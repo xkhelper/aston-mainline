@@ -665,11 +665,7 @@ static struct key *nvmf_parse_key(int key_id)
 		return ERR_PTR(-EINVAL);
 	}
 
-<<<<<<< HEAD
-	key = key_lookup(key_id);
-=======
 	key = nvme_tls_key_lookup(key_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(key))
 		pr_err("key id %08x not found\n", key_id);
 	else

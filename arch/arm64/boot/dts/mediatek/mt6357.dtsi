@@ -10,14 +10,11 @@
 	mt6357_pmic: pmic {
 		compatible = "mediatek,mt6357";
 
-<<<<<<< HEAD
-=======
 		pmic_adc: adc {
 			compatible = "mediatek,mt6357-auxadc";
 			#io-channel-cells = <1>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		regulators {
 			mt6357_vproc_reg: buck-vproc {
 				regulator-name = "vproc";

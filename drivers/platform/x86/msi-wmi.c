@@ -170,26 +170,9 @@ static const struct backlight_ops msi_backlight_ops = {
 	.update_status	= bl_set_status,
 };
 
-<<<<<<< HEAD
-static void msi_wmi_notify(u32 value, void *context)
-{
-	struct acpi_buffer response = { ACPI_ALLOCATE_BUFFER, NULL };
-	struct key_entry *key;
-	union acpi_object *obj;
-	acpi_status status;
-
-	status = wmi_get_event_data(value, &response);
-	if (status != AE_OK) {
-		pr_info("bad event status 0x%x\n", status);
-		return;
-	}
-
-	obj = (union acpi_object *)response.pointer;
-=======
 static void msi_wmi_notify(union acpi_object *obj, void *context)
 {
 	struct key_entry *key;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (obj && obj->type == ACPI_TYPE_INTEGER) {
 		int eventcode = obj->integer.value;
@@ -198,11 +181,7 @@ static void msi_wmi_notify(union acpi_object *obj, void *context)
 				eventcode);
 		if (!key) {
 			pr_info("Unknown key pressed - %x\n", eventcode);
-<<<<<<< HEAD
-			goto msi_wmi_notify_exit;
-=======
 			return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (event_wmi->quirk_last_pressed) {
@@ -214,11 +193,7 @@ static void msi_wmi_notify(union acpi_object *obj, void *context)
 				pr_debug("Suppressed key event 0x%X - "
 					 "Last press was %lld us ago\n",
 					 key->code, ktime_to_us(diff));
-<<<<<<< HEAD
-				goto msi_wmi_notify_exit;
-=======
 				return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			last_pressed = cur;
 		}
@@ -235,12 +210,6 @@ static void msi_wmi_notify(union acpi_object *obj, void *context)
 		}
 	} else
 		pr_info("Unknown event received\n");
-<<<<<<< HEAD
-
-msi_wmi_notify_exit:
-	kfree(response.pointer);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int __init msi_wmi_backlight_setup(void)

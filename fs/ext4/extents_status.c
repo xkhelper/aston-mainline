@@ -558,13 +558,8 @@ static int ext4_es_can_be_merged(struct extent_status *es1,
 	if (ext4_es_is_hole(es1))
 		return 1;
 
-<<<<<<< HEAD
-	/* we need to check delayed extent is without unwritten status */
-	if (ext4_es_is_delayed(es1) && !ext4_es_is_unwritten(es1))
-=======
 	/* we need to check delayed extent */
 	if (ext4_es_is_delayed(es1))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 
 	return 0;
@@ -853,19 +848,12 @@ out:
  */
 void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
 			   ext4_lblk_t len, ext4_fsblk_t pblk,
-<<<<<<< HEAD
-			   unsigned int status)
-=======
 			   unsigned int status, int flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct extent_status newes;
 	ext4_lblk_t end = lblk + len - 1;
 	int err1 = 0, err2 = 0, err3 = 0;
-<<<<<<< HEAD
-=======
 	int resv_used = 0, pending = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
 	struct extent_status *es1 = NULL;
 	struct extent_status *es2 = NULL;
@@ -875,30 +863,14 @@ void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
 		return;
 
-<<<<<<< HEAD
-	es_debug("add [%u/%u) %llu %x to extent status tree of inode %lu\n",
-		 lblk, len, pblk, status, inode->i_ino);
-=======
 	es_debug("add [%u/%u) %llu %x %x to extent status tree of inode %lu\n",
 		 lblk, len, pblk, status, flags, inode->i_ino);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!len)
 		return;
 
 	BUG_ON(end < lblk);
-<<<<<<< HEAD
-
-	if ((status & EXTENT_STATUS_DELAYED) &&
-	    (status & EXTENT_STATUS_WRITTEN)) {
-		ext4_warning(inode->i_sb, "Inserting extent [%u/%u] as "
-				" delayed and written which can potentially "
-				" cause data loss.", lblk, len);
-		WARN_ON(1);
-	}
-=======
 	WARN_ON_ONCE(status & EXTENT_STATUS_DELAYED);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	newes.es_lblk = lblk;
 	newes.es_len = len;
@@ -916,19 +888,11 @@ retry:
 		es1 = __es_alloc_extent(true);
 	if ((err1 || err2) && !es2)
 		es2 = __es_alloc_extent(true);
-<<<<<<< HEAD
-	if ((err1 || err2 || err3) && revise_pending && !pr)
-		pr = __alloc_pending(true);
-	write_lock(&EXT4_I(inode)->i_es_lock);
-
-	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
-=======
 	if ((err1 || err2 || err3 < 0) && revise_pending && !pr)
 		pr = __alloc_pending(true);
 	write_lock(&EXT4_I(inode)->i_es_lock);
 
 	err1 = __es_remove_extent(inode, lblk, end, &resv_used, es1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err1 != 0)
 		goto error;
 	/* Free preallocated extent if it didn't get used. */
@@ -952,22 +916,12 @@ retry:
 
 	if (revise_pending) {
 		err3 = __revise_pending(inode, lblk, len, &pr);
-<<<<<<< HEAD
-		if (err3 != 0)
-=======
 		if (err3 < 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto error;
 		if (pr) {
 			__free_pending(pr);
 			pr = NULL;
 		}
-<<<<<<< HEAD
-	}
-error:
-	write_unlock(&EXT4_I(inode)->i_es_lock);
-	if (err1 || err2 || err3)
-=======
 		pending = err3;
 	}
 error:
@@ -994,7 +948,6 @@ error:
 				flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE);
 
 	if (err1 || err2 || err3 < 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto retry;
 
 	ext4_es_print_tree(inode);
@@ -1114,11 +1067,7 @@ out:
 }
 
 struct rsvd_count {
-<<<<<<< HEAD
-	int ndelonly;
-=======
 	int ndelayed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool first_do_lblk_found;
 	ext4_lblk_t first_do_lblk;
 	ext4_lblk_t last_do_lblk;
@@ -1144,17 +1093,10 @@ static void init_rsvd(struct inode *inode, ext4_lblk_t lblk,
 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
 	struct rb_node *node;
 
-<<<<<<< HEAD
-	rc->ndelonly = 0;
-
-	/*
-	 * for bigalloc, note the first delonly block in the range has not
-=======
 	rc->ndelayed = 0;
 
 	/*
 	 * for bigalloc, note the first delayed block in the range has not
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * been found, record the extent containing the block to the left of
 	 * the region to be removed, if any, and note that there's no partial
 	 * cluster to track
@@ -1174,14 +1116,8 @@ static void init_rsvd(struct inode *inode, ext4_lblk_t lblk,
 }
 
 /*
-<<<<<<< HEAD
- * count_rsvd - count the clusters containing delayed and not unwritten
- *		(delonly) blocks in a range within an extent and add to
- *	        the running tally in rsvd_count
-=======
  * count_rsvd - count the clusters containing delayed blocks in a range
  *	        within an extent and add to the running tally in rsvd_count
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * @inode - file containing extent
  * @lblk - first block in range
@@ -1198,21 +1134,13 @@ static void count_rsvd(struct inode *inode, ext4_lblk_t lblk, long len,
 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
 	ext4_lblk_t i, end, nclu;
 
-<<<<<<< HEAD
-	if (!ext4_es_is_delonly(es))
-=======
 	if (!ext4_es_is_delayed(es))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	WARN_ON(len <= 0);
 
 	if (sbi->s_cluster_ratio == 1) {
-<<<<<<< HEAD
-		rc->ndelonly += (int) len;
-=======
 		rc->ndelayed += (int) len;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -1222,11 +1150,7 @@ static void count_rsvd(struct inode *inode, ext4_lblk_t lblk, long len,
 	end = lblk + (ext4_lblk_t) len - 1;
 	end = (end > ext4_es_end(es)) ? ext4_es_end(es) : end;
 
-<<<<<<< HEAD
-	/* record the first block of the first delonly extent seen */
-=======
 	/* record the first block of the first delayed extent seen */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!rc->first_do_lblk_found) {
 		rc->first_do_lblk = i;
 		rc->first_do_lblk_found = true;
@@ -1240,11 +1164,7 @@ static void count_rsvd(struct inode *inode, ext4_lblk_t lblk, long len,
 	 * doesn't start with it, count it and stop tracking
 	 */
 	if (rc->partial && (rc->lclu != EXT4_B2C(sbi, i))) {
-<<<<<<< HEAD
-		rc->ndelonly++;
-=======
 		rc->ndelayed++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rc->partial = false;
 	}
 
@@ -1254,11 +1174,7 @@ static void count_rsvd(struct inode *inode, ext4_lblk_t lblk, long len,
 	 */
 	if (EXT4_LBLK_COFF(sbi, i) != 0) {
 		if (end >= EXT4_LBLK_CFILL(sbi, i)) {
-<<<<<<< HEAD
-			rc->ndelonly++;
-=======
 			rc->ndelayed++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rc->partial = false;
 			i = EXT4_LBLK_CFILL(sbi, i) + 1;
 		}
@@ -1266,19 +1182,11 @@ static void count_rsvd(struct inode *inode, ext4_lblk_t lblk, long len,
 
 	/*
 	 * if the current cluster starts on a cluster boundary, count the
-<<<<<<< HEAD
-	 * number of whole delonly clusters in the extent
-	 */
-	if ((i + sbi->s_cluster_ratio - 1) <= end) {
-		nclu = (end - i + 1) >> sbi->s_cluster_bits;
-		rc->ndelonly += nclu;
-=======
 	 * number of whole delayed clusters in the extent
 	 */
 	if ((i + sbi->s_cluster_ratio - 1) <= end) {
 		nclu = (end - i + 1) >> sbi->s_cluster_bits;
 		rc->ndelayed += nclu;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i += nclu << sbi->s_cluster_bits;
 	}
 
@@ -1338,16 +1246,9 @@ static struct pending_reservation *__pr_tree_search(struct rb_root *root,
  * @rc - pointer to reserved count data
  *
  * The number of reservations to be released is equal to the number of
-<<<<<<< HEAD
- * clusters containing delayed and not unwritten (delonly) blocks within
- * the range, minus the number of clusters still containing delonly blocks
- * at the ends of the range, and minus the number of pending reservations
- * within the range.
-=======
  * clusters containing delayed blocks within the range, minus the number of
  * clusters still containing delayed blocks at the ends of the range, and
  * minus the number of pending reservations within the range.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
 			     struct extent_status *right_es,
@@ -1358,57 +1259,33 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
 	struct ext4_pending_tree *tree = &EXT4_I(inode)->i_pending_tree;
 	struct rb_node *node;
 	ext4_lblk_t first_lclu, last_lclu;
-<<<<<<< HEAD
-	bool left_delonly, right_delonly, count_pending;
-=======
 	bool left_delayed, right_delayed, count_pending;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct extent_status *es;
 
 	if (sbi->s_cluster_ratio > 1) {
 		/* count any remaining partial cluster */
 		if (rc->partial)
-<<<<<<< HEAD
-			rc->ndelonly++;
-
-		if (rc->ndelonly == 0)
-=======
 			rc->ndelayed++;
 
 		if (rc->ndelayed == 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return 0;
 
 		first_lclu = EXT4_B2C(sbi, rc->first_do_lblk);
 		last_lclu = EXT4_B2C(sbi, rc->last_do_lblk);
 
 		/*
-<<<<<<< HEAD
-		 * decrease the delonly count by the number of clusters at the
-		 * ends of the range that still contain delonly blocks -
-		 * these clusters still need to be reserved
-		 */
-		left_delonly = right_delonly = false;
-=======
 		 * decrease the delayed count by the number of clusters at the
 		 * ends of the range that still contain delayed blocks -
 		 * these clusters still need to be reserved
 		 */
 		left_delayed = right_delayed = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		es = rc->left_es;
 		while (es && ext4_es_end(es) >=
 		       EXT4_LBLK_CMASK(sbi, rc->first_do_lblk)) {
-<<<<<<< HEAD
-			if (ext4_es_is_delonly(es)) {
-				rc->ndelonly--;
-				left_delonly = true;
-=======
 			if (ext4_es_is_delayed(es)) {
 				rc->ndelayed--;
 				left_delayed = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 			}
 			node = rb_prev(&es->rb_node);
@@ -1416,11 +1293,7 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
 				break;
 			es = rb_entry(node, struct extent_status, rb_node);
 		}
-<<<<<<< HEAD
-		if (right_es && (!left_delonly || first_lclu != last_lclu)) {
-=======
 		if (right_es && (!left_delayed || first_lclu != last_lclu)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (end < ext4_es_end(right_es)) {
 				es = right_es;
 			} else {
@@ -1430,15 +1303,9 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
 			}
 			while (es && es->es_lblk <=
 			       EXT4_LBLK_CFILL(sbi, rc->last_do_lblk)) {
-<<<<<<< HEAD
-				if (ext4_es_is_delonly(es)) {
-					rc->ndelonly--;
-					right_delonly = true;
-=======
 				if (ext4_es_is_delayed(es)) {
 					rc->ndelayed--;
 					right_delayed = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					break;
 				}
 				node = rb_next(&es->rb_node);
@@ -1452,35 +1319,21 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
 		/*
 		 * Determine the block range that should be searched for
 		 * pending reservations, if any.  Clusters on the ends of the
-<<<<<<< HEAD
-		 * original removed range containing delonly blocks are
-=======
 		 * original removed range containing delayed blocks are
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * excluded.  They've already been accounted for and it's not
 		 * possible to determine if an associated pending reservation
 		 * should be released with the information available in the
 		 * extents status tree.
 		 */
 		if (first_lclu == last_lclu) {
-<<<<<<< HEAD
-			if (left_delonly | right_delonly)
-=======
 			if (left_delayed | right_delayed)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				count_pending = false;
 			else
 				count_pending = true;
 		} else {
-<<<<<<< HEAD
-			if (left_delonly)
-				first_lclu++;
-			if (right_delonly)
-=======
 			if (left_delayed)
 				first_lclu++;
 			if (right_delayed)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				last_lclu--;
 			if (first_lclu <= last_lclu)
 				count_pending = true;
@@ -1491,21 +1344,13 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
 		/*
 		 * a pending reservation found between first_lclu and last_lclu
 		 * represents an allocated cluster that contained at least one
-<<<<<<< HEAD
-		 * delonly block, so the delonly total must be reduced by one
-=======
 		 * delayed block, so the delayed total must be reduced by one
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * for each pending reservation found and released
 		 */
 		if (count_pending) {
 			pr = __pr_tree_search(&tree->root, first_lclu);
 			while (pr && pr->lclu <= last_lclu) {
-<<<<<<< HEAD
-				rc->ndelonly--;
-=======
 				rc->ndelayed--;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				node = rb_next(&pr->rb_node);
 				rb_erase(&pr->rb_node, &tree->root);
 				__free_pending(pr);
@@ -1516,11 +1361,7 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
 			}
 		}
 	}
-<<<<<<< HEAD
-	return rc->ndelonly;
-=======
 	return rc->ndelayed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 
@@ -2113,11 +1954,7 @@ static struct pending_reservation *__get_pending(struct inode *inode,
  * @lblk - logical block in the cluster to be added
  * @prealloc - preallocated pending entry
  *
-<<<<<<< HEAD
- * Returns 0 on successful insertion and -ENOMEM on failure.  If the
-=======
  * Returns 1 on successful insertion and -ENOMEM on failure.  If the
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * pending reservation is already in the set, returns successfully.
  */
 static int __insert_pending(struct inode *inode, ext4_lblk_t lblk,
@@ -2161,10 +1998,7 @@ static int __insert_pending(struct inode *inode, ext4_lblk_t lblk,
 
 	rb_link_node(&pr->rb_node, parent, p);
 	rb_insert_color(&pr->rb_node, &tree->root);
-<<<<<<< HEAD
-=======
 	ret = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	return ret;
@@ -2286,11 +2120,7 @@ retry:
 		es1 = __es_alloc_extent(true);
 	if ((err1 || err2) && !es2)
 		es2 = __es_alloc_extent(true);
-<<<<<<< HEAD
-	if (err1 || err2 || err3) {
-=======
 	if (err1 || err2 || err3 < 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (lclu_allocated && !pr1)
 			pr1 = __alloc_pending(true);
 		if (end_allocated && !pr2)
@@ -2320,11 +2150,7 @@ retry:
 
 	if (lclu_allocated) {
 		err3 = __insert_pending(inode, lblk, &pr1);
-<<<<<<< HEAD
-		if (err3 != 0)
-=======
 		if (err3 < 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto error;
 		if (pr1) {
 			__free_pending(pr1);
@@ -2333,11 +2159,7 @@ retry:
 	}
 	if (end_allocated) {
 		err3 = __insert_pending(inode, end, &pr2);
-<<<<<<< HEAD
-		if (err3 != 0)
-=======
 		if (err3 < 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto error;
 		if (pr2) {
 			__free_pending(pr2);
@@ -2346,11 +2168,7 @@ retry:
 	}
 error:
 	write_unlock(&EXT4_I(inode)->i_es_lock);
-<<<<<<< HEAD
-	if (err1 || err2 || err3)
-=======
 	if (err1 || err2 || err3 < 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto retry;
 
 	ext4_es_print_tree(inode);
@@ -2359,97 +2177,6 @@ error:
 }
 
 /*
-<<<<<<< HEAD
- * __es_delayed_clu - count number of clusters containing blocks that
- *                    are delayed only
- *
- * @inode - file containing block range
- * @start - logical block defining start of range
- * @end - logical block defining end of range
- *
- * Returns the number of clusters containing only delayed (not delayed
- * and unwritten) blocks in the range specified by @start and @end.  Any
- * cluster or part of a cluster within the range and containing a delayed
- * and not unwritten block within the range is counted as a whole cluster.
- */
-static unsigned int __es_delayed_clu(struct inode *inode, ext4_lblk_t start,
-				     ext4_lblk_t end)
-{
-	struct ext4_es_tree *tree = &EXT4_I(inode)->i_es_tree;
-	struct extent_status *es;
-	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
-	struct rb_node *node;
-	ext4_lblk_t first_lclu, last_lclu;
-	unsigned long long last_counted_lclu;
-	unsigned int n = 0;
-
-	/* guaranteed to be unequal to any ext4_lblk_t value */
-	last_counted_lclu = ~0ULL;
-
-	es = __es_tree_search(&tree->root, start);
-
-	while (es && (es->es_lblk <= end)) {
-		if (ext4_es_is_delonly(es)) {
-			if (es->es_lblk <= start)
-				first_lclu = EXT4_B2C(sbi, start);
-			else
-				first_lclu = EXT4_B2C(sbi, es->es_lblk);
-
-			if (ext4_es_end(es) >= end)
-				last_lclu = EXT4_B2C(sbi, end);
-			else
-				last_lclu = EXT4_B2C(sbi, ext4_es_end(es));
-
-			if (first_lclu == last_counted_lclu)
-				n += last_lclu - first_lclu;
-			else
-				n += last_lclu - first_lclu + 1;
-			last_counted_lclu = last_lclu;
-		}
-		node = rb_next(&es->rb_node);
-		if (!node)
-			break;
-		es = rb_entry(node, struct extent_status, rb_node);
-	}
-
-	return n;
-}
-
-/*
- * ext4_es_delayed_clu - count number of clusters containing blocks that
- *                       are both delayed and unwritten
- *
- * @inode - file containing block range
- * @lblk - logical block defining start of range
- * @len - number of blocks in range
- *
- * Locking for external use of __es_delayed_clu().
- */
-unsigned int ext4_es_delayed_clu(struct inode *inode, ext4_lblk_t lblk,
-				 ext4_lblk_t len)
-{
-	struct ext4_inode_info *ei = EXT4_I(inode);
-	ext4_lblk_t end;
-	unsigned int n;
-
-	if (len == 0)
-		return 0;
-
-	end = lblk + len - 1;
-	WARN_ON(end < lblk);
-
-	read_lock(&ei->i_es_lock);
-
-	n = __es_delayed_clu(inode, lblk, end);
-
-	read_unlock(&ei->i_es_lock);
-
-	return n;
-}
-
-/*
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * __revise_pending - makes, cancels, or leaves unchanged pending cluster
  *                    reservations for a specified block range depending
  *                    upon the presence or absence of delayed blocks
@@ -2463,13 +2190,9 @@ unsigned int ext4_es_delayed_clu(struct inode *inode, ext4_lblk_t lblk,
  *
  * Used after a newly allocated extent is added to the extents status tree.
  * Requires that the extents in the range have either written or unwritten
-<<<<<<< HEAD
- * status.  Must be called while holding i_es_lock.
-=======
  * status.  Must be called while holding i_es_lock. Returns number of new
  * inserts pending cluster on insert pendings, returns 0 on remove pendings,
  * return -ENOMEM on failure.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int __revise_pending(struct inode *inode, ext4_lblk_t lblk,
 			    ext4_lblk_t len,
@@ -2479,10 +2202,7 @@ static int __revise_pending(struct inode *inode, ext4_lblk_t lblk,
 	ext4_lblk_t end = lblk + len - 1;
 	ext4_lblk_t first, last;
 	bool f_del = false, l_del = false;
-<<<<<<< HEAD
-=======
 	int pendings = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	if (len == 0)
@@ -2504,85 +2224,53 @@ static int __revise_pending(struct inode *inode, ext4_lblk_t lblk,
 	if (EXT4_B2C(sbi, lblk) == EXT4_B2C(sbi, end)) {
 		first = EXT4_LBLK_CMASK(sbi, lblk);
 		if (first != lblk)
-<<<<<<< HEAD
-			f_del = __es_scan_range(inode, &ext4_es_is_delonly,
-=======
 			f_del = __es_scan_range(inode, &ext4_es_is_delayed,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						first, lblk - 1);
 		if (f_del) {
 			ret = __insert_pending(inode, first, prealloc);
 			if (ret < 0)
 				goto out;
-<<<<<<< HEAD
-=======
 			pendings += ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			last = EXT4_LBLK_CMASK(sbi, end) +
 			       sbi->s_cluster_ratio - 1;
 			if (last != end)
 				l_del = __es_scan_range(inode,
-<<<<<<< HEAD
-							&ext4_es_is_delonly,
-=======
 							&ext4_es_is_delayed,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							end + 1, last);
 			if (l_del) {
 				ret = __insert_pending(inode, last, prealloc);
 				if (ret < 0)
 					goto out;
-<<<<<<< HEAD
-=======
 				pendings += ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			} else
 				__remove_pending(inode, last);
 		}
 	} else {
 		first = EXT4_LBLK_CMASK(sbi, lblk);
 		if (first != lblk)
-<<<<<<< HEAD
-			f_del = __es_scan_range(inode, &ext4_es_is_delonly,
-=======
 			f_del = __es_scan_range(inode, &ext4_es_is_delayed,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						first, lblk - 1);
 		if (f_del) {
 			ret = __insert_pending(inode, first, prealloc);
 			if (ret < 0)
 				goto out;
-<<<<<<< HEAD
-=======
 			pendings += ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else
 			__remove_pending(inode, first);
 
 		last = EXT4_LBLK_CMASK(sbi, end) + sbi->s_cluster_ratio - 1;
 		if (last != end)
-<<<<<<< HEAD
-			l_del = __es_scan_range(inode, &ext4_es_is_delonly,
-=======
 			l_del = __es_scan_range(inode, &ext4_es_is_delayed,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						end + 1, last);
 		if (l_del) {
 			ret = __insert_pending(inode, last, prealloc);
 			if (ret < 0)
 				goto out;
-<<<<<<< HEAD
-=======
 			pendings += ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else
 			__remove_pending(inode, last);
 	}
 out:
-<<<<<<< HEAD
-	return ret;
-=======
 	return (ret < 0) ? ret : pendings;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

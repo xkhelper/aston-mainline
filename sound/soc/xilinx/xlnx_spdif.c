@@ -325,11 +325,7 @@ static struct platform_driver xlnx_spdif_driver = {
 		.of_match_table = xlnx_spdif_of_match,
 	},
 	.probe = xlnx_spdif_probe,
-<<<<<<< HEAD
-	.remove_new = xlnx_spdif_remove,
-=======
 	.remove = xlnx_spdif_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(xlnx_spdif_driver);
 

@@ -608,8 +608,6 @@ int regmap_irq_set_type_config_simple(unsigned int **buf, unsigned int type,
 }
 EXPORT_SYMBOL_GPL(regmap_irq_set_type_config_simple);
 
-<<<<<<< HEAD
-=======
 static int regmap_irq_create_domain(struct fwnode_handle *fwnode, int irq_base,
 				    const struct regmap_irq_chip *chip,
 				    struct regmap_irq_chip_data *d)
@@ -634,7 +632,6 @@ static int regmap_irq_create_domain(struct fwnode_handle *fwnode, int irq_base,
 }
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * regmap_add_irq_chip_fwnode() - Use standard regmap IRQ controller handling
  *
@@ -883,24 +880,9 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
 		}
 	}
 
-<<<<<<< HEAD
-	if (irq_base)
-		d->domain = irq_domain_create_legacy(fwnode, chip->num_irqs,
-						     irq_base, 0,
-						     &regmap_domain_ops, d);
-	else
-		d->domain = irq_domain_create_linear(fwnode, chip->num_irqs,
-						     &regmap_domain_ops, d);
-	if (!d->domain) {
-		dev_err(map->dev, "Failed to create IRQ domain\n");
-		ret = -ENOMEM;
-		goto err_alloc;
-	}
-=======
 	ret = regmap_irq_create_domain(fwnode, irq_base, chip, d);
 	if (ret)
 		goto err_alloc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = request_threaded_irq(irq, NULL, regmap_irq_thread,
 				   irq_flags | IRQF_ONESHOT,

@@ -108,11 +108,7 @@ struct axp288_extcon_info {
 };
 
 static const struct x86_cpu_id cherry_trail_cpu_ids[] = {
-<<<<<<< HEAD
-	X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,	NULL),
-=======
 	X86_MATCH_VFM(INTEL_ATOM_AIRMONT,	NULL),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

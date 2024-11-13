@@ -26,10 +26,6 @@
 #include <drm/drm_drv.h>
 #include <drm/intel/i915_pciids.h>
 
-<<<<<<< HEAD
-#include "display/intel_display.h"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "display/intel_display_driver.h"
 #include "gt/intel_gt_regs.h"
 #include "gt/intel_sa_media.h"
@@ -883,11 +879,7 @@ static void i915_pci_remove(struct pci_dev *pdev)
 {
 	struct drm_i915_private *i915;
 
-<<<<<<< HEAD
-	i915 = pci_get_drvdata(pdev);
-=======
 	i915 = pdev_to_i915(pdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!i915) /* driver load aborted, nothing to cleanup */
 		return;
 
@@ -1010,11 +1002,7 @@ static int i915_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
-	if (i915_inject_probe_failure(pci_get_drvdata(pdev))) {
-=======
 	if (i915_inject_probe_failure(pdev_to_i915(pdev))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i915_pci_remove(pdev);
 		return -ENODEV;
 	}
@@ -1036,11 +1024,7 @@ static int i915_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 static void i915_pci_shutdown(struct pci_dev *pdev)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = pci_get_drvdata(pdev);
-=======
 	struct drm_i915_private *i915 = pdev_to_i915(pdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	i915_driver_shutdown(i915);
 }

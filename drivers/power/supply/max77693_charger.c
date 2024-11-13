@@ -197,8 +197,6 @@ static int max77693_get_online(struct regmap *regmap, int *val)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * There are *two* current limit registers:
  * - CHGIN limit, which limits the input current from the external charger;
@@ -243,18 +241,14 @@ static int max77693_get_fast_charge_current(struct regmap *regmap, int *val)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static enum power_supply_property max77693_charger_props[] = {
 	POWER_SUPPLY_PROP_STATUS,
 	POWER_SUPPLY_PROP_CHARGE_TYPE,
 	POWER_SUPPLY_PROP_HEALTH,
 	POWER_SUPPLY_PROP_PRESENT,
 	POWER_SUPPLY_PROP_ONLINE,
-<<<<<<< HEAD
-=======
 	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
 	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	POWER_SUPPLY_PROP_MODEL_NAME,
 	POWER_SUPPLY_PROP_MANUFACTURER,
 };
@@ -283,15 +277,12 @@ static int max77693_charger_get_property(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_ONLINE:
 		ret = max77693_get_online(regmap, &val->intval);
 		break;
-<<<<<<< HEAD
-=======
 	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		ret = max77693_get_input_current_limit(regmap, &val->intval);
 		break;
 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		ret = max77693_get_fast_charge_current(regmap, &val->intval);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = max77693_charger_model;
 		break;

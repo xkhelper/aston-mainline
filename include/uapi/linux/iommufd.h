@@ -4,13 +4,8 @@
 #ifndef _UAPI_IOMMUFD_H
 #define _UAPI_IOMMUFD_H
 
-<<<<<<< HEAD
-#include <linux/types.h>
-#include <linux/ioctl.h>
-=======
 #include <linux/ioctl.h>
 #include <linux/types.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IOMMUFD_TYPE (';')
 

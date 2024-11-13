@@ -21,11 +21,7 @@
 #include <linux/netdevice.h>
 #include <linux/random.h>
 #include <linux/crc32.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/bitsperlong.h>
 
 #ifdef __KERNEL__
@@ -649,11 +645,7 @@ static inline struct ethhdr *eth_skb_pull_mac(struct sk_buff *skb)
 }
 
 /**
-<<<<<<< HEAD
- * eth_skb_pad - Pad buffer to mininum number of octets for Ethernet frame
-=======
  * eth_skb_pad - Pad buffer to minimum number of octets for Ethernet frame
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @skb: Buffer to pad
  *
  * An Ethernet frame should have a minimum size of 60 bytes.  This function

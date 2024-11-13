@@ -517,11 +517,7 @@ static int igt_mock_max_segment(void *arg)
 
 		if (!IS_ALIGNED(daddr, ps)) {
 			pr_err("%s: Created an unaligned scatterlist entry, addr=%pa, ps=%u\n",
-<<<<<<< HEAD
-			       __func__,  &daddr, ps);
-=======
 			       __func__, &daddr, ps);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -EINVAL;
 			goto out_close;
 		}

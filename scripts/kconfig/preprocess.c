@@ -11,10 +11,7 @@
 
 #include <array_size.h>
 #include <list.h>
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "internal.h"
 #include "lkc.h"
 #include "preprocess.h"

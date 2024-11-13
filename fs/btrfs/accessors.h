@@ -3,11 +3,7 @@
 #ifndef BTRFS_ACCESSORS_H
 #define BTRFS_ACCESSORS_H
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/stddef.h>
 #include <linux/types.h>
 #include <linux/align.h>

@@ -2092,11 +2092,7 @@ static struct platform_driver cs47l92_codec_driver = {
 		.name = "cs47l92-codec",
 	},
 	.probe = &cs47l92_probe,
-<<<<<<< HEAD
-	.remove_new = cs47l92_remove,
-=======
 	.remove = cs47l92_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(cs47l92_codec_driver);

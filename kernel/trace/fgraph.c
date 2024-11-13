@@ -1160,29 +1160,14 @@ void fgraph_update_pid_func(void)
 static int start_graph_tracing(void)
 {
 	unsigned long **ret_stack_list;
-<<<<<<< HEAD
-	int ret, cpu;
-
-	ret_stack_list = kmalloc(SHADOW_STACK_SIZE, GFP_KERNEL);
-=======
 	int ret;
 
 	ret_stack_list = kcalloc(FTRACE_RETSTACK_ALLOC_SIZE,
 				 sizeof(*ret_stack_list), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!ret_stack_list)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	/* The cpu_boot init_task->ret_stack will never be freed */
-	for_each_online_cpu(cpu) {
-		if (!idle_task(cpu)->ret_stack)
-			ftrace_graph_init_idle_task(idle_task(cpu), cpu);
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	do {
 		ret = alloc_retstack_tasklist(ret_stack_list);
 	} while (ret == -EAGAIN);
@@ -1252,10 +1237,6 @@ static void ftrace_graph_disable_direct(bool disable_branch)
 	fgraph_direct_gops = &fgraph_stub;
 }
 
-<<<<<<< HEAD
-int register_ftrace_graph(struct fgraph_ops *gops)
-{
-=======
 /* The cpu_boot init_task->ret_stack will never be freed */
 static int fgraph_cpu_init(unsigned int cpu)
 {
@@ -1267,14 +1248,10 @@ static int fgraph_cpu_init(unsigned int cpu)
 int register_ftrace_graph(struct fgraph_ops *gops)
 {
 	static bool fgraph_initialized;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int command = 0;
 	int ret = 0;
 	int i = -1;
 
-<<<<<<< HEAD
-	mutex_lock(&ftrace_lock);
-=======
 	guard(mutex)(&ftrace_lock);
 
 	if (!fgraph_initialized) {
@@ -1287,7 +1264,6 @@ int register_ftrace_graph(struct fgraph_ops *gops)
 		fgraph_initialized = true;
 		ret = 0;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!fgraph_array[0]) {
 		/* The array must always have real data on it */
@@ -1297,15 +1273,8 @@ int register_ftrace_graph(struct fgraph_ops *gops)
 	}
 
 	i = fgraph_lru_alloc_index();
-<<<<<<< HEAD
-	if (i < 0 || WARN_ON_ONCE(fgraph_array[i] != &fgraph_stub)) {
-		ret = -ENOSPC;
-		goto out;
-	}
-=======
 	if (i < 0 || WARN_ON_ONCE(fgraph_array[i] != &fgraph_stub))
 		return -ENOSPC;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gops->idx = i;
 
 	ftrace_graph_active++;
@@ -1342,11 +1311,6 @@ error:
 		gops->saved_func = NULL;
 		fgraph_lru_release_index(i);
 	}
-<<<<<<< HEAD
-out:
-	mutex_unlock(&ftrace_lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

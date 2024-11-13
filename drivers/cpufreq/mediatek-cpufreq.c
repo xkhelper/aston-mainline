@@ -738,11 +738,7 @@ static const struct mtk_cpufreq_platform_data mt8516_platform_data = {
 };
 
 /* List of machines supported by this driver */
-<<<<<<< HEAD
-static const struct of_device_id mtk_cpufreq_machines[] __initconst = {
-=======
 static const struct of_device_id mtk_cpufreq_machines[] __initconst __maybe_unused = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "mediatek,mt2701", .data = &mt2701_platform_data },
 	{ .compatible = "mediatek,mt2712", .data = &mt2701_platform_data },
 	{ .compatible = "mediatek,mt7622", .data = &mt7622_platform_data },

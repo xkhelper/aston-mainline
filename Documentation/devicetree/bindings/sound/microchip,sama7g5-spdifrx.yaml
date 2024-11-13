@@ -13,12 +13,9 @@ description:
   The Microchip Sony/Philips Digital Interface Receiver is a serial port
   compliant with the IEC-60958 standard.
 
-<<<<<<< HEAD
-=======
 allOf:
   - $ref: dai-common.yaml#
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 properties:
   "#sound-dai-cells":
     const: 0
@@ -59,11 +56,7 @@ required:
   - dmas
   - dma-names
 
-<<<<<<< HEAD
-additionalProperties: false
-=======
 unevaluatedProperties: false
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 examples:
   - |

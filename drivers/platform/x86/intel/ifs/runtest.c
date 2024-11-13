@@ -29,8 +29,6 @@ struct run_params {
 	union ifs_status status;
 };
 
-<<<<<<< HEAD
-=======
 struct sbaf_run_params {
 	struct ifs_data *ifsd;
 	int *retry_cnt;
@@ -38,7 +36,6 @@ struct sbaf_run_params {
 	union ifs_sbaf_status status;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Number of TSC cycles that a logical CPU will wait for the other
  * logical CPU on the core in the WRMSR(ACTIVATE_SCAN).
@@ -156,10 +153,7 @@ static bool can_restart(union ifs_status status)
 #define SPINUNIT 100 /* 100 nsec */
 static atomic_t array_cpus_in;
 static atomic_t scan_cpus_in;
-<<<<<<< HEAD
-=======
 static atomic_t sbaf_cpus_in;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Simplified cpu sibling rendezvous loop based on microcode loader __wait_for_cpus()
@@ -401,8 +395,6 @@ static void ifs_array_test_gen1(int cpu, struct device *dev)
 		ifsd->status = SCAN_TEST_PASS;
 }
 
-<<<<<<< HEAD
-=======
 #define SBAF_STATUS_PASS			0
 #define SBAF_STATUS_SIGN_FAIL			1
 #define SBAF_STATUS_INTR			2
@@ -622,7 +614,6 @@ static void ifs_sbaf_test_core(int cpu, struct device *dev)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Initiate per core test. It wakes up work queue threads on the target cpu and
  * its sibling cpu. Once all sibling threads wake up, the scan test gets executed and
@@ -656,15 +647,12 @@ int do_core_test(int cpu, struct device *dev)
 		else
 			ifs_array_test_gen1(cpu, dev);
 		break;
-<<<<<<< HEAD
-=======
 	case IFS_TYPE_SBAF:
 		if (!ifsd->loaded)
 			ret = -EPERM;
 		else
 			ifs_sbaf_test_core(cpu, dev);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		ret = -EINVAL;
 	}

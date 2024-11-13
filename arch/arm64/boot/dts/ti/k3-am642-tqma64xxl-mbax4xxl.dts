@@ -24,11 +24,8 @@
 
 	aliases {
 		ethernet0 = &cpsw_port1;
-<<<<<<< HEAD
-=======
 		ethernet1 = &icssg1_emac0;
 		ethernet2 = &icssg1_emac1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i2c1 = &mcu_i2c0;
 		mmc1 = &sdhci1;
 		serial0 = &mcu_uart0;
@@ -76,8 +73,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	icssg1_eth: icssg1-eth {
 		compatible = "ti,am642-icssg-prueth";
 		pinctrl-names = "default";
@@ -138,7 +133,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fan0: pwm-fan {
 		compatible = "pwm-fan";
 		pinctrl-names = "default";
@@ -187,23 +181,13 @@
 &cpsw3g {
 	pinctrl-names = "default";
 	pinctrl-0 = <&cpsw_pins>;
-<<<<<<< HEAD
-=======
 	status = "okay";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &cpsw_port1 {
 	phy-mode = "rgmii-rxid";
 	phy-handle = <&cpsw3g_phy0>;
-<<<<<<< HEAD
-};
-
-&cpsw_port2 {
-	status = "disabled";
-=======
 	status = "okay";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &cpsw3g_mdio {
@@ -230,8 +214,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &icssg1_mdio {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pru_icssg1_mdio_pins>;
@@ -268,7 +250,6 @@
 };
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &main_gpio0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&main_gpio0_digital_pins>,

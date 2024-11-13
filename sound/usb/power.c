@@ -40,10 +40,7 @@ snd_usb_find_power_domain(struct usb_host_interface *ctrl_iface,
 					le16_to_cpu(pd_desc->waRecoveryTime1);
 				pd->pd_d2d0_rec =
 					le16_to_cpu(pd_desc->waRecoveryTime2);
-<<<<<<< HEAD
-=======
 				pd->ctrl_iface = ctrl_iface;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return pd;
 			}
 		}
@@ -61,11 +58,7 @@ int snd_usb_power_domain_set(struct snd_usb_audio *chip,
 	unsigned char current_state;
 	int err, idx;
 
-<<<<<<< HEAD
-	idx = snd_usb_ctrl_intf(chip) | (pd->pd_id << 8);
-=======
 	idx = snd_usb_ctrl_intf(pd->ctrl_iface) | (pd->pd_id << 8);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = snd_usb_ctl_msg(chip->dev, usb_rcvctrlpipe(chip->dev, 0),
 			      UAC2_CS_CUR,

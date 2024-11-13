@@ -128,11 +128,7 @@ static const struct pci_device_id sil_pci_tbl[] = {
 static const struct sil_drivelist {
 	const char *product;
 	unsigned int quirk;
-<<<<<<< HEAD
-} sil_blacklist [] = {
-=======
 } sil_quirks[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ "ST320012AS",		SIL_QUIRK_MOD15WRITE },
 	{ "ST330013AS",		SIL_QUIRK_MOD15WRITE },
 	{ "ST340017AS",		SIL_QUIRK_MOD15WRITE },
@@ -604,13 +600,8 @@ static void sil_thaw(struct ata_port *ap)
  *	list, and apply the fixups to only the specific
  *	devices/hosts/firmwares that need it.
  *
-<<<<<<< HEAD
- *	20040111 - Seagate drives affected by the Mod15Write bug are blacklisted
- *	The Maxtor quirk is in the blacklist, but I'm keeping the original
-=======
  *	20040111 - Seagate drives affected by the Mod15Write bug are quirked
  *	The Maxtor quirk is in sil_quirks, but I'm keeping the original
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	pessimistic fix for the following reasons...
  *	- There seems to be less info on it, only one device gleaned off the
  *	Windows	driver, maybe only one is affected.  More info would be greatly
@@ -625,15 +616,6 @@ static void sil_dev_config(struct ata_device *dev)
 	unsigned char model_num[ATA_ID_PROD_LEN + 1];
 
 	/* This controller doesn't support trim */
-<<<<<<< HEAD
-	dev->horkage |= ATA_HORKAGE_NOTRIM;
-
-	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
-
-	for (n = 0; sil_blacklist[n].product; n++)
-		if (!strcmp(sil_blacklist[n].product, model_num)) {
-			quirks = sil_blacklist[n].quirk;
-=======
 	dev->quirks |= ATA_QUIRK_NOTRIM;
 
 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
@@ -641,7 +623,6 @@ static void sil_dev_config(struct ata_device *dev)
 	for (n = 0; sil_quirks[n].product; n++)
 		if (!strcmp(sil_quirks[n].product, model_num)) {
 			quirks = sil_quirks[n].quirk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 

@@ -78,11 +78,7 @@ static inline long do_syscall_stub(struct mm_id *mm_idp)
 {
 	struct stub_data *proc_data = (void *)mm_idp->stack;
 	int n, i;
-<<<<<<< HEAD
-	int err, pid = mm_idp->u.pid;
-=======
 	int err, pid = mm_idp->pid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	n = ptrace_setregs(pid, syscall_regs);
 	if (n < 0) {

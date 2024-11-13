@@ -812,10 +812,7 @@ __reset_control_get_internal(struct reset_controller_dev *rcdev,
 	kref_init(&rstc->refcnt);
 	rstc->acquired = acquired;
 	rstc->shared = shared;
-<<<<<<< HEAD
-=======
 	get_device(rcdev->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return rstc;
 }
@@ -830,10 +827,7 @@ static void __reset_control_release(struct kref *kref)
 	module_put(rstc->rcdev->owner);
 
 	list_del(&rstc->list);
-<<<<<<< HEAD
-=======
 	put_device(rstc->rcdev->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(rstc);
 }
 
@@ -924,33 +918,18 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
 	 */
 	lockdep_assert_not_held(&reset_list_mutex);
 
-<<<<<<< HEAD
-	mutex_lock(&reset_gpio_lookup_mutex);
-=======
 	guard(mutex)(&reset_gpio_lookup_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_for_each_entry(rgpio_dev, &reset_gpio_lookup_list, list) {
 		if (args->np == rgpio_dev->of_args.np) {
 			if (of_phandle_args_equal(args, &rgpio_dev->of_args))
-<<<<<<< HEAD
-				goto out; /* Already on the list, done */
-=======
 				return 0; /* Already on the list, done */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	id = ida_alloc(&reset_gpio_ida, GFP_KERNEL);
-<<<<<<< HEAD
-	if (id < 0) {
-		ret = id;
-		goto err_unlock;
-	}
-=======
 	if (id < 0)
 		return id;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Not freed on success, because it is persisent subsystem data. */
 	rgpio_dev = kzalloc(sizeof(*rgpio_dev), GFP_KERNEL);
@@ -980,12 +959,6 @@ static int __reset_add_reset_gpio_device(const struct of_phandle_args *args)
 
 	list_add(&rgpio_dev->list, &reset_gpio_lookup_list);
 
-<<<<<<< HEAD
-out:
-	mutex_unlock(&reset_gpio_lookup_mutex);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_put:
@@ -994,11 +967,6 @@ err_kfree:
 	kfree(rgpio_dev);
 err_ida_free:
 	ida_free(&reset_gpio_ida, id);
-<<<<<<< HEAD
-err_unlock:
-	mutex_unlock(&reset_gpio_lookup_mutex);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

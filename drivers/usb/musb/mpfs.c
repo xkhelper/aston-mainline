@@ -49,33 +49,6 @@ static const struct musb_hdrc_config mpfs_musb_hdrc_config = {
 	.ram_bits = MPFS_MUSB_RAM_BITS,
 };
 
-<<<<<<< HEAD
-static irqreturn_t mpfs_musb_interrupt(int irq, void *__hci)
-{
-	unsigned long flags;
-	irqreturn_t ret = IRQ_NONE;
-	struct musb *musb = __hci;
-
-	spin_lock_irqsave(&musb->lock, flags);
-
-	musb->int_usb = musb_readb(musb->mregs, MUSB_INTRUSB);
-	musb->int_tx = musb_readw(musb->mregs, MUSB_INTRTX);
-	musb->int_rx = musb_readw(musb->mregs, MUSB_INTRRX);
-
-	if (musb->int_usb || musb->int_tx || musb->int_rx) {
-		musb_writeb(musb->mregs, MUSB_INTRUSB, musb->int_usb);
-		musb_writew(musb->mregs, MUSB_INTRTX, musb->int_tx);
-		musb_writew(musb->mregs, MUSB_INTRRX, musb->int_rx);
-		ret = musb_interrupt(musb);
-	}
-
-	spin_unlock_irqrestore(&musb->lock, flags);
-
-	return ret;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mpfs_musb_set_vbus(struct musb *musb, int is_on)
 {
 	u8 devctl;
@@ -114,8 +87,6 @@ static void mpfs_musb_set_vbus(struct musb *musb, int is_on)
 		musb_readb(musb->mregs, MUSB_DEVCTL));
 }
 
-<<<<<<< HEAD
-=======
 #define	POLL_SECONDS	2
 
 static void otg_timer(struct timer_list *t)
@@ -239,7 +210,6 @@ static irqreturn_t mpfs_musb_interrupt(int irq, void *__hci)
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mpfs_musb_init(struct musb *musb)
 {
 	struct device *dev = musb->controller;
@@ -250,11 +220,8 @@ static int mpfs_musb_init(struct musb *musb)
 		return PTR_ERR(musb->xceiv);
 	}
 
-<<<<<<< HEAD
-=======
 	timer_setup(&musb->dev_timer, otg_timer, 0);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	musb->dyn_fifo = true;
 	musb->isr = mpfs_musb_interrupt;
 
@@ -263,11 +230,6 @@ static int mpfs_musb_init(struct musb *musb)
 	return 0;
 }
 
-<<<<<<< HEAD
-static const struct musb_platform_ops mpfs_ops = {
-	.quirks		= MUSB_DMA_INVENTRA,
-	.init		= mpfs_musb_init,
-=======
 static int mpfs_musb_exit(struct musb *musb)
 {
 	del_timer_sync(&musb->dev_timer);
@@ -279,18 +241,14 @@ static const struct musb_platform_ops mpfs_ops = {
 	.quirks		= MUSB_DMA_INVENTRA,
 	.init		= mpfs_musb_init,
 	.exit		= mpfs_musb_exit,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.fifo_mode	= 2,
 #ifdef CONFIG_USB_INVENTRA_DMA
 	.dma_init	= musbhs_dma_controller_create,
 	.dma_exit	= musbhs_dma_controller_destroy,
 #endif
-<<<<<<< HEAD
-=======
 #ifndef CONFIG_USB_MUSB_HOST
 	.try_idle	= mpfs_musb_try_idle,
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_vbus	= mpfs_musb_set_vbus
 };
 

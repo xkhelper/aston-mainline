@@ -37,15 +37,6 @@
 #define AMD_PMF_RESULT_CMD_UNKNOWN           0xFE
 #define AMD_PMF_RESULT_FAILED                0xFF
 
-<<<<<<< HEAD
-/* List of supported CPU ids */
-#define AMD_CPU_ID_RMB			0x14b5
-#define AMD_CPU_ID_PS			0x14e8
-#define PCI_DEVICE_ID_AMD_1AH_M20H_ROOT	0x1507
-#define PCI_DEVICE_ID_AMD_1AH_M60H_ROOT	0x1122
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PMF_MSG_DELAY_MIN_US		50
 #define RESPONSE_REGISTER_LOOP_MAX	20000
 
@@ -264,9 +255,6 @@ int amd_pmf_set_dram_addr(struct amd_pmf_dev *dev, bool alloc_buffer)
 
 	/* Get Metrics Table Address */
 	if (alloc_buffer) {
-<<<<<<< HEAD
-		dev->buf = kzalloc(sizeof(dev->m_table), GFP_KERNEL);
-=======
 		switch (dev->cpu_id) {
 		case AMD_CPU_ID_PS:
 		case AMD_CPU_ID_RMB:
@@ -281,7 +269,6 @@ int amd_pmf_set_dram_addr(struct amd_pmf_dev *dev, bool alloc_buffer)
 		}
 
 		dev->buf = kzalloc(dev->mtable_size, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!dev->buf)
 			return -ENOMEM;
 	}

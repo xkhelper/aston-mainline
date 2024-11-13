@@ -483,10 +483,6 @@ static const struct file_operations v4l2_fops = {
 #endif
 	.release = v4l2_release,
 	.poll = v4l2_poll,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -560,10 +556,7 @@ static void determine_valid_ioctls(struct video_device *vdev)
 	bool is_tx = vdev->vfl_dir != VFL_DIR_RX;
 	bool is_io_mc = vdev->device_caps & V4L2_CAP_IO_MC;
 	bool has_streaming = vdev->device_caps & V4L2_CAP_STREAMING;
-<<<<<<< HEAD
-=======
 	bool is_edid =  vdev->device_caps & V4L2_CAP_EDID;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bitmap_zero(valid_ioctls, BASE_VIDIOC_PRIVATE);
 
@@ -791,8 +784,6 @@ static void determine_valid_ioctls(struct video_device *vdev)
 		SET_VALID_IOCTL(ops, VIDIOC_S_TUNER, vidioc_s_tuner);
 		SET_VALID_IOCTL(ops, VIDIOC_S_HW_FREQ_SEEK, vidioc_s_hw_freq_seek);
 	}
-<<<<<<< HEAD
-=======
 	if (is_edid) {
 		SET_VALID_IOCTL(ops, VIDIOC_G_EDID, vidioc_g_edid);
 		if (is_tx) {
@@ -807,7 +798,6 @@ static void determine_valid_ioctls(struct video_device *vdev)
 			SET_VALID_IOCTL(ops, VIDIOC_S_EDID, vidioc_s_edid);
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bitmap_andnot(vdev->valid_ioctls, valid_ioctls, vdev->valid_ioctls,
 			BASE_VIDIOC_PRIVATE);

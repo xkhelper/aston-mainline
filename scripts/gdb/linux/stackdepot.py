@@ -13,8 +13,6 @@ if constants.LX_CONFIG_STACKDEPOT:
     stack_record_type = utils.CachedType('struct stack_record')
     DEPOT_STACK_ALIGN = 4
 
-<<<<<<< HEAD
-=======
 def help():
     t = """Usage: lx-stack_depot_lookup [Hex handle value]
     Example:
@@ -22,7 +20,6 @@ def help():
     gdb.write("Unrecognized command\n")
     raise gdb.GdbError(t)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 def stack_depot_fetch(handle):
     global DEPOT_STACK_ALIGN
     global stack_record_type
@@ -67,8 +64,6 @@ def stack_depot_print(handle):
                 gdb.execute("x /i 0x%x" % (int(entries[i])))
             except Exception as e:
                 gdb.write("%s\n" % e)
-<<<<<<< HEAD
-=======
 
 class StackDepotLookup(gdb.Command):
     """Search backtrace by handle"""
@@ -89,4 +84,3 @@ class StackDepotLookup(gdb.Command):
             help()
 
 StackDepotLookup()
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -135,11 +135,7 @@ void test_lpm_trie_map_batch_ops(void)
 		CHECK(total != max_entries, "delete with steps",
 		      "total = %u, max_entries = %u\n", total, max_entries);
 
-<<<<<<< HEAD
-		/* check map is empty, errono == ENOENT */
-=======
 		/* check map is empty, errno == ENOENT */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = bpf_map_get_next_key(map_fd, NULL, &key);
 		CHECK(!err || errno != ENOENT, "bpf_map_get_next_key()",
 		      "error: %s\n", strerror(errno));

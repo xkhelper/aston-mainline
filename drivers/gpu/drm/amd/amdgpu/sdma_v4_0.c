@@ -72,8 +72,6 @@ MODULE_FIRMWARE("amdgpu/renoir_sdma.bin");
 MODULE_FIRMWARE("amdgpu/green_sardine_sdma.bin");
 MODULE_FIRMWARE("amdgpu/aldebaran_sdma.bin");
 
-<<<<<<< HEAD
-=======
 static const struct amdgpu_hwip_reg_entry sdma_reg_list_4_0[] = {
 	SOC15_REG_ENTRY_STR(GC, 0, mmSDMA0_STATUS_REG),
 	SOC15_REG_ENTRY_STR(GC, 0, mmSDMA0_STATUS1_REG),
@@ -121,7 +119,6 @@ static const struct amdgpu_hwip_reg_entry sdma_reg_list_4_0[] = {
 	SOC15_REG_ENTRY_STR(GC, 0, mmSDMA0_VM_CNTL)
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SDMA0_POWER_CNTL__ON_OFF_CONDITION_HOLD_TIME_MASK  0x000000F8L
 #define SDMA0_POWER_CNTL__ON_OFF_STATUS_DURATION_TIME_MASK 0xFC000000L
 
@@ -1800,11 +1797,8 @@ static int sdma_v4_0_sw_init(void *handle)
 	struct amdgpu_ring *ring;
 	int r, i;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-<<<<<<< HEAD
-=======
 	uint32_t reg_count = ARRAY_SIZE(sdma_reg_list_4_0);
 	uint32_t *ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* SDMA trap event */
 	for (i = 0; i < adev->sdma.num_instances; i++) {
@@ -1925,8 +1919,6 @@ static int sdma_v4_0_sw_init(void *handle)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Allocate memory for SDMA IP Dump buffer */
 	ptr = kcalloc(adev->sdma.num_instances * reg_count, sizeof(uint32_t), GFP_KERNEL);
 	if (ptr)
@@ -1934,7 +1926,6 @@ static int sdma_v4_0_sw_init(void *handle)
 	else
 		DRM_ERROR("Failed to allocated memory for SDMA IP Dump\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return r;
 }
 
@@ -1955,11 +1946,8 @@ static int sdma_v4_0_sw_fini(void *handle)
 	else
 		amdgpu_sdma_destroy_inst_ctx(adev, false);
 
-<<<<<<< HEAD
-=======
 	kfree(adev->sdma.ip_dump);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2362,8 +2350,6 @@ static void sdma_v4_0_get_clockgating_state(void *handle, u64 *flags)
 		*flags |= AMD_CG_SUPPORT_SDMA_LS;
 }
 
-<<<<<<< HEAD
-=======
 static void sdma_v4_0_print_ip_state(void *handle, struct drm_printer *p)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
@@ -2406,7 +2392,6 @@ static void sdma_v4_0_dump_ip_state(void *handle)
 	amdgpu_gfx_off_ctrl(adev, true);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct amd_ip_funcs sdma_v4_0_ip_funcs = {
 	.name = "sdma_v4_0",
 	.early_init = sdma_v4_0_early_init,
@@ -2423,11 +2408,8 @@ const struct amd_ip_funcs sdma_v4_0_ip_funcs = {
 	.set_clockgating_state = sdma_v4_0_set_clockgating_state,
 	.set_powergating_state = sdma_v4_0_set_powergating_state,
 	.get_clockgating_state = sdma_v4_0_get_clockgating_state,
-<<<<<<< HEAD
-=======
 	.dump_ip_state = sdma_v4_0_dump_ip_state,
 	.print_ip_state = sdma_v4_0_print_ip_state,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ring_funcs sdma_v4_0_ring_funcs = {

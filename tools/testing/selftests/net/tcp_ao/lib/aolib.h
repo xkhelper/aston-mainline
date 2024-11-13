@@ -37,19 +37,6 @@ extern void __test_xfail(const char *buf);
 extern void __test_error(const char *buf);
 extern void __test_skip(const char *buf);
 
-<<<<<<< HEAD
-__attribute__((__format__(__printf__, 2, 3)))
-static inline void __test_print(void (*fn)(const char *), const char *fmt, ...)
-{
-#define TEST_MSG_BUFFER_SIZE 4096
-	char buf[TEST_MSG_BUFFER_SIZE];
-	va_list arg;
-
-	va_start(arg, fmt);
-	vsnprintf(buf, sizeof(buf), fmt, arg);
-	va_end(arg);
-	fn(buf);
-=======
 static inline char *test_snprintf(const char *fmt, va_list vargs)
 {
 	char *ret = NULL;
@@ -102,7 +89,6 @@ static __printf(2, 3) inline void __test_print(void (*fn)(const char *),
 
 	fn(msg);
 	free(msg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define test_print(fmt, ...)						\
@@ -158,10 +144,7 @@ enum test_needs_kconfig {
 	KCONFIG_TCP_AO,			/* required */
 	KCONFIG_TCP_MD5,		/* optional, for TCP-MD5 features */
 	KCONFIG_NET_VRF,		/* optional, for L3/VRF testing */
-<<<<<<< HEAD
-=======
 	KCONFIG_FTRACE,			/* optional, for tracepoints checks */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__KCONFIG_LAST__
 };
 extern bool kernel_config_has(enum test_needs_kconfig k);
@@ -201,11 +184,8 @@ static inline void test_init2(unsigned int ntests,
 	__test_init(ntests, family, prefix, taddr1, taddr2, peer1, peer2);
 }
 extern void test_add_destructor(void (*d)(void));
-<<<<<<< HEAD
-=======
 extern void test_init_ftrace(int nsfd1, int nsfd2);
 extern int test_setup_tracing(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* To adjust optmem socket limit, approximately estimate a number,
  * that is bigger than sizeof(struct tcp_ao_key).
@@ -280,23 +260,17 @@ static inline void test_init(unsigned int ntests,
 }
 extern void synchronize_threads(void);
 extern void switch_ns(int fd);
-<<<<<<< HEAD
-=======
 extern int switch_save_ns(int fd);
 extern void switch_close_ns(int fd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern __thread union tcp_addr this_ip_addr;
 extern __thread union tcp_addr this_ip_dest;
 extern int test_family;
 
 extern void randomize_buffer(void *buf, size_t buflen);
-<<<<<<< HEAD
-=======
 extern __printf(3, 4) int test_echo(const char *fname, bool append,
 				    const char *fmt, ...);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int open_netns(void);
 extern int unshare_open_netns(void);
 extern const char veth_name[];
@@ -677,8 +651,6 @@ static inline int test_add_repaired_key(int sk,
 	return test_verify_socket_key(sk, &tmp);
 }
 
-<<<<<<< HEAD
-=======
 #define DEFAULT_FTRACE_BUFFER_KB	10000
 #define DEFAULT_TRACER_LINES_ARR	200
 struct test_ftracer;
@@ -790,5 +762,4 @@ static inline void trace_ao_event_sne_expect(enum trace_events type,
 
 extern int setup_aolib_ftracer(void);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _AOLIB_H_ */

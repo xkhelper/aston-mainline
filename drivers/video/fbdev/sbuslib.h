@@ -19,11 +19,7 @@ struct sbus_mmap_map {
 
 extern void sbusfb_fill_var(struct fb_var_screeninfo *var,
 			    struct device_node *dp, int bpp);
-<<<<<<< HEAD
-extern int sbusfb_mmap_helper(struct sbus_mmap_map *map,
-=======
 extern int sbusfb_mmap_helper(const struct sbus_mmap_map *map,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      unsigned long physbase, unsigned long fbsize,
 			      unsigned long iospace,
 			      struct vm_area_struct *vma);

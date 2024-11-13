@@ -12,30 +12,13 @@
 #include <sysdep/syscalls.h>
 #include <linux/time-internal.h>
 #include <asm/unistd.h>
-<<<<<<< HEAD
-=======
 #include <asm/delay.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void handle_syscall(struct uml_pt_regs *r)
 {
 	struct pt_regs *regs = container_of(r, struct pt_regs, regs);
 	int syscall;
 
-<<<<<<< HEAD
-	/*
-	 * If we have infinite CPU resources, then make every syscall also a
-	 * preemption point, since we don't have any other preemption in this
-	 * case, and kernel threads would basically never run until userspace
-	 * went to sleep, even if said userspace interacts with the kernel in
-	 * various ways.
-	 */
-	if (time_travel_mode == TT_MODE_INFCPU ||
-	    time_travel_mode == TT_MODE_EXTERNAL)
-		schedule();
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Initialize the syscall number and default return value. */
 	UPT_SYSCALL_NR(r) = PT_SYSCALL_NR(r->gp);
 	PT_REGS_SET_SYSCALL_RETURN(regs, -ENOSYS);
@@ -48,11 +31,6 @@ void handle_syscall(struct uml_pt_regs *r)
 		goto out;
 
 	syscall = UPT_SYSCALL_NR(r);
-<<<<<<< HEAD
-	if (syscall >= 0 && syscall < __NR_syscalls)
-		PT_REGS_SET_SYSCALL_RETURN(regs,
-				EXECUTE_SYSCALL(syscall, regs));
-=======
 	if (syscall >= 0 && syscall < __NR_syscalls) {
 		unsigned long ret = EXECUTE_SYSCALL(syscall, regs);
 
@@ -72,7 +50,6 @@ void handle_syscall(struct uml_pt_regs *r)
 			schedule();
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	syscall_trace_leave(regs);

@@ -23,11 +23,7 @@
 #include <linux/spi/spi.h>
 #include <linux/spi/spi-mem.h>
 #include <linux/types.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* SPI */
 #define REG_SPI_CTRL_BASE			0x1FA10000
@@ -215,12 +211,6 @@ struct airoha_snand_dev {
 
 	u8 *txrx_buf;
 	dma_addr_t dma_addr;
-<<<<<<< HEAD
-
-	u64 cur_page_num;
-	bool data_need_update;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct airoha_snand_ctrl {
@@ -412,11 +402,7 @@ static int airoha_snand_write_data(struct airoha_snand_ctrl *as_ctrl, u8 cmd,
 	for (i = 0; i < len; i += data_len) {
 		int err;
 
-<<<<<<< HEAD
-		data_len = min(len, SPI_MAX_TRANSFER_SIZE);
-=======
 		data_len = min(len - i, SPI_MAX_TRANSFER_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = airoha_snand_set_fifo_op(as_ctrl, cmd, data_len);
 		if (err)
 			return err;
@@ -438,11 +424,7 @@ static int airoha_snand_read_data(struct airoha_snand_ctrl *as_ctrl, u8 *data,
 	for (i = 0; i < len; i += data_len) {
 		int err;
 
-<<<<<<< HEAD
-		data_len = min(len, SPI_MAX_TRANSFER_SIZE);
-=======
 		data_len = min(len - i, SPI_MAX_TRANSFER_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = airoha_snand_set_fifo_op(as_ctrl, 0xc, data_len);
 		if (err)
 			return err;
@@ -659,14 +641,6 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
 	u32 val, rd_mode;
 	int err;
 
-<<<<<<< HEAD
-	if (!as_dev->data_need_update)
-		return len;
-
-	as_dev->data_need_update = false;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (op->cmd.opcode) {
 	case SPI_NAND_OP_READ_FROM_CACHE_DUAL:
 		rd_mode = 1;
@@ -757,10 +731,6 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
 	if (err)
 		return err;
 
-<<<<<<< HEAD
-	err = regmap_set_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_STA_CTL1,
-			      SPI_NFI_READ_FROM_CACHE_DONE);
-=======
 	/*
 	 * SPI_NFI_READ_FROM_CACHE_DONE bit must be written at the end
 	 * of dirmap_read operation even if it is already set.
@@ -768,7 +738,6 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
 	err = regmap_write_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_STA_CTL1,
 				SPI_NFI_READ_FROM_CACHE_DONE,
 				SPI_NFI_READ_FROM_CACHE_DONE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
@@ -898,10 +867,6 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
 	if (err)
 		return err;
 
-<<<<<<< HEAD
-	err = regmap_set_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_STA_CTL1,
-			      SPI_NFI_LOAD_TO_CACHE_DONE);
-=======
 	/*
 	 * SPI_NFI_LOAD_TO_CACHE_DONE bit must be written at the end
 	 * of dirmap_write operation even if it is already set.
@@ -909,7 +874,6 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
 	err = regmap_write_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_STA_CTL1,
 				SPI_NFI_LOAD_TO_CACHE_DONE,
 				SPI_NFI_LOAD_TO_CACHE_DONE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
@@ -923,29 +887,11 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
 static int airoha_snand_exec_op(struct spi_mem *mem,
 				const struct spi_mem_op *op)
 {
-<<<<<<< HEAD
-	struct airoha_snand_dev *as_dev = spi_get_ctldata(mem->spi);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 data[8], cmd, opcode = op->cmd.opcode;
 	struct airoha_snand_ctrl *as_ctrl;
 	int i, err;
 
 	as_ctrl = spi_controller_get_devdata(mem->spi->controller);
-<<<<<<< HEAD
-	if (opcode == SPI_NAND_OP_PROGRAM_EXECUTE &&
-	    op->addr.val == as_dev->cur_page_num) {
-		as_dev->data_need_update = true;
-	} else if (opcode == SPI_NAND_OP_PAGE_READ) {
-		if (!as_dev->data_need_update &&
-		    op->addr.val == as_dev->cur_page_num)
-			return 0;
-
-		as_dev->data_need_update = true;
-		as_dev->cur_page_num = op->addr.val;
-	}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* switch to manual mode */
 	err = airoha_snand_set_mode(as_ctrl, SPI_MODE_MANUAL);
@@ -1030,10 +976,6 @@ static int airoha_snand_setup(struct spi_device *spi)
 	if (dma_mapping_error(as_ctrl->dev, as_dev->dma_addr))
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	as_dev->data_need_update = true;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spi_set_ctldata(spi, as_dev);
 
 	return 0;

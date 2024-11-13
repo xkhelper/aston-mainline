@@ -203,57 +203,6 @@ nvkm_udevice_mthd(struct nvkm_object *object, u32 mthd, void *data, u32 size)
 }
 
 static int
-<<<<<<< HEAD
-nvkm_udevice_rd08(struct nvkm_object *object, u64 addr, u8 *data)
-{
-	struct nvkm_udevice *udev = nvkm_udevice(object);
-	*data = nvkm_rd08(udev->device, addr);
-	return 0;
-}
-
-static int
-nvkm_udevice_rd16(struct nvkm_object *object, u64 addr, u16 *data)
-{
-	struct nvkm_udevice *udev = nvkm_udevice(object);
-	*data = nvkm_rd16(udev->device, addr);
-	return 0;
-}
-
-static int
-nvkm_udevice_rd32(struct nvkm_object *object, u64 addr, u32 *data)
-{
-	struct nvkm_udevice *udev = nvkm_udevice(object);
-	*data = nvkm_rd32(udev->device, addr);
-	return 0;
-}
-
-static int
-nvkm_udevice_wr08(struct nvkm_object *object, u64 addr, u8 data)
-{
-	struct nvkm_udevice *udev = nvkm_udevice(object);
-	nvkm_wr08(udev->device, addr, data);
-	return 0;
-}
-
-static int
-nvkm_udevice_wr16(struct nvkm_object *object, u64 addr, u16 data)
-{
-	struct nvkm_udevice *udev = nvkm_udevice(object);
-	nvkm_wr16(udev->device, addr, data);
-	return 0;
-}
-
-static int
-nvkm_udevice_wr32(struct nvkm_object *object, u64 addr, u32 data)
-{
-	struct nvkm_udevice *udev = nvkm_udevice(object);
-	nvkm_wr32(udev->device, addr, data);
-	return 0;
-}
-
-static int
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nvkm_udevice_map(struct nvkm_object *object, void *argv, u32 argc,
 		 enum nvkm_object_map *type, u64 *addr, u64 *size)
 {
@@ -325,12 +274,7 @@ nvkm_udevice_child_get(struct nvkm_object *object, int index,
 	struct nvkm_engine *engine;
 	u64 mask = (1ULL << NVKM_ENGINE_DMAOBJ) |
 		   (1ULL << NVKM_ENGINE_FIFO) |
-<<<<<<< HEAD
-		   (1ULL << NVKM_ENGINE_DISP) |
-		   (1ULL << NVKM_ENGINE_PM);
-=======
 		   (1ULL << NVKM_ENGINE_DISP);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct nvkm_device_oclass *sclass = NULL;
 	int i;
 
@@ -365,32 +309,11 @@ nvkm_udevice_child_get(struct nvkm_object *object, int index,
 }
 
 static const struct nvkm_object_func
-<<<<<<< HEAD
-nvkm_udevice_super = {
-	.init = nvkm_udevice_init,
-	.fini = nvkm_udevice_fini,
-	.mthd = nvkm_udevice_mthd,
-	.map = nvkm_udevice_map,
-	.rd08 = nvkm_udevice_rd08,
-	.rd16 = nvkm_udevice_rd16,
-	.rd32 = nvkm_udevice_rd32,
-	.wr08 = nvkm_udevice_wr08,
-	.wr16 = nvkm_udevice_wr16,
-	.wr32 = nvkm_udevice_wr32,
-	.sclass = nvkm_udevice_child_get,
-};
-
-static const struct nvkm_object_func
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nvkm_udevice = {
 	.init = nvkm_udevice_init,
 	.fini = nvkm_udevice_fini,
 	.mthd = nvkm_udevice_mthd,
-<<<<<<< HEAD
-=======
 	.map = nvkm_udevice_map,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sclass = nvkm_udevice_child_get,
 };
 
@@ -398,40 +321,6 @@ static int
 nvkm_udevice_new(const struct nvkm_oclass *oclass, void *data, u32 size,
 		 struct nvkm_object **pobject)
 {
-<<<<<<< HEAD
-	union {
-		struct nv_device_v0 v0;
-	} *args = data;
-	struct nvkm_client *client = oclass->client;
-	struct nvkm_object *parent = &client->object;
-	const struct nvkm_object_func *func;
-	struct nvkm_udevice *udev;
-	int ret = -ENOSYS;
-
-	nvif_ioctl(parent, "create device size %d\n", size);
-	if (!(ret = nvif_unpack(ret, &data, &size, args->v0, 0, 0, false))) {
-		nvif_ioctl(parent, "create device v%d device %016llx\n",
-			   args->v0.version, args->v0.device);
-	} else
-		return ret;
-
-	/* give priviledged clients register access */
-	if (args->v0.priv)
-		func = &nvkm_udevice_super;
-	else
-		func = &nvkm_udevice;
-
-	if (!(udev = kzalloc(sizeof(*udev), GFP_KERNEL)))
-		return -ENOMEM;
-	nvkm_object_ctor(func, oclass, &udev->object);
-	*pobject = &udev->object;
-
-	/* find the device that matches what the client requested */
-	if (args->v0.device != ~0)
-		udev->device = nvkm_device_find(args->v0.device);
-	else
-		udev->device = nvkm_device_find(client->device);
-=======
 	struct nvkm_client *client = oclass->client;
 	struct nvkm_udevice *udev;
 
@@ -442,7 +331,6 @@ nvkm_udevice_new(const struct nvkm_oclass *oclass, void *data, u32 size,
 
 	/* find the device that matches what the client requested */
 	udev->device = nvkm_device_find(client->device);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!udev->device)
 		return -ENODEV;
 

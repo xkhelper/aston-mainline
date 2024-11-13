@@ -157,13 +157,7 @@ static irqreturn_t cc10001_adc_trigger_h(int irq, void *p)
 
 	i = 0;
 	sample_invalid = false;
-<<<<<<< HEAD
-	for_each_set_bit(scan_idx, indio_dev->active_scan_mask,
-				  indio_dev->masklength) {
-
-=======
 	iio_for_each_active_channel(indio_dev, scan_idx) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		channel = indio_dev->channels[scan_idx].channel;
 		cc10001_adc_start(adc_dev, channel);
 

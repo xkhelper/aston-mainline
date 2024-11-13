@@ -339,11 +339,7 @@ static const unsigned int tst_out11_pins[]		= { GPIOA_11 };
 static const unsigned int mute_key_pins[]		= { GPIOA_4 };
 static const unsigned int mute_en_pins[]		= { GPIOA_5 };
 
-<<<<<<< HEAD
-static struct meson_pmx_group meson_a1_periphs_groups[] = {
-=======
 static const struct meson_pmx_group meson_a1_periphs_groups[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	GPIO_GROUP(GPIOP_0),
 	GPIO_GROUP(GPIOP_1),
 	GPIO_GROUP(GPIOP_2),
@@ -836,11 +832,7 @@ static const char * const mute_groups[] = {
 	"mute_key", "mute_en",
 };
 
-<<<<<<< HEAD
-static struct meson_pmx_func meson_a1_periphs_functions[] = {
-=======
 static const struct meson_pmx_func meson_a1_periphs_functions[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	FUNCTION(gpio_periphs),
 	FUNCTION(psram),
 	FUNCTION(pwm_a),
@@ -883,11 +875,7 @@ static const struct meson_pmx_func meson_a1_periphs_functions[] = {
 	FUNCTION(mute),
 };
 
-<<<<<<< HEAD
-static struct meson_bank meson_a1_periphs_banks[] = {
-=======
 static const struct meson_bank meson_a1_periphs_banks[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* name  first  last  irq  pullen  pull  dir  out  in  ds*/
 	BANK_DS("P",  GPIOP_0,  GPIOP_12,  0,  12, 0x3,  0,  0x4,  0,
 		0x2,  0,  0x1,  0,  0x0,  0,  0x5,  0),
@@ -901,11 +889,7 @@ static const struct meson_bank meson_a1_periphs_banks[] = {
 		0x42,  0,  0x41,  0,  0x40,  0,  0x45,  0),
 };
 
-<<<<<<< HEAD
-static struct meson_pmx_bank meson_a1_periphs_pmx_banks[] = {
-=======
 static const struct meson_pmx_bank meson_a1_periphs_pmx_banks[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*  name	 first	    lask    reg	offset  */
 	BANK_PMX("P",    GPIOP_0, GPIOP_12, 0x0, 0),
 	BANK_PMX("B",    GPIOB_0, GPIOB_6,  0x2, 0),
@@ -914,20 +898,12 @@ static const struct meson_pmx_bank meson_a1_periphs_pmx_banks[] = {
 	BANK_PMX("A",    GPIOA_0, GPIOA_11, 0x8, 0),
 };
 
-<<<<<<< HEAD
-static struct meson_axg_pmx_data meson_a1_periphs_pmx_banks_data = {
-=======
 static const struct meson_axg_pmx_data meson_a1_periphs_pmx_banks_data = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.pmx_banks	= meson_a1_periphs_pmx_banks,
 	.num_pmx_banks	= ARRAY_SIZE(meson_a1_periphs_pmx_banks),
 };
 
-<<<<<<< HEAD
-static struct meson_pinctrl_data meson_a1_periphs_pinctrl_data = {
-=======
 static const struct meson_pinctrl_data meson_a1_periphs_pinctrl_data = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "periphs-banks",
 	.pins		= meson_a1_periphs_pins,
 	.groups		= meson_a1_periphs_groups,

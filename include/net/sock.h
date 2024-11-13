@@ -337,10 +337,7 @@ struct sk_filter;
   *	@sk_txtime_report_errors: set report errors mode for SO_TXTIME
   *	@sk_txtime_unused: unused txtime flags
   *	@ns_tracker: tracker for netns reference
-<<<<<<< HEAD
-=======
   *	@sk_user_frags: xarray of pages the user is holding a reference on.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   */
 struct sock {
 	/*
@@ -546,10 +543,7 @@ struct sock {
 #endif
 	struct rcu_head		sk_rcu;
 	netns_tracker		ns_tracker;
-<<<<<<< HEAD
-=======
 	struct xarray		sk_user_frags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct sock_bh_locked {
@@ -900,11 +894,8 @@ static inline void sk_add_bind_node(struct sock *sk,
 	hlist_for_each_entry_safe(__sk, tmp, list, sk_node)
 #define sk_for_each_bound(__sk, list) \
 	hlist_for_each_entry(__sk, list, sk_bind_node)
-<<<<<<< HEAD
-=======
 #define sk_for_each_bound_safe(__sk, tmp, list) \
 	hlist_for_each_entry_safe(__sk, tmp, list, sk_bind_node)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * sk_for_each_entry_offset_rcu - iterate over a list at a given struct offset
@@ -1637,11 +1628,7 @@ bool __lock_sock_fast(struct sock *sk) __acquires(&sk->sk_lock.slock);
  * lock_sock_fast - fast version of lock_sock
  * @sk: socket
  *
-<<<<<<< HEAD
- * This version should be used for very small section, where process wont block
-=======
  * This version should be used for very small section, where process won't block
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * return false if fast path is taken:
  *
  *   sk_lock.slock locked, owned = 0, BH disabled
@@ -2563,11 +2550,7 @@ struct sock_skb_cb {
 
 /* Store sock_skb_cb at the end of skb->cb[] so protocol families
  * using skb->cb[] would keep using it directly and utilize its
-<<<<<<< HEAD
- * alignement guarantee.
-=======
  * alignment guarantee.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #define SOCK_SKB_CB_OFFSET ((sizeof_field(struct sk_buff, cb) - \
 			    sizeof(struct sock_skb_cb)))
@@ -2734,14 +2717,11 @@ static inline bool sk_is_stream_unix(const struct sock *sk)
 	return sk->sk_family == AF_UNIX && sk->sk_type == SOCK_STREAM;
 }
 
-<<<<<<< HEAD
-=======
 static inline bool sk_is_vsock(const struct sock *sk)
 {
 	return sk->sk_family == AF_VSOCK;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * sk_eat_skb - Release a skb if it is no longer needed
  * @sk: socket to eat this skb from

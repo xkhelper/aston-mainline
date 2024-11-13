@@ -52,8 +52,6 @@ properties:
 allOf:
   - $ref: dsa.yaml#/$defs/ethernet-ports
 
-<<<<<<< HEAD
-=======
 patternProperties:
   "^(ethernet-)?ports$":
     additionalProperties: true
@@ -73,7 +71,6 @@ patternProperties:
                 tx-internal-delay-ps:
                   $ref: "#/$defs/internal-delay-ps"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # This checks if reg is a chipselect so the device is on an SPI
 # bus, the if-clause will fail if reg is a tuple such as for a
 # platform device.
@@ -89,8 +86,6 @@ required:
   - compatible
   - reg
 
-<<<<<<< HEAD
-=======
 $defs:
   internal-delay-ps:
     description:
@@ -100,7 +95,6 @@ $defs:
     enum:
       [0, 1400, 1700, 2000]
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:
@@ -142,11 +136,8 @@ examples:
             reg = <6>;
             ethernet = <&gmac1>;
             phy-mode = "rgmii";
-<<<<<<< HEAD
-=======
             rx-internal-delay-ps = <0>;
             tx-internal-delay-ps = <0>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             fixed-link {
               speed = <1000>;
               full-duplex;
@@ -189,11 +180,8 @@ examples:
           ethernet-port@6 {
             reg = <6>;
             ethernet = <&enet0>;
-<<<<<<< HEAD
-=======
             rx-internal-delay-ps = <0>;
             tx-internal-delay-ps = <0>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             phy-mode = "rgmii";
             fixed-link {
               speed = <1000>;

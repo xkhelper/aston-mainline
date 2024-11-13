@@ -404,10 +404,7 @@ static void
 mt7915_tm_init(struct mt7915_phy *phy, bool en)
 {
 	struct mt7915_dev *dev = phy->dev;
-<<<<<<< HEAD
-=======
 	int state;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
 		return;
@@ -419,12 +416,8 @@ mt7915_tm_init(struct mt7915_phy *phy, bool en)
 	mt7915_tm_set_trx(phy, TM_MAC_TXRX, !en);
 
 	mt7915_mcu_add_bss_info(phy, phy->monitor_vif, en);
-<<<<<<< HEAD
-	mt7915_mcu_add_sta(dev, phy->monitor_vif, NULL, en);
-=======
 	state = en ? CONN_STATE_PORT_SECURE : CONN_STATE_DISCONNECT;
 	mt7915_mcu_add_sta(dev, phy->monitor_vif, NULL, state, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!en)
 		mt7915_tm_set_tam_arb(phy, en, 0);
@@ -434,11 +427,7 @@ static void
 mt7915_tm_update_channel(struct mt7915_phy *phy)
 {
 	mutex_unlock(&phy->dev->mt76.mutex);
-<<<<<<< HEAD
-	mt7915_set_channel(phy);
-=======
 	mt76_update_channel(phy->mt76);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&phy->dev->mt76.mutex);
 
 	mt7915_mcu_set_chan_info(phy, MCU_EXT_CMD(SET_RX_PATH));

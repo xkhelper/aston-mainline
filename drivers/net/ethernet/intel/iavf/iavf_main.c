@@ -4013,11 +4013,7 @@ static int iavf_delete_clsflower(struct iavf_adapter *adapter,
 
 /**
  * iavf_setup_tc_cls_flower - flower classifier offloads
-<<<<<<< HEAD
- * @adapter: board private structure
-=======
  * @adapter: pointer to iavf adapter structure
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @cls_flower: pointer to flow_cls_offload struct with flow info
  */
 static int iavf_setup_tc_cls_flower(struct iavf_adapter *adapter,
@@ -4036,8 +4032,6 @@ static int iavf_setup_tc_cls_flower(struct iavf_adapter *adapter,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * iavf_add_cls_u32 - Add U32 classifier offloads
  * @adapter: pointer to iavf adapter structure
  * @cls_u32: pointer to tc_cls_u32_offload struct with flow info
@@ -4186,7 +4180,6 @@ static int iavf_setup_tc_cls_u32(struct iavf_adapter *adapter,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * iavf_setup_tc_block_cb - block callback for tc
  * @type: type of offload
  * @type_data: offload data
@@ -4205,11 +4198,8 @@ static int iavf_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
 	switch (type) {
 	case TC_SETUP_CLSFLOWER:
 		return iavf_setup_tc_cls_flower(cb_priv, type_data);
-<<<<<<< HEAD
-=======
 	case TC_SETUP_CLSU32:
 		return iavf_setup_tc_cls_u32(cb_priv, type_data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -4492,13 +4482,8 @@ static void iavf_disable_fdir(struct iavf_adapter *adapter)
 		    fdir->state == IAVF_FDIR_FLTR_INACTIVE) {
 			/* Delete filters not registered in PF */
 			list_del(&fdir->list);
-<<<<<<< HEAD
-			kfree(fdir);
-			adapter->fdir_active_fltr--;
-=======
 			iavf_dec_fdir_active_fltr(adapter, fdir);
 			kfree(fdir);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (fdir->state == IAVF_FDIR_FLTR_ADD_PENDING ||
 			   fdir->state == IAVF_FDIR_FLTR_DIS_REQUEST ||
 			   fdir->state == IAVF_FDIR_FLTR_ACTIVE) {
@@ -5008,17 +4993,11 @@ int iavf_process_config(struct iavf_adapter *adapter)
 	/* get HW VLAN features that can be toggled */
 	hw_vlan_features = iavf_get_netdev_vlan_hw_features(adapter);
 
-<<<<<<< HEAD
-	/* Enable cloud filter if ADQ is supported */
-	if (vfres->vf_cap_flags & VIRTCHNL_VF_OFFLOAD_ADQ)
-		hw_features |= NETIF_F_HW_TC;
-=======
 	/* Enable HW TC offload if ADQ or tc U32 is supported */
 	if (vfres->vf_cap_flags & VIRTCHNL_VF_OFFLOAD_ADQ ||
 	    TC_U32_SUPPORT(adapter))
 		hw_features |= NETIF_F_HW_TC;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (vfres->vf_cap_flags & VIRTCHNL_VF_OFFLOAD_USO)
 		hw_features |= NETIF_F_GSO_UDP_L4;
 

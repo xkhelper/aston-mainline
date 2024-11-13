@@ -20,10 +20,7 @@
 	EM(netfs_read_trace_expanded,		"EXPANDED ")	\
 	EM(netfs_read_trace_readahead,		"READAHEAD")	\
 	EM(netfs_read_trace_readpage,		"READPAGE ")	\
-<<<<<<< HEAD
-=======
 	EM(netfs_read_trace_read_gaps,		"READ-GAPS")	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EM(netfs_read_trace_prefetch_for_write,	"PREFETCHW")	\
 	E_(netfs_read_trace_write_begin,	"WRITEBEGN")
 
@@ -37,15 +34,6 @@
 #define netfs_rreq_origins					\
 	EM(NETFS_READAHEAD,			"RA")		\
 	EM(NETFS_READPAGE,			"RP")		\
-<<<<<<< HEAD
-	EM(NETFS_READ_FOR_WRITE,		"RW")		\
-	EM(NETFS_COPY_TO_CACHE,			"CC")		\
-	EM(NETFS_WRITEBACK,			"WB")		\
-	EM(NETFS_WRITETHROUGH,			"WT")		\
-	EM(NETFS_UNBUFFERED_WRITE,		"UW")		\
-	EM(NETFS_DIO_READ,			"DR")		\
-	E_(NETFS_DIO_WRITE,			"DW")
-=======
 	EM(NETFS_READ_GAPS,			"RG")		\
 	EM(NETFS_READ_FOR_WRITE,		"RW")		\
 	EM(NETFS_DIO_READ,			"DR")		\
@@ -54,7 +42,6 @@
 	EM(NETFS_UNBUFFERED_WRITE,		"UW")		\
 	EM(NETFS_DIO_WRITE,			"DW")		\
 	E_(NETFS_PGPRIV2_COPY_TO_CACHE,		"2C")
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define netfs_rreq_traces					\
 	EM(netfs_rreq_trace_assess,		"ASSESS ")	\
@@ -75,10 +62,7 @@
 	E_(netfs_rreq_trace_write_done,		"WR-DONE")
 
 #define netfs_sreq_sources					\
-<<<<<<< HEAD
-=======
 	EM(NETFS_SOURCE_UNKNOWN,		"----")		\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EM(NETFS_FILL_WITH_ZEROES,		"ZERO")		\
 	EM(NETFS_DOWNLOAD_FROM_SERVER,		"DOWN")		\
 	EM(NETFS_READ_FROM_CACHE,		"READ")		\
@@ -88,17 +72,6 @@
 	E_(NETFS_INVALID_WRITE,			"INVL")
 
 #define netfs_sreq_traces					\
-<<<<<<< HEAD
-	EM(netfs_sreq_trace_discard,		"DSCRD")	\
-	EM(netfs_sreq_trace_download_instead,	"RDOWN")	\
-	EM(netfs_sreq_trace_fail,		"FAIL ")	\
-	EM(netfs_sreq_trace_free,		"FREE ")	\
-	EM(netfs_sreq_trace_limited,		"LIMIT")	\
-	EM(netfs_sreq_trace_prepare,		"PREP ")	\
-	EM(netfs_sreq_trace_prep_failed,	"PRPFL")	\
-	EM(netfs_sreq_trace_resubmit_short,	"SHORT")	\
-	EM(netfs_sreq_trace_retry,		"RETRY")	\
-=======
 	EM(netfs_sreq_trace_add_donations,	"+DON ")	\
 	EM(netfs_sreq_trace_added,		"ADD  ")	\
 	EM(netfs_sreq_trace_clear,		"CLEAR")	\
@@ -118,7 +91,6 @@
 	EM(netfs_sreq_trace_retry,		"RETRY")	\
 	EM(netfs_sreq_trace_short,		"SHORT")	\
 	EM(netfs_sreq_trace_split,		"SPLIT")	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EM(netfs_sreq_trace_submit,		"SUBMT")	\
 	EM(netfs_sreq_trace_terminated,		"TERM ")	\
 	EM(netfs_sreq_trace_write,		"WRITE")	\
@@ -159,11 +131,7 @@
 	EM(netfs_sreq_trace_new,		"NEW        ")	\
 	EM(netfs_sreq_trace_put_cancel,		"PUT CANCEL ")	\
 	EM(netfs_sreq_trace_put_clear,		"PUT CLEAR  ")	\
-<<<<<<< HEAD
-	EM(netfs_sreq_trace_put_discard,	"PUT DISCARD")	\
-=======
 	EM(netfs_sreq_trace_put_consumed,	"PUT CONSUME")	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EM(netfs_sreq_trace_put_done,		"PUT DONE   ")	\
 	EM(netfs_sreq_trace_put_failed,		"PUT FAILED ")	\
 	EM(netfs_sreq_trace_put_merged,		"PUT MERGED ")	\
@@ -174,10 +142,6 @@
 	E_(netfs_sreq_trace_put_terminated,	"PUT TERM   ")
 
 #define netfs_folio_traces					\
-<<<<<<< HEAD
-	/* The first few correspond to enum netfs_how_to_modify */	\
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EM(netfs_folio_is_uptodate,		"mod-uptodate")	\
 	EM(netfs_just_prefetch,			"mod-prefetch")	\
 	EM(netfs_whole_folio_modify,		"mod-whole-f")	\
@@ -187,14 +151,9 @@
 	EM(netfs_flush_content,			"flush")	\
 	EM(netfs_streaming_filled_page,		"mod-streamw-f") \
 	EM(netfs_streaming_cont_filled_page,	"mod-streamw-f+") \
-<<<<<<< HEAD
-	/* The rest are for writeback */			\
-	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
-=======
 	EM(netfs_folio_trace_abandon,		"abandon")	\
 	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
 	EM(netfs_folio_trace_cancel_store,	"cancel-store")	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EM(netfs_folio_trace_clear,		"clear")	\
 	EM(netfs_folio_trace_clear_cc,		"clear-cc")	\
 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
@@ -209,15 +168,11 @@
 	EM(netfs_folio_trace_mkwrite,		"mkwrite")	\
 	EM(netfs_folio_trace_mkwrite_plus,	"mkwrite+")	\
 	EM(netfs_folio_trace_not_under_wback,	"!wback")	\
-<<<<<<< HEAD
-	EM(netfs_folio_trace_read_gaps,		"read-gaps")	\
-=======
 	EM(netfs_folio_trace_put,		"put")		\
 	EM(netfs_folio_trace_read,		"read")		\
 	EM(netfs_folio_trace_read_done,		"read-done")	\
 	EM(netfs_folio_trace_read_gaps,		"read-gaps")	\
 	EM(netfs_folio_trace_read_unlock,	"read-unlock")	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EM(netfs_folio_trace_redirtied,		"redirtied")	\
 	EM(netfs_folio_trace_store,		"store")	\
 	EM(netfs_folio_trace_store_copy,	"store-copy")	\
@@ -230,15 +185,12 @@
 	EM(netfs_contig_trace_jump,		"-->JUMP-->")	\
 	E_(netfs_contig_trace_unlock,		"Unlock")
 
-<<<<<<< HEAD
-=======
 #define netfs_donate_traces					\
 	EM(netfs_trace_donate_tail_to_prev,	"tail-to-prev")	\
 	EM(netfs_trace_donate_to_prev,		"to-prev")	\
 	EM(netfs_trace_donate_to_next,		"to-next")	\
 	E_(netfs_trace_donate_to_deferred_next,	"defer-next")
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __NETFS_DECLARE_TRACE_ENUMS_ONCE_ONLY
 #define __NETFS_DECLARE_TRACE_ENUMS_ONCE_ONLY
 
@@ -256,10 +208,7 @@ enum netfs_rreq_ref_trace { netfs_rreq_ref_traces } __mode(byte);
 enum netfs_sreq_ref_trace { netfs_sreq_ref_traces } __mode(byte);
 enum netfs_folio_trace { netfs_folio_traces } __mode(byte);
 enum netfs_collect_contig_trace { netfs_collect_contig_traces } __mode(byte);
-<<<<<<< HEAD
-=======
 enum netfs_donate_trace { netfs_donate_traces } __mode(byte);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif
 
@@ -282,10 +231,7 @@ netfs_rreq_ref_traces;
 netfs_sreq_ref_traces;
 netfs_folio_traces;
 netfs_collect_contig_traces;
-<<<<<<< HEAD
-=======
 netfs_donate_traces;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Now redefine the EM() and E_() macros to map the enums to the strings that
@@ -306,10 +252,7 @@ TRACE_EVENT(netfs_read,
 	    TP_STRUCT__entry(
 		    __field(unsigned int,		rreq		)
 		    __field(unsigned int,		cookie		)
-<<<<<<< HEAD
-=======
 		    __field(loff_t,			i_size		)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    __field(loff_t,			start		)
 		    __field(size_t,			len		)
 		    __field(enum netfs_read_trace,	what		)
@@ -319,30 +262,19 @@ TRACE_EVENT(netfs_read,
 	    TP_fast_assign(
 		    __entry->rreq	= rreq->debug_id;
 		    __entry->cookie	= rreq->cache_resources.debug_id;
-<<<<<<< HEAD
-=======
 		    __entry->i_size	= rreq->i_size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    __entry->start	= start;
 		    __entry->len	= len;
 		    __entry->what	= what;
 		    __entry->netfs_inode = rreq->inode->i_ino;
 			   ),
 
-<<<<<<< HEAD
-	    TP_printk("R=%08x %s c=%08x ni=%x s=%llx %zx",
-=======
 	    TP_printk("R=%08x %s c=%08x ni=%x s=%llx l=%zx sz=%llx",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		      __entry->rreq,
 		      __print_symbolic(__entry->what, netfs_read_traces),
 		      __entry->cookie,
 		      __entry->netfs_inode,
-<<<<<<< HEAD
-		      __entry->start, __entry->len)
-=======
 		      __entry->start, __entry->len, __entry->i_size)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    );
 
 TRACE_EVENT(netfs_rreq,
@@ -515,12 +447,8 @@ TRACE_EVENT(netfs_folio,
 			     ),
 
 	    TP_fast_assign(
-<<<<<<< HEAD
-		    __entry->ino = folio->mapping->host->i_ino;
-=======
 		    struct address_space *__m = READ_ONCE(folio->mapping);
 		    __entry->ino = __m ? __m->host->i_ino : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    __entry->why = why;
 		    __entry->index = folio_index(folio);
 		    __entry->nr = folio_nr_pages(folio);
@@ -613,36 +541,6 @@ TRACE_EVENT(netfs_collect,
 		      __entry->start + __entry->len)
 	    );
 
-<<<<<<< HEAD
-TRACE_EVENT(netfs_collect_contig,
-	    TP_PROTO(const struct netfs_io_request *wreq, unsigned long long to,
-		     enum netfs_collect_contig_trace type),
-
-	    TP_ARGS(wreq, to, type),
-
-	    TP_STRUCT__entry(
-		    __field(unsigned int,		wreq)
-		    __field(enum netfs_collect_contig_trace, type)
-		    __field(unsigned long long,		contiguity)
-		    __field(unsigned long long,		to)
-			     ),
-
-	    TP_fast_assign(
-		    __entry->wreq	= wreq->debug_id;
-		    __entry->type	= type;
-		    __entry->contiguity	= wreq->contiguity;
-		    __entry->to		= to;
-			   ),
-
-	    TP_printk("R=%08x %llx -> %llx %s",
-		      __entry->wreq,
-		      __entry->contiguity,
-		      __entry->to,
-		      __print_symbolic(__entry->type, netfs_collect_contig_traces))
-	    );
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TRACE_EVENT(netfs_collect_sreq,
 	    TP_PROTO(const struct netfs_io_request *wreq,
 		     const struct netfs_io_subrequest *subreq),
@@ -714,10 +612,6 @@ TRACE_EVENT(netfs_collect_state,
 		    __field(unsigned int,	notes		)
 		    __field(unsigned long long,	collected_to	)
 		    __field(unsigned long long,	cleaned_to	)
-<<<<<<< HEAD
-		    __field(unsigned long long,	contiguity	)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     ),
 
 	    TP_fast_assign(
@@ -725,20 +619,11 @@ TRACE_EVENT(netfs_collect_state,
 		    __entry->notes	= notes;
 		    __entry->collected_to = collected_to;
 		    __entry->cleaned_to	= wreq->cleaned_to;
-<<<<<<< HEAD
-		    __entry->contiguity = wreq->contiguity;
-			   ),
-
-	    TP_printk("R=%08x cto=%llx fto=%llx ctg=%llx n=%x",
-		      __entry->wreq, __entry->collected_to,
-		      __entry->cleaned_to, __entry->contiguity,
-=======
 			   ),
 
 	    TP_printk("R=%08x col=%llx cln=%llx n=%x",
 		      __entry->wreq, __entry->collected_to,
 		      __entry->cleaned_to,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		      __entry->notes)
 	    );
 
@@ -795,8 +680,6 @@ TRACE_EVENT(netfs_collect_stream,
 		      __entry->collected_to, __entry->front)
 	    );
 
-<<<<<<< HEAD
-=======
 TRACE_EVENT(netfs_progress,
 	    TP_PROTO(const struct netfs_io_subrequest *subreq,
 		     unsigned long long start, size_t avail, size_t part),
@@ -862,7 +745,6 @@ TRACE_EVENT(netfs_donate,
 		      __entry->amount)
 	    );
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #undef EM
 #undef E_
 #endif /* _TRACE_NETFS_H */

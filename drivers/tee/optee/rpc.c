@@ -7,10 +7,7 @@
 
 #include <linux/delay.h>
 #include <linux/i2c.h>
-<<<<<<< HEAD
-=======
 #include <linux/rpmb.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/slab.h>
 #include <linux/tee_core.h>
 #include "optee_private.h"
@@ -265,8 +262,6 @@ void optee_rpc_cmd_free_suppl(struct tee_context *ctx, struct tee_shm *shm)
 	optee_supp_thrd_req(ctx, OPTEE_RPC_CMD_SHM_FREE, 1, &param);
 }
 
-<<<<<<< HEAD
-=======
 static void handle_rpc_func_rpmb_probe_reset(struct tee_context *ctx,
 					     struct optee *optee,
 					     struct optee_msg_arg *arg)
@@ -415,7 +410,6 @@ out:
 	rpmb_dev_put(rdev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void optee_rpc_cmd(struct tee_context *ctx, struct optee *optee,
 		   struct optee_msg_arg *arg)
 {
@@ -432,8 +426,6 @@ void optee_rpc_cmd(struct tee_context *ctx, struct optee *optee,
 	case OPTEE_RPC_CMD_I2C_TRANSFER:
 		handle_rpc_func_cmd_i2c_transfer(ctx, arg);
 		break;
-<<<<<<< HEAD
-=======
 	/*
 	 * optee->in_kernel_rpmb_routing true means that OP-TEE supports
 	 * in-kernel RPMB routing _and_ that the RPMB subsystem is
@@ -462,7 +454,6 @@ void optee_rpc_cmd(struct tee_context *ctx, struct optee *optee,
 		else
 			handle_rpc_supp_cmd(ctx, optee, arg);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		handle_rpc_supp_cmd(ctx, optee, arg);
 	}

@@ -17,12 +17,6 @@
 
 #include <drm/drm_auth.h>
 #include <drm/drm_managed.h>
-<<<<<<< HEAD
-#include <linux/errno.h>
-#include <linux/kernel.h>
-#include <linux/sched.h>
-#include <linux/slab.h>
-=======
 
 #include <linux/bug.h>
 #include <linux/errno.h>
@@ -31,7 +25,6 @@
 #include <linux/sched.h>
 #include <linux/slab.h>
 #include <linux/spinlock.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/string.h>
 #include <linux/types.h>
 #include <linux/xarray.h>
@@ -365,13 +358,10 @@ int pvr_context_create(struct pvr_file *pvr_file, struct drm_pvr_ioctl_create_co
 		return err;
 	}
 
-<<<<<<< HEAD
-=======
 	spin_lock(&pvr_dev->ctx_list_lock);
 	list_add_tail(&ctx->file_link, &pvr_file->contexts);
 	spin_unlock(&pvr_dev->ctx_list_lock);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_destroy_fw_obj:
@@ -398,14 +388,11 @@ pvr_context_release(struct kref *ref_count)
 		container_of(ref_count, struct pvr_context, ref_count);
 	struct pvr_device *pvr_dev = ctx->pvr_dev;
 
-<<<<<<< HEAD
-=======
 	WARN_ON(in_interrupt());
 	spin_lock(&pvr_dev->ctx_list_lock);
 	list_del(&ctx->file_link);
 	spin_unlock(&pvr_dev->ctx_list_lock);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xa_erase(&pvr_dev->ctx_ids, ctx->ctx_id);
 	pvr_context_destroy_queues(ctx);
 	pvr_fw_object_destroy(ctx->fw_obj);
@@ -463,17 +450,12 @@ pvr_context_destroy(struct pvr_file *pvr_file, u32 handle)
  */
 void pvr_destroy_contexts_for_file(struct pvr_file *pvr_file)
 {
-<<<<<<< HEAD
-=======
 	struct pvr_device *pvr_dev = pvr_file->pvr_dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pvr_context *ctx;
 	unsigned long handle;
 
 	xa_for_each(&pvr_file->ctx_handles, handle, ctx)
 		pvr_context_destroy(pvr_file, handle);
-<<<<<<< HEAD
-=======
 
 	spin_lock(&pvr_dev->ctx_list_lock);
 	ctx = list_first_entry(&pvr_file->contexts, struct pvr_context, file_link);
@@ -492,7 +474,6 @@ void pvr_destroy_contexts_for_file(struct pvr_file *pvr_file)
 		ctx = list_first_entry(&pvr_file->contexts, struct pvr_context, file_link);
 	}
 	spin_unlock(&pvr_dev->ctx_list_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -502,10 +483,7 @@ void pvr_destroy_contexts_for_file(struct pvr_file *pvr_file)
 void pvr_context_device_init(struct pvr_device *pvr_dev)
 {
 	xa_init_flags(&pvr_dev->ctx_ids, XA_FLAGS_ALLOC1);
-<<<<<<< HEAD
-=======
 	spin_lock_init(&pvr_dev->ctx_list_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

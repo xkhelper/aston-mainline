@@ -118,12 +118,9 @@ static int msm_hdmi_phy_pll_init(struct platform_device *pdev,
 	case MSM_HDMI_PHY_8996:
 		ret = msm_hdmi_pll_8996_init(pdev);
 		break;
-<<<<<<< HEAD
-=======
 	case MSM_HDMI_PHY_8998:
 		ret = msm_hdmi_pll_8998_init(pdev);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * we don't have PLL support for these, don't report an error for now
 	 */
@@ -199,11 +196,8 @@ static const struct of_device_id msm_hdmi_phy_dt_match[] = {
 	  .data = &msm_hdmi_phy_8x74_cfg },
 	{ .compatible = "qcom,hdmi-phy-8996",
 	  .data = &msm_hdmi_phy_8996_cfg },
-<<<<<<< HEAD
-=======
 	{ .compatible = "qcom,hdmi-phy-8998",
 	  .data = &msm_hdmi_phy_8998_cfg },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

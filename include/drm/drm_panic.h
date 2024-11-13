@@ -1,13 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 or MIT */
-<<<<<<< HEAD
-=======
 
 /*
  * Copyright (c) 2024 Intel
  * Copyright (c) 2024 Red Hat
  */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __DRM_PANIC_H__
 #define __DRM_PANIC_H__
 
@@ -17,12 +14,6 @@
 
 #include <drm/drm_device.h>
 #include <drm/drm_fourcc.h>
-<<<<<<< HEAD
-/*
- * Copyright (c) 2024 Intel
- */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * struct drm_scanout_buffer - DRM scanout buffer
@@ -158,19 +149,4 @@ struct drm_scanout_buffer {
 #define drm_panic_unlock(dev, flags) \
 	raw_spin_unlock_irqrestore(&(dev)->mode_config.panic_lock, flags)
 
-<<<<<<< HEAD
-#ifdef CONFIG_DRM_PANIC
-
-void drm_panic_register(struct drm_device *dev);
-void drm_panic_unregister(struct drm_device *dev);
-
-#else
-
-static inline void drm_panic_register(struct drm_device *dev) {}
-static inline void drm_panic_unregister(struct drm_device *dev) {}
-
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __DRM_PANIC_H__ */

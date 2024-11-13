@@ -17,10 +17,7 @@
 #include <linux/mount.h>	/* mnt_want_write_file(), mnt_drop_write_file() */
 #include <linux/buffer_head.h>
 #include <linux/fileattr.h>
-<<<<<<< HEAD
-=======
 #include <linux/string.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "nilfs.h"
 #include "segment.h"
 #include "bmap.h"
@@ -118,15 +115,11 @@ static int nilfs_ioctl_wrap_copy(struct the_nilfs *nilfs,
 }
 
 /**
-<<<<<<< HEAD
- * nilfs_fileattr_get - ioctl to support lsattr
-=======
  * nilfs_fileattr_get - retrieve miscellaneous file attributes
  * @dentry: the object to retrieve from
  * @fa:     fileattr pointer
  *
  * Return: always 0 as success.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int nilfs_fileattr_get(struct dentry *dentry, struct fileattr *fa)
 {
@@ -138,16 +131,12 @@ int nilfs_fileattr_get(struct dentry *dentry, struct fileattr *fa)
 }
 
 /**
-<<<<<<< HEAD
- * nilfs_fileattr_set - ioctl to support chattr
-=======
  * nilfs_fileattr_set - change miscellaneous file attributes
  * @idmap:  idmap of the mount
  * @dentry: the object to change
  * @fa:     fileattr pointer
  *
  * Return: 0 on success, or a negative error code on failure.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int nilfs_fileattr_set(struct mnt_idmap *idmap,
 		       struct dentry *dentry, struct fileattr *fa)
@@ -180,13 +169,10 @@ int nilfs_fileattr_set(struct mnt_idmap *idmap,
 
 /**
  * nilfs_ioctl_getversion - get info about a file's version (generation number)
-<<<<<<< HEAD
-=======
  * @inode: inode object
  * @argp:  userspace memory where the generation number of @inode is stored
  *
  * Return: 0 on success, or %-EFAULT on error.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int nilfs_ioctl_getversion(struct inode *inode, void __user *argp)
 {
@@ -1294,8 +1280,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * nilfs_ioctl_get_fslabel - get the volume name of the file system
  * @sb:   super block instance
@@ -1381,7 +1365,6 @@ out_drop_write:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 long nilfs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	struct inode *inode = file_inode(filp);
@@ -1424,13 +1407,10 @@ long nilfs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		return nilfs_ioctl_set_alloc_range(inode, argp);
 	case FITRIM:
 		return nilfs_ioctl_trim_fs(inode, argp);
-<<<<<<< HEAD
-=======
 	case FS_IOC_GETFSLABEL:
 		return nilfs_ioctl_get_fslabel(inode->i_sb, argp);
 	case FS_IOC_SETFSLABEL:
 		return nilfs_ioctl_set_fslabel(inode->i_sb, filp, argp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -ENOTTY;
 	}
@@ -1457,11 +1437,8 @@ long nilfs_compat_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	case NILFS_IOCTL_RESIZE:
 	case NILFS_IOCTL_SET_ALLOC_RANGE:
 	case FITRIM:
-<<<<<<< HEAD
-=======
 	case FS_IOC_GETFSLABEL:
 	case FS_IOC_SETFSLABEL:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		return -ENOIOCTLCMD;

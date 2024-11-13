@@ -21,11 +21,6 @@ struct nvkm_oclass {
 	const void *priv;
 	const void *engn;
 	u32 handle;
-<<<<<<< HEAD
-	u8  route;
-	u64 token;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 object;
 	struct nvkm_client *client;
 	struct nvkm_object *parent;

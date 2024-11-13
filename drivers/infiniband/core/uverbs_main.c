@@ -353,10 +353,6 @@ const struct file_operations uverbs_event_fops = {
 	.poll    = ib_uverbs_comp_event_poll,
 	.release = uverbs_uobject_fd_release,
 	.fasync  = ib_uverbs_comp_event_fasync,
-<<<<<<< HEAD
-	.llseek	 = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const struct file_operations uverbs_async_event_fops = {
@@ -365,10 +361,6 @@ const struct file_operations uverbs_async_event_fops = {
 	.poll    = ib_uverbs_async_event_poll,
 	.release = uverbs_async_event_release,
 	.fasync  = ib_uverbs_async_event_fasync,
-<<<<<<< HEAD
-	.llseek	 = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void ib_uverbs_comp_handler(struct ib_cq *cq, void *cq_context)
@@ -997,10 +989,6 @@ static const struct file_operations uverbs_fops = {
 	.write	 = ib_uverbs_write,
 	.open	 = ib_uverbs_open,
 	.release = ib_uverbs_close,
-<<<<<<< HEAD
-	.llseek	 = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl = ib_uverbs_ioctl,
 	.compat_ioctl = compat_ptr_ioctl,
 };
@@ -1011,10 +999,6 @@ static const struct file_operations uverbs_mmap_fops = {
 	.mmap    = ib_uverbs_mmap,
 	.open	 = ib_uverbs_open,
 	.release = ib_uverbs_close,
-<<<<<<< HEAD
-	.llseek	 = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl = ib_uverbs_ioctl,
 	.compat_ioctl = compat_ptr_ioctl,
 };

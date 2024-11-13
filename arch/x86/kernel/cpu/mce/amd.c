@@ -780,11 +780,7 @@ static void __log_error(unsigned int bank, u64 status, u64 addr, u64 misc)
 {
 	struct mce m;
 
-<<<<<<< HEAD
-	mce_setup(&m);
-=======
 	mce_prep_record(&m);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	m.status = status;
 	m.misc   = misc;

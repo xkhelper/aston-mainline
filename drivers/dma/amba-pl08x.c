@@ -2,11 +2,7 @@
 /*
  * Copyright (c) 2006 ARM Ltd.
  * Copyright (c) 2010 ST-Ericsson SA
-<<<<<<< HEAD
- * Copyirght (c) 2017 Linaro Ltd.
-=======
  * Copyright (c) 2017 Linaro Ltd.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Author: Peter Pearse <peter.pearse@arm.com>
  * Author: Linus Walleij <linus.walleij@linaro.org>

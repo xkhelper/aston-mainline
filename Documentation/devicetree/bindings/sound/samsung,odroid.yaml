@@ -27,14 +27,6 @@ properties:
       - const: samsung,odroid-xu4-audio
         deprecated: true
 
-<<<<<<< HEAD
-  assigned-clock-parents: true
-  assigned-clock-rates: true
-  assigned-clocks: true
-  clocks: true
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   cpu:
     type: object
     additionalProperties: false

@@ -6,19 +6,6 @@
 #ifndef __LINUX_IOMMUFD_H
 #define __LINUX_IOMMUFD_H
 
-<<<<<<< HEAD
-#include <linux/types.h>
-#include <linux/errno.h>
-#include <linux/err.h>
-
-struct device;
-struct iommufd_device;
-struct page;
-struct iommufd_ctx;
-struct iommufd_access;
-struct file;
-struct iommu_group;
-=======
 #include <linux/err.h>
 #include <linux/errno.h>
 #include <linux/types.h>
@@ -30,7 +17,6 @@ struct iommufd_access;
 struct iommufd_ctx;
 struct iommufd_device;
 struct page;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct iommufd_device *iommufd_device_bind(struct iommufd_ctx *ictx,
 					   struct device *dev, u32 *id);

@@ -40,11 +40,6 @@ static void test_self_id_receive_buffer_deserialization(struct kunit *test)
 	KUNIT_EXPECT_EQ(test, 0xf38b, timestamp);
 }
 
-<<<<<<< HEAD
-static struct kunit_case ohci_serdes_test_cases[] = {
-	KUNIT_CASE(test_self_id_count_register_deserialization),
-	KUNIT_CASE(test_self_id_receive_buffer_deserialization),
-=======
 static void test_at_data_serdes(struct kunit *test)
 {
 	static const __le32 expected[] = {
@@ -114,7 +109,6 @@ static struct kunit_case ohci_serdes_test_cases[] = {
 	KUNIT_CASE(test_self_id_receive_buffer_deserialization),
 	KUNIT_CASE(test_at_data_serdes),
 	KUNIT_CASE(test_it_data_serdes),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

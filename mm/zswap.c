@@ -44,11 +44,6 @@
 **********************************/
 /* The number of compressed pages currently stored in zswap */
 atomic_t zswap_stored_pages = ATOMIC_INIT(0);
-<<<<<<< HEAD
-/* The number of same-value filled pages currently stored in zswap */
-static atomic_t zswap_same_filled_pages = ATOMIC_INIT(0);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * The statistics below are not protected from concurrent access for
@@ -188,13 +183,6 @@ static struct shrinker *zswap_shrinker;
  *
  * swpentry - associated swap entry, the offset indexes into the red-black tree
  * length - the length in bytes of the compressed page data.  Needed during
-<<<<<<< HEAD
- *          decompression. For a same value filled page length is 0, and both
- *          pool and lru are invalid and must be ignored.
- * pool - the zswap_pool the entry's data is in
- * handle - zpool allocation handle that stores the compressed page data
- * value - value of the same-value filled pages which have same content
-=======
  *          decompression.
  * referenced - true if the entry recently entered the zswap pool. Unset by the
  *              writeback logic. The entry is only reclaimed by the writeback
@@ -202,24 +190,15 @@ static struct shrinker *zswap_shrinker;
  *              section for context.
  * pool - the zswap_pool the entry's data is in
  * handle - zpool allocation handle that stores the compressed page data
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * objcg - the obj_cgroup that the compressed memory is charged to
  * lru - handle to the pool's lru used to evict pages.
  */
 struct zswap_entry {
 	swp_entry_t swpentry;
 	unsigned int length;
-<<<<<<< HEAD
-	struct zswap_pool *pool;
-	union {
-		unsigned long handle;
-		unsigned long value;
-	};
-=======
 	bool referenced;
 	struct zswap_pool *pool;
 	unsigned long handle;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct obj_cgroup *objcg;
 	struct list_head lru;
 };
@@ -719,16 +698,8 @@ static inline int entry_to_nid(struct zswap_entry *entry)
 
 static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry)
 {
-<<<<<<< HEAD
-	atomic_long_t *nr_zswap_protected;
-	unsigned long lru_size, old, new;
 	int nid = entry_to_nid(entry);
 	struct mem_cgroup *memcg;
-	struct lruvec *lruvec;
-=======
-	int nid = entry_to_nid(entry);
-	struct mem_cgroup *memcg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Note that it is safe to use rcu_read_lock() here, even in the face of
@@ -746,22 +717,6 @@ static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry)
 	memcg = mem_cgroup_from_entry(entry);
 	/* will always succeed */
 	list_lru_add(list_lru, &entry->lru, nid, memcg);
-<<<<<<< HEAD
-
-	/* Update the protection area */
-	lru_size = list_lru_count_one(list_lru, nid, memcg);
-	lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
-	nr_zswap_protected = &lruvec->zswap_lruvec_state.nr_zswap_protected;
-	old = atomic_long_inc_return(nr_zswap_protected);
-	/*
-	 * Decay to avoid overflow and adapt to changing workloads.
-	 * This is based on LRU reclaim cost decaying heuristics.
-	 */
-	do {
-		new = old > lru_size / 4 ? old / 2 : old;
-	} while (!atomic_long_try_cmpxchg(nr_zswap_protected, &old, new));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_read_unlock();
 }
 
@@ -779,11 +734,7 @@ static void zswap_lru_del(struct list_lru *list_lru, struct zswap_entry *entry)
 
 void zswap_lruvec_state_init(struct lruvec *lruvec)
 {
-<<<<<<< HEAD
-	atomic_long_set(&lruvec->zswap_lruvec_state.nr_zswap_protected, 0);
-=======
 	atomic_long_set(&lruvec->zswap_lruvec_state.nr_disk_swapins, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void zswap_folio_swapin(struct folio *folio)
@@ -792,12 +743,6 @@ void zswap_folio_swapin(struct folio *folio)
 
 	if (folio) {
 		lruvec = folio_lruvec(folio);
-<<<<<<< HEAD
-		atomic_long_inc(&lruvec->zswap_lruvec_state.nr_zswap_protected);
-	}
-}
-
-=======
 		atomic_long_inc(&lruvec->zswap_lruvec_state.nr_disk_swapins);
 	}
 }
@@ -812,21 +757,15 @@ void zswap_folio_swapin(struct folio *folio)
  * shrink_worker() must handle the case where this function releases
  * the reference of memcg being shrunk.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg)
 {
 	/* lock out zswap shrinker walking memcg tree */
 	spin_lock(&zswap_shrink_lock);
-<<<<<<< HEAD
-	if (zswap_next_shrink == memcg)
-		zswap_next_shrink = mem_cgroup_iter(NULL, zswap_next_shrink, NULL);
-=======
 	if (zswap_next_shrink == memcg) {
 		do {
 			zswap_next_shrink = mem_cgroup_iter(NULL, zswap_next_shrink, NULL);
 		} while (zswap_next_shrink && !mem_cgroup_online(zswap_next_shrink));
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(&zswap_shrink_lock);
 }
 
@@ -855,19 +794,9 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
  */
 static void zswap_entry_free(struct zswap_entry *entry)
 {
-<<<<<<< HEAD
-	if (!entry->length)
-		atomic_dec(&zswap_same_filled_pages);
-	else {
-		zswap_lru_del(&zswap_list_lru, entry);
-		zpool_free(entry->pool->zpool, entry->handle);
-		zswap_pool_put(entry->pool);
-	}
-=======
 	zswap_lru_del(&zswap_list_lru, entry);
 	zpool_free(entry->pool->zpool, entry->handle);
 	zswap_pool_put(entry->pool);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (entry->objcg) {
 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
 		obj_cgroup_put(entry->objcg);
@@ -1144,8 +1073,6 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
 /*********************************
 * shrinker functions
 **********************************/
-<<<<<<< HEAD
-=======
 /*
  * The dynamic shrinker is modulated by the following factors:
  *
@@ -1168,7 +1095,6 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
  *    can expect from writeback. We scale down the number of objects available
  *    for reclaim by this ratio.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_one *l,
 				       spinlock_t *lock, void *arg)
 {
@@ -1179,8 +1105,6 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
 	int writeback_result;
 
 	/*
-<<<<<<< HEAD
-=======
 	 * Second chance algorithm: if the entry has its referenced bit set, give it
 	 * a second chance. Only clear the referenced bit and rotate it in the
 	 * zswap's LRU list.
@@ -1191,7 +1115,6 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
 	}
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * As soon as we drop the LRU lock, the entry can be freed by
 	 * a concurrent invalidation. This means the following:
 	 *
@@ -1257,12 +1180,7 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
 static unsigned long zswap_shrinker_scan(struct shrinker *shrinker,
 		struct shrink_control *sc)
 {
-<<<<<<< HEAD
-	struct lruvec *lruvec = mem_cgroup_lruvec(sc->memcg, NODE_DATA(sc->nid));
-	unsigned long shrink_ret, nr_protected, lru_size;
-=======
 	unsigned long shrink_ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool encountered_page_in_swapcache = false;
 
 	if (!zswap_shrinker_enabled ||
@@ -1271,28 +1189,6 @@ static unsigned long zswap_shrinker_scan(struct shrinker *shrinker,
 		return SHRINK_STOP;
 	}
 
-<<<<<<< HEAD
-	nr_protected =
-		atomic_long_read(&lruvec->zswap_lruvec_state.nr_zswap_protected);
-	lru_size = list_lru_shrink_count(&zswap_list_lru, sc);
-
-	/*
-	 * Abort if we are shrinking into the protected region.
-	 *
-	 * This short-circuiting is necessary because if we have too many multiple
-	 * concurrent reclaimers getting the freeable zswap object counts at the
-	 * same time (before any of them made reasonable progress), the total
-	 * number of reclaimed objects might be more than the number of unprotected
-	 * objects (i.e the reclaimers will reclaim into the protected area of the
-	 * zswap LRU).
-	 */
-	if (nr_protected >= lru_size - sc->nr_to_scan) {
-		sc->nr_scanned = 0;
-		return SHRINK_STOP;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	shrink_ret = list_lru_shrink_walk(&zswap_list_lru, sc, &shrink_memcg_cb,
 		&encountered_page_in_swapcache);
 
@@ -1307,14 +1203,10 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
 {
 	struct mem_cgroup *memcg = sc->memcg;
 	struct lruvec *lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(sc->nid));
-<<<<<<< HEAD
-	unsigned long nr_backing, nr_stored, nr_freeable, nr_protected;
-=======
 	atomic_long_t *nr_disk_swapins =
 		&lruvec->zswap_lruvec_state.nr_disk_swapins;
 	unsigned long nr_backing, nr_stored, nr_freeable, nr_disk_swapins_cur,
 		nr_remain;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!zswap_shrinker_enabled || !mem_cgroup_zswap_writeback_enabled(memcg))
 		return 0;
@@ -1347,16 +1239,6 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
 	if (!nr_stored)
 		return 0;
 
-<<<<<<< HEAD
-	nr_protected =
-		atomic_long_read(&lruvec->zswap_lruvec_state.nr_zswap_protected);
-	nr_freeable = list_lru_shrink_count(&zswap_list_lru, sc);
-	/*
-	 * Subtract the lru size by an estimate of the number of pages
-	 * that should be protected.
-	 */
-	nr_freeable = nr_freeable > nr_protected ? nr_freeable - nr_protected : 0;
-=======
 	nr_freeable = list_lru_shrink_count(&zswap_list_lru, sc);
 	if (!nr_freeable)
 		return 0;
@@ -1378,21 +1260,12 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
 	nr_freeable -= nr_disk_swapins_cur - nr_remain;
 	if (!nr_freeable)
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Scale the number of freeable pages by the memory saving factor.
 	 * This ensures that the better zswap compresses memory, the fewer
 	 * pages we will evict to swap (as it will otherwise incur IO for
 	 * relatively small memory saving).
-<<<<<<< HEAD
-	 *
-	 * The memory saving factor calculated here takes same-filled pages into
-	 * account, but those are not freeable since they almost occupy no
-	 * space. Hence, we may scale nr_freeable down a little bit more than we
-	 * should if we have a lot of same-filled pages.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	return mult_frac(nr_freeable, nr_backing, nr_stored);
 }
@@ -1415,17 +1288,10 @@ static struct shrinker *zswap_alloc_shrinker(void)
 
 static int shrink_memcg(struct mem_cgroup *memcg)
 {
-<<<<<<< HEAD
-	int nid, shrunk = 0;
-
-	if (!mem_cgroup_zswap_writeback_enabled(memcg))
-		return -EINVAL;
-=======
 	int nid, shrunk = 0, scanned = 0;
 
 	if (!mem_cgroup_zswap_writeback_enabled(memcg))
 		return -ENOENT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Skip zombies because their LRUs are reparented and we would be
@@ -1439,72 +1305,24 @@ static int shrink_memcg(struct mem_cgroup *memcg)
 
 		shrunk += list_lru_walk_one(&zswap_list_lru, nid, memcg,
 					    &shrink_memcg_cb, NULL, &nr_to_walk);
-<<<<<<< HEAD
-	}
-=======
 		scanned += 1 - nr_to_walk;
 	}
 
 	if (!scanned)
 		return -ENOENT;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return shrunk ? 0 : -EAGAIN;
 }
 
 static void shrink_worker(struct work_struct *w)
 {
 	struct mem_cgroup *memcg;
-<<<<<<< HEAD
-	int ret, failures = 0;
-=======
 	int ret, failures = 0, attempts = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long thr;
 
 	/* Reclaim down to the accept threshold */
 	thr = zswap_accept_thr_pages();
 
-<<<<<<< HEAD
-	/* global reclaim will select cgroup in a round-robin fashion. */
-	do {
-		spin_lock(&zswap_shrink_lock);
-		zswap_next_shrink = mem_cgroup_iter(NULL, zswap_next_shrink, NULL);
-		memcg = zswap_next_shrink;
-
-		/*
-		 * We need to retry if we have gone through a full round trip, or if we
-		 * got an offline memcg (or else we risk undoing the effect of the
-		 * zswap memcg offlining cleanup callback). This is not catastrophic
-		 * per se, but it will keep the now offlined memcg hostage for a while.
-		 *
-		 * Note that if we got an online memcg, we will keep the extra
-		 * reference in case the original reference obtained by mem_cgroup_iter
-		 * is dropped by the zswap memcg offlining callback, ensuring that the
-		 * memcg is not killed when we are reclaiming.
-		 */
-		if (!memcg) {
-			spin_unlock(&zswap_shrink_lock);
-			if (++failures == MAX_RECLAIM_RETRIES)
-				break;
-
-			goto resched;
-		}
-
-		if (!mem_cgroup_tryget_online(memcg)) {
-			/* drop the reference from mem_cgroup_iter() */
-			mem_cgroup_iter_break(NULL, memcg);
-			zswap_next_shrink = NULL;
-			spin_unlock(&zswap_shrink_lock);
-
-			if (++failures == MAX_RECLAIM_RETRIES)
-				break;
-
-			goto resched;
-		}
-		spin_unlock(&zswap_shrink_lock);
-
-=======
 	/*
 	 * Global reclaim will select cgroup in a round-robin fashion from all
 	 * online memcgs, but memcgs that have no pages in zswap and
@@ -1561,15 +1379,10 @@ static void shrink_worker(struct work_struct *w)
 			goto resched;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = shrink_memcg(memcg);
 		/* drop the extra reference */
 		mem_cgroup_put(memcg);
 
-<<<<<<< HEAD
-		if (ret == -EINVAL)
-			break;
-=======
 		/*
 		 * There are no writeback-candidate pages in the memcg.
 		 * This is not an issue as long as we can find another memcg
@@ -1580,7 +1393,6 @@ static void shrink_worker(struct work_struct *w)
 			continue;
 		++attempts;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret && ++failures == MAX_RECLAIM_RETRIES)
 			break;
 resched:
@@ -1589,45 +1401,6 @@ resched:
 }
 
 /*********************************
-<<<<<<< HEAD
-* same-filled functions
-**********************************/
-static bool zswap_is_folio_same_filled(struct folio *folio, unsigned long *value)
-{
-	unsigned long *data;
-	unsigned long val;
-	unsigned int pos, last_pos = PAGE_SIZE / sizeof(*data) - 1;
-	bool ret = false;
-
-	data = kmap_local_folio(folio, 0);
-	val = data[0];
-
-	if (val != data[last_pos])
-		goto out;
-
-	for (pos = 1; pos < last_pos; pos++) {
-		if (val != data[pos])
-			goto out;
-	}
-
-	*value = val;
-	ret = true;
-out:
-	kunmap_local(data);
-	return ret;
-}
-
-static void zswap_fill_folio(struct folio *folio, unsigned long value)
-{
-	unsigned long *data = kmap_local_folio(folio, 0);
-
-	memset_l(data, value, PAGE_SIZE / sizeof(unsigned long));
-	kunmap_local(data);
-}
-
-/*********************************
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 * main API
 **********************************/
 bool zswap_store(struct folio *folio)
@@ -1638,10 +1411,6 @@ bool zswap_store(struct folio *folio)
 	struct zswap_entry *entry, *old;
 	struct obj_cgroup *objcg = NULL;
 	struct mem_cgroup *memcg = NULL;
-<<<<<<< HEAD
-	unsigned long value;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	VM_WARN_ON_ONCE(!folio_test_locked(folio));
 	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
@@ -1674,16 +1443,6 @@ bool zswap_store(struct folio *folio)
 		goto reject;
 	}
 
-<<<<<<< HEAD
-	if (zswap_is_folio_same_filled(folio, &value)) {
-		entry->length = 0;
-		entry->value = value;
-		atomic_inc(&zswap_same_filled_pages);
-		goto store_entry;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* if entry is successfully added, it keeps the reference */
 	entry->pool = zswap_pool_current_get();
 	if (!entry->pool)
@@ -1701,15 +1460,9 @@ bool zswap_store(struct folio *folio)
 	if (!zswap_compress(folio, entry))
 		goto put_pool;
 
-<<<<<<< HEAD
-store_entry:
-	entry->swpentry = swp;
-	entry->objcg = objcg;
-=======
 	entry->swpentry = swp;
 	entry->objcg = objcg;
 	entry->referenced = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	old = xa_store(tree, offset, entry, GFP_KERNEL);
 	if (xa_is_err(old)) {
@@ -1755,19 +1508,9 @@ store_entry:
 	return true;
 
 store_failed:
-<<<<<<< HEAD
-	if (!entry->length)
-		atomic_dec(&zswap_same_filled_pages);
-	else {
-		zpool_free(entry->pool->zpool, entry->handle);
-put_pool:
-		zswap_pool_put(entry->pool);
-	}
-=======
 	zpool_free(entry->pool->zpool, entry->handle);
 put_pool:
 	zswap_pool_put(entry->pool);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 freepage:
 	zswap_entry_cache_free(entry);
 reject:
@@ -1830,14 +1573,7 @@ bool zswap_load(struct folio *folio)
 	if (!entry)
 		return false;
 
-<<<<<<< HEAD
-	if (entry->length)
-		zswap_decompress(entry, folio);
-	else
-		zswap_fill_folio(folio, entry->value);
-=======
 	zswap_decompress(entry, folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	count_vm_event(ZSWPIN);
 	if (entry->objcg)
@@ -1940,11 +1676,6 @@ static int zswap_debugfs_init(void)
 			    zswap_debugfs_root, NULL, &total_size_fops);
 	debugfs_create_atomic_t("stored_pages", 0444,
 				zswap_debugfs_root, &zswap_stored_pages);
-<<<<<<< HEAD
-	debugfs_create_atomic_t("same_filled_pages", 0444,
-				zswap_debugfs_root, &zswap_same_filled_pages);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

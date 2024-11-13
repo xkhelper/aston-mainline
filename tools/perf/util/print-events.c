@@ -68,20 +68,12 @@ void print_tracepoint_events(const struct print_callbacks *print_cb __maybe_unus
 	struct dirent **sys_namelist = NULL;
 	int sys_items;
 
-<<<<<<< HEAD
-	put_tracing_file(events_path);
-	if (events_fd < 0) {
-		pr_err("Error: failed to open tracing events directory\n");
-		return;
-	}
-=======
 	if (events_fd < 0) {
 		pr_err("Error: failed to open tracing events directory\n");
 		pr_err("%s: %s\n", events_path, strerror(errno));
 		return;
 	}
 	put_tracing_file(events_path);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sys_items = tracing_events__scandir_alphasort(&sys_namelist);
 

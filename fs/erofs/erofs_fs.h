@@ -288,18 +288,12 @@ struct erofs_dirent {
 
 #define EROFS_NAME_LEN      255
 
-<<<<<<< HEAD
-/* maximum supported size of a physical compression cluster */
-#define Z_EROFS_PCLUSTER_MAX_SIZE	(1024 * 1024)
-
-=======
 /* maximum supported encoded size of a physical compressed cluster */
 #define Z_EROFS_PCLUSTER_MAX_SIZE	(1024 * 1024)
 
 /* maximum supported decoded size of a physical compressed cluster */
 #define Z_EROFS_PCLUSTER_MAX_DSIZE	(12 * 1024 * 1024)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* available compression algorithm types (for h_algorithmtype) */
 enum {
 	Z_EROFS_COMPRESSION_LZ4		= 0,

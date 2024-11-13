@@ -4,11 +4,7 @@
  * driver common header file containing some definitions, structures
  * and function prototypes used in all the different SCMI protocols.
  *
-<<<<<<< HEAD
- * Copyright (C) 2018-2022 ARM Ltd.
-=======
  * Copyright (C) 2018-2024 ARM Ltd.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #ifndef _SCMI_COMMON_H
 #define _SCMI_COMMON_H
@@ -26,11 +22,7 @@
 #include <linux/spinlock.h>
 #include <linux/types.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "protocols.h"
 #include "notify.h"
@@ -171,10 +163,7 @@ void scmi_protocol_release(const struct scmi_handle *handle, u8 protocol_id);
  *      used to initialize this channel
  * @dev: Reference to device in the SCMI hierarchy corresponding to this
  *	 channel
-<<<<<<< HEAD
-=======
  * @is_p2a: A flag to identify a channel as P2A (RX)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @rx_timeout_ms: The configured RX timeout in milliseconds.
  * @handle: Pointer to SCMI entity handle
  * @no_completion_irq: Flag to indicate that this channel has no completion
@@ -186,10 +175,7 @@ void scmi_protocol_release(const struct scmi_handle *handle, u8 protocol_id);
 struct scmi_chan_info {
 	int id;
 	struct device *dev;
-<<<<<<< HEAD
-=======
 	bool is_p2a;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int rx_timeout_ms;
 	struct scmi_handle *handle;
 	bool no_completion_irq;
@@ -199,10 +185,6 @@ struct scmi_chan_info {
 /**
  * struct scmi_transport_ops - Structure representing a SCMI transport ops
  *
-<<<<<<< HEAD
- * @link_supplier: Optional callback to add link to a supplier device
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @chan_available: Callback to check if channel is available or not
  * @chan_setup: Callback to allocate and setup a channel
  * @chan_free: Callback to free a channel
@@ -217,10 +199,6 @@ struct scmi_chan_info {
  * @poll_done: Callback to poll transfer status
  */
 struct scmi_transport_ops {
-<<<<<<< HEAD
-	int (*link_supplier)(struct device *dev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool (*chan_available)(struct device_node *of_node, int idx);
 	int (*chan_setup)(struct scmi_chan_info *cinfo, struct device *dev,
 			  bool tx);
@@ -241,15 +219,6 @@ struct scmi_transport_ops {
 /**
  * struct scmi_desc - Description of SoC integration
  *
-<<<<<<< HEAD
- * @transport_init: An optional function that a transport can provide to
- *		    initialize some transport-specific setup during SCMI core
- *		    initialization, so ahead of SCMI core probing.
- * @transport_exit: An optional function that a transport can provide to
- *		    de-initialize some transport-specific setup during SCMI core
- *		    de-initialization, so after SCMI core removal.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @ops: Pointer to the transport specific ops structure
  * @max_rx_timeout_ms: Timeout for communication with SoC (in Milliseconds)
  * @max_msg: Maximum number of messages for a channel type (tx or rx) that can
@@ -270,11 +239,6 @@ struct scmi_transport_ops {
  *		    when requested.
  */
 struct scmi_desc {
-<<<<<<< HEAD
-	int (*transport_init)(void);
-	void (*transport_exit)(void);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct scmi_transport_ops *ops;
 	int max_rx_timeout_ms;
 	int max_msg;
@@ -314,22 +278,6 @@ int scmi_xfer_raw_inflight_register(const struct scmi_handle *handle,
 int scmi_xfer_raw_wait_for_message_response(struct scmi_chan_info *cinfo,
 					    struct scmi_xfer *xfer,
 					    unsigned int timeout_ms);
-<<<<<<< HEAD
-#ifdef CONFIG_ARM_SCMI_TRANSPORT_MAILBOX
-extern const struct scmi_desc scmi_mailbox_desc;
-#endif
-#ifdef CONFIG_ARM_SCMI_TRANSPORT_SMC
-extern const struct scmi_desc scmi_smc_desc;
-#endif
-#ifdef CONFIG_ARM_SCMI_TRANSPORT_VIRTIO
-extern const struct scmi_desc scmi_virtio_desc;
-#endif
-#ifdef CONFIG_ARM_SCMI_TRANSPORT_OPTEE
-extern const struct scmi_desc scmi_optee_desc;
-#endif
-
-void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr, void *priv);
-=======
 
 enum debug_counters {
 	SENT_OK,
@@ -354,7 +302,6 @@ static inline void scmi_inc_count(atomic_t *arr, int stat)
 	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS))
 		atomic_inc(&arr[stat]);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum scmi_bad_msg {
 	MSG_UNEXPECTED = -1,
@@ -364,26 +311,6 @@ enum scmi_bad_msg {
 	MSG_MBOX_SPURIOUS = -5,
 };
 
-<<<<<<< HEAD
-void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
-			    enum scmi_bad_msg err);
-
-/* shmem related declarations */
-struct scmi_shared_mem;
-
-void shmem_tx_prepare(struct scmi_shared_mem __iomem *shmem,
-		      struct scmi_xfer *xfer, struct scmi_chan_info *cinfo);
-u32 shmem_read_header(struct scmi_shared_mem __iomem *shmem);
-void shmem_fetch_response(struct scmi_shared_mem __iomem *shmem,
-			  struct scmi_xfer *xfer);
-void shmem_fetch_notification(struct scmi_shared_mem __iomem *shmem,
-			      size_t max_len, struct scmi_xfer *xfer);
-void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem);
-bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
-		     struct scmi_xfer *xfer);
-bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem);
-bool shmem_channel_intr_enabled(struct scmi_shared_mem __iomem *shmem);
-=======
 /* shmem related declarations */
 struct scmi_shared_mem;
 
@@ -422,7 +349,6 @@ struct scmi_shared_mem_operations {
 };
 
 const struct scmi_shared_mem_operations *scmi_shared_mem_operations_get(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* declarations for message passing transports */
 struct scmi_msg_payld;
@@ -430,16 +356,6 @@ struct scmi_msg_payld;
 /* Maximum overhead of message w.r.t. struct scmi_desc.max_msg_size */
 #define SCMI_MSG_MAX_PROT_OVERHEAD (2 * sizeof(__le32))
 
-<<<<<<< HEAD
-size_t msg_response_size(struct scmi_xfer *xfer);
-size_t msg_command_size(struct scmi_xfer *xfer);
-void msg_tx_prepare(struct scmi_msg_payld *msg, struct scmi_xfer *xfer);
-u32 msg_read_header(struct scmi_msg_payld *msg);
-void msg_fetch_response(struct scmi_msg_payld *msg, size_t len,
-			struct scmi_xfer *xfer);
-void msg_fetch_notification(struct scmi_msg_payld *msg, size_t len,
-			    size_t max_len, struct scmi_xfer *xfer);
-=======
 /**
  * struct scmi_message_operations  - Transport core operations for Message
  *
@@ -542,7 +458,6 @@ static struct platform_driver __drv = {					       \
 		   },							       \
 	.probe = __tag##_probe,						       \
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void scmi_notification_instance_data_set(const struct scmi_handle *handle,
 					 void *priv);

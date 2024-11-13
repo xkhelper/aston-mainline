@@ -132,18 +132,6 @@ struct snd_sof_pdata;
 
 /**
  * struct snd_sof_platform_stream_params - platform dependent stream parameters
-<<<<<<< HEAD
- * @stream_tag:		Stream tag to use
- * @use_phy_addr:	Use the provided @phy_addr for configuration
- * @phy_addr:		Platform dependent address to be used, if  @use_phy_addr
- *			is true
- * @no_ipc_position:	Disable position update IPC from firmware
- */
-struct snd_sof_platform_stream_params {
-	u16 stream_tag;
-	bool use_phy_address;
-	u32 phy_addr;
-=======
  * @phy_addr:		Platform dependent address to be used, if  @use_phy_addr
  *			is true
  * @stream_tag:		Stream tag to use
@@ -155,7 +143,6 @@ struct snd_sof_platform_stream_params {
 	u32 phy_addr;
 	u16 stream_tag;
 	bool use_phy_address;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool no_ipc_position;
 	bool cont_update_posn;
 };
@@ -425,13 +412,8 @@ struct snd_sof_debugfs_map {
 
 /* mailbox descriptor, used for host <-> DSP IPC */
 struct snd_sof_mailbox {
-<<<<<<< HEAD
-	u32 offset;
-	size_t size;
-=======
 	size_t size;
 	u32 offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* IPC message descriptor for host <-> DSP IO */
@@ -443,20 +425,12 @@ struct snd_sof_ipc_msg {
 	size_t reply_size;
 	int reply_error;
 
-<<<<<<< HEAD
-	/* notification, firmware initiated messages */
-	void *rx_data;
-
-	wait_queue_head_t waitq;
-	bool ipc_complete;
-=======
 	bool ipc_complete;
 
 	wait_queue_head_t waitq;
 
 	/* notification, firmware initiated messages */
 	void *rx_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

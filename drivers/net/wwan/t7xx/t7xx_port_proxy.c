@@ -553,10 +553,6 @@ static int t7xx_proxy_alloc(struct t7xx_modem *md)
 
 	md->port_prox = port_prox;
 	port_prox->dev = dev;
-<<<<<<< HEAD
-	t7xx_port_proxy_set_cfg(md, PORT_CFG_ID_EARLY);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

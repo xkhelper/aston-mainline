@@ -13,10 +13,7 @@
 #include <linux/seq_file.h>
 #include <linux/proc_fs.h>
 #include <linux/vmalloc.h>
-<<<<<<< HEAD
-=======
 #include <linux/coredump.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/fpu/api.h>
 #include <asm/fpu/regset.h>
@@ -27,11 +24,8 @@
 #include <asm/prctl.h>
 #include <asm/elf.h>
 
-<<<<<<< HEAD
-=======
 #include <uapi/asm/elf.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "context.h"
 #include "internal.h"
 #include "legacy.h"
@@ -1005,8 +999,6 @@ void *get_xsave_addr(struct xregs_state *xsave, int xfeature_nr)
 }
 EXPORT_SYMBOL_GPL(get_xsave_addr);
 
-<<<<<<< HEAD
-=======
 /*
  * Given an xstate feature nr, calculate where in the xsave buffer the state is.
  * The xsave buffer should be in standard format, not compacted (e.g. user mode
@@ -1020,7 +1012,6 @@ void __user *get_xsave_addr_user(struct xregs_state __user *xsave, int xfeature_
 	return (void __user *)xsave + xstate_offsets[xfeature_nr];
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ARCH_HAS_PKEYS
 
 /*
@@ -1866,8 +1857,6 @@ int proc_pid_arch_status(struct seq_file *m, struct pid_namespace *ns,
 	return 0;
 }
 #endif /* CONFIG_PROC_PID_ARCH_STATUS */
-<<<<<<< HEAD
-=======
 
 #ifdef CONFIG_COREDUMP
 static const char owner_name[] = "LINUX";
@@ -1954,4 +1943,3 @@ int elf_coredump_extra_notes_size(void)
 	return size;
 }
 #endif /* CONFIG_COREDUMP */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

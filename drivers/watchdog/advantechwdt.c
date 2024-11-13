@@ -217,10 +217,6 @@ static int advwdt_close(struct inode *inode, struct file *file)
 
 static const struct file_operations advwdt_fops = {
 	.owner		= THIS_MODULE,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		= advwdt_write,
 	.unlocked_ioctl	= advwdt_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,

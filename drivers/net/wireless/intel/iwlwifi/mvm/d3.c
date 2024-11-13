@@ -1398,13 +1398,9 @@ int iwl_mvm_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wowlan)
 
 	iwl_mvm_pause_tcm(mvm, true);
 
-<<<<<<< HEAD
-	iwl_fw_runtime_suspend(&mvm->fwrt);
-=======
 	mutex_lock(&mvm->mutex);
 	iwl_fw_runtime_suspend(&mvm->fwrt);
 	mutex_unlock(&mvm->mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return __iwl_mvm_suspend(hw, wowlan, false);
 }
@@ -3774,10 +3770,6 @@ static int iwl_mvm_d3_test_release(struct inode *inode, struct file *file)
 }
 
 const struct file_operations iwl_dbgfs_d3_test_ops = {
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.open = iwl_mvm_d3_test_open,
 	.read = iwl_mvm_d3_test_read,
 	.release = iwl_mvm_d3_test_release,

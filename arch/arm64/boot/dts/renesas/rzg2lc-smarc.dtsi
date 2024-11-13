@@ -33,8 +33,6 @@
 			};
 		};
 	};
-<<<<<<< HEAD
-=======
 
 #if (SW_I2S0_I2S1)
 	/delete-node/ sound;
@@ -45,7 +43,6 @@
 		dais = <&i2s2_port>;
 	};
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #if (SW_SCIF_CAN || SW_RSPI_CAN)
@@ -61,17 +58,11 @@
 };
 #endif
 
-<<<<<<< HEAD
-&cpu_dai {
-	sound-dai = <&ssi0>;
-};
-=======
 #if (!SW_I2S0_I2S1)
 &cpu_dai {
 	sound-dai = <&ssi0>;
 };
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 &dsi {
 	status = "okay";
@@ -125,8 +116,6 @@
 					remote-endpoint = <&hdmi_con_out>;
 				};
 			};
-<<<<<<< HEAD
-=======
 
 #if (SW_I2S0_I2S1)
 			port@2 {
@@ -136,7 +125,6 @@
 				};
 			};
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };
@@ -210,8 +198,6 @@
 	pinctrl-names = "default";
 
 	status = "okay";
-<<<<<<< HEAD
-=======
 
 #if (SW_I2S0_I2S1)
 	i2s2_port: port {
@@ -224,7 +210,6 @@
 		};
 	};
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #if (SW_RSPI_CAN)

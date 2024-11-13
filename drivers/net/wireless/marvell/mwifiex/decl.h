@@ -31,8 +31,6 @@
 						 *   + sizeof(tx_control)
 						 */
 
-<<<<<<< HEAD
-=======
 #define FRMCTL_LEN                2
 #define DURATION_LEN              2
 #define SEQCTL_LEN                2
@@ -56,7 +54,6 @@
 
 #define WLAN_AUTH_NONE            0xFFFF
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MWIFIEX_MAX_TX_BASTREAM_SUPPORTED	2
 #define MWIFIEX_MAX_RX_BASTREAM_SUPPORTED	16
 #define MWIFIEX_MAX_TDLS_PEER_SUPPORTED 8

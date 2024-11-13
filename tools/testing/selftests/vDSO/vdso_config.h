@@ -18,32 +18,18 @@
 #elif defined(__aarch64__)
 #define VDSO_VERSION		3
 #define VDSO_NAMES		0
-<<<<<<< HEAD
-=======
 #elif defined(__powerpc64__)
 #define VDSO_VERSION		1
 #define VDSO_NAMES		0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #elif defined(__powerpc__)
 #define VDSO_VERSION		1
 #define VDSO_NAMES		0
 #define VDSO_32BIT		1
-<<<<<<< HEAD
-#elif defined(__powerpc64__)
-#define VDSO_VERSION		1
-#define VDSO_NAMES		0
-#elif defined (__s390__)
-#define VDSO_VERSION		2
-#define VDSO_NAMES		0
-#define VDSO_32BIT		1
-#elif defined (__s390X__)
-=======
 #elif defined (__s390__) && !defined(__s390x__)
 #define VDSO_VERSION		2
 #define VDSO_NAMES		0
 #define VDSO_32BIT		1
 #elif defined (__s390x__)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define VDSO_VERSION		2
 #define VDSO_NAMES		0
 #elif defined(__mips__)
@@ -82,25 +68,15 @@ static const char *versions[7] = {
 	"LINUX_5.10"
 };
 
-<<<<<<< HEAD
-static const char *names[2][6] = {
-=======
 static const char *names[2][7] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		"__kernel_gettimeofday",
 		"__kernel_clock_gettime",
 		"__kernel_time",
 		"__kernel_clock_getres",
 		"__kernel_getcpu",
-<<<<<<< HEAD
-#if defined(VDSO_32BIT)
-		"__kernel_clock_gettime64",
-#endif
-=======
 		"__kernel_clock_gettime64",
 		"__kernel_getrandom",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		"__vdso_gettimeofday",
@@ -108,14 +84,8 @@ static const char *names[2][7] = {
 		"__vdso_time",
 		"__vdso_clock_getres",
 		"__vdso_getcpu",
-<<<<<<< HEAD
-#if defined(VDSO_32BIT)
-		"__vdso_clock_gettime64",
-#endif
-=======
 		"__vdso_clock_gettime64",
 		"__vdso_getrandom",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

@@ -11,10 +11,7 @@
 #include <linux/kmemleak.h>
 #include <linux/bvec.h>
 #include <linux/uio.h>
-<<<<<<< HEAD
-=======
 #include <linux/folio_queue.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * sg_next - return the next scatterlist entry in a list
@@ -1266,8 +1263,6 @@ static ssize_t extract_kvec_to_sg(struct iov_iter *iter,
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Extract up to sg_max folios from an FOLIOQ-type iterator and add them to
  * the scatterlist.  The pages are not pinned.
  */
@@ -1329,7 +1324,6 @@ static ssize_t extract_folioq_to_sg(struct iov_iter *iter,
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Extract up to sg_max folios from an XARRAY-type iterator and add them to
  * the scatterlist.  The pages are not pinned.
  */
@@ -1391,13 +1385,8 @@ static ssize_t extract_xarray_to_sg(struct iov_iter *iter,
  * addition of @sg_max elements.
  *
  * The pages referred to by UBUF- and IOVEC-type iterators are extracted and
-<<<<<<< HEAD
- * pinned; BVEC-, KVEC- and XARRAY-type are extracted but aren't pinned; PIPE-
- * and DISCARD-type are not supported.
-=======
  * pinned; BVEC-, KVEC-, FOLIOQ- and XARRAY-type are extracted but aren't
  * pinned; DISCARD-type is not supported.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * No end mark is placed on the scatterlist; that's left to the caller.
  *
@@ -1429,12 +1418,9 @@ ssize_t extract_iter_to_sg(struct iov_iter *iter, size_t maxsize,
 	case ITER_KVEC:
 		return extract_kvec_to_sg(iter, maxsize, sgtable, sg_max,
 					  extraction_flags);
-<<<<<<< HEAD
-=======
 	case ITER_FOLIOQ:
 		return extract_folioq_to_sg(iter, maxsize, sgtable, sg_max,
 					    extraction_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case ITER_XARRAY:
 		return extract_xarray_to_sg(iter, maxsize, sgtable, sg_max,
 					    extraction_flags);

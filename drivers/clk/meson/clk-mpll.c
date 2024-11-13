@@ -165,11 +165,7 @@ const struct clk_ops meson_clk_mpll_ro_ops = {
 	.recalc_rate	= mpll_recalc_rate,
 	.determine_rate	= mpll_determine_rate,
 };
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(meson_clk_mpll_ro_ops);
-=======
 EXPORT_SYMBOL_NS_GPL(meson_clk_mpll_ro_ops, CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 const struct clk_ops meson_clk_mpll_ops = {
 	.recalc_rate	= mpll_recalc_rate,
@@ -177,16 +173,9 @@ const struct clk_ops meson_clk_mpll_ops = {
 	.set_rate	= mpll_set_rate,
 	.init		= mpll_init,
 };
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(meson_clk_mpll_ops);
-=======
 EXPORT_SYMBOL_NS_GPL(meson_clk_mpll_ops, CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_DESCRIPTION("Amlogic MPLL driver");
 MODULE_AUTHOR("Michael Turquette <mturquette@baylibre.com>");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
 MODULE_IMPORT_NS(CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

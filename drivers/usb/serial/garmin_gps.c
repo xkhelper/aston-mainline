@@ -1412,10 +1412,6 @@ static void garmin_port_remove(struct usb_serial_port *port)
 /* All of the device info needed */
 static struct usb_serial_driver garmin_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner       = THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name        = "garmin_gps",
 	},
 	.description         = "Garmin GPS usb/tty",

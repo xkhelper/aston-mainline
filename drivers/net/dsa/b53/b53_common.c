@@ -27,10 +27,7 @@
 #include <linux/phylink.h>
 #include <linux/etherdevice.h>
 #include <linux/if_bridge.h>
-<<<<<<< HEAD
-=======
 #include <linux/if_vlan.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/dsa.h>
 
 #include "b53_regs.h"
@@ -228,12 +225,9 @@ static const struct b53_mib_desc b53_mibs_58xx[] = {
 
 #define B53_MIBS_58XX_SIZE	ARRAY_SIZE(b53_mibs_58xx)
 
-<<<<<<< HEAD
-=======
 #define B53_MAX_MTU_25		(1536 - ETH_HLEN - VLAN_HLEN - ETH_FCS_LEN)
 #define B53_MAX_MTU		(9720 - ETH_HLEN - VLAN_HLEN - ETH_FCS_LEN)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int b53_do_vlan_op(struct b53_device *dev, u8 op)
 {
 	unsigned int i;
@@ -2264,38 +2258,25 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
 	bool allow_10_100;
 
 	if (is5325(dev) || is5365(dev))
-<<<<<<< HEAD
-		return -EOPNOTSUPP;
-=======
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!dsa_is_cpu_port(ds, port))
 		return 0;
 
-<<<<<<< HEAD
-	enable_jumbo = (mtu >= JMS_MIN_SIZE);
-	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
-=======
 	enable_jumbo = (mtu > ETH_DATA_LEN);
 	allow_10_100 = !is63xx(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return b53_set_jumbo(dev, enable_jumbo, allow_10_100);
 }
 
 static int b53_get_max_mtu(struct dsa_switch *ds, int port)
 {
-<<<<<<< HEAD
-	return JMS_MAX_SIZE;
-=======
 	struct b53_device *dev = ds->priv;
 
 	if (is5325(dev) || is5365(dev))
 		return B53_MAX_MTU_25;
 
 	return B53_MAX_MTU;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct phylink_mac_ops b53_phylink_mac_ops = {

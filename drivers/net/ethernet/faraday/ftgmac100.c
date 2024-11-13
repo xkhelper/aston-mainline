@@ -24,10 +24,7 @@
 #include <linux/crc32.h>
 #include <linux/if_vlan.h>
 #include <linux/of_net.h>
-<<<<<<< HEAD
-=======
 #include <linux/phy_fixed.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/ip.h>
 #include <net/ncsi.h>
 
@@ -54,8 +51,6 @@
 #define FTGMAC_100MHZ		100000000
 #define FTGMAC_25MHZ		25000000
 
-<<<<<<< HEAD
-=======
 /* For NC-SI to register a fixed-link phy device */
 static struct fixed_phy_status ncsi_phy_status = {
 	.link = 1,
@@ -65,7 +60,6 @@ static struct fixed_phy_status ncsi_phy_status = {
 	.asym_pause = 0
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ftgmac100 {
 	/* Registers */
 	struct resource *res;
@@ -1557,12 +1551,8 @@ static int ftgmac100_open(struct net_device *netdev)
 	if (netdev->phydev) {
 		/* If we have a PHY, start polling */
 		phy_start(netdev->phydev);
-<<<<<<< HEAD
-	} else if (priv->use_ncsi) {
-=======
 	}
 	if (priv->use_ncsi) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* If using NC-SI, set our carrier on and start the stack */
 		netif_carrier_on(netdev);
 
@@ -1575,10 +1565,7 @@ static int ftgmac100_open(struct net_device *netdev)
 	return 0;
 
 err_ncsi:
-<<<<<<< HEAD
-=======
 	phy_stop(netdev->phydev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	napi_disable(&priv->napi);
 	netif_stop_queue(netdev);
 err_alloc:
@@ -1612,11 +1599,7 @@ static int ftgmac100_stop(struct net_device *netdev)
 	netif_napi_del(&priv->napi);
 	if (netdev->phydev)
 		phy_stop(netdev->phydev);
-<<<<<<< HEAD
-	else if (priv->use_ncsi)
-=======
 	if (priv->use_ncsi)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ncsi_stop_dev(priv->ndev);
 
 	ftgmac100_stop_hw(priv);
@@ -1754,12 +1737,9 @@ static void ftgmac100_phy_disconnect(struct net_device *netdev)
 	phy_disconnect(netdev->phydev);
 	if (of_phy_is_fixed_link(priv->dev->of_node))
 		of_phy_deregister_fixed_link(priv->dev->of_node);
-<<<<<<< HEAD
-=======
 
 	if (priv->use_ncsi)
 		fixed_phy_unregister(netdev->phydev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ftgmac100_destroy_mdio(struct net_device *netdev)
@@ -1837,10 +1817,7 @@ static int ftgmac100_probe(struct platform_device *pdev)
 	struct resource *res;
 	int irq;
 	struct net_device *netdev;
-<<<<<<< HEAD
-=======
 	struct phy_device *phydev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ftgmac100 *priv;
 	struct device_node *np;
 	int err = 0;
@@ -1928,8 +1905,6 @@ static int ftgmac100_probe(struct platform_device *pdev)
 			err = -EINVAL;
 			goto err_phy_connect;
 		}
-<<<<<<< HEAD
-=======
 
 		phydev = fixed_phy_register(PHY_POLL, &ncsi_phy_status, np);
 		if (IS_ERR(phydev)) {
@@ -1943,7 +1918,6 @@ static int ftgmac100_probe(struct platform_device *pdev)
 			dev_err(&pdev->dev, "Connecting PHY failed\n");
 			goto err_phy_connect;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (np && of_phy_is_fixed_link(np)) {
 		struct phy_device *phy;
 

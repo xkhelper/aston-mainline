@@ -42,13 +42,6 @@ properties:
       - const: xin24m
       - const: xin32k
 
-<<<<<<< HEAD
-  assigned-clocks: true
-
-  assigned-clock-rates: true
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   rockchip,grf:
     $ref: /schemas/types.yaml#/definitions/phandle
     description: >

@@ -15,19 +15,12 @@
 #include <linux/cpuidle.h>
 #include <linux/cpufreq.h>
 #include <linux/memory_hotplug.h>
-<<<<<<< HEAD
-=======
 #include <linux/acpi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/elf.h>
 #include <asm/vdso.h>
 #include <asm/e820/api.h>
 #include <asm/setup.h>
-<<<<<<< HEAD
-#include <asm/acpi.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/numa.h>
 #include <asm/idtentry.h>
 #include <asm/xen/hypervisor.h>
@@ -53,12 +46,9 @@ bool xen_pv_pci_possible;
 /* E820 map used during setting up memory. */
 static struct e820_table xen_e820_table __initdata;
 
-<<<<<<< HEAD
-=======
 /* Number of initially usable memory pages. */
 static unsigned long ini_nr_pages __initdata;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Buffer used to remap identity mapped pages. We only need the virtual space.
  * The physical page behind this address is remapped as needed to different
@@ -225,11 +215,7 @@ static int __init xen_free_mfn(unsigned long mfn)
  * as a fallback if the remapping fails.
  */
 static void __init xen_set_identity_and_release_chunk(unsigned long start_pfn,
-<<<<<<< HEAD
-			unsigned long end_pfn, unsigned long nr_pages)
-=======
 						      unsigned long end_pfn)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long pfn, end;
 	int ret;
@@ -237,11 +223,7 @@ static void __init xen_set_identity_and_release_chunk(unsigned long start_pfn,
 	WARN_ON(start_pfn > end_pfn);
 
 	/* Release pages first. */
-<<<<<<< HEAD
-	end = min(end_pfn, nr_pages);
-=======
 	end = min(end_pfn, ini_nr_pages);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (pfn = start_pfn; pfn < end; pfn++) {
 		unsigned long mfn = pfn_to_mfn(pfn);
 
@@ -362,23 +344,14 @@ static void __init xen_do_set_identity_and_remap_chunk(
  * to Xen and not remapped.
  */
 static unsigned long __init xen_set_identity_and_remap_chunk(
-<<<<<<< HEAD
-	unsigned long start_pfn, unsigned long end_pfn, unsigned long nr_pages,
-	unsigned long remap_pfn)
-=======
 	unsigned long start_pfn, unsigned long end_pfn, unsigned long remap_pfn)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long pfn;
 	unsigned long i = 0;
 	unsigned long n = end_pfn - start_pfn;
 
 	if (remap_pfn == 0)
-<<<<<<< HEAD
-		remap_pfn = nr_pages;
-=======
 		remap_pfn = ini_nr_pages;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	while (i < n) {
 		unsigned long cur_pfn = start_pfn + i;
@@ -387,32 +360,19 @@ static unsigned long __init xen_set_identity_and_remap_chunk(
 		unsigned long remap_range_size;
 
 		/* Do not remap pages beyond the current allocation */
-<<<<<<< HEAD
-		if (cur_pfn >= nr_pages) {
-=======
 		if (cur_pfn >= ini_nr_pages) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* Identity map remaining pages */
 			set_phys_range_identity(cur_pfn, cur_pfn + size);
 			break;
 		}
-<<<<<<< HEAD
-		if (cur_pfn + size > nr_pages)
-			size = nr_pages - cur_pfn;
-=======
 		if (cur_pfn + size > ini_nr_pages)
 			size = ini_nr_pages - cur_pfn;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		remap_range_size = xen_find_pfn_range(&remap_pfn);
 		if (!remap_range_size) {
 			pr_warn("Unable to find available pfn range, not remapping identity pages\n");
 			xen_set_identity_and_release_chunk(cur_pfn,
-<<<<<<< HEAD
-						cur_pfn + left, nr_pages);
-=======
 							   cur_pfn + left);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 		/* Adjust size to fit in current e820 RAM region */
@@ -439,20 +399,6 @@ static unsigned long __init xen_set_identity_and_remap_chunk(
 }
 
 static unsigned long __init xen_count_remap_pages(
-<<<<<<< HEAD
-	unsigned long start_pfn, unsigned long end_pfn, unsigned long nr_pages,
-	unsigned long remap_pages)
-{
-	if (start_pfn >= nr_pages)
-		return remap_pages;
-
-	return remap_pages + min(end_pfn, nr_pages) - start_pfn;
-}
-
-static unsigned long __init xen_foreach_remap_area(unsigned long nr_pages,
-	unsigned long (*func)(unsigned long start_pfn, unsigned long end_pfn,
-			      unsigned long nr_pages, unsigned long last_val))
-=======
 	unsigned long start_pfn, unsigned long end_pfn,
 	unsigned long remap_pages)
 {
@@ -465,7 +411,6 @@ static unsigned long __init xen_foreach_remap_area(unsigned long nr_pages,
 static unsigned long __init xen_foreach_remap_area(
 	unsigned long (*func)(unsigned long start_pfn, unsigned long end_pfn,
 			      unsigned long last_val))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	phys_addr_t start = 0;
 	unsigned long ret_val = 0;
@@ -493,12 +438,7 @@ static unsigned long __init xen_foreach_remap_area(
 				end_pfn = PFN_UP(entry->addr);
 
 			if (start_pfn < end_pfn)
-<<<<<<< HEAD
-				ret_val = func(start_pfn, end_pfn, nr_pages,
-					       ret_val);
-=======
 				ret_val = func(start_pfn, end_pfn, ret_val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			start = end;
 		}
 	}
@@ -555,11 +495,8 @@ void __init xen_remap_memory(void)
 	set_pte_mfn(buf, mfn_save, PAGE_KERNEL);
 
 	pr_info("Remapped %ld page(s)\n", remapped);
-<<<<<<< HEAD
-=======
 
 	xen_do_remap_nonram();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static unsigned long __init xen_get_pages_limit(void)
@@ -633,11 +570,7 @@ static void __init xen_ignore_unusable(void)
 	}
 }
 
-<<<<<<< HEAD
-bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
-=======
 static bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct e820_entry *entry;
 	unsigned mapcnt;
@@ -695,8 +628,6 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size)
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Swap a non-RAM E820 map entry with RAM above ini_nr_pages.
  * Note that the E820 map is modified accordingly, but the P2M map isn't yet.
  * The adaption of the P2M must be deferred until page allocation is possible.
@@ -802,7 +733,6 @@ void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Like memcpy, but with physical addresses for dest and src.
  */
 static void __init xen_phys_memcpy(phys_addr_t dest, phys_addr_t src,
@@ -861,11 +791,7 @@ static void __init xen_reserve_xen_mfnlist(void)
  **/
 char * __init xen_memory_setup(void)
 {
-<<<<<<< HEAD
-	unsigned long max_pfn, pfn_s, n_pfns;
-=======
 	unsigned long pfn_s, n_pfns;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phys_addr_t mem_end, addr, size, chunk_size;
 	u32 type;
 	int rc;
@@ -877,14 +803,8 @@ char * __init xen_memory_setup(void)
 	int op;
 
 	xen_parse_512gb();
-<<<<<<< HEAD
-	max_pfn = xen_get_pages_limit();
-	max_pfn = min(max_pfn, xen_start_info->nr_pages);
-	mem_end = PFN_PHYS(max_pfn);
-=======
 	ini_nr_pages = min(xen_get_pages_limit(), xen_start_info->nr_pages);
 	mem_end = PFN_PHYS(ini_nr_pages);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memmap.nr_entries = ARRAY_SIZE(xen_e820_table.entries);
 	set_xen_guest_handle(memmap.buffer, xen_e820_table.entries);
@@ -934,15 +854,6 @@ char * __init xen_memory_setup(void)
 	/* Make sure the Xen-supplied memory map is well-ordered. */
 	e820__update_table(&xen_e820_table);
 
-<<<<<<< HEAD
-	max_pages = xen_get_max_pages();
-
-	/* How many extra pages do we need due to remapping? */
-	max_pages += xen_foreach_remap_area(max_pfn, xen_count_remap_pages);
-
-	if (max_pages > max_pfn)
-		extra_pages += max_pages - max_pfn;
-=======
 	/*
 	 * Check whether the kernel itself conflicts with the target E820 map.
 	 * Failing now is better than running into weird problems later due
@@ -972,7 +883,6 @@ char * __init xen_memory_setup(void)
 
 	if (max_pages > ini_nr_pages)
 		extra_pages += max_pages - ini_nr_pages;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Clamp the amount of extra memory to a EXTRA_MEM_RATIO
@@ -981,13 +891,8 @@ char * __init xen_memory_setup(void)
 	 * Make sure we have no memory above max_pages, as this area
 	 * isn't handled by the p2m management.
 	 */
-<<<<<<< HEAD
-	maxmem_pages = EXTRA_MEM_RATIO * min(max_pfn, PFN_DOWN(MAXMEM));
-	extra_pages = min3(maxmem_pages, extra_pages, max_pages - max_pfn);
-=======
 	maxmem_pages = EXTRA_MEM_RATIO * min(ini_nr_pages, PFN_DOWN(MAXMEM));
 	extra_pages = min3(maxmem_pages, extra_pages, max_pages - ini_nr_pages);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i = 0;
 	addr = xen_e820_table.entries[0].addr;
 	size = xen_e820_table.entries[0].size;
@@ -1043,26 +948,6 @@ char * __init xen_memory_setup(void)
 
 	e820__update_table(e820_table);
 
-<<<<<<< HEAD
-	/*
-	 * Check whether the kernel itself conflicts with the target E820 map.
-	 * Failing now is better than running into weird problems later due
-	 * to relocating (and even reusing) pages with kernel text or data.
-	 */
-	if (xen_is_e820_reserved(__pa_symbol(_text),
-			__pa_symbol(__bss_stop) - __pa_symbol(_text))) {
-		xen_raw_console_write("Xen hypervisor allocated kernel memory conflicts with E820 map\n");
-		BUG();
-	}
-
-	/*
-	 * Check for a conflict of the hypervisor supplied page tables with
-	 * the target E820 map.
-	 */
-	xen_pt_check_e820();
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xen_reserve_xen_mfnlist();
 
 	/* Check for a conflict of the initrd with the target E820 map. */
@@ -1090,11 +975,7 @@ char * __init xen_memory_setup(void)
 	 * Set identity map on non-RAM pages and prepare remapping the
 	 * underlying RAM.
 	 */
-<<<<<<< HEAD
-	xen_foreach_remap_area(max_pfn, xen_set_identity_and_remap_chunk);
-=======
 	xen_foreach_remap_area(xen_set_identity_and_remap_chunk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pr_info("Released %ld page(s)\n", xen_released_pages);
 

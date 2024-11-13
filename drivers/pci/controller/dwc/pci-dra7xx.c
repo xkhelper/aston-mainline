@@ -850,31 +850,21 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
 	dra7xx->mode = mode;
 
 	ret = devm_request_threaded_irq(dev, irq, NULL, dra7xx_pcie_irq_handler,
-<<<<<<< HEAD
-			       IRQF_SHARED, "dra7xx-pcie-main", dra7xx);
-	if (ret) {
-		dev_err(dev, "failed to request irq\n");
-		goto err_gpio;
-=======
 					IRQF_SHARED | IRQF_ONESHOT,
 					"dra7xx-pcie-main", dra7xx);
 	if (ret) {
 		dev_err(dev, "failed to request irq\n");
 		goto err_deinit;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
 
-<<<<<<< HEAD
-=======
 err_deinit:
 	if (dra7xx->mode == DW_PCIE_RC_TYPE)
 		dw_pcie_host_deinit(&dra7xx->pci->pp);
 	else
 		dw_pcie_ep_deinit(&dra7xx->pci->ep);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_gpio:
 err_get_sync:
 	pm_runtime_put(dev);

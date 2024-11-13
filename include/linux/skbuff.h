@@ -827,11 +827,8 @@ enum skb_tstamp_type {
  *	@csum_level: indicates the number of consecutive checksums found in
  *		the packet minus one that have been verified as
  *		CHECKSUM_UNNECESSARY (max 3)
-<<<<<<< HEAD
-=======
  *	@unreadable: indicates that at least 1 of the fragments in this skb is
  *		unreadable.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@dst_pending_confirm: need to confirm neighbour
  *	@decrypted: Decrypted SKB
  *	@slow_gro: state present at GRO time, slower prepare step required
@@ -1013,11 +1010,7 @@ struct sk_buff {
 #if IS_ENABLED(CONFIG_IP_SCTP)
 	__u8			csum_not_inet:1;
 #endif
-<<<<<<< HEAD
-
-=======
 	__u8			unreadable:1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if defined(CONFIG_NET_SCHED) || defined(CONFIG_NET_XGRESS)
 	__u16			tc_index;	/* traffic control index */
 #endif
@@ -1234,11 +1227,7 @@ static inline bool skb_unref(struct sk_buff *skb)
 {
 	if (unlikely(!skb))
 		return false;
-<<<<<<< HEAD
-	if (likely(refcount_read(&skb->users) == 1))
-=======
 	if (!IS_ENABLED(CONFIG_DEBUG_NET) && likely(refcount_read(&skb->users) == 1))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		smp_rmb();
 	else if (likely(!refcount_dec_and_test(&skb->users)))
 		return false;
@@ -1446,10 +1435,7 @@ void skb_prepare_seq_read(struct sk_buff *skb, unsigned int from,
 unsigned int skb_seq_read(unsigned int consumed, const u8 **data,
 			  struct skb_seq_state *st);
 void skb_abort_seq_read(struct skb_seq_state *st);
-<<<<<<< HEAD
-=======
 int skb_copy_seq_read(struct skb_seq_state *st, int offset, void *to, int len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 unsigned int skb_find_text(struct sk_buff *skb, unsigned int from,
 			   unsigned int to, struct ts_config *config);
@@ -1840,15 +1826,12 @@ static inline void skb_zcopy_downgrade_managed(struct sk_buff *skb)
 		__skb_zcopy_downgrade_managed(skb);
 }
 
-<<<<<<< HEAD
-=======
 /* Return true if frags in this skb are readable by the host. */
 static inline bool skb_frags_readable(const struct sk_buff *skb)
 {
 	return !skb->unreadable;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void skb_mark_not_on_list(struct sk_buff *skb)
 {
 	skb->next = NULL;
@@ -2565,12 +2548,6 @@ static inline void skb_len_add(struct sk_buff *skb, int delta)
 static inline void __skb_fill_netmem_desc(struct sk_buff *skb, int i,
 					  netmem_ref netmem, int off, int size)
 {
-<<<<<<< HEAD
-	struct page *page = netmem_to_page(netmem);
-
-	__skb_fill_netmem_desc_noacc(skb_shinfo(skb), i, netmem, off, size);
-
-=======
 	struct page *page;
 
 	__skb_fill_netmem_desc_noacc(skb_shinfo(skb), i, netmem, off, size);
@@ -2582,7 +2559,6 @@ static inline void __skb_fill_netmem_desc(struct sk_buff *skb, int i,
 
 	page = netmem_to_page(netmem);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Propagate page pfmemalloc to the skb if we can. The problem is
 	 * that not all callers have unique ownership of the page but rely
 	 * on page_is_pfmemalloc doing the right thing(tm).
@@ -3563,8 +3539,6 @@ static inline void skb_frag_off_copy(skb_frag_t *fragto,
 	fragto->offset = fragfrom->offset;
 }
 
-<<<<<<< HEAD
-=======
 /* Return: true if the skb_frag contains a net_iov. */
 static inline bool skb_frag_is_net_iov(const skb_frag_t *frag)
 {
@@ -3586,20 +3560,10 @@ static inline struct net_iov *skb_frag_net_iov(const skb_frag_t *frag)
 	return netmem_to_net_iov(frag->netmem);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * skb_frag_page - retrieve the page referred to by a paged fragment
  * @frag: the paged fragment
  *
-<<<<<<< HEAD
- * Returns the &struct page associated with @frag.
- */
-static inline struct page *skb_frag_page(const skb_frag_t *frag)
-{
-	return netmem_to_page(frag->netmem);
-}
-
-=======
  * Return: the &struct page associated with @frag. Returns NULL if this frag
  * has no associated page.
  */
@@ -3622,15 +3586,11 @@ static inline netmem_ref skb_frag_netmem(const skb_frag_t *frag)
 	return frag->netmem;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int skb_pp_cow_data(struct page_pool *pool, struct sk_buff **pskb,
 		    unsigned int headroom);
 int skb_cow_data_for_xdp(struct page_pool *pool, struct sk_buff **pskb,
 			 struct bpf_prog *prog);
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * skb_frag_address - gets the address of the data contained in a paged fragment
  * @frag: the paged fragment buffer
@@ -3640,12 +3600,9 @@ int skb_cow_data_for_xdp(struct page_pool *pool, struct sk_buff **pskb,
  */
 static inline void *skb_frag_address(const skb_frag_t *frag)
 {
-<<<<<<< HEAD
-=======
 	if (!skb_frag_page(frag))
 		return NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return page_address(skb_frag_page(frag)) + skb_frag_off(frag);
 }
 

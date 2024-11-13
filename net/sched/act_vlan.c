@@ -96,10 +96,7 @@ out:
 	if (skb_at_tc_ingress(skb))
 		skb_pull_rcsum(skb, skb->mac_len);
 
-<<<<<<< HEAD
-=======
 	skb_reset_mac_len(skb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return action;
 
 drop:

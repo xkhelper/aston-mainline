@@ -34,19 +34,12 @@
 #define ULONG_CMP_GE(a, b)	(ULONG_MAX / 2 >= (a) - (b))
 #define ULONG_CMP_LT(a, b)	(ULONG_MAX / 2 < (a) - (b))
 
-<<<<<<< HEAD
-/* Exported common interfaces */
-void call_rcu(struct rcu_head *head, rcu_callback_t func);
-void rcu_barrier_tasks(void);
-void rcu_barrier_tasks_rude(void);
-=======
 #define RCU_SEQ_CTR_SHIFT    2
 #define RCU_SEQ_STATE_MASK   ((1 << RCU_SEQ_CTR_SHIFT) - 1)
 
 /* Exported common interfaces */
 void call_rcu(struct rcu_head *head, rcu_callback_t func);
 void rcu_barrier_tasks(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void synchronize_rcu(void);
 
 struct rcu_gp_oldstate;
@@ -153,25 +146,18 @@ void rcu_init_nohz(void);
 int rcu_nocb_cpu_offload(int cpu);
 int rcu_nocb_cpu_deoffload(int cpu);
 void rcu_nocb_flush_deferred_wakeup(void);
-<<<<<<< HEAD
-#else /* #ifdef CONFIG_RCU_NOCB_CPU */
-=======
 
 #define RCU_NOCB_LOCKDEP_WARN(c, s) RCU_LOCKDEP_WARN(c, s)
 
 #else /* #ifdef CONFIG_RCU_NOCB_CPU */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void rcu_init_nohz(void) { }
 static inline int rcu_nocb_cpu_offload(int cpu) { return -EINVAL; }
 static inline int rcu_nocb_cpu_deoffload(int cpu) { return 0; }
 static inline void rcu_nocb_flush_deferred_wakeup(void) { }
-<<<<<<< HEAD
-=======
 
 #define RCU_NOCB_LOCKDEP_WARN(c, s)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* #else #ifdef CONFIG_RCU_NOCB_CPU */
 
 /*
@@ -188,10 +174,7 @@ static inline void rcu_nocb_flush_deferred_wakeup(void) { }
 	} while (0)
 void call_rcu_tasks(struct rcu_head *head, rcu_callback_t func);
 void synchronize_rcu_tasks(void);
-<<<<<<< HEAD
-=======
 void rcu_tasks_torture_stats_print(char *tt, char *tf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # else
 # define rcu_tasks_classic_qs(t, preempt) do { } while (0)
 # define call_rcu_tasks call_rcu
@@ -218,10 +201,7 @@ void rcu_tasks_trace_qs_blkd(struct task_struct *t);
 			rcu_tasks_trace_qs_blkd(t);				\
 		}								\
 	} while (0)
-<<<<<<< HEAD
-=======
 void rcu_tasks_trace_torture_stats_print(char *tt, char *tf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # else
 # define rcu_tasks_trace_qs(t) do { } while (0)
 # endif
@@ -233,13 +213,8 @@ do {									\
 } while (0)
 
 # ifdef CONFIG_TASKS_RUDE_RCU
-<<<<<<< HEAD
-void call_rcu_tasks_rude(struct rcu_head *head, rcu_callback_t func);
-void synchronize_rcu_tasks_rude(void);
-=======
 void synchronize_rcu_tasks_rude(void);
 void rcu_tasks_rude_torture_stats_print(char *tt, char *tf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # endif
 
 #define rcu_note_voluntary_context_switch(t) rcu_tasks_qs(t, false)

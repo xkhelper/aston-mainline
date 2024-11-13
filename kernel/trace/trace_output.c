@@ -990,16 +990,11 @@ enum print_line_t trace_nop_print(struct trace_iterator *iter, int flags,
 }
 
 static void print_fn_trace(struct trace_seq *s, unsigned long ip,
-<<<<<<< HEAD
-			   unsigned long parent_ip, int flags)
-{
-=======
 			   unsigned long parent_ip, long delta, int flags)
 {
 	ip += delta;
 	parent_ip += delta;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	seq_print_ip_sym(s, ip, flags);
 
 	if ((flags & TRACE_ITER_PRINT_PARENT) && parent_ip) {
@@ -1017,11 +1012,7 @@ static enum print_line_t trace_fn_trace(struct trace_iterator *iter, int flags,
 
 	trace_assign_type(field, iter->ent);
 
-<<<<<<< HEAD
-	print_fn_trace(s, field->ip, field->parent_ip, flags);
-=======
 	print_fn_trace(s, field->ip, field->parent_ip, iter->tr->text_delta, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_seq_putc(s, '\n');
 
 	return trace_handle_return(s);
@@ -1242,10 +1233,7 @@ static enum print_line_t trace_stack_print(struct trace_iterator *iter,
 	struct trace_seq *s = &iter->seq;
 	unsigned long *p;
 	unsigned long *end;
-<<<<<<< HEAD
-=======
 	long delta = iter->tr->text_delta;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_assign_type(field, iter->ent);
 	end = (unsigned long *)((long)iter->ent + iter->ent_size);
@@ -1258,11 +1246,7 @@ static enum print_line_t trace_stack_print(struct trace_iterator *iter,
 			break;
 
 		trace_seq_puts(s, " => ");
-<<<<<<< HEAD
-		seq_print_ip_sym(s, *p, flags);
-=======
 		seq_print_ip_sym(s, (*p) + delta, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		trace_seq_putc(s, '\n');
 	}
 
@@ -1607,12 +1591,6 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
 {
 	struct print_entry *field;
 	struct trace_seq *s = &iter->seq;
-<<<<<<< HEAD
-
-	trace_assign_type(field, iter->ent);
-
-	seq_print_ip_sym(s, field->ip, flags);
-=======
 	unsigned long ip;
 
 	trace_assign_type(field, iter->ent);
@@ -1620,7 +1598,6 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
 	ip = field->ip + iter->tr->text_delta;
 
 	seq_print_ip_sym(s, ip, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_seq_printf(s, ": %s", field->buf);
 
 	return trace_handle_return(s);
@@ -1704,11 +1681,7 @@ trace_func_repeats_print(struct trace_iterator *iter, int flags,
 
 	trace_assign_type(field, iter->ent);
 
-<<<<<<< HEAD
-	print_fn_trace(s, field->ip, field->parent_ip, flags);
-=======
 	print_fn_trace(s, field->ip, field->parent_ip, iter->tr->text_delta, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_seq_printf(s, " (repeats: %u, last_ts:", field->count);
 	trace_print_time(s, iter,
 			 iter->ts - FUNC_REPEATS_GET_DELTA_TS(field));

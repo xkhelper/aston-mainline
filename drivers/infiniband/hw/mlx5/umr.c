@@ -224,12 +224,9 @@ int mlx5r_umr_init(struct mlx5_ib_dev *dev)
 
 void mlx5r_umr_cleanup(struct mlx5_ib_dev *dev)
 {
-<<<<<<< HEAD
-=======
 	if (!dev->umrc.pd)
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_destroy(&dev->umrc.init_lock);
 	ib_dealloc_pd(dev->umrc.pd);
 }
@@ -638,53 +635,14 @@ static void mlx5r_umr_final_update_xlt(struct mlx5_ib_dev *dev,
 	wqe->data_seg.byte_count = cpu_to_be32(sg->length);
 }
 
-<<<<<<< HEAD
-/*
- * Send the DMA list to the HW for a normal MR using UMR.
- * Dmabuf MR is handled in a similar way, except that the MLX5_IB_UPD_XLT_ZAP
- * flag may be used.
- */
-int mlx5r_umr_update_mr_pas(struct mlx5_ib_mr *mr, unsigned int flags)
-{
-=======
 static int
 _mlx5r_umr_update_mr_pas(struct mlx5_ib_mr *mr, unsigned int flags, bool dd)
 {
 	size_t ent_size = dd ? sizeof(struct mlx5_ksm) : sizeof(struct mlx5_mtt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mlx5_ib_dev *dev = mr_to_mdev(mr);
 	struct device *ddev = &dev->mdev->pdev->dev;
 	struct mlx5r_umr_wqe wqe = {};
 	struct ib_block_iter biter;
-<<<<<<< HEAD
-	struct mlx5_mtt *cur_mtt;
-	size_t orig_sg_length;
-	struct mlx5_mtt *mtt;
-	size_t final_size;
-	struct ib_sge sg;
-	u64 offset = 0;
-	int err = 0;
-
-	if (WARN_ON(mr->umem->is_odp))
-		return -EINVAL;
-
-	mtt = mlx5r_umr_create_xlt(
-		dev, &sg, ib_umem_num_dma_blocks(mr->umem, 1 << mr->page_shift),
-		sizeof(*mtt), flags);
-	if (!mtt)
-		return -ENOMEM;
-
-	orig_sg_length = sg.length;
-
-	mlx5r_umr_set_update_xlt_ctrl_seg(&wqe.ctrl_seg, flags, &sg);
-	mlx5r_umr_set_update_xlt_mkey_seg(dev, &wqe.mkey_seg, mr,
-					  mr->page_shift);
-	mlx5r_umr_set_update_xlt_data_seg(&wqe.data_seg, &sg);
-
-	cur_mtt = mtt;
-	rdma_umem_for_each_dma_block(mr->umem, &biter, BIT(mr->page_shift)) {
-		if (cur_mtt == (void *)mtt + sg.length) {
-=======
 	struct mlx5_ksm *cur_ksm;
 	struct mlx5_mtt *cur_mtt;
 	size_t orig_sg_length;
@@ -718,7 +676,6 @@ _mlx5r_umr_update_mr_pas(struct mlx5_ib_mr *mr, unsigned int flags, bool dd)
 	curr_entry = entry;
 	rdma_umem_for_each_dma_block(mr->umem, &biter, BIT(mr->page_shift)) {
 		if (curr_entry == entry + sg.length) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dma_sync_single_for_device(ddev, sg.addr, sg.length,
 						   DMA_TO_DEVICE);
 
@@ -730,25 +687,6 @@ _mlx5r_umr_update_mr_pas(struct mlx5_ib_mr *mr, unsigned int flags, bool dd)
 						DMA_TO_DEVICE);
 			offset += sg.length;
 			mlx5r_umr_update_offset(&wqe.ctrl_seg, offset);
-<<<<<<< HEAD
-
-			cur_mtt = mtt;
-		}
-
-		cur_mtt->ptag =
-			cpu_to_be64(rdma_block_iter_dma_address(&biter) |
-				    MLX5_IB_MTT_PRESENT);
-
-		if (mr->umem->is_dmabuf && (flags & MLX5_IB_UPD_XLT_ZAP))
-			cur_mtt->ptag = 0;
-
-		cur_mtt++;
-	}
-
-	final_size = (void *)cur_mtt - (void *)mtt;
-	sg.length = ALIGN(final_size, MLX5_UMR_FLEX_ALIGNMENT);
-	memset(cur_mtt, 0, sg.length - final_size);
-=======
 			if (dd)
 				cur_ksm = entry;
 			else
@@ -774,7 +712,6 @@ _mlx5r_umr_update_mr_pas(struct mlx5_ib_mr *mr, unsigned int flags, bool dd)
 	final_size = curr_entry - entry;
 	sg.length = ALIGN(final_size, MLX5_UMR_FLEX_ALIGNMENT);
 	memset(curr_entry, 0, sg.length - final_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5r_umr_final_update_xlt(dev, &wqe, mr, &sg, flags);
 
 	dma_sync_single_for_device(ddev, sg.addr, sg.length, DMA_TO_DEVICE);
@@ -782,12 +719,6 @@ _mlx5r_umr_update_mr_pas(struct mlx5_ib_mr *mr, unsigned int flags, bool dd)
 
 err:
 	sg.length = orig_sg_length;
-<<<<<<< HEAD
-	mlx5r_umr_unmap_free_xlt(dev, mtt, &sg);
-	return err;
-}
-
-=======
 	mlx5r_umr_unmap_free_xlt(dev, entry, &sg);
 	return err;
 }
@@ -814,7 +745,6 @@ int mlx5r_umr_update_mr_pas(struct mlx5_ib_mr *mr, unsigned int flags)
 	return _mlx5r_umr_update_mr_pas(mr, flags, false);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool umr_can_use_indirect_mkey(struct mlx5_ib_dev *dev)
 {
 	return !MLX5_CAP_GEN(dev->mdev, umr_indirect_mkey_disabled);

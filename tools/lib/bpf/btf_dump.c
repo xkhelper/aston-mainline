@@ -304,11 +304,7 @@ int btf_dump__dump_type(struct btf_dump *d, __u32 id)
  * definition, in which case they have to be declared inline as part of field
  * type declaration; or as a top-level anonymous enum, typically used for
  * declaring global constants. It's impossible to distinguish between two
-<<<<<<< HEAD
- * without knowning whether given enum type was referenced from other type:
-=======
  * without knowing whether given enum type was referenced from other type:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * top-level anonymous enum won't be referenced by anything, while embedded
  * one will.
  */

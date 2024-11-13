@@ -501,13 +501,6 @@ int amdgpu_mes_remove_gang(struct amdgpu_device *adev, int gang_id)
 
 int amdgpu_mes_suspend(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
-	struct idr *idp;
-	struct amdgpu_mes_process *process;
-	struct amdgpu_mes_gang *gang;
-	struct mes_suspend_gang_input input;
-	int r, pasid;
-=======
 	struct mes_suspend_gang_input input;
 	int r;
 
@@ -516,47 +509,22 @@ int amdgpu_mes_suspend(struct amdgpu_device *adev)
 
 	memset(&input, 0x0, sizeof(struct mes_suspend_gang_input));
 	input.suspend_all_gangs = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Avoid taking any other locks under MES lock to avoid circular
 	 * lock dependencies.
 	 */
 	amdgpu_mes_lock(&adev->mes);
-<<<<<<< HEAD
-
-	idp = &adev->mes.pasid_idr;
-
-	idr_for_each_entry(idp, process, pasid) {
-		list_for_each_entry(gang, &process->gang_list, list) {
-			r = adev->mes.funcs->suspend_gang(&adev->mes, &input);
-			if (r)
-				DRM_ERROR("failed to suspend pasid %d gangid %d",
-					 pasid, gang->gang_id);
-		}
-	}
-
-	amdgpu_mes_unlock(&adev->mes);
-	return 0;
-=======
 	r = adev->mes.funcs->suspend_gang(&adev->mes, &input);
 	amdgpu_mes_unlock(&adev->mes);
 	if (r)
 		DRM_ERROR("failed to suspend all gangs");
 
 	return r;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int amdgpu_mes_resume(struct amdgpu_device *adev)
 {
-<<<<<<< HEAD
-	struct idr *idp;
-	struct amdgpu_mes_process *process;
-	struct amdgpu_mes_gang *gang;
-	struct mes_resume_gang_input input;
-	int r, pasid;
-=======
 	struct mes_resume_gang_input input;
 	int r;
 
@@ -565,36 +533,18 @@ int amdgpu_mes_resume(struct amdgpu_device *adev)
 
 	memset(&input, 0x0, sizeof(struct mes_resume_gang_input));
 	input.resume_all_gangs = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Avoid taking any other locks under MES lock to avoid circular
 	 * lock dependencies.
 	 */
 	amdgpu_mes_lock(&adev->mes);
-<<<<<<< HEAD
-
-	idp = &adev->mes.pasid_idr;
-
-	idr_for_each_entry(idp, process, pasid) {
-		list_for_each_entry(gang, &process->gang_list, list) {
-			r = adev->mes.funcs->resume_gang(&adev->mes, &input);
-			if (r)
-				DRM_ERROR("failed to resume pasid %d gangid %d",
-					 pasid, gang->gang_id);
-		}
-	}
-
-	amdgpu_mes_unlock(&adev->mes);
-	return 0;
-=======
 	r = adev->mes.funcs->resume_gang(&adev->mes, &input);
 	amdgpu_mes_unlock(&adev->mes);
 	if (r)
 		DRM_ERROR("failed to resume all gangs");
 
 	return r;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int amdgpu_mes_queue_alloc_mqd(struct amdgpu_device *adev,
@@ -833,8 +783,6 @@ int amdgpu_mes_remove_hw_queue(struct amdgpu_device *adev, int queue_id)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 int amdgpu_mes_reset_hw_queue(struct amdgpu_device *adev, int queue_id)
 {
 	unsigned long flags;
@@ -897,7 +845,6 @@ int amdgpu_mes_reset_hw_queue_mmio(struct amdgpu_device *adev, int queue_type,
 	return r;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int amdgpu_mes_map_legacy_queue(struct amdgpu_device *adev,
 				struct amdgpu_ring *ring)
 {
@@ -943,8 +890,6 @@ int amdgpu_mes_unmap_legacy_queue(struct amdgpu_device *adev,
 	return r;
 }
 
-<<<<<<< HEAD
-=======
 int amdgpu_mes_reset_legacy_queue(struct amdgpu_device *adev,
 				  struct amdgpu_ring *ring,
 				  unsigned int vmid,
@@ -972,7 +917,6 @@ int amdgpu_mes_reset_legacy_queue(struct amdgpu_device *adev,
 	return r;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 uint32_t amdgpu_mes_rreg(struct amdgpu_device *adev, uint32_t reg)
 {
 	struct mes_misc_op_input op_input;
@@ -1259,15 +1203,10 @@ int amdgpu_mes_add_ring(struct amdgpu_device *adev, int gang_id,
 
 	r = amdgpu_ring_init(adev, ring, 1024, NULL, 0,
 			     AMDGPU_RING_PRIO_DEFAULT, NULL);
-<<<<<<< HEAD
-	if (r)
-		goto clean_up_memory;
-=======
 	if (r) {
 		amdgpu_mes_unlock(&adev->mes);
 		goto clean_up_memory;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	amdgpu_mes_ring_to_queue_props(adev, ring, &qprops);
 
@@ -1300,10 +1239,6 @@ clean_up_ring:
 	amdgpu_ring_fini(ring);
 clean_up_memory:
 	kfree(ring);
-<<<<<<< HEAD
-	amdgpu_mes_unlock(&adev->mes);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return r;
 }
 
@@ -1678,11 +1613,7 @@ int amdgpu_mes_init_microcode(struct amdgpu_device *adev, int pipe)
 			 pipe == AMDGPU_MES_SCHED_PIPE ? "" : "1");
 	}
 
-<<<<<<< HEAD
-	r = amdgpu_ucode_request(adev, &adev->mes.fw[pipe], fw_name);
-=======
 	r = amdgpu_ucode_request(adev, &adev->mes.fw[pipe], "%s", fw_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r && need_retry && pipe == AMDGPU_MES_SCHED_PIPE) {
 		dev_info(adev->dev, "try to fall back to %s_mes.bin\n", ucode_prefix);
 		r = amdgpu_ucode_request(adev, &adev->mes.fw[pipe],
@@ -1733,8 +1664,6 @@ out:
 	return r;
 }
 
-<<<<<<< HEAD
-=======
 bool amdgpu_mes_suspend_resume_all_supported(struct amdgpu_device *adev)
 {
 	uint32_t mes_rev = adev->mes.sched_version & AMDGPU_MES_VERSION_MASK;
@@ -1748,7 +1677,6 @@ bool amdgpu_mes_suspend_resume_all_supported(struct amdgpu_device *adev)
 	return is_supported;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if defined(CONFIG_DEBUG_FS)
 
 static int amdgpu_debugfs_mes_event_log_show(struct seq_file *m, void *unused)

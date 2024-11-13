@@ -1,23 +1,5 @@
 .. SPDX-License-Identifier: GPL-2.0
 
-<<<<<<< HEAD
-.. _v4l2-meta-fmt-rk-isp1-params:
-
-.. _v4l2-meta-fmt-rk-isp1-stat-3a:
-
-*****************************************************************************
-V4L2_META_FMT_RK_ISP1_PARAMS ('rk1p'), V4L2_META_FMT_RK_ISP1_STAT_3A ('rk1s')
-*****************************************************************************
-
-Configuration parameters
-========================
-
-The configuration parameters are passed to the
-:ref:`rkisp1_params <rkisp1_params>` metadata output video node, using
-the :c:type:`v4l2_meta_format` interface. The buffer contains
-a single instance of the C structure :c:type:`rkisp1_params_cfg` defined in
-``rkisp1-config.h``. So the structure can be obtained from the buffer by:
-=======
 .. _v4l2-meta-fmt-rk-isp1-stat-3a:
 
 ************************************************************************************************************************
@@ -48,16 +30,11 @@ the `V4L2_META_FMT_RK_ISP1_PARAMS` meta format.
 The buffer contains a single instance of the C structure
 :c:type:`rkisp1_params_cfg` defined in ``rkisp1-config.h``. So the structure can
 be obtained from the buffer by:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 .. code-block:: c
 
 	struct rkisp1_params_cfg *params = (struct rkisp1_params_cfg*) buffer;
 
-<<<<<<< HEAD
-.. rkisp1_stat_buffer
-
-=======
 This method supports a subset of the ISP features only, new applications should
 use the extensible parameters method.
 
@@ -85,7 +62,6 @@ parameters` format alternative.
 .. rkisp1_stat_buffer
 
 ===========================
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 3A and histogram statistics
 ===========================
 

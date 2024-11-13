@@ -153,8 +153,6 @@
 			dr_mode = "otg";
 		};
 	};
-<<<<<<< HEAD
-=======
 
 	main_r5fss0: r5fss@78400000 {
 		compatible = "ti,am62-r5fss";
@@ -216,7 +214,6 @@
 
 &wkup_r5fss0_core0 {
 	firmware-name = "j722s-wkup-r5f0_0-fw";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &main_conf {
@@ -278,9 +275,6 @@
 &main_gpio1 {
 	gpio-ranges = <&main_pmx0 7 101 25>, <&main_pmx0 42 137 5>,
 			<&main_pmx0 47 143 3>, <&main_pmx0 50 149 2>;
-<<<<<<< HEAD
-=======
 	gpio-reserved-ranges = <0 7>, <32 10>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ti,ngpio = <73>;
 };

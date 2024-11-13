@@ -495,8 +495,6 @@ u64 xe_gt_sriov_vf_lmem(struct xe_gt *gt)
 	return gt->sriov.vf.self_config.lmem_size;
 }
 
-<<<<<<< HEAD
-=======
 static struct xe_ggtt_node *
 vf_balloon_ggtt_node(struct xe_ggtt *ggtt, u64 start, u64 end)
 {
@@ -516,7 +514,6 @@ vf_balloon_ggtt_node(struct xe_ggtt *ggtt, u64 start, u64 end)
 	return node;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int vf_balloon_ggtt(struct xe_gt *gt)
 {
 	struct xe_gt_sriov_vf_selfconfig *config = &gt->sriov.vf.self_config;
@@ -524,10 +521,6 @@ static int vf_balloon_ggtt(struct xe_gt *gt)
 	struct xe_ggtt *ggtt = tile->mem.ggtt;
 	struct xe_device *xe = gt_to_xe(gt);
 	u64 start, end;
-<<<<<<< HEAD
-	int err;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xe_gt_assert(gt, IS_SRIOV_VF(xe));
 	xe_gt_assert(gt, !xe_gt_is_media_type(gt));
@@ -553,33 +546,14 @@ static int vf_balloon_ggtt(struct xe_gt *gt)
 	start = xe_wopcm_size(xe);
 	end = config->ggtt_base;
 	if (end != start) {
-<<<<<<< HEAD
-		err = xe_ggtt_balloon(ggtt, start, end, &tile->sriov.vf.ggtt_balloon[0]);
-		if (err)
-			goto failed;
-=======
 		tile->sriov.vf.ggtt_balloon[0] = vf_balloon_ggtt_node(ggtt, start, end);
 		if (IS_ERR(tile->sriov.vf.ggtt_balloon[0]))
 			return PTR_ERR(tile->sriov.vf.ggtt_balloon[0]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	start = config->ggtt_base + config->ggtt_size;
 	end = GUC_GGTT_TOP;
 	if (end != start) {
-<<<<<<< HEAD
-		err = xe_ggtt_balloon(ggtt, start, end, &tile->sriov.vf.ggtt_balloon[1]);
-		if (err)
-			goto deballoon;
-	}
-
-	return 0;
-
-deballoon:
-	xe_ggtt_deballoon(ggtt, &tile->sriov.vf.ggtt_balloon[0]);
-failed:
-	return err;
-=======
 		tile->sriov.vf.ggtt_balloon[1] = vf_balloon_ggtt_node(ggtt, start, end);
 		if (IS_ERR(tile->sriov.vf.ggtt_balloon[1])) {
 			xe_ggtt_node_remove_balloon(tile->sriov.vf.ggtt_balloon[0]);
@@ -588,24 +562,15 @@ failed:
 	}
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void deballoon_ggtt(struct drm_device *drm, void *arg)
 {
 	struct xe_tile *tile = arg;
-<<<<<<< HEAD
-	struct xe_ggtt *ggtt = tile->mem.ggtt;
-
-	xe_tile_assert(tile, IS_SRIOV_VF(tile_to_xe(tile)));
-	xe_ggtt_deballoon(ggtt, &tile->sriov.vf.ggtt_balloon[1]);
-	xe_ggtt_deballoon(ggtt, &tile->sriov.vf.ggtt_balloon[0]);
-=======
 
 	xe_tile_assert(tile, IS_SRIOV_VF(tile_to_xe(tile)));
 	xe_ggtt_node_remove_balloon(tile->sriov.vf.ggtt_balloon[1]);
 	xe_ggtt_node_remove_balloon(tile->sriov.vf.ggtt_balloon[0]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -942,8 +907,6 @@ u32 xe_gt_sriov_vf_read32(struct xe_gt *gt, struct xe_reg reg)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * xe_gt_sriov_vf_write32 - Handle a write to an inaccessible register.
  * @gt: the &xe_gt
  * @reg: the register to write
@@ -970,7 +933,6 @@ void xe_gt_sriov_vf_write32(struct xe_gt *gt, struct xe_reg reg, u32 val)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * xe_gt_sriov_vf_print_config - Print VF self config.
  * @gt: the &xe_gt
  * @p: the &drm_printer

@@ -9,11 +9,8 @@ menu "Digital to analog converters"
 config AD3552R
 	tristate "Analog Devices AD3552R DAC driver"
 	depends on SPI_MASTER
-<<<<<<< HEAD
-=======
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Say yes here to build support for Analog Devices AD3552R
 	  Digital to Analog Converter.
@@ -257,11 +254,8 @@ config AD5764
 config AD5766
 	tristate "Analog Devices AD5766/AD5767 DAC driver"
 	depends on SPI_MASTER
-<<<<<<< HEAD
-=======
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Say yes here to build support for Analog Devices AD5766, AD5767
 	  Digital to Analog Converter.
@@ -272,10 +266,7 @@ config AD5766
 config AD5770R
 	tristate "Analog Devices AD5770R IDAC driver"
 	depends on SPI_MASTER
-<<<<<<< HEAD
-=======
 	select REGMAP_SPI
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Say yes here to build support for Analog Devices AD5770R Digital to
 	  Analog Converter.
@@ -367,10 +358,7 @@ config LPC18XX_DAC
 config LTC1660
 	tristate "Linear Technology LTC1660/LTC1665 DAC SPI driver"
 	depends on SPI
-<<<<<<< HEAD
-=======
 	select REGMAP_SPI
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Say yes here to build support for Linear Technology
 	  LTC1660 and LTC1665 Digital to Analog Converters.
@@ -389,8 +377,6 @@ config LTC2632
 	  To compile this driver as a module, choose M here: the
 	  module will be called ltc2632.
 
-<<<<<<< HEAD
-=======
 config LTC2664
 	tristate "Analog Devices LTC2664 and LTC2672 DAC SPI driver"
 	depends on SPI
@@ -402,7 +388,6 @@ config LTC2664
 	  To compile this driver as a module, choose M here: the
 	  module will be called ltc2664.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config M62332
 	tristate "Mitsubishi M62332 DAC driver"
 	depends on I2C
@@ -504,10 +489,7 @@ config STM32_DAC
 
 config STM32_DAC_CORE
 	tristate
-<<<<<<< HEAD
-=======
 	select REGMAP_MMIO
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config TI_DAC082S085
 	tristate "Texas Instruments 8/10/12-bit 2/4-channel DAC driver"

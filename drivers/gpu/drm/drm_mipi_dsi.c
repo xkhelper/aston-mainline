@@ -603,11 +603,8 @@ EXPORT_SYMBOL(mipi_dsi_shutdown_peripheral);
  * mipi_dsi_turn_on_peripheral() - sends a Turn On Peripheral command
  * @dsi: DSI peripheral device
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_turn_on_peripheral_multi() instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_turn_on_peripheral(struct mipi_dsi_device *dsi)
@@ -657,10 +654,7 @@ EXPORT_SYMBOL(mipi_dsi_set_maximum_return_packet_size);
  * @pps_selector: Select PPS from the table of pre-stored or uploaded PPS entries
  *
  * Enable or disable Display Stream Compression on the peripheral.
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_compression_mode_ext_multi() instead.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return: 0 on success or a negative error code on failure.
  */
@@ -712,10 +706,7 @@ EXPORT_SYMBOL(mipi_dsi_compression_mode);
  * @pps: VESA DSC 1.1 Picture Parameter Set
  *
  * Transmit the VESA DSC 1.1 Picture Parameter Set to the peripheral.
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_picture_parameter_set_multi() instead.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return: 0 on success or a negative error code on failure.
  */
@@ -1050,11 +1041,8 @@ EXPORT_SYMBOL(mipi_dsi_dcs_read);
  * mipi_dsi_dcs_nop() - send DCS nop packet
  * @dsi: DSI peripheral device
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_nop_multi() instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_nop(struct mipi_dsi_device *dsi)
@@ -1073,11 +1061,8 @@ EXPORT_SYMBOL(mipi_dsi_dcs_nop);
  * mipi_dsi_dcs_soft_reset() - perform a software reset of the display module
  * @dsi: DSI peripheral device
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_soft_reset_multi() instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_soft_reset(struct mipi_dsi_device *dsi)
@@ -1147,11 +1132,8 @@ EXPORT_SYMBOL(mipi_dsi_dcs_get_pixel_format);
  *    display module except interface communication
  * @dsi: DSI peripheral device
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_enter_sleep_mode_multi() instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_enter_sleep_mode(struct mipi_dsi_device *dsi)
@@ -1171,11 +1153,8 @@ EXPORT_SYMBOL(mipi_dsi_dcs_enter_sleep_mode);
  *    module
  * @dsi: DSI peripheral device
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_exit_sleep_mode_multi() instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_exit_sleep_mode(struct mipi_dsi_device *dsi)
@@ -1195,11 +1174,8 @@ EXPORT_SYMBOL(mipi_dsi_dcs_exit_sleep_mode);
  *    display device
  * @dsi: DSI peripheral device
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_set_display_off_multi() instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_set_display_off(struct mipi_dsi_device *dsi)
@@ -1219,11 +1195,8 @@ EXPORT_SYMBOL(mipi_dsi_dcs_set_display_off);
  *    display device
  * @dsi: DSI peripheral device
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_set_display_on_multi() instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure
  */
 int mipi_dsi_dcs_set_display_on(struct mipi_dsi_device *dsi)
@@ -1245,12 +1218,9 @@ EXPORT_SYMBOL(mipi_dsi_dcs_set_display_on);
  * @start: first column of frame memory
  * @end: last column of frame memory
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_set_column_address_multi()
  * instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_set_column_address(struct mipi_dsi_device *dsi, u16 start,
@@ -1275,12 +1245,9 @@ EXPORT_SYMBOL(mipi_dsi_dcs_set_column_address);
  * @start: first page of frame memory
  * @end: last page of frame memory
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_set_page_address_multi()
  * instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_set_page_address(struct mipi_dsi_device *dsi, u16 start,
@@ -1323,11 +1290,8 @@ EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_off);
  * @dsi: DSI peripheral device
  * @mode: the Tearing Effect Output Line mode
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_set_tear_on_multi() instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure
  */
 int mipi_dsi_dcs_set_tear_on(struct mipi_dsi_device *dsi,
@@ -1351,12 +1315,9 @@ EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_on);
  * @dsi: DSI peripheral device
  * @format: pixel format
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_set_pixel_format_multi()
  * instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_set_pixel_format(struct mipi_dsi_device *dsi, u8 format)
@@ -1378,12 +1339,9 @@ EXPORT_SYMBOL(mipi_dsi_dcs_set_pixel_format);
  * @dsi: DSI peripheral device
  * @scanline: scanline to use as trigger
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_set_tear_scanline_multi()
  * instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure
  */
 int mipi_dsi_dcs_set_tear_scanline(struct mipi_dsi_device *dsi, u16 scanline)
@@ -1406,12 +1364,9 @@ EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_scanline);
  * @dsi: DSI peripheral device
  * @brightness: brightness value
  *
-<<<<<<< HEAD
-=======
  * This function is deprecated. Use mipi_dsi_dcs_set_display_brightness_multi()
  * instead.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return: 0 on success or a negative error code on failure.
  */
 int mipi_dsi_dcs_set_display_brightness(struct mipi_dsi_device *dsi,
@@ -1717,8 +1672,6 @@ void mipi_dsi_dcs_set_tear_on_multi(struct mipi_dsi_multi_context *ctx,
 }
 EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_on_multi);
 
-<<<<<<< HEAD
-=======
 /**
  * mipi_dsi_turn_on_peripheral_multi() - sends a Turn On Peripheral command
  * @ctx: Context for multiple DSI transactions
@@ -1911,7 +1864,6 @@ void mipi_dsi_dcs_set_tear_scanline_multi(struct mipi_dsi_multi_context *ctx,
 }
 EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_scanline_multi);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mipi_dsi_drv_probe(struct device *dev)
 {
 	struct mipi_dsi_driver *drv = to_mipi_dsi_driver(dev->driver);

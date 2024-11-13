@@ -11,7 +11,4 @@ generated-y += xen-hypercalls.h
 
 generic-y += early_ioremap.h
 generic-y += mcs_spinlock.h
-<<<<<<< HEAD
-=======
 generic-y += mmzone.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

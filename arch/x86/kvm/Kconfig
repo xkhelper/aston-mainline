@@ -17,13 +17,8 @@ menuconfig VIRTUALIZATION
 
 if VIRTUALIZATION
 
-<<<<<<< HEAD
-config KVM
-	tristate "Kernel-based Virtual Machine (KVM) support"
-=======
 config KVM_X86
 	def_tristate KVM if KVM_INTEL || KVM_AMD
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	depends on X86_LOCAL_APIC
 	select KVM_COMMON
 	select KVM_GENERIC_MMU_NOTIFIER
@@ -49,15 +44,11 @@ config KVM_X86
 	select HAVE_KVM_PM_NOTIFIER if PM
 	select KVM_GENERIC_HARDWARE_ENABLING
 	select KVM_GENERIC_PRE_FAULT_MEMORY
-<<<<<<< HEAD
-	select KVM_WERROR if WERROR
-=======
 	select KVM_GENERIC_PRIVATE_MEM if KVM_SW_PROTECTED_VM
 	select KVM_WERROR if WERROR
 
 config KVM
 	tristate "Kernel-based Virtual Machine (KVM) support"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Support hosting fully virtualized guest machines using hardware
 	  virtualization extensions.  You will need a fairly recent
@@ -90,10 +81,6 @@ config KVM_SW_PROTECTED_VM
 	bool "Enable support for KVM software-protected VMs"
 	depends on EXPERT
 	depends on KVM && X86_64
-<<<<<<< HEAD
-	select KVM_GENERIC_PRIVATE_MEM
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Enable support for KVM software-protected VMs.  Currently, software-
 	  protected VMs are purely a development and testing vehicle for

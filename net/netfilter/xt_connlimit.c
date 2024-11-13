@@ -86,10 +86,7 @@ static int connlimit_mt_check(const struct xt_mtchk_param *par)
 {
 	struct xt_connlimit_info *info = par->matchinfo;
 	unsigned int keylen;
-<<<<<<< HEAD
-=======
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	keylen = sizeof(u32);
 	if (par->family == NFPROTO_IPV6)
@@ -97,10 +94,6 @@ static int connlimit_mt_check(const struct xt_mtchk_param *par)
 	else
 		keylen += sizeof(struct in_addr);
 
-<<<<<<< HEAD
-	/* init private data */
-	info->data = nf_conncount_init(par->net, par->family, keylen);
-=======
 	ret = nf_ct_netns_get(par->net, par->family);
 	if (ret < 0) {
 		pr_info_ratelimited("cannot load conntrack support for proto=%u\n",
@@ -112,7 +105,6 @@ static int connlimit_mt_check(const struct xt_mtchk_param *par)
 	info->data = nf_conncount_init(par->net, keylen);
 	if (IS_ERR(info->data))
 		nf_ct_netns_put(par->net, par->family);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return PTR_ERR_OR_ZERO(info->data);
 }
@@ -121,21 +113,6 @@ static void connlimit_mt_destroy(const struct xt_mtdtor_param *par)
 {
 	const struct xt_connlimit_info *info = par->matchinfo;
 
-<<<<<<< HEAD
-	nf_conncount_destroy(par->net, par->family, info->data);
-}
-
-static struct xt_match connlimit_mt_reg __read_mostly = {
-	.name       = "connlimit",
-	.revision   = 1,
-	.family     = NFPROTO_UNSPEC,
-	.checkentry = connlimit_mt_check,
-	.match      = connlimit_mt,
-	.matchsize  = sizeof(struct xt_connlimit_info),
-	.usersize   = offsetof(struct xt_connlimit_info, data),
-	.destroy    = connlimit_mt_destroy,
-	.me         = THIS_MODULE,
-=======
 	nf_conncount_destroy(par->net, info->data);
 	nf_ct_netns_put(par->net, par->family);
 }
@@ -165,25 +142,16 @@ static struct xt_match connlimit_mt_reg[] __read_mostly = {
 		.me         = THIS_MODULE,
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init connlimit_mt_init(void)
 {
-<<<<<<< HEAD
-	return xt_register_match(&connlimit_mt_reg);
-=======
 	return xt_register_matches(connlimit_mt_reg, ARRAY_SIZE(connlimit_mt_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __exit connlimit_mt_exit(void)
 {
-<<<<<<< HEAD
-	xt_unregister_match(&connlimit_mt_reg);
-=======
 	xt_unregister_matches(connlimit_mt_reg, ARRAY_SIZE(connlimit_mt_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 module_init(connlimit_mt_init);

@@ -666,28 +666,16 @@ struct folio *vm_normal_folio(struct vm_area_struct *vma, unsigned long addr,
 	return NULL;
 }
 
-<<<<<<< HEAD
-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-=======
 #ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
 				pmd_t pmd)
 {
 	unsigned long pfn = pmd_pfn(pmd);
 
-<<<<<<< HEAD
-	/*
-	 * There is no pmd_special() but there may be special pmds, e.g.
-	 * in a direct-access (dax) mapping, so let's just replicate the
-	 * !CONFIG_ARCH_HAS_PTE_SPECIAL case from vm_normal_page() here.
-	 */
-=======
 	/* Currently it's only used for huge pfnmaps */
 	if (unlikely(pmd_special(pmd)))
 		return NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP))) {
 		if (vma->vm_flags & VM_MIXEDMAP) {
 			if (!pfn_valid(pfn))
@@ -938,16 +926,11 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
 	 * We have a prealloc page, all good!  Take it
 	 * over and copy the page & arm it.
 	 */
-<<<<<<< HEAD
-	*prealloc = NULL;
-	copy_user_highpage(&new_folio->page, page, addr, src_vma);
-=======
 
 	if (copy_mc_user_highpage(&new_folio->page, page, addr, src_vma))
 		return -EHWPOISON;
 
 	*prealloc = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__folio_mark_uptodate(new_folio);
 	folio_add_new_anon_rmap(new_folio, dst_vma, addr, RMAP_EXCLUSIVE);
 	folio_add_lru_vma(new_folio, dst_vma);
@@ -1186,14 +1169,9 @@ again:
 		/*
 		 * If we need a pre-allocated page for this pte, drop the
 		 * locks, allocate, and try again.
-<<<<<<< HEAD
-		 */
-		if (unlikely(ret == -EAGAIN))
-=======
 		 * If copy failed due to hwpoison in source page, break out.
 		 */
 		if (unlikely(ret == -EAGAIN || ret == -EHWPOISON))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		if (unlikely(prealloc)) {
 			/*
@@ -1223,11 +1201,7 @@ again:
 			goto out;
 		}
 		entry.val = 0;
-<<<<<<< HEAD
-	} else if (ret == -EBUSY) {
-=======
 	} else if (ret == -EBUSY || unlikely(ret == -EHWPOISON)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	} else if (ret ==  -EAGAIN) {
 		prealloc = folio_prealloc(src_mm, src_vma, addr, false);
@@ -3305,11 +3279,7 @@ static inline vm_fault_t vmf_can_call_fault(const struct vm_fault *vmf)
 }
 
 /**
-<<<<<<< HEAD
- * vmf_anon_prepare - Prepare to handle an anonymous fault.
-=======
  * __vmf_anon_prepare - Prepare to handle an anonymous fault.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @vmf: The vm_fault descriptor passed from the fault handler.
  *
  * When preparing to insert an anonymous page into a VMA from a
@@ -3323,11 +3293,7 @@ static inline vm_fault_t vmf_can_call_fault(const struct vm_fault *vmf)
  * Return: 0 if fault handling can proceed.  Any other value should be
  * returned to the caller.
  */
-<<<<<<< HEAD
-vm_fault_t vmf_anon_prepare(struct vm_fault *vmf)
-=======
 vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct vm_area_struct *vma = vmf->vma;
 	vm_fault_t ret = 0;
@@ -3335,15 +3301,8 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
 	if (likely(vma->anon_vma))
 		return 0;
 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
-<<<<<<< HEAD
-		if (!mmap_read_trylock(vma->vm_mm)) {
-			vma_end_read(vma);
-			return VM_FAULT_RETRY;
-		}
-=======
 		if (!mmap_read_trylock(vma->vm_mm))
 			return VM_FAULT_RETRY;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (__anon_vma_prepare(vma))
 		ret = VM_FAULT_OOM;
@@ -4045,8 +4004,6 @@ static vm_fault_t handle_pte_marker(struct vm_fault *vmf)
 	return VM_FAULT_SIGBUS;
 }
 
-<<<<<<< HEAD
-=======
 static struct folio *__alloc_swap_folio(struct vm_fault *vmf)
 {
 	struct vm_area_struct *vma = vmf->vma;
@@ -4232,7 +4189,6 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
 
 static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * We enter with non-exclusive mmap_lock (to exclude vma changes,
  * but allow concurrent faults), and pte mapped but not yet locked.
@@ -4245,10 +4201,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct folio *swapcache, *folio = NULL;
-<<<<<<< HEAD
-=======
 	DECLARE_WAITQUEUE(wait, current);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct page *page;
 	struct swap_info_struct *si = NULL;
 	rmap_t rmap_flags = RMAP_NONE;
@@ -4325,42 +4278,12 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 	if (!folio) {
 		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
 		    __swap_count(entry) == 1) {
-<<<<<<< HEAD
-			/*
-			 * Prevent parallel swapin from proceeding with
-			 * the cache flag. Otherwise, another thread may
-			 * finish swapin first, free the entry, and swapout
-			 * reusing the same entry. It's undetectable as
-			 * pte_same() returns true due to entry reuse.
-			 */
-			if (swapcache_prepare(entry)) {
-				/* Relax a bit to prevent rapid repeated page faults */
-				schedule_timeout_uninterruptible(1);
-				goto out;
-			}
-			need_clear_cache = true;
-
-			/* skip swapcache */
-			folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0,
-						vma, vmf->address, false);
-			page = &folio->page;
-=======
 			/* skip swapcache */
 			folio = alloc_swap_folio(vmf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (folio) {
 				__folio_set_locked(folio);
 				__folio_set_swapbacked(folio);
 
-<<<<<<< HEAD
-				if (mem_cgroup_swapin_charge_folio(folio,
-							vma->vm_mm, GFP_KERNEL,
-							entry)) {
-					ret = VM_FAULT_OOM;
-					goto out_page;
-				}
-				mem_cgroup_swapin_uncharge_swap(entry);
-=======
 				nr_pages = folio_nr_pages(folio);
 				if (folio_test_large(folio))
 					entry.val = ALIGN_DOWN(entry.val, nr_pages);
@@ -4385,7 +4308,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 				need_clear_cache = true;
 
 				mem_cgroup_swapin_uncharge_swap(entry, nr_pages);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				shadow = get_shadow_from_swap_cache(entry);
 				if (shadow)
@@ -4399,15 +4321,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 				folio->private = NULL;
 			}
 		} else {
-<<<<<<< HEAD
-			page = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE,
-						vmf);
-			if (page)
-				folio = page_folio(page);
-=======
 			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE,
 						vmf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			swapcache = folio;
 		}
 
@@ -4428,10 +4343,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 		ret = VM_FAULT_MAJOR;
 		count_vm_event(PGMAJFAULT);
 		count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
-<<<<<<< HEAD
-=======
 		page = folio_file_page(folio, swp_offset(entry));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (PageHWPoison(page)) {
 		/*
 		 * hwpoisoned dirty swapcache pages are kept for killing
@@ -4501,8 +4413,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 		goto out_nomap;
 	}
 
-<<<<<<< HEAD
-=======
 	/* allocated large folios for SWP_SYNCHRONOUS_IO */
 	if (folio_test_large(folio) && !folio_test_swapcache(folio)) {
 		unsigned long nr = folio_nr_pages(folio);
@@ -4521,7 +4431,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 		goto check_folio;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nr_pages = 1;
 	page_idx = 0;
 	address = vmf->address;
@@ -4653,20 +4562,12 @@ check_folio:
 		folio_add_lru_vma(folio, vma);
 	} else if (!folio_test_anon(folio)) {
 		/*
-<<<<<<< HEAD
-		 * We currently only expect small !anon folios, which are either
-		 * fully exclusive or fully shared. If we ever get large folios
-		 * here, we have to be careful.
-		 */
-		VM_WARN_ON_ONCE(folio_test_large(folio));
-=======
 		 * We currently only expect small !anon folios which are either
 		 * fully exclusive or fully shared, or new allocated large
 		 * folios which are fully exclusive. If we ever get large
 		 * folios within swapcache here, we have to be careful.
 		 */
 		VM_WARN_ON_ONCE(folio_test_large(folio) && folio_test_swapcache(folio));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
 		folio_add_new_anon_rmap(folio, vma, address, rmap_flags);
 	} else {
@@ -4708,16 +4609,11 @@ unlock:
 		pte_unmap_unlock(vmf->pte, vmf->ptl);
 out:
 	/* Clear the swap cache pin for direct swapin after PTL unlock */
-<<<<<<< HEAD
-	if (need_clear_cache)
-		swapcache_clear(si, entry);
-=======
 	if (need_clear_cache) {
 		swapcache_clear(si, entry, nr_pages);
 		if (waitqueue_active(&swapcache_wq))
 			wake_up(&swapcache_wq);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (si)
 		put_swap_device(si);
 	return ret;
@@ -4732,16 +4628,11 @@ out_release:
 		folio_unlock(swapcache);
 		folio_put(swapcache);
 	}
-<<<<<<< HEAD
-	if (need_clear_cache)
-		swapcache_clear(si, entry);
-=======
 	if (need_clear_cache) {
 		swapcache_clear(si, entry, nr_pages);
 		if (waitqueue_active(&swapcache_wq))
 			wake_up(&swapcache_wq);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (si)
 		put_swap_device(si);
 	return ret;
@@ -4935,13 +4826,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
 
 	folio_ref_add(folio, nr_pages - 1);
 	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
-<<<<<<< HEAD
-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
 	count_mthp_stat(folio_order(folio), MTHP_STAT_ANON_FAULT_ALLOC);
-#endif
-=======
-	count_mthp_stat(folio_order(folio), MTHP_STAT_ANON_FAULT_ALLOC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
 	folio_add_lru_vma(folio, vma);
 setpte:
@@ -5046,8 +4931,6 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct page *page)
 	pmd_t entry;
 	vm_fault_t ret = VM_FAULT_FALLBACK;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * It is too late to allocate a small folio, we already have a large
 	 * folio in the pagecache: especially s390 KVM cannot tolerate any
@@ -5057,7 +4940,6 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct page *page)
 	if (thp_disabled_by_hw() || vma_thp_disabled(vma, vma->vm_flags))
 		return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
 		return ret;
 
@@ -5448,12 +5330,6 @@ static vm_fault_t do_cow_fault(struct vm_fault *vmf)
 	if (ret & VM_FAULT_DONE_COW)
 		return ret;
 
-<<<<<<< HEAD
-	copy_user_highpage(vmf->cow_page, vmf->page, vmf->address, vma);
-	__folio_mark_uptodate(folio);
-
-	ret |= finish_fault(vmf);
-=======
 	if (copy_mc_user_highpage(vmf->cow_page, vmf->page, vmf->address, vma)) {
 		ret = VM_FAULT_HWPOISON;
 		goto unlock;
@@ -5462,7 +5338,6 @@ static vm_fault_t do_cow_fault(struct vm_fault *vmf)
 
 	ret |= finish_fault(vmf);
 unlock:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unlock_page(vmf->page);
 	put_page(vmf->page);
 	if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY)))
@@ -5567,13 +5442,6 @@ static vm_fault_t do_fault(struct vm_fault *vmf)
 	return ret;
 }
 
-<<<<<<< HEAD
-int numa_migrate_prep(struct folio *folio, struct vm_fault *vmf,
-		      unsigned long addr, int page_nid, int *flags)
-{
-	struct vm_area_struct *vma = vmf->vma;
-
-=======
 int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
 		      unsigned long addr, int *flags,
 		      bool writable, int *last_cpupid)
@@ -5606,19 +5474,14 @@ int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
 	else
 		*last_cpupid = folio_last_cpupid(folio);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Record the current PID acceesing VMA */
 	vma_set_access_pid_bit(vma);
 
 	count_vm_numa_event(NUMA_HINT_FAULTS);
-<<<<<<< HEAD
-	if (page_nid == numa_node_id()) {
-=======
 #ifdef CONFIG_NUMA_BALANCING
 	count_memcg_folio_events(folio, NUMA_HINT_FAULTS, 1);
 #endif
 	if (folio_nid(folio) == numa_node_id()) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count_vm_numa_event(NUMA_HINT_FAULTS_LOCAL);
 		*flags |= TNF_FAULT_LOCAL;
 	}
@@ -5720,44 +5583,11 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
 	if (!folio || folio_is_zone_device(folio))
 		goto out_map;
 
-<<<<<<< HEAD
-	/*
-	 * Avoid grouping on RO pages in general. RO pages shouldn't hurt as
-	 * much anyway since they can be in shared cache state. This misses
-	 * the case where a mapping is writable but the process never writes
-	 * to it but pte_write gets cleared during protection updates and
-	 * pte_dirty has unpredictable behaviour between PTE scan updates,
-	 * background writeback, dirty balancing and application behaviour.
-	 */
-	if (!writable)
-		flags |= TNF_NO_GROUP;
-
-	/*
-	 * Flag if the folio is shared between multiple address spaces. This
-	 * is later used when determining whether to group tasks together
-	 */
-	if (folio_likely_mapped_shared(folio) && (vma->vm_flags & VM_SHARED))
-		flags |= TNF_SHARED;
-
-	nid = folio_nid(folio);
-	nr_pages = folio_nr_pages(folio);
-	/*
-	 * For memory tiering mode, cpupid of slow memory page is used
-	 * to record page access time.  So use default value.
-	 */
-	if ((sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING) &&
-	    !node_is_toptier(nid))
-		last_cpupid = (-1 & LAST_CPUPID_MASK);
-	else
-		last_cpupid = folio_last_cpupid(folio);
-	target_nid = numa_migrate_prep(folio, vmf, vmf->address, nid, &flags);
-=======
 	nid = folio_nid(folio);
 	nr_pages = folio_nr_pages(folio);
 
 	target_nid = numa_migrate_check(folio, vmf, vmf->address, &flags,
 					writable, &last_cpupid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (target_nid == NUMA_NO_NODE)
 		goto out_map;
 	if (migrate_misplaced_folio_prepare(folio, vma, target_nid)) {
@@ -6413,13 +6243,6 @@ retry:
 	if (!vma_start_read(vma))
 		goto inval;
 
-<<<<<<< HEAD
-	/* Check since vm_start/vm_end might change before we lock the VMA */
-	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
-		goto inval_end_read;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Check if the VMA got isolated after we found it */
 	if (vma->detached) {
 		vma_end_read(vma);
@@ -6427,8 +6250,6 @@ retry:
 		/* The area was replaced with another one */
 		goto retry;
 	}
-<<<<<<< HEAD
-=======
 	/*
 	 * At this point, we have a stable reference to a VMA: The VMA is
 	 * locked and we know it hasn't already been isolated.
@@ -6439,7 +6260,6 @@ retry:
 	/* Check since vm_start/vm_end might change before we lock the VMA */
 	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
 		goto inval_end_read;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rcu_read_unlock();
 	return vma;
@@ -6524,46 +6344,6 @@ int __pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
 }
 #endif /* __PAGETABLE_PMD_FOLDED */
 
-<<<<<<< HEAD
-/**
- * follow_pte - look up PTE at a user virtual address
- * @vma: the memory mapping
- * @address: user virtual address
- * @ptepp: location to store found PTE
- * @ptlp: location to store the lock for the PTE
- *
- * On a successful return, the pointer to the PTE is stored in @ptepp;
- * the corresponding lock is taken and its location is stored in @ptlp.
- *
- * The contents of the PTE are only stable until @ptlp is released using
- * pte_unmap_unlock(). This function will fail if the PTE is non-present.
- * Present PTEs may include PTEs that map refcounted pages, such as
- * anonymous folios in COW mappings.
- *
- * Callers must be careful when relying on PTE content after
- * pte_unmap_unlock(). Especially if the PTE maps a refcounted page,
- * callers must protect against invalidation with MMU notifiers; otherwise
- * access to the PFN at a later point in time can trigger use-after-free.
- *
- * Only IO mappings and raw PFN mappings are allowed.  The mmap semaphore
- * should be taken for read.
- *
- * This function must not be used to modify PTE content.
- *
- * Return: zero on success, -ve otherwise.
- */
-int follow_pte(struct vm_area_struct *vma, unsigned long address,
-	       pte_t **ptepp, spinlock_t **ptlp)
-{
-	struct mm_struct *mm = vma->vm_mm;
-	pgd_t *pgd;
-	p4d_t *p4d;
-	pud_t *pud;
-	pmd_t *pmd;
-	pte_t *ptep;
-
-	mmap_assert_locked(mm);
-=======
 static inline void pfnmap_args_setup(struct follow_pfnmap_args *args,
 				     spinlock_t *lock, pte_t *ptep,
 				     pgprot_t pgprot, unsigned long pfn_base,
@@ -6637,43 +6417,11 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
 
 	pfnmap_lockdep_assert(vma);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
 		goto out;
 
 	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)))
 		goto out;
-<<<<<<< HEAD
-
-	pgd = pgd_offset(mm, address);
-	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
-		goto out;
-
-	p4d = p4d_offset(pgd, address);
-	if (p4d_none(*p4d) || unlikely(p4d_bad(*p4d)))
-		goto out;
-
-	pud = pud_offset(p4d, address);
-	if (pud_none(*pud) || unlikely(pud_bad(*pud)))
-		goto out;
-
-	pmd = pmd_offset(pud, address);
-	VM_BUG_ON(pmd_trans_huge(*pmd));
-
-	ptep = pte_offset_map_lock(mm, pmd, address, ptlp);
-	if (!ptep)
-		goto out;
-	if (!pte_present(ptep_get(ptep)))
-		goto unlock;
-	*ptepp = ptep;
-	return 0;
-unlock:
-	pte_unmap_unlock(ptep, *ptlp);
-out:
-	return -EINVAL;
-}
-EXPORT_SYMBOL_GPL(follow_pte);
-=======
 retry:
 	pgdp = pgd_offset(mm, address);
 	if (pgd_none(*pgdp) || unlikely(pgd_bad(*pgdp)))
@@ -6746,7 +6494,6 @@ void follow_pfnmap_end(struct follow_pfnmap_args *args)
 		pte_unmap(args->ptep);
 }
 EXPORT_SYMBOL_GPL(follow_pfnmap_end);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_HAVE_IOREMAP_PROT
 /**
@@ -6767,23 +6514,6 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
 	resource_size_t phys_addr;
 	unsigned long prot = 0;
 	void __iomem *maddr;
-<<<<<<< HEAD
-	pte_t *ptep, pte;
-	spinlock_t *ptl;
-	int offset = offset_in_page(addr);
-	int ret = -EINVAL;
-
-retry:
-	if (follow_pte(vma, addr, &ptep, &ptl))
-		return -EINVAL;
-	pte = ptep_get(ptep);
-	pte_unmap_unlock(ptep, ptl);
-
-	prot = pgprot_val(pte_pgprot(pte));
-	phys_addr = (resource_size_t)pte_pfn(pte) << PAGE_SHIFT;
-
-	if ((write & FOLL_WRITE) && !pte_write(pte))
-=======
 	int offset = offset_in_page(addr);
 	int ret = -EINVAL;
 	bool writable;
@@ -6798,22 +6528,12 @@ retry:
 	follow_pfnmap_end(&args);
 
 	if ((write & FOLL_WRITE) && !writable)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
 	if (!maddr)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	if (follow_pte(vma, addr, &ptep, &ptl))
-		goto out_unmap;
-
-	if (!pte_same(pte, ptep_get(ptep))) {
-		pte_unmap_unlock(ptep, ptl);
-		iounmap(maddr);
-
-=======
 	if (follow_pfnmap_start(&args))
 		goto out_unmap;
 
@@ -6822,7 +6542,6 @@ retry:
 	    (writable != args.writable)) {
 		follow_pfnmap_end(&args);
 		iounmap(maddr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto retry;
 	}
 
@@ -6831,11 +6550,7 @@ retry:
 	else
 		memcpy_fromio(buf, maddr + offset, len);
 	ret = len;
-<<<<<<< HEAD
-	pte_unmap_unlock(ptep, ptl);
-=======
 	follow_pfnmap_end(&args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_unmap:
 	iounmap(maddr);
 
@@ -7186,11 +6901,7 @@ long copy_folio_from_user(struct folio *dst_folio,
 }
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_HUGETLBFS */
 
-<<<<<<< HEAD
-#if USE_SPLIT_PTE_PTLOCKS && ALLOC_SPLIT_PTLOCKS
-=======
 #if defined(CONFIG_SPLIT_PTE_PTLOCKS) && ALLOC_SPLIT_PTLOCKS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct kmem_cache *page_ptl_cachep;
 

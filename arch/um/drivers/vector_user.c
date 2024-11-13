@@ -46,12 +46,9 @@
 #define TRANS_FD "fd"
 #define TRANS_FD_LEN strlen(TRANS_FD)
 
-<<<<<<< HEAD
-=======
 #define TRANS_VDE "vde"
 #define TRANS_VDE_LEN strlen(TRANS_VDE)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define VNET_HDR_FAIL "could not enable vnet headers on fd %d"
 #define TUN_GET_F_FAIL "tapraw: TUNGETFEATURES failed: %s"
 #define L2TPV3_BIND_FAIL "l2tpv3_open : could not bind socket err=%i"
@@ -440,8 +437,6 @@ fd_cleanup:
 	return NULL;
 }
 
-<<<<<<< HEAD
-=======
 /* enough char to store an int type */
 #define ENOUGH(type) ((CHAR_BIT * sizeof(type) - 1) / 3 + 2)
 #define ENOUGH_OCTAL(type) ((CHAR_BIT * sizeof(type) + 2) / 3)
@@ -520,7 +515,6 @@ vde_cleanup:
 	return NULL;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct vector_fds *user_init_raw_fds(struct arglist *ifspec)
 {
 	int rxfd = -1, txfd = -1;
@@ -760,11 +754,8 @@ struct vector_fds *uml_vector_user_open(
 		return user_init_unix_fds(parsed, ID_BESS);
 	if (strncmp(transport, TRANS_FD, TRANS_FD_LEN) == 0)
 		return user_init_fd_fds(parsed);
-<<<<<<< HEAD
-=======
 	if (strncmp(transport, TRANS_VDE, TRANS_VDE_LEN) == 0)
 		return user_init_vde_fds(parsed);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return NULL;
 }
 

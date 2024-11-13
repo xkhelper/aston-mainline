@@ -8,13 +8,9 @@
 obj-$(CONFIG_FBNIC) += fbnic.o
 
 fbnic-y := fbnic_devlink.o \
-<<<<<<< HEAD
-	   fbnic_fw.o \
-=======
 	   fbnic_ethtool.o \
 	   fbnic_fw.o \
 	   fbnic_hw_stats.o \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	   fbnic_irq.o \
 	   fbnic_mac.o \
 	   fbnic_netdev.o \

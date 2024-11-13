@@ -9,11 +9,7 @@
 #include <linux/types.h>
 #include <linux/netdevice.h>
 #include <linux/export.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/mac80211.h>
 #include "driver-ops.h"

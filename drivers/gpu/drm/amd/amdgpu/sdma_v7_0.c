@@ -51,8 +51,6 @@ MODULE_FIRMWARE("amdgpu/sdma_7_0_1.bin");
 #define SDMA0_HYP_DEC_REG_END 0x589a
 #define SDMA1_HYP_DEC_REG_OFFSET 0x20
 
-<<<<<<< HEAD
-=======
 /*define for compression field for sdma7*/
 #define SDMA_PKT_CONSTANT_FILL_HEADER_compress_offset 0
 #define SDMA_PKT_CONSTANT_FILL_HEADER_compress_mask   0x00000001
@@ -117,7 +115,6 @@ static const struct amdgpu_hwip_reg_entry sdma_reg_list_7_0[] = {
 	SOC15_REG_ENTRY_STR(GC, 0, regSDMA0_CHICKEN_BITS),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void sdma_v7_0_set_ring_funcs(struct amdgpu_device *adev);
 static void sdma_v7_0_set_buffer_funcs(struct amdgpu_device *adev);
 static void sdma_v7_0_set_vm_pte_funcs(struct amdgpu_device *adev);
@@ -1089,23 +1086,16 @@ static void sdma_v7_0_vm_copy_pte(struct amdgpu_ib *ib,
 	unsigned bytes = count * 8;
 
 	ib->ptr[ib->length_dw++] = SDMA_PKT_COPY_LINEAR_HEADER_OP(SDMA_OP_COPY) |
-<<<<<<< HEAD
-		SDMA_PKT_COPY_LINEAR_HEADER_SUB_OP(SDMA_SUBOP_COPY_LINEAR);
-=======
 		SDMA_PKT_COPY_LINEAR_HEADER_SUB_OP(SDMA_SUBOP_COPY_LINEAR) |
 		SDMA_PKT_COPY_LINEAR_HEADER_CPV(1);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ib->ptr[ib->length_dw++] = bytes - 1;
 	ib->ptr[ib->length_dw++] = 0; /* src/dst endian swap */
 	ib->ptr[ib->length_dw++] = lower_32_bits(src);
 	ib->ptr[ib->length_dw++] = upper_32_bits(src);
 	ib->ptr[ib->length_dw++] = lower_32_bits(pe);
 	ib->ptr[ib->length_dw++] = upper_32_bits(pe);
-<<<<<<< HEAD
-=======
 	ib->ptr[ib->length_dw++] = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 }
 
@@ -1294,11 +1284,8 @@ static int sdma_v7_0_sw_init(void *handle)
 	struct amdgpu_ring *ring;
 	int r, i;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
-<<<<<<< HEAD
-=======
 	uint32_t reg_count = ARRAY_SIZE(sdma_reg_list_7_0);
 	uint32_t *ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* SDMA trap event */
 	r = amdgpu_irq_add_id(adev, SOC21_IH_CLIENTID_GFX,
@@ -1329,8 +1316,6 @@ static int sdma_v7_0_sw_init(void *handle)
 			return r;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Allocate memory for SDMA IP Dump buffer */
 	ptr = kcalloc(adev->sdma.num_instances * reg_count, sizeof(uint32_t), GFP_KERNEL);
 	if (ptr)
@@ -1338,7 +1323,6 @@ static int sdma_v7_0_sw_init(void *handle)
 	else
 		DRM_ERROR("Failed to allocated memory for SDMA IP Dump\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return r;
 }
 
@@ -1355,11 +1339,8 @@ static int sdma_v7_0_sw_fini(void *handle)
 	if (adev->firmware.load_type == AMDGPU_FW_LOAD_DIRECT)
 		sdma_v12_0_free_ucode_buffer(adev);
 
-<<<<<<< HEAD
-=======
 	kfree(adev->sdma.ip_dump);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1563,8 +1544,6 @@ static void sdma_v7_0_get_clockgating_state(void *handle, u64 *flags)
 {
 }
 
-<<<<<<< HEAD
-=======
 static void sdma_v7_0_print_ip_state(void *handle, struct drm_printer *p)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
@@ -1607,7 +1586,6 @@ static void sdma_v7_0_dump_ip_state(void *handle)
 	amdgpu_gfx_off_ctrl(adev, true);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct amd_ip_funcs sdma_v7_0_ip_funcs = {
 	.name = "sdma_v7_0",
 	.early_init = sdma_v7_0_early_init,
@@ -1625,11 +1603,8 @@ const struct amd_ip_funcs sdma_v7_0_ip_funcs = {
 	.set_clockgating_state = sdma_v7_0_set_clockgating_state,
 	.set_powergating_state = sdma_v7_0_set_powergating_state,
 	.get_clockgating_state = sdma_v7_0_get_clockgating_state,
-<<<<<<< HEAD
-=======
 	.dump_ip_state = sdma_v7_0_dump_ip_state,
 	.print_ip_state = sdma_v7_0_print_ip_state,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ring_funcs sdma_v7_0_ring_funcs = {
@@ -1755,12 +1730,8 @@ static void sdma_v7_0_emit_fill_buffer(struct amdgpu_ib *ib,
 				       uint64_t dst_offset,
 				       uint32_t byte_count)
 {
-<<<<<<< HEAD
-	ib->ptr[ib->length_dw++] = SDMA_PKT_COPY_LINEAR_HEADER_OP(SDMA_OP_CONST_FILL);
-=======
 	ib->ptr[ib->length_dw++] = SDMA_PKT_CONSTANT_FILL_HEADER_OP(SDMA_OP_CONST_FILL) |
 		SDMA_PKT_CONSTANT_FILL_HEADER_COMPRESS(1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ib->ptr[ib->length_dw++] = lower_32_bits(dst_offset);
 	ib->ptr[ib->length_dw++] = upper_32_bits(dst_offset);
 	ib->ptr[ib->length_dw++] = src_data;
@@ -1783,11 +1754,7 @@ static void sdma_v7_0_set_buffer_funcs(struct amdgpu_device *adev)
 }
 
 static const struct amdgpu_vm_pte_funcs sdma_v7_0_vm_pte_funcs = {
-<<<<<<< HEAD
-	.copy_pte_num_dw = 7,
-=======
 	.copy_pte_num_dw = 8,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.copy_pte = sdma_v7_0_vm_copy_pte,
 	.write_pte = sdma_v7_0_vm_write_pte,
 	.set_pte_pde = sdma_v7_0_vm_set_pte_pde,

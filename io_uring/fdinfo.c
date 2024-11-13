@@ -177,14 +177,8 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
 	seq_printf(m, "UserBufs:\t%u\n", ctx->nr_user_bufs);
 	for (i = 0; has_lock && i < ctx->nr_user_bufs; i++) {
 		struct io_mapped_ubuf *buf = ctx->user_bufs[i];
-<<<<<<< HEAD
-		unsigned int len = buf->ubuf_end - buf->ubuf;
-
-		seq_printf(m, "%5u: 0x%llx/%u\n", i, buf->ubuf, len);
-=======
 
 		seq_printf(m, "%5u: 0x%llx/%u\n", i, buf->ubuf, buf->len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (has_lock && !xa_empty(&ctx->personalities)) {
 		unsigned long index;
@@ -226,10 +220,6 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
 			   cqe->user_data, cqe->res, cqe->flags);
 
 	}
-<<<<<<< HEAD
-
-	spin_unlock(&ctx->completion_lock);
-=======
 	spin_unlock(&ctx->completion_lock);
 
 #ifdef CONFIG_NET_RX_BUSY_POLL
@@ -244,6 +234,5 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
 		seq_puts(m, "NAPI:\tdisabled\n");
 	}
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif

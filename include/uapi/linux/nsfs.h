@@ -27,8 +27,6 @@
 /* Return thread-group leader id of pid in the target pid namespace. */
 #define NS_GET_TGID_IN_PIDNS	_IOR(NSIO, 0x9, int)
 
-<<<<<<< HEAD
-=======
 struct mnt_ns_info {
 	__u32 size;
 	__u32 nr_mounts;
@@ -44,5 +42,4 @@ struct mnt_ns_info {
 /* Get previous namespace. */
 #define NS_MNT_GET_PREV		_IOR(NSIO, 12, struct mnt_ns_info)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __LINUX_NSFS_H */

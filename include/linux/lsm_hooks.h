@@ -30,28 +30,15 @@
 #include <linux/init.h>
 #include <linux/rculist.h>
 #include <linux/xattr.h>
-<<<<<<< HEAD
-=======
 #include <linux/static_call.h>
 #include <linux/unroll.h>
 #include <linux/jump_label.h>
 #include <linux/lsm_count.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 union security_list_options {
 	#define LSM_HOOK(RET, DEFAULT, NAME, ...) RET (*NAME)(__VA_ARGS__);
 	#include "lsm_hook_defs.h"
 	#undef LSM_HOOK
-<<<<<<< HEAD
-};
-
-struct security_hook_heads {
-	#define LSM_HOOK(RET, DEFAULT, NAME, ...) struct hlist_head NAME;
-	#include "lsm_hook_defs.h"
-	#undef LSM_HOOK
-} __randomize_layout;
-
-=======
 	void *lsm_func_addr;
 };
 
@@ -84,7 +71,6 @@ struct lsm_static_calls_table {
 	#undef LSM_HOOK
 } __packed __randomize_layout;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct lsm_id - Identify a Linux Security Module.
  * @lsm: name of the LSM, must be approved by the LSM maintainers
@@ -93,26 +79,13 @@ struct lsm_static_calls_table {
  * Contains the information that identifies the LSM.
  */
 struct lsm_id {
-<<<<<<< HEAD
-	const char	*name;
-	u64		id;
-=======
 	const char *name;
 	u64 id;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
  * Security module hook list structure.
  * For use with generic list macros for common operations.
-<<<<<<< HEAD
- */
-struct security_hook_list {
-	struct hlist_node		list;
-	struct hlist_head		*head;
-	union security_list_options	hook;
-	const struct lsm_id		*lsmid;
-=======
  *
  * struct security_hook_list - Contents of a cacheable, mappable object.
  * @scalls: The beginning of the array of static calls assigned to this hook.
@@ -123,43 +96,12 @@ struct security_hook_list {
 	struct lsm_static_call *scalls;
 	union security_list_options hook;
 	const struct lsm_id *lsmid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } __randomize_layout;
 
 /*
  * Security blob size or offset data.
  */
 struct lsm_blob_sizes {
-<<<<<<< HEAD
-	int	lbs_cred;
-	int	lbs_file;
-	int	lbs_inode;
-	int	lbs_superblock;
-	int	lbs_ipc;
-	int	lbs_msg_msg;
-	int	lbs_task;
-	int	lbs_xattr_count; /* number of xattr slots in new_xattrs array */
-};
-
-/**
- * lsm_get_xattr_slot - Return the next available slot and increment the index
- * @xattrs: array storing LSM-provided xattrs
- * @xattr_count: number of already stored xattrs (updated)
- *
- * Retrieve the first available slot in the @xattrs array to fill with an xattr,
- * and increment @xattr_count.
- *
- * Return: The slot to fill in @xattrs if non-NULL, NULL otherwise.
- */
-static inline struct xattr *lsm_get_xattr_slot(struct xattr *xattrs,
-					       int *xattr_count)
-{
-	if (unlikely(!xattrs))
-		return NULL;
-	return &xattrs[(*xattr_count)++];
-}
-
-=======
 	int lbs_cred;
 	int lbs_file;
 	int lbs_ib;
@@ -176,7 +118,6 @@ static inline struct xattr *lsm_get_xattr_slot(struct xattr *xattrs,
 	int lbs_bdev;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * LSM_RET_VOID is used as the default value in LSM_HOOK definitions for void
  * LSM hooks (in include/linux/lsm_hook_defs.h).
@@ -189,19 +130,11 @@ static inline struct xattr *lsm_get_xattr_slot(struct xattr *xattrs,
  * care of the common case and reduces the amount of
  * text involved.
  */
-<<<<<<< HEAD
-#define LSM_HOOK_INIT(HEAD, HOOK) \
-	{ .head = &security_hook_heads.HEAD, .hook = { .HEAD = HOOK } }
-
-extern struct security_hook_heads security_hook_heads;
-extern char *lsm_names;
-=======
 #define LSM_HOOK_INIT(NAME, HOOK)			\
 	{						\
 		.scalls = static_calls_table.NAME,	\
 		.hook = { .NAME = HOOK }		\
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern void security_add_hooks(struct security_hook_list *hooks, int count,
 			       const struct lsm_id *lsmid);
@@ -224,12 +157,6 @@ struct lsm_info {
 	struct lsm_blob_sizes *blobs; /* Optional: for blob sharing. */
 };
 
-<<<<<<< HEAD
-extern struct lsm_info __start_lsm_info[], __end_lsm_info[];
-extern struct lsm_info __start_early_lsm_info[], __end_early_lsm_info[];
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DEFINE_LSM(lsm)							\
 	static struct lsm_info __lsm_##lsm				\
 		__used __section(".lsm_info.init")			\
@@ -240,9 +167,6 @@ extern struct lsm_info __start_early_lsm_info[], __end_early_lsm_info[];
 		__used __section(".early_lsm_info.init")		\
 		__aligned(sizeof(unsigned long))
 
-<<<<<<< HEAD
-extern int lsm_inode_alloc(struct inode *inode);
-=======
 /* DO NOT tamper with these variables outside of the LSM framework */
 extern char *lsm_names;
 extern struct lsm_static_calls_table static_calls_table __ro_after_init;
@@ -266,6 +190,5 @@ static inline struct xattr *lsm_get_xattr_slot(struct xattr *xattrs,
 		return NULL;
 	return &xattrs[(*xattr_count)++];
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* ! __LINUX_LSM_HOOKS_H */

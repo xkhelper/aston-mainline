@@ -19,16 +19,6 @@ properties:
       - qcom,hdmi-tx-8974
       - qcom,hdmi-tx-8994
       - qcom,hdmi-tx-8996
-<<<<<<< HEAD
-
-  clocks:
-    minItems: 1
-    maxItems: 5
-
-  clock-names:
-    minItems: 1
-    maxItems: 5
-=======
       - qcom,hdmi-tx-8998
 
   clocks:
@@ -38,7 +28,6 @@ properties:
   clock-names:
     minItems: 1
     maxItems: 8
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     minItems: 1
@@ -154,10 +143,7 @@ allOf:
       properties:
         clocks:
           minItems: 5
-<<<<<<< HEAD
-=======
           maxItems: 5
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         clock-names:
           items:
             - const: mdp_core
@@ -167,8 +153,6 @@ allOf:
             - const: extp
         hdmi-mux-supplies: false
 
-<<<<<<< HEAD
-=======
   - if:
       properties:
         compatible:
@@ -191,7 +175,6 @@ allOf:
             - const: mnoc
             - const: iface_mmss
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:

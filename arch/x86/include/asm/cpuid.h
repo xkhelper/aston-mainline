@@ -179,10 +179,7 @@ static __always_inline bool cpuid_function_is_indexed(u32 function)
 	case 0x1d:
 	case 0x1e:
 	case 0x1f:
-<<<<<<< HEAD
-=======
 	case 0x24:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case 0x8000001d:
 		return true;
 	}
@@ -200,16 +197,12 @@ static inline uint32_t hypervisor_cpuid_base(const char *sig, uint32_t leaves)
 	for_each_possible_hypervisor_cpuid_base(base) {
 		cpuid(base, &eax, &signature[0], &signature[1], &signature[2]);
 
-<<<<<<< HEAD
-		if (!memcmp(sig, signature, 12) &&
-=======
 		/*
 		 * This must not compile to "call memcmp" because it's called
 		 * from PVH early boot code before instrumentation is set up
 		 * and memcmp() itself may be instrumented.
 		 */
 		if (!__builtin_memcmp(sig, signature, 12) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    (leaves == 0 || ((eax - base) >= leaves)))
 			return base;
 	}

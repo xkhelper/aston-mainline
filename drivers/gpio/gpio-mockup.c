@@ -347,10 +347,6 @@ static const struct file_operations gpio_mockup_debugfs_ops = {
 	.open = gpio_mockup_debugfs_open,
 	.read = gpio_mockup_debugfs_read,
 	.write = gpio_mockup_debugfs_write,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.release = single_release,
 };
 

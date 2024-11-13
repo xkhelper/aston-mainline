@@ -1940,14 +1940,6 @@ lpfc_issue_cmf_sync_wqe(struct lpfc_hba *phba, u32 ms, u64 total)
 	atot = atomic_xchg(&phba->cgn_sync_alarm_cnt, 0);
 	wtot = atomic_xchg(&phba->cgn_sync_warn_cnt, 0);
 
-<<<<<<< HEAD
-	/* ONLY Managed mode will send the CMF_SYNC_WQE to the HBA */
-	if (phba->cmf_active_mode != LPFC_CFG_MANAGED ||
-	    phba->link_state == LPFC_LINK_DOWN)
-		return 0;
-
-	spin_lock_irqsave(&phba->hbalock, iflags);
-=======
 	spin_lock_irqsave(&phba->hbalock, iflags);
 
 	/* ONLY Managed mode will send the CMF_SYNC_WQE to the HBA */
@@ -1957,7 +1949,6 @@ lpfc_issue_cmf_sync_wqe(struct lpfc_hba *phba, u32 ms, u64 total)
 		goto out_unlock;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sync_buf = __lpfc_sli_get_iocbq(phba);
 	if (!sync_buf) {
 		lpfc_printf_log(phba, KERN_ERR, LOG_CGN_MGMT,
@@ -4699,8 +4690,6 @@ lpfc_sli_flush_io_rings(struct lpfc_hba *phba)
 	/* Look on all the FCP Rings for the iotag */
 	if (phba->sli_rev >= LPFC_SLI_REV4) {
 		for (i = 0; i < phba->cfg_hdw_queue; i++) {
-<<<<<<< HEAD
-=======
 			if (!phba->sli4_hba.hdwq ||
 			    !phba->sli4_hba.hdwq[i].io_wq) {
 				lpfc_printf_log(phba, KERN_ERR, LOG_SLI,
@@ -4712,7 +4701,6 @@ lpfc_sli_flush_io_rings(struct lpfc_hba *phba)
 						phba->sli.sli_flag);
 				return;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pring = phba->sli4_hba.hdwq[i].io_wq->pring;
 
 			spin_lock_irq(&pring->ring_lock);
@@ -8833,11 +8821,7 @@ lpfc_sli4_hba_setup(struct lpfc_hba *phba)
 	rc = lpfc_sli4_queue_setup(phba);
 	if (unlikely(rc)) {
 		lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
-<<<<<<< HEAD
-				"0381 Error %d during queue setup.\n ", rc);
-=======
 				"0381 Error %d during queue setup.\n", rc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out_stop_timers;
 	}
 	/* Initialize the driver internal SLI layer lists. */
@@ -11109,11 +11093,6 @@ __lpfc_sli_prep_xmit_seq64_s4(struct lpfc_iocbq *cmdiocbq,
 	/* Word 9 */
 	bf_set(wqe_rcvoxid, &wqe->xmit_sequence.wqe_com, ox_id);
 
-<<<<<<< HEAD
-	/* Word 12 */
-	if (cmdiocbq->cmd_flag & (LPFC_IO_LIBDFC | LPFC_IO_LOOPBACK))
-		wqe->xmit_sequence.xmit_len = full_size;
-=======
 	if (cmdiocbq->cmd_flag & (LPFC_IO_LIBDFC | LPFC_IO_LOOPBACK)) {
 		/* Word 10 */
 		if (cmdiocbq->cmd_flag & LPFC_IO_VMID) {
@@ -11125,7 +11104,6 @@ __lpfc_sli_prep_xmit_seq64_s4(struct lpfc_iocbq *cmdiocbq,
 		/* Word 12 */
 		wqe->xmit_sequence.xmit_len = full_size;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		wqe->xmit_sequence.xmit_len =
 			wqe->xmit_sequence.bde.tus.f.bdeSize;
@@ -12517,11 +12495,6 @@ lpfc_sli_issue_abort_iotag(struct lpfc_hba *phba, struct lpfc_sli_ring *pring,
 				cmdiocb->iocb.ulpClass,
 				LPFC_WQE_CQ_ID_DEFAULT, ia, false);
 
-<<<<<<< HEAD
-	abtsiocbp->vport = vport;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* ABTS WQE must go to the same WQ as the WQE to be aborted */
 	abtsiocbp->hba_wqidx = cmdiocb->hba_wqidx;
 	if (cmdiocb->cmd_flag & LPFC_IO_FCP)
@@ -18469,10 +18442,7 @@ lpfc_fc_frame_check(struct lpfc_hba *phba, struct fc_frame_header *fc_hdr)
 {
 	/*  make rctl_names static to save stack space */
 	struct fc_vft_header *fc_vft_hdr;
-<<<<<<< HEAD
-=======
 	struct fc_app_header *fc_app_hdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint32_t *header = (uint32_t *) fc_hdr;
 
 #define FC_RCTL_MDS_DIAGS	0xF4
@@ -18528,8 +18498,6 @@ lpfc_fc_frame_check(struct lpfc_hba *phba, struct fc_frame_header *fc_hdr)
 		goto drop;
 	}
 
-<<<<<<< HEAD
-=======
 	if (unlikely(phba->link_flag == LS_LOOPBACK_MODE &&
 				phba->cfg_vmid_app_header)) {
 		/* Application header is 16B device header */
@@ -18556,7 +18524,6 @@ lpfc_fc_frame_check(struct lpfc_hba *phba, struct fc_frame_header *fc_hdr)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lpfc_printf_log(phba, KERN_INFO, LOG_ELS,
 			"2538 Received frame rctl:x%x, type:x%x, "
 			"frame Data:%08x %08x %08x %08x %08x %08x %08x\n",
@@ -21220,11 +21187,7 @@ lpfc_drain_txq(struct lpfc_hba *phba)
 		if (!piocbq) {
 			spin_unlock_irqrestore(&pring->ring_lock, iflags);
 			lpfc_printf_log(phba, KERN_ERR, LOG_TRACE_EVENT,
-<<<<<<< HEAD
-				"2823 txq empty and txq_cnt is %d\n ",
-=======
 				"2823 txq empty and txq_cnt is %d\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				txq_cnt);
 			break;
 		}

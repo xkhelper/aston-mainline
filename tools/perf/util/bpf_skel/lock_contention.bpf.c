@@ -117,23 +117,6 @@ struct mm_struct___new {
 } __attribute__((preserve_access_index));
 
 /* control flags */
-<<<<<<< HEAD
-int enabled;
-int has_cpu;
-int has_task;
-int has_type;
-int has_addr;
-int has_cgroup;
-int needs_callstack;
-int stack_skip;
-int lock_owner;
-
-int use_cgroup_v2;
-int perf_subsys_id = -1;
-
-/* determine the key of lock stat */
-int aggr_mode;
-=======
 const volatile int has_cpu;
 const volatile int has_task;
 const volatile int has_type;
@@ -150,7 +133,6 @@ const volatile int aggr_mode;
 int enabled;
 
 int perf_subsys_id = -1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 __u64 end_ts;
 
@@ -342,12 +324,7 @@ static inline struct tstamp_data *get_tstamp_elem(__u32 flags)
 	struct tstamp_data *pelem;
 
 	/* Use per-cpu array map for spinlock and rwlock */
-<<<<<<< HEAD
-	if (flags == (LCB_F_SPIN | LCB_F_READ) || flags == LCB_F_SPIN ||
-	    flags == (LCB_F_SPIN | LCB_F_WRITE)) {
-=======
 	if ((flags & (LCB_F_SPIN | LCB_F_MUTEX)) == LCB_F_SPIN) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__u32 idx = 0;
 
 		pelem = bpf_map_lookup_elem(&tstamp_cpu, &idx);
@@ -462,16 +439,8 @@ int contention_end(u64 *ctx)
 
 	duration = bpf_ktime_get_ns() - pelem->timestamp;
 	if ((__s64)duration < 0) {
-<<<<<<< HEAD
-		pelem->lock = 0;
-		if (need_delete)
-			bpf_map_delete_elem(&tstamp, &pid);
-		__sync_fetch_and_add(&time_fail, 1);
-		return 0;
-=======
 		__sync_fetch_and_add(&time_fail, 1);
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	switch (aggr_mode) {
@@ -505,16 +474,8 @@ int contention_end(u64 *ctx)
 	data = bpf_map_lookup_elem(&lock_stat, &key);
 	if (!data) {
 		if (data_map_full) {
-<<<<<<< HEAD
-			pelem->lock = 0;
-			if (need_delete)
-				bpf_map_delete_elem(&tstamp, &pid);
-			__sync_fetch_and_add(&data_fail, 1);
-			return 0;
-=======
 			__sync_fetch_and_add(&data_fail, 1);
 			goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		struct contention_data first = {
@@ -531,32 +492,20 @@ int contention_end(u64 *ctx)
 
 		err = bpf_map_update_elem(&lock_stat, &key, &first, BPF_NOEXIST);
 		if (err < 0) {
-<<<<<<< HEAD
-=======
 			if (err == -EEXIST) {
 				/* it lost the race, try to get it again */
 				data = bpf_map_lookup_elem(&lock_stat, &key);
 				if (data != NULL)
 					goto found;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err == -E2BIG)
 				data_map_full = 1;
 			__sync_fetch_and_add(&data_fail, 1);
 		}
-<<<<<<< HEAD
-		pelem->lock = 0;
-		if (need_delete)
-			bpf_map_delete_elem(&tstamp, &pid);
-		return 0;
-	}
-
-=======
 		goto out;
 	}
 
 found:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__sync_fetch_and_add(&data->total_time, duration);
 	__sync_fetch_and_add(&data->count, 1);
 
@@ -566,10 +515,7 @@ found:
 	if (data->min_time > duration)
 		data->min_time = duration;
 
-<<<<<<< HEAD
-=======
 out:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pelem->lock = 0;
 	if (need_delete)
 		bpf_map_delete_elem(&tstamp, &pid);

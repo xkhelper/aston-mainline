@@ -514,11 +514,7 @@ struct i2c_vbi_ram_value {
  * and so on. There are 16 possible locations from 0 to 15.
  */
 
-<<<<<<< HEAD
-static struct i2c_vbi_ram_value vbi_ram_default[] = {
-=======
 static const struct i2c_vbi_ram_value vbi_ram_default[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * FIXME: Current api doesn't handle all VBI types, those not
@@ -1816,11 +1812,7 @@ static const struct regmap_access_table tvp5150_readable_table = {
 	.n_yes_ranges = ARRAY_SIZE(tvp5150_readable_ranges),
 };
 
-<<<<<<< HEAD
-static struct regmap_config tvp5150_config = {
-=======
 static const struct regmap_config tvp5150_config = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits = 8,
 	.val_bits = 8,
 	.max_register = 0xff,
@@ -2273,11 +2265,7 @@ static const struct dev_pm_ops tvp5150_pm_ops = {
 };
 
 static const struct i2c_device_id tvp5150_id[] = {
-<<<<<<< HEAD
-	{ "tvp5150", 0 },
-=======
 	{ "tvp5150" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, tvp5150_id);

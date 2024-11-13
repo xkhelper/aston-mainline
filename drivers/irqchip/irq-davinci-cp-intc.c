@@ -116,12 +116,7 @@ static struct irq_chip davinci_cp_intc_irq_chip = {
 	.flags		= IRQCHIP_SKIP_SET_WAKE,
 };
 
-<<<<<<< HEAD
-static asmlinkage void __exception_irq_entry
-davinci_cp_intc_handle_irq(struct pt_regs *regs)
-=======
 static void __exception_irq_entry davinci_cp_intc_handle_irq(struct pt_regs *regs)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int gpir, irqnr, none;
 

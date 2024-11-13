@@ -61,16 +61,6 @@ struct perf_file_section {
 	u64 size;
 };
 
-<<<<<<< HEAD
-struct perf_file_header {
-	u64				magic;
-	u64				size;
-	u64				attr_size;
-	struct perf_file_section	attrs;
-	struct perf_file_section	data;
-	/* event_types is ignored */
-	struct perf_file_section	event_types;
-=======
 /**
  * struct perf_file_header: Header representation on disk.
  */
@@ -93,7 +83,6 @@ struct perf_file_header {
 	/**
 	 * @adds_features: Bitmap of features. The features are immediately after the data section.
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DECLARE_BITMAP(adds_features, HEADER_FEAT_BITS);
 };
 
@@ -142,11 +131,7 @@ union perf_event;
 
 extern const char perf_version_string[];
 
-<<<<<<< HEAD
-int perf_session__read_header(struct perf_session *session, int repipe_fd);
-=======
 int perf_session__read_header(struct perf_session *session);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int perf_session__write_header(struct perf_session *session,
 			       struct evlist *evlist,
 			       int fd, bool at_exit);
@@ -165,12 +150,8 @@ struct feat_copier {
 int perf_session__inject_header(struct perf_session *session,
 				struct evlist *evlist,
 				int fd,
-<<<<<<< HEAD
-				struct feat_copier *fc);
-=======
 				struct feat_copier *fc,
 				bool write_attrs_after_data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 size_t perf_session__data_offset(const struct evlist *evlist);
 
@@ -190,15 +171,9 @@ int perf_header__fprintf_info(struct perf_session *s, FILE *fp, bool full);
 
 int perf_event__process_feature(struct perf_session *session,
 				union perf_event *event);
-<<<<<<< HEAD
-int perf_event__process_attr(struct perf_tool *tool, union perf_event *event,
-			     struct evlist **pevlist);
-int perf_event__process_event_update(struct perf_tool *tool,
-=======
 int perf_event__process_attr(const struct perf_tool *tool, union perf_event *event,
 			     struct evlist **pevlist);
 int perf_event__process_event_update(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     union perf_event *event,
 				     struct evlist **pevlist);
 size_t perf_event__fprintf_event_update(union perf_event *event, FILE *fp);

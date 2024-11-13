@@ -492,11 +492,7 @@ static const struct serdev_device_ops bno055_ser_serdev_ops = {
 	.write_wakeup = serdev_device_write_wakeup,
 };
 
-<<<<<<< HEAD
-static struct regmap_bus bno055_ser_regmap_bus = {
-=======
 static const struct regmap_bus bno055_ser_regmap_bus = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write = bno055_ser_write_reg,
 	.read = bno055_ser_read_reg,
 };

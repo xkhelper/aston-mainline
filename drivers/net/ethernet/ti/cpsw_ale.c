@@ -10,10 +10,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
-=======
 #include <linux/regmap.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/seq_file.h>
 #include <linux/slab.h>
 #include <linux/err.h>
@@ -49,8 +46,6 @@
 #define ALE_UNKNOWNVLAN_FORCE_UNTAG_EGRESS	0x9C
 #define ALE_VLAN_MASK_MUX(reg)			(0xc0 + (0x4 * (reg)))
 
-<<<<<<< HEAD
-=======
 #define ALE_POLICER_PORT_OUI		0x100
 #define ALE_POLICER_DA_SA		0x104
 #define ALE_POLICER_VLAN		0x108
@@ -69,7 +64,6 @@
 #define ALE_POLICER_TBL_WRITE_ENABLE	BIT(31)
 #define ALE_POLICER_TBL_INDEX_MASK	GENMASK(4, 0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define AM65_CPSW_ALE_THREAD_DEF_REG 0x134
 
 /* ALE_AGING_TIMER */
@@ -101,12 +95,8 @@ enum {
  * @dev_id: ALE version/SoC id
  * @features: features supported by ALE
  * @tbl_entries: number of ALE entries
-<<<<<<< HEAD
- * @major_ver_mask: mask of ALE Major Version Value in ALE_IDVER reg.
-=======
  * @reg_fields: pointer to array of register field configuration
  * @num_fields: number of fields in the reg_fields array
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nu_switch_ale: NU Switch ALE
  * @vlan_entry_tbl: ALE vlan entry fields description tbl
  */
@@ -114,12 +104,8 @@ struct cpsw_ale_dev_id {
 	const char *dev_id;
 	u32 features;
 	u32 tbl_entries;
-<<<<<<< HEAD
-	u32 major_ver_mask;
-=======
 	const struct reg_field *reg_fields;
 	int num_fields;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool nu_switch_ale;
 	const struct ale_entry_fld *vlan_entry_tbl;
 };
@@ -137,11 +123,7 @@ struct cpsw_ale_dev_id {
 #define ALE_UCAST_TOUCHED		3
 
 #define ALE_TABLE_SIZE_MULTIPLIER	1024
-<<<<<<< HEAD
-#define ALE_STATUS_SIZE_MASK		0x1f
-=======
 #define ALE_POLICER_SIZE_MULTIPLIER	8
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
 {
@@ -1331,8 +1313,6 @@ void cpsw_ale_stop(struct cpsw_ale *ale)
 	cpsw_ale_control_set(ale, 0, ALE_ENABLE, 0);
 }
 
-<<<<<<< HEAD
-=======
 static const struct reg_field ale_fields_cpsw[] = {
 	/* CPSW_ALE_IDVER_REG */
 	[MINOR_VER]	= REG_FIELD(ALE_IDVER, 0, 7),
@@ -1416,41 +1396,28 @@ static const struct reg_field ale_fields_cpsw_nu[] = {
 	[ALE_THREAD_VALUE]	= REG_FIELD(ALE_THREAD_VAL, 0, 5),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
 	{
 		/* am3/4/5, dra7. dm814x, 66ak2hk-gbe */
 		.dev_id = "cpsw",
 		.tbl_entries = 1024,
-<<<<<<< HEAD
-		.major_ver_mask = 0xff,
-=======
 		.reg_fields = ale_fields_cpsw,
 		.num_fields = ARRAY_SIZE(ale_fields_cpsw),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.vlan_entry_tbl = vlan_entry_cpsw,
 	},
 	{
 		/* 66ak2h_xgbe */
 		.dev_id = "66ak2h-xgbe",
 		.tbl_entries = 2048,
-<<<<<<< HEAD
-		.major_ver_mask = 0xff,
-=======
 		.reg_fields = ale_fields_cpsw,
 		.num_fields = ARRAY_SIZE(ale_fields_cpsw),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.vlan_entry_tbl = vlan_entry_cpsw,
 	},
 	{
 		.dev_id = "66ak2el",
 		.features = CPSW_ALE_F_STATUS_REG,
-<<<<<<< HEAD
-		.major_ver_mask = 0x7,
-=======
 		.reg_fields = ale_fields_cpsw_nu,
 		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.nu_switch_ale = true,
 		.vlan_entry_tbl = vlan_entry_nu,
 	},
@@ -1458,12 +1425,8 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
 		.dev_id = "66ak2g",
 		.features = CPSW_ALE_F_STATUS_REG,
 		.tbl_entries = 64,
-<<<<<<< HEAD
-		.major_ver_mask = 0x7,
-=======
 		.reg_fields = ale_fields_cpsw_nu,
 		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.nu_switch_ale = true,
 		.vlan_entry_tbl = vlan_entry_nu,
 	},
@@ -1471,35 +1434,23 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
 		.dev_id = "am65x-cpsw2g",
 		.features = CPSW_ALE_F_STATUS_REG | CPSW_ALE_F_HW_AUTOAGING,
 		.tbl_entries = 64,
-<<<<<<< HEAD
-		.major_ver_mask = 0x7,
-=======
 		.reg_fields = ale_fields_cpsw_nu,
 		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.nu_switch_ale = true,
 		.vlan_entry_tbl = vlan_entry_nu,
 	},
 	{
 		.dev_id = "j721e-cpswxg",
 		.features = CPSW_ALE_F_STATUS_REG | CPSW_ALE_F_HW_AUTOAGING,
-<<<<<<< HEAD
-		.major_ver_mask = 0x7,
-=======
 		.reg_fields = ale_fields_cpsw_nu,
 		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.vlan_entry_tbl = vlan_entry_k3_cpswxg,
 	},
 	{
 		.dev_id = "am64-cpswxg",
 		.features = CPSW_ALE_F_STATUS_REG | CPSW_ALE_F_HW_AUTOAGING,
-<<<<<<< HEAD
-		.major_ver_mask = 0x7,
-=======
 		.reg_fields = ale_fields_cpsw_nu,
 		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.vlan_entry_tbl = vlan_entry_k3_cpswxg,
 		.tbl_entries = 512,
 	},
@@ -1521,13 +1472,6 @@ cpsw_ale_dev_id *cpsw_ale_match_id(const struct cpsw_ale_dev_id *id,
 	return NULL;
 }
 
-<<<<<<< HEAD
-struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
-{
-	const struct cpsw_ale_dev_id *ale_dev_id;
-	struct cpsw_ale *ale;
-	u32 rev, ale_entries;
-=======
 static const struct regmap_config ale_regmap_cfg = {
 	.reg_bits = 32,
 	.val_bits = 32,
@@ -1560,27 +1504,19 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
 	const struct cpsw_ale_dev_id *ale_dev_id;
 	struct cpsw_ale *ale;
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ale_dev_id = cpsw_ale_match_id(cpsw_ale_id_match, params->dev_id);
 	if (!ale_dev_id)
 		return ERR_PTR(-EINVAL);
 
 	params->ale_entries = ale_dev_id->tbl_entries;
-<<<<<<< HEAD
-	params->major_ver_mask = ale_dev_id->major_ver_mask;
-	params->nu_switch_ale = ale_dev_id->nu_switch_ale;
-=======
 	params->nu_switch_ale = ale_dev_id->nu_switch_ale;
 	params->reg_fields = ale_dev_id->reg_fields;
 	params->num_fields = ale_dev_id->num_fields;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ale = devm_kzalloc(params->dev, sizeof(*ale), GFP_KERNEL);
 	if (!ale)
 		return ERR_PTR(-ENOMEM);
-<<<<<<< HEAD
-=======
 	ale->regmap = devm_regmap_init_mmio(params->dev, params->ale_regs,
 					    &ale_regmap_cfg);
 	if (IS_ERR(ale->regmap)) {
@@ -1592,36 +1528,16 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
 	ret = cpsw_ale_regfield_init(ale);
 	if (ret)
 		return ERR_PTR(ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ale->p0_untag_vid_mask = devm_bitmap_zalloc(params->dev, VLAN_N_VID,
 						    GFP_KERNEL);
 	if (!ale->p0_untag_vid_mask)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
-	ale->params = *params;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ale->ageout = ale->params.ale_ageout * HZ;
 	ale->features = ale_dev_id->features;
 	ale->vlan_entry_tbl = ale_dev_id->vlan_entry_tbl;
 
-<<<<<<< HEAD
-	rev = readl_relaxed(ale->params.ale_regs + ALE_IDVER);
-	ale->version =
-		(ALE_VERSION_MAJOR(rev, ale->params.major_ver_mask) << 8) |
-		 ALE_VERSION_MINOR(rev);
-	dev_info(ale->params.dev, "initialized cpsw ale version %d.%d\n",
-		 ALE_VERSION_MAJOR(rev, ale->params.major_ver_mask),
-		 ALE_VERSION_MINOR(rev));
-
-	if (ale->features & CPSW_ALE_F_STATUS_REG &&
-	    !ale->params.ale_entries) {
-		ale_entries =
-			readl_relaxed(ale->params.ale_regs + ALE_STATUS) &
-			ALE_STATUS_SIZE_MASK;
-=======
 	regmap_field_read(ale->fields[MINOR_VER], &rev_minor);
 	regmap_field_read(ale->fields[MAJOR_VER], &rev_major);
 	ale->version = rev_major << 8 | rev_minor;
@@ -1631,7 +1547,6 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
 	if (ale->features & CPSW_ALE_F_STATUS_REG &&
 	    !ale->params.ale_entries) {
 		regmap_field_read(ale->fields[ALE_ENTRIES], &ale_entries);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* ALE available on newer NetCP switches has introduced
 		 * a register, ALE_STATUS, to indicate the size of ALE
 		 * table which shows the size as a multiple of 1024 entries.
@@ -1645,10 +1560,6 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
 		ale_entries *= ALE_TABLE_SIZE_MULTIPLIER;
 		ale->params.ale_entries = ale_entries;
 	}
-<<<<<<< HEAD
-	dev_info(ale->params.dev,
-		 "ALE Table size %ld\n", ale->params.ale_entries);
-=======
 
 	if (ale->features & CPSW_ALE_F_STATUS_REG &&
 	    !ale->params.num_policers) {
@@ -1663,7 +1574,6 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
 	dev_info(ale->params.dev,
 		 "ALE Table size %ld, Policers %ld\n", ale->params.ale_entries,
 		 ale->params.num_policers);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* set default bits for existing h/w */
 	ale->port_mask_bits = ale->params.ale_ports;
@@ -1727,8 +1637,6 @@ u32 cpsw_ale_get_num_entries(struct cpsw_ale *ale)
 {
 	return ale ? ale->params.ale_entries : 0;
 }
-<<<<<<< HEAD
-=======
 
 /* Reads the specified policer index into ALE POLICER registers */
 static void cpsw_ale_policer_read_idx(struct cpsw_ale *ale, u32 idx)
@@ -1823,4 +1731,3 @@ void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch)
 						   1);
 	}
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -827,11 +827,7 @@ nlmsg_parse_deprecated_strict(const struct nlmsghdr *nlh, int hdrlen,
 /**
  * nlmsg_find_attr - find a specific attribute in a netlink message
  * @nlh: netlink message header
-<<<<<<< HEAD
- * @hdrlen: length of familiy specific header
-=======
  * @hdrlen: length of family specific header
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @attrtype: type of attribute to look for
  *
  * Returns the first attribute which matches the specified type.
@@ -853,11 +849,7 @@ static inline struct nlattr *nlmsg_find_attr(const struct nlmsghdr *nlh,
  *
  * Validates all attributes in the specified attribute stream against the
  * specified policy. Validation is done in liberal mode.
-<<<<<<< HEAD
- * See documenation of struct nla_policy for more details.
-=======
  * See documentation of struct nla_policy for more details.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns 0 on success or a negative error code.
  */
@@ -880,11 +872,7 @@ static inline int nla_validate_deprecated(const struct nlattr *head, int len,
  *
  * Validates all attributes in the specified attribute stream against the
  * specified policy. Validation is done in strict mode.
-<<<<<<< HEAD
- * See documenation of struct nla_policy for more details.
-=======
  * See documentation of struct nla_policy for more details.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns 0 on success or a negative error code.
  */
@@ -899,11 +887,7 @@ static inline int nla_validate(const struct nlattr *head, int len, int maxtype,
 /**
  * nlmsg_validate_deprecated - validate a netlink message including attributes
  * @nlh: netlinket message header
-<<<<<<< HEAD
- * @hdrlen: length of familiy specific header
-=======
  * @hdrlen: length of family specific header
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @maxtype: maximum attribute type to be expected
  * @policy: validation policy
  * @extack: extended ACK report struct
@@ -949,11 +933,7 @@ static inline u32 nlmsg_seq(const struct nlmsghdr *nlh)
  * nlmsg_for_each_attr - iterate over a stream of attributes
  * @pos: loop counter, set to current attribute
  * @nlh: netlink message header
-<<<<<<< HEAD
- * @hdrlen: length of familiy specific header
-=======
  * @hdrlen: length of family specific header
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @rem: initialized to len, holds bytes currently remaining in stream
  */
 #define nlmsg_for_each_attr(pos, nlh, hdrlen, rem) \
@@ -1054,11 +1034,7 @@ static inline struct sk_buff *nlmsg_new_large(size_t payload)
  * @skb: socket buffer the message is stored in
  * @nlh: netlink message header
  *
-<<<<<<< HEAD
- * Corrects the netlink message header to include the appeneded
-=======
  * Corrects the netlink message header to include the appended
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * attributes. Only necessary if attributes have been added to
  * the message.
  */
@@ -1978,11 +1954,7 @@ static inline struct nlattr *nla_nest_start(struct sk_buff *skb, int attrtype)
  * @start: container attribute
  *
  * Corrects the container attribute header to include the all
-<<<<<<< HEAD
- * appeneded attributes.
-=======
  * appended attributes.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns the total data length of the skb.
  */
@@ -2015,11 +1987,7 @@ static inline void nla_nest_cancel(struct sk_buff *skb, struct nlattr *start)
  *
  * Validates all attributes in the nested attribute stream against the
  * specified policy. Attributes with a type exceeding maxtype will be
-<<<<<<< HEAD
- * ignored. See documenation of struct nla_policy for more details.
-=======
  * ignored. See documentation of struct nla_policy for more details.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns 0 on success or a negative error code.
  */

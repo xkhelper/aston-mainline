@@ -223,22 +223,6 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
 		prev_type = 0;
 		attr = Add2Ptr(rec, off);
 	} else {
-<<<<<<< HEAD
-		/* Check if input attr inside record. */
-		off = PtrOffset(rec, attr);
-		if (off >= used)
-			return NULL;
-
-		asize = le32_to_cpu(attr->size);
-		if (asize < SIZEOF_RESIDENT) {
-			/* Impossible 'cause we should not return such attribute. */
-			return NULL;
-		}
-
-		/* Overflow check. */
-		if (off + asize < off)
-			return NULL;
-=======
 		/*
 		 * We don't need to check previous attr here. There is
 		 * a bounds checking in the previous round.
@@ -246,21 +230,14 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
 		off = PtrOffset(rec, attr);
 
 		asize = le32_to_cpu(attr->size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		prev_type = le32_to_cpu(attr->type);
 		attr = Add2Ptr(attr, asize);
 		off += asize;
 	}
 
-<<<<<<< HEAD
-	asize = le32_to_cpu(attr->size);
-
-	/* Can we use the first field (attr->type). */
-=======
 	/* Can we use the first field (attr->type). */
 	/* NOTE: this code also checks attr->size availability. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (off + 8 > used) {
 		static_assert(ALIGN(sizeof(enum ATTR_TYPE), 8) == 8);
 		return NULL;
@@ -280,11 +257,8 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
 	if (t32 < prev_type)
 		return NULL;
 
-<<<<<<< HEAD
-=======
 	asize = le32_to_cpu(attr->size);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Check overflow and boundary. */
 	if (off + asize < off || off + asize > used)
 		return NULL;
@@ -313,13 +287,10 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
 	if (attr->non_res != 1)
 		return NULL;
 
-<<<<<<< HEAD
-=======
 	/* Can we use memory including attr->nres.valid_size? */
 	if (asize < SIZEOF_NONRESIDENT)
 		return NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	t16 = le16_to_cpu(attr->nres.run_off);
 	if (t16 > asize)
 		return NULL;
@@ -346,12 +317,8 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
 
 	if (!attr->nres.svcn && is_attr_ext(attr)) {
 		/* First segment of sparse/compressed attribute */
-<<<<<<< HEAD
-		if (asize + 8 < SIZEOF_NONRESIDENT_EX)
-=======
 		/* Can we use memory including attr->nres.total_size? */
 		if (asize < SIZEOF_NONRESIDENT_EX)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return NULL;
 
 		tot_size = le64_to_cpu(attr->nres.total_size);
@@ -361,17 +328,10 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
 		if (tot_size > alloc_size)
 			return NULL;
 	} else {
-<<<<<<< HEAD
-		if (asize + 8 < SIZEOF_NONRESIDENT)
-			return NULL;
-
-		if (attr->nres.c_unit)
-=======
 		if (attr->nres.c_unit)
 			return NULL;
 
 		if (alloc_size > mi->sbi->volume.size)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return NULL;
 	}
 

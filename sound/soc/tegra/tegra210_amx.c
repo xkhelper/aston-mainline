@@ -589,11 +589,7 @@ static struct platform_driver tegra210_amx_driver = {
 		.pm = &tegra210_amx_pm_ops,
 	},
 	.probe = tegra210_amx_platform_probe,
-<<<<<<< HEAD
-	.remove_new = tegra210_amx_platform_remove,
-=======
 	.remove = tegra210_amx_platform_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(tegra210_amx_driver);
 

@@ -16,18 +16,13 @@
 
 	aliases {
 		serial0 = &uart_b;
-<<<<<<< HEAD
-=======
 		spi0 = &spifc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	memory@0 {
 		device_type = "memory";
 		reg = <0x0 0x0 0x0 0x10000000>;
 	};
-<<<<<<< HEAD
-=======
 
 	reserved-memory {
 		#address-cells = <2>;
@@ -151,14 +146,11 @@
 		regulator-boot-on;
 		regulator-always-on;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &uart_b {
 	status = "okay";
 };
-<<<<<<< HEAD
-=======
 
 &nand {
 	status = "okay";
@@ -266,4 +258,3 @@
 	vmmc-supply = <&sdcard>;
 	vqmmc-supply = <&sdcard>;
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

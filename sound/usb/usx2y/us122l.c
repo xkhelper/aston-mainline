@@ -84,18 +84,9 @@ static int us144_create_usbmidi(struct snd_card *card)
 
 static void pt_info_set(struct usb_device *dev, u8 v)
 {
-<<<<<<< HEAD
-	int ret;
-
-	ret = usb_control_msg_send(dev, 0, 'I',
-				   USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-				   v, 0, NULL, 0, 1000, GFP_NOIO);
-	snd_printdd(KERN_DEBUG "%i\n", ret);
-=======
 	usb_control_msg_send(dev, 0, 'I',
 			     USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
 			     v, 0, NULL, 0, 1000, GFP_NOIO);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void usb_stream_hwdep_vm_open(struct vm_area_struct *area)
@@ -103,10 +94,6 @@ static void usb_stream_hwdep_vm_open(struct vm_area_struct *area)
 	struct us122l *us122l = area->vm_private_data;
 
 	atomic_inc(&us122l->mmap_count);
-<<<<<<< HEAD
-	snd_printdd(KERN_DEBUG "%i\n", atomic_read(&us122l->mmap_count));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static vm_fault_t usb_stream_hwdep_vm_fault(struct vm_fault *vmf)
@@ -150,10 +137,6 @@ static void usb_stream_hwdep_vm_close(struct vm_area_struct *area)
 	struct us122l *us122l = area->vm_private_data;
 
 	atomic_dec(&us122l->mmap_count);
-<<<<<<< HEAD
-	snd_printdd(KERN_DEBUG "%i\n", atomic_read(&us122l->mmap_count));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct vm_operations_struct usb_stream_hwdep_vm_ops = {
@@ -167,10 +150,6 @@ static int usb_stream_hwdep_open(struct snd_hwdep *hw, struct file *file)
 	struct us122l	*us122l = hw->private_data;
 	struct usb_interface *iface;
 
-<<<<<<< HEAD
-	snd_printdd(KERN_DEBUG "%p %p\n", hw, file);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (hw->used >= 2)
 		return -EBUSY;
 
@@ -191,11 +170,6 @@ static int usb_stream_hwdep_release(struct snd_hwdep *hw, struct file *file)
 	struct us122l	*us122l = hw->private_data;
 	struct usb_interface *iface;
 
-<<<<<<< HEAD
-	snd_printdd(KERN_DEBUG "%p %p\n", hw, file);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (us122l->is_us144) {
 		iface = usb_ifnum_to_if(us122l->dev, 0);
 		usb_autopm_put_interface(iface);
@@ -231,19 +205,10 @@ static int usb_stream_hwdep_mmap(struct snd_hwdep *hw,
 		err = -EPERM;
 		goto out;
 	}
-<<<<<<< HEAD
-	snd_printdd(KERN_DEBUG "%lu %u\n", size,
-		    read ? s->read_size : s->write_size);
-	/* if userspace tries to mmap beyond end of our buffer, fail */
-	if (size > PAGE_ALIGN(read ? s->read_size : s->write_size)) {
-		snd_printk(KERN_WARNING "%lu > %u\n", size,
-			   read ? s->read_size : s->write_size);
-=======
 	/* if userspace tries to mmap beyond end of our buffer, fail */
 	if (size > PAGE_ALIGN(read ? s->read_size : s->write_size)) {
 		dev_warn(hw->card->dev, "%s: size %lu > %u\n", __func__,
 			 size, read ? s->read_size : s->write_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EINVAL;
 		goto out;
 	}
@@ -314,13 +279,8 @@ static int us122l_set_sample_rate(struct usb_device *dev, int rate)
 				   UAC_EP_CS_ATTR_SAMPLE_RATE << 8, ep, data, 3,
 				   1000, GFP_NOIO);
 	if (err)
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "%d: cannot set freq %d to ep 0x%x\n",
-			   dev->devnum, rate, ep);
-=======
 		dev_err(&dev->dev, "%d: cannot set freq %d to ep 0x%x\n",
 			dev->devnum, rate, ep);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -356,21 +316,13 @@ static bool us122l_start(struct us122l *us122l,
 	err = us122l_set_sample_rate(us122l->dev, rate);
 	if (err < 0) {
 		us122l_stop(us122l);
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "us122l_set_sample_rate error\n");
-=======
 		dev_err(&us122l->dev->dev, "us122l_set_sample_rate error\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 	err = usb_stream_start(&us122l->sk);
 	if (err < 0) {
 		us122l_stop(us122l);
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "%s error %i\n", __func__, err);
-=======
 		dev_err(&us122l->dev->dev, "%s error %i\n", __func__, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 	list_for_each(p, &us122l->midi_list)
@@ -483,21 +435,13 @@ static bool us122l_create_card(struct snd_card *card)
 	if (us122l->is_us144) {
 		err = usb_set_interface(us122l->dev, 0, 1);
 		if (err) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "usb_set_interface error\n");
-=======
 			dev_err(card->dev, "usb_set_interface error\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return false;
 		}
 	}
 	err = usb_set_interface(us122l->dev, 1, 1);
 	if (err) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "usb_set_interface error\n");
-=======
 		dev_err(card->dev, "usb_set_interface error\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 	}
 
@@ -512,11 +456,7 @@ static bool us122l_create_card(struct snd_card *card)
 	else
 		err = us122l_create_usbmidi(card);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "us122l_create_usbmidi error %i\n", err);
-=======
 		dev_err(card->dev, "us122l_create_usbmidi error %i\n", err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto stop;
 	}
 	err = usb_stream_hwdep_new(card);
@@ -567,10 +507,7 @@ static int usx2y_create_card(struct usb_device *device,
 	card->private_free = snd_us122l_free;
 	US122L(card)->dev = device;
 	mutex_init(&US122L(card)->mutex);
-<<<<<<< HEAD
-=======
 	US122L(card)->sk.dev = device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	init_waitqueue_head(&US122L(card)->sk.sleep);
 	US122L(card)->is_us144 = flags & US122L_FLAG_US144;
 	INIT_LIST_HEAD(&US122L(card)->midi_list);
@@ -626,19 +563,10 @@ static int snd_us122l_probe(struct usb_interface *intf,
 
 	if (id->driver_info & US122L_FLAG_US144 &&
 			device->speed == USB_SPEED_HIGH) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "disable ehci-hcd to run US-144\n");
-		return -ENODEV;
-	}
-
-	snd_printdd(KERN_DEBUG"%p:%i\n",
-		    intf, intf->cur_altsetting->desc.bInterfaceNumber);
-=======
 		dev_err(&device->dev, "disable ehci-hcd to run US-144\n");
 		return -ENODEV;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (intf->cur_altsetting->desc.bInterfaceNumber != 1)
 		return 0;
 
@@ -729,21 +657,13 @@ static int snd_us122l_resume(struct usb_interface *intf)
 	if (us122l->is_us144) {
 		err = usb_set_interface(us122l->dev, 0, 1);
 		if (err) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "usb_set_interface error\n");
-=======
 			dev_err(&us122l->dev->dev, "usb_set_interface error\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto unlock;
 		}
 	}
 	err = usb_set_interface(us122l->dev, 1, 1);
 	if (err) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "usb_set_interface error\n");
-=======
 		dev_err(&us122l->dev->dev, "usb_set_interface error\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto unlock;
 	}
 
@@ -753,11 +673,7 @@ static int snd_us122l_resume(struct usb_interface *intf)
 	err = us122l_set_sample_rate(us122l->dev,
 				     us122l->sk.s->cfg.sample_rate);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "us122l_set_sample_rate error\n");
-=======
 		dev_err(&us122l->dev->dev, "us122l_set_sample_rate error\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto unlock;
 	}
 	err = usb_stream_start(&us122l->sk);

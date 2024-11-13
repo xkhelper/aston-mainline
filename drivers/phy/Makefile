@@ -25,10 +25,7 @@ obj-y					+= allwinner/	\
 					   microchip/	\
 					   motorola/	\
 					   mscc/	\
-<<<<<<< HEAD
-=======
 					   nuvoton/	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   qualcomm/	\
 					   ralink/	\
 					   realtek/	\

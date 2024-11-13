@@ -66,10 +66,6 @@ MODULE_DEVICE_TABLE(usb, id_table);
 /* All of the device info needed for the serial converters */
 static struct usb_serial_driver belkin_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner =	THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"belkin",
 	},
 	.description =		"Belkin / Peracom / GoHubs USB Serial Adapter",

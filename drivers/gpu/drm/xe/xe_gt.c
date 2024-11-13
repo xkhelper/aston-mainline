@@ -8,11 +8,7 @@
 #include <linux/minmax.h>
 
 #include <drm/drm_managed.h>
-<<<<<<< HEAD
-#include <drm/xe_drm.h>
-=======
 #include <uapi/drm/xe_drm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <generated/xe_wa_oob.h>
 
@@ -112,16 +108,9 @@ static void xe_gt_enable_host_l2_vram(struct xe_gt *gt)
 		return;
 
 	if (!xe_gt_is_media_type(gt)) {
-<<<<<<< HEAD
-		xe_mmio_write32(gt, SCRATCH1LPFC, EN_L3_RW_CCS_CACHE_FLUSH);
-		reg = xe_mmio_read32(gt, XE2_GAMREQSTRM_CTRL);
-		reg |= CG_DIS_CNTLBUS;
-		xe_mmio_write32(gt, XE2_GAMREQSTRM_CTRL, reg);
-=======
 		reg = xe_gt_mcr_unicast_read_any(gt, XE2_GAMREQSTRM_CTRL);
 		reg |= CG_DIS_CNTLBUS;
 		xe_gt_mcr_multicast_write(gt, XE2_GAMREQSTRM_CTRL, reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	xe_gt_mcr_multicast_write(gt, XEHPC_L3CLOS_MASK(3), 0x3);
@@ -143,15 +132,9 @@ static void xe_gt_disable_host_l2_vram(struct xe_gt *gt)
 	if (WARN_ON(err))
 		return;
 
-<<<<<<< HEAD
-	reg = xe_mmio_read32(gt, XE2_GAMREQSTRM_CTRL);
-	reg &= ~CG_DIS_CNTLBUS;
-	xe_mmio_write32(gt, XE2_GAMREQSTRM_CTRL, reg);
-=======
 	reg = xe_gt_mcr_unicast_read_any(gt, XE2_GAMREQSTRM_CTRL);
 	reg &= ~CG_DIS_CNTLBUS;
 	xe_gt_mcr_multicast_write(gt, XE2_GAMREQSTRM_CTRL, reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
 }
@@ -571,10 +554,6 @@ int xe_gt_init_hwconfig(struct xe_gt *gt)
 
 	xe_gt_mcr_init_early(gt);
 	xe_pat_init(gt);
-<<<<<<< HEAD
-	xe_gt_enable_host_l2_vram(gt);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = xe_uc_init(&gt->uc);
 	if (err)
@@ -586,10 +565,7 @@ int xe_gt_init_hwconfig(struct xe_gt *gt)
 
 	xe_gt_topology_init(gt);
 	xe_gt_mcr_init(gt);
-<<<<<<< HEAD
-=======
 	xe_gt_enable_host_l2_vram(gt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out_fw:
 	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
@@ -897,13 +873,9 @@ int xe_gt_sanitize_freq(struct xe_gt *gt)
 	int ret = 0;
 
 	if ((!xe_uc_fw_is_available(&gt->uc.gsc.fw) ||
-<<<<<<< HEAD
-	     xe_uc_fw_is_loaded(&gt->uc.gsc.fw)) && XE_WA(gt, 22019338487))
-=======
 	     xe_uc_fw_is_loaded(&gt->uc.gsc.fw) ||
 	     xe_uc_fw_is_in_error_state(&gt->uc.gsc.fw)) &&
 	    XE_WA(gt, 22019338487))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = xe_guc_pc_restore_stashed_freq(&gt->uc.guc.pc);
 
 	return ret;

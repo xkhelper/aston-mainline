@@ -822,11 +822,7 @@ static struct iommu_iort_rmr_data *iort_rmr_alloc(
 		return NULL;
 
 	/* Create a copy of SIDs array to associate with this rmr_data */
-<<<<<<< HEAD
-	sids_copy = kmemdup(sids, num_sids * sizeof(*sids), GFP_KERNEL);
-=======
 	sids_copy = kmemdup_array(sids, num_sids, sizeof(*sids), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sids_copy) {
 		kfree(rmr_data);
 		return NULL;
@@ -1707,8 +1703,6 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
 	/* HiSilicon Hip09 Platform */
 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
-<<<<<<< HEAD
-=======
 	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
 	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
@@ -1716,7 +1710,6 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
 	{"HISI  ", "HIP11   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 

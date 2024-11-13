@@ -6,10 +6,6 @@
  ******************************************************************************/
 
 #include <drv_types.h>
-<<<<<<< HEAD
-#include <rtw_debug.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <rtl8723b_hal.h>
 
 static u8 rtw_sdio_wait_enough_TxOQT_space(struct adapter *padapter, u8 agg_num)

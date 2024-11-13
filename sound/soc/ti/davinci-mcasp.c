@@ -2535,11 +2535,7 @@ static const struct dev_pm_ops davinci_mcasp_pm_ops = {
 
 static struct platform_driver davinci_mcasp_driver = {
 	.probe		= davinci_mcasp_probe,
-<<<<<<< HEAD
-	.remove_new	= davinci_mcasp_remove,
-=======
 	.remove		= davinci_mcasp_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "davinci-mcasp",
 		.pm     = &davinci_mcasp_pm_ops,

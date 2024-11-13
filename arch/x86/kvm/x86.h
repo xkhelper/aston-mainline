@@ -103,25 +103,18 @@ static inline unsigned int __shrink_ple_window(unsigned int val,
 	return max(val, min);
 }
 
-<<<<<<< HEAD
-#define MSR_IA32_CR_PAT_DEFAULT  0x0007040600070406ULL
-=======
 #define MSR_IA32_CR_PAT_DEFAULT	\
 	PAT_VALUE(WB, WT, UC_MINUS, UC, WB, WT, UC_MINUS, UC)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void kvm_service_local_tlb_flush_requests(struct kvm_vcpu *vcpu);
 int kvm_check_nested_events(struct kvm_vcpu *vcpu);
 
-<<<<<<< HEAD
-=======
 /* Forcibly leave the nested mode in cases like a vCPU reset */
 static inline void kvm_leave_nested(struct kvm_vcpu *vcpu)
 {
 	kvm_x86_ops.nested_ops->leave_nested(vcpu);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool kvm_vcpu_has_run(struct kvm_vcpu *vcpu)
 {
 	return vcpu->arch.last_vmentry_cpu != -1;
@@ -348,10 +341,7 @@ int x86_decode_emulated_instruction(struct kvm_vcpu *vcpu, int emulation_type,
 int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
 			    int emulation_type, void *insn, int insn_len);
 fastpath_t handle_fastpath_set_msr_irqoff(struct kvm_vcpu *vcpu);
-<<<<<<< HEAD
-=======
 fastpath_t handle_fastpath_hlt(struct kvm_vcpu *vcpu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern struct kvm_caps kvm_caps;
 extern struct kvm_host_values kvm_host;
@@ -522,15 +512,6 @@ int kvm_handle_memory_failure(struct kvm_vcpu *vcpu, int r,
 int kvm_handle_invpcid(struct kvm_vcpu *vcpu, unsigned long type, gva_t gva);
 bool kvm_msr_allowed(struct kvm_vcpu *vcpu, u32 index, u32 type);
 
-<<<<<<< HEAD
-/*
- * Internal error codes that are used to indicate that MSR emulation encountered
- * an error that should result in #GP in the guest, unless userspace
- * handles it.
- */
-#define  KVM_MSR_RET_INVALID	2	/* in-kernel MSR emulation #GP condition */
-#define  KVM_MSR_RET_FILTERED	3	/* #GP due to userspace MSR filter */
-=======
 enum kvm_msr_access {
 	MSR_TYPE_R	= BIT(0),
 	MSR_TYPE_W	= BIT(1),
@@ -551,7 +532,6 @@ enum kvm_msr_access {
  */
 #define  KVM_MSR_RET_UNSUPPORTED	2
 #define  KVM_MSR_RET_FILTERED		3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define __cr4_reserved_bits(__cpu_has, __c)             \
 ({                                                      \

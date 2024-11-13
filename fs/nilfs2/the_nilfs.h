@@ -71,11 +71,6 @@ enum {
  * @ns_dirty_files: list of dirty files
  * @ns_inode_lock: lock protecting @ns_dirty_files
  * @ns_gc_inodes: dummy inodes to keep live blocks
-<<<<<<< HEAD
- * @ns_next_generation: next generation number for inodes
- * @ns_next_gen_lock: lock protecting @ns_next_generation
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @ns_mount_opt: mount options
  * @ns_resuid: uid for reserved blocks
  * @ns_resgid: gid for reserved blocks
@@ -164,13 +159,6 @@ struct the_nilfs {
 	/* GC inode list */
 	struct list_head	ns_gc_inodes;
 
-<<<<<<< HEAD
-	/* Inode allocator */
-	u32			ns_next_generation;
-	spinlock_t		ns_next_gen_lock;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Mount options */
 	unsigned long		ns_mount_opt;
 

@@ -472,11 +472,7 @@ const struct clk_ops meson_clk_pcie_pll_ops = {
 	.enable		= meson_clk_pcie_pll_enable,
 	.disable	= meson_clk_pll_disable
 };
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(meson_clk_pcie_pll_ops);
-=======
 EXPORT_SYMBOL_NS_GPL(meson_clk_pcie_pll_ops, CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 const struct clk_ops meson_clk_pll_ops = {
 	.init		= meson_clk_pll_init,
@@ -487,27 +483,16 @@ const struct clk_ops meson_clk_pll_ops = {
 	.enable		= meson_clk_pll_enable,
 	.disable	= meson_clk_pll_disable
 };
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(meson_clk_pll_ops);
-=======
 EXPORT_SYMBOL_NS_GPL(meson_clk_pll_ops, CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 const struct clk_ops meson_clk_pll_ro_ops = {
 	.recalc_rate	= meson_clk_pll_recalc_rate,
 	.is_enabled	= meson_clk_pll_is_enabled,
 };
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(meson_clk_pll_ro_ops);
-=======
 EXPORT_SYMBOL_NS_GPL(meson_clk_pll_ro_ops, CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_DESCRIPTION("Amlogic PLL driver");
 MODULE_AUTHOR("Carlo Caione <carlo@endlessm.com>");
 MODULE_AUTHOR("Jerome Brunet <jbrunet@baylibre.com>");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
 MODULE_IMPORT_NS(CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

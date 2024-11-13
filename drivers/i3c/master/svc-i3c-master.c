@@ -127,11 +127,8 @@
 
 /* This parameter depends on the implementation and may be tuned */
 #define SVC_I3C_FIFO_SIZE 16
-<<<<<<< HEAD
-=======
 #define SVC_I3C_PPBAUD_MAX 15
 #define SVC_I3C_QUICK_I2C_CLK 4170000
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SVC_I3C_EVENT_IBI	BIT(0)
 #define SVC_I3C_EVENT_HOTJOIN	BIT(1)
@@ -187,10 +184,7 @@ struct svc_i3c_regs_save {
  * @ibi.lock: IBI lock
  * @lock: Transfer lock, protect between IBI work thread and callbacks from master
  * @enabled_events: Bit masks for enable events (IBI, HotJoin).
-<<<<<<< HEAD
-=======
  * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct svc_i3c_master {
 	struct i3c_master_controller base;
@@ -221,10 +215,7 @@ struct svc_i3c_master {
 	} ibi;
 	struct mutex lock;
 	int enabled_events;
-<<<<<<< HEAD
-=======
 	u32 mctrl_config;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -542,8 +533,6 @@ static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
-=======
 static int svc_i3c_master_set_speed(struct i3c_master_controller *m,
 				     enum i3c_open_drain_speed speed)
 {
@@ -592,17 +581,13 @@ rpm_out:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
 {
 	struct svc_i3c_master *master = to_svc_i3c_master(m);
 	struct i3c_bus *bus = i3c_master_get_bus(m);
 	struct i3c_device_info info = {};
 	unsigned long fclk_rate, fclk_period_ns;
-<<<<<<< HEAD
-=======
 	unsigned long i2c_period_ns, i2c_scl_rate, i3c_scl_rate;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int high_period_ns, od_low_period_ns;
 	u32 ppbaud, pplow, odhpp, odbaud, odstop, i2cbaud, reg;
 	int ret;
@@ -623,22 +608,15 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
 	}
 
 	fclk_period_ns = DIV_ROUND_UP(1000000000, fclk_rate);
-<<<<<<< HEAD
-=======
 	i2c_period_ns = DIV_ROUND_UP(1000000000, bus->scl_rate.i2c);
 	i2c_scl_rate = bus->scl_rate.i2c;
 	i3c_scl_rate = bus->scl_rate.i3c;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Using I3C Push-Pull mode, target is 12.5MHz/80ns period.
 	 * Simplest configuration is using a 50% duty-cycle of 40ns.
 	 */
-<<<<<<< HEAD
-	ppbaud = DIV_ROUND_UP(40, fclk_period_ns) - 1;
-=======
 	ppbaud = DIV_ROUND_UP(fclk_rate / 2, i3c_scl_rate) - 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pplow = 0;
 
 	/*
@@ -648,11 +626,7 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
 	 */
 	odhpp = 1;
 	high_period_ns = (ppbaud + 1) * fclk_period_ns;
-<<<<<<< HEAD
-	odbaud = DIV_ROUND_UP(240 - high_period_ns, high_period_ns) - 1;
-=======
 	odbaud = DIV_ROUND_UP(fclk_rate, SVC_I3C_QUICK_I2C_CLK * (1 + ppbaud)) - 2;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	od_low_period_ns = (odbaud + 1) * high_period_ns;
 
 	switch (bus->mode) {
@@ -661,25 +635,10 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
 		odstop = 0;
 		break;
 	case I3C_BUS_MODE_MIXED_FAST:
-<<<<<<< HEAD
-	case I3C_BUS_MODE_MIXED_LIMITED:
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Using I2C Fm+ mode, target is 1MHz/1000ns, the difference
 		 * between the high and low period does not really matter.
 		 */
-<<<<<<< HEAD
-		i2cbaud = DIV_ROUND_UP(1000, od_low_period_ns) - 2;
-		odstop = 1;
-		break;
-	case I3C_BUS_MODE_MIXED_SLOW:
-		/*
-		 * Using I2C Fm mode, target is 0.4MHz/2500ns, with the same
-		 * constraints as the FM+ mode.
-		 */
-		i2cbaud = DIV_ROUND_UP(2500, od_low_period_ns) - 2;
-=======
 		i2cbaud = DIV_ROUND_UP(i2c_period_ns, od_low_period_ns) - 2;
 		odstop = 1;
 		break;
@@ -697,7 +656,6 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
 
 		od_low_period_ns = (odbaud + 1) * high_period_ns;
 		i2cbaud = DIV_ROUND_UP(i2c_period_ns, od_low_period_ns) - 2;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		odstop = 1;
 		break;
 	default:
@@ -716,10 +674,7 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
 	      SVC_I3C_MCONFIG_I2CBAUD(i2cbaud);
 	writel(reg, master->regs + SVC_I3C_MCONFIG);
 
-<<<<<<< HEAD
-=======
 	master->mctrl_config = reg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Master core's registration */
 	ret = i3c_master_get_free_addr(m, 0);
 	if (ret < 0)
@@ -1754,10 +1709,7 @@ static const struct i3c_master_controller_ops svc_i3c_master_ops = {
 	.disable_ibi = svc_i3c_master_disable_ibi,
 	.enable_hotjoin = svc_i3c_master_enable_hotjoin,
 	.disable_hotjoin = svc_i3c_master_disable_hotjoin,
-<<<<<<< HEAD
-=======
 	.set_speed = svc_i3c_master_set_speed,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int svc_i3c_master_prepare_clks(struct svc_i3c_master *master)
@@ -1888,10 +1840,7 @@ static void svc_i3c_master_remove(struct platform_device *pdev)
 {
 	struct svc_i3c_master *master = platform_get_drvdata(pdev);
 
-<<<<<<< HEAD
-=======
 	cancel_work_sync(&master->hj_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i3c_master_unregister(&master->base);
 
 	pm_runtime_dont_use_autosuspend(&pdev->dev);

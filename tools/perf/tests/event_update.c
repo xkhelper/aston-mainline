@@ -12,11 +12,7 @@
 #include "tests.h"
 #include "debug.h"
 
-<<<<<<< HEAD
-static int process_event_unit(struct perf_tool *tool __maybe_unused,
-=======
 static int process_event_unit(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample __maybe_unused,
 			      struct machine *machine __maybe_unused)
@@ -29,11 +25,7 @@ static int process_event_unit(const struct perf_tool *tool __maybe_unused,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int process_event_scale(struct perf_tool *tool __maybe_unused,
-=======
 static int process_event_scale(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       union perf_event *event,
 			       struct perf_sample *sample __maybe_unused,
 			       struct machine *machine __maybe_unused)
@@ -51,11 +43,7 @@ struct event_name {
 	const char *name;
 };
 
-<<<<<<< HEAD
-static int process_event_name(struct perf_tool *tool,
-=======
 static int process_event_name(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample __maybe_unused,
 			      struct machine *machine __maybe_unused)
@@ -69,11 +57,7 @@ static int process_event_name(const struct perf_tool *tool,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int process_event_cpus(struct perf_tool *tool __maybe_unused,
-=======
 static int process_event_cpus(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample __maybe_unused,
 			      struct machine *machine __maybe_unused)
@@ -119,10 +103,7 @@ static int test__event_update(struct test_suite *test __maybe_unused, int subtes
 	TEST_ASSERT_VAL("failed to synthesize attr update scale",
 			!perf_event__synthesize_event_update_scale(NULL, evsel, process_event_scale));
 
-<<<<<<< HEAD
-=======
 	perf_tool__init(&tmp.tool, /*ordered_events=*/false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tmp.name = evsel__name(evsel);
 
 	TEST_ASSERT_VAL("failed to synthesize attr update name",

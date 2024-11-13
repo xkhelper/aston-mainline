@@ -319,11 +319,7 @@ static inline struct page *alloc_pages_mpol_noprof(gfp_t gfp, unsigned int order
 }
 static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
 {
-<<<<<<< HEAD
-	return __folio_alloc_node(gfp, order, numa_node_id());
-=======
 	return __folio_alloc_node_noprof(gfp, order, numa_node_id());
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
 		struct mempolicy *mpol, pgoff_t ilx, int nid)
@@ -450,8 +446,6 @@ extern struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_
 #endif
 void free_contig_range(unsigned long pfn, unsigned long nr_pages);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CONTIG_ALLOC
 static inline struct folio *folio_alloc_gigantic_noprof(int order, gfp_t gfp,
 							int nid, nodemask_t *node)
@@ -475,5 +469,4 @@ static inline struct folio *folio_alloc_gigantic_noprof(int order, gfp_t gfp,
 /* This should be paired with folio_put() rather than free_contig_range(). */
 #define folio_alloc_gigantic(...) alloc_hooks(folio_alloc_gigantic_noprof(__VA_ARGS__))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __LINUX_GFP_H */

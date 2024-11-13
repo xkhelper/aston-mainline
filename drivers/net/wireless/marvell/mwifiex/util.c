@@ -370,8 +370,6 @@ mwifiex_parse_mgmt_packet(struct mwifiex_private *priv, u8 *payload, u16 len,
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
 
 /* This function sends deauth packet to the kernel. */
 void mwifiex_host_mlme_disconnect(struct mwifiex_private *priv,
@@ -411,7 +409,6 @@ void mwifiex_host_mlme_disconnect(struct mwifiex_private *priv,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This function processes the received management packet and send it
  * to the kernel.
@@ -459,8 +456,6 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
 	pkt_len -= ETH_ALEN;
 	rx_pd->rx_pkt_length = cpu_to_le16(pkt_len);
 
-<<<<<<< HEAD
-=======
 	if (priv->host_mlme_reg &&
 	    (GET_BSS_ROLE(priv) != MWIFIEX_BSS_ROLE_UAP) &&
 	    (ieee80211_is_auth(ieee_hdr->frame_control) ||
@@ -526,7 +521,6 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
 				    ieee_hdr->addr2);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
 			 CAL_RSSI(rx_pd->snr, rx_pd->nf), skb->data, pkt_len,
 			 0);

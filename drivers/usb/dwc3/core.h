@@ -1150,11 +1150,8 @@ struct dwc3_scratchpad_array {
  * @sys_wakeup: set if the device may do system wakeup.
  * @wakeup_configured: set if the device is configured for remote wakeup.
  * @suspended: set to track suspend event due to U3/L2.
-<<<<<<< HEAD
-=======
  * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY + DWC3_GUSB3PIPECTL_SUSPHY
  *		  before PM suspend.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @imod_interval: set the interrupt moderation interval in 250ns
  *			increments or 0 to disable.
  * @max_cfg_eps: current max number of IN eps used across all USB configs.
@@ -1387,10 +1384,7 @@ struct dwc3 {
 	unsigned		sys_wakeup:1;
 	unsigned		wakeup_configured:1;
 	unsigned		suspended:1;
-<<<<<<< HEAD
-=======
 	unsigned		susphy_state:1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u16			imod_interval;
 
@@ -1684,10 +1678,6 @@ static inline void dwc3_otg_host_init(struct dwc3 *dwc)
 #if !IS_ENABLED(CONFIG_USB_DWC3_HOST)
 int dwc3_gadget_suspend(struct dwc3 *dwc);
 int dwc3_gadget_resume(struct dwc3 *dwc);
-<<<<<<< HEAD
-void dwc3_gadget_process_pending_events(struct dwc3 *dwc);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static inline int dwc3_gadget_suspend(struct dwc3 *dwc)
 {
@@ -1699,12 +1689,6 @@ static inline int dwc3_gadget_resume(struct dwc3 *dwc)
 	return 0;
 }
 
-<<<<<<< HEAD
-static inline void dwc3_gadget_process_pending_events(struct dwc3 *dwc)
-{
-}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* !IS_ENABLED(CONFIG_USB_DWC3_HOST) */
 
 #if IS_ENABLED(CONFIG_USB_DWC3_ULPI)

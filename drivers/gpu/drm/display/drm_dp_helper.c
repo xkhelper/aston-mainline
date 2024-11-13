@@ -2328,8 +2328,6 @@ drm_dp_get_quirks(const struct drm_dp_dpcd_ident *ident, bool is_branch)
 #undef DEVICE_ID_ANY
 #undef DEVICE_ID
 
-<<<<<<< HEAD
-=======
 static int drm_dp_read_ident(struct drm_dp_aux *aux, unsigned int offset,
 			     struct drm_dp_dpcd_ident *ident)
 {
@@ -2355,7 +2353,6 @@ static void drm_dp_dump_desc(struct drm_dp_aux *aux,
 		    desc->quirks);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * drm_dp_read_desc - read sink/branch descriptor from DPCD
  * @aux: DisplayPort AUX channel
@@ -2372,40 +2369,21 @@ int drm_dp_read_desc(struct drm_dp_aux *aux, struct drm_dp_desc *desc,
 {
 	struct drm_dp_dpcd_ident *ident = &desc->ident;
 	unsigned int offset = is_branch ? DP_BRANCH_OUI : DP_SINK_OUI;
-<<<<<<< HEAD
-	int ret, dev_id_len;
-
-	ret = drm_dp_dpcd_read(aux, offset, ident, sizeof(*ident));
-=======
 	int ret;
 
 	ret = drm_dp_read_ident(aux, offset, ident);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		return ret;
 
 	desc->quirks = drm_dp_get_quirks(ident, is_branch);
 
-<<<<<<< HEAD
-	dev_id_len = strnlen(ident->device_id, sizeof(ident->device_id));
-
-	drm_dbg_kms(aux->drm_dev,
-		    "%s: DP %s: OUI %*phD dev-ID %*pE HW-rev %d.%d SW-rev %d.%d quirks 0x%04x\n",
-		    aux->name, is_branch ? "branch" : "sink",
-		    (int)sizeof(ident->oui), ident->oui, dev_id_len,
-		    ident->device_id, ident->hw_rev >> 4, ident->hw_rev & 0xf,
-		    ident->sw_major_rev, ident->sw_minor_rev, desc->quirks);
-=======
 	drm_dp_dump_desc(aux, is_branch ? "DP branch" : "DP sink", desc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 EXPORT_SYMBOL(drm_dp_read_desc);
 
 /**
-<<<<<<< HEAD
-=======
  * drm_dp_dump_lttpr_desc - read and dump the DPCD descriptor for an LTTPR PHY
  * @aux: DisplayPort AUX channel
  * @dp_phy: LTTPR PHY instance
@@ -2434,7 +2412,6 @@ int drm_dp_dump_lttpr_desc(struct drm_dp_aux *aux, enum drm_dp_phy dp_phy)
 EXPORT_SYMBOL(drm_dp_dump_lttpr_desc);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * drm_dp_dsc_sink_bpp_incr() - Get bits per pixel increment
  * @dsc_dpcd: DSC capabilities from DPCD
  *

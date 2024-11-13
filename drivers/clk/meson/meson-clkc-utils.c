@@ -20,15 +20,8 @@ struct clk_hw *meson_clk_hw_get(struct of_phandle_args *clkspec, void *clk_hw_da
 
 	return data->hws[idx];
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(meson_clk_hw_get);
-
-MODULE_DESCRIPTION("Amlogic Clock Controller Utilities");
-MODULE_LICENSE("GPL");
-=======
 EXPORT_SYMBOL_NS_GPL(meson_clk_hw_get, CLK_MESON);
 
 MODULE_DESCRIPTION("Amlogic Clock Controller Utilities");
 MODULE_LICENSE("GPL");
 MODULE_IMPORT_NS(CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -23,11 +23,7 @@
  * to handle wireless statistics.
  *
  * The initial APIs served us well and has proven a reasonably good design.
-<<<<<<< HEAD
- * However, there is a few shortcommings :
-=======
  * However, there are a few shortcomings :
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	o No events, everything is a request to the driver.
  *	o Large ioctl function in driver with gigantic switch statement
  *	  (i.e. spaghetti code).
@@ -42,21 +38,13 @@
  * -------------------------------
  * The new driver API is just a bunch of standard functions (handlers),
  * each handling a specific Wireless Extension. The driver just export
-<<<<<<< HEAD
- * the list of handler it supports, and those will be called apropriately.
-=======
  * the list of handler it supports, and those will be called appropriately.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * I tried to keep the main advantage of the previous API (simplicity,
  * efficiency and light weight), and also I provide a good dose of backward
  * compatibility (most structures are the same, driver can use both API
  * simultaneously, ...).
-<<<<<<< HEAD
- * Hopefully, I've also addressed the shortcomming of the initial API.
-=======
  * Hopefully, I've also addressed the shortcoming of the initial API.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * The advantage of the new API are :
  *	o Handling of Extensions in driver broken in small contained functions
@@ -96,11 +84,7 @@
 
 /* ---------------------- THE IMPLEMENTATION ---------------------- */
 /*
-<<<<<<< HEAD
- * Some of the choice I've made are pretty controversials. Defining an
-=======
  * Some of the choice I've made are pretty controversial. Defining an
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * API is very much weighting compromises. This goes into some of the
  * details and the thinking behind the implementation.
  *
@@ -156,11 +140,7 @@
  * example to distinguish setting max rate and basic rate), I would
  * break the prototype. Using iwreq_data is more flexible.
  * 3) Also, the above form is not generic (see above).
-<<<<<<< HEAD
- * 4) I don't expect driver developper using the wrong field of the
-=======
  * 4) I don't expect driver developer using the wrong field of the
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * union (Doh !), so static typechecking doesn't add much value.
  * 5) Lastly, you can skip the union by doing :
  *	static int mydriver_ioctl_setrate(struct net_device *dev,
@@ -479,11 +459,7 @@ int iw_handler_get_thrspy(struct net_device *dev, struct iw_request_info *info,
 void wireless_spy_update(struct net_device *dev, unsigned char *address,
 			 struct iw_quality *wstats);
 
-<<<<<<< HEAD
-/************************* INLINE FUNTIONS *************************/
-=======
 /************************* INLINE FUNCTIONS *************************/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Function that are so simple that it's more efficient inlining them
  */

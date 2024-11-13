@@ -36,13 +36,10 @@ struct perf_pmu_caps {
 	struct list_head list;
 };
 
-<<<<<<< HEAD
-=======
 enum {
 	PERF_PMU_TYPE_FAKE = 0xFFFFFFFF,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct perf_pmu
  */
@@ -180,12 +177,6 @@ struct perf_pmu {
 	struct perf_mem_event *mem_events;
 };
 
-<<<<<<< HEAD
-/** @perf_pmu__fake: A special global PMU used for testing. */
-extern struct perf_pmu perf_pmu__fake;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct perf_pmu_info {
 	const char *unit;
 	double scale;
@@ -203,10 +194,7 @@ struct pmu_event_info {
 	const char *encoding_desc;
 	const char *topic;
 	const char *pmu_name;
-<<<<<<< HEAD
-=======
 	const char *event_type_desc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const char *str;
 	bool deprecated;
 };

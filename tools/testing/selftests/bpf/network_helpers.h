@@ -23,10 +23,6 @@ typedef __u16 __sum16;
 
 struct network_helper_opts {
 	int timeout_ms;
-<<<<<<< HEAD
-	bool must_fail;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int proto;
 	/* +ve: Passed to listen() as-is.
 	 *   0: Default when the test does not set
@@ -73,15 +69,10 @@ int client_socket(int family, int type,
 		  const struct network_helper_opts *opts);
 int connect_to_addr(int type, const struct sockaddr_storage *addr, socklen_t len,
 		    const struct network_helper_opts *opts);
-<<<<<<< HEAD
-int connect_to_fd(int server_fd, int timeout_ms);
-int connect_to_fd_opts(int server_fd, int type, const struct network_helper_opts *opts);
-=======
 int connect_to_addr_str(int family, int type, const char *addr_str, __u16 port,
 			const struct network_helper_opts *opts);
 int connect_to_fd(int server_fd, int timeout_ms);
 int connect_to_fd_opts(int server_fd, const struct network_helper_opts *opts);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int connect_fd_to_fd(int client_fd, int server_fd, int timeout_ms);
 int fastopen_connect(int server_fd, const char *data, unsigned int data_len,
 		     int timeout_ms);
@@ -102,11 +93,8 @@ struct nstoken;
 struct nstoken *open_netns(const char *name);
 void close_netns(struct nstoken *token);
 int send_recv_data(int lfd, int fd, uint32_t total_bytes);
-<<<<<<< HEAD
-=======
 int make_netns(const char *name);
 int remove_netns(const char *name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static __u16 csum_fold(__u32 csum)
 {
@@ -150,8 +138,6 @@ static inline __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
 	return csum_fold((__u32)s);
 }
 
-<<<<<<< HEAD
-=======
 struct tmonitor_ctx;
 
 #ifdef TRAFFIC_MONITOR
@@ -170,5 +156,4 @@ static inline void traffic_monitor_stop(struct tmonitor_ctx *ctx)
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

@@ -181,10 +181,7 @@ int mt7603_eeprom_init(struct mt7603_dev *dev)
 	    is_mt7688(dev))
 		dev->mphy.antenna_mask = 1;
 
-<<<<<<< HEAD
-=======
 	dev->mphy.chainmask = dev->mphy.antenna_mask;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mt76_eeprom_override(&dev->mphy);
 
 	return 0;

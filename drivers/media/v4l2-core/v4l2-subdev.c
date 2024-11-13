@@ -1443,18 +1443,6 @@ int v4l2_subdev_link_validate(struct media_link *link)
 	bool states_locked;
 	int ret;
 
-<<<<<<< HEAD
-	if (!is_media_entity_v4l2_subdev(link->sink->entity) ||
-	    !is_media_entity_v4l2_subdev(link->source->entity)) {
-		pr_warn_once("%s of link '%s':%u->'%s':%u is not a V4L2 sub-device, driver bug!\n",
-			     !is_media_entity_v4l2_subdev(link->sink->entity) ?
-			     "sink" : "source",
-			     link->source->entity->name, link->source->index,
-			     link->sink->entity->name, link->sink->index);
-		return 0;
-	}
-
-=======
 	/*
 	 * Links are validated in the context of the sink entity. Usage of this
 	 * helper on a sink that is not a subdev is a clear driver bug.
@@ -1502,7 +1490,6 @@ int v4l2_subdev_link_validate(struct media_link *link)
 	if (WARN_ON(!is_media_entity_v4l2_subdev(link->source->entity)))
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sink_sd = media_entity_to_v4l2_subdev(link->sink->entity);
 	source_sd = media_entity_to_v4l2_subdev(link->source->entity);
 

@@ -1076,13 +1076,8 @@ OldOpenRetry:
 	pSMB->OpenFlags |= cpu_to_le16(REQ_MORE_INFO);
 	pSMB->Mode = cpu_to_le16(access_flags_to_smbopen_mode(access_flags));
 	pSMB->Mode |= cpu_to_le16(0x40); /* deny none */
-<<<<<<< HEAD
-	/* set file as system file if special file such
-	   as fifo and server expecting SFU style and
-=======
 	/* set file as system file if special file such as fifo,
 	 * socket, char or block and server expecting SFU style and
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	   no Unix extensions */
 
 	if (create_options & CREATE_OPTION_SPECIAL)
@@ -1198,13 +1193,8 @@ openRetry:
 	req->AllocationSize = 0;
 
 	/*
-<<<<<<< HEAD
-	 * Set file as system file if special file such as fifo and server
-	 * expecting SFU style and no Unix extensions.
-=======
 	 * Set file as system file if special file such as fifo, socket, char
 	 * or block and server expecting SFU style and no Unix extensions.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if (create_options & CREATE_OPTION_SPECIAL)
 		req->FileAttributes = cpu_to_le32(ATTR_SYSTEM);
@@ -1225,11 +1215,7 @@ openRetry:
 	req->CreateDisposition = cpu_to_le32(disposition);
 	req->CreateOptions = cpu_to_le32(create_options & CREATE_OPTIONS_MASK);
 
-<<<<<<< HEAD
-	/* BB Expirement with various impersonation levels and verify */
-=======
 	/* BB Experiment with various impersonation levels and verify */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	req->ImpersonationLevel = cpu_to_le32(SECURITY_IMPERSONATION);
 	req->SecurityFlags = SECURITY_CONTEXT_TRACKING|SECURITY_EFFECTIVE_ONLY;
 
@@ -1280,13 +1266,7 @@ static void cifs_readv_worker(struct work_struct *work)
 	struct cifs_io_subrequest *rdata =
 		container_of(work, struct cifs_io_subrequest, subreq.work);
 
-<<<<<<< HEAD
-	netfs_subreq_terminated(&rdata->subreq,
-				(rdata->result == 0 || rdata->result == -EAGAIN) ?
-				rdata->got_bytes : rdata->result, true);
-=======
 	netfs_read_subreq_terminated(&rdata->subreq, rdata->result, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void
@@ -1345,25 +1325,16 @@ cifs_readv_callback(struct mid_q_entry *mid)
 		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
 		rdata->result = 0;
 	} else {
-<<<<<<< HEAD
-		if (rdata->got_bytes < rdata->actual_len &&
-		    rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes ==
-		    ictx->remote_i_size) {
-=======
 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
 		if (trans < rdata->subreq.len &&
 		    rdata->subreq.start + trans == ictx->remote_i_size) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
 			rdata->result = 0;
 		}
 	}
 
 	rdata->credits.value = 0;
-<<<<<<< HEAD
-=======
 	rdata->subreq.transferred += rdata->got_bytes;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_WORK(&rdata->subreq.work, cifs_readv_worker);
 	queue_work(cifsiod_wq, &rdata->subreq.work);
 	release_mid(mid);
@@ -3047,11 +3018,7 @@ static void cifs_init_ace(struct cifs_posix_ace *cifs_ace,
 
 /**
  * posix_acl_to_cifs - convert ACLs from POSIX ACL to cifs format
-<<<<<<< HEAD
- * @parm_data: ACLs in cifs format to conver to
-=======
  * @parm_data: ACLs in cifs format to convert to
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @acl: ACLs in POSIX ACL format to convert from
  * @acl_type: the type of POSIX ACLs stored in @acl
  *
@@ -3460,11 +3427,7 @@ validate_ntransact(char *buf, char **ppparm, char **ppdata,
 /* Get Security Descriptor (by handle) from remote server for a file or dir */
 int
 CIFSSMBGetCIFSACL(const unsigned int xid, struct cifs_tcon *tcon, __u16 fid,
-<<<<<<< HEAD
-		  struct cifs_ntsd **acl_inf, __u32 *pbuflen)
-=======
 		  struct smb_ntsd **acl_inf, __u32 *pbuflen)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int rc = 0;
 	int buf_type = 0;
@@ -3534,11 +3497,7 @@ CIFSSMBGetCIFSACL(const unsigned int xid, struct cifs_tcon *tcon, __u16 fid,
 
 		/* check if buffer is big enough for the acl
 		   header followed by the smallest SID */
-<<<<<<< HEAD
-		if ((*pbuflen < sizeof(struct cifs_ntsd) + 8) ||
-=======
 		if ((*pbuflen < sizeof(struct smb_ntsd) + 8) ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    (*pbuflen >= 64 * 1024)) {
 			cifs_dbg(VFS, "bad acl length %d\n", *pbuflen);
 			rc = -EINVAL;
@@ -3558,11 +3517,7 @@ qsec_out:
 
 int
 CIFSSMBSetCIFSACL(const unsigned int xid, struct cifs_tcon *tcon, __u16 fid,
-<<<<<<< HEAD
-			struct cifs_ntsd *pntsd, __u32 acllen, int aclflag)
-=======
 			struct smb_ntsd *pntsd, __u32 acllen, int aclflag)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__u16 byte_count, param_count, data_count, param_offset, data_offset;
 	int rc = 0;
@@ -4040,11 +3995,7 @@ findFirstRetry:
 		name_len =
 		    cifsConvertToUTF16((__le16 *) pSMB->FileName, searchName,
 				       PATH_MAX, nls_codepage, remap);
-<<<<<<< HEAD
-		/* We can not add the asterik earlier in case
-=======
 		/* We can not add the asterisk earlier in case
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		it got remapped to 0xF03A as if it were part of the
 		directory name instead of a wildcard */
 		name_len *= 2;

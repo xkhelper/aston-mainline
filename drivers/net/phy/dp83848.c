@@ -147,11 +147,8 @@ MODULE_DEVICE_TABLE(mdio, dp83848_tbl);
 		/* IRQ related */				\
 		.config_intr	= dp83848_config_intr,		\
 		.handle_interrupt = dp83848_handle_interrupt,	\
-<<<<<<< HEAD
-=======
 								\
 		.flags		= PHY_RST_AFTER_CLK_EN,		\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 static struct phy_driver dp83848_driver[] = {

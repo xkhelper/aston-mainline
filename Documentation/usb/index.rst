@@ -11,10 +11,7 @@ USB support
     dwc3
     ehci
     functionfs
-<<<<<<< HEAD
-=======
     functionfs-desc
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     gadget_configfs
     gadget_hid
     gadget_multi

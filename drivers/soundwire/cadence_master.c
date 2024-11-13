@@ -890,10 +890,6 @@ static int cdns_update_slave_status(struct sdw_cdns *cdns,
 		}
 	}
 
-<<<<<<< HEAD
-	if (is_slave)
-		return sdw_handle_slave_status(&cdns->bus, status);
-=======
 	if (is_slave) {
 		int ret;
 
@@ -902,7 +898,6 @@ static int cdns_update_slave_status(struct sdw_cdns *cdns,
 		mutex_unlock(&cdns->status_update_lock);
 		return ret;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -999,8 +994,6 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
 }
 EXPORT_SYMBOL(sdw_cdns_irq);
 
-<<<<<<< HEAD
-=======
 static void cdns_check_attached_status_dwork(struct work_struct *work)
 {
 	struct sdw_cdns *cdns =
@@ -1026,7 +1019,6 @@ static void cdns_check_attached_status_dwork(struct work_struct *work)
 		dev_err(cdns->dev, "%s: sdw_handle_slave_status failed: %d\n", __func__, ret);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * cdns_update_slave_status_work - update slave status in a work since we will need to handle
  * other interrupts eg. CDNS_MCP_INT_RX_WL during the update slave
@@ -1779,15 +1771,11 @@ int sdw_cdns_probe(struct sdw_cdns *cdns)
 	init_completion(&cdns->tx_complete);
 	cdns->bus.port_ops = &cdns_port_ops;
 
-<<<<<<< HEAD
-	INIT_WORK(&cdns->work, cdns_update_slave_status_work);
-=======
 	mutex_init(&cdns->status_update_lock);
 
 	INIT_WORK(&cdns->work, cdns_update_slave_status_work);
 	INIT_DELAYED_WORK(&cdns->attach_dwork, cdns_check_attached_status_dwork);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL(sdw_cdns_probe);

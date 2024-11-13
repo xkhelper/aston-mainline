@@ -94,8 +94,6 @@ out_rcu:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /* Caller need to hold vsock->tx_lock on vq */
 static int virtio_transport_send_skb(struct sk_buff *skb, struct virtqueue *vq,
 				     struct virtio_vsock *vsock, gfp_t gfp)
@@ -153,7 +151,6 @@ static int virtio_transport_send_skb(struct sk_buff *skb, struct virtqueue *vq,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void
 virtio_transport_send_pkt_work(struct work_struct *work)
 {
@@ -171,80 +168,22 @@ virtio_transport_send_pkt_work(struct work_struct *work)
 	vq = vsock->vqs[VSOCK_VQ_TX];
 
 	for (;;) {
-<<<<<<< HEAD
-		int ret, in_sg = 0, out_sg = 0;
-		struct scatterlist **sgs;
-		struct sk_buff *skb;
-		bool reply;
-=======
 		struct sk_buff *skb;
 		bool reply;
 		int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		skb = virtio_vsock_skb_dequeue(&vsock->send_pkt_queue);
 		if (!skb)
 			break;
 
 		reply = virtio_vsock_skb_reply(skb);
-<<<<<<< HEAD
-		sgs = vsock->out_sgs;
-		sg_init_one(sgs[out_sg], virtio_vsock_hdr(skb),
-			    sizeof(*virtio_vsock_hdr(skb)));
-		out_sg++;
-
-		if (!skb_is_nonlinear(skb)) {
-			if (skb->len > 0) {
-				sg_init_one(sgs[out_sg], skb->data, skb->len);
-				out_sg++;
-			}
-		} else {
-			struct skb_shared_info *si;
-			int i;
-
-			/* If skb is nonlinear, then its buffer must contain
-			 * only header and nothing more. Data is stored in
-			 * the fragged part.
-			 */
-			WARN_ON_ONCE(skb_headroom(skb) != sizeof(*virtio_vsock_hdr(skb)));
-
-			si = skb_shinfo(skb);
-
-			for (i = 0; i < si->nr_frags; i++) {
-				skb_frag_t *skb_frag = &si->frags[i];
-				void *va;
-
-				/* We will use 'page_to_virt()' for the userspace page
-				 * here, because virtio or dma-mapping layers will call
-				 * 'virt_to_phys()' later to fill the buffer descriptor.
-				 * We don't touch memory at "virtual" address of this page.
-				 */
-				va = page_to_virt(skb_frag_page(skb_frag));
-				sg_init_one(sgs[out_sg],
-					    va + skb_frag_off(skb_frag),
-					    skb_frag_size(skb_frag));
-				out_sg++;
-			}
-		}
-
-		ret = virtqueue_add_sgs(vq, sgs, out_sg, in_sg, skb, GFP_KERNEL);
-		/* Usually this means that there is no more space available in
-		 * the vq
-		 */
-=======
 
 		ret = virtio_transport_send_skb(skb, vq, vsock, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0) {
 			virtio_vsock_skb_queue_head(&vsock->send_pkt_queue, skb);
 			break;
 		}
 
-<<<<<<< HEAD
-		virtio_transport_deliver_tap_pkt(skb);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (reply) {
 			struct virtqueue *rx_vq = vsock->vqs[VSOCK_VQ_RX];
 			int val;
@@ -269,8 +208,6 @@ out:
 		queue_work(virtio_vsock_workqueue, &vsock->rx_work);
 }
 
-<<<<<<< HEAD
-=======
 /* Caller need to hold RCU for vsock.
  * Returns 0 if the packet is successfully put on the vq.
  */
@@ -293,7 +230,6 @@ static int virtio_transport_send_skb_fast_path(struct virtio_vsock *vsock, struc
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int
 virtio_transport_send_pkt(struct sk_buff *skb)
 {
@@ -317,13 +253,6 @@ virtio_transport_send_pkt(struct sk_buff *skb)
 		goto out_rcu;
 	}
 
-<<<<<<< HEAD
-	if (virtio_vsock_skb_reply(skb))
-		atomic_inc(&vsock->queued_replies);
-
-	virtio_vsock_skb_queue_tail(&vsock->send_pkt_queue, skb);
-	queue_work(virtio_vsock_workqueue, &vsock->send_pkt_work);
-=======
 	/* If send_pkt_queue is empty, we can safely bypass this queue
 	 * because packet order is maintained and (try) to put the packet
 	 * on the virtqueue using virtio_transport_send_skb_fast_path.
@@ -338,7 +267,6 @@ virtio_transport_send_pkt(struct sk_buff *skb)
 		virtio_vsock_skb_queue_tail(&vsock->send_pkt_queue, skb);
 		queue_work(virtio_vsock_workqueue, &vsock->send_pkt_work);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out_rcu:
 	rcu_read_unlock();
@@ -427,11 +355,7 @@ static void virtio_transport_tx_work(struct work_struct *work)
 
 		virtqueue_disable_cb(vq);
 		while ((skb = virtqueue_get_buf(vq, &len)) != NULL) {
-<<<<<<< HEAD
-			consume_skb(skb);
-=======
 			virtio_transport_consume_skb_sent(skb, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			added = true;
 		}
 	} while (!virtqueue_enable_cb(vq));
@@ -660,11 +584,8 @@ static struct virtio_transport virtio_transport = {
 		.notify_buffer_size       = virtio_transport_notify_buffer_size,
 		.notify_set_rcvlowat      = virtio_transport_notify_set_rcvlowat,
 
-<<<<<<< HEAD
-=======
 		.unsent_bytes             = virtio_transport_unsent_bytes,
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.read_skb = virtio_transport_read_skb,
 	},
 

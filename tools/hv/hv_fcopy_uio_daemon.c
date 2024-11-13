@@ -296,8 +296,6 @@ static int hv_fcopy_start(struct hv_start_fcopy *smsg_in)
 	file_name = (char *)malloc(file_size * sizeof(char));
 	path_name = (char *)malloc(path_size * sizeof(char));
 
-<<<<<<< HEAD
-=======
 	if (!file_name || !path_name) {
 		free(file_name);
 		free(path_name);
@@ -305,7 +303,6 @@ static int hv_fcopy_start(struct hv_start_fcopy *smsg_in)
 		return HV_E_FAIL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wcstoutf8(file_name, (__u16 *)in_file_name, file_size);
 	wcstoutf8(path_name, (__u16 *)in_path_name, path_size);
 

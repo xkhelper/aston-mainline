@@ -13,10 +13,7 @@
 #include <linux/dma/ti-cppi5.h>
 #include <linux/etherdevice.h>
 #include <linux/genalloc.h>
-<<<<<<< HEAD
-=======
 #include <linux/if_hsr.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/if_vlan.h>
 #include <linux/interrupt.h>
 #include <linux/kernel.h>
@@ -44,14 +41,11 @@
 #define DEFAULT_PORT_MASK	1
 #define DEFAULT_UNTAG_MASK	1
 
-<<<<<<< HEAD
-=======
 #define NETIF_PRUETH_HSR_OFFLOAD_FEATURES	(NETIF_F_HW_HSR_FWD | \
 						 NETIF_F_HW_HSR_DUP | \
 						 NETIF_F_HW_HSR_TAG_INS | \
 						 NETIF_F_HW_HSR_TAG_RM)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* CTRLMMR_ICSSG_RGMII_CTRL register bits */
 #define ICSSG_CTRL_RGMII_ID_MODE                BIT(24)
 
@@ -130,8 +124,6 @@ static irqreturn_t prueth_tx_ts_irq(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
-=======
 static struct icssg_firmwares icssg_hsr_firmwares[] = {
 	{
 		.pru = "ti-pruss/am65x-sr2-pru0-pruhsr-fw.elf",
@@ -145,7 +137,6 @@ static struct icssg_firmwares icssg_hsr_firmwares[] = {
 	}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct icssg_firmwares icssg_switch_firmwares[] = {
 	{
 		.pru = "ti-pruss/am65x-sr2-pru0-prusw-fw.elf",
@@ -180,11 +171,8 @@ static int prueth_emac_start(struct prueth *prueth, struct prueth_emac *emac)
 
 	if (prueth->is_switch_mode)
 		firmwares = icssg_switch_firmwares;
-<<<<<<< HEAD
-=======
 	else if (prueth->is_hsr_offload_mode)
 		firmwares = icssg_hsr_firmwares;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		firmwares = icssg_emac_firmwares;
 
@@ -398,12 +386,8 @@ static void prueth_iep_settime(void *clockops_data, u64 ns)
 	sc_desc.cyclecounter0_set = cyclecount & GENMASK(31, 0);
 	sc_desc.cyclecounter1_set = (cyclecount & GENMASK(63, 32)) >> 32;
 	sc_desc.iepcount_set = ns % cycletime;
-<<<<<<< HEAD
-	sc_desc.CMP0_current = cycletime - 4; //Count from 0 to (cycle time)-4
-=======
 	/* Count from 0 to (cycle time) - emac->iep->def_inc */
 	sc_desc.CMP0_current = cycletime - emac->iep->def_inc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memcpy_toio(sc_descp, &sc_desc, sizeof(sc_desc));
 
@@ -508,8 +492,6 @@ static int icssg_prueth_del_mcast(struct net_device *ndev, const u8 *addr)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int icssg_prueth_hsr_add_mcast(struct net_device *ndev, const u8 *addr)
 {
 	struct prueth_emac *emac = netdev_priv(ndev);
@@ -540,7 +522,6 @@ static int icssg_prueth_hsr_del_mcast(struct net_device *ndev, const u8 *addr)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * emac_ndo_open - EMAC device open
  * @ndev: network adapter device
@@ -701,14 +682,10 @@ static int emac_ndo_stop(struct net_device *ndev)
 
 	icssg_class_disable(prueth->miig_rt, prueth_emac_slice(emac));
 
-<<<<<<< HEAD
-	__dev_mc_unsync(ndev, icssg_prueth_del_mcast);
-=======
 	if (emac->prueth->is_hsr_offload_mode)
 		__dev_mc_unsync(ndev, icssg_prueth_hsr_del_mcast);
 	else
 		__dev_mc_unsync(ndev, icssg_prueth_del_mcast);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	atomic_set(&emac->tdown_cnt, emac->tx_ch_num);
 	/* ensure new tdown_cnt value is visible */
@@ -786,16 +763,12 @@ static void emac_ndo_set_rx_mode_work(struct work_struct *work)
 		return;
 	}
 
-<<<<<<< HEAD
-	__dev_mc_sync(ndev, icssg_prueth_add_mcast, icssg_prueth_del_mcast);
-=======
 	if (emac->prueth->is_hsr_offload_mode)
 		__dev_mc_sync(ndev, icssg_prueth_hsr_add_mcast,
 			      icssg_prueth_hsr_del_mcast);
 	else
 		__dev_mc_sync(ndev, icssg_prueth_add_mcast,
 			      icssg_prueth_del_mcast);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -812,8 +785,6 @@ static void emac_ndo_set_rx_mode(struct net_device *ndev)
 	queue_work(emac->cmd_wq, &emac->rx_mode_work);
 }
 
-<<<<<<< HEAD
-=======
 static netdev_features_t emac_ndo_fix_features(struct net_device *ndev,
 					       netdev_features_t features)
 {
@@ -837,7 +808,6 @@ static netdev_features_t emac_ndo_fix_features(struct net_device *ndev,
 	return features;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct net_device_ops emac_netdev_ops = {
 	.ndo_open = emac_ndo_open,
 	.ndo_stop = emac_ndo_stop,
@@ -849,10 +819,7 @@ static const struct net_device_ops emac_netdev_ops = {
 	.ndo_eth_ioctl = icssg_ndo_ioctl,
 	.ndo_get_stats64 = icssg_ndo_get_stats64,
 	.ndo_get_phys_port_name = icssg_ndo_get_phys_port_name,
-<<<<<<< HEAD
-=======
 	.ndo_fix_features = emac_ndo_fix_features,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int prueth_netdev_init(struct prueth *prueth,
@@ -974,20 +941,14 @@ static int prueth_netdev_init(struct prueth *prueth,
 	}
 	ether_addr_copy(emac->mac_addr, ndev->dev_addr);
 
-<<<<<<< HEAD
-=======
 	ndev->dev.of_node = eth_node;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ndev->min_mtu = PRUETH_MIN_PKT_SIZE;
 	ndev->max_mtu = PRUETH_MAX_MTU;
 	ndev->netdev_ops = &emac_netdev_ops;
 	ndev->ethtool_ops = &icssg_ethtool_ops;
 	ndev->hw_features = NETIF_F_SG;
 	ndev->features = ndev->hw_features;
-<<<<<<< HEAD
-=======
 	ndev->hw_features |= NETIF_PRUETH_HSR_OFFLOAD_FEATURES;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	netif_napi_add(ndev, &emac->napi_rx, icssg_napi_rx_poll);
 	hrtimer_init(&emac->rx_hrtimer, CLOCK_MONOTONIC,
@@ -1076,11 +1037,7 @@ static void prueth_emac_restart(struct prueth *prueth)
 	netif_device_attach(emac1->ndev);
 }
 
-<<<<<<< HEAD
-static void icssg_enable_switch_mode(struct prueth *prueth)
-=======
 static void icssg_change_mode(struct prueth *prueth)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct prueth_emac *emac;
 	int mac;
@@ -1089,8 +1046,6 @@ static void icssg_change_mode(struct prueth *prueth)
 
 	for (mac = PRUETH_MAC0; mac < PRUETH_NUM_MACS; mac++) {
 		emac = prueth->emac[mac];
-<<<<<<< HEAD
-=======
 		if (prueth->is_hsr_offload_mode) {
 			if (emac->ndev->features & NETIF_F_HW_HSR_TAG_RM)
 				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_ENABLE);
@@ -1098,7 +1053,6 @@ static void icssg_change_mode(struct prueth *prueth)
 				icssg_set_port_state(emac, ICSSG_EMAC_HSR_RX_OFFLOAD_DISABLE);
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (netif_running(emac->ndev)) {
 			icssg_fdb_add_del(emac, eth_stp_addr, prueth->default_vlan,
 					  ICSSG_FDB_ENTRY_P0_MEMBERSHIP |
@@ -1110,10 +1064,6 @@ static void icssg_change_mode(struct prueth *prueth)
 					  BIT(emac->port_id) | DEFAULT_PORT_MASK,
 					  BIT(emac->port_id) | DEFAULT_UNTAG_MASK,
 					  true);
-<<<<<<< HEAD
-			icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
-			icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
-=======
 			if (prueth->is_hsr_offload_mode)
 				icssg_vtbl_modify(emac, DEFAULT_VID,
 						  DEFAULT_PORT_MASK,
@@ -1121,7 +1071,6 @@ static void icssg_change_mode(struct prueth *prueth)
 			icssg_set_pvid(prueth, emac->port_vlan, emac->port_id);
 			if (prueth->is_switch_mode)
 				icssg_set_port_state(emac, ICSSG_EMAC_PORT_VLAN_AWARE_ENABLE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -1159,11 +1108,7 @@ static int prueth_netdevice_port_link(struct net_device *ndev,
 			prueth->is_switch_mode = true;
 			prueth->default_vlan = 1;
 			emac->port_vlan = prueth->default_vlan;
-<<<<<<< HEAD
-			icssg_enable_switch_mode(prueth);
-=======
 			icssg_change_mode(prueth);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -1191,8 +1136,6 @@ static void prueth_netdevice_port_unlink(struct net_device *ndev)
 		prueth->hw_bridge_dev = NULL;
 }
 
-<<<<<<< HEAD
-=======
 static int prueth_hsr_port_link(struct net_device *ndev)
 {
 	struct prueth_emac *emac = netdev_priv(ndev);
@@ -1248,7 +1191,6 @@ static void prueth_hsr_port_unlink(struct net_device *ndev)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* netdev notifier */
 static int prueth_netdevice_event(struct notifier_block *unused,
 				  unsigned long event, void *ptr)
@@ -1256,11 +1198,8 @@ static int prueth_netdevice_event(struct notifier_block *unused,
 	struct netlink_ext_ack *extack = netdev_notifier_info_to_extack(ptr);
 	struct net_device *ndev = netdev_notifier_info_to_dev(ptr);
 	struct netdev_notifier_changeupper_info *info;
-<<<<<<< HEAD
-=======
 	struct prueth_emac *emac = netdev_priv(ndev);
 	struct prueth *prueth = emac->prueth;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = NOTIFY_DONE;
 
 	if (ndev->netdev_ops != &emac_netdev_ops)
@@ -1270,8 +1209,6 @@ static int prueth_netdevice_event(struct notifier_block *unused,
 	case NETDEV_CHANGEUPPER:
 		info = ptr;
 
-<<<<<<< HEAD
-=======
 		if ((ndev->features & NETIF_PRUETH_HSR_OFFLOAD_FEATURES) &&
 		    is_hsr_master(info->upper_dev)) {
 			if (info->linking) {
@@ -1291,7 +1228,6 @@ static int prueth_netdevice_event(struct notifier_block *unused,
 			}
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (netif_is_bridge_master(info->upper_dev)) {
 			if (info->linking)
 				ret = prueth_netdevice_port_link(ndev, info->upper_dev, extack);
@@ -1419,15 +1355,12 @@ static int prueth_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-=======
 	prueth->pa_stats = syscon_regmap_lookup_by_phandle(np, "ti,pa-stats");
 	if (IS_ERR(prueth->pa_stats)) {
 		dev_err(dev, "couldn't get ti,pa-stats syscon regmap\n");
 		prueth->pa_stats = NULL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (eth0_node) {
 		ret = prueth_get_cores(prueth, ICSS_SLICE0, false);
 		if (ret)
@@ -1509,10 +1442,7 @@ static int prueth_probe(struct platform_device *pdev)
 		icss_iep_init_fw(prueth->iep1);
 	}
 
-<<<<<<< HEAD
-=======
 	spin_lock_init(&prueth->vtbl_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* setup netdev interfaces */
 	if (eth0_node) {
 		ret = prueth_netdev_init(prueth, eth0_node);
@@ -1522,13 +1452,8 @@ static int prueth_probe(struct platform_device *pdev)
 			goto exit_iep;
 		}
 
-<<<<<<< HEAD
-		if (of_find_property(eth0_node, "ti,half-duplex-capable", NULL))
-			prueth->emac[PRUETH_MAC0]->half_duplex = 1;
-=======
 		prueth->emac[PRUETH_MAC0]->half_duplex =
 			of_property_read_bool(eth0_node, "ti,half-duplex-capable");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		prueth->emac[PRUETH_MAC0]->iep = prueth->iep0;
 	}
@@ -1541,13 +1466,8 @@ static int prueth_probe(struct platform_device *pdev)
 			goto netdev_exit;
 		}
 
-<<<<<<< HEAD
-		if (of_find_property(eth1_node, "ti,half-duplex-capable", NULL))
-			prueth->emac[PRUETH_MAC1]->half_duplex = 1;
-=======
 		prueth->emac[PRUETH_MAC1]->half_duplex =
 			of_property_read_bool(eth1_node, "ti,half-duplex-capable");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		prueth->emac[PRUETH_MAC1]->iep = prueth->iep0;
 	}

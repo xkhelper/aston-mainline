@@ -642,12 +642,6 @@ static u64 get_max_boost_ratio(unsigned int cpu)
 		return 0;
 	}
 
-<<<<<<< HEAD
-	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
-		highest_perf = amd_get_highest_perf();
-	else
-		highest_perf = perf_caps.highest_perf;
-=======
 	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD) {
 		ret = amd_get_boost_ratio_numerator(cpu, &highest_perf);
 		if (ret) {
@@ -658,7 +652,6 @@ static u64 get_max_boost_ratio(unsigned int cpu)
 	} else {
 		highest_perf = perf_caps.highest_perf;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	nominal_perf = perf_caps.nominal_perf;
 

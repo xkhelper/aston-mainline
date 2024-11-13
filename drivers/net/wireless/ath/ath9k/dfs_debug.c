@@ -116,11 +116,7 @@ static ssize_t write_file_simulate_radar(struct file *file,
 {
 	struct ath_softc *sc = file->private_data;
 
-<<<<<<< HEAD
-	ieee80211_radar_detected(sc->hw);
-=======
 	ieee80211_radar_detected(sc->hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return count;
 }

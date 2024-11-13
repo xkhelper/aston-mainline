@@ -51,20 +51,12 @@ static int do_active_device(const struct ctl_table *table, int write,
 	
 	for (dev = port->devices; dev ; dev = dev->next) {
 		if(dev == port->cad) {
-<<<<<<< HEAD
-			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
-=======
 			len += scnprintf(buffer, sizeof(buffer), "%s\n", dev->name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	if(!len) {
-<<<<<<< HEAD
-		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
-=======
 		len += scnprintf(buffer, sizeof(buffer), "%s\n", "none");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (len > *lenp)
@@ -95,21 +87,6 @@ static int do_autoprobe(const struct ctl_table *table, int write,
 	}
 	
 	if ((str = info->class_name) != NULL)
-<<<<<<< HEAD
-		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
-
-	if ((str = info->model) != NULL)
-		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
-
-	if ((str = info->mfr) != NULL)
-		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
-
-	if ((str = info->description) != NULL)
-		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
-
-	if ((str = info->cmdset) != NULL)
-		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
-=======
 		len += scnprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
 
 	if ((str = info->model) != NULL)
@@ -123,7 +100,6 @@ static int do_autoprobe(const struct ctl_table *table, int write,
 
 	if ((str = info->cmdset) != NULL)
 		len += scnprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (len > *lenp)
 		len = *lenp;
@@ -152,11 +128,7 @@ static int do_hardware_base_addr(const struct ctl_table *table, int write,
 	if (write) /* permissions prevent this anyway */
 		return -EACCES;
 
-<<<<<<< HEAD
-	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
-=======
 	len += scnprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (len > *lenp)
 		len = *lenp;
@@ -183,11 +155,7 @@ static int do_hardware_irq(const struct ctl_table *table, int write,
 	if (write) /* permissions prevent this anyway */
 		return -EACCES;
 
-<<<<<<< HEAD
-	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
-=======
 	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->irq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (len > *lenp)
 		len = *lenp;
@@ -214,11 +182,7 @@ static int do_hardware_dma(const struct ctl_table *table, int write,
 	if (write) /* permissions prevent this anyway */
 		return -EACCES;
 
-<<<<<<< HEAD
-	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
-=======
 	len += scnprintf (buffer, sizeof(buffer), "%d\n", port->dma);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (len > *lenp)
 		len = *lenp;
@@ -249,11 +213,7 @@ static int do_hardware_modes(const struct ctl_table *table, int write,
 #define printmode(x)							\
 do {									\
 	if (port->modes & PARPORT_MODE_##x)				\
-<<<<<<< HEAD
-		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
-=======
 		len += scnprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } while (0)
 		int f = 0;
 		printmode(PCSPP);

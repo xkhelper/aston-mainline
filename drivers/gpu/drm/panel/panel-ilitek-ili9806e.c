@@ -380,9 +380,6 @@ static const struct panel_desc com35h3p70ulc_desc = {
 	.lanes = 2,
 };
 
-<<<<<<< HEAD
-static const struct of_device_id ili9806e_of_match[] = {
-=======
 static void dmt028vghmcmi_1d_init(struct mipi_dsi_multi_context *ctx)
 {
 	mipi_dsi_dcs_write_seq_multi(ctx, 0xff, 0xff, 0x98, 0x06, 0x04, 0x01);
@@ -549,7 +546,6 @@ static const struct panel_desc dmt028vghmcmi_1d_desc = {
 
 static const struct of_device_id ili9806e_of_match[] = {
 	{ .compatible = "densitron,dmt028vghmcmi-1d", .data = &dmt028vghmcmi_1d_desc },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "ortustech,com35h3p70ulc", .data = &com35h3p70ulc_desc },
 	{ }
 };

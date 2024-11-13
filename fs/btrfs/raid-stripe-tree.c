@@ -66,14 +66,11 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 		if (ret)
 			break;
 
-<<<<<<< HEAD
-=======
 		start += key.offset;
 		length -= key.offset;
 		if (length == 0)
 			break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		btrfs_release_path(path);
 	}
 
@@ -81,8 +78,6 @@ int btrfs_delete_raid_extent(struct btrfs_trans_handle *trans, u64 start, u64 le
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int update_raid_extent_item(struct btrfs_trans_handle *trans,
 				   struct btrfs_key *key,
 				   struct btrfs_stripe_extent *stripe_extent,
@@ -113,7 +108,6 @@ static int update_raid_extent_item(struct btrfs_trans_handle *trans,
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int btrfs_insert_one_raid_extent(struct btrfs_trans_handle *trans,
 					struct btrfs_io_context *bioc)
 {
@@ -153,12 +147,9 @@ static int btrfs_insert_one_raid_extent(struct btrfs_trans_handle *trans,
 
 	ret = btrfs_insert_item(trans, stripe_root, &stripe_key, stripe_extent,
 				item_size);
-<<<<<<< HEAD
-=======
 	if (ret == -EEXIST)
 		ret = update_raid_extent_item(trans, &stripe_key, stripe_extent,
 					      item_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		btrfs_abort_transaction(trans, ret);
 
@@ -219,11 +210,7 @@ int btrfs_get_raid_extent_offset(struct btrfs_fs_info *fs_info,
 	if (!path)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	if (stripe->is_scrub) {
-=======
 	if (stripe->rst_search_commit_root) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		path->skip_locking = 1;
 		path->search_commit_root = 1;
 	}
@@ -296,15 +283,8 @@ int btrfs_get_raid_extent_offset(struct btrfs_fs_info *fs_info,
 out:
 	if (ret > 0)
 		ret = -ENOENT;
-<<<<<<< HEAD
-	if (ret && ret != -EIO && !stripe->is_scrub) {
-		if (IS_ENABLED(CONFIG_BTRFS_DEBUG))
-			btrfs_print_tree(leaf, 1);
-		btrfs_err(fs_info,
-=======
 	if (ret && ret != -EIO && !stripe->rst_search_commit_root) {
 		btrfs_debug(fs_info,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"cannot find raid-stripe for logical [%llu, %llu] devid %llu, profile %s",
 			  logical, logical + *length, stripe->dev->devid,
 			  btrfs_bg_type_to_raid_name(map_type));

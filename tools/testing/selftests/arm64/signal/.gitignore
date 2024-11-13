@@ -2,10 +2,7 @@
 mangle_*
 fake_sigreturn_*
 fpmr_*
-<<<<<<< HEAD
-=======
 poe_*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 sme_*
 ssve_*
 sve_*

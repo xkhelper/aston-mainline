@@ -1691,11 +1691,7 @@ static int sienna_cichlid_get_power_profile_mode(struct smu_context *smu, char *
 		size += sysfs_emit_at(buf, size, "%19s %d(%13s) %7d %7d %7d %7d %7d %7d %7d %7d %7d\n",
 			" ",
 			2,
-<<<<<<< HEAD
-			"MEMLK",
-=======
 			"MEMCLK",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			activity_monitor->Mem_FPS,
 			activity_monitor->Mem_MinFreqStep,
 			activity_monitor->Mem_MinActiveFreqType,
@@ -1760,11 +1756,7 @@ static int sienna_cichlid_set_power_profile_mode(struct smu_context *smu, long *
 			activity_monitor->Fclk_PD_Data_error_coeff = input[8];
 			activity_monitor->Fclk_PD_Data_error_rate_coeff = input[9];
 			break;
-<<<<<<< HEAD
-		case 2: /* Memlk */
-=======
 		case 2: /* Memclk */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			activity_monitor->Mem_FPS = input[1];
 			activity_monitor->Mem_MinFreqStep = input[2];
 			activity_monitor->Mem_MinActiveFreqType = input[3];
@@ -1794,12 +1786,6 @@ static int sienna_cichlid_set_power_profile_mode(struct smu_context *smu, long *
 						       smu->power_profile_mode);
 	if (workload_type < 0)
 		return -EINVAL;
-<<<<<<< HEAD
-	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
-				    1 << workload_type, NULL);
-	if (ret)
-		dev_err(smu->adev->dev, "[%s] Failed to set work load mask!", __func__);
-=======
 
 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
 				    smu->workload_mask, NULL);
@@ -1807,7 +1793,6 @@ static int sienna_cichlid_set_power_profile_mode(struct smu_context *smu, long *
 		dev_err(smu->adev->dev, "[%s] Failed to set work load mask!", __func__);
 	else
 		smu_cmn_assign_power_profile(smu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

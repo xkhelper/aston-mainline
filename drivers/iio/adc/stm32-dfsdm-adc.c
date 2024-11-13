@@ -9,10 +9,7 @@
 #include <linux/dmaengine.h>
 #include <linux/dma-mapping.h>
 #include <linux/iio/adc/stm32-dfsdm-adc.h>
-<<<<<<< HEAD
-=======
 #include <linux/iio/backend.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/iio/buffer.h>
 #include <linux/iio/hw-consumer.h>
 #include <linux/iio/sysfs.h>
@@ -82,10 +79,7 @@ struct stm32_dfsdm_adc {
 	/* ADC specific */
 	unsigned int oversamp;
 	struct iio_hw_consumer *hwc;
-<<<<<<< HEAD
-=======
 	struct iio_backend **backend;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct completion completion;
 	u32 *buffer;
 
@@ -674,8 +668,6 @@ static int stm32_dfsdm_channel_parse_of(struct stm32_dfsdm *dfsdm,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int stm32_dfsdm_generic_channel_parse_of(struct stm32_dfsdm *dfsdm,
 						struct iio_dev *indio_dev,
 						struct iio_chan_spec *ch,
@@ -744,7 +736,6 @@ static int stm32_dfsdm_generic_channel_parse_of(struct stm32_dfsdm *dfsdm,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t dfsdm_adc_audio_get_spiclk(struct iio_dev *indio_dev,
 					  uintptr_t priv,
 					  const struct iio_chan_spec *chan,
@@ -1066,11 +1057,7 @@ static int stm32_dfsdm_update_scan_mode(struct iio_dev *indio_dev,
 {
 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
 
-<<<<<<< HEAD
-	adc->nconv = bitmap_weight(scan_mask, indio_dev->masklength);
-=======
 	adc->nconv = bitmap_weight(scan_mask, iio_get_masklength(indio_dev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	adc->smask = *scan_mask;
 
 	dev_dbg(&indio_dev->dev, "nconv=%d mask=%lx\n", adc->nconv, *scan_mask);
@@ -1081,10 +1068,7 @@ static int stm32_dfsdm_update_scan_mode(struct iio_dev *indio_dev,
 static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
 {
 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-<<<<<<< HEAD
-=======
 	int i = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	/* Reset adc buffer index */
@@ -1096,8 +1080,6 @@ static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
 			return ret;
 	}
 
-<<<<<<< HEAD
-=======
 	if (adc->backend) {
 		while (adc->backend[i]) {
 			ret = iio_backend_enable(adc->backend[i]);
@@ -1107,7 +1089,6 @@ static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = stm32_dfsdm_start_dfsdm(adc->dfsdm);
 	if (ret < 0)
 		goto err_stop_hwc;
@@ -1140,10 +1121,7 @@ err_stop_hwc:
 static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
 {
 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-<<<<<<< HEAD
-=======
 	int i = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	stm32_dfsdm_stop_conv(indio_dev);
 
@@ -1151,8 +1129,6 @@ static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
 
 	stm32_dfsdm_stop_dfsdm(adc->dfsdm);
 
-<<<<<<< HEAD
-=======
 	if (adc->backend) {
 		while (adc->backend[i]) {
 			iio_backend_disable(adc->backend[i]);
@@ -1160,7 +1136,6 @@ static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (adc->hwc)
 		iio_hw_consumer_disable(adc->hwc);
 
@@ -1333,10 +1308,6 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
 				int *val2, long mask)
 {
 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-<<<<<<< HEAD
-	int ret;
-
-=======
 
 	struct stm32_dfsdm_filter *fl = &adc->dfsdm->fl_list[adc->fl_id];
 	struct stm32_dfsdm_filter_osr *flo = &fl->flo[fl->fast];
@@ -1347,20 +1318,15 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
 	if (flo->lshift < chan->scan_type.shift)
 		max = flo->max >> (chan->scan_type.shift - flo->lshift);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
 		ret = iio_device_claim_direct_mode(indio_dev);
 		if (ret)
 			return ret;
-<<<<<<< HEAD
-		ret = iio_hw_consumer_enable(adc->hwc);
-=======
 		if (adc->hwc)
 			ret = iio_hw_consumer_enable(adc->hwc);
 		if (adc->backend)
 			ret = iio_backend_enable(adc->backend[idx]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0) {
 			dev_err(&indio_dev->dev,
 				"%s: IIO enable failed (channel %d)\n",
@@ -1369,14 +1335,10 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
 			return ret;
 		}
 		ret = stm32_dfsdm_single_conv(indio_dev, chan, val);
-<<<<<<< HEAD
-		iio_hw_consumer_disable(adc->hwc);
-=======
 		if (adc->hwc)
 			iio_hw_consumer_disable(adc->hwc);
 		if (adc->backend)
 			iio_backend_disable(adc->backend[idx]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0) {
 			dev_err(&indio_dev->dev,
 				"%s: Conversion failed (channel %d)\n",
@@ -1396,8 +1358,6 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
 		*val = adc->sample_freq;
 
 		return IIO_VAL_INT;
-<<<<<<< HEAD
-=======
 
 	case IIO_CHAN_INFO_SCALE:
 		/*
@@ -1442,7 +1402,6 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
 				*val += max;
 		}
 		return IIO_VAL_INT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return -EINVAL;
@@ -1507,11 +1466,7 @@ static const struct iio_chan_spec_ext_info dfsdm_adc_audio_ext_info[] = {
 		.read = dfsdm_adc_audio_get_spiclk,
 		.write = dfsdm_adc_audio_set_spiclk,
 	},
-<<<<<<< HEAD
-	{},
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void stm32_dfsdm_dma_release(struct iio_dev *indio_dev)
@@ -1553,29 +1508,18 @@ static int stm32_dfsdm_dma_request(struct device *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
-					 struct iio_chan_spec *ch)
-=======
 static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev, struct iio_chan_spec *ch,
 					 struct fwnode_handle *child)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
 	int ret;
 
-<<<<<<< HEAD
-	ret = stm32_dfsdm_channel_parse_of(adc->dfsdm, indio_dev, ch);
-	if (ret < 0)
-		return ret;
-=======
 	if (child)
 		ret = stm32_dfsdm_generic_channel_parse_of(adc->dfsdm, indio_dev, ch, child);
 	else /* Legacy binding */
 		ret = stm32_dfsdm_channel_parse_of(adc->dfsdm, indio_dev, ch);
 	if (ret < 0)
 		return dev_err_probe(&indio_dev->dev, ret, "Failed to parse channel\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ch->type = IIO_VOLTAGE;
 	ch->indexed = 1;
@@ -1584,9 +1528,6 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev, struct iio_c
 	 * IIO_CHAN_INFO_RAW: used to compute regular conversion
 	 * IIO_CHAN_INFO_OVERSAMPLING_RATIO: used to set oversampling
 	 */
-<<<<<<< HEAD
-	ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
-=======
 	if (child) {
 		ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
 					 BIT(IIO_CHAN_INFO_SCALE) |
@@ -1596,16 +1537,12 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev, struct iio_c
 		ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ch->info_mask_shared_by_all = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
 					BIT(IIO_CHAN_INFO_SAMP_FREQ);
 
 	if (adc->dev_data->type == DFSDM_AUDIO) {
 		ch->ext_info = dfsdm_adc_audio_ext_info;
-<<<<<<< HEAD
-=======
 		ch->scan_index = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		ch->scan_type.shift = 8;
 	}
@@ -1617,8 +1554,6 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev, struct iio_c
 					  &adc->dfsdm->ch_list[ch->channel]);
 }
 
-<<<<<<< HEAD
-=======
 static int stm32_dfsdm_chan_init(struct iio_dev *indio_dev, struct iio_chan_spec *channels)
 {
 	int num_ch = indio_dev->num_channels;
@@ -1655,15 +1590,11 @@ static int stm32_dfsdm_generic_chan_init(struct iio_dev *indio_dev, struct iio_c
 	return chan_idx;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int stm32_dfsdm_audio_init(struct device *dev, struct iio_dev *indio_dev)
 {
 	struct iio_chan_spec *ch;
 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
 	struct stm32_dfsdm_channel *d_ch;
-<<<<<<< HEAD
-	int ret;
-=======
 	bool legacy = false;
 	int num_ch, ret;
 
@@ -1671,17 +1602,11 @@ static int stm32_dfsdm_audio_init(struct device *dev, struct iio_dev *indio_dev)
 	num_ch = of_property_count_u32_elems(indio_dev->dev.of_node, "st,adc-channels");
 	if (num_ch == 1)
 		legacy = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ch = devm_kzalloc(&indio_dev->dev, sizeof(*ch), GFP_KERNEL);
 	if (!ch)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	ch->scan_index = 0;
-
-	ret = stm32_dfsdm_adc_chan_init_one(indio_dev, ch);
-=======
 	indio_dev->num_channels = 1;
 	indio_dev->channels = ch;
 
@@ -1690,7 +1615,6 @@ static int stm32_dfsdm_audio_init(struct device *dev, struct iio_dev *indio_dev)
 	else
 		ret = stm32_dfsdm_generic_chan_init(indio_dev, ch);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		dev_err(&indio_dev->dev, "Channels init failed\n");
 		return ret;
@@ -1701,12 +1625,6 @@ static int stm32_dfsdm_audio_init(struct device *dev, struct iio_dev *indio_dev)
 	if (d_ch->src != DFSDM_CHANNEL_SPI_CLOCK_EXTERNAL)
 		adc->spi_freq = adc->dfsdm->spi_master_freq;
 
-<<<<<<< HEAD
-	indio_dev->num_channels = 1;
-	indio_dev->channels = ch;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return stm32_dfsdm_dma_request(dev, indio_dev);
 }
 
@@ -1714,50 +1632,14 @@ static int stm32_dfsdm_adc_init(struct device *dev, struct iio_dev *indio_dev)
 {
 	struct iio_chan_spec *ch;
 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-<<<<<<< HEAD
-	int num_ch;
-	int ret, chan_idx;
-=======
 	int num_ch, ret;
 	bool legacy = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	adc->oversamp = DFSDM_DEFAULT_OVERSAMPLING;
 	ret = stm32_dfsdm_compute_all_osrs(indio_dev, adc->oversamp);
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	num_ch = of_property_count_u32_elems(indio_dev->dev.of_node,
-					     "st,adc-channels");
-	if (num_ch < 0 || num_ch > adc->dfsdm->num_chs) {
-		dev_err(&indio_dev->dev, "Bad st,adc-channels\n");
-		return num_ch < 0 ? num_ch : -EINVAL;
-	}
-
-	/* Bind to SD modulator IIO device */
-	adc->hwc = devm_iio_hw_consumer_alloc(&indio_dev->dev);
-	if (IS_ERR(adc->hwc))
-		return -EPROBE_DEFER;
-
-	ch = devm_kcalloc(&indio_dev->dev, num_ch, sizeof(*ch),
-			  GFP_KERNEL);
-	if (!ch)
-		return -ENOMEM;
-
-	for (chan_idx = 0; chan_idx < num_ch; chan_idx++) {
-		ch[chan_idx].scan_index = chan_idx;
-		ret = stm32_dfsdm_adc_chan_init_one(indio_dev, &ch[chan_idx]);
-		if (ret < 0) {
-			dev_err(&indio_dev->dev, "Channels init failed\n");
-			return ret;
-		}
-	}
-
-	indio_dev->num_channels = num_ch;
-	indio_dev->channels = ch;
-
-=======
 	num_ch = device_get_child_node_count(&indio_dev->dev);
 	if (!num_ch) {
 		/* No channels nodes found. Assume legacy binding */
@@ -1805,7 +1687,6 @@ static int stm32_dfsdm_adc_init(struct device *dev, struct iio_dev *indio_dev)
 	if (ret < 0)
 		return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	init_completion(&adc->completion);
 
 	/* Optionally request DMA */
@@ -2016,7 +1897,4 @@ module_platform_driver(stm32_dfsdm_adc_driver);
 MODULE_DESCRIPTION("STM32 sigma delta ADC");
 MODULE_AUTHOR("Arnaud Pouliquen <arnaud.pouliquen@st.com>");
 MODULE_LICENSE("GPL v2");
-<<<<<<< HEAD
-=======
 MODULE_IMPORT_NS(IIO_BACKEND);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

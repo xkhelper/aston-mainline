@@ -815,11 +815,7 @@ plip_send_packet(struct net_device *dev, struct net_local *nl,
 				return HS_TIMEOUT;
 			}
 		}
-<<<<<<< HEAD
-		break;
-=======
 		fallthrough;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	case PLIP_PK_LENGTH_LSB:
 		if (plip_send(nibble_timeout, dev,

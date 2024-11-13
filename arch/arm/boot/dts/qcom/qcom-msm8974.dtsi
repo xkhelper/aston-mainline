@@ -136,11 +136,7 @@
 			qcom,smd-edge = <15>;
 
 			rpm_requests: rpm-requests {
-<<<<<<< HEAD
-				compatible = "qcom,rpm-msm8974";
-=======
 				compatible = "qcom,rpm-msm8974", "qcom,smd-rpm";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,smd-channels = "rpm_requests";
 
 				rpmcc: clock-controller {
@@ -153,11 +149,7 @@
 		};
 	};
 
-<<<<<<< HEAD
-	reserved-memory {
-=======
 	reserved_memory: reserved-memory {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		#address-cells = <1>;
 		#size-cells = <1>;
 		ranges;

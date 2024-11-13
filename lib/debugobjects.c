@@ -70,17 +70,10 @@ static HLIST_HEAD(obj_to_free);
  * made at debug_stats_show(). Both obj_pool_min_free and obj_pool_max_used
  * can be off.
  */
-<<<<<<< HEAD
-static int			obj_pool_min_free = ODEBUG_POOL_SIZE;
-static int			obj_pool_free = ODEBUG_POOL_SIZE;
-static int			obj_pool_used;
-static int			obj_pool_max_used;
-=======
 static int __data_racy		obj_pool_min_free = ODEBUG_POOL_SIZE;
 static int __data_racy		obj_pool_free = ODEBUG_POOL_SIZE;
 static int			obj_pool_used;
 static int __data_racy		obj_pool_max_used;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool			obj_freeing;
 /* The number of objs on the global free list */
 static int			obj_nr_tofree;
@@ -91,15 +84,9 @@ static int __data_racy			debug_objects_fixups __read_mostly;
 static int __data_racy			debug_objects_warnings __read_mostly;
 static int __data_racy			debug_objects_enabled __read_mostly
 					= CONFIG_DEBUG_OBJECTS_ENABLE_DEFAULT;
-<<<<<<< HEAD
-static int __data_racy			debug_objects_pool_size __read_mostly
-					= ODEBUG_POOL_SIZE;
-static int __data_racy			debug_objects_pool_min_level __read_mostly
-=======
 static int				debug_objects_pool_size __ro_after_init
 					= ODEBUG_POOL_SIZE;
 static int				debug_objects_pool_min_level __ro_after_init
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					= ODEBUG_POOL_MIN_LEVEL;
 
 static const struct debug_obj_descr *descr_test  __read_mostly;
@@ -108,13 +95,8 @@ static struct kmem_cache	*obj_cache __ro_after_init;
 /*
  * Track numbers of kmem_cache_alloc()/free() calls done.
  */
-<<<<<<< HEAD
-static int			debug_objects_allocated;
-static int			debug_objects_freed;
-=======
 static int __data_racy		debug_objects_allocated;
 static int __data_racy		debug_objects_freed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void free_obj_work(struct work_struct *work);
 static DECLARE_DELAYED_WORK(debug_obj_work, free_obj_work);
@@ -153,16 +135,6 @@ static void fill_pool(void)
 		return;
 
 	/*
-<<<<<<< HEAD
-	 * Reuse objs from the global free list; they will be reinitialized
-	 * when allocating.
-	 *
-	 * Both obj_nr_tofree and obj_pool_free are checked locklessly; the
-	 * READ_ONCE()s pair with the WRITE_ONCE()s in pool_lock critical
-	 * sections.
-	 */
-	while (READ_ONCE(obj_nr_tofree) && (READ_ONCE(obj_pool_free) < obj_pool_min_free)) {
-=======
 	 * Reuse objs from the global obj_to_free list; they will be
 	 * reinitialized when allocating.
 	 *
@@ -170,17 +142,12 @@ static void fill_pool(void)
 	 * the WRITE_ONCE() in pool_lock critical sections.
 	 */
 	if (READ_ONCE(obj_nr_tofree)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		raw_spin_lock_irqsave(&pool_lock, flags);
 		/*
 		 * Recheck with the lock held as the worker thread might have
 		 * won the race and freed the global free list already.
 		 */
-<<<<<<< HEAD
-		while (obj_nr_tofree && (obj_pool_free < obj_pool_min_free)) {
-=======
 		while (obj_nr_tofree && (obj_pool_free < debug_objects_pool_min_level)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			obj = hlist_entry(obj_to_free.first, typeof(*obj), node);
 			hlist_del(&obj->node);
 			WRITE_ONCE(obj_nr_tofree, obj_nr_tofree - 1);

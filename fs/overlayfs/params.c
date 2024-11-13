@@ -755,14 +755,6 @@ int ovl_fs_params_verify(const struct ovl_fs_context *ctx,
 {
 	struct ovl_opt_set set = ctx->set;
 
-<<<<<<< HEAD
-	if (ctx->nr_data > 0 && !config->metacopy) {
-		pr_err("lower data-only dirs require metacopy support.\n");
-		return -EINVAL;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Workdir/index are useless in non-upper mount */
 	if (!config->upperdir) {
 		if (config->workdir) {
@@ -914,8 +906,6 @@ int ovl_fs_params_verify(const struct ovl_fs_context *ctx,
 		config->metacopy = false;
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Fail if we don't have trusted xattr capability and a feature was
 	 * explicitly requested that requires them.
@@ -949,7 +939,6 @@ int ovl_fs_params_verify(const struct ovl_fs_context *ctx,
 		return -EINVAL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

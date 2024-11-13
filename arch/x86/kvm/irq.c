@@ -108,11 +108,7 @@ EXPORT_SYMBOL_GPL(kvm_cpu_has_interrupt);
  * Read pending interrupt(from non-APIC source)
  * vector and intack.
  */
-<<<<<<< HEAD
-static int kvm_cpu_get_extint(struct kvm_vcpu *v)
-=======
 int kvm_cpu_get_extint(struct kvm_vcpu *v)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!kvm_cpu_has_extint(v)) {
 		WARN_ON(!lapic_in_kernel(v));
@@ -135,10 +131,7 @@ int kvm_cpu_get_extint(struct kvm_vcpu *v)
 	} else
 		return kvm_pic_read_irq(v->kvm); /* PIC */
 }
-<<<<<<< HEAD
-=======
 EXPORT_SYMBOL_GPL(kvm_cpu_get_extint);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Read pending interrupt vector and intack.
@@ -149,18 +142,12 @@ int kvm_cpu_get_interrupt(struct kvm_vcpu *v)
 	if (vector != -1)
 		return vector;			/* PIC */
 
-<<<<<<< HEAD
-	return kvm_get_apic_interrupt(v);	/* APIC */
-}
-EXPORT_SYMBOL_GPL(kvm_cpu_get_interrupt);
-=======
 	vector = kvm_apic_has_interrupt(v);	/* APIC */
 	if (vector != -1)
 		kvm_apic_ack_interrupt(v, vector);
 
 	return vector;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void kvm_inject_pending_timer_irqs(struct kvm_vcpu *vcpu)
 {

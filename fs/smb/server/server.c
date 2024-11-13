@@ -15,11 +15,7 @@
 
 #include "server.h"
 #include "smb_common.h"
-<<<<<<< HEAD
-#include "smbstatus.h"
-=======
 #include "../common/smb2status.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "connection.h"
 #include "transport_ipc.h"
 #include "mgmt/user_session.h"
@@ -245,11 +241,8 @@ send:
 	if (work->tcon)
 		ksmbd_tree_connect_put(work->tcon);
 	smb3_preauth_hash_rsp(work);
-<<<<<<< HEAD
-=======
 	if (work->sess)
 		ksmbd_user_session_put(work->sess);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (work->sess && work->sess->enc && work->encrypted &&
 	    conn->ops->encrypt_resp) {
 		rc = conn->ops->encrypt_resp(work);
@@ -277,10 +270,7 @@ static void handle_ksmbd_work(struct work_struct *wk)
 
 	ksmbd_conn_try_dequeue_request(work);
 	ksmbd_free_work_struct(work);
-<<<<<<< HEAD
-=======
 	atomic_dec(&conn->mux_smb_requests);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Checking waitqueue to dropping pending requests on
 	 * disconnection. waitqueue_active is safe because it
@@ -292,11 +282,7 @@ static void handle_ksmbd_work(struct work_struct *wk)
 
 /**
  * queue_ksmbd_work() - queue a smb request to worker thread queue
-<<<<<<< HEAD
- *		for proccessing smb command and sending response
-=======
  *		for processing smb command and sending response
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @conn:	connection instance
  *
  * read remaining data from socket create and submit work.
@@ -306,8 +292,6 @@ static int queue_ksmbd_work(struct ksmbd_conn *conn)
 	struct ksmbd_work *work;
 	int err;
 
-<<<<<<< HEAD
-=======
 	err = ksmbd_init_smb_server(conn);
 	if (err)
 		return 0;
@@ -317,7 +301,6 @@ static int queue_ksmbd_work(struct ksmbd_conn *conn)
 		return -ENOSPC;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	work = ksmbd_alloc_work_struct();
 	if (!work) {
 		pr_err("allocation for work failed\n");
@@ -328,15 +311,6 @@ static int queue_ksmbd_work(struct ksmbd_conn *conn)
 	work->request_buf = conn->request_buf;
 	conn->request_buf = NULL;
 
-<<<<<<< HEAD
-	err = ksmbd_init_smb_server(work);
-	if (err) {
-		ksmbd_free_work_struct(work);
-		return 0;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ksmbd_conn_enqueue_request(work);
 	atomic_inc(&conn->r_count);
 	/* update activity on connection */

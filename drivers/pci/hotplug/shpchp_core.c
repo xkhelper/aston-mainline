@@ -81,10 +81,6 @@ static int init_slots(struct controller *ctrl)
 		slot->ctrl = ctrl;
 		slot->bus = ctrl->pci_dev->subordinate->number;
 		slot->device = ctrl->slot_device_offset + i;
-<<<<<<< HEAD
-		slot->hpc_ops = ctrl->hpc_ops;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		slot->number = ctrl->first_slot + (ctrl->slot_num_inc * i);
 
 		slot->wq = alloc_workqueue("shpchp-%d", 0, 0, slot->number);
@@ -153,11 +149,7 @@ static int set_attention_status(struct hotplug_slot *hotplug_slot, u8 status)
 		 __func__, slot_name(slot));
 
 	slot->attention_save = status;
-<<<<<<< HEAD
-	slot->hpc_ops->set_attention_status(slot, status);
-=======
 	shpchp_set_attention_status(slot, status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -190,11 +182,7 @@ static int get_power_status(struct hotplug_slot *hotplug_slot, u8 *value)
 	ctrl_dbg(slot->ctrl, "%s: physical_slot = %s\n",
 		 __func__, slot_name(slot));
 
-<<<<<<< HEAD
-	retval = slot->hpc_ops->get_power_status(slot, value);
-=======
 	retval = shpchp_get_power_status(slot, value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (retval < 0)
 		*value = slot->pwr_save;
 
@@ -209,11 +197,7 @@ static int get_attention_status(struct hotplug_slot *hotplug_slot, u8 *value)
 	ctrl_dbg(slot->ctrl, "%s: physical_slot = %s\n",
 		 __func__, slot_name(slot));
 
-<<<<<<< HEAD
-	retval = slot->hpc_ops->get_attention_status(slot, value);
-=======
 	retval = shpchp_get_attention_status(slot, value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (retval < 0)
 		*value = slot->attention_save;
 
@@ -228,11 +212,7 @@ static int get_latch_status(struct hotplug_slot *hotplug_slot, u8 *value)
 	ctrl_dbg(slot->ctrl, "%s: physical_slot = %s\n",
 		 __func__, slot_name(slot));
 
-<<<<<<< HEAD
-	retval = slot->hpc_ops->get_latch_status(slot, value);
-=======
 	retval = shpchp_get_latch_status(slot, value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (retval < 0)
 		*value = slot->latch_save;
 
@@ -247,11 +227,7 @@ static int get_adapter_status(struct hotplug_slot *hotplug_slot, u8 *value)
 	ctrl_dbg(slot->ctrl, "%s: physical_slot = %s\n",
 		 __func__, slot_name(slot));
 
-<<<<<<< HEAD
-	retval = slot->hpc_ops->get_adapter_status(slot, value);
-=======
 	retval = shpchp_get_adapter_status(slot, value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (retval < 0)
 		*value = slot->presence_save;
 
@@ -316,11 +292,7 @@ static int shpc_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 err_cleanup_slots:
 	cleanup_slots(ctrl);
 err_out_release_ctlr:
-<<<<<<< HEAD
-	ctrl->hpc_ops->release_ctlr(ctrl);
-=======
 	shpchp_release_ctlr(ctrl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_out_free_ctrl:
 	kfree(ctrl);
 err_out_none:
@@ -333,11 +305,7 @@ static void shpc_remove(struct pci_dev *dev)
 
 	dev->shpc_managed = 0;
 	shpchp_remove_ctrl_files(ctrl);
-<<<<<<< HEAD
-	ctrl->hpc_ops->release_ctlr(ctrl);
-=======
 	shpchp_release_ctlr(ctrl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(ctrl);
 }
 

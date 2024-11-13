@@ -161,11 +161,7 @@ __u32 cifs_lock_secret;
 
 /*
  * Bumps refcount for cifs super block.
-<<<<<<< HEAD
- * Note that it should be only called if a referece to VFS super block is
-=======
  * Note that it should be only called if a reference to VFS super block is
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * already held, e.g. in open-type syscalls context. Otherwise it can race with
  * atomic_dec_and_test in deactivate_locked_super.
  */
@@ -293,11 +289,7 @@ static void cifs_kill_sb(struct super_block *sb)
 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
 
 	/*
-<<<<<<< HEAD
-	 * We ned to release all dentries for the cached directories
-=======
 	 * We need to release all dentries for the cached directories
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * before we kill the sb.
 	 */
 	if (cifs_sb->root) {
@@ -321,10 +313,6 @@ cifs_statfs(struct dentry *dentry, struct kstatfs *buf)
 	struct TCP_Server_Info *server = tcon->ses->server;
 	unsigned int xid;
 	int rc = 0;
-<<<<<<< HEAD
-
-	xid = get_xid();
-=======
 	const char *full_path;
 	void *page;
 
@@ -336,7 +324,6 @@ cifs_statfs(struct dentry *dentry, struct kstatfs *buf)
 		rc = PTR_ERR(full_path);
 		goto statfs_out;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (le32_to_cpu(tcon->fsAttrInfo.MaxPathNameComponentLength) > 0)
 		buf->f_namelen =
@@ -352,15 +339,10 @@ cifs_statfs(struct dentry *dentry, struct kstatfs *buf)
 	buf->f_ffree = 0;	/* unlimited */
 
 	if (server->ops->queryfs)
-<<<<<<< HEAD
-		rc = server->ops->queryfs(xid, tcon, cifs_sb, buf);
-
-=======
 		rc = server->ops->queryfs(xid, tcon, full_path, cifs_sb, buf);
 
 statfs_out:
 	free_dentry_path(page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free_xid(xid);
 	return rc;
 }
@@ -1798,11 +1780,7 @@ static int cifs_init_netfs(void)
 nomem_subreqpool:
 	kmem_cache_destroy(cifs_io_subrequest_cachep);
 nomem_subreq:
-<<<<<<< HEAD
-	mempool_destroy(&cifs_io_request_pool);
-=======
 	mempool_exit(&cifs_io_request_pool);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nomem_reqpool:
 	kmem_cache_destroy(cifs_io_request_cachep);
 nomem_req:

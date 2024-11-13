@@ -144,7 +144,4 @@ static void __exit cleanup(void)
 module_init(init);
 module_exit(cleanup);
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
 MODULE_DESCRIPTION("Test module for mmiotrace");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

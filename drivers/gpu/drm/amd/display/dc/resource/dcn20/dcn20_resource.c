@@ -2040,10 +2040,7 @@ bool dcn20_fast_validate_bw(
 {
 	bool out = false;
 	int split[MAX_PIPES] = { 0 };
-<<<<<<< HEAD
-=======
 	bool merge[MAX_PIPES] = { false };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int pipe_cnt, i, pipe_idx, vlevel;
 
 	ASSERT(pipes);
@@ -2068,11 +2065,7 @@ bool dcn20_fast_validate_bw(
 	if (vlevel > context->bw_ctx.dml.soc.num_states)
 		goto validate_fail;
 
-<<<<<<< HEAD
-	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, NULL);
-=======
 	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, merge);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*initialize pipe_just_split_from to invalid idx*/
 	for (i = 0; i < MAX_PIPES; i++)

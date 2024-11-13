@@ -416,8 +416,6 @@ void unpin_user_pages(struct page **pages, unsigned long npages)
 EXPORT_SYMBOL(unpin_user_pages);
 
 /**
-<<<<<<< HEAD
-=======
  * unpin_user_folio() - release pages of a folio
  * @folio:  pointer to folio to be released
  * @npages: number of pages of same folio
@@ -431,7 +429,6 @@ void unpin_user_folio(struct folio *folio, unsigned long npages)
 EXPORT_SYMBOL(unpin_user_folio);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * unpin_folios() - release an array of gup-pinned folios.
  * @folios:  array of folios to be marked dirty and released.
  * @nfolios: number of folios in the @folios array.
@@ -835,10 +832,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
 		struct dev_pagemap **pgmap)
 {
 	struct mm_struct *mm = vma->vm_mm;
-<<<<<<< HEAD
-=======
 	struct folio *folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct page *page;
 	spinlock_t *ptl;
 	pte_t *ptep, pte;
@@ -896,10 +890,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
 			goto out;
 		}
 	}
-<<<<<<< HEAD
-=======
 	folio = page_folio(page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!pte_write(pte) && gup_must_unshare(vma, flags, page)) {
 		page = ERR_PTR(-EMLINK);
@@ -910,11 +901,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
 		       !PageAnonExclusive(page), page);
 
 	/* try_grab_folio() does nothing unless FOLL_GET or FOLL_PIN is set. */
-<<<<<<< HEAD
-	ret = try_grab_folio(page_folio(page), 1, flags);
-=======
 	ret = try_grab_folio(folio, 1, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(ret)) {
 		page = ERR_PTR(ret);
 		goto out;
@@ -926,11 +913,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
 	 * Documentation/core-api/pin_user_pages.rst for details.
 	 */
 	if (flags & FOLL_PIN) {
-<<<<<<< HEAD
-		ret = arch_make_page_accessible(page);
-=======
 		ret = arch_make_folio_accessible(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret) {
 			unpin_user_page(page);
 			page = ERR_PTR(ret);
@@ -1102,31 +1085,6 @@ static struct page *follow_page_mask(struct vm_area_struct *vma,
 	return page;
 }
 
-<<<<<<< HEAD
-struct page *follow_page(struct vm_area_struct *vma, unsigned long address,
-			 unsigned int foll_flags)
-{
-	struct follow_page_context ctx = { NULL };
-	struct page *page;
-
-	if (vma_is_secretmem(vma))
-		return NULL;
-
-	if (WARN_ON_ONCE(foll_flags & FOLL_PIN))
-		return NULL;
-
-	/*
-	 * We never set FOLL_HONOR_NUMA_FAULT because callers don't expect
-	 * to fail on PROT_NONE-mapped pages.
-	 */
-	page = follow_page_mask(vma, address, foll_flags, &ctx);
-	if (ctx.pgmap)
-		put_dev_pagemap(ctx.pgmap);
-	return page;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int get_gate_page(struct mm_struct *mm, unsigned long address,
 		unsigned int gup_flags, struct vm_area_struct **vma,
 		struct page **page)
@@ -1188,25 +1146,12 @@ unmap:
  * to 0 and -EBUSY returned.
  */
 static int faultin_page(struct vm_area_struct *vma,
-<<<<<<< HEAD
-		unsigned long address, unsigned int *flags, bool unshare,
-=======
 		unsigned long address, unsigned int flags, bool unshare,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int *locked)
 {
 	unsigned int fault_flags = 0;
 	vm_fault_t ret;
 
-<<<<<<< HEAD
-	if (*flags & FOLL_NOFAULT)
-		return -EFAULT;
-	if (*flags & FOLL_WRITE)
-		fault_flags |= FAULT_FLAG_WRITE;
-	if (*flags & FOLL_REMOTE)
-		fault_flags |= FAULT_FLAG_REMOTE;
-	if (*flags & FOLL_UNLOCKABLE) {
-=======
 	if (flags & FOLL_NOFAULT)
 		return -EFAULT;
 	if (flags & FOLL_WRITE)
@@ -1214,7 +1159,6 @@ static int faultin_page(struct vm_area_struct *vma,
 	if (flags & FOLL_REMOTE)
 		fault_flags |= FAULT_FLAG_REMOTE;
 	if (flags & FOLL_UNLOCKABLE) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 		/*
 		 * FAULT_FLAG_INTERRUPTIBLE is opt-in. GUP callers must set
@@ -1222,21 +1166,12 @@ static int faultin_page(struct vm_area_struct *vma,
 		 * That's because some callers may not be prepared to
 		 * handle early exits caused by non-fatal signals.
 		 */
-<<<<<<< HEAD
-		if (*flags & FOLL_INTERRUPTIBLE)
-			fault_flags |= FAULT_FLAG_INTERRUPTIBLE;
-	}
-	if (*flags & FOLL_NOWAIT)
-		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_RETRY_NOWAIT;
-	if (*flags & FOLL_TRIED) {
-=======
 		if (flags & FOLL_INTERRUPTIBLE)
 			fault_flags |= FAULT_FLAG_INTERRUPTIBLE;
 	}
 	if (flags & FOLL_NOWAIT)
 		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_RETRY_NOWAIT;
 	if (flags & FOLL_TRIED) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Note: FAULT_FLAG_ALLOW_RETRY and FAULT_FLAG_TRIED
 		 * can co-exist
@@ -1270,11 +1205,7 @@ static int faultin_page(struct vm_area_struct *vma,
 	}
 
 	if (ret & VM_FAULT_ERROR) {
-<<<<<<< HEAD
-		int err = vm_fault_to_errno(ret, *flags);
-=======
 		int err = vm_fault_to_errno(ret, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (err)
 			return err;
@@ -1499,10 +1430,6 @@ static long __get_user_pages(struct mm_struct *mm,
 
 	do {
 		struct page *page;
-<<<<<<< HEAD
-		unsigned int foll_flags = gup_flags;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int page_increm;
 
 		/* first iteration or cross vma bound */
@@ -1553,15 +1480,9 @@ retry:
 		}
 		cond_resched();
 
-<<<<<<< HEAD
-		page = follow_page_mask(vma, start, foll_flags, &ctx);
-		if (!page || PTR_ERR(page) == -EMLINK) {
-			ret = faultin_page(vma, start, &foll_flags,
-=======
 		page = follow_page_mask(vma, start, gup_flags, &ctx);
 		if (!page || PTR_ERR(page) == -EMLINK) {
 			ret = faultin_page(vma, start, gup_flags,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   PTR_ERR(page) == -EMLINK, locked);
 			switch (ret) {
 			case 0:
@@ -1618,21 +1539,12 @@ next_page:
 				 * large folio, this should never fail.
 				 */
 				if (try_grab_folio(folio, page_increm - 1,
-<<<<<<< HEAD
-						   foll_flags)) {
-=======
 						   gup_flags)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					/*
 					 * Release the 1st page ref if the
 					 * folio is problematic, fail hard.
 					 */
-<<<<<<< HEAD
-					gup_put_folio(folio, 1,
-						      foll_flags);
-=======
 					gup_put_folio(folio, 1, gup_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					ret = -EFAULT;
 					goto out;
 				}
@@ -2436,11 +2348,7 @@ static int migrate_longterm_unpinnable_folios(
 			folio_get(folio);
 			gup_put_folio(folio, 1, FOLL_PIN);
 
-<<<<<<< HEAD
-			if (migrate_device_coherent_page(&folio->page)) {
-=======
 			if (migrate_device_coherent_folio(folio)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ret = -EBUSY;
 				goto err;
 			}
@@ -2486,22 +2394,6 @@ err:
 }
 
 /*
-<<<<<<< HEAD
- * Check whether all folios are *allowed* to be pinned indefinitely (longterm).
- * Rather confusingly, all folios in the range are required to be pinned via
- * FOLL_PIN, before calling this routine.
- *
- * If any folios in the range are not allowed to be pinned, then this routine
- * will migrate those folios away, unpin all the folios in the range and return
- * -EAGAIN. The caller should re-pin the entire range with FOLL_PIN and then
- * call this routine again.
- *
- * If an error other than -EAGAIN occurs, this indicates a migration failure.
- * The caller should give up, and propagate the error back up the call stack.
- *
- * If everything is OK and all folios in the range are allowed to be pinned,
- * then this routine leaves all folios pinned and returns zero for success.
-=======
  * Check whether all folios are *allowed* to be pinned indefinitely (long term).
  * Rather confusingly, all folios in the range are required to be pinned via
  * FOLL_PIN, before calling this routine.
@@ -2521,7 +2413,6 @@ err:
  * indicates a migration failure. The caller should give up, and propagate the
  * error back up the call stack. The caller does not need to unpin any folios in
  * that case, because this routine will do the unpinning.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static long check_and_migrate_movable_folios(unsigned long nr_folios,
 					     struct folio **folios)
@@ -2539,15 +2430,8 @@ static long check_and_migrate_movable_folios(unsigned long nr_folios,
 }
 
 /*
-<<<<<<< HEAD
- * This routine just converts all the pages in the @pages array to folios and
- * calls check_and_migrate_movable_folios() to do the heavy lifting.
- *
- * Please see the check_and_migrate_movable_folios() documentation for details.
-=======
  * Return values and behavior are the same as those for
  * check_and_migrate_movable_folios().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static long check_and_migrate_movable_pages(unsigned long nr_pages,
 					    struct page **pages)
@@ -2556,15 +2440,10 @@ static long check_and_migrate_movable_pages(unsigned long nr_pages,
 	long i, ret;
 
 	folios = kmalloc_array(nr_pages, sizeof(*folios), GFP_KERNEL);
-<<<<<<< HEAD
-	if (!folios)
-		return -ENOMEM;
-=======
 	if (!folios) {
 		unpin_user_pages(pages, nr_pages);
 		return -ENOMEM;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < nr_pages; i++)
 		folios[i] = page_folio(pages[i]);
@@ -2636,11 +2515,7 @@ static bool is_valid_gup_args(struct page **pages, int *locked,
 	 * These flags not allowed to be specified externally to the gup
 	 * interfaces:
 	 * - FOLL_TOUCH/FOLL_PIN/FOLL_TRIED/FOLL_FAST_ONLY are internal only
-<<<<<<< HEAD
-	 * - FOLL_REMOTE is internal only and used on follow_page()
-=======
 	 * - FOLL_REMOTE is internal only, set in (get|pin)_user_pages_remote()
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * - FOLL_UNLOCKABLE is internal only and used if locked is !NULL
 	 */
 	if (WARN_ON_ONCE(gup_flags & INTERNAL_GUP_FLAGS))
@@ -3042,11 +2917,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
 		 * details.
 		 */
 		if (flags & FOLL_PIN) {
-<<<<<<< HEAD
-			ret = arch_make_page_accessible(page);
-=======
 			ret = arch_make_folio_accessible(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (ret) {
 				gup_put_folio(folio, 1, flags);
 				goto pte_unmap;
@@ -3185,12 +3056,9 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
 	if (!pmd_access_permitted(orig, flags & FOLL_WRITE))
 		return 0;
 
-<<<<<<< HEAD
-=======
 	if (pmd_special(orig))
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pmd_devmap(orig)) {
 		if (unlikely(flags & FOLL_LONGTERM))
 			return 0;
@@ -3235,12 +3103,9 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
 	if (!pud_access_permitted(orig, flags & FOLL_WRITE))
 		return 0;
 
-<<<<<<< HEAD
-=======
 	if (pud_special(orig))
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pud_devmap(orig)) {
 		if (unlikely(flags & FOLL_LONGTERM))
 			return 0;
@@ -3840,10 +3705,7 @@ long memfd_pin_folios(struct file *memfd, loff_t start, loff_t end,
 					ret = PTR_ERR(folio);
 					if (ret != -EEXIST)
 						goto err;
-<<<<<<< HEAD
-=======
 					folio = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 		}

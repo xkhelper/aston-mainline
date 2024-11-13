@@ -247,11 +247,7 @@
 			qcom,smd-edge = <15>;
 
 			rpm_requests: rpm-requests {
-<<<<<<< HEAD
-				compatible = "qcom,rpm-msm8976";
-=======
 				compatible = "qcom,rpm-msm8976", "qcom,smd-rpm";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,smd-channels = "rpm_requests";
 
 				rpmcc: clock-controller {
@@ -667,14 +663,11 @@
 			#thermal-sensor-cells = <1>;
 		};
 
-<<<<<<< HEAD
-=======
 		restart@4ab000 {
 			compatible = "qcom,pshold";
 			reg = <0x004ab000 0x4>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tlmm: pinctrl@1000000 {
 			compatible = "qcom,msm8976-pinctrl";
 			reg = <0x01000000 0x300000>;

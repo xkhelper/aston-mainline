@@ -920,10 +920,6 @@ static int smb3_reconfigure(struct fs_context *fc)
 	else  {
 		kfree_sensitive(ses->password);
 		ses->password = kstrdup(ctx->password, GFP_KERNEL);
-<<<<<<< HEAD
-		kfree_sensitive(ses->password2);
-		ses->password2 = kstrdup(ctx->password2, GFP_KERNEL);
-=======
 		if (!ses->password)
 			return -ENOMEM;
 		kfree_sensitive(ses->password2);
@@ -933,7 +929,6 @@ static int smb3_reconfigure(struct fs_context *fc)
 			ses->password = NULL;
 			return -ENOMEM;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	STEAL_STRING(cifs_sb, ctx, domainname);
 	STEAL_STRING(cifs_sb, ctx, nodename);
@@ -990,18 +985,12 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
 
 	switch (opt) {
 	case Opt_compress:
-<<<<<<< HEAD
-		ctx->compress = true;
-		cifs_dbg(VFS,
-			"SMB3 compression support is experimental\n");
-=======
 		if (!IS_ENABLED(CONFIG_CIFS_COMPRESSION)) {
 			cifs_errorf(fc, "CONFIG_CIFS_COMPRESSION kernel config option is unset\n");
 			goto cifs_parse_mount_err;
 		}
 		ctx->compress = true;
 		cifs_dbg(VFS, "SMB3 compression support is experimental\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case Opt_nodfs:
 		ctx->nodfs = 1;
@@ -1917,16 +1906,6 @@ void smb3_update_mnt_flags(struct cifs_sb_info *cifs_sb)
 	if (ctx->mfsymlinks) {
 		if (ctx->sfu_emul) {
 			/*
-<<<<<<< HEAD
-			 * Our SFU ("Services for Unix" emulation does not allow
-			 * creating symlinks but does allow reading existing SFU
-			 * symlinks (it does allow both creating and reading SFU
-			 * style mknod and FIFOs though). When "mfsymlinks" and
-			 * "sfu" are both enabled at the same time, it allows
-			 * reading both types of symlinks, but will only create
-			 * them with mfsymlinks format. This allows better
-			 * Apple compatibility (probably better for Samba too)
-=======
 			 * Our SFU ("Services for Unix") emulation allows now
 			 * creating new and reading existing SFU symlinks.
 			 * Older Linux kernel versions were not able to neither
@@ -1938,7 +1917,6 @@ void smb3_update_mnt_flags(struct cifs_sb_info *cifs_sb)
 			 * them with mfsymlinks format. This allows better
 			 * Apple compatibility, compatibility with older Linux
 			 * kernel clients (probably better for Samba too)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 * while still recognizing old Windows style symlinks.
 			 */
 			cifs_dbg(VFS, "mount options mfsymlinks and sfu both enabled\n");

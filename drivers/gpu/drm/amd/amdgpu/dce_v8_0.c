@@ -1828,10 +1828,7 @@ static int dce_v8_0_crtc_do_set_base(struct drm_crtc *crtc,
 		return r;
 
 	if (!atomic) {
-<<<<<<< HEAD
-=======
 		abo->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		r = amdgpu_bo_pin(abo, AMDGPU_GEM_DOMAIN_VRAM);
 		if (unlikely(r != 0)) {
 			amdgpu_bo_unreserve(abo);
@@ -2324,10 +2321,7 @@ static int dce_v8_0_crtc_cursor_set2(struct drm_crtc *crtc,
 		return ret;
 	}
 
-<<<<<<< HEAD
-=======
 	aobj->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = amdgpu_bo_pin(aobj, AMDGPU_GEM_DOMAIN_VRAM);
 	amdgpu_bo_unreserve(aobj);
 	if (ret) {
@@ -2774,11 +2768,7 @@ static int dce_v8_0_sw_fini(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
-	kfree(adev->mode_info.bios_hardcoded_edid);
-=======
 	drm_edid_free(adev->mode_info.bios_hardcoded_edid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	drm_kms_helper_poll_fini(adev_to_drm(adev));
 

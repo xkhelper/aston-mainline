@@ -49,22 +49,17 @@
 /*I2C Checksum */
 #define TASDEVICE_I2CChecksum		TASDEVICE_REG(0x0, 0x0, 0x7E)
 
-<<<<<<< HEAD
-=======
 /* XM_340 */
 #define	TASDEVICE_XM_A1_REG	TASDEVICE_REG(0x64, 0x63, 0x3c)
 /* XM_341 */
 #define	TASDEVICE_XM_A2_REG	TASDEVICE_REG(0x64, 0x63, 0x38)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Volume control */
 #define TAS2563_DVC_LVL			TASDEVICE_REG(0x00, 0x02, 0x0C)
 #define TAS2781_DVC_LVL			TASDEVICE_REG(0x0, 0x0, 0x1A)
 #define TAS2781_AMP_LEVEL		TASDEVICE_REG(0x0, 0x0, 0x03)
 #define TAS2781_AMP_LEVEL_MASK		GENMASK(5, 1)
 
-<<<<<<< HEAD
-=======
 #define TAS2563_IDLE		TASDEVICE_REG(0x00, 0x00, 0x3e)
 #define TAS2563_PRM_R0_REG		TASDEVICE_REG(0x00, 0x0f, 0x34)
 
@@ -107,7 +102,6 @@
 #define TAS2781_RUNTIME_RE_REG_TF	TASDEVICE_REG(0x64, 0x62, 0x48)
 #define TAS2781_RUNTIME_RE_REG		TASDEVICE_REG(0x64, 0x63, 0x44)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define TASDEVICE_CMD_SING_W		0x1
 #define TASDEVICE_CMD_BURST		0x2
 #define TASDEVICE_CMD_DELAY		0x3
@@ -123,9 +117,6 @@ enum device_catlog_id {
 	OTHERS
 };
 
-<<<<<<< HEAD
-struct tasdevice {
-=======
 struct bulk_reg_val {
 	int reg;
 	unsigned char val[4];
@@ -135,7 +126,6 @@ struct bulk_reg_val {
 
 struct tasdevice {
 	struct bulk_reg_val *cali_data_backup;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct tasdevice_fw *cali_data_fmw;
 	unsigned int dev_addr;
 	unsigned int err_code;
@@ -146,36 +136,23 @@ struct tasdevice {
 	bool is_loaderr;
 };
 
-<<<<<<< HEAD
-struct tasdevice_irqinfo {
-	int irq_gpio;
-	int irq;
-=======
 struct cali_reg {
 	unsigned int r0_reg;
 	unsigned int r0_low_reg;
 	unsigned int invr0_reg;
 	unsigned int pow_reg;
 	unsigned int tlimit_reg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct calidata {
 	unsigned char *data;
 	unsigned long total_sz;
-<<<<<<< HEAD
-=======
 	struct cali_reg cali_reg_array;
 	unsigned int cali_dat_sz_per_dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct tasdevice_priv {
 	struct tasdevice tasdevice[TASDEVICE_MAX_CHANNELS];
-<<<<<<< HEAD
-	struct tasdevice_irqinfo irq_info;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct tasdevice_rca rcabin;
 	struct calidata cali_data;
 	struct tasdevice_fw *fmw;
@@ -197,10 +174,7 @@ struct tasdevice_priv {
 	unsigned int chip_id;
 	unsigned int sysclk;
 
-<<<<<<< HEAD
-=======
 	int irq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int cur_prog;
 	int cur_conf;
 	int fw_state;
@@ -210,10 +184,7 @@ struct tasdevice_priv {
 	bool force_fwload_status;
 	bool playback_started;
 	bool isacpi;
-<<<<<<< HEAD
-=======
 	bool is_user_space_calidata;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int global_addr;
 
 	int (*fw_parse_variable_header)(struct tasdevice_priv *tas_priv,
@@ -240,11 +211,8 @@ int tasdevice_init(struct tasdevice_priv *tas_priv);
 void tasdevice_remove(struct tasdevice_priv *tas_priv);
 int tasdevice_save_calibration(struct tasdevice_priv *tas_priv);
 void tasdevice_apply_calibration(struct tasdevice_priv *tas_priv);
-<<<<<<< HEAD
-=======
 int tasdev_chn_switch(struct tasdevice_priv *tas_priv,
 	unsigned short chn);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int tasdevice_dev_read(struct tasdevice_priv *tas_priv,
 	unsigned short chn, unsigned int reg, unsigned int *value);
 int tasdevice_dev_write(struct tasdevice_priv *tas_priv,

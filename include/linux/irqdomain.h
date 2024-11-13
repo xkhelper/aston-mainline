@@ -291,16 +291,12 @@ struct irq_domain_chip_generic_info;
  * @hwirq_max:		Maximum number of interrupts supported by controller
  * @direct_max:		Maximum value of direct maps;
  *			Use ~0 for no limit; 0 for no direct mapping
-<<<<<<< HEAD
- * @bus_token:		Domain bus token
-=======
  * @hwirq_base:		The first hardware interrupt number (legacy domains only)
  * @virq_base:		The first Linux interrupt number for legacy domains to
  *			immediately associate the interrupts after domain creation
  * @bus_token:		Domain bus token
  * @name_suffix:	Optional name suffix to avoid collisions when multiple
  *			domains are added using same fwnode
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @ops:		Domain operation callbacks
  * @host_data:		Controller private data pointer
  * @dgc_info:		Geneneric chip information structure pointer used to
@@ -316,14 +312,10 @@ struct irq_domain_info {
 	unsigned int				size;
 	irq_hw_number_t				hwirq_max;
 	int					direct_max;
-<<<<<<< HEAD
-	enum irq_domain_bus_token		bus_token;
-=======
 	unsigned int				hwirq_base;
 	unsigned int				virq_base;
 	enum irq_domain_bus_token		bus_token;
 	const char				*name_suffix;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct irq_domain_ops		*ops;
 	void					*host_data;
 #ifdef CONFIG_IRQ_DOMAIN_HIERARCHY

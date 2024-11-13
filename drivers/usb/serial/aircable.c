@@ -35,11 +35,7 @@
  *
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/tty.h>
 #include <linux/slab.h>
 #include <linux/module.h>
@@ -142,10 +138,6 @@ static void aircable_process_read_urb(struct urb *urb)
 
 static struct usb_serial_driver aircable_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner =	THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"aircable",
 	},
 	.id_table = 		id_table,

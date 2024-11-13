@@ -11,10 +11,7 @@
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_tracing.h>
 #include "bpf_kfuncs.h"
-<<<<<<< HEAD
-=======
 #include "err.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MAX_DATA_SIZE (1024 * 1024)
 #define MAX_SIG_SIZE 1024
@@ -59,20 +56,12 @@ int BPF_PROG(bpf, int cmd, union bpf_attr *attr, unsigned int size)
 
 	ret = bpf_probe_read_kernel(&value, sizeof(value), &attr->value);
 	if (ret)
-<<<<<<< HEAD
-		return ret;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = bpf_copy_from_user(data_val, sizeof(struct data),
 				 (void *)(unsigned long)value);
 	if (ret)
-<<<<<<< HEAD
-		return ret;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (data_val->data_len > sizeof(data_val->data))
 		return -EINVAL;
@@ -96,11 +85,8 @@ int BPF_PROG(bpf, int cmd, union bpf_attr *attr, unsigned int size)
 
 	bpf_key_put(trusted_keyring);
 
-<<<<<<< HEAD
-=======
 out:
 	set_if_not_errno_or_zero(ret, -EFAULT);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }

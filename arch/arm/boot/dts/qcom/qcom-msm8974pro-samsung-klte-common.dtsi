@@ -438,8 +438,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &reserved_memory {
 	ramoops@3e8e0000 {
 		compatible = "ramoops";
@@ -453,7 +451,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &remoteproc_adsp {
 	status = "okay";
 	cx-supply = <&pma8084_s2>;

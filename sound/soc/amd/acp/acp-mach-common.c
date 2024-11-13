@@ -1766,11 +1766,7 @@ int acp_legacy_dai_links_create(struct snd_soc_card *card)
 		} else if (drv_data->platform == ACP63) {
 			links[i].platforms = platform_acp63_component;
 			links[i].num_platforms = ARRAY_SIZE(platform_acp63_component);
-<<<<<<< HEAD
-		} else if (drv_data->platform == ACP70) {
-=======
 		} else if ((drv_data->platform == ACP70) || (drv_data->platform == ACP71)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			links[i].platforms = platform_acp70_component;
 			links[i].num_platforms = ARRAY_SIZE(platform_acp70_component);
 		} else {

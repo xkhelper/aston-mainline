@@ -45,10 +45,7 @@
 #ifdef CONFIG_XFRM_ESPINTCP
 #include <net/espintcp.h>
 #endif
-<<<<<<< HEAD
-=======
 #include <net/inet_dscp.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xfrm_hash.h"
 
@@ -113,15 +110,11 @@ struct xfrm_pol_inexact_node {
  * 4. saddr:any list from saddr tree
  *
  * This result set then needs to be searched for the policy with
-<<<<<<< HEAD
- * the lowest priority.  If two results have same prio, youngest one wins.
-=======
  * the lowest priority.  If two candidates have the same priority, the
  * struct xfrm_policy pos member with the lower number is used.
  *
  * This replicates previous single-list-search algorithm which would
  * return first matching policy in the (ordered-by-priority) list.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 struct xfrm_pol_inexact_key {
@@ -208,11 +201,6 @@ xfrm_policy_inexact_lookup_rcu(struct net *net,
 static struct xfrm_policy *
 xfrm_policy_insert_list(struct hlist_head *chain, struct xfrm_policy *policy,
 			bool excl);
-<<<<<<< HEAD
-static void xfrm_policy_insert_inexact_list(struct hlist_head *chain,
-					    struct xfrm_policy *policy);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static bool
 xfrm_policy_find_inexact_candidates(struct xfrm_pol_inexact_candidates *cand,
@@ -282,15 +270,8 @@ static const struct xfrm_if_cb *xfrm_if_get_cb(void)
 	return rcu_dereference(xfrm_if_cb);
 }
 
-<<<<<<< HEAD
-struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
-				    const xfrm_address_t *saddr,
-				    const xfrm_address_t *daddr,
-				    int family, u32 mark)
-=======
 struct dst_entry *__xfrm_dst_lookup(int family,
 				    const struct xfrm_dst_lookup_params *params)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct xfrm_policy_afinfo *afinfo;
 	struct dst_entry *dst;
@@ -299,11 +280,7 @@ struct dst_entry *__xfrm_dst_lookup(int family,
 	if (unlikely(afinfo == NULL))
 		return ERR_PTR(-EAFNOSUPPORT);
 
-<<<<<<< HEAD
-	dst = afinfo->dst_lookup(net, tos, oif, saddr, daddr, mark);
-=======
 	dst = afinfo->dst_lookup(params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rcu_read_unlock();
 
@@ -317,10 +294,7 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
 						xfrm_address_t *prev_daddr,
 						int family, u32 mark)
 {
-<<<<<<< HEAD
-=======
 	struct xfrm_dst_lookup_params params;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct net *net = xs_net(x);
 	xfrm_address_t *saddr = &x->props.saddr;
 	xfrm_address_t *daddr = &x->id.daddr;
@@ -335,9 +309,6 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
 		daddr = x->coaddr;
 	}
 
-<<<<<<< HEAD
-	dst = __xfrm_dst_lookup(net, tos, oif, saddr, daddr, family, mark);
-=======
 	params.net = net;
 	params.saddr = saddr;
 	params.daddr = daddr;
@@ -361,7 +332,6 @@ static inline struct dst_entry *xfrm_dst_lookup(struct xfrm_state *x,
 	}
 
 	dst = __xfrm_dst_lookup(family, &params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!IS_ERR(dst)) {
 		if (prev_saddr != saddr)
@@ -464,10 +434,6 @@ struct xfrm_policy *xfrm_policy_alloc(struct net *net, gfp_t gfp)
 	if (policy) {
 		write_pnet(&policy->xp_net, net);
 		INIT_LIST_HEAD(&policy->walk.all);
-<<<<<<< HEAD
-		INIT_HLIST_NODE(&policy->bydst_inexact_list);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		INIT_HLIST_NODE(&policy->bydst);
 		INIT_HLIST_NODE(&policy->byidx);
 		rwlock_init(&policy->lock);
@@ -1285,20 +1251,12 @@ xfrm_policy_inexact_insert(struct xfrm_policy *policy, u8 dir, int excl)
 		return ERR_PTR(-EEXIST);
 	}
 
-<<<<<<< HEAD
-	chain = &net->xfrm.policy_inexact[dir];
-	xfrm_policy_insert_inexact_list(chain, policy);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (delpol)
 		__xfrm_policy_inexact_prune_bin(bin, false);
 
 	return delpol;
 }
 
-<<<<<<< HEAD
-=======
 static bool xfrm_policy_is_dead_or_sk(const struct xfrm_policy *policy)
 {
 	int dir;
@@ -1310,25 +1268,14 @@ static bool xfrm_policy_is_dead_or_sk(const struct xfrm_policy *policy)
 	return dir >= XFRM_POLICY_MAX;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void xfrm_hash_rebuild(struct work_struct *work)
 {
 	struct net *net = container_of(work, struct net,
 				       xfrm.policy_hthresh.work);
-<<<<<<< HEAD
-	unsigned int hmask;
-	struct xfrm_policy *pol;
-	struct xfrm_policy *policy;
-	struct hlist_head *chain;
-	struct hlist_head *odst;
-	struct hlist_node *newpos;
-	int i;
-=======
 	struct xfrm_policy *pol;
 	struct xfrm_policy *policy;
 	struct hlist_head *chain;
 	struct hlist_node *newpos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int dir;
 	unsigned seq;
 	u8 lbits4, rbits4, lbits6, rbits6;
@@ -1355,20 +1302,10 @@ static void xfrm_hash_rebuild(struct work_struct *work)
 		struct xfrm_pol_inexact_bin *bin;
 		u8 dbits, sbits;
 
-<<<<<<< HEAD
-		if (policy->walk.dead)
-			continue;
-
-		dir = xfrm_policy_id2dir(policy->index);
-		if (dir >= XFRM_POLICY_MAX)
-			continue;
-
-=======
 		if (xfrm_policy_is_dead_or_sk(policy))
 			continue;
 
 		dir = xfrm_policy_id2dir(policy->index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((dir & XFRM_POLICY_MASK) == XFRM_POLICY_OUT) {
 			if (policy->family == AF_INET) {
 				dbits = rbits4;
@@ -1399,27 +1336,7 @@ static void xfrm_hash_rebuild(struct work_struct *work)
 			goto out_unlock;
 	}
 
-<<<<<<< HEAD
-	/* reset the bydst and inexact table in all directions */
 	for (dir = 0; dir < XFRM_POLICY_MAX; dir++) {
-		struct hlist_node *n;
-
-		hlist_for_each_entry_safe(policy, n,
-					  &net->xfrm.policy_inexact[dir],
-					  bydst_inexact_list) {
-			hlist_del_rcu(&policy->bydst);
-			hlist_del_init(&policy->bydst_inexact_list);
-		}
-
-		hmask = net->xfrm.policy_bydst[dir].hmask;
-		odst = net->xfrm.policy_bydst[dir].table;
-		for (i = hmask; i >= 0; i--) {
-			hlist_for_each_entry_safe(policy, n, odst + i, bydst)
-				hlist_del_rcu(&policy->bydst);
-		}
-=======
-	for (dir = 0; dir < XFRM_POLICY_MAX; dir++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((dir & XFRM_POLICY_MASK) == XFRM_POLICY_OUT) {
 			/* dir out => dst = remote, src = local */
 			net->xfrm.policy_bydst[dir].dbits4 = rbits4;
@@ -1437,16 +1354,6 @@ static void xfrm_hash_rebuild(struct work_struct *work)
 
 	/* re-insert all policies by order of creation */
 	list_for_each_entry_reverse(policy, &net->xfrm.policy_all, walk.all) {
-<<<<<<< HEAD
-		if (policy->walk.dead)
-			continue;
-		dir = xfrm_policy_id2dir(policy->index);
-		if (dir >= XFRM_POLICY_MAX) {
-			/* skip socket policies */
-			continue;
-		}
-		newpos = NULL;
-=======
 		if (xfrm_policy_is_dead_or_sk(policy))
 			continue;
 
@@ -1454,7 +1361,6 @@ static void xfrm_hash_rebuild(struct work_struct *work)
 
 		newpos = NULL;
 		dir = xfrm_policy_id2dir(policy->index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chain = policy_hash_bysel(net, &policy->selector,
 					  policy->family, dir);
 
@@ -1621,45 +1527,6 @@ static const struct rhashtable_params xfrm_pol_inexact_params = {
 	.automatic_shrinking	= true,
 };
 
-<<<<<<< HEAD
-static void xfrm_policy_insert_inexact_list(struct hlist_head *chain,
-					    struct xfrm_policy *policy)
-{
-	struct xfrm_policy *pol, *delpol = NULL;
-	struct hlist_node *newpos = NULL;
-	int i = 0;
-
-	hlist_for_each_entry(pol, chain, bydst_inexact_list) {
-		if (pol->type == policy->type &&
-		    pol->if_id == policy->if_id &&
-		    !selector_cmp(&pol->selector, &policy->selector) &&
-		    xfrm_policy_mark_match(&policy->mark, pol) &&
-		    xfrm_sec_ctx_match(pol->security, policy->security) &&
-		    !WARN_ON(delpol)) {
-			delpol = pol;
-			if (policy->priority > pol->priority)
-				continue;
-		} else if (policy->priority >= pol->priority) {
-			newpos = &pol->bydst_inexact_list;
-			continue;
-		}
-		if (delpol)
-			break;
-	}
-
-	if (newpos && policy->xdo.type != XFRM_DEV_OFFLOAD_PACKET)
-		hlist_add_behind_rcu(&policy->bydst_inexact_list, newpos);
-	else
-		hlist_add_head_rcu(&policy->bydst_inexact_list, chain);
-
-	hlist_for_each_entry(pol, chain, bydst_inexact_list) {
-		pol->pos = i;
-		i++;
-	}
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct xfrm_policy *xfrm_policy_insert_list(struct hlist_head *chain,
 						   struct xfrm_policy *policy,
 						   bool excl)
@@ -2399,8 +2266,6 @@ out:
 	return pol;
 }
 
-<<<<<<< HEAD
-=======
 static u32 xfrm_gen_pos_slow(struct net *net)
 {
 	struct xfrm_policy *policy;
@@ -2435,13 +2300,10 @@ static u32 xfrm_gen_pos(struct net *net)
 	return i;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __xfrm_policy_link(struct xfrm_policy *pol, int dir)
 {
 	struct net *net = xp_net(pol);
 
-<<<<<<< HEAD
-=======
 	switch (dir) {
 	case XFRM_POLICY_IN:
 	case XFRM_POLICY_FWD:
@@ -2450,7 +2312,6 @@ static void __xfrm_policy_link(struct xfrm_policy *pol, int dir)
 		break;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_add(&pol->walk.all, &net->xfrm.policy_all);
 	net->xfrm.policy_count[dir]++;
 	xfrm_pol_hold(pol);
@@ -2467,10 +2328,6 @@ static struct xfrm_policy *__xfrm_policy_unlink(struct xfrm_policy *pol,
 	/* Socket policies are not hashed. */
 	if (!hlist_unhashed(&pol->bydst)) {
 		hlist_del_rcu(&pol->bydst);
-<<<<<<< HEAD
-		hlist_del_init(&pol->bydst_inexact_list);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		hlist_del(&pol->byidx);
 	}
 
@@ -2596,24 +2453,15 @@ int __xfrm_sk_clone_policy(struct sock *sk, const struct sock *osk)
 }
 
 static int
-<<<<<<< HEAD
-xfrm_get_saddr(struct net *net, int oif, xfrm_address_t *local,
-	       xfrm_address_t *remote, unsigned short family, u32 mark)
-=======
 xfrm_get_saddr(unsigned short family, xfrm_address_t *saddr,
 	       const struct xfrm_dst_lookup_params *params)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 	const struct xfrm_policy_afinfo *afinfo = xfrm_policy_get_afinfo(family);
 
 	if (unlikely(afinfo == NULL))
 		return -EINVAL;
-<<<<<<< HEAD
-	err = afinfo->get_saddr(net, oif, local, remote, mark);
-=======
 	err = afinfo->get_saddr(saddr, params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_read_unlock();
 	return err;
 }
@@ -2642,11 +2490,6 @@ xfrm_tmpl_resolve_one(struct xfrm_policy *policy, const struct flowi *fl,
 			remote = &tmpl->id.daddr;
 			local = &tmpl->saddr;
 			if (xfrm_addr_any(local, tmpl->encap_family)) {
-<<<<<<< HEAD
-				error = xfrm_get_saddr(net, fl->flowi_oif,
-						       &tmp, remote,
-						       tmpl->encap_family, 0);
-=======
 				struct xfrm_dst_lookup_params params;
 
 				memset(&params, 0, sizeof(params));
@@ -2655,7 +2498,6 @@ xfrm_tmpl_resolve_one(struct xfrm_policy *policy, const struct flowi *fl,
 				params.daddr = remote;
 				error = xfrm_get_saddr(tmpl->encap_family, &tmp,
 						       &params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (error)
 					goto fail;
 				local = &tmp;
@@ -2737,11 +2579,7 @@ xfrm_tmpl_resolve(struct xfrm_policy **pols, int npols, const struct flowi *fl,
 static int xfrm_get_tos(const struct flowi *fl, int family)
 {
 	if (family == AF_INET)
-<<<<<<< HEAD
-		return IPTOS_RT_MASK & fl->u.ip4.flowi4_tos;
-=======
 		return fl->u.ip4.flowi4_tos & INET_DSCP_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -4368,10 +4206,6 @@ static int __net_init xfrm_policy_init(struct net *net)
 
 		net->xfrm.policy_count[dir] = 0;
 		net->xfrm.policy_count[XFRM_POLICY_MAX + dir] = 0;
-<<<<<<< HEAD
-		INIT_HLIST_HEAD(&net->xfrm.policy_inexact[dir]);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		htab = &net->xfrm.policy_bydst[dir];
 		htab->table = xfrm_hash_alloc(sz);
@@ -4425,11 +4259,6 @@ static void xfrm_policy_fini(struct net *net)
 	for (dir = 0; dir < XFRM_POLICY_MAX; dir++) {
 		struct xfrm_policy_hash *htab;
 
-<<<<<<< HEAD
-		WARN_ON(!hlist_empty(&net->xfrm.policy_inexact[dir]));
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		htab = &net->xfrm.policy_bydst[dir];
 		sz = (htab->hmask + 1) * sizeof(struct hlist_head);
 		WARN_ON(!hlist_empty(htab->table));
@@ -4623,65 +4452,6 @@ EXPORT_SYMBOL_GPL(xfrm_audit_policy_delete);
 #endif
 
 #ifdef CONFIG_XFRM_MIGRATE
-<<<<<<< HEAD
-static bool xfrm_migrate_selector_match(const struct xfrm_selector *sel_cmp,
-					const struct xfrm_selector *sel_tgt)
-{
-	if (sel_cmp->proto == IPSEC_ULPROTO_ANY) {
-		if (sel_tgt->family == sel_cmp->family &&
-		    xfrm_addr_equal(&sel_tgt->daddr, &sel_cmp->daddr,
-				    sel_cmp->family) &&
-		    xfrm_addr_equal(&sel_tgt->saddr, &sel_cmp->saddr,
-				    sel_cmp->family) &&
-		    sel_tgt->prefixlen_d == sel_cmp->prefixlen_d &&
-		    sel_tgt->prefixlen_s == sel_cmp->prefixlen_s) {
-			return true;
-		}
-	} else {
-		if (memcmp(sel_tgt, sel_cmp, sizeof(*sel_tgt)) == 0) {
-			return true;
-		}
-	}
-	return false;
-}
-
-static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *sel,
-						    u8 dir, u8 type, struct net *net, u32 if_id)
-{
-	struct xfrm_policy *pol, *ret = NULL;
-	struct hlist_head *chain;
-	u32 priority = ~0U;
-
-	spin_lock_bh(&net->xfrm.xfrm_policy_lock);
-	chain = policy_hash_direct(net, &sel->daddr, &sel->saddr, sel->family, dir);
-	hlist_for_each_entry(pol, chain, bydst) {
-		if ((if_id == 0 || pol->if_id == if_id) &&
-		    xfrm_migrate_selector_match(sel, &pol->selector) &&
-		    pol->type == type) {
-			ret = pol;
-			priority = ret->priority;
-			break;
-		}
-	}
-	chain = &net->xfrm.policy_inexact[dir];
-	hlist_for_each_entry(pol, chain, bydst_inexact_list) {
-		if ((pol->priority >= priority) && ret)
-			break;
-
-		if ((if_id == 0 || pol->if_id == if_id) &&
-		    xfrm_migrate_selector_match(sel, &pol->selector) &&
-		    pol->type == type) {
-			ret = pol;
-			break;
-		}
-	}
-
-	xfrm_pol_hold(ret);
-
-	spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
-
-	return ret;
-=======
 static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *sel,
 						    u8 dir, u8 type, struct net *net, u32 if_id)
 {
@@ -4726,7 +4496,6 @@ static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *
 out_unlock:
 	rcu_read_unlock();
 	return pol;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int migrate_tmpl_match(const struct xfrm_migrate *m, const struct xfrm_tmpl *t)
@@ -4863,15 +4632,9 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
 
 	/* Stage 1 - find policy */
 	pol = xfrm_migrate_policy_find(sel, dir, type, net, if_id);
-<<<<<<< HEAD
-	if (!pol) {
-		NL_SET_ERR_MSG(extack, "Target policy not found");
-		err = -ENOENT;
-=======
 	if (IS_ERR_OR_NULL(pol)) {
 		NL_SET_ERR_MSG(extack, "Target policy not found");
 		err = IS_ERR(pol) ? PTR_ERR(pol) : -ENOENT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 

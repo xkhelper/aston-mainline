@@ -28,8 +28,6 @@ struct ti_sci_proc {
 	u8 host_id;
 };
 
-<<<<<<< HEAD
-=======
 static inline
 struct ti_sci_proc *ti_sci_proc_of_get_tsp(struct device *dev,
 					   const struct ti_sci_handle *sci)
@@ -56,7 +54,6 @@ struct ti_sci_proc *ti_sci_proc_of_get_tsp(struct device *dev,
 	return tsp;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int ti_sci_proc_request(struct ti_sci_proc *tsp)
 {
 	int ret;

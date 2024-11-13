@@ -3,17 +3,10 @@
  * NCR 5380 defines
  *
  * Copyright 1993, Drew Eckhardt
-<<<<<<< HEAD
- *	Visionary Computing
- *	(Unix consulting and custom programming)
- * 	drew@colorado.edu
- *      +1 (303) 666-5836
-=======
  * Visionary Computing
  * (Unix consulting and custom programming)
  * drew@colorado.edu
  * +1 (303) 666-5836
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * For more information, please consult 
  *
@@ -85,11 +78,7 @@
 #define ICR_DIFF_ENABLE		0x20	/* wo Set to enable diff. drivers */
 #define ICR_ASSERT_ACK		0x10	/* rw ini Set to assert ACK */
 #define ICR_ASSERT_BSY		0x08	/* rw Set to assert BSY */
-<<<<<<< HEAD
-#define ICR_ASSERT_SEL 		0x04	/* rw Set to assert SEL */
-=======
 #define ICR_ASSERT_SEL		0x04	/* rw Set to assert SEL */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ICR_ASSERT_ATN		0x02	/* rw Set to assert ATN */
 #define ICR_ASSERT_DATA		0x01	/* rw SCSI_DATA_REG is asserted */
 
@@ -146,11 +135,7 @@
 #define BASR_IRQ		0x10	/* ro mirror of IRQ pin */
 #define BASR_PHASE_MATCH	0x08	/* ro Set when MSG CD IO match TCR */
 #define BASR_BUSY_ERROR		0x04	/* ro Unexpected change to inactive state */
-<<<<<<< HEAD
-#define BASR_ATN 		0x02	/* ro BUS status */
-=======
 #define BASR_ATN		0x02	/* ro BUS status */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define BASR_ACK		0x01	/* ro BUS status */
 
 /* Write any value to this register to start a DMA send */
@@ -185,11 +170,7 @@
 #define CSR_BASE CSR_53C80_INTR
 
 /* Note : PHASE_* macros are based on the values of the STATUS register */
-<<<<<<< HEAD
-#define PHASE_MASK 	(SR_MSG | SR_CD | SR_IO)
-=======
 #define PHASE_MASK		(SR_MSG | SR_CD | SR_IO)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define PHASE_DATAOUT		0
 #define PHASE_DATAIN		SR_IO
@@ -250,10 +231,6 @@ struct NCR5380_cmd {
 	int this_residual;
 	struct scatterlist *buffer;
 	int status;
-<<<<<<< HEAD
-	int message;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int phase;
 	struct list_head list;
 };
@@ -308,14 +285,9 @@ static const char *NCR5380_info(struct Scsi_Host *instance);
 static void NCR5380_reselect(struct Scsi_Host *instance);
 static bool NCR5380_select(struct Scsi_Host *, struct scsi_cmnd *);
 static int NCR5380_transfer_dma(struct Scsi_Host *instance, unsigned char *phase, int *count, unsigned char **data);
-<<<<<<< HEAD
-static int NCR5380_transfer_pio(struct Scsi_Host *instance, unsigned char *phase, int *count, unsigned char **data,
-				unsigned int can_sleep);
-=======
 static void NCR5380_transfer_pio(struct Scsi_Host *instance,
 				 unsigned char *phase, int *count,
 				 unsigned char **data, unsigned int can_sleep);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int NCR5380_poll_politely2(struct NCR5380_hostdata *,
                                   unsigned int, u8, u8,
                                   unsigned int, u8, u8, unsigned long);

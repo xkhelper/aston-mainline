@@ -21,10 +21,7 @@ static int show_console_dev(struct seq_file *m, void *v)
 		{ CON_ENABLED,		'E' },
 		{ CON_CONSDEV,		'C' },
 		{ CON_BOOT,		'B' },
-<<<<<<< HEAD
-=======
 		{ CON_NBCON,		'N' },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{ CON_PRINTBUFFER,	'p' },
 		{ CON_BRL,		'b' },
 		{ CON_ANYTIME,		'a' },
@@ -62,13 +59,8 @@ static int show_console_dev(struct seq_file *m, void *v)
 	seq_printf(m, "%s%d", con->name, con->index);
 	seq_pad(m, ' ');
 	seq_printf(m, "%c%c%c (%s)", con->read ? 'R' : '-',
-<<<<<<< HEAD
-			con->write ? 'W' : '-', con->unblank ? 'U' : '-',
-			flags);
-=======
 		   ((con->flags & CON_NBCON) || con->write) ? 'W' : '-',
 		   con->unblank ? 'U' : '-', flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dev)
 		seq_printf(m, " %4d:%d", MAJOR(dev), MINOR(dev));
 
@@ -77,10 +69,7 @@ static int show_console_dev(struct seq_file *m, void *v)
 }
 
 static void *c_start(struct seq_file *m, loff_t *pos)
-<<<<<<< HEAD
-=======
 	__acquires(&console_mutex)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct console *con;
 	loff_t off = 0;
@@ -107,10 +96,7 @@ static void *c_next(struct seq_file *m, void *v, loff_t *pos)
 }
 
 static void c_stop(struct seq_file *m, void *v)
-<<<<<<< HEAD
-=======
 	__releases(&console_mutex)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	console_list_unlock();
 }

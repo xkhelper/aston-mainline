@@ -7,11 +7,7 @@
  * Copyright (C) 2009 Bernie Thompson <bernie@plugable.com>
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "udl_drv.h"
 #include "udl_proto.h"

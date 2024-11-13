@@ -1906,20 +1906,12 @@ static void wacom_map_usage(struct input_dev *input, struct hid_usage *usage,
 		if ((code == ABS_X || code == ABS_Y) && !resolution) {
 			resolution = WACOM_INTUOS_RES;
 			hid_warn(input,
-<<<<<<< HEAD
-				 "Wacom usage (%d) missing resolution \n",
-				 code);
-		}
-		input_abs_set_res(input, code, resolution);
-		break;
-=======
 				 "Using default resolution for axis type 0x%x code 0x%x\n",
 				 type, code);
 		}
 		input_abs_set_res(input, code, resolution);
 		break;
 	case EV_REL:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case EV_KEY:
 	case EV_MSC:
 	case EV_SW:
@@ -2056,9 +2048,6 @@ static void wacom_wac_pad_usage_mapping(struct hid_device *hdev,
 		features->device_type |= WACOM_DEVICETYPE_PAD;
 		break;
 	case WACOM_HID_WD_TOUCHRING:
-<<<<<<< HEAD
-		wacom_map_usage(input, usage, field, EV_ABS, ABS_WHEEL, 0);
-=======
 		if (field->flags & HID_MAIN_ITEM_RELATIVE) {
 			wacom_wac->relring_count++;
 			if (wacom_wac->relring_count == 1) {
@@ -2076,7 +2065,6 @@ static void wacom_wac_pad_usage_mapping(struct hid_device *hdev,
 			else if (wacom_wac->absring_count == 2)
 				wacom_map_usage(input, usage, field, EV_ABS, ABS_THROTTLE, 0);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		features->device_type |= WACOM_DEVICETYPE_PAD;
 		break;
 	case WACOM_HID_WD_TOUCHRINGSTATUS:
@@ -2141,14 +2129,10 @@ static void wacom_wac_pad_event(struct hid_device *hdev, struct hid_field *field
 		return;
 
 	if (wacom_equivalent_usage(field->physical) == HID_DG_TABLETFUNCTIONKEY) {
-<<<<<<< HEAD
-		if (usage->hid != WACOM_HID_WD_TOUCHRING)
-=======
 		bool is_abs_touchring = usage->hid == WACOM_HID_WD_TOUCHRING &&
 					!(field->flags & HID_MAIN_ITEM_RELATIVE);
 
 		if (!is_abs_touchring)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			wacom_wac->hid_data.inrange_state |= value;
 	}
 
@@ -2201,8 +2185,6 @@ static void wacom_wac_pad_event(struct hid_device *hdev, struct hid_field *field
 				 hdev->product == 0x3AA)
 				value = wacom_offset_rotation(input, usage, value, 1, 2);
 		}
-<<<<<<< HEAD
-=======
 		else if (field->flags & HID_MAIN_ITEM_RELATIVE) {
 			int hires_value = value * 120 / usage->resolution_multiplier;
 			int *ring_value;
@@ -2249,7 +2231,6 @@ static void wacom_wac_pad_event(struct hid_device *hdev, struct hid_field *field
 				*ring_value -= clicks * 120;
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else {
 			value = wacom_offset_rotation(input, usage, value, 1, 4);
 		}
@@ -2407,12 +2388,9 @@ static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
 		wacom_map_usage(input, usage, field, EV_KEY, BTN_STYLUS3, 0);
 		features->quirks &= ~WACOM_QUIRK_PEN_BUTTON3;
 		break;
-<<<<<<< HEAD
-=======
 	case WACOM_HID_WD_SEQUENCENUMBER:
 		wacom_wac->hid_data.sequence_number = -1;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -2537,11 +2515,6 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 		wacom_wac->hid_data.barrelswitch3 = value;
 		return;
 	case WACOM_HID_WD_SEQUENCENUMBER:
-<<<<<<< HEAD
-		if (wacom_wac->hid_data.sequence_number != value)
-			hid_warn(hdev, "Dropped %hu packets", (unsigned short)(value - wacom_wac->hid_data.sequence_number));
-		wacom_wac->hid_data.sequence_number = value + 1;
-=======
 		if (wacom_wac->hid_data.sequence_number != value &&
 		    wacom_wac->hid_data.sequence_number >= 0) {
 			int sequence_size = field->logical_maximum - field->logical_minimum + 1;
@@ -2551,7 +2524,6 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 		wacom_wac->hid_data.sequence_number = value + 1;
 		if (wacom_wac->hid_data.sequence_number > field->logical_maximum)
 			wacom_wac->hid_data.sequence_number = field->logical_minimum;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -2595,11 +2567,8 @@ static void wacom_wac_pen_report(struct hid_device *hdev,
 		/* Going into range select tool */
 		if (wacom_wac->hid_data.invert_state)
 			wacom_wac->tool[0] = BTN_TOOL_RUBBER;
-<<<<<<< HEAD
-=======
 		else if (wacom_wac->features.quirks & WACOM_QUIRK_AESPEN)
 			wacom_wac->tool[0] = BTN_TOOL_PEN;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else if (wacom_wac->id[0])
 			wacom_wac->tool[0] = wacom_intuos_get_tool_type(wacom_wac->id[0]);
 		else

@@ -1,11 +1,7 @@
 #!/bin/sh
 # SPDX-License-Identifier: GPL-2.0
 # description: Kprobe event string type argument
-<<<<<<< HEAD
-# requires: kprobe_events
-=======
 # requires: kprobe_events available_filter_functions
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 case `uname -m` in
 x86_64)

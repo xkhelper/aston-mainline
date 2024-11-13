@@ -11,11 +11,7 @@
  * various power domain DVFS including the core/cluster, certain system
  * clocks configuration, thermal sensors and many others.
  *
-<<<<<<< HEAD
- * Copyright (C) 2018-2021 ARM Ltd.
-=======
  * Copyright (C) 2018-2024 ARM Ltd.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
@@ -121,20 +117,14 @@ struct scmi_protocol_instance {
  * @name: Name of this SCMI instance
  * @type: Type of this SCMI instance
  * @is_atomic: Flag to state if the transport of this instance is atomic
-<<<<<<< HEAD
-=======
  * @counters: An array of atomic_c's used for tracking statistics (if enabled)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct scmi_debug_info {
 	struct dentry *top_dentry;
 	const char *name;
 	const char *type;
 	bool is_atomic;
-<<<<<<< HEAD
-=======
 	atomic_t counters[SCMI_DEBUG_COUNTERS_LAST];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -206,8 +196,6 @@ struct scmi_info {
 #define bus_nb_to_scmi_info(nb)	container_of(nb, struct scmi_info, bus_nb)
 #define req_nb_to_scmi_info(nb)	container_of(nb, struct scmi_info, dev_req_nb)
 
-<<<<<<< HEAD
-=======
 static void scmi_rx_callback(struct scmi_chan_info *cinfo,
 			     u32 msg_hdr, void *priv);
 static void scmi_bad_message_trace(struct scmi_chan_info *cinfo,
@@ -218,7 +206,6 @@ static struct scmi_transport_core_operations scmi_trans_core_ops = {
 	.rx_callback = scmi_rx_callback,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static unsigned long
 scmi_vendor_protocol_signature(unsigned int protocol_id, char *vendor_id,
 			       char *sub_vendor_id, u32 impl_ver)
@@ -858,13 +845,8 @@ scmi_xfer_lookup_unlocked(struct scmi_xfers_info *minfo, u16 xfer_id)
  * timed-out message that arrives and as such, can be traced only referring to
  * the header content, since the payload is missing/unreliable.
  */
-<<<<<<< HEAD
-void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
-			    enum scmi_bad_msg err)
-=======
 static void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
 				   enum scmi_bad_msg err)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	char *tag;
 	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
@@ -1018,10 +1000,7 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
 		spin_unlock_irqrestore(&minfo->xfer_lock, flags);
 
 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_UNEXPECTED);
-<<<<<<< HEAD
-=======
 		scmi_inc_count(info->dbg->counters, ERR_MSG_UNEXPECTED);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return xfer;
 	}
@@ -1049,10 +1028,7 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
 			msg_type, xfer_id, msg_hdr, xfer->state);
 
 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_INVALID);
-<<<<<<< HEAD
-=======
 		scmi_inc_count(info->dbg->counters, ERR_MSG_INVALID);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* On error the refcount incremented above has to be dropped */
 		__scmi_xfer_put(minfo, xfer);
@@ -1072,14 +1048,11 @@ static inline void scmi_xfer_command_release(struct scmi_info *info,
 static inline void scmi_clear_channel(struct scmi_info *info,
 				      struct scmi_chan_info *cinfo)
 {
-<<<<<<< HEAD
-=======
 	if (!cinfo->is_p2a) {
 		dev_warn(cinfo->dev, "Invalid clear on A2P channel !\n");
 		return;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (info->desc->ops->clear_channel)
 		info->desc->ops->clear_channel(cinfo);
 }
@@ -1100,10 +1073,7 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
 			PTR_ERR(xfer));
 
 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_NOMEM);
-<<<<<<< HEAD
-=======
 		scmi_inc_count(info->dbg->counters, ERR_MSG_NOMEM);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		scmi_clear_channel(info, cinfo);
 		return;
@@ -1119,10 +1089,7 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
 	trace_scmi_msg_dump(info->id, cinfo->id, xfer->hdr.protocol_id,
 			    xfer->hdr.id, "NOTI", xfer->hdr.seq,
 			    xfer->hdr.status, xfer->rx.buf, xfer->rx.len);
-<<<<<<< HEAD
-=======
 	scmi_inc_count(info->dbg->counters, NOTIFICATION_OK);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	scmi_notify(cinfo->handle, xfer->hdr.protocol_id,
 		    xfer->hdr.id, xfer->rx.buf, xfer->rx.len, ts);
@@ -1182,15 +1149,10 @@ static void scmi_handle_response(struct scmi_chan_info *cinfo,
 	if (xfer->hdr.type == MSG_TYPE_DELAYED_RESP) {
 		scmi_clear_channel(info, cinfo);
 		complete(xfer->async_done);
-<<<<<<< HEAD
-	} else {
-		complete(&xfer->done);
-=======
 		scmi_inc_count(info->dbg->counters, DELAYED_RESPONSE_OK);
 	} else {
 		complete(&xfer->done);
 		scmi_inc_count(info->dbg->counters, RESPONSE_OK);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
@@ -1221,12 +1183,8 @@ static void scmi_handle_response(struct scmi_chan_info *cinfo,
  * NOTE: This function will be invoked in IRQ context, hence should be
  * as optimal as possible.
  */
-<<<<<<< HEAD
-void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr, void *priv)
-=======
 static void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr,
 			     void *priv)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u8 msg_type = MSG_XTRACT_TYPE(msg_hdr);
 
@@ -1279,10 +1237,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
 			       struct scmi_xfer *xfer, unsigned int timeout_ms)
 {
 	int ret = 0;
-<<<<<<< HEAD
-=======
 	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (xfer->hdr.poll_completion) {
 		/*
@@ -1303,20 +1258,12 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
 					"timed out in resp(caller: %pS) - polling\n",
 					(void *)_RET_IP_);
 				ret = -ETIMEDOUT;
-<<<<<<< HEAD
-=======
 				scmi_inc_count(info->dbg->counters, XFERS_RESPONSE_POLLED_TIMEOUT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 
 		if (!ret) {
 			unsigned long flags;
-<<<<<<< HEAD
-			struct scmi_info *info =
-				handle_to_scmi_info(cinfo->handle);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			/*
 			 * Do not fetch_response if an out-of-order delayed
@@ -1336,17 +1283,9 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
 					    "RESP" : "resp",
 					    xfer->hdr.seq, xfer->hdr.status,
 					    xfer->rx.buf, xfer->rx.len);
-<<<<<<< HEAD
-
-			if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
-				struct scmi_info *info =
-					handle_to_scmi_info(cinfo->handle);
-
-=======
 			scmi_inc_count(info->dbg->counters, RESPONSE_POLLED_OK);
 
 			if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				scmi_raw_message_report(info->raw, xfer,
 							SCMI_RAW_REPLY_QUEUE,
 							cinfo->id);
@@ -1359,10 +1298,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
 			dev_err(dev, "timed out in resp(caller: %pS)\n",
 				(void *)_RET_IP_);
 			ret = -ETIMEDOUT;
-<<<<<<< HEAD
-=======
 			scmi_inc_count(info->dbg->counters, XFERS_RESPONSE_TIMEOUT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -1446,24 +1382,15 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
 	    !is_transport_polling_capable(info->desc)) {
 		dev_warn_once(dev,
 			      "Polling mode is not supported by transport.\n");
-<<<<<<< HEAD
-=======
 		scmi_inc_count(info->dbg->counters, SENT_FAIL_POLLING_UNSUPPORTED);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
 	cinfo = idr_find(&info->tx_idr, pi->proto->id);
-<<<<<<< HEAD
-	if (unlikely(!cinfo))
-		return -EINVAL;
-
-=======
 	if (unlikely(!cinfo)) {
 		scmi_inc_count(info->dbg->counters, SENT_FAIL_CHANNEL_NOT_FOUND);
 		return -EINVAL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* True ONLY if also supported by transport. */
 	if (is_polling_enabled(cinfo, info->desc))
 		xfer->hdr.poll_completion = true;
@@ -1495,22 +1422,13 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
 	ret = info->desc->ops->send_message(cinfo, xfer);
 	if (ret < 0) {
 		dev_dbg(dev, "Failed to send message %d\n", ret);
-<<<<<<< HEAD
-=======
 		scmi_inc_count(info->dbg->counters, SENT_FAIL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 
 	trace_scmi_msg_dump(info->id, cinfo->id, xfer->hdr.protocol_id,
 			    xfer->hdr.id, "CMND", xfer->hdr.seq,
 			    xfer->hdr.status, xfer->tx.buf, xfer->tx.len);
-<<<<<<< HEAD
-
-	ret = scmi_wait_for_message_response(cinfo, xfer);
-	if (!ret && xfer->hdr.status)
-		ret = scmi_to_linux_errno(xfer->hdr.status);
-=======
 	scmi_inc_count(info->dbg->counters, SENT_OK);
 
 	ret = scmi_wait_for_message_response(cinfo, xfer);
@@ -1518,7 +1436,6 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
 		ret = scmi_to_linux_errno(xfer->hdr.status);
 		scmi_inc_count(info->dbg->counters, ERR_PROTOCOL);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (info->desc->ops->mark_txdone)
 		info->desc->ops->mark_txdone(cinfo, ret, xfer);
@@ -2726,10 +2643,7 @@ static int scmi_chan_setup(struct scmi_info *info, struct device_node *of_node,
 	if (!cinfo)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
 	cinfo->is_p2a = !tx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cinfo->rx_timeout_ms = info->desc->max_rx_timeout_ms;
 
 	/* Create a unique name for this transport device */
@@ -2824,22 +2738,14 @@ scmi_txrx_setup(struct scmi_info *info, struct device_node *of_node,
 static int scmi_channels_setup(struct scmi_info *info)
 {
 	int ret;
-<<<<<<< HEAD
-	struct device_node *child, *top_np = info->dev->of_node;
-=======
 	struct device_node *top_np = info->dev->of_node;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Initialize a common generic channel at first */
 	ret = scmi_txrx_setup(info, top_np, SCMI_PROTOCOL_BASE);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	for_each_available_child_of_node(top_np, child) {
-=======
 	for_each_available_child_of_node_scoped(top_np, child) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u32 prot_id;
 
 		if (of_property_read_u32(child, "reg", &prot_id))
@@ -2850,15 +2756,8 @@ static int scmi_channels_setup(struct scmi_info *info)
 				"Out of range protocol %d\n", prot_id);
 
 		ret = scmi_txrx_setup(info, child, prot_id);
-<<<<<<< HEAD
-		if (ret) {
-			of_node_put(child);
-			return ret;
-		}
-=======
 		if (ret)
 			return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -2962,8 +2861,6 @@ static int scmi_device_request_notifier(struct notifier_block *nb,
 	return NOTIFY_OK;
 }
 
-<<<<<<< HEAD
-=======
 static const char * const dbg_counter_strs[] = {
 	"sent_ok",
 	"sent_fail",
@@ -3013,7 +2910,6 @@ static void scmi_debugfs_counters_setup(struct scmi_debug_info *dbg,
 	debugfs_create_file("reset", 0200, counters, dbg, &fops_reset_counts);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void scmi_debugfs_common_cleanup(void *d)
 {
 	struct scmi_debug_info *dbg = d;
@@ -3080,15 +2976,6 @@ static struct scmi_debug_info *scmi_debugfs_common_setup(struct scmi_info *info)
 	debugfs_create_u32("rx_max_msg", 0400, trans,
 			   (u32 *)&info->rx_minfo.max_msg);
 
-<<<<<<< HEAD
-	dbg->top_dentry = top_dentry;
-
-	if (devm_add_action_or_reset(info->dev,
-				     scmi_debugfs_common_cleanup, dbg)) {
-		scmi_debugfs_common_cleanup(dbg);
-		return NULL;
-	}
-=======
 	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS))
 		scmi_debugfs_counters_setup(dbg, trans);
 
@@ -3097,7 +2984,6 @@ static struct scmi_debug_info *scmi_debugfs_common_setup(struct scmi_info *info)
 	if (devm_add_action_or_reset(info->dev,
 				     scmi_debugfs_common_cleanup, dbg))
 		return NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return dbg;
 }
@@ -3142,8 +3028,6 @@ static int scmi_debugfs_raw_mode_setup(struct scmi_info *info)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static const struct scmi_desc *scmi_transport_setup(struct device *dev)
 {
 	struct scmi_transport *trans;
@@ -3175,7 +3059,6 @@ static const struct scmi_desc *scmi_transport_setup(struct device *dev)
 	return trans->desc;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int scmi_probe(struct platform_device *pdev)
 {
 	int ret;
@@ -3187,18 +3070,12 @@ static int scmi_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct device_node *child, *np = dev->of_node;
 
-<<<<<<< HEAD
-	desc = of_device_get_match_data(dev);
-	if (!desc)
-		return -EINVAL;
-=======
 	desc = scmi_transport_setup(dev);
 	if (!desc) {
 		err_str = "transport invalid\n";
 		ret = -EINVAL;
 		goto out_err;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info = devm_kzalloc(dev, sizeof(*info), GFP_KERNEL);
 	if (!info)
@@ -3237,17 +3114,6 @@ static int scmi_probe(struct platform_device *pdev)
 			 info->atomic_threshold);
 	handle->is_transport_atomic = scmi_is_transport_atomic;
 
-<<<<<<< HEAD
-	if (desc->ops->link_supplier) {
-		ret = desc->ops->link_supplier(dev);
-		if (ret) {
-			err_str = "transport not ready\n";
-			goto clear_ida;
-		}
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Setup all channels described in the DT at first */
 	ret = scmi_channels_setup(info);
 	if (ret) {
@@ -3368,10 +3234,7 @@ clear_txrx_setup:
 clear_ida:
 	ida_free(&scmi_id, info->id);
 
-<<<<<<< HEAD
-=======
 out_err:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return dev_err_probe(dev, ret, "%s", err_str);
 }
 
@@ -3457,95 +3320,16 @@ static struct attribute *versions_attrs[] = {
 };
 ATTRIBUTE_GROUPS(versions);
 
-<<<<<<< HEAD
-/* Each compatible listed below must have descriptor associated with it */
-static const struct of_device_id scmi_of_match[] = {
-#ifdef CONFIG_ARM_SCMI_TRANSPORT_MAILBOX
-	{ .compatible = "arm,scmi", .data = &scmi_mailbox_desc },
-#endif
-#ifdef CONFIG_ARM_SCMI_TRANSPORT_OPTEE
-	{ .compatible = "linaro,scmi-optee", .data = &scmi_optee_desc },
-#endif
-#ifdef CONFIG_ARM_SCMI_TRANSPORT_SMC
-	{ .compatible = "arm,scmi-smc", .data = &scmi_smc_desc},
-	{ .compatible = "arm,scmi-smc-param", .data = &scmi_smc_desc},
-	{ .compatible = "qcom,scmi-smc", .data = &scmi_smc_desc},
-#endif
-#ifdef CONFIG_ARM_SCMI_TRANSPORT_VIRTIO
-	{ .compatible = "arm,scmi-virtio", .data = &scmi_virtio_desc},
-#endif
-	{ /* Sentinel */ },
-};
-
-MODULE_DEVICE_TABLE(of, scmi_of_match);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct platform_driver scmi_driver = {
 	.driver = {
 		   .name = "arm-scmi",
 		   .suppress_bind_attrs = true,
-<<<<<<< HEAD
-		   .of_match_table = scmi_of_match,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   .dev_groups = versions_groups,
 		   },
 	.probe = scmi_probe,
 	.remove_new = scmi_remove,
 };
 
-<<<<<<< HEAD
-/**
- * __scmi_transports_setup  - Common helper to call transport-specific
- * .init/.exit code if provided.
- *
- * @init: A flag to distinguish between init and exit.
- *
- * Note that, if provided, we invoke .init/.exit functions for all the
- * transports currently compiled in.
- *
- * Return: 0 on Success.
- */
-static inline int __scmi_transports_setup(bool init)
-{
-	int ret = 0;
-	const struct of_device_id *trans;
-
-	for (trans = scmi_of_match; trans->data; trans++) {
-		const struct scmi_desc *tdesc = trans->data;
-
-		if ((init && !tdesc->transport_init) ||
-		    (!init && !tdesc->transport_exit))
-			continue;
-
-		if (init)
-			ret = tdesc->transport_init();
-		else
-			tdesc->transport_exit();
-
-		if (ret) {
-			pr_err("SCMI transport %s FAILED initialization!\n",
-			       trans->compatible);
-			break;
-		}
-	}
-
-	return ret;
-}
-
-static int __init scmi_transports_init(void)
-{
-	return __scmi_transports_setup(true);
-}
-
-static void __exit scmi_transports_exit(void)
-{
-	__scmi_transports_setup(false);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct dentry *scmi_debugfs_init(void)
 {
 	struct dentry *d;
@@ -3561,27 +3345,15 @@ static struct dentry *scmi_debugfs_init(void)
 
 static int __init scmi_driver_init(void)
 {
-<<<<<<< HEAD
-	int ret;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Bail out if no SCMI transport was configured */
 	if (WARN_ON(!IS_ENABLED(CONFIG_ARM_SCMI_HAVE_TRANSPORT)))
 		return -EINVAL;
 
-<<<<<<< HEAD
-	/* Initialize any compiled-in transport which provided an init/exit */
-	ret = scmi_transports_init();
-	if (ret)
-		return ret;
-=======
 	if (IS_ENABLED(CONFIG_ARM_SCMI_HAVE_SHMEM))
 		scmi_trans_core_ops.shmem = scmi_shared_mem_operations_get();
 
 	if (IS_ENABLED(CONFIG_ARM_SCMI_HAVE_MSG))
 		scmi_trans_core_ops.msg = scmi_message_operations_get();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (IS_ENABLED(CONFIG_ARM_SCMI_NEED_DEBUGFS))
 		scmi_top_dentry = scmi_debugfs_init();
@@ -3616,11 +3388,6 @@ static void __exit scmi_driver_exit(void)
 	scmi_powercap_unregister();
 	scmi_pinctrl_unregister();
 
-<<<<<<< HEAD
-	scmi_transports_exit();
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	platform_driver_unregister(&scmi_driver);
 
 	debugfs_remove_recursive(scmi_top_dentry);

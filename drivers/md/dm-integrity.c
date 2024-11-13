@@ -284,10 +284,7 @@ struct dm_integrity_c {
 
 	mempool_t recheck_pool;
 	struct bio_set recheck_bios;
-<<<<<<< HEAD
-=======
 	struct bio_set recalc_bios;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct notifier_block reboot_notifier;
 };
@@ -325,13 +322,9 @@ struct dm_integrity_io {
 	struct dm_bio_details bio_details;
 
 	char *integrity_payload;
-<<<<<<< HEAD
-	bool integrity_payload_from_mempool;
-=======
 	unsigned payload_len;
 	bool integrity_payload_from_mempool;
 	bool integrity_range_locked;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct journal_completion {
@@ -369,11 +362,7 @@ static struct kmem_cache *journal_io_cache;
 #endif
 
 static void dm_integrity_map_continue(struct dm_integrity_io *dio, bool from_map);
-<<<<<<< HEAD
-static int dm_integrity_map_inline(struct dm_integrity_io *dio);
-=======
 static int dm_integrity_map_inline(struct dm_integrity_io *dio, bool from_map);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void integrity_bio_wait(struct work_struct *w);
 static void dm_integrity_dtr(struct dm_target *ti);
 
@@ -505,12 +494,8 @@ static int sb_mac(struct dm_integrity_c *ic, bool wr)
 	__u8 *sb = (__u8 *)ic->sb;
 	__u8 *mac = sb + (1 << SECTOR_SHIFT) - mac_size;
 
-<<<<<<< HEAD
-	if (sizeof(struct superblock) + mac_size > 1 << SECTOR_SHIFT) {
-=======
 	if (sizeof(struct superblock) + mac_size > 1 << SECTOR_SHIFT ||
 	    mac_size > HASH_MAX_DIGESTSIZE) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dm_integrity_io_error(ic, "digest is too long", -EINVAL);
 		return -EINVAL;
 	}
@@ -1519,17 +1504,6 @@ static void dm_integrity_flush_buffers(struct dm_integrity_c *ic, bool flush_dat
 	if (!ic->meta_dev)
 		flush_data = false;
 	if (flush_data) {
-<<<<<<< HEAD
-		fr.io_req.bi_opf = REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC,
-		fr.io_req.mem.type = DM_IO_KMEM,
-		fr.io_req.mem.ptr.addr = NULL,
-		fr.io_req.notify.fn = flush_notify,
-		fr.io_req.notify.context = &fr;
-		fr.io_req.client = dm_bufio_get_dm_io_client(ic->bufio),
-		fr.io_reg.bdev = ic->dev->bdev,
-		fr.io_reg.sector = 0,
-		fr.io_reg.count = 0,
-=======
 		fr.io_req.bi_opf = REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC;
 		fr.io_req.mem.type = DM_IO_KMEM;
 		fr.io_req.mem.ptr.addr = NULL;
@@ -1539,7 +1513,6 @@ static void dm_integrity_flush_buffers(struct dm_integrity_c *ic, bool flush_dat
 		fr.io_reg.bdev = ic->dev->bdev;
 		fr.io_reg.sector = 0;
 		fr.io_reg.count = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fr.ic = ic;
 		init_completion(&fr.comp);
 		r = dm_io(&fr.io_req, 1, &fr.io_reg, NULL, IOPRIO_DEFAULT);
@@ -1977,10 +1950,6 @@ static int dm_integrity_map(struct dm_target *ti, struct bio *bio)
 	dio->bi_status = 0;
 	dio->op = bio_op(bio);
 
-<<<<<<< HEAD
-	if (ic->mode == 'I')
-		return dm_integrity_map_inline(dio);
-=======
 	if (ic->mode == 'I') {
 		bio->bi_iter.bi_sector = dm_target_offset(ic->ti, bio->bi_iter.bi_sector);
 		dio->integrity_payload = NULL;
@@ -1988,7 +1957,6 @@ static int dm_integrity_map(struct dm_target *ti, struct bio *bio)
 		dio->integrity_range_locked = false;
 		return dm_integrity_map_inline(dio, true);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(dio->op == REQ_OP_DISCARD)) {
 		if (ti->max_io_len) {
@@ -2438,24 +2406,13 @@ journal_read_write:
 	do_endio_flush(ic, dio);
 }
 
-<<<<<<< HEAD
-static int dm_integrity_map_inline(struct dm_integrity_io *dio)
-=======
 static int dm_integrity_map_inline(struct dm_integrity_io *dio, bool from_map)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct dm_integrity_c *ic = dio->ic;
 	struct bio *bio = dm_bio_from_per_bio_data(dio, sizeof(struct dm_integrity_io));
 	struct bio_integrity_payload *bip;
-<<<<<<< HEAD
-	unsigned payload_len, digest_size, extra_size, ret;
-
-	dio->integrity_payload = NULL;
-	dio->integrity_payload_from_mempool = false;
-=======
 	unsigned ret;
 	sector_t recalc_sector;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(bio_integrity(bio))) {
 		bio->bi_status = BLK_STS_NOTSUPP;
@@ -2468,25 +2425,6 @@ static int dm_integrity_map_inline(struct dm_integrity_io *dio, bool from_map)
 		return DM_MAPIO_REMAPPED;
 
 retry:
-<<<<<<< HEAD
-	payload_len = ic->tuple_size * (bio_sectors(bio) >> ic->sb->log2_sectors_per_block);
-	digest_size = crypto_shash_digestsize(ic->internal_hash);
-	extra_size = unlikely(digest_size > ic->tag_size) ? digest_size - ic->tag_size : 0;
-	payload_len += extra_size;
-	dio->integrity_payload = kmalloc(payload_len, GFP_NOIO | __GFP_NORETRY | __GFP_NOMEMALLOC | __GFP_NOWARN);
-	if (unlikely(!dio->integrity_payload)) {
-		const unsigned x_size = PAGE_SIZE << 1;
-		if (payload_len > x_size) {
-			unsigned sectors = ((x_size - extra_size) / ic->tuple_size) << ic->sb->log2_sectors_per_block;
-			if (WARN_ON(!sectors || sectors >= bio_sectors(bio))) {
-				bio->bi_status = BLK_STS_NOTSUPP;
-				bio_endio(bio);
-				return DM_MAPIO_SUBMITTED;
-			}
-			dm_accept_partial_bio(bio, sectors);
-			goto retry;
-		}
-=======
 	if (!dio->integrity_payload) {
 		unsigned digest_size, extra_size;
 		dio->payload_len = ic->tuple_size * (bio_sectors(bio) >> ic->sb->log2_sectors_per_block);
@@ -2544,15 +2482,10 @@ skip_unlock:
 skip_spinlock:
 
 	if (unlikely(!dio->integrity_payload)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dio->integrity_payload = page_to_virt((struct page *)mempool_alloc(&ic->recheck_pool, GFP_NOIO));
 		dio->integrity_payload_from_mempool = true;
 	}
 
-<<<<<<< HEAD
-	bio->bi_iter.bi_sector = dm_target_offset(ic->ti, bio->bi_iter.bi_sector);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dio->bio_details.bi_iter = bio->bi_iter;
 
 	if (unlikely(!dm_integrity_check_limits(ic, bio->bi_iter.bi_sector, bio))) {
@@ -2562,11 +2495,7 @@ skip_spinlock:
 	bio->bi_iter.bi_sector += ic->start + SB_SECTORS;
 
 	bip = bio_integrity_alloc(bio, GFP_NOIO, 1);
-<<<<<<< HEAD
-	if (unlikely(IS_ERR(bip))) {
-=======
 	if (IS_ERR(bip)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bio->bi_status = errno_to_blk_status(PTR_ERR(bip));
 		bio_endio(bio);
 		return DM_MAPIO_SUBMITTED;
@@ -2587,13 +2516,8 @@ skip_spinlock:
 	}
 
 	ret = bio_integrity_add_page(bio, virt_to_page(dio->integrity_payload),
-<<<<<<< HEAD
-					payload_len, offset_in_page(dio->integrity_payload));
-	if (unlikely(ret != payload_len)) {
-=======
 					dio->payload_len, offset_in_page(dio->integrity_payload));
 	if (unlikely(ret != dio->payload_len)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bio->bi_status = BLK_STS_RESOURCE;
 		bio_endio(bio);
 		return DM_MAPIO_SUBMITTED;
@@ -2644,11 +2568,7 @@ static void dm_integrity_inline_recheck(struct work_struct *w)
 		}
 
 		bip = bio_integrity_alloc(outgoing_bio, GFP_NOIO, 1);
-<<<<<<< HEAD
-		if (unlikely(IS_ERR(bip))) {
-=======
 		if (IS_ERR(bip)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bio_put(outgoing_bio);
 			bio->bi_status = errno_to_blk_status(PTR_ERR(bip));
 			bio_endio(bio);
@@ -2705,12 +2625,9 @@ static int dm_integrity_end_io(struct dm_target *ti, struct bio *bio, blk_status
 		struct dm_integrity_io *dio = dm_per_bio_data(bio, sizeof(struct dm_integrity_io));
 		if (dio->op == REQ_OP_READ && likely(*status == BLK_STS_OK)) {
 			unsigned pos = 0;
-<<<<<<< HEAD
-=======
 			if (ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING) &&
 			    unlikely(dio->integrity_range_locked))
 				goto skip_check;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			while (dio->bio_details.bi_iter.bi_size) {
 				char digest[HASH_MAX_DIGESTSIZE];
 				struct bio_vec bv = bio_iter_iovec(bio, dio->bio_details.bi_iter);
@@ -2730,16 +2647,10 @@ static int dm_integrity_end_io(struct dm_target *ti, struct bio *bio, blk_status
 				bio_advance_iter_single(bio, &dio->bio_details.bi_iter, ic->sectors_per_block << SECTOR_SHIFT);
 			}
 		}
-<<<<<<< HEAD
-		if (likely(dio->op == REQ_OP_READ) || likely(dio->op == REQ_OP_WRITE)) {
-			dm_integrity_free_payload(dio);
-		}
-=======
 skip_check:
 		dm_integrity_free_payload(dio);
 		if (unlikely(dio->integrity_range_locked))
 			remove_range(ic, &dio->range);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return DM_ENDIO_DONE;
 }
@@ -2747,10 +2658,6 @@ skip_check:
 static void integrity_bio_wait(struct work_struct *w)
 {
 	struct dm_integrity_io *dio = container_of(w, struct dm_integrity_io, work);
-<<<<<<< HEAD
-
-	dm_integrity_map_continue(dio, false);
-=======
 	struct dm_integrity_c *ic = dio->ic;
 
 	if (ic->mode == 'I') {
@@ -2771,7 +2678,6 @@ static void integrity_bio_wait(struct work_struct *w)
 	} else {
 		dm_integrity_map_continue(dio, false);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void pad_uncommitted(struct dm_integrity_c *ic)
@@ -3243,8 +3149,6 @@ free_ret:
 	kvfree(recalc_tags);
 }
 
-<<<<<<< HEAD
-=======
 static void integrity_recalc_inline(struct work_struct *w)
 {
 	struct dm_integrity_c *ic = container_of(w, struct dm_integrity_c, recalc_work);
@@ -3372,7 +3276,6 @@ free_ret:
 	kfree(recalc_tags);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void bitmap_block_work(struct work_struct *w)
 {
 	struct bitmap_block_status *bbs = container_of(w, struct bitmap_block_status, work);
@@ -4911,8 +4814,6 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned int argc, char **argv
 			r = -ENOMEM;
 			goto bad;
 		}
-<<<<<<< HEAD
-=======
 		r = bioset_init(&ic->recalc_bios, 1, 0, BIOSET_NEED_BVECS);
 		if (r) {
 			ti->error = "Cannot allocate bio set";
@@ -4924,7 +4825,6 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned int argc, char **argv
 			r = -ENOMEM;
 			goto bad;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ic->metadata_wq = alloc_workqueue("dm-integrity-metadata",
@@ -5023,15 +4923,6 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned int argc, char **argv
 		ti->error = "Block size doesn't match the information in superblock";
 		goto bad;
 	}
-<<<<<<< HEAD
-	if (!le32_to_cpu(ic->sb->journal_sections) != (ic->mode == 'I')) {
-		r = -EINVAL;
-		if (ic->mode != 'I')
-			ti->error = "Corrupted superblock, journal_sections is 0";
-		else
-			ti->error = "Corrupted superblock, journal_sections is not 0";
-		goto bad;
-=======
 	if (ic->mode != 'I') {
 		if (!le32_to_cpu(ic->sb->journal_sections)) {
 			r = -EINVAL;
@@ -5044,7 +4935,6 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned int argc, char **argv
 			ti->error = "Corrupted superblock, journal_sections is not 0";
 			goto bad;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/* make sure that ti->max_io_len doesn't overflow */
 	if (!ic->meta_dev) {
@@ -5151,11 +5041,7 @@ try_smaller_buffer:
 			r = -ENOMEM;
 			goto bad;
 		}
-<<<<<<< HEAD
-		INIT_WORK(&ic->recalc_work, integrity_recalc);
-=======
 		INIT_WORK(&ic->recalc_work, ic->mode == 'I' ? integrity_recalc_inline : integrity_recalc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		if (ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING)) {
 			ti->error = "Recalculate can only be specified with internal_hash";
@@ -5172,19 +5058,6 @@ try_smaller_buffer:
 		goto bad;
 	}
 
-<<<<<<< HEAD
-	if (ic->mode != 'I') {
-		ic->bufio = dm_bufio_client_create(ic->meta_dev ? ic->meta_dev->bdev : ic->dev->bdev,
-				1U << (SECTOR_SHIFT + ic->log2_buffer_sectors), 1, 0, NULL, NULL, 0);
-		if (IS_ERR(ic->bufio)) {
-			r = PTR_ERR(ic->bufio);
-			ti->error = "Cannot initialize dm-bufio";
-			ic->bufio = NULL;
-			goto bad;
-		}
-		dm_bufio_set_sector_offset(ic->bufio, ic->start + ic->initial_sectors);
-	}
-=======
 	ic->bufio = dm_bufio_client_create(ic->meta_dev ? ic->meta_dev->bdev : ic->dev->bdev,
 			1U << (SECTOR_SHIFT + ic->log2_buffer_sectors), 1, 0, NULL, NULL, 0);
 	if (IS_ERR(ic->bufio)) {
@@ -5194,7 +5067,6 @@ try_smaller_buffer:
 		goto bad;
 	}
 	dm_bufio_set_sector_offset(ic->bufio, ic->start + ic->initial_sectors);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ic->mode != 'R' && ic->mode != 'I') {
 		r = create_journal(ic, &ti->error);
@@ -5316,10 +5188,7 @@ static void dm_integrity_dtr(struct dm_target *ti)
 	kvfree(ic->bbs);
 	if (ic->bufio)
 		dm_bufio_client_destroy(ic->bufio);
-<<<<<<< HEAD
-=======
 	bioset_exit(&ic->recalc_bios);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bioset_exit(&ic->recheck_bios);
 	mempool_exit(&ic->recheck_pool);
 	mempool_exit(&ic->journal_io_mempool);
@@ -5374,11 +5243,7 @@ static void dm_integrity_dtr(struct dm_target *ti)
 
 static struct target_type integrity_target = {
 	.name			= "integrity",
-<<<<<<< HEAD
-	.version		= {1, 12, 0},
-=======
 	.version		= {1, 13, 0},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.module			= THIS_MODULE,
 	.features		= DM_TARGET_SINGLETON | DM_TARGET_INTEGRITY,
 	.ctr			= dm_integrity_ctr,

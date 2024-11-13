@@ -697,11 +697,7 @@ static void init_append_extent(struct bch_write_op *op,
 	e = bkey_extent_init(op->insert_keys.top);
 	e->k.p		= op->pos;
 	e->k.size	= crc.uncompressed_size;
-<<<<<<< HEAD
-	e->k.version	= version;
-=======
 	e->k.bversion	= version;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (crc.csum_type ||
 	    crc.compression_type ||
@@ -1304,16 +1300,8 @@ retry:
 						 bucket_to_u64(i->b),
 						 BUCKET_NOCOW_LOCK_UPDATE);
 
-<<<<<<< HEAD
-			rcu_read_lock();
-			u8 *gen = bucket_gen(ca, i->b.offset);
-			stale = !gen ? -1 : gen_after(*gen, i->gen);
-			rcu_read_unlock();
-
-=======
 			int gen = bucket_gen_get(ca, i->b.offset);
 			stale = gen < 0 ? gen : gen_after(gen, i->gen);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (unlikely(stale)) {
 				stale_at = i;
 				goto err_bucket_stale;
@@ -1446,11 +1434,7 @@ again:
 		 * freeing up space on specific disks, which means that
 		 * allocations for specific disks may hang arbitrarily long:
 		 */
-<<<<<<< HEAD
-		ret = bch2_trans_do(c, NULL, NULL, 0,
-=======
 		ret = bch2_trans_run(c, lockrestart_do(trans,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bch2_alloc_sectors_start_trans(trans,
 				op->target,
 				op->opts.erasure_code && !(op->flags & BCH_WRITE_CACHED),
@@ -1460,13 +1444,7 @@ again:
 				op->nr_replicas_required,
 				op->watermark,
 				op->flags,
-<<<<<<< HEAD
-				(op->flags & (BCH_WRITE_ALLOC_NOWAIT|
-					      BCH_WRITE_ONLY_SPECIFIED_DEVS))
-				? NULL : &op->cl, &wp));
-=======
 				&op->cl, &wp)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (unlikely(ret)) {
 			if (bch2_err_matches(ret, BCH_ERR_operation_blocked))
 				break;
@@ -1563,11 +1541,7 @@ static void bch2_write_data_inline(struct bch_write_op *op, unsigned data_len)
 
 	id = bkey_inline_data_init(op->insert_keys.top);
 	id->k.p		= op->pos;
-<<<<<<< HEAD
-	id->k.version	= op->version;
-=======
 	id->k.bversion	= op->version;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	id->k.size	= sectors;
 
 	iter = bio->bi_iter;
@@ -1613,12 +1587,9 @@ CLOSURE_CALLBACK(bch2_write)
 	BUG_ON(!op->write_point.v);
 	BUG_ON(bkey_eq(op->pos, POS_MAX));
 
-<<<<<<< HEAD
-=======
 	if (op->flags & BCH_WRITE_ONLY_SPECIFIED_DEVS)
 		op->flags |= BCH_WRITE_ALLOC_NOWAIT;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	op->nr_replicas_required = min_t(unsigned, op->nr_replicas_required, op->nr_replicas);
 	op->start_time = local_clock();
 	bch2_keylist_init(&op->insert_keys, op->inline_keys);

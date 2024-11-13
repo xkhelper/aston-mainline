@@ -12,11 +12,7 @@ ones.
 
 Of course this is a bad idea to rely on the alignment trap to perform
 unaligned memory access in general.  If those access are predictable, you
-<<<<<<< HEAD
-are better to use the macros provided by include/asm/unaligned.h.  The
-=======
 are better to use the macros provided by include/linux/unaligned.h.  The
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 alignment trap can fixup misaligned access for the exception cases, but at
 a high performance cost.  It better be rare.
 

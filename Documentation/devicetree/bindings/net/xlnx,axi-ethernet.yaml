@@ -34,10 +34,7 @@ properties:
       and length of the AXI DMA controller IO space, unless
       axistream-connected is specified, in which case the reg
       attribute of the node referenced by it is used.
-<<<<<<< HEAD
-=======
     minItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     maxItems: 2
 
   interrupts:
@@ -64,11 +61,7 @@ properties:
       - gmii
       - rgmii
       - sgmii
-<<<<<<< HEAD
-      - 1000BaseX
-=======
       - 1000base-x
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   xlnx,phy-type:
     description:
@@ -189,11 +182,7 @@ examples:
         clock-names = "s_axi_lite_clk", "axis_clk", "ref_clk", "mgt_clk";
         clocks = <&axi_clk>, <&axi_clk>, <&pl_enet_ref_clk>, <&mgt_clk>;
         phy-mode = "mii";
-<<<<<<< HEAD
-        reg = <0x00 0x40000000 0x00 0x40000>;
-=======
         reg = <0x40000000 0x40000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         xlnx,rxcsum = <0x2>;
         xlnx,rxmem = <0x800>;
         xlnx,txcsum = <0x2>;

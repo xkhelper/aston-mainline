@@ -394,11 +394,7 @@ mt7615_mcu_rx_radar_detected(struct mt7615_dev *dev, struct sk_buff *skb)
 	if (mt76_phy_dfs_state(mphy) < MT_DFS_STATE_CAC)
 		return;
 
-<<<<<<< HEAD
-	ieee80211_radar_detected(mphy->hw);
-=======
 	ieee80211_radar_detected(mphy->hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->hw_pattern++;
 }
 
@@ -851,10 +847,7 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
 	struct wtbl_req_hdr *wtbl_hdr;
 	struct mt7615_sta *msta;
 	bool new_entry = true;
-<<<<<<< HEAD
-=======
 	int conn_state;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int cmd, err;
 
 	msta = sta ? (struct mt7615_sta *)sta->drv_priv : &mvif->sta;
@@ -871,14 +864,9 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
 		else
 			mvif->sta_added = true;
 	}
-<<<<<<< HEAD
-	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, sskb, vif, link_sta,
-				      enable, new_entry);
-=======
 	conn_state = enable ? CONN_STATE_PORT_SECURE : CONN_STATE_DISCONNECT;
 	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, sskb, vif, link_sta,
 				      conn_state, new_entry);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (enable && sta)
 		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0,
 					MT76_STA_INFO_STATE_ASSOC);
@@ -1892,19 +1880,6 @@ out:
 				 sizeof(req), true);
 }
 
-<<<<<<< HEAD
-int mt7615_mcu_del_wtbl_all(struct mt7615_dev *dev)
-{
-	struct wtbl_req_hdr req = {
-		.operation = WTBL_RESET_ALL,
-	};
-
-	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(WTBL_UPDATE),
-				 &req, sizeof(req), true);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int mt7615_mcu_set_fcc5_lpn(struct mt7615_dev *dev, int val)
 {
 	struct {
@@ -2168,11 +2143,7 @@ int mt7615_mcu_set_chan_info(struct mt7615_phy *phy, int cmd)
 	if (cmd == MCU_EXT_CMD(SET_RX_PATH) ||
 	    phy->mt76->hw->conf.flags & IEEE80211_CONF_MONITOR)
 		req.switch_reason = CH_SWITCH_NORMAL;
-<<<<<<< HEAD
-	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-=======
 	else if (phy->mt76->offchannel)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
 	else if (!cfg80211_reg_can_beacon(phy->mt76->hw->wiphy, chandef,
 					  NL80211_IFTYPE_AP))

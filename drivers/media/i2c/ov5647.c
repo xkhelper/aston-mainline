@@ -1487,11 +1487,7 @@ static const struct dev_pm_ops ov5647_pm_ops = {
 };
 
 static const struct i2c_device_id ov5647_id[] = {
-<<<<<<< HEAD
-	{ "ov5647", 0 },
-=======
 	{ "ov5647" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(i2c, ov5647_id);

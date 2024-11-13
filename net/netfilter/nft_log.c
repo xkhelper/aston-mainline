@@ -163,11 +163,7 @@ static int nft_log_init(const struct nft_ctx *ctx,
 
 	nla = tb[NFTA_LOG_PREFIX];
 	if (nla != NULL) {
-<<<<<<< HEAD
-		priv->prefix = kmalloc(nla_len(nla) + 1, GFP_KERNEL);
-=======
 		priv->prefix = kmalloc(nla_len(nla) + 1, GFP_KERNEL_ACCOUNT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (priv->prefix == NULL)
 			return -ENOMEM;
 		nla_strscpy(priv->prefix, nla, nla_len(nla) + 1);

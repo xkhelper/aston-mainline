@@ -31,12 +31,8 @@ CFLAGS	+= $(KHDR_INCLUDES)
 CFLAGS	+= -iquote ./lib/ -I ../../../../include/
 
 # Library
-<<<<<<< HEAD
-LIBSRC	:= kconfig.c netlink.c proc.c repair.c setup.c sock.c utils.c
-=======
 LIBSRC	:= ftrace.c ftrace-tcp.c kconfig.c netlink.c
 LIBSRC	+= proc.c repair.c setup.c sock.c utils.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 LIBOBJ	:= $(LIBSRC:%.c=$(LIBDIR)/%.o)
 EXTRA_CLEAN += $(LIBOBJ) $(LIB)
 

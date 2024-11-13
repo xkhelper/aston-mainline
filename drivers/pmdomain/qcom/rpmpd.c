@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright (c) 2017-2018, The Linux Foundation. All rights reserved. */
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/err.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
@@ -1028,31 +1025,17 @@ static int rpmpd_power_on(struct generic_pm_domain *domain)
 	int ret;
 	struct rpmpd *pd = domain_to_rpmpd(domain);
 
-<<<<<<< HEAD
-	mutex_lock(&rpmpd_lock);
-
-	ret = rpmpd_send_enable(pd, true);
-	if (ret)
-		goto out;
-=======
 	guard(mutex)(&rpmpd_lock);
 
 	ret = rpmpd_send_enable(pd, true);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pd->enabled = true;
 
 	if (pd->corner)
 		ret = rpmpd_aggregate_corner(pd);
 
-<<<<<<< HEAD
-out:
-	mutex_unlock(&rpmpd_lock);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1075,40 +1058,21 @@ static int rpmpd_power_off(struct generic_pm_domain *domain)
 static int rpmpd_set_performance(struct generic_pm_domain *domain,
 				 unsigned int state)
 {
-<<<<<<< HEAD
-	int ret = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rpmpd *pd = domain_to_rpmpd(domain);
 
 	if (state > pd->max_state)
 		state = pd->max_state;
 
-<<<<<<< HEAD
-	mutex_lock(&rpmpd_lock);
-=======
 	guard(mutex)(&rpmpd_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pd->corner = state;
 
 	/* Always send updates for vfc and vfl */
 	if (!pd->enabled && pd->key != cpu_to_le32(KEY_FLOOR_CORNER) &&
 	    pd->key != cpu_to_le32(KEY_FLOOR_LEVEL))
-<<<<<<< HEAD
-		goto out;
-
-	ret = rpmpd_aggregate_corner(pd);
-
-out:
-	mutex_unlock(&rpmpd_lock);
-
-	return ret;
-=======
 		return 0;
 
 	return rpmpd_aggregate_corner(pd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rpmpd_probe(struct platform_device *pdev)

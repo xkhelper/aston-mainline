@@ -66,19 +66,12 @@ struct its_vpe {
 				bool	enabled;
 				bool	group;
 			}			sgi_config[16];
-<<<<<<< HEAD
-			atomic_t vmapp_count;
-		};
-	};
-
-=======
 		};
 	};
 
 	/* Track the VPE being mapped */
 	atomic_t vmapp_count;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Ensures mutual exclusion between affinity setting of the
 	 * vPE and vLPI operations using vpe->col_idx.

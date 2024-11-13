@@ -8,15 +8,6 @@
  *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
  */
 
-<<<<<<< HEAD
-#include <linux/gpio/driver.h>
-#include <linux/platform_device.h>
-#include <linux/platform_data/gpio-ath79.h>
-#include <linux/of.h>
-#include <linux/interrupt.h>
-#include <linux/module.h>
-#include <linux/irq.h>
-=======
 #include <linux/device.h>
 #include <linux/gpio/driver.h>
 #include <linux/interrupt.h>
@@ -24,7 +15,6 @@
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define AR71XX_GPIO_REG_OE		0x00
 #define AR71XX_GPIO_REG_IN		0x04
@@ -234,13 +224,7 @@ MODULE_DEVICE_TABLE(of, ath79_gpio_of_match);
 
 static int ath79_gpio_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
-	struct ath79_gpio_platform_data *pdata = dev_get_platdata(&pdev->dev);
 	struct device *dev = &pdev->dev;
-	struct device_node *np = dev->of_node;
-=======
-	struct device *dev = &pdev->dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ath79_gpio_ctrl *ctrl;
 	struct gpio_irq_chip *girq;
 	u32 ath79_gpio_count;
@@ -251,23 +235,6 @@ static int ath79_gpio_probe(struct platform_device *pdev)
 	if (!ctrl)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	if (np) {
-		err = of_property_read_u32(np, "ngpios", &ath79_gpio_count);
-		if (err) {
-			dev_err(dev, "ngpios property is not valid\n");
-			return err;
-		}
-		oe_inverted = of_device_is_compatible(np, "qca,ar9340-gpio");
-	} else if (pdata) {
-		ath79_gpio_count = pdata->ngpios;
-		oe_inverted = pdata->oe_inverted;
-	} else {
-		dev_err(dev, "No DT node or platform data found\n");
-		return -EINVAL;
-	}
-
-=======
 	err = device_property_read_u32(dev, "ngpios", &ath79_gpio_count);
 	if (err) {
 		dev_err(dev, "ngpios property is not valid\n");
@@ -276,7 +243,6 @@ static int ath79_gpio_probe(struct platform_device *pdev)
 
 	oe_inverted = device_is_compatible(dev, "qca,ar9340-gpio");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ath79_gpio_count >= 32) {
 		dev_err(dev, "ngpios must be less than 32\n");
 		return -EINVAL;
@@ -300,11 +266,7 @@ static int ath79_gpio_probe(struct platform_device *pdev)
 	}
 
 	/* Optional interrupt setup */
-<<<<<<< HEAD
-	if (!np || of_property_read_bool(np, "interrupt-controller")) {
-=======
 	if (device_property_read_bool(dev, "interrupt-controller")) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		girq = &ctrl->gc.irq;
 		gpio_irq_chip_set_chip(girq, &ath79_gpio_irqchip);
 		girq->parent_handler = ath79_gpio_irq_handler;

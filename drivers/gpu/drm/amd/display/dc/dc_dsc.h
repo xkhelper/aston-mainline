@@ -59,10 +59,7 @@ struct dc_dsc_config_options {
 	uint32_t max_target_bpp_limit_override_x16;
 	uint32_t slice_height_granularity;
 	uint32_t dsc_force_odm_hslice_override;
-<<<<<<< HEAD
-=======
 	bool force_dsc_when_not_needed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 bool dc_dsc_parse_dsc_dpcd(const struct dc *dc,
@@ -104,12 +101,8 @@ uint32_t dc_dsc_stream_bandwidth_overhead_in_kbps(
  */
 void dc_dsc_get_policy_for_timing(const struct dc_crtc_timing *timing,
 		uint32_t max_target_bpp_limit_override_x16,
-<<<<<<< HEAD
-		struct dc_dsc_policy *policy);
-=======
 		struct dc_dsc_policy *policy,
 		const enum dc_link_encoding_format link_encoding);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void dc_dsc_policy_set_max_target_bpp_limit(uint32_t limit);
 

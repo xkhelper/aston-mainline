@@ -1,24 +1,16 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 /*
-<<<<<<< HEAD
- * Copyright (c) 2023, Dang Huynh <danct12@riseup.net>
-=======
  * Copyright (c) 2023 - 2024, Dang Huynh <danct12@riseup.net>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 /dts-v1/;
 
 #include "sm6115.dtsi"
 #include "pm6125.dtsi"
-<<<<<<< HEAD
-#include <dt-bindings/arm/qcom,ids.h>
-=======
 #include "pmi632.dtsi"
 #include <dt-bindings/arm/qcom,ids.h>
 #include <dt-bindings/leds/common.h>
 #include <dt-bindings/usb/pd.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	model = "F(x)tec Pro1X (QX1050)";
@@ -43,14 +35,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-	gpio-keys {
-		compatible = "gpio-keys";
-
-		pinctrl-0 = <&vol_up_n>;
-		pinctrl-names = "default";
-
-=======
 	disp_elvdd_supply: disp-elvdd-supply {
 		compatible = "regulator-fixed";
 		regulator-name = "disp_elvdd_supply";
@@ -93,7 +77,6 @@
 			debounce-interval = <15>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		key-volume-up {
 			label = "Volume Up";
 			linux,code = <KEY_VOLUMEUP>;
@@ -103,13 +86,6 @@
 			wakeup-source;
 		};
 	};
-<<<<<<< HEAD
-};
-
-&dispcc {
-	/* HACK: disable until a panel driver is ready to retain simplefb */
-	status = "disabled";
-=======
 
 	gpio-leds {
 		compatible = "gpio-leds";
@@ -223,7 +199,6 @@
 
 &mdss_dsi0_phy {
 	status = "okay";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &pm6125_gpios {
@@ -236,8 +211,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &pmi632_lpg {
 	status = "okay";
 
@@ -305,7 +278,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pon_pwrkey {
 	status = "okay";
 };
@@ -315,8 +287,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &qupv3_id_0 {
 	status = "okay";
 };
@@ -336,7 +306,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &rpm_requests {
 	regulators-0 {
 		compatible = "qcom,rpm-pm6125-regulators";
@@ -369,10 +338,7 @@
 		pm6125_l5a: l5 {
 			regulator-min-microvolt = <1648000>;
 			regulator-max-microvolt = <3056000>;
-<<<<<<< HEAD
-=======
 			regulator-allow-set-load;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		pm6125_l6a: l6 {
@@ -474,8 +440,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &sdc2_state_off {
 	cd-pins {
 		pins = "gpio88";
@@ -507,15 +471,12 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &sleep_clk {
 	clock-frequency = <32764>;
 };
 
 &tlmm {
 	gpio-reserved-ranges = <0 4>, <14 4>;
-<<<<<<< HEAD
-=======
 
 	key_camera_n: key-camera-n-state {
 		pins = "gpio18";
@@ -557,7 +518,6 @@
 		drive-strength = <2>;
 		bias-pull-up;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &ufs_mem_hc {
@@ -579,15 +539,8 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-&usb_dwc3 {
-	/delete-property/ usb-role-switch;
-	maximum-speed = "high-speed";
-	dr_mode = "peripheral";
-=======
 &usb_dwc3_hs {
 	remote-endpoint = <&pmi632_hs_in>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &usb_hsphy {
@@ -597,8 +550,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &usb_qmpphy {
 	vdda-phy-supply = <&pm6125_l4a>;
 	vdda-pll-supply = <&pm6125_l12a>;
@@ -620,7 +571,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &xo_board {
 	clock-frequency = <19200000>;
 };

@@ -34,8 +34,6 @@
 			no-map;
 		};
 	};
-<<<<<<< HEAD
-=======
 
 	sdio_32k: sdio-32k {
 		compatible = "pwm-clock";
@@ -141,7 +139,6 @@
 
 &pwm_ij {
 	status = "okay";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &uart_b {
@@ -154,8 +151,6 @@
 	pinctrl-names = "default";
 };
 
-<<<<<<< HEAD
-=======
 &sdio {
 	pinctrl-0 = <&sdio_pins>;
 	pinctrl-1 = <&sdio_clk_gate_pins>;
@@ -190,7 +185,6 @@
 	vqmmc-supply = <&vddao_3v3>;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &nand {
 	status = "okay";
 	#address-cells = <1>;
@@ -235,12 +229,9 @@
 	pinctrl-0 = <&spicc0_pins_x>;
 	cs-gpios = <&gpio GPIOX_10 GPIO_ACTIVE_LOW>;
 };
-<<<<<<< HEAD
-=======
 
 &ethmac {
 	status = "okay";
 	phy-handle = <&internal_ephy>;
 	phy-mode = "rmii";
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

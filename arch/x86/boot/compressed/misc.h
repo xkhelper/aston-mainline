@@ -256,10 +256,6 @@ static inline bool init_unaccepted_memory(void) { return false; }
 
 /* Defined in EFI stub */
 extern struct efi_unaccepted_memory *unaccepted_table;
-<<<<<<< HEAD
-void accept_memory(phys_addr_t start, phys_addr_t end);
-=======
 void accept_memory(phys_addr_t start, unsigned long size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* BOOT_COMPRESSED_MISC_H */

@@ -130,10 +130,7 @@ TEST_GEN_PROGS_x86_64 += x86_64/max_vcpuid_cap_test
 TEST_GEN_PROGS_x86_64 += x86_64/triple_fault_event_test
 TEST_GEN_PROGS_x86_64 += x86_64/recalc_apic_map_test
 TEST_GEN_PROGS_x86_64 += access_tracking_perf_test
-<<<<<<< HEAD
-=======
 TEST_GEN_PROGS_x86_64 += coalesced_io_test
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_GEN_PROGS_x86_64 += demand_paging_test
 TEST_GEN_PROGS_x86_64 += dirty_log_test
 TEST_GEN_PROGS_x86_64 += dirty_log_perf_test
@@ -156,10 +153,7 @@ TEST_GEN_PROGS_x86_64 += pre_fault_memory_test
 TEST_GEN_PROGS_EXTENDED_x86_64 += x86_64/nx_huge_pages_test
 
 TEST_GEN_PROGS_aarch64 += aarch64/aarch32_id_regs
-<<<<<<< HEAD
-=======
 TEST_GEN_PROGS_aarch64 += aarch64/arch_timer_edge_cases
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_GEN_PROGS_aarch64 += aarch64/debug-exceptions
 TEST_GEN_PROGS_aarch64 += aarch64/hypercalls
 TEST_GEN_PROGS_aarch64 += aarch64/page_fault_test
@@ -171,15 +165,10 @@ TEST_GEN_PROGS_aarch64 += aarch64/vgic_init
 TEST_GEN_PROGS_aarch64 += aarch64/vgic_irq
 TEST_GEN_PROGS_aarch64 += aarch64/vgic_lpi_stress
 TEST_GEN_PROGS_aarch64 += aarch64/vpmu_counter_access
-<<<<<<< HEAD
-TEST_GEN_PROGS_aarch64 += access_tracking_perf_test
-TEST_GEN_PROGS_aarch64 += arch_timer
-=======
 TEST_GEN_PROGS_aarch64 += aarch64/no-vgic-v3
 TEST_GEN_PROGS_aarch64 += access_tracking_perf_test
 TEST_GEN_PROGS_aarch64 += arch_timer
 TEST_GEN_PROGS_aarch64 += coalesced_io_test
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_GEN_PROGS_aarch64 += demand_paging_test
 TEST_GEN_PROGS_aarch64 += dirty_log_test
 TEST_GEN_PROGS_aarch64 += dirty_log_perf_test
@@ -201,10 +190,7 @@ TEST_GEN_PROGS_s390x += s390x/tprot
 TEST_GEN_PROGS_s390x += s390x/cmma_test
 TEST_GEN_PROGS_s390x += s390x/debug_test
 TEST_GEN_PROGS_s390x += s390x/shared_zeropage_test
-<<<<<<< HEAD
-=======
 TEST_GEN_PROGS_s390x += s390x/ucontrol_test
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_GEN_PROGS_s390x += demand_paging_test
 TEST_GEN_PROGS_s390x += dirty_log_test
 TEST_GEN_PROGS_s390x += guest_print_test
@@ -217,10 +203,7 @@ TEST_GEN_PROGS_s390x += kvm_binary_stats_test
 TEST_GEN_PROGS_riscv += riscv/sbi_pmu_test
 TEST_GEN_PROGS_riscv += riscv/ebreak_test
 TEST_GEN_PROGS_riscv += arch_timer
-<<<<<<< HEAD
-=======
 TEST_GEN_PROGS_riscv += coalesced_io_test
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_GEN_PROGS_riscv += demand_paging_test
 TEST_GEN_PROGS_riscv += dirty_log_test
 TEST_GEN_PROGS_riscv += get-reg-list
@@ -265,12 +248,9 @@ CFLAGS += -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=gnu99 \
 ifeq ($(ARCH),s390)
 	CFLAGS += -march=z10
 endif
-<<<<<<< HEAD
-=======
 ifeq ($(ARCH),x86)
 	CFLAGS += -march=x86-64-v2
 endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ifeq ($(ARCH),arm64)
 tools_dir := $(top_srcdir)/tools
 arm64_tools_dir := $(tools_dir)/arch/arm64/tools/

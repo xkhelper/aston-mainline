@@ -82,12 +82,6 @@ allOf:
             enum:
               - fsl,ls1043a-extirq
               - fsl,ls1046a-extirq
-<<<<<<< HEAD
-              - fsl,ls1088a-extirq
-              - fsl,ls2080a-extirq
-              - fsl,lx2160a-extirq
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     then:
       properties:
         interrupt-map:
@@ -98,8 +92,6 @@ allOf:
             - const: 0xf
             - const: 0
 
-<<<<<<< HEAD
-=======
   - if:
       properties:
         compatible:
@@ -123,7 +115,6 @@ allOf:
             - const: 0xf
             - const: 0
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:

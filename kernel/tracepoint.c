@@ -735,8 +735,6 @@ static __init int init_tracepoints(void)
 	return ret;
 }
 __initcall(init_tracepoints);
-<<<<<<< HEAD
-=======
 
 /**
  * for_each_tracepoint_in_module - iteration on all tracepoints in a module
@@ -779,7 +777,6 @@ void for_each_module_tracepoint(void (*fct)(struct tracepoint *tp,
 		for_each_tracepoint_in_module(tp_mod->mod, fct, priv);
 	mutex_unlock(&tracepoint_module_list_mutex);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_MODULES */
 
 /**

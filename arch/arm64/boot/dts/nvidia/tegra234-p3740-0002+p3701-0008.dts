@@ -3,13 +3,8 @@
 
 #include <dt-bindings/input/linux-event-codes.h>
 #include <dt-bindings/input/gpio-keys.h>
-<<<<<<< HEAD
-#include "tegra234-p3701-0008.dtsi"
-#include "tegra234-p3740-0002.dtsi"
-=======
 #include <dt-bindings/sound/rt5640.h>
 #include "tegra234-p3701-0008.dtsi"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	model = "NVIDIA IGX Orin Development Kit";
@@ -25,8 +20,6 @@
 	};
 
 	bus@0 {
-<<<<<<< HEAD
-=======
 		aconnect@2900000 {
 			ahub@2900800 {
 				i2s@2901300 {
@@ -53,7 +46,6 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		serial@3100000 {
 			compatible = "nvidia,tegra194-hsuart";
 			reset-names = "serial";
@@ -79,8 +71,6 @@
 		i2c@31c0000 {
 			status = "okay";
 
-<<<<<<< HEAD
-=======
 			rt5640: audio-codec@1c {
 				compatible = "realtek,rt5640";
 				reg = <0x1c>;
@@ -115,7 +105,6 @@
 				size = <256>;
 				read-only;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		i2c@31e0000 {
@@ -131,8 +120,6 @@
 			status = "okay";
 		};
 
-<<<<<<< HEAD
-=======
 		padctl@3520000 {
 			status = "okay";
 
@@ -242,7 +229,6 @@
 				"usb3-0", "usb3-1", "usb3-2";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fuse@3810000 {
 			status = "okay";
 		};
@@ -253,8 +239,6 @@
 
 		i2c@c250000 {
 			status = "okay";
-<<<<<<< HEAD
-=======
 
 			power-sensor@41 {
 				compatible = "ti,ina3221";
@@ -286,7 +270,6 @@
 				reg = <0x44>;
 				shunt-resistor = <2000>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		host1x@13e00000 {
@@ -452,8 +435,6 @@
 			  "CVB-RT DMIC1",		"CVB-RT MIC",
 			  "CVB-RT DMIC2",		"CVB-RT MIC";
 	};
-<<<<<<< HEAD
-=======
 
 	vdd_3v3_dp: regulator-vdd-3v3-dp {
 		compatible = "regulator-fixed";
@@ -482,5 +463,4 @@
 		regulator-boot-on;
 		enable-active-high;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

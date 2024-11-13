@@ -4,15 +4,6 @@
 #ifndef __IOMMUFD_PRIVATE_H
 #define __IOMMUFD_PRIVATE_H
 
-<<<<<<< HEAD
-#include <linux/rwsem.h>
-#include <linux/xarray.h>
-#include <linux/refcount.h>
-#include <linux/uaccess.h>
-#include <linux/iommu.h>
-#include <linux/iova_bitmap.h>
-#include <uapi/linux/iommufd.h>
-=======
 #include <linux/iommu.h>
 #include <linux/iova_bitmap.h>
 #include <linux/refcount.h>
@@ -21,7 +12,6 @@
 #include <linux/xarray.h>
 #include <uapi/linux/iommufd.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "../iommu-priv.h"
 
 struct iommu_domain;
@@ -335,8 +325,6 @@ to_hwpt_paging(struct iommufd_hw_pagetable *hwpt)
 	return container_of(hwpt, struct iommufd_hwpt_paging, common);
 }
 
-<<<<<<< HEAD
-=======
 static inline struct iommufd_hwpt_nested *
 to_hwpt_nested(struct iommufd_hw_pagetable *hwpt)
 {
@@ -356,7 +344,6 @@ find_hwpt_paging(struct iommufd_hw_pagetable *hwpt)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct iommufd_hwpt_paging *
 iommufd_get_hwpt_paging(struct iommufd_ucmd *ucmd, u32 id)
 {
@@ -523,15 +510,10 @@ static inline int iommufd_hwpt_attach_device(struct iommufd_hw_pagetable *hwpt,
 static inline void iommufd_hwpt_detach_device(struct iommufd_hw_pagetable *hwpt,
 					      struct iommufd_device *idev)
 {
-<<<<<<< HEAD
-	if (hwpt->fault)
-		iommufd_fault_domain_detach_dev(hwpt, idev);
-=======
 	if (hwpt->fault) {
 		iommufd_fault_domain_detach_dev(hwpt, idev);
 		return;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	iommu_detach_group(hwpt->domain, idev->igroup->group);
 }

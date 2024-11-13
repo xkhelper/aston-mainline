@@ -176,11 +176,7 @@ static inline void
 nouveau_bios_run_init_table(struct drm_device *dev, u16 table,
 			    struct dcb_output *outp, int crtc)
 {
-<<<<<<< HEAD
-	nvbios_init(&nvxx_bios(&nouveau_drm(dev)->client.device)->subdev, table,
-=======
 	nvbios_init(&nvxx_bios(nouveau_drm(dev))->subdev, table,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		init.outp = outp;
 		init.head = crtc;
 	);

@@ -25,23 +25,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-	reg_v1v8: regulator-v1v8 {
-		compatible = "regulator-fixed";
-		regulator-name = "V_1V8";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-	};
-
-	reg_v3v3: regulator-v3v3 {
-		compatible = "regulator-fixed";
-		regulator-name = "V_3V3";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-	};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* SD2 RST# via PMIC SW_EN */
 	reg_usdhc2_vmmc: regulator-usdhc2 {
 		compatible = "regulator-fixed";
@@ -50,22 +33,14 @@
 		regulator-name = "VSD_3V3";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-<<<<<<< HEAD
-		vin-supply = <&reg_v3v3>;
-=======
 		vin-supply = <&buck4>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gpio = <&gpio3 7 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 	};
 };
 
 &adc1 {
-<<<<<<< HEAD
-	vref-supply = <&reg_v1v8>;
-=======
 	vref-supply = <&buck5>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &flexspi1 {
@@ -116,8 +91,6 @@
 		reg = <0x1b>;
 	};
 
-<<<<<<< HEAD
-=======
 	pca9451a: pmic@25 {
 		compatible = "nxp,pca9451a";
 		reg = <0x25>;
@@ -203,7 +176,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pcf85063: rtc@51 {
 		compatible = "nxp,pcf85063a";
 		reg = <0x51>;
@@ -215,45 +187,28 @@
 		reg = <0x53>;
 		pagesize = <16>;
 		read-only;
-<<<<<<< HEAD
-		vcc-supply = <&reg_v3v3>;
-=======
 		vcc-supply = <&buck4>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	eeprom1: eeprom@57 {
 		compatible = "atmel,24c64";
 		reg = <0x57>;
 		pagesize = <32>;
-<<<<<<< HEAD
-		vcc-supply = <&reg_v3v3>;
-=======
 		vcc-supply = <&buck4>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	/* protectable identification memory (part of M24C64-D @57) */
 	eeprom@5f {
 		compatible = "atmel,24c64d-wl";
 		reg = <0x5f>;
-<<<<<<< HEAD
-		vcc-supply = <&reg_v3v3>;
-=======
 		vcc-supply = <&buck4>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	imu@6a {
 		compatible = "st,ism330dhcx";
 		reg = <0x6a>;
-<<<<<<< HEAD
-		vdd-supply = <&reg_v3v3>;
-		vddio-supply = <&reg_v3v3>;
-=======
 		vdd-supply = <&buck4>;
 		vddio-supply = <&buck4>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -262,11 +217,8 @@
 	pinctrl-0 = <&pinctrl_usdhc1>;
 	pinctrl-1 = <&pinctrl_usdhc1>;
 	pinctrl-2 = <&pinctrl_usdhc1>;
-<<<<<<< HEAD
-=======
 	vmmc-supply = <&buck4>;
 	vqmmc-supply = <&buck5>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bus-width = <8>;
 	non-removable;
 	no-sdio;
@@ -284,14 +236,6 @@
 &iomuxc {
 	pinctrl_flexspi1: flexspi1grp {
 		fsl,pins = <
-<<<<<<< HEAD
-			MX93_PAD_SD3_CMD__FLEXSPI1_A_SS0_B	0x3fe
-			MX93_PAD_SD3_CLK__FLEXSPI1_A_SCLK	0x3fe
-			MX93_PAD_SD3_DATA0__FLEXSPI1_A_DATA00	0x3fe
-			MX93_PAD_SD3_DATA1__FLEXSPI1_A_DATA01	0x3fe
-			MX93_PAD_SD3_DATA2__FLEXSPI1_A_DATA02	0x3fe
-			MX93_PAD_SD3_DATA3__FLEXSPI1_A_DATA03	0x3fe
-=======
 			/* FSEL 3  | DSE X6 */
 			MX93_PAD_SD3_CMD__FLEXSPI1_A_SS0_B	0x01fe
 			MX93_PAD_SD3_CLK__FLEXSPI1_A_SCLK	0x01fe
@@ -301,58 +245,26 @@
 			/* HYS | FSEL 3  | DSE X6 (external PU) */
 			MX93_PAD_SD3_DATA2__FLEXSPI1_A_DATA02	0x11fe
 			MX93_PAD_SD3_DATA3__FLEXSPI1_A_DATA03	0x11fe
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		>;
 	};
 
 	pinctrl_lpi2c1: lpi2c1grp {
 		fsl,pins = <
-<<<<<<< HEAD
-			MX93_PAD_I2C1_SCL__LPI2C1_SCL		0x40000b9e
-			MX93_PAD_I2C1_SDA__LPI2C1_SDA		0x40000b9e
-=======
 			/* SION | OD | FSEL 3 | DSE X4 */
 			MX93_PAD_I2C1_SCL__LPI2C1_SCL		0x4000199e
 			MX93_PAD_I2C1_SDA__LPI2C1_SDA		0x4000199e
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		>;
 	};
 
 	pinctrl_pca9451: pca9451grp {
 		fsl,pins = <
-<<<<<<< HEAD
-			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x1306
-=======
 			/* HYS | PU */
 			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x1200
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		>;
 	};
 
 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
 		fsl,pins = <
-<<<<<<< HEAD
-			MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x1306
-		>;
-	};
-
-	pinctrl_usdhc1: usdhc1grp {
-		fsl,pins = <
-			/* HYS | PU | PD | FSEL_3 | X5 */
-			MX93_PAD_SD1_CLK__USDHC1_CLK		0x17be
-			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x17be
-			/* HYS | PU | FSEL_3 | X5 */
-			MX93_PAD_SD1_CMD__USDHC1_CMD		0x13be
-			/* HYS | PU | FSEL_3 | X4 */
-			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x139e
-			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x139e
-			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x139e
-			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x139e
-			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x139e
-			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x139e
-			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x139e
-			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x139e
-=======
 			/* FSEL 2 | DSE X2 */
 			MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x106
 		>;
@@ -376,16 +288,12 @@
 			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x4000119e
 			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x4000119e
 			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x4000119e
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		>;
 	};
 
 	pinctrl_wdog: wdoggrp {
 		fsl,pins = <
-<<<<<<< HEAD
-=======
 			/* PU | FSEL 1 | DSE X4 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			MX93_PAD_WDOG_ANY__WDOG1_WDOG_ANY	0x31e
 		>;
 	};

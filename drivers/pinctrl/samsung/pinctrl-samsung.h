@@ -61,8 +61,6 @@ enum pincfg_type {
 #define PIN_CON_FUNC_INPUT		0x0
 #define PIN_CON_FUNC_OUTPUT		0x1
 
-<<<<<<< HEAD
-=======
 /* Values for the pin PUD register */
 #define EXYNOS_PIN_PUD_PULL_DISABLE	0x0
 #define EXYNOS_PIN_PID_PULL_DOWN	0x1
@@ -82,7 +80,6 @@ enum pud_index {
 	PUD_MAX,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * enum eint_type - possible external interrupt types.
  * @EINT_TYPE_NONE: bank does not support external interrupts
@@ -283,10 +280,7 @@ struct samsung_pin_ctrl {
 
 	int		(*eint_gpio_init)(struct samsung_pinctrl_drv_data *);
 	int		(*eint_wkup_init)(struct samsung_pinctrl_drv_data *);
-<<<<<<< HEAD
-=======
 	void		(*pud_value_init)(struct samsung_pinctrl_drv_data *drvdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void		(*suspend)(struct samsung_pinctrl_drv_data *);
 	void		(*resume)(struct samsung_pinctrl_drv_data *);
 };
@@ -333,10 +327,7 @@ struct samsung_pinctrl_drv_data {
 	struct samsung_pin_bank		*pin_banks;
 	unsigned int			nr_banks;
 	unsigned int			nr_pins;
-<<<<<<< HEAD
-=======
 	unsigned int			pud_val[PUD_MAX];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct samsung_retention_ctrl	*retention_ctrl;
 

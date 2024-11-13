@@ -416,16 +416,9 @@ static int mtk_musb_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	ret = of_platform_populate(np, NULL, NULL, dev);
-<<<<<<< HEAD
-	if (ret) {
-		dev_err(dev, "failed to create child devices at %p\n", np);
-		return ret;
-	}
-=======
 	if (ret)
 		return dev_err_probe(dev, ret,
 				"failed to create child devices at %p\n", np);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = mtk_musb_clks_get(glue);
 	if (ret)
@@ -454,25 +447,6 @@ static int mtk_musb_probe(struct platform_device *pdev)
 		glue->role = USB_ROLE_NONE;
 		break;
 	default:
-<<<<<<< HEAD
-		dev_err(&pdev->dev, "Error 'dr_mode' property\n");
-		return -EINVAL;
-	}
-
-	glue->phy = devm_of_phy_get_by_index(dev, np, 0);
-	if (IS_ERR(glue->phy)) {
-		dev_err(dev, "fail to getting phy %ld\n",
-			PTR_ERR(glue->phy));
-		return PTR_ERR(glue->phy);
-	}
-
-	glue->usb_phy = usb_phy_generic_register();
-	if (IS_ERR(glue->usb_phy)) {
-		dev_err(dev, "fail to registering usb-phy %ld\n",
-			PTR_ERR(glue->usb_phy));
-		return PTR_ERR(glue->usb_phy);
-	}
-=======
 		return dev_err_probe(&pdev->dev, -EINVAL,
 				"Error 'dr_mode' property\n");
 	}
@@ -486,7 +460,6 @@ static int mtk_musb_probe(struct platform_device *pdev)
 	if (IS_ERR(glue->usb_phy))
 		return dev_err_probe(dev, PTR_ERR(glue->usb_phy),
 				"fail to registering usb-phy\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	glue->xceiv = devm_usb_get_phy(dev, USB_PHY_TYPE_USB2);
 	if (IS_ERR(glue->xceiv)) {

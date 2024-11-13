@@ -283,10 +283,6 @@ static int iter_release(struct inode *inode, struct file *file)
 
 const struct file_operations bpf_iter_fops = {
 	.open		= iter_open,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read		= bpf_seq_read,
 	.release	= iter_release,
 };

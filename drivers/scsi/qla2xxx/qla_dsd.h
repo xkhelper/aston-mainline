@@ -1,11 +1,7 @@
 #ifndef _QLA_DSD_H_
 #define _QLA_DSD_H_
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* 32-bit data segment descriptor (8 bytes) */
 struct dsd32 {

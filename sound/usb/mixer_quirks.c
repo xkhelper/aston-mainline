@@ -14,10 +14,7 @@
  *	    Przemek Rudy (prudy1@o2.pl)
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/bitfield.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/hid.h>
 #include <linux/init.h>
 #include <linux/math64.h>
@@ -1047,11 +1044,7 @@ static int snd_ftu_eff_switch_init(struct usb_mixer_interface *mixer,
 	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), UAC_GET_CUR,
 			      USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_IN,
 			      pval & 0xff00,
-<<<<<<< HEAD
-			      snd_usb_ctrl_intf(mixer->chip) | ((pval & 0xff) << 8),
-=======
 			      snd_usb_ctrl_intf(mixer->hostif) | ((pval & 0xff) << 8),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      value, 2);
 	if (err < 0)
 		return err;
@@ -1085,11 +1078,7 @@ static int snd_ftu_eff_switch_update(struct usb_mixer_elem_list *list)
 			      UAC_SET_CUR,
 			      USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_OUT,
 			      pval & 0xff00,
-<<<<<<< HEAD
-			      snd_usb_ctrl_intf(chip) | ((pval & 0xff) << 8),
-=======
 			      snd_usb_ctrl_intf(list->mixer->hostif) | ((pval & 0xff) << 8),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      value, 2);
 	snd_usb_unlock_shutdown(chip);
 	return err;
@@ -2127,41 +2116,25 @@ static int dell_dock_mixer_create(struct usb_mixer_interface *mixer)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void dell_dock_init_vol(struct snd_usb_audio *chip, int ch, int id)
-{
-=======
 static void dell_dock_init_vol(struct usb_mixer_interface *mixer, int ch, int id)
 {
 	struct snd_usb_audio *chip = mixer->chip;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 buf = 0;
 
 	snd_usb_ctl_msg(chip->dev, usb_sndctrlpipe(chip->dev, 0), UAC_SET_CUR,
 			USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_OUT,
 			(UAC_FU_VOLUME << 8) | ch,
-<<<<<<< HEAD
-			snd_usb_ctrl_intf(chip) | (id << 8),
-=======
 			snd_usb_ctrl_intf(mixer->hostif) | (id << 8),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			&buf, 2);
 }
 
 static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
 {
 	/* fix to 0dB playback volumes */
-<<<<<<< HEAD
-	dell_dock_init_vol(mixer->chip, 1, 16);
-	dell_dock_init_vol(mixer->chip, 2, 16);
-	dell_dock_init_vol(mixer->chip, 1, 19);
-	dell_dock_init_vol(mixer->chip, 2, 19);
-=======
 	dell_dock_init_vol(mixer, 1, 16);
 	dell_dock_init_vol(mixer, 2, 16);
 	dell_dock_init_vol(mixer, 1, 19);
 	dell_dock_init_vol(mixer, 2, 19);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2570,21 +2543,13 @@ enum {
 #define SND_BBFPRO_CTL_REG2_PAD_AN1 4
 #define SND_BBFPRO_CTL_REG2_PAD_AN2 5
 
-<<<<<<< HEAD
-#define SND_BBFPRO_MIXER_IDX_MASK 0x1ff
-=======
 #define SND_BBFPRO_MIXER_MAIN_OUT_CH_OFFSET 992
 #define SND_BBFPRO_MIXER_IDX_MASK 0x3ff
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SND_BBFPRO_MIXER_VAL_MASK 0x3ffff
 #define SND_BBFPRO_MIXER_VAL_SHIFT 9
 #define SND_BBFPRO_MIXER_VAL_MIN 0 // -inf
 #define SND_BBFPRO_MIXER_VAL_MAX 65536 // +6dB
 
-<<<<<<< HEAD
-#define SND_BBFPRO_USBREQ_CTL_REG1 0x10
-#define SND_BBFPRO_USBREQ_CTL_REG2 0x17
-=======
 #define SND_BBFPRO_GAIN_CHANNEL_MASK 0x03
 #define SND_BBFPRO_GAIN_CHANNEL_SHIFT 7
 #define SND_BBFPRO_GAIN_VAL_MASK 0x7f
@@ -2595,7 +2560,6 @@ enum {
 #define SND_BBFPRO_USBREQ_CTL_REG1 0x10
 #define SND_BBFPRO_USBREQ_CTL_REG2 0x17
 #define SND_BBFPRO_USBREQ_GAIN 0x1a
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SND_BBFPRO_USBREQ_MIXER 0x12
 
 static int snd_bbfpro_ctl_update(struct usb_mixer_interface *mixer, u8 reg,
@@ -2742,8 +2706,6 @@ static int snd_bbfpro_ctl_resume(struct usb_mixer_elem_list *list)
 	return snd_bbfpro_ctl_update(list->mixer, reg, idx, value);
 }
 
-<<<<<<< HEAD
-=======
 static int snd_bbfpro_gain_update(struct usb_mixer_interface *mixer,
 				  u8 channel, u8 gain)
 {
@@ -2852,7 +2814,6 @@ static int snd_bbfpro_gain_resume(struct usb_mixer_elem_list *list)
 	return snd_bbfpro_gain_update(list->mixer, channel, value);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int snd_bbfpro_vol_update(struct usb_mixer_interface *mixer, u16 index,
 				 u32 value)
 {
@@ -2948,8 +2909,6 @@ static const struct snd_kcontrol_new snd_bbfpro_ctl_control = {
 	.put = snd_bbfpro_ctl_put
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_kcontrol_new snd_bbfpro_gain_control = {
 	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
 	.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
@@ -2959,7 +2918,6 @@ static const struct snd_kcontrol_new snd_bbfpro_gain_control = {
 	.put = snd_bbfpro_gain_put
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_kcontrol_new snd_bbfpro_vol_control = {
 	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
 	.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
@@ -2983,8 +2941,6 @@ static int snd_bbfpro_ctl_add(struct usb_mixer_interface *mixer, u8 reg,
 		&knew, NULL);
 }
 
-<<<<<<< HEAD
-=======
 static int snd_bbfpro_gain_add(struct usb_mixer_interface *mixer, u8 channel,
 			       char *name)
 {
@@ -2997,7 +2953,6 @@ static int snd_bbfpro_gain_add(struct usb_mixer_interface *mixer, u8 channel,
 		&knew, NULL);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int snd_bbfpro_vol_add(struct usb_mixer_interface *mixer, u16 index,
 			      char *name)
 {
@@ -3045,8 +3000,6 @@ static int snd_bbfpro_controls_create(struct usb_mixer_interface *mixer)
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	// Main out volume
 	for (i = 0 ; i < 12 ; ++i) {
 		snprintf(name, sizeof(name), "Main-Out %s", output[i]);
@@ -3070,7 +3023,6 @@ static int snd_bbfpro_controls_create(struct usb_mixer_interface *mixer)
 			return err;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	// Control Reg 1
 	err = snd_bbfpro_ctl_add(mixer, SND_BBFPRO_CTL_REG1,
 				 SND_BBFPRO_CTL_REG1_CLK_OPTICAL,
@@ -3137,8 +3089,6 @@ static int snd_bbfpro_controls_create(struct usb_mixer_interface *mixer)
 }
 
 /*
-<<<<<<< HEAD
-=======
  * RME Digiface USB
  */
 
@@ -3548,7 +3498,6 @@ static int snd_rme_digiface_controls_create(struct usb_mixer_interface *mixer)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Pioneer DJ DJM Mixers
  *
  * These devices generally have options for soft-switching the playback and
@@ -4093,12 +4042,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
 			break;
 		err = dell_dock_mixer_init(mixer);
 		break;
-<<<<<<< HEAD
-=======
 	case USB_ID(0x0bda, 0x402e): /* Dell WD19 dock */
 		err = dell_dock_mixer_create(mixer);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	case USB_ID(0x2a39, 0x3fd2): /* RME ADI-2 Pro */
 	case USB_ID(0x2a39, 0x3fd3): /* RME ADI-2 DAC */
@@ -4112,12 +4058,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
 	case USB_ID(0x2a39, 0x3fb0): /* RME Babyface Pro FS */
 		err = snd_bbfpro_controls_create(mixer);
 		break;
-<<<<<<< HEAD
-=======
 	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
 		err = snd_rme_digiface_controls_create(mixer);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case USB_ID(0x2b73, 0x0017): /* Pioneer DJ DJM-250MK2 */
 		err = snd_djm_controls_create(mixer, SND_DJM_250MK2_IDX);
 		break;

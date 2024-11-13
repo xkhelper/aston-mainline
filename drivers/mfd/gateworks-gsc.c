@@ -20,11 +20,7 @@
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * The GSC suffers from an errata where occasionally during
@@ -164,11 +160,7 @@ static const struct of_device_id gsc_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, gsc_of_match);
 
-<<<<<<< HEAD
-static struct regmap_bus gsc_regmap_bus = {
-=======
 static const struct regmap_bus gsc_regmap_bus = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_read = gsc_read,
 	.reg_write = gsc_write,
 };

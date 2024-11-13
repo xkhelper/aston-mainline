@@ -83,11 +83,7 @@ static int nft_range_init(const struct nft_ctx *ctx, const struct nft_expr *expr
 		goto err2;
 	}
 
-<<<<<<< HEAD
-	err = nft_parse_register_load(tb[NFTA_RANGE_SREG], &priv->sreg,
-=======
 	err = nft_parse_register_load(ctx, tb[NFTA_RANGE_SREG], &priv->sreg,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      desc_from.len);
 	if (err < 0)
 		goto err2;

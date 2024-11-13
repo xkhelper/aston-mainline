@@ -21,15 +21,12 @@
 		serial0 = &uart0;
 	};
 
-<<<<<<< HEAD
-=======
 	battery: battery {
 		compatible = "simple-battery";
 		constant-charge-current-max-microamp = <1024000>;
 		voltage-max-design-microvolt = <4200000>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
@@ -210,21 +207,12 @@
 	vcc-pi-supply = <&reg_cldo3>;
 };
 
-<<<<<<< HEAD
-&r_rsb {
-	status = "okay";
-
-	axp717: pmic@3a3 {
-		compatible = "x-powers,axp717";
-		reg = <0x3a3>;
-=======
 &r_i2c {
 	status = "okay";
 
 	axp717: pmic@34 {
 		compatible = "x-powers,axp717";
 		reg = <0x34>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		interrupt-controller;
 		#interrupt-cells = <1>;
 		interrupt-parent = <&nmi_intc>;
@@ -235,8 +223,6 @@
 		vin3-supply = <&reg_vcc5v>;
 		vin4-supply = <&reg_vcc5v>;
 
-<<<<<<< HEAD
-=======
 		axp_adc: adc {
 			compatible = "x-powers,axp717-adc";
 			#io-channel-cells = <1>;
@@ -247,7 +233,6 @@
 			monitored-battery = <&battery>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		regulators {
 			reg_dcdc1: dcdc1 {
 				regulator-always-on;
@@ -338,14 +323,11 @@
 				/* unused */
 			};
 		};
-<<<<<<< HEAD
-=======
 
 		usb_power: usb-power {
 			compatible = "x-powers,axp717-usb-power-supply";
 			input-current-limit-microamp = <1500000>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

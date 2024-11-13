@@ -55,18 +55,11 @@ nilfs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
 {
 	struct inode *inode;
 	ino_t ino;
-<<<<<<< HEAD
-=======
 	int res;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (dentry->d_name.len > NILFS_NAME_LEN)
 		return ERR_PTR(-ENAMETOOLONG);
 
-<<<<<<< HEAD
-	ino = nilfs_inode_by_name(dir, &dentry->d_name);
-	inode = ino ? nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino) : NULL;
-=======
 	res = nilfs_inode_by_name(dir, &dentry->d_name, &ino);
 	if (res) {
 		if (res != -ENOENT)
@@ -76,7 +69,6 @@ nilfs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
 		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return d_splice_alias(inode, dentry);
 }
 
@@ -165,12 +157,9 @@ static int nilfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
 	/* slow symlink */
 	inode->i_op = &nilfs_symlink_inode_operations;
 	inode_nohighmem(inode);
-<<<<<<< HEAD
-=======
 	mapping_set_gfp_mask(inode->i_mapping,
 			     mapping_gfp_constraint(inode->i_mapping,
 						    ~__GFP_FS));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	inode->i_mapping->a_ops = &nilfs_aops;
 	err = page_symlink(inode, symname, l);
 	if (err)
@@ -285,18 +274,11 @@ static int nilfs_do_unlink(struct inode *dir, struct dentry *dentry)
 	struct folio *folio;
 	int err;
 
-<<<<<<< HEAD
-	err = -ENOENT;
-	de = nilfs_find_entry(dir, &dentry->d_name, &folio);
-	if (!de)
-		goto out;
-=======
 	de = nilfs_find_entry(dir, &dentry->d_name, &folio);
 	if (IS_ERR(de)) {
 		err = PTR_ERR(de);
 		goto out;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	inode = d_inode(dentry);
 	err = -EIO;
@@ -392,18 +374,11 @@ static int nilfs_rename(struct mnt_idmap *idmap,
 	if (unlikely(err))
 		return err;
 
-<<<<<<< HEAD
-	err = -ENOENT;
-	old_de = nilfs_find_entry(old_dir, &old_dentry->d_name, &old_folio);
-	if (!old_de)
-		goto out;
-=======
 	old_de = nilfs_find_entry(old_dir, &old_dentry->d_name, &old_folio);
 	if (IS_ERR(old_de)) {
 		err = PTR_ERR(old_de);
 		goto out;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (S_ISDIR(old_inode->i_mode)) {
 		err = -EIO;
@@ -420,19 +395,12 @@ static int nilfs_rename(struct mnt_idmap *idmap,
 		if (dir_de && !nilfs_empty_dir(new_inode))
 			goto out_dir;
 
-<<<<<<< HEAD
-		err = -ENOENT;
-		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name, &new_folio);
-		if (!new_de)
-			goto out_dir;
-=======
 		new_de = nilfs_find_entry(new_dir, &new_dentry->d_name,
 					  &new_folio);
 		if (IS_ERR(new_de)) {
 			err = PTR_ERR(new_de);
 			goto out_dir;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nilfs_set_link(new_dir, new_de, new_folio, old_inode);
 		folio_release_kmap(new_folio, new_de);
 		nilfs_mark_inode_dirty(new_dir);
@@ -487,14 +455,6 @@ out:
  */
 static struct dentry *nilfs_get_parent(struct dentry *child)
 {
-<<<<<<< HEAD
-	unsigned long ino;
-	struct nilfs_root *root;
-
-	ino = nilfs_inode_by_name(d_inode(child), &dotdot_name);
-	if (!ino)
-		return ERR_PTR(-ENOENT);
-=======
 	ino_t ino;
 	int res;
 	struct nilfs_root *root;
@@ -502,7 +462,6 @@ static struct dentry *nilfs_get_parent(struct dentry *child)
 	res = nilfs_inode_by_name(d_inode(child), &dotdot_name, &ino);
 	if (res)
 		return ERR_PTR(res);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	root = NILFS_I(d_inode(child))->i_root;
 

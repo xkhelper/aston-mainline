@@ -2,14 +2,6 @@
 #ifndef __ASM_MMAN_H__
 #define __ASM_MMAN_H__
 
-<<<<<<< HEAD
-#include <linux/compiler.h>
-#include <linux/types.h>
-#include <uapi/asm/mman.h>
-
-static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
-	unsigned long pkey __always_unused)
-=======
 #include <uapi/asm/mman.h>
 
 #ifndef BUILD_VDSO
@@ -20,7 +12,6 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
 
 static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
 	unsigned long pkey)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long ret = 0;
 
@@ -30,8 +21,6 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
 	if (system_supports_mte() && (prot & PROT_MTE))
 		ret |= VM_MTE;
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ARCH_HAS_PKEYS
 	if (system_supports_poe()) {
 		ret |= pkey & BIT(0) ? VM_PKEY_BIT0 : 0;
@@ -40,38 +29,25 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
 	}
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
 
-<<<<<<< HEAD
-static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
-=======
 static inline unsigned long arch_calc_vm_flag_bits(struct file *file,
 						   unsigned long flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * Only allow MTE on anonymous mappings as these are guaranteed to be
 	 * backed by tags-capable memory. The vm_flags may be overridden by a
 	 * filesystem supporting MTE (RAM-based).
 	 */
-<<<<<<< HEAD
-	if (system_supports_mte() && (flags & MAP_ANONYMOUS))
-=======
 	if (system_supports_mte() &&
 	    ((flags & MAP_ANONYMOUS) || shmem_file(file)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return VM_MTE_ALLOWED;
 
 	return 0;
 }
-<<<<<<< HEAD
-#define arch_calc_vm_flag_bits(flags) arch_calc_vm_flag_bits(flags)
-=======
 #define arch_calc_vm_flag_bits(file, flags) arch_calc_vm_flag_bits(file, flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline bool arch_validate_prot(unsigned long prot,
 	unsigned long addr __always_unused)
@@ -98,9 +74,6 @@ static inline bool arch_validate_flags(unsigned long vm_flags)
 }
 #define arch_validate_flags(vm_flags) arch_validate_flags(vm_flags)
 
-<<<<<<< HEAD
-=======
 #endif /* !BUILD_VDSO */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* ! __ASM_MMAN_H__ */

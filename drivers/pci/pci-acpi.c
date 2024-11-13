@@ -15,10 +15,7 @@
 #include <linux/pci_hotplug.h>
 #include <linux/module.h>
 #include <linux/pci-acpi.h>
-<<<<<<< HEAD
-=======
 #include <linux/pci-ecam.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pm_runtime.h>
 #include <linux/pm_qos.h>
 #include <linux/rwsem.h>
@@ -1545,8 +1542,6 @@ static int __init acpi_pci_init(void)
 	return 0;
 }
 arch_initcall(acpi_pci_init);
-<<<<<<< HEAD
-=======
 
 #if defined(CONFIG_ARM64) || defined(CONFIG_RISCV)
 
@@ -1728,4 +1723,3 @@ void pcibios_remove_bus(struct pci_bus *bus)
 }
 
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

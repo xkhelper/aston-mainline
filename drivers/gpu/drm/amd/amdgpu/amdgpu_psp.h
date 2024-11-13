@@ -138,10 +138,7 @@ struct psp_funcs {
 	int (*vbflash_stat)(struct psp_context *psp);
 	int (*fatal_error_recovery_quirk)(struct psp_context *psp);
 	bool (*get_ras_capability)(struct psp_context *psp);
-<<<<<<< HEAD
-=======
 	bool (*is_aux_sos_load_required)(struct psp_context *psp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ta_funcs {
@@ -468,12 +465,9 @@ struct amdgpu_psp_funcs {
 	((psp)->funcs->fatal_error_recovery_quirk ? \
 	(psp)->funcs->fatal_error_recovery_quirk((psp)) : 0)
 
-<<<<<<< HEAD
-=======
 #define psp_is_aux_sos_load_required(psp) \
 	((psp)->funcs->is_aux_sos_load_required ? (psp)->funcs->is_aux_sos_load_required((psp)) : 0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct amd_ip_funcs psp_ip_funcs;
 
 extern const struct amdgpu_ip_block_version psp_v3_1_ip_block;

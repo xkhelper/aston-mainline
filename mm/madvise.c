@@ -1031,12 +1031,9 @@ static int madvise_vma_behavior(struct vm_area_struct *vma,
 	struct anon_vma_name *anon_name;
 	unsigned long new_flags = vma->vm_flags;
 
-<<<<<<< HEAD
-=======
 	if (unlikely(!can_modify_vma_madv(vma, behavior)))
 		return -EPERM;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (behavior) {
 	case MADV_REMOVE:
 		return madvise_remove(vma, prev, start, end);
@@ -1454,18 +1451,6 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
 	start = untagged_addr_remote(mm, start);
 	end = start + len;
 
-<<<<<<< HEAD
-	/*
-	 * Check if the address range is sealed for do_madvise().
-	 * can_modify_mm_madv assumes we have acquired the lock on MM.
-	 */
-	if (unlikely(!can_modify_mm_madv(mm, start, end, behavior))) {
-		error = -EPERM;
-		goto out;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	blk_start_plug(&plug);
 	switch (behavior) {
 	case MADV_POPULATE_READ:
@@ -1479,10 +1464,6 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
 	}
 	blk_finish_plug(&plug);
 
-<<<<<<< HEAD
-out:
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (write)
 		mmap_write_unlock(mm);
 	else
@@ -1539,11 +1520,7 @@ SYSCALL_DEFINE5(process_madvise, int, pidfd, const struct iovec __user *, vec,
 	 * Require CAP_SYS_NICE for influencing process performance. Note that
 	 * only non-destructive hints are currently supported.
 	 */
-<<<<<<< HEAD
-	if (!capable(CAP_SYS_NICE)) {
-=======
 	if (mm != current->mm && !capable(CAP_SYS_NICE)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EPERM;
 		goto release_mm;
 	}

@@ -310,11 +310,7 @@ struct kmem_cache {
 };
 
 #if defined(CONFIG_SYSFS) && !defined(CONFIG_SLUB_TINY)
-<<<<<<< HEAD
-#define SLAB_SUPPORTS_SYSFS
-=======
 #define SLAB_SUPPORTS_SYSFS 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void sysfs_slab_unlink(struct kmem_cache *s);
 void sysfs_slab_release(struct kmem_cache *s);
 #else
@@ -426,13 +422,9 @@ kmalloc_slab(size_t size, kmem_buckets *b, gfp_t flags, unsigned long caller)
 gfp_t kmalloc_fix_flags(gfp_t flags);
 
 /* Functions provided by the slab allocators */
-<<<<<<< HEAD
-int __kmem_cache_create(struct kmem_cache *, slab_flags_t flags);
-=======
 int do_kmem_cache_create(struct kmem_cache *s, const char *name,
 			 unsigned int size, struct kmem_cache_args *args,
 			 slab_flags_t flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void __init kmem_cache_init(void);
 extern void create_boot_cache(struct kmem_cache *, const char *name,
@@ -453,8 +445,6 @@ static inline bool is_kmalloc_cache(struct kmem_cache *s)
 	return (s->flags & SLAB_KMALLOC);
 }
 
-<<<<<<< HEAD
-=======
 static inline bool is_kmalloc_normal(struct kmem_cache *s)
 {
 	if (!is_kmalloc_cache(s))
@@ -462,7 +452,6 @@ static inline bool is_kmalloc_normal(struct kmem_cache *s)
 	return !(s->flags & (SLAB_CACHE_DMA|SLAB_ACCOUNT|SLAB_RECLAIM_ACCOUNT));
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Legal flag mask for kmem_cache_create(), for various configurations */
 #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
 			 SLAB_CACHE_DMA32 | SLAB_PANIC | \
@@ -557,15 +546,12 @@ static inline bool kmem_cache_debug_flags(struct kmem_cache *s, slab_flags_t fla
 	return false;
 }
 
-<<<<<<< HEAD
-=======
 #if IS_ENABLED(CONFIG_SLUB_DEBUG) && IS_ENABLED(CONFIG_KUNIT)
 bool slab_in_kunit_test(void);
 #else
 static inline bool slab_in_kunit_test(void) { return false; }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SLAB_OBJ_EXT
 
 /*

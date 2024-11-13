@@ -8,10 +8,7 @@
 // This driver is based on max8998.c
 
 #include <linux/bug.h>
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/err.h>
 #include <linux/gpio/consumer.h>
 #include <linux/slab.h>
@@ -880,11 +877,7 @@ static int max8997_pmic_dt_parse_pdata(struct platform_device *pdev,
 					struct max8997_platform_data *pdata)
 {
 	struct max8997_dev *iodev = dev_get_drvdata(pdev->dev.parent);
-<<<<<<< HEAD
-	struct device_node *pmic_np, *regulators_np, *reg_np;
-=======
 	struct device_node *pmic_np, *reg_np;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct max8997_regulator_data *rdata;
 	unsigned int i, dvs_voltage_nr = 1;
 
@@ -894,12 +887,8 @@ static int max8997_pmic_dt_parse_pdata(struct platform_device *pdev,
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-	regulators_np = of_get_child_by_name(pmic_np, "regulators");
-=======
 	struct device_node *regulators_np __free(device_node) = of_get_child_by_name(pmic_np,
 										     "regulators");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!regulators_np) {
 		dev_err(&pdev->dev, "could not find regulators sub-node\n");
 		return -EINVAL;
@@ -911,15 +900,8 @@ static int max8997_pmic_dt_parse_pdata(struct platform_device *pdev,
 	rdata = devm_kcalloc(&pdev->dev,
 			     pdata->num_regulators, sizeof(*rdata),
 			     GFP_KERNEL);
-<<<<<<< HEAD
-	if (!rdata) {
-		of_node_put(regulators_np);
-		return -ENOMEM;
-	}
-=======
 	if (!rdata)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pdata->regulators = rdata;
 	for_each_child_of_node(regulators_np, reg_np) {
@@ -940,10 +922,6 @@ static int max8997_pmic_dt_parse_pdata(struct platform_device *pdev,
 		rdata->reg_node = reg_np;
 		rdata++;
 	}
-<<<<<<< HEAD
-	of_node_put(regulators_np);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pdata->buck1_gpiodvs = of_property_read_bool(pmic_np, "max8997,pmic-buck1-uses-gpio-dvs");
 	pdata->buck2_gpiodvs = of_property_read_bool(pmic_np, "max8997,pmic-buck2-uses-gpio-dvs");
@@ -962,14 +940,8 @@ static int max8997_pmic_dt_parse_pdata(struct platform_device *pdev,
 			}
 		}
 
-<<<<<<< HEAD
-		if (of_get_property(pmic_np,
-			"max8997,pmic-ignore-gpiodvs-side-effect", NULL))
-			pdata->ignore_gpiodvs_side_effect = true;
-=======
 		pdata->ignore_gpiodvs_side_effect = of_property_read_bool(pmic_np,
 			"max8997,pmic-ignore-gpiodvs-side-effect");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		dvs_voltage_nr = 8;
 	}

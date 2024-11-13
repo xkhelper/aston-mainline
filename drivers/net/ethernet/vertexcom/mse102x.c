@@ -222,11 +222,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
 	struct spi_transfer *xfer = &mses->spi_xfer;
 	struct spi_message *msg = &mses->spi_msg;
-<<<<<<< HEAD
-	struct sk_buff *tskb;
-=======
 	struct sk_buff *tskb = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	netif_dbg(mse, tx_queued, mse->ndev, "%s: skb %p, %d@%p\n",
@@ -239,10 +235,6 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
 		if (!tskb)
 			return -ENOMEM;
 
-<<<<<<< HEAD
-		dev_kfree_skb(txp);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		txp = tskb;
 	}
 
@@ -264,11 +256,8 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
 		mse->stats.xfer_err++;
 	}
 
-<<<<<<< HEAD
-=======
 	dev_kfree_skb(tskb);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -389,13 +378,8 @@ static int mse102x_tx_pkt_spi(struct mse102x_net *mse, struct sk_buff *txb,
 	int ret;
 	bool first = true;
 
-<<<<<<< HEAD
-	if (txb->len < 60)
-		pad = 60 - txb->len;
-=======
 	if (txb->len < ETH_ZLEN)
 		pad = ETH_ZLEN - txb->len;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	while (1) {
 		mse102x_tx_cmd_spi(mse, CMD_RTS | (txb->len + pad));
@@ -468,11 +452,7 @@ static void mse102x_tx_work(struct work_struct *work)
 
 	if (ret == -ETIMEDOUT) {
 		if (netif_msg_timer(mse))
-<<<<<<< HEAD
-			netdev_err(mse->ndev, "tx work timeout\n");
-=======
 			netdev_err_once(mse->ndev, "tx work timeout\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		mse->stats.tx_timeout++;
 	}
@@ -506,13 +486,8 @@ static void mse102x_init_mac(struct mse102x_net *mse, struct device_node *np)
 
 	if (ret) {
 		eth_hw_addr_random(ndev);
-<<<<<<< HEAD
-		netdev_err(ndev, "Using random MAC address: %pM\n",
-			   ndev->dev_addr);
-=======
 		dev_warn(ndev->dev.parent, "Using random MAC address: %pM\n",
 			 ndev->dev_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -648,11 +623,6 @@ static const struct ethtool_ops mse102x_ethtool_ops = {
 
 /* driver bus management functions */
 
-<<<<<<< HEAD
-#ifdef CONFIG_PM_SLEEP
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mse102x_suspend(struct device *dev)
 {
 	struct mse102x_net *mse = dev_get_drvdata(dev);
@@ -678,14 +648,8 @@ static int mse102x_resume(struct device *dev)
 
 	return 0;
 }
-<<<<<<< HEAD
-#endif
-
-static SIMPLE_DEV_PM_OPS(mse102x_pm_ops, mse102x_suspend, mse102x_resume);
-=======
 
 static DEFINE_SIMPLE_DEV_PM_OPS(mse102x_pm_ops, mse102x_suspend, mse102x_resume);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int mse102x_probe_spi(struct spi_device *spi)
 {
@@ -770,12 +734,6 @@ static void mse102x_remove_spi(struct spi_device *spi)
 	struct mse102x_net *mse = dev_get_drvdata(&spi->dev);
 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
 
-<<<<<<< HEAD
-	if (netif_msg_drv(mse))
-		dev_info(&spi->dev, "remove\n");
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mse102x_remove_device_debugfs(mses);
 	unregister_netdev(mse->ndev);
 }
@@ -798,11 +756,7 @@ static struct spi_driver mse102x_driver = {
 	.driver = {
 		.name = DRV_NAME,
 		.of_match_table = mse102x_match_table,
-<<<<<<< HEAD
-		.pm = &mse102x_pm_ops,
-=======
 		.pm = pm_sleep_ptr(&mse102x_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe = mse102x_probe_spi,
 	.remove = mse102x_remove_spi,

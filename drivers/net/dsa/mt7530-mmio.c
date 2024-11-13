@@ -11,10 +11,7 @@
 #include "mt7530.h"
 
 static const struct of_device_id mt7988_of_match[] = {
-<<<<<<< HEAD
-=======
 	{ .compatible = "airoha,en7581-switch", .data = &mt753x_table[ID_EN7581], },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "mediatek,mt7988-switch", .data = &mt753x_table[ID_MT7988], },
 	{ /* sentinel */ },
 };

@@ -391,11 +391,7 @@ static const struct stepping_info *
 intel_get_stepping_info(struct drm_i915_private *i915,
 			struct stepping_info *si)
 {
-<<<<<<< HEAD
-	const char *step_name = intel_display_step_name(i915);
-=======
 	const char *step_name = intel_step_name(INTEL_DISPLAY_STEP(i915));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	si->stepping = step_name[0];
 	si->substepping = step_name[1];

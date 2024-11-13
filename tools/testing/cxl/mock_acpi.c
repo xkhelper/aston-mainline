@@ -18,11 +18,7 @@ struct acpi_device *to_cxl_host_bridge(struct device *host, struct device *dev)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	if (dev->bus == &platform_bus_type)
-=======
 	if (dev_is_platform(dev))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 
 	adev = to_acpi_device(dev);

@@ -740,11 +740,7 @@ static struct rapl_primitive_info *get_rpi(struct rapl_package *rp, int prim)
 {
 	struct rapl_primitive_info *rpi = rp->priv->rpi;
 
-<<<<<<< HEAD
-	if (prim < 0 || prim > NR_RAPL_PRIMITIVES || !rpi)
-=======
 	if (prim < 0 || prim >= NR_RAPL_PRIMITIVES || !rpi)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 
 	return &rpi[prim];
@@ -1271,10 +1267,7 @@ static const struct x86_cpu_id rapl_ids[] __initconst = {
 	X86_MATCH_VFM(INTEL_LUNARLAKE_M,	&rapl_defaults_core),
 	X86_MATCH_VFM(INTEL_ARROWLAKE_H,	&rapl_defaults_core),
 	X86_MATCH_VFM(INTEL_ARROWLAKE,		&rapl_defaults_core),
-<<<<<<< HEAD
-=======
 	X86_MATCH_VFM(INTEL_ARROWLAKE_U,	&rapl_defaults_core),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	X86_MATCH_VFM(INTEL_LAKEFIELD,		&rapl_defaults_core),
 
 	X86_MATCH_VFM(INTEL_ATOM_SILVERMONT,	&rapl_defaults_byt),
@@ -1293,10 +1286,7 @@ static const struct x86_cpu_id rapl_ids[] __initconst = {
 
 	X86_MATCH_VENDOR_FAM(AMD, 0x17, &rapl_defaults_amd),
 	X86_MATCH_VENDOR_FAM(AMD, 0x19, &rapl_defaults_amd),
-<<<<<<< HEAD
-=======
 	X86_MATCH_VENDOR_FAM(AMD, 0x1A, &rapl_defaults_amd),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	X86_MATCH_VENDOR_FAM(HYGON, 0x18, &rapl_defaults_amd),
 	{}
 };
@@ -2140,8 +2130,6 @@ void rapl_remove_package(struct rapl_package *rp)
 }
 EXPORT_SYMBOL_GPL(rapl_remove_package);
 
-<<<<<<< HEAD
-=======
 /*
  * RAPL Package energy counter scope:
  * 1. AMD/HYGON platforms use per-PKG package energy counter
@@ -2157,7 +2145,6 @@ EXPORT_SYMBOL_GPL(rapl_remove_package);
 	(boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||	\
 	 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* caller to ensure CPU hotplug lock is held */
 struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_priv *priv,
 							 bool id_is_cpu)
@@ -2165,10 +2152,6 @@ struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_
 	struct rapl_package *rp;
 	int uid;
 
-<<<<<<< HEAD
-	if (id_is_cpu)
-		uid = topology_logical_die_id(id);
-=======
 	if (id_is_cpu) {
 		uid = rapl_msrs_are_pkg_scope() ?
 		      topology_physical_package_id(id) : topology_logical_die_id(id);
@@ -2177,7 +2160,6 @@ struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_
 			return NULL;
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		uid = id;
 
@@ -2209,11 +2191,6 @@ struct rapl_package *rapl_add_package_cpuslocked(int id, struct rapl_if_priv *pr
 		return ERR_PTR(-ENOMEM);
 
 	if (id_is_cpu) {
-<<<<<<< HEAD
-		rp->id = topology_logical_die_id(id);
-		rp->lead_cpu = id;
-		if (topology_max_dies_per_package() > 1)
-=======
 		rp->id = rapl_msrs_are_pkg_scope() ?
 			 topology_physical_package_id(id) : topology_logical_die_id(id);
 		if ((int)(rp->id) < 0) {
@@ -2222,7 +2199,6 @@ struct rapl_package *rapl_add_package_cpuslocked(int id, struct rapl_if_priv *pr
 		}
 		rp->lead_cpu = id;
 		if (!rapl_msrs_are_pkg_scope() && topology_max_dies_per_package() > 1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			snprintf(rp->name, PACKAGE_DOMAIN_NAME_LENGTH, "package-%d-die-%d",
 				 topology_physical_package_id(id), topology_die_id(id));
 		else

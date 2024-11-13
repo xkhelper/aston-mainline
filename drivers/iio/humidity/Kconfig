@@ -25,8 +25,6 @@ config DHT11
 	  Other sensors should work as well as long as they speak the
 	  same protocol.
 
-<<<<<<< HEAD
-=======
 config ENS210
 	tristate "ENS210 temperature and humidity sensor"
 	depends on I2C
@@ -38,7 +36,6 @@ config ENS210
 	  This driver can also be built as a module. If so, the module will be
 	  called ens210.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config HDC100X
 	tristate "TI HDC100x relative humidity and temperature sensor"
 	depends on I2C

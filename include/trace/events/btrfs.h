@@ -674,17 +674,10 @@ TRACE_EVENT(btrfs_finish_ordered_extent,
 
 DECLARE_EVENT_CLASS(btrfs__writepage,
 
-<<<<<<< HEAD
-	TP_PROTO(const struct page *page, const struct inode *inode,
-		 const struct writeback_control *wbc),
-
-	TP_ARGS(page, inode, wbc),
-=======
 	TP_PROTO(const struct folio *folio, const struct inode *inode,
 		 const struct writeback_control *wbc),
 
 	TP_ARGS(folio, inode, wbc),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	TP_STRUCT__entry_btrfs(
 		__field(	u64,	ino			)
@@ -702,11 +695,7 @@ DECLARE_EVENT_CLASS(btrfs__writepage,
 
 	TP_fast_assign_btrfs(btrfs_sb(inode->i_sb),
 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
-<<<<<<< HEAD
-		__entry->index		= page->index;
-=======
 		__entry->index		= folio->index;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->nr_to_write	= wbc->nr_to_write;
 		__entry->pages_skipped	= wbc->pages_skipped;
 		__entry->range_start	= wbc->range_start;
@@ -732,21 +721,12 @@ DECLARE_EVENT_CLASS(btrfs__writepage,
 		  __entry->writeback_index)
 );
 
-<<<<<<< HEAD
-DEFINE_EVENT(btrfs__writepage, __extent_writepage,
-
-	TP_PROTO(const struct page *page, const struct inode *inode,
-		 const struct writeback_control *wbc),
-
-	TP_ARGS(page, inode, wbc)
-=======
 DEFINE_EVENT(btrfs__writepage, extent_writepage,
 
 	TP_PROTO(const struct folio *folio, const struct inode *inode,
 		 const struct writeback_control *wbc),
 
 	TP_ARGS(folio, inode, wbc)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 );
 
 TRACE_EVENT(btrfs_writepage_end_io_hook,
@@ -1736,11 +1716,7 @@ DECLARE_EVENT_CLASS(btrfs_qgroup_extent,
 	),
 
 	TP_fast_assign_btrfs(fs_info,
-<<<<<<< HEAD
-		__entry->bytenr		= rec->bytenr,
-=======
 		__entry->bytenr		= rec->bytenr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->num_bytes	= rec->num_bytes;
 	),
 
@@ -1849,11 +1825,7 @@ TRACE_EVENT(qgroup_update_counters,
 
 TRACE_EVENT(qgroup_update_reserve,
 
-<<<<<<< HEAD
-	TP_PROTO(struct btrfs_fs_info *fs_info, struct btrfs_qgroup *qgroup,
-=======
 	TP_PROTO(const struct btrfs_fs_info *fs_info, const struct btrfs_qgroup *qgroup,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 s64 diff, int type),
 
 	TP_ARGS(fs_info, qgroup, diff, type),
@@ -1879,11 +1851,7 @@ TRACE_EVENT(qgroup_update_reserve,
 
 TRACE_EVENT(qgroup_meta_reserve,
 
-<<<<<<< HEAD
-	TP_PROTO(struct btrfs_root *root, s64 diff, int type),
-=======
 	TP_PROTO(const struct btrfs_root *root, s64 diff, int type),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	TP_ARGS(root, diff, type),
 
@@ -1906,11 +1874,7 @@ TRACE_EVENT(qgroup_meta_reserve,
 
 TRACE_EVENT(qgroup_meta_convert,
 
-<<<<<<< HEAD
-	TP_PROTO(struct btrfs_root *root, s64 diff),
-=======
 	TP_PROTO(const struct btrfs_root *root, s64 diff),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	TP_ARGS(root, diff),
 

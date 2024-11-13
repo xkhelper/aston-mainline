@@ -30,11 +30,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
 #ifdef CONFIG_PPC64
 	mflr	r12
   .cfi_register lr,r12
-<<<<<<< HEAD
-	get_datapage	r10
-=======
 	get_realdatapage	r10, r11
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mtlr	r12
   .cfi_restore	lr
 #endif

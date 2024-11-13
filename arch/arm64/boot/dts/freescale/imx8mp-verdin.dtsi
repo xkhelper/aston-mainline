@@ -77,8 +77,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	sound_hdmi: sound-hdmi {
 		compatible = "fsl,imx-audio-hdmi";
 		model = "audio-hdmi";
@@ -87,7 +85,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Carrier Board Supplies */
 	reg_1p8v: regulator-1p8v {
 		compatible = "regulator-fixed";

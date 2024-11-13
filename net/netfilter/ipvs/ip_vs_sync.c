@@ -51,11 +51,7 @@
 #include <linux/kernel.h>
 #include <linux/sched/signal.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>		/* Used for ntoh_seq and hton_seq */
-=======
 #include <linux/unaligned.h>		/* Used for ntoh_seq and hton_seq */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/ip.h>
 #include <net/sock.h>

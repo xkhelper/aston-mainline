@@ -33,7 +33,3 @@ kms_plane_alpha_blend@coverage-vs-premult-vs-constant,Fail
 kms_plane_cursor@overlay,Fail
 kms_plane_cursor@viewport,Fail
 kms_rmfb@close-fd,Fail
-<<<<<<< HEAD
-tools_test@tools_test,Fail
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -62,13 +62,9 @@ static const struct xhci_plat_priv xhci_plat_cdns3_xhci = {
 	.resume_quirk = xhci_cdns3_resume_quirk,
 };
 
-<<<<<<< HEAD
-static const struct xhci_plat_priv xhci_plat_cdnsp_xhci;
-=======
 static const struct xhci_plat_priv xhci_plat_cdnsp_xhci = {
 	.quirks = XHCI_CDNS_SCTX_QUIRK,
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int __cdns_host_init(struct cdns *cdns)
 {

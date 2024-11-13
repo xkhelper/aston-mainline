@@ -1147,11 +1147,8 @@ static int dapm_widget_list_create(struct snd_soc_dapm_widget_list **list,
 	if (*list == NULL)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
 	(*list)->num_widgets = size;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry(w, widgets, work_list)
 		(*list)->widgets[i++] = w;
 
@@ -2259,11 +2256,7 @@ static const struct file_operations dapm_bias_fops = {
 void snd_soc_dapm_debugfs_init(struct snd_soc_dapm_context *dapm,
 	struct dentry *parent)
 {
-<<<<<<< HEAD
-	if (!parent || IS_ERR(parent))
-=======
 	if (IS_ERR_OR_NULL(parent))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	dapm->debugfs_dapm = debugfs_create_dir("dapm", parent);
@@ -2760,12 +2753,7 @@ static int dapm_update_dai_unlocked(struct snd_pcm_substream *substream,
 	if (!w)
 		return 0;
 
-<<<<<<< HEAD
-	dev_dbg(dai->dev, "Update DAI routes for %s %s\n", dai->name,
-		dir == SNDRV_PCM_STREAM_PLAYBACK ? "playback" : "capture");
-=======
 	dev_dbg(dai->dev, "Update DAI routes for %s %s\n", dai->name, snd_pcm_direction_name(dir));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	snd_soc_dapm_widget_for_each_sink_path(w, p) {
 		ret = dapm_update_dai_chan(p, p->sink, channels);
@@ -2799,17 +2787,10 @@ EXPORT_SYMBOL_GPL(snd_soc_dapm_update_dai);
 
 int snd_soc_dapm_widget_name_cmp(struct snd_soc_dapm_widget *widget, const char *s)
 {
-<<<<<<< HEAD
-	struct snd_soc_component *component = snd_soc_dapm_to_component(widget->dapm);
-	const char *wname = widget->name;
-
-	if (component->name_prefix)
-=======
 	struct snd_soc_component *component = widget->dapm->component;
 	const char *wname = widget->name;
 
 	if (component && component->name_prefix)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wname += strlen(component->name_prefix) + 1; /* plus space */
 
 	return strcmp(wname, s);

@@ -31,17 +31,11 @@ static int acp_dmic_prepare(struct snd_pcm_substream *substream,
 	struct acp_stream *stream = substream->runtime->private_data;
 	struct device *dev = dai->component->dev;
 	struct acp_dev_data *adata = dev_get_drvdata(dev);
-<<<<<<< HEAD
-	u32 physical_addr, size_dmic, period_bytes;
-	unsigned int dmic_ctrl;
-
-=======
 	struct acp_chip_info *chip;
 	u32 physical_addr, size_dmic, period_bytes;
 	unsigned int dmic_ctrl;
 
 	chip = dev_get_platdata(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Enable default DMIC clk */
 	writel(PDM_CLK_FREQ_MASK, adata->acp_base + ACP_WOV_CLK_CTRL);
 	dmic_ctrl = readl(adata->acp_base + ACP_WOV_MISC_CTRL);
@@ -53,14 +47,10 @@ static int acp_dmic_prepare(struct snd_pcm_substream *substream,
 	size_dmic = frames_to_bytes(substream->runtime,
 			substream->runtime->buffer_size);
 
-<<<<<<< HEAD
-	physical_addr = stream->reg_offset + MEM_WINDOW_START;
-=======
 	if (chip->acp_rev >= ACP70_DEV)
 		physical_addr = ACP7x_DMIC_MEM_WINDOW_START;
 	else
 		physical_addr = stream->reg_offset + MEM_WINDOW_START;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Init DMIC Ring buffer */
 	writel(physical_addr, adata->acp_base + ACP_WOV_RX_RINGBUFADDR);

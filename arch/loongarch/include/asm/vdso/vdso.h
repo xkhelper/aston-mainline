@@ -4,12 +4,9 @@
  * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
  */
 
-<<<<<<< HEAD
-=======
 #ifndef _ASM_VDSO_VDSO_H
 #define _ASM_VDSO_VDSO_H
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __ASSEMBLY__
 
 #include <asm/asm.h>
@@ -22,10 +19,7 @@ struct vdso_pcpu_data {
 
 struct loongarch_vdso_data {
 	struct vdso_pcpu_data pdata[NR_CPUS];
-<<<<<<< HEAD
-=======
 	struct vdso_rng_data rng_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -73,8 +67,5 @@ static inline unsigned long get_vdso_data(void)
 }
 
 #endif /* __ASSEMBLY__ */
-<<<<<<< HEAD
-=======
 
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -10,11 +10,7 @@
 #include "oplock.h"
 
 #include "smb_common.h"
-<<<<<<< HEAD
-#include "smbstatus.h"
-=======
 #include "../common/smb2status.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "connection.h"
 #include "mgmt/user_session.h"
 #include "mgmt/share_config.h"
@@ -55,10 +51,7 @@ static struct oplock_info *alloc_opinfo(struct ksmbd_work *work,
 	init_waitqueue_head(&opinfo->oplock_brk);
 	atomic_set(&opinfo->refcount, 1);
 	atomic_set(&opinfo->breaking_cnt, 0);
-<<<<<<< HEAD
-=======
 	atomic_inc(&opinfo->conn->refcnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return opinfo;
 }
@@ -132,11 +125,8 @@ static void free_opinfo(struct oplock_info *opinfo)
 {
 	if (opinfo->is_lease)
 		free_lease(opinfo);
-<<<<<<< HEAD
-=======
 	if (opinfo->conn && atomic_dec_and_test(&opinfo->conn->refcnt))
 		kfree(opinfo->conn);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(opinfo);
 }
 
@@ -176,13 +166,7 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
 		    !atomic_inc_not_zero(&opinfo->refcount))
 			opinfo = NULL;
 		else {
-<<<<<<< HEAD
-			atomic_inc(&opinfo->conn->r_count);
 			if (ksmbd_conn_releasing(opinfo->conn)) {
-				atomic_dec(&opinfo->conn->r_count);
-=======
-			if (ksmbd_conn_releasing(opinfo->conn)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				atomic_dec(&opinfo->refcount);
 				opinfo = NULL;
 			}
@@ -194,34 +178,11 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
 	return opinfo;
 }
 
-<<<<<<< HEAD
-static void opinfo_conn_put(struct oplock_info *opinfo)
-{
-	struct ksmbd_conn *conn;
-
-	if (!opinfo)
-		return;
-
-	conn = opinfo->conn;
-	/*
-	 * Checking waitqueue to dropping pending requests on
-	 * disconnection. waitqueue_active is safe because it
-	 * uses atomic operation for condition.
-	 */
-	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
-		wake_up(&conn->r_count_q);
-	opinfo_put(opinfo);
-}
-
-void opinfo_put(struct oplock_info *opinfo)
-{
-=======
 void opinfo_put(struct oplock_info *opinfo)
 {
 	if (!opinfo)
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!atomic_dec_and_test(&opinfo->refcount))
 		return;
 
@@ -835,11 +796,7 @@ out:
 /**
  * smb2_lease_break_noti() - break lease when a new client request
  *			write lease
-<<<<<<< HEAD
- * @opinfo:		conains lease state information
-=======
  * @opinfo:		contains lease state information
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return:	0 on success, otherwise error
  */
@@ -1156,22 +1113,11 @@ void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
 			if (!atomic_inc_not_zero(&opinfo->refcount))
 				continue;
 
-<<<<<<< HEAD
-			atomic_inc(&opinfo->conn->r_count);
-			if (ksmbd_conn_releasing(opinfo->conn)) {
-				atomic_dec(&opinfo->conn->r_count);
-				continue;
-			}
-
-			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
-			opinfo_conn_put(opinfo);
-=======
 			if (ksmbd_conn_releasing(opinfo->conn))
 				continue;
 
 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
 			opinfo_put(opinfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	up_read(&p_ci->m_lock);
@@ -1204,20 +1150,10 @@ void smb_lazy_parent_lease_break_close(struct ksmbd_file *fp)
 			if (!atomic_inc_not_zero(&opinfo->refcount))
 				continue;
 
-<<<<<<< HEAD
-			atomic_inc(&opinfo->conn->r_count);
-			if (ksmbd_conn_releasing(opinfo->conn)) {
-				atomic_dec(&opinfo->conn->r_count);
-				continue;
-			}
-			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
-			opinfo_conn_put(opinfo);
-=======
 			if (ksmbd_conn_releasing(opinfo->conn))
 				continue;
 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
 			opinfo_put(opinfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	up_read(&p_ci->m_lock);
@@ -1296,11 +1232,7 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
 	prev_opinfo = opinfo_get_list(ci);
 	if (!prev_opinfo ||
 	    (prev_opinfo->level == SMB2_OPLOCK_LEVEL_NONE && lctx)) {
-<<<<<<< HEAD
-		opinfo_conn_put(prev_opinfo);
-=======
 		opinfo_put(prev_opinfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto set_lev;
 	}
 	prev_op_has_lease = prev_opinfo->is_lease;
@@ -1310,31 +1242,19 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
 	if (share_ret < 0 &&
 	    prev_opinfo->level == SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
 		err = share_ret;
-<<<<<<< HEAD
-		opinfo_conn_put(prev_opinfo);
-=======
 		opinfo_put(prev_opinfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_out;
 	}
 
 	if (prev_opinfo->level != SMB2_OPLOCK_LEVEL_BATCH &&
 	    prev_opinfo->level != SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
-<<<<<<< HEAD
-		opinfo_conn_put(prev_opinfo);
-=======
 		opinfo_put(prev_opinfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto op_break_not_needed;
 	}
 
 	list_add(&work->interim_entry, &prev_opinfo->interim_list);
 	err = oplock_break(prev_opinfo, SMB2_OPLOCK_LEVEL_II);
-<<<<<<< HEAD
-	opinfo_conn_put(prev_opinfo);
-=======
 	opinfo_put(prev_opinfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err == -ENOENT)
 		goto set_lev;
 	/* Check all oplock was freed by close */
@@ -1397,22 +1317,14 @@ static void smb_break_all_write_oplock(struct ksmbd_work *work,
 		return;
 	if (brk_opinfo->level != SMB2_OPLOCK_LEVEL_BATCH &&
 	    brk_opinfo->level != SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
-<<<<<<< HEAD
-		opinfo_conn_put(brk_opinfo);
-=======
 		opinfo_put(brk_opinfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
 	brk_opinfo->open_trunc = is_trunc;
 	list_add(&work->interim_entry, &brk_opinfo->interim_list);
 	oplock_break(brk_opinfo, SMB2_OPLOCK_LEVEL_II);
-<<<<<<< HEAD
-	opinfo_conn_put(brk_opinfo);
-=======
 	opinfo_put(brk_opinfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1444,16 +1356,8 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
 		if (!atomic_inc_not_zero(&brk_op->refcount))
 			continue;
 
-<<<<<<< HEAD
-		atomic_inc(&brk_op->conn->r_count);
-		if (ksmbd_conn_releasing(brk_op->conn)) {
-			atomic_dec(&brk_op->conn->r_count);
-			continue;
-		}
-=======
 		if (ksmbd_conn_releasing(brk_op->conn))
 			continue;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		rcu_read_unlock();
 		if (brk_op->is_lease && (brk_op->o_lease->state &
@@ -1484,11 +1388,7 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
 		brk_op->open_trunc = is_trunc;
 		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE);
 next:
-<<<<<<< HEAD
-		opinfo_conn_put(brk_op);
-=======
 		opinfo_put(brk_op);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rcu_read_lock();
 	}
 	rcu_read_unlock();
@@ -1584,11 +1484,7 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
 }
 
 /**
-<<<<<<< HEAD
- * parse_lease_state() - parse lease context containted in file open request
-=======
  * parse_lease_state() - parse lease context contained in file open request
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @open_req:	buffer containing smb2 file open(create) request
  *
  * Return: allocated lease context object on success, otherwise NULL

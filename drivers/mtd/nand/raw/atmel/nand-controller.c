@@ -2049,14 +2049,10 @@ static int atmel_nand_controller_init(struct atmel_nand_controller *nc,
 		dma_cap_set(DMA_MEMCPY, mask);
 
 		nc->dmac = dma_request_channel(mask, NULL, NULL);
-<<<<<<< HEAD
-		if (!nc->dmac)
-=======
 		if (nc->dmac)
 			dev_info(nc->dev, "using %s for DMA transfers\n",
 				 dma_chan_name(nc->dmac));
 		else
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev_err(nc->dev, "Failed to request DMA channel\n");
 	}
 

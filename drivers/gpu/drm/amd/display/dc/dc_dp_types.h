@@ -969,8 +969,6 @@ union dp_sink_video_fallback_formats {
 	uint8_t raw;
 };
 
-<<<<<<< HEAD
-=======
 union dpcd_max_uncompressed_pixel_rate_cap {
 	struct {
 		uint16_t max_uncompressed_pixel_rate_cap	:15;
@@ -979,7 +977,6 @@ union dpcd_max_uncompressed_pixel_rate_cap {
 	uint8_t raw[2];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 union dp_fec_capability1 {
 	struct {
 		uint8_t AGGREGATED_ERROR_COUNTERS_CAPABLE	:1;
@@ -1181,10 +1178,7 @@ struct dpcd_caps {
 	struct dc_lttpr_caps lttpr_caps;
 	struct adaptive_sync_caps adaptive_sync_caps;
 	struct dpcd_usb4_dp_tunneling_info usb4_dp_tun_info;
-<<<<<<< HEAD
-=======
 	union dpcd_max_uncompressed_pixel_rate_cap max_uncompressed_pixel_rate_cap;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	union dp_128b_132b_supported_link_rates dp_128b_132b_supported_link_rates;
 	union dp_main_line_channel_coding_cap channel_coding_cap;
@@ -1355,12 +1349,9 @@ struct dp_trace {
 #ifndef DP_CABLE_ATTRIBUTES_UPDATED_BY_DPTX
 #define DP_CABLE_ATTRIBUTES_UPDATED_BY_DPTX		0x110
 #endif
-<<<<<<< HEAD
-=======
 #ifndef DPCD_MAX_UNCOMPRESSED_PIXEL_RATE_CAP
 #define DPCD_MAX_UNCOMPRESSED_PIXEL_RATE_CAP    0x221c
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE
 #define DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE	0x50
 #endif

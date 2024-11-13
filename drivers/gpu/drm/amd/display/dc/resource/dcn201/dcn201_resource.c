@@ -1007,15 +1007,10 @@ static struct pipe_ctx *dcn201_acquire_free_pipe_for_layer(
 	struct pipe_ctx *head_pipe = resource_get_otg_master_for_stream(res_ctx, opp_head_pipe->stream);
 	struct pipe_ctx *idle_pipe = resource_find_free_secondary_pipe_legacy(res_ctx, pool, head_pipe);
 
-<<<<<<< HEAD
-	if (!head_pipe)
-		ASSERT(0);
-=======
 	if (!head_pipe) {
 		ASSERT(0);
 		return NULL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!idle_pipe)
 		return NULL;

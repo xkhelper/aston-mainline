@@ -292,11 +292,7 @@ static int snd_ali_codec_ready(struct snd_ali *codec,
 	}
 
 	snd_ali_5451_poke(codec, port, res & ~0x8000);
-<<<<<<< HEAD
-	dev_dbg(codec->card->dev, "ali_codec_ready: codec is not ready.\n ");
-=======
 	dev_dbg(codec->card->dev, "ali_codec_ready: codec is not ready.\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -EIO;
 }
 

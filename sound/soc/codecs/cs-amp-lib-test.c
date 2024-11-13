@@ -515,8 +515,6 @@ static void cs_amp_lib_test_get_efi_cal_zero_not_matched_test(struct kunit *test
 	kunit_deactivate_static_stub(test, cs_amp_test_hooks->get_efi_variable);
 }
 
-<<<<<<< HEAD
-=======
 /*
  * If an entry has a timestamp of 0 it should be ignored even if it has
  * a matching target UID.
@@ -560,7 +558,6 @@ static void cs_amp_lib_test_get_efi_cal_empty_entry_test(struct kunit *test)
 	kunit_deactivate_static_stub(test, cs_amp_test_hooks->get_efi_variable);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct cirrus_amp_cal_controls cs_amp_lib_test_calibration_controls = {
 	.alg_id =	0x9f210,
 	.mem_region =	WMFW_ADSP2_YM,
@@ -742,10 +739,7 @@ static struct kunit_case cs_amp_lib_test_cases[] = {
 			 cs_amp_lib_test_get_cal_gen_params),
 	KUNIT_CASE_PARAM(cs_amp_lib_test_get_efi_cal_by_index_fallback_test,
 			 cs_amp_lib_test_get_cal_gen_params),
-<<<<<<< HEAD
-=======
 	KUNIT_CASE(cs_amp_lib_test_get_efi_cal_empty_entry_test),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Tests for writing calibration data */
 	KUNIT_CASE(cs_amp_lib_test_write_cal_data_test),

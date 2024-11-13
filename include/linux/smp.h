@@ -109,11 +109,7 @@ static inline void on_each_cpu_cond(smp_cond_func_t cond_func,
  * Architecture specific boot CPU setup.  Defined as empty weak function in
  * init/main.c. Architectures can override it.
  */
-<<<<<<< HEAD
-void smp_prepare_boot_cpu(void);
-=======
 void __init smp_prepare_boot_cpu(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_SMP
 
@@ -298,13 +294,10 @@ int smpcfd_prepare_cpu(unsigned int cpu);
 int smpcfd_dead_cpu(unsigned int cpu);
 int smpcfd_dying_cpu(unsigned int cpu);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CSD_LOCK_WAIT_DEBUG
 bool csd_lock_is_stuck(void);
 #else
 static inline bool csd_lock_is_stuck(void) { return false; }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __LINUX_SMP_H */

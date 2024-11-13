@@ -14,10 +14,7 @@
  */
 
 #define MAX_RT_PRIO		100
-<<<<<<< HEAD
-=======
 #define MAX_DL_PRIO		0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MAX_PRIO		(MAX_RT_PRIO + NICE_WIDTH)
 #define DEFAULT_PRIO		(MAX_RT_PRIO + NICE_WIDTH / 2)

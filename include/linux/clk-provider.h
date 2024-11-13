@@ -394,8 +394,6 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
 	__clk_hw_register_fixed_rate((dev), NULL, (name), (parent_name), NULL, \
 				     NULL, (flags), (fixed_rate), 0, 0, true)
 /**
-<<<<<<< HEAD
-=======
  * devm_clk_hw_register_fixed_rate_parent_data - register fixed-rate clock with
  * the clock framework
  * @dev: device that is registering this clock
@@ -410,7 +408,6 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
 				     (parent_data), (flags), (fixed_rate), 0,	   \
 				     0, true)
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * clk_hw_register_fixed_rate_parent_hw - register fixed-rate clock with
  * the clock framework
  * @dev: device that is registering this clock

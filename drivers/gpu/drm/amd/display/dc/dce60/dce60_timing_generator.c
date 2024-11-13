@@ -111,21 +111,14 @@ static void program_timing(struct timing_generator *tg,
 	int vstartup_start,
 	int vupdate_offset,
 	int vupdate_width,
-<<<<<<< HEAD
-=======
 	int pstate_keepout,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const enum signal_type signal,
 	bool use_vbios)
 {
 	if (!use_vbios)
 		program_pix_dur(tg, timing->pix_clk_100hz);
 
-<<<<<<< HEAD
-	dce110_tg_program_timing(tg, timing, 0, 0, 0, 0, 0, use_vbios);
-=======
 	dce110_tg_program_timing(tg, timing, 0, 0, 0, 0, 0, 0, use_vbios);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void dce60_timing_generator_enable_advanced_request(

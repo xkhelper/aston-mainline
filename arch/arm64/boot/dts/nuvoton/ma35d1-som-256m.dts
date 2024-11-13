@@ -14,13 +14,10 @@
 
 	aliases {
 		serial0 = &uart0;
-<<<<<<< HEAD
-=======
 		serial11 = &uart11;
 		serial12 = &uart12;
 		serial14 = &uart14;
 		serial16 = &uart16;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	chosen {
@@ -40,13 +37,6 @@
 	};
 };
 
-<<<<<<< HEAD
-&uart0 {
-	status = "okay";
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &clk {
 	assigned-clocks = <&clk CAPLL>,
 			  <&clk DDRPLL>,
@@ -64,8 +54,6 @@
 			   "integer",
 			   "integer";
 };
-<<<<<<< HEAD
-=======
 
 &pinctrl {
 	uart-grp {
@@ -141,4 +129,3 @@
 	pinctrl-0 = <&pinctrl_uart16>;
 	status = "okay";
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

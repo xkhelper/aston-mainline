@@ -115,10 +115,6 @@ static struct platform_driver fch_clk_driver = {
 		.suppress_bind_attrs = true,
 	},
 	.probe = fch_clk_probe,
-<<<<<<< HEAD
-	.remove_new = fch_clk_remove,
-=======
 	.remove = fch_clk_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 builtin_platform_driver(fch_clk_driver);

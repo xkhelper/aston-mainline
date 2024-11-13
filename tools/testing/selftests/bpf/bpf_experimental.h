@@ -195,8 +195,6 @@ extern void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it) __ksym;
  */
 extern void bpf_throw(u64 cookie) __ksym;
 
-<<<<<<< HEAD
-=======
 /* Description
  *	Acquire a reference on the exe_file member field belonging to the
  *	mm_struct that is nested within the supplied task_struct. The supplied
@@ -223,7 +221,6 @@ extern void bpf_put_file(struct file *file) __ksym;
  */
 extern int bpf_path_d_path(struct path *path, char *buf, size_t buf__sz) __ksym;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* This macro must be used to mark the exception callback corresponding to the
  * main program. For example:
  *

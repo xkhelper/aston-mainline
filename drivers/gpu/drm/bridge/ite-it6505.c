@@ -460,11 +460,8 @@ struct it6505 {
 	bool enable_drv_hold;
 
 	const struct drm_edid *cached_edid;
-<<<<<<< HEAD
-=======
 
 	int irq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct it6505_step_train_para {
@@ -2629,11 +2626,8 @@ static int it6505_poweron(struct it6505 *it6505)
 	it6505_init(it6505);
 	it6505_lane_off(it6505);
 
-<<<<<<< HEAD
-=======
 	enable_irq(it6505->irq);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2650,11 +2644,8 @@ static int it6505_poweroff(struct it6505 *it6505)
 		return 0;
 	}
 
-<<<<<<< HEAD
-=======
 	disable_irq_nosync(it6505->irq);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pdata->gpiod_reset)
 		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
 
@@ -3404,11 +3395,7 @@ static int it6505_i2c_probe(struct i2c_client *client)
 	struct it6505 *it6505;
 	struct device *dev = &client->dev;
 	struct extcon_dev *extcon;
-<<<<<<< HEAD
-	int err, intp_irq;
-=======
 	int err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	it6505 = devm_kzalloc(&client->dev, sizeof(*it6505), GFP_KERNEL);
 	if (!it6505)
@@ -3449,30 +3436,18 @@ static int it6505_i2c_probe(struct i2c_client *client)
 
 	it6505_parse_dt(it6505);
 
-<<<<<<< HEAD
-	intp_irq = client->irq;
-
-	if (!intp_irq) {
-=======
 	it6505->irq = client->irq;
 
 	if (!it6505->irq) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(dev, "Failed to get INTP IRQ");
 		err = -ENODEV;
 		return err;
 	}
 
-<<<<<<< HEAD
-	err = devm_request_threaded_irq(&client->dev, intp_irq, NULL,
-					it6505_int_threaded_handler,
-					IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-=======
 	err = devm_request_threaded_irq(&client->dev, it6505->irq, NULL,
 					it6505_int_threaded_handler,
 					IRQF_TRIGGER_LOW | IRQF_ONESHOT |
 					IRQF_NO_AUTOEN,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					"it6505-intp", it6505);
 	if (err) {
 		dev_err(dev, "Failed to request INTP threaded IRQ: %d", err);

@@ -6,11 +6,7 @@
 #ifndef _XE_MIGRATE_
 #define _XE_MIGRATE_
 
-<<<<<<< HEAD
-#include <drm/drm_mm.h>
-=======
 #include <linux/types.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct dma_fence;
 struct iosys_map;
@@ -51,8 +47,6 @@ struct xe_migrate_pt_update_ops {
 			 struct xe_tile *tile, struct iosys_map *map,
 			 void *pos, u32 ofs, u32 num_qwords,
 			 const struct xe_vm_pgtable_update *update);
-<<<<<<< HEAD
-=======
 	/**
 	 * @clear: Clear a command buffer or page-table with ptes.
 	 * @pt_update: Embeddable callback argument.
@@ -71,7 +65,6 @@ struct xe_migrate_pt_update_ops {
 		      struct xe_tile *tile, struct iosys_map *map,
 		      void *pos, u32 ofs, u32 num_qwords,
 		      const struct xe_vm_pgtable_update *update);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/**
 	 * @pre_commit: Callback to be called just before arming the
@@ -92,21 +85,10 @@ struct xe_migrate_pt_update_ops {
 struct xe_migrate_pt_update {
 	/** @ops: Pointer to the struct xe_migrate_pt_update_ops callbacks */
 	const struct xe_migrate_pt_update_ops *ops;
-<<<<<<< HEAD
-	/** @vma: The vma we're updating the pagetable for. */
-	struct xe_vma *vma;
-	/** @job: The job if a GPU page-table update. NULL otherwise */
-	struct xe_sched_job *job;
-	/** @start: Start of update for the range fence */
-	u64 start;
-	/** @last: Last of update for the range fence */
-	u64 last;
-=======
 	/** @vops: VMA operations */
 	struct xe_vma_ops *vops;
 	/** @job: The job if a GPU page-table update. NULL otherwise */
 	struct xe_sched_job *job;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/** @tile_id: Tile ID of the update */
 	u8 tile_id;
 };
@@ -120,11 +102,6 @@ struct dma_fence *xe_migrate_copy(struct xe_migrate *m,
 				  struct ttm_resource *dst,
 				  bool copy_only_ccs);
 
-<<<<<<< HEAD
-struct dma_fence *xe_migrate_clear(struct xe_migrate *m,
-				   struct xe_bo *bo,
-				   struct ttm_resource *dst);
-=======
 #define XE_MIGRATE_CLEAR_FLAG_BO_DATA		BIT(0)
 #define XE_MIGRATE_CLEAR_FLAG_CCS_DATA		BIT(1)
 #define XE_MIGRATE_CLEAR_FLAG_FULL	(XE_MIGRATE_CLEAR_FLAG_BO_DATA | \
@@ -133,28 +110,14 @@ struct dma_fence *xe_migrate_clear(struct xe_migrate *m,
 				   struct xe_bo *bo,
 				   struct ttm_resource *dst,
 				   u32 clear_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct xe_vm *xe_migrate_get_vm(struct xe_migrate *m);
 
 struct dma_fence *
 xe_migrate_update_pgtables(struct xe_migrate *m,
-<<<<<<< HEAD
-			   struct xe_vm *vm,
-			   struct xe_bo *bo,
-			   struct xe_exec_queue *q,
-			   const struct xe_vm_pgtable_update *updates,
-			   u32 num_updates,
-			   struct xe_sync_entry *syncs, u32 num_syncs,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   struct xe_migrate_pt_update *pt_update);
 
 void xe_migrate_wait(struct xe_migrate *m);
 
-<<<<<<< HEAD
-struct xe_exec_queue *xe_tile_migrate_engine(struct xe_tile *tile);
-=======
 struct xe_exec_queue *xe_tile_migrate_exec_queue(struct xe_tile *tile);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

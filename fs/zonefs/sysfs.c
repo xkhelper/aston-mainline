@@ -92,10 +92,7 @@ int zonefs_sysfs_register(struct super_block *sb)
 	struct zonefs_sb_info *sbi = ZONEFS_SB(sb);
 	int ret;
 
-<<<<<<< HEAD
-=======
 	super_set_sysfs_name_id(sb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	init_completion(&sbi->s_kobj_unregister);
 	ret = kobject_init_and_add(&sbi->s_kobj, &zonefs_sb_ktype,
 				   zonefs_sysfs_root, "%s", sb->s_id);

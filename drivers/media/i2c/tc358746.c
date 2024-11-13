@@ -1616,8 +1616,6 @@ static void tc358746_remove(struct i2c_client *client)
 	pm_runtime_dont_use_autosuspend(sd->dev);
 }
 
-<<<<<<< HEAD
-=======
 /*
  * This function has been created just to avoid a smatch warning,
  * please do not merge it into tc358746_suspend until you have
@@ -1628,7 +1626,6 @@ static void tc358746_clk_enable(struct tc358746 *tc358746)
 	clk_prepare_enable(tc358746->refclk);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int tc358746_suspend(struct device *dev)
 {
 	struct tc358746 *tc358746 = dev_get_drvdata(dev);
@@ -1639,11 +1636,7 @@ static int tc358746_suspend(struct device *dev)
 	err = regulator_bulk_disable(ARRAY_SIZE(tc358746_supplies),
 				     tc358746->supplies);
 	if (err)
-<<<<<<< HEAD
-		clk_prepare_enable(tc358746->refclk);
-=======
 		tc358746_clk_enable(tc358746);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return err;
 }

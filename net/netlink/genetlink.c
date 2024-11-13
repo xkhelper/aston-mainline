@@ -1501,23 +1501,11 @@ static int genl_ctrl_event(int event, const struct genl_family *family,
 	if (IS_ERR(msg))
 		return PTR_ERR(msg);
 
-<<<<<<< HEAD
-	if (!family->netnsok) {
-		genlmsg_multicast_netns(&genl_ctrl, &init_net, msg, 0,
-					0, GFP_KERNEL);
-	} else {
-		rcu_read_lock();
-		genlmsg_multicast_allns(&genl_ctrl, msg, 0,
-					0, GFP_ATOMIC);
-		rcu_read_unlock();
-	}
-=======
 	if (!family->netnsok)
 		genlmsg_multicast_netns(&genl_ctrl, &init_net, msg, 0,
 					0, GFP_KERNEL);
 	else
 		genlmsg_multicast_allns(&genl_ctrl, msg, 0, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -1937,38 +1925,23 @@ problem:
 
 core_initcall(genl_init);
 
-<<<<<<< HEAD
-static int genlmsg_mcast(struct sk_buff *skb, u32 portid, unsigned long group,
-			 gfp_t flags)
-=======
 static int genlmsg_mcast(struct sk_buff *skb, u32 portid, unsigned long group)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct sk_buff *tmp;
 	struct net *net, *prev = NULL;
 	bool delivered = false;
 	int err;
 
-<<<<<<< HEAD
-	for_each_net_rcu(net) {
-		if (prev) {
-			tmp = skb_clone(skb, flags);
-=======
 	rcu_read_lock();
 	for_each_net_rcu(net) {
 		if (prev) {
 			tmp = skb_clone(skb, GFP_ATOMIC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!tmp) {
 				err = -ENOMEM;
 				goto error;
 			}
 			err = nlmsg_multicast(prev->genl_sock, tmp,
-<<<<<<< HEAD
-					      portid, group, flags);
-=======
 					      portid, group, GFP_ATOMIC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!err)
 				delivered = true;
 			else if (err != -ESRCH)
@@ -1977,47 +1950,31 @@ static int genlmsg_mcast(struct sk_buff *skb, u32 portid, unsigned long group)
 
 		prev = net;
 	}
-<<<<<<< HEAD
-
-	err = nlmsg_multicast(prev->genl_sock, skb, portid, group, flags);
-=======
 	err = nlmsg_multicast(prev->genl_sock, skb, portid, group, GFP_ATOMIC);
 
 	rcu_read_unlock();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!err)
 		delivered = true;
 	else if (err != -ESRCH)
 		return err;
 	return delivered ? 0 : -ESRCH;
  error:
-<<<<<<< HEAD
-=======
 	rcu_read_unlock();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree_skb(skb);
 	return err;
 }
 
 int genlmsg_multicast_allns(const struct genl_family *family,
 			    struct sk_buff *skb, u32 portid,
-<<<<<<< HEAD
-			    unsigned int group, gfp_t flags)
-=======
 			    unsigned int group)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (WARN_ON_ONCE(group >= family->n_mcgrps))
 		return -EINVAL;
 
 	group = family->mcgrp_offset + group;
-<<<<<<< HEAD
-	return genlmsg_mcast(skb, portid, group, flags);
-=======
 	return genlmsg_mcast(skb, portid, group);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(genlmsg_multicast_allns);
 

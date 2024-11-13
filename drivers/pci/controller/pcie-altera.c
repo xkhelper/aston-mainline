@@ -55,19 +55,11 @@
 #define TLP_READ_TAG			0x1d
 #define TLP_WRITE_TAG			0x10
 #define RP_DEVFN			0
-<<<<<<< HEAD
-#define TLP_REQ_ID(bus, devfn)		(((bus) << 8) | (devfn))
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define TLP_CFG_DW0(pcie, cfg)		\
 		(((cfg) << 24) |	\
 		  TLP_PAYLOAD_SIZE)
 #define TLP_CFG_DW1(pcie, tag, be)	\
-<<<<<<< HEAD
-	(((TLP_REQ_ID(pcie->root_bus_nr,  RP_DEVFN)) << 16) | (tag << 8) | (be))
-=======
 	(((PCI_DEVID(pcie->root_bus_nr,  RP_DEVFN)) << 16) | (tag << 8) | (be))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define TLP_CFG_DW2(bus, devfn, offset)	\
 				(((bus) << 24) | ((devfn) << 16) | (offset))
 #define TLP_COMP_STATUS(s)		(((s) >> 13) & 7)

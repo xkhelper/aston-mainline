@@ -107,11 +107,7 @@ static const struct map hwq_map[2][ICSSG_NUM_OTHER_QUEUES] = {
 	},
 };
 
-<<<<<<< HEAD
-static void icssg_config_mii_init_switch(struct prueth_emac *emac)
-=======
 static void icssg_config_mii_init_fw_offload(struct prueth_emac *emac)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct prueth *prueth = emac->prueth;
 	int mii = prueth_emac_slice(emac);
@@ -282,11 +278,7 @@ static int emac_r30_is_done(struct prueth_emac *emac)
 	return 1;
 }
 
-<<<<<<< HEAD
-static int prueth_switch_buffer_setup(struct prueth_emac *emac)
-=======
 static int prueth_fw_offload_buffer_setup(struct prueth_emac *emac)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct icssg_buffer_pool_cfg __iomem *bpool_cfg;
 	struct icssg_rxq_ctx __iomem *rxq_ctx;
@@ -432,11 +424,7 @@ static void icssg_init_emac_mode(struct prueth *prueth)
 	icssg_class_set_host_mac_addr(prueth->miig_rt, mac);
 }
 
-<<<<<<< HEAD
-static void icssg_init_switch_mode(struct prueth *prueth)
-=======
 static void icssg_init_fw_offload_mode(struct prueth *prueth)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 addr = prueth->shram.pa + EMAC_ICSSG_SWITCH_DEFAULT_VLAN_TABLE_OFFSET;
 	int i;
@@ -467,13 +455,8 @@ int icssg_config(struct prueth *prueth, struct prueth_emac *emac, int slice)
 	struct icssg_flow_cfg __iomem *flow_cfg;
 	int ret;
 
-<<<<<<< HEAD
-	if (prueth->is_switch_mode)
-		icssg_init_switch_mode(prueth);
-=======
 	if (prueth->is_switch_mode || prueth->is_hsr_offload_mode)
 		icssg_init_fw_offload_mode(prueth);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		icssg_init_emac_mode(prueth);
 
@@ -489,13 +472,8 @@ int icssg_config(struct prueth *prueth, struct prueth_emac *emac, int slice)
 	regmap_update_bits(prueth->miig_rt, ICSSG_CFG_OFFSET,
 			   ICSSG_CFG_DEFAULT, ICSSG_CFG_DEFAULT);
 	icssg_miig_set_interface_mode(prueth->miig_rt, slice, emac->phy_if);
-<<<<<<< HEAD
-	if (prueth->is_switch_mode)
-		icssg_config_mii_init_switch(emac);
-=======
 	if (prueth->is_switch_mode || prueth->is_hsr_offload_mode)
 		icssg_config_mii_init_fw_offload(emac);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		icssg_config_mii_init(emac);
 	icssg_config_ipg(emac);
@@ -520,13 +498,8 @@ int icssg_config(struct prueth *prueth, struct prueth_emac *emac, int slice)
 	writeb(0, config + SPL_PKT_DEFAULT_PRIORITY);
 	writeb(0, config + QUEUE_NUM_UNTAGGED);
 
-<<<<<<< HEAD
-	if (prueth->is_switch_mode)
-		ret = prueth_switch_buffer_setup(emac);
-=======
 	if (prueth->is_switch_mode || prueth->is_hsr_offload_mode)
 		ret = prueth_fw_offload_buffer_setup(emac);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		ret = prueth_emac_buffer_setup(emac);
 	if (ret)
@@ -558,13 +531,9 @@ static const struct icssg_r30_cmd emac_r32_bitmask[] = {
 	{{EMAC_NONE,  0xffff4000, EMAC_NONE, EMAC_NONE}},	/* Preemption on Tx ENABLE*/
 	{{EMAC_NONE,  0xbfff0000, EMAC_NONE, EMAC_NONE}},	/* Preemption on Tx DISABLE*/
 	{{0xffff0010,  EMAC_NONE, 0xffff0010, EMAC_NONE}},	/* VLAN AWARE*/
-<<<<<<< HEAD
-	{{0xffef0000,  EMAC_NONE, 0xffef0000, EMAC_NONE}}	/* VLAN UNWARE*/
-=======
 	{{0xffef0000,  EMAC_NONE, 0xffef0000, EMAC_NONE}},	/* VLAN UNWARE*/
 	{{0xffff2000, EMAC_NONE, EMAC_NONE, EMAC_NONE}},	/* HSR_RX_OFFLOAD_ENABLE */
 	{{0xdfff0000, EMAC_NONE, EMAC_NONE, EMAC_NONE}}		/* HSR_RX_OFFLOAD_DISABLE */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 int icssg_set_port_state(struct prueth_emac *emac,
@@ -766,10 +735,7 @@ void icssg_vtbl_modify(struct prueth_emac *emac, u8 vid, u8 port_mask,
 	u8 fid_c1;
 
 	tbl = prueth->vlan_tbl;
-<<<<<<< HEAD
-=======
 	spin_lock(&prueth->vtbl_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fid_c1 = tbl[vid].fid_c1;
 
 	/* FID_C1: bit0..2 port membership mask,
@@ -785,10 +751,7 @@ void icssg_vtbl_modify(struct prueth_emac *emac, u8 vid, u8 port_mask,
 	}
 
 	tbl[vid].fid_c1 = fid_c1;
-<<<<<<< HEAD
-=======
 	spin_unlock(&prueth->vtbl_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(icssg_vtbl_modify);
 

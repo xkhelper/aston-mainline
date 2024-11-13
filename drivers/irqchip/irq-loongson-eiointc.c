@@ -17,11 +17,8 @@
 #include <linux/syscore_ops.h>
 #include <asm/numa.h>
 
-<<<<<<< HEAD
-=======
 #include "irq-loongson.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define EIOINTC_REG_NODEMAP	0x14a0
 #define EIOINTC_REG_IPMAP	0x14c0
 #define EIOINTC_REG_ENABLE	0x1600
@@ -365,12 +362,9 @@ static int __init acpi_cascade_irqdomain_init(void)
 	if (r < 0)
 		return r;
 
-<<<<<<< HEAD
-=======
 	if (cpu_has_avecint)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	r = acpi_table_parse_madt(ACPI_MADT_TYPE_MSI_PIC, pch_msi_parse_madt, 1);
 	if (r < 0)
 		return r;
@@ -407,13 +401,8 @@ static int __init eiointc_init(struct eiointc_priv *priv, int parent_irq,
 
 	if (nr_pics == 1) {
 		register_syscore_ops(&eiointc_syscore_ops);
-<<<<<<< HEAD
-		cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_LOONGARCH_STARTING,
-					  "irqchip/loongarch/intc:starting",
-=======
 		cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_EIOINTC_STARTING,
 					  "irqchip/loongarch/eiointc:starting",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  eiointc_router_init, NULL);
 	}
 

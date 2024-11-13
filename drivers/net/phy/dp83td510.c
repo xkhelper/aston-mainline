@@ -58,13 +58,10 @@ static const u16 dp83td510_mse_sqi_map[] = {
 	0x0000  /* 24dB =< SNR */
 };
 
-<<<<<<< HEAD
-=======
 struct dp83td510_priv {
 	bool alcd_test_active;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Time Domain Reflectometry (TDR) Functionality of DP83TD510 PHY
  *
  * I assume that this PHY is using a variation of Spread Spectrum Time Domain
@@ -176,13 +173,10 @@ struct dp83td510_priv {
 #define DP83TD510E_UNKN_030E				0x30e
 #define DP83TD510E_030E_VAL				0x2520
 
-<<<<<<< HEAD
-=======
 #define DP83TD510E_ALCD_STAT				0xa9f
 #define DP83TD510E_ALCD_COMPLETE			BIT(15)
 #define DP83TD510E_ALCD_CABLE_LENGTH			GENMASK(10, 0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int dp83td510_config_intr(struct phy_device *phydev)
 {
 	int ret;
@@ -339,10 +333,6 @@ static int dp83td510_get_sqi_max(struct phy_device *phydev)
  */
 static int dp83td510_cable_test_start(struct phy_device *phydev)
 {
-<<<<<<< HEAD
-	int ret;
-
-=======
 	struct dp83td510_priv *priv = phydev->priv;
 	int ret;
 
@@ -360,7 +350,6 @@ static int dp83td510_cable_test_start(struct phy_device *phydev)
 
 	priv->alcd_test_active = false;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_CTRL,
 			       DP83TD510E_CTRL_HW_RESET);
 	if (ret)
@@ -436,13 +425,8 @@ static int dp83td510_cable_test_start(struct phy_device *phydev)
 }
 
 /**
-<<<<<<< HEAD
- * dp83td510_cable_test_get_status - Get the status of the cable test for the
- *                                   DP83TD510 PHY.
-=======
  * dp83td510_cable_test_get_tdr_status - Get the status of the TDR test for the
  *                                       DP83TD510 PHY.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @phydev: Pointer to the phy_device structure.
  * @finished: Pointer to a boolean that indicates whether the test is finished.
  *
@@ -450,21 +434,11 @@ static int dp83td510_cable_test_start(struct phy_device *phydev)
  *
  * Returns: 0 on success or a negative error code on failure.
  */
-<<<<<<< HEAD
-static int dp83td510_cable_test_get_status(struct phy_device *phydev,
-					   bool *finished)
-{
-	int ret, stat;
-
-	*finished = false;
-
-=======
 static int dp83td510_cable_test_get_tdr_status(struct phy_device *phydev,
 					       bool *finished)
 {
 	int ret, stat;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_TDR_CFG);
 	if (ret < 0)
 		return ret;
@@ -506,8 +480,6 @@ static int dp83td510_cable_test_get_tdr_status(struct phy_device *phydev,
 	return phy_init_hw(phydev);
 }
 
-<<<<<<< HEAD
-=======
 /**
  * dp83td510_cable_test_get_alcd_status - Get the status of the ALCD test for the
  *                                        DP83TD510 PHY.
@@ -579,7 +551,6 @@ static int dp83td510_cable_test_get_status(struct phy_device *phydev,
 	return dp83td510_cable_test_get_tdr_status(phydev, finished);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int dp83td510_get_features(struct phy_device *phydev)
 {
 	/* This PHY can't respond on MDIO bus if no RMII clock is enabled.
@@ -598,8 +569,6 @@ static int dp83td510_get_features(struct phy_device *phydev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int dp83td510_probe(struct phy_device *phydev)
 {
 	struct device *dev = &phydev->mdio.dev;
@@ -614,17 +583,13 @@ static int dp83td510_probe(struct phy_device *phydev)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct phy_driver dp83td510_driver[] = {
 {
 	PHY_ID_MATCH_MODEL(DP83TD510E_PHY_ID),
 	.name		= "TI DP83TD510E",
 
 	.flags          = PHY_POLL_CABLE_TEST,
-<<<<<<< HEAD
-=======
 	.probe		= dp83td510_probe,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config_aneg	= dp83td510_config_aneg,
 	.read_status	= dp83td510_read_status,
 	.get_features	= dp83td510_get_features,

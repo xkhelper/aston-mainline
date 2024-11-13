@@ -4,11 +4,7 @@
  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
  * Copyright (C) 2016-2017 Intel Deutschland GmbH
  */
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/etherdevice.h>
 #include <linux/skbuff.h>
 #include "iwl-trans.h"
@@ -742,13 +738,8 @@ static void iwl_mvm_stats_energy_iter(void *_data,
 	u8 *energy = _data;
 	u32 sta_id = mvmsta->deflink.sta_id;
 
-<<<<<<< HEAD
-	if (WARN_ONCE(sta_id >= IWL_MVM_STATION_COUNT_MAX, "sta_id %d >= %d",
-		      sta_id, IWL_MVM_STATION_COUNT_MAX))
-=======
 	if (WARN_ONCE(sta_id >= IWL_STATION_COUNT_MAX, "sta_id %d >= %d",
 		      sta_id, IWL_STATION_COUNT_MAX))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	if (energy[sta_id])
@@ -1000,11 +991,7 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
 		spin_lock_bh(&mvmsta->mpdu_counters[q].lock);
 
 		/* The link IDs that doesn't exist will contain 0 */
-<<<<<<< HEAD
-		for (int link = 0; link < IWL_MVM_FW_MAX_LINK_ID; link++) {
-=======
 		for (int link = 0; link < IWL_FW_MAX_LINK_ID; link++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			total_tx += mvmsta->mpdu_counters[q].per_link[link].tx;
 			total_rx += mvmsta->mpdu_counters[q].per_link[link].rx;
 		}
@@ -1022,13 +1009,8 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
 		spin_unlock_bh(&mvmsta->mpdu_counters[q].lock);
 	}
 
-<<<<<<< HEAD
-	IWL_DEBUG_STATS(mvm, "total Tx MPDUs: %ld. total Rx MPDUs: %ld\n",
-			total_tx, total_rx);
-=======
 	IWL_DEBUG_INFO(mvm, "total Tx MPDUs: %ld. total Rx MPDUs: %ld\n",
 		       total_tx, total_rx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* If we don't have enough MPDUs - exit EMLSR */
 	if (total_tx < IWL_MVM_ENTER_ESR_TPT_THRESH &&
@@ -1038,12 +1020,9 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
 		return;
 	}
 
-<<<<<<< HEAD
-=======
 	IWL_DEBUG_INFO(mvm, "Secondary Link %d: Tx MPDUs: %ld. Rx MPDUs: %ld\n",
 		       sec_link, sec_link_tx, sec_link_rx);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Calculate the percentage of the secondary link TX/RX */
 	sec_link_tx_perc = total_tx ? sec_link_tx * 100 / total_tx : 0;
 	sec_link_rx_perc = total_rx ? sec_link_rx * 100 / total_rx : 0;
@@ -1063,11 +1042,7 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
 void iwl_mvm_handle_rx_system_oper_stats(struct iwl_mvm *mvm,
 					 struct iwl_rx_cmd_buffer *rxb)
 {
-<<<<<<< HEAD
-	u8 average_energy[IWL_MVM_STATION_COUNT_MAX];
-=======
 	u8 average_energy[IWL_STATION_COUNT_MAX];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
 	struct iwl_system_statistics_notif_oper *stats;
 	int i;
@@ -1126,11 +1101,7 @@ static void
 iwl_mvm_handle_rx_statistics_tlv(struct iwl_mvm *mvm,
 				 struct iwl_rx_packet *pkt)
 {
-<<<<<<< HEAD
-	u8 average_energy[IWL_MVM_STATION_COUNT_MAX];
-=======
 	u8 average_energy[IWL_STATION_COUNT_MAX];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le32 air_time[MAC_INDEX_AUX];
 	__le32 rx_bytes[MAC_INDEX_AUX];
 	__le32 flags = 0;

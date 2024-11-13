@@ -438,11 +438,6 @@ struct wsa883x_priv {
 	struct gpio_desc *sd_n;
 	bool port_prepared[WSA883X_MAX_SWR_PORTS];
 	bool port_enable[WSA883X_MAX_SWR_PORTS];
-<<<<<<< HEAD
-	int version;
-	int variant;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int active_ports;
 	int dev_mode;
 	int comp_offset;
@@ -485,56 +480,32 @@ static const struct soc_enum wsa_dev_mode_enum =
 
 /* 4 ports */
 static struct sdw_dpn_prop wsa_sink_dpn_prop[WSA883X_MAX_SWR_PORTS] = {
-<<<<<<< HEAD
-	{
-		/* DAC */
-		.num = 1,
-=======
 	[WSA883X_PORT_DAC] = {
 		.num = WSA883X_PORT_DAC + 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
 		.simple_ch_prep_sm = true,
 		.read_only_wordlength = true,
-<<<<<<< HEAD
-	}, {
-		/* COMP */
-		.num = 2,
-=======
 	},
 	[WSA883X_PORT_COMP] = {
 		.num = WSA883X_PORT_COMP + 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
 		.simple_ch_prep_sm = true,
 		.read_only_wordlength = true,
-<<<<<<< HEAD
-	}, {
-		/* BOOST */
-		.num = 3,
-=======
 	},
 	[WSA883X_PORT_BOOST] = {
 		.num = WSA883X_PORT_BOOST + 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
 		.simple_ch_prep_sm = true,
 		.read_only_wordlength = true,
-<<<<<<< HEAD
-	}, {
-		/* VISENSE */
-		.num = 4,
-=======
 	},
 	[WSA883X_PORT_VISENSE] = {
 		.num = WSA883X_PORT_VISENSE + 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
@@ -544,19 +515,6 @@ static struct sdw_dpn_prop wsa_sink_dpn_prop[WSA883X_MAX_SWR_PORTS] = {
 };
 
 static const struct sdw_port_config wsa883x_pconfig[WSA883X_MAX_SWR_PORTS] = {
-<<<<<<< HEAD
-	{
-		.num = 1,
-		.ch_mask = 0x1,
-	}, {
-		.num = 2,
-		.ch_mask = 0xf,
-	}, {
-		.num = 3,
-		.ch_mask = 0x3,
-	}, {	/* IV feedback */
-		.num = 4,
-=======
 	[WSA883X_PORT_DAC] = {
 		.num = WSA883X_PORT_DAC + 1,
 		.ch_mask = 0x1,
@@ -571,7 +529,6 @@ static const struct sdw_port_config wsa883x_pconfig[WSA883X_MAX_SWR_PORTS] = {
 	},
 	[WSA883X_PORT_VISENSE] = {
 		.num = WSA883X_PORT_VISENSE + 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.ch_mask = 0x3,
 	},
 };
@@ -1040,35 +997,6 @@ static const struct reg_sequence reg_init[] = {
 	{WSA883X_GMAMP_SUP1, 0xE2},
 };
 
-<<<<<<< HEAD
-static void wsa883x_init(struct wsa883x_priv *wsa883x)
-{
-	struct regmap *regmap = wsa883x->regmap;
-	int variant, version;
-
-	regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
-	wsa883x->variant = variant & WSA883X_ID_MASK;
-
-	regmap_read(regmap, WSA883X_CHIP_ID0, &version);
-	wsa883x->version = version;
-
-	switch (wsa883x->variant) {
-	case WSA8830:
-		dev_info(wsa883x->dev, "WSA883X Version 1_%d, Variant: WSA8830\n",
-			 wsa883x->version);
-		break;
-	case WSA8835:
-		dev_info(wsa883x->dev, "WSA883X Version 1_%d, Variant: WSA8835\n",
-			 wsa883x->version);
-		break;
-	case WSA8832:
-		dev_info(wsa883x->dev, "WSA883X Version 1_%d, Variant: WSA8832\n",
-			 wsa883x->version);
-		break;
-	case WSA8835_V2:
-		dev_info(wsa883x->dev, "WSA883X Version 1_%d, Variant: WSA8835_V2\n",
-			 wsa883x->version);
-=======
 static int wsa883x_init(struct wsa883x_priv *wsa883x)
 {
 	struct regmap *regmap = wsa883x->regmap;
@@ -1099,7 +1027,6 @@ static int wsa883x_init(struct wsa883x_priv *wsa883x)
 	case WSA8835_V2:
 		dev_info(wsa883x->dev, "WSA883X Version 1_%d, Variant: WSA8835_V2\n",
 			 version);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		break;
@@ -1110,21 +1037,14 @@ static int wsa883x_init(struct wsa883x_priv *wsa883x)
 	/* Initial settings */
 	regmap_multi_reg_write(regmap, reg_init, ARRAY_SIZE(reg_init));
 
-<<<<<<< HEAD
-	if (wsa883x->variant == WSA8830 || wsa883x->variant == WSA8832) {
-=======
 	if (variant == WSA8830 || variant == WSA8832) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wsa883x->comp_offset = COMP_OFFSET3;
 		regmap_update_bits(regmap, WSA883X_DRE_CTL_0,
 				   WSA883X_DRE_OFFSET_MASK,
 				   wsa883x->comp_offset);
 	}
-<<<<<<< HEAD
-=======
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int wsa883x_update_status(struct sdw_slave *slave,
@@ -1133,11 +1053,7 @@ static int wsa883x_update_status(struct sdw_slave *slave,
 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
 
 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
-<<<<<<< HEAD
-		wsa883x_init(wsa883x);
-=======
 		return wsa883x_init(wsa883x);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

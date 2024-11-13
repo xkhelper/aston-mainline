@@ -8,10 +8,7 @@
 
 #include <linux/build_bug.h>
 #include <linux/types.h>
-<<<<<<< HEAD
-=======
 #include <linux/cmpxchg-emu.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/barrier.h>
 #include <asm/smp.h>
@@ -50,12 +47,9 @@
 	__typeof__(*(ptr)) _prev_;					\
 									\
 	switch(sizeof((_p_))) {						\
-<<<<<<< HEAD
-=======
 	case 1:								\
 		_prev_ = (__typeof__(*(ptr)))cmpxchg_emu_u8((volatile u8 *)_p_, (uintptr_t)_o_, (uintptr_t)_n_);	\
 		break;							\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case 4:								\
 		_prev_ = __cmpxchg(_p_, _o_, _n_);			\
 		break;							\
@@ -75,11 +69,6 @@
 	__typeof__(*(ptr)) _prev_;					\
 	unsigned long __flags;						\
 									\
-<<<<<<< HEAD
-	BUILD_BUG_ON(sizeof(_p_) != 4);					\
-									\
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*								\
 	 * spin lock/unlock provide the needed smp_mb() before/after	\
 	 */								\

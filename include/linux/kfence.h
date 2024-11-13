@@ -124,11 +124,7 @@ static __always_inline void *kfence_alloc(struct kmem_cache *s, size_t size, gfp
 	if (!static_branch_likely(&kfence_allocation_key))
 		return NULL;
 #endif
-<<<<<<< HEAD
-	if (likely(atomic_read(&kfence_allocation_gate)))
-=======
 	if (likely(atomic_read(&kfence_allocation_gate) > 0))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 	return __kfence_alloc(s, size, flags);
 }

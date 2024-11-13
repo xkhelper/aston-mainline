@@ -134,13 +134,6 @@
 #undef main
 #endif
 
-<<<<<<< HEAD
-#define main main_test_libcapstone
-# include "test-libcapstone.c"
-#undef main
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define main main_test_lzma
 # include "test-lzma.c"
 #undef main

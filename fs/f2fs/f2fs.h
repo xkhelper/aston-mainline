@@ -11,10 +11,6 @@
 #include <linux/uio.h>
 #include <linux/types.h>
 #include <linux/page-flags.h>
-<<<<<<< HEAD
-#include <linux/buffer_head.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/slab.h>
 #include <linux/crc32.h>
 #include <linux/magic.h>
@@ -137,15 +133,12 @@ typedef u32 nid_t;
 
 #define COMPRESS_EXT_NUM		16
 
-<<<<<<< HEAD
-=======
 enum blkzone_allocation_policy {
 	BLKZONE_ALLOC_PRIOR_SEQ,	/* Prioritize writing to sequential zones */
 	BLKZONE_ALLOC_ONLY_SEQ,		/* Only allow writing to sequential zones */
 	BLKZONE_ALLOC_PRIOR_CONV,	/* Prioritize writing to conventional zones */
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * An implementation of an rwsem that is explicitly unfair to readers. This
  * prevents priority inversion when a low-priority reader acquires the read lock
@@ -297,10 +290,7 @@ enum {
 	APPEND_INO,		/* for append ino list */
 	UPDATE_INO,		/* for update ino list */
 	TRANS_DIR_INO,		/* for transactions dir ino list */
-<<<<<<< HEAD
-=======
 	XATTR_DIR_INO,		/* for xattr updated dir ino list */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	FLUSH_INO,		/* for multiple device flushing */
 	MAX_INO_ENTRY,		/* max. list */
 };
@@ -800,10 +790,6 @@ enum {
 	FI_NEED_IPU,		/* used for ipu per file */
 	FI_ATOMIC_FILE,		/* indicate atomic file */
 	FI_DATA_EXIST,		/* indicate data exists */
-<<<<<<< HEAD
-	FI_INLINE_DOTS,		/* indicate inline dot dentries */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	FI_SKIP_WRITES,		/* should skip data page writeback */
 	FI_OPU_WRITE,		/* used for opu per file */
 	FI_DIRTY_FILE,		/* indicate regular/symlink has dirty pages */
@@ -821,10 +807,7 @@ enum {
 	FI_ALIGNED_WRITE,	/* enable aligned write */
 	FI_COW_FILE,		/* indicate COW file */
 	FI_ATOMIC_COMMITTED,	/* indicate atomic commit completed except disk sync */
-<<<<<<< HEAD
-=======
 	FI_ATOMIC_DIRTIED,	/* indicate atomic file is dirtied */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	FI_ATOMIC_REPLACE,	/* indicate atomic replace */
 	FI_OPENED_FILE,		/* indicate file has been opened */
 	FI_MAX,			/* max flag, never be used */
@@ -1178,10 +1161,7 @@ enum cp_reason_type {
 	CP_FASTBOOT_MODE,
 	CP_SPEC_LOG_NUM,
 	CP_RECOVER_DIR,
-<<<<<<< HEAD
-=======
 	CP_XATTR_DIR,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum iostat_type {
@@ -1320,10 +1300,7 @@ struct f2fs_gc_control {
 	bool no_bg_gc;			/* check the space and stop bg_gc */
 	bool should_migrate_blocks;	/* should migrate blocks */
 	bool err_gc_skipped;		/* return EAGAIN if GC skipped */
-<<<<<<< HEAD
-=======
 	bool one_time;			/* require one time GC in one migration unit */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int nr_free_secs;	/* # of free sections to do GC */
 };
 
@@ -1449,12 +1426,8 @@ static inline void f2fs_clear_bit(unsigned int nr, char *addr);
  * bit 1	PAGE_PRIVATE_ONGOING_MIGRATION
  * bit 2	PAGE_PRIVATE_INLINE_INODE
  * bit 3	PAGE_PRIVATE_REF_RESOURCE
-<<<<<<< HEAD
- * bit 4-	f2fs private data
-=======
  * bit 4	PAGE_PRIVATE_ATOMIC_WRITE
  * bit 5-	f2fs private data
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Layout B: lowest bit should be 0
  * page.private is a wrapped pointer.
@@ -1464,10 +1437,7 @@ enum {
 	PAGE_PRIVATE_ONGOING_MIGRATION,		/* data page which is on-going migrating */
 	PAGE_PRIVATE_INLINE_INODE,		/* inode page contains inline data */
 	PAGE_PRIVATE_REF_RESOURCE,		/* dirty page has referenced resources */
-<<<<<<< HEAD
-=======
 	PAGE_PRIVATE_ATOMIC_WRITE,		/* data page from atomic write path */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PAGE_PRIVATE_MAX
 };
 
@@ -1599,11 +1569,8 @@ struct f2fs_sb_info {
 #ifdef CONFIG_BLK_DEV_ZONED
 	unsigned int blocks_per_blkz;		/* F2FS blocks per zone */
 	unsigned int max_open_zones;		/* max open zone resources of the zoned device */
-<<<<<<< HEAD
-=======
 	/* For adjust the priority writing position of data in zone UFS */
 	unsigned int blkzone_alloc_policy;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	/* for node-related operations */
@@ -1730,11 +1697,8 @@ struct f2fs_sb_info {
 	unsigned int max_victim_search;
 	/* migration granularity of garbage collection, unit: segment */
 	unsigned int migration_granularity;
-<<<<<<< HEAD
-=======
 	/* migration window granularity of garbage collection, unit: segment */
 	unsigned int migration_window_granularity;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * for stat information.
@@ -2044,8 +2008,6 @@ static inline struct f2fs_super_block *F2FS_RAW_SUPER(struct f2fs_sb_info *sbi)
 	return (struct f2fs_super_block *)(sbi->raw_super);
 }
 
-<<<<<<< HEAD
-=======
 static inline struct f2fs_super_block *F2FS_SUPER_BLOCK(struct folio *folio,
 								pgoff_t index)
 {
@@ -2056,7 +2018,6 @@ static inline struct f2fs_super_block *F2FS_SUPER_BLOCK(struct folio *folio,
 						F2FS_SUPER_OFFSET);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct f2fs_checkpoint *F2FS_CKPT(struct f2fs_sb_info *sbi)
 {
 	return (struct f2fs_checkpoint *)(sbi->ckpt);
@@ -2459,26 +2420,17 @@ static inline void clear_page_private_##name(struct page *page) \
 PAGE_PRIVATE_GET_FUNC(nonpointer, NOT_POINTER);
 PAGE_PRIVATE_GET_FUNC(inline, INLINE_INODE);
 PAGE_PRIVATE_GET_FUNC(gcing, ONGOING_MIGRATION);
-<<<<<<< HEAD
-=======
 PAGE_PRIVATE_GET_FUNC(atomic, ATOMIC_WRITE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 PAGE_PRIVATE_SET_FUNC(reference, REF_RESOURCE);
 PAGE_PRIVATE_SET_FUNC(inline, INLINE_INODE);
 PAGE_PRIVATE_SET_FUNC(gcing, ONGOING_MIGRATION);
-<<<<<<< HEAD
-=======
 PAGE_PRIVATE_SET_FUNC(atomic, ATOMIC_WRITE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 PAGE_PRIVATE_CLEAR_FUNC(reference, REF_RESOURCE);
 PAGE_PRIVATE_CLEAR_FUNC(inline, INLINE_INODE);
 PAGE_PRIVATE_CLEAR_FUNC(gcing, ONGOING_MIGRATION);
-<<<<<<< HEAD
-=======
 PAGE_PRIVATE_CLEAR_FUNC(atomic, ATOMIC_WRITE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned long get_page_private_data(struct page *page)
 {
@@ -2510,10 +2462,7 @@ static inline void clear_page_private_all(struct page *page)
 	clear_page_private_reference(page);
 	clear_page_private_gcing(page);
 	clear_page_private_inline(page);
-<<<<<<< HEAD
-=======
 	clear_page_private_atomic(page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	f2fs_bug_on(F2FS_P_SB(page), page_private(page));
 }
@@ -2933,15 +2882,6 @@ static inline bool is_inflight_io(struct f2fs_sb_info *sbi, int type)
 	return false;
 }
 
-<<<<<<< HEAD
-static inline bool is_idle(struct f2fs_sb_info *sbi, int type)
-{
-	if (sbi->gc_mode == GC_URGENT_HIGH)
-		return true;
-
-	if (is_inflight_io(sbi, type))
-		return false;
-=======
 static inline bool is_inflight_read_io(struct f2fs_sb_info *sbi)
 {
 	return get_pages(sbi, F2FS_RD_DATA) || get_pages(sbi, F2FS_DIO_READ);
@@ -2962,7 +2902,6 @@ static inline bool is_idle(struct f2fs_sb_info *sbi, int type)
 		if (is_inflight_io(sbi, type))
 			return false;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sbi->gc_mode == GC_URGENT_MID)
 		return true;
@@ -2971,12 +2910,9 @@ static inline bool is_idle(struct f2fs_sb_info *sbi, int type)
 			(type == DISCARD_TIME || type == GC_TIME))
 		return true;
 
-<<<<<<< HEAD
-=======
 	if (zoned_gc)
 		return true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return f2fs_time_over(sbi, type);
 }
 
@@ -3008,28 +2944,6 @@ static inline __le32 *blkaddr_in_node(struct f2fs_node *node)
 }
 
 static inline int f2fs_has_extra_attr(struct inode *inode);
-<<<<<<< HEAD
-static inline block_t data_blkaddr(struct inode *inode,
-			struct page *node_page, unsigned int offset)
-{
-	struct f2fs_node *raw_node;
-	__le32 *addr_array;
-	int base = 0;
-	bool is_inode = IS_INODE(node_page);
-
-	raw_node = F2FS_NODE(node_page);
-
-	if (is_inode) {
-		if (!inode)
-			/* from GC path only */
-			base = offset_in_addr(&raw_node->i);
-		else if (f2fs_has_extra_attr(inode))
-			base = get_extra_isize(inode);
-	}
-
-	addr_array = blkaddr_in_node(raw_node);
-	return le32_to_cpu(addr_array[base + offset]);
-=======
 static inline unsigned int get_dnode_base(struct inode *inode,
 					struct page *node_page)
 {
@@ -3051,7 +2965,6 @@ static inline block_t data_blkaddr(struct inode *inode,
 			struct page *node_page, unsigned int offset)
 {
 	return le32_to_cpu(*(get_dnode_addr(inode, node_page) + offset));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline block_t f2fs_data_blkaddr(struct dnode_of_data *dn)
@@ -3170,15 +3083,8 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
 			return;
 		fallthrough;
 	case FI_DATA_EXIST:
-<<<<<<< HEAD
-	case FI_INLINE_DOTS:
 	case FI_PIN_FILE:
 	case FI_COMPRESS_RELEASED:
-	case FI_ATOMIC_COMMITTED:
-=======
-	case FI_PIN_FILE:
-	case FI_COMPRESS_RELEASED:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		f2fs_mark_inode_dirty_sync(inode, true);
 	}
 }
@@ -3300,11 +3206,6 @@ static inline void get_inline_info(struct inode *inode, struct f2fs_inode *ri)
 		set_bit(FI_INLINE_DENTRY, fi->flags);
 	if (ri->i_inline & F2FS_DATA_EXIST)
 		set_bit(FI_DATA_EXIST, fi->flags);
-<<<<<<< HEAD
-	if (ri->i_inline & F2FS_INLINE_DOTS)
-		set_bit(FI_INLINE_DOTS, fi->flags);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ri->i_inline & F2FS_EXTRA_ATTR)
 		set_bit(FI_EXTRA_ATTR, fi->flags);
 	if (ri->i_inline & F2FS_PIN_FILE)
@@ -3325,11 +3226,6 @@ static inline void set_raw_inline(struct inode *inode, struct f2fs_inode *ri)
 		ri->i_inline |= F2FS_INLINE_DENTRY;
 	if (is_inode_flag_set(inode, FI_DATA_EXIST))
 		ri->i_inline |= F2FS_DATA_EXIST;
-<<<<<<< HEAD
-	if (is_inode_flag_set(inode, FI_INLINE_DOTS))
-		ri->i_inline |= F2FS_INLINE_DOTS;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (is_inode_flag_set(inode, FI_EXTRA_ATTR))
 		ri->i_inline |= F2FS_EXTRA_ATTR;
 	if (is_inode_flag_set(inode, FI_PIN_FILE))
@@ -3410,14 +3306,6 @@ static inline int f2fs_exist_data(struct inode *inode)
 	return is_inode_flag_set(inode, FI_DATA_EXIST);
 }
 
-<<<<<<< HEAD
-static inline int f2fs_has_inline_dots(struct inode *inode)
-{
-	return is_inode_flag_set(inode, FI_INLINE_DOTS);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int f2fs_is_mmap_file(struct inode *inode)
 {
 	return is_inode_flag_set(inode, FI_MMAP_FILE);
@@ -3438,11 +3326,6 @@ static inline bool f2fs_is_cow_file(struct inode *inode)
 	return is_inode_flag_set(inode, FI_COW_FILE);
 }
 
-<<<<<<< HEAD
-static inline __le32 *get_dnode_addr(struct inode *inode,
-					struct page *node_page);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void *inline_data_addr(struct inode *inode, struct page *page)
 {
 	__le32 *addr = get_dnode_addr(inode, page);
@@ -3581,20 +3464,6 @@ static inline int get_inline_xattr_addrs(struct inode *inode)
 	return F2FS_I(inode)->i_inline_xattr_size;
 }
 
-<<<<<<< HEAD
-static inline __le32 *get_dnode_addr(struct inode *inode,
-					struct page *node_page)
-{
-	int base = 0;
-
-	if (IS_INODE(node_page) && f2fs_has_extra_attr(inode))
-		base = get_extra_isize(inode);
-
-	return blkaddr_in_node(F2FS_NODE(node_page)) + base;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define f2fs_get_inode_mode(i) \
 	((is_inode_flag_set(i, FI_ACL_MODE)) ? \
 	 (F2FS_I(i)->i_acl_mode) : ((i)->i_mode))
@@ -3647,11 +3516,7 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 int f2fs_truncate_hole(struct inode *inode, pgoff_t pg_start, pgoff_t pg_end);
 void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count);
 int f2fs_do_shutdown(struct f2fs_sb_info *sbi, unsigned int flag,
-<<<<<<< HEAD
-							bool readonly);
-=======
 						bool readonly, bool need_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int f2fs_precache_extents(struct inode *inode);
 int f2fs_fileattr_get(struct dentry *dentry, struct fileattr *fa);
 int f2fs_fileattr_set(struct mnt_idmap *idmap,
@@ -3875,11 +3740,7 @@ bool f2fs_exist_trim_candidates(struct f2fs_sb_info *sbi,
 struct page *f2fs_get_sum_page(struct f2fs_sb_info *sbi, unsigned int segno);
 void f2fs_update_meta_page(struct f2fs_sb_info *sbi, void *src,
 					block_t blk_addr);
-<<<<<<< HEAD
-void f2fs_do_write_meta_page(struct f2fs_sb_info *sbi, struct page *page,
-=======
 void f2fs_do_write_meta_page(struct f2fs_sb_info *sbi, struct folio *folio,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						enum iostat_type io_type);
 void f2fs_do_write_node_page(unsigned int nid, struct f2fs_io_info *fio);
 void f2fs_outplace_write_data(struct dnode_of_data *dn,
@@ -3919,12 +3780,7 @@ void f2fs_destroy_segment_manager_caches(void);
 int f2fs_rw_hint_to_seg_type(struct f2fs_sb_info *sbi, enum rw_hint hint);
 enum rw_hint f2fs_io_type_to_rw_hint(struct f2fs_sb_info *sbi,
 			enum page_type type, enum temp_type temp);
-<<<<<<< HEAD
-unsigned int f2fs_usable_segs_in_sec(struct f2fs_sb_info *sbi,
-			unsigned int segno);
-=======
 unsigned int f2fs_usable_segs_in_sec(struct f2fs_sb_info *sbi);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unsigned int f2fs_usable_blks_in_seg(struct f2fs_sb_info *sbi,
 			unsigned int segno);
 
@@ -4032,11 +3888,7 @@ int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
 int f2fs_encrypt_one_page(struct f2fs_io_info *fio);
 bool f2fs_should_update_inplace(struct inode *inode, struct f2fs_io_info *fio);
 bool f2fs_should_update_outplace(struct inode *inode, struct f2fs_io_info *fio);
-<<<<<<< HEAD
-int f2fs_write_single_data_page(struct page *page, int *submitted,
-=======
 int f2fs_write_single_data_page(struct folio *folio, int *submitted,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				struct bio **bio, sector_t *last_block,
 				struct writeback_control *wbc,
 				enum iostat_type io_type,
@@ -4045,11 +3897,7 @@ void f2fs_write_failed(struct inode *inode, loff_t to);
 void f2fs_invalidate_folio(struct folio *folio, size_t offset, size_t length);
 bool f2fs_release_folio(struct folio *folio, gfp_t wait);
 bool f2fs_overwrite_io(struct inode *inode, loff_t pos, size_t len);
-<<<<<<< HEAD
-void f2fs_clear_page_cache_dirty_tag(struct page *page);
-=======
 void f2fs_clear_page_cache_dirty_tag(struct folio *folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int f2fs_init_post_read_processing(void);
 void f2fs_destroy_post_read_processing(void);
 int f2fs_init_post_read_wq(struct f2fs_sb_info *sbi);
@@ -4073,11 +3921,7 @@ void f2fs_destroy_garbage_collection_cache(void);
 /* victim selection function for cleaning and SSR */
 int f2fs_get_victim(struct f2fs_sb_info *sbi, unsigned int *result,
 			int gc_type, int type, char alloc_mode,
-<<<<<<< HEAD
-			unsigned long long age);
-=======
 			unsigned long long age, bool one_time);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * recovery.c
@@ -4163,11 +4007,7 @@ static inline struct f2fs_stat_info *F2FS_STAT(struct f2fs_sb_info *sbi)
 
 #define stat_inc_cp_call_count(sbi, foreground)				\
 		atomic_inc(&sbi->cp_call_count[(foreground)])
-<<<<<<< HEAD
-#define stat_inc_cp_count(si)		(F2FS_STAT(sbi)->cp_count++)
-=======
 #define stat_inc_cp_count(sbi)		(F2FS_STAT(sbi)->cp_count++)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define stat_io_skip_bggc_count(sbi)	((sbi)->io_skip_bggc++)
 #define stat_other_skip_bggc_count(sbi)	((sbi)->other_skip_bggc++)
 #define stat_inc_dirty_inode(sbi, type)	((sbi)->ndirty_inode[type]++)
@@ -4352,11 +4192,7 @@ int f2fs_read_inline_data(struct inode *inode, struct folio *folio);
 int f2fs_convert_inline_page(struct dnode_of_data *dn, struct page *page);
 int f2fs_convert_inline_inode(struct inode *inode);
 int f2fs_try_convert_inline_dir(struct inode *dir, struct dentry *dentry);
-<<<<<<< HEAD
-int f2fs_write_inline_data(struct inode *inode, struct page *page);
-=======
 int f2fs_write_inline_data(struct inode *inode, struct folio *folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int f2fs_recover_inline_data(struct inode *inode, struct page *npage);
 struct f2fs_dir_entry *f2fs_find_in_inline_dir(struct inode *dir,
 					const struct f2fs_filename *fname,
@@ -4473,14 +4309,11 @@ static inline bool f2fs_meta_inode_gc_required(struct inode *inode)
  * compress.c
  */
 #ifdef CONFIG_F2FS_FS_COMPRESSION
-<<<<<<< HEAD
-=======
 enum cluster_check_type {
 	CLUSTER_IS_COMPR,   /* check only if compressed cluster */
 	CLUSTER_COMPR_BLKS, /* return # of compressed blocks in a cluster */
 	CLUSTER_RAW_BLKS    /* return # of raw blocks in a cluster */
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool f2fs_is_compressed_page(struct page *page);
 struct page *f2fs_compress_control_page(struct page *page);
 int f2fs_prepare_compress_overwrite(struct inode *inode,
@@ -4501,20 +4334,13 @@ bool f2fs_cluster_can_merge_page(struct compress_ctx *cc, pgoff_t index);
 bool f2fs_all_cluster_page_ready(struct compress_ctx *cc, struct page **pages,
 				int index, int nr_pages, bool uptodate);
 bool f2fs_sanity_check_cluster(struct dnode_of_data *dn);
-<<<<<<< HEAD
-void f2fs_compress_ctx_add_page(struct compress_ctx *cc, struct page *page);
-=======
 void f2fs_compress_ctx_add_page(struct compress_ctx *cc, struct folio *folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int f2fs_write_multi_pages(struct compress_ctx *cc,
 						int *submitted,
 						struct writeback_control *wbc,
 						enum iostat_type io_type);
 int f2fs_is_compressed_cluster(struct inode *inode, pgoff_t index);
-<<<<<<< HEAD
-=======
 bool f2fs_is_sparse_cluster(struct inode *inode, pgoff_t index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void f2fs_update_read_extent_tree_range_compressed(struct inode *inode,
 				pgoff_t fofs, block_t blkaddr,
 				unsigned int llen, unsigned int c_len);
@@ -4601,15 +4427,12 @@ static inline bool f2fs_load_compressed_page(struct f2fs_sb_info *sbi,
 static inline void f2fs_invalidate_compress_pages(struct f2fs_sb_info *sbi,
 							nid_t ino) { }
 #define inc_compr_inode_stat(inode)		do { } while (0)
-<<<<<<< HEAD
-=======
 static inline int f2fs_is_compressed_cluster(
 				struct inode *inode,
 				pgoff_t index) { return 0; }
 static inline bool f2fs_is_sparse_cluster(
 				struct inode *inode,
 				pgoff_t index) { return true; }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void f2fs_update_read_extent_tree_range_compressed(
 				struct inode *inode,
 				pgoff_t fofs, block_t blkaddr,
@@ -4862,17 +4685,11 @@ static inline void f2fs_io_schedule_timeout(long timeout)
 	io_schedule_timeout(timeout);
 }
 
-<<<<<<< HEAD
-static inline void f2fs_handle_page_eio(struct f2fs_sb_info *sbi, pgoff_t ofs,
-					enum page_type type)
-{
-=======
 static inline void f2fs_handle_page_eio(struct f2fs_sb_info *sbi,
 				struct folio *folio, enum page_type type)
 {
 	pgoff_t ofs = folio->index;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(f2fs_cp_error(sbi)))
 		return;
 

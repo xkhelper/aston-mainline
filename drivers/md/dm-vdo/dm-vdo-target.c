@@ -1105,12 +1105,9 @@ static int vdo_message(struct dm_target *ti, unsigned int argc, char **argv,
 	if ((argc == 1) && (strcasecmp(argv[0], "stats") == 0)) {
 		vdo_write_stats(vdo, result_buffer, maxlen);
 		result = 1;
-<<<<<<< HEAD
-=======
 	} else if ((argc == 1) && (strcasecmp(argv[0], "config") == 0)) {
 		vdo_write_config(vdo, &result_buffer, &maxlen);
 		result = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		result = vdo_status_to_errno(process_vdo_message(vdo, argc, argv));
 	}
@@ -2299,8 +2296,6 @@ static void handle_load_error(struct vdo_completion *completion)
 		return;
 	}
 
-<<<<<<< HEAD
-=======
 	if ((completion->result == VDO_UNSUPPORTED_VERSION) &&
 	    (vdo->admin.phase == LOAD_PHASE_MAKE_DIRTY)) {
 		vdo_log_error("Aborting load due to unsupported version");
@@ -2309,7 +2304,6 @@ static void handle_load_error(struct vdo_completion *completion)
 		return;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vdo_log_error_strerror(completion->result,
 			       "Entering read-only mode due to load error");
 	vdo->admin.phase = LOAD_PHASE_WAIT_FOR_READ_ONLY;
@@ -2754,8 +2748,6 @@ static int vdo_preresume_registered(struct dm_target *ti, struct vdo *vdo)
 		vdo_log_info("starting device '%s'", device_name);
 		result = perform_admin_operation(vdo, LOAD_PHASE_START, load_callback,
 						 handle_load_error, "load");
-<<<<<<< HEAD
-=======
 		if (result == VDO_UNSUPPORTED_VERSION) {
 			 /*
 			  * A component version is not supported. This can happen when the
@@ -2769,7 +2761,6 @@ static int vdo_preresume_registered(struct dm_target *ti, struct vdo *vdo)
 			return result;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((result != VDO_SUCCESS) && (result != VDO_READ_ONLY)) {
 			/*
 			 * Something has gone very wrong. Make sure everything has drained and
@@ -2841,12 +2832,8 @@ static int vdo_preresume(struct dm_target *ti)
 
 	vdo_register_thread_device_id(&instance_thread, &vdo->instance);
 	result = vdo_preresume_registered(ti, vdo);
-<<<<<<< HEAD
-	if ((result == VDO_PARAMETER_MISMATCH) || (result == VDO_INVALID_ADMIN_STATE))
-=======
 	if ((result == VDO_PARAMETER_MISMATCH) || (result == VDO_INVALID_ADMIN_STATE) ||
 	    (result == VDO_UNSUPPORTED_VERSION))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		result = -EINVAL;
 	vdo_unregister_thread_device_id();
 	return vdo_status_to_errno(result);
@@ -2870,11 +2857,7 @@ static void vdo_resume(struct dm_target *ti)
 static struct target_type vdo_target_bio = {
 	.features = DM_TARGET_SINGLETON,
 	.name = "vdo",
-<<<<<<< HEAD
-	.version = { 9, 0, 0 },
-=======
 	.version = { 9, 1, 0 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.module = THIS_MODULE,
 	.ctr = vdo_ctr,
 	.dtr = vdo_dtr,

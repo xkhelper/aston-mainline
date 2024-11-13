@@ -60,11 +60,6 @@ static inline void nfs_netfs_get(struct nfs_netfs_io_data *netfs)
 
 static inline void nfs_netfs_put(struct nfs_netfs_io_data *netfs)
 {
-<<<<<<< HEAD
-	ssize_t final_len;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Only the last RPC completion should call netfs_subreq_terminated() */
 	if (!refcount_dec_and_test(&netfs->refcount))
 		return;
@@ -77,14 +72,9 @@ static inline void nfs_netfs_put(struct nfs_netfs_io_data *netfs)
 	 * Correct the final length here to be no larger than the netfs subrequest
 	 * length, and thus avoid netfs's "Subreq overread" warning message.
 	 */
-<<<<<<< HEAD
-	final_len = min_t(s64, netfs->sreq->len, atomic64_read(&netfs->transferred));
-	netfs_subreq_terminated(netfs->sreq, netfs->error ?: final_len, false);
-=======
 	netfs->sreq->transferred = min_t(s64, netfs->sreq->len,
 					 atomic64_read(&netfs->transferred));
 	netfs_read_subreq_terminated(netfs->sreq, netfs->error, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(netfs);
 }
 static inline void nfs_netfs_inode_init(struct nfs_inode *nfsi)

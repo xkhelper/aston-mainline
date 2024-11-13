@@ -102,23 +102,6 @@ properties:
     default: 2
 
   interrupts:
-<<<<<<< HEAD
-    anyOf:
-      - minItems: 1
-        items:
-          - description: TX interrupt
-          - description: RX interrupt
-      - items:
-          - description: common/combined interrupt
-
-  interrupt-names:
-    oneOf:
-      - minItems: 1
-        items:
-          - const: tx
-          - const: rx
-      - const: common
-=======
     minItems: 1
     maxItems: 2
 
@@ -134,7 +117,6 @@ properties:
           - const: rx
       - description: Common/combined interrupt
         const: common
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   fck_parent:
     $ref: /schemas/types.yaml#/definitions/string

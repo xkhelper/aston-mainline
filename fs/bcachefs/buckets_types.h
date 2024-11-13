@@ -19,17 +19,6 @@ struct bucket {
 	u32			stripe_sectors;
 } __aligned(sizeof(long));
 
-<<<<<<< HEAD
-struct bucket_array {
-	struct rcu_head		rcu;
-	u16			first_bucket;
-	size_t			nbuckets;
-	size_t			nbuckets_minus_first;
-	struct bucket		b[];
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct bucket_gens {
 	struct rcu_head		rcu;
 	u16			first_bucket;

@@ -353,26 +353,6 @@ static int imx_set_trip_temp(struct thermal_zone_device *tz,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int imx_bind(struct thermal_zone_device *tz,
-		    struct thermal_cooling_device *cdev)
-{
-	return thermal_zone_bind_cooling_device(tz, IMX_TRIP_PASSIVE, cdev,
-						THERMAL_NO_LIMIT,
-						THERMAL_NO_LIMIT,
-						THERMAL_WEIGHT_DEFAULT);
-}
-
-static int imx_unbind(struct thermal_zone_device *tz,
-		      struct thermal_cooling_device *cdev)
-{
-	return thermal_zone_unbind_cooling_device(tz, IMX_TRIP_PASSIVE, cdev);
-}
-
-static struct thermal_zone_device_ops imx_tz_ops = {
-	.bind = imx_bind,
-	.unbind = imx_unbind,
-=======
 static bool imx_should_bind(struct thermal_zone_device *tz,
 			    const struct thermal_trip *trip,
 			    struct thermal_cooling_device *cdev,
@@ -383,7 +363,6 @@ static bool imx_should_bind(struct thermal_zone_device *tz,
 
 static struct thermal_zone_device_ops imx_tz_ops = {
 	.should_bind = imx_should_bind,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_temp = imx_get_temp,
 	.change_mode = imx_change_mode,
 	.set_trip_temp = imx_set_trip_temp,
@@ -786,11 +765,7 @@ static void imx_thermal_remove(struct platform_device *pdev)
 	imx_thermal_unregister_legacy_cooling(data);
 }
 
-<<<<<<< HEAD
-static int __maybe_unused imx_thermal_suspend(struct device *dev)
-=======
 static int imx_thermal_suspend(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct imx_thermal_data *data = dev_get_drvdata(dev);
 	int ret;
@@ -809,11 +784,7 @@ static int imx_thermal_suspend(struct device *dev)
 	return pm_runtime_force_suspend(data->dev);
 }
 
-<<<<<<< HEAD
-static int __maybe_unused imx_thermal_resume(struct device *dev)
-=======
 static int imx_thermal_resume(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct imx_thermal_data *data = dev_get_drvdata(dev);
 	int ret;
@@ -825,11 +796,7 @@ static int imx_thermal_resume(struct device *dev)
 	return thermal_zone_device_enable(data->tz);
 }
 
-<<<<<<< HEAD
-static int __maybe_unused imx_thermal_runtime_suspend(struct device *dev)
-=======
 static int imx_thermal_runtime_suspend(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct imx_thermal_data *data = dev_get_drvdata(dev);
 	const struct thermal_soc_data *socdata = data->socdata;
@@ -851,11 +818,7 @@ static int imx_thermal_runtime_suspend(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int __maybe_unused imx_thermal_runtime_resume(struct device *dev)
-=======
 static int imx_thermal_runtime_resume(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct imx_thermal_data *data = dev_get_drvdata(dev);
 	const struct thermal_soc_data *socdata = data->socdata;
@@ -886,25 +849,15 @@ static int imx_thermal_runtime_resume(struct device *dev)
 }
 
 static const struct dev_pm_ops imx_thermal_pm_ops = {
-<<<<<<< HEAD
-	SET_SYSTEM_SLEEP_PM_OPS(imx_thermal_suspend, imx_thermal_resume)
-	SET_RUNTIME_PM_OPS(imx_thermal_runtime_suspend,
-			   imx_thermal_runtime_resume, NULL)
-=======
 	SYSTEM_SLEEP_PM_OPS(imx_thermal_suspend, imx_thermal_resume)
 	RUNTIME_PM_OPS(imx_thermal_runtime_suspend,
 		       imx_thermal_runtime_resume, NULL)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct platform_driver imx_thermal = {
 	.driver = {
 		.name	= "imx_thermal",
-<<<<<<< HEAD
-		.pm	= &imx_thermal_pm_ops,
-=======
 		.pm	= pm_ptr(&imx_thermal_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = of_imx_thermal_match,
 	},
 	.probe		= imx_thermal_probe,

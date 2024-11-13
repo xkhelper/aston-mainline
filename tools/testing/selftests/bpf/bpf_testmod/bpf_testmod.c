@@ -17,10 +17,7 @@
 #include <linux/in.h>
 #include <linux/in6.h>
 #include <linux/un.h>
-<<<<<<< HEAD
-=======
 #include <linux/filter.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/sock.h>
 #include <linux/namei.h>
 #include "bpf_testmod.h"
@@ -145,22 +142,12 @@ bpf_testmod_test_mod_kfunc(int i)
 
 __bpf_kfunc int bpf_iter_testmod_seq_new(struct bpf_iter_testmod_seq *it, s64 value, int cnt)
 {
-<<<<<<< HEAD
-	if (cnt < 0) {
-		it->cnt = 0;
-		return -EINVAL;
-	}
-
-	it->value = value;
-	it->cnt = cnt;
-=======
 	it->cnt = cnt;
 
 	if (cnt < 0)
 		return -EINVAL;
 
 	it->value = value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -175,8 +162,6 @@ __bpf_kfunc s64 *bpf_iter_testmod_seq_next(struct bpf_iter_testmod_seq* it)
 	return &it->value;
 }
 
-<<<<<<< HEAD
-=======
 __bpf_kfunc s64 bpf_iter_testmod_seq_value(int val, struct bpf_iter_testmod_seq* it__iter)
 {
 	if (it__iter->cnt < 0)
@@ -185,7 +170,6 @@ __bpf_kfunc s64 bpf_iter_testmod_seq_value(int val, struct bpf_iter_testmod_seq*
 	return val + it__iter->value;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 __bpf_kfunc void bpf_iter_testmod_seq_destroy(struct bpf_iter_testmod_seq *it)
 {
 	it->cnt = 0;
@@ -200,8 +184,6 @@ __bpf_kfunc void bpf_kfunc_dynptr_test(struct bpf_dynptr *ptr,
 {
 }
 
-<<<<<<< HEAD
-=======
 __bpf_kfunc struct sk_buff *bpf_kfunc_nested_acquire_nonzero_offset_test(struct sk_buff_head *ptr)
 {
 	return NULL;
@@ -232,7 +214,6 @@ __bpf_kfunc void bpf_kfunc_rcu_task_test(struct task_struct *ptr)
 {
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 __bpf_kfunc struct bpf_testmod_ctx *
 bpf_testmod_ctx_create(int *err)
 {
@@ -413,11 +394,8 @@ bpf_testmod_test_read(struct file *file, struct kobject *kobj,
 	if (bpf_testmod_loop_test(101) > 100)
 		trace_bpf_testmod_test_read(current, &ctx);
 
-<<<<<<< HEAD
-=======
 	trace_bpf_testmod_test_nullable_bare(NULL);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Magic number to enable writable tp */
 	if (len == 64) {
 		struct bpf_testmod_test_writable_ctx writable = {
@@ -494,11 +472,7 @@ uprobe_ret_handler(struct uprobe_consumer *self, unsigned long func,
 
 struct testmod_uprobe {
 	struct path path;
-<<<<<<< HEAD
-	loff_t offset;
-=======
 	struct uprobe *uprobe;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct uprobe_consumer consumer;
 };
 
@@ -512,35 +486,18 @@ static int testmod_register_uprobe(loff_t offset)
 {
 	int err = -EBUSY;
 
-<<<<<<< HEAD
-	if (uprobe.offset)
-=======
 	if (uprobe.uprobe)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 
 	mutex_lock(&testmod_uprobe_mutex);
 
-<<<<<<< HEAD
-	if (uprobe.offset)
-=======
 	if (uprobe.uprobe)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 
 	err = kern_path("/proc/self/exe", LOOKUP_FOLLOW, &uprobe.path);
 	if (err)
 		goto out;
 
-<<<<<<< HEAD
-	err = uprobe_register_refctr(d_real_inode(uprobe.path.dentry),
-				     offset, 0, &uprobe.consumer);
-	if (err)
-		path_put(&uprobe.path);
-	else
-		uprobe.offset = offset;
-
-=======
 	uprobe.uprobe = uprobe_register(d_real_inode(uprobe.path.dentry),
 					offset, 0, &uprobe.consumer);
 	if (IS_ERR(uprobe.uprobe)) {
@@ -548,7 +505,6 @@ static int testmod_register_uprobe(loff_t offset)
 		path_put(&uprobe.path);
 		uprobe.uprobe = NULL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	mutex_unlock(&testmod_uprobe_mutex);
 	return err;
@@ -558,18 +514,11 @@ static void testmod_unregister_uprobe(void)
 {
 	mutex_lock(&testmod_uprobe_mutex);
 
-<<<<<<< HEAD
-	if (uprobe.offset) {
-		uprobe_unregister(d_real_inode(uprobe.path.dentry),
-				  uprobe.offset, &uprobe.consumer);
-		uprobe.offset = 0;
-=======
 	if (uprobe.uprobe) {
 		uprobe_unregister_nosync(uprobe.uprobe, &uprobe.consumer);
 		uprobe_unregister_sync();
 		path_put(&uprobe.path);
 		uprobe.uprobe = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mutex_unlock(&testmod_uprobe_mutex);
@@ -623,10 +572,6 @@ BTF_KFUNCS_START(bpf_testmod_common_kfunc_ids)
 BTF_ID_FLAGS(func, bpf_iter_testmod_seq_new, KF_ITER_NEW)
 BTF_ID_FLAGS(func, bpf_iter_testmod_seq_next, KF_ITER_NEXT | KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_iter_testmod_seq_destroy, KF_ITER_DESTROY)
-<<<<<<< HEAD
-BTF_ID_FLAGS(func, bpf_kfunc_common_test)
-BTF_ID_FLAGS(func, bpf_kfunc_dynptr_test)
-=======
 BTF_ID_FLAGS(func, bpf_iter_testmod_seq_value)
 BTF_ID_FLAGS(func, bpf_kfunc_common_test)
 BTF_ID_FLAGS(func, bpf_kfunc_dynptr_test)
@@ -637,7 +582,6 @@ BTF_ID_FLAGS(func, bpf_kfunc_trusted_vma_test, KF_TRUSTED_ARGS)
 BTF_ID_FLAGS(func, bpf_kfunc_trusted_task_test, KF_TRUSTED_ARGS)
 BTF_ID_FLAGS(func, bpf_kfunc_trusted_num_test, KF_TRUSTED_ARGS)
 BTF_ID_FLAGS(func, bpf_kfunc_rcu_task_test, KF_RCU)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 BTF_ID_FLAGS(func, bpf_testmod_ctx_create, KF_ACQUIRE | KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_testmod_ctx_release, KF_RELEASE)
 BTF_KFUNCS_END(bpf_testmod_common_kfunc_ids)
@@ -1025,8 +969,6 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
-=======
 static DEFINE_MUTEX(st_ops_mutex);
 static struct bpf_testmod_st_ops *st_ops;
 
@@ -1072,7 +1014,6 @@ __bpf_kfunc int bpf_kfunc_st_ops_inc10(struct st_ops_args *args)
 	return args->a;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 BTF_KFUNCS_START(bpf_testmod_check_kfunc_ids)
 BTF_ID_FLAGS(func, bpf_testmod_test_mod_kfunc)
 BTF_ID_FLAGS(func, bpf_kfunc_call_test1)
@@ -1109,13 +1050,10 @@ BTF_ID_FLAGS(func, bpf_kfunc_call_kernel_sendmsg, KF_SLEEPABLE)
 BTF_ID_FLAGS(func, bpf_kfunc_call_sock_sendmsg, KF_SLEEPABLE)
 BTF_ID_FLAGS(func, bpf_kfunc_call_kernel_getsockname, KF_SLEEPABLE)
 BTF_ID_FLAGS(func, bpf_kfunc_call_kernel_getpeername, KF_SLEEPABLE)
-<<<<<<< HEAD
-=======
 BTF_ID_FLAGS(func, bpf_kfunc_st_ops_test_prologue, KF_TRUSTED_ARGS | KF_SLEEPABLE)
 BTF_ID_FLAGS(func, bpf_kfunc_st_ops_test_epilogue, KF_TRUSTED_ARGS | KF_SLEEPABLE)
 BTF_ID_FLAGS(func, bpf_kfunc_st_ops_test_pro_epilogue, KF_TRUSTED_ARGS | KF_SLEEPABLE)
 BTF_ID_FLAGS(func, bpf_kfunc_st_ops_inc10, KF_TRUSTED_ARGS)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 BTF_KFUNCS_END(bpf_testmod_check_kfunc_ids)
 
 static int bpf_testmod_ops_init(struct btf *btf)
@@ -1184,14 +1122,11 @@ static void bpf_testmod_test_2(int a, int b)
 {
 }
 
-<<<<<<< HEAD
-=======
 static int bpf_testmod_tramp(int value)
 {
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int bpf_testmod_ops__test_maybe_null(int dummy,
 					    struct task_struct *task__nullable)
 {
@@ -1238,8 +1173,6 @@ struct bpf_struct_ops bpf_testmod_ops2 = {
 	.owner = THIS_MODULE,
 };
 
-<<<<<<< HEAD
-=======
 static int bpf_test_mod_st_ops__test_prologue(struct st_ops_args *args)
 {
 	return 0;
@@ -1378,7 +1311,6 @@ static struct bpf_struct_ops testmod_st_ops = {
 	.owner = THIS_MODULE,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int bpf_fentry_test1(int a);
 
 static int bpf_testmod_init(void)
@@ -1389,25 +1321,17 @@ static int bpf_testmod_init(void)
 			.kfunc_btf_id	= bpf_testmod_dtor_ids[1]
 		},
 	};
-<<<<<<< HEAD
-=======
 	void **tramp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC, &bpf_testmod_common_kfunc_set);
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &bpf_testmod_kfunc_set);
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &bpf_testmod_kfunc_set);
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL, &bpf_testmod_kfunc_set);
-<<<<<<< HEAD
-	ret = ret ?: register_bpf_struct_ops(&bpf_bpf_testmod_ops, bpf_testmod_ops);
-	ret = ret ?: register_bpf_struct_ops(&bpf_testmod_ops2, bpf_testmod_ops2);
-=======
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &bpf_testmod_kfunc_set);
 	ret = ret ?: register_bpf_struct_ops(&bpf_bpf_testmod_ops, bpf_testmod_ops);
 	ret = ret ?: register_bpf_struct_ops(&bpf_testmod_ops2, bpf_testmod_ops2);
 	ret = ret ?: register_bpf_struct_ops(&testmod_st_ops, bpf_testmod_st_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ret ?: register_btf_id_dtor_kfuncs(bpf_testmod_dtors,
 						 ARRAY_SIZE(bpf_testmod_dtors),
 						 THIS_MODULE);
@@ -1423,8 +1347,6 @@ static int bpf_testmod_init(void)
 	ret = register_bpf_testmod_uprobe();
 	if (ret < 0)
 		return ret;
-<<<<<<< HEAD
-=======
 
 	/* Ensure nothing is between tramp_1..tramp_40 */
 	BUILD_BUG_ON(offsetof(struct bpf_testmod_ops, tramp_1) + 40 * sizeof(long) !=
@@ -1433,7 +1355,6 @@ static int bpf_testmod_init(void)
 	while (tramp <= (void **)&__bpf_testmod_ops.tramp_40)
 		*tramp++ = bpf_testmod_tramp;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

@@ -792,11 +792,7 @@
 			qcom,smd-edge = <15>;
 
 			rpm-requests {
-<<<<<<< HEAD
-				compatible = "qcom,rpm-apq8084";
-=======
 				compatible = "qcom,rpm-apq8084", "qcom,smd-rpm";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,smd-channels = "rpm_requests";
 
 				regulators-0 {

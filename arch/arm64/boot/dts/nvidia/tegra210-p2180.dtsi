@@ -33,8 +33,6 @@
 		status = "okay";
 	};
 
-<<<<<<< HEAD
-=======
 	serial@70006300 {
 		/delete-property/ reg-shift;
 		status = "okay";
@@ -80,7 +78,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i2c@7000c500 {
 		status = "okay";
 
@@ -343,8 +340,6 @@
 		nvidia,sys-clock-req-active-high;
 	};
 
-<<<<<<< HEAD
-=======
 	mmc@700b0200 {
 		status = "okay";
 		bus-width = <4>;
@@ -364,7 +359,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* eMMC */
 	mmc@700b0600 {
 		status = "okay";

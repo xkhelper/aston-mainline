@@ -83,11 +83,7 @@
 		ranges;
 
 		sys: system-management@40460000 {
-<<<<<<< HEAD
-			compatible = "nuvoton,ma35d1-reset";
-=======
 			compatible = "nuvoton,ma35d1-reset", "syscon";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0x0 0x40460000 0x0 0x200>;
 			#reset-cells = <1>;
 		};
@@ -99,8 +95,6 @@
 			clocks = <&clk_hxt>;
 		};
 
-<<<<<<< HEAD
-=======
 		pinctrl: pinctrl@40040000 {
 			compatible = "nuvoton,ma35d1-pinctrl";
 			reg = <0x0 0x40040000 0x0 0xc00>;
@@ -250,7 +244,6 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		uart0: serial@40700000 {
 			compatible = "nuvoton,ma35d1-uart";
 			reg = <0x0 0x40700000 0x0 0x100>;

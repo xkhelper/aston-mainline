@@ -204,8 +204,6 @@ static const struct clk_ops imx8m_clk_composite_mux_ops = {
 	.determine_rate = imx8m_clk_composite_mux_determine_rate,
 };
 
-<<<<<<< HEAD
-=======
 static int imx8m_clk_composite_gate_enable(struct clk_hw *hw)
 {
 	struct clk_gate *gate = to_clk_gate(hw);
@@ -234,7 +232,6 @@ static const struct clk_ops imx8m_clk_composite_gate_ops = {
 	.is_enabled = clk_gate_is_enabled,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct clk_hw *__imx8m_clk_hw_composite(const char *name,
 					const char * const *parent_names,
 					int num_parents, void __iomem *reg,
@@ -248,10 +245,7 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
 	struct clk_mux *mux;
 	const struct clk_ops *divider_ops;
 	const struct clk_ops *mux_ops;
-<<<<<<< HEAD
-=======
 	const struct clk_ops *gate_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
 	if (!mux)
@@ -292,22 +286,6 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
 	div->flags = CLK_DIVIDER_ROUND_CLOSEST;
 
 	/* skip registering the gate ops if M4 is enabled */
-<<<<<<< HEAD
-	if (!mcore_booted) {
-		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
-		if (!gate)
-			goto free_div;
-
-		gate_hw = &gate->hw;
-		gate->reg = reg;
-		gate->bit_idx = PCG_CGC_SHIFT;
-		gate->lock = &imx_ccm_lock;
-	}
-
-	hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
-			mux_hw, mux_ops, div_hw,
-			divider_ops, gate_hw, &clk_gate_ops, flags);
-=======
 	gate = kzalloc(sizeof(*gate), GFP_KERNEL);
 	if (!gate)
 		goto free_div;
@@ -324,7 +302,6 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
 	hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
 			mux_hw, mux_ops, div_hw,
 			divider_ops, gate_hw, gate_ops, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(hw))
 		goto free_gate;
 

@@ -1126,27 +1126,19 @@ int c4iw_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
 			goto err_free_mm2;
 
 		mm->key = uresp.key;
-<<<<<<< HEAD
-		mm->addr = virt_to_phys(chp->cq.queue);
-		mm->len = chp->cq.memsize;
-=======
 		mm->addr = 0;
 		mm->vaddr = chp->cq.queue;
 		mm->dma_addr = chp->cq.dma_addr;
 		mm->len = chp->cq.memsize;
 		insert_flag_to_mmap(&rhp->rdev, mm, mm->addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		insert_mmap(ucontext, mm);
 
 		mm2->key = uresp.gts_key;
 		mm2->addr = chp->cq.bar2_pa;
 		mm2->len = PAGE_SIZE;
-<<<<<<< HEAD
-=======
 		mm2->vaddr = NULL;
 		mm2->dma_addr = 0;
 		insert_flag_to_mmap(&rhp->rdev, mm2, mm2->addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		insert_mmap(ucontext, mm2);
 	}
 

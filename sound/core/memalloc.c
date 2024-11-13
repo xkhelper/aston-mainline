@@ -17,9 +17,6 @@
 #include <asm/set_memory.h>
 #endif
 #include <sound/memalloc.h>
-<<<<<<< HEAD
-#include "memalloc_local.h"
-=======
 
 struct snd_malloc_ops {
 	void *(*alloc)(struct snd_dma_buffer *dmab, size_t size);
@@ -31,7 +28,6 @@ struct snd_malloc_ops {
 	int (*mmap)(struct snd_dma_buffer *dmab, struct vm_area_struct *area);
 	void (*sync)(struct snd_dma_buffer *dmab, enum snd_dma_sync_mode mode);
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DEFAULT_GFP \
 	(GFP_KERNEL | \
@@ -40,13 +36,6 @@ struct snd_malloc_ops {
 
 static const struct snd_malloc_ops *snd_dma_get_ops(struct snd_dma_buffer *dmab);
 
-<<<<<<< HEAD
-#ifdef CONFIG_SND_DMA_SGBUF
-static void *snd_dma_sg_fallback_alloc(struct snd_dma_buffer *dmab, size_t size);
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void *__snd_dma_alloc_pages(struct snd_dma_buffer *dmab, size_t size)
 {
 	const struct snd_malloc_ops *ops = snd_dma_get_ops(dmab);
@@ -507,13 +496,6 @@ static const struct snd_malloc_ops snd_dma_dev_ops = {
 /*
  * Write-combined pages
  */
-<<<<<<< HEAD
-/* x86-specific allocations */
-#ifdef CONFIG_SND_DMA_SGBUF
-static void *snd_dma_wc_alloc(struct snd_dma_buffer *dmab, size_t size)
-{
-	return do_alloc_pages(dmab->dev.dev, size, &dmab->addr, true);
-=======
 #ifdef CONFIG_SND_DMA_SGBUF
 /* x86-specific allocations */
 static void *snd_dma_wc_alloc(struct snd_dma_buffer *dmab, size_t size)
@@ -528,16 +510,12 @@ static void *snd_dma_wc_alloc(struct snd_dma_buffer *dmab, size_t size)
 		return NULL;
 	}
 	return p;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void snd_dma_wc_free(struct snd_dma_buffer *dmab)
 {
-<<<<<<< HEAD
-=======
 	dma_unmap_single(dmab->dev.dev, dmab->addr, dmab->bytes,
 			 DMA_BIDIRECTIONAL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	do_free_pages(dmab->area, dmab->bytes, true);
 }
 
@@ -545,12 +523,8 @@ static int snd_dma_wc_mmap(struct snd_dma_buffer *dmab,
 			   struct vm_area_struct *area)
 {
 	area->vm_page_prot = pgprot_writecombine(area->vm_page_prot);
-<<<<<<< HEAD
-	return snd_dma_continuous_mmap(dmab, area);
-=======
 	return dma_mmap_coherent(dmab->dev.dev, area,
 				 dmab->area, dmab->addr, dmab->bytes);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #else
 static void *snd_dma_wc_alloc(struct snd_dma_buffer *dmab, size_t size)
@@ -569,11 +543,7 @@ static int snd_dma_wc_mmap(struct snd_dma_buffer *dmab,
 	return dma_mmap_wc(dmab->dev.dev, area,
 			   dmab->area, dmab->addr, dmab->bytes);
 }
-<<<<<<< HEAD
-#endif /* CONFIG_SND_DMA_SGBUF */
-=======
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct snd_malloc_ops snd_dma_wc_ops = {
 	.alloc = snd_dma_wc_alloc,
@@ -589,21 +559,8 @@ static void *snd_dma_noncontig_alloc(struct snd_dma_buffer *dmab, size_t size)
 	struct sg_table *sgt;
 	void *p;
 
-<<<<<<< HEAD
-#ifdef CONFIG_SND_DMA_SGBUF
-	if (cpu_feature_enabled(X86_FEATURE_XENPV))
-		return snd_dma_sg_fallback_alloc(dmab, size);
-#endif
 	sgt = dma_alloc_noncontiguous(dmab->dev.dev, size, dmab->dev.dir,
 				      DEFAULT_GFP, 0);
-#ifdef CONFIG_SND_DMA_SGBUF
-	if (!sgt && !get_dma_ops(dmab->dev.dev))
-		return snd_dma_sg_fallback_alloc(dmab, size);
-#endif
-=======
-	sgt = dma_alloc_noncontiguous(dmab->dev.dev, size, dmab->dev.dir,
-				      DEFAULT_GFP, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sgt)
 		return NULL;
 
@@ -720,62 +677,6 @@ static const struct snd_malloc_ops snd_dma_noncontig_ops = {
 	.get_chunk_size = snd_dma_noncontig_get_chunk_size,
 };
 
-<<<<<<< HEAD
-/* x86-specific SG-buffer with WC pages */
-#ifdef CONFIG_SND_DMA_SGBUF
-#define sg_wc_address(it) ((unsigned long)page_address(sg_page_iter_page(it)))
-
-static void *snd_dma_sg_wc_alloc(struct snd_dma_buffer *dmab, size_t size)
-{
-	void *p = snd_dma_noncontig_alloc(dmab, size);
-	struct sg_table *sgt = dmab->private_data;
-	struct sg_page_iter iter;
-
-	if (!p)
-		return NULL;
-	if (dmab->dev.type != SNDRV_DMA_TYPE_DEV_WC_SG)
-		return p;
-	for_each_sgtable_page(sgt, &iter, 0)
-		set_memory_wc(sg_wc_address(&iter), 1);
-	return p;
-}
-
-static void snd_dma_sg_wc_free(struct snd_dma_buffer *dmab)
-{
-	struct sg_table *sgt = dmab->private_data;
-	struct sg_page_iter iter;
-
-	for_each_sgtable_page(sgt, &iter, 0)
-		set_memory_wb(sg_wc_address(&iter), 1);
-	snd_dma_noncontig_free(dmab);
-}
-
-static int snd_dma_sg_wc_mmap(struct snd_dma_buffer *dmab,
-			      struct vm_area_struct *area)
-{
-	area->vm_page_prot = pgprot_writecombine(area->vm_page_prot);
-	return dma_mmap_noncontiguous(dmab->dev.dev, area,
-				      dmab->bytes, dmab->private_data);
-}
-
-static const struct snd_malloc_ops snd_dma_sg_wc_ops = {
-	.alloc = snd_dma_sg_wc_alloc,
-	.free = snd_dma_sg_wc_free,
-	.mmap = snd_dma_sg_wc_mmap,
-	.sync = snd_dma_noncontig_sync,
-	.get_addr = snd_dma_noncontig_get_addr,
-	.get_page = snd_dma_noncontig_get_page,
-	.get_chunk_size = snd_dma_noncontig_get_chunk_size,
-};
-
-/* Fallback SG-buffer allocations for x86 */
-struct snd_dma_sg_fallback {
-	bool use_dma_alloc_coherent;
-	size_t count;
-	struct page **pages;
-	/* DMA address array; the first page contains #pages in ~PAGE_MASK */
-	dma_addr_t *addrs;
-=======
 #ifdef CONFIG_SND_DMA_SGBUF
 /* Fallback SG-buffer allocations for x86 */
 struct snd_dma_sg_fallback {
@@ -783,31 +684,11 @@ struct snd_dma_sg_fallback {
 	size_t count;
 	struct page **pages;
 	unsigned int *npages;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void __snd_dma_sg_fallback_free(struct snd_dma_buffer *dmab,
 				       struct snd_dma_sg_fallback *sgbuf)
 {
-<<<<<<< HEAD
-	size_t i, size;
-
-	if (sgbuf->pages && sgbuf->addrs) {
-		i = 0;
-		while (i < sgbuf->count) {
-			if (!sgbuf->pages[i] || !sgbuf->addrs[i])
-				break;
-			size = sgbuf->addrs[i] & ~PAGE_MASK;
-			if (WARN_ON(!size))
-				break;
-			if (sgbuf->use_dma_alloc_coherent)
-				dma_free_coherent(dmab->dev.dev, size << PAGE_SHIFT,
-						  page_address(sgbuf->pages[i]),
-						  sgbuf->addrs[i] & PAGE_MASK);
-			else
-				do_free_pages(page_address(sgbuf->pages[i]),
-					      size << PAGE_SHIFT, false);
-=======
 	bool wc = dmab->dev.type == SNDRV_DMA_TYPE_DEV_WC_SG;
 	size_t i, size;
 
@@ -819,52 +700,10 @@ static void __snd_dma_sg_fallback_free(struct snd_dma_buffer *dmab,
 				break;
 			do_free_pages(page_address(sgbuf->pages[i]),
 				      size << PAGE_SHIFT, wc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			i += size;
 		}
 	}
 	kvfree(sgbuf->pages);
-<<<<<<< HEAD
-	kvfree(sgbuf->addrs);
-	kfree(sgbuf);
-}
-
-static void *snd_dma_sg_fallback_alloc(struct snd_dma_buffer *dmab, size_t size)
-{
-	struct snd_dma_sg_fallback *sgbuf;
-	struct page **pagep, *curp;
-	size_t chunk, npages;
-	dma_addr_t *addrp;
-	dma_addr_t addr;
-	void *p;
-
-	/* correct the type */
-	if (dmab->dev.type == SNDRV_DMA_TYPE_DEV_SG)
-		dmab->dev.type = SNDRV_DMA_TYPE_DEV_SG_FALLBACK;
-	else if (dmab->dev.type == SNDRV_DMA_TYPE_DEV_WC_SG)
-		dmab->dev.type = SNDRV_DMA_TYPE_DEV_WC_SG_FALLBACK;
-
-	sgbuf = kzalloc(sizeof(*sgbuf), GFP_KERNEL);
-	if (!sgbuf)
-		return NULL;
-	sgbuf->use_dma_alloc_coherent = cpu_feature_enabled(X86_FEATURE_XENPV);
-	size = PAGE_ALIGN(size);
-	sgbuf->count = size >> PAGE_SHIFT;
-	sgbuf->pages = kvcalloc(sgbuf->count, sizeof(*sgbuf->pages), GFP_KERNEL);
-	sgbuf->addrs = kvcalloc(sgbuf->count, sizeof(*sgbuf->addrs), GFP_KERNEL);
-	if (!sgbuf->pages || !sgbuf->addrs)
-		goto error;
-
-	pagep = sgbuf->pages;
-	addrp = sgbuf->addrs;
-	chunk = (PAGE_SIZE - 1) << PAGE_SHIFT; /* to fit in low bits in addrs */
-	while (size > 0) {
-		chunk = min(size, chunk);
-		if (sgbuf->use_dma_alloc_coherent)
-			p = dma_alloc_coherent(dmab->dev.dev, chunk, &addr, DEFAULT_GFP);
-		else
-			p = do_alloc_pages(dmab->dev.dev, chunk, &addr, false);
-=======
 	kvfree(sgbuf->npages);
 	kfree(sgbuf);
 }
@@ -896,7 +735,6 @@ static void *snd_dma_sg_fallback_alloc(struct snd_dma_buffer *dmab, size_t size)
 	while (size > 0) {
 		chunk = min(size, chunk);
 		p = do_alloc_pages(dmab->dev.dev, chunk, &addr, wc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!p) {
 			if (chunk <= PAGE_SIZE)
 				goto error;
@@ -908,29 +746,6 @@ static void *snd_dma_sg_fallback_alloc(struct snd_dma_buffer *dmab, size_t size)
 		size -= chunk;
 		/* fill pages */
 		npages = chunk >> PAGE_SHIFT;
-<<<<<<< HEAD
-		*addrp = npages; /* store in lower bits */
-		curp = virt_to_page(p);
-		while (npages--) {
-			*pagep++ = curp++;
-			*addrp++ |= addr;
-			addr += PAGE_SIZE;
-		}
-	}
-
-	p = vmap(sgbuf->pages, sgbuf->count, VM_MAP, PAGE_KERNEL);
-	if (!p)
-		goto error;
-
-	if (dmab->dev.type == SNDRV_DMA_TYPE_DEV_WC_SG_FALLBACK)
-		set_pages_array_wc(sgbuf->pages, sgbuf->count);
-
-	dmab->private_data = sgbuf;
-	/* store the first page address for convenience */
-	dmab->addr = sgbuf->addrs[0] & PAGE_MASK;
-	return p;
-
-=======
 		sgbuf->npages[idx] = npages;
 		idx += npages;
 		curp = virt_to_page(p);
@@ -958,7 +773,6 @@ static void *snd_dma_sg_fallback_alloc(struct snd_dma_buffer *dmab, size_t size)
 	dma_unmap_sgtable(dmab->dev.dev, &sgbuf->sgt, DMA_BIDIRECTIONAL, 0);
  error_dma_map:
 	sg_free_table(&sgbuf->sgt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  error:
 	__snd_dma_sg_fallback_free(dmab, sgbuf);
 	return NULL;
@@ -968,51 +782,22 @@ static void snd_dma_sg_fallback_free(struct snd_dma_buffer *dmab)
 {
 	struct snd_dma_sg_fallback *sgbuf = dmab->private_data;
 
-<<<<<<< HEAD
-	if (dmab->dev.type == SNDRV_DMA_TYPE_DEV_WC_SG_FALLBACK)
-		set_pages_array_wb(sgbuf->pages, sgbuf->count);
-	vunmap(dmab->area);
-	__snd_dma_sg_fallback_free(dmab, dmab->private_data);
-}
-
-static dma_addr_t snd_dma_sg_fallback_get_addr(struct snd_dma_buffer *dmab,
-					       size_t offset)
-{
-	struct snd_dma_sg_fallback *sgbuf = dmab->private_data;
-	size_t index = offset >> PAGE_SHIFT;
-
-	return (sgbuf->addrs[index] & PAGE_MASK) | (offset & ~PAGE_MASK);
-}
-
-=======
 	vunmap(dmab->area);
 	dma_unmap_sgtable(dmab->dev.dev, &sgbuf->sgt, DMA_BIDIRECTIONAL, 0);
 	sg_free_table(&sgbuf->sgt);
 	__snd_dma_sg_fallback_free(dmab, dmab->private_data);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int snd_dma_sg_fallback_mmap(struct snd_dma_buffer *dmab,
 				    struct vm_area_struct *area)
 {
 	struct snd_dma_sg_fallback *sgbuf = dmab->private_data;
 
-<<<<<<< HEAD
-	if (dmab->dev.type == SNDRV_DMA_TYPE_DEV_WC_SG_FALLBACK)
-=======
 	if (dmab->dev.type == SNDRV_DMA_TYPE_DEV_WC_SG)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		area->vm_page_prot = pgprot_writecombine(area->vm_page_prot);
 	return vm_map_pages(area, sgbuf->pages, sgbuf->count);
 }
 
-<<<<<<< HEAD
-static const struct snd_malloc_ops snd_dma_sg_fallback_ops = {
-	.alloc = snd_dma_sg_fallback_alloc,
-	.free = snd_dma_sg_fallback_free,
-	.mmap = snd_dma_sg_fallback_mmap,
-	.get_addr = snd_dma_sg_fallback_get_addr,
-=======
 static void *snd_dma_sg_alloc(struct snd_dma_buffer *dmab, size_t size)
 {
 	int type = dmab->dev.type;
@@ -1037,7 +822,6 @@ static const struct snd_malloc_ops snd_dma_sg_ops = {
 	.mmap = snd_dma_sg_fallback_mmap,
 	/* reuse noncontig helper */
 	.get_addr = snd_dma_noncontig_get_addr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* reuse vmalloc helpers */
 	.get_page = snd_dma_vmalloc_get_page,
 	.get_chunk_size = snd_dma_vmalloc_get_chunk_size,
@@ -1108,23 +892,12 @@ static const struct snd_malloc_ops *snd_dma_ops[] = {
 	[SNDRV_DMA_TYPE_NONCONTIG] = &snd_dma_noncontig_ops,
 	[SNDRV_DMA_TYPE_NONCOHERENT] = &snd_dma_noncoherent_ops,
 #ifdef CONFIG_SND_DMA_SGBUF
-<<<<<<< HEAD
-	[SNDRV_DMA_TYPE_DEV_WC_SG] = &snd_dma_sg_wc_ops,
-=======
 	[SNDRV_DMA_TYPE_DEV_SG] = &snd_dma_sg_ops,
 	[SNDRV_DMA_TYPE_DEV_WC_SG] = &snd_dma_sg_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 #ifdef CONFIG_GENERIC_ALLOCATOR
 	[SNDRV_DMA_TYPE_DEV_IRAM] = &snd_dma_iram_ops,
 #endif /* CONFIG_GENERIC_ALLOCATOR */
-<<<<<<< HEAD
-#ifdef CONFIG_SND_DMA_SGBUF
-	[SNDRV_DMA_TYPE_DEV_SG_FALLBACK] = &snd_dma_sg_fallback_ops,
-	[SNDRV_DMA_TYPE_DEV_WC_SG_FALLBACK] = &snd_dma_sg_fallback_ops,
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_HAS_DMA */
 };
 

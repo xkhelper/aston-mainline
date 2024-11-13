@@ -141,10 +141,7 @@ enum idpf_vport_state {
  * @adapter: Adapter back pointer
  * @vport: Vport back pointer
  * @vport_id: Vport identifier
-<<<<<<< HEAD
-=======
  * @link_speed_mbps: Link speed in mbps
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @vport_idx: Relative vport index
  * @state: See enum idpf_vport_state
  * @netstats: Packet and byte stats
@@ -154,10 +151,7 @@ struct idpf_netdev_priv {
 	struct idpf_adapter *adapter;
 	struct idpf_vport *vport;
 	u32 vport_id;
-<<<<<<< HEAD
-=======
 	u32 link_speed_mbps;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 vport_idx;
 	enum idpf_vport_state state;
 	struct rtnl_link_stats64 netstats;
@@ -295,10 +289,6 @@ struct idpf_port_stats {
  * @tx_itr_profile: TX profiles for Dynamic Interrupt Moderation
  * @port_stats: per port csum, header split, and other offload stats
  * @link_up: True if link is up
-<<<<<<< HEAD
- * @link_speed_mbps: Link speed in mbps
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @sw_marker_wq: workqueue for marker packets
  */
 struct idpf_vport {
@@ -342,10 +332,6 @@ struct idpf_vport {
 	struct idpf_port_stats port_stats;
 
 	bool link_up;
-<<<<<<< HEAD
-	u32 link_speed_mbps;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	wait_queue_head_t sw_marker_wq;
 };

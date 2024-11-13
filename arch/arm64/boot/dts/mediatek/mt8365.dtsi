@@ -2,17 +2,11 @@
 /*
  * (C) 2018 MediaTek Inc.
  * Copyright (C) 2022 BayLibre SAS
-<<<<<<< HEAD
- * Fabien Parent <fparent@baylibre.com>
- * Bernhard Rosenkränzer <bero@baylibre.com>
- */
-=======
  * Authors: Fabien Parent <fparent@baylibre.com>
  *	    Bernhard Rosenkränzer <bero@baylibre.com>
  *	    Alexandre Mergnat <amergnat@baylibre.com>
  */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/clock/mediatek,mt8365-clk.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/interrupt-controller/irq.h>
@@ -820,8 +814,6 @@
 			reg = <0 0x19020000 0 0x1000>;
 			#clock-cells = <1>;
 		};
-<<<<<<< HEAD
-=======
 
 		afe: audio-controller@11220000 {
 			compatible = "mediatek,mt8365-afe-pcm";
@@ -859,7 +851,6 @@
 			power-domains = <&spm MT8365_POWER_DOMAIN_AUDIO>;
 			status = "disabled";
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	timer {

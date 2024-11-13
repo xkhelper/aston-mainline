@@ -38,10 +38,7 @@ struct bbnsm_pwrkey {
 	int irq;
 	int keycode;
 	int keystate;  /* 1:pressed */
-<<<<<<< HEAD
-=======
 	bool suspended;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct timer_list check_timer;
 	struct input_dev *input;
 };
@@ -74,10 +71,7 @@ static irqreturn_t bbnsm_pwrkey_interrupt(int irq, void *dev_id)
 {
 	struct platform_device *pdev = dev_id;
 	struct bbnsm_pwrkey *bbnsm = platform_get_drvdata(pdev);
-<<<<<<< HEAD
-=======
 	struct input_dev *input = bbnsm->input;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 event;
 
 	regmap_read(bbnsm->regmap, BBNSM_EVENTS, &event);
@@ -86,8 +80,6 @@ static irqreturn_t bbnsm_pwrkey_interrupt(int irq, void *dev_id)
 
 	pm_wakeup_event(bbnsm->input->dev.parent, 0);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Directly report key event after resume to make sure key press
 	 * event is never missed.
@@ -100,7 +92,6 @@ static irqreturn_t bbnsm_pwrkey_interrupt(int irq, void *dev_id)
 		bbnsm->suspended = false;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mod_timer(&bbnsm->check_timer,
 		   jiffies + msecs_to_jiffies(DEBOUNCE_TIME));
 
@@ -196,8 +187,6 @@ static int bbnsm_pwrkey_probe(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int __maybe_unused bbnsm_pwrkey_suspend(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
@@ -221,7 +210,6 @@ static int __maybe_unused bbnsm_pwrkey_resume(struct device *dev)
 static SIMPLE_DEV_PM_OPS(bbnsm_pwrkey_pm_ops, bbnsm_pwrkey_suspend,
 		bbnsm_pwrkey_resume);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct of_device_id bbnsm_pwrkey_ids[] = {
 	{ .compatible = "nxp,imx93-bbnsm-pwrkey" },
 	{ /* sentinel */ }
@@ -231,10 +219,7 @@ MODULE_DEVICE_TABLE(of, bbnsm_pwrkey_ids);
 static struct platform_driver bbnsm_pwrkey_driver = {
 	.driver = {
 		.name = "bbnsm_pwrkey",
-<<<<<<< HEAD
-=======
 		.pm = &bbnsm_pwrkey_pm_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = bbnsm_pwrkey_ids,
 	},
 	.probe = bbnsm_pwrkey_probe,

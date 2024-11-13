@@ -1006,29 +1006,17 @@ static int fanotify_find_path(int dfd, const char __user *filename,
 		struct fd f = fdget(dfd);
 
 		ret = -EBADF;
-<<<<<<< HEAD
-		if (!f.file)
-=======
 		if (!fd_file(f))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out;
 
 		ret = -ENOTDIR;
 		if ((flags & FAN_MARK_ONLYDIR) &&
-<<<<<<< HEAD
-		    !(S_ISDIR(file_inode(f.file)->i_mode))) {
-=======
 		    !(S_ISDIR(file_inode(fd_file(f))->i_mode))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			fdput(f);
 			goto out;
 		}
 
-<<<<<<< HEAD
-		*path = f.file->f_path;
-=======
 		*path = fd_file(f)->f_path;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		path_get(path);
 		fdput(f);
 	} else {
@@ -1492,11 +1480,7 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
 
 	/* fsnotify_alloc_group takes a ref.  Dropped in fanotify_release */
 	group = fsnotify_alloc_group(&fanotify_fsnotify_ops,
-<<<<<<< HEAD
-				     FSNOTIFY_GROUP_USER | FSNOTIFY_GROUP_NOFS);
-=======
 				     FSNOTIFY_GROUP_USER);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(group)) {
 		return PTR_ERR(group);
 	}
@@ -1769,24 +1753,14 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
 	}
 
 	f = fdget(fanotify_fd);
-<<<<<<< HEAD
-	if (unlikely(!f.file))
-=======
 	if (unlikely(!fd_file(f)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 
 	/* verify that this is indeed an fanotify instance */
 	ret = -EINVAL;
-<<<<<<< HEAD
-	if (unlikely(f.file->f_op != &fanotify_fops))
-		goto fput_and_out;
-	group = f.file->private_data;
-=======
 	if (unlikely(fd_file(f)->f_op != &fanotify_fops))
 		goto fput_and_out;
 	group = fd_file(f)->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * An unprivileged user is not allowed to setup mount nor filesystem

@@ -19,11 +19,7 @@
 #include <linux/spi/spi.h>
 #include <linux/units.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* ADMV1014 Register Map */
 #define ADMV1014_REG_SPI_CONTROL		0x00

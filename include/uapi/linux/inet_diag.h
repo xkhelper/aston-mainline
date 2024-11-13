@@ -143,11 +143,7 @@ enum {
 	INET_DIAG_SHUTDOWN,
 
 	/*
-<<<<<<< HEAD
-	 * Next extenstions cannot be requested in struct inet_diag_req_v2:
-=======
 	 * Next extensions cannot be requested in struct inet_diag_req_v2:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * its field idiag_ext has only 8 bits.
 	 */
 

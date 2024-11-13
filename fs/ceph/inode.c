@@ -1779,11 +1779,7 @@ retry_lookup:
 		if (err < 0)
 			goto done;
 	} else if (rinfo->head->is_dentry && req->r_dentry) {
-<<<<<<< HEAD
-		/* parent inode is not locked, be carefull */
-=======
 		/* parent inode is not locked, be careful */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct ceph_vino *ptvino = NULL;
 		dvino.ino = le64_to_cpu(rinfo->diri.in->ino);
 		dvino.snap = le64_to_cpu(rinfo->diri.in->snapid);

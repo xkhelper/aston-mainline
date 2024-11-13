@@ -12,11 +12,7 @@
 #include <linux/mfd/dln2.h>
 #include <linux/spi/spi.h>
 #include <linux/pm_runtime.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DLN2_SPI_MODULE_ID		0x02
 #define DLN2_SPI_CMD(cmd)		DLN2_CMD(cmd, DLN2_SPI_MODULE_ID)

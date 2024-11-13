@@ -70,10 +70,7 @@ int migrate_pages(struct list_head *l, new_folio_t new, free_folio_t free,
 		  unsigned int *ret_succeeded);
 struct folio *alloc_migration_target(struct folio *src, unsigned long private);
 bool isolate_movable_page(struct page *page, isolate_mode_t mode);
-<<<<<<< HEAD
-=======
 bool isolate_folio_to_list(struct folio *folio, struct list_head *list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int migrate_huge_page_move_mapping(struct address_space *mapping,
 		struct folio *dst, struct folio *src);
@@ -95,11 +92,8 @@ static inline struct folio *alloc_migration_target(struct folio *src,
 	{ return NULL; }
 static inline bool isolate_movable_page(struct page *page, isolate_mode_t mode)
 	{ return false; }
-<<<<<<< HEAD
-=======
 static inline bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
 	{ return false; }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline int migrate_huge_page_move_mapping(struct address_space *mapping,
 				  struct folio *dst, struct folio *src)

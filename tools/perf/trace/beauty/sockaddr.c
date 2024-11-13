@@ -47,11 +47,7 @@ static size_t (*af_scnprintfs[])(struct sockaddr *sa, char *bf, size_t size) = {
 
 static size_t syscall_arg__scnprintf_augmented_sockaddr(struct syscall_arg *arg, char *bf, size_t size)
 {
-<<<<<<< HEAD
-	struct sockaddr *sa = (struct sockaddr *)arg->augmented.args;
-=======
 	struct sockaddr *sa = (struct sockaddr *)&arg->augmented.args->value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char family[32];
 	size_t printed;
 

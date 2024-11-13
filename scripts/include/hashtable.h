@@ -15,8 +15,6 @@
 
 #define hash_head(table, key)		(&(table)[(key) % HASH_SIZE(table)])
 
-<<<<<<< HEAD
-=======
 static inline void __hash_init(struct hlist_head *ht, unsigned int sz)
 {
 	unsigned int i;
@@ -34,7 +32,6 @@ static inline void __hash_init(struct hlist_head *ht, unsigned int sz)
  */
 #define hash_init(table) __hash_init(table, HASH_SIZE(table))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * hash_add - add an object to a hashtable
  * @table: hashtable to add to
@@ -45,8 +42,6 @@ static inline void __hash_init(struct hlist_head *ht, unsigned int sz)
 	hlist_add_head(node, hash_head(table, key))
 
 /**
-<<<<<<< HEAD
-=======
  * hash_del - remove an object from a hashtable
  * @node: &struct hlist_node of the object to remove
  */
@@ -56,7 +51,6 @@ static inline void hash_del(struct hlist_node *node)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * hash_for_each - iterate over a hashtable
  * @table: hashtable to iterate
  * @obj: the type * to use as a loop cursor for each entry
@@ -67,8 +61,6 @@ static inline void hash_del(struct hlist_node *node)
 		hlist_for_each_entry(obj, &table[_bkt], member)
 
 /**
-<<<<<<< HEAD
-=======
  * hash_for_each_safe - iterate over a hashtable safe against removal of
  * hash entry
  * @table: hashtable to iterate
@@ -81,7 +73,6 @@ static inline void hash_del(struct hlist_node *node)
 		hlist_for_each_entry_safe(obj, tmp, &table[_bkt], member)
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * hash_for_each_possible - iterate over all possible objects hashing to the
  * same bucket
  * @table: hashtable to iterate
@@ -92,8 +83,6 @@ static inline void hash_del(struct hlist_node *node)
 #define hash_for_each_possible(table, obj, member, key)			\
 	hlist_for_each_entry(obj, hash_head(table, key), member)
 
-<<<<<<< HEAD
-=======
 /**
  * hash_for_each_possible_safe - iterate over all possible objects hashing to the
  * same bucket safe against removals
@@ -106,5 +95,4 @@ static inline void hash_del(struct hlist_node *node)
 #define hash_for_each_possible_safe(table, obj, tmp, member, key)	\
 	hlist_for_each_entry_safe(obj, tmp, hash_head(table, key), member)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* HASHTABLE_H */

@@ -351,11 +351,7 @@ struct omap_hdmi {
 	bool audio_configured;
 	struct omap_dss_audio audio_config;
 
-<<<<<<< HEAD
-	/* This lock should be taken when booleans bellow are touched. */
-=======
 	/* This lock should be taken when booleans below are touched. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spinlock_t audio_playing_lock;
 	bool audio_playing;
 	bool display_enabled;

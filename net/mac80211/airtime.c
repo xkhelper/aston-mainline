@@ -55,8 +55,6 @@
 #define HE_DURATION_S(shift, streams, gi, bps)		\
 	(HE_DURATION(streams, gi, bps) >> shift)
 
-<<<<<<< HEAD
-=======
 /* gi in HE/EHT is identical. It matches enum nl80211_eht_gi as well */
 #define EHT_GI_08 HE_GI_08
 #define EHT_GI_16 HE_GI_16
@@ -67,15 +65,11 @@
 #define EHT_DURATION_S(shift, streams, gi, bps)		\
 	HE_DURATION_S(shift, streams, gi, bps)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define BW_20			0
 #define BW_40			1
 #define BW_80			2
 #define BW_160			3
-<<<<<<< HEAD
-=======
 #define BW_320			4
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Define group sort order: HT40 -> SGI -> #streams
@@ -85,37 +79,26 @@
 #define IEEE80211_VHT_STREAM_GROUPS	8 /* BW(=4) * SGI(=2) */
 
 #define IEEE80211_HE_MAX_STREAMS	8
-<<<<<<< HEAD
-=======
 #define IEEE80211_HE_STREAM_GROUPS	12 /* BW(=4) * GI(=3) */
 
 #define IEEE80211_EHT_MAX_STREAMS	8
 #define IEEE80211_EHT_STREAM_GROUPS	15 /* BW(=5) * GI(=3) */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IEEE80211_HT_GROUPS_NB	(IEEE80211_MAX_STREAMS *	\
 				 IEEE80211_HT_STREAM_GROUPS)
 #define IEEE80211_VHT_GROUPS_NB	(IEEE80211_MAX_STREAMS *	\
 					 IEEE80211_VHT_STREAM_GROUPS)
-<<<<<<< HEAD
-=======
 #define IEEE80211_HE_GROUPS_NB	(IEEE80211_HE_MAX_STREAMS *	\
 				 IEEE80211_HE_STREAM_GROUPS)
 #define IEEE80211_EHT_GROUPS_NB	(IEEE80211_EHT_MAX_STREAMS *	\
 				 IEEE80211_EHT_STREAM_GROUPS)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IEEE80211_HT_GROUP_0	0
 #define IEEE80211_VHT_GROUP_0	(IEEE80211_HT_GROUP_0 + IEEE80211_HT_GROUPS_NB)
 #define IEEE80211_HE_GROUP_0	(IEEE80211_VHT_GROUP_0 + IEEE80211_VHT_GROUPS_NB)
-<<<<<<< HEAD
-
-#define MCS_GROUP_RATES		12
-=======
 #define IEEE80211_EHT_GROUP_0	(IEEE80211_HE_GROUP_0 + IEEE80211_HE_GROUPS_NB)
 
 #define MCS_GROUP_RATES		14
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define HT_GROUP_IDX(_streams, _sgi, _ht40)	\
 	IEEE80211_HT_GROUP_0 +			\
@@ -240,8 +223,6 @@
 #define HE_GROUP(_streams, _gi, _bw)					\
 	__HE_GROUP(_streams, _gi, _bw,				\
 		   HE_GROUP_SHIFT(_streams, _gi, _bw))
-<<<<<<< HEAD
-=======
 
 #define EHT_BW2VBPS(_bw, r5, r4, r3, r2, r1)					\
 	((_bw) == BW_320 ? r5 : BW2VBPS(_bw, r4, r3, r2, r1))
@@ -305,7 +286,6 @@
 	EHT_GROUP(7, _gi, _bw),		\
 	EHT_GROUP(8, _gi, _bw)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mcs_group {
 	u8 shift;
 	u16 duration[MCS_GROUP_RATES];
@@ -479,8 +459,6 @@ static const struct mcs_group airtime_mcs_groups[] = {
 	HE_GROUP(6, HE_GI_32, BW_160),
 	HE_GROUP(7, HE_GI_32, BW_160),
 	HE_GROUP(8, HE_GI_32, BW_160),
-<<<<<<< HEAD
-=======
 
 	EHT_GROUP_RANGE(EHT_GI_08, BW_20),
 	EHT_GROUP_RANGE(EHT_GI_16, BW_20),
@@ -501,7 +479,6 @@ static const struct mcs_group airtime_mcs_groups[] = {
 	EHT_GROUP_RANGE(EHT_GI_08, BW_320),
 	EHT_GROUP_RANGE(EHT_GI_16, BW_320),
 	EHT_GROUP_RANGE(EHT_GI_32, BW_320),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static u32
@@ -548,12 +525,9 @@ static u32 ieee80211_get_rate_duration(struct ieee80211_hw *hw,
 	case RATE_INFO_BW_160:
 		bw = BW_160;
 		break;
-<<<<<<< HEAD
-=======
 	case RATE_INFO_BW_320:
 		bw = BW_320;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		WARN_ON_ONCE(1);
 		return 0;
@@ -575,24 +549,16 @@ static u32 ieee80211_get_rate_duration(struct ieee80211_hw *hw,
 		idx = status->rate_idx;
 		group = HE_GROUP_IDX(streams, status->he_gi, bw);
 		break;
-<<<<<<< HEAD
-=======
 	case RX_ENC_EHT:
 		streams = status->nss;
 		idx = status->rate_idx;
 		group = EHT_GROUP_IDX(streams, status->eht.gi, bw);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		WARN_ON_ONCE(1);
 		return 0;
 	}
 
-<<<<<<< HEAD
-	if (WARN_ON_ONCE((status->encoding != RX_ENC_HE && streams > 4) ||
-			 (status->encoding == RX_ENC_HE && streams > 8)))
-		return 0;
-=======
 	switch (status->encoding) {
 	case RX_ENC_EHT:
 	case RX_ENC_HE:
@@ -604,7 +570,6 @@ static u32 ieee80211_get_rate_duration(struct ieee80211_hw *hw,
 			return 0;
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (idx >= MCS_GROUP_RATES)
 		return 0;
@@ -671,13 +636,9 @@ static bool ieee80211_fill_rate_info(struct ieee80211_hw *hw,
 	stat->nss = ri->nss;
 	stat->rate_idx = ri->mcs;
 
-<<<<<<< HEAD
-	if (ri->flags & RATE_INFO_FLAGS_HE_MCS)
-=======
 	if (ri->flags & RATE_INFO_FLAGS_EHT_MCS)
 		stat->encoding = RX_ENC_EHT;
 	else if (ri->flags & RATE_INFO_FLAGS_HE_MCS)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		stat->encoding = RX_ENC_HE;
 	else if (ri->flags & RATE_INFO_FLAGS_VHT_MCS)
 		stat->encoding = RX_ENC_VHT;
@@ -689,9 +650,6 @@ static bool ieee80211_fill_rate_info(struct ieee80211_hw *hw,
 	if (ri->flags & RATE_INFO_FLAGS_SHORT_GI)
 		stat->enc_flags |= RX_ENC_FLAG_SHORT_GI;
 
-<<<<<<< HEAD
-	stat->he_gi = ri->he_gi;
-=======
 	switch (stat->encoding) {
 	case RX_ENC_EHT:
 		stat->eht.gi = ri->eht_gi;
@@ -700,7 +658,6 @@ static bool ieee80211_fill_rate_info(struct ieee80211_hw *hw,
 		stat->he_gi = ri->he_gi;
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (stat->encoding != RX_ENC_LEGACY)
 		return true;

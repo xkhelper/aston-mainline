@@ -39,10 +39,7 @@ struct tsa_serial_info {
 /* Get information */
 int tsa_serial_get_info(struct tsa_serial *tsa_serial, struct tsa_serial_info *info);
 
-<<<<<<< HEAD
-=======
 /* Get serial number */
 int tsa_serial_get_num(struct tsa_serial *tsa_serial);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __SOC_FSL_TSA_H__ */

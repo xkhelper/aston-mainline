@@ -407,11 +407,7 @@ static void sp2_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id sp2_id[] = {
-<<<<<<< HEAD
-	{"sp2", 0},
-=======
 	{ "sp2" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, sp2_id);

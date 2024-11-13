@@ -6,10 +6,7 @@
 #include <net/dst_metadata.h>
 #include <net/udp.h>
 #include <net/udp_tunnel.h>
-<<<<<<< HEAD
-=======
 #include <net/inet_dscp.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int udp_sock_create4(struct net *net, struct udp_port_cfg *cfg,
 		     struct socket **sockp)
@@ -236,11 +233,7 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
 	fl4.saddr = key->u.ipv4.src;
 	fl4.fl4_dport = dport;
 	fl4.fl4_sport = sport;
-<<<<<<< HEAD
-	fl4.flowi4_tos = RT_TOS(tos);
-=======
 	fl4.flowi4_tos = tos & INET_DSCP_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fl4.flowi4_flags = key->flow_flags;
 
 	rt = ip_route_output_key(net, &fl4);

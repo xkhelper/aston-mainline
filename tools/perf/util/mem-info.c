@@ -33,8 +33,6 @@ struct mem_info *mem_info__new(void)
 
 	return result;
 }
-<<<<<<< HEAD
-=======
 
 struct mem_info *mem_info__clone(struct mem_info *mi)
 {
@@ -48,4 +46,3 @@ struct mem_info *mem_info__clone(struct mem_info *mi)
 
 	return result;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

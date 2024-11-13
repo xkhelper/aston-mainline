@@ -84,16 +84,8 @@ config PPC_BOOK3S_64
 	bool "Server processors"
 	select PPC_FPU
 	select PPC_HAVE_PMU_SUPPORT
-<<<<<<< HEAD
-	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-	select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK
-	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
-=======
-	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
-	select ARCH_ENABLE_SPLIT_PMD_PTLOCK
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select ARCH_SUPPORTS_HUGETLBFS
 	select ARCH_SUPPORTS_NUMA_BALANCING
 	select HAVE_MOVE_PMD
@@ -113,8 +105,6 @@ config PPC_BOOK3E_64
 
 endchoice
 
-<<<<<<< HEAD
-=======
 config PPC_THP
        def_bool y
        depends on PPC_BOOK3S_64
@@ -123,7 +113,6 @@ config PPC_THP
        select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
        select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 choice
 	prompt "CPU selection"
 	help

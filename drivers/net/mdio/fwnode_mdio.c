@@ -7,10 +7,7 @@
  */
 
 #include <linux/acpi.h>
-<<<<<<< HEAD
-=======
 #include <linux/dev_printk.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/fwnode_mdio.h>
 #include <linux/of.h>
 #include <linux/phy.h>
@@ -108,11 +105,7 @@ int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
 		return rc;
 	}
 
-<<<<<<< HEAD
-	dev_dbg(&mdio->dev, "registered phy %p fwnode at address %i\n",
-=======
 	dev_dbg(&mdio->dev, "registered phy fwnode %pfw at address %i\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		child, addr);
 	return 0;
 }

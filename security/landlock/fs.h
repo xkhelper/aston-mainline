@@ -52,8 +52,6 @@ struct landlock_file_security {
 	 * needed to authorize later operations on the open file.
 	 */
 	access_mask_t allowed_access;
-<<<<<<< HEAD
-=======
 	/**
 	 * @fown_domain: Domain of the task that set the PID that may receive a
 	 * signal e.g., SIGURG when writing MSG_OOB to the related socket.
@@ -61,7 +59,6 @@ struct landlock_file_security {
 	 * fown_struct's members: pid, uid, and euid.
 	 */
 	struct landlock_ruleset *fown_domain;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

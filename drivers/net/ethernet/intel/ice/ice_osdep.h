@@ -12,10 +12,7 @@
 #include <linux/ethtool.h>
 #include <linux/etherdevice.h>
 #include <linux/if_ether.h>
-<<<<<<< HEAD
-=======
 #include <linux/iopoll.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pci_ids.h>
 #ifndef CONFIG_64BIT
 #include <linux/io-64-nonatomic-lo-hi.h>
@@ -27,12 +24,9 @@
 #define wr64(a, reg, value)	writeq((value), ((a)->hw_addr + (reg)))
 #define rd64(a, reg)		readq((a)->hw_addr + (reg))
 
-<<<<<<< HEAD
-=======
 #define rd32_poll_timeout(a, addr, val, cond, delay_us, timeout_us) \
 	read_poll_timeout(rd32, val, cond, delay_us, timeout_us, false, a, addr)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ice_flush(a)		rd32((a), GLGEN_STAT)
 #define ICE_M(m, s)		((m ## U) << (s))
 
@@ -49,18 +43,10 @@ struct device *ice_hw_to_dev(struct ice_hw *hw);
 #define ice_debug(hw, type, fmt, args...) \
 	dev_dbg(ice_hw_to_dev(hw), fmt, ##args)
 
-<<<<<<< HEAD
-#define ice_debug_array(hw, type, rowsize, groupsize, buf, len) \
-	print_hex_dump_debug(KBUILD_MODNAME " ",		\
-			     DUMP_PREFIX_OFFSET, rowsize,	\
-			     groupsize, buf, len, false)
-#else
-=======
 #define _ice_debug_array(hw, type, prefix, rowsize, groupsize, buf, len) \
 	print_hex_dump_debug(prefix, DUMP_PREFIX_OFFSET,		 \
 			     rowsize, groupsize, buf, len, false)
 #else /* CONFIG_DYNAMIC_DEBUG */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ice_debug(hw, type, fmt, args...)			\
 do {								\
 	if ((type) & (hw)->debug_mask)				\
@@ -68,18 +54,6 @@ do {								\
 } while (0)
 
 #ifdef DEBUG
-<<<<<<< HEAD
-#define ice_debug_array(hw, type, rowsize, groupsize, buf, len) \
-do {								\
-	if ((type) & (hw)->debug_mask)				\
-		print_hex_dump_debug(KBUILD_MODNAME,		\
-				     DUMP_PREFIX_OFFSET,	\
-				     rowsize, groupsize, buf,	\
-				     len, false);		\
-} while (0)
-#else
-#define ice_debug_array(hw, type, rowsize, groupsize, buf, len) \
-=======
 #define _ice_debug_array(hw, type, prefix, rowsize, groupsize, buf, len) \
 do {								\
 	if ((type) & (hw)->debug_mask)				\
@@ -89,7 +63,6 @@ do {								\
 } while (0)
 #else /* DEBUG */
 #define _ice_debug_array(hw, type, prefix, rowsize, groupsize, buf, len) \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 do {								\
 	struct ice_hw *hw_l = hw;				\
 	if ((type) & (hw_l)->debug_mask) {			\
@@ -107,13 +80,10 @@ do {								\
 #endif /* DEBUG */
 #endif /* CONFIG_DYNAMIC_DEBUG */
 
-<<<<<<< HEAD
-=======
 #define ice_debug_array(hw, type, rowsize, groupsize, buf, len) \
 	_ice_debug_array(hw, type, KBUILD_MODNAME, rowsize, groupsize, buf, len)
 
 #define ice_debug_array_w_prefix(hw, type, prefix, buf, len) \
 	_ice_debug_array(hw, type, prefix, 16, 1, buf, len)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _ICE_OSDEP_H_ */

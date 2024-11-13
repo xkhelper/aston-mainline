@@ -119,21 +119,12 @@ static void input_pass_values(struct input_dev *dev,
 
 	handle = rcu_dereference(dev->grab);
 	if (handle) {
-<<<<<<< HEAD
-		count = handle->handler->events(handle, vals, count);
-	} else {
-		list_for_each_entry_rcu(handle, &dev->h_list, d_node)
-			if (handle->open) {
-				count = handle->handler->events(handle, vals,
-								count);
-=======
 		count = handle->handle_events(handle, vals, count);
 	} else {
 		list_for_each_entry_rcu(handle, &dev->h_list, d_node)
 			if (handle->open) {
 				count = handle->handle_events(handle, vals,
 							      count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (!count)
 					break;
 			}
@@ -1088,13 +1079,6 @@ static inline void input_wakeup_procfs_readers(void)
 	wake_up(&input_devices_poll_wait);
 }
 
-<<<<<<< HEAD
-static __poll_t input_proc_devices_poll(struct file *file, poll_table *wait)
-{
-	poll_wait(file, &input_devices_poll_wait, wait);
-	if (file->f_version != input_devices_state) {
-		file->f_version = input_devices_state;
-=======
 struct input_seq_state {
 	unsigned short pos;
 	bool mutex_acquired;
@@ -1109,37 +1093,17 @@ static __poll_t input_proc_devices_poll(struct file *file, poll_table *wait)
 	poll_wait(file, &input_devices_poll_wait, wait);
 	if (state->input_devices_state != input_devices_state) {
 		state->input_devices_state = input_devices_state;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return EPOLLIN | EPOLLRDNORM;
 	}
 
 	return 0;
 }
 
-<<<<<<< HEAD
-union input_seq_state {
-	struct {
-		unsigned short pos;
-		bool mutex_acquired;
-	};
-	void *p;
-};
-
-static void *input_devices_seq_start(struct seq_file *seq, loff_t *pos)
-{
-	union input_seq_state *state = (union input_seq_state *)&seq->private;
-	int error;
-
-	/* We need to fit into seq->private pointer */
-	BUILD_BUG_ON(sizeof(union input_seq_state) != sizeof(seq->private));
-
-=======
 static void *input_devices_seq_start(struct seq_file *seq, loff_t *pos)
 {
 	struct input_seq_state *state = seq->private;
 	int error;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = mutex_lock_interruptible(&input_mutex);
 	if (error) {
 		state->mutex_acquired = false;
@@ -1158,11 +1122,7 @@ static void *input_devices_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 
 static void input_seq_stop(struct seq_file *seq, void *v)
 {
-<<<<<<< HEAD
-	union input_seq_state *state = (union input_seq_state *)&seq->private;
-=======
 	struct input_seq_state *state = seq->private;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (state->mutex_acquired)
 		mutex_unlock(&input_mutex);
@@ -1248,12 +1208,8 @@ static const struct seq_operations input_devices_seq_ops = {
 
 static int input_proc_devices_open(struct inode *inode, struct file *file)
 {
-<<<<<<< HEAD
-	return seq_open(file, &input_devices_seq_ops);
-=======
 	return seq_open_private(file, &input_devices_seq_ops,
 				sizeof(struct input_seq_state));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct proc_ops input_devices_proc_ops = {
@@ -1261,27 +1217,14 @@ static const struct proc_ops input_devices_proc_ops = {
 	.proc_poll	= input_proc_devices_poll,
 	.proc_read	= seq_read,
 	.proc_lseek	= seq_lseek,
-<<<<<<< HEAD
-	.proc_release	= seq_release,
-=======
 	.proc_release	= seq_release_private,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void *input_handlers_seq_start(struct seq_file *seq, loff_t *pos)
 {
-<<<<<<< HEAD
-	union input_seq_state *state = (union input_seq_state *)&seq->private;
-	int error;
-
-	/* We need to fit into seq->private pointer */
-	BUILD_BUG_ON(sizeof(union input_seq_state) != sizeof(seq->private));
-
-=======
 	struct input_seq_state *state = seq->private;
 	int error;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = mutex_lock_interruptible(&input_mutex);
 	if (error) {
 		state->mutex_acquired = false;
@@ -1296,11 +1239,7 @@ static void *input_handlers_seq_start(struct seq_file *seq, loff_t *pos)
 
 static void *input_handlers_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 {
-<<<<<<< HEAD
-	union input_seq_state *state = (union input_seq_state *)&seq->private;
-=======
 	struct input_seq_state *state = seq->private;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	state->pos = *pos + 1;
 	return seq_list_next(v, &input_handler_list, pos);
@@ -1309,11 +1248,7 @@ static void *input_handlers_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 static int input_handlers_seq_show(struct seq_file *seq, void *v)
 {
 	struct input_handler *handler = container_of(v, struct input_handler, node);
-<<<<<<< HEAD
-	union input_seq_state *state = (union input_seq_state *)&seq->private;
-=======
 	struct input_seq_state *state = seq->private;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	seq_printf(seq, "N: Number=%u Name=%s", state->pos, handler->name);
 	if (handler->filter)
@@ -1334,23 +1269,15 @@ static const struct seq_operations input_handlers_seq_ops = {
 
 static int input_proc_handlers_open(struct inode *inode, struct file *file)
 {
-<<<<<<< HEAD
-	return seq_open(file, &input_handlers_seq_ops);
-=======
 	return seq_open_private(file, &input_handlers_seq_ops,
 				sizeof(struct input_seq_state));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct proc_ops input_handlers_proc_ops = {
 	.proc_open	= input_proc_handlers_open,
 	.proc_read	= seq_read,
 	.proc_lseek	= seq_lseek,
-<<<<<<< HEAD
-	.proc_release	= seq_release,
-=======
 	.proc_release	= seq_release_private,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init input_proc_init(void)
@@ -2294,11 +2221,7 @@ static unsigned int input_estimate_events_per_packet(struct input_dev *dev)
 		mt_slots = dev->mt->num_slots;
 	} else if (test_bit(ABS_MT_TRACKING_ID, dev->absbit)) {
 		mt_slots = dev->absinfo[ABS_MT_TRACKING_ID].maximum -
-<<<<<<< HEAD
-			   dev->absinfo[ABS_MT_TRACKING_ID].minimum + 1,
-=======
 			   dev->absinfo[ABS_MT_TRACKING_ID].minimum + 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mt_slots = clamp(mt_slots, 2, 32);
 	} else if (test_bit(ABS_MT_POSITION_X, dev->absbit)) {
 		mt_slots = 2;
@@ -2611,60 +2534,6 @@ static int input_handler_check_methods(const struct input_handler *handler)
 	return 0;
 }
 
-<<<<<<< HEAD
-/*
- * An implementation of input_handler's events() method that simply
- * invokes handler->event() method for each event one by one.
- */
-static unsigned int input_handler_events_default(struct input_handle *handle,
-						 struct input_value *vals,
-						 unsigned int count)
-{
-	struct input_handler *handler = handle->handler;
-	struct input_value *v;
-
-	for (v = vals; v != vals + count; v++)
-		handler->event(handle, v->type, v->code, v->value);
-
-	return count;
-}
-
-/*
- * An implementation of input_handler's events() method that invokes
- * handler->filter() method for each event one by one and removes events
- * that were filtered out from the "vals" array.
- */
-static unsigned int input_handler_events_filter(struct input_handle *handle,
-						struct input_value *vals,
-						unsigned int count)
-{
-	struct input_handler *handler = handle->handler;
-	struct input_value *end = vals;
-	struct input_value *v;
-
-	for (v = vals; v != vals + count; v++) {
-		if (handler->filter(handle, v->type, v->code, v->value))
-			continue;
-		if (end != v)
-			*end = *v;
-		end++;
-	}
-
-	return end - vals;
-}
-
-/*
- * An implementation of input_handler's events() method that does nothing.
- */
-static unsigned int input_handler_events_null(struct input_handle *handle,
-					      struct input_value *vals,
-					      unsigned int count)
-{
-	return count;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * input_register_handler - register a new input handler
  * @handler: handler to be registered
@@ -2684,16 +2553,6 @@ int input_register_handler(struct input_handler *handler)
 
 	INIT_LIST_HEAD(&handler->h_list);
 
-<<<<<<< HEAD
-	if (handler->filter)
-		handler->events = input_handler_events_filter;
-	else if (handler->event)
-		handler->events = input_handler_events_default;
-	else if (!handler->events)
-		handler->events = input_handler_events_null;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = mutex_lock_interruptible(&input_mutex);
 	if (error)
 		return error;
@@ -2767,8 +2626,6 @@ int input_handler_for_each_handle(struct input_handler *handler, void *data,
 }
 EXPORT_SYMBOL(input_handler_for_each_handle);
 
-<<<<<<< HEAD
-=======
 /*
  * An implementation of input_handle's handle_events() method that simply
  * invokes handler->event() method for each event one by one.
@@ -2838,7 +2695,6 @@ static void input_handle_setup_event_handler(struct input_handle *handle)
 		handle->handle_events = input_handle_events_null;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * input_register_handle - register a new input handle
  * @handle: handle to register
@@ -2856,10 +2712,7 @@ int input_register_handle(struct input_handle *handle)
 	struct input_dev *dev = handle->dev;
 	int error;
 
-<<<<<<< HEAD
-=======
 	input_handle_setup_event_handler(handle);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * We take dev->mutex here to prevent race with
 	 * input_release_device().

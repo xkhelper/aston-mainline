@@ -228,19 +228,11 @@ static int wilc_bus_probe(struct spi_device *spi)
 	if (ret < 0)
 		goto netdev_cleanup;
 
-<<<<<<< HEAD
-	wilc->rtc_clk = devm_clk_get_optional(&spi->dev, "rtc");
-=======
 	wilc->rtc_clk = devm_clk_get_optional_enabled(&spi->dev, "rtc");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(wilc->rtc_clk)) {
 		ret = PTR_ERR(wilc->rtc_clk);
 		goto netdev_cleanup;
 	}
-<<<<<<< HEAD
-	clk_prepare_enable(wilc->rtc_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_info(&spi->dev, "Selected CRC config: crc7=%s, crc16=%s\n",
 		 enable_crc7 ? "on" : "off", enable_crc16 ? "on" : "off");
@@ -273,10 +265,6 @@ static int wilc_bus_probe(struct spi_device *spi)
 	return 0;
 
 power_down:
-<<<<<<< HEAD
-	clk_disable_unprepare(wilc->rtc_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wilc_wlan_power(wilc, false);
 netdev_cleanup:
 	wilc_netdev_cleanup(wilc);
@@ -290,10 +278,6 @@ static void wilc_bus_remove(struct spi_device *spi)
 	struct wilc *wilc = spi_get_drvdata(spi);
 	struct wilc_spi *spi_priv = wilc->bus_data;
 
-<<<<<<< HEAD
-	clk_disable_unprepare(wilc->rtc_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wilc_netdev_cleanup(wilc);
 	kfree(spi_priv);
 }

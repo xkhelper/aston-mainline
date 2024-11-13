@@ -347,11 +347,7 @@ static struct platform_driver uniphier_aio_driver = {
 		.of_match_table = of_match_ptr(uniphier_aio_of_match),
 	},
 	.probe    = uniphier_aio_probe,
-<<<<<<< HEAD
-	.remove_new = uniphier_aio_remove,
-=======
 	.remove = uniphier_aio_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(uniphier_aio_driver);
 

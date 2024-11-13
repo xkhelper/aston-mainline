@@ -11,15 +11,9 @@
 #include "intel_wakeref.h"
 
 enum pipe;
-<<<<<<< HEAD
-struct drm_i915_private;
-struct intel_connector;
-struct intel_crtc_state;
-=======
 struct intel_connector;
 struct intel_crtc_state;
 struct intel_display;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_dp;
 struct intel_encoder;
 
@@ -49,29 +43,16 @@ void intel_pps_wait_power_cycle(struct intel_dp *intel_dp);
 bool intel_pps_init(struct intel_dp *intel_dp);
 void intel_pps_init_late(struct intel_dp *intel_dp);
 void intel_pps_encoder_reset(struct intel_dp *intel_dp);
-<<<<<<< HEAD
-void intel_pps_reset_all(struct drm_i915_private *i915);
-=======
 void intel_pps_reset_all(struct intel_display *display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void vlv_pps_init(struct intel_encoder *encoder,
 		  const struct intel_crtc_state *crtc_state);
 
-<<<<<<< HEAD
-void intel_pps_unlock_regs_wa(struct drm_i915_private *i915);
-void intel_pps_setup(struct drm_i915_private *i915);
-
-void intel_pps_connector_debugfs_add(struct intel_connector *connector);
-
-void assert_pps_unlocked(struct drm_i915_private *i915, enum pipe pipe);
-=======
 void intel_pps_unlock_regs_wa(struct intel_display *display);
 void intel_pps_setup(struct intel_display *display);
 
 void intel_pps_connector_debugfs_add(struct intel_connector *connector);
 
 void assert_pps_unlocked(struct intel_display *display, enum pipe pipe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* __INTEL_PPS_H__ */

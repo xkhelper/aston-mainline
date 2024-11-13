@@ -99,11 +99,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void usage(void)
 {
 	fprintf(stderr, "Usage: fixdep <depfile> <target> <cmdline>\n");
@@ -136,18 +133,9 @@ static unsigned int strhash(const char *str, unsigned int sz)
 static void add_to_hashtable(const char *name, int len, unsigned int hash,
 			     struct item *hashtab[])
 {
-<<<<<<< HEAD
-	struct item *aux = malloc(sizeof(*aux) + len);
-
-	if (!aux) {
-		perror("fixdep:malloc");
-		exit(1);
-	}
-=======
 	struct item *aux;
 
 	aux = xmalloc(sizeof(*aux) + len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memcpy(aux->name, name, len);
 	aux->len = len;
 	aux->hash = hash;
@@ -239,15 +227,7 @@ static void *read_file(const char *filename)
 		perror(filename);
 		exit(2);
 	}
-<<<<<<< HEAD
-	buf = malloc(st.st_size + 1);
-	if (!buf) {
-		perror("fixdep: malloc");
-		exit(2);
-	}
-=======
 	buf = xmalloc(st.st_size + 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (read(fd, buf, st.st_size) != st.st_size) {
 		perror("fixdep: read");
 		exit(2);

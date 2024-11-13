@@ -10,10 +10,7 @@
 #include <linux/slab.h>
 #include <linux/audit.h>
 #include <linux/security.h>
-<<<<<<< HEAD
-=======
 #include <linux/cpuset.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/io_uring.h>
 
 #include <uapi/linux/io_uring.h>
@@ -112,24 +109,14 @@ static struct io_sq_data *io_attach_sq_data(struct io_uring_params *p)
 	struct fd f;
 
 	f = fdget(p->wq_fd);
-<<<<<<< HEAD
-	if (!f.file)
-		return ERR_PTR(-ENXIO);
-	if (!io_is_uring_fops(f.file)) {
-=======
 	if (!fd_file(f))
 		return ERR_PTR(-ENXIO);
 	if (!io_is_uring_fops(fd_file(f))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 		return ERR_PTR(-EINVAL);
 	}
 
-<<<<<<< HEAD
-	ctx_attach = f.file->private_data;
-=======
 	ctx_attach = fd_file(f)->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sqd = ctx_attach->sq_data;
 	if (!sqd) {
 		fdput(f);
@@ -190,11 +177,7 @@ static int __io_sq_thread(struct io_ring_ctx *ctx, bool cap_entries)
 	if (cap_entries && to_submit > IORING_SQPOLL_CAP_ENTRIES_VALUE)
 		to_submit = IORING_SQPOLL_CAP_ENTRIES_VALUE;
 
-<<<<<<< HEAD
-	if (!wq_list_empty(&ctx->iopoll_list) || to_submit) {
-=======
 	if (to_submit || !wq_list_empty(&ctx->iopoll_list)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct cred *creds = NULL;
 
 		if (ctx->sq_creds != current_cred())
@@ -213,12 +196,6 @@ static int __io_sq_thread(struct io_ring_ctx *ctx, bool cap_entries)
 			ret = io_submit_sqes(ctx, to_submit);
 		mutex_unlock(&ctx->uring_lock);
 
-<<<<<<< HEAD
-		if (io_napi(ctx))
-			ret += io_napi_sqpoll_busy_poll(ctx);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (to_submit && wq_has_sleeper(&ctx->sqo_sq_wait))
 			wake_up(&ctx->sqo_sq_wait);
 		if (creds)
@@ -343,13 +320,10 @@ static int io_sq_thread(void *data)
 		if (io_sq_tw(&retry_list, IORING_TW_CAP_ENTRIES_VALUE))
 			sqt_spin = true;
 
-<<<<<<< HEAD
-=======
 		list_for_each_entry(ctx, &sqd->ctx_list, sqd_list)
 			if (io_napi(ctx))
 				io_napi_sqpoll_busy_poll(ctx);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (sqt_spin || !time_after(jiffies, timeout)) {
 			if (sqt_spin) {
 				io_sq_update_worktime(sqd, &start);
@@ -446,15 +420,9 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
 		struct fd f;
 
 		f = fdget(p->wq_fd);
-<<<<<<< HEAD
-		if (!f.file)
-			return -ENXIO;
-		if (!io_is_uring_fops(f.file)) {
-=======
 		if (!fd_file(f))
 			return -ENXIO;
 		if (!io_is_uring_fops(fd_file(f))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			fdput(f);
 			return -EINVAL;
 		}
@@ -494,17 +462,12 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
 			return 0;
 
 		if (p->flags & IORING_SETUP_SQ_AFF) {
-<<<<<<< HEAD
-=======
 			cpumask_var_t allowed_mask;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			int cpu = p->sq_thread_cpu;
 
 			ret = -EINVAL;
 			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
 				goto err_sqpoll;
-<<<<<<< HEAD
-=======
 			ret = -ENOMEM;
 			if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
 				goto err_sqpoll;
@@ -515,7 +478,6 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
 				goto err_sqpoll;
 			}
 			free_cpumask_var(allowed_mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			sqd->sq_cpu = cpu;
 		} else {
 			sqd->sq_cpu = -1;

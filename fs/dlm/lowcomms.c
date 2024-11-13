@@ -161,11 +161,6 @@ struct dlm_proto_ops {
 	const char *name;
 	int proto;
 
-<<<<<<< HEAD
-	int (*connect)(struct connection *con, struct socket *sock,
-		       struct sockaddr *addr, int addr_len);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*sockopts)(struct socket *sock);
 	int (*bind)(struct socket *sock);
 	int (*listen_validate)(void);
@@ -1602,12 +1597,7 @@ static int dlm_connect(struct connection *con)
 
 	log_print_ratelimited("connecting to %d", con->nodeid);
 	make_sockaddr(&addr, dlm_config.ci_tcp_port, &addr_len);
-<<<<<<< HEAD
-	result = dlm_proto_ops->connect(con, sock, (struct sockaddr *)&addr,
-					addr_len);
-=======
 	result = kernel_connect(sock, (struct sockaddr *)&addr, addr_len, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (result) {
 	case -EINPROGRESS:
 		/* not an error */
@@ -1641,16 +1631,6 @@ static void process_send_sockets(struct work_struct *work)
 			switch (ret) {
 			case 0:
 				break;
-<<<<<<< HEAD
-			case -EINPROGRESS:
-				/* avoid spamming resched on connection
-				 * we might can switch to a state_change
-				 * event based mechanism if established
-				 */
-				msleep(100);
-				break;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			default:
 				/* CF_SEND_PENDING not cleared */
 				up_write(&con->sock_lock);
@@ -1841,15 +1821,6 @@ static int dlm_tcp_bind(struct socket *sock)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int dlm_tcp_connect(struct connection *con, struct socket *sock,
-			   struct sockaddr *addr, int addr_len)
-{
-	return kernel_connect(sock, addr, addr_len, O_NONBLOCK);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int dlm_tcp_listen_validate(void)
 {
 	/* We don't support multi-homed hosts */
@@ -1886,10 +1857,6 @@ static int dlm_tcp_listen_bind(struct socket *sock)
 static const struct dlm_proto_ops dlm_tcp_ops = {
 	.name = "TCP",
 	.proto = IPPROTO_TCP,
-<<<<<<< HEAD
-	.connect = dlm_tcp_connect,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sockopts = dlm_tcp_sockopts,
 	.bind = dlm_tcp_bind,
 	.listen_validate = dlm_tcp_listen_validate,
@@ -1902,25 +1869,6 @@ static int dlm_sctp_bind(struct socket *sock)
 	return sctp_bind_addrs(sock, 0);
 }
 
-<<<<<<< HEAD
-static int dlm_sctp_connect(struct connection *con, struct socket *sock,
-			    struct sockaddr *addr, int addr_len)
-{
-	int ret;
-
-	/*
-	 * Make kernel_connect() function return in specified time,
-	 * since O_NONBLOCK argument in connect() function does not work here,
-	 * then, we should restore the default value of this attribute.
-	 */
-	sock_set_sndtimeo(sock->sk, 5);
-	ret = kernel_connect(sock, addr, addr_len, 0);
-	sock_set_sndtimeo(sock->sk, 0);
-	return ret;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int dlm_sctp_listen_validate(void)
 {
 	if (!IS_ENABLED(CONFIG_IP_SCTP)) {
@@ -1948,10 +1896,6 @@ static const struct dlm_proto_ops dlm_sctp_ops = {
 	.name = "SCTP",
 	.proto = IPPROTO_SCTP,
 	.try_new_addr = true,
-<<<<<<< HEAD
-	.connect = dlm_sctp_connect,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sockopts = dlm_sctp_sockopts,
 	.bind = dlm_sctp_bind,
 	.listen_validate = dlm_sctp_listen_validate,

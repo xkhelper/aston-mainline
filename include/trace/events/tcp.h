@@ -91,17 +91,10 @@ DEFINE_RST_REASON(FN, FN)
 TRACE_EVENT(tcp_send_reset,
 
 	TP_PROTO(const struct sock *sk,
-<<<<<<< HEAD
-		 const struct sk_buff *skb,
-		 const enum sk_rst_reason reason),
-
-	TP_ARGS(sk, skb, reason),
-=======
 		 const struct sk_buff *skb__nullable,
 		 const enum sk_rst_reason reason),
 
 	TP_ARGS(sk, skb__nullable, reason),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	TP_STRUCT__entry(
 		__field(const void *, skbaddr)
@@ -113,11 +106,7 @@ TRACE_EVENT(tcp_send_reset,
 	),
 
 	TP_fast_assign(
-<<<<<<< HEAD
-		__entry->skbaddr = skb;
-=======
 		__entry->skbaddr = skb__nullable;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->skaddr = sk;
 		/* Zero means unknown state. */
 		__entry->state = sk ? sk->sk_state : 0;
@@ -129,22 +118,13 @@ TRACE_EVENT(tcp_send_reset,
 			const struct inet_sock *inet = inet_sk(sk);
 
 			TP_STORE_ADDR_PORTS(__entry, inet, sk);
-<<<<<<< HEAD
-		} else if (skb) {
-			const struct tcphdr *th = (const struct tcphdr *)skb->data;
-=======
 		} else if (skb__nullable) {
 			const struct tcphdr *th = (const struct tcphdr *)skb__nullable->data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*
 			 * We should reverse the 4-tuple of skb, so later
 			 * it can print the right flow direction of rst.
 			 */
-<<<<<<< HEAD
-			TP_STORE_ADDR_PORTS_SKB(skb, th, entry->daddr, entry->saddr);
-=======
 			TP_STORE_ADDR_PORTS_SKB(skb__nullable, th, entry->daddr, entry->saddr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		__entry->reason = reason;
 	),

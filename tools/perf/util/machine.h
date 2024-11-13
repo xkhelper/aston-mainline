@@ -178,15 +178,6 @@ struct mem_info *sample__resolve_mem(struct perf_sample *sample,
 
 struct callchain_cursor;
 
-<<<<<<< HEAD
-int thread__resolve_callchain(struct thread *thread,
-			      struct callchain_cursor *cursor,
-			      struct evsel *evsel,
-			      struct perf_sample *sample,
-			      struct symbol **parent,
-			      struct addr_location *root_al,
-			      int max_stack);
-=======
 int __thread__resolve_callchain(struct thread *thread,
 				struct callchain_cursor *cursor,
 				struct evsel *evsel,
@@ -213,7 +204,6 @@ static inline int thread__resolve_callchain(struct thread *thread,
 					   max_stack,
 					   /*symbols=*/true);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Default guest kernel is defined by parameter --guestkallsyms
@@ -236,12 +226,8 @@ int machine__nr_cpus_avail(struct machine *machine);
 
 struct thread *machine__findnew_thread(struct machine *machine, pid_t pid, pid_t tid);
 
-<<<<<<< HEAD
-struct dso *machine__findnew_dso_id(struct machine *machine, const char *filename, struct dso_id *id);
-=======
 struct dso *machine__findnew_dso_id(struct machine *machine, const char *filename,
 				    const struct dso_id *id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dso *machine__findnew_dso(struct machine *machine, const char *filename);
 
 size_t machine__fprintf(struct machine *machine, FILE *fp);

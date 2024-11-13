@@ -352,11 +352,7 @@ EXPORT_SYMBOL_GPL(__auxiliary_device_add);
  */
 struct auxiliary_device *auxiliary_find_device(struct device *start,
 					       const void *data,
-<<<<<<< HEAD
-					       int (*match)(struct device *dev, const void *data))
-=======
 					       device_match_t match)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct device *dev;
 

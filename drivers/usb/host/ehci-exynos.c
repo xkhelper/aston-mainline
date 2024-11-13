@@ -48,10 +48,6 @@ struct exynos_ehci_hcd {
 static int exynos_ehci_get_phy(struct device *dev,
 				struct exynos_ehci_hcd *exynos_ehci)
 {
-<<<<<<< HEAD
-	struct device_node *child;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct phy *phy;
 	int phy_number, num_phys;
 	int ret;
@@ -69,41 +65,22 @@ static int exynos_ehci_get_phy(struct device *dev,
 		return 0;
 
 	/* Get PHYs using legacy bindings */
-<<<<<<< HEAD
-	for_each_available_child_of_node(dev->of_node, child) {
-		ret = of_property_read_u32(child, "reg", &phy_number);
-		if (ret) {
-			dev_err(dev, "Failed to parse device tree\n");
-			of_node_put(child);
-=======
 	for_each_available_child_of_node_scoped(dev->of_node, child) {
 		ret = of_property_read_u32(child, "reg", &phy_number);
 		if (ret) {
 			dev_err(dev, "Failed to parse device tree\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 
 		if (phy_number >= PHY_NUMBER) {
 			dev_err(dev, "Invalid number of PHYs\n");
-<<<<<<< HEAD
-			of_node_put(child);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 		}
 
 		phy = devm_of_phy_optional_get(dev, child, NULL);
 		exynos_ehci->phy[phy_number] = phy;
-<<<<<<< HEAD
-		if (IS_ERR(phy)) {
-			of_node_put(child);
-			return PTR_ERR(phy);
-		}
-=======
 		if (IS_ERR(phy))
 			return PTR_ERR(phy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	exynos_ehci->legacy_phy = true;

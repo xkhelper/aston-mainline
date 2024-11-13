@@ -36,8 +36,6 @@ static const struct snd_soc_acpi_endpoint spk_r_endpoint = {
 	.group_id = 1,
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_endpoint spk_2_endpoint = {
 	.num = 0,
 	.aggregated = 1,
@@ -52,7 +50,6 @@ static const struct snd_soc_acpi_endpoint spk_3_endpoint = {
 	.group_id = 1,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_endpoint rt712_endpoints[] = {
 	{
 		.num = 0,
@@ -120,8 +117,6 @@ static const struct snd_soc_acpi_endpoint cs42l43_endpoints[] = {
 	},
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_adr_device cs35l56_2_l_adr[] = {
 	{
 		.adr = 0x00023001FA355601ull,
@@ -167,7 +162,6 @@ static const struct snd_soc_acpi_adr_device cs35l56_3_lr_adr[] = {
 	}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_adr_device cs42l43_0_adr[] = {
 	{
 		.adr = 0x00003001FA424301ull,
@@ -231,8 +225,6 @@ static const struct snd_soc_acpi_adr_device rt1316_3_group1_adr[] = {
 	}
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_adr_device rt1318_1_adr[] = {
 	{
 		.adr = 0x000133025D131801ull,
@@ -242,7 +234,6 @@ static const struct snd_soc_acpi_adr_device rt1318_1_adr[] = {
 	}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_adr_device rt1318_1_group1_adr[] = {
 	{
 		.adr = 0x000130025D131801ull,
@@ -261,8 +252,6 @@ static const struct snd_soc_acpi_adr_device rt1318_2_group1_adr[] = {
 	}
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_adr_device rt713_0_adr[] = {
 	{
 		.adr = 0x000031025D071301ull,
@@ -272,7 +261,6 @@ static const struct snd_soc_acpi_adr_device rt713_0_adr[] = {
 	}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_adr_device rt714_0_adr[] = {
 	{
 		.adr = 0x000030025D071401ull,
@@ -300,8 +288,6 @@ static const struct snd_soc_acpi_link_adr lnl_cs42l43_l0[] = {
 	{}
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_link_adr lnl_cs42l43_l0_cs35l56_l3[] = {
 	{
 		.mask = BIT(0),
@@ -335,7 +321,6 @@ static const struct snd_soc_acpi_link_adr lnl_cs42l43_l0_cs35l56_l23[] = {
 	{}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_link_adr lnl_rvp[] = {
 	{
 		.mask = BIT(0),
@@ -411,8 +396,6 @@ static const struct snd_soc_acpi_link_adr lnl_sdw_rt1318_l12_rt714_l0[] = {
 	{}
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_link_adr lnl_sdw_rt713_l0_rt1318_l1[] = {
 	{
 		.mask = BIT(0),
@@ -427,7 +410,6 @@ static const struct snd_soc_acpi_link_adr lnl_sdw_rt713_l0_rt1318_l1[] = {
 	{}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* this table is used when there is no I2S codec present */
 struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[] = {
 	/* mockup tests need to be first */
@@ -456,8 +438,6 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[] = {
 		.sof_tplg_filename = "sof-lnl-rt711-l0-rt1316-l23-rt714-l1.tplg",
 	},
 	{
-<<<<<<< HEAD
-=======
 		.link_mask = BIT(0) | BIT(2) | BIT(3),
 		.links = lnl_cs42l43_l0_cs35l56_l23,
 		.drv_name = "sof_sdw",
@@ -470,7 +450,6 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[] = {
 		.sof_tplg_filename = "sof-lnl-cs42l43-l0-cs35l56-l3.tplg",
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.link_mask = BIT(0),
 		.links = lnl_cs42l43_l0,
 		.drv_name = "sof_sdw",
@@ -500,15 +479,12 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[] = {
 		.drv_name = "sof_sdw",
 		.sof_tplg_filename = "sof-lnl-rt1318-l12-rt714-l0.tplg"
 	},
-<<<<<<< HEAD
-=======
 	{
 		.link_mask = BIT(0) | BIT(1),
 		.links = lnl_sdw_rt713_l0_rt1318_l1,
 		.drv_name = "sof_sdw",
 		.sof_tplg_filename = "sof-lnl-rt713-l0-rt1318-l1.tplg"
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_lnl_sdw_machines);

@@ -8,11 +8,7 @@
 
 #include "dml_top_soc_parameter_types.h"
 
-<<<<<<< HEAD
-static const struct dml2_soc_qos_parameters dml_dcn401_soc_qos_params = {
-=======
 static const struct dml2_soc_qos_parameters dml_dcn4_variant_a_soc_qos_params = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.derate_table = {
 		.system_active_urgent = {
 			.dram_derate_percent_pixel = 22,
@@ -56,11 +52,7 @@ static const struct dml2_soc_qos_parameters dml_dcn4_variant_a_soc_qos_params = 
 		.scaling_factor_mhz = 0,
 	},
 	.qos_params = {
-<<<<<<< HEAD
-		.dcn4 = {
-=======
 		.dcn4x = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.df_qos_response_time_fclk_cycles = 300,
 			.max_round_trip_to_furthest_cs_fclk_cycles = 350,
 			.mall_overhead_fclk_cycles = 50,
@@ -86,11 +78,7 @@ static const struct dml2_soc_qos_parameters dml_dcn4_variant_a_soc_qos_params = 
 			},
 		},
 	},
-<<<<<<< HEAD
-	.qos_type = dml2_qos_param_type_dcn4,
-=======
 	.qos_type = dml2_qos_param_type_dcn4x,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dml2_soc_bb dml2_socbb_dcn401 = {
@@ -190,11 +178,7 @@ static const struct dml2_soc_bb dml2_socbb_dcn401 = {
 			.scaling_factor_mhz = 0,
 		},
 		.qos_params = {
-<<<<<<< HEAD
-			.dcn4 = {
-=======
 			.dcn4x = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				.df_qos_response_time_fclk_cycles = 300,
 				.max_round_trip_to_furthest_cs_fclk_cycles = 350,
 				.mall_overhead_fclk_cycles = 50,
@@ -298,11 +282,7 @@ static const struct dml2_soc_bb dml2_socbb_dcn401 = {
 				},
 			},
 		},
-<<<<<<< HEAD
-		.qos_type = dml2_qos_param_type_dcn4,
-=======
 		.qos_type = dml2_qos_param_type_dcn4x,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 
 	.power_management_parameters = {
@@ -364,12 +344,9 @@ static const struct dml2_ip_capabilities dml2_dcn401_max_ip_caps = {
 	.config_return_buffer_segment_size_in_kbytes = 64,
 	.meta_fifo_size_in_kentries = 22,
 	.compressed_buffer_segment_size_in_kbytes = 64,
-<<<<<<< HEAD
-=======
 	.max_flip_time_us = 80,
 	.max_flip_time_lines = 32,
 	.hostvm_mode = 0,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.subvp_drr_scheduling_margin_us = 100,
 	.subvp_prefetch_end_to_mall_start_us = 15,
 	.subvp_fw_processing_delay = 15,
@@ -377,16 +354,6 @@ static const struct dml2_ip_capabilities dml2_dcn401_max_ip_caps = {
 
 	.fams2 = {
 		.max_allow_delay_us = 100 * 1000,
-<<<<<<< HEAD
-		.scheduling_delay_us = 50,
-		.vertical_interrupt_ack_delay_us = 18,
-		.allow_programming_delay_us = 18,
-		.min_allow_width_us = 20,
-		.subvp_df_throttle_delay_us = 100,
-		.subvp_programming_delay_us = 18,
-		.subvp_prefetch_to_mall_delay_us = 18,
-		.drr_programming_delay_us = 18,
-=======
 		.scheduling_delay_us = 125,
 		.vertical_interrupt_ack_delay_us = 40,
 		.allow_programming_delay_us = 18,
@@ -399,7 +366,6 @@ static const struct dml2_ip_capabilities dml2_dcn401_max_ip_caps = {
 		.lock_timeout_us = 5000,
 		.recovery_timeout_us = 5000,
 		.flip_programming_delay_us = 300,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

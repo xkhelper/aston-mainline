@@ -11,8 +11,6 @@
 #include "xe_hw_engine_types.h"
 #include "xe_macros.h"
 
-<<<<<<< HEAD
-=======
 /*
  * GuC version number components are defined to be only 8-bit size,
  * so converting to a 32bit 8.8.8 integer allows simple (and safe)
@@ -25,7 +23,6 @@
 #define GUC_FIRMWARE_VER(guc) \
 	MAKE_GUC_VER_STRUCT((guc)->fw.versions.found[XE_UC_FW_VER_RELEASE])
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct drm_printer;
 
 void xe_guc_comm_init_early(struct xe_guc *guc);

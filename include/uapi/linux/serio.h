@@ -83,9 +83,6 @@
 #define SERIO_PULSE8_CEC	0x40
 #define SERIO_RAINSHADOW_CEC	0x41
 #define SERIO_FSIA6B	0x42
-<<<<<<< HEAD
-=======
 #define SERIO_EXTRON_DA_HD_4K_PLUS	0x43
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _UAPI_SERIO_H */

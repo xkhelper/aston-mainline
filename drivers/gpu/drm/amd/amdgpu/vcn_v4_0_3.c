@@ -45,8 +45,6 @@
 #define VCN_VID_SOC_ADDRESS_2_0		0x1fb00
 #define VCN1_VID_SOC_ADDRESS_3_0	0x48300
 
-<<<<<<< HEAD
-=======
 static const struct amdgpu_hwip_reg_entry vcn_reg_list_4_0_3[] = {
 	SOC15_REG_ENTRY_STR(VCN, 0, regUVD_POWER_STATUS),
 	SOC15_REG_ENTRY_STR(VCN, 0, regUVD_STATUS),
@@ -83,7 +81,6 @@ static const struct amdgpu_hwip_reg_entry vcn_reg_list_4_0_3[] = {
 	SOC15_REG_ENTRY_STR(VCN, 0, regUVD_DPG_PAUSE)
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define NORMALIZE_VCN_REG_OFFSET(offset) \
 		(offset & 0x1FFFF)
 
@@ -131,11 +128,8 @@ static int vcn_v4_0_3_sw_init(void *handle)
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 	struct amdgpu_ring *ring;
 	int i, r, vcn_inst;
-<<<<<<< HEAD
-=======
 	uint32_t reg_count = ARRAY_SIZE(vcn_reg_list_4_0_3);
 	uint32_t *ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	r = amdgpu_vcn_sw_init(adev);
 	if (r)
@@ -203,8 +197,6 @@ static int vcn_v4_0_3_sw_init(void *handle)
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	/* Allocate memory for VCN IP Dump buffer */
 	ptr = kcalloc(adev->vcn.num_vcn_inst * reg_count, sizeof(uint32_t), GFP_KERNEL);
 	if (!ptr) {
@@ -214,7 +206,6 @@ static int vcn_v4_0_3_sw_init(void *handle)
 		adev->vcn.ip_dump = ptr;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -250,11 +241,8 @@ static int vcn_v4_0_3_sw_fini(void *handle)
 
 	r = amdgpu_vcn_sw_fini(adev);
 
-<<<<<<< HEAD
-=======
 	kfree(adev->vcn.ip_dump);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return r;
 }
 
@@ -1745,8 +1733,6 @@ static void vcn_v4_0_3_set_irq_funcs(struct amdgpu_device *adev)
 	adev->vcn.inst->irq.funcs = &vcn_v4_0_3_irq_funcs;
 }
 
-<<<<<<< HEAD
-=======
 static void vcn_v4_0_3_print_ip_state(void *handle, struct drm_printer *p)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
@@ -1809,7 +1795,6 @@ static void vcn_v4_0_3_dump_ip_state(void *handle)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct amd_ip_funcs vcn_v4_0_3_ip_funcs = {
 	.name = "vcn_v4_0_3",
 	.early_init = vcn_v4_0_3_early_init,
@@ -1828,13 +1813,8 @@ static const struct amd_ip_funcs vcn_v4_0_3_ip_funcs = {
 	.post_soft_reset = NULL,
 	.set_clockgating_state = vcn_v4_0_3_set_clockgating_state,
 	.set_powergating_state = vcn_v4_0_3_set_powergating_state,
-<<<<<<< HEAD
-	.dump_ip_state = NULL,
-	.print_ip_state = NULL,
-=======
 	.dump_ip_state = vcn_v4_0_3_dump_ip_state,
 	.print_ip_state = vcn_v4_0_3_print_ip_state,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const struct amdgpu_ip_block_version vcn_v4_0_3_ip_block = {

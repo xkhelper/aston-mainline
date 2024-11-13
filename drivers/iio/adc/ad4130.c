@@ -23,11 +23,7 @@
 #include <linux/units.h>
 
 #include <asm/div64.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/iio/buffer.h>
 #include <linux/iio/iio.h>

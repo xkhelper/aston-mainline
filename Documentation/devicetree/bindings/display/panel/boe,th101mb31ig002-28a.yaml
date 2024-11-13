@@ -9,32 +9,20 @@ title: BOE TH101MB31IG002-28A WXGA DSI Display Panel
 maintainers:
   - Manuel Traut <manut@mecka.net>
 
-<<<<<<< HEAD
-allOf:
-  - $ref: panel-common.yaml#
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 properties:
   compatible:
     enum:
         # BOE TH101MB31IG002-28A 10.1" WXGA TFT LCD panel
       - boe,th101mb31ig002-28a
-<<<<<<< HEAD
-=======
         # The Starry-er88577 is a 10.1" WXGA TFT-LCD panel
       - starry,er88577
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1
 
   backlight: true
   enable-gpios: true
-<<<<<<< HEAD
-=======
   reset-gpios: true
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   power-supply: true
   port: true
   rotation: true
@@ -45,8 +33,6 @@ required:
   - enable-gpios
   - power-supply
 
-<<<<<<< HEAD
-=======
 allOf:
   - $ref: panel-common.yaml#
   - if:
@@ -61,7 +47,6 @@ allOf:
       required:
         - reset-gpios
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:
@@ -76,10 +61,7 @@ examples:
             reg = <0>;
             backlight = <&backlight_lcd0>;
             enable-gpios = <&gpio 45 GPIO_ACTIVE_HIGH>;
-<<<<<<< HEAD
-=======
             reset-gpios = <&gpio 55 GPIO_ACTIVE_LOW>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             rotation = <90>;
             power-supply = <&vcc_3v3>;
             port {

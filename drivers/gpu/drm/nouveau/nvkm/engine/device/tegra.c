@@ -237,10 +237,6 @@ int
 nvkm_device_tegra_new(const struct nvkm_device_tegra_func *func,
 		      struct platform_device *pdev,
 		      const char *cfg, const char *dbg,
-<<<<<<< HEAD
-		      bool detect, bool mmio, u64 subdev_mask,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		      struct nvkm_device **pdevice)
 {
 	struct nvkm_device_tegra *tdev;
@@ -314,12 +310,7 @@ nvkm_device_tegra_new(const struct nvkm_device_tegra_func *func,
 	tdev->gpu_speedo_id = tegra_sku_info.gpu_speedo_id;
 	ret = nvkm_device_ctor(&nvkm_device_tegra_func, NULL, &pdev->dev,
 			       NVKM_DEVICE_TEGRA, pdev->id, NULL,
-<<<<<<< HEAD
-			       cfg, dbg, detect, mmio, subdev_mask,
-			       &tdev->device);
-=======
 			       cfg, dbg, &tdev->device);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto powerdown;
 
@@ -340,10 +331,6 @@ int
 nvkm_device_tegra_new(const struct nvkm_device_tegra_func *func,
 		      struct platform_device *pdev,
 		      const char *cfg, const char *dbg,
-<<<<<<< HEAD
-		      bool detect, bool mmio, u64 subdev_mask,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		      struct nvkm_device **pdevice)
 {
 	return -ENOSYS;

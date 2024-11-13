@@ -530,14 +530,7 @@ static int __load_bitset_in_core(struct dm_clone_metadata *cmd)
 		return r;
 
 	for (i = 0; ; i++) {
-<<<<<<< HEAD
-		if (dm_bitset_cursor_get_value(&c))
-			__set_bit(i, cmd->region_map);
-		else
-			__clear_bit(i, cmd->region_map);
-=======
 		__assign_bit(i, cmd->region_map, dm_bitset_cursor_get_value(&c));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (i >= (cmd->nr_regions - 1))
 			break;

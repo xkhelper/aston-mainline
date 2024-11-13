@@ -157,17 +157,10 @@ static int parse_fixed_partitions(struct mtd_info *master,
 			partname = of_get_property(pp, "name", &len);
 		parts[i].name = partname;
 
-<<<<<<< HEAD
-		if (of_get_property(pp, "read-only", &len))
-			parts[i].mask_flags |= MTD_WRITEABLE;
-
-		if (of_get_property(pp, "lock", &len))
-=======
 		if (of_property_read_bool(pp, "read-only"))
 			parts[i].mask_flags |= MTD_WRITEABLE;
 
 		if (of_property_read_bool(pp, "lock"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			parts[i].mask_flags |= MTD_POWERUP_LOCK;
 
 		if (of_property_read_bool(pp, "slc-mode"))

@@ -11,10 +11,7 @@
 #include <linux/fs.h>
 #include <linux/hashtable.h>
 #include <linux/init.h>
-<<<<<<< HEAD
-=======
 #include <linux/jiffies.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kmsan-checks.h>
 #include <linux/mm.h>
 #include <linux/preempt.h>
@@ -1071,8 +1068,6 @@ u64 kcov_common_handle(void)
 }
 EXPORT_SYMBOL(kcov_common_handle);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_KCOV_SELFTEST
 static void __init selftest(void)
 {
@@ -1099,7 +1094,6 @@ static void __init selftest(void)
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init kcov_init(void)
 {
 	int cpu;
@@ -1119,13 +1113,10 @@ static int __init kcov_init(void)
 	 */
 	debugfs_create_file_unsafe("kcov", 0600, NULL, NULL, &kcov_fops);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_KCOV_SELFTEST
 	selftest();
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

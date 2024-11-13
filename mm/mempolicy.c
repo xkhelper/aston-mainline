@@ -676,15 +676,10 @@ unsigned long change_prot_numa(struct vm_area_struct *vma,
 	tlb_gather_mmu(&tlb, vma->vm_mm);
 
 	nr_updated = change_protection(&tlb, vma, addr, end, MM_CP_PROT_NUMA);
-<<<<<<< HEAD
-	if (nr_updated > 0)
-		count_vm_numa_events(NUMA_PTE_UPDATES, nr_updated);
-=======
 	if (nr_updated > 0) {
 		count_vm_numa_events(NUMA_PTE_UPDATES, nr_updated);
 		count_memcg_events_mm(vma->vm_mm, NUMA_PTE_UPDATES, nr_updated);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tlb_finish_mmu(&tlb);
 
@@ -1958,11 +1953,7 @@ unsigned int mempolicy_slab_node(void)
 		zonelist = &NODE_DATA(node)->node_zonelists[ZONELIST_FALLBACK];
 		z = first_zones_zonelist(zonelist, highest_zoneidx,
 							&policy->nodes);
-<<<<<<< HEAD
-		return z->zone ? zone_to_nid(z->zone) : node;
-=======
 		return zonelist_zone(z) ? zonelist_node_idx(z) : node;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	case MPOL_LOCAL:
 		return node;
@@ -2820,11 +2811,7 @@ int mpol_misplaced(struct folio *folio, struct vm_fault *vmf,
 				node_zonelist(thisnid, GFP_HIGHUSER),
 				gfp_zone(GFP_HIGHUSER),
 				&pol->nodes);
-<<<<<<< HEAD
-		polnid = zone_to_nid(z->zone);
-=======
 		polnid = zonelist_node_idx(z);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	default:

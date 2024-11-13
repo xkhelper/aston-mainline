@@ -217,11 +217,8 @@ remote UML and other VM instances.
 +-----------+--------+------------------------------------+------------+
 | fd        | vector | dependent on fd type               | varies     |
 +-----------+--------+------------------------------------+------------+
-<<<<<<< HEAD
-=======
 | vde       | vector | dep. on VDE VPN: Virt.Net Locator  | varies     |
 +-----------+--------+------------------------------------+------------+
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 | tuntap    | legacy | none                               | ~ 500Mbit  |
 +-----------+--------+------------------------------------+------------+
 | daemon    | legacy | none                               | ~ 450Mbit  |
@@ -578,8 +575,6 @@ https://github.com/NetSys/bess/wiki/Built-In-Modules-and-Ports
 
 BESS transport does not require any special privileges.
 
-<<<<<<< HEAD
-=======
 VDE vector transport
 --------------------
 
@@ -615,7 +610,6 @@ connect to a local area cloud (all the UML nodes using the same
 multicast address running on hosts in the same multicast domain (LAN)
 will be automagically connected together to a virtual LAN.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Configuring Legacy transports
 =============================
 

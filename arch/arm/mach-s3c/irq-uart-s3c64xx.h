@@ -12,8 +12,3 @@ struct s3c_uart_irq {
 	unsigned int	 parent_irq;
 };
 
-<<<<<<< HEAD
-extern void s3c_init_uart_irqs(struct s3c_uart_irq *irq, unsigned int nr_irqs);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

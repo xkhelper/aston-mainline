@@ -6,10 +6,7 @@
 
 #include "i915_drv.h"
 #include "i915_irq.h"
-<<<<<<< HEAD
-=======
 #include "i915_reg.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "intel_crtc.h"
 #include "intel_de.h"
 #include "intel_display_types.h"
@@ -46,12 +43,8 @@ struct intel_dsb {
 	 */
 	unsigned int ins_start_offset;
 
-<<<<<<< HEAD
-	int dewake_scanline;
-=======
 	u32 chicken;
 	int hw_dewake_scanline;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -91,8 +84,6 @@ struct intel_dsb {
 #define DSB_OPCODE_POLL			0xA
 /* see DSB_REG_VALUE_MASK */
 
-<<<<<<< HEAD
-=======
 static bool pre_commit_is_vrr_active(struct intel_atomic_state *state,
 				     struct intel_crtc *crtc)
 {
@@ -180,7 +171,6 @@ static u32 dsb_chicken(struct intel_atomic_state *state,
 		return DSB_SKIP_WAITS_EN;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool assert_dsb_has_room(struct intel_dsb *dsb)
 {
 	struct intel_crtc *crtc = dsb->crtc;
@@ -380,8 +370,6 @@ void intel_dsb_nonpost_end(struct intel_dsb *dsb)
 	intel_dsb_noop(dsb, 4);
 }
 
-<<<<<<< HEAD
-=======
 static void intel_dsb_emit_wait_dsl(struct intel_dsb *dsb,
 				    u32 opcode, int lower, int upper)
 {
@@ -455,7 +443,6 @@ void intel_dsb_wait_scanline_out(struct intel_atomic_state *state,
 			   start, end);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void intel_dsb_align_tail(struct intel_dsb *dsb)
 {
 	u32 aligned_tail, tail;
@@ -477,15 +464,10 @@ void intel_dsb_finish(struct intel_dsb *dsb)
 	/*
 	 * DSB_FORCE_DEWAKE remains active even after DSB is
 	 * disabled, so make sure to clear it (if set during
-<<<<<<< HEAD
-	 * intel_dsb_commit()).
-	 */
-=======
 	 * intel_dsb_commit()). And clear DSB_ENABLE_DEWAKE as
 	 * well for good measure.
 	 */
 	intel_dsb_reg_write(dsb, DSB_PMCTRL(crtc->pipe, dsb->id), 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsb_reg_write_masked(dsb, DSB_PMCTRL_2(crtc->pipe, dsb->id),
 				   DSB_FORCE_DEWAKE, 0);
 
@@ -494,37 +476,6 @@ void intel_dsb_finish(struct intel_dsb *dsb)
 	intel_dsb_buffer_flush_map(&dsb->dsb_buf);
 }
 
-<<<<<<< HEAD
-static int intel_dsb_dewake_scanline(const struct intel_crtc_state *crtc_state)
-{
-	struct drm_i915_private *i915 = to_i915(crtc_state->uapi.crtc->dev);
-	const struct drm_display_mode *adjusted_mode = &crtc_state->hw.adjusted_mode;
-	unsigned int latency = skl_watermark_max_latency(i915, 0);
-	int vblank_start;
-
-	if (crtc_state->vrr.enable)
-		vblank_start = intel_vrr_vmin_vblank_start(crtc_state);
-	else
-		vblank_start = intel_mode_vblank_start(adjusted_mode);
-
-	return max(0, vblank_start - intel_usecs_to_scanlines(adjusted_mode, latency));
-}
-
-static u32 dsb_chicken(struct intel_crtc *crtc)
-{
-	if (crtc->mode_flags & I915_MODE_FLAG_VRR)
-		return DSB_SKIP_WAITS_EN |
-			DSB_CTRL_WAIT_SAFE_WINDOW |
-			DSB_CTRL_NO_WAIT_VBLANK |
-			DSB_INST_WAIT_SAFE_WINDOW |
-			DSB_INST_NO_WAIT_VBLANK;
-	else
-		return DSB_SKIP_WAITS_EN;
-}
-
-static void _intel_dsb_commit(struct intel_dsb *dsb, u32 ctrl,
-			      int dewake_scanline)
-=======
 static u32 dsb_error_int_status(struct intel_display *display)
 {
 	u32 errors;
@@ -628,7 +579,6 @@ void intel_dsb_chain(struct intel_atomic_state *state,
 
 static void _intel_dsb_commit(struct intel_dsb *dsb, u32 ctrl,
 			      int hw_dewake_scanline)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_crtc *crtc = dsb->crtc;
 	struct intel_display *display = to_intel_display(crtc->base.dev);
@@ -649,28 +599,17 @@ static void _intel_dsb_commit(struct intel_dsb *dsb, u32 ctrl,
 			  ctrl | DSB_ENABLE);
 
 	intel_de_write_fw(display, DSB_CHICKEN(pipe, dsb->id),
-<<<<<<< HEAD
-			  dsb_chicken(crtc));
-=======
 			  dsb->chicken);
 
 	intel_de_write_fw(display, DSB_INTERRUPT(pipe, dsb->id),
 			  dsb_error_int_status(display) | DSB_PROG_INT_STATUS |
 			  dsb_error_int_en(display));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intel_de_write_fw(display, DSB_HEAD(pipe, dsb->id),
 			  intel_dsb_buffer_ggtt_offset(&dsb->dsb_buf));
 
-<<<<<<< HEAD
-	if (dewake_scanline >= 0) {
-		int diff, hw_dewake_scanline;
-
-		hw_dewake_scanline = intel_crtc_scanline_to_hw(crtc, dewake_scanline);
-=======
 	if (hw_dewake_scanline >= 0) {
 		int diff, position;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		intel_de_write_fw(display, DSB_PMCTRL(pipe, dsb->id),
 				  DSB_ENABLE_DEWAKE |
@@ -680,13 +619,9 @@ static void _intel_dsb_commit(struct intel_dsb *dsb, u32 ctrl,
 		 * Force DEwake immediately if we're already past
 		 * or close to racing past the target scanline.
 		 */
-<<<<<<< HEAD
-		diff = dewake_scanline - intel_get_crtc_scanline(crtc);
-=======
 		position = intel_de_read_fw(display, PIPEDSL(display, pipe)) & PIPEDSL_LINE_MASK;
 
 		diff = hw_dewake_scanline - position;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_de_write_fw(display, DSB_PMCTRL_2(pipe, dsb->id),
 				  (diff >= 0 && diff < 5 ? DSB_FORCE_DEWAKE : 0) |
 				  DSB_BLOCK_DEWAKE_EXTENSION);
@@ -708,11 +643,7 @@ void intel_dsb_commit(struct intel_dsb *dsb,
 {
 	_intel_dsb_commit(dsb,
 			  wait_for_vblank ? DSB_WAIT_FOR_VBLANK : 0,
-<<<<<<< HEAD
-			  wait_for_vblank ? dsb->dewake_scanline : -1);
-=======
 			  wait_for_vblank ? dsb->hw_dewake_scanline : -1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void intel_dsb_wait(struct intel_dsb *dsb)
@@ -741,12 +672,9 @@ void intel_dsb_wait(struct intel_dsb *dsb)
 	dsb->free_pos = 0;
 	dsb->ins_start_offset = 0;
 	intel_de_write_fw(display, DSB_CTRL(pipe, dsb->id), 0);
-<<<<<<< HEAD
-=======
 
 	intel_de_write_fw(display, DSB_INTERRUPT(pipe, dsb->id),
 			  dsb_error_int_status(display) | DSB_PROG_INT_STATUS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -768,11 +696,6 @@ struct intel_dsb *intel_dsb_prepare(struct intel_atomic_state *state,
 				    unsigned int max_cmds)
 {
 	struct drm_i915_private *i915 = to_i915(state->base.dev);
-<<<<<<< HEAD
-	const struct intel_crtc_state *crtc_state =
-		intel_atomic_get_new_crtc_state(state, crtc);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_wakeref_t wakeref;
 	struct intel_dsb *dsb;
 	unsigned int size;
@@ -806,14 +729,10 @@ struct intel_dsb *intel_dsb_prepare(struct intel_atomic_state *state,
 	dsb->size = size / 4; /* in dwords */
 	dsb->free_pos = 0;
 	dsb->ins_start_offset = 0;
-<<<<<<< HEAD
-	dsb->dewake_scanline = intel_dsb_dewake_scanline(crtc_state);
-=======
 
 	dsb->chicken = dsb_chicken(state, crtc);
 	dsb->hw_dewake_scanline =
 		dsb_scanline_to_hw(state, crtc, dsb_dewake_scanline_start(state, crtc));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return dsb;
 
@@ -840,8 +759,6 @@ void intel_dsb_cleanup(struct intel_dsb *dsb)
 	intel_dsb_buffer_cleanup(&dsb->dsb_buf);
 	kfree(dsb);
 }
-<<<<<<< HEAD
-=======
 
 void intel_dsb_irq_handler(struct intel_display *display,
 			   enum pipe pipe, enum intel_dsb_id dsb_id)
@@ -857,4 +774,3 @@ void intel_dsb_irq_handler(struct intel_display *display,
 		drm_err(display->drm, "[CRTC:%d:%s] DSB %d error interrupt: 0x%x\n",
 			crtc->base.base.id, crtc->base.name, dsb_id, errors);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

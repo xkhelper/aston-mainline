@@ -222,72 +222,44 @@ legacy:
 #define __NOT(x)	(~(x))
 
 /**
-<<<<<<< HEAD
- * test_and_set_bit - Set a bit and return its old value
-=======
  * arch_test_and_set_bit - Set a bit and return its old value
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: Bit to set
  * @addr: Address to count from
  *
  * This operation may be reordered on other architectures than x86.
  */
-<<<<<<< HEAD
-static inline int test_and_set_bit(int nr, volatile unsigned long *addr)
-=======
 static inline int arch_test_and_set_bit(int nr, volatile unsigned long *addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return __test_and_op_bit(or, __NOP, nr, addr);
 }
 
 /**
-<<<<<<< HEAD
- * test_and_clear_bit - Clear a bit and return its old value
-=======
  * arch_test_and_clear_bit - Clear a bit and return its old value
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: Bit to clear
  * @addr: Address to count from
  *
  * This operation can be reordered on other architectures other than x86.
  */
-<<<<<<< HEAD
-static inline int test_and_clear_bit(int nr, volatile unsigned long *addr)
-=======
 static inline int arch_test_and_clear_bit(int nr, volatile unsigned long *addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return __test_and_op_bit(and, __NOT, nr, addr);
 }
 
 /**
-<<<<<<< HEAD
- * test_and_change_bit - Change a bit and return its old value
-=======
  * arch_test_and_change_bit - Change a bit and return its old value
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: Bit to change
  * @addr: Address to count from
  *
  * This operation is atomic and cannot be reordered.
  * It also implies a memory barrier.
  */
-<<<<<<< HEAD
-static inline int test_and_change_bit(int nr, volatile unsigned long *addr)
-=======
 static inline int arch_test_and_change_bit(int nr, volatile unsigned long *addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return __test_and_op_bit(xor, __NOP, nr, addr);
 }
 
 /**
-<<<<<<< HEAD
- * set_bit - Atomically set a bit in memory
-=======
  * arch_set_bit - Atomically set a bit in memory
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: the bit to set
  * @addr: the address to start counting from
  *
@@ -298,21 +270,13 @@ static inline int arch_test_and_change_bit(int nr, volatile unsigned long *addr)
  * Note that @nr may be almost arbitrarily large; this function is not
  * restricted to acting on a single-word quantity.
  */
-<<<<<<< HEAD
-static inline void set_bit(int nr, volatile unsigned long *addr)
-=======
 static inline void arch_set_bit(int nr, volatile unsigned long *addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__op_bit(or, __NOP, nr, addr);
 }
 
 /**
-<<<<<<< HEAD
- * clear_bit - Clears a bit in memory
-=======
  * arch_clear_bit - Clears a bit in memory
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: Bit to clear
  * @addr: Address to start counting from
  *
@@ -320,21 +284,13 @@ static inline void arch_set_bit(int nr, volatile unsigned long *addr)
  * on non x86 architectures, so if you are writing portable code,
  * make sure not to rely on its reordering guarantees.
  */
-<<<<<<< HEAD
-static inline void clear_bit(int nr, volatile unsigned long *addr)
-=======
 static inline void arch_clear_bit(int nr, volatile unsigned long *addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__op_bit(and, __NOT, nr, addr);
 }
 
 /**
-<<<<<<< HEAD
- * change_bit - Toggle a bit in memory
-=======
  * arch_change_bit - Toggle a bit in memory
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: Bit to change
  * @addr: Address to start counting from
  *
@@ -342,64 +298,40 @@ static inline void arch_clear_bit(int nr, volatile unsigned long *addr)
  * Note that @nr may be almost arbitrarily large; this function is not
  * restricted to acting on a single-word quantity.
  */
-<<<<<<< HEAD
-static inline void change_bit(int nr, volatile unsigned long *addr)
-=======
 static inline void arch_change_bit(int nr, volatile unsigned long *addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__op_bit(xor, __NOP, nr, addr);
 }
 
 /**
-<<<<<<< HEAD
- * test_and_set_bit_lock - Set a bit and return its old value, for lock
-=======
  * arch_test_and_set_bit_lock - Set a bit and return its old value, for lock
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: Bit to set
  * @addr: Address to count from
  *
  * This operation is atomic and provides acquire barrier semantics.
  * It can be used to implement bit locks.
  */
-<<<<<<< HEAD
-static inline int test_and_set_bit_lock(
-=======
 static inline int arch_test_and_set_bit_lock(
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long nr, volatile unsigned long *addr)
 {
 	return __test_and_op_bit_ord(or, __NOP, nr, addr, .aq);
 }
 
 /**
-<<<<<<< HEAD
- * clear_bit_unlock - Clear a bit in memory, for unlock
-=======
  * arch_clear_bit_unlock - Clear a bit in memory, for unlock
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: the bit to set
  * @addr: the address to start counting from
  *
  * This operation is atomic and provides release barrier semantics.
  */
-<<<<<<< HEAD
-static inline void clear_bit_unlock(
-=======
 static inline void arch_clear_bit_unlock(
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long nr, volatile unsigned long *addr)
 {
 	__op_bit_ord(and, __NOT, nr, addr, .rl);
 }
 
 /**
-<<<<<<< HEAD
- * __clear_bit_unlock - Clear a bit in memory, for unlock
-=======
  * arch___clear_bit_unlock - Clear a bit in memory, for unlock
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nr: the bit to set
  * @addr: the address to start counting from
  *
@@ -413,15 +345,6 @@ static inline void arch_clear_bit_unlock(
  * non-atomic property here: it's a lot more instructions and we still have to
  * provide release semantics anyway.
  */
-<<<<<<< HEAD
-static inline void __clear_bit_unlock(
-	unsigned long nr, volatile unsigned long *addr)
-{
-	clear_bit_unlock(nr, addr);
-}
-
-static inline bool xor_unlock_is_negative_byte(unsigned long mask,
-=======
 static inline void arch___clear_bit_unlock(
 	unsigned long nr, volatile unsigned long *addr)
 {
@@ -429,7 +352,6 @@ static inline void arch___clear_bit_unlock(
 }
 
 static inline bool arch_xor_unlock_is_negative_byte(unsigned long mask,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		volatile unsigned long *addr)
 {
 	unsigned long res;
@@ -447,12 +369,9 @@ static inline bool arch_xor_unlock_is_negative_byte(unsigned long mask,
 #undef __NOT
 #undef __AMO
 
-<<<<<<< HEAD
-=======
 #include <asm-generic/bitops/instrumented-atomic.h>
 #include <asm-generic/bitops/instrumented-lock.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm-generic/bitops/non-atomic.h>
 #include <asm-generic/bitops/le.h>
 #include <asm-generic/bitops/ext2-atomic.h>

@@ -125,11 +125,6 @@
 &gsbi1_i2c {
 	status = "okay";
 	clock-frequency = <200000>;
-<<<<<<< HEAD
-	pinctrl-0 = <&i2c1_pins>;
-	pinctrl-names = "default";
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	eeprom@52 {
 		compatible = "atmel,24c128";
@@ -151,11 +146,6 @@
 
 &gsbi3_i2c {
 	clock-frequency = <200000>;
-<<<<<<< HEAD
-	pinctrl-0 = <&i2c3_pins>;
-	pinctrl-names = "default";
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 
 	trackpad@10 {

@@ -512,12 +512,7 @@ static int lzx_decompress_block(const struct lzx_decompressor *d,
 			 * the same code.  (For R0, the swap is a no-op.)
 			 */
 			match_offset = recent_offsets[offset_slot];
-<<<<<<< HEAD
-			recent_offsets[offset_slot] = recent_offsets[0];
-			recent_offsets[0] = match_offset;
-=======
 			swap(recent_offsets[offset_slot], recent_offsets[0]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			/* Explicit offset  */
 

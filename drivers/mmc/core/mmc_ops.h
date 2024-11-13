@@ -56,8 +56,6 @@ int mmc_cmdq_enable(struct mmc_card *card);
 int mmc_cmdq_disable(struct mmc_card *card);
 int mmc_sanitize(struct mmc_card *card, unsigned int timeout_ms);
 
-<<<<<<< HEAD
-=======
 static inline u32 unstuff_bits(const u32 *resp, int start, int size)
 {
 	const int __size = size;
@@ -72,6 +70,5 @@ static inline u32 unstuff_bits(const u32 *resp, int start, int size)
 	return __res & __mask;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 

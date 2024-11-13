@@ -20,11 +20,7 @@
  *	page->index: links together all component pages of a zspage
  *		For the huge page, this is always 0, so we use this field
  *		to store handle.
-<<<<<<< HEAD
- *	page->page_type: PG_zsmalloc, lower 16 bit locate the first object
-=======
  *	page->page_type: PGTY_zsmalloc, lower 24 bits locate the first object
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *		offset in a subpage of a zspage
  *
  * Usage of struct page flags:
@@ -58,10 +54,7 @@
 #include <linux/vmalloc.h>
 #include <linux/preempt.h>
 #include <linux/spinlock.h>
-<<<<<<< HEAD
-=======
 #include <linux/sprintf.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/shrinker.h>
 #include <linux/types.h>
 #include <linux/debugfs.h>
@@ -301,19 +294,6 @@ static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage) {}
 
 static int create_cache(struct zs_pool *pool)
 {
-<<<<<<< HEAD
-	pool->handle_cachep = kmem_cache_create("zs_handle", ZS_HANDLE_SIZE,
-					0, 0, NULL);
-	if (!pool->handle_cachep)
-		return 1;
-
-	pool->zspage_cachep = kmem_cache_create("zspage", sizeof(struct zspage),
-					0, 0, NULL);
-	if (!pool->zspage_cachep) {
-		kmem_cache_destroy(pool->handle_cachep);
-		pool->handle_cachep = NULL;
-		return 1;
-=======
 	char *name;
 
 	name = kasprintf(GFP_KERNEL, "zs_handle-%s", pool->name);
@@ -335,7 +315,6 @@ static int create_cache(struct zs_pool *pool)
 		kmem_cache_destroy(pool->handle_cachep);
 		pool->handle_cachep = NULL;
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -484,17 +463,7 @@ static inline struct page *get_first_page(struct zspage *zspage)
 	return first_page;
 }
 
-<<<<<<< HEAD
-#define FIRST_OBJ_PAGE_TYPE_MASK	0xffff
-
-static inline void reset_first_obj_offset(struct page *page)
-{
-	VM_WARN_ON_ONCE(!PageZsmalloc(page));
-	page->page_type |= FIRST_OBJ_PAGE_TYPE_MASK;
-}
-=======
 #define FIRST_OBJ_PAGE_TYPE_MASK	0xffffff
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned int get_first_obj_offset(struct page *page)
 {
@@ -504,13 +473,8 @@ static inline unsigned int get_first_obj_offset(struct page *page)
 
 static inline void set_first_obj_offset(struct page *page, unsigned int offset)
 {
-<<<<<<< HEAD
-	/* With 16 bit available, we can support offsets into 64 KiB pages. */
-	BUILD_BUG_ON(PAGE_SIZE > SZ_64K);
-=======
 	/* With 24 bits available, we can support offsets into 16 MiB pages. */
 	BUILD_BUG_ON(PAGE_SIZE > SZ_16M);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	VM_WARN_ON_ONCE(!PageZsmalloc(page));
 	VM_WARN_ON_ONCE(offset & ~FIRST_OBJ_PAGE_TYPE_MASK);
 	page->page_type &= ~FIRST_OBJ_PAGE_TYPE_MASK;
@@ -849,10 +813,6 @@ static void reset_page(struct page *page)
 	ClearPagePrivate(page);
 	set_page_private(page, 0);
 	page->index = 0;
-<<<<<<< HEAD
-	reset_first_obj_offset(page);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__ClearPageZsmalloc(page);
 }
 

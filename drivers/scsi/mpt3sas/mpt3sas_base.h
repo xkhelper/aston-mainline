@@ -1162,12 +1162,7 @@ typedef void (*MPT3SAS_FLUSH_RUNNING_CMDS)(struct MPT3SAS_ADAPTER *ioc);
  * @fault_reset_work_q_name: fw fault work queue
  * @fault_reset_work_q: ""
  * @fault_reset_work: ""
-<<<<<<< HEAD
- * @firmware_event_name: fw event work queue
- * @firmware_event_thread: ""
-=======
  * @firmware_event_thread: fw event work queue
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @fw_event_lock:
  * @fw_event_list: list of fw events
  * @current_evet: current processing firmware event
@@ -1355,10 +1350,6 @@ struct MPT3SAS_ADAPTER {
 	struct delayed_work fault_reset_work;
 
 	/* fw event handler */
-<<<<<<< HEAD
-	char		firmware_event_name[20];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct workqueue_struct	*firmware_event_thread;
 	spinlock_t	fw_event_lock;
 	struct list_head fw_event_list;

@@ -372,11 +372,7 @@
 			mboxes = <&apcs_glb 0>;
 
 			rpm_requests: rpm-requests {
-<<<<<<< HEAD
-				compatible = "qcom,rpm-sdm660";
-=======
 				compatible = "qcom,rpm-sdm660", "qcom,glink-smd-rpm";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,glink-channels = "rpm_requests";
 
 				rpmcc: clock-controller {

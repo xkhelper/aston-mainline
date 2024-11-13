@@ -292,19 +292,11 @@ static void jfs_write_failed(struct address_space *mapping, loff_t to)
 
 static int jfs_write_begin(struct file *file, struct address_space *mapping,
 				loff_t pos, unsigned len,
-<<<<<<< HEAD
-				struct page **pagep, void **fsdata)
-{
-	int ret;
-
-	ret = block_write_begin(mapping, pos, len, pagep, jfs_get_block);
-=======
 				struct folio **foliop, void **fsdata)
 {
 	int ret;
 
 	ret = block_write_begin(mapping, pos, len, foliop, jfs_get_block);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(ret))
 		jfs_write_failed(mapping, pos + len);
 
@@ -312,20 +304,12 @@ static int jfs_write_begin(struct file *file, struct address_space *mapping,
 }
 
 static int jfs_write_end(struct file *file, struct address_space *mapping,
-<<<<<<< HEAD
-		loff_t pos, unsigned len, unsigned copied, struct page *page,
-=======
 		loff_t pos, unsigned len, unsigned copied, struct folio *folio,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		void *fsdata)
 {
 	int ret;
 
-<<<<<<< HEAD
-	ret = generic_write_end(file, mapping, pos, len, copied, page, fsdata);
-=======
 	ret = generic_write_end(file, mapping, pos, len, copied, folio, fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < len)
 		jfs_write_failed(mapping, pos + len);
 	return ret;

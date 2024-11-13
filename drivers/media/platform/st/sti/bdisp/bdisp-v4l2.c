@@ -1160,11 +1160,7 @@ static void bdisp_irq_timeout(struct work_struct *ptr)
 static int bdisp_m2m_suspend(struct bdisp_dev *bdisp)
 {
 	unsigned long flags;
-<<<<<<< HEAD
-	int timeout;
-=======
 	long time_left;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irqsave(&bdisp->slock, flags);
 	if (!test_bit(ST_M2M_RUNNING, &bdisp->state)) {
@@ -1175,15 +1171,6 @@ static int bdisp_m2m_suspend(struct bdisp_dev *bdisp)
 	set_bit(ST_M2M_SUSPENDING, &bdisp->state);
 	spin_unlock_irqrestore(&bdisp->slock, flags);
 
-<<<<<<< HEAD
-	timeout = wait_event_timeout(bdisp->irq_queue,
-				     test_bit(ST_M2M_SUSPENDED, &bdisp->state),
-				     BDISP_WORK_TIMEOUT);
-
-	clear_bit(ST_M2M_SUSPENDING, &bdisp->state);
-
-	if (!timeout) {
-=======
 	time_left = wait_event_timeout(bdisp->irq_queue,
 				       test_bit(ST_M2M_SUSPENDED, &bdisp->state),
 				       BDISP_WORK_TIMEOUT);
@@ -1191,7 +1178,6 @@ static int bdisp_m2m_suspend(struct bdisp_dev *bdisp)
 	clear_bit(ST_M2M_SUSPENDING, &bdisp->state);
 
 	if (!time_left) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(bdisp->dev, "%s IRQ timeout\n", __func__);
 		return -EAGAIN;
 	}

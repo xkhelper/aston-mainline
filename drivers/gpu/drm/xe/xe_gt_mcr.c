@@ -8,15 +8,10 @@
 #include "regs/xe_gt_regs.h"
 #include "xe_assert.h"
 #include "xe_gt.h"
-<<<<<<< HEAD
-#include "xe_gt_topology.h"
-#include "xe_gt_types.h"
-=======
 #include "xe_gt_printk.h"
 #include "xe_gt_topology.h"
 #include "xe_gt_types.h"
 #include "xe_guc_hwconfig.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_mmio.h"
 #include "xe_sriov.h"
 
@@ -304,8 +299,6 @@ static void init_steering_mslice(struct xe_gt *gt)
 
 static unsigned int dss_per_group(struct xe_gt *gt)
 {
-<<<<<<< HEAD
-=======
 	struct xe_guc *guc = &gt->uc.guc;
 	u32 max_slices = 0, max_subslices = 0;
 	int ret;
@@ -336,7 +329,6 @@ static unsigned int dss_per_group(struct xe_gt *gt)
 
 fallback:
 	xe_gt_dbg(gt, "GuC hwconfig cannot provide dss/slice; using typical fallback values\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (gt_to_xe(gt)->info.platform == XE_PVC)
 		return 8;
 	else if (GRAPHICS_VERx100(gt_to_xe(gt)) >= 1250)
@@ -354,28 +346,16 @@ fallback:
  */
 void xe_gt_mcr_get_dss_steering(struct xe_gt *gt, unsigned int dss, u16 *group, u16 *instance)
 {
-<<<<<<< HEAD
-	int dss_per_grp = dss_per_group(gt);
-
-	xe_gt_assert(gt, dss < XE_MAX_DSS_FUSE_BITS);
-
-	*group = dss / dss_per_grp;
-	*instance = dss % dss_per_grp;
-=======
 	xe_gt_assert(gt, dss < XE_MAX_DSS_FUSE_BITS);
 
 	*group = dss / gt->steering_dss_per_grp;
 	*instance = dss % gt->steering_dss_per_grp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void init_steering_dss(struct xe_gt *gt)
 {
-<<<<<<< HEAD
-=======
 	gt->steering_dss_per_grp = dss_per_group(gt);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_gt_mcr_get_dss_steering(gt,
 				   min(xe_dss_mask_group_ffs(gt->fuse_topo.g_dss_mask, 0, 0),
 				       xe_dss_mask_group_ffs(gt->fuse_topo.c_dss_mask, 0, 0)),
@@ -459,11 +439,7 @@ void xe_gt_mcr_init(struct xe_gt *gt)
 	if (gt->info.type == XE_GT_TYPE_MEDIA) {
 		drm_WARN_ON(&xe->drm, MEDIA_VER(xe) < 13);
 
-<<<<<<< HEAD
-		if (MEDIA_VER(xe) >= 20) {
-=======
 		if (MEDIA_VERx100(xe) >= 1301) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			gt->steering[OADDRM].ranges = xe2lpm_gpmxmt_steering_table;
 			gt->steering[INSTANCE0].ranges = xe2lpm_instance0_steering_table;
 		} else {

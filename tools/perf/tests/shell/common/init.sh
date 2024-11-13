@@ -26,13 +26,8 @@ print_results()
 	PERF_RETVAL="$1"; shift
 	CHECK_RETVAL="$1"; shift
 	FAILURE_REASON=""
-<<<<<<< HEAD
-	TASK_COMMENT="$@"
-	if [ $PERF_RETVAL -eq 0 -a $CHECK_RETVAL -eq 0 ]; then
-=======
 	TASK_COMMENT="$*"
 	if [ $PERF_RETVAL -eq 0 ] && [ $CHECK_RETVAL -eq 0 ]; then
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		_echo "$MPASS-- [ PASS ] --$MEND $TEST_NAME :: $THIS_TEST_NAME :: $TASK_COMMENT"
 		return 0
 	else
@@ -61,11 +56,7 @@ print_overall_results()
 
 print_testcase_skipped()
 {
-<<<<<<< HEAD
-	TASK_COMMENT="$@"
-=======
 	TASK_COMMENT="$*"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	_echo "$MSKIP-- [ SKIP ] --$MEND $TEST_NAME :: $THIS_TEST_NAME :: $TASK_COMMENT :: testcase skipped"
 	return 0
 }
@@ -78,11 +69,7 @@ print_overall_skipped()
 
 print_warning()
 {
-<<<<<<< HEAD
-	WARN_COMMENT="$@"
-=======
 	WARN_COMMENT="$*"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	_echo "$MWARN-- [ WARN ] --$MEND $TEST_NAME :: $THIS_TEST_NAME :: $WARN_COMMENT"
 	return 0
 }
@@ -128,8 +115,6 @@ detect_amd()
 	# 1 = is not AMD or unknown
 	grep "vendor_id" < /proc/cpuinfo | grep -q "AMD"
 }
-<<<<<<< HEAD
-=======
 
 # base probe utility
 check_kprobes_available()
@@ -153,4 +138,3 @@ check_sdt_support()
 {
 	$CMD_PERF list sdt | grep sdt > /dev/null 2> /dev/null
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

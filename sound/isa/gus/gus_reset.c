@@ -116,13 +116,9 @@ void snd_gf1_smart_stop_voice(struct snd_gus_card * gus, unsigned short voice)
 	spin_lock_irqsave(&gus->reg_lock, flags);
 	snd_gf1_select_voice(gus, voice);
 #if 0
-<<<<<<< HEAD
-	printk(KERN_DEBUG " -%i- smart stop voice - volume = 0x%x\n", voice, snd_gf1_i_read16(gus, SNDRV_GF1_VW_VOLUME));
-=======
 	dev_dbg(gus->card->dev,
 		" -%i- smart stop voice - volume = 0x%x\n",
 		voice, snd_gf1_i_read16(gus, SNDRV_GF1_VW_VOLUME));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	snd_gf1_ctrl_stop(gus, SNDRV_GF1_VB_ADDRESS_CONTROL);
 	snd_gf1_ctrl_stop(gus, SNDRV_GF1_VB_VOLUME_CONTROL);
@@ -136,13 +132,9 @@ void snd_gf1_stop_voice(struct snd_gus_card * gus, unsigned short voice)
 	spin_lock_irqsave(&gus->reg_lock, flags);
 	snd_gf1_select_voice(gus, voice);
 #if 0
-<<<<<<< HEAD
-	printk(KERN_DEBUG " -%i- stop voice - volume = 0x%x\n", voice, snd_gf1_i_read16(gus, SNDRV_GF1_VW_VOLUME));
-=======
 	dev_dbg(gus->card->dev,
 		" -%i- stop voice - volume = 0x%x\n",
 		voice, snd_gf1_i_read16(gus, SNDRV_GF1_VW_VOLUME));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	snd_gf1_ctrl_stop(gus, SNDRV_GF1_VB_ADDRESS_CONTROL);
 	snd_gf1_ctrl_stop(gus, SNDRV_GF1_VB_VOLUME_CONTROL);

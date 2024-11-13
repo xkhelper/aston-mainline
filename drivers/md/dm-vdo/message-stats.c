@@ -4,10 +4,7 @@
  */
 
 #include "dedupe.h"
-<<<<<<< HEAD
-=======
 #include "indexer.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "logger.h"
 #include "memory-alloc.h"
 #include "message-stats.h"
@@ -434,8 +431,6 @@ int vdo_write_stats(struct vdo *vdo, char *buf, unsigned int maxlen)
 	vdo_free(stats);
 	return VDO_SUCCESS;
 }
-<<<<<<< HEAD
-=======
 
 static void write_index_memory(u32 mem, char **buf, unsigned int *maxlen)
 {
@@ -483,4 +478,3 @@ int vdo_write_config(struct vdo *vdo, char **buf, unsigned int *maxlen)
 	write_string(NULL, "}", NULL, buf, maxlen);
 	return VDO_SUCCESS;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

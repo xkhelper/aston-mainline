@@ -88,11 +88,7 @@ xrep_tempfile_create(
 		goto out_release_dquots;
 
 	/* Allocate inode, set up directory. */
-<<<<<<< HEAD
-	error = xfs_dialloc(&tp, dp->i_ino, mode, &ino);
-=======
 	error = xfs_dialloc(&tp, &args, &ino);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		goto out_trans_cancel;
 	error = xfs_icreate(tp, ino, &args, &sc->tempip);

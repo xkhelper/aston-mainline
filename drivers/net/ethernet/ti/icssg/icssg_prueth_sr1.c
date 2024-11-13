@@ -847,10 +847,7 @@ static int prueth_netdev_init(struct prueth *prueth,
 	}
 	ether_addr_copy(emac->mac_addr, ndev->dev_addr);
 
-<<<<<<< HEAD
-=======
 	ndev->dev.of_node = eth_node;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ndev->min_mtu = PRUETH_MIN_PKT_SIZE;
 	ndev->max_mtu = PRUETH_MAX_MTU;
 	ndev->netdev_ops = &emac_netdev_ops;
@@ -1049,13 +1046,8 @@ static int prueth_probe(struct platform_device *pdev)
 			goto exit_iep;
 		}
 
-<<<<<<< HEAD
-		if (of_find_property(eth0_node, "ti,half-duplex-capable", NULL))
-			prueth->emac[PRUETH_MAC0]->half_duplex = 1;
-=======
 		prueth->emac[PRUETH_MAC0]->half_duplex =
 			of_property_read_bool(eth0_node, "ti,half-duplex-capable");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		prueth->emac[PRUETH_MAC0]->iep = prueth->iep0;
 	}
@@ -1068,13 +1060,8 @@ static int prueth_probe(struct platform_device *pdev)
 			goto netdev_exit;
 		}
 
-<<<<<<< HEAD
-		if (of_find_property(eth1_node, "ti,half-duplex-capable", NULL))
-			prueth->emac[PRUETH_MAC1]->half_duplex = 1;
-=======
 		prueth->emac[PRUETH_MAC1]->half_duplex =
 			of_property_read_bool(eth1_node, "ti,half-duplex-capable");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		prueth->emac[PRUETH_MAC1]->iep = prueth->iep1;
 	}

@@ -102,8 +102,6 @@ pgprot_t vm_get_page_prot(unsigned long vm_flags)
 	if (vm_flags & VM_MTE)
 		prot |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ARCH_HAS_PKEYS
 	if (system_supports_poe()) {
 		if (vm_flags & VM_PKEY_BIT0)
@@ -115,7 +113,6 @@ pgprot_t vm_get_page_prot(unsigned long vm_flags)
 	}
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return __pgprot(prot);
 }
 EXPORT_SYMBOL(vm_get_page_prot);

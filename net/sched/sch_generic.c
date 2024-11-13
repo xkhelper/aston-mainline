@@ -512,11 +512,6 @@ static void dev_watchdog(struct timer_list *t)
 				struct netdev_queue *txq;
 
 				txq = netdev_get_tx_queue(dev, i);
-<<<<<<< HEAD
-				trans_start = READ_ONCE(txq->trans_start);
-				if (!netif_xmit_stopped(txq))
-					continue;
-=======
 				if (!netif_xmit_stopped(txq))
 					continue;
 
@@ -526,7 +521,6 @@ static void dev_watchdog(struct timer_list *t)
 				smp_mb();
 				trans_start = READ_ONCE(txq->trans_start);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (time_after(jiffies, trans_start + dev->watchdog_timeo)) {
 					timedout_ms = jiffies_to_msecs(jiffies - trans_start);
 					atomic_long_inc(&txq->trans_timeout);

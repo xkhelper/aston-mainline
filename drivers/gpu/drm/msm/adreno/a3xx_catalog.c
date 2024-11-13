@@ -42,8 +42,6 @@ static const struct adreno_info a3xx_gpus[] = {
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.init  = a3xx_gpu_init,
 	}, {
-<<<<<<< HEAD
-=======
 		.chip_ids = ADRENO_CHIP_IDS(0x03000620),
 		.family = ADRENO_3XX,
 		.revn = 308,
@@ -55,7 +53,6 @@ static const struct adreno_info a3xx_gpus[] = {
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.init = a3xx_gpu_init,
 	}, {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.chip_ids = ADRENO_CHIP_IDS(
 			0x03020000,
 			0x03020001,

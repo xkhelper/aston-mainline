@@ -5,21 +5,6 @@
 struct nvif_client_v0 {
 	__u8  version;
 	__u8  pad01[7];
-<<<<<<< HEAD
-	__u64 device;
 	char  name[32];
 };
-
-#define NVIF_CLIENT_V0_DEVLIST                                             0x00
-
-struct nvif_client_devlist_v0 {
-	__u8  version;
-	__u8  count;
-	__u8  pad02[6];
-	__u64 device[];
-};
-=======
-	char  name[32];
-};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

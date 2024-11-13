@@ -33,8 +33,6 @@
 
 #include <drm/drm_util.h>
 
-<<<<<<< HEAD
-=======
 /* Detach the cursor from the bulk move list*/
 static void
 ttm_resource_cursor_clear_bulk(struct ttm_resource_cursor *cursor)
@@ -97,7 +95,6 @@ void ttm_resource_cursor_fini(struct ttm_resource_cursor *cursor)
 	ttm_resource_cursor_clear_bulk(cursor);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ttm_lru_bulk_move_init - initialize a bulk move structure
  * @bulk: the structure to init
@@ -107,16 +104,11 @@ void ttm_resource_cursor_fini(struct ttm_resource_cursor *cursor)
 void ttm_lru_bulk_move_init(struct ttm_lru_bulk_move *bulk)
 {
 	memset(bulk, 0, sizeof(*bulk));
-<<<<<<< HEAD
-=======
 	INIT_LIST_HEAD(&bulk->cursor_list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(ttm_lru_bulk_move_init);
 
 /**
-<<<<<<< HEAD
-=======
  * ttm_lru_bulk_move_fini - finalize a bulk move structure
  * @bdev: The struct ttm_device
  * @bulk: the structure to finalize
@@ -134,7 +126,6 @@ void ttm_lru_bulk_move_fini(struct ttm_device *bdev,
 EXPORT_SYMBOL(ttm_lru_bulk_move_fini);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ttm_lru_bulk_move_tail - bulk move range of resources to the LRU tail.
  *
  * @bulk: bulk move structure
@@ -146,10 +137,7 @@ void ttm_lru_bulk_move_tail(struct ttm_lru_bulk_move *bulk)
 {
 	unsigned i, j;
 
-<<<<<<< HEAD
-=======
 	ttm_bulk_move_adjust_cursors(bulk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < TTM_NUM_MEM_TYPES; ++i) {
 		for (j = 0; j < TTM_MAX_BO_PRIORITY; ++j) {
 			struct ttm_lru_bulk_move_pos *pos = &bulk->pos[i][j];
@@ -163,13 +151,8 @@ void ttm_lru_bulk_move_tail(struct ttm_lru_bulk_move *bulk)
 			dma_resv_assert_held(pos->last->bo->base.resv);
 
 			man = ttm_manager_type(pos->first->bo->bdev, i);
-<<<<<<< HEAD
-			list_bulk_move_tail(&man->lru[j], &pos->first->lru,
-					    &pos->last->lru);
-=======
 			list_bulk_move_tail(&man->lru[j], &pos->first->lru.link,
 					    &pos->last->lru.link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -182,8 +165,6 @@ ttm_lru_bulk_move_pos(struct ttm_lru_bulk_move *bulk, struct ttm_resource *res)
 	return &bulk->pos[res->mem_type][res->bo->priority];
 }
 
-<<<<<<< HEAD
-=======
 /* Return the previous resource on the list (skip over non-resource list items) */
 static struct ttm_resource *ttm_lru_prev_res(struct ttm_resource *cur)
 {
@@ -208,20 +189,14 @@ static struct ttm_resource *ttm_lru_next_res(struct ttm_resource *cur)
 	return ttm_lru_item_to_res(lru);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Move the resource to the tail of the bulk move range */
 static void ttm_lru_bulk_move_pos_tail(struct ttm_lru_bulk_move_pos *pos,
 				       struct ttm_resource *res)
 {
 	if (pos->last != res) {
 		if (pos->first == res)
-<<<<<<< HEAD
-			pos->first = list_next_entry(res, lru);
-		list_move(&res->lru, &pos->last->lru);
-=======
 			pos->first = ttm_lru_next_res(res);
 		list_move(&res->lru.link, &pos->last->lru.link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pos->last = res;
 	}
 }
@@ -252,19 +227,11 @@ static void ttm_lru_bulk_move_del(struct ttm_lru_bulk_move *bulk,
 		pos->first = NULL;
 		pos->last = NULL;
 	} else if (pos->first == res) {
-<<<<<<< HEAD
-		pos->first = list_next_entry(res, lru);
-	} else if (pos->last == res) {
-		pos->last = list_prev_entry(res, lru);
-	} else {
-		list_move(&res->lru, &pos->last->lru);
-=======
 		pos->first = ttm_lru_next_res(res);
 	} else if (pos->last == res) {
 		pos->last = ttm_lru_prev_res(res);
 	} else {
 		list_move(&res->lru.link, &pos->last->lru.link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -293,11 +260,7 @@ void ttm_resource_move_to_lru_tail(struct ttm_resource *res)
 	lockdep_assert_held(&bo->bdev->lru_lock);
 
 	if (bo->pin_count) {
-<<<<<<< HEAD
-		list_move_tail(&res->lru, &bdev->pinned);
-=======
 		list_move_tail(&res->lru.link, &bdev->pinned);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	} else	if (bo->bulk_move) {
 		struct ttm_lru_bulk_move_pos *pos =
@@ -308,11 +271,7 @@ void ttm_resource_move_to_lru_tail(struct ttm_resource *res)
 		struct ttm_resource_manager *man;
 
 		man = ttm_manager_type(bdev, res->mem_type);
-<<<<<<< HEAD
-		list_move_tail(&res->lru, &man->lru[bo->priority]);
-=======
 		list_move_tail(&res->lru.link, &man->lru[bo->priority]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -343,15 +302,9 @@ void ttm_resource_init(struct ttm_buffer_object *bo,
 	man = ttm_manager_type(bo->bdev, place->mem_type);
 	spin_lock(&bo->bdev->lru_lock);
 	if (bo->pin_count)
-<<<<<<< HEAD
-		list_add_tail(&res->lru, &bo->bdev->pinned);
-	else
-		list_add_tail(&res->lru, &man->lru[bo->priority]);
-=======
 		list_add_tail(&res->lru.link, &bo->bdev->pinned);
 	else
 		list_add_tail(&res->lru.link, &man->lru[bo->priority]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	man->usage += res->size;
 	spin_unlock(&bo->bdev->lru_lock);
 }
@@ -373,11 +326,7 @@ void ttm_resource_fini(struct ttm_resource_manager *man,
 	struct ttm_device *bdev = man->bdev;
 
 	spin_lock(&bdev->lru_lock);
-<<<<<<< HEAD
-	list_del_init(&res->lru);
-=======
 	list_del_init(&res->lru.link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	man->usage -= res->size;
 	spin_unlock(&bdev->lru_lock);
 }
@@ -546,32 +495,11 @@ int ttm_resource_manager_evict_all(struct ttm_device *bdev,
 	};
 	struct dma_fence *fence;
 	int ret;
-<<<<<<< HEAD
-	unsigned i;
-
-	/*
-	 * Can't use standard list traversal since we're unlocking.
-	 */
-
-	spin_lock(&bdev->lru_lock);
-	for (i = 0; i < TTM_MAX_BO_PRIORITY; ++i) {
-		while (!list_empty(&man->lru[i])) {
-			spin_unlock(&bdev->lru_lock);
-			ret = ttm_mem_evict_first(bdev, man, NULL, &ctx,
-						  NULL);
-			if (ret)
-				return ret;
-			spin_lock(&bdev->lru_lock);
-		}
-	}
-	spin_unlock(&bdev->lru_lock);
-=======
 
 	do {
 		ret = ttm_bo_evict_first(bdev, man, &ctx);
 		cond_resched();
 	} while (!ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock(&man->move_lock);
 	fence = dma_fence_get(man->move);
@@ -624,15 +552,6 @@ void ttm_resource_manager_debug(struct ttm_resource_manager *man,
 }
 EXPORT_SYMBOL(ttm_resource_manager_debug);
 
-<<<<<<< HEAD
-/**
- * ttm_resource_manager_first
- *
- * @man: resource manager to iterate over
- * @cursor: cursor to record the position
- *
- * Returns the first resource from the resource manager.
-=======
 static void
 ttm_resource_cursor_check_bulk(struct ttm_resource_cursor *cursor,
 			       struct ttm_lru_item *next_lru)
@@ -665,22 +584,11 @@ ttm_resource_cursor_check_bulk(struct ttm_resource_cursor *cursor,
  * the caller must explicitly call ttm_resource_cursor_fini().
  *
  * Return: The first resource from the resource manager.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct ttm_resource *
 ttm_resource_manager_first(struct ttm_resource_manager *man,
 			   struct ttm_resource_cursor *cursor)
 {
-<<<<<<< HEAD
-	struct ttm_resource *res;
-
-	lockdep_assert_held(&man->bdev->lru_lock);
-
-	for (cursor->priority = 0; cursor->priority < TTM_MAX_BO_PRIORITY;
-	     ++cursor->priority)
-		list_for_each_entry(res, &man->lru[cursor->priority], lru)
-			return res;
-=======
 	lockdep_assert_held(&man->bdev->lru_lock);
 
 	cursor->priority = 0;
@@ -725,36 +633,11 @@ ttm_resource_manager_next(struct ttm_resource_cursor *cursor)
 	}
 
 	ttm_resource_cursor_fini(cursor);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return NULL;
 }
 
 /**
-<<<<<<< HEAD
- * ttm_resource_manager_next
- *
- * @man: resource manager to iterate over
- * @cursor: cursor to record the position
- * @res: the current resource pointer
- *
- * Returns the next resource from the resource manager.
- */
-struct ttm_resource *
-ttm_resource_manager_next(struct ttm_resource_manager *man,
-			  struct ttm_resource_cursor *cursor,
-			  struct ttm_resource *res)
-{
-	lockdep_assert_held(&man->bdev->lru_lock);
-
-	list_for_each_entry_continue(res, &man->lru[cursor->priority], lru)
-		return res;
-
-	for (++cursor->priority; cursor->priority < TTM_MAX_BO_PRIORITY;
-	     ++cursor->priority)
-		list_for_each_entry(res, &man->lru[cursor->priority], lru)
-			return res;
-=======
  * ttm_lru_first_res_or_null() - Return the first resource on an lru list
  * @head: The list head of the lru list.
  *
@@ -769,7 +652,6 @@ struct ttm_resource *ttm_lru_first_res_or_null(struct list_head *head)
 		if (ttm_lru_item_is_res(lru))
 			return ttm_lru_item_to_res(lru);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return NULL;
 }

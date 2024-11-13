@@ -11,11 +11,8 @@
 #include <linux/of_clk.h>
 #include <linux/clocksource.h>
 
-<<<<<<< HEAD
-=======
 #include <asm/time.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "common.h"
 
 void __init plat_time_init(void)

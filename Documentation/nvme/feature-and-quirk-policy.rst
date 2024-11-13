@@ -1,14 +1,8 @@
 .. SPDX-License-Identifier: GPL-2.0
 
-<<<<<<< HEAD
-=======================================
-Linux NVMe feature and and quirk policy
-=======================================
-=======
 ===================================
 Linux NVMe feature and quirk policy
 ===================================
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 This file explains the policy used to decide what is supported by the
 Linux NVMe driver and what is not.

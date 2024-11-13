@@ -265,10 +265,6 @@ static void fsl_mqs_remove(struct platform_device *pdev)
 	pm_runtime_disable(&pdev->dev);
 }
 
-<<<<<<< HEAD
-#ifdef CONFIG_PM
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int fsl_mqs_runtime_resume(struct device *dev)
 {
 	struct fsl_mqs *mqs_priv = dev_get_drvdata(dev);
@@ -302,21 +298,10 @@ static int fsl_mqs_runtime_suspend(struct device *dev)
 
 	return 0;
 }
-<<<<<<< HEAD
-#endif
-
-static const struct dev_pm_ops fsl_mqs_pm_ops = {
-	SET_RUNTIME_PM_OPS(fsl_mqs_runtime_suspend,
-			   fsl_mqs_runtime_resume,
-			   NULL)
-	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-				pm_runtime_force_resume)
-=======
 
 static const struct dev_pm_ops fsl_mqs_pm_ops = {
 	RUNTIME_PM_OPS(fsl_mqs_runtime_suspend, fsl_mqs_runtime_resume, NULL)
 	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct fsl_mqs_soc_data fsl_mqs_imx8qm_data = {
@@ -396,19 +381,11 @@ MODULE_DEVICE_TABLE(of, fsl_mqs_dt_ids);
 
 static struct platform_driver fsl_mqs_driver = {
 	.probe		= fsl_mqs_probe,
-<<<<<<< HEAD
-	.remove_new	= fsl_mqs_remove,
-	.driver		= {
-		.name	= "fsl-mqs",
-		.of_match_table = fsl_mqs_dt_ids,
-		.pm = &fsl_mqs_pm_ops,
-=======
 	.remove		= fsl_mqs_remove,
 	.driver		= {
 		.name	= "fsl-mqs",
 		.of_match_table = fsl_mqs_dt_ids,
 		.pm = pm_ptr(&fsl_mqs_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

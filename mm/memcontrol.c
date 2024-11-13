@@ -25,10 +25,7 @@
  * Copyright (C) 2020 Alibaba, Inc, Alex Shi
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/cgroup-defs.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/page_counter.h>
 #include <linux/memcontrol.h>
 #include <linux/cgroup.h>
@@ -45,10 +42,7 @@
 #include <linux/rcupdate.h>
 #include <linux/limits.h>
 #include <linux/export.h>
-<<<<<<< HEAD
-=======
 #include <linux/list.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/mutex.h>
 #include <linux/rbtree.h>
 #include <linux/slab.h>
@@ -101,12 +95,6 @@ static bool cgroup_memory_nobpf __ro_after_init;
 static DECLARE_WAIT_QUEUE_HEAD(memcg_cgwb_frn_waitq);
 #endif
 
-<<<<<<< HEAD
-#define THRESHOLDS_EVENTS_TARGET 128
-#define SOFTLIMIT_EVENTS_TARGET 1024
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool task_is_dying(void)
 {
 	return tsk_is_oom_victim(current) || fatal_signal_pending(current) ||
@@ -316,15 +304,12 @@ static const unsigned int memcg_node_stat_items[] = {
 #ifdef CONFIG_SWAP
 	NR_SWAPCACHE,
 #endif
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_NUMA_BALANCING
 	PGPROMOTE_SUCCESS,
 #endif
 	PGDEMOTE_KSWAPD,
 	PGDEMOTE_DIRECT,
 	PGDEMOTE_KHUGEPAGED,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const unsigned int memcg_stat_items[] = {
@@ -340,21 +325,6 @@ static const unsigned int memcg_stat_items[] = {
 #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
 #define MEMCG_VMSTAT_SIZE (NR_MEMCG_NODE_STAT_ITEMS + \
 			   ARRAY_SIZE(memcg_stat_items))
-<<<<<<< HEAD
-static int8_t mem_cgroup_stats_index[MEMCG_NR_STAT] __read_mostly;
-
-static void init_memcg_stats(void)
-{
-	int8_t i, j = 0;
-
-	BUILD_BUG_ON(MEMCG_NR_STAT >= S8_MAX);
-
-	for (i = 0; i < NR_MEMCG_NODE_STAT_ITEMS; ++i)
-		mem_cgroup_stats_index[memcg_node_stat_items[i]] = ++j;
-
-	for (i = 0; i < ARRAY_SIZE(memcg_stat_items); ++i)
-		mem_cgroup_stats_index[memcg_stat_items[i]] = ++j;
-=======
 #define BAD_STAT_IDX(index) ((u32)(index) >= U8_MAX)
 static u8 mem_cgroup_stats_index[MEMCG_NR_STAT] __read_mostly;
 
@@ -371,16 +341,11 @@ static void init_memcg_stats(void)
 
 	for (i = 0; i < ARRAY_SIZE(memcg_stat_items); ++i, ++j)
 		mem_cgroup_stats_index[memcg_stat_items[i]] = j;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int memcg_stats_index(int idx)
 {
-<<<<<<< HEAD
-	return mem_cgroup_stats_index[idx] - 1;
-=======
 	return mem_cgroup_stats_index[idx];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct lruvec_stats_percpu {
@@ -412,11 +377,7 @@ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx)
 		return node_page_state(lruvec_pgdat(lruvec), idx);
 
 	i = memcg_stats_index(idx);
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, idx))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
@@ -439,11 +400,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
 		return node_page_state(lruvec_pgdat(lruvec), idx);
 
 	i = memcg_stats_index(idx);
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, idx))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
@@ -457,15 +414,10 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
 
 /* Subset of vm_event_item to report for memcg event stats */
 static const unsigned int memcg_vm_event_stat[] = {
-<<<<<<< HEAD
-	PGPGIN,
-	PGPGOUT,
-=======
 #ifdef CONFIG_MEMCG_V1
 	PGPGIN,
 	PGPGOUT,
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PGSCAN_KSWAPD,
 	PGSCAN_DIRECT,
 	PGSCAN_KHUGEPAGED,
@@ -490,21 +442,6 @@ static const unsigned int memcg_vm_event_stat[] = {
 	THP_SWPOUT,
 	THP_SWPOUT_FALLBACK,
 #endif
-<<<<<<< HEAD
-};
-
-#define NR_MEMCG_EVENTS ARRAY_SIZE(memcg_vm_event_stat)
-static int8_t mem_cgroup_events_index[NR_VM_EVENT_ITEMS] __read_mostly;
-
-static void init_memcg_events(void)
-{
-	int8_t i;
-
-	BUILD_BUG_ON(NR_VM_EVENT_ITEMS >= S8_MAX);
-
-	for (i = 0; i < NR_MEMCG_EVENTS; ++i)
-		mem_cgroup_events_index[memcg_vm_event_stat[i]] = i + 1;
-=======
 #ifdef CONFIG_NUMA_BALANCING
 	NUMA_PAGE_MIGRATE,
 	NUMA_PTE_UPDATES,
@@ -526,16 +463,11 @@ static void init_memcg_events(void)
 
 	for (i = 0; i < NR_MEMCG_EVENTS; ++i)
 		mem_cgroup_events_index[memcg_vm_event_stat[i]] = i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int memcg_events_index(enum vm_event_item idx)
 {
-<<<<<<< HEAD
-	return mem_cgroup_events_index[idx] - 1;
-=======
 	return mem_cgroup_events_index[idx];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct memcg_vmstats_percpu {
@@ -555,13 +487,6 @@ struct memcg_vmstats_percpu {
 	/* Delta calculation for lockless upward propagation */
 	long			state_prev[MEMCG_VMSTAT_SIZE];
 	unsigned long		events_prev[NR_MEMCG_EVENTS];
-<<<<<<< HEAD
-
-	/* Cgroup1: threshold notifications & softlimit tree updates */
-	unsigned long		nr_page_events;
-	unsigned long		targets[MEM_CGROUP_NTARGETS];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } ____cacheline_aligned;
 
 struct memcg_vmstats {
@@ -710,11 +635,7 @@ unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx)
 	long x;
 	int i = memcg_stats_index(idx);
 
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, idx))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	x = READ_ONCE(memcg->vmstats->state[i]);
@@ -755,11 +676,7 @@ void __mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
 	if (mem_cgroup_disabled())
 		return;
 
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, idx))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	__this_cpu_add(memcg->vmstats_percpu->state[i], val);
@@ -772,11 +689,7 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
 	long x;
 	int i = memcg_stats_index(idx);
 
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, idx))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	x = READ_ONCE(memcg->vmstats->state_local[i]);
@@ -795,11 +708,7 @@ static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
 	struct mem_cgroup *memcg;
 	int i = memcg_stats_index(idx);
 
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, idx))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
@@ -915,11 +824,7 @@ void __count_memcg_events(struct mem_cgroup *memcg, enum vm_event_item idx,
 	if (mem_cgroup_disabled())
 		return;
 
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, idx))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	memcg_stats_lock();
@@ -932,11 +837,7 @@ unsigned long memcg_events(struct mem_cgroup *memcg, int event)
 {
 	int i = memcg_events_index(event);
 
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, event))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, event))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	return READ_ONCE(memcg->vmstats->events[i]);
@@ -946,57 +847,12 @@ unsigned long memcg_events_local(struct mem_cgroup *memcg, int event)
 {
 	int i = memcg_events_index(event);
 
-<<<<<<< HEAD
-	if (WARN_ONCE(i < 0, "%s: missing stat item %d\n", __func__, event))
-=======
 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, event))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	return READ_ONCE(memcg->vmstats->events_local[i]);
 }
 
-<<<<<<< HEAD
-void mem_cgroup_charge_statistics(struct mem_cgroup *memcg, int nr_pages)
-{
-	/* pagein of a big page is an event. So, ignore page size */
-	if (nr_pages > 0)
-		__count_memcg_events(memcg, PGPGIN, 1);
-	else {
-		__count_memcg_events(memcg, PGPGOUT, 1);
-		nr_pages = -nr_pages; /* for event */
-	}
-
-	__this_cpu_add(memcg->vmstats_percpu->nr_page_events, nr_pages);
-}
-
-bool mem_cgroup_event_ratelimit(struct mem_cgroup *memcg,
-				enum mem_cgroup_events_target target)
-{
-	unsigned long val, next;
-
-	val = __this_cpu_read(memcg->vmstats_percpu->nr_page_events);
-	next = __this_cpu_read(memcg->vmstats_percpu->targets[target]);
-	/* from time_after() in jiffies.h */
-	if ((long)(next - val) < 0) {
-		switch (target) {
-		case MEM_CGROUP_TARGET_THRESH:
-			next = val + THRESHOLDS_EVENTS_TARGET;
-			break;
-		case MEM_CGROUP_TARGET_SOFTLIMIT:
-			next = val + SOFTLIMIT_EVENTS_TARGET;
-			break;
-		default:
-			break;
-		}
-		__this_cpu_write(memcg->vmstats_percpu->targets[target], next);
-		return true;
-	}
-	return false;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mem_cgroup *mem_cgroup_from_task(struct task_struct *p)
 {
 	/*
@@ -1091,8 +947,6 @@ again:
 }
 
 /**
-<<<<<<< HEAD
-=======
  * get_mem_cgroup_from_folio - Obtain a reference on a given folio's memcg.
  * @folio: folio from which memcg should be extracted.
  */
@@ -1111,7 +965,6 @@ struct mem_cgroup *get_mem_cgroup_from_folio(struct folio *folio)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * mem_cgroup_iter - iterate over memory cgroup hierarchy
  * @root: hierarchy root
  * @prev: previously returned memcg, NULL on first invocation
@@ -1133,15 +986,9 @@ struct mem_cgroup *mem_cgroup_iter(struct mem_cgroup *root,
 				   struct mem_cgroup_reclaim_cookie *reclaim)
 {
 	struct mem_cgroup_reclaim_iter *iter;
-<<<<<<< HEAD
-	struct cgroup_subsys_state *css = NULL;
-	struct mem_cgroup *memcg = NULL;
-	struct mem_cgroup *pos = NULL;
-=======
 	struct cgroup_subsys_state *css;
 	struct mem_cgroup *pos;
 	struct mem_cgroup *next;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mem_cgroup_disabled())
 		return NULL;
@@ -1150,14 +997,6 @@ struct mem_cgroup *mem_cgroup_iter(struct mem_cgroup *root,
 		root = root_mem_cgroup;
 
 	rcu_read_lock();
-<<<<<<< HEAD
-
-	if (reclaim) {
-		struct mem_cgroup_per_node *mz;
-
-		mz = root->nodeinfo[reclaim->pgdat->node_id];
-		iter = &mz->iter;
-=======
 restart:
 	next = NULL;
 
@@ -1167,54 +1006,12 @@ restart:
 
 		iter = &root->nodeinfo[nid]->iter;
 		gen = atomic_read(&iter->generation);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * On start, join the current reclaim iteration cycle.
 		 * Exit when a concurrent walker completes it.
 		 */
 		if (!prev)
-<<<<<<< HEAD
-			reclaim->generation = iter->generation;
-		else if (reclaim->generation != iter->generation)
-			goto out_unlock;
-
-		while (1) {
-			pos = READ_ONCE(iter->position);
-			if (!pos || css_tryget(&pos->css))
-				break;
-			/*
-			 * css reference reached zero, so iter->position will
-			 * be cleared by ->css_released. However, we should not
-			 * rely on this happening soon, because ->css_released
-			 * is called from a work queue, and by busy-waiting we
-			 * might block it. So we clear iter->position right
-			 * away.
-			 */
-			(void)cmpxchg(&iter->position, pos, NULL);
-		}
-	} else if (prev) {
-		pos = prev;
-	}
-
-	if (pos)
-		css = &pos->css;
-
-	for (;;) {
-		css = css_next_descendant_pre(css, &root->css);
-		if (!css) {
-			/*
-			 * Reclaimers share the hierarchy walk, and a
-			 * new one might jump in right at the end of
-			 * the hierarchy - make sure they see at least
-			 * one group and restart from the beginning.
-			 */
-			if (!prev)
-				continue;
-			break;
-		}
-
-=======
 			reclaim->generation = gen;
 		else if (reclaim->generation != gen)
 			goto out_unlock;
@@ -1226,42 +1023,23 @@ restart:
 	css = pos ? &pos->css : NULL;
 
 	while ((css = css_next_descendant_pre(css, &root->css))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Verify the css and acquire a reference.  The root
 		 * is provided by the caller, so we know it's alive
 		 * and kicking, and don't take an extra reference.
 		 */
-<<<<<<< HEAD
-		if (css == &root->css || css_tryget(css)) {
-			memcg = mem_cgroup_from_css(css);
-			break;
-		}
-	}
-
-=======
 		if (css == &root->css || css_tryget(css))
 			break;
 	}
 
 	next = mem_cgroup_from_css(css);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (reclaim) {
 		/*
 		 * The position could have already been updated by a competing
 		 * thread, so check that the value hasn't changed since we read
 		 * it to avoid reclaiming from the same cgroup twice.
 		 */
-<<<<<<< HEAD
-		(void)cmpxchg(&iter->position, pos, memcg);
-
-		if (pos)
-			css_put(&pos->css);
-
-		if (!memcg)
-			iter->generation++;
-=======
 		if (cmpxchg(&iter->position, pos, next) != pos) {
 			if (css && css != &root->css)
 				css_put(css);
@@ -1280,7 +1058,6 @@ restart:
 			if (!prev)
 				goto restart;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 out_unlock:
@@ -1288,11 +1065,7 @@ out_unlock:
 	if (prev && prev != root)
 		css_put(&prev->css);
 
-<<<<<<< HEAD
-	return memcg;
-=======
 	return next;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1582,8 +1355,6 @@ static const struct memory_stat memory_stats[] = {
 	{ "workingset_restore_anon",	WORKINGSET_RESTORE_ANON		},
 	{ "workingset_restore_file",	WORKINGSET_RESTORE_FILE		},
 	{ "workingset_nodereclaim",	WORKINGSET_NODERECLAIM		},
-<<<<<<< HEAD
-=======
 
 	{ "pgdemote_kswapd",		PGDEMOTE_KSWAPD		},
 	{ "pgdemote_direct",		PGDEMOTE_DIRECT		},
@@ -1591,7 +1362,6 @@ static const struct memory_stat memory_stats[] = {
 #ifdef CONFIG_NUMA_BALANCING
 	{ "pgpromote_success",		PGPROMOTE_SUCCESS	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* The actual unit of the state item, not the same as the output unit */
@@ -1616,12 +1386,9 @@ static int memcg_page_state_output_unit(int item)
 	/*
 	 * Workingset state is actually in pages, but we export it to userspace
 	 * as a scalar count of events, so special case it here.
-<<<<<<< HEAD
-=======
 	 *
 	 * Demotion and promotion activities are exported in pages, consistent
 	 * with their global counterparts.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	switch (item) {
 	case WORKINGSET_REFAULT_ANON:
@@ -1631,15 +1398,12 @@ static int memcg_page_state_output_unit(int item)
 	case WORKINGSET_RESTORE_ANON:
 	case WORKINGSET_RESTORE_FILE:
 	case WORKINGSET_NODERECLAIM:
-<<<<<<< HEAD
-=======
 	case PGDEMOTE_KSWAPD:
 	case PGDEMOTE_DIRECT:
 	case PGDEMOTE_KHUGEPAGED:
 #ifdef CONFIG_NUMA_BALANCING
 	case PGPROMOTE_SUCCESS:
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 	default:
 		return memcg_page_state_unit(item);
@@ -1698,18 +1462,11 @@ static void memcg_stat_format(struct mem_cgroup *memcg, struct seq_buf *s)
 		       memcg_events(memcg, PGSTEAL_KHUGEPAGED));
 
 	for (i = 0; i < ARRAY_SIZE(memcg_vm_event_stat); i++) {
-<<<<<<< HEAD
-		if (memcg_vm_event_stat[i] == PGPGIN ||
-		    memcg_vm_event_stat[i] == PGPGOUT)
-			continue;
-
-=======
 #ifdef CONFIG_MEMCG_V1
 		if (memcg_vm_event_stat[i] == PGPGIN ||
 		    memcg_vm_event_stat[i] == PGPGOUT)
 			continue;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		seq_buf_printf(s, "%s %lu\n",
 			       vm_event_name(memcg_vm_event_stat[i]),
 			       memcg_events(memcg, memcg_vm_event_stat[i]));
@@ -2606,11 +2363,7 @@ void mem_cgroup_cancel_charge(struct mem_cgroup *memcg, unsigned int nr_pages)
 
 static void commit_charge(struct folio *folio, struct mem_cgroup *memcg)
 {
-<<<<<<< HEAD
-	VM_BUG_ON_FOLIO(folio_memcg(folio), folio);
-=======
 	VM_BUG_ON_FOLIO(folio_memcg_charged(folio), folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Any of the following ensures page's memcg stability:
 	 *
@@ -2632,15 +2385,7 @@ void mem_cgroup_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
 {
 	css_get(&memcg->css);
 	commit_charge(folio, memcg);
-<<<<<<< HEAD
-
-	local_irq_disable();
-	mem_cgroup_charge_statistics(memcg, folio_nr_pages(folio));
-	memcg1_check_events(memcg, folio_nid(folio));
-	local_irq_enable();
-=======
 	memcg1_commit_charge(folio, memcg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void __mod_objcg_mlstate(struct obj_cgroup *objcg,
@@ -2694,41 +2439,7 @@ struct mem_cgroup *mem_cgroup_from_obj_folio(struct folio *folio, void *p)
 
 /*
  * Returns a pointer to the memory cgroup to which the kernel object is charged.
-<<<<<<< HEAD
- *
- * A passed kernel object can be a slab object, vmalloc object or a generic
- * kernel page, so different mechanisms for getting the memory cgroup pointer
- * should be used.
- *
- * In certain cases (e.g. kernel stacks or large kmallocs with SLUB) the caller
- * can not know for sure how the kernel object is implemented.
- * mem_cgroup_from_obj() can be safely used in such cases.
- *
- * The caller must ensure the memcg lifetime, e.g. by taking rcu_read_lock(),
- * cgroup_mutex, etc.
- */
-struct mem_cgroup *mem_cgroup_from_obj(void *p)
-{
-	struct folio *folio;
-
-	if (mem_cgroup_disabled())
-		return NULL;
-
-	if (unlikely(is_vmalloc_addr(p)))
-		folio = page_folio(vmalloc_to_page(p));
-	else
-		folio = virt_to_folio(p);
-
-	return mem_cgroup_from_obj_folio(folio, p);
-}
-
-/*
- * Returns a pointer to the memory cgroup to which the kernel object is charged.
- * Similar to mem_cgroup_from_obj(), but faster and not suitable for objects,
- * allocated using vmalloc().
-=======
  * It is not suitable for objects allocated using vmalloc().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * A passed kernel object must be a slab object or a generic kernel page.
  *
@@ -3309,19 +3020,11 @@ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
 void split_page_memcg(struct page *head, int old_order, int new_order)
 {
 	struct folio *folio = page_folio(head);
-<<<<<<< HEAD
-	struct mem_cgroup *memcg = folio_memcg(folio);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i;
 	unsigned int old_nr = 1 << old_order;
 	unsigned int new_nr = 1 << new_order;
 
-<<<<<<< HEAD
-	if (mem_cgroup_disabled() || !memcg)
-=======
 	if (mem_cgroup_disabled() || !folio_memcg_charged(folio))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	for (i = new_nr; i < old_nr; i += new_nr)
@@ -3330,11 +3033,7 @@ void split_page_memcg(struct page *head, int old_order, int new_order)
 	if (folio_memcg_kmem(folio))
 		obj_cgroup_get_many(__folio_objcg(folio), old_nr / new_nr - 1);
 	else
-<<<<<<< HEAD
-		css_get_many(&memcg->css, old_nr / new_nr - 1);
-=======
 		css_get_many(&folio_memcg(folio)->css, old_nr / new_nr - 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
@@ -3648,37 +3347,12 @@ static void memcg_wb_domain_size_changed(struct mem_cgroup *memcg)
  */
 
 #define MEM_CGROUP_ID_MAX	((1UL << MEM_CGROUP_ID_SHIFT) - 1)
-<<<<<<< HEAD
-static DEFINE_IDR(mem_cgroup_idr);
-static DEFINE_SPINLOCK(memcg_idr_lock);
-
-static int mem_cgroup_alloc_id(void)
-{
-	int ret;
-
-	idr_preload(GFP_KERNEL);
-	spin_lock(&memcg_idr_lock);
-	ret = idr_alloc(&mem_cgroup_idr, NULL, 1, MEM_CGROUP_ID_MAX + 1,
-			GFP_NOWAIT);
-	spin_unlock(&memcg_idr_lock);
-	idr_preload_end();
-	return ret;
-}
-=======
 static DEFINE_XARRAY_ALLOC1(mem_cgroup_ids);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void mem_cgroup_id_remove(struct mem_cgroup *memcg)
 {
 	if (memcg->id.id > 0) {
-<<<<<<< HEAD
-		spin_lock(&memcg_idr_lock);
-		idr_remove(&mem_cgroup_idr, memcg->id.id);
-		spin_unlock(&memcg_idr_lock);
-
-=======
 		xa_erase(&mem_cgroup_ids, memcg->id.id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memcg->id.id = 0;
 	}
 }
@@ -3713,11 +3387,7 @@ static inline void mem_cgroup_id_put(struct mem_cgroup *memcg)
 struct mem_cgroup *mem_cgroup_from_id(unsigned short id)
 {
 	WARN_ON_ONCE(!rcu_read_lock_held());
-<<<<<<< HEAD
-	return idr_find(&mem_cgroup_idr, id);
-=======
 	return xa_load(&mem_cgroup_ids, id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_SHRINKER_DEBUG
@@ -3792,10 +3462,7 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
 
 	for_each_node(node)
 		free_mem_cgroup_per_node_info(memcg, node);
-<<<<<<< HEAD
-=======
 	memcg1_free_events(memcg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(memcg->vmstats);
 	free_percpu(memcg->vmstats_percpu);
 	kfree(memcg);
@@ -3814,19 +3481,6 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
 	struct mem_cgroup *memcg;
 	int node, cpu;
 	int __maybe_unused i;
-<<<<<<< HEAD
-	long error = -ENOMEM;
-
-	memcg = kzalloc(struct_size(memcg, nodeinfo, nr_node_ids), GFP_KERNEL);
-	if (!memcg)
-		return ERR_PTR(error);
-
-	memcg->id.id = mem_cgroup_alloc_id();
-	if (memcg->id.id < 0) {
-		error = memcg->id.id;
-		goto fail;
-	}
-=======
 	long error;
 
 	memcg = kzalloc(struct_size(memcg, nodeinfo, nr_node_ids), GFP_KERNEL);
@@ -3838,7 +3492,6 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
 	if (error)
 		goto fail;
 	error = -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memcg->vmstats = kzalloc(sizeof(struct memcg_vmstats),
 				 GFP_KERNEL_ACCOUNT);
@@ -3850,12 +3503,9 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
 	if (!memcg->vmstats_percpu)
 		goto fail;
 
-<<<<<<< HEAD
-=======
 	if (!memcg1_alloc_events(memcg))
 		goto fail;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_possible_cpu(cpu) {
 		if (parent)
 			pstatc = per_cpu_ptr(parent->vmstats_percpu, cpu);
@@ -3873,12 +3523,9 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
 
 	INIT_WORK(&memcg->high_work, high_work_func);
 	vmpressure_init(&memcg->vmpressure);
-<<<<<<< HEAD
-=======
 	INIT_LIST_HEAD(&memcg->memory_peaks);
 	INIT_LIST_HEAD(&memcg->swap_peaks);
 	spin_lock_init(&memcg->peaks_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memcg->socket_pressure = jiffies;
 	memcg1_memcg_init(memcg);
 	memcg->kmemcg_id = -1;
@@ -3924,38 +3571,21 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
 	if (parent) {
 		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
 
-<<<<<<< HEAD
-		page_counter_init(&memcg->memory, &parent->memory);
-		page_counter_init(&memcg->swap, &parent->swap);
-#ifdef CONFIG_MEMCG_V1
-		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
-		page_counter_init(&memcg->kmem, &parent->kmem);
-		page_counter_init(&memcg->tcpmem, &parent->tcpmem);
-=======
 		page_counter_init(&memcg->memory, &parent->memory, true);
 		page_counter_init(&memcg->swap, &parent->swap, false);
 #ifdef CONFIG_MEMCG_V1
 		WRITE_ONCE(memcg->oom_kill_disable, READ_ONCE(parent->oom_kill_disable));
 		page_counter_init(&memcg->kmem, &parent->kmem, false);
 		page_counter_init(&memcg->tcpmem, &parent->tcpmem, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	} else {
 		init_memcg_stats();
 		init_memcg_events();
-<<<<<<< HEAD
-		page_counter_init(&memcg->memory, NULL);
-		page_counter_init(&memcg->swap, NULL);
-#ifdef CONFIG_MEMCG_V1
-		page_counter_init(&memcg->kmem, NULL);
-		page_counter_init(&memcg->tcpmem, NULL);
-=======
 		page_counter_init(&memcg->memory, NULL, true);
 		page_counter_init(&memcg->swap, NULL, false);
 #ifdef CONFIG_MEMCG_V1
 		page_counter_init(&memcg->kmem, NULL, false);
 		page_counter_init(&memcg->tcpmem, NULL, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 		root_mem_cgroup = memcg;
 		return &memcg->css;
@@ -4004,13 +3634,7 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
 	 * publish it here at the end of onlining. This matches the
 	 * regular ID destruction during offlining.
 	 */
-<<<<<<< HEAD
-	spin_lock(&memcg_idr_lock);
-	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
-	spin_unlock(&memcg_idr_lock);
-=======
 	xa_store(&mem_cgroup_ids, memcg->id.id, memcg, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 offline_kmem:
@@ -4293,16 +3917,6 @@ static u64 memory_current_read(struct cgroup_subsys_state *css,
 	return (u64)page_counter_read(&memcg->memory) * PAGE_SIZE;
 }
 
-<<<<<<< HEAD
-static u64 memory_peak_read(struct cgroup_subsys_state *css,
-			    struct cftype *cft)
-{
-	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
-
-	return (u64)memcg->memory.watermark * PAGE_SIZE;
-}
-
-=======
 #define OFP_PEAK_UNSET (((-1UL)))
 
 static int peak_show(struct seq_file *sf, void *v, struct page_counter *pc)
@@ -4388,7 +4002,6 @@ static ssize_t memory_peak_write(struct kernfs_open_file *of, char *buf,
 
 #undef OFP_PEAK_UNSET
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int memory_min_show(struct seq_file *m, void *v)
 {
 	return seq_puts_memcg_tunable(m,
@@ -4738,14 +4351,10 @@ static struct cftype memory_files[] = {
 	{
 		.name = "peak",
 		.flags = CFTYPE_NOT_ON_ROOT,
-<<<<<<< HEAD
-		.read_u64 = memory_peak_read,
-=======
 		.open = peak_open,
 		.release = peak_release,
 		.seq_show = memory_peak_show,
 		.write = memory_peak_write,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.name = "min",
@@ -4949,23 +4558,15 @@ int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct *mm,
 
 /*
  * mem_cgroup_swapin_uncharge_swap - uncharge swap slot
-<<<<<<< HEAD
- * @entry: swap entry for which the page is charged
-=======
  * @entry: the first swap entry for which the pages are charged
  * @nr_pages: number of pages which will be uncharged
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Call this function after successfully adding the charged page to swapcache.
  *
  * Note: This function assumes the page for which swap slot is being uncharged
  * is order 0 page.
  */
-<<<<<<< HEAD
-void mem_cgroup_swapin_uncharge_swap(swp_entry_t entry)
-=======
 void mem_cgroup_swapin_uncharge_swap(swp_entry_t entry, unsigned int nr_pages)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * Cgroup1's unified memory+swap counter has been charged with the
@@ -4985,11 +4586,7 @@ void mem_cgroup_swapin_uncharge_swap(swp_entry_t entry, unsigned int nr_pages)
 		 * let's not wait for it.  The page already received a
 		 * memory+swap charge, drop the swap entry duplicate.
 		 */
-<<<<<<< HEAD
-		mem_cgroup_uncharge_swap(entry, 1);
-=======
 		mem_cgroup_uncharge_swap(entry, nr_pages);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -5008,11 +4605,6 @@ static inline void uncharge_gather_clear(struct uncharge_gather *ug)
 
 static void uncharge_batch(const struct uncharge_gather *ug)
 {
-<<<<<<< HEAD
-	unsigned long flags;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ug->nr_memory) {
 		page_counter_uncharge(&ug->memcg->memory, ug->nr_memory);
 		if (do_memsw_account())
@@ -5024,15 +4616,7 @@ static void uncharge_batch(const struct uncharge_gather *ug)
 		memcg1_oom_recover(ug->memcg);
 	}
 
-<<<<<<< HEAD
-	local_irq_save(flags);
-	__count_memcg_events(ug->memcg, PGPGOUT, ug->pgpgout);
-	__this_cpu_add(ug->memcg->vmstats_percpu->nr_page_events, ug->nr_memory);
-	memcg1_check_events(ug->memcg, ug->nid);
-	local_irq_restore(flags);
-=======
 	memcg1_uncharge_batch(ug->memcg, ug->pgpgout, ug->nr_memory, ug->nid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* drop reference from uncharge_folio */
 	css_put(&ug->memcg->css);
@@ -5045,12 +4629,6 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
 	struct obj_cgroup *objcg;
 
 	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
-<<<<<<< HEAD
-	VM_BUG_ON_FOLIO(folio_order(folio) > 1 &&
-			!folio_test_hugetlb(folio) &&
-			!list_empty(&folio->_deferred_list), folio);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Nobody should be changing or seriously looking at
@@ -5097,10 +4675,7 @@ static void uncharge_folio(struct folio *folio, struct uncharge_gather *ug)
 			ug->nr_memory += nr_pages;
 		ug->pgpgout++;
 
-<<<<<<< HEAD
-=======
 		WARN_ON_ONCE(folio_unqueue_deferred_split(folio));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		folio->memcg_data = 0;
 	}
 
@@ -5112,11 +4687,7 @@ void __mem_cgroup_uncharge(struct folio *folio)
 	struct uncharge_gather ug;
 
 	/* Don't touch folio->lru of any random page, pre-check: */
-<<<<<<< HEAD
-	if (!folio_memcg(folio))
-=======
 	if (!folio_memcg_charged(folio))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	uncharge_gather_clear(&ug);
@@ -5150,10 +4721,6 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
 {
 	struct mem_cgroup *memcg;
 	long nr_pages = folio_nr_pages(new);
-<<<<<<< HEAD
-	unsigned long flags;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	VM_BUG_ON_FOLIO(!folio_test_locked(old), old);
 	VM_BUG_ON_FOLIO(!folio_test_locked(new), new);
@@ -5164,11 +4731,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
 		return;
 
 	/* Page cache replacement: new folio already charged? */
-<<<<<<< HEAD
-	if (folio_memcg(new))
-=======
 	if (folio_memcg_charged(new))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	memcg = folio_memcg(old);
@@ -5185,15 +4748,7 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
 
 	css_get(&memcg->css);
 	commit_charge(new, memcg);
-<<<<<<< HEAD
-
-	local_irq_save(flags);
-	mem_cgroup_charge_statistics(memcg, nr_pages);
-	memcg1_check_events(memcg, folio_nid(new));
-	local_irq_restore(flags);
-=======
 	memcg1_commit_charge(new, memcg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -5232,12 +4787,9 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
 
 	/* Transfer the charge and the css ref */
 	commit_charge(new, memcg);
-<<<<<<< HEAD
-=======
 
 	/* Warning should never happen, so don't worry about refcount non-0 */
 	WARN_ON_ONCE(folio_unqueue_deferred_split(old));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	old->memcg_data = 0;
 }
 
@@ -5424,10 +4976,7 @@ void mem_cgroup_swapout(struct folio *folio, swp_entry_t entry)
 	VM_BUG_ON_FOLIO(oldid, folio);
 	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
 
-<<<<<<< HEAD
-=======
 	folio_unqueue_deferred_split(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	folio->memcg_data = 0;
 
 	if (!mem_cgroup_is_root(memcg))
@@ -5439,21 +4988,7 @@ void mem_cgroup_swapout(struct folio *folio, swp_entry_t entry)
 		page_counter_uncharge(&memcg->memsw, nr_entries);
 	}
 
-<<<<<<< HEAD
-	/*
-	 * Interrupts should be disabled here because the caller holds the
-	 * i_pages lock which is taken with interrupts-off. It is
-	 * important here to have the interrupts disabled because it is the
-	 * only synchronisation we have for updating the per-CPU variables.
-	 */
-	memcg_stats_lock();
-	mem_cgroup_charge_statistics(memcg, -nr_entries);
-	memcg_stats_unlock();
-	memcg1_check_events(memcg, folio_nid(folio));
-
-=======
 	memcg1_swapout(folio, memcg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	css_put(&memcg->css);
 }
 
@@ -5593,14 +5128,6 @@ static u64 swap_current_read(struct cgroup_subsys_state *css,
 	return (u64)page_counter_read(&memcg->swap) * PAGE_SIZE;
 }
 
-<<<<<<< HEAD
-static u64 swap_peak_read(struct cgroup_subsys_state *css,
-			  struct cftype *cft)
-{
-	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
-
-	return (u64)memcg->swap.watermark * PAGE_SIZE;
-=======
 static int swap_peak_show(struct seq_file *sf, void *v)
 {
 	struct mem_cgroup *memcg = mem_cgroup_from_css(seq_css(sf));
@@ -5615,7 +5142,6 @@ static ssize_t swap_peak_write(struct kernfs_open_file *of, char *buf,
 
 	return peak_write(of, buf, nbytes, off, &memcg->swap,
 			  &memcg->swap_peaks);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int swap_high_show(struct seq_file *m, void *v)
@@ -5699,14 +5225,10 @@ static struct cftype swap_files[] = {
 	{
 		.name = "swap.peak",
 		.flags = CFTYPE_NOT_ON_ROOT,
-<<<<<<< HEAD
-		.read_u64 = swap_peak_read,
-=======
 		.open = peak_open,
 		.release = peak_release,
 		.seq_show = swap_peak_show,
 		.write = swap_peak_write,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.name = "swap.events",

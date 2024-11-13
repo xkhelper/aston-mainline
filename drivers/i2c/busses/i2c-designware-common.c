@@ -20,24 +20,17 @@
 #include <linux/io.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
-<<<<<<< HEAD
-#include <linux/pm_runtime.h>
-=======
 #include <linux/of.h>
 #include <linux/pm.h>
 #include <linux/pm_runtime.h>
 #include <linux/property.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/regmap.h>
 #include <linux/swab.h>
 #include <linux/types.h>
 #include <linux/units.h>
 
-<<<<<<< HEAD
-=======
 #define DEFAULT_SYMBOL_NAMESPACE	I2C_DW_COMMON
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "i2c-designware-core.h"
 
 static char *abort_sources[] = {
@@ -200,11 +193,7 @@ static const u32 supported_speeds[] = {
 	I2C_MAX_STANDARD_MODE_FREQ,
 };
 
-<<<<<<< HEAD
-int i2c_dw_validate_speed(struct dw_i2c_dev *dev)
-=======
 static int i2c_dw_validate_speed(struct dw_i2c_dev *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct i2c_timings *t = &dev->timings;
 	unsigned int i;
@@ -224,9 +213,6 @@ static int i2c_dw_validate_speed(struct dw_i2c_dev *dev)
 
 	return -EINVAL;
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(i2c_dw_validate_speed);
-=======
 
 #ifdef CONFIG_OF
 
@@ -265,7 +251,6 @@ static void i2c_dw_of_configure(struct device *device)
 static inline void i2c_dw_of_configure(struct device *device) { }
 
 #endif	/* CONFIG_OF */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_ACPI
 
@@ -312,11 +297,7 @@ static void i2c_dw_acpi_params(struct device *device, char method[],
 	kfree(buf.pointer);
 }
 
-<<<<<<< HEAD
-int i2c_dw_acpi_configure(struct device *device)
-=======
 static void i2c_dw_acpi_configure(struct device *device)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct dw_i2c_dev *dev = dev_get_drvdata(device);
 	struct i2c_timings *t = &dev->timings;
@@ -346,14 +327,7 @@ static void i2c_dw_acpi_configure(struct device *device)
 		dev->sda_hold_time = fs_ht;
 		break;
 	}
-<<<<<<< HEAD
-
-	return 0;
 }
-EXPORT_SYMBOL_GPL(i2c_dw_acpi_configure);
-=======
-}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static u32 i2c_dw_acpi_round_bus_speed(struct device *device)
 {
@@ -375,20 +349,13 @@ static u32 i2c_dw_acpi_round_bus_speed(struct device *device)
 
 #else	/* CONFIG_ACPI */
 
-<<<<<<< HEAD
-=======
 static inline void i2c_dw_acpi_configure(struct device *device) { }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline u32 i2c_dw_acpi_round_bus_speed(struct device *device) { return 0; }
 
 #endif	/* CONFIG_ACPI */
 
-<<<<<<< HEAD
-void i2c_dw_adjust_bus_speed(struct dw_i2c_dev *dev)
-=======
 static void i2c_dw_adjust_bus_speed(struct dw_i2c_dev *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 acpi_speed = i2c_dw_acpi_round_bus_speed(dev->dev);
 	struct i2c_timings *t = &dev->timings;
@@ -404,12 +371,6 @@ static void i2c_dw_adjust_bus_speed(struct dw_i2c_dev *dev)
 	else
 		t->bus_freq_hz = I2C_MAX_FAST_MODE_FREQ;
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(i2c_dw_adjust_bus_speed);
-
-u32 i2c_dw_scl_hcnt(u32 ic_clk, u32 tSYMBOL, u32 tf, int cond, int offset)
-{
-=======
 
 int i2c_dw_fw_parse_and_configure(struct dw_i2c_dev *dev)
 {
@@ -451,7 +412,6 @@ u32 i2c_dw_scl_hcnt(struct dw_i2c_dev *dev, unsigned int reg, u32 ic_clk,
 	if (!ic_clk)
 		return i2c_dw_read_scl_reg(dev, reg);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * DesignWare I2C core doesn't seem to have solid strategy to meet
 	 * the tHD;STA timing spec.  Configuring _HCNT based on tHIGH spec
@@ -490,17 +450,12 @@ u32 i2c_dw_scl_hcnt(struct dw_i2c_dev *dev, unsigned int reg, u32 ic_clk,
 		       3 + offset;
 }
 
-<<<<<<< HEAD
-u32 i2c_dw_scl_lcnt(u32 ic_clk, u32 tLOW, u32 tf, int offset)
-{
-=======
 u32 i2c_dw_scl_lcnt(struct dw_i2c_dev *dev, unsigned int reg, u32 ic_clk,
 		    u32 tLOW, u32 tf, int offset)
 {
 	if (!ic_clk)
 		return i2c_dw_read_scl_reg(dev, reg);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Conditional expression:
 	 *
@@ -568,12 +523,8 @@ err_release_lock:
 
 void __i2c_dw_disable(struct dw_i2c_dev *dev)
 {
-<<<<<<< HEAD
-	unsigned int raw_intr_stats;
-=======
 	struct i2c_timings *t = &dev->timings;
 	unsigned int raw_intr_stats, ic_stats;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int enable;
 	int timeout = 100;
 	bool abort_needed;
@@ -581,12 +532,6 @@ void __i2c_dw_disable(struct dw_i2c_dev *dev)
 	int ret;
 
 	regmap_read(dev->map, DW_IC_RAW_INTR_STAT, &raw_intr_stats);
-<<<<<<< HEAD
-	regmap_read(dev->map, DW_IC_ENABLE, &enable);
-
-	abort_needed = raw_intr_stats & DW_IC_INTR_MST_ON_HOLD;
-	if (abort_needed) {
-=======
 	regmap_read(dev->map, DW_IC_STATUS, &ic_stats);
 	regmap_read(dev->map, DW_IC_ENABLE, &enable);
 
@@ -606,7 +551,6 @@ void __i2c_dw_disable(struct dw_i2c_dev *dev)
 			enable |= DW_IC_ENABLE_ENABLE;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		regmap_write(dev->map, DW_IC_ENABLE, enable | DW_IC_ENABLE_ABORT);
 		ret = regmap_read_poll_timeout(dev->map, DW_IC_ENABLE, enable,
 					       !(enable & DW_IC_ENABLE_ABORT), 10,
@@ -807,8 +751,6 @@ void i2c_dw_disable(struct dw_i2c_dev *dev)
 
 	i2c_dw_release_lock(dev);
 }
-<<<<<<< HEAD
-=======
 EXPORT_SYMBOL_GPL(i2c_dw_disable);
 
 int i2c_dw_probe(struct dw_i2c_dev *dev)
@@ -887,7 +829,6 @@ EXPORT_GPL_DEV_PM_OPS(i2c_dw_dev_pm_ops) = {
 	LATE_SYSTEM_SLEEP_PM_OPS(i2c_dw_suspend, i2c_dw_resume)
 	RUNTIME_PM_OPS(i2c_dw_runtime_suspend, i2c_dw_runtime_resume, NULL)
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_DESCRIPTION("Synopsys DesignWare I2C bus adapter core");
 MODULE_LICENSE("GPL");

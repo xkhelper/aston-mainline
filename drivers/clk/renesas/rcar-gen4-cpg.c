@@ -45,10 +45,6 @@ static u32 cpg_mode __initdata;
 #define CPG_PLL6CR1		0x8d8
 
 #define CPG_PLLxCR0_KICK	BIT(31)
-<<<<<<< HEAD
-#define CPG_PLLxCR0_NI		GENMASK(27, 20)	/* Integer mult. factor */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CPG_PLLxCR0_SSMODE	GENMASK(18, 16)	/* PLL mode */
 #define CPG_PLLxCR0_SSMODE_FM	BIT(18)	/* Fractional Multiplication */
 #define CPG_PLLxCR0_SSMODE_DITH	BIT(17) /* Frequency Dithering */
@@ -56,11 +52,6 @@ static u32 cpg_mode __initdata;
 #define CPG_PLLxCR0_SSFREQ	GENMASK(14, 8)	/* SSCG Modulation Frequency */
 #define CPG_PLLxCR0_SSDEPT	GENMASK(6, 0)	/* SSCG Modulation Depth */
 
-<<<<<<< HEAD
-#define SSMODE_FM		BIT(2)	/* Fractional Multiplication */
-#define SSMODE_DITHER		BIT(1)	/* Frequency Dithering */
-#define SSMODE_CENTER		BIT(0)	/* Center (vs. Down) Spread Dithering */
-=======
 /* Fractional 8.25 PLL */
 #define CPG_PLLxCR0_NI8		GENMASK(27, 20)	/* Integer mult. factor */
 #define CPG_PLLxCR1_NF25	GENMASK(24, 0)	/* Fractional mult. factor */
@@ -76,39 +67,18 @@ static u32 cpg_mode __initdata;
 #define CPG_SD0CKCR1		0x8a4	/* SD-IF0 Clock Freq. Control Reg. 1 */
 
 #define CPG_SD0CKCR1_SDSRC_SEL	GENMASK(30, 29)	/* SDSRC clock freq. select */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PLL Clocks */
 struct cpg_pll_clk {
 	struct clk_hw hw;
 	void __iomem *pllcr0_reg;
-<<<<<<< HEAD
-=======
 	void __iomem *pllcr1_reg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem *pllecr_reg;
 	u32 pllecr_pllst_mask;
 };
 
 #define to_pll_clk(_hw)   container_of(_hw, struct cpg_pll_clk, hw)
 
-<<<<<<< HEAD
-static unsigned long cpg_pll_clk_recalc_rate(struct clk_hw *hw,
-					     unsigned long parent_rate)
-{
-	struct cpg_pll_clk *pll_clk = to_pll_clk(hw);
-	unsigned int mult;
-
-	mult = FIELD_GET(CPG_PLLxCR0_NI, readl(pll_clk->pllcr0_reg)) + 1;
-
-	return parent_rate * mult * 2;
-}
-
-static int cpg_pll_clk_determine_rate(struct clk_hw *hw,
-				      struct clk_rate_request *req)
-{
-	unsigned int min_mult, max_mult, mult;
-=======
 static unsigned long cpg_pll_8_25_clk_recalc_rate(struct clk_hw *hw,
 						  unsigned long parent_rate)
 {
@@ -133,7 +103,6 @@ static int cpg_pll_8_25_clk_determine_rate(struct clk_hw *hw,
 	struct cpg_pll_clk *pll_clk = to_pll_clk(hw);
 	unsigned int min_mult, max_mult, ni, nf;
 	u32 cr0 = readl(pll_clk->pllcr0_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long prate;
 
 	prate = req->best_parent_rate * 2;
@@ -142,24 +111,6 @@ static int cpg_pll_8_25_clk_determine_rate(struct clk_hw *hw,
 	if (max_mult < min_mult)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	mult = DIV_ROUND_CLOSEST_ULL(req->rate, prate);
-	mult = clamp(mult, min_mult, max_mult);
-
-	req->rate = prate * mult;
-	return 0;
-}
-
-static int cpg_pll_clk_set_rate(struct clk_hw *hw, unsigned long rate,
-				unsigned long parent_rate)
-{
-	struct cpg_pll_clk *pll_clk = to_pll_clk(hw);
-	unsigned int mult;
-	u32 val;
-
-	mult = DIV_ROUND_CLOSEST_ULL(rate, parent_rate * 2);
-	mult = clamp(mult, 1U, 256U);
-=======
 	if (cr0 & CPG_PLLxCR0_SSMODE_FM) {
 		ni = div64_ul(req->rate, prate);
 		if (ni < min_mult) {
@@ -203,21 +154,15 @@ static int cpg_pll_8_25_clk_set_rate(struct clk_hw *hw, unsigned long rate,
 		ni = DIV_ROUND_CLOSEST_ULL(rate, prate);
 		ni = clamp(ni, 1U, 256U);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (readl(pll_clk->pllcr0_reg) & CPG_PLLxCR0_KICK)
 		return -EBUSY;
 
-<<<<<<< HEAD
-	cpg_reg_modify(pll_clk->pllcr0_reg, CPG_PLLxCR0_NI,
-		       FIELD_PREP(CPG_PLLxCR0_NI, mult - 1));
-=======
 	cpg_reg_modify(pll_clk->pllcr0_reg, CPG_PLLxCR0_NI8,
 		       FIELD_PREP(CPG_PLLxCR0_NI8, ni - 1));
 	if (cr0 & CPG_PLLxCR0_SSMODE_FM)
 		cpg_reg_modify(pll_clk->pllcr1_reg, CPG_PLLxCR1_NF25,
 			       FIELD_PREP(CPG_PLLxCR1_NF25, nf));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Set KICK bit in PLLxCR0 to update hardware setting and wait for
@@ -238,12 +183,6 @@ static int cpg_pll_8_25_clk_set_rate(struct clk_hw *hw, unsigned long rate,
 				  val & pll_clk->pllecr_pllst_mask, 0, 1000);
 }
 
-<<<<<<< HEAD
-static const struct clk_ops cpg_pll_clk_ops = {
-	.recalc_rate = cpg_pll_clk_recalc_rate,
-	.determine_rate = cpg_pll_clk_determine_rate,
-	.set_rate = cpg_pll_clk_set_rate,
-=======
 static const struct clk_ops cpg_pll_f8_25_clk_ops = {
 	.recalc_rate = cpg_pll_8_25_clk_recalc_rate,
 };
@@ -276,21 +215,11 @@ static unsigned long cpg_pll_9_24_clk_recalc_rate(struct clk_hw *hw,
 
 static const struct clk_ops cpg_pll_f9_24_clk_ops = {
 	.recalc_rate = cpg_pll_9_24_clk_recalc_rate,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct clk * __init cpg_pll_clk_register(const char *name,
 						const char *parent_name,
 						void __iomem *base,
-<<<<<<< HEAD
-						unsigned int cr0_offset,
-						unsigned int cr1_offset,
-						unsigned int index)
-
-{
-	struct cpg_pll_clk *pll_clk;
-	struct clk_init_data init = {};
-=======
 						unsigned int index,
 						const struct clk_ops *ops)
 {
@@ -303,7 +232,6 @@ static struct clk * __init cpg_pll_clk_register(const char *name,
 	};
 	struct clk_init_data init = {};
 	struct cpg_pll_clk *pll_clk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct clk *clk;
 
 	pll_clk = kzalloc(sizeof(*pll_clk), GFP_KERNEL);
@@ -311,41 +239,23 @@ static struct clk * __init cpg_pll_clk_register(const char *name,
 		return ERR_PTR(-ENOMEM);
 
 	init.name = name;
-<<<<<<< HEAD
-	init.ops = &cpg_pll_clk_ops;
-=======
 	init.ops = ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	init.parent_names = &parent_name;
 	init.num_parents = 1;
 
 	pll_clk->hw.init = &init;
-<<<<<<< HEAD
-	pll_clk->pllcr0_reg = base + cr0_offset;
-	pll_clk->pllecr_reg = base + CPG_PLLECR;
-	pll_clk->pllecr_pllst_mask = CPG_PLLECR_PLLST(index);
-
-	/* Disable Fractional Multiplication and Frequency Dithering */
-	writel(0, base + cr1_offset);
-	cpg_reg_modify(pll_clk->pllcr0_reg, CPG_PLLxCR0_SSMODE, 0);
-
-=======
 	pll_clk->pllcr0_reg = base + pll_cr_offsets[index - 1].cr0;
 	pll_clk->pllcr1_reg = base + pll_cr_offsets[index - 1].cr1;
 	pll_clk->pllecr_reg = base + CPG_PLLECR;
 	pll_clk->pllecr_pllst_mask = CPG_PLLECR_PLLST(index);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clk = clk_register(NULL, &pll_clk->hw);
 	if (IS_ERR(clk))
 		kfree(pll_clk);
 
 	return clk;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Z0 Clock & Z1 Clock
  */
@@ -530,50 +440,11 @@ struct clk * __init rcar_gen4_cpg_clk_register(struct device *dev,
 		div = cpg_pll_config->pll1_div;
 		break;
 
-<<<<<<< HEAD
-	case CLK_TYPE_GEN4_PLL2_VAR:
-		/*
-		 * PLL2 is implemented as a custom clock, to change the
-		 * multiplier when cpufreq changes between normal and boost
-		 * modes.
-		 */
-		return cpg_pll_clk_register(core->name, __clk_get_name(parent),
-					    base, CPG_PLL2CR0, CPG_PLL2CR1, 2);
-
-	case CLK_TYPE_GEN4_PLL2:
-		mult = cpg_pll_config->pll2_mult;
-		div = cpg_pll_config->pll2_div;
-		break;
-
-	case CLK_TYPE_GEN4_PLL3:
-		mult = cpg_pll_config->pll3_mult;
-		div = cpg_pll_config->pll3_div;
-		break;
-
-	case CLK_TYPE_GEN4_PLL4:
-		mult = cpg_pll_config->pll4_mult;
-		div = cpg_pll_config->pll4_div;
-		break;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case CLK_TYPE_GEN4_PLL5:
 		mult = cpg_pll_config->pll5_mult;
 		div = cpg_pll_config->pll5_div;
 		break;
 
-<<<<<<< HEAD
-	case CLK_TYPE_GEN4_PLL6:
-		mult = cpg_pll_config->pll6_mult;
-		div = cpg_pll_config->pll6_div;
-		break;
-
-	case CLK_TYPE_GEN4_PLL2X_3X:
-		value = readl(base + core->offset);
-		mult = (((value >> 24) & 0x7f) + 1) * 2;
-		break;
-
-=======
 	case CLK_TYPE_GEN4_PLL2X_3X:
 		value = readl(base + core->offset);
 		mult = (FIELD_GET(CPG_PLLxCR_STC, value) + 1) * 2;
@@ -597,18 +468,13 @@ struct clk * __init rcar_gen4_cpg_clk_register(struct device *dev,
 					    base, core->offset,
 					    &cpg_pll_f9_24_clk_ops);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case CLK_TYPE_GEN4_Z:
 		return cpg_z_clk_register(core->name, __clk_get_name(parent),
 					  base, core->div, core->offset);
 
 	case CLK_TYPE_GEN4_SDSRC:
-<<<<<<< HEAD
-		div = ((readl(base + SD0CKCR1) >> 29) & 0x03) + 4;
-=======
 		value = readl(base + CPG_SD0CKCR1);
 		div = FIELD_GET(CPG_SD0CKCR1_SDSRC_SEL, value) + 4;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	case CLK_TYPE_GEN4_SDH:

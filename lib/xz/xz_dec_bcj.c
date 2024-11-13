@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-=======
 // SPDX-License-Identifier: 0BSD
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Branch/Call/Jump (BCJ) filter decoders
  *
  * Authors: Lasse Collin <lasse.collin@tukaani.org>
  *          Igor Pavlov <https://7-zip.org/>
-<<<<<<< HEAD
- *
- * This file has been put into the public domain.
- * You can do whatever you want with this file.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include "xz_private.h"
@@ -32,13 +23,9 @@ struct xz_dec_bcj {
 		BCJ_IA64 = 6,       /* Big or little endian */
 		BCJ_ARM = 7,        /* Little endian only */
 		BCJ_ARMTHUMB = 8,   /* Little endian only */
-<<<<<<< HEAD
-		BCJ_SPARC = 9       /* Big or little endian */
-=======
 		BCJ_SPARC = 9,      /* Big or little endian */
 		BCJ_ARM64 = 10,     /* AArch64 */
 		BCJ_RISCV = 11      /* RV32GQC_Zfh, RV64GQC_Zfh */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} type;
 
 	/*
@@ -176,13 +163,9 @@ static size_t bcj_powerpc(struct xz_dec_bcj *s, uint8_t *buf, size_t size)
 	size_t i;
 	uint32_t instr;
 
-<<<<<<< HEAD
-	for (i = 0; i + 4 <= size; i += 4) {
-=======
 	size &= ~(size_t)3;
 
 	for (i = 0; i < size; i += 4) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		instr = get_unaligned_be32(buf + i);
 		if ((instr & 0xFC000003) == 0x48000001) {
 			instr &= 0x03FFFFFC;
@@ -239,13 +222,9 @@ static size_t bcj_ia64(struct xz_dec_bcj *s, uint8_t *buf, size_t size)
 	/* Instruction normalized with bit_res for easier manipulation */
 	uint64_t norm;
 
-<<<<<<< HEAD
-	for (i = 0; i + 16 <= size; i += 16) {
-=======
 	size &= ~(size_t)15;
 
 	for (i = 0; i < size; i += 16) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mask = branch_table[buf[i] & 0x1F];
 		for (slot = 0, bit_pos = 5; slot < 3; ++slot, bit_pos += 41) {
 			if (((mask >> slot) & 1) == 0)
@@ -293,13 +272,9 @@ static size_t bcj_arm(struct xz_dec_bcj *s, uint8_t *buf, size_t size)
 	size_t i;
 	uint32_t addr;
 
-<<<<<<< HEAD
-	for (i = 0; i + 4 <= size; i += 4) {
-=======
 	size &= ~(size_t)3;
 
 	for (i = 0; i < size; i += 4) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (buf[i + 3] == 0xEB) {
 			addr = (uint32_t)buf[i] | ((uint32_t)buf[i + 1] << 8)
 					| ((uint32_t)buf[i + 2] << 16);
@@ -322,16 +297,12 @@ static size_t bcj_armthumb(struct xz_dec_bcj *s, uint8_t *buf, size_t size)
 	size_t i;
 	uint32_t addr;
 
-<<<<<<< HEAD
-	for (i = 0; i + 4 <= size; i += 2) {
-=======
 	if (size < 4)
 		return 0;
 
 	size -= 4;
 
 	for (i = 0; i <= size; i += 2) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((buf[i + 1] & 0xF8) == 0xF0
 				&& (buf[i + 3] & 0xF8) == 0xF8) {
 			addr = (((uint32_t)buf[i + 1] & 0x07) << 19)
@@ -359,13 +330,9 @@ static size_t bcj_sparc(struct xz_dec_bcj *s, uint8_t *buf, size_t size)
 	size_t i;
 	uint32_t instr;
 
-<<<<<<< HEAD
-	for (i = 0; i + 4 <= size; i += 4) {
-=======
 	size &= ~(size_t)3;
 
 	for (i = 0; i < size; i += 4) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		instr = get_unaligned_be32(buf + i);
 		if ((instr >> 22) == 0x100 || (instr >> 22) == 0x1FF) {
 			instr <<= 2;
@@ -381,8 +348,6 @@ static size_t bcj_sparc(struct xz_dec_bcj *s, uint8_t *buf, size_t size)
 }
 #endif
 
-<<<<<<< HEAD
-=======
 #ifdef XZ_DEC_ARM64
 static size_t bcj_arm64(struct xz_dec_bcj *s, uint8_t *buf, size_t size)
 {
@@ -517,7 +482,6 @@ static size_t bcj_riscv(struct xz_dec_bcj *s, uint8_t *buf, size_t size)
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Apply the selected BCJ filter. Update *pos and s->pos to match the amount
  * of data that got filtered.
@@ -565,8 +529,6 @@ static void bcj_apply(struct xz_dec_bcj *s,
 		filtered = bcj_sparc(s, buf, size);
 		break;
 #endif
-<<<<<<< HEAD
-=======
 #ifdef XZ_DEC_ARM64
 	case BCJ_ARM64:
 		filtered = bcj_arm64(s, buf, size);
@@ -577,7 +539,6 @@ static void bcj_apply(struct xz_dec_bcj *s,
 		filtered = bcj_riscv(s, buf, size);
 		break;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		/* Never reached but silence compiler warnings. */
 		filtered = 0;
@@ -611,14 +572,8 @@ static void bcj_flush(struct xz_dec_bcj *s, struct xz_buf *b)
  * data in chunks of 1-16 bytes. To hide this issue, this function does
  * some buffering.
  */
-<<<<<<< HEAD
-XZ_EXTERN enum xz_ret xz_dec_bcj_run(struct xz_dec_bcj *s,
-				     struct xz_dec_lzma2 *lzma2,
-				     struct xz_buf *b)
-=======
 enum xz_ret xz_dec_bcj_run(struct xz_dec_bcj *s, struct xz_dec_lzma2 *lzma2,
 			   struct xz_buf *b)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	size_t out_start;
 
@@ -726,11 +681,7 @@ enum xz_ret xz_dec_bcj_run(struct xz_dec_bcj *s, struct xz_dec_lzma2 *lzma2,
 	return s->ret;
 }
 
-<<<<<<< HEAD
-XZ_EXTERN struct xz_dec_bcj *xz_dec_bcj_create(bool single_call)
-=======
 struct xz_dec_bcj *xz_dec_bcj_create(bool single_call)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct xz_dec_bcj *s = kmalloc(sizeof(*s), GFP_KERNEL);
 	if (s != NULL)
@@ -739,11 +690,7 @@ struct xz_dec_bcj *xz_dec_bcj_create(bool single_call)
 	return s;
 }
 
-<<<<<<< HEAD
-XZ_EXTERN enum xz_ret xz_dec_bcj_reset(struct xz_dec_bcj *s, uint8_t id)
-=======
 enum xz_ret xz_dec_bcj_reset(struct xz_dec_bcj *s, uint8_t id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (id) {
 #ifdef XZ_DEC_X86
@@ -764,15 +711,12 @@ enum xz_ret xz_dec_bcj_reset(struct xz_dec_bcj *s, uint8_t id)
 #ifdef XZ_DEC_SPARC
 	case BCJ_SPARC:
 #endif
-<<<<<<< HEAD
-=======
 #ifdef XZ_DEC_ARM64
 	case BCJ_ARM64:
 #endif
 #ifdef XZ_DEC_RISCV
 	case BCJ_RISCV:
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	default:

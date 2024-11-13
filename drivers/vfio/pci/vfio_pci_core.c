@@ -20,10 +20,7 @@
 #include <linux/mutex.h>
 #include <linux/notifier.h>
 #include <linux/pci.h>
-<<<<<<< HEAD
-=======
 #include <linux/pfn_t.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pm_runtime.h>
 #include <linux/slab.h>
 #include <linux/types.h>
@@ -61,14 +58,6 @@ struct vfio_pci_vf_token {
 	int			users;
 };
 
-<<<<<<< HEAD
-struct vfio_pci_mmap_vma {
-	struct vm_area_struct	*vma;
-	struct list_head	vma_next;
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool vfio_vga_disabled(void)
 {
 #ifdef CONFIG_VFIO_PCI_VGA
@@ -1335,11 +1324,7 @@ out:
 
 static int
 vfio_pci_ioctl_pci_hot_reset_groups(struct vfio_pci_core_device *vdev,
-<<<<<<< HEAD
-				    int array_count, bool slot,
-=======
 				    u32 array_count, bool slot,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    struct vfio_pci_hot_reset __user *arg)
 {
 	int32_t *group_fds;
@@ -1668,21 +1653,12 @@ static unsigned long vma_to_pfn(struct vm_area_struct *vma)
 	return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
 }
 
-<<<<<<< HEAD
-static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
-=======
 static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
 					   unsigned int order)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
 	unsigned long pfn, pgoff = vmf->pgoff - vma->vm_pgoff;
-<<<<<<< HEAD
-	unsigned long addr = vma->vm_start;
-	vm_fault_t ret = VM_FAULT_SIGBUS;
-
-=======
 	vm_fault_t ret = VM_FAULT_SIGBUS;
 
 	if (order && (vmf->address & ((PAGE_SIZE << order) - 1) ||
@@ -1691,7 +1667,6 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
 		goto out;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pfn = vma_to_pfn(vma);
 
 	down_read(&vdev->memory_lock);
@@ -1699,22 +1674,6 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
 		goto out_unlock;
 
-<<<<<<< HEAD
-	ret = vmf_insert_pfn(vma, vmf->address, pfn + pgoff);
-	if (ret & VM_FAULT_ERROR)
-		goto out_unlock;
-
-	/*
-	 * Pre-fault the remainder of the vma, abort further insertions and
-	 * supress error if fault is encountered during pre-fault.
-	 */
-	for (; addr < vma->vm_end; addr += PAGE_SIZE, pfn++) {
-		if (addr == vmf->address)
-			continue;
-
-		if (vmf_insert_pfn(vma, addr, pfn) & VM_FAULT_ERROR)
-			break;
-=======
 	switch (order) {
 	case 0:
 		ret = vmf_insert_pfn(vma, vmf->address, pfn + pgoff);
@@ -1733,13 +1692,10 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
 #endif
 	default:
 		ret = VM_FAULT_FALLBACK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 out_unlock:
 	up_read(&vdev->memory_lock);
-<<<<<<< HEAD
-=======
 out:
 	dev_dbg_ratelimited(&vdev->pdev->dev,
 			   "%s(,order = %d) BAR %ld page offset 0x%lx: 0x%x\n",
@@ -1747,15 +1703,10 @@ out:
 			    vma->vm_pgoff >>
 				(VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT),
 			    pgoff, (unsigned int)ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
 
-<<<<<<< HEAD
-static const struct vm_operations_struct vfio_pci_mmap_ops = {
-	.fault = vfio_pci_mmap_fault,
-=======
 static vm_fault_t vfio_pci_mmap_page_fault(struct vm_fault *vmf)
 {
 	return vfio_pci_mmap_huge_fault(vmf, 0);
@@ -1766,7 +1717,6 @@ static const struct vm_operations_struct vfio_pci_mmap_ops = {
 #ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
 	.huge_fault = vfio_pci_mmap_huge_fault,
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma)

@@ -338,11 +338,7 @@ static int leo_blank(int blank, struct fb_info *info)
 	return 0;
 }
 
-<<<<<<< HEAD
-static struct sbus_mmap_map leo_mmap_map[] = {
-=======
 static const struct sbus_mmap_map leo_mmap_map[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.voff	= LEO_SS0_MAP,
 		.poff	= LEO_OFF_SS0,
@@ -661,11 +657,7 @@ static struct platform_driver leo_driver = {
 		.of_match_table = leo_match,
 	},
 	.probe		= leo_probe,
-<<<<<<< HEAD
-	.remove_new	= leo_remove,
-=======
 	.remove		= leo_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init leo_init(void)

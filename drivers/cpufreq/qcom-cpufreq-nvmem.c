@@ -611,11 +611,7 @@ static struct platform_driver qcom_cpufreq_driver = {
 	},
 };
 
-<<<<<<< HEAD
-static const struct of_device_id qcom_cpufreq_match_list[] __initconst = {
-=======
 static const struct of_device_id qcom_cpufreq_match_list[] __initconst __maybe_unused = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "qcom,apq8096", .data = &match_data_kryo },
 	{ .compatible = "qcom,msm8909", .data = &match_data_msm8909 },
 	{ .compatible = "qcom,msm8996", .data = &match_data_kryo },

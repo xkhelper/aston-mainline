@@ -29,13 +29,6 @@
 
 static int shell_tests__dir_fd(void)
 {
-<<<<<<< HEAD
-	char path[PATH_MAX], *exec_path;
-	static const char * const devel_dirs[] = { "./tools/perf/tests/shell", "./tests/shell", };
-
-	for (size_t i = 0; i < ARRAY_SIZE(devel_dirs); ++i) {
-		int fd = open(devel_dirs[i], O_PATH);
-=======
 	struct stat st;
 	char path[PATH_MAX], path2[PATH_MAX], *exec_path;
 	static const char * const devel_dirs[] = {
@@ -48,14 +41,11 @@ static int shell_tests__dir_fd(void)
 
 	for (size_t i = 0; i < ARRAY_SIZE(devel_dirs); ++i) {
 		fd = open(devel_dirs[i], O_PATH);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (fd >= 0)
 			return fd;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Use directory of executable */
 	if (readlink("/proc/self/exe", path2, sizeof path2) < 0)
 		return -1;
@@ -78,7 +68,6 @@ static int shell_tests__dir_fd(void)
 	if (fd >= 0)
 		return fd;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Then installed path. */
 	exec_path = get_argv_exec_path();
 	scnprintf(path, sizeof(path), "%s/tests/shell", exec_path);
@@ -262,11 +251,8 @@ static void append_scripts_in_dir(int dir_fd,
 			if (!S_ISDIR(st.st_mode))
 				continue;
 		}
-<<<<<<< HEAD
-=======
 		if (strncmp(ent->d_name, "base_", 5) == 0)
 			continue; /* Skip scripts that have a separate driver. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fd = openat(dir_fd, ent->d_name, O_PATH);
 		append_scripts_in_dir(fd, result, result_sz);
 	}

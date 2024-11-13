@@ -44,11 +44,7 @@
 #include <linux/mutex.h>
 #include <linux/slab.h>
 #include <linux/file.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/slhc_vj.h>
 #include <linux/atomic.h>
 #include <linux/refcount.h>
@@ -1635,11 +1631,7 @@ static void ppp_setup(struct net_device *dev)
 	dev->netdev_ops = &ppp_netdev_ops;
 	SET_NETDEV_DEVTYPE(dev, &ppp_type);
 
-<<<<<<< HEAD
-	dev->features |= NETIF_F_LLTX;
-=======
 	dev->lltx = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->hard_header_len = PPP_HDRLEN;
 	dev->mtu = PPP_MRU;
@@ -2277,11 +2269,7 @@ static bool ppp_channel_bridge_input(struct channel *pch, struct sk_buff *skb)
 	if (!pchb)
 		goto out_rcu;
 
-<<<<<<< HEAD
-	spin_lock(&pchb->downl);
-=======
 	spin_lock_bh(&pchb->downl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!pchb->chan) {
 		/* channel got unregistered */
 		kfree_skb(skb);
@@ -2293,11 +2281,7 @@ static bool ppp_channel_bridge_input(struct channel *pch, struct sk_buff *skb)
 		kfree_skb(skb);
 
 outl:
-<<<<<<< HEAD
-	spin_unlock(&pchb->downl);
-=======
 	spin_unlock_bh(&pchb->downl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_rcu:
 	rcu_read_unlock();
 

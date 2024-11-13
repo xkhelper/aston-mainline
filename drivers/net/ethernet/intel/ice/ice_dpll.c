@@ -9,11 +9,8 @@
 #define ICE_CGU_STATE_ACQ_ERR_THRESHOLD		50
 #define ICE_DPLL_PIN_IDX_INVALID		0xff
 #define ICE_DPLL_RCLK_NUM_PER_PF		1
-<<<<<<< HEAD
-=======
 #define ICE_DPLL_PIN_ESYNC_PULSE_HIGH_PERCENT	25
 #define ICE_DPLL_PIN_GEN_RCLK_FREQ		1953125
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * enum ice_dpll_pin_type - enumerate ice pin types:
@@ -35,13 +32,10 @@ static const char * const pin_type_name[] = {
 	[ICE_DPLL_PIN_TYPE_RCLK_INPUT] = "rclk-input",
 };
 
-<<<<<<< HEAD
-=======
 static const struct dpll_pin_frequency ice_esync_range[] = {
 	DPLL_PIN_FREQUENCY_RANGE(0, DPLL_PIN_FREQUENCY_1_HZ),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ice_dpll_is_reset - check if reset is in progress
  * @pf: private board structure
@@ -406,13 +400,8 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
 
 	switch (pin_type) {
 	case ICE_DPLL_PIN_TYPE_INPUT:
-<<<<<<< HEAD
-		ret = ice_aq_get_input_pin_cfg(&pf->hw, pin->idx, NULL, NULL,
-					       NULL, &pin->flags[0],
-=======
 		ret = ice_aq_get_input_pin_cfg(&pf->hw, pin->idx, &pin->status,
 					       NULL, NULL, &pin->flags[0],
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					       &pin->freq, &pin->phase_adjust);
 		if (ret)
 			goto err;
@@ -447,11 +436,7 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
 			goto err;
 
 		parent &= ICE_AQC_GET_CGU_OUT_CFG_DPLL_SRC_SEL;
-<<<<<<< HEAD
-		if (ICE_AQC_SET_CGU_OUT_CFG_OUT_EN & pin->flags[0]) {
-=======
 		if (ICE_AQC_GET_CGU_OUT_CFG_OUT_EN & pin->flags[0]) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pin->state[pf->dplls.eec.dpll_idx] =
 				parent == pf->dplls.eec.dpll_idx ?
 				DPLL_PIN_STATE_CONNECTED :
@@ -672,11 +657,8 @@ ice_dpll_output_state_set(const struct dpll_pin *pin, void *pin_priv,
 	struct ice_dpll_pin *p = pin_priv;
 	struct ice_dpll *d = dpll_priv;
 
-<<<<<<< HEAD
-=======
 	if (state == DPLL_PIN_STATE_SELECTABLE)
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!enable && p->state[d->dpll_idx] == DPLL_PIN_STATE_DISCONNECTED)
 		return 0;
 
@@ -1125,8 +1107,6 @@ ice_dpll_phase_offset_get(const struct dpll_pin *pin, void *pin_priv,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ice_dpll_output_esync_set - callback for setting embedded sync
  * @pin: pointer to a pin
  * @pin_priv: private data pointer passed on pin registration
@@ -1335,7 +1315,6 @@ ice_dpll_input_esync_get(const struct dpll_pin *pin, void *pin_priv,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_dpll_rclk_state_on_pin_set - set a state on rclk pin
  * @pin: pointer to a pin
  * @pin_priv: private data pointer passed on pin registration
@@ -1459,11 +1438,8 @@ static const struct dpll_pin_ops ice_dpll_input_ops = {
 	.phase_adjust_get = ice_dpll_pin_phase_adjust_get,
 	.phase_adjust_set = ice_dpll_input_phase_adjust_set,
 	.phase_offset_get = ice_dpll_phase_offset_get,
-<<<<<<< HEAD
-=======
 	.esync_set = ice_dpll_input_esync_set,
 	.esync_get = ice_dpll_input_esync_get,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dpll_pin_ops ice_dpll_output_ops = {
@@ -1474,11 +1450,8 @@ static const struct dpll_pin_ops ice_dpll_output_ops = {
 	.direction_get = ice_dpll_output_direction,
 	.phase_adjust_get = ice_dpll_pin_phase_adjust_get,
 	.phase_adjust_set = ice_dpll_output_phase_adjust_set,
-<<<<<<< HEAD
-=======
 	.esync_set = ice_dpll_output_esync_set,
 	.esync_get = ice_dpll_output_esync_get,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct dpll_device_ops ice_dpll_ops = {
@@ -1873,11 +1846,8 @@ ice_dpll_init_rclk_pins(struct ice_pf *pf, struct ice_dpll_pin *pin,
 	struct dpll_pin *parent;
 	int ret, i;
 
-<<<<<<< HEAD
-=======
 	if (WARN_ON((!vsi || !vsi->netdev)))
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ice_dpll_get_pins(pf, pin, start_idx, ICE_DPLL_RCLK_NUM_PER_PF,
 				pf->dplls.clock_id);
 	if (ret)
@@ -1893,11 +1863,6 @@ ice_dpll_init_rclk_pins(struct ice_pf *pf, struct ice_dpll_pin *pin,
 		if (ret)
 			goto unregister_pins;
 	}
-<<<<<<< HEAD
-	if (WARN_ON((!vsi || !vsi->netdev)))
-		return -EINVAL;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dpll_netdev_pin_set(vsi->netdev, pf->dplls.rclk.pin);
 
 	return 0;
@@ -2100,8 +2065,6 @@ static int ice_dpll_init_worker(struct ice_pf *pf)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ice_dpll_init_info_pins_generic - initializes generic pins info
  * @pf: board private structure
  * @input: if input pins initialized
@@ -2169,7 +2132,6 @@ static int ice_dpll_init_info_pins_generic(struct ice_pf *pf, bool input)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_dpll_init_info_direct_pins - initializes direct pins info
  * @pf: board private structure
  * @pin_type: type of pins being initialized
@@ -2207,11 +2169,8 @@ ice_dpll_init_info_direct_pins(struct ice_pf *pf,
 	default:
 		return -EINVAL;
 	}
-<<<<<<< HEAD
-=======
 	if (num_pins != ice_cgu_get_num_pins(hw, input))
 		return ice_dpll_init_info_pins_generic(pf, input);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < num_pins; i++) {
 		caps = 0;

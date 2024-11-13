@@ -56,8 +56,6 @@
 		      <0x1 0x00000000 0 0xc0000000>;
 	};
 
-<<<<<<< HEAD
-=======
 	native-hdmi-connector {
 		compatible = "hdmi-connector";
 		label = "HDMI OUT";
@@ -70,7 +68,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pcie0_refclk: pcie0-refclk {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -423,8 +420,6 @@
 	status = "disabled";/* can2 pin conflict with pdm */
 };
 
-<<<<<<< HEAD
-=======
 &hdmi_pvi {
 	status = "okay";
 };
@@ -447,7 +442,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &i2c1 {
 	clock-frequency = <400000>;
 	pinctrl-names = "default";
@@ -644,13 +638,10 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &lcdif3 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &micfil {
 	#sound-dai-cells = <0>;
 	pinctrl-names = "default";
@@ -905,8 +896,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_hdmi: hdmigrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c2
@@ -915,7 +904,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_hog: hoggrp {
 		fsl,pins = <
 			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x40000010

@@ -95,11 +95,7 @@ static int avr_probe(struct i2c_client *client)
 }
 
 static const struct i2c_device_id avr_id[] = {
-<<<<<<< HEAD
-	{ "akebono-avr", 0 },
-=======
 	{ "akebono-avr" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 

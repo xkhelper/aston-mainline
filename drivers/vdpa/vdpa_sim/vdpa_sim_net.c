@@ -414,8 +414,6 @@ static void vdpasim_net_get_config(struct vdpasim *vdpasim, void *config)
 	net_config->status = cpu_to_vdpasim16(vdpasim, VIRTIO_NET_S_LINK_UP);
 }
 
-<<<<<<< HEAD
-=======
 static int vdpasim_net_set_attr(struct vdpa_mgmt_dev *mdev, struct vdpa_device *dev,
 				const struct vdpa_dev_set_config *config)
 {
@@ -434,7 +432,6 @@ static int vdpasim_net_set_attr(struct vdpa_mgmt_dev *mdev, struct vdpa_device *
 	return -EOPNOTSUPP;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void vdpasim_net_setup_config(struct vdpasim *vdpasim,
 				     const struct vdpa_dev_set_config *config)
 {
@@ -531,12 +528,8 @@ static void vdpasim_net_dev_del(struct vdpa_mgmt_dev *mdev,
 
 static const struct vdpa_mgmtdev_ops vdpasim_net_mgmtdev_ops = {
 	.dev_add = vdpasim_net_dev_add,
-<<<<<<< HEAD
-	.dev_del = vdpasim_net_dev_del
-=======
 	.dev_del = vdpasim_net_dev_del,
 	.dev_set_attr = vdpasim_net_set_attr
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct virtio_device_id id_table[] = {

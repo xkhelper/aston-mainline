@@ -12,10 +12,7 @@ if RTW88
 
 config RTW88_CORE
 	tristate
-<<<<<<< HEAD
-=======
 	select WANT_DEV_COREDUMP
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config RTW88_PCI
 	tristate

@@ -440,8 +440,6 @@ struct io_uring_cqe {
  * IORING_CQE_F_SOCK_NONEMPTY	If set, more data to read after socket recv
  * IORING_CQE_F_NOTIF	Set for notification CQEs. Can be used to distinct
  * 			them from sends.
-<<<<<<< HEAD
-=======
  * IORING_CQE_F_BUF_MORE If set, the buffer ID set in the completion will get
  *			more completions. In other words, the buffer is being
  *			partially consumed, and will be used by the kernel for
@@ -451,16 +449,12 @@ struct io_uring_cqe {
  *			other provided buffer type, all completions with a
  *			buffer passed back is automatically returned to the
  *			application.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #define IORING_CQE_F_BUFFER		(1U << 0)
 #define IORING_CQE_F_MORE		(1U << 1)
 #define IORING_CQE_F_SOCK_NONEMPTY	(1U << 2)
 #define IORING_CQE_F_NOTIF		(1U << 3)
-<<<<<<< HEAD
-=======
 #define IORING_CQE_F_BUF_MORE		(1U << 4)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IORING_CQE_BUFFER_SHIFT		16
 
@@ -523,10 +517,7 @@ struct io_cqring_offsets {
 #define IORING_ENTER_SQ_WAIT		(1U << 2)
 #define IORING_ENTER_EXT_ARG		(1U << 3)
 #define IORING_ENTER_REGISTERED_RING	(1U << 4)
-<<<<<<< HEAD
-=======
 #define IORING_ENTER_ABS_TIMER		(1U << 5)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Passed in for io_uring_setup(2). Copied back with updated info on success
@@ -562,10 +553,7 @@ struct io_uring_params {
 #define IORING_FEAT_LINKED_FILE		(1U << 12)
 #define IORING_FEAT_REG_REG_RING	(1U << 13)
 #define IORING_FEAT_RECVSEND_BUNDLE	(1U << 14)
-<<<<<<< HEAD
-=======
 #define IORING_FEAT_MIN_TIMEOUT		(1U << 15)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * io_uring_register(2) opcodes and arguments
@@ -619,14 +607,11 @@ enum io_uring_register_op {
 	IORING_REGISTER_NAPI			= 27,
 	IORING_UNREGISTER_NAPI			= 28,
 
-<<<<<<< HEAD
-=======
 	IORING_REGISTER_CLOCK			= 29,
 
 	/* clone registered buffers from source ring to current ring */
 	IORING_REGISTER_CLONE_BUFFERS		= 30,
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* this goes last */
 	IORING_REGISTER_LAST,
 
@@ -707,8 +692,6 @@ struct io_uring_restriction {
 	__u32 resv2[3];
 };
 
-<<<<<<< HEAD
-=======
 struct io_uring_clock_register {
 	__u32	clockid;
 	__u32	__resv[3];
@@ -724,7 +707,6 @@ struct io_uring_clone_buffers {
 	__u32	pad[6];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct io_uring_buf {
 	__u64	addr;
 	__u32	len;
@@ -757,11 +739,6 @@ struct io_uring_buf_ring {
  *			mmap(2) with the offset set as:
  *			IORING_OFF_PBUF_RING | (bgid << IORING_OFF_PBUF_SHIFT)
  *			to get a virtual mapping for the ring.
-<<<<<<< HEAD
- */
-enum io_uring_register_pbuf_ring_flags {
-	IOU_PBUF_RING_MMAP	= 1,
-=======
  * IOU_PBUF_RING_INC:	If set, buffers consumed from this buffer ring can be
  *			consumed incrementally. Normally one (or more) buffers
  *			are fully consumed. With incremental consumptions, it's
@@ -773,7 +750,6 @@ enum io_uring_register_pbuf_ring_flags {
 enum io_uring_register_pbuf_ring_flags {
 	IOU_PBUF_RING_MMAP	= 1,
 	IOU_PBUF_RING_INC	= 2,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* argument for IORING_(UN)REGISTER_PBUF_RING */
@@ -822,11 +798,7 @@ enum io_uring_register_restriction_op {
 struct io_uring_getevents_arg {
 	__u64	sigmask;
 	__u32	sigmask_sz;
-<<<<<<< HEAD
-	__u32	pad;
-=======
 	__u32	min_wait_usec;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__u64	ts;
 };
 

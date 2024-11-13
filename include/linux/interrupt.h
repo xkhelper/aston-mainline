@@ -276,11 +276,7 @@ struct irq_affinity_notify {
 #define	IRQ_AFFINITY_MAX_SETS  4
 
 /**
-<<<<<<< HEAD
- * struct irq_affinity - Description for automatic irq affinity assignements
-=======
  * struct irq_affinity - Description for automatic irq affinity assignments
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @pre_vectors:	Don't apply affinity to @pre_vectors at beginning of
  *			the MSI(-X) vector space
  * @post_vectors:	Don't apply affinity to @post_vectors at end of
@@ -598,11 +594,7 @@ extern const char * const softirq_to_name[NR_SOFTIRQS];
 
 struct softirq_action
 {
-<<<<<<< HEAD
-	void	(*action)(struct softirq_action *);
-=======
 	void	(*action)(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 asmlinkage void do_softirq(void);
@@ -617,11 +609,7 @@ static inline void do_softirq_post_smp_call_flush(unsigned int unused)
 }
 #endif
 
-<<<<<<< HEAD
-extern void open_softirq(int nr, void (*action)(struct softirq_action *));
-=======
 extern void open_softirq(int nr, void (*action)(void));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void softirq_init(void);
 extern void __raise_softirq_irqoff(unsigned int nr);
 

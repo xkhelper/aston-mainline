@@ -477,7 +477,4 @@ module_platform_driver(g12a_aoclkc_driver);
 
 MODULE_DESCRIPTION("Amlogic G12A Always-ON Clock Controller driver");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
 MODULE_IMPORT_NS(CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

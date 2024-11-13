@@ -22,10 +22,7 @@
 	aliases {
 		i2c0 = &i2c0;
 		i2c2 = &i2c2;
-<<<<<<< HEAD
-=======
 		i2c3 = &i2c3;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		serial0 = &uart0;
 		serial1 = &uart1;
 		serial2 = &uart2;
@@ -272,8 +269,6 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
-=======
 	pwm0: pwm@ff430000 {
 		compatible = "rockchip,rv1126-pwm", "rockchip,rk3328-pwm";
 		reg = <0xff430000 0x10>;
@@ -296,7 +291,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pwm2: pwm@ff430020 {
 		compatible = "rockchip,rv1126-pwm", "rockchip,rk3328-pwm";
 		reg = <0xff430020 0x10>;
@@ -308,8 +302,6 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
-=======
 	pwm3: pwm@ff430030 {
 		compatible = "rockchip,rv1126-pwm", "rockchip,rk3328-pwm";
 		reg = <0xff430030 0x10>;
@@ -365,7 +357,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pmucru: clock-controller@ff480000 {
 		compatible = "rockchip,rv1126-pmucru";
 		reg = <0xff480000 0x1000>;
@@ -395,8 +386,6 @@
 		clock-names = "apb_pclk";
 	};
 
-<<<<<<< HEAD
-=======
 	i2c3: i2c@ff520000 {
 		compatible = "rockchip,rv1126-i2c", "rockchip,rk3399-i2c";
 		reg = <0xff520000 0x1000>;
@@ -444,7 +433,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pwm11: pwm@ff550030 {
 		compatible = "rockchip,rv1126-pwm", "rockchip,rk3328-pwm";
 		reg = <0xff550030 0x10>;
@@ -556,8 +544,6 @@
 		clock-names = "pclk", "timer";
 	};
 
-<<<<<<< HEAD
-=======
 	i2s0: i2s@ff800000 {
 		compatible = "rockchip,rv1126-i2s-tdm";
 		reg = <0xff800000 0x1000>;
@@ -584,7 +570,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vop: vop@ffb00000 {
 		compatible = "rockchip,rv1126-vop";
 		reg = <0xffb00000 0x200>, <0xffb00a00 0x400>;

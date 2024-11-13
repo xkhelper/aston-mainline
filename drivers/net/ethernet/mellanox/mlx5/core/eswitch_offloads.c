@@ -613,8 +613,6 @@ esw_setup_dests(struct mlx5_flow_destination *dest,
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	if (attr->extra_split_ft) {
 		flow_act->flags |= FLOW_ACT_IGNORE_FLOW_LEVEL;
 		dest[*i].type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
@@ -622,7 +620,6 @@ esw_setup_dests(struct mlx5_flow_destination *dest,
 		(*i)++;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	return err;
 }

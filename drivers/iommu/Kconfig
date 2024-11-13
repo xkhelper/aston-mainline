@@ -151,11 +151,7 @@ config OF_IOMMU
 # IOMMU-agnostic DMA-mapping layer
 config IOMMU_DMA
 	def_bool ARM64 || X86 || S390
-<<<<<<< HEAD
-	select DMA_OPS
-=======
 	select DMA_OPS_HELPERS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select IOMMU_API
 	select IOMMU_IOVA
 	select IRQ_MSI_IOMMU
@@ -428,8 +424,6 @@ config ARM_SMMU_V3_KUNIT_TEST
 	  Enable this option to unit-test arm-smmu-v3 driver functions.
 
 	  If unsure, say N.
-<<<<<<< HEAD
-=======
 
 config TEGRA241_CMDQV
 	bool "NVIDIA Tegra241 CMDQ-V extension support for ARM SMMUv3"
@@ -441,7 +435,6 @@ config TEGRA241_CMDQV
 
 	  Say Y here if your system is NVIDIA Tegra241 (Grace) or it has the same
 	  CMDQ-V extension.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 config S390_IOMMU

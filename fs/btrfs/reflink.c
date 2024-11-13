@@ -66,11 +66,7 @@ static int copy_inline_to_page(struct btrfs_inode *inode,
 	const size_t inline_size = size - btrfs_file_extent_calc_inline_size(0);
 	char *data_start = inline_data + btrfs_file_extent_calc_inline_size(0);
 	struct extent_changeset *data_reserved = NULL;
-<<<<<<< HEAD
-	struct page *page = NULL;
-=======
 	struct folio *folio = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct address_space *mapping = inode->vfs_inode.i_mapping;
 	int ret;
 
@@ -87,25 +83,15 @@ static int copy_inline_to_page(struct btrfs_inode *inode,
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
-	page = find_or_create_page(mapping, file_offset >> PAGE_SHIFT,
-				   btrfs_alloc_write_mask(mapping));
-	if (!page) {
-=======
 	folio = __filemap_get_folio(mapping, file_offset >> PAGE_SHIFT,
 					FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
 					btrfs_alloc_write_mask(mapping));
 	if (IS_ERR(folio)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -ENOMEM;
 		goto out_unlock;
 	}
 
-<<<<<<< HEAD
-	ret = set_page_extent_mapped(page);
-=======
 	ret = set_folio_extent_mapped(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		goto out_unlock;
 
@@ -130,17 +116,6 @@ static int copy_inline_to_page(struct btrfs_inode *inode,
 	set_bit(BTRFS_INODE_NO_DELALLOC_FLUSH, &inode->runtime_flags);
 
 	if (comp_type == BTRFS_COMPRESS_NONE) {
-<<<<<<< HEAD
-		memcpy_to_page(page, offset_in_page(file_offset), data_start,
-			       datal);
-	} else {
-		ret = btrfs_decompress(comp_type, data_start, page,
-				       offset_in_page(file_offset),
-				       inline_size, datal);
-		if (ret)
-			goto out_unlock;
-		flush_dcache_page(page);
-=======
 		memcpy_to_folio(folio, offset_in_folio(folio, file_offset), data_start,
 					datal);
 	} else {
@@ -150,7 +125,6 @@ static int copy_inline_to_page(struct btrfs_inode *inode,
 		if (ret)
 			goto out_unlock;
 		flush_dcache_folio(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -166,17 +140,6 @@ static int copy_inline_to_page(struct btrfs_inode *inode,
 	 * So what's in the range [500, 4095] corresponds to zeroes.
 	 */
 	if (datal < block_size)
-<<<<<<< HEAD
-		memzero_page(page, datal, block_size - datal);
-
-	btrfs_folio_set_uptodate(fs_info, page_folio(page), file_offset, block_size);
-	btrfs_folio_clear_checked(fs_info, page_folio(page), file_offset, block_size);
-	btrfs_folio_set_dirty(fs_info, page_folio(page), file_offset, block_size);
-out_unlock:
-	if (page) {
-		unlock_page(page);
-		put_page(page);
-=======
 		folio_zero_range(folio, datal, block_size - datal);
 
 	btrfs_folio_set_uptodate(fs_info, folio, file_offset, block_size);
@@ -186,7 +149,6 @@ out_unlock:
 	if (!IS_ERR(folio)) {
 		folio_unlock(folio);
 		folio_put(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (ret)
 		btrfs_delalloc_release_space(inode, data_reserved, file_offset,

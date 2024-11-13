@@ -19,8 +19,6 @@
 
 	.section .irqentry.text, "ax"
 
-<<<<<<< HEAD
-=======
 .macro new_vmalloc_check
 	REG_S 	a0, TASK_TI_A0(tp)
 	csrr 	a0, CSR_CAUSE
@@ -94,7 +92,6 @@ _new_vmalloc_restore_context_a0:
 .endm
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SYM_CODE_START(handle_exception)
 	/*
 	 * If coming from userspace, preserve the user thread pointer and load
@@ -106,8 +103,6 @@ SYM_CODE_START(handle_exception)
 
 .Lrestore_kernel_tpsp:
 	csrr tp, CSR_SCRATCH
-<<<<<<< HEAD
-=======
 
 #ifdef CONFIG_64BIT
 	/*
@@ -122,7 +117,6 @@ SYM_CODE_START(handle_exception)
 	new_vmalloc_check
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	REG_S sp, TASK_TI_KERNEL_SP(tp)
 
 #ifdef CONFIG_VMAP_STACK
@@ -332,13 +326,8 @@ SYM_CODE_START(ret_from_fork)
 	jalr s0
 1:
 	move a0, sp /* pt_regs */
-<<<<<<< HEAD
-	la ra, ret_from_exception
-	tail syscall_exit_to_user_mode
-=======
 	call syscall_exit_to_user_mode
 	j ret_from_exception
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SYM_CODE_END(ret_from_fork)
 
 #ifdef CONFIG_IRQ_STACKS

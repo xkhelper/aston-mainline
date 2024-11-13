@@ -33,10 +33,7 @@
 #include <linux/cdev.h>
 #include <linux/mutex.h>
 #include <linux/scatterlist.h>
-<<<<<<< HEAD
-=======
 #include <linux/string.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/string_helpers.h>
 #include <linux/delay.h>
 #include <linux/capability.h>
@@ -44,10 +41,7 @@
 #include <linux/pm_runtime.h>
 #include <linux/idr.h>
 #include <linux/debugfs.h>
-<<<<<<< HEAD
-=======
 #include <linux/rpmb.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/mmc/ioctl.h>
 #include <linux/mmc/card.h>
@@ -84,8 +78,6 @@ MODULE_ALIAS("mmc:block");
 #define MMC_EXTRACT_INDEX_FROM_ARG(x) ((x & 0x00FF0000) >> 16)
 #define MMC_EXTRACT_VALUE_FROM_ARG(x) ((x & 0x0000FF00) >> 8)
 
-<<<<<<< HEAD
-=======
 /**
  * struct rpmb_frame - rpmb frame as defined by eMMC 5.1 (JESD84-B51)
  *
@@ -128,7 +120,6 @@ struct rpmb_frame {
 #define RPMB_READ_DATA         0x4    /* Read data from RPMB partition */
 #define RPMB_RESULT_READ       0x5    /* Read result request  (Internal) */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static DEFINE_MUTEX(block_mutex);
 
 /*
@@ -208,10 +199,7 @@ static const struct bus_type mmc_rpmb_bus_type = {
  * @id: unique device ID number
  * @part_index: partition index (0 on first)
  * @md: parent MMC block device
-<<<<<<< HEAD
-=======
  * @rdev: registered RPMB device
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @node: list item, so we can put this device on a list
  */
 struct mmc_rpmb_data {
@@ -220,10 +208,7 @@ struct mmc_rpmb_data {
 	int id;
 	unsigned int part_index;
 	struct mmc_blk_data *md;
-<<<<<<< HEAD
-=======
 	struct rpmb_dev *rdev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head node;
 };
 
@@ -368,17 +353,10 @@ static ssize_t force_ro_store(struct device *dev, struct device_attribute *attr,
 			      const char *buf, size_t count)
 {
 	int ret;
-<<<<<<< HEAD
-	char *end;
-	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
-	unsigned long set = simple_strtoul(buf, &end, 0);
-	if (end == buf) {
-=======
 	struct mmc_blk_data *md = mmc_blk_get(dev_to_disk(dev));
 	unsigned long set;
 
 	if (kstrtoul(buf, 0, &set)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EINVAL;
 		goto out;
 	}
@@ -2552,11 +2530,7 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
 		return ERR_PTR(devidx);
 	}
 
-<<<<<<< HEAD
-	md = kzalloc(sizeof(struct mmc_blk_data), GFP_KERNEL);
-=======
 	md = kzalloc(sizeof(*md), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!md) {
 		ret = -ENOMEM;
 		goto out;
@@ -2742,10 +2716,6 @@ static int mmc_rpmb_chrdev_open(struct inode *inode, struct file *filp)
 
 	get_device(&rpmb->dev);
 	filp->private_data = rpmb;
-<<<<<<< HEAD
-	mmc_blk_get(rpmb->md->disk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return nonseekable_open(inode, filp);
 }
@@ -2755,10 +2725,6 @@ static int mmc_rpmb_chrdev_release(struct inode *inode, struct file *filp)
 	struct mmc_rpmb_data *rpmb = container_of(inode->i_cdev,
 						  struct mmc_rpmb_data, chrdev);
 
-<<<<<<< HEAD
-	mmc_blk_put(rpmb->md);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	put_device(&rpmb->dev);
 
 	return 0;
@@ -2768,10 +2734,6 @@ static const struct file_operations mmc_rpmb_fileops = {
 	.release = mmc_rpmb_chrdev_release,
 	.open = mmc_rpmb_chrdev_open,
 	.owner = THIS_MODULE,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl = mmc_rpmb_ioctl,
 #ifdef CONFIG_COMPAT
 	.compat_ioctl = mmc_rpmb_ioctl_compat,
@@ -2782,17 +2744,12 @@ static void mmc_blk_rpmb_device_release(struct device *dev)
 {
 	struct mmc_rpmb_data *rpmb = dev_get_drvdata(dev);
 
-<<<<<<< HEAD
-=======
 	rpmb_dev_unregister(rpmb->rdev);
 	mmc_blk_put(rpmb->md);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ida_free(&mmc_rpmb_ida, rpmb->id);
 	kfree(rpmb);
 }
 
-<<<<<<< HEAD
-=======
 static void free_idata(struct mmc_blk_ioc_data **idata, unsigned int cmd_count)
 {
 	unsigned int n;
@@ -2946,7 +2903,6 @@ out:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mmc_blk_alloc_rpmb_part(struct mmc_card *card,
 				   struct mmc_blk_data *md,
 				   unsigned int part_index,
@@ -2981,10 +2937,7 @@ static int mmc_blk_alloc_rpmb_part(struct mmc_card *card,
 	rpmb->dev.release = mmc_blk_rpmb_device_release;
 	device_initialize(&rpmb->dev);
 	dev_set_drvdata(&rpmb->dev, rpmb);
-<<<<<<< HEAD
-=======
 	mmc_blk_get(md->disk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rpmb->md = md;
 
 	cdev_init(&rpmb->chrdev, &mmc_rpmb_fileops);
@@ -3246,8 +3199,6 @@ static void mmc_blk_remove_debugfs(struct mmc_card *card,
 
 #endif /* CONFIG_DEBUG_FS */
 
-<<<<<<< HEAD
-=======
 static void mmc_blk_rpmb_add(struct mmc_card *card)
 {
 	struct mmc_blk_data *md = dev_get_drvdata(&card->dev);
@@ -3284,7 +3235,6 @@ static void mmc_blk_rpmb_add(struct mmc_card *card)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mmc_blk_probe(struct mmc_card *card)
 {
 	struct mmc_blk_data *md;
@@ -3330,11 +3280,8 @@ static int mmc_blk_probe(struct mmc_card *card)
 		pm_runtime_enable(&card->dev);
 	}
 
-<<<<<<< HEAD
-=======
 	mmc_blk_rpmb_add(card);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 out:

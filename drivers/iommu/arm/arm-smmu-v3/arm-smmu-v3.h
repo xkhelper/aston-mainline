@@ -14,11 +14,8 @@
 #include <linux/mmzone.h>
 #include <linux/sizes.h>
 
-<<<<<<< HEAD
-=======
 struct arm_smmu_device;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* MMIO registers */
 #define ARM_SMMU_IDR0			0x0
 #define IDR0_ST_LVL			GENMASK(28, 27)
@@ -207,15 +204,8 @@ struct arm_smmu_device;
  * 2lvl: 128k L1 entries,
  *       256 lazy entries per table (each table covers a PCI bus)
  */
-<<<<<<< HEAD
-#define STRTAB_L1_SZ_SHIFT		20
 #define STRTAB_SPLIT			8
 
-#define STRTAB_L1_DESC_DWORDS		1
-=======
-#define STRTAB_SPLIT			8
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define STRTAB_L1_DESC_SPAN		GENMASK_ULL(4, 0)
 #define STRTAB_L1_DESC_L2PTR_MASK	GENMASK_ULL(51, 6)
 
@@ -225,8 +215,6 @@ struct arm_smmu_ste {
 	__le64 data[STRTAB_STE_DWORDS];
 };
 
-<<<<<<< HEAD
-=======
 #define STRTAB_NUM_L2_STES		(1 << STRTAB_SPLIT)
 struct arm_smmu_strtab_l2 {
 	struct arm_smmu_ste stes[STRTAB_NUM_L2_STES];
@@ -247,7 +235,6 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
 	return sid % STRTAB_NUM_L2_STES;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define STRTAB_STE_0_V			(1UL << 0)
 #define STRTAB_STE_0_CFG		GENMASK_ULL(3, 1)
 #define STRTAB_STE_0_CFG_ABORT		0
@@ -300,10 +287,7 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
 #define STRTAB_STE_2_S2AA64		(1UL << 51)
 #define STRTAB_STE_2_S2ENDI		(1UL << 52)
 #define STRTAB_STE_2_S2PTW		(1UL << 54)
-<<<<<<< HEAD
-=======
 #define STRTAB_STE_2_S2S		(1UL << 57)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define STRTAB_STE_2_S2R		(1UL << 58)
 
 #define STRTAB_STE_3_S2TTB_MASK		GENMASK_ULL(51, 4)
@@ -317,10 +301,6 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
  */
 #define CTXDESC_L2_ENTRIES		1024
 
-<<<<<<< HEAD
-#define CTXDESC_L1_DESC_DWORDS		1
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CTXDESC_L1_DESC_V		(1UL << 0)
 #define CTXDESC_L1_DESC_L2PTR_MASK	GENMASK_ULL(51, 12)
 
@@ -330,8 +310,6 @@ struct arm_smmu_cd {
 	__le64 data[CTXDESC_CD_DWORDS];
 };
 
-<<<<<<< HEAD
-=======
 struct arm_smmu_cdtab_l2 {
 	struct arm_smmu_cd cds[CTXDESC_L2_ENTRIES];
 };
@@ -350,7 +328,6 @@ static inline unsigned int arm_smmu_cdtab_l2_idx(unsigned int ssid)
 	return ssid % CTXDESC_L2_ENTRIES;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CTXDESC_CD_0_TCR_T0SZ		GENMASK_ULL(5, 0)
 #define CTXDESC_CD_0_TCR_TG0		GENMASK_ULL(7, 6)
 #define CTXDESC_CD_0_TCR_IRGN0		GENMASK_ULL(9, 8)
@@ -381,11 +358,7 @@ static inline unsigned int arm_smmu_cdtab_l2_idx(unsigned int ssid)
  * When the SMMU only supports linear context descriptor tables, pick a
  * reasonable size limit (64kB).
  */
-<<<<<<< HEAD
-#define CTXDESC_LINEAR_CDMAX		ilog2(SZ_64K / (CTXDESC_CD_DWORDS << 3))
-=======
 #define CTXDESC_LINEAR_CDMAX		ilog2(SZ_64K / sizeof(struct arm_smmu_cd))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Command queue */
 #define CMDQ_ENT_SZ_SHIFT		4
@@ -631,12 +604,6 @@ struct arm_smmu_cmdq {
 	atomic_long_t			*valid_map;
 	atomic_t			owner_prod;
 	atomic_t			lock;
-<<<<<<< HEAD
-};
-
-struct arm_smmu_cmdq_batch {
-	u64				cmds[CMDQ_BATCH_ENTRIES * CMDQ_ENT_DWORDS];
-=======
 	bool				(*supports_cmd)(struct arm_smmu_cmdq_ent *ent);
 };
 
@@ -649,7 +616,6 @@ static inline bool arm_smmu_cmdq_supports_cmd(struct arm_smmu_cmdq *cmdq,
 struct arm_smmu_cmdq_batch {
 	u64				cmds[CMDQ_BATCH_ENTRIES * CMDQ_ENT_DWORDS];
 	struct arm_smmu_cmdq		*cmdq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int				num;
 };
 
@@ -664,29 +630,10 @@ struct arm_smmu_priq {
 };
 
 /* High-level stream table and context descriptor structures */
-<<<<<<< HEAD
-struct arm_smmu_strtab_l1_desc {
-	struct arm_smmu_ste		*l2ptr;
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct arm_smmu_ctx_desc {
 	u16				asid;
 };
 
-<<<<<<< HEAD
-struct arm_smmu_l1_ctx_desc {
-	struct arm_smmu_cd		*l2ptr;
-	dma_addr_t			l2ptr_dma;
-};
-
-struct arm_smmu_ctx_desc_cfg {
-	__le64				*cdtab;
-	dma_addr_t			cdtab_dma;
-	struct arm_smmu_l1_ctx_desc	*l1_desc;
-	unsigned int			num_l1_ents;
-=======
 struct arm_smmu_ctx_desc_cfg {
 	union {
 		struct {
@@ -700,7 +647,6 @@ struct arm_smmu_ctx_desc_cfg {
 		} l2;
 	};
 	dma_addr_t			cdtab_dma;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int			used_ssids;
 	u8				in_ste;
 	u8				s1fmt;
@@ -708,15 +654,12 @@ struct arm_smmu_ctx_desc_cfg {
 	u8				s1cdmax;
 };
 
-<<<<<<< HEAD
-=======
 static inline bool
 arm_smmu_cdtab_allocated(struct arm_smmu_ctx_desc_cfg *cfg)
 {
 	return cfg->linear.table || cfg->l2.l1tab;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* True if the cd table has SSIDS > 0 in use. */
 static inline bool arm_smmu_ssids_in_use(struct arm_smmu_ctx_desc_cfg *cd_table)
 {
@@ -728,15 +671,6 @@ struct arm_smmu_s2_cfg {
 };
 
 struct arm_smmu_strtab_cfg {
-<<<<<<< HEAD
-	__le64				*strtab;
-	dma_addr_t			strtab_dma;
-	struct arm_smmu_strtab_l1_desc	*l1_desc;
-	unsigned int			num_l1_ents;
-
-	u64				strtab_base;
-	u32				strtab_base_cfg;
-=======
 	union {
 		struct {
 			struct arm_smmu_ste *table;
@@ -758,18 +692,14 @@ struct arm_smmu_impl_ops {
 	int (*init_structures)(struct arm_smmu_device *smmu);
 	struct arm_smmu_cmdq *(*get_secondary_cmdq)(
 		struct arm_smmu_device *smmu, struct arm_smmu_cmdq_ent *ent);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* An SMMUv3 instance */
 struct arm_smmu_device {
 	struct device			*dev;
-<<<<<<< HEAD
-=======
 	struct device			*impl_dev;
 	const struct arm_smmu_impl_ops	*impl_ops;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem			*base;
 	void __iomem			*page1;
 
@@ -802,10 +732,7 @@ struct arm_smmu_device {
 #define ARM_SMMU_OPT_PAGE0_REGS_ONLY	(1 << 1)
 #define ARM_SMMU_OPT_MSIPOLL		(1 << 2)
 #define ARM_SMMU_OPT_CMDQ_FORCE_SYNC	(1 << 3)
-<<<<<<< HEAD
-=======
 #define ARM_SMMU_OPT_TEGRA241_CMDQV	(1 << 4)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32				options;
 
 	struct arm_smmu_cmdq		cmdq;
@@ -957,8 +884,6 @@ void arm_smmu_tlb_inv_range_asid(unsigned long iova, size_t size, int asid,
 int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain,
 			    unsigned long iova, size_t size);
 
-<<<<<<< HEAD
-=======
 void __arm_smmu_cmdq_skip_err(struct arm_smmu_device *smmu,
 			      struct arm_smmu_cmdq *cmdq);
 int arm_smmu_init_one_queue(struct arm_smmu_device *smmu,
@@ -968,7 +893,6 @@ int arm_smmu_init_one_queue(struct arm_smmu_device *smmu,
 int arm_smmu_cmdq_init(struct arm_smmu_device *smmu,
 		       struct arm_smmu_cmdq *cmdq);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ARM_SMMU_V3_SVA
 bool arm_smmu_sva_supported(struct arm_smmu_device *smmu);
 bool arm_smmu_master_sva_supported(struct arm_smmu_master *master);
@@ -1014,14 +938,6 @@ static inline void arm_smmu_sva_notifier_synchronize(void) {}
 
 #define arm_smmu_sva_domain_alloc NULL
 
-<<<<<<< HEAD
-static inline void arm_smmu_sva_remove_dev_pasid(struct iommu_domain *domain,
-						 struct device *dev,
-						 ioasid_t id)
-{
-}
-#endif /* CONFIG_ARM_SMMU_V3_SVA */
-=======
 #endif /* CONFIG_ARM_SMMU_V3_SVA */
 
 #ifdef CONFIG_TEGRA241_CMDQV
@@ -1033,5 +949,4 @@ tegra241_cmdqv_probe(struct arm_smmu_device *smmu)
 	return ERR_PTR(-ENODEV);
 }
 #endif /* CONFIG_TEGRA241_CMDQV */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _ARM_SMMU_V3_H */

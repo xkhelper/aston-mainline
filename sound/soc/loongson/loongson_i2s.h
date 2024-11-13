@@ -27,20 +27,6 @@
 #define LS_I2S_RX_ORDER 0x110 /* RX DMA Order */
 
 /* Loongson I2S Control Register */
-<<<<<<< HEAD
-#define I2S_CTRL_MCLK_READY	(1 << 16) /* MCLK ready */
-#define I2S_CTRL_MASTER		(1 << 15) /* Master mode */
-#define I2S_CTRL_MSB		(1 << 14) /* MSB bit order */
-#define I2S_CTRL_RX_EN		(1 << 13) /* RX enable */
-#define I2S_CTRL_TX_EN		(1 << 12) /* TX enable */
-#define I2S_CTRL_RX_DMA_EN	(1 << 11) /* DMA RX enable */
-#define I2S_CTRL_CLK_READY	(1 << 8)  /* BCLK ready */
-#define I2S_CTRL_TX_DMA_EN	(1 << 7)  /* DMA TX enable */
-#define I2S_CTRL_RESET		(1 << 4)  /* Controller soft reset */
-#define I2S_CTRL_MCLK_EN	(1 << 3)  /* Enable MCLK */
-#define I2S_CTRL_RX_INT_EN	(1 << 1)  /* RX interrupt enable */
-#define I2S_CTRL_TX_INT_EN	(1 << 0)  /* TX interrupt enable */
-=======
 #define I2S_CTRL_MCLK_READY	BIT(16) /* MCLK ready */
 #define I2S_CTRL_MASTER		BIT(15) /* Master mode */
 #define I2S_CTRL_MSB		BIT(14) /* MSB bit order */
@@ -53,7 +39,6 @@
 #define I2S_CTRL_MCLK_EN	BIT(3)  /* Enable MCLK */
 #define I2S_CTRL_RX_INT_EN	BIT(1)  /* RX interrupt enable */
 #define I2S_CTRL_TX_INT_EN	BIT(0)  /* TX interrupt enable */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define LS_I2S_DRVNAME		"loongson-i2s"
 

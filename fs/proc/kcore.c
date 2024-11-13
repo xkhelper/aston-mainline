@@ -50,8 +50,6 @@ static struct proc_dir_entry *proc_root_kcore;
 #define	kc_offset_to_vaddr(o) ((o) + PAGE_OFFSET)
 #endif
 
-<<<<<<< HEAD
-=======
 #ifndef kc_xlate_dev_mem_ptr
 #define kc_xlate_dev_mem_ptr kc_xlate_dev_mem_ptr
 static inline void *kc_xlate_dev_mem_ptr(phys_addr_t phys)
@@ -66,7 +64,6 @@ static inline void kc_unxlate_dev_mem_ptr(phys_addr_t phys, void *virt)
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static LIST_HEAD(kclist_head);
 static DECLARE_RWSEM(kclist_lock);
 static int kcore_need_update = 1;
@@ -252,11 +249,7 @@ static int kcore_ram_list(struct list_head *list)
 	int nid, ret;
 	unsigned long end_pfn;
 
-<<<<<<< HEAD
-	/* Not inialized....update now */
-=======
 	/* Not initialized....update now */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* find out "max pfn" */
 	end_pfn = 0;
 	for_each_node_state(nid, N_MEMORY) {
@@ -492,11 +485,8 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
 	while (buflen) {
 		struct page *page;
 		unsigned long pfn;
-<<<<<<< HEAD
-=======
 		phys_addr_t phys;
 		void *__start;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * If this is the first iteration or the address is not within
@@ -563,12 +553,8 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
 			}
 			break;
 		case KCORE_RAM:
-<<<<<<< HEAD
-			pfn = __pa(start) >> PAGE_SHIFT;
-=======
 			phys = __pa(start);
 			pfn =  phys >> PAGE_SHIFT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			page = pfn_to_online_page(pfn);
 
 			/*
@@ -588,8 +574,6 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
 			fallthrough;
 		case KCORE_VMEMMAP:
 		case KCORE_TEXT:
-<<<<<<< HEAD
-=======
 			if (m->type == KCORE_RAM) {
 				__start = kc_xlate_dev_mem_ptr(phys);
 				if (!__start) {
@@ -602,21 +586,16 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
 				__start = (void *)start;
 			}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*
 			 * Sadly we must use a bounce buffer here to be able to
 			 * make use of copy_from_kernel_nofault(), as these
 			 * memory regions might not always be mapped on all
 			 * architectures.
 			 */
-<<<<<<< HEAD
-			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
-=======
 			ret = copy_from_kernel_nofault(buf, __start, tsz);
 			if (m->type == KCORE_RAM)
 				kc_unxlate_dev_mem_ptr(phys, __start);
 			if (ret) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (iov_iter_zero(tsz, iter) != tsz) {
 					ret = -EFAULT;
 					goto out;

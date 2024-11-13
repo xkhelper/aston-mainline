@@ -6,10 +6,7 @@
 #include <linux/module.h>
 #include <linux/gpio/consumer.h>
 #include <linux/regmap.h>
-<<<<<<< HEAD
-=======
 #include <linux/iopoll.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/mutex.h>
 #include <linux/mii.h>
 #include <linux/of.h>
@@ -843,11 +840,8 @@ static void lan9303_handle_reset(struct lan9303 *chip)
 	if (!chip->reset_gpio)
 		return;
 
-<<<<<<< HEAD
-=======
 	gpiod_set_value_cansleep(chip->reset_gpio, 1);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (chip->reset_duration != 0)
 		msleep(chip->reset_duration);
 
@@ -873,10 +867,6 @@ static int lan9303_disable_processing(struct lan9303 *chip)
 static int lan9303_check_device(struct lan9303 *chip)
 {
 	int ret;
-<<<<<<< HEAD
-	u32 reg;
-
-=======
 	int err;
 	u32 reg;
 
@@ -905,7 +895,6 @@ static int lan9303_check_device(struct lan9303 *chip)
 		return err;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = lan9303_read(chip->regmap, LAN9303_CHIP_REV, &reg);
 	if (ret) {
 		dev_err(chip->dev, "failed to read chip revision register: %d\n",

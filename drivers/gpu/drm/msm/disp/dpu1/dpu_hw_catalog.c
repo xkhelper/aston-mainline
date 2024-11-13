@@ -96,24 +96,16 @@
 
 #define INTF_SC7280_MASK (INTF_SC7180_MASK)
 
-<<<<<<< HEAD
-#define WB_SM8250_MASK (BIT(DPU_WB_LINE_MODE) | \
-=======
 #define WB_SDM845_MASK (BIT(DPU_WB_LINE_MODE) | \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 BIT(DPU_WB_UBWC) | \
 			 BIT(DPU_WB_YUV_CONFIG) | \
 			 BIT(DPU_WB_PIPE_ALPHA) | \
 			 BIT(DPU_WB_XY_ROI_OFFSET) | \
 			 BIT(DPU_WB_QOS) | \
 			 BIT(DPU_WB_QOS_8LVL) | \
-<<<<<<< HEAD
-			 BIT(DPU_WB_CDP) | \
-=======
 			 BIT(DPU_WB_CDP))
 
 #define WB_SM8250_MASK (WB_SDM845_MASK | \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 BIT(DPU_WB_INPUT_CTRL))
 
 #define DEFAULT_PIXEL_RAM_SIZE		(50 * 1024)

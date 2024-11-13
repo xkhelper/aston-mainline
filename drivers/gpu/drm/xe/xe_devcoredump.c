@@ -66,28 +66,9 @@ static struct xe_guc *exec_queue_to_guc(struct xe_exec_queue *q)
 	return &q->gt->uc.guc;
 }
 
-<<<<<<< HEAD
-static void xe_devcoredump_deferred_snap_work(struct work_struct *work)
-{
-	struct xe_devcoredump_snapshot *ss = container_of(work, typeof(*ss), work);
-
-	/* keep going if fw fails as we still want to save the memory and SW data */
-	if (xe_force_wake_get(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL))
-		xe_gt_info(ss->gt, "failed to get forcewake for coredump capture\n");
-	xe_vm_snapshot_capture_delayed(ss->vm);
-	xe_guc_exec_queue_snapshot_capture_delayed(ss->ge);
-	xe_force_wake_put(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL);
-}
-
-static ssize_t xe_devcoredump_read(char *buffer, loff_t offset,
-				   size_t count, void *data, size_t datalen)
-{
-	struct xe_devcoredump *coredump = data;
-=======
 static ssize_t __xe_devcoredump_read(char *buffer, size_t count,
 				     struct xe_devcoredump *coredump)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_device *xe;
 	struct xe_devcoredump_snapshot *ss;
 	struct drm_printer p;
@@ -95,26 +76,11 @@ static ssize_t __xe_devcoredump_read(char *buffer, size_t count,
 	struct timespec64 ts;
 	int i;
 
-<<<<<<< HEAD
-	if (!coredump)
-		return -ENODEV;
-
-	xe = coredump_to_xe(coredump);
-	ss = &coredump->snapshot;
-
-	/* Ensure delayed work is captured before continuing */
-	flush_work(&ss->work);
-
-	iter.data = buffer;
-	iter.offset = 0;
-	iter.start = offset;
-=======
 	xe = coredump_to_xe(coredump);
 	ss = &coredump->snapshot;
 
 	iter.data = buffer;
 	iter.start = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iter.remain = count;
 
 	p = drm_coredump_printer(&iter);
@@ -148,12 +114,6 @@ static ssize_t __xe_devcoredump_read(char *buffer, size_t count,
 	return count - iter.remain;
 }
 
-<<<<<<< HEAD
-static void xe_devcoredump_free(void *data)
-{
-	struct xe_devcoredump *coredump = data;
-	int i;
-=======
 static void xe_devcoredump_snapshot_free(struct xe_devcoredump_snapshot *ss)
 {
 	int i;
@@ -231,7 +191,6 @@ static ssize_t xe_devcoredump_read(char *buffer, loff_t offset,
 static void xe_devcoredump_free(void *data)
 {
 	struct xe_devcoredump *coredump = data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Our device is gone. Nothing to do... */
 	if (!data || !coredump_to_xe(coredump))
@@ -239,18 +198,8 @@ static void xe_devcoredump_free(void *data)
 
 	cancel_work_sync(&coredump->snapshot.work);
 
-<<<<<<< HEAD
-	xe_guc_ct_snapshot_free(coredump->snapshot.ct);
-	xe_guc_exec_queue_snapshot_free(coredump->snapshot.ge);
-	xe_sched_job_snapshot_free(coredump->snapshot.job);
-	for (i = 0; i < XE_NUM_HW_ENGINES; i++)
-		if (coredump->snapshot.hwe[i])
-			xe_hw_engine_snapshot_free(coredump->snapshot.hwe[i]);
-	xe_vm_snapshot_free(coredump->snapshot.vm);
-=======
 	xe_devcoredump_snapshot_free(&coredump->snapshot);
 	kvfree(coredump->snapshot.read.buffer);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* To prevent stale data on next snapshot, clear everything */
 	memset(&coredump->snapshot, 0, sizeof(coredump->snapshot));
@@ -270,10 +219,6 @@ static void devcoredump_snapshot(struct xe_devcoredump *coredump,
 	u32 adj_logical_mask = q->logical_mask;
 	u32 width_mask = (0x1 << q->width) - 1;
 	const char *process_name = "no process";
-<<<<<<< HEAD
-	struct task_struct *task = NULL;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int i;
 	bool cookie;
@@ -281,20 +226,9 @@ static void devcoredump_snapshot(struct xe_devcoredump *coredump,
 	ss->snapshot_time = ktime_get_real();
 	ss->boot_time = ktime_get_boottime();
 
-<<<<<<< HEAD
-	if (q->vm && q->vm->xef) {
-		task = get_pid_task(q->vm->xef->drm->pid, PIDTYPE_PID);
-		if (task)
-			process_name = task->comm;
-	}
-	strscpy(ss->process_name, process_name);
-	if (task)
-		put_task_struct(task);
-=======
 	if (q->vm && q->vm->xef)
 		process_name = q->vm->xef->process_name;
 	strscpy(ss->process_name, process_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ss->gt = q->gt;
 	INIT_WORK(&ss->work, xe_devcoredump_deferred_snap_work);
@@ -374,8 +308,5 @@ int xe_devcoredump_init(struct xe_device *xe)
 {
 	return devm_add_action_or_reset(xe->drm.dev, xe_driver_devcoredump_fini, &xe->drm);
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

@@ -14,11 +14,7 @@
 #include <linux/delay.h>
 #include <linux/interrupt.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
@@ -50,10 +46,7 @@ MODULE_DEVICE_TABLE(pci, btintel_pcie_table);
 #define BTINTEL_PCIE_HCI_ACL_PKT	0x00000002
 #define BTINTEL_PCIE_HCI_SCO_PKT	0x00000003
 #define BTINTEL_PCIE_HCI_EVT_PKT	0x00000004
-<<<<<<< HEAD
-=======
 #define BTINTEL_PCIE_HCI_ISO_PKT	0x00000005
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline void ipc_print_ia_ring(struct hci_dev *hdev, struct ia *ia,
 				     u16 queue_num)
@@ -431,8 +424,6 @@ static int btintel_pcie_recv_frame(struct btintel_pcie_data *data,
 			goto exit_error;
 		}
 		break;
-<<<<<<< HEAD
-=======
 
 	case BTINTEL_PCIE_HCI_ISO_PKT:
 		if (skb->len >= HCI_ISO_HDR_SIZE) {
@@ -445,7 +436,6 @@ static int btintel_pcie_recv_frame(struct btintel_pcie_data *data,
 		}
 		break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		bt_dev_err(hdev, "Invalid packet type received: 0x%4.4x",
 			   pcie_pkt_type);
@@ -1105,12 +1095,9 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
 		type = BTINTEL_PCIE_HCI_SCO_PKT;
 		hdev->stat.sco_tx++;
 		break;
-<<<<<<< HEAD
-=======
 	case HCI_ISODATA_PKT:
 		type = BTINTEL_PCIE_HCI_ISO_PKT;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		bt_dev_err(hdev, "Unknown HCI packet type");
 		return -EILSEQ;
@@ -1237,11 +1224,7 @@ static int btintel_pcie_setup_hdev(struct btintel_pcie_data *data)
 	int err;
 	struct hci_dev *hdev;
 
-<<<<<<< HEAD
-	hdev = hci_alloc_dev();
-=======
 	hdev = hci_alloc_dev_priv(sizeof(struct btintel_data));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!hdev)
 		return -ENOMEM;
 

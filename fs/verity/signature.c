@@ -17,10 +17,7 @@
 
 #include <linux/cred.h>
 #include <linux/key.h>
-<<<<<<< HEAD
-=======
 #include <linux/security.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/slab.h>
 #include <linux/verification.h>
 
@@ -45,15 +42,11 @@ static struct key *fsverity_keyring;
  * @sig_size: size of signature in bytes, or 0 if no signature
  *
  * If the file includes a signature of its fs-verity file digest, verify it
-<<<<<<< HEAD
- * against the certificates in the fs-verity keyring.
-=======
  * against the certificates in the fs-verity keyring. Note that signatures
  * are verified regardless of the state of the 'fsverity_require_signatures'
  * variable and the LSM subsystem relies on this behavior to help enforce
  * file integrity policies. Please discuss changes with the LSM list
  * (thank you!).
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return: 0 on success (signature valid or not required); -errno on failure
  */
@@ -118,8 +111,6 @@ int fsverity_verify_signature(const struct fsverity_info *vi,
 		return err;
 	}
 
-<<<<<<< HEAD
-=======
 	err = security_inode_setintegrity(inode,
 					  LSM_INT_FSVERITY_BUILTINSIG_VALID,
 					  signature,
@@ -131,7 +122,6 @@ int fsverity_verify_signature(const struct fsverity_info *vi,
 		return err;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

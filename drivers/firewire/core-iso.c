@@ -209,10 +209,6 @@ void fw_iso_context_queue_flush(struct fw_iso_context *ctx)
 }
 EXPORT_SYMBOL(fw_iso_context_queue_flush);
 
-<<<<<<< HEAD
-int fw_iso_context_flush_completions(struct fw_iso_context *ctx)
-{
-=======
 /**
  * fw_iso_context_flush_completions() - process isochronous context in current process context.
  * @ctx: the isochronous context
@@ -231,14 +227,10 @@ int fw_iso_context_flush_completions(struct fw_iso_context *ctx)
 {
 	int err;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_isoc_outbound_flush_completions(ctx);
 	trace_isoc_inbound_single_flush_completions(ctx);
 	trace_isoc_inbound_multiple_flush_completions(ctx);
 
-<<<<<<< HEAD
-	return ctx->card->driver->flush_iso_completions(ctx);
-=======
 	might_sleep();
 
 	// Avoid dead lock due to programming mistake.
@@ -252,24 +244,17 @@ int fw_iso_context_flush_completions(struct fw_iso_context *ctx)
 	enable_work(&ctx->work);
 
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(fw_iso_context_flush_completions);
 
 int fw_iso_context_stop(struct fw_iso_context *ctx)
 {
-<<<<<<< HEAD
-=======
 	int err;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_isoc_outbound_stop(ctx);
 	trace_isoc_inbound_single_stop(ctx);
 	trace_isoc_inbound_multiple_stop(ctx);
 
-<<<<<<< HEAD
-	return ctx->card->driver->stop_iso(ctx);
-=======
 	might_sleep();
 
 	// Avoid dead lock due to programming mistake.
@@ -281,7 +266,6 @@ int fw_iso_context_stop(struct fw_iso_context *ctx)
 	cancel_work_sync(&ctx->work);
 
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(fw_iso_context_stop);
 
@@ -431,14 +415,8 @@ void fw_iso_resource_manage(struct fw_card *card, int generation,
 	u32 channels_lo = channels_mask >> 32;	/* channels 63...32 */
 	int irm_id, ret, c = -EINVAL;
 
-<<<<<<< HEAD
-	spin_lock_irq(&card->lock);
-	irm_id = card->irm_node->node_id;
-	spin_unlock_irq(&card->lock);
-=======
 	scoped_guard(spinlock_irq, &card->lock)
 		irm_id = card->irm_node->node_id;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (channels_hi)
 		c = manage_channel(card, irm_id, generation, channels_hi,

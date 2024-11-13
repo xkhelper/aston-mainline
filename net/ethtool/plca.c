@@ -25,11 +25,7 @@ struct plca_reply_data {
 
 const struct nla_policy ethnl_plca_get_cfg_policy[] = {
 	[ETHTOOL_A_PLCA_HEADER]		=
-<<<<<<< HEAD
-		NLA_POLICY_NESTED(ethnl_header_policy),
-=======
 		NLA_POLICY_NESTED(ethnl_header_policy_phy),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void plca_update_sint(int *dst, struct nlattr **tb, u32 attrid,
@@ -62,12 +58,6 @@ static int plca_get_cfg_prepare_data(const struct ethnl_req_info *req_base,
 	struct plca_reply_data *data = PLCA_REPDATA(reply_base);
 	struct net_device *dev = reply_base->dev;
 	const struct ethtool_phy_ops *ops;
-<<<<<<< HEAD
-	int ret;
-
-	// check that the PHY device is available and connected
-	if (!dev->phydev) {
-=======
 	struct nlattr **tb = info->attrs;
 	struct phy_device *phydev;
 	int ret;
@@ -76,7 +66,6 @@ static int plca_get_cfg_prepare_data(const struct ethnl_req_info *req_base,
 				      info->extack);
 	// check that the PHY device is available and connected
 	if (IS_ERR_OR_NULL(phydev)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EOPNOTSUPP;
 		goto out;
 	}
@@ -95,11 +84,7 @@ static int plca_get_cfg_prepare_data(const struct ethnl_req_info *req_base,
 	memset(&data->plca_cfg, 0xff,
 	       sizeof_field(struct plca_reply_data, plca_cfg));
 
-<<<<<<< HEAD
-	ret = ops->get_plca_cfg(dev->phydev, &data->plca_cfg);
-=======
 	ret = ops->get_plca_cfg(phydev, &data->plca_cfg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ethnl_ops_complete(dev);
 
 out:
@@ -148,11 +133,7 @@ static int plca_get_cfg_fill_reply(struct sk_buff *skb,
 
 const struct nla_policy ethnl_plca_set_cfg_policy[] = {
 	[ETHTOOL_A_PLCA_HEADER]		=
-<<<<<<< HEAD
-		NLA_POLICY_NESTED(ethnl_header_policy),
-=======
 		NLA_POLICY_NESTED(ethnl_header_policy_phy),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[ETHTOOL_A_PLCA_ENABLED]	= NLA_POLICY_MAX(NLA_U8, 1),
 	[ETHTOOL_A_PLCA_NODE_ID]	= NLA_POLICY_MAX(NLA_U32, 255),
 	[ETHTOOL_A_PLCA_NODE_CNT]	= NLA_POLICY_RANGE(NLA_U32, 1, 255),
@@ -164,17 +145,6 @@ const struct nla_policy ethnl_plca_set_cfg_policy[] = {
 static int
 ethnl_set_plca(struct ethnl_req_info *req_info, struct genl_info *info)
 {
-<<<<<<< HEAD
-	struct net_device *dev = req_info->dev;
-	const struct ethtool_phy_ops *ops;
-	struct nlattr **tb = info->attrs;
-	struct phy_plca_cfg plca_cfg;
-	bool mod = false;
-	int ret;
-
-	// check that the PHY device is available and connected
-	if (!dev->phydev)
-=======
 	const struct ethtool_phy_ops *ops;
 	struct nlattr **tb = info->attrs;
 	struct phy_plca_cfg plca_cfg;
@@ -186,7 +156,6 @@ ethnl_set_plca(struct ethnl_req_info *req_info, struct genl_info *info)
 				      info->extack);
 	// check that the PHY device is available and connected
 	if (IS_ERR_OR_NULL(phydev))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EOPNOTSUPP;
 
 	ops = ethtool_phy_ops;
@@ -205,11 +174,7 @@ ethnl_set_plca(struct ethnl_req_info *req_info, struct genl_info *info)
 	if (!mod)
 		return 0;
 
-<<<<<<< HEAD
-	ret = ops->set_plca_cfg(dev->phydev, &plca_cfg, info->extack);
-=======
 	ret = ops->set_plca_cfg(phydev, &plca_cfg, info->extack);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret < 0 ? ret : 1;
 }
 
@@ -232,11 +197,7 @@ const struct ethnl_request_ops ethnl_plca_cfg_request_ops = {
 
 const struct nla_policy ethnl_plca_get_status_policy[] = {
 	[ETHTOOL_A_PLCA_HEADER]		=
-<<<<<<< HEAD
-		NLA_POLICY_NESTED(ethnl_header_policy),
-=======
 		NLA_POLICY_NESTED(ethnl_header_policy_phy),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int plca_get_status_prepare_data(const struct ethnl_req_info *req_base,
@@ -246,12 +207,6 @@ static int plca_get_status_prepare_data(const struct ethnl_req_info *req_base,
 	struct plca_reply_data *data = PLCA_REPDATA(reply_base);
 	struct net_device *dev = reply_base->dev;
 	const struct ethtool_phy_ops *ops;
-<<<<<<< HEAD
-	int ret;
-
-	// check that the PHY device is available and connected
-	if (!dev->phydev) {
-=======
 	struct nlattr **tb = info->attrs;
 	struct phy_device *phydev;
 	int ret;
@@ -260,7 +215,6 @@ static int plca_get_status_prepare_data(const struct ethnl_req_info *req_base,
 				      info->extack);
 	// check that the PHY device is available and connected
 	if (IS_ERR_OR_NULL(phydev)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EOPNOTSUPP;
 		goto out;
 	}
@@ -279,11 +233,7 @@ static int plca_get_status_prepare_data(const struct ethnl_req_info *req_base,
 	memset(&data->plca_st, 0xff,
 	       sizeof_field(struct plca_reply_data, plca_st));
 
-<<<<<<< HEAD
-	ret = ops->get_plca_status(dev->phydev, &data->plca_st);
-=======
 	ret = ops->get_plca_status(phydev, &data->plca_st);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ethnl_ops_complete(dev);
 out:
 	return ret;

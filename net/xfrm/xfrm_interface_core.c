@@ -769,11 +769,7 @@ static int xfrmi_dev_init(struct net_device *dev)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
-	dev->features |= NETIF_F_LLTX;
-=======
 	dev->lltx = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->features |= XFRMI_FEATURES;
 	dev->hw_features |= XFRMI_FEATURES;
 

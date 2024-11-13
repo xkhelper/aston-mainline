@@ -74,10 +74,6 @@ install_linux_image () {
 
 		mkdir -p "${pdir}/DEBIAN"
 		cat <<-EOF > "${pdir}/DEBIAN/${script}"
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		#!/bin/sh
 
 		set -e
@@ -127,11 +123,7 @@ install_kernel_headers () {
 	pdir=debian/$1
 	version=${1#linux-headers-}
 
-<<<<<<< HEAD
-	"${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
-=======
 	CC="${DEB_HOST_GNU_TYPE}-gcc" "${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mkdir -p $pdir/lib/modules/$version/
 	ln -s /usr/src/linux-headers-$version $pdir/lib/modules/$version/build

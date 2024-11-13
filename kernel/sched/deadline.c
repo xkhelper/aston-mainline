@@ -320,28 +320,12 @@ void sub_running_bw(struct sched_dl_entity *dl_se, struct dl_rq *dl_rq)
 		__sub_running_bw(dl_se->dl_bw, dl_rq);
 }
 
-<<<<<<< HEAD
-static void dl_change_utilization(struct task_struct *p, u64 new_bw)
-{
-	struct rq *rq;
-
-	WARN_ON_ONCE(p->dl.flags & SCHED_FLAG_SUGOV);
-
-	if (task_on_rq_queued(p))
-		return;
-
-	rq = task_rq(p);
-	if (p->dl.dl_non_contending) {
-		sub_running_bw(&p->dl, &rq->dl);
-		p->dl.dl_non_contending = 0;
-=======
 static void dl_rq_change_utilization(struct rq *rq, struct sched_dl_entity *dl_se, u64 new_bw)
 {
 	if (dl_se->dl_non_contending) {
 		sub_running_bw(dl_se, &rq->dl);
 		dl_se->dl_non_contending = 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * If the timer handler is currently running and the
 		 * timer cannot be canceled, inactive_task_timer()
@@ -349,15 +333,6 @@ static void dl_rq_change_utilization(struct rq *rq, struct sched_dl_entity *dl_s
 		 * will not touch the rq's active utilization,
 		 * so we are still safe.
 		 */
-<<<<<<< HEAD
-		if (hrtimer_try_to_cancel(&p->dl.inactive_timer) == 1)
-			put_task_struct(p);
-	}
-	__sub_rq_bw(p->dl.dl_bw, &rq->dl);
-	__add_rq_bw(new_bw, &rq->dl);
-}
-
-=======
 		if (hrtimer_try_to_cancel(&dl_se->inactive_timer) == 1) {
 			if (!dl_server(dl_se))
 				put_task_struct(dl_task_of(dl_se));
@@ -377,7 +352,6 @@ static void dl_change_utilization(struct task_struct *p, u64 new_bw)
 	dl_rq_change_utilization(task_rq(p), &p->dl, new_bw);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __dl_clear_params(struct sched_dl_entity *dl_se);
 
 /*
@@ -802,8 +776,6 @@ static inline void replenish_dl_new_period(struct sched_dl_entity *dl_se,
 	/* for non-boosted task, pi_of(dl_se) == dl_se */
 	dl_se->deadline = rq_clock(rq) + pi_of(dl_se)->dl_deadline;
 	dl_se->runtime = pi_of(dl_se)->dl_runtime;
-<<<<<<< HEAD
-=======
 
 	/*
 	 * If it is a deferred reservation, and the server
@@ -813,7 +785,6 @@ static inline void replenish_dl_new_period(struct sched_dl_entity *dl_se,
 		dl_se->dl_throttled = 1;
 		dl_se->dl_defer_armed = 1;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -852,12 +823,9 @@ static inline void setup_new_dl_entity(struct sched_dl_entity *dl_se)
 	replenish_dl_new_period(dl_se, rq);
 }
 
-<<<<<<< HEAD
-=======
 static int start_dl_timer(struct sched_dl_entity *dl_se);
 static bool dl_entity_overflow(struct sched_dl_entity *dl_se, u64 t);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Pure Earliest Deadline First (EDF) scheduling does not deal with the
  * possibility of a entity lasting more than what it declared, and thus
@@ -886,11 +854,6 @@ static void replenish_dl_entity(struct sched_dl_entity *dl_se)
 	/*
 	 * This could be the case for a !-dl task that is boosted.
 	 * Just go with full inherited parameters.
-<<<<<<< HEAD
-	 */
-	if (dl_se->dl_deadline == 0)
-		replenish_dl_new_period(dl_se, rq);
-=======
 	 *
 	 * Or, it could be the case of a deferred reservation that
 	 * was not able to consume its runtime in background and
@@ -903,7 +866,6 @@ static void replenish_dl_entity(struct sched_dl_entity *dl_se)
 		dl_se->deadline = rq_clock(rq) + pi_of(dl_se)->dl_deadline;
 		dl_se->runtime = pi_of(dl_se)->dl_runtime;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (dl_se->dl_yielded && dl_se->runtime > 0)
 		dl_se->runtime = 0;
@@ -937,8 +899,6 @@ static void replenish_dl_entity(struct sched_dl_entity *dl_se)
 		dl_se->dl_yielded = 0;
 	if (dl_se->dl_throttled)
 		dl_se->dl_throttled = 0;
-<<<<<<< HEAD
-=======
 
 	/*
 	 * If this is the replenishment of a deferred reservation,
@@ -977,7 +937,6 @@ static void replenish_dl_entity(struct sched_dl_entity *dl_se)
 			}
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1128,8 +1087,6 @@ static void update_dl_entity(struct sched_dl_entity *dl_se)
 		}
 
 		replenish_dl_new_period(dl_se, rq);
-<<<<<<< HEAD
-=======
 	} else if (dl_server(dl_se) && dl_se->dl_defer) {
 		/*
 		 * The server can still use its previous deadline, so check if
@@ -1139,7 +1096,6 @@ static void update_dl_entity(struct sched_dl_entity *dl_se)
 			dl_se->dl_defer_armed = 1;
 			dl_se->dl_throttled = 1;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -1172,10 +1128,6 @@ static int start_dl_timer(struct sched_dl_entity *dl_se)
 	 * We want the timer to fire at the deadline, but considering
 	 * that it is actually coming from rq->clock and not from
 	 * hrtimer's time base reading.
-<<<<<<< HEAD
-	 */
-	act = ns_to_ktime(dl_next_period(dl_se));
-=======
 	 *
 	 * The deferred reservation will have its timer set to
 	 * (deadline - runtime). At that point, the CBS rule will decide
@@ -1191,7 +1143,6 @@ static int start_dl_timer(struct sched_dl_entity *dl_se)
 		act = ns_to_ktime(dl_next_period(dl_se));
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	now = hrtimer_cb_get_time(timer);
 	delta = ktime_to_ns(now) - rq_clock(rq);
 	act = ktime_add_ns(act, delta);
@@ -1241,8 +1192,6 @@ static void __push_dl_task(struct rq *rq, struct rq_flags *rf)
 #endif
 }
 
-<<<<<<< HEAD
-=======
 /* a defer timer will not be reset if the runtime consumed was < dl_server_min_res */
 static const u64 dl_server_min_res = 1 * NSEC_PER_MSEC;
 
@@ -1299,7 +1248,6 @@ static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_
 	return HRTIMER_NORESTART;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This is the bandwidth enforcement timer callback. If here, we know
  * a task is not on its dl_rq, since the fact that the timer was running
@@ -1322,33 +1270,8 @@ static enum hrtimer_restart dl_task_timer(struct hrtimer *timer)
 	struct rq_flags rf;
 	struct rq *rq;
 
-<<<<<<< HEAD
-	if (dl_server(dl_se)) {
-		struct rq *rq = rq_of_dl_se(dl_se);
-		struct rq_flags rf;
-
-		rq_lock(rq, &rf);
-		if (dl_se->dl_throttled) {
-			sched_clock_tick();
-			update_rq_clock(rq);
-
-			if (dl_se->server_has_tasks(dl_se)) {
-				enqueue_dl_entity(dl_se, ENQUEUE_REPLENISH);
-				resched_curr(rq);
-				__push_dl_task(rq, &rf);
-			} else {
-				replenish_dl_entity(dl_se);
-			}
-
-		}
-		rq_unlock(rq, &rf);
-
-		return HRTIMER_NORESTART;
-	}
-=======
 	if (dl_server(dl_se))
 		return dl_server_timer(timer, dl_se);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	p = dl_task_of(dl_se);
 	rq = task_rq_lock(p, &rf);
@@ -1518,29 +1441,10 @@ static u64 grub_reclaim(u64 delta, struct rq *rq, struct sched_dl_entity *dl_se)
 	return (delta * u_act) >> BW_SHIFT;
 }
 
-<<<<<<< HEAD
-static inline void
-update_stats_dequeue_dl(struct dl_rq *dl_rq, struct sched_dl_entity *dl_se,
-                        int flags);
-static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64 delta_exec)
-{
-	s64 scaled_delta_exec;
-
-	if (unlikely(delta_exec <= 0)) {
-		if (unlikely(dl_se->dl_yielded))
-			goto throttle;
-		return;
-	}
-
-	if (dl_entity_is_special(dl_se))
-		return;
-
-=======
 s64 dl_scaled_delta_exec(struct rq *rq, struct sched_dl_entity *dl_se, s64 delta_exec)
 {
 	s64 scaled_delta_exec;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * For tasks that participate in GRUB, we implement GRUB-PA: the
 	 * spare reclaimed bandwidth is used to clock down frequency.
@@ -1559,10 +1463,6 @@ s64 dl_scaled_delta_exec(struct rq *rq, struct sched_dl_entity *dl_se, s64 delta
 		scaled_delta_exec = cap_scale(scaled_delta_exec, scale_cpu);
 	}
 
-<<<<<<< HEAD
-	dl_se->runtime -= scaled_delta_exec;
-
-=======
 	return scaled_delta_exec;
 }
 
@@ -1621,7 +1521,6 @@ static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64 
 		return;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 throttle:
 	if (dl_runtime_exceeded(dl_se) || dl_se->dl_yielded) {
 		dl_se->dl_throttled = 1;
@@ -1649,8 +1548,6 @@ throttle:
 	}
 
 	/*
-<<<<<<< HEAD
-=======
 	 * The fair server (sole dl_server) does not account for real-time
 	 * workload because it is running fair work.
 	 */
@@ -1659,7 +1556,6 @@ throttle:
 
 #ifdef CONFIG_RT_GROUP_SCHED
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Because -- for now -- we share the rt bandwidth, we need to
 	 * account our runtime there too, otherwise actual rt tasks
 	 * would be able to exceed the shared quota.
@@ -1683,8 +1579,6 @@ throttle:
 			rt_rq->rt_time += delta_exec;
 		raw_spin_unlock(&rt_rq->rt_runtime_lock);
 	}
-<<<<<<< HEAD
-=======
 #endif
 }
 
@@ -1721,29 +1615,17 @@ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
 	}
 
 	p->se.exec_start = rq_clock_task(rq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dl_server_update(struct sched_dl_entity *dl_se, s64 delta_exec)
 {
-<<<<<<< HEAD
-	update_curr_dl_se(dl_se->rq, dl_se, delta_exec);
-=======
 	/* 0 runtime = fair server disabled */
 	if (dl_se->dl_runtime)
 		update_curr_dl_se(dl_se->rq, dl_se, delta_exec);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dl_server_start(struct sched_dl_entity *dl_se)
 {
-<<<<<<< HEAD
-	if (!dl_server(dl_se)) {
-		dl_se->dl_server = 1;
-		setup_new_dl_entity(dl_se);
-	}
-	enqueue_dl_entity(dl_se, ENQUEUE_WAKEUP);
-=======
 	struct rq *rq = dl_se->rq;
 
 	/*
@@ -1768,14 +1650,10 @@ void dl_server_start(struct sched_dl_entity *dl_se)
 	enqueue_dl_entity(dl_se, ENQUEUE_WAKEUP);
 	if (!dl_task(dl_se->rq->curr) || dl_entity_preempt(dl_se, &rq->curr->dl))
 		resched_curr(dl_se->rq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dl_server_stop(struct sched_dl_entity *dl_se)
 {
-<<<<<<< HEAD
-	dequeue_dl_entity(dl_se, DEQUEUE_SLEEP);
-=======
 	if (!dl_se->dl_runtime)
 		return;
 
@@ -1783,18 +1661,10 @@ void dl_server_stop(struct sched_dl_entity *dl_se)
 	hrtimer_try_to_cancel(&dl_se->dl_timer);
 	dl_se->dl_defer_armed = 0;
 	dl_se->dl_throttled = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
 		    dl_server_has_tasks_f has_tasks,
-<<<<<<< HEAD
-		    dl_server_pick_f pick)
-{
-	dl_se->rq = rq;
-	dl_se->server_has_tasks = has_tasks;
-	dl_se->server_pick = pick;
-=======
 		    dl_server_pick_f pick_task)
 {
 	dl_se->rq = rq;
@@ -1858,7 +1728,6 @@ int dl_server_apply_params(struct sched_dl_entity *dl_se, u64 runtime, u64 perio
 	dl_se->dl_density = to_ratio(dl_se->dl_deadline, dl_se->dl_runtime);
 
 	return retval;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2025,11 +1894,6 @@ static inline bool __dl_less(struct rb_node *a, const struct rb_node *b)
 	return dl_time_before(__node_2_dle(a)->deadline, __node_2_dle(b)->deadline);
 }
 
-<<<<<<< HEAD
-static inline struct sched_statistics *
-__schedstats_from_dl_se(struct sched_dl_entity *dl_se)
-{
-=======
 static __always_inline struct sched_statistics *
 __schedstats_from_dl_se(struct sched_dl_entity *dl_se)
 {
@@ -2039,62 +1903,31 @@ __schedstats_from_dl_se(struct sched_dl_entity *dl_se)
 	if (dl_server(dl_se))
 		return NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return &dl_task_of(dl_se)->stats;
 }
 
 static inline void
 update_stats_wait_start_dl(struct dl_rq *dl_rq, struct sched_dl_entity *dl_se)
 {
-<<<<<<< HEAD
-	struct sched_statistics *stats;
-
-	if (!schedstat_enabled())
-		return;
-
-	stats = __schedstats_from_dl_se(dl_se);
-	__update_stats_wait_start(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
-=======
 	struct sched_statistics *stats = __schedstats_from_dl_se(dl_se);
 	if (stats)
 		__update_stats_wait_start(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void
 update_stats_wait_end_dl(struct dl_rq *dl_rq, struct sched_dl_entity *dl_se)
 {
-<<<<<<< HEAD
-	struct sched_statistics *stats;
-
-	if (!schedstat_enabled())
-		return;
-
-	stats = __schedstats_from_dl_se(dl_se);
-	__update_stats_wait_end(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
-=======
 	struct sched_statistics *stats = __schedstats_from_dl_se(dl_se);
 	if (stats)
 		__update_stats_wait_end(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void
 update_stats_enqueue_sleeper_dl(struct dl_rq *dl_rq, struct sched_dl_entity *dl_se)
 {
-<<<<<<< HEAD
-	struct sched_statistics *stats;
-
-	if (!schedstat_enabled())
-		return;
-
-	stats = __schedstats_from_dl_se(dl_se);
-	__update_stats_enqueue_sleeper(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
-=======
 	struct sched_statistics *stats = __schedstats_from_dl_se(dl_se);
 	if (stats)
 		__update_stats_enqueue_sleeper(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void
@@ -2191,11 +2024,7 @@ enqueue_dl_entity(struct sched_dl_entity *dl_se, int flags)
 	 * be counted in the active utilization; hence, we need to call
 	 * add_running_bw().
 	 */
-<<<<<<< HEAD
-	if (dl_se->dl_throttled && !(flags & ENQUEUE_REPLENISH)) {
-=======
 	if (!dl_se->dl_defer && dl_se->dl_throttled && !(flags & ENQUEUE_REPLENISH)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (flags & ENQUEUE_WAKEUP)
 			task_contending(dl_se, flags);
 
@@ -2217,8 +2046,6 @@ enqueue_dl_entity(struct sched_dl_entity *dl_se, int flags)
 		setup_new_dl_entity(dl_se);
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * If the reservation is still throttled, e.g., it got replenished but is a
 	 * deferred task and still got to wait, don't enqueue.
@@ -2238,7 +2065,6 @@ enqueue_dl_entity(struct sched_dl_entity *dl_se, int flags)
 		dl_se->dl_throttled = 0;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__enqueue_dl_entity(dl_se);
 }
 
@@ -2328,11 +2154,7 @@ static void enqueue_task_dl(struct rq *rq, struct task_struct *p, int flags)
 		enqueue_pushable_dl_task(rq, p);
 }
 
-<<<<<<< HEAD
-static void dequeue_task_dl(struct rq *rq, struct task_struct *p, int flags)
-=======
 static bool dequeue_task_dl(struct rq *rq, struct task_struct *p, int flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	update_curr_dl(rq);
 
@@ -2342,11 +2164,8 @@ static bool dequeue_task_dl(struct rq *rq, struct task_struct *p, int flags)
 	dequeue_dl_entity(&p->dl, flags);
 	if (!p->dl.dl_throttled && !dl_server(&p->dl))
 		dequeue_pushable_dl_task(rq, p);
-<<<<<<< HEAD
-=======
 
 	return true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2565,12 +2384,9 @@ static void set_next_task_dl(struct rq *rq, struct task_struct *p, bool first)
 		update_dl_rq_load_avg(rq_clock_pelt(rq), rq, 0);
 
 	deadline_queue_push_tasks(rq);
-<<<<<<< HEAD
-=======
 
 	if (hrtick_enabled_dl(rq))
 		start_hrtick_dl(rq, &p->dl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct sched_dl_entity *pick_next_dl_entity(struct dl_rq *dl_rq)
@@ -2583,15 +2399,11 @@ static struct sched_dl_entity *pick_next_dl_entity(struct dl_rq *dl_rq)
 	return __node_2_dle(left);
 }
 
-<<<<<<< HEAD
-static struct task_struct *pick_task_dl(struct rq *rq)
-=======
 /*
  * __pick_next_task_dl - Helper to pick the next -deadline task to run.
  * @rq: The runqueue to pick the next task from.
  */
 static struct task_struct *__pick_task_dl(struct rq *rq)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct sched_dl_entity *dl_se;
 	struct dl_rq *dl_rq = &rq->dl;
@@ -2605,23 +2417,13 @@ again:
 	WARN_ON_ONCE(!dl_se);
 
 	if (dl_server(dl_se)) {
-<<<<<<< HEAD
-		p = dl_se->server_pick(dl_se);
-		if (!p) {
-			WARN_ON_ONCE(1);
-=======
 		p = dl_se->server_pick_task(dl_se);
 		if (!p) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dl_se->dl_yielded = 1;
 			update_curr_dl_se(rq, dl_se, 0);
 			goto again;
 		}
-<<<<<<< HEAD
-		p->dl_server = dl_se;
-=======
 		rq->dl_server = dl_se;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		p = dl_task_of(dl_se);
 	}
@@ -2629,33 +2431,12 @@ again:
 	return p;
 }
 
-<<<<<<< HEAD
-static struct task_struct *pick_next_task_dl(struct rq *rq)
-{
-	struct task_struct *p;
-
-	p = pick_task_dl(rq);
-	if (!p)
-		return p;
-
-	if (!p->dl_server)
-		set_next_task_dl(rq, p, true);
-
-	if (hrtick_enabled(rq))
-		start_hrtick_dl(rq, &p->dl);
-
-	return p;
-}
-
-static void put_prev_task_dl(struct rq *rq, struct task_struct *p)
-=======
 static struct task_struct *pick_task_dl(struct rq *rq)
 {
 	return __pick_task_dl(rq);
 }
 
 static void put_prev_task_dl(struct rq *rq, struct task_struct *p, struct task_struct *next)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct sched_dl_entity *dl_se = &p->dl;
 	struct dl_rq *dl_rq = &rq->dl;
@@ -3347,20 +3128,12 @@ DEFINE_SCHED_CLASS(dl) = {
 
 	.wakeup_preempt		= wakeup_preempt_dl,
 
-<<<<<<< HEAD
-	.pick_next_task		= pick_next_task_dl,
-=======
 	.pick_task		= pick_task_dl,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.put_prev_task		= put_prev_task_dl,
 	.set_next_task		= set_next_task_dl,
 
 #ifdef CONFIG_SMP
 	.balance		= balance_dl,
-<<<<<<< HEAD
-	.pick_task		= pick_task_dl,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.select_task_rq		= select_task_rq_dl,
 	.migrate_task_rq	= migrate_task_rq_dl,
 	.set_cpus_allowed       = set_cpus_allowed_dl,

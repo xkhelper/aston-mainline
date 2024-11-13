@@ -212,8 +212,6 @@ OPTIONS for 'perf sched timehist'
 --state::
 	Show task state when it switched out.
 
-<<<<<<< HEAD
-=======
 --show-prio::
 	Show task priority.
 
@@ -223,7 +221,6 @@ OPTIONS for 'perf sched timehist'
 	priorities are specified with -: 120-129. A combination of both can also be
 	provided: 0,120-129.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 OPTIONS for 'perf sched replay'
 ------------------------------
 

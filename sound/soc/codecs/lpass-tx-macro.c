@@ -2534,11 +2534,7 @@ static struct platform_driver tx_macro_driver = {
 		.pm = &tx_macro_pm_ops,
 	},
 	.probe = tx_macro_probe,
-<<<<<<< HEAD
-	.remove_new = tx_macro_remove,
-=======
 	.remove = tx_macro_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(tx_macro_driver);

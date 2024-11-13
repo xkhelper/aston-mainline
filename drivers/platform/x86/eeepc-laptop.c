@@ -15,10 +15,6 @@
 #include <linux/types.h>
 #include <linux/platform_device.h>
 #include <linux/backlight.h>
-<<<<<<< HEAD
-#include <linux/fb.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
 #include <linux/slab.h>
@@ -1140,11 +1136,7 @@ static int eeepc_backlight_init(struct eeepc_laptop *eeepc)
 	}
 	eeepc->backlight_device = bd;
 	bd->props.brightness = read_brightness(bd);
-<<<<<<< HEAD
-	bd->props.power = FB_BLANK_UNBLANK;
-=======
 	bd->props.power = BACKLIGHT_POWER_ON;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	backlight_update_status(bd);
 	return 0;
 }

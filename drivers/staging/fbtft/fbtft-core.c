@@ -152,11 +152,7 @@ static int fbtft_backlight_get_brightness(struct backlight_device *bd)
 void fbtft_unregister_backlight(struct fbtft_par *par)
 {
 	if (par->info->bl_dev) {
-<<<<<<< HEAD
-		par->info->bl_dev->props.power = FB_BLANK_POWERDOWN;
-=======
 		par->info->bl_dev->props.power = BACKLIGHT_POWER_OFF;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		backlight_update_status(par->info->bl_dev);
 		backlight_device_unregister(par->info->bl_dev);
 		par->info->bl_dev = NULL;
@@ -182,11 +178,7 @@ void fbtft_register_backlight(struct fbtft_par *par)
 
 	bl_props.type = BACKLIGHT_RAW;
 	/* Assume backlight is off, get polarity from current state of pin */
-<<<<<<< HEAD
-	bl_props.power = FB_BLANK_POWERDOWN;
-=======
 	bl_props.power = BACKLIGHT_POWER_OFF;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!gpiod_get_value(par->gpio.led[0]))
 		par->polarity = true;
 
@@ -223,11 +215,6 @@ static void fbtft_reset(struct fbtft_par *par)
 	if (!par->gpio.reset)
 		return;
 
-<<<<<<< HEAD
-	fbtft_par_dbg(DEBUG_RESET, par, "%s()\n", __func__);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gpiod_set_value_cansleep(par->gpio.reset, 1);
 	usleep_range(20, 40);
 	gpiod_set_value_cansleep(par->gpio.reset, 0);
@@ -812,11 +799,7 @@ int fbtft_register_framebuffer(struct fb_info *fb_info)
 
 	/* Turn on backlight if available */
 	if (fb_info->bl_dev) {
-<<<<<<< HEAD
-		fb_info->bl_dev->props.power = FB_BLANK_UNBLANK;
-=======
 		fb_info->bl_dev->props.power = BACKLIGHT_POWER_ON;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fb_info->bl_dev->ops->update_status(fb_info->bl_dev);
 	}
 
@@ -1067,11 +1050,6 @@ static int fbtft_verify_gpios(struct fbtft_par *par)
 	struct fbtft_platform_data *pdata = par->pdata;
 	int i;
 
-<<<<<<< HEAD
-	fbtft_par_dbg(DEBUG_VERIFY_GPIOS, par, "%s()\n", __func__);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pdata->display.buswidth != 9 &&  par->startbyte == 0 &&
 	    !par->gpio.dc) {
 		dev_err(par->info->device,
@@ -1175,12 +1153,6 @@ int fbtft_probe_common(struct fbtft_display *display,
 	else
 		dev = &pdev->dev;
 
-<<<<<<< HEAD
-	if (unlikely(display->debug & DEBUG_DRIVER_INIT_FUNCTIONS))
-		dev_info(dev, "%s()\n", __func__);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pdata = dev->platform_data;
 	if (!pdata) {
 		pdata = fbtft_properties_read(dev);

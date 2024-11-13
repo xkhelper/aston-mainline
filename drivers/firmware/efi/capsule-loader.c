@@ -309,10 +309,6 @@ static const struct file_operations efi_capsule_fops = {
 	.open = efi_capsule_open,
 	.write = efi_capsule_write,
 	.release = efi_capsule_release,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice efi_capsule_misc = {

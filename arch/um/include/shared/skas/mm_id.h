@@ -7,14 +7,7 @@
 #define __MM_ID_H
 
 struct mm_id {
-<<<<<<< HEAD
-	union {
-		int mm_fd;
-		int pid;
-	} u;
-=======
 	int pid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long stack;
 	int syscall_data_len;
 };

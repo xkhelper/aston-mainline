@@ -119,8 +119,6 @@ mlx5_core-$(CONFIG_MLX5_SW_STEERING) += steering/dr_domain.o steering/dr_table.o
 					steering/dr_action.o steering/fs_dr.o \
 					steering/dr_definer.o steering/dr_ptrn.o \
 					steering/dr_arg.o steering/dr_dbg.o lib/smfs.o
-<<<<<<< HEAD
-=======
 
 #
 # HW Steering
@@ -142,7 +140,6 @@ mlx5_core-$(CONFIG_MLX5_HW_STEERING) += steering/hws/mlx5hws_cmd.o \
 					steering/hws/mlx5hws_bwc_complex.o
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #
 # SF device
 #

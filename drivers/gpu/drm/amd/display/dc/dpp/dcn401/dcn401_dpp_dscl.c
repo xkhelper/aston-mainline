@@ -280,12 +280,8 @@ static void dpp401_dscl_set_scaler_filter(
 static void dpp401_dscl_set_scl_filter(
 		struct dcn401_dpp *dpp,
 		const struct scaler_data *scl_data,
-<<<<<<< HEAD
-		bool chroma_coef_mode)
-=======
 		bool chroma_coef_mode,
 		bool force_coeffs_update)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bool h_2tap_hardcode_coef_en = false;
 	bool v_2tap_hardcode_coef_en = false;
@@ -348,11 +344,7 @@ static void dpp401_dscl_set_scl_filter(
 							|| (filter_v_c && (filter_v_c != dpp->filter_v_c));
 		}
 
-<<<<<<< HEAD
-		if (filter_updated) {
-=======
 		if ((filter_updated) || (force_coeffs_update)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			uint32_t scl_mode = REG_READ(SCL_MODE);
 
 			if (!h_2tap_hardcode_coef_en && filter_h) {
@@ -665,8 +657,6 @@ static void dpp401_dscl_set_recout(struct dcn401_dpp *dpp,
 		  RECOUT_HEIGHT, recout->height);
 }
 /**
-<<<<<<< HEAD
-=======
  * dpp401_dscl_program_easf_v - Program EASF_V
  *
  * @dpp_base: High level DPP struct
@@ -887,7 +877,6 @@ static void dpp401_dscl_program_easf_h(struct dpp *dpp_base, const struct scaler
 	PERF_TRACE();
 }
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * dpp401_dscl_program_easf - Program EASF
  *
  * @dpp_base: High level DPP struct
@@ -901,263 +890,6 @@ static void dpp401_dscl_program_easf(struct dpp *dpp_base, const struct scaler_d
 	struct dcn401_dpp *dpp = TO_DCN401_DPP(dpp_base);
 
 	PERF_TRACE();
-<<<<<<< HEAD
-	REG_UPDATE(DSCL_SC_MODE,
-			SCL_SC_MATRIX_MODE, scl_data->dscl_prog_data.easf_matrix_mode);
-	REG_UPDATE(DSCL_SC_MODE,
-			SCL_SC_LTONL_EN, scl_data->dscl_prog_data.easf_ltonl_en);
-	/* DSCL_EASF_V_MODE */
-	REG_UPDATE(DSCL_EASF_V_MODE,
-			SCL_EASF_V_EN, scl_data->dscl_prog_data.easf_v_en);
-	REG_UPDATE(DSCL_EASF_V_MODE,
-			SCL_EASF_V_2TAP_SHARP_FACTOR, scl_data->dscl_prog_data.easf_v_sharp_factor);
-	REG_UPDATE(DSCL_EASF_V_MODE,
-			SCL_EASF_V_RINGEST_FORCE_EN, scl_data->dscl_prog_data.easf_v_ring);
-	REG_UPDATE(DSCL_EASF_V_BF_CNTL,
-			SCL_EASF_V_BF1_EN, scl_data->dscl_prog_data.easf_v_bf1_en);
-	REG_UPDATE(DSCL_EASF_V_BF_CNTL,
-			SCL_EASF_V_BF2_MODE, scl_data->dscl_prog_data.easf_v_bf2_mode);
-	REG_UPDATE(DSCL_EASF_V_BF_CNTL,
-			SCL_EASF_V_BF3_MODE, scl_data->dscl_prog_data.easf_v_bf3_mode);
-	REG_UPDATE(DSCL_EASF_V_BF_CNTL,
-			SCL_EASF_V_BF2_FLAT1_GAIN, scl_data->dscl_prog_data.easf_v_bf2_flat1_gain);
-	REG_UPDATE(DSCL_EASF_V_BF_CNTL,
-			SCL_EASF_V_BF2_FLAT2_GAIN, scl_data->dscl_prog_data.easf_v_bf2_flat2_gain);
-	REG_UPDATE(DSCL_EASF_V_BF_CNTL,
-			SCL_EASF_V_BF2_ROC_GAIN, scl_data->dscl_prog_data.easf_v_bf2_roc_gain);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_3TAP_CNTL1,
-		SCL_EASF_V_RINGEST_3TAP_DNTILT_UPTILT, scl_data->dscl_prog_data.easf_v_ringest_3tap_dntilt_uptilt);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_3TAP_CNTL1,
-		SCL_EASF_V_RINGEST_3TAP_UPTILT_MAXVAL, scl_data->dscl_prog_data.easf_v_ringest_3tap_uptilt_max);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_3TAP_CNTL2,
-		SCL_EASF_V_RINGEST_3TAP_DNTILT_SLOPE, scl_data->dscl_prog_data.easf_v_ringest_3tap_dntilt_slope);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_3TAP_CNTL2,
-		SCL_EASF_V_RINGEST_3TAP_UPTILT1_SLOPE, scl_data->dscl_prog_data.easf_v_ringest_3tap_uptilt1_slope);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_3TAP_CNTL3,
-		SCL_EASF_V_RINGEST_3TAP_UPTILT2_SLOPE, scl_data->dscl_prog_data.easf_v_ringest_3tap_uptilt2_slope);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_3TAP_CNTL3,
-		SCL_EASF_V_RINGEST_3TAP_UPTILT2_OFFSET, scl_data->dscl_prog_data.easf_v_ringest_3tap_uptilt2_offset);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_EVENTAP_REDUCE,
-		SCL_EASF_V_RINGEST_EVENTAP_REDUCEG1, scl_data->dscl_prog_data.easf_v_ringest_eventap_reduceg1);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_EVENTAP_REDUCE,
-		SCL_EASF_V_RINGEST_EVENTAP_REDUCEG2, scl_data->dscl_prog_data.easf_v_ringest_eventap_reduceg2);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_EVENTAP_GAIN,
-		SCL_EASF_V_RINGEST_EVENTAP_GAIN1, scl_data->dscl_prog_data.easf_v_ringest_eventap_gain1);
-	REG_UPDATE(DSCL_EASF_V_RINGEST_EVENTAP_GAIN,
-		SCL_EASF_V_RINGEST_EVENTAP_GAIN2, scl_data->dscl_prog_data.easf_v_ringest_eventap_gain2);
-	REG_UPDATE(DSCL_EASF_V_BF_FINAL_MAX_MIN,
-			SCL_EASF_V_BF_MAXA, scl_data->dscl_prog_data.easf_v_bf_maxa);
-	REG_UPDATE(DSCL_EASF_V_BF_FINAL_MAX_MIN,
-			SCL_EASF_V_BF_MAXB, scl_data->dscl_prog_data.easf_v_bf_maxb);
-	REG_UPDATE(DSCL_EASF_V_BF_FINAL_MAX_MIN,
-			SCL_EASF_V_BF_MINA, scl_data->dscl_prog_data.easf_v_bf_mina);
-	REG_UPDATE(DSCL_EASF_V_BF_FINAL_MAX_MIN,
-			SCL_EASF_V_BF_MINB, scl_data->dscl_prog_data.easf_v_bf_minb);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG0,
-			SCL_EASF_V_BF1_PWL_IN_SEG0, scl_data->dscl_prog_data.easf_v_bf1_pwl_in_seg0);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG0,
-			SCL_EASF_V_BF1_PWL_BASE_SEG0, scl_data->dscl_prog_data.easf_v_bf1_pwl_base_seg0);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG0,
-			SCL_EASF_V_BF1_PWL_SLOPE_SEG0, scl_data->dscl_prog_data.easf_v_bf1_pwl_slope_seg0);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG1,
-			SCL_EASF_V_BF1_PWL_IN_SEG1, scl_data->dscl_prog_data.easf_v_bf1_pwl_in_seg1);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG1,
-			SCL_EASF_V_BF1_PWL_BASE_SEG1, scl_data->dscl_prog_data.easf_v_bf1_pwl_base_seg1);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG1,
-			SCL_EASF_V_BF1_PWL_SLOPE_SEG1, scl_data->dscl_prog_data.easf_v_bf1_pwl_slope_seg1);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG2,
-			SCL_EASF_V_BF1_PWL_IN_SEG2, scl_data->dscl_prog_data.easf_v_bf1_pwl_in_seg2);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG2,
-			SCL_EASF_V_BF1_PWL_BASE_SEG2, scl_data->dscl_prog_data.easf_v_bf1_pwl_base_seg2);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG2,
-			SCL_EASF_V_BF1_PWL_SLOPE_SEG2, scl_data->dscl_prog_data.easf_v_bf1_pwl_slope_seg2);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG3,
-			SCL_EASF_V_BF1_PWL_IN_SEG3, scl_data->dscl_prog_data.easf_v_bf1_pwl_in_seg3);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG3,
-			SCL_EASF_V_BF1_PWL_BASE_SEG3, scl_data->dscl_prog_data.easf_v_bf1_pwl_base_seg3);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG3,
-			SCL_EASF_V_BF1_PWL_SLOPE_SEG3, scl_data->dscl_prog_data.easf_v_bf1_pwl_slope_seg3);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG4,
-			SCL_EASF_V_BF1_PWL_IN_SEG4, scl_data->dscl_prog_data.easf_v_bf1_pwl_in_seg4);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG4,
-			SCL_EASF_V_BF1_PWL_BASE_SEG4, scl_data->dscl_prog_data.easf_v_bf1_pwl_base_seg4);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG4,
-			SCL_EASF_V_BF1_PWL_SLOPE_SEG4, scl_data->dscl_prog_data.easf_v_bf1_pwl_slope_seg4);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG5,
-			SCL_EASF_V_BF1_PWL_IN_SEG5, scl_data->dscl_prog_data.easf_v_bf1_pwl_in_seg5);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG5,
-			SCL_EASF_V_BF1_PWL_BASE_SEG5, scl_data->dscl_prog_data.easf_v_bf1_pwl_base_seg5);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG5,
-			SCL_EASF_V_BF1_PWL_SLOPE_SEG5, scl_data->dscl_prog_data.easf_v_bf1_pwl_slope_seg5);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG6,
-			SCL_EASF_V_BF1_PWL_IN_SEG6, scl_data->dscl_prog_data.easf_v_bf1_pwl_in_seg6);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG6,
-			SCL_EASF_V_BF1_PWL_BASE_SEG6, scl_data->dscl_prog_data.easf_v_bf1_pwl_base_seg6);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG6,
-			SCL_EASF_V_BF1_PWL_SLOPE_SEG6, scl_data->dscl_prog_data.easf_v_bf1_pwl_slope_seg6);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG7,
-			SCL_EASF_V_BF1_PWL_IN_SEG7, scl_data->dscl_prog_data.easf_v_bf1_pwl_in_seg7);
-	REG_UPDATE(DSCL_EASF_V_BF1_PWL_SEG7,
-			SCL_EASF_V_BF1_PWL_BASE_SEG7, scl_data->dscl_prog_data.easf_v_bf1_pwl_base_seg7);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG0,
-			SCL_EASF_V_BF3_PWL_IN_SEG0, scl_data->dscl_prog_data.easf_v_bf3_pwl_in_set0);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG0,
-			SCL_EASF_V_BF3_PWL_BASE_SEG0, scl_data->dscl_prog_data.easf_v_bf3_pwl_base_set0);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG0,
-			SCL_EASF_V_BF3_PWL_SLOPE_SEG0, scl_data->dscl_prog_data.easf_v_bf3_pwl_slope_set0);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG1,
-			SCL_EASF_V_BF3_PWL_IN_SEG1, scl_data->dscl_prog_data.easf_v_bf3_pwl_in_set1);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG1,
-			SCL_EASF_V_BF3_PWL_BASE_SEG1, scl_data->dscl_prog_data.easf_v_bf3_pwl_base_set1);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG1,
-			SCL_EASF_V_BF3_PWL_SLOPE_SEG1, scl_data->dscl_prog_data.easf_v_bf3_pwl_slope_set1);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG2,
-			SCL_EASF_V_BF3_PWL_IN_SEG2, scl_data->dscl_prog_data.easf_v_bf3_pwl_in_set2);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG2,
-			SCL_EASF_V_BF3_PWL_BASE_SEG2, scl_data->dscl_prog_data.easf_v_bf3_pwl_base_set2);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG2,
-			SCL_EASF_V_BF3_PWL_SLOPE_SEG2, scl_data->dscl_prog_data.easf_v_bf3_pwl_slope_set2);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG3,
-			SCL_EASF_V_BF3_PWL_IN_SEG3, scl_data->dscl_prog_data.easf_v_bf3_pwl_in_set3);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG3,
-			SCL_EASF_V_BF3_PWL_BASE_SEG3, scl_data->dscl_prog_data.easf_v_bf3_pwl_base_set3);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG3,
-			SCL_EASF_V_BF3_PWL_SLOPE_SEG3, scl_data->dscl_prog_data.easf_v_bf3_pwl_slope_set3);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG4,
-			SCL_EASF_V_BF3_PWL_IN_SEG4, scl_data->dscl_prog_data.easf_v_bf3_pwl_in_set4);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG4,
-			SCL_EASF_V_BF3_PWL_BASE_SEG4, scl_data->dscl_prog_data.easf_v_bf3_pwl_base_set4);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG4,
-			SCL_EASF_V_BF3_PWL_SLOPE_SEG4, scl_data->dscl_prog_data.easf_v_bf3_pwl_slope_set4);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG5,
-			SCL_EASF_V_BF3_PWL_IN_SEG5, scl_data->dscl_prog_data.easf_v_bf3_pwl_in_set5);
-	REG_UPDATE(DSCL_EASF_V_BF3_PWL_SEG5,
-			SCL_EASF_V_BF3_PWL_BASE_SEG5, scl_data->dscl_prog_data.easf_v_bf3_pwl_base_set5);
-	/* DSCL_EASF_H_MODE */
-	REG_UPDATE(DSCL_EASF_H_MODE,
-			SCL_EASF_H_EN, scl_data->dscl_prog_data.easf_h_en);
-	REG_UPDATE(DSCL_EASF_H_MODE,
-			SCL_EASF_H_2TAP_SHARP_FACTOR, scl_data->dscl_prog_data.easf_h_sharp_factor);
-	REG_UPDATE(DSCL_EASF_H_MODE,
-			SCL_EASF_H_RINGEST_FORCE_EN, scl_data->dscl_prog_data.easf_h_ring);
-	REG_UPDATE(DSCL_EASF_H_BF_CNTL,
-			SCL_EASF_H_BF1_EN, scl_data->dscl_prog_data.easf_h_bf1_en);
-	REG_UPDATE(DSCL_EASF_H_BF_CNTL,
-			SCL_EASF_H_BF2_MODE, scl_data->dscl_prog_data.easf_h_bf2_mode);
-	REG_UPDATE(DSCL_EASF_H_BF_CNTL,
-			SCL_EASF_H_BF3_MODE, scl_data->dscl_prog_data.easf_h_bf3_mode);
-	REG_UPDATE(DSCL_EASF_H_BF_CNTL,
-			SCL_EASF_H_BF2_FLAT1_GAIN, scl_data->dscl_prog_data.easf_h_bf2_flat1_gain);
-	REG_UPDATE(DSCL_EASF_H_BF_CNTL,
-			SCL_EASF_H_BF2_FLAT2_GAIN, scl_data->dscl_prog_data.easf_h_bf2_flat2_gain);
-	REG_UPDATE(DSCL_EASF_H_BF_CNTL,
-			SCL_EASF_H_BF2_ROC_GAIN, scl_data->dscl_prog_data.easf_h_bf2_roc_gain);
-	REG_UPDATE(DSCL_EASF_H_RINGEST_EVENTAP_REDUCE,
-			SCL_EASF_H_RINGEST_EVENTAP_REDUCEG1, scl_data->dscl_prog_data.easf_h_ringest_eventap_reduceg1);
-	REG_UPDATE(DSCL_EASF_H_RINGEST_EVENTAP_REDUCE,
-			SCL_EASF_H_RINGEST_EVENTAP_REDUCEG2, scl_data->dscl_prog_data.easf_h_ringest_eventap_reduceg2);
-	REG_UPDATE(DSCL_EASF_H_RINGEST_EVENTAP_GAIN,
-			SCL_EASF_H_RINGEST_EVENTAP_GAIN1, scl_data->dscl_prog_data.easf_h_ringest_eventap_gain1);
-	REG_UPDATE(DSCL_EASF_H_RINGEST_EVENTAP_GAIN,
-			SCL_EASF_H_RINGEST_EVENTAP_GAIN2, scl_data->dscl_prog_data.easf_h_ringest_eventap_gain2);
-	REG_UPDATE(DSCL_EASF_H_BF_FINAL_MAX_MIN,
-			SCL_EASF_H_BF_MAXA, scl_data->dscl_prog_data.easf_h_bf_maxa);
-	REG_UPDATE(DSCL_EASF_H_BF_FINAL_MAX_MIN,
-			SCL_EASF_H_BF_MAXB, scl_data->dscl_prog_data.easf_h_bf_maxb);
-	REG_UPDATE(DSCL_EASF_H_BF_FINAL_MAX_MIN,
-			SCL_EASF_H_BF_MINA, scl_data->dscl_prog_data.easf_h_bf_mina);
-	REG_UPDATE(DSCL_EASF_H_BF_FINAL_MAX_MIN,
-			SCL_EASF_H_BF_MINB, scl_data->dscl_prog_data.easf_h_bf_minb);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG0,
-			SCL_EASF_H_BF1_PWL_IN_SEG0, scl_data->dscl_prog_data.easf_h_bf1_pwl_in_seg0);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG0,
-			SCL_EASF_H_BF1_PWL_BASE_SEG0, scl_data->dscl_prog_data.easf_h_bf1_pwl_base_seg0);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG0,
-			SCL_EASF_H_BF1_PWL_SLOPE_SEG0, scl_data->dscl_prog_data.easf_h_bf1_pwl_slope_seg0);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG1,
-			SCL_EASF_H_BF1_PWL_IN_SEG1, scl_data->dscl_prog_data.easf_h_bf1_pwl_in_seg1);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG1,
-			SCL_EASF_H_BF1_PWL_BASE_SEG1, scl_data->dscl_prog_data.easf_h_bf1_pwl_base_seg1);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG1,
-			SCL_EASF_H_BF1_PWL_SLOPE_SEG1, scl_data->dscl_prog_data.easf_h_bf1_pwl_slope_seg1);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG2,
-			SCL_EASF_H_BF1_PWL_IN_SEG2, scl_data->dscl_prog_data.easf_h_bf1_pwl_in_seg2);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG2,
-			SCL_EASF_H_BF1_PWL_BASE_SEG2, scl_data->dscl_prog_data.easf_h_bf1_pwl_base_seg2);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG2,
-			SCL_EASF_H_BF1_PWL_SLOPE_SEG2, scl_data->dscl_prog_data.easf_h_bf1_pwl_slope_seg2);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG3,
-			SCL_EASF_H_BF1_PWL_IN_SEG3, scl_data->dscl_prog_data.easf_h_bf1_pwl_in_seg3);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG3,
-			SCL_EASF_H_BF1_PWL_BASE_SEG3, scl_data->dscl_prog_data.easf_h_bf1_pwl_base_seg3);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG3,
-			SCL_EASF_H_BF1_PWL_SLOPE_SEG3, scl_data->dscl_prog_data.easf_h_bf1_pwl_slope_seg3);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG4,
-			SCL_EASF_H_BF1_PWL_IN_SEG4, scl_data->dscl_prog_data.easf_h_bf1_pwl_in_seg4);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG4,
-			SCL_EASF_H_BF1_PWL_BASE_SEG4, scl_data->dscl_prog_data.easf_h_bf1_pwl_base_seg4);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG4,
-			SCL_EASF_H_BF1_PWL_SLOPE_SEG4, scl_data->dscl_prog_data.easf_h_bf1_pwl_slope_seg4);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG5,
-			SCL_EASF_H_BF1_PWL_IN_SEG5, scl_data->dscl_prog_data.easf_h_bf1_pwl_in_seg5);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG5,
-			SCL_EASF_H_BF1_PWL_BASE_SEG5, scl_data->dscl_prog_data.easf_h_bf1_pwl_base_seg5);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG5,
-			SCL_EASF_H_BF1_PWL_SLOPE_SEG5, scl_data->dscl_prog_data.easf_h_bf1_pwl_slope_seg5);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG6,
-			SCL_EASF_H_BF1_PWL_IN_SEG6, scl_data->dscl_prog_data.easf_h_bf1_pwl_in_seg6);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG6,
-			SCL_EASF_H_BF1_PWL_BASE_SEG6, scl_data->dscl_prog_data.easf_h_bf1_pwl_base_seg6);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG6,
-			SCL_EASF_H_BF1_PWL_SLOPE_SEG6, scl_data->dscl_prog_data.easf_h_bf1_pwl_slope_seg6);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG7,
-			SCL_EASF_H_BF1_PWL_IN_SEG7, scl_data->dscl_prog_data.easf_h_bf1_pwl_in_seg7);
-	REG_UPDATE(DSCL_EASF_H_BF1_PWL_SEG7,
-			SCL_EASF_H_BF1_PWL_BASE_SEG7, scl_data->dscl_prog_data.easf_h_bf1_pwl_base_seg7);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG0,
-			SCL_EASF_H_BF3_PWL_IN_SEG0, scl_data->dscl_prog_data.easf_h_bf3_pwl_in_set0);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG0,
-			SCL_EASF_H_BF3_PWL_BASE_SEG0, scl_data->dscl_prog_data.easf_h_bf3_pwl_base_set0);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG0,
-			SCL_EASF_H_BF3_PWL_SLOPE_SEG0, scl_data->dscl_prog_data.easf_h_bf3_pwl_slope_set0);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG1,
-			SCL_EASF_H_BF3_PWL_IN_SEG1, scl_data->dscl_prog_data.easf_h_bf3_pwl_in_set1);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG1,
-			SCL_EASF_H_BF3_PWL_BASE_SEG1, scl_data->dscl_prog_data.easf_h_bf3_pwl_base_set1);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG1,
-			SCL_EASF_H_BF3_PWL_SLOPE_SEG1, scl_data->dscl_prog_data.easf_h_bf3_pwl_slope_set1);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG2,
-			SCL_EASF_H_BF3_PWL_IN_SEG2, scl_data->dscl_prog_data.easf_h_bf3_pwl_in_set2);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG2,
-			SCL_EASF_H_BF3_PWL_BASE_SEG2, scl_data->dscl_prog_data.easf_h_bf3_pwl_base_set2);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG2,
-			SCL_EASF_H_BF3_PWL_SLOPE_SEG2, scl_data->dscl_prog_data.easf_h_bf3_pwl_slope_set2);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG3,
-			SCL_EASF_H_BF3_PWL_IN_SEG3, scl_data->dscl_prog_data.easf_h_bf3_pwl_in_set3);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG3,
-			SCL_EASF_H_BF3_PWL_BASE_SEG3, scl_data->dscl_prog_data.easf_h_bf3_pwl_base_set3);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG3,
-			SCL_EASF_H_BF3_PWL_SLOPE_SEG3, scl_data->dscl_prog_data.easf_h_bf3_pwl_slope_set3);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG4,
-			SCL_EASF_H_BF3_PWL_IN_SEG4, scl_data->dscl_prog_data.easf_h_bf3_pwl_in_set4);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG4,
-			SCL_EASF_H_BF3_PWL_BASE_SEG4, scl_data->dscl_prog_data.easf_h_bf3_pwl_base_set4);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG4,
-			SCL_EASF_H_BF3_PWL_SLOPE_SEG4, scl_data->dscl_prog_data.easf_h_bf3_pwl_slope_set4);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG5,
-			SCL_EASF_H_BF3_PWL_IN_SEG5, scl_data->dscl_prog_data.easf_h_bf3_pwl_in_set5);
-	REG_UPDATE(DSCL_EASF_H_BF3_PWL_SEG5,
-			SCL_EASF_H_BF3_PWL_BASE_SEG5, scl_data->dscl_prog_data.easf_h_bf3_pwl_base_set5);
-	/* DSCL_EASF_SC_MATRIX_C0C1, DSCL_EASF_SC_MATRIX_C2C3 */
-	REG_UPDATE(DSCL_SC_MATRIX_C0C1,
-			SCL_SC_MATRIX_C0, scl_data->dscl_prog_data.easf_matrix_c0);
-	REG_UPDATE(DSCL_SC_MATRIX_C0C1,
-			SCL_SC_MATRIX_C1, scl_data->dscl_prog_data.easf_matrix_c1);
-	REG_UPDATE(DSCL_SC_MATRIX_C2C3,
-			SCL_SC_MATRIX_C2, scl_data->dscl_prog_data.easf_matrix_c2);
-	REG_UPDATE(DSCL_SC_MATRIX_C2C3,
-			SCL_SC_MATRIX_C3, scl_data->dscl_prog_data.easf_matrix_c3);
-=======
 	/* DSCL_SC_MODE */
 	REG_SET_2(DSCL_SC_MODE, 0,
 			SCL_SC_MATRIX_MODE, scl_data->dscl_prog_data.easf_matrix_mode,
@@ -1171,7 +903,6 @@ static void dpp401_dscl_program_easf(struct dpp *dpp_base, const struct scaler_d
 			SCL_SC_MATRIX_C3, scl_data->dscl_prog_data.easf_matrix_c3);
 	dpp401_dscl_program_easf_v(dpp_base, scl_data);
 	dpp401_dscl_program_easf_h(dpp_base, scl_data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PERF_TRACE();
 }
 /**
@@ -1206,18 +937,11 @@ static void dpp401_dscl_set_isharp_filter(
 
 	REG_UPDATE(ISHARP_DELTA_CTRL,
 		ISHARP_DELTA_LUT_HOST_SELECT, 0);
-<<<<<<< HEAD
-	for (level = 0; level < NUM_LEVELS; level++)	{
-		filter_data = filter[level];
-		REG_SET(ISHARP_DELTA_INDEX, 0,
-				ISHARP_DELTA_INDEX, level);
-=======
 	/* LUT data write is auto-indexed.  Write index once */
 	REG_SET(ISHARP_DELTA_INDEX, 0,
 			ISHARP_DELTA_INDEX, 0);
 	for (level = 0; level < NUM_LEVELS; level++)	{
 		filter_data = filter[level];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		REG_SET(ISHARP_DELTA_DATA, 0,
 				ISHARP_DELTA_DATA, filter_data);
 	}
@@ -1227,119 +951,13 @@ static void dpp401_dscl_set_isharp_filter(
  *
  * @dpp_base: High level DPP struct
  * @scl_data: scalaer_data info
-<<<<<<< HEAD
-=======
  * @program_isharp_1dlut: flag to program isharp 1D LUT
  * @bs_coeffs_updated: Blur and Scale Coefficients update flag
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This is the primary function to program isharp
  *
  */
 static void dpp401_dscl_program_isharp(struct dpp *dpp_base,
-<<<<<<< HEAD
-		const struct scaler_data *scl_data)
-{
-	struct dcn401_dpp *dpp = TO_DCN401_DPP(dpp_base);
-
-	PERF_TRACE();
-	/* ISHARP_EN */
-	REG_UPDATE(ISHARP_MODE,
-		ISHARP_EN, scl_data->dscl_prog_data.isharp_en);
-	/* ISHARP_NOISEDET_EN */
-	REG_UPDATE(ISHARP_MODE,
-		ISHARP_NOISEDET_EN, scl_data->dscl_prog_data.isharp_noise_det.enable);
-	/* ISHARP_NOISEDET_MODE */
-	REG_UPDATE(ISHARP_MODE,
-		ISHARP_NOISEDET_MODE, scl_data->dscl_prog_data.isharp_noise_det.mode);
-	/* ISHARP_NOISEDET_UTHRE */
-	REG_UPDATE(ISHARP_NOISEDET_THRESHOLD,
-		ISHARP_NOISEDET_UTHRE, scl_data->dscl_prog_data.isharp_noise_det.uthreshold);
-	/* ISHARP_NOISEDET_DTHRE */
-	REG_UPDATE(ISHARP_NOISEDET_THRESHOLD,
-		ISHARP_NOISEDET_DTHRE, scl_data->dscl_prog_data.isharp_noise_det.dthreshold);
-	REG_UPDATE(ISHARP_MODE,
-		ISHARP_NOISEDET_MODE, scl_data->dscl_prog_data.isharp_noise_det.mode);
-	/* ISHARP_NOISEDET_UTHRE */
-	REG_UPDATE(ISHARP_NOISEDET_THRESHOLD,
-		ISHARP_NOISEDET_UTHRE, scl_data->dscl_prog_data.isharp_noise_det.uthreshold);
-	/* ISHARP_NOISEDET_DTHRE */
-	REG_UPDATE(ISHARP_NOISEDET_THRESHOLD,
-		ISHARP_NOISEDET_DTHRE, scl_data->dscl_prog_data.isharp_noise_det.dthreshold);
-	/* ISHARP_NOISEDET_PWL_START_IN */
-	REG_UPDATE(ISHARP_NOISE_GAIN_PWL,
-		ISHARP_NOISEDET_PWL_START_IN, scl_data->dscl_prog_data.isharp_noise_det.pwl_start_in);
-	/* ISHARP_NOISEDET_PWL_END_IN */
-	REG_UPDATE(ISHARP_NOISE_GAIN_PWL,
-		ISHARP_NOISEDET_PWL_END_IN, scl_data->dscl_prog_data.isharp_noise_det.pwl_end_in);
-	/* ISHARP_NOISEDET_PWL_SLOPE */
-	REG_UPDATE(ISHARP_NOISE_GAIN_PWL,
-		ISHARP_NOISEDET_PWL_SLOPE, scl_data->dscl_prog_data.isharp_noise_det.pwl_slope);
-	/* ISHARP_LBA_MODE */
-	REG_UPDATE(ISHARP_MODE,
-		ISHARP_LBA_MODE, scl_data->dscl_prog_data.isharp_lba.mode);
-	/* ISHARP_LBA: IN_SEG, BASE_SEG, SLOPE_SEG */
-	REG_UPDATE(ISHARP_LBA_PWL_SEG0,
-		ISHARP_LBA_PWL_IN_SEG0, scl_data->dscl_prog_data.isharp_lba.in_seg[0]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG0,
-		ISHARP_LBA_PWL_BASE_SEG0, scl_data->dscl_prog_data.isharp_lba.base_seg[0]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG0,
-		ISHARP_LBA_PWL_SLOPE_SEG0, scl_data->dscl_prog_data.isharp_lba.slope_seg[0]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG1,
-		ISHARP_LBA_PWL_IN_SEG1, scl_data->dscl_prog_data.isharp_lba.in_seg[1]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG1,
-		ISHARP_LBA_PWL_BASE_SEG1, scl_data->dscl_prog_data.isharp_lba.base_seg[1]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG1,
-		ISHARP_LBA_PWL_SLOPE_SEG1, scl_data->dscl_prog_data.isharp_lba.slope_seg[1]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG2,
-		ISHARP_LBA_PWL_IN_SEG2, scl_data->dscl_prog_data.isharp_lba.in_seg[2]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG2,
-		ISHARP_LBA_PWL_BASE_SEG2, scl_data->dscl_prog_data.isharp_lba.base_seg[2]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG2,
-		ISHARP_LBA_PWL_SLOPE_SEG2, scl_data->dscl_prog_data.isharp_lba.slope_seg[2]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG3,
-		ISHARP_LBA_PWL_IN_SEG3, scl_data->dscl_prog_data.isharp_lba.in_seg[3]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG3,
-		ISHARP_LBA_PWL_BASE_SEG3, scl_data->dscl_prog_data.isharp_lba.base_seg[3]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG3,
-		ISHARP_LBA_PWL_SLOPE_SEG3, scl_data->dscl_prog_data.isharp_lba.slope_seg[3]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG4,
-		ISHARP_LBA_PWL_IN_SEG4, scl_data->dscl_prog_data.isharp_lba.in_seg[4]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG4,
-		ISHARP_LBA_PWL_BASE_SEG4, scl_data->dscl_prog_data.isharp_lba.base_seg[4]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG4,
-		ISHARP_LBA_PWL_SLOPE_SEG4, scl_data->dscl_prog_data.isharp_lba.slope_seg[4]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG5,
-		ISHARP_LBA_PWL_IN_SEG5, scl_data->dscl_prog_data.isharp_lba.in_seg[5]);
-	REG_UPDATE(ISHARP_LBA_PWL_SEG5,
-		ISHARP_LBA_PWL_BASE_SEG5, scl_data->dscl_prog_data.isharp_lba.base_seg[5]);
-
-	/* ISHARP_FMT_MODE */
-	REG_UPDATE(ISHARP_MODE,
-		ISHARP_FMT_MODE, scl_data->dscl_prog_data.isharp_fmt.mode);
-	/* ISHARP_FMT_NORM */
-	REG_UPDATE(ISHARP_MODE,
-		ISHARP_FMT_NORM, scl_data->dscl_prog_data.isharp_fmt.norm);
-	/* ISHARP_DELTA_LUT */
-	dpp401_dscl_set_isharp_filter(dpp, scl_data->dscl_prog_data.isharp_delta);
-	/* ISHARP_NLDELTA_SCLIP_EN_P */
-	REG_UPDATE(ISHARP_NLDELTA_SOFT_CLIP,
-		ISHARP_NLDELTA_SCLIP_EN_P, scl_data->dscl_prog_data.isharp_nldelta_sclip.enable_p);
-	/* ISHARP_NLDELTA_SCLIP_PIVOT_P */
-	REG_UPDATE(ISHARP_NLDELTA_SOFT_CLIP,
-		ISHARP_NLDELTA_SCLIP_PIVOT_P, scl_data->dscl_prog_data.isharp_nldelta_sclip.pivot_p);
-	/* ISHARP_NLDELTA_SCLIP_SLOPE_P */
-	REG_UPDATE(ISHARP_NLDELTA_SOFT_CLIP,
-		ISHARP_NLDELTA_SCLIP_SLOPE_P, scl_data->dscl_prog_data.isharp_nldelta_sclip.slope_p);
-	/* ISHARP_NLDELTA_SCLIP_EN_N */
-	REG_UPDATE(ISHARP_NLDELTA_SOFT_CLIP,
-		ISHARP_NLDELTA_SCLIP_EN_N, scl_data->dscl_prog_data.isharp_nldelta_sclip.enable_n);
-	/* ISHARP_NLDELTA_SCLIP_PIVOT_N */
-	REG_UPDATE(ISHARP_NLDELTA_SOFT_CLIP,
-		ISHARP_NLDELTA_SCLIP_PIVOT_N, scl_data->dscl_prog_data.isharp_nldelta_sclip.pivot_n);
-	/* ISHARP_NLDELTA_SCLIP_SLOPE_N */
-	REG_UPDATE(ISHARP_NLDELTA_SOFT_CLIP,
-=======
 		const struct scaler_data *scl_data,
 		bool program_isharp_1dlut,
 		bool *bs_coeffs_updated)
@@ -1410,7 +1028,6 @@ static void dpp401_dscl_program_isharp(struct dpp *dpp_base,
 		ISHARP_NLDELTA_SCLIP_SLOPE_P, scl_data->dscl_prog_data.isharp_nldelta_sclip.slope_p,
 		ISHARP_NLDELTA_SCLIP_EN_N, scl_data->dscl_prog_data.isharp_nldelta_sclip.enable_n,
 		ISHARP_NLDELTA_SCLIP_PIVOT_N, scl_data->dscl_prog_data.isharp_nldelta_sclip.pivot_n,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ISHARP_NLDELTA_SCLIP_SLOPE_N, scl_data->dscl_prog_data.isharp_nldelta_sclip.slope_n);
 
 	/* Blur and Scale Coefficients - SCL_COEF_RAM_TAP_SELECT */
@@ -1420,20 +1037,14 @@ static void dpp401_dscl_program_isharp(struct dpp *dpp_base,
 				dpp, scl_data->taps.v_taps,
 				SCL_COEF_VERTICAL_BLUR_SCALE,
 				scl_data->dscl_prog_data.filter_blur_scale_v);
-<<<<<<< HEAD
-=======
 			*bs_coeffs_updated = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		if (scl_data->dscl_prog_data.filter_blur_scale_h) {
 			dpp401_dscl_set_scaler_filter(
 				dpp, scl_data->taps.h_taps,
 				SCL_COEF_HORIZONTAL_BLUR_SCALE,
 				scl_data->dscl_prog_data.filter_blur_scale_h);
-<<<<<<< HEAD
-=======
 			*bs_coeffs_updated = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	PERF_TRACE();
@@ -1464,20 +1075,15 @@ void dpp401_dscl_set_scaler_manual_scale(struct dpp *dpp_base,
 			dpp_base, scl_data, dpp_base->ctx->dc->debug.always_scale);
 	bool ycbcr = scl_data->format >= PIXEL_FORMAT_VIDEO_BEGIN
 				&& scl_data->format <= PIXEL_FORMAT_VIDEO_END;
-<<<<<<< HEAD
-=======
 	bool program_isharp_1dlut = false;
 	bool bs_coeffs_updated = false;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (memcmp(&dpp->scl_data, scl_data, sizeof(*scl_data)) == 0)
 		return;
 
 	PERF_TRACE();
 
-<<<<<<< HEAD
-=======
 	/* If only sharpness has changed, then only update 1dlut, then return */
 	if (scl_data->dscl_prog_data.isharp_en &&
 		(dpp->scl_data.dscl_prog_data.sharpness_level
@@ -1492,7 +1098,6 @@ void dpp401_dscl_set_scaler_manual_scale(struct dpp *dpp_base,
 		program_isharp_1dlut = true;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dpp->scl_data = *scl_data;
 
 	if ((dpp->base.ctx->dc->config.use_spl) && (!dpp->base.ctx->dc->debug.disable_spl)) {
@@ -1546,11 +1151,7 @@ void dpp401_dscl_set_scaler_manual_scale(struct dpp *dpp_base,
 	if (dscl_mode == DSCL_MODE_SCALING_444_BYPASS) {
 		if (dpp->base.ctx->dc->config.prefer_easf)
 			dpp401_dscl_disable_easf(dpp_base, scl_data);
-<<<<<<< HEAD
-		dpp401_dscl_program_isharp(dpp_base, scl_data);
-=======
 		dpp401_dscl_program_isharp(dpp_base, scl_data, program_isharp_1dlut, &bs_coeffs_updated);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -1577,15 +1178,6 @@ void dpp401_dscl_set_scaler_manual_scale(struct dpp *dpp_base,
 		SCL_V_NUM_TAPS_C, v_num_taps_c,
 		SCL_H_NUM_TAPS_C, h_num_taps_c);
 
-<<<<<<< HEAD
-	dpp401_dscl_set_scl_filter(dpp, scl_data, ycbcr);
-	/* Edge adaptive scaler function configuration */
-	if (dpp->base.ctx->dc->config.prefer_easf)
-		dpp401_dscl_program_easf(dpp_base, scl_data);
-	/* isharp configuration */
-	//if (dpp->base.ctx->dc->config.prefer_easf)
-	dpp401_dscl_program_isharp(dpp_base, scl_data);
-=======
 	/* ISharp configuration
 	 * - B&S coeffs are written to same coeff RAM as WB scaler coeffs
 	 * - coeff RAM toggle is in EASF programming
@@ -1599,6 +1191,5 @@ void dpp401_dscl_set_scaler_manual_scale(struct dpp *dpp_base,
 	/* Edge adaptive scaler function configuration */
 	if (dpp->base.ctx->dc->config.prefer_easf)
 		dpp401_dscl_program_easf(dpp_base, scl_data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PERF_TRACE();
 }

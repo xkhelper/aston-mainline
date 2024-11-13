@@ -100,11 +100,8 @@ void adf_cfg_dev_dbgfs_rm(struct adf_accel_dev *accel_dev)
 }
 
 static void adf_cfg_section_del_all(struct list_head *head);
-<<<<<<< HEAD
-=======
 static void adf_cfg_section_del_all_except(struct list_head *head,
 					   const char *section_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void adf_cfg_del_all(struct adf_accel_dev *accel_dev)
 {
@@ -116,8 +113,6 @@ void adf_cfg_del_all(struct adf_accel_dev *accel_dev)
 	clear_bit(ADF_STATUS_CONFIGURED, &accel_dev->status);
 }
 
-<<<<<<< HEAD
-=======
 void adf_cfg_del_all_except(struct adf_accel_dev *accel_dev,
 			    const char *section_name)
 {
@@ -129,7 +124,6 @@ void adf_cfg_del_all_except(struct adf_accel_dev *accel_dev,
 	clear_bit(ADF_STATUS_CONFIGURED, &accel_dev->status);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * adf_cfg_dev_remove() - Clears acceleration device configuration table.
  * @accel_dev:  Pointer to acceleration device.
@@ -204,8 +198,6 @@ static void adf_cfg_section_del_all(struct list_head *head)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void adf_cfg_section_del_all_except(struct list_head *head,
 					   const char *section_name)
 {
@@ -222,7 +214,6 @@ static void adf_cfg_section_del_all_except(struct list_head *head,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct adf_cfg_key_val *adf_cfg_key_value_find(struct adf_cfg_section *s,
 						      const char *key)
 {

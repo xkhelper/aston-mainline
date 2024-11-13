@@ -436,13 +436,8 @@ static int acpi_processor_add(struct acpi_device *device,
 	}
 
 	pr->handle = device->handle;
-<<<<<<< HEAD
-	strcpy(acpi_device_name(device), ACPI_PROCESSOR_DEVICE_NAME);
-	strcpy(acpi_device_class(device), ACPI_PROCESSOR_CLASS);
-=======
 	strscpy(acpi_device_name(device), ACPI_PROCESSOR_DEVICE_NAME);
 	strscpy(acpi_device_class(device), ACPI_PROCESSOR_CLASS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	device->driver_data = pr;
 
 	result = acpi_processor_get_info(device);
@@ -990,11 +985,7 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u32 cpu,
 		memcpy(&info->states[++last_index], &cx, sizeof(cx));
 	}
 
-<<<<<<< HEAD
-	acpi_handle_info(handle, "Found %d idle states\n", last_index);
-=======
 	acpi_handle_debug(handle, "Found %d idle states\n", last_index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info->count = last_index;
 

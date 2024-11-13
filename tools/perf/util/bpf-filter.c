@@ -1,14 +1,4 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-<<<<<<< HEAD
-#include <stdlib.h>
-
-#include <bpf/bpf.h>
-#include <linux/err.h>
-#include <internal/xyarray.h>
-
-#include "util/debug.h"
-#include "util/evsel.h"
-=======
 /**
  * Generic event filter for sampling events in BPF.
  *
@@ -65,7 +55,6 @@
 #include "util/debug.h"
 #include "util/evsel.h"
 #include "util/target.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "util/bpf-filter.h"
 #include <util/bpf-filter-flex.h>
@@ -79,8 +68,6 @@
 #define __PERF_SAMPLE_TYPE(tt, st, opt)	{ tt, #st, opt }
 #define PERF_SAMPLE_TYPE(_st, opt)	__PERF_SAMPLE_TYPE(PBF_TERM_##_st, PERF_SAMPLE_##_st, opt)
 
-<<<<<<< HEAD
-=======
 /* Index in the pinned 'filters' map.  Should be released after use. */
 struct pinned_filter_idx {
 	struct list_head list;
@@ -91,7 +78,6 @@ struct pinned_filter_idx {
 
 static LIST_HEAD(pinned_filters);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct perf_sample_info {
 	enum perf_bpf_filter_term type;
 	const char *name;
@@ -114,16 +100,11 @@ static const struct perf_sample_info {
 	PERF_SAMPLE_TYPE(TRANSACTION, "--transaction"),
 	PERF_SAMPLE_TYPE(CODE_PAGE_SIZE, "--code-page-size"),
 	PERF_SAMPLE_TYPE(DATA_PAGE_SIZE, "--data-page-size"),
-<<<<<<< HEAD
-};
-
-=======
 	PERF_SAMPLE_TYPE(CGROUP, "--all-cgroups"),
 };
 
 static int get_pinned_fd(const char *name);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct perf_sample_info *get_sample_info(enum perf_bpf_filter_term type)
 {
 	size_t i;
@@ -171,36 +152,6 @@ static int check_sample_flags(struct evsel *evsel, struct perf_bpf_filter_expr *
 	return -1;
 }
 
-<<<<<<< HEAD
-int perf_bpf_filter__prepare(struct evsel *evsel)
-{
-	int i, x, y, fd;
-	struct sample_filter_bpf *skel;
-	struct bpf_program *prog;
-	struct bpf_link *link;
-	struct perf_bpf_filter_expr *expr;
-
-	skel = sample_filter_bpf__open_and_load();
-	if (!skel) {
-		pr_err("Failed to load perf sample-filter BPF skeleton\n");
-		return -1;
-	}
-
-	i = 0;
-	fd = bpf_map__fd(skel->maps.filters);
-	list_for_each_entry(expr, &evsel->bpf_filters, list) {
-		struct perf_bpf_filter_entry entry = {
-			.op = expr->op,
-			.part = expr->part,
-			.term = expr->term,
-			.value = expr->val,
-		};
-
-		if (check_sample_flags(evsel, expr) < 0)
-			return -1;
-
-		bpf_map_update_elem(fd, &i, &entry, BPF_ANY);
-=======
 static int get_filter_entries(struct evsel *evsel, struct perf_bpf_filter_entry *entry)
 {
 	int i = 0;
@@ -217,28 +168,12 @@ static int get_filter_entries(struct evsel *evsel, struct perf_bpf_filter_entry 
 		entry[i].part = expr->part;
 		entry[i].term = expr->term;
 		entry[i].value = expr->val;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i++;
 
 		if (expr->op == PBF_OP_GROUP_BEGIN) {
 			struct perf_bpf_filter_expr *group;
 
 			list_for_each_entry(group, &expr->groups, list) {
-<<<<<<< HEAD
-				struct perf_bpf_filter_entry group_entry = {
-					.op = group->op,
-					.part = group->part,
-					.term = group->term,
-					.value = group->val,
-				};
-				bpf_map_update_elem(fd, &i, &group_entry, BPF_ANY);
-				i++;
-			}
-
-			memset(&entry, 0, sizeof(entry));
-			entry.op = PBF_OP_GROUP_END;
-			bpf_map_update_elem(fd, &i, &entry, BPF_ANY);
-=======
 				if (i == MAX_FILTERS)
 					return -E2BIG;
 
@@ -253,17 +188,10 @@ static int get_filter_entries(struct evsel *evsel, struct perf_bpf_filter_entry 
 				return -E2BIG;
 
 			entry[i].op = PBF_OP_GROUP_END;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			i++;
 		}
 	}
 
-<<<<<<< HEAD
-	if (i > MAX_FILTERS) {
-		pr_err("Too many filters: %d (max = %d)\n", i, MAX_FILTERS);
-		return -1;
-	}
-=======
 	if (i < MAX_FILTERS) {
 		/* to terminate the loop early */
 		entry[i].op = PBF_OP_DONE;
@@ -590,21 +518,12 @@ int perf_bpf_filter__prepare(struct evsel *evsel, struct target *target)
 		goto err;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	prog = skel->progs.perf_sample_filter;
 	for (x = 0; x < xyarray__max_x(evsel->core.fd); x++) {
 		for (y = 0; y < xyarray__max_y(evsel->core.fd); y++) {
 			link = bpf_program__attach_perf_event(prog, FD(evsel, x, y));
 			if (IS_ERR(link)) {
 				pr_err("Failed to attach perf sample-filter program\n");
-<<<<<<< HEAD
-				return PTR_ERR(link);
-			}
-		}
-	}
-	evsel->bpf_skel = skel;
-	return 0;
-=======
 				ret = PTR_ERR(link);
 				goto err;
 			}
@@ -627,41 +546,29 @@ err:
 	}
 	sample_filter_bpf__destroy(skel);
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int perf_bpf_filter__destroy(struct evsel *evsel)
 {
 	struct perf_bpf_filter_expr *expr, *tmp;
-<<<<<<< HEAD
-=======
 	struct pinned_filter_idx *pfi, *pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_for_each_entry_safe(expr, tmp, &evsel->bpf_filters, list) {
 		list_del(&expr->list);
 		free(expr);
 	}
 	sample_filter_bpf__destroy(evsel->bpf_skel);
-<<<<<<< HEAD
-=======
 
 	list_for_each_entry_safe(pfi, pos, &pinned_filters, list) {
 		destroy_idx_hash(pfi);
 		list_del(&pfi->list);
 		free(pfi);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 u64 perf_bpf_filter__lost_count(struct evsel *evsel)
 {
-<<<<<<< HEAD
-	struct sample_filter_bpf *skel = evsel->bpf_skel;
-
-	return skel ? skel->bss->dropped : 0;
-=======
 	int count = 0;
 
 	if (list_empty(&evsel->bpf_filters))
@@ -691,7 +598,6 @@ u64 perf_bpf_filter__lost_count(struct evsel *evsel)
 	}
 
 	return count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct perf_bpf_filter_expr *perf_bpf_filter_expr__new(enum perf_bpf_filter_term term,
@@ -727,8 +633,6 @@ int perf_bpf_filter__parse(struct list_head *expr_head, const char *str)
 
 	return ret;
 }
-<<<<<<< HEAD
-=======
 
 int perf_bpf_filter__pin(void)
 {
@@ -865,4 +769,3 @@ static int get_pinned_fd(const char *name)
 	free(path);
 	return fd;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

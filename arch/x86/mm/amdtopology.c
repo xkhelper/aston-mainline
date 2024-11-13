@@ -12,10 +12,7 @@
 #include <linux/string.h>
 #include <linux/nodemask.h>
 #include <linux/memblock.h>
-<<<<<<< HEAD
-=======
 #include <linux/numa_memblks.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/io.h>
 #include <linux/pci_ids.h>

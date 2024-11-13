@@ -907,11 +907,7 @@ static struct platform_driver rcar_can_driver = {
 		.pm = &rcar_can_pm_ops,
 	},
 	.probe = rcar_can_probe,
-<<<<<<< HEAD
-	.remove_new = rcar_can_remove,
-=======
 	.remove = rcar_can_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(rcar_can_driver);

@@ -544,11 +544,7 @@ static const struct backlight_ops dcon_bl_ops = {
 static struct backlight_properties dcon_bl_props = {
 	.max_brightness = 15,
 	.type = BACKLIGHT_RAW,
-<<<<<<< HEAD
-	.power = FB_BLANK_UNBLANK,
-=======
 	.power = BACKLIGHT_POWER_ON,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int dcon_reboot_notify(struct notifier_block *nb,

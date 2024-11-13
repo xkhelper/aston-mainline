@@ -260,31 +260,6 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
-int f2fs_write_inline_data(struct inode *inode, struct page *page)
-{
-	struct dnode_of_data dn;
-	int err;
-
-	set_new_dnode(&dn, inode, NULL, NULL, 0);
-	err = f2fs_get_dnode_of_data(&dn, 0, LOOKUP_NODE);
-	if (err)
-		return err;
-
-	if (!f2fs_has_inline_data(inode)) {
-		f2fs_put_dnode(&dn);
-		return -EAGAIN;
-	}
-
-	f2fs_bug_on(F2FS_I_SB(inode), page->index);
-
-	f2fs_wait_on_page_writeback(dn.inode_page, NODE, true, true);
-	memcpy_from_page(inline_data_addr(inode, dn.inode_page),
-			 page, 0, MAX_INLINE_DATA(inode));
-	set_page_dirty(dn.inode_page);
-
-	f2fs_clear_page_cache_dirty_tag(page);
-=======
 int f2fs_write_inline_data(struct inode *inode, struct folio *folio)
 {
 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
@@ -307,18 +282,12 @@ int f2fs_write_inline_data(struct inode *inode, struct folio *folio)
 	set_page_dirty(ipage);
 
 	f2fs_clear_page_cache_dirty_tag(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	set_inode_flag(inode, FI_APPEND_WRITE);
 	set_inode_flag(inode, FI_DATA_EXIST);
 
-<<<<<<< HEAD
-	clear_page_private_inline(dn.inode_page);
-	f2fs_put_dnode(&dn);
-=======
 	clear_page_private_inline(ipage);
 	f2fs_put_page(ipage, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

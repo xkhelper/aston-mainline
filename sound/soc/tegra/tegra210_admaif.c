@@ -856,11 +856,7 @@ static const struct dev_pm_ops tegra_admaif_pm_ops = {
 
 static struct platform_driver tegra_admaif_driver = {
 	.probe = tegra_admaif_probe,
-<<<<<<< HEAD
-	.remove_new = tegra_admaif_remove,
-=======
 	.remove = tegra_admaif_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "tegra210-admaif",
 		.of_match_table = tegra_admaif_of_match,

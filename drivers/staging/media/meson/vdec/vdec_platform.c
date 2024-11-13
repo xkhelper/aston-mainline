@@ -101,8 +101,6 @@ static const struct amvdec_format vdec_formats_gxl[] = {
 	},
 };
 
-<<<<<<< HEAD
-=======
 static const struct amvdec_format vdec_formats_gxlx[] = {
 	{
 		.pixfmt = V4L2_PIX_FMT_H264,
@@ -141,7 +139,6 @@ static const struct amvdec_format vdec_formats_gxlx[] = {
 	},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct amvdec_format vdec_formats_gxm[] = {
 	{
 		.pixfmt = V4L2_PIX_FMT_VP9,
@@ -304,15 +301,12 @@ const struct vdec_platform vdec_platform_gxl = {
 	.revision = VDEC_REVISION_GXL,
 };
 
-<<<<<<< HEAD
-=======
 const struct vdec_platform vdec_platform_gxlx = {
 	.formats = vdec_formats_gxlx,
 	.num_formats = ARRAY_SIZE(vdec_formats_gxlx),
 	.revision = VDEC_REVISION_GXLX,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct vdec_platform vdec_platform_gxm = {
 	.formats = vdec_formats_gxm,
 	.num_formats = ARRAY_SIZE(vdec_formats_gxm),

@@ -8,28 +8,19 @@
 #define __MM_INTERNAL_H
 
 #include <linux/fs.h>
-<<<<<<< HEAD
-#include <linux/mm.h>
-=======
 #include <linux/khugepaged.h>
 #include <linux/mm.h>
 #include <linux/mm_inline.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pagemap.h>
 #include <linux/rmap.h>
 #include <linux/swap.h>
 #include <linux/swapops.h>
-<<<<<<< HEAD
-#include <linux/tracepoint-defs.h>
-
-=======
 #include <linux/swap_cgroup.h>
 #include <linux/tracepoint-defs.h>
 
 /* Internal core VMA manipulation functions. */
 #include "vma.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct folio_batch;
 
 /*
@@ -117,8 +108,6 @@ static inline void *folio_raw_mapping(const struct folio *folio)
 	return (void *)(mapping & ~PAGE_MAPPING_FLAGS);
 }
 
-<<<<<<< HEAD
-=======
 /*
  * This is a file-backed mapping, and is about to be memory mapped - invoke its
  * mmap hook and safely handle error conditions. On error, VMA hooks will be
@@ -164,7 +153,6 @@ static inline void vma_close(struct vm_area_struct *vma)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_MMU
 
 /* Flags for folio_pte_batch(). */
@@ -333,14 +321,6 @@ static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
 {
 	pte_t expected_pte = pte_next_swp_offset(pte);
 	const pte_t *end_ptep = start_ptep + max_nr;
-<<<<<<< HEAD
-	pte_t *ptep = start_ptep + 1;
-
-	VM_WARN_ON(max_nr < 1);
-	VM_WARN_ON(!is_swap_pte(pte));
-	VM_WARN_ON(non_swap_entry(pte_to_swp_entry(pte)));
-
-=======
 	swp_entry_t entry = pte_to_swp_entry(pte);
 	pte_t *ptep = start_ptep + 1;
 	unsigned short cgroup_id;
@@ -350,18 +330,13 @@ static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
 	VM_WARN_ON(non_swap_entry(entry));
 
 	cgroup_id = lookup_swap_cgroup_id(entry);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (ptep < end_ptep) {
 		pte = ptep_get(ptep);
 
 		if (!pte_same(pte, expected_pte))
 			break;
-<<<<<<< HEAD
-
-=======
 		if (lookup_swap_cgroup_id(pte_to_swp_entry(pte)) != cgroup_id)
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		expected_pte = pte_next_swp_offset(expected_pte);
 		ptep++;
 	}
@@ -390,9 +365,6 @@ static inline void wake_throttle_isolated(pg_data_t *pgdat)
 		wake_up(wqh);
 }
 
-<<<<<<< HEAD
-vm_fault_t vmf_anon_prepare(struct vm_fault *vmf);
-=======
 vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf);
 static inline vm_fault_t vmf_anon_prepare(struct vm_fault *vmf)
 {
@@ -403,7 +375,6 @@ static inline vm_fault_t vmf_anon_prepare(struct vm_fault *vmf)
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 vm_fault_t do_swap_page(struct vm_fault *vmf);
 void folio_rotate_reclaimable(struct folio *folio);
 bool __folio_end_writeback(struct folio *folio);
@@ -499,13 +470,7 @@ extern unsigned long highest_memmap_pfn;
 /*
  * in mm/vmscan.c:
  */
-<<<<<<< HEAD
-bool isolate_lru_page(struct page *page);
 bool folio_isolate_lru(struct folio *folio);
-void putback_lru_page(struct page *page);
-=======
-bool folio_isolate_lru(struct folio *folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void folio_putback_lru(struct folio *folio);
 extern void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason);
 
@@ -719,19 +684,11 @@ static inline void folio_set_order(struct folio *folio, unsigned int order)
 #endif
 }
 
-<<<<<<< HEAD
-void __folio_undo_large_rmappable(struct folio *folio);
-static inline void folio_undo_large_rmappable(struct folio *folio)
-{
-	if (folio_order(folio) <= 1 || !folio_test_large_rmappable(folio))
-		return;
-=======
 bool __folio_unqueue_deferred_split(struct folio *folio);
 static inline bool folio_unqueue_deferred_split(struct folio *folio)
 {
 	if (folio_order(folio) <= 1 || !folio_test_large_rmappable(folio))
 		return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * At this point, there is no one trying to add the folio to
@@ -739,15 +696,9 @@ static inline bool folio_unqueue_deferred_split(struct folio *folio)
 	 * to check without acquiring the split_queue_lock.
 	 */
 	if (data_race(list_empty(&folio->_deferred_list)))
-<<<<<<< HEAD
-		return;
-
-	__folio_undo_large_rmappable(folio);
-=======
 		return false;
 
 	return __folio_unqueue_deferred_split(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline struct folio *page_rmappable_folio(struct page *page)
@@ -889,40 +840,6 @@ static inline bool free_area_empty(struct free_area *area, int migratetype)
 	return list_empty(&area->free_list[migratetype]);
 }
 
-<<<<<<< HEAD
-/*
- * These three helpers classifies VMAs for virtual memory accounting.
- */
-
-/*
- * Executable code area - executable, not writable, not stack
- */
-static inline bool is_exec_mapping(vm_flags_t flags)
-{
-	return (flags & (VM_EXEC | VM_WRITE | VM_STACK)) == VM_EXEC;
-}
-
-/*
- * Stack area (including shadow stacks)
- *
- * VM_GROWSUP / VM_GROWSDOWN VMAs are always private anonymous:
- * do_mmap() forbids all other combinations.
- */
-static inline bool is_stack_mapping(vm_flags_t flags)
-{
-	return ((flags & VM_STACK) == VM_STACK) || (flags & VM_SHADOW_STACK);
-}
-
-/*
- * Data area - private, writable, not stack
- */
-static inline bool is_data_mapping(vm_flags_t flags)
-{
-	return (flags & (VM_WRITE | VM_SHARED | VM_STACK)) == VM_WRITE;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* mm/util.c */
 struct anon_vma *folio_anon_vma(struct folio *folio);
 
@@ -1183,11 +1100,8 @@ static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
 /*
  * mm/memory-failure.c
  */
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_MEMORY_FAILURE
 void unmap_poisoned_folio(struct folio *folio, enum ttu_flags ttu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void shake_folio(struct folio *folio);
 extern int hwpoison_filter(struct page *p);
 
@@ -1208,15 +1122,12 @@ void add_to_kill_ksm(struct task_struct *tsk, struct page *p,
 		     unsigned long ksm_addr);
 unsigned long page_mapped_in_vma(struct page *page, struct vm_area_struct *vma);
 
-<<<<<<< HEAD
-=======
 #else
 static inline void unmap_poisoned_folio(struct folio *folio, enum ttu_flags ttu)
 {
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern unsigned long  __must_check vm_mmap_pgoff(struct file *, unsigned long,
         unsigned long, unsigned long,
         unsigned long, unsigned long);
@@ -1293,10 +1204,6 @@ static inline void flush_tlb_batched_pending(struct mm_struct *mm)
 #endif /* CONFIG_ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH */
 
 extern const struct trace_print_flags pageflag_names[];
-<<<<<<< HEAD
-extern const struct trace_print_flags pagetype_names[];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct trace_print_flags vmaflag_names[];
 extern const struct trace_print_flags gfpflag_names[];
 
@@ -1348,20 +1255,12 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
 
 void __vunmap_range_noflush(unsigned long start, unsigned long end);
 
-<<<<<<< HEAD
-int numa_migrate_prep(struct folio *folio, struct vm_fault *vmf,
-		      unsigned long addr, int page_nid, int *flags);
-
-void free_zone_device_folio(struct folio *folio);
-int migrate_device_coherent_page(struct page *page);
-=======
 int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
 		      unsigned long addr, int *flags, bool writable,
 		      int *last_cpupid);
 
 void free_zone_device_folio(struct folio *folio);
 int migrate_device_coherent_folio(struct folio *folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * mm/gup.c
@@ -1377,16 +1276,6 @@ void touch_pud(struct vm_area_struct *vma, unsigned long addr,
 void touch_pmd(struct vm_area_struct *vma, unsigned long addr,
 	       pmd_t *pmd, bool write);
 
-<<<<<<< HEAD
-/*
- * mm/mmap.c
- */
-struct vm_area_struct *vma_merge_extend(struct vma_iterator *vmi,
-					struct vm_area_struct *vma,
-					unsigned long delta);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	/* mark page accessed */
 	FOLL_TOUCH = 1 << 16,
@@ -1513,120 +1402,6 @@ static inline bool pte_needs_soft_dirty_wp(struct vm_area_struct *vma, pte_t pte
 	return vma_soft_dirty_enabled(vma) && !pte_soft_dirty(pte);
 }
 
-<<<<<<< HEAD
-static inline void vma_iter_config(struct vma_iterator *vmi,
-		unsigned long index, unsigned long last)
-{
-	__mas_set_range(&vmi->mas, index, last - 1);
-}
-
-static inline void vma_iter_reset(struct vma_iterator *vmi)
-{
-	mas_reset(&vmi->mas);
-}
-
-static inline
-struct vm_area_struct *vma_iter_prev_range_limit(struct vma_iterator *vmi, unsigned long min)
-{
-	return mas_prev_range(&vmi->mas, min);
-}
-
-static inline
-struct vm_area_struct *vma_iter_next_range_limit(struct vma_iterator *vmi, unsigned long max)
-{
-	return mas_next_range(&vmi->mas, max);
-}
-
-static inline int vma_iter_area_lowest(struct vma_iterator *vmi, unsigned long min,
-				       unsigned long max, unsigned long size)
-{
-	return mas_empty_area(&vmi->mas, min, max - 1, size);
-}
-
-static inline int vma_iter_area_highest(struct vma_iterator *vmi, unsigned long min,
-					unsigned long max, unsigned long size)
-{
-	return mas_empty_area_rev(&vmi->mas, min, max - 1, size);
-}
-
-/*
- * VMA Iterator functions shared between nommu and mmap
- */
-static inline int vma_iter_prealloc(struct vma_iterator *vmi,
-		struct vm_area_struct *vma)
-{
-	return mas_preallocate(&vmi->mas, vma, GFP_KERNEL);
-}
-
-static inline void vma_iter_clear(struct vma_iterator *vmi)
-{
-	mas_store_prealloc(&vmi->mas, NULL);
-}
-
-static inline struct vm_area_struct *vma_iter_load(struct vma_iterator *vmi)
-{
-	return mas_walk(&vmi->mas);
-}
-
-/* Store a VMA with preallocated memory */
-static inline void vma_iter_store(struct vma_iterator *vmi,
-				  struct vm_area_struct *vma)
-{
-
-#if defined(CONFIG_DEBUG_VM_MAPLE_TREE)
-	if (MAS_WARN_ON(&vmi->mas, vmi->mas.status != ma_start &&
-			vmi->mas.index > vma->vm_start)) {
-		pr_warn("%lx > %lx\n store vma %lx-%lx\n into slot %lx-%lx\n",
-			vmi->mas.index, vma->vm_start, vma->vm_start,
-			vma->vm_end, vmi->mas.index, vmi->mas.last);
-	}
-	if (MAS_WARN_ON(&vmi->mas, vmi->mas.status != ma_start &&
-			vmi->mas.last <  vma->vm_start)) {
-		pr_warn("%lx < %lx\nstore vma %lx-%lx\ninto slot %lx-%lx\n",
-		       vmi->mas.last, vma->vm_start, vma->vm_start, vma->vm_end,
-		       vmi->mas.index, vmi->mas.last);
-	}
-#endif
-
-	if (vmi->mas.status != ma_start &&
-	    ((vmi->mas.index > vma->vm_start) || (vmi->mas.last < vma->vm_start)))
-		vma_iter_invalidate(vmi);
-
-	__mas_set_range(&vmi->mas, vma->vm_start, vma->vm_end - 1);
-	mas_store_prealloc(&vmi->mas, vma);
-}
-
-static inline int vma_iter_store_gfp(struct vma_iterator *vmi,
-			struct vm_area_struct *vma, gfp_t gfp)
-{
-	if (vmi->mas.status != ma_start &&
-	    ((vmi->mas.index > vma->vm_start) || (vmi->mas.last < vma->vm_start)))
-		vma_iter_invalidate(vmi);
-
-	__mas_set_range(&vmi->mas, vma->vm_start, vma->vm_end - 1);
-	mas_store_gfp(&vmi->mas, vma, gfp);
-	if (unlikely(mas_is_err(&vmi->mas)))
-		return -ENOMEM;
-
-	return 0;
-}
-
-/*
- * VMA lock generalization
- */
-struct vma_prepare {
-	struct vm_area_struct *vma;
-	struct vm_area_struct *adj_next;
-	struct file *file;
-	struct address_space *mapping;
-	struct anon_vma *anon_vma;
-	struct vm_area_struct *insert;
-	struct vm_area_struct *remove;
-	struct vm_area_struct *remove2;
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __meminit __init_single_page(struct page *page, unsigned long pfn,
 				unsigned long zone, int nid);
 
@@ -1643,33 +1418,11 @@ static inline int can_do_mseal(unsigned long flags)
 	return 0;
 }
 
-<<<<<<< HEAD
-bool can_modify_mm(struct mm_struct *mm, unsigned long start,
-		unsigned long end);
-bool can_modify_mm_madv(struct mm_struct *mm, unsigned long start,
-		unsigned long end, int behavior);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static inline int can_do_mseal(unsigned long flags)
 {
 	return -EPERM;
 }
-<<<<<<< HEAD
-
-static inline bool can_modify_mm(struct mm_struct *mm, unsigned long start,
-		unsigned long end)
-{
-	return true;
-}
-
-static inline bool can_modify_mm_madv(struct mm_struct *mm, unsigned long start,
-		unsigned long end, int behavior)
-{
-	return true;
-}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #ifdef CONFIG_SHRINKER_DEBUG
@@ -1721,16 +1474,6 @@ static inline void shrinker_debugfs_remove(struct dentry *debugfs_entry,
 void workingset_update_node(struct xa_node *node);
 extern struct list_lru shadow_nodes;
 
-<<<<<<< HEAD
-struct unlink_vma_file_batch {
-	int count;
-	struct vm_area_struct *vmas[8];
-};
-
-void unlink_file_vma_batch_init(struct unlink_vma_file_batch *);
-void unlink_file_vma_batch_add(struct unlink_vma_file_batch *, struct vm_area_struct *);
-void unlink_file_vma_batch_final(struct unlink_vma_file_batch *);
-=======
 /* mremap.c */
 unsigned long move_page_tables(struct vm_area_struct *vma,
 	unsigned long old_addr, struct vm_area_struct *new_vma,
@@ -1744,6 +1487,5 @@ static inline void accept_page(struct page *page)
 {
 }
 #endif /* CONFIG_UNACCEPTED_MEMORY */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif	/* __MM_INTERNAL_H */

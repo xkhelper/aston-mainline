@@ -68,11 +68,8 @@ config_override_param "--gdb options" KcList "$TORTURE_KCONFIG_GDB_ARG"
 config_override_param "--kasan options" KcList "$TORTURE_KCONFIG_KASAN_ARG"
 config_override_param "--kcsan options" KcList "$TORTURE_KCONFIG_KCSAN_ARG"
 config_override_param "--kconfig argument" KcList "$TORTURE_KCONFIG_ARG"
-<<<<<<< HEAD
-=======
 config_override_param "$config_dir/CFcommon.$(uname -m)" KcList \
 		      "`cat $config_dir/CFcommon.$(uname -m) 2> /dev/null`"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 cp $T/KcList $resdir/ConfigFragment
 
 base_resdir=`echo $resdir | sed -e 's/\.[0-9]\+$//'`

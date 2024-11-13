@@ -2,11 +2,8 @@
 #ifndef _TOOLS_LINUX_COMPILER_H_
 #define _TOOLS_LINUX_COMPILER_H_
 
-<<<<<<< HEAD
-=======
 #ifndef __ASSEMBLY__
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/compiler_types.h>
 
 #ifndef __compiletime_error
@@ -131,13 +128,6 @@
 # define unlikely(x)		__builtin_expect(!!(x), 0)
 #endif
 
-<<<<<<< HEAD
-#ifndef __init
-# define __init
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/types.h>
 
 /*
@@ -232,9 +222,6 @@ static __always_inline void __write_once_size(volatile void *p, void *res, int s
 	__asm__ ("" : "=r" (var) : "0" (var))
 #endif
 
-<<<<<<< HEAD
-=======
 #endif /* __ASSEMBLY__ */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _TOOLS_LINUX_COMPILER_H */

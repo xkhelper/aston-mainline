@@ -68,11 +68,8 @@ MODULE_LICENSE("Dual BSD/GPL");
 static u64 srpt_service_guid;
 static DEFINE_SPINLOCK(srpt_dev_lock);	/* Protects srpt_dev_list. */
 static LIST_HEAD(srpt_dev_list);	/* List of srpt_device structures. */
-<<<<<<< HEAD
-=======
 static DEFINE_MUTEX(srpt_mc_mutex);	/* Protects srpt_memory_caches. */
 static DEFINE_XARRAY(srpt_memory_caches); /* See also srpt_memory_cache_entry */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static unsigned srp_max_req_size = DEFAULT_MAX_REQ_SIZE;
 module_param(srp_max_req_size, int, 0444);
@@ -110,8 +107,6 @@ static void srpt_recv_done(struct ib_cq *cq, struct ib_wc *wc);
 static void srpt_send_done(struct ib_cq *cq, struct ib_wc *wc);
 static void srpt_process_wait_list(struct srpt_rdma_ch *ch);
 
-<<<<<<< HEAD
-=======
 /* Type of the entries in srpt_memory_caches. */
 struct srpt_memory_cache_entry {
 	refcount_t ref;
@@ -169,7 +164,6 @@ static void srpt_cache_put(struct kmem_cache *c)
 	kfree(e);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The only allowed channel state changes are those that change the channel
  * state into a state with a higher numerical value. Hence the new > prev test.
@@ -2184,21 +2178,13 @@ static void srpt_release_channel_work(struct work_struct *w)
 			     ch->sport->sdev, ch->rq_size,
 			     ch->rsp_buf_cache, DMA_TO_DEVICE);
 
-<<<<<<< HEAD
-	kmem_cache_destroy(ch->rsp_buf_cache);
-=======
 	srpt_cache_put(ch->rsp_buf_cache);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	srpt_free_ioctx_ring((struct srpt_ioctx **)ch->ioctx_recv_ring,
 			     sdev, ch->rq_size,
 			     ch->req_buf_cache, DMA_FROM_DEVICE);
 
-<<<<<<< HEAD
-	kmem_cache_destroy(ch->req_buf_cache);
-=======
 	srpt_cache_put(ch->req_buf_cache);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kref_put(&ch->kref, srpt_free_ch);
 }
@@ -2318,12 +2304,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
 	INIT_LIST_HEAD(&ch->cmd_wait_list);
 	ch->max_rsp_size = ch->sport->port_attrib.srp_max_rsp_size;
 
-<<<<<<< HEAD
-	ch->rsp_buf_cache = kmem_cache_create("srpt-rsp-buf", ch->max_rsp_size,
-					      512, 0, NULL);
-=======
 	ch->rsp_buf_cache = srpt_cache_get(ch->max_rsp_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ch->rsp_buf_cache)
 		goto free_ch;
 
@@ -2357,12 +2338,7 @@ static int srpt_cm_req_recv(struct srpt_device *const sdev,
 		alignment_offset = round_up(imm_data_offset, 512) -
 			imm_data_offset;
 		req_sz = alignment_offset + imm_data_offset + srp_max_req_size;
-<<<<<<< HEAD
-		ch->req_buf_cache = kmem_cache_create("srpt-req-buf", req_sz,
-						      512, 0, NULL);
-=======
 		ch->req_buf_cache = srpt_cache_get(req_sz);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!ch->req_buf_cache)
 			goto free_rsp_ring;
 
@@ -2559,11 +2535,7 @@ free_recv_ring:
 			     ch->req_buf_cache, DMA_FROM_DEVICE);
 
 free_recv_cache:
-<<<<<<< HEAD
-	kmem_cache_destroy(ch->req_buf_cache);
-=======
 	srpt_cache_put(ch->req_buf_cache);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 free_rsp_ring:
 	srpt_free_ioctx_ring((struct srpt_ioctx **)ch->ioctx_ring,
@@ -2571,11 +2543,7 @@ free_rsp_ring:
 			     ch->rsp_buf_cache, DMA_TO_DEVICE);
 
 free_rsp_cache:
-<<<<<<< HEAD
-	kmem_cache_destroy(ch->rsp_buf_cache);
-=======
 	srpt_cache_put(ch->rsp_buf_cache);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 free_ch:
 	if (rdma_cm_id)
@@ -3144,11 +3112,7 @@ static void srpt_free_srq(struct srpt_device *sdev)
 	srpt_free_ioctx_ring((struct srpt_ioctx **)sdev->ioctx_ring, sdev,
 			     sdev->srq_size, sdev->req_buf_cache,
 			     DMA_FROM_DEVICE);
-<<<<<<< HEAD
-	kmem_cache_destroy(sdev->req_buf_cache);
-=======
 	srpt_cache_put(sdev->req_buf_cache);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sdev->srq = NULL;
 }
 
@@ -3175,12 +3139,7 @@ static int srpt_alloc_srq(struct srpt_device *sdev)
 	pr_debug("create SRQ #wr= %d max_allow=%d dev= %s\n", sdev->srq_size,
 		 sdev->device->attrs.max_srq_wr, dev_name(&device->dev));
 
-<<<<<<< HEAD
-	sdev->req_buf_cache = kmem_cache_create("srpt-srq-req-buf",
-						srp_max_req_size, 0, 0, NULL);
-=======
 	sdev->req_buf_cache = srpt_cache_get(srp_max_req_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sdev->req_buf_cache)
 		goto free_srq;
 
@@ -3202,11 +3161,7 @@ static int srpt_alloc_srq(struct srpt_device *sdev)
 	return 0;
 
 free_cache:
-<<<<<<< HEAD
-	kmem_cache_destroy(sdev->req_buf_cache);
-=======
 	srpt_cache_put(sdev->req_buf_cache);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 free_srq:
 	ib_destroy_srq(srq);

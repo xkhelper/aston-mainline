@@ -263,17 +263,6 @@ out:
 static int attempt_writeback(const char *cgroup, void *arg)
 {
 	long pagesize = sysconf(_SC_PAGESIZE);
-<<<<<<< HEAD
-	char *test_group = arg;
-	size_t memsize = MB(4);
-	char buf[pagesize];
-	long zswap_usage;
-	bool wb_enabled;
-	int ret = -1;
-	char *mem;
-
-	wb_enabled = cg_read_long(test_group, "memory.zswap.writeback");
-=======
 	size_t memsize = MB(4);
 	char buf[pagesize];
 	long zswap_usage;
@@ -281,7 +270,6 @@ static int attempt_writeback(const char *cgroup, void *arg)
 	int ret = -1;
 	char *mem;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mem = (char *)malloc(memsize);
 	if (!mem)
 		return ret;
@@ -298,20 +286,12 @@ static int attempt_writeback(const char *cgroup, void *arg)
 		memcpy(&mem[i], buf, pagesize);
 
 	/* Try and reclaim allocated memory */
-<<<<<<< HEAD
-	if (cg_write_numeric(test_group, "memory.reclaim", memsize)) {
-=======
 	if (cg_write_numeric(cgroup, "memory.reclaim", memsize)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ksft_print_msg("Failed to reclaim all of the requested memory\n");
 		goto out;
 	}
 
-<<<<<<< HEAD
-	zswap_usage = cg_read_long(test_group, "memory.zswap.current");
-=======
 	zswap_usage = cg_read_long(cgroup, "memory.zswap.current");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* zswpin */
 	for (int i = 0; i < memsize; i += pagesize) {
@@ -321,11 +301,7 @@ static int attempt_writeback(const char *cgroup, void *arg)
 		}
 	}
 
-<<<<<<< HEAD
-	if (cg_write_numeric(test_group, "memory.zswap.max", zswap_usage/2))
-=======
 	if (cg_write_numeric(cgroup, "memory.zswap.max", zswap_usage/2))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 
 	/*
@@ -334,11 +310,7 @@ static int attempt_writeback(const char *cgroup, void *arg)
 	 * If writeback is disabled, memory reclaim will fail as zswap is limited and
 	 * it can't writeback to swap.
 	 */
-<<<<<<< HEAD
-	ret = cg_write_numeric(test_group, "memory.reclaim", memsize);
-=======
 	ret = cg_write_numeric(cgroup, "memory.reclaim", memsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!wb_enabled)
 		ret = (ret == -EAGAIN) ? 0 : -1;
 
@@ -347,14 +319,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-/* Test to verify the zswap writeback path */
-static int test_zswap_writeback(const char *root, bool wb)
-{
-	long zswpwb_before, zswpwb_after;
-	int ret = KSFT_FAIL;
-	char *test_group;
-=======
 static int test_zswap_writeback_one(const char *cgroup, bool wb)
 {
 	long zswpwb_before, zswpwb_after;
@@ -390,7 +354,6 @@ static int test_zswap_writeback(const char *root, bool wb)
 
 	if (cg_read_strcmp(root, "memory.zswap.writeback", "1"))
 		return KSFT_SKIP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	test_group = cg_name(root, "zswap_writeback_test");
 	if (!test_group)
@@ -400,27 +363,6 @@ static int test_zswap_writeback(const char *root, bool wb)
 	if (cg_write(test_group, "memory.zswap.writeback", wb ? "1" : "0"))
 		goto out;
 
-<<<<<<< HEAD
-	zswpwb_before = get_cg_wb_count(test_group);
-	if (zswpwb_before != 0) {
-		ksft_print_msg("zswpwb_before = %ld instead of 0\n", zswpwb_before);
-		goto out;
-	}
-
-	if (cg_run(test_group, attempt_writeback, (void *) test_group))
-		goto out;
-
-	/* Verify that zswap writeback occurred only if writeback was enabled */
-	zswpwb_after = get_cg_wb_count(test_group);
-	if (zswpwb_after < 0)
-		goto out;
-
-	if (wb != !!zswpwb_after) {
-		ksft_print_msg("zswpwb_after is %ld while wb is %s",
-				zswpwb_after, wb ? "enabled" : "disabled");
-		goto out;
-	}
-=======
 	if (test_zswap_writeback_one(test_group, wb))
 		goto out;
 
@@ -442,18 +384,14 @@ static int test_zswap_writeback(const char *root, bool wb)
 
 	if (test_zswap_writeback_one(test_group_child, wb))
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = KSFT_PASS;
 
 out:
-<<<<<<< HEAD
-=======
 	if (test_group_child) {
 		cg_destroy(test_group_child);
 		free(test_group_child);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cg_destroy(test_group);
 	free(test_group);
 	return ret;

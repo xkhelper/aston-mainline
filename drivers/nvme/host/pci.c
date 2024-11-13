@@ -2506,18 +2506,11 @@ static unsigned int nvme_pci_nr_maps(struct nvme_dev *dev)
 	return 1;
 }
 
-<<<<<<< HEAD
-static void nvme_pci_update_nr_queues(struct nvme_dev *dev)
-=======
 static bool nvme_pci_update_nr_queues(struct nvme_dev *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!dev->ctrl.tagset) {
 		nvme_alloc_io_tag_set(&dev->ctrl, &dev->tagset, &nvme_mq_ops,
 				nvme_pci_nr_maps(dev), sizeof(struct nvme_iod));
-<<<<<<< HEAD
-		return;
-=======
 		return true;
 	}
 
@@ -2529,17 +2522,13 @@ static bool nvme_pci_update_nr_queues(struct nvme_dev *dev)
 	if (!dev->online_queues) {
 		mutex_unlock(&dev->shutdown_lock);
 		return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	blk_mq_update_nr_hw_queues(&dev->tagset, dev->online_queues - 1);
 	/* free previously allocated queues that are no longer usable */
 	nvme_free_queues(dev, dev->online_queues);
-<<<<<<< HEAD
-=======
 	mutex_unlock(&dev->shutdown_lock);
 	return true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int nvme_pci_enable(struct nvme_dev *dev)
@@ -2586,20 +2575,8 @@ static int nvme_pci_enable(struct nvme_dev *dev)
 	else
 		dev->io_sqes = NVME_NVM_IOSQES;
 
-<<<<<<< HEAD
-	/*
-	 * Temporary fix for the Apple controller found in the MacBook8,1 and
-	 * some MacBook7,1 to avoid controller resets and data loss.
-	 */
-	if (pdev->vendor == PCI_VENDOR_ID_APPLE && pdev->device == 0x2001) {
-		dev->q_depth = 2;
-		dev_warn(dev->ctrl.device, "detected Apple NVMe controller, "
-			"set queue depth=%u to work around controller resets\n",
-			dev->q_depth);
-=======
 	if (dev->ctrl.quirks & NVME_QUIRK_QDEPTH_ONE) {
 		dev->q_depth = 2;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (pdev->vendor == PCI_VENDOR_ID_SAMSUNG &&
 		   (pdev->device == 0xa821 || pdev->device == 0xa822) &&
 		   NVME_CAP_MQES(dev->ctrl.cap) == 0) {
@@ -2832,12 +2809,8 @@ static void nvme_reset_work(struct work_struct *work)
 		nvme_dbbuf_set(dev);
 		nvme_unquiesce_io_queues(&dev->ctrl);
 		nvme_wait_freeze(&dev->ctrl);
-<<<<<<< HEAD
-		nvme_pci_update_nr_queues(dev);
-=======
 		if (!nvme_pci_update_nr_queues(dev))
 			goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nvme_unfreeze(&dev->ctrl);
 	} else {
 		dev_warn(dev->ctrl.device, "IO queues lost\n");
@@ -3475,11 +3448,8 @@ static const struct pci_device_id nvme_id_table[] = {
 				NVME_QUIRK_BOGUS_NID, },
 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-<<<<<<< HEAD
-=======
 	{ PCI_DEVICE(0x1217, 0x8760), /* O2 Micro 64GB Steam Deck */
 		.driver_data = NVME_QUIRK_QDEPTH_ONE },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
 				NVME_QUIRK_BOGUS_NID, },
@@ -3614,16 +3584,12 @@ static const struct pci_device_id nvme_id_table[] = {
 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0xcd02),
 		.driver_data = NVME_QUIRK_DMA_ADDRESS_BITS_48, },
 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2001),
-<<<<<<< HEAD
-		.driver_data = NVME_QUIRK_SINGLE_VECTOR },
-=======
 		/*
 		 * Fix for the Apple controller found in the MacBook8,1 and
 		 * some MacBook7,1 to avoid controller resets and data loss.
 		 */
 		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
 				NVME_QUIRK_QDEPTH_ONE },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2003) },
 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2005),
 		.driver_data = NVME_QUIRK_SINGLE_VECTOR |

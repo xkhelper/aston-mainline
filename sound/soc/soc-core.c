@@ -326,13 +326,8 @@ static int snd_soc_rtd_add_component(struct snd_soc_pcm_runtime *rtd,
 	}
 
 	/* see for_each_rtd_components */
-<<<<<<< HEAD
-	rtd->components[rtd->num_components] = component;
-	rtd->num_components++;
-=======
 	rtd->num_components++; // increment flex array count at first
 	rtd->components[rtd->num_components - 1] = component;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -499,10 +494,6 @@ static struct snd_soc_pcm_runtime *soc_new_pcm_runtime(
 	struct snd_soc_card *card, struct snd_soc_dai_link *dai_link)
 {
 	struct snd_soc_pcm_runtime *rtd;
-<<<<<<< HEAD
-	struct snd_soc_component *component;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device *dev;
 	int ret;
 	int stream;
@@ -529,17 +520,10 @@ static struct snd_soc_pcm_runtime *soc_new_pcm_runtime(
 	 * for rtd
 	 */
 	rtd = devm_kzalloc(dev,
-<<<<<<< HEAD
-			   sizeof(*rtd) +
-			   sizeof(component) * (dai_link->num_cpus +
-						 dai_link->num_codecs +
-						 dai_link->num_platforms),
-=======
 			   struct_size(rtd, components,
 				       dai_link->num_cpus +
 				       dai_link->num_codecs +
 				       dai_link->num_platforms),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   GFP_KERNEL);
 	if (!rtd) {
 		device_unregister(dev);
@@ -3387,17 +3371,10 @@ unsigned int snd_soc_daifmt_parse_format(struct device_node *np,
 	 * SND_SOC_DAIFMT_INV_MASK area
 	 */
 	snprintf(prop, sizeof(prop), "%sbitclock-inversion", prefix);
-<<<<<<< HEAD
-	bit = !!of_get_property(np, prop, NULL);
-
-	snprintf(prop, sizeof(prop), "%sframe-inversion", prefix);
-	frame = !!of_get_property(np, prop, NULL);
-=======
 	bit = of_property_read_bool(np, prop);
 
 	snprintf(prop, sizeof(prop), "%sframe-inversion", prefix);
 	frame = of_property_read_bool(np, prop);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch ((bit << 4) + frame) {
 	case 0x11:
@@ -3434,20 +3411,12 @@ unsigned int snd_soc_daifmt_parse_clock_provider_raw(struct device_node *np,
 	 * check "[prefix]frame-master"
 	 */
 	snprintf(prop, sizeof(prop), "%sbitclock-master", prefix);
-<<<<<<< HEAD
-	bit = !!of_get_property(np, prop, NULL);
-=======
 	bit = of_property_read_bool(np, prop);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (bit && bitclkmaster)
 		*bitclkmaster = of_parse_phandle(np, prop, 0);
 
 	snprintf(prop, sizeof(prop), "%sframe-master", prefix);
-<<<<<<< HEAD
-	frame = !!of_get_property(np, prop, NULL);
-=======
 	frame = of_property_read_bool(np, prop);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (frame && framemaster)
 		*framemaster = of_parse_phandle(np, prop, 0);
 

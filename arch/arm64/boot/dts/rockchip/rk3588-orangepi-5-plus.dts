@@ -105,8 +105,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	rfkill {
 		compatible = "rfkill-gpio";
 		label = "rfkill-pcie-wlan";
@@ -114,7 +112,6 @@
 		shutdown-gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sound {
 		compatible = "simple-audio-card";
 		pinctrl-names = "default";
@@ -331,10 +328,6 @@
 		compatible = "everest,es8388";
 		reg = <0x11>;
 		clocks = <&cru I2S0_8CH_MCLKOUT>;
-<<<<<<< HEAD
-		clock-names = "mclk";
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		AVDD-supply = <&vcc_1v8_s0>;
 		DVDD-supply = <&vcc_1v8_s0>;
 		HPVDD-supply = <&vcc_3v3_s0>;

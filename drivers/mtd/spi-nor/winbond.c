@@ -18,8 +18,6 @@
 		   SPI_MEM_OP_DATA_OUT(1, buf, 0))
 
 static int
-<<<<<<< HEAD
-=======
 w25q128_post_bfpt_fixups(struct spi_nor *nor,
 			 const struct sfdp_parameter_header *bfpt_header,
 			 const struct sfdp_bfpt *bfpt)
@@ -45,7 +43,6 @@ static const struct spi_nor_fixups w25q128_fixups = {
 };
 
 static int
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 w25q256_post_bfpt_fixups(struct spi_nor *nor,
 			 const struct sfdp_parameter_header *bfpt_header,
 			 const struct sfdp_bfpt *bfpt)
@@ -136,10 +133,7 @@ static const struct flash_info winbond_nor_parts[] = {
 		.size = SZ_16M,
 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB,
 		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
-<<<<<<< HEAD
-=======
 		.fixups = &w25q128_fixups,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}, {
 		.id = SNOR_ID(0xef, 0x40, 0x19),
 		.name = "w25q256",

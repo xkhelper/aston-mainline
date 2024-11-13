@@ -75,11 +75,7 @@
 #include <net/proto_memory.h>
 #include <net/inet_common.h>
 #include <linux/ipsec.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/errqueue.h>
 #include <trace/events/tcp.h>
 #include <linux/jump_label_ratelimit.h>
@@ -2477,10 +2473,6 @@ static bool tcp_skb_spurious_retrans(const struct tcp_sock *tp,
  */
 static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
 {
-<<<<<<< HEAD
-	return tp->retrans_stamp &&
-	       tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
-=======
 	const struct sock *sk = (const struct sock *)tp;
 
 	if (tp->retrans_stamp &&
@@ -2497,7 +2489,6 @@ static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
 		return true;  /* nothing was retransmitted */
 
 	return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Undo procedures. */
@@ -2531,8 +2522,6 @@ static bool tcp_any_retrans_done(const struct sock *sk)
 	return false;
 }
 
-<<<<<<< HEAD
-=======
 /* If loss recovery is finished and there are no retransmits out in the
  * network, then we clear retrans_stamp so that upon the next loss recovery
  * retransmits_timed_out() and timestamp-undo are using the correct value.
@@ -2543,7 +2532,6 @@ static void tcp_retrans_stamp_cleanup(struct sock *sk)
 		tcp_sk(sk)->retrans_stamp = 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void DBGUNDO(struct sock *sk, const char *msg)
 {
 #if FASTRETRANS_DEBUG > 1
@@ -2911,12 +2899,9 @@ void tcp_enter_recovery(struct sock *sk, bool ece_ack)
 	struct tcp_sock *tp = tcp_sk(sk);
 	int mib_idx;
 
-<<<<<<< HEAD
-=======
 	/* Start the clock with our fast retransmit, for undo and ETIMEDOUT. */
 	tcp_retrans_stamp_cleanup(sk);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (tcp_is_reno(tp))
 		mib_idx = LINUX_MIB_TCPRENORECOVERY;
 	else
@@ -5433,12 +5418,9 @@ restart:
 	for (end_of_skbs = true; skb != NULL && skb != tail; skb = n) {
 		n = tcp_skb_next(skb, list);
 
-<<<<<<< HEAD
-=======
 		if (!skb_frags_readable(skb))
 			goto skip_this;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* No new bits? It is possible on ofo queue. */
 		if (!before(start, TCP_SKB_CB(skb)->end_seq)) {
 			skb = tcp_collapse_one(sk, skb, list, root);
@@ -5459,31 +5441,20 @@ restart:
 			break;
 		}
 
-<<<<<<< HEAD
-		if (n && n != tail && tcp_skb_can_collapse_rx(skb, n) &&
-=======
 		if (n && n != tail && skb_frags_readable(n) &&
 		    tcp_skb_can_collapse_rx(skb, n) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    TCP_SKB_CB(skb)->end_seq != TCP_SKB_CB(n)->seq) {
 			end_of_skbs = false;
 			break;
 		}
 
-<<<<<<< HEAD
-=======
 skip_this:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Decided to skip this, advance start seq. */
 		start = TCP_SKB_CB(skb)->end_seq;
 	}
 	if (end_of_skbs ||
-<<<<<<< HEAD
-	    (TCP_SKB_CB(skb)->tcp_flags & (TCPHDR_SYN | TCPHDR_FIN)))
-=======
 	    (TCP_SKB_CB(skb)->tcp_flags & (TCPHDR_SYN | TCPHDR_FIN)) ||
 	    !skb_frags_readable(skb))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	__skb_queue_head_init(&tmp);
@@ -5525,12 +5496,8 @@ skip_this:
 				if (!skb ||
 				    skb == tail ||
 				    !tcp_skb_can_collapse_rx(nskb, skb) ||
-<<<<<<< HEAD
-				    (TCP_SKB_CB(skb)->tcp_flags & (TCPHDR_SYN | TCPHDR_FIN)))
-=======
 				    (TCP_SKB_CB(skb)->tcp_flags & (TCPHDR_SYN | TCPHDR_FIN)) ||
 				    !skb_frags_readable(skb))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					goto end;
 			}
 		}
@@ -6717,12 +6684,6 @@ static void tcp_rcv_synrecv_state_fastopen(struct sock *sk)
 	if (inet_csk(sk)->icsk_ca_state == TCP_CA_Loss && !tp->packets_out)
 		tcp_try_undo_recovery(sk);
 
-<<<<<<< HEAD
-	/* Reset rtx states to prevent spurious retransmits_timed_out() */
-	tcp_update_rto_time(tp);
-	tp->retrans_stamp = 0;
-	inet_csk(sk)->icsk_retransmits = 0;
-=======
 	tcp_update_rto_time(tp);
 	inet_csk(sk)->icsk_retransmits = 0;
 	/* In tcp_fastopen_synack_timer() on the first SYNACK RTO we set
@@ -6734,7 +6695,6 @@ static void tcp_rcv_synrecv_state_fastopen(struct sock *sk)
 	 * undo behavior.
 	 */
 	tcp_retrans_stamp_cleanup(sk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Once we leave TCP_SYN_RECV or TCP_FIN_WAIT_1,
 	 * we no longer need req so release it.

@@ -39,23 +39,17 @@ bool nested_vmx_check_io_bitmaps(struct kvm_vcpu *vcpu, unsigned int port,
 
 static inline struct vmcs12 *get_vmcs12(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
-=======
 	lockdep_assert_once(lockdep_is_held(&vcpu->mutex) ||
 			    !refcount_read(&vcpu->kvm->users_count));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return to_vmx(vcpu)->nested.cached_vmcs12;
 }
 
 static inline struct vmcs12 *get_shadow_vmcs12(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
-=======
 	lockdep_assert_once(lockdep_is_held(&vcpu->mutex) ||
 			    !refcount_read(&vcpu->kvm->users_count));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return to_vmx(vcpu)->nested.cached_shadow_vmcs12;
 }
 
@@ -121,11 +115,7 @@ static inline unsigned nested_cpu_vmx_misc_cr3_count(struct kvm_vcpu *vcpu)
 static inline bool nested_cpu_has_vmwrite_any_field(struct kvm_vcpu *vcpu)
 {
 	return to_vmx(vcpu)->nested.msrs.misc_low &
-<<<<<<< HEAD
-		MSR_IA32_VMX_MISC_VMWRITE_SHADOW_RO_FIELDS;
-=======
 		VMX_MISC_VMWRITE_SHADOW_RO_FIELDS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline bool nested_cpu_has_zero_length_injection(struct kvm_vcpu *vcpu)

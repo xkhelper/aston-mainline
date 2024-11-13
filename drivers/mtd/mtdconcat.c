@@ -204,11 +204,7 @@ concat_writev(struct mtd_info *mtd, const struct kvec *vecs,
 	}
 
 	/* make a copy of vecs */
-<<<<<<< HEAD
-	vecs_copy = kmemdup(vecs, sizeof(struct kvec) * count, GFP_KERNEL);
-=======
 	vecs_copy = kmemdup_array(vecs, count, sizeof(struct kvec), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!vecs_copy)
 		return -ENOMEM;
 

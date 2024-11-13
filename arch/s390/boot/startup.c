@@ -39,14 +39,7 @@ struct machine_info machine;
 
 void error(char *x)
 {
-<<<<<<< HEAD
-	sclp_early_printk("\n\n");
-	sclp_early_printk(x);
-	sclp_early_printk("\n\n -- System halted");
-
-=======
 	boot_printk("\n\n%s\n\n -- System halted", x);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	disabled_wait();
 }
 
@@ -300,11 +293,7 @@ static unsigned long setup_kernel_memory_layout(unsigned long kernel_size)
 		kernel_start = round_down(kernel_end - kernel_size, THREAD_SIZE);
 	} else if (vmax < __NO_KASLR_END_KERNEL || vsize > __NO_KASLR_END_KERNEL) {
 		kernel_start = round_down(vmax - kernel_size, THREAD_SIZE);
-<<<<<<< HEAD
-		decompressor_printk("The kernel base address is forced to %lx\n", kernel_start);
-=======
 		boot_printk("The kernel base address is forced to %lx\n", kernel_start);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		kernel_start = __NO_KASLR_START_KERNEL;
 	}

@@ -2479,15 +2479,9 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
 		goto free_regions;
 	}
 
-<<<<<<< HEAD
-	mw->mbox_wq = alloc_workqueue(name,
-				      WQ_UNBOUND | WQ_HIGHPRI | WQ_MEM_RECLAIM,
-				      num);
-=======
 	mw->mbox_wq = alloc_workqueue("%s",
 				      WQ_UNBOUND | WQ_HIGHPRI | WQ_MEM_RECLAIM,
 				      num, name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!mw->mbox_wq) {
 		err = -ENOMEM;
 		goto unmap_regions;

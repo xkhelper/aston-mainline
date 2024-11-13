@@ -331,12 +331,7 @@ xfs_getbmap(
 		}
 
 		if (xfs_get_extsz_hint(ip) ||
-<<<<<<< HEAD
-		    (ip->i_diflags &
-		     (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND)))
-=======
 		    (ip->i_diflags & XFS_DIFLAG_PREALLOC))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			max_len = mp->m_super->s_maxbytes;
 		else
 			max_len = XFS_ISIZE(ip);
@@ -447,19 +442,12 @@ out_unlock_iolock:
 void
 xfs_bmap_punch_delalloc_range(
 	struct xfs_inode	*ip,
-<<<<<<< HEAD
-=======
 	int			whichfork,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_off_t		start_byte,
 	xfs_off_t		end_byte)
 {
 	struct xfs_mount	*mp = ip->i_mount;
-<<<<<<< HEAD
-	struct xfs_ifork	*ifp = &ip->i_df;
-=======
 	struct xfs_ifork	*ifp = xfs_ifork_ptr(ip, whichfork);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_fileoff_t		start_fsb = XFS_B_TO_FSBT(mp, start_byte);
 	xfs_fileoff_t		end_fsb = XFS_B_TO_FSB(mp, end_byte);
 	struct xfs_bmbt_irec	got, del;
@@ -487,21 +475,14 @@ xfs_bmap_punch_delalloc_range(
 			continue;
 		}
 
-<<<<<<< HEAD
-		xfs_bmap_del_extent_delay(ip, XFS_DATA_FORK, &icur, &got, &del);
-=======
 		xfs_bmap_del_extent_delay(ip, whichfork, &icur, &got, &del);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!xfs_iext_get_extent(ifp, &icur, &got))
 			break;
 	}
 
-<<<<<<< HEAD
-=======
 	if (whichfork == XFS_COW_FORK && !ifp->if_bytes)
 		xfs_inode_clear_cowblocks_tag(ip);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_unlock:
 	xfs_iunlock(ip, XFS_ILOCK_EXCL);
 }
@@ -514,21 +495,12 @@ bool
 xfs_can_free_eofblocks(
 	struct xfs_inode	*ip)
 {
-<<<<<<< HEAD
-	struct xfs_bmbt_irec	imap;
-	struct xfs_mount	*mp = ip->i_mount;
-	xfs_fileoff_t		end_fsb;
-	xfs_fileoff_t		last_fsb;
-	int			nimaps = 1;
-	int			error;
-=======
 	struct xfs_mount	*mp = ip->i_mount;
 	bool			found_blocks = false;
 	xfs_fileoff_t		end_fsb;
 	xfs_fileoff_t		last_fsb;
 	struct xfs_bmbt_irec	imap;
 	struct xfs_iext_cursor	icur;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Caller must either hold the exclusive io lock; or be inactivating
@@ -555,20 +527,11 @@ xfs_can_free_eofblocks(
 		return false;
 
 	/*
-<<<<<<< HEAD
-	 * Only free real extents for inodes with persistent preallocations or
-	 * the append-only flag.
-	 */
-	if (ip->i_diflags & (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND))
-		if (ip->i_delayed_blks == 0)
-			return false;
-=======
 	 * Do not free real extents in preallocated files unless the file has
 	 * delalloc blocks and we are forced to remove them.
 	 */
 	if ((ip->i_diflags & XFS_DIFLAG_PREALLOC) && !ip->i_delayed_blks)
 		return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Do not try to free post-EOF blocks if EOF is beyond the end of the
@@ -583,23 +546,6 @@ xfs_can_free_eofblocks(
 		return false;
 
 	/*
-<<<<<<< HEAD
-	 * Look up the mapping for the first block past EOF.  If we can't find
-	 * it, there's nothing to free.
-	 */
-	xfs_ilock(ip, XFS_ILOCK_SHARED);
-	error = xfs_bmapi_read(ip, end_fsb, last_fsb - end_fsb, &imap, &nimaps,
-			0);
-	xfs_iunlock(ip, XFS_ILOCK_SHARED);
-	if (error || nimaps == 0)
-		return false;
-
-	/*
-	 * If there's a real mapping there or there are delayed allocation
-	 * reservations, then we have post-EOF blocks to try to free.
-	 */
-	return imap.br_startblock != HOLESTARTBLOCK || ip->i_delayed_blks;
-=======
 	 * Check if there is an post-EOF extent to free.
 	 */
 	xfs_ilock(ip, XFS_ILOCK_SHARED);
@@ -607,7 +553,6 @@ xfs_can_free_eofblocks(
 		found_blocks = true;
 	xfs_iunlock(ip, XFS_ILOCK_SHARED);
 	return found_blocks;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -639,11 +584,7 @@ xfs_free_eofblocks(
 	 */
 	if (ip->i_diflags & (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND)) {
 		if (ip->i_delayed_blks) {
-<<<<<<< HEAD
-			xfs_bmap_punch_delalloc_range(ip,
-=======
 			xfs_bmap_punch_delalloc_range(ip, XFS_DATA_FORK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				round_up(XFS_ISIZE(ip), mp->m_sb.sb_blocksize),
 				LLONG_MAX);
 		}
@@ -706,12 +647,9 @@ xfs_alloc_file_space(
 	xfs_bmbt_irec_t		imaps[1], *imapp;
 	int			error;
 
-<<<<<<< HEAD
-=======
 	if (xfs_is_always_cow_inode(ip))
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_xfs_alloc_file_space(ip);
 
 	if (xfs_is_shutdown(mp))
@@ -907,8 +845,6 @@ xfs_free_file_space(
 	if (len <= 0)	/* if nothing being freed */
 		return 0;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Now AIO and DIO has drained we flush and (if necessary) invalidate
 	 * the cached range over the first operation we are about to run.
@@ -917,7 +853,6 @@ xfs_free_file_space(
 	if (error)
 		return error;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	startoffset_fsb = XFS_B_TO_FSB(mp, offset);
 	endoffset_fsb = XFS_B_TO_FSBT(mp, offset + len);
 
@@ -1254,11 +1189,7 @@ xfs_swap_extents_check_format(
 	 */
 	if (tifp->if_format == XFS_DINODE_FMT_BTREE) {
 		if (xfs_inode_has_attr_fork(ip) &&
-<<<<<<< HEAD
-		    XFS_BMAP_BMDR_SPACE(tifp->if_broot) > xfs_inode_fork_boff(ip))
-=======
 		    xfs_bmap_bmdr_space(tifp->if_broot) > xfs_inode_fork_boff(ip))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 		if (tifp->if_nextents <= XFS_IFORK_MAXEXT(ip, XFS_DATA_FORK))
 			return -EINVAL;
@@ -1267,11 +1198,7 @@ xfs_swap_extents_check_format(
 	/* Reciprocal target->temp btree format checks */
 	if (ifp->if_format == XFS_DINODE_FMT_BTREE) {
 		if (xfs_inode_has_attr_fork(tip) &&
-<<<<<<< HEAD
-		    XFS_BMAP_BMDR_SPACE(ip->i_df.if_broot) > xfs_inode_fork_boff(tip))
-=======
 		    xfs_bmap_bmdr_space(ip->i_df.if_broot) > xfs_inode_fork_boff(tip))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 		if (ifp->if_nextents <= XFS_IFORK_MAXEXT(tip, XFS_DATA_FORK))
 			return -EINVAL;

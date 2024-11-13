@@ -323,9 +323,6 @@
  * Note: Only the memory operand variant of VERW clears the CPU buffers.
  */
 .macro CLEAR_CPU_BUFFERS
-<<<<<<< HEAD
-	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-=======
 #ifdef CONFIG_X86_64
 	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
 #else
@@ -336,7 +333,6 @@
 	 */
 	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .endm
 
 #ifdef CONFIG_X86_64

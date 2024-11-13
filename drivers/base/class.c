@@ -183,8 +183,6 @@ int class_register(const struct class *cls)
 
 	pr_debug("device class '%s': registering\n", cls->name);
 
-<<<<<<< HEAD
-=======
 	if (cls->ns_type && !cls->namespace) {
 		pr_err("%s: class '%s' does not have namespace\n",
 		       __func__, cls->name);
@@ -196,7 +194,6 @@ int class_register(const struct class *cls)
 		return -EINVAL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cp = kzalloc(sizeof(*cp), GFP_KERNEL);
 	if (!cp)
 		return -ENOMEM;
@@ -447,12 +444,7 @@ EXPORT_SYMBOL_GPL(class_for_each_device);
  * code.  There's no locking restriction.
  */
 struct device *class_find_device(const struct class *class, const struct device *start,
-<<<<<<< HEAD
-				 const void *data,
-				 int (*match)(struct device *, const void *))
-=======
 				 const void *data, device_match_t match)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct subsys_private *sp = class_to_subsys(class);
 	struct class_dev_iter iter;

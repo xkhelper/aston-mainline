@@ -6,10 +6,7 @@
 #include <linux/rtnetlink.h>
 #include <linux/ptp_clock_kernel.h>
 
-<<<<<<< HEAD
-=======
 #include "netlink.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "common.h"
 
 const char netdev_features_strings[NETDEV_FEATURE_COUNT][ETH_GSTRING_LEN] = {
@@ -28,11 +25,6 @@ const char netdev_features_strings[NETDEV_FEATURE_COUNT][ETH_GSTRING_LEN] = {
 	[NETIF_F_HW_VLAN_STAG_FILTER_BIT] = "rx-vlan-stag-filter",
 	[NETIF_F_VLAN_CHALLENGED_BIT] =  "vlan-challenged",
 	[NETIF_F_GSO_BIT] =              "tx-generic-segmentation",
-<<<<<<< HEAD
-	[NETIF_F_LLTX_BIT] =             "tx-lockless",
-	[NETIF_F_NETNS_LOCAL_BIT] =      "netns-local",
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[NETIF_F_GRO_BIT] =              "rx-gro",
 	[NETIF_F_GRO_HW_BIT] =           "rx-gro-hw",
 	[NETIF_F_LRO_BIT] =              "rx-lro",
@@ -58,10 +50,6 @@ const char netdev_features_strings[NETDEV_FEATURE_COUNT][ETH_GSTRING_LEN] = {
 
 	[NETIF_F_FCOE_CRC_BIT] =         "tx-checksum-fcoe-crc",
 	[NETIF_F_SCTP_CRC_BIT] =        "tx-checksum-sctp",
-<<<<<<< HEAD
-	[NETIF_F_FCOE_MTU_BIT] =         "fcoe-mtu",
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[NETIF_F_NTUPLE_BIT] =           "rx-ntuple-filter",
 	[NETIF_F_RXHASH_BIT] =           "rx-hashing",
 	[NETIF_F_RXCSUM_BIT] =           "rx-checksum",
@@ -439,10 +427,7 @@ const char sof_timestamping_names[][ETH_GSTRING_LEN] = {
 	[const_ilog2(SOF_TIMESTAMPING_OPT_TX_SWHW)]  = "option-tx-swhw",
 	[const_ilog2(SOF_TIMESTAMPING_BIND_PHC)]     = "bind-phc",
 	[const_ilog2(SOF_TIMESTAMPING_OPT_ID_TCP)]   = "option-id-tcp",
-<<<<<<< HEAD
-=======
 	[const_ilog2(SOF_TIMESTAMPING_OPT_RX_FILTER)] = "option-rx-filter",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 static_assert(ARRAY_SIZE(sof_timestamping_names) == __SOF_TIMESTAMPING_CNT);
 
@@ -553,11 +538,7 @@ static int ethtool_get_rxnfc_rule_count(struct net_device *dev)
 	return info.rule_cnt;
 }
 
-<<<<<<< HEAD
-int ethtool_get_max_rxnfc_channel(struct net_device *dev, u64 *max)
-=======
 static int ethtool_get_max_rxnfc_channel(struct net_device *dev, u64 *max)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct ethtool_ops *ops = dev->ethtool_ops;
 	struct ethtool_rxnfc *info;
@@ -627,11 +608,7 @@ static u32 ethtool_get_max_rss_ctx_channel(struct net_device *dev)
 	return max_ring;
 }
 
-<<<<<<< HEAD
-u32 ethtool_get_max_rxfh_channel(struct net_device *dev)
-=======
 static u32 ethtool_get_max_rxfh_channel(struct net_device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ethtool_rxfh_param rxfh = {};
 	u32 dev_size, current_max;
@@ -672,8 +649,6 @@ out_free:
 	return current_max;
 }
 
-<<<<<<< HEAD
-=======
 int ethtool_check_max_channel(struct net_device *dev,
 			      struct ethtool_channels channels,
 			      struct genl_info *info)
@@ -709,16 +684,12 @@ int ethtool_check_max_channel(struct net_device *dev,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ethtool_check_ops(const struct ethtool_ops *ops)
 {
 	if (WARN_ON(ops->set_coalesce && !ops->supported_coalesce_params))
 		return -EINVAL;
-<<<<<<< HEAD
-=======
 	if (WARN_ON(ops->rxfh_max_num_contexts == 1))
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* NOTE: sufficiently insane drivers may swap ethtool_ops at runtime,
 	 * the fact that ops are checked at registration time does not
 	 * mean the ops attached to a netdev later on are sane.
@@ -730,22 +701,6 @@ int __ethtool_get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info 
 {
 	const struct ethtool_ops *ops = dev->ethtool_ops;
 	struct phy_device *phydev = dev->phydev;
-<<<<<<< HEAD
-
-	memset(info, 0, sizeof(*info));
-	info->cmd = ETHTOOL_GET_TS_INFO;
-
-	if (phy_is_default_hwtstamp(phydev) && phy_has_tsinfo(phydev))
-		return phy_ts_info(phydev, info);
-	if (ops->get_ts_info)
-		return ops->get_ts_info(dev, info);
-
-	info->so_timestamping = SOF_TIMESTAMPING_RX_SOFTWARE |
-				SOF_TIMESTAMPING_SOFTWARE;
-	info->phc_index = -1;
-
-	return 0;
-=======
 	int err = 0;
 
 	memset(info, 0, sizeof(*info));
@@ -761,7 +716,6 @@ int __ethtool_get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info 
 				 SOF_TIMESTAMPING_SOFTWARE;
 
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int ethtool_get_phc_vclocks(struct net_device *dev, int **vclock_index)

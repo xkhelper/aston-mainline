@@ -43,8 +43,6 @@ struct rtw_debugfs_priv {
 	};
 };
 
-<<<<<<< HEAD
-=======
 struct rtw_debugfs {
 	struct rtw_debugfs_priv mac_0;
 	struct rtw_debugfs_priv mac_1;
@@ -101,7 +99,6 @@ struct rtw_debugfs {
 	struct rtw_debugfs_priv dm_cap;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char * const rtw_dm_cap_strs[] = {
 	[RTW_DM_CAP_NA] = "NA",
 	[RTW_DM_CAP_TXGAPK] = "TXGAPK",
@@ -583,11 +580,7 @@ static int rtw_debug_get_bb_page(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int rtw_debug_get_rf_dump(struct seq_file *m, void *v)
-=======
 static int rtw_debugfs_get_rf_dump(struct seq_file *m, void *v)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rtw_debugfs_priv *debugfs_priv = m->private;
 	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
@@ -1137,144 +1130,18 @@ static int rtw_debugfs_get_dm_cap(struct seq_file *m, void *v)
 	return 0;
 }
 
-<<<<<<< HEAD
-#define rtw_debug_impl_mac(page, addr)				\
-static struct rtw_debugfs_priv rtw_debug_priv_mac_ ##page = {	\
-=======
 #define rtw_debug_priv_mac(addr)				\
 {								\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.cb_read = rtw_debug_get_mac_page,			\
 	.cb_data = addr,					\
 }
 
-<<<<<<< HEAD
-rtw_debug_impl_mac(0, 0x0000);
-rtw_debug_impl_mac(1, 0x0100);
-rtw_debug_impl_mac(2, 0x0200);
-rtw_debug_impl_mac(3, 0x0300);
-rtw_debug_impl_mac(4, 0x0400);
-rtw_debug_impl_mac(5, 0x0500);
-rtw_debug_impl_mac(6, 0x0600);
-rtw_debug_impl_mac(7, 0x0700);
-rtw_debug_impl_mac(10, 0x1000);
-rtw_debug_impl_mac(11, 0x1100);
-rtw_debug_impl_mac(12, 0x1200);
-rtw_debug_impl_mac(13, 0x1300);
-rtw_debug_impl_mac(14, 0x1400);
-rtw_debug_impl_mac(15, 0x1500);
-rtw_debug_impl_mac(16, 0x1600);
-rtw_debug_impl_mac(17, 0x1700);
-
-#define rtw_debug_impl_bb(page, addr)			\
-static struct rtw_debugfs_priv rtw_debug_priv_bb_ ##page = {	\
-=======
 #define rtw_debug_priv_bb(addr)					\
 {								\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.cb_read = rtw_debug_get_bb_page,			\
 	.cb_data = addr,					\
 }
 
-<<<<<<< HEAD
-rtw_debug_impl_bb(8, 0x0800);
-rtw_debug_impl_bb(9, 0x0900);
-rtw_debug_impl_bb(a, 0x0a00);
-rtw_debug_impl_bb(b, 0x0b00);
-rtw_debug_impl_bb(c, 0x0c00);
-rtw_debug_impl_bb(d, 0x0d00);
-rtw_debug_impl_bb(e, 0x0e00);
-rtw_debug_impl_bb(f, 0x0f00);
-rtw_debug_impl_bb(18, 0x1800);
-rtw_debug_impl_bb(19, 0x1900);
-rtw_debug_impl_bb(1a, 0x1a00);
-rtw_debug_impl_bb(1b, 0x1b00);
-rtw_debug_impl_bb(1c, 0x1c00);
-rtw_debug_impl_bb(1d, 0x1d00);
-rtw_debug_impl_bb(1e, 0x1e00);
-rtw_debug_impl_bb(1f, 0x1f00);
-rtw_debug_impl_bb(2c, 0x2c00);
-rtw_debug_impl_bb(2d, 0x2d00);
-rtw_debug_impl_bb(40, 0x4000);
-rtw_debug_impl_bb(41, 0x4100);
-
-static struct rtw_debugfs_priv rtw_debug_priv_rf_dump = {
-	.cb_read = rtw_debug_get_rf_dump,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_tx_pwr_tbl = {
-	.cb_read = rtw_debugfs_get_tx_pwr_tbl,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_write_reg = {
-	.cb_write = rtw_debugfs_set_write_reg,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_h2c = {
-	.cb_write = rtw_debugfs_set_h2c,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_rf_write = {
-	.cb_write = rtw_debugfs_set_rf_write,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_rf_read = {
-	.cb_write = rtw_debugfs_set_rf_read,
-	.cb_read = rtw_debugfs_get_rf_read,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_read_reg = {
-	.cb_write = rtw_debugfs_set_read_reg,
-	.cb_read = rtw_debugfs_get_read_reg,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_fix_rate = {
-	.cb_write = rtw_debugfs_set_fix_rate,
-	.cb_read = rtw_debugfs_get_fix_rate,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_dump_cam = {
-	.cb_write = rtw_debugfs_set_single_input,
-	.cb_read = rtw_debugfs_get_dump_cam,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_rsvd_page = {
-	.cb_write = rtw_debugfs_set_rsvd_page,
-	.cb_read = rtw_debugfs_get_rsvd_page,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_phy_info = {
-	.cb_read = rtw_debugfs_get_phy_info,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_coex_enable = {
-	.cb_write = rtw_debugfs_set_coex_enable,
-	.cb_read = rtw_debugfs_get_coex_enable,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_coex_info = {
-	.cb_read = rtw_debugfs_get_coex_info,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_edcca_enable = {
-	.cb_write = rtw_debugfs_set_edcca_enable,
-	.cb_read = rtw_debugfs_get_edcca_enable,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_fw_crash = {
-	.cb_write = rtw_debugfs_set_fw_crash,
-	.cb_read = rtw_debugfs_get_fw_crash,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_force_lowest_basic_rate = {
-	.cb_write = rtw_debugfs_set_force_lowest_basic_rate,
-	.cb_read = rtw_debugfs_get_force_lowest_basic_rate,
-};
-
-static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
-	.cb_write = rtw_debugfs_set_dm_cap,
-	.cb_read = rtw_debugfs_get_dm_cap,
-=======
 #define rtw_debug_priv_get(name)				\
 {								\
 	.cb_read = rtw_debugfs_get_ ##name,			\
@@ -1351,21 +1218,14 @@ static const struct rtw_debugfs rtw_debugfs_templ = {
 	.fw_crash = rtw_debug_priv_set_and_get(fw_crash),
 	.force_lowest_basic_rate = rtw_debug_priv_set_and_get(force_lowest_basic_rate),
 	.dm_cap = rtw_debug_priv_set_and_get(dm_cap),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define rtw_debugfs_add_core(name, mode, fopname, parent)		\
 	do {								\
-<<<<<<< HEAD
-		rtw_debug_priv_ ##name.rtwdev = rtwdev;			\
-		if (IS_ERR(debugfs_create_file(#name, mode,		\
-					 parent, &rtw_debug_priv_ ##name,\
-=======
 		struct rtw_debugfs_priv *priv = &rtwdev->debugfs->name;	\
 		priv->rtwdev = rtwdev;					\
 		if (IS_ERR(debugfs_create_file(#name, mode,		\
 					 parent, priv,			\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 &file_ops_ ##fopname)))	\
 			pr_debug("Unable to initialize debugfs:%s\n",	\
 			       #name);					\
@@ -1378,18 +1238,9 @@ static const struct rtw_debugfs rtw_debugfs_templ = {
 #define rtw_debugfs_add_r(name)						\
 	rtw_debugfs_add_core(name, S_IFREG | 0444, single_r, debugfs_topdir)
 
-<<<<<<< HEAD
-void rtw_debugfs_init(struct rtw_dev *rtwdev)
-{
-	struct dentry *debugfs_topdir;
-
-	debugfs_topdir = debugfs_create_dir("rtw88",
-					    rtwdev->hw->wiphy->debugfsdir);
-=======
 static
 void rtw_debugfs_add_basic(struct rtw_dev *rtwdev, struct dentry *debugfs_topdir)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtw_debugfs_add_w(write_reg);
 	rtw_debugfs_add_rw(read_reg);
 	rtw_debugfs_add_w(rf_write);
@@ -1401,8 +1252,6 @@ void rtw_debugfs_add_basic(struct rtw_dev *rtwdev, struct dentry *debugfs_topdir
 	rtw_debugfs_add_r(coex_info);
 	rtw_debugfs_add_rw(coex_enable);
 	rtw_debugfs_add_w(h2c);
-<<<<<<< HEAD
-=======
 	rtw_debugfs_add_r(rf_dump);
 	rtw_debugfs_add_r(tx_pwr_tbl);
 	rtw_debugfs_add_rw(edcca_enable);
@@ -1414,7 +1263,6 @@ void rtw_debugfs_add_basic(struct rtw_dev *rtwdev, struct dentry *debugfs_topdir
 static
 void rtw_debugfs_add_sec0(struct rtw_dev *rtwdev, struct dentry *debugfs_topdir)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtw_debugfs_add_r(mac_0);
 	rtw_debugfs_add_r(mac_1);
 	rtw_debugfs_add_r(mac_2);
@@ -1431,14 +1279,11 @@ void rtw_debugfs_add_sec0(struct rtw_dev *rtwdev, struct dentry *debugfs_topdir)
 	rtw_debugfs_add_r(bb_d);
 	rtw_debugfs_add_r(bb_e);
 	rtw_debugfs_add_r(bb_f);
-<<<<<<< HEAD
-=======
 }
 
 static
 void rtw_debugfs_add_sec1(struct rtw_dev *rtwdev, struct dentry *debugfs_topdir)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtw_debugfs_add_r(mac_10);
 	rtw_debugfs_add_r(mac_11);
 	rtw_debugfs_add_r(mac_12);
@@ -1461,16 +1306,6 @@ void rtw_debugfs_add_sec1(struct rtw_dev *rtwdev, struct dentry *debugfs_topdir)
 		rtw_debugfs_add_r(bb_40);
 		rtw_debugfs_add_r(bb_41);
 	}
-<<<<<<< HEAD
-	rtw_debugfs_add_r(rf_dump);
-	rtw_debugfs_add_r(tx_pwr_tbl);
-	rtw_debugfs_add_rw(edcca_enable);
-	rtw_debugfs_add_rw(fw_crash);
-	rtw_debugfs_add_rw(force_lowest_basic_rate);
-	rtw_debugfs_add_rw(dm_cap);
-}
-
-=======
 }
 
 void rtw_debugfs_init(struct rtw_dev *rtwdev)
@@ -1494,7 +1329,6 @@ void rtw_debugfs_deinit(struct rtw_dev *rtwdev)
 {
 	kfree(rtwdev->debugfs);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_RTW88_DEBUGFS */
 
 #ifdef CONFIG_RTW88_DEBUG

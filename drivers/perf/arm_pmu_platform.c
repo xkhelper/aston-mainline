@@ -59,11 +59,7 @@ static int pmu_parse_percpu_irq(struct arm_pmu *pmu, int irq)
 
 static bool pmu_has_irq_affinity(struct device_node *node)
 {
-<<<<<<< HEAD
-	return !!of_find_property(node, "interrupt-affinity", NULL);
-=======
 	return of_property_present(node, "interrupt-affinity");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int pmu_parse_irq_affinity(struct device *dev, int i)

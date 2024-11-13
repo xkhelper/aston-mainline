@@ -64,11 +64,7 @@ extra_header_fields:
 	.long	efi_header_end - _start			// SizeOfHeaders
 	.long	0					// CheckSum
 	.short	IMAGE_SUBSYSTEM_EFI_APPLICATION		// Subsystem
-<<<<<<< HEAD
-	.short	0					// DllCharacteristics
-=======
 	.short	IMAGE_DLL_CHARACTERISTICS_NX_COMPAT	// DllCharacteristics
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.quad	0					// SizeOfStackReserve
 	.quad	0					// SizeOfStackCommit
 	.quad	0					// SizeOfHeapReserve

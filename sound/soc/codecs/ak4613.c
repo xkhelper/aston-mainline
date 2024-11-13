@@ -840,22 +840,14 @@ static void ak4613_parse_of(struct ak4613_priv *priv,
 	/* Input 1 - 2 */
 	for (i = 0; i < 2; i++) {
 		snprintf(prop, sizeof(prop), "asahi-kasei,in%d-single-end", i + 1);
-<<<<<<< HEAD
-		if (!of_get_property(np, prop, NULL))
-=======
 		if (!of_property_read_bool(np, prop))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			priv->ic |= 1 << i;
 	}
 
 	/* Output 1 - 6 */
 	for (i = 0; i < 6; i++) {
 		snprintf(prop, sizeof(prop), "asahi-kasei,out%d-single-end", i + 1);
-<<<<<<< HEAD
-		if (!of_get_property(np, prop, NULL))
-=======
 		if (!of_property_read_bool(np, prop))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			priv->oc |= 1 << i;
 	}
 

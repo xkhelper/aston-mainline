@@ -59,10 +59,7 @@ int clk_mgr_helper_get_active_display_cnt(
 	display_count = 0;
 	for (i = 0; i < context->stream_count; i++) {
 		const struct dc_stream_state *stream = context->streams[i];
-<<<<<<< HEAD
-=======
 		const struct dc_stream_status *stream_status = &context->stream_status[i];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Don't count SubVP phantom pipes as part of active
 		 * display count
@@ -70,17 +67,7 @@ int clk_mgr_helper_get_active_display_cnt(
 		if (dc_state_get_stream_subvp_type(context, stream) == SUBVP_PHANTOM)
 			continue;
 
-<<<<<<< HEAD
-		/*
-		 * Only notify active stream or virtual stream.
-		 * Need to notify virtual stream to work around
-		 * headless case. HPD does not fire when system is in
-		 * S0i2.
-		 */
-		if (!stream->dpms_off || stream->signal == SIGNAL_TYPE_VIRTUAL)
-=======
 		if (!stream->dpms_off || (stream_status && stream_status->plane_count))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			display_count++;
 	}
 

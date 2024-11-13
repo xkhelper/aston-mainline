@@ -346,16 +346,6 @@ static int arm_smmu_cmdq_build_cmd(u64 *cmd, struct arm_smmu_cmdq_ent *ent)
 	return 0;
 }
 
-<<<<<<< HEAD
-static struct arm_smmu_cmdq *arm_smmu_get_cmdq(struct arm_smmu_device *smmu)
-{
-	return &smmu->cmdq;
-}
-
-static void arm_smmu_cmdq_build_sync_cmd(u64 *cmd, struct arm_smmu_device *smmu,
-					 struct arm_smmu_queue *q, u32 prod)
-{
-=======
 static struct arm_smmu_cmdq *arm_smmu_get_cmdq(struct arm_smmu_device *smmu,
 					       struct arm_smmu_cmdq_ent *ent)
 {
@@ -380,7 +370,6 @@ static void arm_smmu_cmdq_build_sync_cmd(u64 *cmd, struct arm_smmu_device *smmu,
 					 struct arm_smmu_cmdq *cmdq, u32 prod)
 {
 	struct arm_smmu_queue *q = &cmdq->q;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct arm_smmu_cmdq_ent ent = {
 		.opcode = CMDQ_OP_CMD_SYNC,
 	};
@@ -395,19 +384,12 @@ static void arm_smmu_cmdq_build_sync_cmd(u64 *cmd, struct arm_smmu_device *smmu,
 	}
 
 	arm_smmu_cmdq_build_cmd(cmd, &ent);
-<<<<<<< HEAD
-}
-
-static void __arm_smmu_cmdq_skip_err(struct arm_smmu_device *smmu,
-				     struct arm_smmu_queue *q)
-=======
 	if (arm_smmu_cmdq_needs_busy_polling(smmu, cmdq))
 		u64p_replace_bits(cmd, CMDQ_SYNC_0_CS_NONE, CMDQ_SYNC_0_CS);
 }
 
 void __arm_smmu_cmdq_skip_err(struct arm_smmu_device *smmu,
 			      struct arm_smmu_cmdq *cmdq)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	static const char * const cerror_str[] = {
 		[CMDQ_ERR_CERROR_NONE_IDX]	= "No error",
@@ -415,10 +397,7 @@ void __arm_smmu_cmdq_skip_err(struct arm_smmu_device *smmu,
 		[CMDQ_ERR_CERROR_ABT_IDX]	= "Abort on command fetch",
 		[CMDQ_ERR_CERROR_ATC_INV_IDX]	= "ATC invalidate timeout",
 	};
-<<<<<<< HEAD
-=======
 	struct arm_smmu_queue *q = &cmdq->q;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int i;
 	u64 cmd[CMDQ_ENT_DWORDS];
@@ -461,22 +440,15 @@ void __arm_smmu_cmdq_skip_err(struct arm_smmu_device *smmu,
 
 	/* Convert the erroneous command into a CMD_SYNC */
 	arm_smmu_cmdq_build_cmd(cmd, &cmd_sync);
-<<<<<<< HEAD
-=======
 	if (arm_smmu_cmdq_needs_busy_polling(smmu, cmdq))
 		u64p_replace_bits(cmd, CMDQ_SYNC_0_CS_NONE, CMDQ_SYNC_0_CS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	queue_write(Q_ENT(q, cons), cmd, q->ent_dwords);
 }
 
 static void arm_smmu_cmdq_skip_err(struct arm_smmu_device *smmu)
 {
-<<<<<<< HEAD
-	__arm_smmu_cmdq_skip_err(smmu, &smmu->cmdq.q);
-=======
 	__arm_smmu_cmdq_skip_err(smmu, &smmu->cmdq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -641,18 +613,11 @@ static void arm_smmu_cmdq_poll_valid_map(struct arm_smmu_cmdq *cmdq,
 
 /* Wait for the command queue to become non-full */
 static int arm_smmu_cmdq_poll_until_not_full(struct arm_smmu_device *smmu,
-<<<<<<< HEAD
-=======
 					     struct arm_smmu_cmdq *cmdq,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     struct arm_smmu_ll_queue *llq)
 {
 	unsigned long flags;
 	struct arm_smmu_queue_poll qp;
-<<<<<<< HEAD
-	struct arm_smmu_cmdq *cmdq = arm_smmu_get_cmdq(smmu);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	/*
@@ -683,18 +648,11 @@ static int arm_smmu_cmdq_poll_until_not_full(struct arm_smmu_device *smmu,
  * Must be called with the cmdq lock held in some capacity.
  */
 static int __arm_smmu_cmdq_poll_until_msi(struct arm_smmu_device *smmu,
-<<<<<<< HEAD
-=======
 					  struct arm_smmu_cmdq *cmdq,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  struct arm_smmu_ll_queue *llq)
 {
 	int ret = 0;
 	struct arm_smmu_queue_poll qp;
-<<<<<<< HEAD
-	struct arm_smmu_cmdq *cmdq = arm_smmu_get_cmdq(smmu);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 *cmd = (u32 *)(Q_ENT(&cmdq->q, llq->prod));
 
 	queue_poll_init(smmu, &qp);
@@ -714,17 +672,10 @@ static int __arm_smmu_cmdq_poll_until_msi(struct arm_smmu_device *smmu,
  * Must be called with the cmdq lock held in some capacity.
  */
 static int __arm_smmu_cmdq_poll_until_consumed(struct arm_smmu_device *smmu,
-<<<<<<< HEAD
-					       struct arm_smmu_ll_queue *llq)
-{
-	struct arm_smmu_queue_poll qp;
-	struct arm_smmu_cmdq *cmdq = arm_smmu_get_cmdq(smmu);
-=======
 					       struct arm_smmu_cmdq *cmdq,
 					       struct arm_smmu_ll_queue *llq)
 {
 	struct arm_smmu_queue_poll qp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 prod = llq->prod;
 	int ret = 0;
 
@@ -771,14 +722,6 @@ static int __arm_smmu_cmdq_poll_until_consumed(struct arm_smmu_device *smmu,
 }
 
 static int arm_smmu_cmdq_poll_until_sync(struct arm_smmu_device *smmu,
-<<<<<<< HEAD
-					 struct arm_smmu_ll_queue *llq)
-{
-	if (smmu->options & ARM_SMMU_OPT_MSIPOLL)
-		return __arm_smmu_cmdq_poll_until_msi(smmu, llq);
-
-	return __arm_smmu_cmdq_poll_until_consumed(smmu, llq);
-=======
 					 struct arm_smmu_cmdq *cmdq,
 					 struct arm_smmu_ll_queue *llq)
 {
@@ -787,7 +730,6 @@ static int arm_smmu_cmdq_poll_until_sync(struct arm_smmu_device *smmu,
 		return __arm_smmu_cmdq_poll_until_msi(smmu, cmdq, llq);
 
 	return __arm_smmu_cmdq_poll_until_consumed(smmu, cmdq, llq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void arm_smmu_cmdq_write_entries(struct arm_smmu_cmdq *cmdq, u64 *cmds,
@@ -824,20 +766,13 @@ static void arm_smmu_cmdq_write_entries(struct arm_smmu_cmdq *cmdq, u64 *cmds,
  *   CPU will appear before any of the commands from the other CPU.
  */
 static int arm_smmu_cmdq_issue_cmdlist(struct arm_smmu_device *smmu,
-<<<<<<< HEAD
-=======
 				       struct arm_smmu_cmdq *cmdq,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       u64 *cmds, int n, bool sync)
 {
 	u64 cmd_sync[CMDQ_ENT_DWORDS];
 	u32 prod;
 	unsigned long flags;
 	bool owner;
-<<<<<<< HEAD
-	struct arm_smmu_cmdq *cmdq = arm_smmu_get_cmdq(smmu);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct arm_smmu_ll_queue llq, head;
 	int ret = 0;
 
@@ -851,11 +786,7 @@ static int arm_smmu_cmdq_issue_cmdlist(struct arm_smmu_device *smmu,
 
 		while (!queue_has_space(&llq, n + sync)) {
 			local_irq_restore(flags);
-<<<<<<< HEAD
-			if (arm_smmu_cmdq_poll_until_not_full(smmu, &llq))
-=======
 			if (arm_smmu_cmdq_poll_until_not_full(smmu, cmdq, &llq))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				dev_err_ratelimited(smmu->dev, "CMDQ timeout\n");
 			local_irq_save(flags);
 		}
@@ -881,11 +812,7 @@ static int arm_smmu_cmdq_issue_cmdlist(struct arm_smmu_device *smmu,
 	arm_smmu_cmdq_write_entries(cmdq, cmds, llq.prod, n);
 	if (sync) {
 		prod = queue_inc_prod_n(&llq, n);
-<<<<<<< HEAD
-		arm_smmu_cmdq_build_sync_cmd(cmd_sync, smmu, &cmdq->q, prod);
-=======
 		arm_smmu_cmdq_build_sync_cmd(cmd_sync, smmu, cmdq, prod);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		queue_write(Q_ENT(&cmdq->q, prod), cmd_sync, CMDQ_ENT_DWORDS);
 
 		/*
@@ -935,11 +862,7 @@ static int arm_smmu_cmdq_issue_cmdlist(struct arm_smmu_device *smmu,
 	/* 5. If we are inserting a CMD_SYNC, we must wait for it to complete */
 	if (sync) {
 		llq.prod = queue_inc_prod_n(&llq, n);
-<<<<<<< HEAD
-		ret = arm_smmu_cmdq_poll_until_sync(smmu, &llq);
-=======
 		ret = arm_smmu_cmdq_poll_until_sync(smmu, cmdq, &llq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret) {
 			dev_err_ratelimited(smmu->dev,
 					    "CMD_SYNC timeout at 0x%08x [hwprod 0x%08x, hwcons 0x%08x]\n",
@@ -974,12 +897,8 @@ static int __arm_smmu_cmdq_issue_cmd(struct arm_smmu_device *smmu,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	return arm_smmu_cmdq_issue_cmdlist(smmu, cmd, 1, sync);
-=======
 	return arm_smmu_cmdq_issue_cmdlist(
 		smmu, arm_smmu_get_cmdq(smmu, ent), cmd, 1, sync);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int arm_smmu_cmdq_issue_cmd(struct arm_smmu_device *smmu,
@@ -994,8 +913,6 @@ static int arm_smmu_cmdq_issue_cmd_with_sync(struct arm_smmu_device *smmu,
 	return __arm_smmu_cmdq_issue_cmd(smmu, ent, true);
 }
 
-<<<<<<< HEAD
-=======
 static void arm_smmu_cmdq_batch_init(struct arm_smmu_device *smmu,
 				     struct arm_smmu_cmdq_batch *cmds,
 				     struct arm_smmu_cmdq_ent *ent)
@@ -1004,24 +921,10 @@ static void arm_smmu_cmdq_batch_init(struct arm_smmu_device *smmu,
 	cmds->cmdq = arm_smmu_get_cmdq(smmu, ent);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void arm_smmu_cmdq_batch_add(struct arm_smmu_device *smmu,
 				    struct arm_smmu_cmdq_batch *cmds,
 				    struct arm_smmu_cmdq_ent *cmd)
 {
-<<<<<<< HEAD
-	int index;
-
-	if (cmds->num == CMDQ_BATCH_ENTRIES - 1 &&
-	    (smmu->options & ARM_SMMU_OPT_CMDQ_FORCE_SYNC)) {
-		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, true);
-		cmds->num = 0;
-	}
-
-	if (cmds->num == CMDQ_BATCH_ENTRIES) {
-		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, false);
-		cmds->num = 0;
-=======
 	bool unsupported_cmd = !arm_smmu_cmdq_supports_cmd(cmds->cmdq, cmd);
 	bool force_sync = (cmds->num == CMDQ_BATCH_ENTRIES - 1) &&
 			  (smmu->options & ARM_SMMU_OPT_CMDQ_FORCE_SYNC);
@@ -1037,7 +940,6 @@ static void arm_smmu_cmdq_batch_add(struct arm_smmu_device *smmu,
 		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmdq, cmds->cmds,
 					    cmds->num, false);
 		arm_smmu_cmdq_batch_init(smmu, cmds, cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	index = cmds->num * CMDQ_ENT_DWORDS;
@@ -1053,12 +955,8 @@ static void arm_smmu_cmdq_batch_add(struct arm_smmu_device *smmu,
 static int arm_smmu_cmdq_batch_submit(struct arm_smmu_device *smmu,
 				      struct arm_smmu_cmdq_batch *cmds)
 {
-<<<<<<< HEAD
-	return arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, true);
-=======
 	return arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmdq, cmds->cmds,
 					   cmds->num, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void arm_smmu_page_response(struct device *dev, struct iopf_fault *unused,
@@ -1151,12 +1049,8 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
 		used_bits[2] |=
 			cpu_to_le64(STRTAB_STE_2_S2VMID | STRTAB_STE_2_VTCR |
 				    STRTAB_STE_2_S2AA64 | STRTAB_STE_2_S2ENDI |
-<<<<<<< HEAD
-				    STRTAB_STE_2_S2PTW | STRTAB_STE_2_S2R);
-=======
 				    STRTAB_STE_2_S2PTW | STRTAB_STE_2_S2S |
 				    STRTAB_STE_2_S2R);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		used_bits[3] |= cpu_to_le64(STRTAB_STE_3_S2TTB_MASK);
 	}
 
@@ -1314,11 +1208,7 @@ static void arm_smmu_sync_cd(struct arm_smmu_master *master,
 		},
 	};
 
-<<<<<<< HEAD
-	cmds.num = 0;
-=======
 	arm_smmu_cmdq_batch_init(smmu, &cmds, &cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < master->num_streams; i++) {
 		cmd.cfgi.sid = master->streams[i].id;
 		arm_smmu_cmdq_batch_add(smmu, &cmds, &cmd);
@@ -1327,31 +1217,6 @@ static void arm_smmu_sync_cd(struct arm_smmu_master *master,
 	arm_smmu_cmdq_batch_submit(smmu, &cmds);
 }
 
-<<<<<<< HEAD
-static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
-					struct arm_smmu_l1_ctx_desc *l1_desc)
-{
-	size_t size = CTXDESC_L2_ENTRIES * (CTXDESC_CD_DWORDS << 3);
-
-	l1_desc->l2ptr = dmam_alloc_coherent(smmu->dev, size,
-					     &l1_desc->l2ptr_dma, GFP_KERNEL);
-	if (!l1_desc->l2ptr) {
-		dev_warn(smmu->dev,
-			 "failed to allocate context descriptor table\n");
-		return -ENOMEM;
-	}
-	return 0;
-}
-
-static void arm_smmu_write_cd_l1_desc(__le64 *dst,
-				      struct arm_smmu_l1_ctx_desc *l1_desc)
-{
-	u64 val = (l1_desc->l2ptr_dma & CTXDESC_L1_DESC_L2PTR_MASK) |
-		  CTXDESC_L1_DESC_V;
-
-	/* The HW has 64 bit atomicity with stores to the L2 CD table */
-	WRITE_ONCE(*dst, cpu_to_le64(val));
-=======
 static void arm_smmu_write_cd_l1_desc(struct arm_smmu_cdtab_l1 *dst,
 				      dma_addr_t l2ptr_dma)
 {
@@ -1364,28 +1229,11 @@ static void arm_smmu_write_cd_l1_desc(struct arm_smmu_cdtab_l1 *dst,
 static dma_addr_t arm_smmu_cd_l1_get_desc(const struct arm_smmu_cdtab_l1 *src)
 {
 	return le64_to_cpu(src->l2ptr) & CTXDESC_L1_DESC_L2PTR_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct arm_smmu_cd *arm_smmu_get_cd_ptr(struct arm_smmu_master *master,
 					u32 ssid)
 {
-<<<<<<< HEAD
-	struct arm_smmu_l1_ctx_desc *l1_desc;
-	struct arm_smmu_ctx_desc_cfg *cd_table = &master->cd_table;
-
-	if (!cd_table->cdtab)
-		return NULL;
-
-	if (cd_table->s1fmt == STRTAB_STE_0_S1FMT_LINEAR)
-		return (struct arm_smmu_cd *)(cd_table->cdtab +
-					      ssid * CTXDESC_CD_DWORDS);
-
-	l1_desc = &cd_table->l1_desc[ssid / CTXDESC_L2_ENTRIES];
-	if (!l1_desc->l2ptr)
-		return NULL;
-	return &l1_desc->l2ptr[ssid % CTXDESC_L2_ENTRIES];
-=======
 	struct arm_smmu_cdtab_l2 *l2;
 	struct arm_smmu_ctx_desc_cfg *cd_table = &master->cd_table;
 
@@ -1399,7 +1247,6 @@ struct arm_smmu_cd *arm_smmu_get_cd_ptr(struct arm_smmu_master *master,
 	if (!l2)
 		return NULL;
 	return &l2->cds[arm_smmu_cdtab_l2_idx(ssid)];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct arm_smmu_cd *arm_smmu_alloc_cd_ptr(struct arm_smmu_master *master,
@@ -1411,30 +1258,12 @@ static struct arm_smmu_cd *arm_smmu_alloc_cd_ptr(struct arm_smmu_master *master,
 	might_sleep();
 	iommu_group_mutex_assert(master->dev);
 
-<<<<<<< HEAD
-	if (!cd_table->cdtab) {
-=======
 	if (!arm_smmu_cdtab_allocated(cd_table)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (arm_smmu_alloc_cd_tables(master))
 			return NULL;
 	}
 
 	if (cd_table->s1fmt == STRTAB_STE_0_S1FMT_64K_L2) {
-<<<<<<< HEAD
-		unsigned int idx = ssid / CTXDESC_L2_ENTRIES;
-		struct arm_smmu_l1_ctx_desc *l1_desc;
-
-		l1_desc = &cd_table->l1_desc[idx];
-		if (!l1_desc->l2ptr) {
-			__le64 *l1ptr;
-
-			if (arm_smmu_alloc_cd_leaf_table(smmu, l1_desc))
-				return NULL;
-
-			l1ptr = cd_table->cdtab + idx * CTXDESC_L1_DESC_DWORDS;
-			arm_smmu_write_cd_l1_desc(l1ptr, l1_desc);
-=======
 		unsigned int idx = arm_smmu_cdtab_l1_idx(ssid);
 		struct arm_smmu_cdtab_l2 **l2ptr = &cd_table->l2.l2ptrs[idx];
 
@@ -1448,7 +1277,6 @@ static struct arm_smmu_cd *arm_smmu_alloc_cd_ptr(struct arm_smmu_master *master,
 
 			arm_smmu_write_cd_l1_desc(&cd_table->l2.l1tab[idx],
 						  l2ptr_dma);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* An invalid L1CD can be cached */
 			arm_smmu_sync_cd(master, ssid, false);
 		}
@@ -1568,11 +1396,7 @@ void arm_smmu_clear_cd(struct arm_smmu_master *master, ioasid_t ssid)
 	struct arm_smmu_cd target = {};
 	struct arm_smmu_cd *cdptr;
 
-<<<<<<< HEAD
-	if (!master->cd_table.cdtab)
-=======
 	if (!arm_smmu_cdtab_allocated(&master->cd_table))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	cdptr = arm_smmu_get_cd_ptr(master, ssid);
 	if (WARN_ON(!cdptr))
@@ -1594,40 +1418,6 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
 	if (!(smmu->features & ARM_SMMU_FEAT_2_LVL_CDTAB) ||
 	    max_contexts <= CTXDESC_L2_ENTRIES) {
 		cd_table->s1fmt = STRTAB_STE_0_S1FMT_LINEAR;
-<<<<<<< HEAD
-		cd_table->num_l1_ents = max_contexts;
-
-		l1size = max_contexts * (CTXDESC_CD_DWORDS << 3);
-	} else {
-		cd_table->s1fmt = STRTAB_STE_0_S1FMT_64K_L2;
-		cd_table->num_l1_ents = DIV_ROUND_UP(max_contexts,
-						  CTXDESC_L2_ENTRIES);
-
-		cd_table->l1_desc = devm_kcalloc(smmu->dev, cd_table->num_l1_ents,
-					      sizeof(*cd_table->l1_desc),
-					      GFP_KERNEL);
-		if (!cd_table->l1_desc)
-			return -ENOMEM;
-
-		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
-	}
-
-	cd_table->cdtab = dmam_alloc_coherent(smmu->dev, l1size, &cd_table->cdtab_dma,
-					   GFP_KERNEL);
-	if (!cd_table->cdtab) {
-		dev_warn(smmu->dev, "failed to allocate context descriptor\n");
-		ret = -ENOMEM;
-		goto err_free_l1;
-	}
-
-	return 0;
-
-err_free_l1:
-	if (cd_table->l1_desc) {
-		devm_kfree(smmu->dev, cd_table->l1_desc);
-		cd_table->l1_desc = NULL;
-	}
-=======
 		cd_table->linear.num_ents = max_contexts;
 
 		l1size = max_contexts * sizeof(struct arm_smmu_cd);
@@ -1661,45 +1451,12 @@ err_free_l1:
 err_free_l2ptrs:
 	kfree(cd_table->l2.l2ptrs);
 	cd_table->l2.l2ptrs = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
 static void arm_smmu_free_cd_tables(struct arm_smmu_master *master)
 {
 	int i;
-<<<<<<< HEAD
-	size_t size, l1size;
-	struct arm_smmu_device *smmu = master->smmu;
-	struct arm_smmu_ctx_desc_cfg *cd_table = &master->cd_table;
-
-	if (cd_table->l1_desc) {
-		size = CTXDESC_L2_ENTRIES * (CTXDESC_CD_DWORDS << 3);
-
-		for (i = 0; i < cd_table->num_l1_ents; i++) {
-			if (!cd_table->l1_desc[i].l2ptr)
-				continue;
-
-			dmam_free_coherent(smmu->dev, size,
-					   cd_table->l1_desc[i].l2ptr,
-					   cd_table->l1_desc[i].l2ptr_dma);
-		}
-		devm_kfree(smmu->dev, cd_table->l1_desc);
-		cd_table->l1_desc = NULL;
-
-		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
-	} else {
-		l1size = cd_table->num_l1_ents * (CTXDESC_CD_DWORDS << 3);
-	}
-
-	dmam_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
-	cd_table->cdtab_dma = 0;
-	cd_table->cdtab = NULL;
-}
-
-/* Stream table manipulation functions */
-static void arm_smmu_write_strtab_l1_desc(__le64 *dst, dma_addr_t l2ptr_dma)
-=======
 	struct arm_smmu_device *smmu = master->smmu;
 	struct arm_smmu_ctx_desc_cfg *cd_table = &master->cd_table;
 
@@ -1730,7 +1487,6 @@ static void arm_smmu_write_strtab_l1_desc(__le64 *dst, dma_addr_t l2ptr_dma)
 /* Stream table manipulation functions */
 static void arm_smmu_write_strtab_l1_desc(struct arm_smmu_strtab_l1 *dst,
 					  dma_addr_t l2ptr_dma)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 val = 0;
 
@@ -1738,11 +1494,7 @@ static void arm_smmu_write_strtab_l1_desc(struct arm_smmu_strtab_l1 *dst,
 	val |= l2ptr_dma & STRTAB_L1_DESC_L2PTR_MASK;
 
 	/* The HW has 64 bit atomicity with stores to the L2 STE table */
-<<<<<<< HEAD
-	WRITE_ONCE(*dst, cpu_to_le64(val));
-=======
 	WRITE_ONCE(dst->l2ptr, cpu_to_le64(val));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct arm_smmu_ste_writer {
@@ -1922,10 +1674,7 @@ void arm_smmu_make_s2_domain_ste(struct arm_smmu_ste *target,
 		STRTAB_STE_2_S2ENDI |
 #endif
 		STRTAB_STE_2_S2PTW |
-<<<<<<< HEAD
-=======
 		(master->stall_enabled ? STRTAB_STE_2_S2S : 0) |
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		STRTAB_STE_2_S2R);
 
 	target->data[3] = cpu_to_le64(pgtbl_cfg->arm_lpae_s2_cfg.vttbr &
@@ -1950,23 +1699,6 @@ static void arm_smmu_init_initial_stes(struct arm_smmu_ste *strtab,
 
 static int arm_smmu_init_l2_strtab(struct arm_smmu_device *smmu, u32 sid)
 {
-<<<<<<< HEAD
-	size_t size;
-	void *strtab;
-	dma_addr_t l2ptr_dma;
-	struct arm_smmu_strtab_cfg *cfg = &smmu->strtab_cfg;
-	struct arm_smmu_strtab_l1_desc *desc = &cfg->l1_desc[sid >> STRTAB_SPLIT];
-
-	if (desc->l2ptr)
-		return 0;
-
-	size = 1 << (STRTAB_SPLIT + ilog2(STRTAB_STE_DWORDS) + 3);
-	strtab = &cfg->strtab[(sid >> STRTAB_SPLIT) * STRTAB_L1_DESC_DWORDS];
-
-	desc->l2ptr = dmam_alloc_coherent(smmu->dev, size, &l2ptr_dma,
-					  GFP_KERNEL);
-	if (!desc->l2ptr) {
-=======
 	dma_addr_t l2ptr_dma;
 	struct arm_smmu_strtab_cfg *cfg = &smmu->strtab_cfg;
 	struct arm_smmu_strtab_l2 **l2table;
@@ -1978,20 +1710,12 @@ static int arm_smmu_init_l2_strtab(struct arm_smmu_device *smmu, u32 sid)
 	*l2table = dmam_alloc_coherent(smmu->dev, sizeof(**l2table),
 				       &l2ptr_dma, GFP_KERNEL);
 	if (!*l2table) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(smmu->dev,
 			"failed to allocate l2 stream table for SID %u\n",
 			sid);
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
-	arm_smmu_init_initial_stes(desc->l2ptr, 1 << STRTAB_SPLIT);
-	arm_smmu_write_strtab_l1_desc(strtab, l2ptr_dma);
-	return 0;
-}
-
-=======
 	arm_smmu_init_initial_stes((*l2table)->stes,
 				   ARRAY_SIZE((*l2table)->stes));
 	arm_smmu_write_strtab_l1_desc(&cfg->l2.l1tab[arm_smmu_strtab_l1_idx(sid)],
@@ -2019,29 +1743,10 @@ static int arm_smmu_streams_cmp_node(struct rb_node *lhs,
 		&rb_entry(lhs, struct arm_smmu_stream, node)->id, rhs);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct arm_smmu_master *
 arm_smmu_find_master(struct arm_smmu_device *smmu, u32 sid)
 {
 	struct rb_node *node;
-<<<<<<< HEAD
-	struct arm_smmu_stream *stream;
-
-	lockdep_assert_held(&smmu->streams_mutex);
-
-	node = smmu->streams.rb_node;
-	while (node) {
-		stream = rb_entry(node, struct arm_smmu_stream, node);
-		if (stream->id < sid)
-			node = node->rb_right;
-		else if (stream->id > sid)
-			node = node->rb_left;
-		else
-			return stream->master;
-	}
-
-	return NULL;
-=======
 
 	lockdep_assert_held(&smmu->streams_mutex);
 
@@ -2049,7 +1754,6 @@ arm_smmu_find_master(struct arm_smmu_device *smmu, u32 sid)
 	if (!node)
 		return NULL;
 	return rb_entry(node, struct arm_smmu_stream, node)->master;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* IRQ and event handlers */
@@ -2073,13 +1777,6 @@ static int arm_smmu_handle_evt(struct arm_smmu_device *smmu, u64 *evt)
 		return -EOPNOTSUPP;
 	}
 
-<<<<<<< HEAD
-	/* Stage-2 is always pinned at the moment */
-	if (evt[1] & EVTQ_1_S2)
-		return -EFAULT;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(evt[1] & EVTQ_1_STALL))
 		return -EOPNOTSUPP;
 
@@ -2358,11 +2055,7 @@ static int arm_smmu_atc_inv_master(struct arm_smmu_master *master,
 
 	arm_smmu_atc_inv_to_cmd(ssid, 0, 0, &cmd);
 
-<<<<<<< HEAD
-	cmds.num = 0;
-=======
 	arm_smmu_cmdq_batch_init(master->smmu, &cmds, &cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < master->num_streams; i++) {
 		cmd.atc.sid = master->streams[i].id;
 		arm_smmu_cmdq_batch_add(master->smmu, &cmds, &cmd);
@@ -2377,13 +2070,9 @@ int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain,
 	struct arm_smmu_master_domain *master_domain;
 	int i;
 	unsigned long flags;
-<<<<<<< HEAD
-	struct arm_smmu_cmdq_ent cmd;
-=======
 	struct arm_smmu_cmdq_ent cmd = {
 		.opcode = CMDQ_OP_ATC_INV,
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct arm_smmu_cmdq_batch cmds;
 
 	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_ATS))
@@ -2406,11 +2095,7 @@ int arm_smmu_atc_inv_domain(struct arm_smmu_domain *smmu_domain,
 	if (!atomic_read(&smmu_domain->nr_ats_masters))
 		return 0;
 
-<<<<<<< HEAD
-	cmds.num = 0;
-=======
 	arm_smmu_cmdq_batch_init(smmu_domain->smmu, &cmds, &cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irqsave(&smmu_domain->devices_lock, flags);
 	list_for_each_entry(master_domain, &smmu_domain->devices,
@@ -2492,11 +2177,7 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
 			num_pages++;
 	}
 
-<<<<<<< HEAD
-	cmds.num = 0;
-=======
 	arm_smmu_cmdq_batch_init(smmu, &cmds, cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	while (iova < end) {
 		if (smmu->features & ARM_SMMU_FEAT_RANGE_INV) {
@@ -2793,25 +2474,12 @@ arm_smmu_get_step_for_sid(struct arm_smmu_device *smmu, u32 sid)
 	struct arm_smmu_strtab_cfg *cfg = &smmu->strtab_cfg;
 
 	if (smmu->features & ARM_SMMU_FEAT_2_LVL_STRTAB) {
-<<<<<<< HEAD
-		unsigned int idx1, idx2;
-
-		/* Two-level walk */
-		idx1 = (sid >> STRTAB_SPLIT) * STRTAB_L1_DESC_DWORDS;
-		idx2 = sid & ((1 << STRTAB_SPLIT) - 1);
-		return &cfg->l1_desc[idx1].l2ptr[idx2];
-	} else {
-		/* Simple linear lookup */
-		return (struct arm_smmu_ste *)&cfg
-			       ->strtab[sid * STRTAB_STE_DWORDS];
-=======
 		/* Two-level walk */
 		return &cfg->l2.l2ptrs[arm_smmu_strtab_l1_idx(sid)]
 				->stes[arm_smmu_strtab_l2_idx(sid)];
 	} else {
 		/* Simple linear lookup */
 		return &cfg->linear.table[sid];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -3426,13 +3094,8 @@ arm_smmu_domain_alloc_user(struct device *dev, u32 flags,
 		return ERR_PTR(-EOPNOTSUPP);
 
 	smmu_domain = arm_smmu_domain_alloc();
-<<<<<<< HEAD
-	if (!smmu_domain)
-		return ERR_PTR(-ENOMEM);
-=======
 	if (IS_ERR(smmu_domain))
 		return ERR_CAST(smmu_domain);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	smmu_domain->domain.type = IOMMU_DOMAIN_UNMANAGED;
 	smmu_domain->domain.ops = arm_smmu_ops.default_domain_ops;
@@ -3516,18 +3179,9 @@ struct arm_smmu_device *arm_smmu_get_by_fwnode(struct fwnode_handle *fwnode)
 
 static bool arm_smmu_sid_in_range(struct arm_smmu_device *smmu, u32 sid)
 {
-<<<<<<< HEAD
-	unsigned long limit = smmu->strtab_cfg.num_l1_ents;
-
-	if (smmu->features & ARM_SMMU_FEAT_2_LVL_STRTAB)
-		limit *= 1UL << STRTAB_SPLIT;
-
-	return sid < limit;
-=======
 	if (smmu->features & ARM_SMMU_FEAT_2_LVL_STRTAB)
 		return arm_smmu_strtab_l1_idx(sid) < smmu->strtab_cfg.l2.num_l1_ents;
 	return sid < smmu->strtab_cfg.linear.num_ents;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int arm_smmu_init_sid_strtab(struct arm_smmu_device *smmu, u32 sid)
@@ -3548,11 +3202,6 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
 {
 	int i;
 	int ret = 0;
-<<<<<<< HEAD
-	struct arm_smmu_stream *new_stream, *cur_stream;
-	struct rb_node **new_node, *parent_node = NULL;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(master->dev);
 
 	master->streams = kcalloc(fwspec->num_ids, sizeof(*master->streams),
@@ -3563,15 +3212,9 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
 
 	mutex_lock(&smmu->streams_mutex);
 	for (i = 0; i < fwspec->num_ids; i++) {
-<<<<<<< HEAD
-		u32 sid = fwspec->ids[i];
-
-		new_stream = &master->streams[i];
-=======
 		struct arm_smmu_stream *new_stream = &master->streams[i];
 		u32 sid = fwspec->ids[i];
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		new_stream->id = sid;
 		new_stream->master = master;
 
@@ -3580,30 +3223,6 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
 			break;
 
 		/* Insert into SID tree */
-<<<<<<< HEAD
-		new_node = &(smmu->streams.rb_node);
-		while (*new_node) {
-			cur_stream = rb_entry(*new_node, struct arm_smmu_stream,
-					      node);
-			parent_node = *new_node;
-			if (cur_stream->id > new_stream->id) {
-				new_node = &((*new_node)->rb_left);
-			} else if (cur_stream->id < new_stream->id) {
-				new_node = &((*new_node)->rb_right);
-			} else {
-				dev_warn(master->dev,
-					 "stream %u already in tree\n",
-					 cur_stream->id);
-				ret = -EINVAL;
-				break;
-			}
-		}
-		if (ret)
-			break;
-
-		rb_link_node(&new_stream->node, parent_node, new_node);
-		rb_insert_color(&new_stream->node, &smmu->streams);
-=======
 		if (rb_find_add(&new_stream->node, &smmu->streams,
 				arm_smmu_streams_cmp_node)) {
 			dev_warn(master->dev, "stream %u already in tree\n",
@@ -3611,7 +3230,6 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
 			ret = -EINVAL;
 			break;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (ret) {
@@ -3689,15 +3307,12 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
 	    smmu->features & ARM_SMMU_FEAT_STALL_FORCE)
 		master->stall_enabled = true;
 
-<<<<<<< HEAD
-=======
 	if (dev_is_pci(dev)) {
 		unsigned int stu = __ffs(smmu->pgsize_bitmap);
 
 		pci_prepare_ats(to_pci_dev(dev), stu);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return &smmu->iommu;
 
 err_free_master:
@@ -3720,11 +3335,7 @@ static void arm_smmu_release_device(struct device *dev)
 
 	arm_smmu_disable_pasid(master);
 	arm_smmu_remove_master(master);
-<<<<<<< HEAD
-	if (master->cd_table.cdtab)
-=======
 	if (arm_smmu_cdtab_allocated(&master->cd_table))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		arm_smmu_free_cd_tables(master);
 	kfree(master);
 }
@@ -3914,19 +3525,10 @@ static struct iommu_dirty_ops arm_smmu_dirty_ops = {
 };
 
 /* Probing and initialisation functions */
-<<<<<<< HEAD
-static int arm_smmu_init_one_queue(struct arm_smmu_device *smmu,
-				   struct arm_smmu_queue *q,
-				   void __iomem *page,
-				   unsigned long prod_off,
-				   unsigned long cons_off,
-				   size_t dwords, const char *name)
-=======
 int arm_smmu_init_one_queue(struct arm_smmu_device *smmu,
 			    struct arm_smmu_queue *q, void __iomem *page,
 			    unsigned long prod_off, unsigned long cons_off,
 			    size_t dwords, const char *name)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	size_t qsz;
 
@@ -3964,15 +3566,9 @@ int arm_smmu_init_one_queue(struct arm_smmu_device *smmu,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int arm_smmu_cmdq_init(struct arm_smmu_device *smmu)
-{
-	struct arm_smmu_cmdq *cmdq = &smmu->cmdq;
-=======
 int arm_smmu_cmdq_init(struct arm_smmu_device *smmu,
 		       struct arm_smmu_cmdq *cmdq)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int nents = 1 << cmdq->q.llq.max_n_shift;
 
 	atomic_set(&cmdq->owner_prod, 0);
@@ -3997,11 +3593,7 @@ static int arm_smmu_init_queues(struct arm_smmu_device *smmu)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	ret = arm_smmu_cmdq_init(smmu);
-=======
 	ret = arm_smmu_cmdq_init(smmu, &smmu->cmdq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -4030,28 +3622,6 @@ static int arm_smmu_init_queues(struct arm_smmu_device *smmu)
 
 static int arm_smmu_init_strtab_2lvl(struct arm_smmu_device *smmu)
 {
-<<<<<<< HEAD
-	void *strtab;
-	u64 reg;
-	u32 size, l1size;
-	struct arm_smmu_strtab_cfg *cfg = &smmu->strtab_cfg;
-
-	/* Calculate the L1 size, capped to the SIDSIZE. */
-	size = STRTAB_L1_SZ_SHIFT - (ilog2(STRTAB_L1_DESC_DWORDS) + 3);
-	size = min(size, smmu->sid_bits - STRTAB_SPLIT);
-	cfg->num_l1_ents = 1 << size;
-
-	size += STRTAB_SPLIT;
-	if (size < smmu->sid_bits)
-		dev_warn(smmu->dev,
-			 "2-level strtab only covers %u/%u bits of SID\n",
-			 size, smmu->sid_bits);
-
-	l1size = cfg->num_l1_ents * (STRTAB_L1_DESC_DWORDS << 3);
-	strtab = dmam_alloc_coherent(smmu->dev, l1size, &cfg->strtab_dma,
-				     GFP_KERNEL);
-	if (!strtab) {
-=======
 	u32 l1size;
 	struct arm_smmu_strtab_cfg *cfg = &smmu->strtab_cfg;
 	unsigned int last_sid_idx =
@@ -4069,30 +3639,15 @@ static int arm_smmu_init_strtab_2lvl(struct arm_smmu_device *smmu)
 	cfg->l2.l1tab = dmam_alloc_coherent(smmu->dev, l1size, &cfg->l2.l1_dma,
 					    GFP_KERNEL);
 	if (!cfg->l2.l1tab) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(smmu->dev,
 			"failed to allocate l1 stream table (%u bytes)\n",
 			l1size);
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
-	cfg->strtab = strtab;
-
-	/* Configure strtab_base_cfg for 2 levels */
-	reg  = FIELD_PREP(STRTAB_BASE_CFG_FMT, STRTAB_BASE_CFG_FMT_2LVL);
-	reg |= FIELD_PREP(STRTAB_BASE_CFG_LOG2SIZE, size);
-	reg |= FIELD_PREP(STRTAB_BASE_CFG_SPLIT, STRTAB_SPLIT);
-	cfg->strtab_base_cfg = reg;
-
-	cfg->l1_desc = devm_kcalloc(smmu->dev, cfg->num_l1_ents,
-				    sizeof(*cfg->l1_desc), GFP_KERNEL);
-	if (!cfg->l1_desc)
-=======
 
 	cfg->l2.l2ptrs = devm_kcalloc(smmu->dev, cfg->l2.num_l1_ents,
 				      sizeof(*cfg->l2.l2ptrs), GFP_KERNEL);
 	if (!cfg->l2.l2ptrs)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 
 	return 0;
@@ -4100,17 +3655,6 @@ static int arm_smmu_init_strtab_2lvl(struct arm_smmu_device *smmu)
 
 static int arm_smmu_init_strtab_linear(struct arm_smmu_device *smmu)
 {
-<<<<<<< HEAD
-	void *strtab;
-	u64 reg;
-	u32 size;
-	struct arm_smmu_strtab_cfg *cfg = &smmu->strtab_cfg;
-
-	size = (1 << smmu->sid_bits) * (STRTAB_STE_DWORDS << 3);
-	strtab = dmam_alloc_coherent(smmu->dev, size, &cfg->strtab_dma,
-				     GFP_KERNEL);
-	if (!strtab) {
-=======
 	u32 size;
 	struct arm_smmu_strtab_cfg *cfg = &smmu->strtab_cfg;
 
@@ -4119,57 +3663,28 @@ static int arm_smmu_init_strtab_linear(struct arm_smmu_device *smmu)
 						&cfg->linear.ste_dma,
 						GFP_KERNEL);
 	if (!cfg->linear.table) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(smmu->dev,
 			"failed to allocate linear stream table (%u bytes)\n",
 			size);
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
-	cfg->strtab = strtab;
-	cfg->num_l1_ents = 1 << smmu->sid_bits;
-
-	/* Configure strtab_base_cfg for a linear table covering all SIDs */
-	reg  = FIELD_PREP(STRTAB_BASE_CFG_FMT, STRTAB_BASE_CFG_FMT_LINEAR);
-	reg |= FIELD_PREP(STRTAB_BASE_CFG_LOG2SIZE, smmu->sid_bits);
-	cfg->strtab_base_cfg = reg;
-
-	arm_smmu_init_initial_stes(strtab, cfg->num_l1_ents);
-=======
 	cfg->linear.num_ents = 1 << smmu->sid_bits;
 
 	arm_smmu_init_initial_stes(cfg->linear.table, cfg->linear.num_ents);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static int arm_smmu_init_strtab(struct arm_smmu_device *smmu)
 {
-<<<<<<< HEAD
-	u64 reg;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (smmu->features & ARM_SMMU_FEAT_2_LVL_STRTAB)
 		ret = arm_smmu_init_strtab_2lvl(smmu);
 	else
 		ret = arm_smmu_init_strtab_linear(smmu);
-<<<<<<< HEAD
-
 	if (ret)
 		return ret;
 
-	/* Set the strtab base address */
-	reg  = smmu->strtab_cfg.strtab_dma & STRTAB_BASE_ADDR_MASK;
-	reg |= STRTAB_BASE_RA;
-	smmu->strtab_cfg.strtab_base = reg;
-
-=======
-	if (ret)
-		return ret;
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ida_init(&smmu->vmid_map);
 
 	return 0;
@@ -4186,9 +3701,6 @@ static int arm_smmu_init_structures(struct arm_smmu_device *smmu)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	return arm_smmu_init_strtab(smmu);
-=======
 	ret = arm_smmu_init_strtab(smmu);
 	if (ret)
 		return ret;
@@ -4197,7 +3709,6 @@ static int arm_smmu_init_structures(struct arm_smmu_device *smmu)
 		return smmu->impl_ops->init_structures(smmu);
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int arm_smmu_write_reg_sync(struct arm_smmu_device *smmu, u32 val,
@@ -4389,8 +3900,6 @@ static int arm_smmu_device_disable(struct arm_smmu_device *smmu)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static void arm_smmu_write_strtab(struct arm_smmu_device *smmu)
 {
 	struct arm_smmu_strtab_cfg *cfg = &smmu->strtab_cfg;
@@ -4415,7 +3924,6 @@ static void arm_smmu_write_strtab(struct arm_smmu_device *smmu)
 	writel_relaxed(reg, smmu->base + ARM_SMMU_STRTAB_BASE_CFG);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int arm_smmu_device_reset(struct arm_smmu_device *smmu)
 {
 	int ret;
@@ -4451,14 +3959,7 @@ static int arm_smmu_device_reset(struct arm_smmu_device *smmu)
 	writel_relaxed(reg, smmu->base + ARM_SMMU_CR2);
 
 	/* Stream table */
-<<<<<<< HEAD
-	writeq_relaxed(smmu->strtab_cfg.strtab_base,
-		       smmu->base + ARM_SMMU_STRTAB_BASE);
-	writel_relaxed(smmu->strtab_cfg.strtab_base_cfg,
-		       smmu->base + ARM_SMMU_STRTAB_BASE_CFG);
-=======
 	arm_smmu_write_strtab(smmu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Command queue */
 	writeq_relaxed(smmu->cmdq.q.q_base, smmu->base + ARM_SMMU_CMDQ_BASE);
@@ -4545,8 +4046,6 @@ static int arm_smmu_device_reset(struct arm_smmu_device *smmu)
 		return ret;
 	}
 
-<<<<<<< HEAD
-=======
 	if (smmu->impl_ops && smmu->impl_ops->device_reset) {
 		ret = smmu->impl_ops->device_reset(smmu);
 		if (ret) {
@@ -4555,7 +4054,6 @@ static int arm_smmu_device_reset(struct arm_smmu_device *smmu)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -4845,11 +4343,6 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
 }
 
 #ifdef CONFIG_ACPI
-<<<<<<< HEAD
-static void acpi_smmu_get_options(u32 model, struct arm_smmu_device *smmu)
-{
-	switch (model) {
-=======
 #ifdef CONFIG_TEGRA241_CMDQV
 static void acpi_smmu_dsdt_probe_tegra241_cmdqv(struct acpi_iort_node *node,
 						struct arm_smmu_device *smmu)
@@ -4882,18 +4375,12 @@ static int acpi_smmu_iort_probe_model(struct acpi_iort_node *node,
 		(struct acpi_iort_smmu_v3 *)node->node_data;
 
 	switch (iort_smmu->model) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case ACPI_IORT_SMMU_V3_CAVIUM_CN99XX:
 		smmu->options |= ARM_SMMU_OPT_PAGE0_REGS_ONLY;
 		break;
 	case ACPI_IORT_SMMU_V3_HISILICON_HI161X:
 		smmu->options |= ARM_SMMU_OPT_SKIP_PREFETCH;
 		break;
-<<<<<<< HEAD
-	}
-
-	dev_notice(smmu->dev, "option mask 0x%x\n", smmu->options);
-=======
 	case ACPI_IORT_SMMU_V3_GENERIC:
 		/*
 		 * Tegra241 implementation stores its SMMU options and impl_dev
@@ -4905,7 +4392,6 @@ static int acpi_smmu_iort_probe_model(struct acpi_iort_node *node,
 
 	dev_notice(smmu->dev, "option mask 0x%x\n", smmu->options);
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int arm_smmu_device_acpi_probe(struct platform_device *pdev,
@@ -4920,11 +4406,6 @@ static int arm_smmu_device_acpi_probe(struct platform_device *pdev,
 	/* Retrieve SMMUv3 specific data */
 	iort_smmu = (struct acpi_iort_smmu_v3 *)node->node_data;
 
-<<<<<<< HEAD
-	acpi_smmu_get_options(iort_smmu->model, smmu);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (iort_smmu->flags & ACPI_IORT_SMMU_V3_COHACC_OVERRIDE)
 		smmu->features |= ARM_SMMU_FEAT_COHERENCY;
 
@@ -4936,11 +4417,7 @@ static int arm_smmu_device_acpi_probe(struct platform_device *pdev,
 		smmu->features |= ARM_SMMU_FEAT_HA;
 	}
 
-<<<<<<< HEAD
-	return 0;
-=======
 	return acpi_smmu_iort_probe_model(node, smmu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #else
 static inline int arm_smmu_device_acpi_probe(struct platform_device *pdev,
@@ -5021,8 +4498,6 @@ static void arm_smmu_rmr_install_bypass_ste(struct arm_smmu_device *smmu)
 	iort_put_rmr_sids(dev_fwnode(smmu->dev), &rmr_list);
 }
 
-<<<<<<< HEAD
-=======
 static void arm_smmu_impl_remove(void *data)
 {
 	struct arm_smmu_device *smmu = data;
@@ -5056,7 +4531,6 @@ static struct arm_smmu_device *arm_smmu_impl_probe(struct arm_smmu_device *smmu)
 	return new_smmu;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int arm_smmu_device_probe(struct platform_device *pdev)
 {
 	int irq, ret;
@@ -5078,13 +4552,10 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-=======
 	smmu = arm_smmu_impl_probe(smmu);
 	if (IS_ERR(smmu))
 		return PTR_ERR(smmu);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Base address */
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!res)

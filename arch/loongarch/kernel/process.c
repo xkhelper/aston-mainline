@@ -293,15 +293,6 @@ unsigned long stack_top(void)
 {
 	unsigned long top = TASK_SIZE & PAGE_MASK;
 
-<<<<<<< HEAD
-	/* Space for the VDSO & data page */
-	top -= PAGE_ALIGN(current->thread.vdso->size);
-	top -= VVAR_SIZE;
-
-	/* Space to randomize the VDSO base */
-	if (current->flags & PF_RANDOMIZE)
-		top -= VDSO_RANDOMIZE_SIZE;
-=======
 	if (current->thread.vdso) {
 		/* Space for the VDSO & data page */
 		top -= PAGE_ALIGN(current->thread.vdso->size);
@@ -311,7 +302,6 @@ unsigned long stack_top(void)
 		if (current->flags & PF_RANDOMIZE)
 			top -= VDSO_RANDOMIZE_SIZE;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return top;
 }

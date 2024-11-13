@@ -144,8 +144,6 @@ __naked void ldsx_s32_range(void)
 	: __clobber_all);
 }
 
-<<<<<<< HEAD
-=======
 SEC("xdp")
 __description("LDSX, xdp s32 xdp_md->data")
 __failure __msg("invalid bpf_context access")
@@ -258,7 +256,6 @@ __naked void ldsx_ctx_8(void)
 	: __clobber_all);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 
 SEC("socket")

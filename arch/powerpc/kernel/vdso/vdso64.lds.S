@@ -123,10 +123,7 @@ VERSION
 		__kernel_sigtramp_rt64;
 		__kernel_getcpu;
 		__kernel_time;
-<<<<<<< HEAD
-=======
 		__kernel_getrandom;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	local: *;
 	};

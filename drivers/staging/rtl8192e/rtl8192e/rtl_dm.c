@@ -1484,12 +1484,7 @@ static void _rtl92e_dm_rx_path_sel_byrssi(struct net_device *dev)
 					rtl92e_set_bb_reg(dev,
 							  rOFDM1_TRxPathEnable,
 							  0x1 << i, 0x1);
-<<<<<<< HEAD
-					dm_rx_path_sel_table.rf_enable_rssi_th[i]
-						 = 100;
-=======
 					dm_rx_path_sel_table.rf_enable_rssi_th[i] = 100;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					disabled_rf_cnt--;
 				}
 			}

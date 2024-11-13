@@ -8,10 +8,7 @@
 #include <linux/limits.h>
 
 #include <drm/display/drm_dsc_helper.h>
-<<<<<<< HEAD
-=======
 #include <drm/drm_fixed.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "i915_drv.h"
 #include "intel_crtc.h"
@@ -80,11 +77,7 @@ intel_vdsc_set_min_max_qp(struct drm_dsc_config *vdsc_cfg, int buf,
 static void
 calculate_rc_params(struct drm_dsc_config *vdsc_cfg)
 {
-<<<<<<< HEAD
-	int bpp = to_bpp_int(vdsc_cfg->bits_per_pixel);
-=======
 	int bpp = fxp_q4_to_int(vdsc_cfg->bits_per_pixel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int bpc = vdsc_cfg->bits_per_component;
 	int qp_bpc_modifier = (bpc - 8) * 2;
 	int uncompressed_bpg_rate;
@@ -192,11 +185,7 @@ calculate_rc_params(struct drm_dsc_config *vdsc_cfg)
 		}
 	} else {
 		/* fractional bpp part * 10000 (for precision up to 4 decimal places) */
-<<<<<<< HEAD
-		int fractional_bits = to_bpp_frac(vdsc_cfg->bits_per_pixel);
-=======
 		int fractional_bits = fxp_q4_to_frac(vdsc_cfg->bits_per_pixel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		static const s8 ofs_und6[] = {
 			0, -2, -2, -4, -6, -6, -8, -8, -8, -10, -10, -12, -12, -12, -12
@@ -275,11 +264,7 @@ int intel_dsc_compute_params(struct intel_crtc_state *pipe_config)
 	struct intel_crtc *crtc = to_intel_crtc(pipe_config->uapi.crtc);
 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
 	struct drm_dsc_config *vdsc_cfg = &pipe_config->dsc.config;
-<<<<<<< HEAD
-	u16 compressed_bpp = to_bpp_int(pipe_config->dsc.compressed_bpp_x16);
-=======
 	u16 compressed_bpp = fxp_q4_to_int(pipe_config->dsc.compressed_bpp_x16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 	int ret;
 
@@ -472,54 +457,30 @@ static void intel_dsc_pps_configure(const struct intel_crtc_state *crtc_state)
 		pps_val |= DSC_PPS0_422_ENABLE;
 	if (vdsc_cfg->vbr_enable)
 		pps_val |= DSC_PPS0_VBR_ENABLE;
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS0 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 0, pps_val);
 
 	/* PPS 1 */
 	pps_val = DSC_PPS1_BPP(vdsc_cfg->bits_per_pixel);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS1 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 1, pps_val);
 
 	/* PPS 2 */
 	pps_val = DSC_PPS2_PIC_HEIGHT(vdsc_cfg->pic_height) |
 		DSC_PPS2_PIC_WIDTH(vdsc_cfg->pic_width / num_vdsc_instances);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS2 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 2, pps_val);
 
 	/* PPS 3 */
 	pps_val = DSC_PPS3_SLICE_HEIGHT(vdsc_cfg->slice_height) |
 		DSC_PPS3_SLICE_WIDTH(vdsc_cfg->slice_width);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS3 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 3, pps_val);
 
 	/* PPS 4 */
 	pps_val = DSC_PPS4_INITIAL_XMIT_DELAY(vdsc_cfg->initial_xmit_delay) |
 		DSC_PPS4_INITIAL_DEC_DELAY(vdsc_cfg->initial_dec_delay);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS4 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 4, pps_val);
 
 	/* PPS 5 */
 	pps_val = DSC_PPS5_SCALE_INC_INT(vdsc_cfg->scale_increment_interval) |
 		DSC_PPS5_SCALE_DEC_INT(vdsc_cfg->scale_decrement_interval);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS5 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 5, pps_val);
 
 	/* PPS 6 */
@@ -527,37 +488,21 @@ static void intel_dsc_pps_configure(const struct intel_crtc_state *crtc_state)
 		DSC_PPS6_FIRST_LINE_BPG_OFFSET(vdsc_cfg->first_line_bpg_offset) |
 		DSC_PPS6_FLATNESS_MIN_QP(vdsc_cfg->flatness_min_qp) |
 		DSC_PPS6_FLATNESS_MAX_QP(vdsc_cfg->flatness_max_qp);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS6 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 6, pps_val);
 
 	/* PPS 7 */
 	pps_val = DSC_PPS7_SLICE_BPG_OFFSET(vdsc_cfg->slice_bpg_offset) |
 		DSC_PPS7_NFL_BPG_OFFSET(vdsc_cfg->nfl_bpg_offset);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS7 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 7, pps_val);
 
 	/* PPS 8 */
 	pps_val = DSC_PPS8_FINAL_OFFSET(vdsc_cfg->final_offset) |
 		DSC_PPS8_INITIAL_OFFSET(vdsc_cfg->initial_offset);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS8 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 8, pps_val);
 
 	/* PPS 9 */
 	pps_val = DSC_PPS9_RC_MODEL_SIZE(vdsc_cfg->rc_model_size) |
 		DSC_PPS9_RC_EDGE_FACTOR(DSC_RC_EDGE_FACTOR_CONST);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS9 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 9, pps_val);
 
 	/* PPS 10 */
@@ -565,10 +510,6 @@ static void intel_dsc_pps_configure(const struct intel_crtc_state *crtc_state)
 		DSC_PPS10_RC_QUANT_INC_LIMIT1(vdsc_cfg->rc_quant_incr_limit1) |
 		DSC_PPS10_RC_TARGET_OFF_HIGH(DSC_RC_TGT_OFFSET_HI_CONST) |
 		DSC_PPS10_RC_TARGET_OFF_LOW(DSC_RC_TGT_OFFSET_LO_CONST);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS10 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 10, pps_val);
 
 	/* PPS 16 */
@@ -577,47 +518,25 @@ static void intel_dsc_pps_configure(const struct intel_crtc_state *crtc_state)
 					 vdsc_cfg->slice_width) |
 		DSC_PPS16_SLICE_ROW_PER_FRAME(vdsc_cfg->pic_height /
 					      vdsc_cfg->slice_height);
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "PPS16 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dsc_pps_write(crtc_state, 16, pps_val);
 
 	if (DISPLAY_VER(dev_priv) >= 14) {
 		/* PPS 17 */
 		pps_val = DSC_PPS17_SL_BPG_OFFSET(vdsc_cfg->second_line_bpg_offset);
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm, "PPS17 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_dsc_pps_write(crtc_state, 17, pps_val);
 
 		/* PPS 18 */
 		pps_val = DSC_PPS18_NSL_BPG_OFFSET(vdsc_cfg->nsl_bpg_offset) |
 			DSC_PPS18_SL_OFFSET_ADJ(vdsc_cfg->second_line_offset_adj);
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm, "PPS18 = 0x%08x\n", pps_val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_dsc_pps_write(crtc_state, 18, pps_val);
 	}
 
 	/* Populate the RC_BUF_THRESH registers */
 	memset(rc_buf_thresh_dword, 0, sizeof(rc_buf_thresh_dword));
-<<<<<<< HEAD
-	for (i = 0; i < DSC_NUM_BUF_RANGES - 1; i++) {
-		rc_buf_thresh_dword[i / 4] |=
-			(u32)(vdsc_cfg->rc_buf_thresh[i] <<
-			      BITS_PER_BYTE * (i % 4));
-		drm_dbg_kms(&dev_priv->drm, "RC_BUF_THRESH_%d = 0x%08x\n", i,
-			    rc_buf_thresh_dword[i / 4]);
-	}
-=======
 	for (i = 0; i < DSC_NUM_BUF_RANGES - 1; i++)
 		rc_buf_thresh_dword[i / 4] |=
 			(u32)(vdsc_cfg->rc_buf_thresh[i] <<
 			      BITS_PER_BYTE * (i % 4));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!is_pipe_dsc(crtc, cpu_transcoder)) {
 		intel_de_write(dev_priv, DSCA_RC_BUF_THRESH_0,
 			       rc_buf_thresh_dword[0]);
@@ -664,11 +583,7 @@ static void intel_dsc_pps_configure(const struct intel_crtc_state *crtc_state)
 
 	/* Populate the RC_RANGE_PARAMETERS registers */
 	memset(rc_range_params_dword, 0, sizeof(rc_range_params_dword));
-<<<<<<< HEAD
-	for (i = 0; i < DSC_NUM_BUF_RANGES; i++) {
-=======
 	for (i = 0; i < DSC_NUM_BUF_RANGES; i++)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rc_range_params_dword[i / 2] |=
 			(u32)(((vdsc_cfg->rc_range_params[i].range_bpg_offset <<
 				RC_BPG_OFFSET_SHIFT) |
@@ -676,12 +591,6 @@ static void intel_dsc_pps_configure(const struct intel_crtc_state *crtc_state)
 				RC_MAX_QP_SHIFT) |
 			       (vdsc_cfg->rc_range_params[i].range_min_qp <<
 				RC_MIN_QP_SHIFT)) << 16 * (i % 2));
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm, "RC_RANGE_PARAM_%d = 0x%08x\n", i,
-			    rc_range_params_dword[i / 2]);
-	}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!is_pipe_dsc(crtc, cpu_transcoder)) {
 		intel_de_write(dev_priv, DSCA_RC_RANGE_PARAMETERS_0,
 			       rc_range_params_dword[0]);
@@ -1061,8 +970,6 @@ void intel_dsc_get_config(struct intel_crtc_state *crtc_state)
 out:
 	intel_display_power_put(dev_priv, power_domain, wakeref);
 }
-<<<<<<< HEAD
-=======
 
 static void intel_vdsc_dump_state(struct drm_printer *p, int indent,
 				  const struct intel_crtc_state *crtc_state)
@@ -1083,4 +990,3 @@ void intel_vdsc_state_dump(struct drm_printer *p, int indent,
 	intel_vdsc_dump_state(p, indent, crtc_state);
 	drm_dsc_dump_config(p, indent, &crtc_state->dsc.config);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

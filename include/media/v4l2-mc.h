@@ -178,12 +178,9 @@ void v4l2_pipeline_pm_put(struct media_entity *entity);
  * @flags: New link flags that will be applied
  * @notification: The link's state change notification type (MEDIA_DEV_NOTIFY_*)
  *
-<<<<<<< HEAD
-=======
  * THIS FUNCTION IS DEPRECATED. DO NOT USE IN NEW DRIVERS. USE RUNTIME PM
  * ON SUB-DEVICE DRIVERS INSTEAD.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * React to link management on powered pipelines by updating the use count of
  * all entities in the source and sink sides of the link. Entities are powered
  * on or off accordingly. The use of this function should be paired

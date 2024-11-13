@@ -4594,20 +4594,13 @@ static int dpaa2_eth_netdev_init(struct net_device *net_dev)
 
 	net_dev->priv_flags |= supported;
 	net_dev->priv_flags &= ~not_supported;
-<<<<<<< HEAD
-=======
 	net_dev->lltx = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Features */
 	net_dev->features = NETIF_F_RXCSUM |
 			    NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM |
 			    NETIF_F_SG | NETIF_F_HIGHDMA |
-<<<<<<< HEAD
-			    NETIF_F_LLTX | NETIF_F_HW_TC | NETIF_F_TSO;
-=======
 			    NETIF_F_HW_TC | NETIF_F_TSO;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	net_dev->gso_max_segs = DPAA2_ETH_ENQUEUE_MAX_FDS;
 	net_dev->hw_features = net_dev->features;
 	net_dev->xdp_features = NETDEV_XDP_ACT_BASIC |

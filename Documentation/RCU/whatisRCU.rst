@@ -1103,11 +1103,7 @@ RCU-Tasks-Rude::
 
 	Critical sections	Grace period		Barrier
 
-<<<<<<< HEAD
-	N/A			call_rcu_tasks_rude	rcu_barrier_tasks_rude
-=======
 	N/A						N/A
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				synchronize_rcu_tasks_rude
 
 

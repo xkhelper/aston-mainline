@@ -347,13 +347,8 @@ static int xhci_disable_interrupter(struct xhci_interrupter *ir)
 }
 
 /* interrupt moderation interval imod_interval in nanoseconds */
-<<<<<<< HEAD
-static int xhci_set_interrupter_moderation(struct xhci_interrupter *ir,
-					   u32 imod_interval)
-=======
 int xhci_set_interrupter_moderation(struct xhci_interrupter *ir,
 				    u32 imod_interval)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 imod;
 
@@ -4530,8 +4525,6 @@ static int xhci_update_device(struct usb_hcd *hcd, struct usb_device *udev)
 	struct xhci_port *port;
 	u32 capability;
 
-<<<<<<< HEAD
-=======
 	/* Check if USB3 device at root port is tunneled over USB4 */
 	if (hcd->speed >= HCD_USB3 && !udev->parent->parent) {
 		port = xhci->usb3_rhub.ports[udev->portnum - 1];
@@ -4546,7 +4539,6 @@ static int xhci_update_device(struct usb_hcd *hcd, struct usb_device *udev)
 		return 0;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (hcd->speed >= HCD_USB3 || !udev->lpm_capable || !xhci->hw_lpm_support)
 		return 0;
 

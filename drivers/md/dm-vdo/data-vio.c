@@ -501,10 +501,7 @@ static void launch_data_vio(struct data_vio *data_vio, logical_block_number_t lb
 
 	memset(&data_vio->record_name, 0, sizeof(data_vio->record_name));
 	memset(&data_vio->duplicate, 0, sizeof(data_vio->duplicate));
-<<<<<<< HEAD
-=======
 	vdo_reset_completion(&data_vio->decrement_completion);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vdo_reset_completion(completion);
 	completion->error_handler = handle_data_vio_error;
 	set_data_vio_logical_callback(data_vio, attempt_logical_block_lock);
@@ -1277,21 +1274,14 @@ static void clean_hash_lock(struct vdo_completion *completion)
 static void finish_cleanup(struct data_vio *data_vio)
 {
 	struct vdo_completion *completion = &data_vio->vio.completion;
-<<<<<<< HEAD
-=======
 	u32 discard_size = min_t(u32, data_vio->remaining_discard,
 				 VDO_BLOCK_SIZE - data_vio->offset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	VDO_ASSERT_LOG_ONLY(data_vio->allocation.lock == NULL,
 			    "complete data_vio has no allocation lock");
 	VDO_ASSERT_LOG_ONLY(data_vio->hash_lock == NULL,
 			    "complete data_vio has no hash lock");
-<<<<<<< HEAD
-	if ((data_vio->remaining_discard <= VDO_BLOCK_SIZE) ||
-=======
 	if ((data_vio->remaining_discard <= discard_size) ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    (completion->result != VDO_SUCCESS)) {
 		struct data_vio_pool *pool = completion->vdo->data_vio_pool;
 
@@ -1300,20 +1290,12 @@ static void finish_cleanup(struct data_vio *data_vio)
 		return;
 	}
 
-<<<<<<< HEAD
-	data_vio->remaining_discard -= min_t(u32, data_vio->remaining_discard,
-					     VDO_BLOCK_SIZE - data_vio->offset);
-=======
 	data_vio->remaining_discard -= discard_size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data_vio->is_partial = (data_vio->remaining_discard < VDO_BLOCK_SIZE);
 	data_vio->read = data_vio->is_partial;
 	data_vio->offset = 0;
 	completion->requeue = true;
-<<<<<<< HEAD
-=======
 	data_vio->first_reference_operation_complete = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	launch_data_vio(data_vio, data_vio->logical.lbn + 1);
 }
 
@@ -1986,12 +1968,8 @@ static void allocate_block(struct vdo_completion *completion)
 		.state = VDO_MAPPING_STATE_UNCOMPRESSED,
 	};
 
-<<<<<<< HEAD
-	if (data_vio->fua) {
-=======
 	if (data_vio->fua ||
 	    data_vio->remaining_discard > (u32) (VDO_BLOCK_SIZE - data_vio->offset)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		prepare_for_dedupe(data_vio);
 		return;
 	}
@@ -2068,10 +2046,6 @@ void continue_data_vio_with_block_map_slot(struct vdo_completion *completion)
 		return;
 	}
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * We don't need to write any data, so skip allocation and just update the block map and
 	 * reference counts (via the journal).
@@ -2080,11 +2054,7 @@ void continue_data_vio_with_block_map_slot(struct vdo_completion *completion)
 	if (data_vio->is_zero)
 		data_vio->new_mapped.state = VDO_MAPPING_STATE_UNCOMPRESSED;
 
-<<<<<<< HEAD
-	if (data_vio->remaining_discard > VDO_BLOCK_SIZE) {
-=======
 	if (data_vio->remaining_discard > (u32) (VDO_BLOCK_SIZE - data_vio->offset)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* This is not the final block of a discard so we can't acknowledge it yet. */
 		update_metadata_for_data_vio_write(data_vio, NULL);
 		return;

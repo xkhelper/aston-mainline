@@ -403,8 +403,6 @@ static void fbnic_mac_init_regs(struct fbnic_dev *fbd)
 	fbnic_mac_init_txb(fbd);
 }
 
-<<<<<<< HEAD
-=======
 static void __fbnic_mac_stat_rd64(struct fbnic_dev *fbd, bool reset, u32 reg,
 				  struct fbnic_stat_counter *stat)
 {
@@ -420,7 +418,6 @@ static void __fbnic_mac_stat_rd64(struct fbnic_dev *fbd, bool reset, u32 reg,
 #define fbnic_mac_stat_rd64(fbd, reset, __stat, __CSR) \
 	__fbnic_mac_stat_rd64(fbd, reset, FBNIC_##__CSR##_L, &(__stat))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void fbnic_mac_tx_pause_config(struct fbnic_dev *fbd, bool tx_pause)
 {
 	u32 rxb_pause_ctrl;
@@ -655,8 +652,6 @@ static void fbnic_mac_link_up_asic(struct fbnic_dev *fbd,
 	wr32(fbd, FBNIC_MAC_COMMAND_CONFIG, cmd_cfg);
 }
 
-<<<<<<< HEAD
-=======
 static void
 fbnic_mac_get_eth_mac_stats(struct fbnic_dev *fbd, bool reset,
 			    struct fbnic_eth_mac_stats *mac_stats)
@@ -691,17 +686,13 @@ fbnic_mac_get_eth_mac_stats(struct fbnic_dev *fbd, bool reset,
 			    MAC_STAT_TX_BROADCAST);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct fbnic_mac fbnic_mac_asic = {
 	.init_regs = fbnic_mac_init_regs,
 	.pcs_enable = fbnic_pcs_enable_asic,
 	.pcs_disable = fbnic_pcs_disable_asic,
 	.pcs_get_link = fbnic_pcs_get_link_asic,
 	.pcs_get_link_event = fbnic_pcs_get_link_event_asic,
-<<<<<<< HEAD
-=======
 	.get_eth_mac_stats = fbnic_mac_get_eth_mac_stats,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.link_down = fbnic_mac_link_down_asic,
 	.link_up = fbnic_mac_link_up_asic,
 };

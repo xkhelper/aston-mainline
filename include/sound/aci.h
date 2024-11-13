@@ -72,10 +72,7 @@
 #define ACI_SET_EQ7		0x46	/* ... to Treble */
 
 struct snd_miro_aci {
-<<<<<<< HEAD
-=======
 	struct snd_card *card;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long aci_port;
 	int aci_vendor;
 	int aci_product;

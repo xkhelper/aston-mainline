@@ -82,11 +82,7 @@
  *  - has multiple clocks.
  *  - has no usable clock due to jitter or packet loss (VoIP).
  * In this case the system's clock is used. The clock resolution depends on
-<<<<<<< HEAD
- * the jiffie resolution.
-=======
  * the jiffy resolution.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * If a member joins a conference:
  *

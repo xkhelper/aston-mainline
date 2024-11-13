@@ -412,11 +412,7 @@ static void test_sk_storage_map_stress_free(void)
 		rlim_new.rlim_max = rlim_new.rlim_cur + 128;
 		err = setrlimit(RLIMIT_NOFILE, &rlim_new);
 		CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
-<<<<<<< HEAD
-		      rlim_new.rlim_cur, errno);
-=======
 		      (unsigned long) rlim_new.rlim_cur, errno);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	err = do_sk_storage_map_stress_free();

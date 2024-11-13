@@ -20,18 +20,12 @@ enum Value {
     Boolean(bool),
     Number(i32),
     String(String),
-<<<<<<< HEAD
-=======
     Array(Vec<Value>),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     Object(Object),
 }
 
 type Object = Vec<(String, Value)>;
 
-<<<<<<< HEAD
-/// Minimal "almost JSON" generator (e.g. no `null`s, no arrays, no escaping),
-=======
 fn comma_sep<T>(
     seq: &[T],
     formatter: &mut Formatter<'_>,
@@ -48,7 +42,6 @@ fn comma_sep<T>(
 }
 
 /// Minimal "almost JSON" generator (e.g. no `null`s, no escaping),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /// enough for this purpose.
 impl Display for Value {
     fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
@@ -56,16 +49,6 @@ impl Display for Value {
             Value::Boolean(boolean) => write!(formatter, "{}", boolean),
             Value::Number(number) => write!(formatter, "{}", number),
             Value::String(string) => write!(formatter, "\"{}\"", string),
-<<<<<<< HEAD
-            Value::Object(object) => {
-                formatter.write_str("{")?;
-                if let [ref rest @ .., ref last] = object[..] {
-                    for (key, value) in rest {
-                        write!(formatter, "\"{}\": {},", key, value)?;
-                    }
-                    write!(formatter, "\"{}\": {}", last.0, last.1)?;
-                }
-=======
             Value::Array(values) => {
                 formatter.write_str("[")?;
                 comma_sep(&values[..], formatter, |formatter, v| v.fmt(formatter))?;
@@ -76,15 +59,12 @@ impl Display for Value {
                 comma_sep(&object[..], formatter, |formatter, v| {
                     write!(formatter, "\"{}\": {}", v.0, v.1)
                 })?;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
                 formatter.write_str("}")
             }
         }
     }
 }
 
-<<<<<<< HEAD
-=======
 impl From<bool> for Value {
     fn from(value: bool) -> Self {
         Self::Boolean(value)
@@ -121,52 +101,15 @@ impl<T: Into<Value>, const N: usize> From<[T; N]> for Value {
     }
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct TargetSpec(Object);
 
 impl TargetSpec {
     fn new() -> TargetSpec {
         TargetSpec(Vec::new())
     }
-<<<<<<< HEAD
-}
-
-trait Push<T> {
-    fn push(&mut self, key: &str, value: T);
-}
-
-impl Push<bool> for TargetSpec {
-    fn push(&mut self, key: &str, value: bool) {
-        self.0.push((key.to_string(), Value::Boolean(value)));
-    }
-}
-
-impl Push<i32> for TargetSpec {
-    fn push(&mut self, key: &str, value: i32) {
-        self.0.push((key.to_string(), Value::Number(value)));
-    }
-}
-
-impl Push<String> for TargetSpec {
-    fn push(&mut self, key: &str, value: String) {
-        self.0.push((key.to_string(), Value::String(value)));
-    }
-}
-
-impl Push<&str> for TargetSpec {
-    fn push(&mut self, key: &str, value: &str) {
-        self.push(key, value.to_string());
-    }
-}
-
-impl Push<Object> for TargetSpec {
-    fn push(&mut self, key: &str, value: Object) {
-        self.0.push((key.to_string(), Value::Object(value)));
-=======
 
     fn push(&mut self, key: &str, value: impl Into<Value>) {
         self.0.push((key.to_string(), value.into()));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 }
 
@@ -245,12 +188,6 @@ fn main() {
         );
         let mut features = "-mmx,+soft-float".to_string();
         if cfg.has("MITIGATION_RETPOLINE") {
-<<<<<<< HEAD
-            features += ",+retpoline-external-thunk";
-        }
-        ts.push("features", features);
-        ts.push("llvm-target", "x86_64-linux-gnu");
-=======
             // The kernel uses `-mretpoline-external-thunk` (for Clang), which Clang maps to the
             // target feature of the same name plus the other two target features in
             // `clang/lib/Driver/ToolChains/Arch/X86.cpp`. These should be eventually enabled via
@@ -271,7 +208,6 @@ fn main() {
         ts.push("features", features);
         ts.push("llvm-target", "x86_64-linux-gnu");
         ts.push("supported-sanitizers", ["kcfi", "kernel-address"]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         ts.push("target-pointer-width", "64");
     } else if cfg.has("X86_32") {
         // This only works on UML, as i386 otherwise needs regparm support in rustc

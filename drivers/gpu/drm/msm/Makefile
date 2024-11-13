@@ -37,10 +37,7 @@ msm-display-$(CONFIG_DRM_MSM_HDMI) += \
 	hdmi/hdmi_phy.o \
 	hdmi/hdmi_phy_8960.o \
 	hdmi/hdmi_phy_8996.o \
-<<<<<<< HEAD
-=======
 	hdmi/hdmi_phy_8998.o \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hdmi/hdmi_phy_8x60.o \
 	hdmi/hdmi_phy_8x74.o \
 	hdmi/hdmi_pll_8960.o \

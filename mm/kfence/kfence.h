@@ -38,10 +38,7 @@
 enum kfence_object_state {
 	KFENCE_OBJECT_UNUSED,		/* Object is unused. */
 	KFENCE_OBJECT_ALLOCATED,	/* Object is currently allocated. */
-<<<<<<< HEAD
-=======
 	KFENCE_OBJECT_RCU_FREEING,	/* Object was allocated, and then being freed by rcu. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KFENCE_OBJECT_FREED,		/* Object was allocated, and then freed. */
 };
 

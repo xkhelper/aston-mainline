@@ -185,17 +185,10 @@ static ssize_t tsl2550_store_power_state(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct tsl2550_data *data = i2c_get_clientdata(client);
-<<<<<<< HEAD
-	unsigned long val = simple_strtoul(buf, NULL, 10);
-	int ret;
-
-	if (val > 1)
-=======
 	unsigned long val;
 	int ret;
 
 	if (kstrtoul(buf, 10, &val) || val > 1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	mutex_lock(&data->update_lock);
@@ -224,17 +217,10 @@ static ssize_t tsl2550_store_operating_mode(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	struct tsl2550_data *data = i2c_get_clientdata(client);
-<<<<<<< HEAD
-	unsigned long val = simple_strtoul(buf, NULL, 10);
-	int ret;
-
-	if (val > 1)
-=======
 	unsigned long val;
 	int ret;
 
 	if (kstrtoul(buf, 10, &val) || val > 1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	if (data->power_state == 0)

@@ -40,8 +40,6 @@ config THERMAL_DEBUGFS
 	  Say Y to allow the thermal subsystem to collect diagnostic
 	  information that can be accessed via debugfs.
 
-<<<<<<< HEAD
-=======
 config THERMAL_CORE_TESTING
 	tristate "Thermal core testing facility"
 	depends on DEBUG_FS
@@ -51,7 +49,6 @@ config THERMAL_CORE_TESTING
 	  with trip points in order to exercise the thermal core
 	  functionality in a controlled way.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config THERMAL_EMERGENCY_POWEROFF_DELAY_MS
 	int "Emergency poweroff delay in milli-seconds"
 	default 0
@@ -441,11 +438,7 @@ source "drivers/thermal/samsung/Kconfig"
 endmenu
 
 menu "STMicroelectronics thermal drivers"
-<<<<<<< HEAD
-depends on (ARCH_STI || ARCH_STM32) && OF
-=======
 depends on (ARCH_STI || ARCH_STM32) && THERMAL_OF
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 source "drivers/thermal/st/Kconfig"
 endmenu
 

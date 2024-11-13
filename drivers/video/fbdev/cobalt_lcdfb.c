@@ -344,11 +344,7 @@ static void cobalt_lcdfb_remove(struct platform_device *dev)
 
 static struct platform_driver cobalt_lcdfb_driver = {
 	.probe	= cobalt_lcdfb_probe,
-<<<<<<< HEAD
-	.remove_new = cobalt_lcdfb_remove,
-=======
 	.remove	= cobalt_lcdfb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name	= "cobalt-lcd",
 	},

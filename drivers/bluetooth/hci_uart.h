@@ -20,11 +20,7 @@
 #define HCIUARTGETFLAGS		_IOR('U', 204, int)
 
 /* UART protocols */
-<<<<<<< HEAD
-#define HCI_UART_MAX_PROTO	12
-=======
 #define HCI_UART_MAX_PROTO	13
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define HCI_UART_H4	0
 #define HCI_UART_BCSP	1
@@ -38,10 +34,7 @@
 #define HCI_UART_AG6XX	9
 #define HCI_UART_NOKIA	10
 #define HCI_UART_MRVL	11
-<<<<<<< HEAD
-=======
 #define HCI_UART_AML	12
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define HCI_UART_RAW_DEVICE	0
 #define HCI_UART_RESET_ON_INIT	1
@@ -217,11 +210,8 @@ int ag6xx_deinit(void);
 int mrvl_init(void);
 int mrvl_deinit(void);
 #endif
-<<<<<<< HEAD
-=======
 
 #ifdef CONFIG_BT_HCIUART_AML
 int aml_init(void);
 int aml_deinit(void);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

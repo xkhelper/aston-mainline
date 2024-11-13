@@ -3,11 +3,8 @@
  * Copyright © 2023 Intel Corporation
  */
 
-<<<<<<< HEAD
-=======
 #include <drm/drm_fixed.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "i915_drv.h"
 
 #include "intel_atomic.h"
@@ -28,20 +25,13 @@
 void intel_link_bw_init_limits(struct intel_atomic_state *state,
 			       struct intel_link_bw_limits *limits)
 {
-<<<<<<< HEAD
-=======
 	struct intel_display *display = to_intel_display(state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *i915 = to_i915(state->base.dev);
 	enum pipe pipe;
 
 	limits->force_fec_pipes = 0;
 	limits->bpp_limit_reached_pipes = 0;
-<<<<<<< HEAD
-	for_each_pipe(i915, pipe) {
-=======
 	for_each_pipe(display, pipe) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct intel_crtc_state *crtc_state =
 			intel_atomic_get_new_crtc_state(state,
 							intel_crtc_for_pipe(i915, pipe));
@@ -80,20 +70,12 @@ int intel_link_bw_reduce_bpp(struct intel_atomic_state *state,
 			     u8 pipe_mask,
 			     const char *reason)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = to_i915(state->base.dev);
-=======
 	struct intel_display *display = to_intel_display(state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum pipe max_bpp_pipe = INVALID_PIPE;
 	struct intel_crtc *crtc;
 	int max_bpp_x16 = 0;
 
-<<<<<<< HEAD
-	for_each_intel_crtc_in_pipe_mask(&i915->drm, crtc, pipe_mask) {
-=======
 	for_each_intel_crtc_in_pipe_mask(display->drm, crtc, pipe_mask) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct intel_crtc_state *crtc_state;
 		int link_bpp_x16;
 
@@ -114,11 +96,7 @@ int intel_link_bw_reduce_bpp(struct intel_atomic_state *state,
 			 * is based on the pipe bpp value, set the actual link bpp
 			 * limit here once the MST BW allocation is fixed.
 			 */
-<<<<<<< HEAD
-			link_bpp_x16 = to_bpp_x16(crtc_state->pipe_bpp);
-=======
 			link_bpp_x16 = fxp_q4_from_int(crtc_state->pipe_bpp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (link_bpp_x16 > max_bpp_x16) {
 			max_bpp_x16 = link_bpp_x16;
@@ -159,11 +137,7 @@ intel_link_bw_set_bpp_limit_for_pipe(struct intel_atomic_state *state,
 				     struct intel_link_bw_limits *new_limits,
 				     enum pipe pipe)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = to_i915(state->base.dev);
-=======
 	struct intel_display *display = to_intel_display(state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (pipe == INVALID_PIPE)
 		return false;
@@ -172,11 +146,7 @@ intel_link_bw_set_bpp_limit_for_pipe(struct intel_atomic_state *state,
 	    old_limits->max_bpp_x16[pipe])
 		return false;
 
-<<<<<<< HEAD
-	if (drm_WARN_ON(&i915->drm,
-=======
 	if (drm_WARN_ON(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			new_limits->bpp_limit_reached_pipes & BIT(pipe)))
 		return false;
 
@@ -209,11 +179,7 @@ static int check_all_link_config(struct intel_atomic_state *state,
 }
 
 static bool
-<<<<<<< HEAD
-assert_link_limit_change_valid(struct drm_i915_private *i915,
-=======
 assert_link_limit_change_valid(struct intel_display *display,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       const struct intel_link_bw_limits *old_limits,
 			       const struct intel_link_bw_limits *new_limits)
 {
@@ -221,24 +187,14 @@ assert_link_limit_change_valid(struct intel_display *display,
 	enum pipe pipe;
 
 	/* FEC can't be forced off after it was forced on. */
-<<<<<<< HEAD
-	if (drm_WARN_ON(&i915->drm,
-=======
 	if (drm_WARN_ON(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			(old_limits->force_fec_pipes & new_limits->force_fec_pipes) !=
 			old_limits->force_fec_pipes))
 		return false;
 
-<<<<<<< HEAD
-	for_each_pipe(i915, pipe) {
-		/* The bpp limit can only decrease. */
-		if (drm_WARN_ON(&i915->drm,
-=======
 	for_each_pipe(display, pipe) {
 		/* The bpp limit can only decrease. */
 		if (drm_WARN_ON(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				new_limits->max_bpp_x16[pipe] >
 				old_limits->max_bpp_x16[pipe]))
 			return false;
@@ -249,11 +205,7 @@ assert_link_limit_change_valid(struct intel_display *display,
 	}
 
 	/* At least one limit must change. */
-<<<<<<< HEAD
-	if (drm_WARN_ON(&i915->drm,
-=======
 	if (drm_WARN_ON(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			!bpps_changed &&
 			new_limits->force_fec_pipes ==
 			old_limits->force_fec_pipes))
@@ -281,11 +233,7 @@ assert_link_limit_change_valid(struct intel_display *display,
 int intel_link_bw_atomic_check(struct intel_atomic_state *state,
 			       struct intel_link_bw_limits *new_limits)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = to_i915(state->base.dev);
-=======
 	struct intel_display *display = to_intel_display(state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_link_bw_limits old_limits = *new_limits;
 	int ret;
 
@@ -293,11 +241,7 @@ int intel_link_bw_atomic_check(struct intel_atomic_state *state,
 	if (ret != -EAGAIN)
 		return ret;
 
-<<<<<<< HEAD
-	if (!assert_link_limit_change_valid(i915, &old_limits, new_limits))
-=======
 	if (!assert_link_limit_change_valid(display, &old_limits, new_limits))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	return -EAGAIN;

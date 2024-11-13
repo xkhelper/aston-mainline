@@ -149,11 +149,7 @@ struct xilinx_dpdma_chan;
  * @addr_ext: upper 16 bit of 48 bit address (next_desc and src_addr)
  * @next_desc: next descriptor 32 bit address
  * @src_addr: payload source address (1st page, 32 LSB)
-<<<<<<< HEAD
- * @addr_ext_23: payload source address (3nd and 3rd pages, 16 LSBs)
-=======
  * @addr_ext_23: payload source address (2nd and 3rd pages, 16 LSBs)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @addr_ext_45: payload source address (4th and 5th pages, 16 LSBs)
  * @src_addr2: payload source address (2nd page, 32 LSB)
  * @src_addr3: payload source address (3rd page, 32 LSB)
@@ -214,11 +210,7 @@ struct xilinx_dpdma_tx_desc {
  * @vchan: virtual DMA channel
  * @reg: register base address
  * @id: channel ID
-<<<<<<< HEAD
- * @wait_to_stop: queue to wait for outstanding transacitons before stopping
-=======
  * @wait_to_stop: queue to wait for outstanding transactions before stopping
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @running: true if the channel is running
  * @first_frame: flag for the first frame of stream
  * @video_group: flag if multi-channel operation is needed for video channels
@@ -679,8 +671,6 @@ static void xilinx_dpdma_chan_free_tx_desc(struct virt_dma_desc *vdesc)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * xilinx_dpdma_chan_prep_cyclic - Prepare a cyclic dma descriptor
  * @chan: DPDMA channel
  * @buf_addr: buffer address
@@ -759,7 +749,6 @@ error:
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * xilinx_dpdma_chan_prep_interleaved_dma - Prepare an interleaved dma
  *					    descriptor
  * @chan: DPDMA channel
@@ -1278,8 +1267,6 @@ out_unlock:
 /* -----------------------------------------------------------------------------
  * DMA Engine Operations
  */
-<<<<<<< HEAD
-=======
 static struct dma_async_tx_descriptor *
 xilinx_dpdma_prep_dma_cyclic(struct dma_chan *dchan, dma_addr_t buf_addr,
 			     size_t buf_len, size_t period_len,
@@ -1297,7 +1284,6 @@ xilinx_dpdma_prep_dma_cyclic(struct dma_chan *dchan, dma_addr_t buf_addr,
 	return xilinx_dpdma_chan_prep_cyclic(chan, buf_addr, buf_len,
 					     period_len, flags);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct dma_async_tx_descriptor *
 xilinx_dpdma_prep_interleaved_dma(struct dma_chan *dchan,
@@ -1781,10 +1767,7 @@ static int xilinx_dpdma_probe(struct platform_device *pdev)
 
 	dma_cap_set(DMA_SLAVE, ddev->cap_mask);
 	dma_cap_set(DMA_PRIVATE, ddev->cap_mask);
-<<<<<<< HEAD
-=======
 	dma_cap_set(DMA_CYCLIC, ddev->cap_mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dma_cap_set(DMA_INTERLEAVE, ddev->cap_mask);
 	dma_cap_set(DMA_REPEAT, ddev->cap_mask);
 	dma_cap_set(DMA_LOAD_EOT, ddev->cap_mask);
@@ -1792,10 +1775,7 @@ static int xilinx_dpdma_probe(struct platform_device *pdev)
 
 	ddev->device_alloc_chan_resources = xilinx_dpdma_alloc_chan_resources;
 	ddev->device_free_chan_resources = xilinx_dpdma_free_chan_resources;
-<<<<<<< HEAD
-=======
 	ddev->device_prep_dma_cyclic = xilinx_dpdma_prep_dma_cyclic;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ddev->device_prep_interleaved_dma = xilinx_dpdma_prep_interleaved_dma;
 	/* TODO: Can we achieve better granularity ? */
 	ddev->device_tx_status = dma_cookie_status;

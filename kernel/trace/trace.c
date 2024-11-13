@@ -482,11 +482,7 @@ EXPORT_SYMBOL_GPL(unregister_ftrace_export);
 	 TRACE_ITER_ANNOTATE | TRACE_ITER_CONTEXT_INFO |		\
 	 TRACE_ITER_RECORD_CMD | TRACE_ITER_OVERWRITE |			\
 	 TRACE_ITER_IRQ_INFO | TRACE_ITER_MARKERS |			\
-<<<<<<< HEAD
-	 TRACE_ITER_HASH_PTR)
-=======
 	 TRACE_ITER_HASH_PTR | TRACE_ITER_TRACE_PRINTK)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* trace_options that are only supported by global_trace */
 #define TOP_LEVEL_TRACE_FLAGS (TRACE_ITER_PRINTK |			\
@@ -494,11 +490,7 @@ EXPORT_SYMBOL_GPL(unregister_ftrace_export);
 
 /* trace_flags that are default zero for instances */
 #define ZEROED_TRACE_FLAGS \
-<<<<<<< HEAD
-	(TRACE_ITER_EVENT_FORK | TRACE_ITER_FUNC_FORK)
-=======
 	(TRACE_ITER_EVENT_FORK | TRACE_ITER_FUNC_FORK | TRACE_ITER_TRACE_PRINTK)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * The global_trace is the descriptor that holds the top-level tracing
@@ -508,8 +500,6 @@ static struct trace_array global_trace = {
 	.trace_flags = TRACE_DEFAULT_FLAGS,
 };
 
-<<<<<<< HEAD
-=======
 static struct trace_array *printk_trace = &global_trace;
 
 static __always_inline bool printk_binsafe(struct trace_array *tr)
@@ -533,7 +523,6 @@ static void update_printk_trace(struct trace_array *tr)
 	tr->trace_flags |= TRACE_ITER_TRACE_PRINTK;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void trace_set_ring_buffer_expanded(struct trace_array *tr)
 {
 	if (!tr)
@@ -1151,11 +1140,7 @@ EXPORT_SYMBOL_GPL(__trace_array_puts);
  */
 int __trace_puts(unsigned long ip, const char *str, int size)
 {
-<<<<<<< HEAD
-	return __trace_array_puts(&global_trace, ip, str, size);
-=======
 	return __trace_array_puts(printk_trace, ip, str, size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(__trace_puts);
 
@@ -1166,10 +1151,7 @@ EXPORT_SYMBOL_GPL(__trace_puts);
  */
 int __trace_bputs(unsigned long ip, const char *str)
 {
-<<<<<<< HEAD
-=======
 	struct trace_array *tr = READ_ONCE(printk_trace);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ring_buffer_event *event;
 	struct trace_buffer *buffer;
 	struct bputs_entry *entry;
@@ -1177,25 +1159,17 @@ int __trace_bputs(unsigned long ip, const char *str)
 	int size = sizeof(struct bputs_entry);
 	int ret = 0;
 
-<<<<<<< HEAD
-	if (!(global_trace.trace_flags & TRACE_ITER_PRINTK))
-=======
 	if (!printk_binsafe(tr))
 		return __trace_puts(ip, str, strlen(str));
 
 	if (!(tr->trace_flags & TRACE_ITER_PRINTK))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	if (unlikely(tracing_selftest_running || tracing_disabled))
 		return 0;
 
 	trace_ctx = tracing_gen_ctx();
-<<<<<<< HEAD
-	buffer = global_trace.array_buffer.buffer;
-=======
 	buffer = tr->array_buffer.buffer;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ring_buffer_nest_start(buffer);
 	event = __trace_buffer_lock_reserve(buffer, TRACE_BPUTS, size,
@@ -1208,11 +1182,7 @@ int __trace_bputs(unsigned long ip, const char *str)
 	entry->str			= str;
 
 	__buffer_unlock_commit(buffer, event);
-<<<<<<< HEAD
-	ftrace_trace_stack(&global_trace, buffer, trace_ctx, 4, NULL);
-=======
 	ftrace_trace_stack(tr, buffer, trace_ctx, 4, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = 1;
  out:
@@ -3078,11 +3048,7 @@ void trace_dump_stack(int skip)
 	/* Skip 1 to skip this function. */
 	skip++;
 #endif
-<<<<<<< HEAD
-	__ftrace_trace_stack(global_trace.array_buffer.buffer,
-=======
 	__ftrace_trace_stack(printk_trace->array_buffer.buffer,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     tracing_gen_ctx(), skip, NULL);
 }
 EXPORT_SYMBOL_GPL(trace_dump_stack);
@@ -3301,22 +3267,15 @@ int trace_vbprintk(unsigned long ip, const char *fmt, va_list args)
 	struct trace_event_call *call = &event_bprint;
 	struct ring_buffer_event *event;
 	struct trace_buffer *buffer;
-<<<<<<< HEAD
-	struct trace_array *tr = &global_trace;
-=======
 	struct trace_array *tr = READ_ONCE(printk_trace);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bprint_entry *entry;
 	unsigned int trace_ctx;
 	char *tbuffer;
 	int len = 0, size;
 
-<<<<<<< HEAD
-=======
 	if (!printk_binsafe(tr))
 		return trace_vprintk(ip, fmt, args);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(tracing_selftest_running || tracing_disabled))
 		return 0;
 
@@ -3409,11 +3368,7 @@ __trace_array_vprintk(struct trace_buffer *buffer,
 	memcpy(&entry->buf, tbuffer, len + 1);
 	if (!call_filter_check_discard(call, entry, buffer, event)) {
 		__buffer_unlock_commit(buffer, event);
-<<<<<<< HEAD
-		ftrace_trace_stack(&global_trace, buffer, trace_ctx, 6, NULL);
-=======
 		ftrace_trace_stack(printk_trace, buffer, trace_ctx, 6, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 out:
@@ -3509,11 +3464,7 @@ int trace_array_printk_buf(struct trace_buffer *buffer,
 	int ret;
 	va_list ap;
 
-<<<<<<< HEAD
-	if (!(global_trace.trace_flags & TRACE_ITER_PRINTK))
-=======
 	if (!(printk_trace->trace_flags & TRACE_ITER_PRINTK))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	va_start(ap, fmt);
@@ -3525,11 +3476,7 @@ int trace_array_printk_buf(struct trace_buffer *buffer,
 __printf(2, 0)
 int trace_vprintk(unsigned long ip, const char *fmt, va_list args)
 {
-<<<<<<< HEAD
-	return trace_array_vprintk(&global_trace, ip, fmt, args);
-=======
 	return trace_array_vprintk(printk_trace, ip, fmt, args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(trace_vprintk);
 
@@ -3750,16 +3697,11 @@ static void test_can_verify(void)
 void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 			 va_list ap)
 {
-<<<<<<< HEAD
-	const char *p = fmt;
-	const char *str;
-=======
 	long text_delta = 0;
 	long data_delta = 0;
 	const char *p = fmt;
 	const char *str;
 	bool good;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i, j;
 
 	if (WARN_ON_ONCE(!fmt))
@@ -3768,8 +3710,6 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 	if (static_branch_unlikely(&trace_no_verify))
 		goto print;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * When the kernel is booted with the tp_printk command line
 	 * parameter, trace events go directly through to printk().
@@ -3781,7 +3721,6 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 		data_delta = iter->tr->data_delta;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Don't bother checking when doing a ftrace_dump() */
 	if (iter->fmt == static_fmt_buf)
 		goto print;
@@ -3792,14 +3731,10 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 
 		j = 0;
 
-<<<<<<< HEAD
-		/* We only care about %s and variants */
-=======
 		/*
 		 * We only care about %s and variants
 		 * as well as %p[sS] if delta is non-zero
 		 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (i = 0; p[i]; i++) {
 			if (i + 1 >= iter->fmt_size) {
 				/*
@@ -3828,14 +3763,11 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 				}
 				if (p[i+j] == 's')
 					break;
-<<<<<<< HEAD
-=======
 
 				if (text_delta && p[i+1] == 'p' &&
 				    ((p[i+2] == 's' || p[i+2] == 'S')))
 					break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				star = false;
 			}
 			j = 0;
@@ -3849,8 +3781,6 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 		iter->fmt[i] = '\0';
 		trace_seq_vprintf(&iter->seq, iter->fmt, ap);
 
-<<<<<<< HEAD
-=======
 		/* Add delta to %pS pointers */
 		if (p[i+1] == 'p') {
 			unsigned long addr;
@@ -3869,7 +3799,6 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 			continue;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * If iter->seq is full, the above call no longer guarantees
 		 * that ap is in sync with fmt processing, and further calls
@@ -3888,8 +3817,6 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 		/* The ap now points to the string data of the %s */
 		str = va_arg(ap, const char *);
 
-<<<<<<< HEAD
-=======
 		good = trace_safe_str(iter, str, star, len);
 
 		/* Could be from the last boot */
@@ -3898,7 +3825,6 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 			good = trace_safe_str(iter, str, star, len);
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * If you hit this warning, it is likely that the
 		 * trace event in question used %s on a string that
@@ -3908,12 +3834,7 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
 		 * instead. See samples/trace_events/trace-events-sample.h
 		 * for reference.
 		 */
-<<<<<<< HEAD
-		if (WARN_ONCE(!trace_safe_str(iter, str, star, len),
-			      "fmt: '%s' current_buffer: '%s'",
-=======
 		if (WARN_ONCE(!good, "fmt: '%s' current_buffer: '%s'",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      fmt, seq_buf_str(&iter->seq.seq))) {
 			int ret;
 
@@ -5075,14 +4996,11 @@ static int tracing_open(struct inode *inode, struct file *file)
 static bool
 trace_ok_for_array(struct tracer *t, struct trace_array *tr)
 {
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_TRACER_SNAPSHOT
 	/* arrays with mapped buffer range do not have snapshots */
 	if (tr->range_addr_start && t->use_max_tr)
 		return false;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return (tr->flags & TRACE_ARRAY_FL_GLOBAL) || t->allow_instances;
 }
 
@@ -5175,11 +5093,7 @@ static int show_traces_open(struct inode *inode, struct file *file)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int show_traces_release(struct inode *inode, struct file *file)
-=======
 static int tracing_seq_release(struct inode *inode, struct file *file)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct trace_array *tr = inode->i_private;
 
@@ -5220,11 +5134,7 @@ static const struct file_operations show_traces_fops = {
 	.open		= show_traces_open,
 	.read		= seq_read,
 	.llseek		= seq_lseek,
-<<<<<<< HEAD
-	.release	= show_traces_release,
-=======
 	.release	= tracing_seq_release,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static ssize_t
@@ -5409,12 +5319,8 @@ int trace_keep_overwrite(struct tracer *tracer, u32 mask, int set)
 int set_tracer_flag(struct trace_array *tr, unsigned int mask, int enabled)
 {
 	if ((mask == TRACE_ITER_RECORD_TGID) ||
-<<<<<<< HEAD
-	    (mask == TRACE_ITER_RECORD_CMD))
-=======
 	    (mask == TRACE_ITER_RECORD_CMD) ||
 	    (mask == TRACE_ITER_TRACE_PRINTK))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		lockdep_assert_held(&event_mutex);
 
 	/* do nothing if flag is already set */
@@ -5426,8 +5332,6 @@ int set_tracer_flag(struct trace_array *tr, unsigned int mask, int enabled)
 		if (tr->current_trace->flag_changed(tr, mask, !!enabled))
 			return -EINVAL;
 
-<<<<<<< HEAD
-=======
 	if (mask == TRACE_ITER_TRACE_PRINTK) {
 		if (enabled) {
 			update_printk_trace(tr);
@@ -5447,7 +5351,6 @@ int set_tracer_flag(struct trace_array *tr, unsigned int mask, int enabled)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (enabled)
 		tr->trace_flags |= mask;
 	else
@@ -5598,13 +5501,10 @@ static const struct file_operations tracing_iter_fops = {
 
 static const char readme_msg[] =
 	"tracing mini-HOWTO:\n\n"
-<<<<<<< HEAD
-=======
 	"By default tracefs removes all OTH file permission bits.\n"
 	"When mounting tracefs an optional group id can be specified\n"
 	"which adds the group to every directory and file in tracefs:\n\n"
 	"\t e.g. mount -t tracefs [-o [gid=<gid>]] nodev /sys/kernel/tracing\n\n"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"# echo 0 > tracing_on : quick way to disable tracing\n"
 	"# echo 1 > tracing_on : quick way to re-enable tracing\n\n"
 	" Important files:\n"
@@ -6240,8 +6140,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static void update_last_data(struct trace_array *tr)
 {
 	if (!tr->text_delta && !tr->data_delta)
@@ -6254,7 +6152,6 @@ static void update_last_data(struct trace_array *tr)
 	tr->text_delta = 0;
 	tr->data_delta = 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * tracing_update_buffers - used by tracing facility to expand ring buffers
@@ -6272,12 +6169,9 @@ int tracing_update_buffers(struct trace_array *tr)
 	int ret = 0;
 
 	mutex_lock(&trace_types_lock);
-<<<<<<< HEAD
-=======
 
 	update_last_data(tr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!tr->ring_buffer_expanded)
 		ret = __tracing_resize_ring_buffer(tr, trace_buf_size,
 						RING_BUFFER_ALL_CPUS);
@@ -6333,11 +6227,8 @@ int tracing_set_tracer(struct trace_array *tr, const char *buf)
 
 	mutex_lock(&trace_types_lock);
 
-<<<<<<< HEAD
-=======
 	update_last_data(tr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!tr->ring_buffer_expanded) {
 		ret = __tracing_resize_ring_buffer(tr, trace_buf_size,
 						RING_BUFFER_ALL_CPUS);
@@ -7086,8 +6977,6 @@ tracing_total_entries_read(struct file *filp, char __user *ubuf,
 }
 
 static ssize_t
-<<<<<<< HEAD
-=======
 tracing_last_boot_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
 {
 	struct trace_array *tr = filp->private_data;
@@ -7119,7 +7008,6 @@ static int tracing_buffer_meta_open(struct inode *inode, struct file *filp)
 }
 
 static ssize_t
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 tracing_free_buffer_write(struct file *filp, const char __user *ubuf,
 			  size_t cnt, loff_t *ppos)
 {
@@ -7684,10 +7572,6 @@ static const struct file_operations tracing_pipe_fops = {
 	.read		= tracing_read_pipe,
 	.splice_read	= tracing_splice_read_pipe,
 	.release	= tracing_release_pipe,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct file_operations tracing_entries_fops = {
@@ -7698,8 +7582,6 @@ static const struct file_operations tracing_entries_fops = {
 	.release	= tracing_release_generic_tr,
 };
 
-<<<<<<< HEAD
-=======
 static const struct file_operations tracing_buffer_meta_fops = {
 	.open		= tracing_buffer_meta_open,
 	.read		= seq_read,
@@ -7707,7 +7589,6 @@ static const struct file_operations tracing_buffer_meta_fops = {
 	.release	= tracing_seq_release,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct file_operations tracing_total_entries_fops = {
 	.open		= tracing_open_generic_tr,
 	.read		= tracing_total_entries_read,
@@ -7748,8 +7629,6 @@ static const struct file_operations trace_time_stamp_mode_fops = {
 	.release	= tracing_single_release_tr,
 };
 
-<<<<<<< HEAD
-=======
 static const struct file_operations last_boot_fops = {
 	.open		= tracing_open_generic_tr,
 	.read		= tracing_last_boot_read,
@@ -7757,7 +7636,6 @@ static const struct file_operations last_boot_fops = {
 	.release	= tracing_release_generic_tr,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_TRACER_SNAPSHOT
 static const struct file_operations snapshot_fops = {
 	.open		= tracing_snapshot_open,
@@ -7772,10 +7650,6 @@ static const struct file_operations snapshot_raw_fops = {
 	.read		= tracing_buffers_read,
 	.release	= tracing_buffers_release,
 	.splice_read	= tracing_buffers_splice_read,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #endif /* CONFIG_TRACER_SNAPSHOT */
@@ -8605,10 +8479,6 @@ static const struct file_operations tracing_buffers_fops = {
 	.flush		= tracing_buffers_flush,
 	.splice_read	= tracing_buffers_splice_read,
 	.unlocked_ioctl = tracing_buffers_ioctl,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.mmap		= tracing_buffers_mmap,
 };
 
@@ -8956,14 +8826,6 @@ tracing_init_tracefs_percpu(struct trace_array *tr, long cpu)
 	trace_create_cpu_file("buffer_size_kb", TRACE_MODE_READ, d_cpu,
 				tr, cpu, &tracing_entries_fops);
 
-<<<<<<< HEAD
-#ifdef CONFIG_TRACER_SNAPSHOT
-	trace_create_cpu_file("snapshot", TRACE_MODE_WRITE, d_cpu,
-				tr, cpu, &snapshot_fops);
-
-	trace_create_cpu_file("snapshot_raw", TRACE_MODE_READ, d_cpu,
-				tr, cpu, &snapshot_raw_fops);
-=======
 	if (tr->range_addr_start)
 		trace_create_cpu_file("buffer_meta", TRACE_MODE_READ, d_cpu,
 				      tr, cpu, &tracing_buffer_meta_fops);
@@ -8975,7 +8837,6 @@ tracing_init_tracefs_percpu(struct trace_array *tr, long cpu)
 		trace_create_cpu_file("snapshot_raw", TRACE_MODE_READ, d_cpu,
 				      tr, cpu, &snapshot_raw_fops);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 
@@ -9512,9 +9373,6 @@ allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size
 
 	buf->tr = tr;
 
-<<<<<<< HEAD
-	buf->buffer = ring_buffer_alloc(size, rb_flags);
-=======
 	if (tr->range_addr_start && tr->range_addr_size) {
 		buf->buffer = ring_buffer_alloc_range(size, rb_flags, 0,
 						      tr->range_addr_start,
@@ -9530,7 +9388,6 @@ allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size
 	} else {
 		buf->buffer = ring_buffer_alloc(size, rb_flags);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!buf->buffer)
 		return -ENOMEM;
 
@@ -9567,13 +9424,10 @@ static int allocate_trace_buffers(struct trace_array *tr, int size)
 		return ret;
 
 #ifdef CONFIG_TRACER_MAX_TRACE
-<<<<<<< HEAD
-=======
 	/* Fix mapped buffer trace arrays do not have snapshot buffers */
 	if (tr->range_addr_start)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = allocate_trace_buffer(tr, &tr->max_buffer,
 				    allocate_snapshot ? size : 1);
 	if (MEM_FAIL(ret, "Failed to allocate trace buffer\n")) {
@@ -9674,13 +9528,9 @@ static int trace_array_create_dir(struct trace_array *tr)
 }
 
 static struct trace_array *
-<<<<<<< HEAD
-trace_array_create_systems(const char *name, const char *systems)
-=======
 trace_array_create_systems(const char *name, const char *systems,
 			   unsigned long range_addr_start,
 			   unsigned long range_addr_size)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct trace_array *tr;
 	int ret;
@@ -9706,13 +9556,10 @@ trace_array_create_systems(const char *name, const char *systems,
 			goto out_free_tr;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Only for boot up memory mapped ring buffers */
 	tr->range_addr_start = range_addr_start;
 	tr->range_addr_size = range_addr_size;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tr->trace_flags = global_trace.trace_flags & ~ZEROED_TRACE_FLAGS;
 
 	cpumask_copy(tr->tracing_cpumask, cpu_all_mask);
@@ -9770,11 +9617,7 @@ trace_array_create_systems(const char *name, const char *systems,
 
 static struct trace_array *trace_array_create(const char *name)
 {
-<<<<<<< HEAD
-	return trace_array_create_systems(name, NULL);
-=======
 	return trace_array_create_systems(name, NULL, 0, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int instance_mkdir(const char *name)
@@ -9799,8 +9642,6 @@ out_unlock:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static u64 map_pages(u64 start, u64 size)
 {
 	struct page **pages;
@@ -9826,7 +9667,6 @@ static u64 map_pages(u64 start, u64 size)
 	return (u64)(unsigned long)vaddr;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * trace_array_get_by_name - Create/Lookup a trace array, given its name.
  * @name: The name of the trace array to be looked up/created.
@@ -9856,11 +9696,7 @@ struct trace_array *trace_array_get_by_name(const char *name, const char *system
 			goto out_unlock;
 	}
 
-<<<<<<< HEAD
-	tr = trace_array_create_systems(name, systems);
-=======
 	tr = trace_array_create_systems(name, systems, 0, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (IS_ERR(tr))
 		tr = NULL;
@@ -9890,12 +9726,9 @@ static int __remove_instance(struct trace_array *tr)
 			set_tracer_flag(tr, 1 << i, 0);
 	}
 
-<<<<<<< HEAD
-=======
 	if (printk_trace == tr)
 		update_printk_trace(&global_trace);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tracing_set_nop(tr);
 	clear_ftrace_function_probes(tr);
 	event_trace_del_tracer(tr);
@@ -10058,12 +9891,6 @@ init_tracer_tracefs(struct trace_array *tr, struct dentry *d_tracer)
 	if (ftrace_create_function_files(tr, d_tracer))
 		MEM_FAIL(1, "Could not allocate function filter files");
 
-<<<<<<< HEAD
-#ifdef CONFIG_TRACER_SNAPSHOT
-	trace_create_file("snapshot", TRACE_MODE_WRITE, d_tracer,
-			  tr, &snapshot_fops);
-#endif
-=======
 	if (tr->range_addr_start) {
 		trace_create_file("last_boot_info", TRACE_MODE_READ, d_tracer,
 				  tr, &last_boot_fops);
@@ -10073,7 +9900,6 @@ init_tracer_tracefs(struct trace_array *tr, struct dentry *d_tracer)
 				  tr, &snapshot_fops);
 #endif
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_create_file("error_log", TRACE_MODE_WRITE, d_tracer,
 			  tr, &tracing_err_log_fops);
@@ -10693,10 +10519,7 @@ __init static void enable_instances(void)
 {
 	struct trace_array *tr;
 	char *curr_str;
-<<<<<<< HEAD
-=======
 	char *name;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *str;
 	char *tok;
 
@@ -10705,21 +10528,6 @@ __init static void enable_instances(void)
 	str = boot_instance_info;
 
 	while ((curr_str = strsep(&str, "\t"))) {
-<<<<<<< HEAD
-
-		tok = strsep(&curr_str, ",");
-
-		if (IS_ENABLED(CONFIG_TRACER_MAX_TRACE))
-			do_allocate_snapshot(tok);
-
-		tr = trace_array_get_by_name(tok, NULL);
-		if (!tr) {
-			pr_warn("Failed to create instance buffer %s\n", curr_str);
-			continue;
-		}
-		/* Allow user space to delete it */
-		trace_array_put(tr);
-=======
 		phys_addr_t start = 0;
 		phys_addr_t size = 0;
 		unsigned long addr = 0;
@@ -10821,7 +10629,6 @@ __init static void enable_instances(void)
 			tr->flags |= TRACE_ARRAY_FL_BOOT;
 			tr->ref++;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		while ((tok = strsep(&curr_str, ","))) {
 			early_enable_events(tr, tok, true);

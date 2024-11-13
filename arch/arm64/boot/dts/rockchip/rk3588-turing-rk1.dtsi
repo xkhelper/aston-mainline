@@ -296,10 +296,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pmic_pins>, <&rk806_dvs1_null>,
 			    <&rk806_dvs2_null>, <&rk806_dvs3_null>;
-<<<<<<< HEAD
-=======
 		system-power-controller;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		vcc1-supply = <&vcc5v0_sys>;
 		vcc2-supply = <&vcc5v0_sys>;

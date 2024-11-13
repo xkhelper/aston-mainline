@@ -267,73 +267,6 @@ struct perf_tool;
 void perf_event__read_stat_config(struct perf_stat_config *config,
 				  struct perf_record_stat_config *event);
 
-<<<<<<< HEAD
-int perf_event__process_comm(struct perf_tool *tool,
-			     union perf_event *event,
-			     struct perf_sample *sample,
-			     struct machine *machine);
-int perf_event__process_lost(struct perf_tool *tool,
-			     union perf_event *event,
-			     struct perf_sample *sample,
-			     struct machine *machine);
-int perf_event__process_lost_samples(struct perf_tool *tool,
-				     union perf_event *event,
-				     struct perf_sample *sample,
-				     struct machine *machine);
-int perf_event__process_aux(struct perf_tool *tool,
-			    union perf_event *event,
-			    struct perf_sample *sample,
-			    struct machine *machine);
-int perf_event__process_itrace_start(struct perf_tool *tool,
-				     union perf_event *event,
-				     struct perf_sample *sample,
-				     struct machine *machine);
-int perf_event__process_aux_output_hw_id(struct perf_tool *tool,
-					 union perf_event *event,
-					 struct perf_sample *sample,
-					 struct machine *machine);
-int perf_event__process_switch(struct perf_tool *tool,
-			       union perf_event *event,
-			       struct perf_sample *sample,
-			       struct machine *machine);
-int perf_event__process_namespaces(struct perf_tool *tool,
-				   union perf_event *event,
-				   struct perf_sample *sample,
-				   struct machine *machine);
-int perf_event__process_cgroup(struct perf_tool *tool,
-			       union perf_event *event,
-			       struct perf_sample *sample,
-			       struct machine *machine);
-int perf_event__process_mmap(struct perf_tool *tool,
-			     union perf_event *event,
-			     struct perf_sample *sample,
-			     struct machine *machine);
-int perf_event__process_mmap2(struct perf_tool *tool,
-			     union perf_event *event,
-			     struct perf_sample *sample,
-			     struct machine *machine);
-int perf_event__process_fork(struct perf_tool *tool,
-			     union perf_event *event,
-			     struct perf_sample *sample,
-			     struct machine *machine);
-int perf_event__process_exit(struct perf_tool *tool,
-			     union perf_event *event,
-			     struct perf_sample *sample,
-			     struct machine *machine);
-int perf_event__process_ksymbol(struct perf_tool *tool,
-				union perf_event *event,
-				struct perf_sample *sample,
-				struct machine *machine);
-int perf_event__process_bpf(struct perf_tool *tool,
-			    union perf_event *event,
-			    struct perf_sample *sample,
-			    struct machine *machine);
-int perf_event__process_text_poke(struct perf_tool *tool,
-				  union perf_event *event,
-				  struct perf_sample *sample,
-				  struct machine *machine);
-int perf_event__process(struct perf_tool *tool,
-=======
 int perf_event__process_comm(const struct perf_tool *tool,
 			     union perf_event *event,
 			     struct perf_sample *sample,
@@ -403,7 +336,6 @@ int perf_event__process_text_poke(const struct perf_tool *tool,
 				  struct perf_sample *sample,
 				  struct machine *machine);
 int perf_event__process(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			union perf_event *event,
 			struct perf_sample *sample,
 			struct machine *machine);

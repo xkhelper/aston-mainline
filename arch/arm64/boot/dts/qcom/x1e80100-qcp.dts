@@ -253,11 +253,8 @@
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&nvme_reg_en>;
-<<<<<<< HEAD
-=======
 
 		regulator-boot-on;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -734,13 +731,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-&smb2360_3 {
-	status = "okay";
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &smb2360_0_eusb2_repeater {
 	vdd18-supply = <&vreg_l3d_1p8>;
 	vdd3-supply = <&vreg_l2b_3p0>;
@@ -751,25 +741,19 @@
 	vdd3-supply = <&vreg_l14b_3p0>;
 };
 
-<<<<<<< HEAD
-=======
 &smb2360_2 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &smb2360_2_eusb2_repeater {
 	vdd18-supply = <&vreg_l3d_1p8>;
 	vdd3-supply = <&vreg_l8b_3p0>;
 };
 
-<<<<<<< HEAD
-=======
 &smb2360_3 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &swr0 {
 	pinctrl-0 = <&wsa_swr_active>, <&spkr_01_sd_n_active>;
 	pinctrl-names = "default";
@@ -785,10 +769,7 @@
 		sound-name-prefix = "SpkrLeft";
 		vdd-1p8-supply = <&vreg_l15b_1p8>;
 		vdd-io-supply = <&vreg_l12b_1p2>;
-<<<<<<< HEAD
-=======
 		qcom,port-mapping = <1 2 3 7 10 13>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	/* WSA8845, Right Speaker */
@@ -800,10 +781,7 @@
 		sound-name-prefix = "SpkrRight";
 		vdd-1p8-supply = <&vreg_l15b_1p8>;
 		vdd-io-supply = <&vreg_l12b_1p2>;
-<<<<<<< HEAD
-=======
 		qcom,port-mapping = <4 5 6 7 11 13>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

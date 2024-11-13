@@ -238,11 +238,8 @@
 #define IGC_TQAVCC(_n)		(0x3004 + ((_n) * 0x40))
 #define IGC_TQAVHC(_n)		(0x300C + ((_n) * 0x40))
 
-<<<<<<< HEAD
-=======
 #define IGC_TXARB		0x3354 /* Tx Arbitration Control TxARB - RW */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* System Time Registers */
 #define IGC_SYSTIML	0x0B600  /* System time register Low - RO */
 #define IGC_SYSTIMH	0x0B604  /* System time register High - RO */
@@ -313,8 +310,6 @@
 #define IGC_IPCNFG	0x0E38 /* Internal PHY Configuration */
 #define IGC_EEE_SU	0x0E34 /* EEE Setup */
 
-<<<<<<< HEAD
-=======
 /* MULTI GBT AN Control Register - reg. 7.32 */
 #define IGC_ANEG_MULTIGBT_AN_CTRL	0x0020
 
@@ -325,7 +320,6 @@
 #define IGC_ANEG_EEE_LP_AB1	0x003d
 #define IGC_ANEG_EEE_LP_AB2	0x003f
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* LTR registers */
 #define IGC_LTRC	0x01A0 /* Latency Tolerance Reporting Control */
 #define IGC_LTRMINV	0x5BB0 /* LTR Minimum Value */

@@ -423,10 +423,6 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 	struct device_node *gpio_ext_np;
 	struct platform_device *gpio_ext_pdev;
 	struct device *gpio_ext_dev;
-<<<<<<< HEAD
-	struct device_node *child;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct netxbig_gpio_ext *gpio_ext;
 	struct netxbig_led_timer *timers;
 	struct netxbig_led *leds, *led;
@@ -510,11 +506,7 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 	}
 
 	led = leds;
-<<<<<<< HEAD
-	for_each_available_child_of_node(np, child) {
-=======
 	for_each_available_child_of_node_scoped(np, child) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const char *string;
 		int *mode_val;
 		int num_modes;
@@ -522,29 +514,17 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 		ret = of_property_read_u32(child, "mode-addr",
 					   &led->mode_addr);
 		if (ret)
-<<<<<<< HEAD
-			goto err_node_put;
-=======
 			goto put_device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = of_property_read_u32(child, "bright-addr",
 					   &led->bright_addr);
 		if (ret)
-<<<<<<< HEAD
-			goto err_node_put;
-=======
 			goto put_device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = of_property_read_u32(child, "max-brightness",
 					   &led->bright_max);
 		if (ret)
-<<<<<<< HEAD
-			goto err_node_put;
-=======
 			goto put_device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		mode_val =
 			devm_kcalloc(dev,
@@ -552,11 +532,7 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 				     GFP_KERNEL);
 		if (!mode_val) {
 			ret = -ENOMEM;
-<<<<<<< HEAD
-			goto err_node_put;
-=======
 			goto put_device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		for (i = 0; i < NETXBIG_LED_MODE_NUM; i++)
@@ -565,20 +541,12 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 		ret = of_property_count_u32_elems(child, "mode-val");
 		if (ret < 0 || ret % 2) {
 			ret = -EINVAL;
-<<<<<<< HEAD
-			goto err_node_put;
-=======
 			goto put_device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		num_modes = ret / 2;
 		if (num_modes > NETXBIG_LED_MODE_NUM) {
 			ret = -EINVAL;
-<<<<<<< HEAD
-			goto err_node_put;
-=======
 			goto put_device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		for (i = 0; i < num_modes; i++) {
@@ -591,11 +559,7 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 						   "mode-val", 2 * i + 1, &val);
 			if (mode >= NETXBIG_LED_MODE_NUM) {
 				ret = -EINVAL;
-<<<<<<< HEAD
-				goto err_node_put;
-=======
 				goto put_device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			mode_val[mode] = val;
 		}
@@ -618,11 +582,6 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 
 	return 0;
 
-<<<<<<< HEAD
-err_node_put:
-	of_node_put(child);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 put_device:
 	put_device(gpio_ext_dev);
 	return ret;

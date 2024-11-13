@@ -368,27 +368,16 @@ struct receive_queue {
  * because table sizes may be differ according to the device configuration.
  */
 #define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
-<<<<<<< HEAD
-#define VIRTIO_NET_RSS_MAX_TABLE_LEN    128
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct virtio_net_ctrl_rss {
 	u32 hash_types;
 	u16 indirection_table_mask;
 	u16 unclassified_queue;
-<<<<<<< HEAD
-	u16 indirection_table[VIRTIO_NET_RSS_MAX_TABLE_LEN];
-	u16 max_tx_vq;
-	u8 hash_key_length;
-	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
-=======
 	u16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
 	u16 max_tx_vq;
 	u8 hash_key_length;
 	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
 
 	u16 *indirection_table;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Control VQ buffers: protected by the rtnl lock */
@@ -524,8 +513,6 @@ static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
 					       struct page *page, void *buf,
 					       int len, int truesize);
 
-<<<<<<< HEAD
-=======
 static int rss_indirection_table_alloc(struct virtio_net_ctrl_rss *rss, u16 indir_table_size)
 {
 	if (!indir_table_size) {
@@ -545,7 +532,6 @@ static void rss_indirection_table_free(struct virtio_net_ctrl_rss *rss)
 	kfree(rss->indirection_table);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool is_xdp_frame(void *ptr)
 {
 	return (unsigned long)ptr & VIRTIO_XDP_FLAG;
@@ -1841,14 +1827,11 @@ static struct sk_buff *receive_small(struct net_device *dev,
 	struct page *page = virt_to_head_page(buf);
 	struct sk_buff *skb;
 
-<<<<<<< HEAD
-=======
 	/* We passed the address of virtnet header to virtio-core,
 	 * so truncate the padding.
 	 */
 	buf -= VIRTNET_RX_PAD + xdp_headroom;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	len -= vi->hdr_len;
 	u64_stats_add(&stats->bytes, len);
 
@@ -2464,14 +2447,9 @@ static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
 	if (unlikely(!buf))
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	virtnet_rq_init_one_sg(rq, buf + VIRTNET_RX_PAD + xdp_headroom,
-			       vi->hdr_len + GOOD_PACKET_LEN);
-=======
 	buf += VIRTNET_RX_PAD + xdp_headroom;
 
 	virtnet_rq_init_one_sg(rq, buf, vi->hdr_len + GOOD_PACKET_LEN);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = virtqueue_add_inbuf_ctx(rq->vq, rq->sg, 1, buf, ctx, gfp);
 	if (err < 0) {
@@ -2932,8 +2910,6 @@ static void virtnet_cancel_dim(struct virtnet_info *vi, struct dim *dim)
 	net_dim_work_cancel(dim);
 }
 
-<<<<<<< HEAD
-=======
 static void virtnet_update_settings(struct virtnet_info *vi)
 {
 	u32 speed;
@@ -2953,7 +2929,6 @@ static void virtnet_update_settings(struct virtnet_info *vi)
 		vi->duplex = duplex;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int virtnet_open(struct net_device *dev)
 {
 	struct virtnet_info *vi = netdev_priv(dev);
@@ -2972,8 +2947,6 @@ static int virtnet_open(struct net_device *dev)
 			goto err_enable_qp;
 	}
 
-<<<<<<< HEAD
-=======
 	if (virtio_has_feature(vi->vdev, VIRTIO_NET_F_STATUS)) {
 		if (vi->status & VIRTIO_NET_S_LINK_UP)
 			netif_carrier_on(vi->dev);
@@ -2983,7 +2956,6 @@ static int virtnet_open(struct net_device *dev)
 		netif_carrier_on(dev);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_enable_qp:
@@ -3422,13 +3394,6 @@ static void virtnet_ack_link_announce(struct virtnet_info *vi)
 		dev_warn(&vi->dev->dev, "Failed to ack link announce.\n");
 }
 
-<<<<<<< HEAD
-static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
-{
-	struct virtio_net_ctrl_mq *mq __free(kfree) = NULL;
-	struct scatterlist sg;
-	struct net_device *dev = vi->dev;
-=======
 static bool virtnet_commit_rss_command(struct virtnet_info *vi);
 
 static void virtnet_rss_update_by_qpairs(struct virtnet_info *vi, u16 queue_pairs)
@@ -3449,13 +3414,10 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
 	struct virtio_net_ctrl_rss old_rss;
 	struct net_device *dev = vi->dev;
 	struct scatterlist sg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!vi->has_cvq || !virtio_has_feature(vi->vdev, VIRTIO_NET_F_MQ))
 		return 0;
 
-<<<<<<< HEAD
-=======
 	/* Firstly check if we need update rss. Do updating if both (1) rss enabled and
 	 * (2) no user configuration.
 	 *
@@ -3485,7 +3447,6 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
 		goto succ;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mq = kzalloc(sizeof(*mq), GFP_KERNEL);
 	if (!mq)
 		return -ENOMEM;
@@ -3498,21 +3459,12 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
 		dev_warn(&dev->dev, "Fail to set num of queue pairs to %d\n",
 			 queue_pairs);
 		return -EINVAL;
-<<<<<<< HEAD
-	} else {
-		vi->curr_queue_pairs = queue_pairs;
-		/* virtnet_open() will refill when device is going to up. */
-		if (dev->flags & IFF_UP)
-			schedule_delayed_work(&vi->refill, 0);
-	}
-=======
 	}
 succ:
 	vi->curr_queue_pairs = queue_pairs;
 	/* virtnet_open() will refill when device is going to up. */
 	if (dev->flags & IFF_UP)
 		schedule_delayed_work(&vi->refill, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -3526,8 +3478,6 @@ static int virtnet_close(struct net_device *dev)
 	disable_delayed_refill(vi);
 	/* Make sure refill_work doesn't re-enable napi! */
 	cancel_delayed_work_sync(&vi->refill);
-<<<<<<< HEAD
-=======
 	/* Prevent the config change callback from changing carrier
 	 * after close
 	 */
@@ -3536,18 +3486,14 @@ static int virtnet_close(struct net_device *dev)
 	 * open
 	 */
 	cancel_work_sync(&vi->config_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < vi->max_queue_pairs; i++) {
 		virtnet_disable_queue_pair(vi, i);
 		virtnet_cancel_dim(vi, &vi->rq[i].dim);
 	}
 
-<<<<<<< HEAD
-=======
 	netif_carrier_off(dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3946,13 +3892,6 @@ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
 	/* prepare sgs */
 	sg_init_table(sgs, 4);
 
-<<<<<<< HEAD
-	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, indirection_table);
-	sg_set_buf(&sgs[0], &vi->rss, sg_buf_size);
-
-	sg_buf_size = sizeof(uint16_t) * (vi->rss.indirection_table_mask + 1);
-	sg_set_buf(&sgs[1], vi->rss.indirection_table, sg_buf_size);
-=======
 	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, hash_cfg_reserved);
 	sg_set_buf(&sgs[0], &vi->rss, sg_buf_size);
 
@@ -3962,7 +3901,6 @@ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
 	} else {
 		sg_set_buf(&sgs[1], &vi->rss.hash_cfg_reserved, sizeof(uint16_t));
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, key)
 			- offsetof(struct virtio_net_ctrl_rss, max_tx_vq);
@@ -3986,29 +3924,14 @@ err:
 
 static void virtnet_init_default_rss(struct virtnet_info *vi)
 {
-<<<<<<< HEAD
-	u32 indir_val = 0;
-	int i = 0;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vi->rss.hash_types = vi->rss_hash_types_supported;
 	vi->rss_hash_types_saved = vi->rss_hash_types_supported;
 	vi->rss.indirection_table_mask = vi->rss_indir_table_size
 						? vi->rss_indir_table_size - 1 : 0;
 	vi->rss.unclassified_queue = 0;
 
-<<<<<<< HEAD
-	for (; i < vi->rss_indir_table_size; ++i) {
-		indir_val = ethtool_rxfh_indir_default(i, vi->curr_queue_pairs);
-		vi->rss.indirection_table[i] = indir_val;
-	}
-
-	vi->rss.max_tx_vq = vi->has_rss ? vi->curr_queue_pairs : 0;
-=======
 	virtnet_rss_update_by_qpairs(vi, vi->curr_queue_pairs);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vi->rss.hash_key_length = vi->rss_key_size;
 
 	netdev_rss_key_fill(vi->rss.key, vi->rss_key_size);
@@ -4293,11 +4216,7 @@ struct virtnet_stats_ctx {
 	u32 desc_num[3];
 
 	/* The actual supported stat types. */
-<<<<<<< HEAD
-	u32 bitmap[3];
-=======
 	u64 bitmap[3];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Used to calculate the reply buffer size. */
 	u32 size[3];
@@ -5280,28 +5199,6 @@ static void virtnet_init_settings(struct net_device *dev)
 	vi->duplex = DUPLEX_UNKNOWN;
 }
 
-<<<<<<< HEAD
-static void virtnet_update_settings(struct virtnet_info *vi)
-{
-	u32 speed;
-	u8 duplex;
-
-	if (!virtio_has_feature(vi->vdev, VIRTIO_NET_F_SPEED_DUPLEX))
-		return;
-
-	virtio_cread_le(vi->vdev, struct virtio_net_config, speed, &speed);
-
-	if (ethtool_validate_speed(speed))
-		vi->speed = speed;
-
-	virtio_cread_le(vi->vdev, struct virtio_net_config, duplex, &duplex);
-
-	if (ethtool_validate_duplex(duplex))
-		vi->duplex = duplex;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static u32 virtnet_get_rxfh_key_size(struct net_device *dev)
 {
 	return ((struct virtnet_info *)netdev_priv(dev))->rss_key_size;
@@ -6584,25 +6481,19 @@ static int virtnet_probe(struct virtio_device *vdev)
 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
 				rss_max_indirection_table_length));
 	}
-<<<<<<< HEAD
-=======
 	err = rss_indirection_table_alloc(&vi->rss, vi->rss_indir_table_size);
 	if (err)
 		goto free;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (vi->has_rss || vi->has_rss_hash_report) {
 		vi->rss_key_size =
 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
-<<<<<<< HEAD
-=======
 		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
 			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
 				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
 			err = -EINVAL;
 			goto free;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		vi->rss_hash_types_supported =
 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
@@ -6725,10 +6616,6 @@ static int virtnet_probe(struct virtio_device *vdev)
 		goto free_failover;
 	}
 
-<<<<<<< HEAD
-	virtio_device_ready(vdev);
-
-=======
 	/* Disable config change notification until ndo_open. */
 	virtio_config_driver_disable(vi->vdev);
 
@@ -6743,7 +6630,6 @@ static int virtnet_probe(struct virtio_device *vdev)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	virtnet_set_queues(vi, vi->curr_queue_pairs);
 
 	/* a random MAC address has been assigned, notify the device.
@@ -6791,26 +6677,11 @@ static int virtnet_probe(struct virtio_device *vdev)
 		vi->device_stats_cap = le64_to_cpu(v);
 	}
 
-<<<<<<< HEAD
-	rtnl_unlock();
-
-	err = virtnet_cpu_notif_add(vi);
-	if (err) {
-		pr_debug("virtio_net: registering cpu notifier failed\n");
-		goto free_unregister_netdev;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Assume link up if device can't report link status,
 	   otherwise get link status from config. */
 	netif_carrier_off(dev);
 	if (virtio_has_feature(vi->vdev, VIRTIO_NET_F_STATUS)) {
-<<<<<<< HEAD
-		schedule_work(&vi->config_work);
-=======
 		virtnet_config_changed_work(&vi->config_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		vi->status = VIRTIO_NET_S_LINK_UP;
 		virtnet_update_settings(vi);
@@ -6822,8 +6693,6 @@ static int virtnet_probe(struct virtio_device *vdev)
 			set_bit(guest_offloads[i], &vi->guest_offloads);
 	vi->guest_offloads_capable = vi->guest_offloads;
 
-<<<<<<< HEAD
-=======
 	rtnl_unlock();
 
 	err = virtnet_cpu_notif_add(vi);
@@ -6832,7 +6701,6 @@ static int virtnet_probe(struct virtio_device *vdev)
 		goto free_unregister_netdev;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_debug("virtnet: registered device %s with %d RX and TX vq's\n",
 		 dev->name, max_queue_pairs);
 
@@ -6885,11 +6753,8 @@ static void virtnet_remove(struct virtio_device *vdev)
 
 	remove_vq_common(vi);
 
-<<<<<<< HEAD
-=======
 	rss_indirection_table_free(&vi->rss);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free_netdev(vi->dev);
 }
 

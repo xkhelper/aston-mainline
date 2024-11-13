@@ -9,11 +9,7 @@ config DAMON
 	  access frequency of each memory region. The information can be useful
 	  for performance-centric DRAM level memory management.
 
-<<<<<<< HEAD
-	  See https://damonitor.github.io/doc/html/latest-damon/index.html for
-=======
 	  See https://www.kernel.org/doc/html/latest/mm/damon/index.html for
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	  more information.
 
 config DAMON_KUNIT_TEST

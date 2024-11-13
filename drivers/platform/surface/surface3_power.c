@@ -40,11 +40,7 @@
 #include <linux/slab.h>
 #include <linux/types.h>
 #include <linux/uuid.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SURFACE_3_POLL_INTERVAL		(2 * HZ)
 #define SURFACE_3_STRLEN		10

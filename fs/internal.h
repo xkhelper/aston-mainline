@@ -337,7 +337,4 @@ static inline bool path_mounted(const struct path *path)
 {
 	return path->mnt->mnt_root == path->dentry;
 }
-<<<<<<< HEAD
-=======
 void file_f_owner_release(struct file *file);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

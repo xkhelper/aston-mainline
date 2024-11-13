@@ -278,8 +278,6 @@ enum i3c_bus_mode {
 };
 
 /**
-<<<<<<< HEAD
-=======
  * enum i3c_open_drain_speed - I3C open-drain speed
  * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open-drain speed for sending the first
  *				broadcast address. The first broadcast address at this speed
@@ -294,7 +292,6 @@ enum i3c_open_drain_speed {
 };
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * enum i3c_addr_slot_status - I3C address slot status
  * @I3C_ADDR_SLOT_FREE: address is free
  * @I3C_ADDR_SLOT_RSVD: address is reserved
@@ -453,10 +450,7 @@ struct i3c_bus {
  *		      NULL.
  * @enable_hotjoin: enable hot join event detect.
  * @disable_hotjoin: disable hot join event detect.
-<<<<<<< HEAD
-=======
  * @set_speed: adjust I3C open drain mode timing.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct i3c_master_controller_ops {
 	int (*bus_init)(struct i3c_master_controller *master);
@@ -485,10 +479,7 @@ struct i3c_master_controller_ops {
 				 struct i3c_ibi_slot *slot);
 	int (*enable_hotjoin)(struct i3c_master_controller *master);
 	int (*disable_hotjoin)(struct i3c_master_controller *master);
-<<<<<<< HEAD
-=======
 	int (*set_speed)(struct i3c_master_controller *master, enum i3c_open_drain_speed speed);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

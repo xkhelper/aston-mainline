@@ -379,11 +379,7 @@ static void imx2_wdt_shutdown(struct platform_device *pdev)
 }
 
 /* Disable watchdog if it is active or non-active but still running */
-<<<<<<< HEAD
-static int __maybe_unused imx2_wdt_suspend(struct device *dev)
-=======
 static int imx2_wdt_suspend(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct watchdog_device *wdog = dev_get_drvdata(dev);
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
@@ -408,11 +404,7 @@ static int imx2_wdt_suspend(struct device *dev)
 }
 
 /* Enable watchdog and configure it if necessary */
-<<<<<<< HEAD
-static int __maybe_unused imx2_wdt_resume(struct device *dev)
-=======
 static int imx2_wdt_resume(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct watchdog_device *wdog = dev_get_drvdata(dev);
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
@@ -443,13 +435,8 @@ static int imx2_wdt_resume(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
-static SIMPLE_DEV_PM_OPS(imx2_wdt_pm_ops, imx2_wdt_suspend,
-			 imx2_wdt_resume);
-=======
 static DEFINE_SIMPLE_DEV_PM_OPS(imx2_wdt_pm_ops, imx2_wdt_suspend,
 				imx2_wdt_resume);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct imx2_wdt_data imx_wdt = {
 	.wdw_supported = true,
@@ -489,11 +476,7 @@ static struct platform_driver imx2_wdt_driver = {
 	.shutdown	= imx2_wdt_shutdown,
 	.driver		= {
 		.name	= DRIVER_NAME,
-<<<<<<< HEAD
-		.pm     = &imx2_wdt_pm_ops,
-=======
 		.pm     = pm_sleep_ptr(&imx2_wdt_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = imx2_wdt_dt_ids,
 	},
 };

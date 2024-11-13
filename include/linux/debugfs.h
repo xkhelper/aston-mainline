@@ -57,10 +57,6 @@ static const struct file_operations __fops = {				\
 	.release = simple_attr_release,					\
 	.read	 = debugfs_attr_read,					\
 	.write	 = (__is_signed) ? debugfs_attr_write_signed : debugfs_attr_write,	\
-<<<<<<< HEAD
-	.llseek  = no_llseek,						\
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define DEFINE_DEBUGFS_ATTRIBUTE(__fops, __get, __set, __fmt)		\

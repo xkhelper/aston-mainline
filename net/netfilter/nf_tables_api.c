@@ -146,11 +146,8 @@ static void nft_ctx_init(struct nft_ctx *ctx,
 	ctx->report	= nlmsg_report(nlh);
 	ctx->flags	= nlh->nlmsg_flags;
 	ctx->seq	= nlh->nlmsg_seq;
-<<<<<<< HEAD
-=======
 
 	bitmap_zero(ctx->reg_inited, NFT_REG32_NUM);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct nft_trans *nft_trans_alloc_gfp(const struct nft_ctx *ctx,
@@ -398,10 +395,7 @@ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *tr
 {
 	struct nftables_pernet *nft_net = nft_pernet(net);
 	struct nft_trans_binding *binding;
-<<<<<<< HEAD
-=======
 	struct nft_trans_set *trans_set;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_add_tail(&trans->list, &nft_net->commit_list);
 
@@ -411,11 +405,6 @@ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *tr
 
 	switch (trans->msg_type) {
 	case NFT_MSG_NEWSET:
-<<<<<<< HEAD
-		if (!nft_trans_set_update(trans) &&
-		    nft_set_is_anonymous(nft_trans_set(trans)))
-			list_add_tail(&binding->binding_list, &nft_net->binding_list);
-=======
 		trans_set = nft_trans_container_set(trans);
 
 		if (!nft_trans_set_update(trans) &&
@@ -423,7 +412,6 @@ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *tr
 			list_add_tail(&binding->binding_list, &nft_net->binding_list);
 
 		list_add_tail(&trans_set->list_trans_newset, &nft_net->commit_set_list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case NFT_MSG_NEWCHAIN:
 		if (!nft_trans_chain_update(trans) &&
@@ -630,10 +618,7 @@ static int __nft_trans_set_add(const struct nft_ctx *ctx, int msg_type,
 
 	trans_set = nft_trans_container_set(trans);
 	INIT_LIST_HEAD(&trans_set->nft_trans_binding.binding_list);
-<<<<<<< HEAD
-=======
 	INIT_LIST_HEAD(&trans_set->list_trans_newset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (msg_type == NFT_MSG_NEWSET && ctx->nla[NFTA_SET_ID] && !desc) {
 		nft_trans_set_id(trans) =
@@ -1510,10 +1495,7 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
 	INIT_LIST_HEAD(&table->sets);
 	INIT_LIST_HEAD(&table->objects);
 	INIT_LIST_HEAD(&table->flowtables);
-<<<<<<< HEAD
-=======
 	write_pnet(&table->net, net);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	table->family = family;
 	table->flags = flags;
 	table->handle = ++nft_net->table_handle;
@@ -1868,11 +1850,7 @@ static int nft_dump_basechain_hook(struct sk_buff *skb, int family,
 		if (!hook_list)
 			hook_list = &basechain->hook_list;
 
-<<<<<<< HEAD
-		list_for_each_entry(hook, hook_list, list) {
-=======
 		list_for_each_entry_rcu(hook, hook_list, list) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!first)
 				first = hook;
 
@@ -3909,10 +3887,6 @@ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *r
 int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
 {
 	struct nft_expr *expr, *last;
-<<<<<<< HEAD
-	const struct nft_data *data;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nft_rule *rule;
 	int err;
 
@@ -3933,11 +3907,7 @@ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
 			/* This may call nft_chain_validate() recursively,
 			 * callers that do so must increment ctx->level.
 			 */
-<<<<<<< HEAD
-			err = expr->ops->validate(ctx, expr, &data);
-=======
 			err = expr->ops->validate(ctx, expr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err < 0)
 				return err;
 		}
@@ -4523,19 +4493,6 @@ static struct nft_set *nft_set_lookup_byid(const struct net *net,
 {
 	struct nftables_pernet *nft_net = nft_pernet(net);
 	u32 id = ntohl(nla_get_be32(nla));
-<<<<<<< HEAD
-	struct nft_trans *trans;
-
-	list_for_each_entry(trans, &nft_net->commit_list, list) {
-		if (trans->msg_type == NFT_MSG_NEWSET) {
-			struct nft_set *set = nft_trans_set(trans);
-
-			if (id == nft_trans_set_id(trans) &&
-			    set->table == table &&
-			    nft_active_genmask(set, genmask))
-				return set;
-		}
-=======
 	struct nft_trans_set *trans;
 
 	/* its likely the id we need is at the tail, not at start */
@@ -4546,7 +4503,6 @@ static struct nft_set *nft_set_lookup_byid(const struct net *net,
 		    set->table == table &&
 		    nft_active_genmask(set, genmask))
 			return set;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return ERR_PTR(-ENOENT);
 }
@@ -4638,11 +4594,7 @@ int nf_msecs_to_jiffies64(const struct nlattr *nla, u64 *result)
 		return -ERANGE;
 
 	ms *= NSEC_PER_MSEC;
-<<<<<<< HEAD
-	*result = nsecs_to_jiffies64(ms);
-=======
 	*result = nsecs_to_jiffies64(ms) ? : !!ms;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -5743,17 +5695,8 @@ const struct nft_set_ext_type nft_set_ext_types[] = {
 		.align	= __alignof__(u8),
 	},
 	[NFT_SET_EXT_TIMEOUT]		= {
-<<<<<<< HEAD
-		.len	= sizeof(u64),
-		.align	= __alignof__(u64),
-	},
-	[NFT_SET_EXT_EXPIRATION]	= {
-		.len	= sizeof(u64),
-		.align	= __alignof__(u64),
-=======
 		.len	= sizeof(struct nft_timeout),
 		.align	= __alignof__(struct nft_timeout),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	[NFT_SET_EXT_USERDATA]		= {
 		.len	= sizeof(struct nft_userdata),
@@ -5872,27 +5815,6 @@ static int nf_tables_fill_setelem(struct sk_buff *skb,
 		         htonl(*nft_set_ext_flags(ext))))
 		goto nla_put_failure;
 
-<<<<<<< HEAD
-	if (nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT) &&
-	    nla_put_be64(skb, NFTA_SET_ELEM_TIMEOUT,
-			 nf_jiffies64_to_msecs(*nft_set_ext_timeout(ext)),
-			 NFTA_SET_ELEM_PAD))
-		goto nla_put_failure;
-
-	if (nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION)) {
-		u64 expires, now = get_jiffies_64();
-
-		expires = *nft_set_ext_expiration(ext);
-		if (time_before64(now, expires))
-			expires -= now;
-		else
-			expires = 0;
-
-		if (nla_put_be64(skb, NFTA_SET_ELEM_EXPIRATION,
-				 nf_jiffies64_to_msecs(expires),
-				 NFTA_SET_ELEM_PAD))
-			goto nla_put_failure;
-=======
 	if (nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT)) {
 		u64 timeout = READ_ONCE(nft_set_ext_timeout(ext)->timeout);
 		u64 set_timeout = READ_ONCE(set->timeout);
@@ -5919,7 +5841,6 @@ static int nf_tables_fill_setelem(struct sk_buff *skb,
 					 NFTA_SET_ELEM_PAD))
 				goto nla_put_failure;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (nft_set_ext_exists(ext, NFT_SET_EXT_USERDATA)) {
@@ -6582,15 +6503,6 @@ struct nft_elem_priv *nft_set_elem_init(const struct nft_set *set,
 			       nft_set_ext_data(ext), data, set->dlen) < 0)
 		goto err_ext_check;
 
-<<<<<<< HEAD
-	if (nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION)) {
-		*nft_set_ext_expiration(ext) = get_jiffies_64() + expiration;
-		if (expiration == 0)
-			*nft_set_ext_expiration(ext) += timeout;
-	}
-	if (nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT))
-		*nft_set_ext_timeout(ext) = timeout;
-=======
 	if (nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT)) {
 		nft_set_ext_timeout(ext)->timeout = timeout;
 
@@ -6599,7 +6511,6 @@ struct nft_elem_priv *nft_set_elem_init(const struct nft_set *set,
 
 		nft_set_ext_timeout(ext)->expiration = get_jiffies_64() + expiration;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return elem;
 
@@ -6774,11 +6685,7 @@ static int nft_setelem_catchall_insert(const struct net *net,
 		}
 	}
 
-<<<<<<< HEAD
-	catchall = kmalloc(sizeof(*catchall), GFP_KERNEL);
-=======
 	catchall = kmalloc(sizeof(*catchall), GFP_KERNEL_ACCOUNT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!catchall)
 		return -ENOMEM;
 
@@ -6946,10 +6853,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
 	struct nft_data_desc desc;
 	enum nft_registers dreg;
 	struct nft_trans *trans;
-<<<<<<< HEAD
-=======
 	u8 update_flags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 expiration;
 	u64 timeout;
 	int err, i;
@@ -7018,33 +6922,23 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
 			return err;
 	} else if (set->flags & NFT_SET_TIMEOUT &&
 		   !(flags & NFT_SET_ELEM_INTERVAL_END)) {
-<<<<<<< HEAD
-		timeout = READ_ONCE(set->timeout);
-=======
 		timeout = set->timeout;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	expiration = 0;
 	if (nla[NFTA_SET_ELEM_EXPIRATION] != NULL) {
 		if (!(set->flags & NFT_SET_TIMEOUT))
 			return -EINVAL;
-<<<<<<< HEAD
-=======
 		if (timeout == 0)
 			return -EOPNOTSUPP;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_ELEM_EXPIRATION],
 					    &expiration);
 		if (err)
 			return err;
-<<<<<<< HEAD
-=======
 
 		if (expiration > timeout)
 			return -ERANGE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (nla[NFTA_SET_ELEM_EXPR]) {
@@ -7130,23 +7024,10 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
 			goto err_parse_key_end;
 	}
 
-<<<<<<< HEAD
-	if (timeout > 0) {
-		err = nft_set_ext_add(&tmpl, NFT_SET_EXT_EXPIRATION);
-		if (err < 0)
-			goto err_parse_key_end;
-
-		if (timeout != READ_ONCE(set->timeout)) {
-			err = nft_set_ext_add(&tmpl, NFT_SET_EXT_TIMEOUT);
-			if (err < 0)
-				goto err_parse_key_end;
-		}
-=======
 	if (set->flags & NFT_SET_TIMEOUT) {
 		err = nft_set_ext_add(&tmpl, NFT_SET_EXT_TIMEOUT);
 		if (err < 0)
 			goto err_parse_key_end;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (num_exprs) {
@@ -7284,10 +7165,6 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
 			     nft_set_ext_exists(ext2, NFT_SET_EXT_OBJREF) &&
 			     *nft_set_ext_obj(ext) != *nft_set_ext_obj(ext2)))
 				goto err_element_clash;
-<<<<<<< HEAD
-			else if (!(nlmsg_flags & NLM_F_EXCL))
-				err = 0;
-=======
 			else if (!(nlmsg_flags & NLM_F_EXCL)) {
 				err = 0;
 				if (nft_set_ext_exists(ext2, NFT_SET_EXT_TIMEOUT)) {
@@ -7312,7 +7189,6 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
 					}
 				}
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (err == -ENOTEMPTY) {
 			/* ENOTEMPTY reports overlapping between this element
 			 * and an existing one.
@@ -9332,11 +9208,7 @@ static void nf_tables_flowtable_destroy(struct nft_flowtable *flowtable)
 		flowtable->data.type->setup(&flowtable->data, hook->ops.dev,
 					    FLOW_BLOCK_UNBIND);
 		list_del_rcu(&hook->list);
-<<<<<<< HEAD
-		kfree(hook);
-=======
 		kfree_rcu(hook, rcu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	kfree(flowtable->name);
 	module_put(flowtable->data.type->owner);
@@ -10609,10 +10481,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
 				nft_flow_rule_destroy(nft_trans_flow_rule(trans));
 			break;
 		case NFT_MSG_NEWSET:
-<<<<<<< HEAD
-=======
 			list_del(&nft_trans_container_set(trans)->list_trans_newset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (nft_trans_set_update(trans)) {
 				struct nft_set *set = nft_trans_set(trans);
 
@@ -10644,9 +10513,6 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
 		case NFT_MSG_NEWSETELEM:
 			te = nft_trans_container_elem(trans);
 
-<<<<<<< HEAD
-			nft_setelem_activate(net, te->set, te->elem_priv);
-=======
 			if (te->update_flags) {
 				const struct nft_set_ext *ext =
 					nft_set_elem_ext(te->set, te->elem_priv);
@@ -10663,7 +10529,6 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
 				nft_setelem_activate(net, te->set, te->elem_priv);
 			}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			nf_tables_setelem_notify(&ctx, te->set,
 						 te->elem_priv,
 						 NFT_MSG_NEWSETELEM);
@@ -10940,10 +10805,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
 			nft_trans_destroy(trans);
 			break;
 		case NFT_MSG_NEWSET:
-<<<<<<< HEAD
-=======
 			list_del(&nft_trans_container_set(trans)->list_trans_newset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (nft_trans_set_update(trans)) {
 				nft_trans_destroy(trans);
 				break;
@@ -10966,24 +10828,16 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
 			nft_trans_destroy(trans);
 			break;
 		case NFT_MSG_NEWSETELEM:
-<<<<<<< HEAD
-			if (nft_trans_elem_set_bound(trans)) {
-=======
 			if (nft_trans_elem_update_flags(trans) ||
 			    nft_trans_elem_set_bound(trans)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nft_trans_destroy(trans);
 				break;
 			}
 			te = nft_trans_container_elem(trans);
-<<<<<<< HEAD
-			nft_setelem_remove(net, te->set, te->elem_priv);
-=======
 			if (!te->set->ops->abort ||
 			    nft_setelem_is_catchall(te->set, te->elem_priv))
 				nft_setelem_remove(net, te->set, te->elem_priv);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!nft_setelem_is_catchall(te->set, te->elem_priv))
 				atomic_dec(&te->set->nelems);
 
@@ -11051,11 +10905,8 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	WARN_ON_ONCE(!list_empty(&nft_net->commit_set_list));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nft_set_abort_update(&set_update_list);
 
 	synchronize_rcu();
@@ -11232,18 +11083,11 @@ static int nft_validate_register_load(enum nft_registers reg, unsigned int len)
 	return 0;
 }
 
-<<<<<<< HEAD
-int nft_parse_register_load(const struct nlattr *attr, u8 *sreg, u32 len)
-{
-	u32 reg;
-	int err;
-=======
 int nft_parse_register_load(const struct nft_ctx *ctx,
 			    const struct nlattr *attr, u8 *sreg, u32 len)
 {
 	int err, invalid_reg;
 	u32 reg, next_register;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = nft_parse_register(attr, &reg);
 	if (err < 0)
@@ -11253,8 +11097,6 @@ int nft_parse_register_load(const struct nft_ctx *ctx,
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
-=======
 	next_register = DIV_ROUND_UP(len, NFT_REG32_SIZE) + reg;
 
 	/* Can't happen: nft_validate_register_load() should have failed */
@@ -11268,14 +11110,11 @@ int nft_parse_register_load(const struct nft_ctx *ctx,
 	if (invalid_reg < next_register)
 		return -ENODATA;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*sreg = reg;
 	return 0;
 }
 EXPORT_SYMBOL_GPL(nft_parse_register_load);
 
-<<<<<<< HEAD
-=======
 static void nft_saw_register_store(const struct nft_ctx *__ctx,
 				   int reg, unsigned int len)
 {
@@ -11288,7 +11127,6 @@ static void nft_saw_register_store(const struct nft_ctx *__ctx,
 	bitmap_set(ctx->reg_inited, reg, registers);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int nft_validate_register_store(const struct nft_ctx *ctx,
 				       enum nft_registers reg,
 				       const struct nft_data *data,
@@ -11310,11 +11148,7 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
 				return err;
 		}
 
-<<<<<<< HEAD
-		return 0;
-=======
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		if (type != NFT_DATA_VALUE)
 			return -EINVAL;
@@ -11327,16 +11161,11 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
 		    sizeof_field(struct nft_regs, data))
 			return -ERANGE;
 
-<<<<<<< HEAD
-		return 0;
-	}
-=======
 		break;
 	}
 
 	nft_saw_register_store(ctx, reg, len);
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int nft_parse_register_store(const struct nft_ctx *ctx,
@@ -11602,24 +11431,6 @@ int nft_data_dump(struct sk_buff *skb, int attr, const struct nft_data *data,
 }
 EXPORT_SYMBOL_GPL(nft_data_dump);
 
-<<<<<<< HEAD
-int __nft_release_basechain(struct nft_ctx *ctx)
-{
-	struct nft_rule *rule, *nr;
-
-	if (WARN_ON(!nft_is_base_chain(ctx->chain)))
-		return 0;
-
-	nf_tables_unregister_hook(ctx->net, ctx->chain->table, ctx->chain);
-	list_for_each_entry_safe(rule, nr, &ctx->chain->rules, list) {
-		list_del(&rule->list);
-		nft_use_dec(&ctx->chain->use);
-		nf_tables_rule_release(ctx, rule);
-	}
-	nft_chain_del(ctx->chain);
-	nft_use_dec(&ctx->table->use);
-	nf_tables_chain_destroy(ctx->chain);
-=======
 static void __nft_release_basechain_now(struct nft_ctx *ctx)
 {
 	struct nft_rule *rule, *nr;
@@ -11662,7 +11473,6 @@ int __nft_release_basechain(struct nft_ctx *ctx)
 		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
 	else
 		__nft_release_basechain_now(ctx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -11821,10 +11631,7 @@ static int __net_init nf_tables_init_net(struct net *net)
 
 	INIT_LIST_HEAD(&nft_net->tables);
 	INIT_LIST_HEAD(&nft_net->commit_list);
-<<<<<<< HEAD
-=======
 	INIT_LIST_HEAD(&nft_net->commit_set_list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&nft_net->binding_list);
 	INIT_LIST_HEAD(&nft_net->module_list);
 	INIT_LIST_HEAD(&nft_net->notify_list);
@@ -11855,10 +11662,7 @@ static void __net_exit nf_tables_exit_net(struct net *net)
 	gc_seq = nft_gc_seq_begin(nft_net);
 
 	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
-<<<<<<< HEAD
-=======
 	WARN_ON_ONCE(!list_empty(&nft_net->commit_set_list));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!list_empty(&nft_net->module_list))
 		nf_tables_module_autoload_cleanup(net);

@@ -51,11 +51,7 @@ static inline u64 set_pgtable_attr(u64 *page)
 	u64 prot;
 
 	prot = IOMMU_PAGE_PRESENT | IOMMU_PAGE_RW | IOMMU_PAGE_USER;
-<<<<<<< HEAD
-	prot |= IOMMU_PAGE_ACCESS | IOMMU_PAGE_DIRTY;
-=======
 	prot |= IOMMU_PAGE_ACCESS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return (iommu_virt_to_phys(page) | prot);
 }
@@ -237,13 +233,8 @@ static int iommu_v2_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
 			      phys_addr_t paddr, size_t pgsize, size_t pgcount,
 			      int prot, gfp_t gfp, size_t *mapped)
 {
-<<<<<<< HEAD
-	struct protection_domain *pdom = io_pgtable_ops_to_domain(ops);
-	struct io_pgtable_cfg *cfg = &pdom->iop.iop.cfg;
-=======
 	struct amd_io_pgtable *pgtable = io_pgtable_ops_to_data(ops);
 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 *pte;
 	unsigned long map_size;
 	unsigned long mapped_size = 0;
@@ -260,11 +251,7 @@ static int iommu_v2_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
 
 	while (mapped_size < size) {
 		map_size = get_alloc_page_size(pgsize);
-<<<<<<< HEAD
-		pte = v2_alloc_pte(pdom->nid, pdom->iop.pgd,
-=======
 		pte = v2_alloc_pte(cfg->amd.nid, pgtable->pgd,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   iova, map_size, gfp, &updated);
 		if (!pte) {
 			ret = -EINVAL;
@@ -279,16 +266,11 @@ static int iommu_v2_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
 	}
 
 out:
-<<<<<<< HEAD
-	if (updated)
-		amd_iommu_domain_flush_pages(pdom, o_iova, size);
-=======
 	if (updated) {
 		struct protection_domain *pdom = io_pgtable_ops_to_domain(ops);
 
 		amd_iommu_domain_flush_pages(pdom, o_iova, size);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mapped)
 		*mapped += mapped_size;
@@ -302,11 +284,7 @@ static unsigned long iommu_v2_unmap_pages(struct io_pgtable_ops *ops,
 					  struct iommu_iotlb_gather *gather)
 {
 	struct amd_io_pgtable *pgtable = io_pgtable_ops_to_data(ops);
-<<<<<<< HEAD
-	struct io_pgtable_cfg *cfg = &pgtable->iop.cfg;
-=======
 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long unmap_size;
 	unsigned long unmapped = 0;
 	size_t size = pgcount << __ffs(pgsize);
@@ -348,36 +326,9 @@ static phys_addr_t iommu_v2_iova_to_phys(struct io_pgtable_ops *ops, unsigned lo
 /*
  * ----------------------------------------------------
  */
-<<<<<<< HEAD
-static void v2_tlb_flush_all(void *cookie)
-{
-}
-
-static void v2_tlb_flush_walk(unsigned long iova, size_t size,
-			      size_t granule, void *cookie)
-{
-}
-
-static void v2_tlb_add_page(struct iommu_iotlb_gather *gather,
-			    unsigned long iova, size_t granule,
-			    void *cookie)
-{
-}
-
-static const struct iommu_flush_ops v2_flush_ops = {
-	.tlb_flush_all	= v2_tlb_flush_all,
-	.tlb_flush_walk = v2_tlb_flush_walk,
-	.tlb_add_page	= v2_tlb_add_page,
-};
-
-static void v2_free_pgtable(struct io_pgtable *iop)
-{
-	struct amd_io_pgtable *pgtable = container_of(iop, struct amd_io_pgtable, iop);
-=======
 static void v2_free_pgtable(struct io_pgtable *iop)
 {
 	struct amd_io_pgtable *pgtable = container_of(iop, struct amd_io_pgtable, pgtbl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!pgtable || !pgtable->pgd)
 		return;
@@ -390,34 +341,15 @@ static void v2_free_pgtable(struct io_pgtable *iop)
 static struct io_pgtable *v2_alloc_pgtable(struct io_pgtable_cfg *cfg, void *cookie)
 {
 	struct amd_io_pgtable *pgtable = io_pgtable_cfg_to_data(cfg);
-<<<<<<< HEAD
-	struct protection_domain *pdom = (struct protection_domain *)cookie;
-	int ias = IOMMU_IN_ADDR_BIT_SIZE;
-
-	pgtable->pgd = iommu_alloc_page_node(pdom->nid, GFP_ATOMIC);
-=======
 	int ias = IOMMU_IN_ADDR_BIT_SIZE;
 
 	pgtable->pgd = iommu_alloc_page_node(cfg->amd.nid, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!pgtable->pgd)
 		return NULL;
 
 	if (get_pgtable_level() == PAGE_MODE_5_LEVEL)
 		ias = 57;
 
-<<<<<<< HEAD
-	pgtable->iop.ops.map_pages    = iommu_v2_map_pages;
-	pgtable->iop.ops.unmap_pages  = iommu_v2_unmap_pages;
-	pgtable->iop.ops.iova_to_phys = iommu_v2_iova_to_phys;
-
-	cfg->pgsize_bitmap = AMD_IOMMU_PGSIZES_V2,
-	cfg->ias           = ias,
-	cfg->oas           = IOMMU_OUT_ADDR_BIT_SIZE,
-	cfg->tlb           = &v2_flush_ops;
-
-	return &pgtable->iop;
-=======
 	pgtable->pgtbl.ops.map_pages    = iommu_v2_map_pages;
 	pgtable->pgtbl.ops.unmap_pages  = iommu_v2_unmap_pages;
 	pgtable->pgtbl.ops.iova_to_phys = iommu_v2_iova_to_phys;
@@ -427,7 +359,6 @@ static struct io_pgtable *v2_alloc_pgtable(struct io_pgtable_cfg *cfg, void *coo
 	cfg->oas           = IOMMU_OUT_ADDR_BIT_SIZE;
 
 	return &pgtable->pgtbl;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct io_pgtable_init_fns io_pgtable_amd_iommu_v2_init_fns = {

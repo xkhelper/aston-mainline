@@ -337,8 +337,6 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * octep_oq_next_pkt() - Move to the next packet in Rx queue.
  *
  * @oq: Octeon Rx queue data structure.
@@ -384,7 +382,6 @@ static void octep_oq_drop_rx(struct octep_oq *oq,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * __octep_oq_process_rx() - Process hardware Rx queue and push to stack.
  *
  * @oct: Octeon device private data structure.
@@ -415,14 +412,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
 	desc_used = 0;
 	for (pkt = 0; pkt < pkts_to_process; pkt++) {
 		buff_info = (struct octep_rx_buffer *)&oq->buff_info[read_idx];
-<<<<<<< HEAD
-		dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
-			       PAGE_SIZE, DMA_FROM_DEVICE);
 		resp_hw = page_address(buff_info->page);
-		buff_info->page = NULL;
-=======
-		resp_hw = page_address(buff_info->page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Swap the length field that is in Big-Endian to CPU */
 		buff_info->len = be64_to_cpu(resp_hw->length);
@@ -446,18 +436,6 @@ static int __octep_oq_process_rx(struct octep_device *oct,
 			data_offset = OCTEP_OQ_RESP_HW_SIZE;
 			rx_ol_flags = 0;
 		}
-<<<<<<< HEAD
-		rx_bytes += buff_info->len;
-
-		if (buff_info->len <= oq->max_single_buffer_size) {
-			skb = build_skb((void *)resp_hw, PAGE_SIZE);
-			skb_reserve(skb, data_offset);
-			skb_put(skb, buff_info->len);
-			read_idx++;
-			desc_used++;
-			if (read_idx == oq->max_count)
-				read_idx = 0;
-=======
 
 		octep_oq_next_pkt(oq, buff_info, &read_idx, &desc_used);
 
@@ -474,36 +452,17 @@ static int __octep_oq_process_rx(struct octep_device *oct,
 
 		if (buff_info->len <= oq->max_single_buffer_size) {
 			skb_put(skb, buff_info->len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			struct skb_shared_info *shinfo;
 			u16 data_len;
 
-<<<<<<< HEAD
-			skb = build_skb((void *)resp_hw, PAGE_SIZE);
-			skb_reserve(skb, data_offset);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* Head fragment includes response header(s);
 			 * subsequent fragments contains only data.
 			 */
 			skb_put(skb, oq->max_single_buffer_size);
-<<<<<<< HEAD
-			read_idx++;
-			desc_used++;
-			if (read_idx == oq->max_count)
-				read_idx = 0;
-
 			shinfo = skb_shinfo(skb);
 			data_len = buff_info->len - oq->max_single_buffer_size;
 			while (data_len) {
-				dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
-					       PAGE_SIZE, DMA_FROM_DEVICE);
-=======
-			shinfo = skb_shinfo(skb);
-			data_len = buff_info->len - oq->max_single_buffer_size;
-			while (data_len) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				buff_info = (struct octep_rx_buffer *)
 					    &oq->buff_info[read_idx];
 				if (data_len < oq->buffer_size) {
@@ -518,16 +477,8 @@ static int __octep_oq_process_rx(struct octep_device *oct,
 						buff_info->page, 0,
 						buff_info->len,
 						buff_info->len);
-<<<<<<< HEAD
-				buff_info->page = NULL;
-				read_idx++;
-				desc_used++;
-				if (read_idx == oq->max_count)
-					read_idx = 0;
-=======
 
 				octep_oq_next_pkt(oq, buff_info, &read_idx, &desc_used);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 

@@ -550,11 +550,7 @@ struct sfp_upstream_ops {
 	void (*link_down)(void *priv);
 	void (*link_up)(void *priv);
 	int (*connect_phy)(void *priv, struct phy_device *);
-<<<<<<< HEAD
-	void (*disconnect_phy)(void *priv);
-=======
 	void (*disconnect_phy)(void *priv, struct phy_device *);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #if IS_ENABLED(CONFIG_SFP)
@@ -580,10 +576,7 @@ struct sfp_bus *sfp_bus_find_fwnode(const struct fwnode_handle *fwnode);
 int sfp_bus_add_upstream(struct sfp_bus *bus, void *upstream,
 			 const struct sfp_upstream_ops *ops);
 void sfp_bus_del_upstream(struct sfp_bus *bus);
-<<<<<<< HEAD
-=======
 const char *sfp_get_name(struct sfp_bus *bus);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static inline int sfp_parse_port(struct sfp_bus *bus,
 				 const struct sfp_eeprom_id *id,
@@ -662,14 +655,11 @@ static inline int sfp_bus_add_upstream(struct sfp_bus *bus, void *upstream,
 static inline void sfp_bus_del_upstream(struct sfp_bus *bus)
 {
 }
-<<<<<<< HEAD
-=======
 
 static inline const char *sfp_get_name(struct sfp_bus *bus)
 {
 	return NULL;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #endif

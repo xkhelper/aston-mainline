@@ -454,8 +454,6 @@ do {									\
 		__closure_wait_event(waitlist, _cond);			\
 } while (0)
 
-<<<<<<< HEAD
-=======
 #define __closure_wait_event_timeout(waitlist, _cond, _until)		\
 ({									\
 	struct closure cl;						\
@@ -491,5 +489,4 @@ do {									\
 		: __closure_wait_event_timeout(waitlist, _cond, _until);\
 })
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _LINUX_CLOSURE_H */

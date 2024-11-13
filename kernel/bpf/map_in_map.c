@@ -11,37 +11,18 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd)
 {
 	struct bpf_map *inner_map, *inner_map_meta;
 	u32 inner_map_meta_size;
-<<<<<<< HEAD
-	struct fd f;
-	int ret;
-
-	f = fdget(inner_map_ufd);
-=======
 	CLASS(fd, f)(inner_map_ufd);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	inner_map = __bpf_map_get(f);
 	if (IS_ERR(inner_map))
 		return inner_map;
 
 	/* Does not support >1 level map-in-map */
-<<<<<<< HEAD
-	if (inner_map->inner_map_meta) {
-		ret = -EINVAL;
-		goto put;
-	}
-
-	if (!inner_map->ops->map_meta_equal) {
-		ret = -ENOTSUPP;
-		goto put;
-	}
-=======
 	if (inner_map->inner_map_meta)
 		return ERR_PTR(-EINVAL);
 
 	if (!inner_map->ops->map_meta_equal)
 		return ERR_PTR(-ENOTSUPP);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	inner_map_meta_size = sizeof(*inner_map_meta);
 	/* In some cases verifier needs to access beyond just base map. */
@@ -49,15 +30,8 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd)
 		inner_map_meta_size = sizeof(struct bpf_array);
 
 	inner_map_meta = kzalloc(inner_map_meta_size, GFP_USER);
-<<<<<<< HEAD
-	if (!inner_map_meta) {
-		ret = -ENOMEM;
-		goto put;
-	}
-=======
 	if (!inner_map_meta)
 		return ERR_PTR(-ENOMEM);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	inner_map_meta->map_type = inner_map->map_type;
 	inner_map_meta->key_size = inner_map->key_size;
@@ -71,14 +45,9 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd)
 		 * invalid/empty/valid, but ERR_PTR in case of errors. During
 		 * equality NULL or IS_ERR is equivalent.
 		 */
-<<<<<<< HEAD
-		ret = PTR_ERR(inner_map_meta->record);
-		goto free;
-=======
 		struct bpf_map *ret = ERR_CAST(inner_map_meta->record);
 		kfree(inner_map_meta);
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/* Note: We must use the same BTF, as we also used btf_record_dup above
 	 * which relies on BTF being same for both maps, as some members like
@@ -101,18 +70,7 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd)
 		inner_array_meta->elem_size = inner_array->elem_size;
 		inner_map_meta->bypass_spec_v1 = inner_map->bypass_spec_v1;
 	}
-<<<<<<< HEAD
-
-	fdput(f);
 	return inner_map_meta;
-free:
-	kfree(inner_map_meta);
-put:
-	fdput(f);
-	return ERR_PTR(ret);
-=======
-	return inner_map_meta;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void bpf_map_meta_free(struct bpf_map *map_meta)
@@ -138,14 +96,8 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
 			 int ufd)
 {
 	struct bpf_map *inner_map, *inner_map_meta;
-<<<<<<< HEAD
-	struct fd f;
-
-	f = fdget(ufd);
-=======
 	CLASS(fd, f)(ufd);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	inner_map = __bpf_map_get(f);
 	if (IS_ERR(inner_map))
 		return inner_map;
@@ -156,10 +108,6 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
 	else
 		inner_map = ERR_PTR(-EINVAL);
 
-<<<<<<< HEAD
-	fdput(f);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return inner_map;
 }
 

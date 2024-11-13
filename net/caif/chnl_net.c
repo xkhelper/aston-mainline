@@ -47,10 +47,6 @@ struct chnl_net {
 	struct caif_connect_request conn_req;
 	struct list_head list_field;
 	struct net_device *netdev;
-<<<<<<< HEAD
-	char name[256];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wait_queue_head_t netmgmt_wq;
 	/* Flow status to remember and control the transmission. */
 	bool flowenabled;
@@ -350,10 +346,6 @@ static int chnl_net_init(struct net_device *dev)
 	struct chnl_net *priv;
 	ASSERT_RTNL();
 	priv = netdev_priv(dev);
-<<<<<<< HEAD
-	strncpy(priv->name, dev->name, sizeof(priv->name));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&priv->list_field);
 	return 0;
 }

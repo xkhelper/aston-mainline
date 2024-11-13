@@ -409,11 +409,7 @@ struct creq_deinitialize_fw_resp {
 	u8	reserved48[6];
 };
 
-<<<<<<< HEAD
-/* cmdq_create_qp (size:768b/96B) */
-=======
 /* cmdq_create_qp (size:832b/104B) */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cmdq_create_qp {
 	u8	opcode;
 	#define CMDQ_CREATE_QP_OPCODE_CREATE_QP 0x1UL
@@ -434,16 +430,11 @@ struct cmdq_create_qp {
 	#define CMDQ_CREATE_QP_QP_FLAGS_OPTIMIZED_TRANSMIT_ENABLED 0x20UL
 	#define CMDQ_CREATE_QP_QP_FLAGS_RESPONDER_UD_CQE_WITH_CFA  0x40UL
 	#define CMDQ_CREATE_QP_QP_FLAGS_EXT_STATS_ENABLED          0x80UL
-<<<<<<< HEAD
-	#define CMDQ_CREATE_QP_QP_FLAGS_LAST                      \
-		CMDQ_CREATE_QP_QP_FLAGS_EXT_STATS_ENABLED
-=======
 	#define CMDQ_CREATE_QP_QP_FLAGS_EXPRESS_MODE_ENABLED       0x100UL
 	#define CMDQ_CREATE_QP_QP_FLAGS_STEERING_TAG_VALID         0x200UL
 	#define CMDQ_CREATE_QP_QP_FLAGS_RDMA_READ_OR_ATOMICS_USED  0x400UL
 	#define CMDQ_CREATE_QP_QP_FLAGS_LAST                      \
 		CMDQ_CREATE_QP_QP_FLAGS_RDMA_READ_OR_ATOMICS_USED
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8	type;
 	#define CMDQ_CREATE_QP_TYPE_RC            0x2UL
 	#define CMDQ_CREATE_QP_TYPE_UD            0x4UL
@@ -504,12 +495,9 @@ struct cmdq_create_qp {
 	__le64	rq_pbl;
 	__le64	irrq_addr;
 	__le64	orrq_addr;
-<<<<<<< HEAD
-=======
 	__le32	request_xid;
 	__le16	steering_tag;
 	__le16	reserved16;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* creq_create_qp_resp (size:128b/16B) */
@@ -990,21 +978,14 @@ struct creq_query_qp_extend_resp_sb_tlv {
 	__le16	reserved_16;
 };
 
-<<<<<<< HEAD
-/* cmdq_create_srq (size:384b/48B) */
-=======
 /* cmdq_create_srq (size:448b/56B) */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cmdq_create_srq {
 	u8	opcode;
 	#define CMDQ_CREATE_SRQ_OPCODE_CREATE_SRQ 0x5UL
 	#define CMDQ_CREATE_SRQ_OPCODE_LAST      CMDQ_CREATE_SRQ_OPCODE_CREATE_SRQ
 	u8	cmd_size;
 	__le16	flags;
-<<<<<<< HEAD
-=======
 	#define CMDQ_CREATE_SRQ_FLAGS_STEERING_TAG_VALID	0x1UL
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16	cookie;
 	u8	resp_size;
 	u8	reserved8;
@@ -1038,11 +1019,8 @@ struct cmdq_create_srq {
 	__le32	dpi;
 	__le32	pd_id;
 	__le64	pbl;
-<<<<<<< HEAD
-=======
 	__le16	steering_tag;
 	u8	reserved48[6];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* creq_create_srq_resp (size:128b/16B) */
@@ -1149,11 +1127,7 @@ struct creq_query_srq_resp_sb {
 	__le32	data[4];
 };
 
-<<<<<<< HEAD
-/* cmdq_create_cq (size:384b/48B) */
-=======
 /* cmdq_create_cq (size:448b/56B) */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cmdq_create_cq {
 	u8	opcode;
 	#define CMDQ_CREATE_CQ_OPCODE_CREATE_CQ 0x9UL
@@ -1161,11 +1135,8 @@ struct cmdq_create_cq {
 	u8	cmd_size;
 	__le16	flags;
 	#define CMDQ_CREATE_CQ_FLAGS_DISABLE_CQ_OVERFLOW_DETECTION     0x1UL
-<<<<<<< HEAD
-=======
 	#define CMDQ_CREATE_CQ_FLAGS_STEERING_TAG_VALID                0x2UL
 	#define CMDQ_CREATE_CQ_FLAGS_INFINITE_CQ_MODE                  0x4UL
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16	cookie;
 	u8	resp_size;
 	u8	reserved8;
@@ -1197,11 +1168,8 @@ struct cmdq_create_cq {
 	__le32	dpi;
 	__le32	cq_size;
 	__le64	pbl;
-<<<<<<< HEAD
-=======
 	__le16	steering_tag;
 	u8	reserved48[6];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* creq_create_cq_resp (size:128b/16B) */
@@ -1333,20 +1301,12 @@ struct cmdq_allocate_mrw {
 	#define CMDQ_ALLOCATE_MRW_MRW_FLAGS_MW_TYPE2A  0x3UL
 	#define CMDQ_ALLOCATE_MRW_MRW_FLAGS_MW_TYPE2B  0x4UL
 	#define CMDQ_ALLOCATE_MRW_MRW_FLAGS_LAST      CMDQ_ALLOCATE_MRW_MRW_FLAGS_MW_TYPE2B
-<<<<<<< HEAD
-	#define CMDQ_ALLOCATE_MRW_UNUSED4_MASK       0xf0UL
-	#define CMDQ_ALLOCATE_MRW_UNUSED4_SFT        4
-	u8	access;
-	#define CMDQ_ALLOCATE_MRW_ACCESS_CONSUMER_OWNED_KEY     0x20UL
-	__le16	unused16;
-=======
 	#define CMDQ_ALLOCATE_MRW_STEERING_TAG_VALID     0x10UL
 	#define CMDQ_ALLOCATE_MRW_UNUSED4_MASK       0xe0UL
 	#define CMDQ_ALLOCATE_MRW_UNUSED4_SFT        5
 	u8	access;
 	#define CMDQ_ALLOCATE_MRW_ACCESS_CONSUMER_OWNED_KEY     0x20UL
 	__le16	steering_tag;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le32	pd_id;
 };
 
@@ -1413,24 +1373,16 @@ struct creq_deallocate_key_resp {
 	__le32	bound_window_info;
 };
 
-<<<<<<< HEAD
-/* cmdq_register_mr (size:384b/48B) */
-=======
 /* cmdq_register_mr (size:448b/56B) */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cmdq_register_mr {
 	u8	opcode;
 	#define CMDQ_REGISTER_MR_OPCODE_REGISTER_MR 0xfUL
 	#define CMDQ_REGISTER_MR_OPCODE_LAST       CMDQ_REGISTER_MR_OPCODE_REGISTER_MR
 	u8	cmd_size;
 	__le16	flags;
-<<<<<<< HEAD
-	#define CMDQ_REGISTER_MR_FLAGS_ALLOC_MR     0x1UL
-=======
 	#define CMDQ_REGISTER_MR_FLAGS_ALLOC_MR			0x1UL
 	#define CMDQ_REGISTER_MR_FLAGS_STEERING_TAG_VALID	0x2UL
 	#define CMDQ_REGISTER_MR_FLAGS_ENABLE_RO		0x4UL
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16	cookie;
 	u8	resp_size;
 	u8	reserved8;
@@ -1479,11 +1431,8 @@ struct cmdq_register_mr {
 	__le64	pbl;
 	__le64	va;
 	__le64	mr_size;
-<<<<<<< HEAD
-=======
 	__le16  steering_tag;
 	u8      reserved48[6];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* creq_register_mr_resp (size:128b/16B) */

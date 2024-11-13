@@ -2,8 +2,6 @@
 #ifndef _LINUX_STRING_CHOICES_H_
 #define _LINUX_STRING_CHOICES_H_
 
-<<<<<<< HEAD
-=======
 /*
  * Here provide a series of helpers in the str_$TRUE_$FALSE format (you can
  * also expand some helpers as needed), where $TRUE and $FALSE are their
@@ -17,26 +15,19 @@
  *  3) Deduping by the linker, which results in a smaller binary file.
  */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/types.h>
 
 static inline const char *str_enable_disable(bool v)
 {
 	return v ? "enable" : "disable";
 }
-<<<<<<< HEAD
-=======
 #define str_disable_enable(v)		str_enable_disable(!(v))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline const char *str_enabled_disabled(bool v)
 {
 	return v ? "enabled" : "disabled";
 }
-<<<<<<< HEAD
-=======
 #define str_disabled_enabled(v)		str_enabled_disabled(!(v))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline const char *str_hi_lo(bool v)
 {
@@ -60,17 +51,12 @@ static inline const char *str_on_off(bool v)
 {
 	return v ? "on" : "off";
 }
-<<<<<<< HEAD
-=======
 #define str_off_on(v)		str_on_off(!(v))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline const char *str_yes_no(bool v)
 {
 	return v ? "yes" : "no";
 }
-<<<<<<< HEAD
-=======
 #define str_no_yes(v)		str_yes_no(!(v))
 
 static inline const char *str_up_down(bool v)
@@ -84,7 +70,6 @@ static inline const char *str_true_false(bool v)
 	return v ? "true" : "false";
 }
 #define str_false_true(v)		str_true_false(!(v))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * str_plural - Return the simple pluralization based on English counts

@@ -308,11 +308,7 @@ put_file_unlock:
 
 	spin_unlock_bh(&reuseport_lock);
 put_file:
-<<<<<<< HEAD
-	fput(socket->file);
-=======
 	sockfd_put(socket);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 

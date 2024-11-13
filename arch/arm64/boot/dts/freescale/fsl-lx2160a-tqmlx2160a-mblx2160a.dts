@@ -320,11 +320,7 @@
 		reg = <1>;
 		peer-hub = <&hub_3_0>;
 		reset-gpios = <&gpioex1 0 GPIO_ACTIVE_LOW>;
-<<<<<<< HEAD
-		vcc-supply = <&reg_vcc3v3>;
-=======
 		vdd-supply = <&reg_vcc3v3>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	hub_3_0: hub@2 {
@@ -332,11 +328,7 @@
 		reg = <2>;
 		peer-hub = <&hub_2_0>;
 		reset-gpios = <&gpioex1 0 GPIO_ACTIVE_LOW>;
-<<<<<<< HEAD
-		vcc-supply = <&reg_vcc3v3>;
-=======
 		vdd-supply = <&reg_vcc3v3>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

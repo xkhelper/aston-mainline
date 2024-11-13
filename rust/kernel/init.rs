@@ -213,10 +213,7 @@
 use crate::{
     alloc::{box_ext::BoxExt, AllocError, Flags},
     error::{self, Error},
-<<<<<<< HEAD
-=======
     sync::Arc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     sync::UniqueArc,
     types::{Opaque, ScopeGuard},
 };
@@ -746,8 +743,6 @@ macro_rules! try_init {
     };
 }
 
-<<<<<<< HEAD
-=======
 /// Asserts that a field on a struct using `#[pin_data]` is marked with `#[pin]` ie. that it is
 /// structurally pinned.
 ///
@@ -816,7 +811,6 @@ macro_rules! assert_pinned {
     };
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /// A pin-initializer for the type `T`.
 ///
 /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
@@ -1182,24 +1176,17 @@ unsafe impl<T, E> PinInit<T, E> for T {
 
 /// Smart pointer that can initialize memory in-place.
 pub trait InPlaceInit<T>: Sized {
-<<<<<<< HEAD
-=======
     /// Pinned version of `Self`.
     ///
     /// If a type already implicitly pins its pointee, `Pin<Self>` is unnecessary. In this case use
     /// `Self`, otherwise just use `Pin<Self>`.
     type PinnedSelf;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     /// Use the given pin-initializer to pin-initialize a `T` inside of a new smart pointer of this
     /// type.
     ///
     /// If `T: !Unpin` it will not be able to move afterwards.
-<<<<<<< HEAD
-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
-=======
     fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedSelf, E>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     where
         E: From<AllocError>;
 
@@ -1207,11 +1194,7 @@ pub trait InPlaceInit<T>: Sized {
     /// type.
     ///
     /// If `T: !Unpin` it will not be able to move afterwards.
-<<<<<<< HEAD
-    fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> error::Result<Pin<Self>>
-=======
     fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> error::Result<Self::PinnedSelf>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     where
         Error: From<E>,
     {
@@ -1240,21 +1223,6 @@ pub trait InPlaceInit<T>: Sized {
     }
 }
 
-<<<<<<< HEAD
-impl<T> InPlaceInit<T> for Box<T> {
-    #[inline]
-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
-    where
-        E: From<AllocError>,
-    {
-        let mut this = <Box<_> as BoxExt<_>>::new_uninit(flags)?;
-        let slot = this.as_mut_ptr();
-        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-        // slot is valid and will not be moved, because we pin it later.
-        unsafe { init.__pinned_init(slot)? };
-        // SAFETY: All fields have been initialized.
-        Ok(unsafe { this.assume_init() }.into())
-=======
 impl<T> InPlaceInit<T> for Arc<T> {
     type PinnedSelf = Self;
 
@@ -1264,7 +1232,6 @@ impl<T> InPlaceInit<T> for Arc<T> {
         E: From<AllocError>,
     {
         UniqueArc::try_pin_init(init, flags).map(|u| u.into())
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 
     #[inline]
@@ -1272,15 +1239,6 @@ impl<T> InPlaceInit<T> for Arc<T> {
     where
         E: From<AllocError>,
     {
-<<<<<<< HEAD
-        let mut this = <Box<_> as BoxExt<_>>::new_uninit(flags)?;
-        let slot = this.as_mut_ptr();
-        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-        // slot is valid.
-        unsafe { init.__init(slot)? };
-        // SAFETY: All fields have been initialized.
-        Ok(unsafe { this.assume_init() })
-=======
         UniqueArc::try_init(init, flags).map(|u| u.into())
     }
 }
@@ -1302,25 +1260,10 @@ impl<T> InPlaceInit<T> for Box<T> {
         E: From<AllocError>,
     {
         <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_init(init)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 }
 
 impl<T> InPlaceInit<T> for UniqueArc<T> {
-<<<<<<< HEAD
-    #[inline]
-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
-    where
-        E: From<AllocError>,
-    {
-        let mut this = UniqueArc::new_uninit(flags)?;
-        let slot = this.as_mut_ptr();
-        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-        // slot is valid and will not be moved, because we pin it later.
-        unsafe { init.__pinned_init(slot)? };
-        // SAFETY: All fields have been initialized.
-        Ok(unsafe { this.assume_init() }.into())
-=======
     type PinnedSelf = Pin<Self>;
 
     #[inline]
@@ -1329,7 +1272,6 @@ impl<T> InPlaceInit<T> for UniqueArc<T> {
         E: From<AllocError>,
     {
         UniqueArc::new_uninit(flags)?.write_pin_init(init)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 
     #[inline]
@@ -1337,10 +1279,6 @@ impl<T> InPlaceInit<T> for UniqueArc<T> {
     where
         E: From<AllocError>,
     {
-<<<<<<< HEAD
-        let mut this = UniqueArc::new_uninit(flags)?;
-        let slot = this.as_mut_ptr();
-=======
         UniqueArc::new_uninit(flags)?.write_init(init)
     }
 }
@@ -1366,14 +1304,10 @@ impl<T> InPlaceWrite<T> for Box<MaybeUninit<T>> {
 
     fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
         let slot = self.as_mut_ptr();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
         // slot is valid.
         unsafe { init.__init(slot)? };
         // SAFETY: All fields have been initialized.
-<<<<<<< HEAD
-        Ok(unsafe { this.assume_init() })
-=======
         Ok(unsafe { self.assume_init() })
     }
 
@@ -1406,7 +1340,6 @@ impl<T> InPlaceWrite<T> for UniqueArc<MaybeUninit<T>> {
         unsafe { init.__pinned_init(slot)? };
         // SAFETY: All fields have been initialized.
         Ok(unsafe { self.assume_init() }.into())
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 }
 

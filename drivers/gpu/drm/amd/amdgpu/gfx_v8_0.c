@@ -6149,10 +6149,7 @@ static void gfx_v8_0_ring_emit_fence_gfx(struct amdgpu_ring *ring, u64 addr,
 {
 	bool write64bit = flags & AMDGPU_FENCE_FLAG_64BIT;
 	bool int_sel = flags & AMDGPU_FENCE_FLAG_INT;
-<<<<<<< HEAD
-=======
 	bool exec = flags & AMDGPU_FENCE_FLAG_EXEC;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Workaround for cache flush problems. First send a dummy EOP
 	 * event down the pipe with seq one below.
@@ -6176,12 +6173,8 @@ static void gfx_v8_0_ring_emit_fence_gfx(struct amdgpu_ring *ring, u64 addr,
 				 EOP_TC_ACTION_EN |
 				 EOP_TC_WB_ACTION_EN |
 				 EVENT_TYPE(CACHE_FLUSH_AND_INV_TS_EVENT) |
-<<<<<<< HEAD
-				 EVENT_INDEX(5)));
-=======
 				 EVENT_INDEX(5) |
 				 (exec ? EOP_EXEC : 0)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	amdgpu_ring_write(ring, addr & 0xfffffffc);
 	amdgpu_ring_write(ring, (upper_32_bits(addr) & 0xffff) |
 			  DATA_SEL(write64bit ? 2 : 1) | INT_SEL(int_sel ? 2 : 0));
@@ -6389,8 +6382,6 @@ static void gfx_v8_0_ring_emit_wreg(struct amdgpu_ring *ring, uint32_t reg,
 	amdgpu_ring_write(ring, val);
 }
 
-<<<<<<< HEAD
-=======
 static void gfx_v8_0_wait_reg_mem(struct amdgpu_ring *ring, int eng_sel,
 				  int mem_space, int opt, uint32_t addr0,
 				  uint32_t addr1, uint32_t ref, uint32_t mask,
@@ -6419,7 +6410,6 @@ static void gfx_v8_0_ring_emit_reg_wait(struct amdgpu_ring *ring, uint32_t reg,
 	gfx_v8_0_wait_reg_mem(ring, 0, 0, 0, reg, 0, val, mask, 0x20);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void gfx_v8_0_ring_soft_recovery(struct amdgpu_ring *ring, unsigned vmid)
 {
 	struct amdgpu_device *adev = ring->adev;
@@ -6896,8 +6886,6 @@ static void gfx_v8_0_emit_wave_limit(struct amdgpu_ring *ring, bool enable)
 
 }
 
-<<<<<<< HEAD
-=======
 static int gfx_v8_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
 {
 	struct amdgpu_device *adev = ring->adev;
@@ -6940,7 +6928,6 @@ static int gfx_v8_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
 	return amdgpu_ring_test_ring(ring);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct amd_ip_funcs gfx_v8_0_ip_funcs = {
 	.name = "gfx_v8_0",
 	.early_init = gfx_v8_0_early_init,
@@ -7008,10 +6995,7 @@ static const struct amdgpu_ring_funcs gfx_v8_0_ring_funcs_gfx = {
 	.emit_wreg = gfx_v8_0_ring_emit_wreg,
 	.soft_recovery = gfx_v8_0_ring_soft_recovery,
 	.emit_mem_sync = gfx_v8_0_emit_mem_sync,
-<<<<<<< HEAD
-=======
 	.reset = gfx_v8_0_reset_kgq,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ring_funcs gfx_v8_0_ring_funcs_compute = {
@@ -7044,10 +7028,7 @@ static const struct amdgpu_ring_funcs gfx_v8_0_ring_funcs_compute = {
 	.insert_nop = amdgpu_ring_insert_nop,
 	.pad_ib = amdgpu_ring_generic_pad_ib,
 	.emit_wreg = gfx_v8_0_ring_emit_wreg,
-<<<<<<< HEAD
-=======
 	.soft_recovery = gfx_v8_0_ring_soft_recovery,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.emit_mem_sync = gfx_v8_0_emit_mem_sync_compute,
 	.emit_wave_limit = gfx_v8_0_emit_wave_limit,
 };

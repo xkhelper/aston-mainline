@@ -911,11 +911,7 @@ static struct platform_driver fsl_soc_dma_driver = {
 		.of_match_table = fsl_soc_dma_ids,
 	},
 	.probe = fsl_soc_dma_probe,
-<<<<<<< HEAD
-	.remove_new = fsl_soc_dma_remove,
-=======
 	.remove = fsl_soc_dma_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(fsl_soc_dma_driver);

@@ -37,11 +37,7 @@
 #include <net/cipso_ipv4.h>
 #include <linux/atomic.h>
 #include <linux/bug.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* List of available DOI definitions */
 /* XXX - This currently assumes a minimal number of different DOIs in use,

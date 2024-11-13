@@ -39,13 +39,10 @@
 #define RK3288_SOC_CON2_FLASH0		BIT(7)
 #define RK3288_SOC_FLASH_SUPPLY_NUM	2
 
-<<<<<<< HEAD
-=======
 #define RK3308_SOC_CON0			0x300
 #define RK3308_SOC_CON0_VCCIO3		BIT(8)
 #define RK3308_SOC_VCCIO3_SUPPLY_NUM	3
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RK3328_SOC_CON4			0x410
 #define RK3328_SOC_CON4_VCCIO2		BIT(7)
 #define RK3328_SOC_VCCIO2_SUPPLY_NUM	1
@@ -236,8 +233,6 @@ static void rk3288_iodomain_init(struct rockchip_iodomain *iod)
 		dev_warn(iod->dev, "couldn't update flash0 ctrl\n");
 }
 
-<<<<<<< HEAD
-=======
 static void rk3308_iodomain_init(struct rockchip_iodomain *iod)
 {
 	int ret;
@@ -257,7 +252,6 @@ static void rk3308_iodomain_init(struct rockchip_iodomain *iod)
 		dev_warn(iod->dev, "couldn't update vccio3 vsel ctrl\n");
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void rk3328_iodomain_init(struct rockchip_iodomain *iod)
 {
 	int ret;
@@ -405,8 +399,6 @@ static const struct rockchip_iodomain_soc_data soc_data_rk3288 = {
 	.init = rk3288_iodomain_init,
 };
 
-<<<<<<< HEAD
-=======
 static const struct rockchip_iodomain_soc_data soc_data_rk3308 = {
 	.grf_offset = 0x300,
 	.supply_names = {
@@ -420,7 +412,6 @@ static const struct rockchip_iodomain_soc_data soc_data_rk3308 = {
 	.init = rk3308_iodomain_init,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct rockchip_iodomain_soc_data soc_data_rk3328 = {
 	.grf_offset = 0x410,
 	.supply_names = {
@@ -574,13 +565,10 @@ static const struct of_device_id rockchip_iodomain_match[] = {
 		.data = &soc_data_rk3288
 	},
 	{
-<<<<<<< HEAD
-=======
 		.compatible = "rockchip,rk3308-io-voltage-domain",
 		.data = &soc_data_rk3308
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "rockchip,rk3328-io-voltage-domain",
 		.data = &soc_data_rk3328
 	},

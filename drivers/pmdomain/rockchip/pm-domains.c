@@ -33,10 +33,7 @@
 #include <dt-bindings/power/rk3368-power.h>
 #include <dt-bindings/power/rk3399-power.h>
 #include <dt-bindings/power/rk3568-power.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/power/rockchip,rk3576-power.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/power/rk3588-power.h>
 
 struct rockchip_domain_info {
@@ -49,10 +46,7 @@ struct rockchip_domain_info {
 	bool active_wakeup;
 	int pwr_w_mask;
 	int req_w_mask;
-<<<<<<< HEAD
-=======
 	int clk_ungate_mask;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int mem_status_mask;
 	int repair_status_mask;
 	u32 pwr_offset;
@@ -70,10 +64,7 @@ struct rockchip_pmu_info {
 	u32 chain_status_offset;
 	u32 mem_status_offset;
 	u32 repair_status_offset;
-<<<<<<< HEAD
-=======
 	u32 clk_ungate_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u32 core_pwrcnt_offset;
 	u32 gpu_pwrcnt_offset;
@@ -156,8 +147,6 @@ struct rockchip_pmu {
 	.active_wakeup = wakeup,			\
 }
 
-<<<<<<< HEAD
-=======
 #define DOMAIN_M_O_R_G(_name, p_offset, pwr, status, m_offset, m_status, r_status, r_offset, req, idle, ack, g_mask, wakeup)	\
 {							\
 	.name = _name,					\
@@ -177,7 +166,6 @@ struct rockchip_pmu {
 	.active_wakeup = wakeup,			\
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DOMAIN_RK3036(_name, req, ack, idle, wakeup)		\
 {							\
 	.name = _name,				\
@@ -209,12 +197,9 @@ struct rockchip_pmu {
 #define DOMAIN_RK3568(name, pwr, req, wakeup)		\
 	DOMAIN_M(name, pwr, pwr, req, req, req, wakeup)
 
-<<<<<<< HEAD
-=======
 #define DOMAIN_RK3576(name, p_offset, pwr, status, r_status, r_offset, req, idle, g_mask, wakeup)	\
 	DOMAIN_M_O_R_G(name, p_offset, pwr, status, 0, r_status, r_status, r_offset, req, idle, idle, g_mask, wakeup)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Dynamic Memory Controller may need to coordinate with us -- see
  * rockchip_pmu_block().
@@ -339,8 +324,6 @@ static unsigned int rockchip_pmu_read_ack(struct rockchip_pmu *pmu)
 	return val;
 }
 
-<<<<<<< HEAD
-=======
 static int rockchip_pmu_ungate_clk(struct rockchip_pm_domain *pd, bool ungate)
 {
 	const struct rockchip_domain_info *pd_info = pd->info;
@@ -361,7 +344,6 @@ static int rockchip_pmu_ungate_clk(struct rockchip_pm_domain *pd, bool ungate)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rockchip_pmu_set_idle_request(struct rockchip_pm_domain *pd,
 					 bool idle)
 {
@@ -602,11 +584,8 @@ static int rockchip_pd_power(struct rockchip_pm_domain *pd, bool power_on)
 			return ret;
 		}
 
-<<<<<<< HEAD
-=======
 		rockchip_pmu_ungate_clk(pd, true);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!power_on) {
 			rockchip_pmu_save_qos(pd);
 
@@ -623,10 +602,7 @@ static int rockchip_pd_power(struct rockchip_pm_domain *pd, bool power_on)
 			rockchip_pmu_restore_qos(pd);
 		}
 
-<<<<<<< HEAD
-=======
 		rockchip_pmu_ungate_clk(pd, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		clk_bulk_disable(pd->num_clks, pd->clks);
 	}
 
@@ -784,20 +760,11 @@ static int rockchip_pm_add_one_domain(struct rockchip_pmu *pmu,
 				goto err_unprepare_clocks;
 			}
 			pd->qos_regmap[j] = syscon_node_to_regmap(qos_node);
-<<<<<<< HEAD
-			if (IS_ERR(pd->qos_regmap[j])) {
-				error = -ENODEV;
-				of_node_put(qos_node);
-				goto err_unprepare_clocks;
-			}
-			of_node_put(qos_node);
-=======
 			of_node_put(qos_node);
 			if (IS_ERR(pd->qos_regmap[j])) {
 				error = -ENODEV;
 				goto err_unprepare_clocks;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -880,18 +847,10 @@ static void rockchip_configure_pd_cnt(struct rockchip_pmu *pmu,
 static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
 				     struct device_node *parent)
 {
-<<<<<<< HEAD
-	struct device_node *np;
-	struct generic_pm_domain *child_domain, *parent_domain;
-	int error;
-
-	for_each_child_of_node(parent, np) {
-=======
 	struct generic_pm_domain *child_domain, *parent_domain;
 	int error;
 
 	for_each_child_of_node_scoped(parent, np) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u32 idx;
 
 		error = of_property_read_u32(parent, "reg", &idx);
@@ -899,11 +858,7 @@ static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
 			dev_err(pmu->dev,
 				"%pOFn: failed to retrieve domain id (reg): %d\n",
 				parent, error);
-<<<<<<< HEAD
-			goto err_out;
-=======
 			return error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		parent_domain = pmu->genpd_data.domains[idx];
 
@@ -911,11 +866,7 @@ static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
 		if (error) {
 			dev_err(pmu->dev, "failed to handle node %pOFn: %d\n",
 				np, error);
-<<<<<<< HEAD
-			goto err_out;
-=======
 			return error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		error = of_property_read_u32(np, "reg", &idx);
@@ -923,11 +874,7 @@ static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
 			dev_err(pmu->dev,
 				"%pOFn: failed to retrieve domain id (reg): %d\n",
 				np, error);
-<<<<<<< HEAD
-			goto err_out;
-=======
 			return error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		child_domain = pmu->genpd_data.domains[idx];
 
@@ -935,11 +882,7 @@ static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
 		if (error) {
 			dev_err(pmu->dev, "%s failed to add subdomain %s: %d\n",
 				parent_domain->name, child_domain->name, error);
-<<<<<<< HEAD
-			goto err_out;
-=======
 			return error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			dev_dbg(pmu->dev, "%s add subdomain: %s\n",
 				parent_domain->name, child_domain->name);
@@ -949,23 +892,12 @@ static int rockchip_pm_add_subdomain(struct rockchip_pmu *pmu,
 	}
 
 	return 0;
-<<<<<<< HEAD
-
-err_out:
-	of_node_put(np);
-	return error;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rockchip_pm_domain_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
-<<<<<<< HEAD
-	struct device_node *node;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device *parent;
 	struct rockchip_pmu *pmu;
 	const struct rockchip_pmu_info *pmu_info;
@@ -1021,23 +953,13 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
 	 * Prevent any rockchip_pmu_block() from racing with the remainder of
 	 * setup (clocks, register initialization).
 	 */
-<<<<<<< HEAD
-	mutex_lock(&dmc_pmu_mutex);
-
-	for_each_available_child_of_node(np, node) {
-=======
 	guard(mutex)(&dmc_pmu_mutex);
 
 	for_each_available_child_of_node_scoped(np, node) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = rockchip_pm_add_one_domain(pmu, node);
 		if (error) {
 			dev_err(dev, "failed to handle node %pOFn: %d\n",
 				node, error);
-<<<<<<< HEAD
-			of_node_put(node);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err_out;
 		}
 
@@ -1045,10 +967,6 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
 		if (error < 0) {
 			dev_err(dev, "failed to handle subdomain node %pOFn: %d\n",
 				node, error);
-<<<<<<< HEAD
-			of_node_put(node);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err_out;
 		}
 	}
@@ -1068,19 +986,10 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
 	if (!WARN_ON_ONCE(dmc_pmu))
 		dmc_pmu = pmu;
 
-<<<<<<< HEAD
-	mutex_unlock(&dmc_pmu_mutex);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_out:
 	rockchip_pm_domain_cleanup(pmu);
-<<<<<<< HEAD
-	mutex_unlock(&dmc_pmu_mutex);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return error;
 }
 
@@ -1233,8 +1142,6 @@ static const struct rockchip_domain_info rk3568_pm_domains[] = {
 	[RK3568_PD_PIPE]	= DOMAIN_RK3568("pipe", BIT(8), BIT(11), false),
 };
 
-<<<<<<< HEAD
-=======
 static const struct rockchip_domain_info rk3576_pm_domains[] = {
 	[RK3576_PD_NPU]		= DOMAIN_RK3576("npu",    0x0, BIT(0),  BIT(0), 0,       0x0, 0,       0,       0,       false),
 	[RK3576_PD_NVM]		= DOMAIN_RK3576("nvm",    0x0, BIT(6),  0,      BIT(6),  0x4, BIT(2),  BIT(18), BIT(2),  false),
@@ -1257,7 +1164,6 @@ static const struct rockchip_domain_info rk3576_pm_domains[] = {
 	[RK3576_PD_GPU]		= DOMAIN_RK3576("gpu",    0x4, BIT(9),  0,      BIT(25), 0x0, BIT(0),  BIT(0),  BIT(0),  false),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct rockchip_domain_info rk3588_pm_domains[] = {
 	[RK3588_PD_GPU]		= DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false),
 	[RK3588_PD_NPU]		= DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x0, 0,       0,       0x0, 0,       0,       false),
@@ -1436,8 +1342,6 @@ static const struct rockchip_pmu_info rk3568_pmu = {
 	.domain_info = rk3568_pm_domains,
 };
 
-<<<<<<< HEAD
-=======
 static const struct rockchip_pmu_info rk3576_pmu = {
 	.pwr_offset = 0x210,
 	.status_offset = 0x230,
@@ -1454,7 +1358,6 @@ static const struct rockchip_pmu_info rk3576_pmu = {
 	.domain_info = rk3576_pm_domains,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct rockchip_pmu_info rk3588_pmu = {
 	.pwr_offset = 0x14c,
 	.status_offset = 0x180,
@@ -1531,13 +1434,10 @@ static const struct of_device_id rockchip_pm_domain_dt_match[] = {
 		.data = (void *)&rk3568_pmu,
 	},
 	{
-<<<<<<< HEAD
-=======
 		.compatible = "rockchip,rk3576-power-controller",
 		.data = (void *)&rk3576_pmu,
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "rockchip,rk3588-power-controller",
 		.data = (void *)&rk3588_pmu,
 	},

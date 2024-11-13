@@ -25,15 +25,6 @@ support is still in development/experimental, especially for certain kernel
 configurations.
 
 
-<<<<<<< HEAD
-.. only:: rustdoc and html
-
-	You can also browse `rustdoc documentation <rustdoc/kernel/index.html>`_.
-
-.. only:: not rustdoc and html
-
-	This documentation does not include rustdoc generated information.
-=======
 Code documentation
 ------------------
 
@@ -55,7 +46,6 @@ A pregenerated version is provided at:
 
 Please see the :ref:`Code documentation <rust_code_documentation>` section for
 more details.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 .. toctree::
     :maxdepth: 1

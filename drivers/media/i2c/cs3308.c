@@ -109,11 +109,7 @@ static void cs3308_remove(struct i2c_client *client)
 /* ----------------------------------------------------------------------- */
 
 static const struct i2c_device_id cs3308_id[] = {
-<<<<<<< HEAD
-	{ "cs3308", 0 },
-=======
 	{ "cs3308" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, cs3308_id);

@@ -6,10 +6,7 @@
 
 /dts-v1/;
 
-<<<<<<< HEAD
-=======
 #include <dt-bindings/usb/pd.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "imx8qm.dtsi"
 
 / {
@@ -35,8 +32,6 @@
 		reg = <0x00000000 0x80000000 0 0x40000000>;
 	};
 
-<<<<<<< HEAD
-=======
 	reserved-memory {
 		#address-cells = <2>;
 		#size-cells = <2>;
@@ -130,7 +125,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reg_usdhc2_vmmc: usdhc2-vmmc {
 		compatible = "regulator-fixed";
 		regulator-name = "SD1_SPWR";
@@ -233,8 +227,6 @@
 				"LINPUT1", "Mic Jack",
 				"Mic Jack", "MICB";
 	};
-<<<<<<< HEAD
-=======
 
 	imx8qm-cm4-0 {
 		compatible = "fsl,imx8qm-cm4";
@@ -266,7 +258,6 @@
 		fsl,entry-address = <0x38fe0000>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &adc0 {
@@ -346,8 +337,6 @@
 		compatible = "st,l3g4200d-gyro";
 		reg = <0x69>;
 	};
-<<<<<<< HEAD
-=======
 
 	ptn5110: tcpc@51 {
 		compatible = "nxp,ptn5110", "tcpci";
@@ -386,7 +375,6 @@
 			};
 		};
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &i2c1 {
@@ -416,8 +404,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &i2c1_lvds0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lvds0_lpi2c1>;
@@ -446,7 +432,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &flexcan1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flexcan1>;
@@ -493,15 +478,6 @@
 	pinctrl-0 = <&pinctrl_lpspi2 &pinctrl_lpspi2_cs>;
 	cs-gpios = <&lsio_gpio3 10 GPIO_ACTIVE_LOW>;
 	status = "okay";
-<<<<<<< HEAD
-
-	spidev0: spi@0 {
-		reg = <0>;
-		compatible = "rohm,dh2228fv";
-		spi-max-frequency = <30000000>;
-	};
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &lsio_mu5 {
@@ -565,8 +541,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &qm_pwm_lvds0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pwm_lvds0>;
@@ -579,7 +553,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &usdhc1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc1>;
@@ -600,8 +573,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &usb3_phy {
 	status = "okay";
 };
@@ -622,7 +593,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &sai0 {
 	#sound-dai-cells = <0>;
 	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
@@ -748,8 +718,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_mipi0_lpi2c0: mipi0_lpi2c0grp {
 		fsl,pins = <
 			IMX8QM_MIPI_DSI0_I2C0_SCL_MIPI_DSI0_I2C0_SCL      0xc6000020
@@ -766,7 +734,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_flexspi0: flexspi0grp {
 		fsl,pins = <
 			IMX8QM_QSPI0A_DATA0_LSIO_QSPI0A_DATA0     0x06000021
@@ -848,8 +815,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_lvds0_lpi2c1: lvds0lpi2c1grp {
 		fsl,pins = <
 			IMX8QM_LVDS0_I2C1_SCL_LVDS0_I2C1_SCL	0xc600004c
@@ -876,7 +841,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_sai0: sai0grp {
 		fsl,pins = <
 			IMX8QM_SPI0_CS1_AUD_SAI0_TXC				0x0600004c
@@ -895,8 +859,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_typec: typecgrp {
 		fsl,pins = <
 			IMX8QM_QSPI1A_DATA0_LSIO_GPIO4_IO26		0x00000021
@@ -910,7 +872,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_usdhc1: usdhc1grp {
 		fsl,pins = <
 			IMX8QM_EMMC0_CLK_CONN_EMMC0_CLK				0x06000041

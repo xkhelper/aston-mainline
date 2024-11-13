@@ -174,15 +174,6 @@ static ssize_t dlm_attr_store(struct kobject *kobj, struct attribute *attr,
 	return a->store ? a->store(ls, buf, len) : len;
 }
 
-<<<<<<< HEAD
-static void lockspace_kobj_release(struct kobject *k)
-{
-	struct dlm_ls *ls  = container_of(k, struct dlm_ls, ls_kobj);
-	kfree(ls);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct sysfs_ops dlm_attr_ops = {
 	.show  = dlm_attr_show,
 	.store = dlm_attr_store,
@@ -191,10 +182,6 @@ static const struct sysfs_ops dlm_attr_ops = {
 static struct kobj_type dlm_ktype = {
 	.default_groups = dlm_groups,
 	.sysfs_ops     = &dlm_attr_ops,
-<<<<<<< HEAD
-	.release       = lockspace_kobj_release,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct kset *dlm_kset;
@@ -328,8 +315,6 @@ static int threads_start(void)
 	return error;
 }
 
-<<<<<<< HEAD
-=======
 static int lkb_idr_free(struct dlm_lkb *lkb)
 {
 	if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
@@ -368,17 +353,12 @@ static void free_lockspace(struct work_struct *work)
 	kfree(ls);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int new_lockspace(const char *name, const char *cluster,
 			 uint32_t flags, int lvblen,
 			 const struct dlm_lockspace_ops *ops, void *ops_arg,
 			 int *ops_result, dlm_lockspace_t **lockspace)
 {
 	struct dlm_ls *ls;
-<<<<<<< HEAD
-	int do_unreg = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int namelen = strlen(name);
 	int error;
 
@@ -503,11 +483,8 @@ static int new_lockspace(const char *name, const char *cluster,
 	spin_lock_init(&ls->ls_cb_lock);
 	INIT_LIST_HEAD(&ls->ls_cb_delay);
 
-<<<<<<< HEAD
-=======
 	INIT_WORK(&ls->ls_free_work, free_lockspace);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ls->ls_recoverd_task = NULL;
 	mutex_init(&ls->ls_recoverd_active);
 	spin_lock_init(&ls->ls_recover_lock);
@@ -585,12 +562,6 @@ static int new_lockspace(const char *name, const char *cluster,
 	wait_event(ls->ls_recover_lock_wait,
 		   test_bit(LSFL_RECOVER_LOCK, &ls->ls_flags));
 
-<<<<<<< HEAD
-	/* let kobject handle freeing of ls if there's an error */
-	do_unreg = 1;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ls->ls_kobj.kset = dlm_kset;
 	error = kobject_init_and_add(&ls->ls_kobj, &dlm_ktype, NULL,
 				     "%s", ls->ls_name);
@@ -638,15 +609,8 @@ static int new_lockspace(const char *name, const char *cluster,
 	xa_destroy(&ls->ls_lkbxa);
 	rhashtable_destroy(&ls->ls_rsbtbl);
  out_lsfree:
-<<<<<<< HEAD
-	if (do_unreg)
-		kobject_put(&ls->ls_kobj);
-	else
-		kfree(ls);
-=======
 	kobject_put(&ls->ls_kobj);
 	kfree(ls);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  out:
 	module_put(THIS_MODULE);
 	return error;
@@ -703,18 +667,6 @@ int dlm_new_user_lockspace(const char *name, const char *cluster,
 				   ops_arg, ops_result, lockspace);
 }
 
-<<<<<<< HEAD
-static int lkb_idr_free(struct dlm_lkb *lkb)
-{
-	if (lkb->lkb_lvbptr && test_bit(DLM_IFL_MSTCPY_BIT, &lkb->lkb_iflags))
-		dlm_free_lvb(lkb->lkb_lvbptr);
-
-	dlm_free_lkb(lkb);
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* NOTE: We check the lkbxa here rather than the resource table.
    This is because there may be LKBs queued as ASTs that have been unlinked
    from their RSBs and are pending deletion once the AST has been delivered */
@@ -746,22 +698,8 @@ static int lockspace_busy(struct dlm_ls *ls, int force)
 	return rv;
 }
 
-<<<<<<< HEAD
-static void rhash_free_rsb(void *ptr, void *arg)
-{
-	struct dlm_rsb *rsb = ptr;
-
-	dlm_free_rsb(rsb);
-}
-
 static int release_lockspace(struct dlm_ls *ls, int force)
 {
-	struct dlm_lkb *lkb;
-	unsigned long id;
-=======
-static int release_lockspace(struct dlm_ls *ls, int force)
-{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int busy, rv;
 
 	busy = lockspace_busy(ls, force);
@@ -814,31 +752,12 @@ static int release_lockspace(struct dlm_ls *ls, int force)
 
 	dlm_delete_debug_file(ls);
 
-<<<<<<< HEAD
-=======
 	kobject_put(&ls->ls_kobj);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xa_destroy(&ls->ls_recover_xa);
 	kfree(ls->ls_recover_buf);
 
 	/*
-<<<<<<< HEAD
-	 * Free all lkb's in xa
-	 */
-	xa_for_each(&ls->ls_lkbxa, id, lkb) {
-		lkb_idr_free(lkb);
-	}
-	xa_destroy(&ls->ls_lkbxa);
-
-	/*
-	 * Free all rsb's on rsbtbl
-	 */
-	rhashtable_free_and_destroy(&ls->ls_rsbtbl, rhash_free_rsb, NULL);
-
-	/*
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Free structures on any other lists
 	 */
 
@@ -847,18 +766,11 @@ static int release_lockspace(struct dlm_ls *ls, int force)
 	dlm_clear_members(ls);
 	dlm_clear_members_gone(ls);
 	kfree(ls->ls_node_array);
-<<<<<<< HEAD
-	log_rinfo(ls, "release_lockspace final free");
-	kobject_put(&ls->ls_kobj);
-	/* The ls structure will be freed when the kobject is done with */
-
-=======
 
 	log_rinfo(ls, "%s final free", __func__);
 
 	/* delayed free of data structures see free_lockspace() */
 	queue_work(dlm_wq, &ls->ls_free_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	module_put(THIS_MODULE);
 	return 0;
 }

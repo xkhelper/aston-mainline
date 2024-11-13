@@ -5,8 +5,3 @@
 /gen_crc32table
 /gen_crc64table
 /oid_registry_data.c
-<<<<<<< HEAD
-/test_fortify.log
-/test_fortify/*.log
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -17,8 +17,6 @@ static dma_addr_t dma_dummy_map_page(struct device *dev, struct page *page,
 {
 	return DMA_MAPPING_ERROR;
 }
-<<<<<<< HEAD
-=======
 static void dma_dummy_unmap_page(struct device *dev, dma_addr_t dma_handle,
 		size_t size, enum dma_data_direction dir, unsigned long attrs)
 {
@@ -28,7 +26,6 @@ static void dma_dummy_unmap_page(struct device *dev, dma_addr_t dma_handle,
 	 */
 	WARN_ON_ONCE(true);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int dma_dummy_map_sg(struct device *dev, struct scatterlist *sgl,
 		int nelems, enum dma_data_direction dir,
@@ -37,8 +34,6 @@ static int dma_dummy_map_sg(struct device *dev, struct scatterlist *sgl,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
-=======
 static void dma_dummy_unmap_sg(struct device *dev, struct scatterlist *sgl,
 		int nelems, enum dma_data_direction dir,
 		unsigned long attrs)
@@ -49,7 +44,6 @@ static void dma_dummy_unmap_sg(struct device *dev, struct scatterlist *sgl,
 	WARN_ON_ONCE(true);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int dma_dummy_supported(struct device *hwdev, u64 mask)
 {
 	return 0;
@@ -58,12 +52,8 @@ static int dma_dummy_supported(struct device *hwdev, u64 mask)
 const struct dma_map_ops dma_dummy_ops = {
 	.mmap                   = dma_dummy_mmap,
 	.map_page               = dma_dummy_map_page,
-<<<<<<< HEAD
-	.map_sg                 = dma_dummy_map_sg,
-=======
 	.unmap_page             = dma_dummy_unmap_page,
 	.map_sg                 = dma_dummy_map_sg,
 	.unmap_sg               = dma_dummy_unmap_sg,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.dma_supported          = dma_dummy_supported,
 };

@@ -322,11 +322,7 @@ struct aac_ciss_phys_luns_resp {
 		u8	level3[2];
 		u8	level2[2];
 		u8	node_ident[16];	/* phys. node identifier */
-<<<<<<< HEAD
-	} lun[1];			/* List of phys. devices */
-=======
 	} lun[];			/* List of phys. devices */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -511,52 +507,27 @@ struct sge_ieee1212 {
 
 struct sgmap {
 	__le32		count;
-<<<<<<< HEAD
-	struct sgentry	sg[1];
-=======
 	struct sgentry	sg[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct user_sgmap {
 	u32		count;
-<<<<<<< HEAD
-	struct user_sgentry	sg[1];
-=======
 	struct user_sgentry	sg[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct sgmap64 {
 	__le32		count;
-<<<<<<< HEAD
-	struct sgentry64 sg[1];
-=======
 	struct sgentry64 sg[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct user_sgmap64 {
 	u32		count;
-<<<<<<< HEAD
-	struct user_sgentry64 sg[1];
-=======
 	struct user_sgentry64 sg[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct sgmapraw {
 	__le32		  count;
-<<<<<<< HEAD
-	struct sgentryraw sg[1];
-};
-
-struct user_sgmapraw {
-	u32		  count;
-	struct user_sgentryraw sg[1];
-=======
 	struct sgentryraw sg[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct creation_info
@@ -897,11 +868,7 @@ union aac_init
 			__le16	element_count;
 			__le16	comp_thresh;
 			__le16	unused;
-<<<<<<< HEAD
-		} rrq[1];		/* up to 64 RRQ addresses */
-=======
 		} rrq[] __counted_by_le(rr_queue_count); /* up to 64 RRQ addresses */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} r8;
 };
 
@@ -2057,13 +2024,8 @@ struct aac_srb_reply
 };
 
 struct aac_srb_unit {
-<<<<<<< HEAD
-	struct aac_srb		srb;
-	struct aac_srb_reply	srb_reply;
-=======
 	struct aac_srb_reply	srb_reply;
 	struct aac_srb		srb;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*

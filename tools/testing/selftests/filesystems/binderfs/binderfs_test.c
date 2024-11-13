@@ -65,10 +65,7 @@ static int __do_binderfs_test(struct __test_metadata *_metadata)
 	static const char * const binder_features[] = {
 		"oneway_spam_detection",
 		"extended_error",
-<<<<<<< HEAD
-=======
 		"freeze_notification",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	change_mountns(_metadata);

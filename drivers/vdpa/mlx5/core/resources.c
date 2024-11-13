@@ -256,10 +256,6 @@ int mlx5_vdpa_alloc_resources(struct mlx5_vdpa_dev *mvdev)
 		mlx5_vdpa_warn(mvdev, "resources already allocated\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
-	mutex_init(&mvdev->mr_mtx);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	res->uar = mlx5_get_uars_page(mdev);
 	if (IS_ERR(res->uar)) {
 		err = PTR_ERR(res->uar);
@@ -304,10 +300,6 @@ err_pd:
 err_uctx:
 	mlx5_put_uars_page(mdev, res->uar);
 err_uars:
-<<<<<<< HEAD
-	mutex_destroy(&mvdev->mr_mtx);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -324,11 +316,6 @@ void mlx5_vdpa_free_resources(struct mlx5_vdpa_dev *mvdev)
 	dealloc_pd(mvdev, res->pdn, res->uid);
 	destroy_uctx(mvdev, res->uid);
 	mlx5_put_uars_page(mvdev->mdev, res->uar);
-<<<<<<< HEAD
-	mutex_destroy(&mvdev->mr_mtx);
-	res->valid = false;
-}
-=======
 	res->valid = false;
 }
 
@@ -404,4 +391,3 @@ int mlx5_vdpa_exec_async_cmds(struct mlx5_vdpa_dev *mvdev,
 
 	return err;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -14,10 +14,7 @@
 #include "core_types.h"
 #include "dm_helpers.h"
 #include "link.h"
-<<<<<<< HEAD
-=======
 #include "dc_state_priv.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "atomfirmware.h"
 
 #include "dcn401_smu14_driver_if.h"
@@ -33,10 +30,7 @@
 #define mmCLK01_CLK0_CLK2_DFS_CNTL                      0x16E6F
 #define mmCLK01_CLK0_CLK3_DFS_CNTL                      0x16E72
 #define mmCLK01_CLK0_CLK4_DFS_CNTL                      0x16E75
-<<<<<<< HEAD
-=======
 #define mmCLK20_CLK2_CLK2_DFS_CNTL                      0x1B051
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define CLK0_CLK_PLL_REQ__FbMult_int_MASK                  0x000001ffUL
 #define CLK0_CLK_PLL_REQ__PllSpineDiv_MASK                 0x0000f000UL
@@ -310,8 +304,6 @@ void dcn401_init_clocks(struct clk_mgr *clk_mgr_base)
 	dcn401_build_wm_range_table(clk_mgr_base);
 }
 
-<<<<<<< HEAD
-=======
 static void dcn401_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
 		struct clk_mgr *clk_mgr_base, struct clk_log_info *log_info)
 {
@@ -503,7 +495,6 @@ static void dcn401_auto_dpm_test_log(
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void dcn401_update_clocks_update_dtb_dto(struct clk_mgr_internal *clk_mgr,
 			struct dc_state *context,
 			int ref_dtbclk_khz)
@@ -526,19 +517,12 @@ static void dcn401_update_clocks_update_dtb_dto(struct clk_mgr_internal *clk_mgr
 		if (!use_hpo_encoder)
 			continue;
 
-<<<<<<< HEAD
-		otg_master->clock_source->funcs->program_pix_clk(
-				otg_master->clock_source,
-				&otg_master->stream_res.pix_clk_params,
-				dccg->ctx->dc->link_srv->dp_get_encoding_format(&otg_master->link_config.dp_link_settings),
-=======
 		if (otg_master->stream_res.pix_clk_params.controller_id > CONTROLLER_ID_UNDEFINED)
 			otg_master->clock_source->funcs->program_pix_clk(
 				otg_master->clock_source,
 				&otg_master->stream_res.pix_clk_params,
 				dccg->ctx->dc->link_srv->dp_get_encoding_format(
 					&otg_master->link_config.dp_link_settings),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				&otg_master->pll_settings);
 	}
 }
@@ -949,19 +933,12 @@ static void dcn401_execute_block_sequence(struct clk_mgr *clk_mgr_base, unsigned
 static unsigned int dcn401_build_update_bandwidth_clocks_sequence(
 		struct clk_mgr *clk_mgr_base,
 		struct dc_state *context,
-<<<<<<< HEAD
-=======
 		struct dc_clocks *new_clocks,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bool safe_to_lower)
 {
 	struct clk_mgr_internal *clk_mgr_internal = TO_CLK_MGR_INTERNAL(clk_mgr_base);
 	struct dcn401_clk_mgr *clk_mgr401 = TO_DCN401_CLK_MGR(clk_mgr_internal);
 	struct dc *dc = clk_mgr_base->ctx->dc;
-<<<<<<< HEAD
-	struct dc_clocks *new_clocks = &context->bw_ctx.bw.dcn.clk;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dcn401_clk_mgr_block_sequence *block_sequence = clk_mgr401->block_sequence;
 	bool enter_display_off = false;
 	bool update_active_fclk = false;
@@ -1243,20 +1220,13 @@ static unsigned int dcn401_build_update_bandwidth_clocks_sequence(
 static unsigned int dcn401_build_update_display_clocks_sequence(
 		struct clk_mgr *clk_mgr_base,
 		struct dc_state *context,
-<<<<<<< HEAD
-=======
 		struct dc_clocks *new_clocks,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bool safe_to_lower)
 {
 	struct clk_mgr_internal *clk_mgr_internal = TO_CLK_MGR_INTERNAL(clk_mgr_base);
 	struct dcn401_clk_mgr *clk_mgr401 = TO_DCN401_CLK_MGR(clk_mgr_internal);
 	struct dc *dc = clk_mgr_base->ctx->dc;
 	struct dmcu *dmcu = clk_mgr_base->ctx->dc->res_pool->dmcu;
-<<<<<<< HEAD
-	struct dc_clocks *new_clocks = &context->bw_ctx.bw.dcn.clk;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dcn401_clk_mgr_block_sequence *block_sequence = clk_mgr401->block_sequence;
 	bool force_reset = false;
 	bool update_dispclk = false;
@@ -1396,12 +1366,6 @@ static void dcn401_update_clocks(struct clk_mgr *clk_mgr_base,
 
 	unsigned int num_steps = 0;
 
-<<<<<<< HEAD
-	if (dc->work_arounds.skip_clock_update)
-		return;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dc->debug.enable_legacy_clock_update) {
 		dcn401_update_clocks_legacy(clk_mgr_base, context, safe_to_lower);
 		return;
@@ -1410,10 +1374,7 @@ static void dcn401_update_clocks(struct clk_mgr *clk_mgr_base,
 	/* build bandwidth related clocks update sequence */
 	num_steps = dcn401_build_update_bandwidth_clocks_sequence(clk_mgr_base,
 			context,
-<<<<<<< HEAD
-=======
 			&context->bw_ctx.bw.dcn.clk,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			safe_to_lower);
 
 	/* execute sequence */
@@ -1422,21 +1383,15 @@ static void dcn401_update_clocks(struct clk_mgr *clk_mgr_base,
 	/* build display related clocks update sequence */
 	num_steps = dcn401_build_update_display_clocks_sequence(clk_mgr_base,
 			context,
-<<<<<<< HEAD
-=======
 			&context->bw_ctx.bw.dcn.clk,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			safe_to_lower);
 
 	/* execute sequence */
 	dcn401_execute_block_sequence(clk_mgr_base,	num_steps);
-<<<<<<< HEAD
-=======
 
 	if (dc->config.enable_auto_dpm_test_logs)
 		dcn401_auto_dpm_test_log(&context->bw_ctx.bw.dcn.clk, TO_CLK_MGR_INTERNAL(clk_mgr_base), context);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 
@@ -1461,62 +1416,6 @@ static uint32_t dcn401_get_vco_frequency_from_reg(struct clk_mgr_internal *clk_m
 		return dc_fixpt_floor(pll_req);
 }
 
-<<<<<<< HEAD
-static void dcn401_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
-		struct clk_mgr *clk_mgr_base, struct clk_log_info *log_info)
-{
-	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
-	uint32_t dprefclk_did = 0;
-	uint32_t dcfclk_did = 0;
-	uint32_t dtbclk_did = 0;
-	uint32_t dispclk_did = 0;
-	uint32_t dppclk_did = 0;
-	uint32_t target_div = 0;
-
-	/* DFS Slice 0 is used for DISPCLK */
-	dispclk_did = REG_READ(CLK0_CLK0_DFS_CNTL);
-	/* DFS Slice 1 is used for DPPCLK */
-	dppclk_did = REG_READ(CLK0_CLK1_DFS_CNTL);
-	/* DFS Slice 2 is used for DPREFCLK */
-	dprefclk_did = REG_READ(CLK0_CLK2_DFS_CNTL);
-	/* DFS Slice 3 is used for DCFCLK */
-	dcfclk_did = REG_READ(CLK0_CLK3_DFS_CNTL);
-	/* DFS Slice 4 is used for DTBCLK */
-	dtbclk_did = REG_READ(CLK0_CLK4_DFS_CNTL);
-
-	/* Convert DISPCLK DFS Slice DID to divider*/
-	target_div = dentist_get_divider_from_did(dispclk_did);
-	//Get dispclk in khz
-	regs_and_bypass->dispclk = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
-			* clk_mgr->base.dentist_vco_freq_khz) / target_div;
-
-	/* Convert DISPCLK DFS Slice DID to divider*/
-	target_div = dentist_get_divider_from_did(dppclk_did);
-	//Get dppclk in khz
-	regs_and_bypass->dppclk = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
-			* clk_mgr->base.dentist_vco_freq_khz) / target_div;
-
-	/* Convert DPREFCLK DFS Slice DID to divider*/
-	target_div = dentist_get_divider_from_did(dprefclk_did);
-	//Get dprefclk in khz
-	regs_and_bypass->dprefclk = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
-			* clk_mgr->base.dentist_vco_freq_khz) / target_div;
-
-	/* Convert DCFCLK DFS Slice DID to divider*/
-	target_div = dentist_get_divider_from_did(dcfclk_did);
-	//Get dcfclk in khz
-	regs_and_bypass->dcfclk = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
-			* clk_mgr->base.dentist_vco_freq_khz) / target_div;
-
-	/* Convert DTBCLK DFS Slice DID to divider*/
-	target_div = dentist_get_divider_from_did(dtbclk_did);
-	//Get dtbclk in khz
-	regs_and_bypass->dtbclk = (DENTIST_DIVIDER_RANGE_SCALE_FACTOR
-			* clk_mgr->base.dentist_vco_freq_khz) / target_div;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void dcn401_clock_read_ss_info(struct clk_mgr_internal *clk_mgr)
 {
 	struct dc_bios *bp = clk_mgr->base.ctx->dc_bios;
@@ -1576,42 +1475,14 @@ static void dcn401_notify_wm_ranges(struct clk_mgr *clk_mgr_base)
 static void dcn401_set_hard_min_memclk(struct clk_mgr *clk_mgr_base, bool current_mode)
 {
 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
-<<<<<<< HEAD
-=======
 	const struct dc *dc = clk_mgr->base.ctx->dc;
 	struct dc_state *context = dc->current_state;
 	struct dc_clocks new_clocks;
 	int num_steps;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!clk_mgr->smu_present || !dcn401_is_ppclk_dpm_enabled(clk_mgr, PPCLK_UCLK))
 		return;
 
-<<<<<<< HEAD
-	if (current_mode) {
-		if (clk_mgr_base->clks.p_state_change_support)
-			dcn401_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK,
-					khz_to_mhz_ceil(clk_mgr_base->clks.dramclk_khz));
-		else
-			dcn401_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK,
-					clk_mgr_base->bw_params->max_memclk_mhz);
-	} else {
-		dcn401_smu_set_hard_min_by_freq(clk_mgr, PPCLK_UCLK,
-				clk_mgr_base->bw_params->clk_table.entries[0].memclk_mhz);
-	}
-}
-
-/* Set max memclk to highest DPM value */
-static void dcn401_set_hard_max_memclk(struct clk_mgr *clk_mgr_base)
-{
-	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
-
-	if (!clk_mgr->smu_present || !dcn401_is_ppclk_dpm_enabled(clk_mgr, PPCLK_UCLK))
-		return;
-
-	dcn30_smu_set_hard_max_by_freq(clk_mgr, PPCLK_UCLK,
-			clk_mgr_base->bw_params->max_memclk_mhz);
-=======
 	/* build clock update */
 	memcpy(&new_clocks, &clk_mgr_base->clks, sizeof(struct dc_clocks));
 
@@ -1632,7 +1503,6 @@ static void dcn401_set_hard_max_memclk(struct clk_mgr *clk_mgr_base)
 
 	/* execute sequence */
 	dcn401_execute_block_sequence(clk_mgr_base,	num_steps);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Get current memclk states, update bounding box */
@@ -1763,10 +1633,6 @@ static struct clk_mgr_funcs dcn401_funcs = {
 		.init_clocks = dcn401_init_clocks,
 		.notify_wm_ranges = dcn401_notify_wm_ranges,
 		.set_hard_min_memclk = dcn401_set_hard_min_memclk,
-<<<<<<< HEAD
-		.set_hard_max_memclk = dcn401_set_hard_max_memclk,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.get_memclk_states_from_smu = dcn401_get_memclk_states_from_smu,
 		.are_clock_states_equal = dcn401_are_clock_states_equal,
 		.enable_pme_wa = dcn401_enable_pme_wa,

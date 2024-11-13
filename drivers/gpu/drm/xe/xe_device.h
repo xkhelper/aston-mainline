@@ -15,11 +15,6 @@ static inline struct xe_device *to_xe_device(const struct drm_device *dev)
 	return container_of(dev, struct xe_device, drm);
 }
 
-<<<<<<< HEAD
-static inline struct xe_device *pdev_to_xe_device(struct pci_dev *pdev)
-{
-	return pci_get_drvdata(pdev);
-=======
 static inline struct xe_device *kdev_to_xe_device(struct device *kdev)
 {
 	struct drm_device *drm = dev_get_drvdata(kdev);
@@ -37,7 +32,6 @@ static inline struct xe_device *pdev_to_xe_device(struct pci_dev *pdev)
 static inline struct xe_device *xe_device_const_cast(const struct xe_device *xe)
 {
 	return (struct xe_device *)xe;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline struct xe_device *ttm_to_xe_device(struct ttm_device *ttm)
@@ -149,19 +143,6 @@ static inline struct xe_force_wake *gt_to_fw(struct xe_gt *gt)
 
 void xe_device_assert_mem_access(struct xe_device *xe);
 
-<<<<<<< HEAD
-static inline bool xe_device_in_fault_mode(struct xe_device *xe)
-{
-	return xe->usm.num_vm_in_fault_mode != 0;
-}
-
-static inline bool xe_device_in_non_fault_mode(struct xe_device *xe)
-{
-	return xe->usm.num_vm_in_non_fault_mode != 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool xe_device_has_flat_ccs(struct xe_device *xe)
 {
 	return xe->info.has_flat_ccs;
@@ -197,8 +178,6 @@ void xe_device_declare_wedged(struct xe_device *xe);
 struct xe_file *xe_file_get(struct xe_file *xef);
 void xe_file_put(struct xe_file *xef);
 
-<<<<<<< HEAD
-=======
 /*
  * Occasionally it is seen that the G2H worker starts running after a delay of more than
  * a second even after being queued and activated by the Linux workqueue subsystem. This
@@ -213,5 +192,4 @@ void xe_file_put(struct xe_file *xef);
 #define LNL_FLUSH_WORK(wrk__) \
 	flush_work(wrk__)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

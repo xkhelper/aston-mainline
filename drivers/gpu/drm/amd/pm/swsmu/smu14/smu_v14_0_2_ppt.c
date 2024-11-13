@@ -68,8 +68,6 @@
 #define DEBUGSMC_MSG_Mode1Reset        2
 #define LINK_SPEED_MAX					3
 
-<<<<<<< HEAD
-=======
 #define PP_OD_FEATURE_GFXCLK_FMIN			0
 #define PP_OD_FEATURE_GFXCLK_FMAX			1
 #define PP_OD_FEATURE_UCLK_FMIN				2
@@ -82,7 +80,6 @@
 #define PP_OD_FEATURE_FAN_TARGET_TEMPERATURE		9
 #define PP_OD_FEATURE_FAN_MINIMUM_PWM			10
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct cmn2asic_msg_mapping smu_v14_0_2_message_map[SMU_MSG_MAX_COUNT] = {
 	MSG_MAP(TestMessage,			PPSMC_MSG_TestMessage,                 1),
 	MSG_MAP(GetSmuVersion,			PPSMC_MSG_GetSmuVersion,               1),
@@ -227,10 +224,7 @@ static struct cmn2asic_mapping smu_v14_0_2_table_map[SMU_TABLE_COUNT] = {
 	[SMU_TABLE_COMBO_PPTABLE] = {1, TABLE_COMBO_PPTABLE},
 	TAB_MAP(I2C_COMMANDS),
 	TAB_MAP(ECCINFO),
-<<<<<<< HEAD
-=======
 	TAB_MAP(OVERDRIVE),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct cmn2asic_mapping smu_v14_0_2_pwr_src_map[SMU_POWER_SOURCE_COUNT] = {
@@ -373,57 +367,6 @@ static int smu_v14_0_2_store_powerplay_table(struct smu_context *smu)
 	return 0;
 }
 
-<<<<<<< HEAD
-#ifndef atom_smc_dpm_info_table_14_0_0
-struct atom_smc_dpm_info_table_14_0_0 {
-	struct atom_common_table_header table_header;
-	BoardTable_t BoardTable;
-};
-#endif
-
-static int smu_v14_0_2_append_powerplay_table(struct smu_context *smu)
-{
-	struct smu_table_context *table_context = &smu->smu_table;
-	PPTable_t *smc_pptable = table_context->driver_pptable;
-	struct atom_smc_dpm_info_table_14_0_0 *smc_dpm_table;
-	BoardTable_t *BoardTable = &smc_pptable->BoardTable;
-	int index, ret;
-
-	index = get_index_into_master_table(atom_master_list_of_data_tables_v2_1,
-					    smc_dpm_info);
-
-	ret = amdgpu_atombios_get_data_table(smu->adev, index, NULL, NULL, NULL,
-					     (uint8_t **)&smc_dpm_table);
-	if (ret)
-		return ret;
-
-	memcpy(BoardTable, &smc_dpm_table->BoardTable, sizeof(BoardTable_t));
-
-	return 0;
-}
-
-#if 0
-static int smu_v14_0_2_get_pptable_from_pmfw(struct smu_context *smu,
-					     void **table,
-					     uint32_t *size)
-{
-	struct smu_table_context *smu_table = &smu->smu_table;
-	void *combo_pptable = smu_table->combo_pptable;
-	int ret = 0;
-
-	ret = smu_cmn_get_combo_pptable(smu);
-	if (ret)
-		return ret;
-
-	*table = combo_pptable;
-	*size = sizeof(struct smu_14_0_powerplay_table);
-
-	return 0;
-}
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int smu_v14_0_2_get_pptable_from_pmfw(struct smu_context *smu,
 					     void **table,
 					     uint32_t *size)
@@ -445,23 +388,12 @@ static int smu_v14_0_2_get_pptable_from_pmfw(struct smu_context *smu,
 static int smu_v14_0_2_setup_pptable(struct smu_context *smu)
 {
 	struct smu_table_context *smu_table = &smu->smu_table;
-<<<<<<< HEAD
-	struct amdgpu_device *adev = smu->adev;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	if (amdgpu_sriov_vf(smu->adev))
 		return 0;
 
-<<<<<<< HEAD
-	if (!adev->scpm_enabled)
-		ret = smu_v14_0_setup_pptable(smu);
-	else
-		ret = smu_v14_0_2_get_pptable_from_pmfw(smu,
-=======
 	ret = smu_v14_0_2_get_pptable_from_pmfw(smu,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							&smu_table->power_play_table,
 							&smu_table->power_play_table_size);
 	if (ret)
@@ -471,19 +403,6 @@ static int smu_v14_0_2_setup_pptable(struct smu_context *smu)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	/*
-	 * With SCPM enabled, the operation below will be handled
-	 * by PSP. Driver involvment is unnecessary and useless.
-	 */
-	if (!adev->scpm_enabled) {
-		ret = smu_v14_0_2_append_powerplay_table(smu);
-		if (ret)
-			return ret;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = smu_v14_0_2_check_powerplay_table(smu);
 	if (ret)
 		return ret;
@@ -1072,8 +991,6 @@ static int smu_v14_0_2_get_current_clk_freq_by_table(struct smu_context *smu,
 						value);
 }
 
-<<<<<<< HEAD
-=======
 static bool smu_v14_0_2_is_od_feature_supported(struct smu_context *smu,
 						int od_feature_bit)
 {
@@ -1149,26 +1066,19 @@ static void smu_v14_0_2_get_od_setting_limits(struct smu_context *smu,
 		*max = od_max_setting;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int smu_v14_0_2_print_clk_levels(struct smu_context *smu,
 					enum smu_clk_type clk_type,
 					char *buf)
 {
 	struct smu_dpm_context *smu_dpm = &smu->smu_dpm;
 	struct smu_14_0_dpm_context *dpm_context = smu_dpm->dpm_context;
-<<<<<<< HEAD
-=======
 	OverDriveTableExternal_t *od_table =
 		(OverDriveTableExternal_t *)smu->smu_table.overdrive_table;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct smu_14_0_dpm_table *single_dpm_table;
 	struct smu_14_0_pcie_table *pcie_table;
 	uint32_t gen_speed, lane_width;
 	int i, curr_freq, size = 0;
-<<<<<<< HEAD
-=======
 	int32_t min_value, max_value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	smu_cmn_get_sysfs_buf(&buf, &size);
@@ -1289,8 +1199,6 @@ static int smu_v14_0_2_print_clk_levels(struct smu_context *smu,
 					"*" : "");
 		break;
 
-<<<<<<< HEAD
-=======
 	case SMU_OD_SCLK:
 		if (!smu_v14_0_2_is_od_feature_supported(smu,
 							 PP_OD_FEATURE_GFXCLK_BIT))
@@ -1474,7 +1382,6 @@ static int smu_v14_0_2_print_clk_levels(struct smu_context *smu,
 		}
 		break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		break;
 	}
@@ -1716,9 +1623,6 @@ static int smu_v14_0_2_get_power_limit(struct smu_context *smu,
 				       uint32_t *max_power_limit,
 				       uint32_t *min_power_limit)
 {
-<<<<<<< HEAD
-	// TODO
-=======
 	struct smu_table_context *table_context = &smu->smu_table;
 	PPTable_t *pptable = table_context->driver_pptable;
 	CustomSkuTable_t *skutable = &pptable->CustomSkuTable;
@@ -1740,7 +1644,6 @@ static int smu_v14_0_2_get_power_limit(struct smu_context *smu,
 
 	if (min_power_limit)
 		*min_power_limit = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -1834,11 +1737,7 @@ static int smu_v14_0_2_set_power_profile_mode(struct smu_context *smu,
 	DpmActivityMonitorCoeffInt_t *activity_monitor =
 		&(activity_monitor_external.DpmActivityMonitorCoeffInt);
 	int workload_type, ret = 0;
-<<<<<<< HEAD
-
-=======
 	uint32_t current_profile_mode = smu->power_profile_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	smu->power_profile_mode = input[size];
 
 	if (smu->power_profile_mode >= PP_SMC_POWER_PROFILE_COUNT) {
@@ -1896,14 +1795,11 @@ static int smu_v14_0_2_set_power_profile_mode(struct smu_context *smu,
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_COMPUTE)
 		smu_v14_0_deep_sleep_control(smu, false);
 	else if (current_profile_mode == PP_SMC_POWER_PROFILE_COMPUTE)
 		smu_v14_0_deep_sleep_control(smu, true);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
 	workload_type = smu_cmn_to_asic_specific_index(smu,
 						       CMN2ASIC_MAPPING_WORKLOAD,
@@ -1911,12 +1807,6 @@ static int smu_v14_0_2_set_power_profile_mode(struct smu_context *smu,
 	if (workload_type < 0)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	return smu_cmn_send_smc_msg_with_param(smu,
-					       SMU_MSG_SetWorkloadMask,
-					       1 << workload_type,
-					       NULL);
-=======
 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
 										  smu->workload_mask, NULL);
 
@@ -1924,7 +1814,6 @@ static int smu_v14_0_2_set_power_profile_mode(struct smu_context *smu,
 		smu_cmn_assign_power_profile(smu);
 
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int smu_v14_0_2_baco_enter(struct smu_context *smu)
@@ -2214,11 +2103,7 @@ static ssize_t smu_v14_0_2_get_gpu_metrics(struct smu_context *smu,
 
 	gpu_metrics->average_gfx_activity = metrics->AverageGfxActivity;
 	gpu_metrics->average_umc_activity = metrics->AverageUclkActivity;
-<<<<<<< HEAD
-	gpu_metrics->average_mm_activity = max(metrics->Vcn0ActivityPercentage,
-=======
 	gpu_metrics->average_mm_activity = max(metrics->AverageVcn0ActivityPercentage,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					       metrics->Vcn1ActivityPercentage);
 
 	gpu_metrics->average_socket_power = metrics->AverageSocketPower;
@@ -2272,8 +2157,6 @@ static ssize_t smu_v14_0_2_get_gpu_metrics(struct smu_context *smu,
 	return sizeof(struct gpu_metrics_v1_3);
 }
 
-<<<<<<< HEAD
-=======
 static void smu_v14_0_2_dump_od_table(struct smu_context *smu,
 				      OverDriveTableExternal_t *od_table)
 {
@@ -2836,7 +2719,6 @@ static int smu_v14_0_2_set_power_limit(struct smu_context *smu,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct pptable_funcs smu_v14_0_2_ppt_funcs = {
 	.get_allowed_feature_mask = smu_v14_0_2_get_allowed_feature_mask,
 	.set_default_dpm_table = smu_v14_0_2_set_default_dpm_table,
@@ -2854,10 +2736,6 @@ static const struct pptable_funcs smu_v14_0_2_ppt_funcs = {
 	.check_fw_status = smu_v14_0_check_fw_status,
 	.setup_pptable = smu_v14_0_2_setup_pptable,
 	.check_fw_version = smu_v14_0_check_fw_version,
-<<<<<<< HEAD
-	.write_pptable = smu_cmn_write_pptable,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_driver_table_location = smu_v14_0_set_driver_table_location,
 	.system_features_control = smu_v14_0_system_features_control,
 	.set_allowed_mask = smu_v14_0_set_allowed_mask,
@@ -2878,23 +2756,16 @@ static const struct pptable_funcs smu_v14_0_2_ppt_funcs = {
 	.notify_memory_pool_location = smu_v14_0_notify_memory_pool_location,
 	.get_gpu_metrics = smu_v14_0_2_get_gpu_metrics,
 	.set_soft_freq_limited_range = smu_v14_0_set_soft_freq_limited_range,
-<<<<<<< HEAD
-=======
 	.set_default_od_settings = smu_v14_0_2_set_default_od_settings,
 	.restore_user_od_settings = smu_v14_0_2_restore_user_od_settings,
 	.od_edit_dpm_table = smu_v14_0_2_od_edit_dpm_table,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init_pptable_microcode = smu_v14_0_init_pptable_microcode,
 	.populate_umd_state_clk = smu_v14_0_2_populate_umd_state_clk,
 	.set_performance_level = smu_v14_0_set_performance_level,
 	.gfx_off_control = smu_v14_0_gfx_off_control,
 	.get_unique_id = smu_v14_0_2_get_unique_id,
 	.get_power_limit = smu_v14_0_2_get_power_limit,
-<<<<<<< HEAD
-	.set_power_limit = smu_v14_0_set_power_limit,
-=======
 	.set_power_limit = smu_v14_0_2_set_power_limit,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_power_source = smu_v14_0_set_power_source,
 	.get_power_profile_mode = smu_v14_0_2_get_power_profile_mode,
 	.set_power_profile_mode = smu_v14_0_2_set_power_profile_mode,

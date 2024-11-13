@@ -122,10 +122,7 @@ struct vop_common {
 	struct vop_reg lut_buffer_index;
 	struct vop_reg gate_en;
 	struct vop_reg mmu_en;
-<<<<<<< HEAD
-=======
 	struct vop_reg dma_stop;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct vop_reg out_mode;
 	struct vop_reg standby;
 };

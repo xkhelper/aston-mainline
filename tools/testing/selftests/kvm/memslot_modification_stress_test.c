@@ -79,10 +79,7 @@ struct test_params {
 	useconds_t delay;
 	uint64_t nr_iterations;
 	bool partition_vcpu_memory_access;
-<<<<<<< HEAD
-=======
 	bool disable_slot_zap_quirk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void run_test(enum vm_guest_mode mode, void *arg)
@@ -93,8 +90,6 @@ static void run_test(enum vm_guest_mode mode, void *arg)
 	vm = memstress_create_vm(mode, nr_vcpus, guest_percpu_mem_size, 1,
 				 VM_MEM_SRC_ANONYMOUS,
 				 p->partition_vcpu_memory_access);
-<<<<<<< HEAD
-=======
 #ifdef __x86_64__
 	if (p->disable_slot_zap_quirk)
 		vm_enable_cap(vm, KVM_CAP_DISABLE_QUIRKS2, KVM_X86_QUIRK_SLOT_ZAP_ALL);
@@ -102,7 +97,6 @@ static void run_test(enum vm_guest_mode mode, void *arg)
 	pr_info("Memslot zap quirk %s\n", p->disable_slot_zap_quirk ?
 		"disabled" : "enabled");
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pr_info("Finished creating vCPUs\n");
 
@@ -121,19 +115,12 @@ static void run_test(enum vm_guest_mode mode, void *arg)
 static void help(char *name)
 {
 	puts("");
-<<<<<<< HEAD
-	printf("usage: %s [-h] [-m mode] [-d delay_usec]\n"
-=======
 	printf("usage: %s [-h] [-m mode] [-d delay_usec] [-q]\n"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	       "          [-b memory] [-v vcpus] [-o] [-i iterations]\n", name);
 	guest_modes_help();
 	printf(" -d: add a delay between each iteration of adding and\n"
 	       "     deleting a memslot in usec.\n");
-<<<<<<< HEAD
-=======
 	printf(" -q: Disable memslot zap quirk.\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printf(" -b: specify the size of the memory region which should be\n"
 	       "     accessed by each vCPU. e.g. 10M or 3G.\n"
 	       "     Default: 1G\n");
@@ -159,11 +146,7 @@ int main(int argc, char *argv[])
 
 	guest_modes_append_default();
 
-<<<<<<< HEAD
-	while ((opt = getopt(argc, argv, "hm:d:b:v:oi:")) != -1) {
-=======
 	while ((opt = getopt(argc, argv, "hm:d:qb:v:oi:")) != -1) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		switch (opt) {
 		case 'm':
 			guest_modes_cmdline(optarg);
@@ -186,8 +169,6 @@ int main(int argc, char *argv[])
 		case 'i':
 			p.nr_iterations = atoi_positive("Number of iterations", optarg);
 			break;
-<<<<<<< HEAD
-=======
 #ifdef __x86_64__
 		case 'q':
 			p.disable_slot_zap_quirk = true;
@@ -196,7 +177,6 @@ int main(int argc, char *argv[])
 				     KVM_X86_QUIRK_SLOT_ZAP_ALL);
 			break;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		case 'h':
 		default:
 			help(argv[0]);

@@ -67,45 +67,27 @@
    - instance of a transformer, struct xfrm_state (=SA)
    - template to clone xfrm_state, struct xfrm_tmpl
 
-<<<<<<< HEAD
-   SPD is plain linear list of xfrm_policy rules, ordered by priority.
-=======
    SPD is organized as hash table (for policies that meet minimum address prefix
    length setting, net->xfrm.policy_hthresh).  Other policies are stored in
    lists, sorted into rbtree ordered by destination and source address networks.
    See net/xfrm/xfrm_policy.c for details.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    (To be compatible with existing pfkeyv2 implementations,
    many rules with priority of 0x7fffffff are allowed to exist and
    such rules are ordered in an unpredictable way, thanks to bsd folks.)
 
-<<<<<<< HEAD
-   Lookup is plain linear search until the first match with selector.
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    If "action" is "block", then we prohibit the flow, otherwise:
    if "xfrms_nr" is zero, the flow passes untransformed. Otherwise,
    policy entry has list of up to XFRM_MAX_DEPTH transformations,
    described by templates xfrm_tmpl. Each template is resolved
    to a complete xfrm_state (see below) and we pack bundle of transformations
-<<<<<<< HEAD
-   to a dst_entry returned to requestor.
-=======
    to a dst_entry returned to requester.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
    dst -. xfrm  .-> xfrm_state #1
     |---. child .-> dst -. xfrm .-> xfrm_state #2
                      |---. child .-> dst -. xfrm .-> xfrm_state #3
                                       |---. child .-> NULL
 
-<<<<<<< HEAD
-   Bundles are cached at xrfm_policy struct (field ->bundles).
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
    Resolution of xrfm_tmpl
    -----------------------
@@ -367,8 +349,6 @@ struct xfrm_if_cb {
 void xfrm_if_register_cb(const struct xfrm_if_cb *ifcb);
 void xfrm_if_unregister_cb(void);
 
-<<<<<<< HEAD
-=======
 struct xfrm_dst_lookup_params {
 	struct net *net;
 	int tos;
@@ -380,27 +360,14 @@ struct xfrm_dst_lookup_params {
 	union flowi_uli uli;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct net_device;
 struct xfrm_type;
 struct xfrm_dst;
 struct xfrm_policy_afinfo {
 	struct dst_ops		*dst_ops;
-<<<<<<< HEAD
-	struct dst_entry	*(*dst_lookup)(struct net *net,
-					       int tos, int oif,
-					       const xfrm_address_t *saddr,
-					       const xfrm_address_t *daddr,
-					       u32 mark);
-	int			(*get_saddr)(struct net *net, int oif,
-					     xfrm_address_t *saddr,
-					     xfrm_address_t *daddr,
-					     u32 mark);
-=======
 	struct dst_entry	*(*dst_lookup)(const struct xfrm_dst_lookup_params *params);
 	int			(*get_saddr)(xfrm_address_t *saddr,
 					     const struct xfrm_dst_lookup_params *params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			(*fill_dst)(struct xfrm_dst *xdst,
 					    struct net_device *dev,
 					    const struct flowi *fl);
@@ -564,8 +531,6 @@ struct xfrm_policy_queue {
 	unsigned long		timeout;
 };
 
-<<<<<<< HEAD
-=======
 /**
  *	struct xfrm_policy - xfrm policy
  *	@xp_net: network namespace the policy lives in
@@ -596,7 +561,6 @@ struct xfrm_policy_queue {
  *	@rcu: rcu head, used to defer memory release
  *	@xdo: hardware offload state
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct xfrm_policy {
 	possible_net_t		xp_net;
 	struct hlist_node	bydst;
@@ -626,10 +590,6 @@ struct xfrm_policy {
 	u16			family;
 	struct xfrm_sec_ctx	*security;
 	struct xfrm_tmpl       	xfrm_vec[XFRM_MAX_DEPTH];
-<<<<<<< HEAD
-	struct hlist_node	bydst_inexact_list;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rcu_head		rcu;
 
 	struct xfrm_dev_offload xdo;
@@ -1090,11 +1050,7 @@ void xfrm_dst_ifdown(struct dst_entry *dst, struct net_device *dev);
 
 struct xfrm_if_parms {
 	int link;		/* ifindex of underlying L2 interface */
-<<<<<<< HEAD
-	u32 if_id;		/* interface identifyer */
-=======
 	u32 if_id;		/* interface identifier */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool collect_md;
 };
 
@@ -1813,14 +1769,7 @@ static inline int xfrm_user_policy(struct sock *sk, int optname,
 }
 #endif
 
-<<<<<<< HEAD
-struct dst_entry *__xfrm_dst_lookup(struct net *net, int tos, int oif,
-				    const xfrm_address_t *saddr,
-				    const xfrm_address_t *daddr,
-				    int family, u32 mark);
-=======
 struct dst_entry *__xfrm_dst_lookup(int family, const struct xfrm_dst_lookup_params *params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct xfrm_policy *xfrm_policy_alloc(struct net *net, gfp_t gfp);
 

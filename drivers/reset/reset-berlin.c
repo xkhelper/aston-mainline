@@ -68,21 +68,14 @@ static int berlin_reset_xlate(struct reset_controller_dev *rcdev,
 
 static int berlin2_reset_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
-	struct device_node *parent_np = of_get_parent(pdev->dev.of_node);
-=======
 	struct device_node *parent_np;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct berlin_reset_priv *priv;
 
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
 	parent_np = of_get_parent(pdev->dev.of_node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	priv->regmap = syscon_node_to_regmap(parent_np);
 	of_node_put(parent_np);
 	if (IS_ERR(priv->regmap))

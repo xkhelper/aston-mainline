@@ -693,32 +693,12 @@ static int mock_decoder_commit(struct cxl_decoder *cxld)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int mock_decoder_reset(struct cxl_decoder *cxld)
-=======
 static void mock_decoder_reset(struct cxl_decoder *cxld)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
 	int id = cxld->id;
 
 	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
-<<<<<<< HEAD
-		return 0;
-
-	dev_dbg(&port->dev, "%s reset\n", dev_name(&cxld->dev));
-	if (port->commit_end != id) {
-		dev_dbg(&port->dev,
-			"%s: out of order reset, expected decoder%d.%d\n",
-			dev_name(&cxld->dev), port->id, port->commit_end);
-		return -EBUSY;
-	}
-
-	port->commit_end--;
-	cxld->flags &= ~CXL_DECODER_F_ENABLE;
-
-	return 0;
-=======
 		return;
 
 	dev_dbg(&port->dev, "%s reset\n", dev_name(&cxld->dev));
@@ -729,7 +709,6 @@ static void mock_decoder_reset(struct cxl_decoder *cxld)
 			"%s: out of order reset, expected decoder%d.%d\n",
 			dev_name(&cxld->dev), port->id, port->commit_end);
 	cxld->flags &= ~CXL_DECODER_F_ENABLE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void default_mock_decoder(struct cxl_decoder *cxld)
@@ -1079,11 +1058,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
 #define SZ_64G (SZ_32G * 2)
 #endif
 
-<<<<<<< HEAD
-static __init int cxl_rch_init(void)
-=======
 static __init int cxl_rch_topo_init(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int rc, i;
 
@@ -1111,35 +1086,8 @@ static __init int cxl_rch_topo_init(void)
 			goto err_bridge;
 	}
 
-<<<<<<< HEAD
-	for (i = 0; i < ARRAY_SIZE(cxl_rcd); i++) {
-		int idx = NR_MEM_MULTI + NR_MEM_SINGLE + i;
-		struct platform_device *rch = cxl_rch[i];
-		struct platform_device *pdev;
-
-		pdev = platform_device_alloc("cxl_rcd", idx);
-		if (!pdev)
-			goto err_mem;
-		pdev->dev.parent = &rch->dev;
-		set_dev_node(&pdev->dev, i % 2);
-
-		rc = platform_device_add(pdev);
-		if (rc) {
-			platform_device_put(pdev);
-			goto err_mem;
-		}
-		cxl_rcd[i] = pdev;
-	}
-
 	return 0;
 
-err_mem:
-	for (i = ARRAY_SIZE(cxl_rcd) - 1; i >= 0; i--)
-		platform_device_unregister(cxl_rcd[i]);
-=======
-	return 0;
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_bridge:
 	for (i = ARRAY_SIZE(cxl_rch) - 1; i >= 0; i--) {
 		struct platform_device *pdev = cxl_rch[i];
@@ -1153,19 +1101,10 @@ err_bridge:
 	return rc;
 }
 
-<<<<<<< HEAD
-static void cxl_rch_exit(void)
-{
-	int i;
-
-	for (i = ARRAY_SIZE(cxl_rcd) - 1; i >= 0; i--)
-		platform_device_unregister(cxl_rcd[i]);
-=======
 static void cxl_rch_topo_exit(void)
 {
 	int i;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = ARRAY_SIZE(cxl_rch) - 1; i >= 0; i--) {
 		struct platform_device *pdev = cxl_rch[i];
 
@@ -1176,11 +1115,7 @@ static void cxl_rch_topo_exit(void)
 	}
 }
 
-<<<<<<< HEAD
-static __init int cxl_single_init(void)
-=======
 static __init int cxl_single_topo_init(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i, rc;
 
@@ -1265,34 +1200,8 @@ static __init int cxl_single_topo_init(void)
 		cxl_swd_single[i] = pdev;
 	}
 
-<<<<<<< HEAD
-	for (i = 0; i < ARRAY_SIZE(cxl_mem_single); i++) {
-		struct platform_device *dport = cxl_swd_single[i];
-		struct platform_device *pdev;
-
-		pdev = platform_device_alloc("cxl_mem", NR_MEM_MULTI + i);
-		if (!pdev)
-			goto err_mem;
-		pdev->dev.parent = &dport->dev;
-		set_dev_node(&pdev->dev, i % 2);
-
-		rc = platform_device_add(pdev);
-		if (rc) {
-			platform_device_put(pdev);
-			goto err_mem;
-		}
-		cxl_mem_single[i] = pdev;
-	}
-
 	return 0;
 
-err_mem:
-	for (i = ARRAY_SIZE(cxl_mem_single) - 1; i >= 0; i--)
-		platform_device_unregister(cxl_mem_single[i]);
-=======
-	return 0;
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_dport:
 	for (i = ARRAY_SIZE(cxl_swd_single) - 1; i >= 0; i--)
 		platform_device_unregister(cxl_swd_single[i]);
@@ -1315,19 +1224,10 @@ err_bridge:
 	return rc;
 }
 
-<<<<<<< HEAD
-static void cxl_single_exit(void)
-{
-	int i;
-
-	for (i = ARRAY_SIZE(cxl_mem_single) - 1; i >= 0; i--)
-		platform_device_unregister(cxl_mem_single[i]);
-=======
 static void cxl_single_topo_exit(void)
 {
 	int i;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = ARRAY_SIZE(cxl_swd_single) - 1; i >= 0; i--)
 		platform_device_unregister(cxl_swd_single[i]);
 	for (i = ARRAY_SIZE(cxl_swu_single) - 1; i >= 0; i--)
@@ -1344,8 +1244,6 @@ static void cxl_single_topo_exit(void)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void cxl_mem_exit(void)
 {
 	int i;
@@ -1431,7 +1329,6 @@ err_mem:
 	return rc;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __init int cxl_test_init(void)
 {
 	int rc, i;
@@ -1544,37 +1441,11 @@ static __init int cxl_test_init(void)
 		cxl_switch_dport[i] = pdev;
 	}
 
-<<<<<<< HEAD
-	for (i = 0; i < ARRAY_SIZE(cxl_mem); i++) {
-		struct platform_device *dport = cxl_switch_dport[i];
-		struct platform_device *pdev;
-
-		pdev = platform_device_alloc("cxl_mem", i);
-		if (!pdev)
-			goto err_mem;
-		pdev->dev.parent = &dport->dev;
-		set_dev_node(&pdev->dev, i % 2);
-
-		rc = platform_device_add(pdev);
-		if (rc) {
-			platform_device_put(pdev);
-			goto err_mem;
-		}
-		cxl_mem[i] = pdev;
-	}
-
-	rc = cxl_single_init();
-	if (rc)
-		goto err_mem;
-
-	rc = cxl_rch_init();
-=======
 	rc = cxl_single_topo_init();
 	if (rc)
 		goto err_dport;
 
 	rc = cxl_rch_topo_init();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc)
 		goto err_single;
 
@@ -1587,21 +1458,6 @@ static __init int cxl_test_init(void)
 
 	rc = platform_device_add(cxl_acpi);
 	if (rc)
-<<<<<<< HEAD
-		goto err_add;
-
-	return 0;
-
-err_add:
-	platform_device_put(cxl_acpi);
-err_rch:
-	cxl_rch_exit();
-err_single:
-	cxl_single_exit();
-err_mem:
-	for (i = ARRAY_SIZE(cxl_mem) - 1; i >= 0; i--)
-		platform_device_unregister(cxl_mem[i]);
-=======
 		goto err_root;
 
 	rc = cxl_mem_init();
@@ -1616,7 +1472,6 @@ err_rch:
 	cxl_rch_topo_exit();
 err_single:
 	cxl_single_topo_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_dport:
 	for (i = ARRAY_SIZE(cxl_switch_dport) - 1; i >= 0; i--)
 		platform_device_unregister(cxl_switch_dport[i]);
@@ -1648,18 +1503,10 @@ static __exit void cxl_test_exit(void)
 {
 	int i;
 
-<<<<<<< HEAD
-	platform_device_unregister(cxl_acpi);
-	cxl_rch_exit();
-	cxl_single_exit();
-	for (i = ARRAY_SIZE(cxl_mem) - 1; i >= 0; i--)
-		platform_device_unregister(cxl_mem[i]);
-=======
 	cxl_mem_exit();
 	platform_device_unregister(cxl_acpi);
 	cxl_rch_topo_exit();
 	cxl_single_topo_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = ARRAY_SIZE(cxl_switch_dport) - 1; i >= 0; i--)
 		platform_device_unregister(cxl_switch_dport[i]);
 	for (i = ARRAY_SIZE(cxl_switch_uport) - 1; i >= 0; i--)

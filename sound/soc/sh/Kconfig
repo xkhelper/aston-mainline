@@ -41,10 +41,7 @@ config SND_SOC_RCAR
 	depends on COMMON_CLK
 	depends on OF
 	select SND_SIMPLE_CARD_UTILS
-<<<<<<< HEAD
-=======
 	select SND_DMAENGINE_PCM
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select REGMAP_MMIO
 	help
 	  This option enables R-Car SRU/SCU/SSIU/SSI sound support

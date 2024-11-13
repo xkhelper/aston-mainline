@@ -846,13 +846,8 @@ mpt3sas_base_start_watchdog(struct MPT3SAS_ADAPTER *ioc)
 	snprintf(ioc->fault_reset_work_q_name,
 	    sizeof(ioc->fault_reset_work_q_name), "poll_%s%d_status",
 	    ioc->driver_name, ioc->id);
-<<<<<<< HEAD
-	ioc->fault_reset_work_q =
-		create_singlethread_workqueue(ioc->fault_reset_work_q_name);
-=======
 	ioc->fault_reset_work_q = alloc_ordered_workqueue(
 		"%s", WQ_MEM_RECLAIM, ioc->fault_reset_work_q_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ioc->fault_reset_work_q) {
 		ioc_err(ioc, "%s: failed (line=%d)\n", __func__, __LINE__);
 		return;
@@ -8903,14 +8898,8 @@ _base_check_ioc_facts_changes(struct MPT3SAS_ADAPTER *ioc)
 		    ioc->device_remove_in_progress, pd_handles_sz, GFP_KERNEL);
 		if (!device_remove_in_progress) {
 			ioc_info(ioc,
-<<<<<<< HEAD
-			    "Unable to allocate the memory for "
-			    "device_remove_in_progress of sz: %d\n "
-			    , pd_handles_sz);
-=======
 			    "Unable to allocate the memory for device_remove_in_progress of sz: %d\n",
 			    pd_handles_sz);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENOMEM;
 		}
 		memset(device_remove_in_progress +

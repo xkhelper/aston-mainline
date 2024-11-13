@@ -4,10 +4,7 @@
 #include <linux/ptrace.h>
 #include <linux/bpf.h>
 #include <bpf/bpf_helpers.h>
-<<<<<<< HEAD
-=======
 #include "bpf_misc.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 const struct {
 	unsigned a[4];
@@ -68,11 +65,7 @@ int full_loop(struct pt_regs *ctx)
 {
 	/* prevent compiler to optimize everything out */
 	unsigned * volatile p = (void *)&rdonly_values.a;
-<<<<<<< HEAD
-	int i = sizeof(rdonly_values.a) / sizeof(rdonly_values.a[0]);
-=======
 	int i = ARRAY_SIZE(rdonly_values.a);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned iters = 0, sum = 0;
 
 	/* validate verifier can allow full loop as well */

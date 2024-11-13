@@ -905,11 +905,7 @@ static int ioat_xor_val_self_test(struct ioatdma_device *ioat_dma)
 
 	op = IOAT_OP_XOR_VAL;
 
-<<<<<<< HEAD
-	/* validate the sources with the destintation page */
-=======
 	/* validate the sources with the destination page */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < IOAT_NUM_SRC_TEST; i++)
 		xor_val_srcs[i] = xor_srcs[i];
 	xor_val_srcs[i] = dest;

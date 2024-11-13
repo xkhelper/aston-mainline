@@ -1696,10 +1696,7 @@ int usb_gadget_register_driver_owner(struct usb_gadget_driver *driver,
 	driver->driver.bus = &gadget_bus_type;
 	driver->driver.owner = owner;
 	driver->driver.mod_name = mod_name;
-<<<<<<< HEAD
-=======
 	driver->driver.probe_type = PROBE_FORCE_SYNCHRONOUS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = driver_register(&driver->driver);
 	if (ret) {
 		pr_warn("%s: driver registration failed: %d\n",

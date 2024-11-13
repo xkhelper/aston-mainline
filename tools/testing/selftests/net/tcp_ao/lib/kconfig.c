@@ -6,11 +6,7 @@
 #include "aolib.h"
 
 struct kconfig_t {
-<<<<<<< HEAD
-	int _errno;		/* the returned error if not supported */
-=======
 	int _error;		/* negative errno if not supported */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*check_kconfig)(int *error);
 };
 
@@ -66,11 +62,7 @@ static int has_tcp_ao(int *err)
 	memcpy(&tmp.addr, &addr, sizeof(addr));
 	*err = 0;
 	if (setsockopt(sk, IPPROTO_TCP, TCP_AO_ADD_KEY, &tmp, sizeof(tmp)) < 0) {
-<<<<<<< HEAD
-		*err = errno;
-=======
 		*err = -errno;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (errno != ENOPROTOOPT)
 			ret = -errno;
 	}
@@ -95,11 +87,7 @@ static int has_tcp_md5(int *err)
 	 */
 	*err = 0;
 	if (test_set_md5(sk, addr_any, 0, -1, DEFAULT_TEST_PASSWORD)) {
-<<<<<<< HEAD
-		*err = errno;
-=======
 		*err = -errno;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (errno != ENOPROTOOPT && errno == ENOMEM) {
 			test_print("setsockopt(TCP_MD5SIG_EXT): %m");
 			ret = -errno;
@@ -128,15 +116,6 @@ static int has_vrfs(int *err)
 	return ret;
 }
 
-<<<<<<< HEAD
-static pthread_mutex_t kconfig_lock = PTHREAD_MUTEX_INITIALIZER;
-static struct kconfig_t kconfig[__KCONFIG_LAST__] = {
-	{ -1, has_net_ns },
-	{ -1, has_veth },
-	{ -1, has_tcp_ao },
-	{ -1, has_tcp_md5 },
-	{ -1, has_vrfs },
-=======
 static int has_ftrace(int *err)
 {
 	*err = test_setup_tracing();
@@ -152,7 +131,6 @@ static struct kconfig_t kconfig[__KCONFIG_LAST__] = {
 	{ KCONFIG_UNKNOWN, has_tcp_md5 },
 	{ KCONFIG_UNKNOWN, has_vrfs },
 	{ KCONFIG_UNKNOWN, has_ftrace },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const char *tests_skip_reason[__KCONFIG_LAST__] = {
@@ -161,10 +139,7 @@ const char *tests_skip_reason[__KCONFIG_LAST__] = {
 	"Tests require TCP-AO support (CONFIG_TCP_AO)",
 	"setsockopt(TCP_MD5SIG_EXT) is not supported (CONFIG_TCP_MD5)",
 	"VRFs are not supported (CONFIG_NET_VRF)",
-<<<<<<< HEAD
-=======
 	"Ftrace points are not supported (CONFIG_TRACEPOINTS)",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 bool kernel_config_has(enum test_needs_kconfig k)
@@ -172,19 +147,11 @@ bool kernel_config_has(enum test_needs_kconfig k)
 	bool ret;
 
 	pthread_mutex_lock(&kconfig_lock);
-<<<<<<< HEAD
-	if (kconfig[k]._errno == -1) {
-		if (kconfig[k].check_kconfig(&kconfig[k]._errno))
-			test_error("Failed to initialize kconfig %u", k);
-	}
-	ret = kconfig[k]._errno == 0;
-=======
 	if (kconfig[k]._error == KCONFIG_UNKNOWN) {
 		if (kconfig[k].check_kconfig(&kconfig[k]._error))
 			test_error("Failed to initialize kconfig %u", k);
 	}
 	ret = kconfig[k]._error == 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pthread_mutex_unlock(&kconfig_lock);
 	return ret;
 }

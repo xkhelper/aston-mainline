@@ -7,10 +7,7 @@ config NFSD
 	select LOCKD
 	select SUNRPC
 	select EXPORTFS
-<<<<<<< HEAD
-=======
 	select NFS_COMMON
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select NFS_ACL_SUPPORT if NFSD_V2_ACL
 	select NFS_ACL_SUPPORT if NFSD_V3_ACL
 	depends on MULTIUSER

@@ -245,8 +245,6 @@ int mlx5_cmd_uar_dealloc(struct mlx5_core_dev *dev, u32 uarn, u16 uid)
 	MLX5_SET(dealloc_uar_in, in, uid, uid);
 	return mlx5_cmd_exec_in(dev, dealloc_uar, in);
 }
-<<<<<<< HEAD
-=======
 
 int mlx5_cmd_query_vuid(struct mlx5_core_dev *dev, bool data_direct,
 			char *out_vuid)
@@ -268,4 +266,3 @@ int mlx5_cmd_query_vuid(struct mlx5_core_dev *dev, bool data_direct,
 	memcpy(out_vuid, vuid, MLX5_ST_SZ_BYTES(array1024_auto));
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

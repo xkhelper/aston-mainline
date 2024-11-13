@@ -137,11 +137,8 @@ check()
 	fi
 }
 
-<<<<<<< HEAD
-=======
 mptcp_lib_subtests_last_ts_reset
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 check "show_endpoints" "" "defaults addr list"
 
 default_limits="$(get_limits)"

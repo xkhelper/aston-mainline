@@ -92,18 +92,3 @@ struct page *grab_cache_page_write_begin(struct address_space *mapping,
 			mapping_gfp_mask(mapping));
 }
 EXPORT_SYMBOL(grab_cache_page_write_begin);
-<<<<<<< HEAD
-
-bool isolate_lru_page(struct page *page)
-{
-	if (WARN_RATELIMIT(PageTail(page), "trying to isolate tail page"))
-		return false;
-	return folio_isolate_lru((struct folio *)page);
-}
-
-void putback_lru_page(struct page *page)
-{
-	folio_putback_lru(page_folio(page));
-}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

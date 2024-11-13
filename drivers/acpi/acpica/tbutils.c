@@ -18,10 +18,6 @@ ACPI_MODULE_NAME("tbutils")
 static acpi_physical_address
 acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size);
 
-<<<<<<< HEAD
-#if (!ACPI_REDUCED_HARDWARE)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*******************************************************************************
  *
  * FUNCTION:    acpi_tb_initialize_facs
@@ -59,10 +55,6 @@ acpi_status acpi_tb_initialize_facs(void)
 
 	return (AE_OK);
 }
-<<<<<<< HEAD
-#endif				/* !ACPI_REDUCED_HARDWARE */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*******************************************************************************
  *

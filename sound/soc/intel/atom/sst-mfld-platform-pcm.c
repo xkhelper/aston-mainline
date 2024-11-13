@@ -812,11 +812,7 @@ static struct platform_driver sst_platform_driver = {
 		.pm             = &sst_platform_pm,
 	},
 	.probe		= sst_platform_probe,
-<<<<<<< HEAD
-	.remove_new	= sst_platform_remove,
-=======
 	.remove		= sst_platform_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(sst_platform_driver);

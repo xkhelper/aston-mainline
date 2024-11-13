@@ -6,14 +6,8 @@ generic-y += mcs_spinlock.h
 generic-y += parport.h
 generic-y += early_ioremap.h
 generic-y += qrwlock.h
-<<<<<<< HEAD
-generic-y += qspinlock.h
-generic-y += user.h
-generic-y += ioctl.h
-=======
 generic-y += user.h
 generic-y += ioctl.h
 generic-y += mmzone.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 generic-y += statfs.h
 generic-y += param.h

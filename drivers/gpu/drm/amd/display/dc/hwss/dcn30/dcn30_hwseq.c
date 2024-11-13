@@ -398,15 +398,11 @@ bool dcn30_set_output_transfer_func(struct dc *dc,
 		}
 	}
 
-<<<<<<< HEAD
-	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
-=======
 	if (mpc->funcs->set_output_gamma)
 		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
 	else
 		DC_LOG_ERROR("%s: set_output_gamma function pointer is NULL.\n", __func__);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -459,11 +455,7 @@ bool dcn30_mmhubbub_warmup(
 	struct mcif_wb *mcif_wb;
 	struct mcif_warmup_params warmup_params = {0};
 	unsigned int  i, i_buf;
-<<<<<<< HEAD
-	/*make sure there is no active DWB eanbled */
-=======
 	/* make sure there is no active DWB enabled */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < num_dwb; i++) {
 		dwb = dc->res_pool->dwbc[wb_info[i].dwb_pipe_inst];
 		if (dwb->dwb_is_efc_transition || dwb->dwb_is_drc) {
@@ -637,11 +629,7 @@ void dcn30_init_hw(struct dc *dc)
 	uint32_t backlight = MAX_BACKLIGHT_LEVEL;
 	uint32_t user_level = MAX_BACKLIGHT_LEVEL;
 
-<<<<<<< HEAD
-	if (dc->clk_mgr && dc->clk_mgr->funcs->init_clocks)
-=======
 	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->init_clocks)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dc->clk_mgr->funcs->init_clocks(dc->clk_mgr);
 
 	// Initialize the dccg
@@ -747,17 +735,10 @@ void dcn30_init_hw(struct dc *dc)
 		if (edp_link && edp_link->link_enc->funcs->is_dig_enabled &&
 				edp_link->link_enc->funcs->is_dig_enabled(edp_link->link_enc) &&
 				dc->hwss.edp_backlight_control &&
-<<<<<<< HEAD
-				dc->hwss.power_down &&
-				dc->hwss.edp_power_control) {
-			dc->hwss.edp_backlight_control(edp_link, false);
-			dc->hwss.power_down(dc);
-=======
 				hws->funcs.power_down &&
 				dc->hwss.edp_power_control) {
 			dc->hwss.edp_backlight_control(edp_link, false);
 			hws->funcs.power_down(dc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dc->hwss.edp_power_control(edp_link, false);
 		} else {
 			for (i = 0; i < dc->link_count; i++) {
@@ -765,13 +746,8 @@ void dcn30_init_hw(struct dc *dc)
 
 				if (link->link_enc->funcs->is_dig_enabled &&
 						link->link_enc->funcs->is_dig_enabled(link->link_enc) &&
-<<<<<<< HEAD
-						dc->hwss.power_down) {
-					dc->hwss.power_down(dc);
-=======
 						hws->funcs.power_down) {
 					hws->funcs.power_down(dc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					break;
 				}
 
@@ -814,20 +790,12 @@ void dcn30_init_hw(struct dc *dc)
 	if (!dcb->funcs->is_accelerated_mode(dcb) && dc->res_pool->hubbub->funcs->init_watermarks)
 		dc->res_pool->hubbub->funcs->init_watermarks(dc->res_pool->hubbub);
 
-<<<<<<< HEAD
-	if (dc->clk_mgr->funcs->notify_wm_ranges)
-		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
-
-	//if softmax is enabled then hardmax will be set by a different call
-	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
-=======
 	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->notify_wm_ranges)
 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
 
 	//if softmax is enabled then hardmax will be set by a different call
 	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->set_hard_max_memclk &&
 	    !dc->clk_mgr->dc_mode_softmax_enabled)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
 
 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)

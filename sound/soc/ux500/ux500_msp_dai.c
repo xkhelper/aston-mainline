@@ -816,11 +816,7 @@ static struct platform_driver msp_i2s_driver = {
 		.of_match_table = ux500_msp_i2s_match,
 	},
 	.probe = ux500_msp_drv_probe,
-<<<<<<< HEAD
-	.remove_new = ux500_msp_drv_remove,
-=======
 	.remove = ux500_msp_drv_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(msp_i2s_driver);
 

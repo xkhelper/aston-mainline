@@ -9,15 +9,6 @@
 
 /* BPF map that will be filled by user space */
 struct filters {
-<<<<<<< HEAD
-	__uint(type, BPF_MAP_TYPE_ARRAY);
-	__type(key, int);
-	__type(value, struct perf_bpf_filter_entry);
-	__uint(max_entries, MAX_FILTERS);
-} filters SEC(".maps");
-
-int dropped;
-=======
 	__uint(type, BPF_MAP_TYPE_HASH);
 	__type(key, int);
 	__type(value, struct perf_bpf_filter_entry[MAX_FILTERS]);
@@ -53,7 +44,6 @@ struct lost_count {
 } dropped SEC(".maps");
 
 volatile const int use_idx_hash;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void *bpf_cast_to_kern_ctx(void *) __ksym;
 
@@ -103,10 +93,7 @@ static inline __u64 perf_get_sample(struct bpf_perf_event_data_kern *kctx,
 	BUILD_CHECK_SAMPLE(DATA_SRC);
 	BUILD_CHECK_SAMPLE(TRANSACTION);
 	BUILD_CHECK_SAMPLE(PHYS_ADDR);
-<<<<<<< HEAD
-=======
 	BUILD_CHECK_SAMPLE(CGROUP);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BUILD_CHECK_SAMPLE(DATA_PAGE_SIZE);
 	BUILD_CHECK_SAMPLE(CODE_PAGE_SIZE);
 	BUILD_CHECK_SAMPLE(WEIGHT_STRUCT);
@@ -149,11 +136,8 @@ static inline __u64 perf_get_sample(struct bpf_perf_event_data_kern *kctx,
 		return kctx->data->weight.full;
 	case PBF_TERM_PHYS_ADDR:
 		return kctx->data->phys_addr;
-<<<<<<< HEAD
-=======
 	case PBF_TERM_CGROUP:
 		return kctx->data->cgroup;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case PBF_TERM_CODE_PAGE_SIZE:
 		return kctx->data->code_page_size;
 	case PBF_TERM_DATA_PAGE_SIZE:
@@ -202,10 +186,6 @@ static inline __u64 perf_get_sample(struct bpf_perf_event_data_kern *kctx,
 	case __PBF_UNUSED_TERM16:
 	case __PBF_UNUSED_TERM18:
 	case __PBF_UNUSED_TERM20:
-<<<<<<< HEAD
-	case __PBF_UNUSED_TERM21:
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		break;
 	}
@@ -229,41 +209,6 @@ int perf_sample_filter(void *ctx)
 	__u64 sample_data;
 	int in_group = 0;
 	int group_result = 0;
-<<<<<<< HEAD
-	int i;
-
-	kctx = bpf_cast_to_kern_ctx(ctx);
-
-	for (i = 0; i < MAX_FILTERS; i++) {
-		int key = i; /* needed for verifier :( */
-
-		entry = bpf_map_lookup_elem(&filters, &key);
-		if (entry == NULL)
-			break;
-		sample_data = perf_get_sample(kctx, entry);
-
-		switch (entry->op) {
-		case PBF_OP_EQ:
-			CHECK_RESULT(sample_data, ==, entry->value)
-			break;
-		case PBF_OP_NEQ:
-			CHECK_RESULT(sample_data, !=, entry->value)
-			break;
-		case PBF_OP_GT:
-			CHECK_RESULT(sample_data, >, entry->value)
-			break;
-		case PBF_OP_GE:
-			CHECK_RESULT(sample_data, >=, entry->value)
-			break;
-		case PBF_OP_LT:
-			CHECK_RESULT(sample_data, <, entry->value)
-			break;
-		case PBF_OP_LE:
-			CHECK_RESULT(sample_data, <=, entry->value)
-			break;
-		case PBF_OP_AND:
-			CHECK_RESULT(sample_data, &, entry->value)
-=======
 	int i, k;
 	int *losts;
 
@@ -324,7 +269,6 @@ int perf_sample_filter(void *ctx)
 			break;
 		case PBF_OP_AND:
 			CHECK_RESULT(sample_data, &, entry[i].value)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case PBF_OP_GROUP_BEGIN:
 			in_group = 1;
@@ -335,26 +279,19 @@ int perf_sample_filter(void *ctx)
 				goto drop;
 			in_group = 0;
 			break;
-<<<<<<< HEAD
-=======
 		case PBF_OP_DONE:
 			/* no failures so far, accept it */
 			return 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	/* generate sample data */
 	return 1;
 
 drop:
-<<<<<<< HEAD
-	__sync_fetch_and_add(&dropped, 1);
-=======
 	losts = bpf_map_lookup_elem(&dropped, &k);
 	if (losts != NULL)
 		__sync_fetch_and_add(losts, 1);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

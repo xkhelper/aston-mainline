@@ -35,20 +35,6 @@ log_test()
 	local expected=$2
 	local msg="$3"
 
-<<<<<<< HEAD
-	$IP rule show | grep -q l3mdev
-	if [ $? -eq 0 ]; then
-		msg="$msg (VRF)"
-	fi
-
-	if [ ${rc} -eq ${expected} ]; then
-		nsuccess=$((nsuccess+1))
-		printf "\n    TEST: %-60s  [ OK ]\n" "${msg}"
-	else
-		ret=1
-		nfail=$((nfail+1))
-		printf "\n    TEST: %-60s  [FAIL]\n" "${msg}"
-=======
 	if [ ${rc} -eq ${expected} ]; then
 		nsuccess=$((nsuccess+1))
 		printf "    TEST: %-60s  [ OK ]\n" "${msg}"
@@ -56,7 +42,6 @@ log_test()
 		ret=1
 		nfail=$((nfail+1))
 		printf "    TEST: %-60s  [FAIL]\n" "${msg}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
 			echo
 			echo "hit enter to continue, 'q' to quit"
@@ -66,42 +51,6 @@ log_test()
 	fi
 }
 
-<<<<<<< HEAD
-log_section()
-{
-	echo
-	echo "######################################################################"
-	echo "TEST SECTION: $*"
-	echo "######################################################################"
-}
-
-check_nettest()
-{
-	if which nettest > /dev/null 2>&1; then
-		return 0
-	fi
-
-	# Add the selftest directory to PATH if not already done
-	if [ "${SELFTEST_PATH}" = "" ]; then
-		SELFTEST_PATH="$(dirname $0)"
-		PATH="${PATH}:${SELFTEST_PATH}"
-
-		# Now retry with the new path
-		if which nettest > /dev/null 2>&1; then
-			return 0
-		fi
-
-		if [ "${ret}" -eq 0 ]; then
-			ret="${ksft_skip}"
-		fi
-		echo "nettest not found (try 'make -C ${SELFTEST_PATH} nettest')"
-	fi
-
-	return 1
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 setup()
 {
 	set -e
@@ -200,24 +149,17 @@ fib_rule6_test_match_n_redirect()
 {
 	local match="$1"
 	local getmatch="$2"
-<<<<<<< HEAD
-	local description="$3"
-=======
 	local getnomatch="$3"
 	local description="$4"
 	local nomatch_description="$5"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	$IP -6 rule add $match table $RTABLE
 	$IP -6 route get $GW_IP6 $getmatch | grep -q "table $RTABLE"
 	log_test $? 0 "rule6 check: $description"
 
-<<<<<<< HEAD
-=======
 	$IP -6 route get $GW_IP6 $getnomatch 2>&1 | grep -q "table $RTABLE"
 	log_test $? 1 "rule6 check: $nomatch_description"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fib_rule6_del_by_pref "$match"
 	log_test $? 0 "rule6 del by pref: $description"
 }
@@ -238,31 +180,19 @@ fib_rule6_test_reject()
 
 fib_rule6_test()
 {
-<<<<<<< HEAD
-=======
 	local ext_name=$1; shift
 	local getnomatch
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local getmatch
 	local match
 	local cnt
 
-<<<<<<< HEAD
-=======
 	echo
 	echo "IPv6 FIB rule tests $ext_name"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	# setup the fib rule redirect route
 	$IP -6 route add table $RTABLE default via $GW_IP6 dev $DEV onlink
 
 	match="oif $DEV"
-<<<<<<< HEAD
-	fib_rule6_test_match_n_redirect "$match" "$match" "oif redirect to table"
-
-	match="from $SRC_IP6 iif $DEV"
-	fib_rule6_test_match_n_redirect "$match" "$match" "iif redirect to table"
-=======
 	getnomatch="oif lo"
 	fib_rule6_test_match_n_redirect "$match" "$match" "$getnomatch" \
 		"oif redirect to table" "oif no redirect to table"
@@ -271,7 +201,6 @@ fib_rule6_test()
 	getnomatch="from $SRC_IP6 iif lo"
 	fib_rule6_test_match_n_redirect "$match" "$match" "$getnomatch" \
 		"iif redirect to table" "iif no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	# Reject dsfield (tos) options which have ECN bits set
 	for cnt in $(seq 1 3); do
@@ -285,10 +214,6 @@ fib_rule6_test()
 		# Using option 'tos' instead of 'dsfield' as old iproute2
 		# versions don't support 'dsfield' in ip rule show.
 		getmatch="tos $cnt"
-<<<<<<< HEAD
-		fib_rule6_test_match_n_redirect "$match" "$getmatch" \
-						"$getmatch redirect to table"
-=======
 		getnomatch="tos 0x20"
 		fib_rule6_test_match_n_redirect "$match" "$getmatch" \
 			"$getnomatch" "$getmatch redirect to table" \
@@ -306,64 +231,44 @@ fib_rule6_test()
 			"from $SRC_IP6 iif $DEV $getnomatch" \
 			"iif $getmatch redirect to table" \
 			"iif $getnomatch no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	done
 
 	match="fwmark 0x64"
 	getmatch="mark 0x64"
-<<<<<<< HEAD
-	fib_rule6_test_match_n_redirect "$match" "$getmatch" "fwmark redirect to table"
-=======
 	getnomatch="mark 0x63"
 	fib_rule6_test_match_n_redirect "$match" "$getmatch" "$getnomatch" \
 		"fwmark redirect to table" "fwmark no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fib_check_iproute_support "uidrange" "uid"
 	if [ $? -eq 0 ]; then
 		match="uidrange 100-100"
 		getmatch="uid 100"
-<<<<<<< HEAD
-		fib_rule6_test_match_n_redirect "$match" "$getmatch" "uid redirect to table"
-=======
 		getnomatch="uid 101"
 		fib_rule6_test_match_n_redirect "$match" "$getmatch" \
 			"$getnomatch" "uid redirect to table" \
 			"uid no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	fib_check_iproute_support "sport" "sport"
 	if [ $? -eq 0 ]; then
 		match="sport 666 dport 777"
-<<<<<<< HEAD
-		fib_rule6_test_match_n_redirect "$match" "$match" "sport and dport redirect to table"
-=======
 		getnomatch="sport 667 dport 778"
 		fib_rule6_test_match_n_redirect "$match" "$match" \
 			"$getnomatch" "sport and dport redirect to table" \
 			"sport and dport no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	fib_check_iproute_support "ipproto" "ipproto"
 	if [ $? -eq 0 ]; then
 		match="ipproto tcp"
-<<<<<<< HEAD
-		fib_rule6_test_match_n_redirect "$match" "$match" "ipproto match"
-=======
 		getnomatch="ipproto udp"
 		fib_rule6_test_match_n_redirect "$match" "$match" \
 			"$getnomatch" "ipproto tcp match" "ipproto udp no match"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	fib_check_iproute_support "ipproto" "ipproto"
 	if [ $? -eq 0 ]; then
 		match="ipproto ipv6-icmp"
-<<<<<<< HEAD
-		fib_rule6_test_match_n_redirect "$match" "$match" "ipproto ipv6-icmp match"
-=======
 		getnomatch="ipproto tcp"
 		fib_rule6_test_match_n_redirect "$match" "$match" \
 			"$getnomatch" "ipproto ipv6-icmp match" \
@@ -385,18 +290,13 @@ fib_rule6_test()
 		fib_rule6_test_match_n_redirect "$match" "$getmatch" \
 			"$getnomatch" "iif dscp redirect to table" \
 			"iif dscp no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 }
 
 fib_rule6_vrf_test()
 {
 	setup_vrf
-<<<<<<< HEAD
-	fib_rule6_test
-=======
 	fib_rule6_test "- with VRF"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cleanup_vrf
 }
 
@@ -406,15 +306,8 @@ fib_rule6_connect_test()
 {
 	local dsfield
 
-<<<<<<< HEAD
-	if ! check_nettest; then
-		echo "SKIP: Could not run test without nettest tool"
-		return
-	fi
-=======
 	echo
 	echo "IPv6 FIB rule connect tests"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	setup_peer
 	$IP -6 rule add dsfield 0x04 table $RTABLE_PEER
@@ -432,9 +325,6 @@ fib_rule6_connect_test()
 		log_test $? 0 "rule6 dsfield tcp connect (dsfield ${dsfield})"
 	done
 
-<<<<<<< HEAD
-	$IP -6 rule del dsfield 0x04 table $RTABLE_PEER
-=======
 	# Check that UDP and TCP connections fail when using a DS Field that
 	# does not match the previously configured FIB rule.
 	nettest -q -6 -B -t 5 -N $testns -O $peerns -U -D \
@@ -474,7 +364,6 @@ fib_rule6_connect_test()
 
 	$IP -6 rule del dscp 0x3f table $RTABLE_PEER
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cleanup_peer
 }
 
@@ -494,24 +383,17 @@ fib_rule4_test_match_n_redirect()
 {
 	local match="$1"
 	local getmatch="$2"
-<<<<<<< HEAD
-	local description="$3"
-=======
 	local getnomatch="$3"
 	local description="$4"
 	local nomatch_description="$5"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	$IP rule add $match table $RTABLE
 	$IP route get $GW_IP4 $getmatch | grep -q "table $RTABLE"
 	log_test $? 0 "rule4 check: $description"
 
-<<<<<<< HEAD
-=======
 	$IP route get $GW_IP4 $getnomatch 2>&1 | grep -q "table $RTABLE"
 	log_test $? 1 "rule4 check: $nomatch_description"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fib_rule4_del_by_pref "$match"
 	log_test $? 0 "rule4 del by pref: $description"
 }
@@ -532,36 +414,19 @@ fib_rule4_test_reject()
 
 fib_rule4_test()
 {
-<<<<<<< HEAD
-=======
 	local ext_name=$1; shift
 	local getnomatch
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local getmatch
 	local match
 	local cnt
 
-<<<<<<< HEAD
-=======
 	echo
 	echo "IPv4 FIB rule tests $ext_name"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	# setup the fib rule redirect route
 	$IP route add table $RTABLE default via $GW_IP4 dev $DEV onlink
 
 	match="oif $DEV"
-<<<<<<< HEAD
-	fib_rule4_test_match_n_redirect "$match" "$match" "oif redirect to table"
-
-	# need enable forwarding and disable rp_filter temporarily as all the
-	# addresses are in the same subnet and egress device == ingress device.
-	ip netns exec $testns sysctl -qw net.ipv4.ip_forward=1
-	ip netns exec $testns sysctl -qw net.ipv4.conf.$DEV.rp_filter=0
-	match="from $SRC_IP iif $DEV"
-	fib_rule4_test_match_n_redirect "$match" "$match" "iif redirect to table"
-	ip netns exec $testns sysctl -qw net.ipv4.ip_forward=0
-=======
 	getnomatch="oif lo"
 	fib_rule4_test_match_n_redirect "$match" "$match" "$getnomatch" \
 		"oif redirect to table" "oif no redirect to table"
@@ -574,7 +439,6 @@ fib_rule4_test()
 	getnomatch="from $SRC_IP iif lo"
 	fib_rule4_test_match_n_redirect "$match" "$match" "$getnomatch" \
 		"iif redirect to table" "iif no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	# Reject dsfield (tos) options which have ECN bits set
 	for cnt in $(seq 1 3); do
@@ -588,10 +452,6 @@ fib_rule4_test()
 		# Using option 'tos' instead of 'dsfield' as old iproute2
 		# versions don't support 'dsfield' in ip rule show.
 		getmatch="tos $cnt"
-<<<<<<< HEAD
-		fib_rule4_test_match_n_redirect "$match" "$getmatch" \
-						"$getmatch redirect to table"
-=======
 		getnomatch="tos 0x20"
 		fib_rule4_test_match_n_redirect "$match" "$getmatch" \
 			"$getnomatch" "$getmatch redirect to table" \
@@ -609,65 +469,45 @@ fib_rule4_test()
 			"from $SRC_IP iif $DEV $getnomatch" \
 			"iif $getmatch redirect to table" \
 			"iif $getnomatch no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	done
 
 	match="fwmark 0x64"
 	getmatch="mark 0x64"
-<<<<<<< HEAD
-	fib_rule4_test_match_n_redirect "$match" "$getmatch" "fwmark redirect to table"
-=======
 	getnomatch="mark 0x63"
 	fib_rule4_test_match_n_redirect "$match" "$getmatch" "$getnomatch" \
 		"fwmark redirect to table" "fwmark no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fib_check_iproute_support "uidrange" "uid"
 	if [ $? -eq 0 ]; then
 		match="uidrange 100-100"
 		getmatch="uid 100"
-<<<<<<< HEAD
-		fib_rule4_test_match_n_redirect "$match" "$getmatch" "uid redirect to table"
-=======
 		getnomatch="uid 101"
 		fib_rule4_test_match_n_redirect "$match" "$getmatch" \
 			"$getnomatch" "uid redirect to table" \
 			"uid no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	fib_check_iproute_support "sport" "sport"
 	if [ $? -eq 0 ]; then
 		match="sport 666 dport 777"
-<<<<<<< HEAD
-		fib_rule4_test_match_n_redirect "$match" "$match" "sport and dport redirect to table"
-=======
 		getnomatch="sport 667 dport 778"
 		fib_rule4_test_match_n_redirect "$match" "$match" \
 			"$getnomatch" "sport and dport redirect to table" \
 			"sport and dport no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	fib_check_iproute_support "ipproto" "ipproto"
 	if [ $? -eq 0 ]; then
 		match="ipproto tcp"
-<<<<<<< HEAD
-		fib_rule4_test_match_n_redirect "$match" "$match" "ipproto tcp match"
-=======
 		getnomatch="ipproto udp"
 		fib_rule4_test_match_n_redirect "$match" "$match" \
 			"$getnomatch" "ipproto tcp match" \
 			"ipproto udp no match"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	fib_check_iproute_support "ipproto" "ipproto"
 	if [ $? -eq 0 ]; then
 		match="ipproto icmp"
-<<<<<<< HEAD
-		fib_rule4_test_match_n_redirect "$match" "$match" "ipproto icmp match"
-=======
 		getnomatch="ipproto tcp"
 		fib_rule4_test_match_n_redirect "$match" "$match" \
 			"$getnomatch" "ipproto icmp match" \
@@ -689,18 +529,13 @@ fib_rule4_test()
 		fib_rule4_test_match_n_redirect "$match" "$getmatch" \
 			"$getnomatch" "iif dscp redirect to table" \
 			"iif dscp no redirect to table"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 }
 
 fib_rule4_vrf_test()
 {
 	setup_vrf
-<<<<<<< HEAD
-	fib_rule4_test
-=======
 	fib_rule4_test "- with VRF"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cleanup_vrf
 }
 
@@ -710,15 +545,8 @@ fib_rule4_connect_test()
 {
 	local dsfield
 
-<<<<<<< HEAD
-	if ! check_nettest; then
-		echo "SKIP: Could not run test without nettest tool"
-		return
-	fi
-=======
 	echo
 	echo "IPv4 FIB rule connect tests"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	setup_peer
 	$IP -4 rule add dsfield 0x04 table $RTABLE_PEER
@@ -736,18 +564,6 @@ fib_rule4_connect_test()
 		log_test $? 0 "rule4 dsfield tcp connect (dsfield ${dsfield})"
 	done
 
-<<<<<<< HEAD
-	$IP -4 rule del dsfield 0x04 table $RTABLE_PEER
-	cleanup_peer
-}
-
-run_fibrule_tests()
-{
-	log_section "IPv4 fib rule"
-	fib_rule4_test
-	log_section "IPv6 fib rule"
-	fib_rule6_test
-=======
 	# Check that UDP and TCP connections fail when using a DS Field that
 	# does not match the previously configured FIB rule.
 	nettest -q -B -t 5 -N $testns -O $peerns -D -U -Q 0x20 \
@@ -788,7 +604,6 @@ run_fibrule_tests()
 	$IP -4 rule del dscp 0x3f table $RTABLE_PEER
 
 	cleanup_peer
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 ################################################################################
 # usage
@@ -824,11 +639,8 @@ if [ ! -x "$(command -v ip)" ]; then
 	exit $ksft_skip
 fi
 
-<<<<<<< HEAD
-=======
 check_gen_prog "nettest"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # start clean
 cleanup &> /dev/null
 setup

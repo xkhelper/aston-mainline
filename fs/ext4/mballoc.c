@@ -2356,11 +2356,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
 	ex.fe_logical = 0xDEADFA11; /* debug value */
 
 	if (max >= ac->ac_g_ex.fe_len &&
-<<<<<<< HEAD
-	    ac->ac_g_ex.fe_len == EXT4_B2C(sbi, sbi->s_stripe)) {
-=======
 	    ac->ac_g_ex.fe_len == EXT4_NUM_B2C(sbi, sbi->s_stripe)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ext4_fsblk_t start;
 
 		start = ext4_grp_offs_to_block(ac->ac_sb, &ex);
@@ -2557,11 +2553,7 @@ void ext4_mb_scan_aligned(struct ext4_allocation_context *ac,
 	do_div(a, sbi->s_stripe);
 	i = (a * sbi->s_stripe) - first_group_block;
 
-<<<<<<< HEAD
-	stripe = EXT4_B2C(sbi, sbi->s_stripe);
-=======
 	stripe = EXT4_NUM_B2C(sbi, sbi->s_stripe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i = EXT4_B2C(sbi, i);
 	while (i < EXT4_CLUSTERS_PER_GROUP(sb)) {
 		if (!mb_test_bit(i, bitmap)) {
@@ -2936,17 +2928,11 @@ repeat:
 			if (cr == CR_POWER2_ALIGNED)
 				ext4_mb_simple_scan_group(ac, &e4b);
 			else {
-<<<<<<< HEAD
-				bool is_stripe_aligned = sbi->s_stripe &&
-					!(ac->ac_g_ex.fe_len %
-					  EXT4_B2C(sbi, sbi->s_stripe));
-=======
 				bool is_stripe_aligned =
 					(sbi->s_stripe >=
 					 sbi->s_cluster_ratio) &&
 					!(ac->ac_g_ex.fe_len %
 					  EXT4_NUM_B2C(sbi, sbi->s_stripe));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				if ((cr == CR_GOAL_LEN_FAST ||
 				     cr == CR_BEST_AVAIL_LEN) &&
@@ -3091,12 +3077,7 @@ static int ext4_mb_seq_groups_show(struct seq_file *seq, void *v)
 	seq_puts(seq, " ]");
 	if (EXT4_MB_GRP_BBITMAP_CORRUPT(&sg.info))
 		seq_puts(seq, " Block bitmap corrupted!");
-<<<<<<< HEAD
-	seq_puts(seq, "\n");
-
-=======
 	seq_putc(seq, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3727,11 +3708,7 @@ int ext4_mb_init(struct super_block *sb)
 	 */
 	if (sbi->s_stripe > 1) {
 		sbi->s_mb_group_prealloc = roundup(
-<<<<<<< HEAD
-			sbi->s_mb_group_prealloc, EXT4_B2C(sbi, sbi->s_stripe));
-=======
 			sbi->s_mb_group_prealloc, EXT4_NUM_B2C(sbi, sbi->s_stripe));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	sbi->s_locality_groups = alloc_percpu(struct ext4_locality_group);
@@ -3911,16 +3888,8 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
 	/*
 	 * Clear the trimmed flag for the group so that the next
 	 * ext4_trim_fs can trim it.
-<<<<<<< HEAD
-	 * If the volume is mounted with -o discard, online discard
-	 * is supported and the free blocks will be trimmed online.
-	 */
-	if (!test_opt(sb, DISCARD))
-		EXT4_MB_GRP_CLEAR_TRIMMED(db);
-=======
 	 */
 	EXT4_MB_GRP_CLEAR_TRIMMED(db);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!db->bb_free_root.rb_node) {
 		/* No more items in the per group rb tree
@@ -6544,14 +6513,9 @@ do_more:
 					 " group:%u block:%d count:%lu failed"
 					 " with %d", block_group, bit, count,
 					 err);
-<<<<<<< HEAD
-		} else
-			EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
-=======
 		}
 
 		EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ext4_lock_group(sb, block_group);
 		mb_free_blocks(inode, &e4b, bit, count_clusters);

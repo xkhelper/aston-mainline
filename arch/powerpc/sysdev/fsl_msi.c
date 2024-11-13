@@ -603,11 +603,7 @@ static struct platform_driver fsl_of_msi_driver = {
 		.of_match_table = fsl_of_msi_ids,
 	},
 	.probe = fsl_of_msi_probe,
-<<<<<<< HEAD
-	.remove_new = fsl_of_msi_remove,
-=======
 	.remove = fsl_of_msi_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static __init int fsl_of_msi_init(void)

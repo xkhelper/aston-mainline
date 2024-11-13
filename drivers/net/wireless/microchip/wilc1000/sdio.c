@@ -174,30 +174,18 @@ static int wilc_sdio_probe(struct sdio_func *func,
 	wilc->bus_data = sdio_priv;
 	wilc->dev = &func->dev;
 
-<<<<<<< HEAD
-	wilc->rtc_clk = devm_clk_get_optional(&func->card->dev, "rtc");
-=======
 	wilc->rtc_clk = devm_clk_get_optional_enabled(&func->card->dev, "rtc");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(wilc->rtc_clk)) {
 		ret = PTR_ERR(wilc->rtc_clk);
 		goto dispose_irq;
 	}
-<<<<<<< HEAD
-	clk_prepare_enable(wilc->rtc_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	wilc_sdio_init(wilc, false);
 
 	ret = wilc_load_mac_from_nv(wilc);
 	if (ret) {
 		pr_err("Can not retrieve MAC address from chip\n");
-<<<<<<< HEAD
-		goto clk_disable_unprepare;
-=======
 		goto dispose_irq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	wilc_sdio_deinit(wilc);
@@ -206,21 +194,12 @@ static int wilc_sdio_probe(struct sdio_func *func,
 				   NL80211_IFTYPE_STATION, false);
 	if (IS_ERR(vif)) {
 		ret = PTR_ERR(vif);
-<<<<<<< HEAD
-		goto clk_disable_unprepare;
-=======
 		goto dispose_irq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	dev_info(&func->dev, "Driver Initializing success\n");
 	return 0;
 
-<<<<<<< HEAD
-clk_disable_unprepare:
-	clk_disable_unprepare(wilc->rtc_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 dispose_irq:
 	irq_dispose_mapping(wilc->dev_irq_num);
 	wilc_netdev_cleanup(wilc);
@@ -235,10 +214,6 @@ static void wilc_sdio_remove(struct sdio_func *func)
 	struct wilc *wilc = sdio_get_drvdata(func);
 	struct wilc_sdio *sdio_priv = wilc->bus_data;
 
-<<<<<<< HEAD
-	clk_disable_unprepare(wilc->rtc_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wilc_netdev_cleanup(wilc);
 	kfree(sdio_priv->cmd53_buf);
 	kfree(sdio_priv);
@@ -998,12 +973,9 @@ static int wilc_sdio_suspend(struct device *dev)
 
 	dev_info(dev, "sdio suspend\n");
 
-<<<<<<< HEAD
-=======
 	if (!wilc->initialized)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!IS_ERR(wilc->rtc_clk))
 		clk_disable_unprepare(wilc->rtc_clk);
 
@@ -1026,8 +998,6 @@ static int wilc_sdio_resume(struct device *dev)
 	struct wilc *wilc = sdio_get_drvdata(func);
 
 	dev_info(dev, "sdio resume\n");
-<<<<<<< HEAD
-=======
 
 	if (!wilc->initialized)
 		return 0;
@@ -1035,7 +1005,6 @@ static int wilc_sdio_resume(struct device *dev)
 	if (!IS_ERR(wilc->rtc_clk))
 		clk_prepare_enable(wilc->rtc_clk);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wilc_sdio_init(wilc, true);
 	wilc_sdio_enable_interrupt(wilc);
 

@@ -194,11 +194,8 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
 
 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7915_%s",
 			      wiphy_name(wiphy));
-<<<<<<< HEAD
-=======
 	if (!name)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cdev = thermal_cooling_device_register(name, phy, &mt7915_thermal_ops);
 	if (!IS_ERR(cdev)) {
@@ -403,10 +400,7 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
 	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
-<<<<<<< HEAD
-=======
 	ieee80211_hw_set(hw, SUPPORTS_TX_FRAG);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hw->max_tx_fragments = 4;
 

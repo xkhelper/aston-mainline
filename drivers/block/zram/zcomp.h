@@ -1,20 +1,4 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
-<<<<<<< HEAD
-/*
- * Copyright (C) 2014 Sergey Senozhatsky.
- */
-
-#ifndef _ZCOMP_H_
-#define _ZCOMP_H_
-#include <linux/local_lock.h>
-
-struct zcomp_strm {
-	/* The members ->buffer and ->tfm are protected by ->lock. */
-	local_lock_t lock;
-	/* compression/decompression buffer */
-	void *buffer;
-	struct crypto_comp *tfm;
-=======
 
 #ifndef _ZCOMP_H_
 #define _ZCOMP_H_
@@ -74,18 +58,13 @@ struct zcomp_ops {
 	void (*release_params)(struct zcomp_params *params);
 
 	const char *name;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* dynamic per-device compression frontend */
 struct zcomp {
 	struct zcomp_strm __percpu *stream;
-<<<<<<< HEAD
-	const char *name;
-=======
 	const struct zcomp_ops *ops;
 	struct zcomp_params *params;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct hlist_node node;
 };
 
@@ -94,27 +73,15 @@ int zcomp_cpu_dead(unsigned int cpu, struct hlist_node *node);
 ssize_t zcomp_available_show(const char *comp, char *buf);
 bool zcomp_available_algorithm(const char *comp);
 
-<<<<<<< HEAD
-struct zcomp *zcomp_create(const char *alg);
-=======
 struct zcomp *zcomp_create(const char *alg, struct zcomp_params *params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void zcomp_destroy(struct zcomp *comp);
 
 struct zcomp_strm *zcomp_stream_get(struct zcomp *comp);
 void zcomp_stream_put(struct zcomp *comp);
 
-<<<<<<< HEAD
-int zcomp_compress(struct zcomp_strm *zstrm,
-		const void *src, unsigned int *dst_len);
-
-int zcomp_decompress(struct zcomp_strm *zstrm,
-		const void *src, unsigned int src_len, void *dst);
-=======
 int zcomp_compress(struct zcomp *comp, struct zcomp_strm *zstrm,
 		   const void *src, unsigned int *dst_len);
 int zcomp_decompress(struct zcomp *comp, struct zcomp_strm *zstrm,
 		     const void *src, unsigned int src_len, void *dst);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _ZCOMP_H_ */

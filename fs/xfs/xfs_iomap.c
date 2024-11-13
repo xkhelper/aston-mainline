@@ -707,11 +707,7 @@ imap_needs_cow(
 		return false;
 
 	/* when zeroing we don't have to COW holes or unwritten extents */
-<<<<<<< HEAD
-	if (flags & IOMAP_ZERO) {
-=======
 	if (flags & (IOMAP_UNSHARE | IOMAP_ZERO)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!nimaps ||
 		    imap->br_startblock == HOLESTARTBLOCK ||
 		    imap->br_state == XFS_EXT_UNWRITTEN)
@@ -979,10 +975,7 @@ xfs_buffered_write_iomap_begin(
 	int			allocfork = XFS_DATA_FORK;
 	int			error = 0;
 	unsigned int		lockmode = XFS_ILOCK_EXCL;
-<<<<<<< HEAD
-=======
 	unsigned int		iomap_flags = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64			seq;
 
 	if (xfs_is_shutdown(mp))
@@ -1153,14 +1146,11 @@ xfs_buffered_write_iomap_begin(
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Flag newly allocated delalloc blocks with IOMAP_F_NEW so we punch
 	 * them out if the write happens to fail.
 	 */
 	iomap_flags |= IOMAP_F_NEW;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (allocfork == XFS_COW_FORK) {
 		error = xfs_bmapi_reserve_delalloc(ip, allocfork, offset_fsb,
 				end_fsb - offset_fsb, prealloc_blocks, &cmap,
@@ -1178,27 +1168,11 @@ xfs_buffered_write_iomap_begin(
 	if (error)
 		goto out_unlock;
 
-<<<<<<< HEAD
-	/*
-	 * Flag newly allocated delalloc blocks with IOMAP_F_NEW so we punch
-	 * them out if the write happens to fail.
-	 */
-	seq = xfs_iomap_inode_sequence(ip, IOMAP_F_NEW);
-	xfs_iunlock(ip, lockmode);
-	trace_xfs_iomap_alloc(ip, offset, count, allocfork, &imap);
-	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, IOMAP_F_NEW, seq);
-
-found_imap:
-	seq = xfs_iomap_inode_sequence(ip, 0);
-	xfs_iunlock(ip, lockmode);
-	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0, seq);
-=======
 	trace_xfs_iomap_alloc(ip, offset, count, allocfork, &imap);
 found_imap:
 	seq = xfs_iomap_inode_sequence(ip, iomap_flags);
 	xfs_iunlock(ip, lockmode);
 	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, iomap_flags, seq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 convert_delay:
 	xfs_iunlock(ip, lockmode);
@@ -1212,22 +1186,6 @@ convert_delay:
 	return 0;
 
 found_cow:
-<<<<<<< HEAD
-	seq = xfs_iomap_inode_sequence(ip, 0);
-	if (imap.br_startoff <= offset_fsb) {
-		error = xfs_bmbt_to_iomap(ip, srcmap, &imap, flags, 0, seq);
-		if (error)
-			goto out_unlock;
-		seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
-		xfs_iunlock(ip, lockmode);
-		return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags,
-					 IOMAP_F_SHARED, seq);
-	}
-
-	xfs_trim_extent(&cmap, offset_fsb, imap.br_startoff - offset_fsb);
-	xfs_iunlock(ip, lockmode);
-	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, 0, seq);
-=======
 	if (imap.br_startoff <= offset_fsb) {
 		error = xfs_bmbt_to_iomap(ip, srcmap, &imap, flags, 0,
 				xfs_iomap_inode_sequence(ip, 0));
@@ -1242,23 +1200,12 @@ found_cow:
 	seq = xfs_iomap_inode_sequence(ip, iomap_flags);
 	xfs_iunlock(ip, lockmode);
 	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, iomap_flags, seq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out_unlock:
 	xfs_iunlock(ip, lockmode);
 	return error;
 }
 
-<<<<<<< HEAD
-static int
-xfs_buffered_write_delalloc_punch(
-	struct inode		*inode,
-	loff_t			offset,
-	loff_t			length)
-{
-	xfs_bmap_punch_delalloc_range(XFS_I(inode), offset, offset + length);
-	return 0;
-=======
 static void
 xfs_buffered_write_delalloc_punch(
 	struct inode		*inode,
@@ -1270,7 +1217,6 @@ xfs_buffered_write_delalloc_punch(
 			(iomap->flags & IOMAP_F_SHARED) ?
 				XFS_COW_FORK : XFS_DATA_FORK,
 			offset, offset + length);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -1282,19 +1228,6 @@ xfs_buffered_write_iomap_end(
 	unsigned		flags,
 	struct iomap		*iomap)
 {
-<<<<<<< HEAD
-
-	struct xfs_mount	*mp = XFS_M(inode->i_sb);
-	int			error;
-
-	error = iomap_file_buffered_write_punch_delalloc(inode, iomap, offset,
-			length, written, &xfs_buffered_write_delalloc_punch);
-	if (error && !xfs_is_shutdown(mp)) {
-		xfs_alert(mp, "%s: unable to clean up ino 0x%llx",
-			__func__, XFS_I(inode)->i_ino);
-		return error;
-	}
-=======
 	loff_t			start_byte, end_byte;
 
 	/* If we didn't reserve the blocks, we're not allowed to punch them. */
@@ -1319,7 +1252,6 @@ xfs_buffered_write_iomap_end(
 		filemap_invalidate_unlock(inode->i_mapping);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1526,11 +1458,8 @@ xfs_zero_range(
 {
 	struct inode		*inode = VFS_I(ip);
 
-<<<<<<< HEAD
-=======
 	xfs_assert_ilocked(ip, XFS_IOLOCK_EXCL | XFS_MMAPLOCK_EXCL);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_DAX(inode))
 		return dax_zero_range(inode, pos, len, did_zero,
 				      &xfs_dax_write_iomap_ops);

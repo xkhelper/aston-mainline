@@ -142,11 +142,7 @@ static int nft_meta_bridge_set_init(const struct nft_ctx *ctx,
 	}
 
 	priv->len = len;
-<<<<<<< HEAD
-	err = nft_parse_register_load(tb[NFTA_META_SREG], &priv->sreg, len);
-=======
 	err = nft_parse_register_load(ctx, tb[NFTA_META_SREG], &priv->sreg, len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0)
 		return err;
 
@@ -172,12 +168,7 @@ static bool nft_meta_bridge_set_reduce(struct nft_regs_track *track,
 }
 
 static int nft_meta_bridge_set_validate(const struct nft_ctx *ctx,
-<<<<<<< HEAD
-					const struct nft_expr *expr,
-					const struct nft_data **data)
-=======
 					const struct nft_expr *expr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct nft_meta *priv = nft_expr_priv(expr);
 	unsigned int hooks;
@@ -187,11 +178,7 @@ static int nft_meta_bridge_set_validate(const struct nft_ctx *ctx,
 		hooks = 1 << NF_BR_PRE_ROUTING;
 		break;
 	default:
-<<<<<<< HEAD
-		return nft_meta_set_validate(ctx, expr, data);
-=======
 		return nft_meta_set_validate(ctx, expr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return nft_chain_validate_hooks(ctx->chain, hooks);

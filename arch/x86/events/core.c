@@ -41,11 +41,8 @@
 #include <asm/desc.h>
 #include <asm/ldt.h>
 #include <asm/unwind.h>
-<<<<<<< HEAD
-=======
 #include <asm/uprobes.h>
 #include <asm/ibt.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "perf_event.h"
 
@@ -2821,8 +2818,6 @@ static unsigned long get_segment_base(unsigned int segment)
 	return get_desc_base(desc);
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_UPROBES
 /*
  * Heuristic-based check if uprobe is installed at the function entry.
@@ -2863,7 +2858,6 @@ static bool is_uprobe_at_func_entry(struct pt_regs *regs)
 }
 #endif /* CONFIG_UPROBES */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_IA32_EMULATION
 
 #include <linux/compat.h>
@@ -2875,10 +2869,7 @@ perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *ent
 	unsigned long ss_base, cs_base;
 	struct stack_frame_ia32 frame;
 	const struct stack_frame_ia32 __user *fp;
-<<<<<<< HEAD
-=======
 	u32 ret_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (user_64bit_mode(regs))
 		return 0;
@@ -2888,15 +2879,12 @@ perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *ent
 
 	fp = compat_ptr(ss_base + regs->bp);
 	pagefault_disable();
-<<<<<<< HEAD
-=======
 
 	/* see perf_callchain_user() below for why we do this */
 	if (is_uprobe_at_func_entry(regs) &&
 	    !get_user(ret_addr, (const u32 __user *)regs->sp))
 		perf_callchain_store(entry, ret_addr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (entry->nr < entry->max_stack) {
 		if (!valid_user_frame(fp, sizeof(frame)))
 			break;
@@ -2925,10 +2913,7 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
 {
 	struct stack_frame frame;
 	const struct stack_frame __user *fp;
-<<<<<<< HEAD
-=======
 	unsigned long ret_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (perf_guest_state()) {
 		/* TODO: We don't support guest os callchain now */
@@ -2952,8 +2937,6 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
 		return;
 
 	pagefault_disable();
-<<<<<<< HEAD
-=======
 
 	/*
 	 * If we are called from uprobe handler, and we are indeed at the very
@@ -2967,7 +2950,6 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
 	    !get_user(ret_addr, (const unsigned long __user *)regs->sp))
 		perf_callchain_store(entry, ret_addr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (entry->nr < entry->max_stack) {
 		if (!valid_user_frame(fp, sizeof(frame)))
 			break;

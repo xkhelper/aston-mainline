@@ -1166,11 +1166,7 @@ static void print_result(struct perf_kvm_stat *kvm)
 }
 
 #if defined(HAVE_TIMERFD_SUPPORT) && defined(HAVE_LIBTRACEEVENT)
-<<<<<<< HEAD
-static int process_lost_event(struct perf_tool *tool,
-=======
 static int process_lost_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event __maybe_unused,
 			      struct perf_sample *sample __maybe_unused,
 			      struct machine *machine __maybe_unused)
@@ -1191,11 +1187,7 @@ static bool skip_sample(struct perf_kvm_stat *kvm,
 	return false;
 }
 
-<<<<<<< HEAD
-static int process_sample_event(struct perf_tool *tool,
-=======
 static int process_sample_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct evsel *evsel,
@@ -1611,30 +1603,17 @@ static int read_events(struct perf_kvm_stat *kvm)
 {
 	int ret;
 
-<<<<<<< HEAD
-	struct perf_tool eops = {
-		.sample			= process_sample_event,
-		.comm			= perf_event__process_comm,
-		.namespaces		= perf_event__process_namespaces,
-		.ordered_events		= true,
-	};
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_data file = {
 		.path  = kvm->file_name,
 		.mode  = PERF_DATA_MODE_READ,
 		.force = kvm->force,
 	};
 
-<<<<<<< HEAD
-	kvm->tool = eops;
-=======
 	perf_tool__init(&kvm->tool, /*ordered_events=*/true);
 	kvm->tool.sample	= process_sample_event;
 	kvm->tool.comm		= perf_event__process_comm;
 	kvm->tool.namespaces	= perf_event__process_namespaces;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvm->session = perf_session__new(&file, &kvm->tool);
 	if (IS_ERR(kvm->session)) {
 		pr_err("Initializing perf session failed\n");
@@ -1938,21 +1917,13 @@ static int kvm_events_live(struct perf_kvm_stat *kvm,
 
 
 	/* event handling */
-<<<<<<< HEAD
-=======
 	perf_tool__init(&kvm->tool, /*ordered_events=*/true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvm->tool.sample = process_sample_event;
 	kvm->tool.comm   = perf_event__process_comm;
 	kvm->tool.exit   = perf_event__process_exit;
 	kvm->tool.fork   = perf_event__process_fork;
 	kvm->tool.lost   = process_lost_event;
 	kvm->tool.namespaces  = perf_event__process_namespaces;
-<<<<<<< HEAD
-	kvm->tool.ordered_events = true;
-	perf_tool__fill_defaults(&kvm->tool);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* set defaults */
 	kvm->display_time = 1;
@@ -2213,11 +2184,8 @@ int cmd_kvm(int argc, const char **argv)
 	else
 		usage_with_options(kvm_usage, kvm_options);
 
-<<<<<<< HEAD
-=======
 	/* free usage string allocated by parse_options_subcommand */
 	free((void *)kvm_usage[0]);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

@@ -6,10 +6,7 @@
 #include <string.h>
 #include <sys/types.h>
 
-<<<<<<< HEAD
-=======
 #include <linux/compiler.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/string.h>
 #include <linux/zalloc.h>
@@ -20,12 +17,9 @@
 #include "util/debug.h"
 #include "util/callchain.h"
 #include "util/symbol_conf.h"
-<<<<<<< HEAD
-=======
 #ifdef HAVE_LIBLLVM_SUPPORT
 #include "util/llvm-c-helpers.h"
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "srcline.h"
 #include "string2.h"
 #include "symbol.h"
@@ -140,9 +134,6 @@ static struct symbol *new_inline_sym(struct dso *dso,
 
 #define MAX_INLINE_NEST 1024
 
-<<<<<<< HEAD
-#ifdef HAVE_LIBBFD_SUPPORT
-=======
 #ifdef HAVE_LIBLLVM_SUPPORT
 
 static void free_llvm_inline_frames(struct llvm_a2l_frame *inline_frames,
@@ -197,7 +188,6 @@ void dso__free_a2l(struct dso *dso __maybe_unused)
 }
 
 #elif defined(HAVE_LIBBFD_SUPPORT)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Implement addr2line using libbfd.

@@ -10,11 +10,7 @@ void bch2_replicas_entry_sort(struct bch_replicas_entry_v1 *);
 void bch2_replicas_entry_to_text(struct printbuf *,
 				 struct bch_replicas_entry_v1 *);
 int bch2_replicas_entry_validate(struct bch_replicas_entry_v1 *,
-<<<<<<< HEAD
-				 struct bch_sb *, struct printbuf *);
-=======
 				 struct bch_fs *, struct printbuf *);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_cpu_replicas_to_text(struct printbuf *, struct bch_replicas_cpu *);
 
 static inline struct bch_replicas_entry_v1 *

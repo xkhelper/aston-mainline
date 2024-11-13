@@ -363,11 +363,7 @@ int skx_get_dimm_info(u32 mtr, u32 mcmtr, u32 amap, struct dimm_info *dimm,
 	if (imc->hbm_mc) {
 		banks = 32;
 		mtype = MEM_HBM2;
-<<<<<<< HEAD
-	} else if (cfg->support_ddr5 && (amap & 0x8)) {
-=======
 	} else if (cfg->support_ddr5) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		banks = 32;
 		mtype = MEM_DDR5;
 	} else {
@@ -743,8 +739,6 @@ void skx_remove(void)
 }
 EXPORT_SYMBOL_GPL(skx_remove);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_EDAC_DEBUG
 /*
  * Debug feature.
@@ -792,7 +786,6 @@ void skx_teardown_debug(void)
 EXPORT_SYMBOL_GPL(skx_teardown_debug);
 #endif /*CONFIG_EDAC_DEBUG*/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL v2");
 MODULE_AUTHOR("Tony Luck");
 MODULE_DESCRIPTION("MC Driver for Intel server processors");

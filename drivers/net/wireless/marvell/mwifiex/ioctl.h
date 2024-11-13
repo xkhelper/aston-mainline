@@ -158,14 +158,11 @@ struct mwifiex_bss_info {
 	u8 bssid[ETH_ALEN];
 };
 
-<<<<<<< HEAD
-=======
 struct mwifiex_sta_info {
 	u8 peer_mac[ETH_ALEN];
 	struct station_parameters *params;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MAX_NUM_TID     8
 
 #define MAX_RX_WINSIZE  64

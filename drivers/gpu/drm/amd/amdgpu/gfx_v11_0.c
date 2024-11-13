@@ -481,8 +481,6 @@ static void gfx_v11_0_wait_reg_mem(struct amdgpu_ring *ring, int eng_sel,
 	amdgpu_ring_write(ring, inv); /* poll interval */
 }
 
-<<<<<<< HEAD
-=======
 static void gfx_v11_ring_insert_nop(struct amdgpu_ring *ring, uint32_t num_nop)
 {
 	int i;
@@ -501,7 +499,6 @@ static void gfx_v11_ring_insert_nop(struct amdgpu_ring *ring, uint32_t num_nop)
 		amdgpu_ring_write(ring, ring->funcs->nop);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int gfx_v11_0_ring_test_ring(struct amdgpu_ring *ring)
 {
 	struct amdgpu_device *adev = ring->adev;
@@ -1505,11 +1502,7 @@ static void gfx_v11_0_alloc_ip_dump(struct amdgpu_device *adev)
 	uint32_t inst;
 
 	ptr = kcalloc(reg_count, sizeof(uint32_t), GFP_KERNEL);
-<<<<<<< HEAD
-	if (ptr == NULL) {
-=======
 	if (!ptr) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		DRM_ERROR("Failed to allocate memory for GFX IP Dump\n");
 		adev->gfx.ip_dump_core = NULL;
 	} else {
@@ -1522,11 +1515,7 @@ static void gfx_v11_0_alloc_ip_dump(struct amdgpu_device *adev)
 		adev->gfx.mec.num_queue_per_pipe;
 
 	ptr = kcalloc(reg_count * inst, sizeof(uint32_t), GFP_KERNEL);
-<<<<<<< HEAD
-	if (ptr == NULL) {
-=======
 	if (!ptr) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		DRM_ERROR("Failed to allocate memory for Compute Queues IP Dump\n");
 		adev->gfx.ip_dump_compute_queues = NULL;
 	} else {
@@ -1539,11 +1528,7 @@ static void gfx_v11_0_alloc_ip_dump(struct amdgpu_device *adev)
 		adev->gfx.me.num_queue_per_pipe;
 
 	ptr = kcalloc(reg_count * inst, sizeof(uint32_t), GFP_KERNEL);
-<<<<<<< HEAD
-	if (ptr == NULL) {
-=======
 	if (!ptr) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		DRM_ERROR("Failed to allocate memory for GFX Queues IP Dump\n");
 		adev->gfx.ip_dump_gfx_queues = NULL;
 	} else {
@@ -1602,8 +1587,6 @@ static int gfx_v11_0_sw_init(void *handle)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
 	/* Bad opcode Event */
 	r = amdgpu_irq_add_id(adev, SOC21_IH_CLIENTID_GRBM_CP,
 			      GFX_11_0_0__SRCID__CP_BAD_OPCODE_ERROR,
@@ -1611,7 +1594,6 @@ static int gfx_v11_0_sw_init(void *handle)
 	if (r)
 		return r;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Privileged reg */
 	r = amdgpu_irq_add_id(adev, SOC21_IH_CLIENTID_GRBM_CP,
 			      GFX_11_0_0__SRCID__CP_PRIV_REG_FAULT,
@@ -1996,12 +1978,6 @@ static void gfx_v11_0_constants_init(struct amdgpu_device *adev)
 	gfx_v11_0_init_gds_vmid(adev);
 }
 
-<<<<<<< HEAD
-static void gfx_v11_0_enable_gui_idle_interrupt(struct amdgpu_device *adev,
-					       bool enable)
-{
-	u32 tmp;
-=======
 static u32 gfx_v11_0_get_cpg_int_cntl(struct amdgpu_device *adev,
 				      int me, int pipe)
 {
@@ -2048,25 +2024,10 @@ static void gfx_v11_0_enable_gui_idle_interrupt(struct amdgpu_device *adev,
 {
 	u32 tmp, cp_int_cntl_reg;
 	int i, j;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (amdgpu_sriov_vf(adev))
 		return;
 
-<<<<<<< HEAD
-	tmp = RREG32_SOC15(GC, 0, regCP_INT_CNTL_RING0);
-
-	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CNTX_BUSY_INT_ENABLE,
-			    enable ? 1 : 0);
-	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CNTX_EMPTY_INT_ENABLE,
-			    enable ? 1 : 0);
-	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CMP_BUSY_INT_ENABLE,
-			    enable ? 1 : 0);
-	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, GFX_IDLE_INT_ENABLE,
-			    enable ? 1 : 0);
-
-	WREG32_SOC15(GC, 0, regCP_INT_CNTL_RING0, tmp);
-=======
 	for (i = 0; i < adev->gfx.me.num_me; i++) {
 		for (j = 0; j < adev->gfx.me.num_pipe_per_me; j++) {
 			cp_int_cntl_reg = gfx_v11_0_get_cpg_int_cntl(adev, i, j);
@@ -2085,7 +2046,6 @@ static void gfx_v11_0_enable_gui_idle_interrupt(struct amdgpu_device *adev,
 			}
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int gfx_v11_0_init_csb(struct amdgpu_device *adev)
@@ -4024,21 +3984,13 @@ static int gfx_v11_0_gfx_mqd_init(struct amdgpu_device *adev, void *m,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int gfx_v11_0_gfx_init_queue(struct amdgpu_ring *ring)
-=======
 static int gfx_v11_0_kgq_init_queue(struct amdgpu_ring *ring, bool reset)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct amdgpu_device *adev = ring->adev;
 	struct v11_gfx_mqd *mqd = ring->mqd_ptr;
 	int mqd_idx = ring - &adev->gfx.gfx_ring[0];
 
-<<<<<<< HEAD
-	if (!amdgpu_in_reset(adev) && !adev->in_suspend) {
-=======
 	if (!reset && !amdgpu_in_reset(adev) && !adev->in_suspend) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memset((void *)mqd, 0, sizeof(*mqd));
 		mutex_lock(&adev->srbm_mutex);
 		soc21_grbm_select(adev, ring->me, ring->pipe, ring->queue, 0);
@@ -4074,11 +4026,7 @@ static int gfx_v11_0_cp_async_gfx_ring_resume(struct amdgpu_device *adev)
 
 		r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
 		if (!r) {
-<<<<<<< HEAD
-			r = gfx_v11_0_gfx_init_queue(ring);
-=======
 			r = gfx_v11_0_kgq_init_queue(ring, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			amdgpu_bo_kunmap(ring->mqd_obj);
 			ring->mqd_ptr = NULL;
 		}
@@ -4373,21 +4321,13 @@ static int gfx_v11_0_kiq_init_queue(struct amdgpu_ring *ring)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int gfx_v11_0_kcq_init_queue(struct amdgpu_ring *ring)
-=======
 static int gfx_v11_0_kcq_init_queue(struct amdgpu_ring *ring, bool reset)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct amdgpu_device *adev = ring->adev;
 	struct v11_compute_mqd *mqd = ring->mqd_ptr;
 	int mqd_idx = ring - &adev->gfx.compute_ring[0];
 
-<<<<<<< HEAD
-	if (!amdgpu_in_reset(adev) && !adev->in_suspend) {
-=======
 	if (!reset && !amdgpu_in_reset(adev) && !adev->in_suspend) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memset((void *)mqd, 0, sizeof(*mqd));
 		mutex_lock(&adev->srbm_mutex);
 		soc21_grbm_select(adev, ring->me, ring->pipe, ring->queue, 0);
@@ -4451,11 +4391,7 @@ static int gfx_v11_0_kcq_resume(struct amdgpu_device *adev)
 			goto done;
 		r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
 		if (!r) {
-<<<<<<< HEAD
-			r = gfx_v11_0_kcq_init_queue(ring);
-=======
 			r = gfx_v11_0_kcq_init_queue(ring, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			amdgpu_bo_kunmap(ring->mqd_obj);
 			ring->mqd_ptr = NULL;
 		}
@@ -4735,10 +4671,7 @@ static int gfx_v11_0_hw_fini(void *handle)
 
 	amdgpu_irq_put(adev, &adev->gfx.priv_reg_irq, 0);
 	amdgpu_irq_put(adev, &adev->gfx.priv_inst_irq, 0);
-<<<<<<< HEAD
-=======
 	amdgpu_irq_put(adev, &adev->gfx.bad_op_irq, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!adev->no_hw_access) {
 		if (amdgpu_async_gfx_ring) {
@@ -4809,13 +4742,8 @@ static int gfx_v11_0_wait_for_idle(void *handle)
 	return -ETIMEDOUT;
 }
 
-<<<<<<< HEAD
-static int gfx_v11_0_request_gfx_index_mutex(struct amdgpu_device *adev,
-					     int req)
-=======
 int gfx_v11_0_request_gfx_index_mutex(struct amdgpu_device *adev,
 				      bool req)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 i, tmp, val;
 
@@ -4853,11 +4781,8 @@ static int gfx_v11_0_soft_reset(void *handle)
 	int r, i, j, k;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
-=======
 	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tmp = RREG32_SOC15(GC, 0, regCP_INT_CNTL);
 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL, CMP_BUSY_INT_ENABLE, 0);
 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL, CNTX_BUSY_INT_ENABLE, 0);
@@ -4865,11 +4790,6 @@ static int gfx_v11_0_soft_reset(void *handle)
 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL, GFX_IDLE_INT_ENABLE, 0);
 	WREG32_SOC15(GC, 0, regCP_INT_CNTL, tmp);
 
-<<<<<<< HEAD
-	gfx_v11_0_set_safe_mode(adev, 0);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&adev->srbm_mutex);
 	for (i = 0; i < adev->gfx.mec.num_mec; ++i) {
 		for (j = 0; j < adev->gfx.mec.num_queue_per_pipe; j++) {
@@ -4894,15 +4814,10 @@ static int gfx_v11_0_soft_reset(void *handle)
 	mutex_unlock(&adev->srbm_mutex);
 
 	/* Try to acquire the gfx mutex before access to CP_VMID_RESET */
-<<<<<<< HEAD
-	r = gfx_v11_0_request_gfx_index_mutex(adev, 1);
-	if (r) {
-=======
 	mutex_lock(&adev->gfx.reset_sem_mutex);
 	r = gfx_v11_0_request_gfx_index_mutex(adev, true);
 	if (r) {
 		mutex_unlock(&adev->gfx.reset_sem_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		DRM_ERROR("Failed to acquire the gfx mutex during soft reset\n");
 		return r;
 	}
@@ -4916,12 +4831,8 @@ static int gfx_v11_0_soft_reset(void *handle)
 	RREG32_SOC15(GC, 0, regCP_VMID_RESET);
 
 	/* release the gfx mutex */
-<<<<<<< HEAD
-	r = gfx_v11_0_request_gfx_index_mutex(adev, 0);
-=======
 	r = gfx_v11_0_request_gfx_index_mutex(adev, false);
 	mutex_unlock(&adev->gfx.reset_sem_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		DRM_ERROR("Failed to release the gfx mutex during soft reset\n");
 		return r;
@@ -4989,11 +4900,7 @@ static int gfx_v11_0_soft_reset(void *handle)
 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL, GFX_IDLE_INT_ENABLE, 1);
 	WREG32_SOC15(GC, 0, regCP_INT_CNTL, tmp);
 
-<<<<<<< HEAD
-	gfx_v11_0_unset_safe_mode(adev, 0);
-=======
 	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return gfx_v11_0_cp_resume(adev);
 }
@@ -5124,12 +5031,9 @@ static int gfx_v11_0_late_init(void *handle)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
 	r = amdgpu_irq_get(adev, &adev->gfx.bad_op_irq, 0);
 	if (r)
 		return r;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -6019,12 +5923,9 @@ static int gfx_v11_0_ring_preempt_ib(struct amdgpu_ring *ring)
 	struct amdgpu_ring *kiq_ring = &kiq->ring;
 	unsigned long flags;
 
-<<<<<<< HEAD
-=======
 	if (adev->enable_mes)
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!kiq->pmf || !kiq->pmf->kiq_unmap_queues)
 		return -EINVAL;
 
@@ -6190,13 +6091,9 @@ static void gfx_v11_0_ring_soft_recovery(struct amdgpu_ring *ring,
 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
-<<<<<<< HEAD
-	WREG32_SOC15(GC, 0, regSQ_CMD, value);
-=======
 	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
 	WREG32_SOC15(GC, 0, regSQ_CMD, value);
 	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void
@@ -6389,17 +6286,6 @@ static int gfx_v11_0_eop_irq(struct amdgpu_device *adev,
 
 static int gfx_v11_0_set_priv_reg_fault_state(struct amdgpu_device *adev,
 					      struct amdgpu_irq_src *source,
-<<<<<<< HEAD
-					      unsigned type,
-					      enum amdgpu_interrupt_state state)
-{
-	switch (state) {
-	case AMDGPU_IRQ_STATE_DISABLE:
-	case AMDGPU_IRQ_STATE_ENABLE:
-		WREG32_FIELD15_PREREG(GC, 0, CP_INT_CNTL_RING0,
-			       PRIV_REG_INT_ENABLE,
-			       state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
-=======
 					      unsigned int type,
 					      enum amdgpu_interrupt_state state)
 {
@@ -6436,7 +6322,6 @@ static int gfx_v11_0_set_priv_reg_fault_state(struct amdgpu_device *adev,
 				}
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		break;
@@ -6445,19 +6330,6 @@ static int gfx_v11_0_set_priv_reg_fault_state(struct amdgpu_device *adev,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int gfx_v11_0_set_priv_inst_fault_state(struct amdgpu_device *adev,
-					       struct amdgpu_irq_src *source,
-					       unsigned type,
-					       enum amdgpu_interrupt_state state)
-{
-	switch (state) {
-	case AMDGPU_IRQ_STATE_DISABLE:
-	case AMDGPU_IRQ_STATE_ENABLE:
-		WREG32_FIELD15_PREREG(GC, 0, CP_INT_CNTL_RING0,
-			       PRIV_INSTR_INT_ENABLE,
-			       state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
-=======
 static int gfx_v11_0_set_bad_op_fault_state(struct amdgpu_device *adev,
 					    struct amdgpu_irq_src *source,
 					    unsigned type,
@@ -6527,7 +6399,6 @@ static int gfx_v11_0_set_priv_inst_fault_state(struct amdgpu_device *adev,
 				}
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		break;
@@ -6551,13 +6422,8 @@ static void gfx_v11_0_handle_priv_fault(struct amdgpu_device *adev,
 	case 0:
 		for (i = 0; i < adev->gfx.num_gfx_rings; i++) {
 			ring = &adev->gfx.gfx_ring[i];
-<<<<<<< HEAD
-			/* we only enabled 1 gfx queue per pipe for now */
-			if (ring->me == me_id && ring->pipe == pipe_id)
-=======
 			if (ring->me == me_id && ring->pipe == pipe_id &&
 			    ring->queue == queue_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				drm_sched_fault(&ring->sched);
 		}
 		break;
@@ -6585,8 +6451,6 @@ static int gfx_v11_0_priv_reg_irq(struct amdgpu_device *adev,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int gfx_v11_0_bad_op_irq(struct amdgpu_device *adev,
 				struct amdgpu_irq_src *source,
 				struct amdgpu_iv_entry *entry)
@@ -6596,7 +6460,6 @@ static int gfx_v11_0_bad_op_irq(struct amdgpu_device *adev,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int gfx_v11_0_priv_inst_irq(struct amdgpu_device *adev,
 				   struct amdgpu_irq_src *source,
 				   struct amdgpu_iv_entry *entry)
@@ -6683,8 +6546,6 @@ static void gfx_v11_0_emit_mem_sync(struct amdgpu_ring *ring)
 	amdgpu_ring_write(ring, gcr_cntl); /* GCR_CNTL */
 }
 
-<<<<<<< HEAD
-=======
 static int gfx_v11_0_reset_kgq(struct amdgpu_ring *ring, unsigned int vmid)
 {
 	struct amdgpu_device *adev = ring->adev;
@@ -6778,7 +6639,6 @@ static int gfx_v11_0_reset_kcq(struct amdgpu_ring *ring, unsigned int vmid)
 	return amdgpu_ring_test_ring(ring);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void gfx_v11_ip_print(void *handle, struct drm_printer *p)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
@@ -6968,11 +6828,7 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_gfx = {
 	.emit_hdp_flush = gfx_v11_0_ring_emit_hdp_flush,
 	.test_ring = gfx_v11_0_ring_test_ring,
 	.test_ib = gfx_v11_0_ring_test_ib,
-<<<<<<< HEAD
-	.insert_nop = amdgpu_ring_insert_nop,
-=======
 	.insert_nop = gfx_v11_ring_insert_nop,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.pad_ib = amdgpu_ring_generic_pad_ib,
 	.emit_cntxcntl = gfx_v11_0_ring_emit_cntxcntl,
 	.emit_gfx_shadow = gfx_v11_0_ring_emit_gfx_shadow,
@@ -6984,10 +6840,7 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_gfx = {
 	.emit_reg_write_reg_wait = gfx_v11_0_ring_emit_reg_write_reg_wait,
 	.soft_recovery = gfx_v11_0_ring_soft_recovery,
 	.emit_mem_sync = gfx_v11_0_emit_mem_sync,
-<<<<<<< HEAD
-=======
 	.reset = gfx_v11_0_reset_kgq,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_compute = {
@@ -7018,22 +6871,14 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_compute = {
 	.emit_hdp_flush = gfx_v11_0_ring_emit_hdp_flush,
 	.test_ring = gfx_v11_0_ring_test_ring,
 	.test_ib = gfx_v11_0_ring_test_ib,
-<<<<<<< HEAD
-	.insert_nop = amdgpu_ring_insert_nop,
-=======
 	.insert_nop = gfx_v11_ring_insert_nop,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.pad_ib = amdgpu_ring_generic_pad_ib,
 	.emit_wreg = gfx_v11_0_ring_emit_wreg,
 	.emit_reg_wait = gfx_v11_0_ring_emit_reg_wait,
 	.emit_reg_write_reg_wait = gfx_v11_0_ring_emit_reg_write_reg_wait,
-<<<<<<< HEAD
-	.emit_mem_sync = gfx_v11_0_emit_mem_sync,
-=======
 	.soft_recovery = gfx_v11_0_ring_soft_recovery,
 	.emit_mem_sync = gfx_v11_0_emit_mem_sync,
 	.reset = gfx_v11_0_reset_kcq,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_kiq = {
@@ -7088,14 +6933,11 @@ static const struct amdgpu_irq_src_funcs gfx_v11_0_priv_reg_irq_funcs = {
 	.process = gfx_v11_0_priv_reg_irq,
 };
 
-<<<<<<< HEAD
-=======
 static const struct amdgpu_irq_src_funcs gfx_v11_0_bad_op_irq_funcs = {
 	.set = gfx_v11_0_set_bad_op_fault_state,
 	.process = gfx_v11_0_bad_op_irq,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct amdgpu_irq_src_funcs gfx_v11_0_priv_inst_irq_funcs = {
 	.set = gfx_v11_0_set_priv_inst_fault_state,
 	.process = gfx_v11_0_priv_inst_irq,
@@ -7113,12 +6955,9 @@ static void gfx_v11_0_set_irq_funcs(struct amdgpu_device *adev)
 	adev->gfx.priv_reg_irq.num_types = 1;
 	adev->gfx.priv_reg_irq.funcs = &gfx_v11_0_priv_reg_irq_funcs;
 
-<<<<<<< HEAD
-=======
 	adev->gfx.bad_op_irq.num_types = 1;
 	adev->gfx.bad_op_irq.funcs = &gfx_v11_0_bad_op_irq_funcs;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	adev->gfx.priv_inst_irq.num_types = 1;
 	adev->gfx.priv_inst_irq.funcs = &gfx_v11_0_priv_inst_irq_funcs;
 

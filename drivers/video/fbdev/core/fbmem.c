@@ -544,8 +544,6 @@ unregister_framebuffer(struct fb_info *fb_info)
 }
 EXPORT_SYMBOL(unregister_framebuffer);
 
-<<<<<<< HEAD
-=======
 static void devm_unregister_framebuffer(void *data)
 {
 	struct fb_info *info = data;
@@ -576,7 +574,6 @@ devm_register_framebuffer(struct device *dev, struct fb_info *fb_info)
 }
 EXPORT_SYMBOL(devm_register_framebuffer);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  *	fb_set_suspend - low level driver signals suspend
  *	@info: framebuffer affected

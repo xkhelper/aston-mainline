@@ -500,12 +500,6 @@ static void ata_eh_dev_disable(struct ata_device *dev)
 	ata_down_xfermask_limit(dev, ATA_DNXFER_FORCE_PIO0 | ATA_DNXFER_QUIET);
 	dev->class++;
 
-<<<<<<< HEAD
-	/* From now till the next successful probe, ering is used to
-	 * track probe failures.  Clear accumulated device error info.
-	 */
-	ata_ering_clear(&dev->ering);
-=======
 	/*
 	 * From now till the next successful probe, ering is used to
 	 * track probe failures.  Clear accumulated device error info.
@@ -513,7 +507,6 @@ static void ata_eh_dev_disable(struct ata_device *dev)
 	ata_ering_clear(&dev->ering);
 
 	ata_dev_free_resources(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ata_eh_unload(struct ata_port *ap)
@@ -640,8 +633,6 @@ void ata_scsi_cmd_error_handler(struct Scsi_Host *host, struct ata_port *ap,
 	list_for_each_entry_safe(scmd, tmp, eh_work_q, eh_entry) {
 		struct ata_queued_cmd *qc;
 
-<<<<<<< HEAD
-=======
 		/*
 		 * If the scmd was added to EH, via ata_qc_schedule_eh() ->
 		 * scsi_timeout() -> scsi_eh_scmd_add(), scsi_timeout() will
@@ -650,7 +641,6 @@ void ata_scsi_cmd_error_handler(struct Scsi_Host *host, struct ata_port *ap,
 		 */
 		set_host_byte(scmd, DID_OK);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ata_qc_for_each_raw(ap, qc, i) {
 			if (qc->flags & ATA_QCFLAG_ACTIVE &&
 			    qc->scsicmd == scmd)
@@ -661,10 +651,7 @@ void ata_scsi_cmd_error_handler(struct Scsi_Host *host, struct ata_port *ap,
 			/* the scmd has an associated qc */
 			if (!(qc->flags & ATA_QCFLAG_EH)) {
 				/* which hasn't failed yet, timeout */
-<<<<<<< HEAD
-=======
 				set_host_byte(scmd, DID_TIME_OUT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qc->err_mask |= AC_ERR_TIMEOUT;
 				qc->flags |= ATA_QCFLAG_EH;
 				nr_timedout++;
@@ -1427,8 +1414,6 @@ unsigned int atapi_eh_tur(struct ata_device *dev, u8 *r_sense_key)
 }
 
 /**
-<<<<<<< HEAD
-=======
  *	ata_eh_decide_disposition - Disposition a qc based on sense data
  *	@qc: qc to examine
  *
@@ -1466,7 +1451,6 @@ enum scsi_disposition ata_eh_decide_disposition(struct ata_queued_cmd *qc)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	ata_eh_request_sense - perform REQUEST_SENSE_DATA_EXT
  *	@qc: qc to perform REQUEST_SENSE_SENSE_DATA_EXT to
  *
@@ -1692,12 +1676,8 @@ static unsigned int ata_eh_analyze_tf(struct ata_queued_cmd *qc)
 	}
 
 	if (qc->flags & ATA_QCFLAG_SENSE_VALID) {
-<<<<<<< HEAD
-		enum scsi_disposition ret = scsi_check_sense(qc->scsicmd);
-=======
 		enum scsi_disposition ret = ata_eh_decide_disposition(qc);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * SUCCESS here means that the sense code could be
 		 * evaluated and should be passed to the upper layers
@@ -1994,11 +1974,7 @@ static inline bool ata_eh_quiet(struct ata_queued_cmd *qc)
 	return qc->flags & ATA_QCFLAG_QUIET;
 }
 
-<<<<<<< HEAD
-static int ata_eh_read_sense_success_non_ncq(struct ata_link *link)
-=======
 static int ata_eh_get_non_ncq_success_sense(struct ata_link *link)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ata_port *ap = link->ap;
 	struct ata_queued_cmd *qc;
@@ -2016,18 +1992,10 @@ static int ata_eh_get_non_ncq_success_sense(struct ata_link *link)
 		return -EIO;
 
 	/*
-<<<<<<< HEAD
-	 * If we have sense data, call scsi_check_sense() in order to set the
-	 * correct SCSI ML byte (if any). No point in checking the return value,
-	 * since the command has already completed successfully.
-	 */
-	scsi_check_sense(qc->scsicmd);
-=======
 	 * No point in checking the return value, since the command has already
 	 * completed successfully.
 	 */
 	ata_eh_decide_disposition(qc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -2057,15 +2025,9 @@ static void ata_eh_get_success_sense(struct ata_link *link)
 	 * request sense ext command to retrieve the sense data.
 	 */
 	if (link->sactive)
-<<<<<<< HEAD
-		ret = ata_eh_read_sense_success_ncq_log(link);
-	else
-		ret = ata_eh_read_sense_success_non_ncq(link);
-=======
 		ret = ata_eh_get_ncq_success_sense(link);
 	else
 		ret = ata_eh_get_non_ncq_success_sense(link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto out;
 
@@ -3334,11 +3296,7 @@ static int atapi_eh_clear_ua(struct ata_device *dev)
 	int i;
 
 	for (i = 0; i < ATA_EH_UA_TRIES; i++) {
-<<<<<<< HEAD
-		u8 *sense_buffer = dev->link->ap->sector_buf;
-=======
 		u8 *sense_buffer = dev->sector_buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u8 sense_key = 0;
 		unsigned int err_mask;
 
@@ -4142,12 +4100,6 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
 
 	WARN_ON(ap->pflags & ATA_PFLAG_SUSPENDED);
 
-<<<<<<< HEAD
-	/* Set all devices attached to the port in standby mode */
-	ata_for_each_link(link, ap, HOST_FIRST) {
-		ata_for_each_dev(dev, link, ENABLED)
-			ata_dev_power_set_standby(dev);
-=======
 	/*
 	 * We will reach this point for all of the PM events:
 	 * PM_EVENT_SUSPEND (if runtime pm, PM_EVENT_AUTO will also be set)
@@ -4162,7 +4114,6 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
 			ata_for_each_dev(dev, link, ENABLED)
 				ata_dev_power_set_standby(dev);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*

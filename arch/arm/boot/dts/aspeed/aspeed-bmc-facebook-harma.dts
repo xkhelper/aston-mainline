@@ -20,13 +20,6 @@
 		i2c21 = &imux21;
 		i2c22 = &imux22;
 		i2c23 = &imux23;
-<<<<<<< HEAD
-		i2c24 = &imux24;
-		i2c25 = &imux25;
-		i2c26 = &imux26;
-		i2c27 = &imux27;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i2c28 = &imux28;
 		i2c29 = &imux29;
 		i2c30 = &imux30;
@@ -73,25 +66,12 @@
 		};
 	};
 
-<<<<<<< HEAD
-	spi_gpio: spi-gpio {
-=======
 	spi_gpio: spi {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		status = "okay";
 		compatible = "spi-gpio";
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-<<<<<<< HEAD
-		gpio-sck = <&gpio0 ASPEED_GPIO(Z, 3) GPIO_ACTIVE_HIGH>;
-		gpio-mosi = <&gpio0 ASPEED_GPIO(Z, 4) GPIO_ACTIVE_HIGH>;
-		gpio-miso = <&gpio0 ASPEED_GPIO(Z, 5) GPIO_ACTIVE_HIGH>;
-		num-chipselects = <1>;
-		cs-gpios = <&gpio0 ASPEED_GPIO(Z, 0) GPIO_ACTIVE_LOW>;
-
-		tpmdev@0 {
-=======
 		sck-gpios = <&gpio0 ASPEED_GPIO(Z, 3) GPIO_ACTIVE_HIGH>;
 		mosi-gpios = <&gpio0 ASPEED_GPIO(Z, 4) GPIO_ACTIVE_HIGH>;
 		miso-gpios = <&gpio0 ASPEED_GPIO(Z, 5) GPIO_ACTIVE_HIGH>;
@@ -99,7 +79,6 @@
 		cs-gpios = <&gpio0 ASPEED_GPIO(Z, 0) GPIO_ACTIVE_LOW>;
 
 		tpm@0 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
 			spi-max-frequency = <33000000>;
 			reg = <0>;
@@ -154,10 +133,6 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_rmii4_default>;
 	use-ncsi;
-<<<<<<< HEAD
-	mellanox,multi-host;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &rtc {
@@ -218,8 +193,6 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 	};
-<<<<<<< HEAD
-=======
 
 	power-sensor@40 {
 		compatible = "ti,ina238";
@@ -249,7 +222,6 @@
 		compatible = "ti,tmp75";
 		reg = <0x4b>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &i2c1 {
@@ -276,8 +248,6 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 	};
-<<<<<<< HEAD
-=======
 
 	power-sensor@40 {
 		compatible = "ti,ina238";
@@ -307,7 +277,6 @@
 		compatible = "ti,tmp75";
 		reg = <0x4b>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &i2c3 {
@@ -360,13 +329,6 @@
 		reg = <0x49>;
 	};
 
-<<<<<<< HEAD
-	power-monitor@22 {
-		compatible = "lltc,ltc4286";
-		reg = <0x22>;
-		adi,vrange-low-enable;
-		shunt-resistor-micro-ohms = <500>;
-=======
 	power-monitor@44 {
 		compatible = "lltc,ltc4287";
 		reg = <0x44>;
@@ -376,7 +338,6 @@
 	power-monitor@40 {
 		compatible = "infineon,xdp710";
 		reg = <0x40>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -417,8 +378,6 @@
 &i2c9 {
 	status = "okay";
 
-<<<<<<< HEAD
-=======
 	mctp-controller;
 	multi-master;
 
@@ -427,7 +386,6 @@
 		reg = <(0x10 | I2C_OWN_SLAVE_ADDRESS)>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gpio@30 {
 		compatible = "nxp,pca9555";
 		reg = <0x30>;
@@ -447,36 +405,6 @@
 		"","","","";
 	};
 
-<<<<<<< HEAD
-	i2c-mux@71 {
-		compatible = "nxp,pca9546";
-		reg = <0x71>;
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		imux24: i2c@0 {
-			#address-cells = <1>;
-			#size-cells = <0>;
-			reg = <0>;
-		};
-		imux25: i2c@1 {
-			#address-cells = <1>;
-			#size-cells = <0>;
-			reg = <1>;
-		};
-		imux26: i2c@2 {
-			#address-cells = <1>;
-			#size-cells = <0>;
-			reg = <2>;
-		};
-		imux27: i2c@3 {
-			#address-cells = <1>;
-			#size-cells = <0>;
-			reg = <3>;
-		};
-	};
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	// PTTV FRU
 	eeprom@52 {
 		compatible = "atmel,24c64";
@@ -486,8 +414,6 @@
 
 &i2c11 {
 	status = "okay";
-<<<<<<< HEAD
-=======
 
 	gpio@30 {
 		compatible = "nxp,pca9555";
@@ -513,7 +439,6 @@
 		compatible = "atmel,24c64";
 		reg = <0x52>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &i2c12 {
@@ -537,8 +462,6 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <0>;
-<<<<<<< HEAD
-=======
 			power-monitor@61 {
 				compatible = "isil,isl69260";
 				reg = <0x61>;
@@ -563,7 +486,6 @@
 				compatible = "infineon,xdpe152c4";
 				reg = <0x68>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 		imux29: i2c@1 {
 			#address-cells = <1>;
@@ -662,22 +584,14 @@
 	/*O0-O7*/	"","","","","","","","",
 	/*P0-P7*/	"power-button","power-host-control",
 			"reset-button","","led-power","","","",
-<<<<<<< HEAD
-	/*Q0-Q7*/	"","","","","","","","",
-=======
 	/*Q0-Q7*/	"","","","","","power-chassis-control","","",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*R0-R7*/	"","","","","","","","",
 	/*S0-S7*/	"","","","","","","","",
 	/*T0-T7*/	"","","","","","","","",
 	/*U0-U7*/	"","","","","","","led-identify-gate","",
 	/*V0-V7*/	"","","","",
-<<<<<<< HEAD
-			"rtc-battery-voltage-read-enable","","","",
-=======
 			"rtc-battery-voltage-read-enable","",
 			"power-chassis-good","",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*W0-W7*/	"","","","","","","","",
 	/*X0-X7*/	"","","","","","","","",
 	/*Y0-Y7*/	"","","","","","","","",
@@ -695,10 +609,6 @@
 
 &sgpiom0 {
 	status = "okay";
-<<<<<<< HEAD
-	max-ngpios = <128>;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ngpios = <128>;
 	bus-frequency = <2000000>;
 	gpio-line-names =

@@ -55,13 +55,6 @@
 		reg = <0x50>;
 		pagesize = <32>;
 		read-only;
-<<<<<<< HEAD
-		#address-cells = <1>;
-		#size-cells = <1>;
-
-		mac_address: mac-address@66 {
-			reg = <0x66 0x6>;
-=======
 
 		nvmem-layout {
 			compatible = "fixed-layout";
@@ -71,7 +64,6 @@
 			mac_address: mac-address@66 {
 				reg = <0x66 0x6>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };

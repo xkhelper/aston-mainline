@@ -23,10 +23,6 @@
 
 #define IOEND_BATCH_SIZE	4096
 
-<<<<<<< HEAD
-typedef int (*iomap_punch_t)(struct inode *inode, loff_t offset, loff_t length);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Structure allocated for each folio to track per-block uptodate, dirty state
  * and I/O completions.
@@ -903,11 +899,7 @@ static bool iomap_write_end(struct iomap_iter *iter, loff_t pos, size_t len,
 		size_t bh_written;
 
 		bh_written = block_write_end(NULL, iter->inode->i_mapping, pos,
-<<<<<<< HEAD
-					len, copied, &folio->page, NULL);
-=======
 					len, copied, folio, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WARN_ON_ONCE(bh_written != copied && bh_written != 0);
 		return bh_written == copied;
 	}
@@ -1029,21 +1021,14 @@ retry:
 
 ssize_t
 iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *i,
-<<<<<<< HEAD
-		const struct iomap_ops *ops)
-=======
 		const struct iomap_ops *ops, void *private)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct iomap_iter iter = {
 		.inode		= iocb->ki_filp->f_mapping->host,
 		.pos		= iocb->ki_pos,
 		.len		= iov_iter_count(i),
 		.flags		= IOMAP_WRITE,
-<<<<<<< HEAD
-=======
 		.private	= private,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	ssize_t ret;
 
@@ -1061,24 +1046,14 @@ iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *i,
 }
 EXPORT_SYMBOL_GPL(iomap_file_buffered_write);
 
-<<<<<<< HEAD
-static int iomap_write_delalloc_ifs_punch(struct inode *inode,
-		struct folio *folio, loff_t start_byte, loff_t end_byte,
-		iomap_punch_t punch)
-=======
 static void iomap_write_delalloc_ifs_punch(struct inode *inode,
 		struct folio *folio, loff_t start_byte, loff_t end_byte,
 		struct iomap *iomap, iomap_punch_t punch)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int first_blk, last_blk, i;
 	loff_t last_byte;
 	u8 blkbits = inode->i_blkbits;
 	struct iomap_folio_state *ifs;
-<<<<<<< HEAD
-	int ret = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * When we have per-block dirty tracking, there can be
@@ -1088,53 +1063,13 @@ static void iomap_write_delalloc_ifs_punch(struct inode *inode,
 	 */
 	ifs = folio->private;
 	if (!ifs)
-<<<<<<< HEAD
-		return ret;
-=======
 		return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	last_byte = min_t(loff_t, end_byte - 1,
 			folio_pos(folio) + folio_size(folio) - 1);
 	first_blk = offset_in_folio(folio, start_byte) >> blkbits;
 	last_blk = offset_in_folio(folio, last_byte) >> blkbits;
 	for (i = first_blk; i <= last_blk; i++) {
-<<<<<<< HEAD
-		if (!ifs_block_is_dirty(folio, ifs, i)) {
-			ret = punch(inode, folio_pos(folio) + (i << blkbits),
-				    1 << blkbits);
-			if (ret)
-				return ret;
-		}
-	}
-
-	return ret;
-}
-
-
-static int iomap_write_delalloc_punch(struct inode *inode, struct folio *folio,
-		loff_t *punch_start_byte, loff_t start_byte, loff_t end_byte,
-		iomap_punch_t punch)
-{
-	int ret = 0;
-
-	if (!folio_test_dirty(folio))
-		return ret;
-
-	/* if dirty, punch up to offset */
-	if (start_byte > *punch_start_byte) {
-		ret = punch(inode, *punch_start_byte,
-				start_byte - *punch_start_byte);
-		if (ret)
-			return ret;
-	}
-
-	/* Punch non-dirty blocks within folio */
-	ret = iomap_write_delalloc_ifs_punch(inode, folio, start_byte,
-			end_byte, punch);
-	if (ret)
-		return ret;
-=======
 		if (!ifs_block_is_dirty(folio, ifs, i))
 			punch(inode, folio_pos(folio) + (i << blkbits),
 				    1 << blkbits, iomap);
@@ -1157,7 +1092,6 @@ static void iomap_write_delalloc_punch(struct inode *inode, struct folio *folio,
 	/* Punch non-dirty blocks within folio */
 	iomap_write_delalloc_ifs_punch(inode, folio, start_byte, end_byte,
 			iomap, punch);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Make sure the next punch start is correctly bound to
@@ -1165,11 +1099,6 @@ static void iomap_write_delalloc_punch(struct inode *inode, struct folio *folio,
 	 */
 	*punch_start_byte = min_t(loff_t, end_byte,
 				folio_pos(folio) + folio_size(folio));
-<<<<<<< HEAD
-
-	return ret;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1189,22 +1118,12 @@ static void iomap_write_delalloc_punch(struct inode *inode, struct folio *folio,
  * This function uses [start_byte, end_byte) intervals (i.e. open ended) to
  * simplify range iterations.
  */
-<<<<<<< HEAD
-static int iomap_write_delalloc_scan(struct inode *inode,
-		loff_t *punch_start_byte, loff_t start_byte, loff_t end_byte,
-		iomap_punch_t punch)
-{
-	while (start_byte < end_byte) {
-		struct folio	*folio;
-		int ret;
-=======
 static void iomap_write_delalloc_scan(struct inode *inode,
 		loff_t *punch_start_byte, loff_t start_byte, loff_t end_byte,
 		struct iomap *iomap, iomap_punch_t punch)
 {
 	while (start_byte < end_byte) {
 		struct folio	*folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* grab locked page */
 		folio = filemap_lock_folio(inode->i_mapping,
@@ -1215,30 +1134,14 @@ static void iomap_write_delalloc_scan(struct inode *inode,
 			continue;
 		}
 
-<<<<<<< HEAD
-		ret = iomap_write_delalloc_punch(inode, folio, punch_start_byte,
-						 start_byte, end_byte, punch);
-		if (ret) {
-			folio_unlock(folio);
-			folio_put(folio);
-			return ret;
-		}
-=======
 		iomap_write_delalloc_punch(inode, folio, punch_start_byte,
 				start_byte, end_byte, iomap, punch);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* move offset to start of next folio in range */
 		start_byte = folio_next_index(folio) << PAGE_SHIFT;
 		folio_unlock(folio);
 		folio_put(folio);
 	}
-<<<<<<< HEAD
-	return 0;
-}
-
-/*
-=======
 }
 
 /*
@@ -1250,13 +1153,10 @@ static void iomap_write_delalloc_scan(struct inode *inode,
  * delalloc extent allocated for this iomap if the write raced with page
  * faults.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Punch out all the delalloc blocks in the range given except for those that
  * have dirty data still pending in the page cache - those are going to be
  * written and so must still retain the delalloc backing for writeback.
  *
-<<<<<<< HEAD
-=======
  * The punch() callback *must* only punch delalloc extents in the range passed
  * to it. It must skip over all other types of extents in the range and leave
  * them completely unchanged. It must do this punch atomically with respect to
@@ -1275,7 +1175,6 @@ static void iomap_write_delalloc_scan(struct inode *inode,
  *       ->punch
  *         internal filesystem allocation lock
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * As we are scanning the page cache for data, we don't need to reimplement the
  * wheel - mapping_seek_hole_data() does exactly what we need to identify the
  * start and end of data ranges correctly even for sub-folio block sizes. This
@@ -1304,22 +1203,6 @@ static void iomap_write_delalloc_scan(struct inode *inode,
  * require sprinkling this code with magic "+ 1" and "- 1" arithmetic and expose
  * the code to subtle off-by-one bugs....
  */
-<<<<<<< HEAD
-static int iomap_write_delalloc_release(struct inode *inode,
-		loff_t start_byte, loff_t end_byte, iomap_punch_t punch)
-{
-	loff_t punch_start_byte = start_byte;
-	loff_t scan_end_byte = min(i_size_read(inode), end_byte);
-	int error = 0;
-
-	/*
-	 * Lock the mapping to avoid races with page faults re-instantiating
-	 * folios and dirtying them via ->page_mkwrite whilst we walk the
-	 * cache and perform delalloc extent removal. Failing to do this can
-	 * leave dirty pages with no space reservation in the cache.
-	 */
-	filemap_invalidate_lock(inode->i_mapping);
-=======
 void iomap_write_delalloc_release(struct inode *inode, loff_t start_byte,
 		loff_t end_byte, unsigned flags, struct iomap *iomap,
 		iomap_punch_t punch)
@@ -1335,7 +1218,6 @@ void iomap_write_delalloc_release(struct inode *inode, loff_t start_byte,
 	 */
 	lockdep_assert_held_write(&inode->i_mapping->invalidate_lock);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (start_byte < scan_end_byte) {
 		loff_t		data_end;
 
@@ -1344,15 +1226,6 @@ void iomap_write_delalloc_release(struct inode *inode, loff_t start_byte,
 		/*
 		 * If there is no more data to scan, all that is left is to
 		 * punch out the remaining range.
-<<<<<<< HEAD
-		 */
-		if (start_byte == -ENXIO || start_byte == scan_end_byte)
-			break;
-		if (start_byte < 0) {
-			error = start_byte;
-			goto out_unlock;
-		}
-=======
 		 *
 		 * Note that mapping_seek_hole_data is only supposed to return
 		 * either an offset or -ENXIO, so WARN on any other error as
@@ -1362,7 +1235,6 @@ void iomap_write_delalloc_release(struct inode *inode, loff_t start_byte,
 			break;
 		if (WARN_ON_ONCE(start_byte < 0))
 			return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WARN_ON_ONCE(start_byte < punch_start_byte);
 		WARN_ON_ONCE(start_byte > scan_end_byte);
 
@@ -1372,19 +1244,6 @@ void iomap_write_delalloc_release(struct inode *inode, loff_t start_byte,
 		 */
 		data_end = mapping_seek_hole_data(inode->i_mapping, start_byte,
 				scan_end_byte, SEEK_HOLE);
-<<<<<<< HEAD
-		if (data_end < 0) {
-			error = data_end;
-			goto out_unlock;
-		}
-		WARN_ON_ONCE(data_end <= start_byte);
-		WARN_ON_ONCE(data_end > scan_end_byte);
-
-		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
-				start_byte, data_end, punch);
-		if (error)
-			goto out_unlock;
-=======
 		if (WARN_ON_ONCE(data_end < 0))
 			return;
 
@@ -1400,112 +1259,25 @@ void iomap_write_delalloc_release(struct inode *inode, loff_t start_byte,
 
 		iomap_write_delalloc_scan(inode, &punch_start_byte, start_byte,
 				data_end, iomap, punch);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* The next data search starts at the end of this one. */
 		start_byte = data_end;
 	}
 
 	if (punch_start_byte < end_byte)
-<<<<<<< HEAD
-		error = punch(inode, punch_start_byte,
-				end_byte - punch_start_byte);
-out_unlock:
-	filemap_invalidate_unlock(inode->i_mapping);
-	return error;
-}
-
-/*
- * When a short write occurs, the filesystem may need to remove reserved space
- * that was allocated in ->iomap_begin from it's ->iomap_end method. For
- * filesystems that use delayed allocation, we need to punch out delalloc
- * extents from the range that are not dirty in the page cache. As the write can
- * race with page faults, there can be dirty pages over the delalloc extent
- * outside the range of a short write but still within the delalloc extent
- * allocated for this iomap.
- *
- * This function uses [start_byte, end_byte) intervals (i.e. open ended) to
- * simplify range iterations.
- *
- * The punch() callback *must* only punch delalloc extents in the range passed
- * to it. It must skip over all other types of extents in the range and leave
- * them completely unchanged. It must do this punch atomically with respect to
- * other extent modifications.
- *
- * The punch() callback may be called with a folio locked to prevent writeback
- * extent allocation racing at the edge of the range we are currently punching.
- * The locked folio may or may not cover the range being punched, so it is not
- * safe for the punch() callback to lock folios itself.
- *
- * Lock order is:
- *
- * inode->i_rwsem (shared or exclusive)
- *   inode->i_mapping->invalidate_lock (exclusive)
- *     folio_lock()
- *       ->punch
- *         internal filesystem allocation lock
- */
-int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
-		struct iomap *iomap, loff_t pos, loff_t length,
-		ssize_t written, iomap_punch_t punch)
-{
-	loff_t			start_byte;
-	loff_t			end_byte;
-	unsigned int		blocksize = i_blocksize(inode);
-
-	if (iomap->type != IOMAP_DELALLOC)
-		return 0;
-
-	/* If we didn't reserve the blocks, we're not allowed to punch them. */
-	if (!(iomap->flags & IOMAP_F_NEW))
-		return 0;
-
-	/*
-	 * start_byte refers to the first unused block after a short write. If
-	 * nothing was written, round offset down to point at the first block in
-	 * the range.
-	 */
-	if (unlikely(!written))
-		start_byte = round_down(pos, blocksize);
-	else
-		start_byte = round_up(pos + written, blocksize);
-	end_byte = round_up(pos + length, blocksize);
-
-	/* Nothing to do if we've written the entire delalloc extent */
-	if (start_byte >= end_byte)
-		return 0;
-
-	return iomap_write_delalloc_release(inode, start_byte, end_byte,
-					punch);
-}
-EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
-=======
 		punch(inode, punch_start_byte, end_byte - punch_start_byte,
 				iomap);
 }
 EXPORT_SYMBOL_GPL(iomap_write_delalloc_release);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static loff_t iomap_unshare_iter(struct iomap_iter *iter)
 {
 	struct iomap *iomap = &iter->iomap;
-<<<<<<< HEAD
-	const struct iomap *srcmap = iomap_iter_srcmap(iter);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	loff_t pos = iter->pos;
 	loff_t length = iomap_length(iter);
 	loff_t written = 0;
 
-<<<<<<< HEAD
-	/* don't bother with blocks that are not shared to start with */
-	if (!(iomap->flags & IOMAP_F_SHARED))
-		return length;
-	/* don't bother with holes or unwritten extents */
-	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
-=======
 	if (!iomap_want_unshare_iter(iter))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return length;
 
 	do {
@@ -1549,13 +1321,6 @@ iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
 	struct iomap_iter iter = {
 		.inode		= inode,
 		.pos		= pos,
-<<<<<<< HEAD
-		.len		= len,
-		.flags		= IOMAP_WRITE | IOMAP_UNSHARE,
-	};
-	int ret;
-
-=======
 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE,
 	};
 	loff_t size = i_size_read(inode);
@@ -1565,16 +1330,12 @@ iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
 		return 0;
 
 	iter.len = min(len, size - pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while ((ret = iomap_iter(&iter, ops)) > 0)
 		iter.processed = iomap_unshare_iter(&iter);
 	return ret;
 }
 EXPORT_SYMBOL_GPL(iomap_file_unshare);
 
-<<<<<<< HEAD
-static loff_t iomap_zero_iter(struct iomap_iter *iter, bool *did_zero)
-=======
 /*
  * Flush the remaining range of the iter and mark the current mapping stale.
  * This is used when zero range sees an unwritten mapping that may have had
@@ -1591,18 +1352,12 @@ static inline int iomap_zero_iter_flush_and_stale(struct iomap_iter *i)
 
 static loff_t iomap_zero_iter(struct iomap_iter *iter, bool *did_zero,
 		bool *range_dirty)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
 	loff_t pos = iter->pos;
 	loff_t length = iomap_length(iter);
 	loff_t written = 0;
 
-<<<<<<< HEAD
-	/* already zeroed?  we're done. */
-	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
-		return length;
-=======
 	/*
 	 * We must zero subranges of unwritten mappings that might be dirty in
 	 * pagecache from previous writes. We only know whether the entire range
@@ -1628,7 +1383,6 @@ static loff_t iomap_zero_iter(struct iomap_iter *iter, bool *did_zero,
 		/* range is clean and already zeroed, nothing to do */
 		return length;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	do {
 		struct folio *folio;
@@ -1676,11 +1430,6 @@ iomap_zero_range(struct inode *inode, loff_t pos, loff_t len, bool *did_zero,
 		.flags		= IOMAP_ZERO,
 	};
 	int ret;
-<<<<<<< HEAD
-
-	while ((ret = iomap_iter(&iter, ops)) > 0)
-		iter.processed = iomap_zero_iter(&iter, did_zero);
-=======
 	bool range_dirty;
 
 	/*
@@ -1702,7 +1451,6 @@ iomap_zero_range(struct inode *inode, loff_t pos, loff_t len, bool *did_zero,
 
 	while ((ret = iomap_iter(&iter, ops)) > 0)
 		iter.processed = iomap_zero_iter(&iter, did_zero, &range_dirty);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(iomap_zero_range);
@@ -2257,18 +2005,10 @@ iomap_writepages(struct address_space *mapping, struct writeback_control *wbc,
 }
 EXPORT_SYMBOL_GPL(iomap_writepages);
 
-<<<<<<< HEAD
-static int __init iomap_init(void)
-=======
 static int __init iomap_buffered_init(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return bioset_init(&iomap_ioend_bioset, 4 * (PAGE_SIZE / SECTOR_SIZE),
 			   offsetof(struct iomap_ioend, io_bio),
 			   BIOSET_NEED_BVECS);
 }
-<<<<<<< HEAD
-fs_initcall(iomap_init);
-=======
 fs_initcall(iomap_buffered_init);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

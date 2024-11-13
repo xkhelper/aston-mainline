@@ -165,17 +165,8 @@ struct ieee80211_regdomain *iwl_mvm_get_regdomain(struct wiphy *wiphy,
 	mvm->lar_regdom_set = true;
 	mvm->mcc_src = src_id;
 
-<<<<<<< HEAD
-	/* Some kind of regulatory mess means we need to currently disallow
-	 * puncturing in the US and Canada. Do that here, at least until we
-	 * figure out the new chanctx APIs for puncturing.
-	 */
-	if (resp->mcc == cpu_to_le16(IWL_MCC_US) ||
-	    resp->mcc == cpu_to_le16(IWL_MCC_CANADA))
-=======
 	if (!iwl_puncturing_is_allowed_in_bios(mvm->bios_enable_puncturing,
 					       le16_to_cpu(resp->mcc)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ieee80211_hw_set(mvm->hw, DISALLOW_PUNCTURING);
 	else
 		__clear_bit(IEEE80211_HW_DISALLOW_PUNCTURING, mvm->hw->flags);
@@ -644,12 +635,6 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
 			       NL80211_FEATURE_LOW_PRIORITY_SCAN |
 			       NL80211_FEATURE_P2P_GO_OPPPS |
 			       NL80211_FEATURE_AP_MODE_CHAN_WIDTH_CHANGE |
-<<<<<<< HEAD
-			       NL80211_FEATURE_DYNAMIC_SMPS |
-			       NL80211_FEATURE_STATIC_SMPS |
-			       NL80211_FEATURE_SUPPORTS_WMM_ADMISSION;
-
-=======
 			       NL80211_FEATURE_SUPPORTS_WMM_ADMISSION;
 
 	/* when firmware supports RLC/SMPS offload, do not set these
@@ -659,7 +644,6 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
 		hw->wiphy->features |= NL80211_FEATURE_STATIC_SMPS |
 				       NL80211_FEATURE_DYNAMIC_SMPS;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (fw_has_capa(&mvm->fw->ucode_capa,
 			IWL_UCODE_TLV_CAPA_TXPOWER_INSERTION_SUPPORT))
 		hw->wiphy->features |= NL80211_FEATURE_TX_POWER_INSERTION;
@@ -855,27 +839,10 @@ void iwl_mvm_mac_tx(struct ieee80211_hw *hw,
 	if (ieee80211_is_mgmt(hdr->frame_control))
 		sta = NULL;
 
-<<<<<<< HEAD
-	/* If there is no sta, and it's not offchannel - send through AP */
-	if (!sta && info->control.vif->type == NL80211_IFTYPE_STATION &&
-	    !offchannel) {
-		struct iwl_mvm_vif *mvmvif =
-			iwl_mvm_vif_from_mac80211(info->control.vif);
-		u8 ap_sta_id = READ_ONCE(mvmvif->deflink.ap_sta_id);
-
-		if (ap_sta_id < mvm->fw->ucode_capa.num_stations) {
-			/* mac80211 holds rcu read lock */
-			sta = rcu_dereference(mvm->fw_id_to_mac_id[ap_sta_id]);
-			if (IS_ERR_OR_NULL(sta))
-				goto drop;
-		}
-	}
-=======
 	/* this shouldn't even happen: just drop */
 	if (!sta && info->control.vif->type == NL80211_IFTYPE_STATION &&
 	    !offchannel)
 		goto drop;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (tmp_sta && !sta && link_id != IEEE80211_LINK_UNSPECIFIED &&
 	    !ieee80211_is_probe_resp(hdr->frame_control)) {
@@ -1265,11 +1232,7 @@ int __iwl_mvm_mac_start(struct iwl_mvm *mvm)
 		mvm->nvm_data = NULL;
 	}
 
-<<<<<<< HEAD
-#ifdef CONFIG_PM
-=======
 #ifdef CONFIG_PM_SLEEP
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* fast_resume will be cleared by iwl_mvm_fast_resume */
 	fast_resume = mvm->fast_resume;
 
@@ -1291,11 +1254,7 @@ int __iwl_mvm_mac_start(struct iwl_mvm *mvm)
 			set_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
 		}
 	}
-<<<<<<< HEAD
-#endif /* CONFIG_PM */
-=======
 #endif /* CONFIG_PM_SLEEP */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED, &mvm->status)) {
 		/*
@@ -1334,20 +1293,14 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
 {
 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
 	int ret;
-<<<<<<< HEAD
-=======
 	int retry, max_retry = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&mvm->mutex);
 
 	/* we are starting the mac not in error flow, and restart is enabled */
 	if (!test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED, &mvm->status) &&
 	    iwlwifi_mod_params.fw_restart) {
-<<<<<<< HEAD
-=======
 		max_retry = IWL_MAX_INIT_RETRY;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * This will prevent mac80211 recovery flows to trigger during
 		 * init failures
@@ -1355,9 +1308,6 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
 		set_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
 	}
 
-<<<<<<< HEAD
-	ret = __iwl_mvm_mac_start(mvm);
-=======
 	for (retry = 0; retry <= max_retry; retry++) {
 		ret = __iwl_mvm_mac_start(mvm);
 		if (!ret)
@@ -1365,7 +1315,6 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
 
 		IWL_ERR(mvm, "mac start retry %d\n", retry);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clear_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
 
 	mutex_unlock(&mvm->mutex);
@@ -1530,21 +1479,6 @@ int iwl_mvm_set_tx_power(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 {
 	u32 cmd_id = REDUCE_TX_POWER_CMD;
 	int len;
-<<<<<<< HEAD
-	struct iwl_dev_tx_power_cmd cmd = {
-		.common.set_mode = cpu_to_le32(IWL_TX_POWER_MODE_SET_MAC),
-		.common.mac_context_id =
-			cpu_to_le32(iwl_mvm_vif_from_mac80211(vif)->id),
-		.common.pwr_restriction = cpu_to_le16(8 * tx_power),
-	};
-	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id,
-					   IWL_FW_CMD_VER_UNKNOWN);
-
-	if (tx_power == IWL_DEFAULT_MAX_TX_POWER)
-		cmd.common.pwr_restriction = cpu_to_le16(IWL_DEV_MAX_TX_POWER);
-
-	if (cmd_ver == 8)
-=======
 	struct iwl_dev_tx_power_cmd_v3_v8 cmd = {
 		.common.set_mode = cpu_to_le32(IWL_TX_POWER_MODE_SET_MAC),
 		.common.mac_context_id =
@@ -1572,7 +1506,6 @@ int iwl_mvm_set_tx_power(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	else if (cmd_ver == 9)
 		len = sizeof(cmd_v9_v10.v9);
 	else if (cmd_ver == 8)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		len = sizeof(cmd.v8);
 	else if (cmd_ver == 7)
 		len = sizeof(cmd.v7);
@@ -1587,12 +1520,6 @@ int iwl_mvm_set_tx_power(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 	else
 		len = sizeof(cmd.v3);
 
-<<<<<<< HEAD
-	/* all structs have the same common part, add it */
-	len += sizeof(cmd.common);
-
-	return iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, len, &cmd);
-=======
 	/* all structs have the same common part, add its length */
 	len += sizeof(cmd.common);
 
@@ -1601,7 +1528,6 @@ int iwl_mvm_set_tx_power(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 
 	return iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, len, cmd_data);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void iwl_mvm_post_csa_tx(void *data, struct ieee80211_sta *sta)
@@ -2052,10 +1978,6 @@ static void iwl_mvm_mac_remove_interface(struct ieee80211_hw *hw,
 		mvm->p2p_device_vif = NULL;
 	}
 
-<<<<<<< HEAD
-	iwl_mvm_unset_link_mapping(mvm, vif, &vif->bss_conf);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iwl_mvm_mac_ctxt_remove(mvm, vif);
 
 	RCU_INIT_POINTER(mvm->vif_id_to_mac[mvmvif->id], NULL);
@@ -2064,10 +1986,7 @@ static void iwl_mvm_mac_remove_interface(struct ieee80211_hw *hw,
 		mvm->monitor_on = false;
 
 out:
-<<<<<<< HEAD
-=======
 	iwl_mvm_unset_link_mapping(mvm, vif, &vif->bss_conf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (vif->type == NL80211_IFTYPE_AP ||
 	    vif->type == NL80211_IFTYPE_ADHOC) {
 		iwl_mvm_dealloc_int_sta(mvm, &mvmvif->deflink.mcast_sta);

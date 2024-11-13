@@ -1042,11 +1042,7 @@ static void xe_guc_pc_fini_hw(void *arg)
 		return;
 
 	XE_WARN_ON(xe_force_wake_get(gt_to_fw(pc_to_gt(pc)), XE_FORCEWAKE_ALL));
-<<<<<<< HEAD
-	XE_WARN_ON(xe_guc_pc_gucrc_disable(pc));
-=======
 	xe_guc_pc_gucrc_disable(pc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	XE_WARN_ON(xe_guc_pc_stop(pc));
 
 	/* Bind requested freq to mert_freq_cap before unload */

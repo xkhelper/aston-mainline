@@ -281,17 +281,6 @@ enum nfsstat4 {
 	/* nfs42 */
 	NFS4ERR_PARTNER_NOTSUPP	= 10088,
 	NFS4ERR_PARTNER_NO_AUTH	= 10089,
-<<<<<<< HEAD
-	NFS4ERR_UNION_NOTSUPP = 10090,
-	NFS4ERR_OFFLOAD_DENIED = 10091,
-	NFS4ERR_WRONG_LFS = 10092,
-	NFS4ERR_BADLABEL = 10093,
-	NFS4ERR_OFFLOAD_NO_REQS = 10094,
-
-	/* xattr (RFC8276) */
-	NFS4ERR_NOXATTR        = 10095,
-	NFS4ERR_XATTR2BIG      = 10096,
-=======
 	NFS4ERR_UNION_NOTSUPP	= 10090,
 	NFS4ERR_OFFLOAD_DENIED	= 10091,
 	NFS4ERR_WRONG_LFS	= 10092,
@@ -304,7 +293,6 @@ enum nfsstat4 {
 
 	/* can be used for internal errors */
 	NFS4ERR_FIRST_FREE
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* error codes for internal client use */

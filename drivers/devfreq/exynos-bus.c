@@ -160,10 +160,6 @@ static void exynos_bus_exit(struct device *dev)
 	platform_device_unregister(bus->icc_pdev);
 
 	dev_pm_opp_of_remove_table(dev);
-<<<<<<< HEAD
-	clk_disable_unprepare(bus->clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_pm_opp_put_regulators(bus->opp_token);
 }
 
@@ -174,10 +170,6 @@ static void exynos_bus_passive_exit(struct device *dev)
 	platform_device_unregister(bus->icc_pdev);
 
 	dev_pm_opp_of_remove_table(dev);
-<<<<<<< HEAD
-	clk_disable_unprepare(bus->clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int exynos_bus_parent_parse_of(struct device_node *np,
@@ -253,34 +245,16 @@ static int exynos_bus_parse_of(struct device_node *np,
 	int ret;
 
 	/* Get the clock to provide each bus with source clock */
-<<<<<<< HEAD
-	bus->clk = devm_clk_get(dev, "bus");
-	if (IS_ERR(bus->clk)) {
-		dev_err(dev, "failed to get bus clock\n");
-		return PTR_ERR(bus->clk);
-	}
-
-	ret = clk_prepare_enable(bus->clk);
-	if (ret < 0) {
-		dev_err(dev, "failed to get enable clock\n");
-		return ret;
-	}
-=======
 	bus->clk = devm_clk_get_enabled(dev, "bus");
 	if (IS_ERR(bus->clk))
 		return dev_err_probe(dev, PTR_ERR(bus->clk),
 				"failed to get bus clock\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Get the freq and voltage from OPP table to scale the bus freq */
 	ret = dev_pm_opp_of_add_table(dev);
 	if (ret < 0) {
 		dev_err(dev, "failed to get OPP table\n");
-<<<<<<< HEAD
-		goto err_clk;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	rate = clk_get_rate(bus->clk);
@@ -298,11 +272,6 @@ static int exynos_bus_parse_of(struct device_node *np,
 
 err_opp:
 	dev_pm_opp_of_remove_table(dev);
-<<<<<<< HEAD
-err_clk:
-	clk_disable_unprepare(bus->clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -473,10 +442,6 @@ static int exynos_bus_probe(struct platform_device *pdev)
 
 err:
 	dev_pm_opp_of_remove_table(dev);
-<<<<<<< HEAD
-	clk_disable_unprepare(bus->clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_reg:
 	dev_pm_opp_put_regulators(bus->opp_token);
 

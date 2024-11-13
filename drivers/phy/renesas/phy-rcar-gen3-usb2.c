@@ -19,20 +19,14 @@
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
 #include <linux/regulator/consumer.h>
-<<<<<<< HEAD
-=======
 #include <linux/reset.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/string.h>
 #include <linux/usb/of.h>
 #include <linux/workqueue.h>
 
 /******* USB2.0 Host registers (original offset is +0x200) *******/
 #define USB2_INT_ENABLE		0x000
-<<<<<<< HEAD
-=======
 #define USB2_AHB_BUS_CTR	0x008
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define USB2_USBCTR		0x00c
 #define USB2_SPD_RSM_TIMSET	0x10c
 #define USB2_OC_TIMSET		0x110
@@ -48,13 +42,10 @@
 #define USB2_INT_ENABLE_USBH_INTB_EN	BIT(2)	/* For EHCI */
 #define USB2_INT_ENABLE_USBH_INTA_EN	BIT(1)	/* For OHCI */
 
-<<<<<<< HEAD
-=======
 /* AHB_BUS_CTR */
 #define USB2_AHB_BUS_CTR_MBL_MASK	GENMASK(1, 0)
 #define USB2_AHB_BUS_CTR_MBL_INCR4	2
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* USBCTR */
 #define USB2_USBCTR_DIRPD	BIT(2)
 #define USB2_USBCTR_PLL_RST	BIT(1)
@@ -126,10 +117,7 @@ struct rcar_gen3_chan {
 	struct extcon_dev *extcon;
 	struct rcar_gen3_phy rphys[NUM_OF_PHYS];
 	struct regulator *vbus;
-<<<<<<< HEAD
-=======
 	struct reset_control *rstc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct work_struct work;
 	struct mutex lock;	/* protects rphys[...].powered */
 	enum usb_dr_mode dr_mode;
@@ -144,10 +132,7 @@ struct rcar_gen3_chan {
 struct rcar_gen3_phy_drv_data {
 	const struct phy_ops *phy_usb2_ops;
 	bool no_adp_ctrl;
-<<<<<<< HEAD
-=======
 	bool init_bus;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -598,15 +583,12 @@ static const struct rcar_gen3_phy_drv_data rz_g2l_phy_usb2_data = {
 	.no_adp_ctrl = true,
 };
 
-<<<<<<< HEAD
-=======
 static const struct rcar_gen3_phy_drv_data rz_g3s_phy_usb2_data = {
 	.phy_usb2_ops = &rcar_gen3_phy_usb2_ops,
 	.no_adp_ctrl = true,
 	.init_bus = true,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct of_device_id rcar_gen3_phy_usb2_match_table[] = {
 	{
 		.compatible = "renesas,usb2-phy-r8a77470",
@@ -629,13 +611,10 @@ static const struct of_device_id rcar_gen3_phy_usb2_match_table[] = {
 		.data = &rz_g2l_phy_usb2_data,
 	},
 	{
-<<<<<<< HEAD
-=======
 		.compatible = "renesas,usb2-phy-r9a08g045",
 		.data = &rz_g3s_phy_usb2_data,
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "renesas,rcar-gen3-usb2-phy",
 		.data = &rcar_gen3_phy_usb2_data,
 	},
@@ -689,8 +668,6 @@ static enum usb_dr_mode rcar_gen3_get_dr_mode(struct device_node *np)
 	return candidate;
 }
 
-<<<<<<< HEAD
-=======
 static int rcar_gen3_phy_usb2_init_bus(struct rcar_gen3_chan *channel)
 {
 	struct device *dev = channel->dev;
@@ -720,7 +697,6 @@ rpm_put:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
 {
 	const struct rcar_gen3_phy_drv_data *phy_data;
@@ -774,8 +750,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
 		goto error;
 	}
 
-<<<<<<< HEAD
-=======
 	platform_set_drvdata(pdev, channel);
 	channel->dev = dev;
 
@@ -785,7 +759,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
 			goto error;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	channel->soc_no_adp_ctrl = phy_data->no_adp_ctrl;
 	if (phy_data->no_adp_ctrl)
 		channel->obint_enable_bits = USB2_OBINT_IDCHG_EN;
@@ -816,12 +789,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
 		channel->vbus = NULL;
 	}
 
-<<<<<<< HEAD
-	platform_set_drvdata(pdev, channel);
-	channel->dev = dev;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	provider = devm_of_phy_provider_register(dev, rcar_gen3_phy_usb2_xlate);
 	if (IS_ERR(provider)) {
 		dev_err(dev, "Failed to register PHY provider\n");
@@ -848,10 +815,7 @@ static void rcar_gen3_phy_usb2_remove(struct platform_device *pdev)
 	if (channel->is_otg_channel)
 		device_remove_file(&pdev->dev, &dev_attr_role);
 
-<<<<<<< HEAD
-=======
 	reset_control_assert(channel->rstc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_disable(&pdev->dev);
 };
 

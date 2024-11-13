@@ -1070,11 +1070,7 @@ static void tvp7002_remove(struct i2c_client *c)
 
 /* I2C Device ID table */
 static const struct i2c_device_id tvp7002_id[] = {
-<<<<<<< HEAD
-	{ "tvp7002", 0 },
-=======
 	{ "tvp7002" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, tvp7002_id);

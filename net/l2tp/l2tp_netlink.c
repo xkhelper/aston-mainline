@@ -63,11 +63,7 @@ static struct l2tp_session *l2tp_nl_session_get(struct genl_info *info)
 		if (tunnel) {
 			session = l2tp_session_get(net, tunnel->sock, tunnel->version,
 						   tunnel_id, session_id);
-<<<<<<< HEAD
-			l2tp_tunnel_dec_refcount(tunnel);
-=======
 			l2tp_tunnel_put(tunnel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -120,11 +116,7 @@ static int l2tp_tunnel_notify(struct genl_family *family,
 				  NLM_F_ACK, tunnel, cmd);
 
 	if (ret >= 0) {
-<<<<<<< HEAD
-		ret = genlmsg_multicast_allns(family, msg, 0, 0, GFP_ATOMIC);
-=======
 		ret = genlmsg_multicast_allns(family, msg, 0, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* We don't care if no one is listening */
 		if (ret == -ESRCH)
 			ret = 0;
@@ -152,11 +144,7 @@ static int l2tp_session_notify(struct genl_family *family,
 				   NLM_F_ACK, session, cmd);
 
 	if (ret >= 0) {
-<<<<<<< HEAD
-		ret = genlmsg_multicast_allns(family, msg, 0, 0, GFP_ATOMIC);
-=======
 		ret = genlmsg_multicast_allns(family, msg, 0, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* We don't care if no one is listening */
 		if (ret == -ESRCH)
 			ret = 0;
@@ -254,11 +242,7 @@ static int l2tp_nl_cmd_tunnel_create(struct sk_buff *skb, struct genl_info *info
 	if (ret < 0)
 		goto out;
 
-<<<<<<< HEAD
-	l2tp_tunnel_inc_refcount(tunnel);
-=======
 	refcount_inc(&tunnel->ref_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = l2tp_tunnel_register(tunnel, net, &cfg);
 	if (ret < 0) {
 		kfree(tunnel);
@@ -266,11 +250,7 @@ static int l2tp_nl_cmd_tunnel_create(struct sk_buff *skb, struct genl_info *info
 	}
 	ret = l2tp_tunnel_notify(&l2tp_nl_family, info, tunnel,
 				 L2TP_CMD_TUNNEL_CREATE);
-<<<<<<< HEAD
-	l2tp_tunnel_dec_refcount(tunnel);
-=======
 	l2tp_tunnel_put(tunnel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	return ret;
@@ -300,11 +280,7 @@ static int l2tp_nl_cmd_tunnel_delete(struct sk_buff *skb, struct genl_info *info
 
 	l2tp_tunnel_delete(tunnel);
 
-<<<<<<< HEAD
-	l2tp_tunnel_dec_refcount(tunnel);
-=======
 	l2tp_tunnel_put(tunnel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	return ret;
@@ -332,11 +308,7 @@ static int l2tp_nl_cmd_tunnel_modify(struct sk_buff *skb, struct genl_info *info
 	ret = l2tp_tunnel_notify(&l2tp_nl_family, info,
 				 tunnel, L2TP_CMD_TUNNEL_MODIFY);
 
-<<<<<<< HEAD
-	l2tp_tunnel_dec_refcount(tunnel);
-=======
 	l2tp_tunnel_put(tunnel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	return ret;
@@ -507,31 +479,18 @@ static int l2tp_nl_cmd_tunnel_get(struct sk_buff *skb, struct genl_info *info)
 	if (ret < 0)
 		goto err_nlmsg_tunnel;
 
-<<<<<<< HEAD
-	l2tp_tunnel_dec_refcount(tunnel);
-=======
 	l2tp_tunnel_put(tunnel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return genlmsg_unicast(net, msg, info->snd_portid);
 
 err_nlmsg_tunnel:
-<<<<<<< HEAD
-	l2tp_tunnel_dec_refcount(tunnel);
-=======
 	l2tp_tunnel_put(tunnel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_nlmsg:
 	nlmsg_free(msg);
 err:
 	return ret;
 }
 
-<<<<<<< HEAD
-static int l2tp_nl_cmd_tunnel_dump(struct sk_buff *skb, struct netlink_callback *cb)
-{
-	int ti = cb->args[0];
-=======
 struct l2tp_nl_cb_data {
 	unsigned long tkey;
 	unsigned long skey;
@@ -541,34 +500,17 @@ static int l2tp_nl_cmd_tunnel_dump(struct sk_buff *skb, struct netlink_callback 
 {
 	struct l2tp_nl_cb_data *cbd = (void *)&cb->ctx[0];
 	unsigned long key = cbd->tkey;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct l2tp_tunnel *tunnel;
 	struct net *net = sock_net(skb->sk);
 
 	for (;;) {
-<<<<<<< HEAD
-		tunnel = l2tp_tunnel_get_nth(net, ti);
-=======
 		tunnel = l2tp_tunnel_get_next(net, &key);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!tunnel)
 			goto out;
 
 		if (l2tp_nl_tunnel_send(skb, NETLINK_CB(cb->skb).portid,
 					cb->nlh->nlmsg_seq, NLM_F_MULTI,
 					tunnel, L2TP_CMD_TUNNEL_GET) < 0) {
-<<<<<<< HEAD
-			l2tp_tunnel_dec_refcount(tunnel);
-			goto out;
-		}
-		l2tp_tunnel_dec_refcount(tunnel);
-
-		ti++;
-	}
-
-out:
-	cb->args[0] = ti;
-=======
 			l2tp_tunnel_put(tunnel);
 			goto out;
 		}
@@ -579,7 +521,6 @@ out:
 
 out:
 	cbd->tkey = key;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return skb->len;
 }
@@ -706,20 +647,12 @@ static int l2tp_nl_cmd_session_create(struct sk_buff *skb, struct genl_info *inf
 		if (session) {
 			ret = l2tp_session_notify(&l2tp_nl_family, info, session,
 						  L2TP_CMD_SESSION_CREATE);
-<<<<<<< HEAD
-			l2tp_session_dec_refcount(session);
-=======
 			l2tp_session_put(session);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 out_tunnel:
-<<<<<<< HEAD
-	l2tp_tunnel_dec_refcount(tunnel);
-=======
 	l2tp_tunnel_put(tunnel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	return ret;
 }
@@ -744,11 +677,7 @@ static int l2tp_nl_cmd_session_delete(struct sk_buff *skb, struct genl_info *inf
 		if (l2tp_nl_cmd_ops[pw_type] && l2tp_nl_cmd_ops[pw_type]->session_delete)
 			l2tp_nl_cmd_ops[pw_type]->session_delete(session);
 
-<<<<<<< HEAD
-	l2tp_session_dec_refcount(session);
-=======
 	l2tp_session_put(session);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	return ret;
@@ -769,15 +698,10 @@ static int l2tp_nl_cmd_session_modify(struct sk_buff *skb, struct genl_info *inf
 		session->recv_seq = nla_get_u8(info->attrs[L2TP_ATTR_RECV_SEQ]);
 
 	if (info->attrs[L2TP_ATTR_SEND_SEQ]) {
-<<<<<<< HEAD
-		session->send_seq = nla_get_u8(info->attrs[L2TP_ATTR_SEND_SEQ]);
-		l2tp_session_set_header_len(session, session->tunnel->version);
-=======
 		struct l2tp_tunnel *tunnel = session->tunnel;
 
 		session->send_seq = nla_get_u8(info->attrs[L2TP_ATTR_SEND_SEQ]);
 		l2tp_session_set_header_len(session, tunnel->version, tunnel->encap);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (info->attrs[L2TP_ATTR_LNS_MODE])
@@ -789,11 +713,7 @@ static int l2tp_nl_cmd_session_modify(struct sk_buff *skb, struct genl_info *inf
 	ret = l2tp_session_notify(&l2tp_nl_family, info,
 				  session, L2TP_CMD_SESSION_MODIFY);
 
-<<<<<<< HEAD
-	l2tp_session_dec_refcount(session);
-=======
 	l2tp_session_put(session);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	return ret;
@@ -904,39 +824,20 @@ static int l2tp_nl_cmd_session_get(struct sk_buff *skb, struct genl_info *info)
 
 	ret = genlmsg_unicast(genl_info_net(info), msg, info->snd_portid);
 
-<<<<<<< HEAD
-	l2tp_session_dec_refcount(session);
-=======
 	l2tp_session_put(session);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 
 err_ref_msg:
 	nlmsg_free(msg);
 err_ref:
-<<<<<<< HEAD
-	l2tp_session_dec_refcount(session);
-=======
 	l2tp_session_put(session);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err:
 	return ret;
 }
 
 static int l2tp_nl_cmd_session_dump(struct sk_buff *skb, struct netlink_callback *cb)
 {
-<<<<<<< HEAD
-	struct net *net = sock_net(skb->sk);
-	struct l2tp_session *session;
-	struct l2tp_tunnel *tunnel = NULL;
-	int ti = cb->args[0];
-	int si = cb->args[1];
-
-	for (;;) {
-		if (!tunnel) {
-			tunnel = l2tp_tunnel_get_nth(net, ti);
-=======
 	struct l2tp_nl_cb_data *cbd = (void *)&cb->ctx[0];
 	struct net *net = sock_net(skb->sk);
 	struct l2tp_session *session;
@@ -947,19 +848,10 @@ static int l2tp_nl_cmd_session_dump(struct sk_buff *skb, struct netlink_callback
 	for (;;) {
 		if (!tunnel) {
 			tunnel = l2tp_tunnel_get_next(net, &tkey);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!tunnel)
 				goto out;
 		}
 
-<<<<<<< HEAD
-		session = l2tp_session_get_nth(tunnel, si);
-		if (!session) {
-			ti++;
-			l2tp_tunnel_dec_refcount(tunnel);
-			tunnel = NULL;
-			si = 0;
-=======
 		session = l2tp_session_get_next(net, tunnel->sock, tunnel->version,
 						tunnel->tunnel_id, &skey);
 		if (!session) {
@@ -967,27 +859,12 @@ static int l2tp_nl_cmd_session_dump(struct sk_buff *skb, struct netlink_callback
 			l2tp_tunnel_put(tunnel);
 			tunnel = NULL;
 			skey = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 
 		if (l2tp_nl_session_send(skb, NETLINK_CB(cb->skb).portid,
 					 cb->nlh->nlmsg_seq, NLM_F_MULTI,
 					 session, L2TP_CMD_SESSION_GET) < 0) {
-<<<<<<< HEAD
-			l2tp_session_dec_refcount(session);
-			l2tp_tunnel_dec_refcount(tunnel);
-			break;
-		}
-		l2tp_session_dec_refcount(session);
-
-		si++;
-	}
-
-out:
-	cb->args[0] = ti;
-	cb->args[1] = si;
-=======
 			l2tp_session_put(session);
 			l2tp_tunnel_put(tunnel);
 			break;
@@ -1000,7 +877,6 @@ out:
 out:
 	cbd->tkey = tkey;
 	cbd->skey = skey;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return skb->len;
 }

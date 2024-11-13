@@ -293,10 +293,6 @@ operations:
       doc: Get endpoint information
       attribute-set: attr
       dont-validate: [ strict ]
-<<<<<<< HEAD
-      flags: [ uns-admin-perm ]
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       do: &get-addr-attrs
         request:
           attributes:

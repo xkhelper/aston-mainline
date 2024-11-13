@@ -21,10 +21,7 @@
 #include "verifier_cgroup_inv_retcode.skel.h"
 #include "verifier_cgroup_skb.skel.h"
 #include "verifier_cgroup_storage.skel.h"
-<<<<<<< HEAD
-=======
 #include "verifier_const.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "verifier_const_or.skel.h"
 #include "verifier_ctx.skel.h"
 #include "verifier_ctx_sk_msg.skel.h"
@@ -43,17 +40,11 @@
 #include "verifier_int_ptr.skel.h"
 #include "verifier_iterating_callbacks.skel.h"
 #include "verifier_jeq_infer_not_null.skel.h"
-<<<<<<< HEAD
-#include "verifier_ld_ind.skel.h"
-#include "verifier_ldsx.skel.h"
-#include "verifier_leak_ptr.skel.h"
-=======
 #include "verifier_jit_convergence.skel.h"
 #include "verifier_ld_ind.skel.h"
 #include "verifier_ldsx.skel.h"
 #include "verifier_leak_ptr.skel.h"
 #include "verifier_linked_scalars.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "verifier_loops1.skel.h"
 #include "verifier_lwt.skel.h"
 #include "verifier_map_in_map.skel.h"
@@ -63,15 +54,10 @@
 #include "verifier_masking.skel.h"
 #include "verifier_meta_access.skel.h"
 #include "verifier_movsx.skel.h"
-<<<<<<< HEAD
-#include "verifier_netfilter_ctx.skel.h"
-#include "verifier_netfilter_retcode.skel.h"
-=======
 #include "verifier_mtu.skel.h"
 #include "verifier_netfilter_ctx.skel.h"
 #include "verifier_netfilter_retcode.skel.h"
 #include "verifier_bpf_fastcall.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "verifier_or_jmp32_k.skel.h"
 #include "verifier_precision.skel.h"
 #include "verifier_prevent_map_lookup.skel.h"
@@ -93,10 +79,7 @@
 #include "verifier_stack_ptr.skel.h"
 #include "verifier_subprog_precision.skel.h"
 #include "verifier_subreg.skel.h"
-<<<<<<< HEAD
-=======
 #include "verifier_tailcall_jit.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "verifier_typedef.skel.h"
 #include "verifier_uninit.skel.h"
 #include "verifier_unpriv.skel.h"
@@ -107,19 +90,13 @@
 #include "verifier_value_or_null.skel.h"
 #include "verifier_value_ptr_arith.skel.h"
 #include "verifier_var_off.skel.h"
-<<<<<<< HEAD
-=======
 #include "verifier_vfs_accept.skel.h"
 #include "verifier_vfs_reject.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "verifier_xadd.skel.h"
 #include "verifier_xdp.skel.h"
 #include "verifier_xdp_direct_packet_access.skel.h"
 #include "verifier_bits_iter.skel.h"
-<<<<<<< HEAD
-=======
 #include "verifier_lsm.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MAX_ENTRIES 11
 
@@ -172,10 +149,7 @@ void test_verifier_cfg(void)                  { RUN(verifier_cfg); }
 void test_verifier_cgroup_inv_retcode(void)   { RUN(verifier_cgroup_inv_retcode); }
 void test_verifier_cgroup_skb(void)           { RUN(verifier_cgroup_skb); }
 void test_verifier_cgroup_storage(void)       { RUN(verifier_cgroup_storage); }
-<<<<<<< HEAD
-=======
 void test_verifier_const(void)                { RUN(verifier_const); }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_verifier_const_or(void)             { RUN(verifier_const_or); }
 void test_verifier_ctx(void)                  { RUN(verifier_ctx); }
 void test_verifier_ctx_sk_msg(void)           { RUN(verifier_ctx_sk_msg); }
@@ -194,17 +168,11 @@ void test_verifier_helper_value_access(void)  { RUN(verifier_helper_value_access
 void test_verifier_int_ptr(void)              { RUN(verifier_int_ptr); }
 void test_verifier_iterating_callbacks(void)  { RUN(verifier_iterating_callbacks); }
 void test_verifier_jeq_infer_not_null(void)   { RUN(verifier_jeq_infer_not_null); }
-<<<<<<< HEAD
-void test_verifier_ld_ind(void)               { RUN(verifier_ld_ind); }
-void test_verifier_ldsx(void)                  { RUN(verifier_ldsx); }
-void test_verifier_leak_ptr(void)             { RUN(verifier_leak_ptr); }
-=======
 void test_verifier_jit_convergence(void)      { RUN(verifier_jit_convergence); }
 void test_verifier_ld_ind(void)               { RUN(verifier_ld_ind); }
 void test_verifier_ldsx(void)                  { RUN(verifier_ldsx); }
 void test_verifier_leak_ptr(void)             { RUN(verifier_leak_ptr); }
 void test_verifier_linked_scalars(void)       { RUN(verifier_linked_scalars); }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_verifier_loops1(void)               { RUN(verifier_loops1); }
 void test_verifier_lwt(void)                  { RUN(verifier_lwt); }
 void test_verifier_map_in_map(void)           { RUN(verifier_map_in_map); }
@@ -216,10 +184,7 @@ void test_verifier_meta_access(void)          { RUN(verifier_meta_access); }
 void test_verifier_movsx(void)                 { RUN(verifier_movsx); }
 void test_verifier_netfilter_ctx(void)        { RUN(verifier_netfilter_ctx); }
 void test_verifier_netfilter_retcode(void)    { RUN(verifier_netfilter_retcode); }
-<<<<<<< HEAD
-=======
 void test_verifier_bpf_fastcall(void)         { RUN(verifier_bpf_fastcall); }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_verifier_or_jmp32_k(void)           { RUN(verifier_or_jmp32_k); }
 void test_verifier_precision(void)            { RUN(verifier_precision); }
 void test_verifier_prevent_map_lookup(void)   { RUN(verifier_prevent_map_lookup); }
@@ -241,10 +206,7 @@ void test_verifier_spin_lock(void)            { RUN(verifier_spin_lock); }
 void test_verifier_stack_ptr(void)            { RUN(verifier_stack_ptr); }
 void test_verifier_subprog_precision(void)    { RUN(verifier_subprog_precision); }
 void test_verifier_subreg(void)               { RUN(verifier_subreg); }
-<<<<<<< HEAD
-=======
 void test_verifier_tailcall_jit(void)         { RUN(verifier_tailcall_jit); }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_verifier_typedef(void)              { RUN(verifier_typedef); }
 void test_verifier_uninit(void)               { RUN(verifier_uninit); }
 void test_verifier_unpriv(void)               { RUN(verifier_unpriv); }
@@ -254,17 +216,12 @@ void test_verifier_value(void)                { RUN(verifier_value); }
 void test_verifier_value_illegal_alu(void)    { RUN(verifier_value_illegal_alu); }
 void test_verifier_value_or_null(void)        { RUN(verifier_value_or_null); }
 void test_verifier_var_off(void)              { RUN(verifier_var_off); }
-<<<<<<< HEAD
-=======
 void test_verifier_vfs_accept(void)	      { RUN(verifier_vfs_accept); }
 void test_verifier_vfs_reject(void)	      { RUN(verifier_vfs_reject); }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_verifier_xadd(void)                 { RUN(verifier_xadd); }
 void test_verifier_xdp(void)                  { RUN(verifier_xdp); }
 void test_verifier_xdp_direct_packet_access(void) { RUN(verifier_xdp_direct_packet_access); }
 void test_verifier_bits_iter(void) { RUN(verifier_bits_iter); }
-<<<<<<< HEAD
-=======
 void test_verifier_lsm(void)                  { RUN(verifier_lsm); }
 
 void test_verifier_mtu(void)
@@ -284,7 +241,6 @@ restore_cap:
 	if (caps)
 		cap_enable_effective(caps, NULL);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int init_test_val_map(struct bpf_object *obj, char *map_name)
 {

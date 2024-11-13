@@ -465,11 +465,7 @@ static int sof_baytrail_probe(struct platform_device *pdev)
 /* acpi_driver definition */
 static struct platform_driver snd_sof_acpi_intel_byt_driver = {
 	.probe = sof_baytrail_probe,
-<<<<<<< HEAD
-	.remove_new = sof_acpi_remove,
-=======
 	.remove = sof_acpi_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "sof-audio-acpi-intel-byt",
 		.pm = &sof_acpi_pm,

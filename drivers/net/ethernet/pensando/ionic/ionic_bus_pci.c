@@ -394,10 +394,7 @@ err_out_free_irqs:
 err_out_pci:
 	ionic_dev_teardown(ionic);
 	ionic_clear_pci(ionic);
-<<<<<<< HEAD
-=======
 	ionic_debugfs_del_dev(ionic);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_out:
 	mutex_destroy(&ionic->dev_cmd_lock);
 	ionic_devlink_free(ionic);

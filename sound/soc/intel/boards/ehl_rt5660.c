@@ -256,12 +256,7 @@ static void hdmi_link_init(struct snd_soc_card *card,
 {
 	int i;
 
-<<<<<<< HEAD
-	if (mach->mach_params.common_hdmi_codec_drv &&
-	    (mach->mach_params.codec_mask & IDISP_CODEC_MASK)) {
-=======
 	if (mach->mach_params.codec_mask & IDISP_CODEC_MASK) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ctx->idisp_codec = true;
 		return;
 	}

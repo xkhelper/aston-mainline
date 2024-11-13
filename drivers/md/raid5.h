@@ -668,11 +668,7 @@ struct r5conf {
 	struct llist_head	released_stripes;
 	wait_queue_head_t	wait_for_quiescent;
 	wait_queue_head_t	wait_for_stripe;
-<<<<<<< HEAD
-	wait_queue_head_t	wait_for_overlap;
-=======
 	wait_queue_head_t	wait_for_reshape;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		cache_state;
 	struct shrinker		*shrinker;
 	int			pool_size; /* number of disks in stripeheads in pool */

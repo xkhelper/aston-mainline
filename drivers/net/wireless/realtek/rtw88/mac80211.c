@@ -167,15 +167,12 @@ static int rtw_ops_add_interface(struct ieee80211_hw *hw,
 
 	mutex_lock(&rtwdev->mutex);
 
-<<<<<<< HEAD
-=======
 	rtwvif->mac_id = rtw_acquire_macid(rtwdev);
 	if (rtwvif->mac_id >= RTW_MAX_MAC_ID_NUM) {
 		mutex_unlock(&rtwdev->mutex);
 		return -ENOSPC;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	port = find_first_zero_bit(rtwdev->hw_port, RTW_PORT_NUM);
 	if (port >= RTW_PORT_NUM) {
 		mutex_unlock(&rtwdev->mutex);
@@ -223,12 +220,8 @@ static int rtw_ops_add_interface(struct ieee80211_hw *hw,
 
 	mutex_unlock(&rtwdev->mutex);
 
-<<<<<<< HEAD
-	rtw_dbg(rtwdev, RTW_DBG_STATE, "start vif %pM on port %d\n", vif->addr, rtwvif->port);
-=======
 	rtw_dbg(rtwdev, RTW_DBG_STATE, "start vif %pM mac_id %d on port %d\n",
 		vif->addr, rtwvif->mac_id, rtwvif->port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -239,12 +232,8 @@ static void rtw_ops_remove_interface(struct ieee80211_hw *hw,
 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
 	u32 config = 0;
 
-<<<<<<< HEAD
-	rtw_dbg(rtwdev, RTW_DBG_STATE, "stop vif %pM on port %d\n", vif->addr, rtwvif->port);
-=======
 	rtw_dbg(rtwdev, RTW_DBG_STATE, "stop vif %pM mac_id %d on port %d\n",
 		vif->addr, rtwvif->mac_id, rtwvif->port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&rtwdev->mutex);
 
@@ -261,10 +250,7 @@ static void rtw_ops_remove_interface(struct ieee80211_hw *hw,
 	config |= PORT_SET_BCN_CTRL;
 	rtw_vif_port_config(rtwdev, rtwvif, config);
 	clear_bit(rtwvif->port, rtwdev->hw_port);
-<<<<<<< HEAD
-=======
 	rtw_release_macid(rtwdev, rtwvif->mac_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtw_recalc_lps(rtwdev, NULL);
 
 	mutex_unlock(&rtwdev->mutex);

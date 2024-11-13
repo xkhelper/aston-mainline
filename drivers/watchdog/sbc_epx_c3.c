@@ -153,10 +153,6 @@ static int epx_c3_notify_sys(struct notifier_block *this, unsigned long code,
 
 static const struct file_operations epx_c3_fops = {
 	.owner		= THIS_MODULE,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		= epx_c3_write,
 	.unlocked_ioctl	= epx_c3_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,

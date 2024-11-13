@@ -12,11 +12,6 @@
 #include <linux/compiler.h>
 #include <linux/list.h>
 #include "bpf-filter.h"
-<<<<<<< HEAD
-
-int perf_bpf_filter_lex(void);
-
-=======
 #include "cgroup.h"
 
 int perf_bpf_filter_lex(void);
@@ -24,7 +19,6 @@ int perf_bpf_filter_lex(void);
 /* To indicate if the current term needs a pathname or not */
 int perf_bpf_filter_needs_path;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void perf_bpf_filter_error(struct list_head *expr __maybe_unused,
 				  char const *msg)
 {
@@ -36,10 +30,7 @@ static void perf_bpf_filter_error(struct list_head *expr __maybe_unused,
 %union
 {
 	unsigned long num;
-<<<<<<< HEAD
-=======
 	char *path;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct {
 		enum perf_bpf_filter_term term;
 		int part;
@@ -48,14 +39,6 @@ static void perf_bpf_filter_error(struct list_head *expr __maybe_unused,
 	struct perf_bpf_filter_expr *expr;
 }
 
-<<<<<<< HEAD
-%token BFT_SAMPLE BFT_OP BFT_ERROR BFT_NUM BFT_LOGICAL_OR
-%type <expr> filter_term filter_expr
-%destructor { free ($$); } <expr>
-%type <sample> BFT_SAMPLE
-%type <op> BFT_OP
-%type <num> BFT_NUM
-=======
 %token BFT_SAMPLE BFT_SAMPLE_PATH BFT_OP BFT_ERROR BFT_NUM BFT_LOGICAL_OR BFT_PATH
 %type <expr> filter_term filter_expr
 %destructor { free ($$); } <expr>
@@ -63,7 +46,6 @@ static void perf_bpf_filter_error(struct list_head *expr __maybe_unused,
 %type <op> BFT_OP
 %type <num> BFT_NUM
 %type <path> BFT_PATH
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 %%
 
@@ -105,8 +87,6 @@ BFT_SAMPLE BFT_OP BFT_NUM
 {
 	$$ = perf_bpf_filter_expr__new($1.term, $1.part, $2, $3);
 }
-<<<<<<< HEAD
-=======
 |
 BFT_SAMPLE_PATH BFT_OP BFT_PATH
 {
@@ -125,6 +105,5 @@ BFT_SAMPLE_PATH BFT_OP BFT_PATH
 	$$ = perf_bpf_filter_expr__new($1.term, $1.part, $2, cgroup_id);
 	cgroup__put(cgrp);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 %%

@@ -11,14 +11,6 @@
 
 #include "6lowpan_i.h"
 
-<<<<<<< HEAD
-static int lowpan_ndisc_is_useropt(u8 nd_opt_type)
-{
-	return nd_opt_type == ND_OPT_6CO;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_IEEE802154_6LOWPAN)
 #define NDISC_802154_SHORT_ADDR_LENGTH	1
 static int lowpan_ndisc_parse_802154_options(const struct net_device *dev,
@@ -225,10 +217,6 @@ static void lowpan_ndisc_prefix_rcv_add_addr(struct net *net,
 #endif
 
 const struct ndisc_ops lowpan_ndisc_ops = {
-<<<<<<< HEAD
-	.is_useropt		= lowpan_ndisc_is_useropt,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_IEEE802154_6LOWPAN)
 	.parse_options		= lowpan_ndisc_parse_options,
 	.update			= lowpan_ndisc_update,

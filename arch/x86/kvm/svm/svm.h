@@ -25,9 +25,6 @@
 #include "cpuid.h"
 #include "kvm_cache_regs.h"
 
-<<<<<<< HEAD
-#define __sme_page_pa(x) __sme_set(page_to_pfn(x) << PAGE_SHIFT)
-=======
 /*
  * Helpers to convert to/from physical addresses for pages whose address is
  * consumed directly by hardware.  Even though it's a physical address, SVM
@@ -43,7 +40,6 @@ static inline struct page *__sme_pa_to_page(unsigned long pa)
 {
 	return pfn_to_page(__sme_clr(pa) >> PAGE_SHIFT);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define	IOPM_SIZE PAGE_SIZE * 3
 #define	MSRPM_SIZE PAGE_SIZE * 2
@@ -339,11 +335,7 @@ struct svm_cpu_data {
 	u32 next_asid;
 	u32 min_asid;
 
-<<<<<<< HEAD
-	struct page *save_area;
-=======
 	struct vmcb *save_area;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long save_area_pa;
 
 	struct vmcb *current_vmcb;

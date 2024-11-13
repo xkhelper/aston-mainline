@@ -29,11 +29,7 @@ struct mt7915_mcu_thermal_ctrl {
 } __packed;
 
 struct mt7915_mcu_thermal_notify {
-<<<<<<< HEAD
-	struct mt76_connac2_mcu_rxd rxd;
-=======
 	struct mt76_connac2_mcu_rxd_hdr rxd;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct mt7915_mcu_thermal_ctrl ctrl;
 	__le32 temperature;
@@ -41,11 +37,7 @@ struct mt7915_mcu_thermal_notify {
 } __packed;
 
 struct mt7915_mcu_csa_notify {
-<<<<<<< HEAD
-	struct mt76_connac2_mcu_rxd rxd;
-=======
 	struct mt76_connac2_mcu_rxd_hdr rxd;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u8 omac_idx;
 	u8 csa_count;
@@ -54,11 +46,7 @@ struct mt7915_mcu_csa_notify {
 } __packed;
 
 struct mt7915_mcu_bcc_notify {
-<<<<<<< HEAD
-	struct mt76_connac2_mcu_rxd rxd;
-=======
 	struct mt76_connac2_mcu_rxd_hdr rxd;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u8 band_idx;
 	u8 omac_idx;
@@ -67,11 +55,7 @@ struct mt7915_mcu_bcc_notify {
 } __packed;
 
 struct mt7915_mcu_rdd_report {
-<<<<<<< HEAD
-	struct mt76_connac2_mcu_rxd rxd;
-=======
 	struct mt76_connac2_mcu_rxd_hdr rxd;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u8 band_idx;
 	u8 long_detected;

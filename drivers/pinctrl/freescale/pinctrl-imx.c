@@ -804,22 +804,14 @@ int imx_pinctrl_probe(struct platform_device *pdev,
 }
 EXPORT_SYMBOL_GPL(imx_pinctrl_probe);
 
-<<<<<<< HEAD
-static int __maybe_unused imx_pinctrl_suspend(struct device *dev)
-=======
 static int imx_pinctrl_suspend(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct imx_pinctrl *ipctl = dev_get_drvdata(dev);
 
 	return pinctrl_force_sleep(ipctl->pctl);
 }
 
-<<<<<<< HEAD
-static int __maybe_unused imx_pinctrl_resume(struct device *dev)
-=======
 static int imx_pinctrl_resume(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct imx_pinctrl *ipctl = dev_get_drvdata(dev);
 
@@ -827,12 +819,7 @@ static int imx_pinctrl_resume(struct device *dev)
 }
 
 const struct dev_pm_ops imx_pinctrl_pm_ops = {
-<<<<<<< HEAD
-	SET_LATE_SYSTEM_SLEEP_PM_OPS(imx_pinctrl_suspend,
-					imx_pinctrl_resume)
-=======
 	LATE_SYSTEM_SLEEP_PM_OPS(imx_pinctrl_suspend, imx_pinctrl_resume)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 EXPORT_SYMBOL_GPL(imx_pinctrl_pm_ops);
 

@@ -230,13 +230,8 @@ struct tpacket_hdr_v1 {
 	 * ts_first_pkt:
 	 *		Is always the time-stamp when the block was opened.
 	 *		Case a)	ZERO packets
-<<<<<<< HEAD
-	 *			No packets to deal with but atleast you know the
-	 *			time-interval of this block.
-=======
 	 *			No packets to deal with but at least you know
 	 *			the time-interval of this block.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 *		Case b) Non-zero packets
 	 *			Use the ts of the first packet in the block.
 	 *
@@ -270,12 +265,8 @@ enum tpacket_versions {
    - struct tpacket_hdr
    - pad to TPACKET_ALIGNMENT=16
    - struct sockaddr_ll
-<<<<<<< HEAD
-   - Gap, chosen so that packet data (Start+tp_net) alignes to TPACKET_ALIGNMENT=16
-=======
    - Gap, chosen so that packet data (Start+tp_net) aligns to
      TPACKET_ALIGNMENT=16
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    - Start+tp_mac: [ Optional MAC header ]
    - Start+tp_net: Packet data, aligned to TPACKET_ALIGNMENT=16.
    - Pad to align to TPACKET_ALIGNMENT=16

@@ -102,33 +102,20 @@ static void do_setup(struct net_device *netdev)
 	netdev->priv_flags &= ~IFF_TX_SKB_SHARING;
 	netdev->priv_flags |= IFF_LIVE_ADDR_CHANGE | IFF_OPENVSWITCH |
 			      IFF_NO_QUEUE;
-<<<<<<< HEAD
-=======
 	netdev->lltx = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	netdev->needs_free_netdev = true;
 	netdev->priv_destructor = NULL;
 	netdev->ethtool_ops = &internal_dev_ethtool_ops;
 	netdev->rtnl_link_ops = &internal_dev_link_ops;
 
-<<<<<<< HEAD
-	netdev->features = NETIF_F_LLTX | NETIF_F_SG | NETIF_F_FRAGLIST |
-			   NETIF_F_HIGHDMA | NETIF_F_HW_CSUM |
-			   NETIF_F_GSO_SOFTWARE | NETIF_F_GSO_ENCAP_ALL;
-=======
 	netdev->features = NETIF_F_SG | NETIF_F_FRAGLIST | NETIF_F_HIGHDMA |
 			   NETIF_F_HW_CSUM | NETIF_F_GSO_SOFTWARE |
 			   NETIF_F_GSO_ENCAP_ALL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	netdev->vlan_features = netdev->features;
 	netdev->hw_enc_features = netdev->features;
 	netdev->features |= NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_STAG_TX;
-<<<<<<< HEAD
-	netdev->hw_features = netdev->features & ~NETIF_F_LLTX;
-=======
 	netdev->hw_features = netdev->features;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	eth_hw_addr_random(netdev);
 }
@@ -162,11 +149,7 @@ static struct vport *internal_dev_create(const struct vport_parms *parms)
 
 	/* Restrict bridge port to current netns. */
 	if (vport->port_no == OVSP_LOCAL)
-<<<<<<< HEAD
-		vport->dev->features |= NETIF_F_NETNS_LOCAL;
-=======
 		vport->dev->netns_local = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rtnl_lock();
 	err = register_netdevice(vport->dev);

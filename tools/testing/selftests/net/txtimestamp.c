@@ -356,17 +356,12 @@ static void __recv_errmsg_cmsg(struct msghdr *msg, int payload_len)
 		}
 	}
 
-<<<<<<< HEAD
-	if (batch > 1)
-		fprintf(stderr, "batched %d timestamps\n", batch);
-=======
 	if (batch > 1) {
 		fprintf(stderr, "batched %d timestamps\n", batch);
 	} else if (!batch) {
 		fprintf(stderr, "Failed to report timestamps\n");
 		test_failed = true;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int recv_errmsg(int fd)

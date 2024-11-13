@@ -13,8 +13,6 @@
 
 #define NFSDDBG_FACILITY		NFSDDBG_PROC
 
-<<<<<<< HEAD
-=======
 static __be32 nfsd_map_status(__be32 status)
 {
 	switch (status) {
@@ -40,7 +38,6 @@ static __be32 nfsd_map_status(__be32 status)
 	return status;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __be32
 nfsd_proc_null(struct svc_rqst *rqstp)
 {
@@ -66,10 +63,7 @@ nfsd_proc_getattr(struct svc_rqst *rqstp)
 		goto out;
 	resp->status = fh_getattr(&resp->fh, &resp->stat);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -141,10 +135,7 @@ nfsd_proc_setattr(struct svc_rqst *rqstp)
 
 	resp->status = fh_getattr(&resp->fh, &resp->stat);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -179,10 +170,7 @@ nfsd_proc_lookup(struct svc_rqst *rqstp)
 
 	resp->status = fh_getattr(&resp->fh, &resp->stat);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -204,10 +192,7 @@ nfsd_proc_readlink(struct svc_rqst *rqstp)
 				     page_address(resp->page), &resp->len);
 
 	fh_put(&argp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -244,10 +229,7 @@ nfsd_proc_read(struct svc_rqst *rqstp)
 		resp->status = fh_getattr(&resp->fh, &resp->stat);
 	else if (resp->status == nfserr_jukebox)
 		set_bit(RQ_DROPME, &rqstp->rq_flags);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -283,10 +265,7 @@ nfsd_proc_write(struct svc_rqst *rqstp)
 		resp->status = fh_getattr(&resp->fh, &resp->stat);
 	else if (resp->status == nfserr_jukebox)
 		set_bit(RQ_DROPME, &rqstp->rq_flags);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -383,18 +362,11 @@ nfsd_proc_create(struct svc_rqst *rqstp)
 					 *   echo thing > device-special-file-or-pipe
 					 * by doing a CREATE with type==0
 					 */
-<<<<<<< HEAD
-					resp->status = nfsd_permission(rqstp,
-								 newfhp->fh_export,
-								 newfhp->fh_dentry,
-								 NFSD_MAY_WRITE|NFSD_MAY_LOCAL_ACCESS);
-=======
 					resp->status = nfsd_permission(
 						&rqstp->rq_cred,
 						newfhp->fh_export,
 						newfhp->fh_dentry,
 						NFSD_MAY_WRITE|NFSD_MAY_LOCAL_ACCESS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					if (resp->status && resp->status != nfserr_rofs)
 						goto out_unlock;
 				}
@@ -463,10 +435,7 @@ done:
 		goto out;
 	resp->status = fh_getattr(&resp->fh, &resp->stat);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -483,10 +452,7 @@ nfsd_proc_remove(struct svc_rqst *rqstp)
 	resp->status = nfsd_unlink(rqstp, &argp->fh, -S_IFDIR,
 				   argp->name, argp->len);
 	fh_put(&argp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -505,10 +471,7 @@ nfsd_proc_rename(struct svc_rqst *rqstp)
 				   &argp->tfh, argp->tname, argp->tlen);
 	fh_put(&argp->ffh);
 	fh_put(&argp->tfh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -529,10 +492,7 @@ nfsd_proc_link(struct svc_rqst *rqstp)
 				 &argp->ffh);
 	fh_put(&argp->ffh);
 	fh_put(&argp->tfh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -571,10 +531,7 @@ nfsd_proc_symlink(struct svc_rqst *rqstp)
 	fh_put(&argp->ffh);
 	fh_put(&newfh);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -608,10 +565,7 @@ nfsd_proc_mkdir(struct svc_rqst *rqstp)
 
 	resp->status = fh_getattr(&resp->fh, &resp->stat);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -629,10 +583,7 @@ nfsd_proc_rmdir(struct svc_rqst *rqstp)
 	resp->status = nfsd_unlink(rqstp, &argp->fh, S_IFDIR,
 				   argp->name, argp->len);
 	fh_put(&argp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -678,10 +629,7 @@ nfsd_proc_readdir(struct svc_rqst *rqstp)
 	nfssvc_encode_nfscookie(resp, offset);
 
 	fh_put(&argp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -699,10 +647,7 @@ nfsd_proc_statfs(struct svc_rqst *rqstp)
 	resp->status = nfsd_statfs(rqstp, &argp->fh, &resp->stats,
 				   NFSD_MAY_BYPASS_GSS_ON_ROOT);
 	fh_put(&argp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 

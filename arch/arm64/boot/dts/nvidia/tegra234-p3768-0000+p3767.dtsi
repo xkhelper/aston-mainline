@@ -9,11 +9,8 @@
 
 	aliases {
 		serial0 = &tcu;
-<<<<<<< HEAD
-=======
 		serial1 = &uarta;
 		serial2 = &uarte;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	chosen {
@@ -21,8 +18,6 @@
 	};
 
 	bus@0 {
-<<<<<<< HEAD
-=======
 		serial@3100000 {
 			compatible = "nvidia,tegra194-hsuart";
 			reset-names = "serial";
@@ -35,7 +30,6 @@
 			status = "okay";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i2c@3160000 {
 			status = "okay";
 
@@ -192,8 +186,6 @@
 			phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
 		};
 
-<<<<<<< HEAD
-=======
 		pcie-ep@14160000 {/* C4 - End Point */
 			phys = <&p2u_hsio_4>, <&p2u_hsio_5>, <&p2u_hsio_6>,
 					<&p2u_hsio_7>;
@@ -206,7 +198,6 @@
 							GPIO_ACTIVE_HIGH>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* C7 - M.2 Key-M */
 		pcie@141e0000 {
 			status = "okay";

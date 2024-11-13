@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-=======
 # CONFIG_GCC_PLUGINS is not set
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 CONFIG_RUST=y
 CONFIG_SAMPLES=y
 CONFIG_SAMPLES_RUST=y
 CONFIG_SAMPLE_RUST_MINIMAL=m
-<<<<<<< HEAD
 CONFIG_SAMPLE_RUST_PRINT=m
-=======
-CONFIG_SAMPLE_RUST_PRINT=m
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

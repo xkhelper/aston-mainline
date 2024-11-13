@@ -282,10 +282,7 @@ int __init opal_event_init(void)
 				 name, NULL);
 		if (rc) {
 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
-<<<<<<< HEAD
-=======
 			kfree(name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 	}

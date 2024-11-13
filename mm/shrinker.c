@@ -76,24 +76,12 @@ void free_shrinker_info(struct mem_cgroup *memcg)
 
 int alloc_shrinker_info(struct mem_cgroup *memcg)
 {
-<<<<<<< HEAD
-	struct shrinker_info *info;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int nid, ret = 0;
 	int array_size = 0;
 
 	mutex_lock(&shrinker_mutex);
 	array_size = shrinker_unit_size(shrinker_nr_max);
 	for_each_node(nid) {
-<<<<<<< HEAD
-		info = kvzalloc_node(sizeof(*info) + array_size, GFP_KERNEL, nid);
-		if (!info)
-			goto err;
-		info->map_nr_max = shrinker_nr_max;
-		if (shrinker_unit_alloc(info, NULL, nid))
-			goto err;
-=======
 		struct shrinker_info *info = kvzalloc_node(sizeof(*info) + array_size,
 							   GFP_KERNEL, nid);
 		if (!info)
@@ -103,7 +91,6 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
 			kvfree(info);
 			goto err;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rcu_assign_pointer(memcg->nodeinfo[nid]->shrinker_info, info);
 	}
 	mutex_unlock(&shrinker_mutex);

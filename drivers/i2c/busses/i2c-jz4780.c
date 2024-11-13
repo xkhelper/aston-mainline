@@ -792,41 +792,22 @@ static int jz4780_i2c_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, i2c);
 
-<<<<<<< HEAD
-	i2c->clk = devm_clk_get(&pdev->dev, NULL);
-	if (IS_ERR(i2c->clk))
-		return PTR_ERR(i2c->clk);
-
-	ret = clk_prepare_enable(i2c->clk);
-	if (ret)
-		return ret;
-
-=======
 	i2c->clk = devm_clk_get_enabled(&pdev->dev, NULL);
 	if (IS_ERR(i2c->clk))
 		return PTR_ERR(i2c->clk);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = of_property_read_u32(pdev->dev.of_node, "clock-frequency",
 				   &clk_freq);
 	if (ret) {
 		dev_err(&pdev->dev, "clock-frequency not specified in DT\n");
-<<<<<<< HEAD
-		goto err;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	i2c->speed = clk_freq / 1000;
 	if (i2c->speed == 0) {
 		ret = -EINVAL;
 		dev_err(&pdev->dev, "clock-frequency minimum is 1000\n");
-<<<<<<< HEAD
-		goto err;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	jz4780_i2c_set_speed(i2c);
 
@@ -842,24 +823,6 @@ static int jz4780_i2c_probe(struct platform_device *pdev)
 
 	ret = platform_get_irq(pdev, 0);
 	if (ret < 0)
-<<<<<<< HEAD
-		goto err;
-	i2c->irq = ret;
-	ret = devm_request_irq(&pdev->dev, i2c->irq, jz4780_i2c_irq, 0,
-			       dev_name(&pdev->dev), i2c);
-	if (ret)
-		goto err;
-
-	ret = i2c_add_adapter(&i2c->adap);
-	if (ret < 0)
-		goto err;
-
-	return 0;
-
-err:
-	clk_disable_unprepare(i2c->clk);
-	return ret;
-=======
 		return ret;
 	i2c->irq = ret;
 
@@ -873,17 +836,12 @@ err:
 		return ret;
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void jz4780_i2c_remove(struct platform_device *pdev)
 {
 	struct jz4780_i2c *i2c = platform_get_drvdata(pdev);
 
-<<<<<<< HEAD
-	clk_disable_unprepare(i2c->clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i2c_del_adapter(&i2c->adap);
 }
 

@@ -1554,10 +1554,7 @@ static void switchtec_ntb_remove(struct device *dev)
 	switchtec_ntb_deinit_db_msg_irq(sndev);
 	switchtec_ntb_deinit_shared_mw(sndev);
 	switchtec_ntb_deinit_crosslink(sndev);
-<<<<<<< HEAD
-=======
 	cancel_work_sync(&sndev->check_link_status_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(sndev);
 	dev_info(dev, "ntb device unregistered\n");
 }

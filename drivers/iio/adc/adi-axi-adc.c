@@ -61,13 +61,10 @@
 
 #define ADI_AXI_ADC_REG_CHAN_STATUS(c)		(0x0404 + (c) * 0x40)
 #define   ADI_AXI_ADC_CHAN_STAT_PN_MASK		GENMASK(2, 1)
-<<<<<<< HEAD
-=======
 /* out of sync */
 #define   ADI_AXI_ADC_CHAN_STAT_PN_OOS		BIT(1)
 /* spurious out of sync */
 #define   ADI_AXI_ADC_CHAN_STAT_PN_ERR		BIT(2)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ADI_AXI_ADC_REG_CHAN_CTRL_3(c)		(0x0418 + (c) * 0x40)
 #define   ADI_AXI_ADC_CHAN_PN_SEL_MASK		GENMASK(19, 16)
@@ -206,31 +203,19 @@ static int axi_adc_test_pattern_set(struct iio_backend *back,
 		return regmap_update_bits(st->regmap, ADI_AXI_ADC_REG_CHAN_CTRL_3(chan),
 					  ADI_AXI_ADC_CHAN_PN_SEL_MASK,
 					  FIELD_PREP(ADI_AXI_ADC_CHAN_PN_SEL_MASK, 0));
-<<<<<<< HEAD
-=======
 	case IIO_BACKEND_ADI_PRBS_23A:
 		return regmap_update_bits(st->regmap, ADI_AXI_ADC_REG_CHAN_CTRL_3(chan),
 					  ADI_AXI_ADC_CHAN_PN_SEL_MASK,
 					  FIELD_PREP(ADI_AXI_ADC_CHAN_PN_SEL_MASK, 1));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -EINVAL;
 	}
 }
 
-<<<<<<< HEAD
-static int axi_adc_chan_status(struct iio_backend *back, unsigned int chan,
-			       bool *error)
-{
-	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-	int ret;
-	u32 val;
-=======
 static int axi_adc_read_chan_status(struct adi_axi_adc_state *st, unsigned int chan,
 				    unsigned int *status)
 {
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	guard(mutex)(&st->lock);
 	/* reset test bits by setting them */
@@ -242,9 +227,6 @@ static int axi_adc_read_chan_status(struct adi_axi_adc_state *st, unsigned int c
 	/* let's give enough time to validate or erroring the incoming pattern */
 	fsleep(1000);
 
-<<<<<<< HEAD
-	ret = regmap_read(st->regmap, ADI_AXI_ADC_REG_CHAN_STATUS(chan), &val);
-=======
 	return regmap_read(st->regmap, ADI_AXI_ADC_REG_CHAN_STATUS(chan),
 			   status);
 }
@@ -257,7 +239,6 @@ static int axi_adc_chan_status(struct iio_backend *back, unsigned int chan,
 	int ret;
 
 	ret = axi_adc_read_chan_status(st, chan, &val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -269,8 +250,6 @@ static int axi_adc_chan_status(struct iio_backend *back, unsigned int chan,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int axi_adc_debugfs_print_chan_status(struct iio_backend *back,
 					     unsigned int chan, char *buf,
 					     size_t len)
@@ -295,7 +274,6 @@ static int axi_adc_debugfs_print_chan_status(struct iio_backend *back,
 	return scnprintf(buf, len, "CH%u: OK.\n", chan);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int axi_adc_chan_enable(struct iio_backend *back, unsigned int chan)
 {
 	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
@@ -330,8 +308,6 @@ static void axi_adc_free_buffer(struct iio_backend *back,
 	iio_dmaengine_buffer_free(buffer);
 }
 
-<<<<<<< HEAD
-=======
 static int axi_adc_reg_access(struct iio_backend *back, unsigned int reg,
 			      unsigned int writeval, unsigned int *readval)
 {
@@ -343,18 +319,13 @@ static int axi_adc_reg_access(struct iio_backend *back, unsigned int reg,
 	return regmap_write(st->regmap, reg, writeval);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct regmap_config axi_adc_regmap_config = {
 	.val_bits = 32,
 	.reg_bits = 32,
 	.reg_stride = 4,
 };
 
-<<<<<<< HEAD
-static const struct iio_backend_ops adi_axi_adc_generic = {
-=======
 static const struct iio_backend_ops adi_axi_adc_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.enable = axi_adc_enable,
 	.disable = axi_adc_disable,
 	.data_format_set = axi_adc_data_format_set,
@@ -366,8 +337,6 @@ static const struct iio_backend_ops adi_axi_adc_ops = {
 	.iodelay_set = axi_adc_iodelays_set,
 	.test_pattern_set = axi_adc_test_pattern_set,
 	.chan_status = axi_adc_chan_status,
-<<<<<<< HEAD
-=======
 	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
 	.debugfs_print_chan_status = iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
 };
@@ -375,7 +344,6 @@ static const struct iio_backend_ops adi_axi_adc_ops = {
 static const struct iio_backend_info adi_axi_adc_generic = {
 	.name = "axi-adc",
 	.ops = &adi_axi_adc_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int adi_axi_adc_probe(struct platform_device *pdev)

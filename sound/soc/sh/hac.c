@@ -334,11 +334,7 @@ static struct platform_driver hac_pcm_driver = {
 	},
 
 	.probe = hac_soc_platform_probe,
-<<<<<<< HEAD
-	.remove_new = hac_soc_platform_remove,
-=======
 	.remove = hac_soc_platform_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(hac_pcm_driver);

@@ -316,25 +316,16 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
 	struct vivid_dev *dev = cec_get_drvdata(adap);
 	struct cec_msg reply;
 	u8 dest = cec_msg_destination(msg);
-<<<<<<< HEAD
-	u8 disp_ctl;
-	char osd[14];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cec_msg_is_broadcast(msg))
 		dest = adap->log_addrs.log_addr[0];
 	cec_msg_init(&reply, dest, cec_msg_initiator(msg));
 
 	switch (cec_msg_opcode(msg)) {
-<<<<<<< HEAD
-	case CEC_MSG_SET_OSD_STRING:
-=======
 	case CEC_MSG_SET_OSD_STRING: {
 		u8 disp_ctl;
 		char osd[14];
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!cec_is_sink(adap))
 			return -ENOMSG;
 		cec_ops_set_osd_string(msg, &disp_ctl, osd);
@@ -358,8 +349,6 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
 			break;
 		}
 		break;
-<<<<<<< HEAD
-=======
 	}
 	case CEC_MSG_VENDOR_COMMAND_WITH_ID: {
 		u32 vendor_id;
@@ -401,7 +390,6 @@ static int vivid_received(struct cec_adapter *adap, struct cec_msg *msg)
 		cec_transmit_msg(adap, &reply, false);
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -ENOMSG;
 	}

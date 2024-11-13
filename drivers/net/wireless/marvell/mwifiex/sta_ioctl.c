@@ -339,11 +339,7 @@ int mwifiex_bss_start(struct mwifiex_private *priv, struct cfg80211_bss *bss,
 			ret = mwifiex_associate(priv, bss_desc);
 		}
 
-<<<<<<< HEAD
-		if (bss)
-=======
 		if (bss && !priv->adapter->host_mlme_enabled)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			cfg80211_put_bss(priv->adapter->wiphy, bss);
 	} else {
 		/* Adhoc mode */
@@ -507,12 +503,7 @@ int mwifiex_enable_hs(struct mwifiex_adapter *adapter)
 	if (disconnect_on_suspend) {
 		for (i = 0; i < adapter->priv_num; i++) {
 			priv = adapter->priv[i];
-<<<<<<< HEAD
-			if (priv)
-				mwifiex_deauthenticate(priv, NULL);
-=======
 			mwifiex_deauthenticate(priv, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

@@ -4,8 +4,6 @@
 
 #include <linux/compiler.h>
 
-<<<<<<< HEAD
-=======
 /**
  * DOC: scope-based cleanup helpers
  *
@@ -142,7 +140,6 @@
  * convert none of them.
  */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * DEFINE_FREE(name, type, free):
  *	simple helper macro that defines the required wrapper for a __free()
@@ -237,11 +234,7 @@ const volatile void * __must_check_fn(const volatile void *val)
  * DEFINE_CLASS(fdget, struct fd, fdput(_T), fdget(fd), int fd)
  *
  *	CLASS(fdget, f)(fd);
-<<<<<<< HEAD
- *	if (!f.file)
-=======
  *	if (!fd_file(f))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *		return -EBADF;
  *
  *	// use 'f' without concern

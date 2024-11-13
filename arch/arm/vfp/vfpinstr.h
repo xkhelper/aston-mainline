@@ -64,20 +64,6 @@
 
 #ifdef CONFIG_AS_VFP_VMRS_FPINST
 
-<<<<<<< HEAD
-#define fmrx(_vfp_) ({			\
-	u32 __v;			\
-	asm(".fpu	vfpv2\n"	\
-	    "vmrs	%0, " #_vfp_	\
-	    : "=r" (__v) : : "cc");	\
-	__v;				\
- })
-
-#define fmxr(_vfp_,_var_)		\
-	asm(".fpu	vfpv2\n"	\
-	    "vmsr	" #_vfp_ ", %0"	\
-	   : : "r" (_var_) : "cc")
-=======
 #define fmrx(_vfp_) ({				\
 	u32 __v;				\
 	asm volatile (".fpu	vfpv2\n"	\
@@ -91,24 +77,11 @@
 		      "vmsr	" #_vfp_ ", %0"	\
 		     : : "r" (_var_) : "cc");	\
 })
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else
 
 #define vfpreg(_vfp_) #_vfp_
 
-<<<<<<< HEAD
-#define fmrx(_vfp_) ({			\
-	u32 __v;			\
-	asm("mrc p10, 7, %0, " vfpreg(_vfp_) ", cr0, 0 @ fmrx	%0, " #_vfp_	\
-	    : "=r" (__v) : : "cc");	\
-	__v;				\
- })
-
-#define fmxr(_vfp_,_var_)		\
-	asm("mcr p10, 7, %0, " vfpreg(_vfp_) ", cr0, 0 @ fmxr	" #_vfp_ ", %0"	\
-	   : : "r" (_var_) : "cc")
-=======
 #define fmrx(_vfp_) ({						\
 	u32 __v;						\
 	asm volatile ("mrc p10, 7, %0, " vfpreg(_vfp_) ","	\
@@ -122,7 +95,6 @@
 		      "cr0, 0 @ fmxr	" #_vfp_ ", %0"		\
 		     : : "r" (_var_) : "cc");			\
 })
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif
 

@@ -628,11 +628,7 @@ static int xadc_update_scan_mode(struct iio_dev *indio_dev,
 	size_t n;
 	void *data;
 
-<<<<<<< HEAD
-	n = bitmap_weight(mask, indio_dev->masklength);
-=======
 	n = bitmap_weight(mask, iio_get_masklength(indio_dev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	data = devm_krealloc_array(indio_dev->dev.parent, xadc->data,
 				   n, sizeof(*xadc->data), GFP_KERNEL);
@@ -685,12 +681,7 @@ static irqreturn_t xadc_trigger_handler(int irq, void *p)
 		goto out;
 
 	j = 0;
-<<<<<<< HEAD
-	for_each_set_bit(i, indio_dev->active_scan_mask,
-		indio_dev->masklength) {
-=======
 	iio_for_each_active_channel(indio_dev, i) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chan = xadc_scan_index_to_channel(i);
 		xadc_read_adc_reg(xadc, chan, &xadc->data[j]);
 		j++;

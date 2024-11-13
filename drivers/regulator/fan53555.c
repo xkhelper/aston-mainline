@@ -46,11 +46,7 @@
 /* VSEL bit definitions */
 #define VSEL_BUCK_EN		BIT(7)
 #define VSEL_MODE		BIT(6)
-<<<<<<< HEAD
-/* Chip ID and Verison */
-=======
 /* Chip ID and Version */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DIE_ID			0x0F	/* ID1 */
 #define DIE_REV			0x0F	/* ID2 */
 /* Control bit definitions */

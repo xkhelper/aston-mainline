@@ -33,11 +33,8 @@
 #include "util/bpf-filter.h"
 #include "util/stat.h"
 #include "util/util.h"
-<<<<<<< HEAD
-=======
 #include "util/env.h"
 #include "util/intel-tpebs.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <signal.h>
 #include <unistd.h>
 #include <sched.h>
@@ -83,10 +80,7 @@ void evlist__init(struct evlist *evlist, struct perf_cpu_map *cpus,
 	evlist->ctl_fd.fd = -1;
 	evlist->ctl_fd.ack = -1;
 	evlist->ctl_fd.pos = -1;
-<<<<<<< HEAD
-=======
 	evlist->nr_br_cntr = -1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct evlist *evlist__new(void)
@@ -188,10 +182,7 @@ void evlist__delete(struct evlist *evlist)
 	if (evlist == NULL)
 		return;
 
-<<<<<<< HEAD
-=======
 	tpebs_delete();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	evlist__free_stats(evlist);
 	evlist__munmap(evlist);
 	evlist__close(evlist);
@@ -1076,11 +1067,7 @@ int evlist__create_maps(struct evlist *evlist, struct target *target)
 	if (!threads)
 		return -1;
 
-<<<<<<< HEAD
-	if (target__uses_dummy_map(target))
-=======
 	if (target__uses_dummy_map(target) && !evlist__has_bpf_output(evlist))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cpus = perf_cpu_map__new_any_cpu();
 	else
 		cpus = perf_cpu_map__new(target->cpu_list);
@@ -1103,12 +1090,8 @@ out_delete_threads:
 	return -1;
 }
 
-<<<<<<< HEAD
-int evlist__apply_filters(struct evlist *evlist, struct evsel **err_evsel)
-=======
 int evlist__apply_filters(struct evlist *evlist, struct evsel **err_evsel,
 			  struct target *target)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct evsel *evsel;
 	int err = 0;
@@ -1130,11 +1113,7 @@ int evlist__apply_filters(struct evlist *evlist, struct evsel **err_evsel,
 		 * non-tracepoint events can have BPF filters.
 		 */
 		if (!list_empty(&evsel->bpf_filters)) {
-<<<<<<< HEAD
-			err = perf_bpf_filter__prepare(evsel);
-=======
 			err = perf_bpf_filter__prepare(evsel, target);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err) {
 				*err_evsel = evsel;
 				break;
@@ -1287,8 +1266,6 @@ u64 evlist__combined_branch_type(struct evlist *evlist)
 	return branch_type;
 }
 
-<<<<<<< HEAD
-=======
 static struct evsel *
 evlist__find_dup_event_from_prev(struct evlist *evlist, struct evsel *event)
 {
@@ -1355,7 +1332,6 @@ void evlist__update_br_cntr(struct evlist *evlist)
 	evlist->nr_br_cntr = i;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool evlist__valid_read_format(struct evlist *evlist)
 {
 	struct evsel *first = evlist__first(evlist), *pos = first;
@@ -2651,8 +2627,6 @@ void evlist__uniquify_name(struct evlist *evlist)
 		}
 	}
 }
-<<<<<<< HEAD
-=======
 
 bool evlist__has_bpf_output(struct evlist *evlist)
 {
@@ -2665,4 +2639,3 @@ bool evlist__has_bpf_output(struct evlist *evlist)
 
 	return false;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

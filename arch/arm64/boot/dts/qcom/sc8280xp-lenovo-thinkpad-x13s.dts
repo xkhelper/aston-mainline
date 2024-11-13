@@ -592,8 +592,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &camss {
 	vdda-phy-supply = <&vreg_l6d>;
 	vdda-pll-supply = <&vreg_l4d>;
@@ -645,7 +643,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &dispcc0 {
 	status = "okay";
 };
@@ -1490,8 +1487,6 @@
 		bias-disable;
 	};
 
-<<<<<<< HEAD
-=======
 	cam_rgb_default: cam-rgb-default-state {
 		mclk-pins {
 			pins = "gpio17";
@@ -1508,7 +1503,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	edp_reg_en: edp-reg-en-state {
 		pins = "gpio25";
 		function = "gpio";
@@ -1582,17 +1576,6 @@
 			pins = "gpio143";
 			function = "gpio";
 			drive-strength = <2>;
-<<<<<<< HEAD
-			bias-pull-down;
-		};
-
-		wake-n-pins {
-		       pins = "gpio145";
-		       function = "gpio";
-		       drive-strength = <2>;
-		       bias-pull-up;
-	       };
-=======
 			bias-disable;
 		};
 
@@ -1602,7 +1585,6 @@
 			drive-strength = <2>;
 			bias-pull-up;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	pcie3a_default: pcie3a-default-state {
@@ -1617,11 +1599,7 @@
 			pins = "gpio151";
 			function = "gpio";
 			drive-strength = <2>;
-<<<<<<< HEAD
-			bias-pull-down;
-=======
 			bias-disable;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		wake-n-pins {
@@ -1644,11 +1622,7 @@
 			pins = "gpio141";
 			function = "gpio";
 			drive-strength = <2>;
-<<<<<<< HEAD
-			bias-pull-down;
-=======
 			bias-disable;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		wake-n-pins {

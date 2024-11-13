@@ -6,10 +6,7 @@
  */
 
 #include <linux/moduleparam.h>
-<<<<<<< HEAD
-=======
 #include <linux/debugfs.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "nvme.h"
 
 static DECLARE_FAULT_ATTR(fail_default_attr);

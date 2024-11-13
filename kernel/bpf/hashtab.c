@@ -462,12 +462,9 @@ static int htab_map_alloc_check(union bpf_attr *attr)
 		 * kmalloc-able later in htab_map_update_elem()
 		 */
 		return -E2BIG;
-<<<<<<< HEAD
-=======
 	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
 	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
 		return -E2BIG;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -1055,25 +1052,15 @@ static struct htab_elem *alloc_htab_elem(struct bpf_htab *htab, void *key,
 			pptr = htab_elem_get_ptr(l_new, key_size);
 		} else {
 			/* alloc_percpu zero-fills */
-<<<<<<< HEAD
-			pptr = bpf_mem_cache_alloc(&htab->pcpu_ma);
-			if (!pptr) {
-=======
 			void *ptr = bpf_mem_cache_alloc(&htab->pcpu_ma);
 
 			if (!ptr) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				bpf_mem_cache_free(&htab->ma, l_new);
 				l_new = ERR_PTR(-ENOMEM);
 				goto dec_count;
 			}
-<<<<<<< HEAD
-			l_new->ptr_to_pptr = pptr;
-			pptr = *(void **)pptr;
-=======
 			l_new->ptr_to_pptr = ptr;
 			pptr = *(void __percpu **)ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		pcpu_init_value(htab, pptr, value, onallcpus);
@@ -1603,11 +1590,7 @@ static void htab_map_seq_show_elem(struct bpf_map *map, void *key,
 	btf_type_seq_show(map->btf, map->btf_key_type_id, key, m);
 	seq_puts(m, ": ");
 	btf_type_seq_show(map->btf, map->btf_value_type_id, value, m);
-<<<<<<< HEAD
-	seq_puts(m, "\n");
-=======
 	seq_putc(m, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rcu_read_unlock();
 }
@@ -2471,11 +2454,7 @@ static void htab_percpu_map_seq_show_elem(struct bpf_map *map, void *key,
 		seq_printf(m, "\tcpu%d: ", cpu);
 		btf_type_seq_show(map->btf, map->btf_value_type_id,
 				  per_cpu_ptr(pptr, cpu), m);
-<<<<<<< HEAD
-		seq_puts(m, "\n");
-=======
 		seq_putc(m, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	seq_puts(m, "}\n");
 

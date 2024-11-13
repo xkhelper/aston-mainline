@@ -5,10 +5,7 @@
 #include <stdbool.h>
 #include <linux/bpf.h>
 #include <bpf/bpf_helpers.h>
-<<<<<<< HEAD
-=======
 #include <bpf/bpf_tracing.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "bpf_misc.h"
 #include "bpf_kfuncs.h"
 #include "errno.h"
@@ -548,8 +545,6 @@ int test_dynptr_skb_strcmp(struct __sk_buff *skb)
 
 	return 1;
 }
-<<<<<<< HEAD
-=======
 
 SEC("tp_btf/kfree_skb")
 int BPF_PROG(test_dynptr_skb_tp_btf, void *skb, void *location)
@@ -572,4 +567,3 @@ int BPF_PROG(test_dynptr_skb_tp_btf, void *skb, void *location)
 
 	return 1;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

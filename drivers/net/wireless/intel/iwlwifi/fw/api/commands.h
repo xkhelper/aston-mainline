@@ -2,11 +2,7 @@
 /*
  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-<<<<<<< HEAD
- * Copyright (C) 2018-2022 Intel Corporation
-=======
  * Copyright (C) 2018-2022, 2024 Intel Corporation
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #ifndef __iwl_fw_api_commands_h__
 #define __iwl_fw_api_commands_h__
@@ -29,11 +25,8 @@
  * @NAN_GROUP: NAN group, uses command IDs from &enum iwl_nan_subcmd_ids
  * @LOCATION_GROUP: location group, uses command IDs from
  *	&enum iwl_location_subcmd_ids
-<<<<<<< HEAD
-=======
  * @BT_COEX_GROUP: bt coex group, uses command IDs from
  *	&enum iwl_bt_coex_subcmd_ids
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @PROT_OFFLOAD_GROUP: protocol offload group, uses command IDs from
  *	&enum iwl_prot_offload_subcmd_ids
  * @REGULATORY_AND_NVM_GROUP: regulatory/NVM group, uses command IDs from
@@ -52,10 +45,7 @@ enum iwl_mvm_command_groups {
 	SCAN_GROUP = 0x6,
 	NAN_GROUP = 0x7,
 	LOCATION_GROUP = 0x8,
-<<<<<<< HEAD
-=======
 	BT_COEX_GROUP = 0x9,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PROT_OFFLOAD_GROUP = 0xb,
 	REGULATORY_AND_NVM_GROUP = 0xc,
 	DEBUG_GROUP = 0xf,
@@ -157,13 +147,8 @@ enum iwl_legacy_cmds {
 	/**
 	 * @TX_CMD: uses &struct iwl_tx_cmd or &struct iwl_tx_cmd_gen2 or
 	 *	&struct iwl_tx_cmd_gen3,
-<<<<<<< HEAD
-	 *	response in &struct iwl_mvm_tx_resp or
-	 *	&struct iwl_mvm_tx_resp_v3
-=======
 	 *	response in &struct iwl_tx_resp or
 	 *	&struct iwl_tx_resp_v3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	TX_CMD = 0x1c,
 
@@ -416,11 +401,7 @@ enum iwl_legacy_cmds {
 	REDUCE_TX_POWER_CMD = 0x9f,
 
 	/**
-<<<<<<< HEAD
-	 * @MISSED_BEACONS_NOTIFICATION: &struct iwl_missed_beacons_notif
-=======
 	 * @MISSED_BEACONS_NOTIFICATION: &struct iwl_missed_beacons_notif_v4
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	MISSED_BEACONS_NOTIFICATION = 0xa2,
 
@@ -489,11 +470,7 @@ enum iwl_legacy_cmds {
 	MARKER_CMD = 0xcb,
 
 	/**
-<<<<<<< HEAD
-	 * @BT_PROFILE_NOTIFICATION: &struct iwl_bt_coex_profile_notif
-=======
 	 * @BT_PROFILE_NOTIFICATION: &struct iwl_bt_coex_prof_old_notif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	BT_PROFILE_NOTIFICATION = 0xce,
 

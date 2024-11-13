@@ -431,10 +431,6 @@ MODULE_DEVICE_TABLE(of, vtg_of_match);
 struct platform_driver sti_vtg_driver = {
 	.driver = {
 		.name = "sti-vtg",
-<<<<<<< HEAD
-		.owner = THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = vtg_of_match,
 	},
 	.probe	= vtg_probe,

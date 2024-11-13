@@ -12,10 +12,7 @@
 #include <linux/user_namespace.h>
 #include <linux/nsfs.h>
 #include <linux/uaccess.h>
-<<<<<<< HEAD
-=======
 #include <linux/mnt_namespace.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "mount.h"
 #include "internal.h"
@@ -25,10 +22,6 @@ static struct vfsmount *nsfs_mnt;
 static long ns_ioctl(struct file *filp, unsigned int ioctl,
 			unsigned long arg);
 static const struct file_operations ns_file_operations = {
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl = ns_ioctl,
 	.compat_ioctl   = compat_ptr_ioctl,
 };
@@ -135,8 +128,6 @@ int open_related_ns(struct ns_common *ns,
 }
 EXPORT_SYMBOL_GPL(open_related_ns);
 
-<<<<<<< HEAD
-=======
 static int copy_ns_info_to_user(const struct mnt_namespace *mnt_ns,
 				struct mnt_ns_info __user *uinfo, size_t usize,
 				struct mnt_ns_info *kinfo)
@@ -161,7 +152,6 @@ static int copy_ns_info_to_user(const struct mnt_namespace *mnt_ns,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static long ns_ioctl(struct file *filp, unsigned int ioctl,
 			unsigned long arg)
 {
@@ -169,11 +159,8 @@ static long ns_ioctl(struct file *filp, unsigned int ioctl,
 	struct pid_namespace *pid_ns;
 	struct task_struct *tsk;
 	struct ns_common *ns = get_proc_ns(file_inode(filp));
-<<<<<<< HEAD
-=======
 	struct mnt_namespace *mnt_ns;
 	bool previous = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uid_t __user *argp;
 	uid_t uid;
 	int ret;
@@ -195,10 +182,6 @@ static long ns_ioctl(struct file *filp, unsigned int ioctl,
 		uid = from_kuid_munged(current_user_ns(), user_ns->owner);
 		return put_user(uid, argp);
 	case NS_GET_MNTNS_ID: {
-<<<<<<< HEAD
-		struct mnt_namespace *mnt_ns;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__u64 __user *idp;
 		__u64 id;
 
@@ -253,9 +236,6 @@ static long ns_ioctl(struct file *filp, unsigned int ioctl,
 
 		if (!ret)
 			ret = -ESRCH;
-<<<<<<< HEAD
-		break;
-=======
 		return ret;
 	}
 	}
@@ -329,7 +309,6 @@ static long ns_ioctl(struct file *filp, unsigned int ioctl,
 		fd_install(fd, no_free_ptr(f));
 		/* File descriptor is live so hand it off to the caller. */
 		return take_fd(fd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	default:
 		ret = -ENOTTY;

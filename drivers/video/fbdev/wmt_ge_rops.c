@@ -159,11 +159,7 @@ static const struct of_device_id wmt_dt_ids[] = {
 
 static struct platform_driver wmt_ge_rops_driver = {
 	.probe		= wmt_ge_rops_probe,
-<<<<<<< HEAD
-	.remove_new	= wmt_ge_rops_remove,
-=======
 	.remove		= wmt_ge_rops_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "wmt_ge_rops",
 		.of_match_table = wmt_dt_ids,

@@ -141,11 +141,7 @@ static void tea6415c_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id tea6415c_id[] = {
-<<<<<<< HEAD
-	{ "tea6415c", 0 },
-=======
 	{ "tea6415c" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, tea6415c_id);

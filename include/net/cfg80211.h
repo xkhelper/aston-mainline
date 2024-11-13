@@ -4837,15 +4837,9 @@ struct cfg80211_ops {
 	int	(*start_radar_detection)(struct wiphy *wiphy,
 					 struct net_device *dev,
 					 struct cfg80211_chan_def *chandef,
-<<<<<<< HEAD
-					 u32 cac_time_ms);
-	void	(*end_cac)(struct wiphy *wiphy,
-				struct net_device *dev);
-=======
 					 u32 cac_time_ms, int link_id);
 	void	(*end_cac)(struct wiphy *wiphy,
 			   struct net_device *dev, unsigned int link_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int	(*update_ft_ies)(struct wiphy *wiphy, struct net_device *dev,
 				 struct cfg80211_update_ft_ies_params *ftie);
 	int	(*crit_proto_start)(struct wiphy *wiphy,
@@ -6136,8 +6130,6 @@ void wiphy_delayed_work_flush(struct wiphy *wiphy,
 			      struct wiphy_delayed_work *dwork);
 
 /**
-<<<<<<< HEAD
-=======
  * wiphy_delayed_work_pending - Find out whether a wiphy delayable
  * work item is currently pending.
  *
@@ -6182,7 +6174,6 @@ bool wiphy_delayed_work_pending(struct wiphy *wiphy,
 				struct wiphy_delayed_work *dwork);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * enum ieee80211_ap_reg_power - regulatory power for an Access Point
  *
  * @IEEE80211_REG_UNSET_AP: Access Point has no regulatory power mode
@@ -6247,12 +6238,6 @@ enum ieee80211_ap_reg_power {
  * @address: The address for this device, valid only if @netdev is %NULL
  * @is_running: true if this is a non-netdev device that has been started, e.g.
  *	the P2P Device.
-<<<<<<< HEAD
- * @cac_started: true if DFS channel availability check has been started
- * @cac_start_time: timestamp (jiffies) when the dfs state was entered.
- * @cac_time_ms: CAC time in ms
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @ps: powersave mode is enabled
  * @ps_timeout: dynamic powersave timeout
  * @ap_unexpected_nlportid: (private) netlink port ID of application
@@ -6276,14 +6261,11 @@ enum ieee80211_ap_reg_power {
  *	unprotected beacon report
  * @links: array of %IEEE80211_MLD_MAX_NUM_LINKS elements containing @addr
  *	@ap and @client for each link
-<<<<<<< HEAD
-=======
  * @links.cac_started: true if DFS channel availability check has been
  *	started
  * @links.cac_start_time: timestamp (jiffies) when the dfs state was
  *	entered.
  * @links.cac_time_ms: CAC time in ms
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @valid_links: bitmap describing what elements of @links are valid
  */
 struct wireless_dev {
@@ -6325,14 +6307,6 @@ struct wireless_dev {
 	u32 owner_nlportid;
 	bool nl_owner_dead;
 
-<<<<<<< HEAD
-	/* FIXME: need to rework radar detection for MLO */
-	bool cac_started;
-	unsigned long cac_start_time;
-	unsigned int cac_time_ms;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_CFG80211_WEXT
 	/* wext data */
 	struct {
@@ -6399,13 +6373,10 @@ struct wireless_dev {
 				struct cfg80211_internal_bss *current_bss;
 			} client;
 		};
-<<<<<<< HEAD
-=======
 
 		bool cac_started;
 		unsigned long cac_start_time;
 		unsigned int cac_time_ms;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} links[IEEE80211_MLD_MAX_NUM_LINKS];
 	u16 valid_links;
 };
@@ -8814,10 +8785,7 @@ void cfg80211_sta_opmode_change_notify(struct net_device *dev, const u8 *mac,
  * @chandef: chandef for the current channel
  * @event: type of event
  * @gfp: context flags
-<<<<<<< HEAD
-=======
  * @link_id: valid link_id for MLO operation or 0 otherwise.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This function is called when a Channel availability check (CAC) is finished
  * or aborted. This must be called to notify the completion of a CAC process,
@@ -8825,12 +8793,8 @@ void cfg80211_sta_opmode_change_notify(struct net_device *dev, const u8 *mac,
  */
 void cfg80211_cac_event(struct net_device *netdev,
 			const struct cfg80211_chan_def *chandef,
-<<<<<<< HEAD
-			enum nl80211_radar_event event, gfp_t gfp);
-=======
 			enum nl80211_radar_event event, gfp_t gfp,
 			unsigned int link_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * cfg80211_background_cac_abort - Channel Availability Check offchan abort event

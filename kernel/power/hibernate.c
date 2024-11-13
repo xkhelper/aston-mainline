@@ -1123,19 +1123,11 @@ static const char * const hibernation_modes[] = {
 static ssize_t disk_show(struct kobject *kobj, struct kobj_attribute *attr,
 			 char *buf)
 {
-<<<<<<< HEAD
-	int i;
-	char *start = buf;
-
-	if (!hibernation_available())
-		return sprintf(buf, "[disabled]\n");
-=======
 	ssize_t count = 0;
 	int i;
 
 	if (!hibernation_available())
 		return sysfs_emit(buf, "[disabled]\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = HIBERNATION_FIRST; i <= HIBERNATION_MAX; i++) {
 		if (!hibernation_modes[i])
@@ -1155,14 +1147,6 @@ static ssize_t disk_show(struct kobject *kobj, struct kobj_attribute *attr,
 			continue;
 		}
 		if (i == hibernation_mode)
-<<<<<<< HEAD
-			buf += sprintf(buf, "[%s] ", hibernation_modes[i]);
-		else
-			buf += sprintf(buf, "%s ", hibernation_modes[i]);
-	}
-	buf += sprintf(buf, "\n");
-	return buf-start;
-=======
 			count += sysfs_emit_at(buf, count, "[%s] ", hibernation_modes[i]);
 		else
 			count += sysfs_emit_at(buf, count, "%s ", hibernation_modes[i]);
@@ -1173,7 +1157,6 @@ static ssize_t disk_show(struct kobject *kobj, struct kobj_attribute *attr,
 		buf[count - 1] = '\n';
 
 	return count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t disk_store(struct kobject *kobj, struct kobj_attribute *attr,
@@ -1231,13 +1214,8 @@ power_attr(disk);
 static ssize_t resume_show(struct kobject *kobj, struct kobj_attribute *attr,
 			   char *buf)
 {
-<<<<<<< HEAD
-	return sprintf(buf, "%d:%d\n", MAJOR(swsusp_resume_device),
-		       MINOR(swsusp_resume_device));
-=======
 	return sysfs_emit(buf, "%d:%d\n", MAJOR(swsusp_resume_device),
 			  MINOR(swsusp_resume_device));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t resume_store(struct kobject *kobj, struct kobj_attribute *attr,
@@ -1296,11 +1274,7 @@ power_attr(resume);
 static ssize_t resume_offset_show(struct kobject *kobj,
 				  struct kobj_attribute *attr, char *buf)
 {
-<<<<<<< HEAD
-	return sprintf(buf, "%llu\n", (unsigned long long)swsusp_resume_block);
-=======
 	return sysfs_emit(buf, "%llu\n", (unsigned long long)swsusp_resume_block);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t resume_offset_store(struct kobject *kobj,
@@ -1323,11 +1297,7 @@ power_attr(resume_offset);
 static ssize_t image_size_show(struct kobject *kobj, struct kobj_attribute *attr,
 			       char *buf)
 {
-<<<<<<< HEAD
-	return sprintf(buf, "%lu\n", image_size);
-=======
 	return sysfs_emit(buf, "%lu\n", image_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t image_size_store(struct kobject *kobj, struct kobj_attribute *attr,
@@ -1348,11 +1318,7 @@ power_attr(image_size);
 static ssize_t reserved_size_show(struct kobject *kobj,
 				  struct kobj_attribute *attr, char *buf)
 {
-<<<<<<< HEAD
-	return sprintf(buf, "%lu\n", reserved_size);
-=======
 	return sysfs_emit(buf, "%lu\n", reserved_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t reserved_size_store(struct kobject *kobj,

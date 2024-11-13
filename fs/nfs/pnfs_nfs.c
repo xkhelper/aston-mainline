@@ -490,11 +490,7 @@ pnfs_generic_commit_pagelist(struct inode *inode, struct list_head *mds_pages,
 			nfs_initiate_commit(NFS_CLIENT(inode), data,
 					    NFS_PROTO(data->inode),
 					    data->mds_ops, how,
-<<<<<<< HEAD
-					    RPC_TASK_CRED_NOREF);
-=======
 					    RPC_TASK_CRED_NOREF, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			nfs_init_commit(data, NULL, data->lseg, cinfo);
 			initiate_commit(data, how);

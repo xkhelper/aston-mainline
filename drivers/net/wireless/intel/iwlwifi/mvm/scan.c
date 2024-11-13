@@ -1594,11 +1594,7 @@ iwl_mvm_umac_scan_cfg_channels(struct iwl_mvm *mvm,
 
 	for (i = 0; i < n_channels; i++) {
 		channel_cfg[i].flags = cpu_to_le32(flags);
-<<<<<<< HEAD
-		channel_cfg[i].v1.channel_num = channels[i]->hw_value;
-=======
 		channel_cfg[i].channel_num = channels[i]->hw_value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (iwl_mvm_is_scan_ext_chan_supported(mvm)) {
 			enum nl80211_band band = channels[i]->band;
 
@@ -1630,21 +1626,13 @@ iwl_mvm_umac_scan_cfg_channels_v4(struct iwl_mvm *mvm,
 			&cp->channel_config[i];
 
 		cfg->flags = cpu_to_le32(flags);
-<<<<<<< HEAD
-		cfg->v2.channel_num = channels[i]->hw_value;
-=======
 		cfg->channel_num = channels[i]->hw_value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cfg->v2.band = iwl_mvm_phy_band_from_nl80211(band);
 		cfg->v2.iter_count = 1;
 		cfg->v2.iter_interval = 0;
 
 		iwl_mvm_scan_ch_add_n_aps_override(vif_type,
-<<<<<<< HEAD
-						   cfg->v2.channel_num,
-=======
 						   cfg->channel_num,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						   cfg->v2.band, bitmap,
 						   bitmap_n_entries);
 	}
@@ -1668,11 +1656,7 @@ iwl_mvm_umac_scan_cfg_channels_v7(struct iwl_mvm *mvm,
 		u8 iwl_band = iwl_mvm_phy_band_from_nl80211(band);
 
 		cfg->flags = cpu_to_le32(flags | n_aps_flag);
-<<<<<<< HEAD
-		cfg->v2.channel_num = channels[i]->hw_value;
-=======
 		cfg->channel_num = channels[i]->hw_value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (cfg80211_channel_is_psc(channels[i]))
 			cfg->flags = 0;
 
@@ -1790,11 +1774,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
 			&cp->channel_config[ch_cnt];
 
 		u32 s_ssid_bitmap = 0, bssid_bitmap = 0, flags = 0;
-<<<<<<< HEAD
-		u8 j, k, n_s_ssids = 0, n_bssids = 0;
-=======
 		u8 k, n_s_ssids = 0, n_bssids = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u8 max_s_ssids, max_bssids;
 		bool force_passive = false, found = false, allow_passive = true,
 		     unsolicited_probe_on_chan = false, psc_no_listen = false;
@@ -1809,11 +1789,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
 		    !params->n_6ghz_params && params->n_ssids)
 			continue;
 
-<<<<<<< HEAD
-		cfg->v1.channel_num = params->channels[i]->hw_value;
-=======
 		cfg->channel_num = params->channels[i]->hw_value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (version < 17)
 			cfg->v2.band = PHY_BAND_6;
 		else
@@ -1823,11 +1799,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
 		cfg->v5.iter_count = 1;
 		cfg->v5.iter_interval = 0;
 
-<<<<<<< HEAD
-		for (j = 0; j < params->n_6ghz_params; j++) {
-=======
 		for (u32 j = 0; j < params->n_6ghz_params; j++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			s8 tmp_psd_20;
 
 			if (!(scan_6ghz_params[j].channel_idx == i))
@@ -1901,11 +1873,7 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
 		 * SSID.
 		 * TODO: improve this logic
 		 */
-<<<<<<< HEAD
-		for (j = 0; j < params->n_6ghz_params; j++) {
-=======
 		for (u32 j = 0; j < params->n_6ghz_params; j++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!(scan_6ghz_params[j].channel_idx == i))
 				continue;
 
@@ -2509,11 +2477,7 @@ iwl_mvm_scan_umac_fill_ch_p_v7(struct iwl_mvm *mvm,
 			if (!cfg80211_channel_is_psc(channel))
 				continue;
 
-<<<<<<< HEAD
-			cfg->v5.channel_num = channel->hw_value;
-=======
 			cfg->channel_num = channel->hw_value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			cfg->v5.iter_count = 1;
 			cfg->v5.iter_interval = 0;
 
@@ -3349,15 +3313,6 @@ void iwl_mvm_rx_umac_scan_iter_complete_notif(struct iwl_mvm *mvm,
 		       mvm->scan_start);
 }
 
-<<<<<<< HEAD
-static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
-{
-	struct iwl_umac_scan_abort cmd = {};
-	int uid, ret;
-
-	lockdep_assert_held(&mvm->mutex);
-
-=======
 static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type, bool *wait)
 {
 	struct iwl_umac_scan_abort abort_cmd = {};
@@ -3375,7 +3330,6 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type, bool *wait)
 
 	*wait = true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* We should always get a valid index here, because we already
 	 * checked that this type of scan was running in the generic
 	 * code.
@@ -3384,19 +3338,6 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type, bool *wait)
 	if (WARN_ON_ONCE(uid < 0))
 		return uid;
 
-<<<<<<< HEAD
-	cmd.uid = cpu_to_le32(uid);
-
-	IWL_DEBUG_SCAN(mvm, "Sending scan abort, uid %u\n", uid);
-
-	ret = iwl_mvm_send_cmd_pdu(mvm,
-				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
-				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
-	if (!ret)
-		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
-
-	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
-=======
 	abort_cmd.uid = cpu_to_le32(uid);
 
 	IWL_DEBUG_SCAN(mvm, "Sending scan abort, uid %u\n", uid);
@@ -3419,7 +3360,6 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type, bool *wait)
 		*wait = false;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -3429,10 +3369,7 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
 	static const u16 scan_done_notif[] = { SCAN_COMPLETE_UMAC,
 					      SCAN_OFFLOAD_COMPLETE, };
 	int ret;
-<<<<<<< HEAD
-=======
 	bool wait = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_held(&mvm->mutex);
 
@@ -3444,11 +3381,7 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
 	IWL_DEBUG_SCAN(mvm, "Preparing to stop scan, type %x\n", type);
 
 	if (fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_UMAC_SCAN))
-<<<<<<< HEAD
-		ret = iwl_mvm_umac_scan_abort(mvm, type);
-=======
 		ret = iwl_mvm_umac_scan_abort(mvm, type, &wait);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		ret = iwl_mvm_lmac_scan_abort(mvm);
 
@@ -3456,13 +3389,10 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
 		IWL_DEBUG_SCAN(mvm, "couldn't stop scan type %d\n", type);
 		iwl_remove_notification(&mvm->notif_wait, &wait_scan_done);
 		return ret;
-<<<<<<< HEAD
-=======
 	} else if (!wait) {
 		IWL_DEBUG_SCAN(mvm, "no need to wait for scan type %d\n", type);
 		iwl_remove_notification(&mvm->notif_wait, &wait_scan_done);
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return iwl_wait_notification(&mvm->notif_wait, &wait_scan_done,

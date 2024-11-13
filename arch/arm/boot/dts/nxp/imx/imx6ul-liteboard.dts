@@ -100,11 +100,7 @@
 		>;
 	};
 
-<<<<<<< HEAD
-	pinctrl_usb_otg1_vbus: usb-otg1-vbus {
-=======
 	pinctrl_usb_otg1_vbus: usb-otg1-vbus-grp {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fsl,pins = <
 			MX6UL_PAD_ENET2_RX_DATA0__GPIO2_IO08	0x79
 		>;

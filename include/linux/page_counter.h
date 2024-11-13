@@ -26,20 +26,14 @@ struct page_counter {
 	atomic_long_t children_low_usage;
 
 	unsigned long watermark;
-<<<<<<< HEAD
-=======
 	/* Latest cg2 reset watermark */
 	unsigned long local_watermark;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long failcnt;
 
 	/* Keep all the read most fields in a separete cacheline. */
 	CACHELINE_PADDING(_pad2_);
 
-<<<<<<< HEAD
-=======
 	bool protection_support;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long min;
 	unsigned long low;
 	unsigned long high;
@@ -53,14 +47,6 @@ struct page_counter {
 #define PAGE_COUNTER_MAX (LONG_MAX / PAGE_SIZE)
 #endif
 
-<<<<<<< HEAD
-static inline void page_counter_init(struct page_counter *counter,
-				     struct page_counter *parent)
-{
-	atomic_long_set(&counter->usage, 0);
-	counter->max = PAGE_COUNTER_MAX;
-	counter->parent = parent;
-=======
 /*
  * Protection is supported only for the first counter (with id 0).
  */
@@ -72,7 +58,6 @@ static inline void page_counter_init(struct page_counter *counter,
 	counter->max = PAGE_COUNTER_MAX;
 	counter->parent = parent;
 	counter->protection_support = protection_support;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline unsigned long page_counter_read(struct page_counter *counter)
@@ -101,14 +86,6 @@ int page_counter_memparse(const char *buf, const char *max,
 
 static inline void page_counter_reset_watermark(struct page_counter *counter)
 {
-<<<<<<< HEAD
-	counter->watermark = page_counter_read(counter);
-}
-
-void page_counter_calculate_protection(struct page_counter *root,
-				       struct page_counter *counter,
-				       bool recursive_protection);
-=======
 	unsigned long usage = page_counter_read(counter);
 
 	/*
@@ -128,6 +105,5 @@ static inline void page_counter_calculate_protection(struct page_counter *root,
 						     struct page_counter *counter,
 						     bool recursive_protection) {}
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _LINUX_PAGE_COUNTER_H */

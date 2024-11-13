@@ -7404,13 +7404,9 @@ static void ath11k_bcn_tx_status_event(struct ath11k_base *ab, struct sk_buff *s
 		rcu_read_unlock();
 		return;
 	}
-<<<<<<< HEAD
-	ath11k_mac_bcn_tx_event(arvif);
-=======
 
 	queue_work(ab->workqueue, &arvif->bcn_tx_work);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_read_unlock();
 }
 
@@ -8362,11 +8358,7 @@ ath11k_wmi_pdev_dfs_radar_detected_event(struct ath11k_base *ab, struct sk_buff 
 	if (ar->dfs_block_radar_events)
 		ath11k_info(ab, "DFS Radar detected, but ignored as requested\n");
 	else
-<<<<<<< HEAD
-		ieee80211_radar_detected(ar->hw);
-=======
 		ieee80211_radar_detected(ar->hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 exit:
 	rcu_read_unlock();

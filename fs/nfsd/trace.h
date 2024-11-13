@@ -86,12 +86,8 @@ DEFINE_NFSD_XDR_ERR_EVENT(cant_encode);
 		{ NFSD_MAY_NOT_BREAK_LEASE,	"NOT_BREAK_LEASE" },	\
 		{ NFSD_MAY_BYPASS_GSS,		"BYPASS_GSS" },		\
 		{ NFSD_MAY_READ_IF_EXEC,	"READ_IF_EXEC" },	\
-<<<<<<< HEAD
-		{ NFSD_MAY_64BIT_COOKIE,	"64BIT_COOKIE" })
-=======
 		{ NFSD_MAY_64BIT_COOKIE,	"64BIT_COOKIE" },	\
 		{ NFSD_MAY_LOCALIO,		"LOCALIO" })
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 TRACE_EVENT(nfsd_compound,
 	TP_PROTO(
@@ -198,11 +194,7 @@ TRACE_EVENT(nfsd_compound_encode_err,
 		{ S_IFIFO,		"FIFO" }, \
 		{ S_IFSOCK,		"SOCK" })
 
-<<<<<<< HEAD
-TRACE_EVENT(nfsd_fh_verify,
-=======
 TRACE_EVENT_CONDITION(nfsd_fh_verify,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TP_PROTO(
 		const struct svc_rqst *rqstp,
 		const struct svc_fh *fhp,
@@ -210,10 +202,7 @@ TRACE_EVENT_CONDITION(nfsd_fh_verify,
 		int access
 	),
 	TP_ARGS(rqstp, fhp, type, access),
-<<<<<<< HEAD
-=======
 	TP_CONDITION(rqstp != NULL),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TP_STRUCT__entry(
 		__field(unsigned int, netns_ino)
 		__sockaddr(server, rqstp->rq_xprt->xpt_remotelen)
@@ -252,11 +241,7 @@ TRACE_EVENT_CONDITION(nfsd_fh_verify_err,
 		__be32 error
 	),
 	TP_ARGS(rqstp, fhp, type, access, error),
-<<<<<<< HEAD
-	TP_CONDITION(error),
-=======
 	TP_CONDITION(rqstp != NULL && error),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TP_STRUCT__entry(
 		__field(unsigned int, netns_ino)
 		__sockaddr(server, rqstp->rq_xprt->xpt_remotelen)
@@ -312,14 +297,6 @@ DECLARE_EVENT_CLASS(nfsd_fh_err_class,
 		  __entry->status)
 )
 
-<<<<<<< HEAD
-#define DEFINE_NFSD_FH_ERR_EVENT(name)		\
-DEFINE_EVENT(nfsd_fh_err_class, nfsd_##name,	\
-	TP_PROTO(struct svc_rqst *rqstp,	\
-		 struct svc_fh	*fhp,		\
-		 int		status),	\
-	TP_ARGS(rqstp, fhp, status))
-=======
 #define DEFINE_NFSD_FH_ERR_EVENT(name)			\
 DEFINE_EVENT_CONDITION(nfsd_fh_err_class, nfsd_##name,	\
 	TP_PROTO(struct svc_rqst *rqstp,		\
@@ -327,7 +304,6 @@ DEFINE_EVENT_CONDITION(nfsd_fh_err_class, nfsd_##name,	\
 		 int		status),		\
 	TP_ARGS(rqstp, fhp, status),			\
 	TP_CONDITION(rqstp != NULL))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badexport);
 DEFINE_NFSD_FH_ERR_EVENT(set_fh_dentry_badhandle);
@@ -1137,11 +1113,7 @@ TRACE_EVENT(nfsd_file_acquire,
 	),
 
 	TP_fast_assign(
-<<<<<<< HEAD
-		__entry->xid = be32_to_cpu(rqstp->rq_xid);
-=======
 		__entry->xid = rqstp ? be32_to_cpu(rqstp->rq_xid) : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->inode = inode;
 		__entry->may_flags = may_flags;
 		__entry->nf_ref = nf ? refcount_read(&nf->nf_ref) : 0;
@@ -1175,11 +1147,7 @@ TRACE_EVENT(nfsd_file_insert_err,
 		__field(long, error)
 	),
 	TP_fast_assign(
-<<<<<<< HEAD
-		__entry->xid = be32_to_cpu(rqstp->rq_xid);
-=======
 		__entry->xid = rqstp ? be32_to_cpu(rqstp->rq_xid) : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->inode = inode;
 		__entry->may_flags = may_flags;
 		__entry->error = error;
@@ -1209,11 +1177,7 @@ TRACE_EVENT(nfsd_file_cons_err,
 		__field(const void *, nf_file)
 	),
 	TP_fast_assign(
-<<<<<<< HEAD
-		__entry->xid = be32_to_cpu(rqstp->rq_xid);
-=======
 		__entry->xid = rqstp ? be32_to_cpu(rqstp->rq_xid) : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->inode = inode;
 		__entry->may_flags = may_flags;
 		__entry->nf_ref = refcount_read(&nf->nf_ref);
@@ -1525,12 +1489,9 @@ DEFINE_NFSD_CB_EVENT(new_state);
 DEFINE_NFSD_CB_EVENT(probe);
 DEFINE_NFSD_CB_EVENT(lost);
 DEFINE_NFSD_CB_EVENT(shutdown);
-<<<<<<< HEAD
-=======
 DEFINE_NFSD_CB_EVENT(rpc_prepare);
 DEFINE_NFSD_CB_EVENT(rpc_done);
 DEFINE_NFSD_CB_EVENT(rpc_release);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 TRACE_DEFINE_ENUM(RPC_AUTH_NULL);
 TRACE_DEFINE_ENUM(RPC_AUTH_UNIX);
@@ -1598,8 +1559,6 @@ TRACE_EVENT(nfsd_cb_setup_err,
 		__entry->error)
 );
 
-<<<<<<< HEAD
-=======
 /* Not a real opcode, but there is no 0 operation. */
 #define _CB_NULL	0
 
@@ -1613,7 +1572,6 @@ TRACE_EVENT(nfsd_cb_setup_err,
 		{ OP_CB_NOTIFY_LOCK,		"CB_NOTIFY_LOCK" },	\
 		{ OP_CB_OFFLOAD,		"CB_OFFLOAD" })
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DECLARE_EVENT_CLASS(nfsd_cb_lifetime_class,
 	TP_PROTO(
 		const struct nfs4_client *clp,
@@ -1624,10 +1582,7 @@ DECLARE_EVENT_CLASS(nfsd_cb_lifetime_class,
 		__field(u32, cl_boot)
 		__field(u32, cl_id)
 		__field(const void *, cb)
-<<<<<<< HEAD
-=======
 		__field(unsigned long, opcode)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__field(bool, need_restart)
 		__sockaddr(addr, clp->cl_cb_conn.cb_addrlen)
 	),
@@ -1635,25 +1590,15 @@ DECLARE_EVENT_CLASS(nfsd_cb_lifetime_class,
 		__entry->cl_boot = clp->cl_clientid.cl_boot;
 		__entry->cl_id = clp->cl_clientid.cl_id;
 		__entry->cb = cb;
-<<<<<<< HEAD
-=======
 		__entry->opcode = cb->cb_ops ? cb->cb_ops->opcode : _CB_NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->need_restart = cb->cb_need_restart;
 		__assign_sockaddr(addr, &clp->cl_cb_conn.cb_addr,
 				  clp->cl_cb_conn.cb_addrlen)
 	),
-<<<<<<< HEAD
-	TP_printk("addr=%pISpc client %08x:%08x cb=%p%s",
-		__get_sockaddr(addr), __entry->cl_boot, __entry->cl_id,
-		__entry->cb, __entry->need_restart ?
-			" (need restart)" : " (first try)"
-=======
 	TP_printk("addr=%pISpc client %08x:%08x cb=%p%s opcode=%s",
 		__get_sockaddr(addr), __entry->cl_boot, __entry->cl_id, __entry->cb,
 		__entry->need_restart ?  " (need restart)" : " (first try)",
 		show_nfsd_cb_opcode(__entry->opcode)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	)
 );
 
@@ -1906,10 +1851,7 @@ DEFINE_NFSD_CB_DONE_EVENT(nfsd_cb_recall_done);
 DEFINE_NFSD_CB_DONE_EVENT(nfsd_cb_notify_lock_done);
 DEFINE_NFSD_CB_DONE_EVENT(nfsd_cb_layout_done);
 DEFINE_NFSD_CB_DONE_EVENT(nfsd_cb_offload_done);
-<<<<<<< HEAD
-=======
 DEFINE_NFSD_CB_DONE_EVENT(nfsd_cb_getattr_done);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 TRACE_EVENT(nfsd_cb_recall_any_done,
 	TP_PROTO(
@@ -2207,13 +2149,10 @@ DECLARE_EVENT_CLASS(nfsd_copy_class,
 		__field(u32, dst_cl_id)
 		__field(u32, dst_so_id)
 		__field(u32, dst_si_generation)
-<<<<<<< HEAD
-=======
 		__field(u32, cb_cl_boot)
 		__field(u32, cb_cl_id)
 		__field(u32, cb_so_id)
 		__field(u32, cb_si_generation)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__field(u64, src_cp_pos)
 		__field(u64, dst_cp_pos)
 		__field(u64, cp_count)
@@ -2222,10 +2161,7 @@ DECLARE_EVENT_CLASS(nfsd_copy_class,
 	TP_fast_assign(
 		const stateid_t *src_stp = &copy->cp_src_stateid;
 		const stateid_t *dst_stp = &copy->cp_dst_stateid;
-<<<<<<< HEAD
-=======
 		const stateid_t *cb_stp = &copy->cp_res.cb_stateid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		__entry->intra = test_bit(NFSD4_COPY_F_INTRA, &copy->cp_flags);
 		__entry->async = !test_bit(NFSD4_COPY_F_SYNCHRONOUS, &copy->cp_flags);
@@ -2237,13 +2173,10 @@ DECLARE_EVENT_CLASS(nfsd_copy_class,
 		__entry->dst_cl_id = dst_stp->si_opaque.so_clid.cl_id;
 		__entry->dst_so_id = dst_stp->si_opaque.so_id;
 		__entry->dst_si_generation = dst_stp->si_generation;
-<<<<<<< HEAD
-=======
 		__entry->cb_cl_boot = cb_stp->si_opaque.so_clid.cl_boot;
 		__entry->cb_cl_id = cb_stp->si_opaque.so_clid.cl_id;
 		__entry->cb_so_id = cb_stp->si_opaque.so_id;
 		__entry->cb_si_generation = cb_stp->si_generation;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->src_cp_pos = copy->cp_src_pos;
 		__entry->dst_cp_pos = copy->cp_dst_pos;
 		__entry->cp_count = copy->cp_count;
@@ -2251,16 +2184,6 @@ DECLARE_EVENT_CLASS(nfsd_copy_class,
 				sizeof(struct sockaddr_in6));
 	),
 	TP_printk("client=%pISpc intra=%d async=%d "
-<<<<<<< HEAD
-		"src_stateid[si_generation:0x%x cl_boot:0x%x cl_id:0x%x so_id:0x%x] "
-		"dst_stateid[si_generation:0x%x cl_boot:0x%x cl_id:0x%x so_id:0x%x] "
-		"cp_src_pos=%llu cp_dst_pos=%llu cp_count=%llu",
-		__get_sockaddr(addr), __entry->intra, __entry->async,
-		__entry->src_si_generation, __entry->src_cl_boot,
-		__entry->src_cl_id, __entry->src_so_id,
-		__entry->dst_si_generation, __entry->dst_cl_boot,
-		__entry->dst_cl_id, __entry->dst_so_id,
-=======
 		"src_client %08x:%08x src_stateid %08x:%08x "
 		"dst_client %08x:%08x dst_stateid %08x:%08x "
 		"cb_client %08x:%08x cb_stateid %08x:%08x "
@@ -2272,7 +2195,6 @@ DECLARE_EVENT_CLASS(nfsd_copy_class,
 		__entry->dst_so_id, __entry->dst_si_generation,
 		__entry->cb_cl_boot, __entry->cb_cl_id,
 		__entry->cb_so_id, __entry->cb_si_generation,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__entry->src_cp_pos, __entry->dst_cp_pos, __entry->cp_count
 	)
 );
@@ -2284,11 +2206,7 @@ DEFINE_EVENT(nfsd_copy_class, nfsd_copy_##name,	\
 
 DEFINE_COPY_EVENT(inter);
 DEFINE_COPY_EVENT(intra);
-<<<<<<< HEAD
-DEFINE_COPY_EVENT(do_async);
-=======
 DEFINE_COPY_EVENT(async);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 TRACE_EVENT(nfsd_copy_done,
 	TP_PROTO(
@@ -2309,17 +2227,11 @@ TRACE_EVENT(nfsd_copy_done,
 		__assign_sockaddr(addr, &copy->cp_clp->cl_addr,
 				sizeof(struct sockaddr_in6));
 	),
-<<<<<<< HEAD
-	TP_printk("addr=%pISpc status=%d intra=%d async=%d ",
-=======
 	TP_printk("addr=%pISpc status=%d intra=%d async=%d",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__get_sockaddr(addr), __entry->status, __entry->intra, __entry->async
 	)
 );
 
-<<<<<<< HEAD
-=======
 TRACE_EVENT(nfsd_copy_async_done,
 	TP_PROTO(
 		const struct nfsd4_copy *copy
@@ -2389,7 +2301,6 @@ TRACE_EVENT(nfsd_copy_async_done,
 	)
 );
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _NFSD_TRACE_H */
 
 #undef TRACE_INCLUDE_PATH

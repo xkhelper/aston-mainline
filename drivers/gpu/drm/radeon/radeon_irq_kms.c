@@ -80,11 +80,7 @@ static void radeon_hotplug_work_func(struct work_struct *work)
 {
 	struct radeon_device *rdev = container_of(work, struct radeon_device,
 						  hotplug_work.work);
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_mode_config *mode_config = &dev->mode_config;
 	struct drm_connector *connector;
 
@@ -105,11 +101,7 @@ static void radeon_dp_work_func(struct work_struct *work)
 {
 	struct radeon_device *rdev = container_of(work, struct radeon_device,
 						  dp_work);
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_mode_config *mode_config = &dev->mode_config;
 	struct drm_connector *connector;
 
@@ -205,11 +197,7 @@ static void radeon_driver_irq_uninstall_kms(struct drm_device *dev)
 
 static int radeon_irq_install(struct radeon_device *rdev, int irq)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (irq == IRQ_NOTCONNECTED)
@@ -230,11 +218,7 @@ static int radeon_irq_install(struct radeon_device *rdev, int irq)
 
 static void radeon_irq_uninstall(struct radeon_device *rdev)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pci_dev *pdev = to_pci_dev(dev->dev);
 
 	radeon_driver_irq_uninstall_kms(dev);
@@ -338,15 +322,9 @@ int radeon_irq_kms_init(struct radeon_device *rdev)
 	spin_lock_init(&rdev->irq.lock);
 
 	/* Disable vblank irqs aggressively for power-saving */
-<<<<<<< HEAD
-	rdev->ddev->vblank_disable_immediate = true;
-
-	r = drm_vblank_init(rdev->ddev, rdev->num_crtc);
-=======
 	rdev_to_drm(rdev)->vblank_disable_immediate = true;
 
 	r = drm_vblank_init(rdev_to_drm(rdev), rdev->num_crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		return r;
 	}

@@ -367,10 +367,7 @@ int snd_bebob_create_pcm_devices(struct snd_bebob *bebob)
 		goto end;
 
 	pcm->private_data = bebob;
-<<<<<<< HEAD
-=======
 	pcm->nonatomic = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	snprintf(pcm->name, sizeof(pcm->name),
 		 "%s PCM", bebob->card->shortname);
 	snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_PLAYBACK, &playback_ops);

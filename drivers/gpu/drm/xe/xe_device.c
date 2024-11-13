@@ -15,11 +15,7 @@
 #include <drm/drm_ioctl.h>
 #include <drm/drm_managed.h>
 #include <drm/drm_print.h>
-<<<<<<< HEAD
-#include <drm/xe_drm.h>
-=======
 #include <uapi/drm/xe_drm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "display/xe_display.h"
 #include "instructions/xe_gpu_commands.h"
@@ -41,10 +37,7 @@
 #include "xe_gt_printk.h"
 #include "xe_gt_sriov_vf.h"
 #include "xe_guc.h"
-<<<<<<< HEAD
-=======
 #include "xe_hw_engine_group.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_hwmon.h"
 #include "xe_irq.h"
 #include "xe_memirq.h"
@@ -72,10 +65,7 @@ static int xe_file_open(struct drm_device *dev, struct drm_file *file)
 	struct xe_drm_client *client;
 	struct xe_file *xef;
 	int ret = -ENOMEM;
-<<<<<<< HEAD
-=======
 	struct task_struct *task = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xef = kzalloc(sizeof(*xef), GFP_KERNEL);
 	if (!xef)
@@ -97,15 +87,6 @@ static int xe_file_open(struct drm_device *dev, struct drm_file *file)
 	mutex_init(&xef->exec_queue.lock);
 	xa_init_flags(&xef->exec_queue.xa, XA_FLAGS_ALLOC1);
 
-<<<<<<< HEAD
-	spin_lock(&xe->clients.lock);
-	xe->clients.count++;
-	spin_unlock(&xe->clients.lock);
-
-	file->driver_priv = xef;
-	kref_init(&xef->refcount);
-
-=======
 	file->driver_priv = xef;
 	kref_init(&xef->refcount);
 
@@ -116,33 +97,20 @@ static int xe_file_open(struct drm_device *dev, struct drm_file *file)
 		put_task_struct(task);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static void xe_file_destroy(struct kref *ref)
 {
 	struct xe_file *xef = container_of(ref, struct xe_file, refcount);
-<<<<<<< HEAD
-	struct xe_device *xe = xef->xe;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xa_destroy(&xef->exec_queue.xa);
 	mutex_destroy(&xef->exec_queue.lock);
 	xa_destroy(&xef->vm.xa);
 	mutex_destroy(&xef->vm.lock);
 
-<<<<<<< HEAD
-	spin_lock(&xe->clients.lock);
-	xe->clients.count--;
-	spin_unlock(&xe->clients.lock);
-
-	xe_drm_client_put(xef->client);
-=======
 	xe_drm_client_put(xef->client);
 	kfree(xef->process_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(xef);
 }
 
@@ -189,15 +157,6 @@ static void xe_file_close(struct drm_device *dev, struct drm_file *file)
 	 * vm->lock taken during xe_exec_queue_kill().
 	 */
 	xa_for_each(&xef->exec_queue.xa, idx, q) {
-<<<<<<< HEAD
-		xe_exec_queue_kill(q);
-		xe_exec_queue_put(q);
-	}
-	mutex_lock(&xef->vm.lock);
-	xa_for_each(&xef->vm.xa, idx, vm)
-		xe_vm_close_and_put(vm);
-	mutex_unlock(&xef->vm.lock);
-=======
 		if (q->vm && q->hwe->hw_engine_group)
 			xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
 		xe_exec_queue_kill(q);
@@ -205,7 +164,6 @@ static void xe_file_close(struct drm_device *dev, struct drm_file *file)
 	}
 	xa_for_each(&xef->vm.xa, idx, vm)
 		xe_vm_close_and_put(vm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xe_file_put(xef);
 
@@ -284,10 +242,7 @@ static const struct file_operations xe_driver_fops = {
 #ifdef CONFIG_PROC_FS
 	.show_fdinfo = drm_show_fdinfo,
 #endif
-<<<<<<< HEAD
-=======
 	.fop_flags = FOP_UNSIGNED_OFFSET,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct drm_driver driver = {
@@ -332,12 +287,9 @@ static void xe_device_destroy(struct drm_device *dev, void *dummy)
 	if (xe->unordered_wq)
 		destroy_workqueue(xe->unordered_wq);
 
-<<<<<<< HEAD
-=======
 	if (xe->destroy_wq)
 		destroy_workqueue(xe->destroy_wq);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ttm_device_fini(&xe->ttm);
 }
 
@@ -372,20 +324,10 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
 	xe->info.force_execlist = xe_modparam.force_execlist;
 
 	spin_lock_init(&xe->irq.lock);
-<<<<<<< HEAD
-	spin_lock_init(&xe->clients.lock);
-
-	init_waitqueue_head(&xe->ufence_wq);
-
-	err = drmm_mutex_init(&xe->drm, &xe->usm.lock);
-	if (err)
-		goto err;
-=======
 
 	init_waitqueue_head(&xe->ufence_wq);
 
 	init_rwsem(&xe->usm.lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xa_init_flags(&xe->usm.asid_to_vm, XA_FLAGS_ALLOC);
 
@@ -410,14 +352,9 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
 	xe->preempt_fence_wq = alloc_ordered_workqueue("xe-preempt-fence-wq", 0);
 	xe->ordered_wq = alloc_ordered_workqueue("xe-ordered-wq", 0);
 	xe->unordered_wq = alloc_workqueue("xe-unordered-wq", 0, 0);
-<<<<<<< HEAD
-	if (!xe->ordered_wq || !xe->unordered_wq ||
-	    !xe->preempt_fence_wq) {
-=======
 	xe->destroy_wq = alloc_workqueue("xe-destroy-wq", 0, 0);
 	if (!xe->ordered_wq || !xe->unordered_wq ||
 	    !xe->preempt_fence_wq || !xe->destroy_wq) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Cleanup done in xe_device_destroy via
 		 * drmm_add_action_or_reset register above
@@ -600,11 +537,7 @@ static void update_device_info(struct xe_device *xe)
 {
 	/* disable features that are not available/applicable to VFs */
 	if (IS_SRIOV_VF(xe)) {
-<<<<<<< HEAD
-		xe->info.enable_display = 0;
-=======
 		xe->info.probe_display = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xe->info.has_heci_gscfi = 0;
 		xe->info.skip_guc_pc = 1;
 		xe->info.skip_pcode = 1;
@@ -858,8 +791,6 @@ void xe_device_shutdown(struct xe_device *xe)
 {
 }
 
-<<<<<<< HEAD
-=======
 /**
  * xe_device_wmb() - Device specific write memory barrier
  * @xe: the &xe_device
@@ -869,18 +800,13 @@ void xe_device_shutdown(struct xe_device *xe)
  * Since it doesn't matter which register we write to, use the read-only VF_CAP
  * register that is also marked as accessible by the VFs.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void xe_device_wmb(struct xe_device *xe)
 {
 	struct xe_gt *gt = xe_root_mmio_gt(xe);
 
 	wmb();
 	if (IS_DGFX(xe))
-<<<<<<< HEAD
-		xe_mmio_write32(gt, SOFTWARE_FLAGS_SPR33, 0);
-=======
 		xe_mmio_write32(gt, VF_CAP_REG, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -954,11 +880,7 @@ void xe_device_l2_flush(struct xe_device *xe)
 	spin_lock(&gt->global_invl_lock);
 	xe_mmio_write32(gt, XE2_GLOBAL_INVAL, 0x1);
 
-<<<<<<< HEAD
-	if (xe_mmio_wait32(gt, XE2_GLOBAL_INVAL, 0x1, 0x0, 150, NULL, true))
-=======
 	if (xe_mmio_wait32(gt, XE2_GLOBAL_INVAL, 0x1, 0x0, 500, NULL, true))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xe_gt_err_once(gt, "Global invalidation timeout\n");
 	spin_unlock(&gt->global_invl_lock);
 
@@ -1048,21 +970,13 @@ void xe_device_declare_wedged(struct xe_device *xe)
 		return;
 	}
 
-<<<<<<< HEAD
-=======
 	xe_pm_runtime_get_noresume(xe);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (drmm_add_action_or_reset(&xe->drm, xe_device_wedged_fini, xe)) {
 		drm_err(&xe->drm, "Failed to register xe_device_wedged_fini clean-up. Although device is wedged.\n");
 		return;
 	}
 
-<<<<<<< HEAD
-	xe_pm_runtime_get_noresume(xe);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!atomic_xchg(&xe->wedged.flag, 1)) {
 		xe->needs_flr_on_fini = true;
 		drm_err(&xe->drm,

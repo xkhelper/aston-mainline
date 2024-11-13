@@ -2362,8 +2362,6 @@ ra_honor_pio_life - BOOLEAN
 
 	Default: 0 (disabled)
 
-<<<<<<< HEAD
-=======
 ra_honor_pio_pflag - BOOLEAN
 	The Prefix Information Option P-flag indicates the network can
 	allocate a unique IPv6 prefix per client using DHCPv6-PD.
@@ -2378,7 +2376,6 @@ ra_honor_pio_pflag - BOOLEAN
 
 	Default: 0 (disabled)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 accept_ra_rt_info_min_plen - INTEGER
 	Minimum prefix length of Route Information in RA.
 

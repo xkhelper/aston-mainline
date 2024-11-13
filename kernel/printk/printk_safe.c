@@ -26,8 +26,6 @@ void __printk_safe_exit(void)
 	this_cpu_dec(printk_context);
 }
 
-<<<<<<< HEAD
-=======
 void __printk_deferred_enter(void)
 {
 	cant_migrate();
@@ -51,7 +49,6 @@ bool is_printk_legacy_deferred(void)
 		in_nmi());
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 asmlinkage int vprintk(const char *fmt, va_list args)
 {
 #ifdef CONFIG_KGDB_KDB
@@ -64,11 +61,7 @@ asmlinkage int vprintk(const char *fmt, va_list args)
 	 * Use the main logbuf even in NMI. But avoid calling console
 	 * drivers that might have their own locks.
 	 */
-<<<<<<< HEAD
-	if (this_cpu_read(printk_context) || in_nmi())
-=======
 	if (is_printk_legacy_deferred())
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return vprintk_deferred(fmt, args);
 
 	/* No obstacles. */

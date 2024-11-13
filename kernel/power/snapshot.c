@@ -1365,14 +1365,6 @@ static unsigned int count_highmem_pages(void)
 	}
 	return n;
 }
-<<<<<<< HEAD
-#else
-static inline void *saveable_highmem_page(struct zone *z, unsigned long p)
-{
-	return NULL;
-}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_HIGHMEM */
 
 /**

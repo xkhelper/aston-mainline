@@ -3,21 +3,16 @@
 #ifndef __PAGE_POOL_PRIV_H
 #define __PAGE_POOL_PRIV_H
 
-<<<<<<< HEAD
-=======
 #include <net/page_pool/helpers.h>
 
 #include "netmem_priv.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 s32 page_pool_inflight(const struct page_pool *pool, bool strict);
 
 int page_pool_list(struct page_pool *pool);
 void page_pool_detached(struct page_pool *pool);
 void page_pool_unlist(struct page_pool *pool);
 
-<<<<<<< HEAD
-=======
 static inline bool
 page_pool_set_dma_addr_netmem(netmem_ref netmem, dma_addr_t addr)
 {
@@ -60,5 +55,4 @@ static inline int page_pool_check_memory_provider(struct net_device *dev,
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

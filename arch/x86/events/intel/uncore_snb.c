@@ -252,10 +252,7 @@ DEFINE_UNCORE_FORMAT_ATTR(inv, inv, "config:23");
 DEFINE_UNCORE_FORMAT_ATTR(cmask5, cmask, "config:24-28");
 DEFINE_UNCORE_FORMAT_ATTR(cmask8, cmask, "config:24-31");
 DEFINE_UNCORE_FORMAT_ATTR(threshold, threshold, "config:24-29");
-<<<<<<< HEAD
-=======
 DEFINE_UNCORE_FORMAT_ATTR(threshold2, threshold, "config:24-31");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Sandy Bridge uncore support */
 static void snb_uncore_msr_enable_event(struct intel_uncore_box *box, struct perf_event *event)
@@ -750,8 +747,6 @@ void mtl_uncore_cpu_init(void)
 	uncore_msr_uncores = mtl_msr_uncores;
 }
 
-<<<<<<< HEAD
-=======
 static struct intel_uncore_type *lnl_msr_uncores[] = {
 	&mtl_uncore_cbox,
 	&mtl_uncore_arb,
@@ -780,7 +775,6 @@ void lnl_uncore_cpu_init(void)
 	uncore_msr_uncores = lnl_msr_uncores;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	SNB_PCI_UNCORE_IMC,
 };
@@ -1510,59 +1504,32 @@ static struct pci_dev *tgl_uncore_get_mc_dev(void)
 		ids++;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Just try to grab 00:00.0 device */
 	if (!mc_dev)
 		mc_dev = pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(0, 0));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return mc_dev;
 }
 
 #define TGL_UNCORE_MMIO_IMC_MEM_OFFSET		0x10000
 #define TGL_UNCORE_PCI_IMC_MAP_SIZE		0xe000
 
-<<<<<<< HEAD
-static void __uncore_imc_init_box(struct intel_uncore_box *box,
-				  unsigned int base_offset)
-=======
 static void
 uncore_get_box_mmio_addr(struct intel_uncore_box *box,
 			 unsigned int base_offset,
 			 int bar_offset, int step)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct pci_dev *pdev = tgl_uncore_get_mc_dev();
 	struct intel_uncore_pmu *pmu = box->pmu;
 	struct intel_uncore_type *type = pmu->type;
 	resource_size_t addr;
-<<<<<<< HEAD
-	u32 mch_bar;
-=======
 	u32 bar;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!pdev) {
 		pr_warn("perf uncore: Cannot find matched IMC device.\n");
 		return;
 	}
 
-<<<<<<< HEAD
-	pci_read_config_dword(pdev, SNB_UNCORE_PCI_IMC_BAR_OFFSET, &mch_bar);
-	/* MCHBAR is disabled */
-	if (!(mch_bar & BIT(0))) {
-		pr_warn("perf uncore: MCHBAR is disabled. Failed to map IMC free-running counters.\n");
-		pci_dev_put(pdev);
-		return;
-	}
-	mch_bar &= ~BIT(0);
-	addr = (resource_size_t)(mch_bar + TGL_UNCORE_MMIO_IMC_MEM_OFFSET * pmu->pmu_idx);
-
-#ifdef CONFIG_PHYS_ADDR_T_64BIT
-	pci_read_config_dword(pdev, SNB_UNCORE_PCI_IMC_BAR_OFFSET + 4, &mch_bar);
-	addr |= ((resource_size_t)mch_bar << 32);
-=======
 	pci_read_config_dword(pdev, bar_offset, &bar);
 	if (!(bar & BIT(0))) {
 		pr_warn("perf uncore: BAR 0x%x is disabled. Failed to map %s counters.\n",
@@ -1576,7 +1543,6 @@ uncore_get_box_mmio_addr(struct intel_uncore_box *box,
 #ifdef CONFIG_PHYS_ADDR_T_64BIT
 	pci_read_config_dword(pdev, bar_offset + 4, &bar);
 	addr |= ((resource_size_t)bar << 32);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	addr += base_offset;
@@ -1587,8 +1553,6 @@ uncore_get_box_mmio_addr(struct intel_uncore_box *box,
 	pci_dev_put(pdev);
 }
 
-<<<<<<< HEAD
-=======
 static void __uncore_imc_init_box(struct intel_uncore_box *box,
 				  unsigned int base_offset)
 {
@@ -1597,7 +1561,6 @@ static void __uncore_imc_init_box(struct intel_uncore_box *box,
 				 TGL_UNCORE_MMIO_IMC_MEM_OFFSET);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void tgl_uncore_imc_freerunning_init_box(struct intel_uncore_box *box)
 {
 	__uncore_imc_init_box(box, 0);
@@ -1692,16 +1655,6 @@ static void adl_uncore_mmio_enable_box(struct intel_uncore_box *box)
 	writel(0, box->io_addr + uncore_mmio_box_ctl(box));
 }
 
-<<<<<<< HEAD
-static struct intel_uncore_ops adl_uncore_mmio_ops = {
-	.init_box	= adl_uncore_imc_init_box,
-	.exit_box	= uncore_mmio_exit_box,
-	.disable_box	= adl_uncore_mmio_disable_box,
-	.enable_box	= adl_uncore_mmio_enable_box,
-	.disable_event	= intel_generic_uncore_mmio_disable_event,
-	.enable_event	= intel_generic_uncore_mmio_enable_event,
-	.read_counter	= uncore_mmio_read_counter,
-=======
 #define MMIO_UNCORE_COMMON_OPS()				\
 	.exit_box	= uncore_mmio_exit_box,		\
 	.disable_box	= adl_uncore_mmio_disable_box,	\
@@ -1713,7 +1666,6 @@ static struct intel_uncore_ops adl_uncore_mmio_ops = {
 static struct intel_uncore_ops adl_uncore_mmio_ops = {
 	.init_box	= adl_uncore_imc_init_box,
 	MMIO_UNCORE_COMMON_OPS()
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define ADL_UNC_CTL_CHMASK_MASK			0x00000f00
@@ -1797,8 +1749,6 @@ void adl_uncore_mmio_init(void)
 }
 
 /* end of Alder Lake MMIO uncore support */
-<<<<<<< HEAD
-=======
 
 /* Lunar Lake MMIO uncore support */
 #define LNL_UNCORE_PCI_SAFBAR_OFFSET		0x68
@@ -1904,4 +1854,3 @@ void lnl_uncore_mmio_init(void)
 }
 
 /* end of Lunar Lake MMIO uncore support */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

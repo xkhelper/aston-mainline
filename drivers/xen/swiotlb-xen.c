@@ -78,11 +78,6 @@ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
 {
 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
-<<<<<<< HEAD
-
-	next_bfn = pfn_to_bfn(xen_pfn);
-
-=======
 	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
 
 	next_bfn = pfn_to_bfn(xen_pfn);
@@ -92,7 +87,6 @@ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
 	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
 		return 1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 1; i < nr_pages; i++)
 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
 			return 1;
@@ -153,11 +147,7 @@ xen_swiotlb_alloc_coherent(struct device *dev, size_t size,
 	void *ret;
 
 	/* Align the allocation to the Xen page size */
-<<<<<<< HEAD
-	size = 1UL << (order + XEN_PAGE_SHIFT);
-=======
 	size = ALIGN(size, XEN_PAGE_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = (void *)__get_free_pages(flags, get_order(size));
 	if (!ret)
@@ -189,11 +179,7 @@ xen_swiotlb_free_coherent(struct device *dev, size_t size, void *vaddr,
 	int order = get_order(size);
 
 	/* Convert the size to actually allocated. */
-<<<<<<< HEAD
-	size = 1UL << (order + XEN_PAGE_SHIFT);
-=======
 	size = ALIGN(size, XEN_PAGE_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (WARN_ON_ONCE(dma_handle + size - 1 > dev->coherent_dma_mask) ||
 	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size)))

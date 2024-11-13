@@ -1685,8 +1685,6 @@ TRACE_EVENT(nfs_mount_path,
 	TP_printk("path='%s'", __get_str(path))
 );
 
-<<<<<<< HEAD
-=======
 TRACE_EVENT(nfs_local_open_fh,
 		TP_PROTO(
 			const struct nfs_fh *fh,
@@ -1748,7 +1746,6 @@ DECLARE_EVENT_CLASS(nfs_local_client_event,
 DEFINE_NFS_LOCAL_CLIENT_EVENT(nfs_local_enable);
 DEFINE_NFS_LOCAL_CLIENT_EVENT(nfs_local_disable);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DECLARE_EVENT_CLASS(nfs_xdr_event,
 		TP_PROTO(
 			const struct xdr_stream *xdr,

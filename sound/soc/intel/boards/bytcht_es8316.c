@@ -562,11 +562,7 @@ static int snd_byt_cht_es8316_mc_probe(struct platform_device *pdev)
 		byt_cht_es8316_dais[dai_index].codecs->name = codec_name;
 	} else {
 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
-<<<<<<< HEAD
-		return -ENXIO;
-=======
 		return -ENOENT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	codec_dev = acpi_get_first_physical_node(adev);
@@ -713,11 +709,7 @@ static struct platform_driver snd_byt_cht_es8316_mc_driver = {
 		.name = "bytcht_es8316",
 	},
 	.probe = snd_byt_cht_es8316_mc_probe,
-<<<<<<< HEAD
-	.remove_new = snd_byt_cht_es8316_mc_remove,
-=======
 	.remove = snd_byt_cht_es8316_mc_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(snd_byt_cht_es8316_mc_driver);

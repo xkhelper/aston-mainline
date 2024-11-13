@@ -5,10 +5,7 @@
  */
 
 #define pr_fmt(fmt) "riscv-imsic: " fmt
-<<<<<<< HEAD
-=======
 #include <linux/acpi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/cpu.h>
 #include <linux/bitmap.h>
 #include <linux/interrupt.h>
@@ -514,83 +511,12 @@ static int __init imsic_matrix_init(void)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int __init imsic_get_parent_hartid(struct fwnode_handle *fwnode,
-					  u32 index, unsigned long *hartid)
-{
-	struct of_phandle_args parent;
-	int rc;
-
-	/*
-	 * Currently, only OF fwnode is supported so extend this
-	 * function for ACPI support.
-	 */
-	if (!is_of_node(fwnode))
-		return -EINVAL;
-
-	rc = of_irq_parse_one(to_of_node(fwnode), index, &parent);
-	if (rc)
-		return rc;
-
-	/*
-	 * Skip interrupts other than external interrupts for
-	 * current privilege level.
-	 */
-	if (parent.args[0] != RV_IRQ_EXT)
-		return -EINVAL;
-
-	return riscv_of_parent_hartid(parent.np, hartid);
-}
-
-static int __init imsic_get_mmio_resource(struct fwnode_handle *fwnode,
-					  u32 index, struct resource *res)
-{
-	/*
-	 * Currently, only OF fwnode is supported so extend this
-	 * function for ACPI support.
-	 */
-	if (!is_of_node(fwnode))
-		return -EINVAL;
-
-	return of_address_to_resource(to_of_node(fwnode), index, res);
-}
-
-static int __init imsic_parse_fwnode(struct fwnode_handle *fwnode,
-				     struct imsic_global_config *global,
-				     u32 *nr_parent_irqs,
-				     u32 *nr_mmios)
-{
-	unsigned long hartid;
-	struct resource res;
-	int rc;
-	u32 i;
-
-	/*
-	 * Currently, only OF fwnode is supported so extend this
-	 * function for ACPI support.
-	 */
-	if (!is_of_node(fwnode))
-		return -EINVAL;
-
-	*nr_parent_irqs = 0;
-	*nr_mmios = 0;
-
-	/* Find number of parent interrupts */
-	while (!imsic_get_parent_hartid(fwnode, *nr_parent_irqs, &hartid))
-		(*nr_parent_irqs)++;
-	if (!*nr_parent_irqs) {
-		pr_err("%pfwP: no parent irqs available\n", fwnode);
-		return -EINVAL;
-	}
-
-=======
 static int __init imsic_populate_global_dt(struct fwnode_handle *fwnode,
 					   struct imsic_global_config *global,
 					   u32 *nr_parent_irqs)
 {
 	int rc;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Find number of guest index bits in MSI address */
 	rc = of_property_read_u32(to_of_node(fwnode), "riscv,guest-index-bits",
 				  &global->guest_index_bits);
@@ -636,8 +562,6 @@ static int __init imsic_populate_global_dt(struct fwnode_handle *fwnode,
 	if (rc)
 		global->nr_guest_ids = global->nr_ids;
 
-<<<<<<< HEAD
-=======
 	return 0;
 }
 
@@ -725,7 +649,6 @@ static int __init imsic_parse_fwnode(struct fwnode_handle *fwnode,
 	if (rc)
 		return rc;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Sanity check guest index bits */
 	i = BITS_PER_LONG - IMSIC_MMIO_PAGE_SHIFT;
 	if (i < global->guest_index_bits) {
@@ -791,11 +714,7 @@ static int __init imsic_parse_fwnode(struct fwnode_handle *fwnode,
 	return 0;
 }
 
-<<<<<<< HEAD
-int __init imsic_setup_state(struct fwnode_handle *fwnode)
-=======
 int __init imsic_setup_state(struct fwnode_handle *fwnode, void *opaque)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 i, j, index, nr_parent_irqs, nr_mmios, nr_handlers = 0;
 	struct imsic_global_config *global;
@@ -836,11 +755,7 @@ int __init imsic_setup_state(struct fwnode_handle *fwnode, void *opaque)
 	}
 
 	/* Parse IMSIC fwnode */
-<<<<<<< HEAD
-	rc = imsic_parse_fwnode(fwnode, global, &nr_parent_irqs, &nr_mmios);
-=======
 	rc = imsic_parse_fwnode(fwnode, global, &nr_parent_irqs, &nr_mmios, opaque);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc)
 		goto out_free_local;
 

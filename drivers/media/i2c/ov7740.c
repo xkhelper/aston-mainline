@@ -1152,11 +1152,7 @@ static int __maybe_unused ov7740_runtime_resume(struct device *dev)
 }
 
 static const struct i2c_device_id ov7740_id[] = {
-<<<<<<< HEAD
-	{ "ov7740", 0 },
-=======
 	{ "ov7740" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(i2c, ov7740_id);

@@ -2,11 +2,7 @@
 #include <net/ieee80211_radiotap.h>
 
 struct tx_radiotap_hdr {
-<<<<<<< HEAD
-	struct ieee80211_radiotap_header hdr;
-=======
 	struct ieee80211_radiotap_header_fixed hdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 rate;
 	u8 txpower;
 	u8 rts_retries;
@@ -35,11 +31,7 @@ struct tx_radiotap_hdr {
 #define IEEE80211_FC_DSTODS          0x0300
 
 struct rx_radiotap_hdr {
-<<<<<<< HEAD
-	struct ieee80211_radiotap_header hdr;
-=======
 	struct ieee80211_radiotap_header_fixed hdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 flags;
 	u8 rate;
 	u8 antsignal;

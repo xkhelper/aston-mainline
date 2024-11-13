@@ -12,10 +12,7 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
-<<<<<<< HEAD
-=======
 #include <linux/container_of.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/sysfs.h>
 #include <linux/device.h>
 #include <linux/err.h>
@@ -56,11 +53,7 @@ mode_show(struct device *dev, struct device_attribute *attr, char *buf)
 	int enabled;
 
 	mutex_lock(&tz->lock);
-<<<<<<< HEAD
-	enabled = thermal_zone_device_is_enabled(tz);
-=======
 	enabled = tz->mode == THERMAL_DEVICE_ENABLED;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&tz->lock);
 
 	return sprintf(buf, "%s\n", enabled ? "enabled" : "disabled");
@@ -86,8 +79,6 @@ mode_store(struct device *dev, struct device_attribute *attr,
 	return count;
 }
 
-<<<<<<< HEAD
-=======
 #define thermal_trip_of_attr(_ptr_, _attr_)				\
 	({ 								\
 		struct thermal_trip_desc *td;				\
@@ -97,66 +88,27 @@ mode_store(struct device *dev, struct device_attribute *attr,
 		&td->trip;						\
 	})
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t
 trip_point_type_show(struct device *dev, struct device_attribute *attr,
 		     char *buf)
 {
-<<<<<<< HEAD
-	struct thermal_zone_device *tz = to_thermal_zone(dev);
-	int trip_id;
-
-	if (sscanf(attr->attr.name, "trip_point_%d_type", &trip_id) != 1)
-		return -EINVAL;
-
-	return sprintf(buf, "%s\n", thermal_trip_type_name(tz->trips[trip_id].trip.type));
-=======
 	struct thermal_trip *trip = thermal_trip_of_attr(attr, type);
 
 	return sprintf(buf, "%s\n", thermal_trip_type_name(trip->type));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t
 trip_point_temp_store(struct device *dev, struct device_attribute *attr,
 		      const char *buf, size_t count)
 {
-<<<<<<< HEAD
-	struct thermal_zone_device *tz = to_thermal_zone(dev);
-	struct thermal_trip *trip;
-	int trip_id, ret;
-	int temp;
-=======
 	struct thermal_trip *trip = thermal_trip_of_attr(attr, temp);
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 	int ret, temp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = kstrtoint(buf, 10, &temp);
 	if (ret)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) != 1)
-		return -EINVAL;
-
-	mutex_lock(&tz->lock);
-
-	trip = &tz->trips[trip_id].trip;
-
-	if (temp != trip->temperature) {
-		if (tz->ops.set_trip_temp) {
-			ret = tz->ops.set_trip_temp(tz, trip, temp);
-			if (ret)
-				goto unlock;
-		}
-
-		thermal_zone_set_trip_temp(tz, trip, temp);
-
-		__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
-	}
-
-=======
 	mutex_lock(&tz->lock);
 
 	if (temp == trip->temperature)
@@ -179,7 +131,6 @@ trip_point_temp_store(struct device *dev, struct device_attribute *attr,
 
 	__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unlock:
 	mutex_unlock(&tz->lock);
 
@@ -190,58 +141,23 @@ static ssize_t
 trip_point_temp_show(struct device *dev, struct device_attribute *attr,
 		     char *buf)
 {
-<<<<<<< HEAD
-	struct thermal_zone_device *tz = to_thermal_zone(dev);
-	int trip_id;
-
-	if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) != 1)
-		return -EINVAL;
-
-	return sprintf(buf, "%d\n", READ_ONCE(tz->trips[trip_id].trip.temperature));
-=======
 	struct thermal_trip *trip = thermal_trip_of_attr(attr, temp);
 
 	return sprintf(buf, "%d\n", READ_ONCE(trip->temperature));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t
 trip_point_hyst_store(struct device *dev, struct device_attribute *attr,
 		      const char *buf, size_t count)
 {
-<<<<<<< HEAD
-	struct thermal_zone_device *tz = to_thermal_zone(dev);
-	struct thermal_trip *trip;
-	int trip_id, ret;
-	int hyst;
-=======
 	struct thermal_trip *trip = thermal_trip_of_attr(attr, hyst);
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 	int ret, hyst;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = kstrtoint(buf, 10, &hyst);
 	if (ret || hyst < 0)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	if (sscanf(attr->attr.name, "trip_point_%d_hyst", &trip_id) != 1)
-		return -EINVAL;
-
-	mutex_lock(&tz->lock);
-
-	trip = &tz->trips[trip_id].trip;
-
-	if (hyst != trip->hysteresis) {
-		WRITE_ONCE(trip->hysteresis, hyst);
-
-		thermal_zone_trip_updated(tz, trip);
-	}
-
-	mutex_unlock(&tz->lock);
-
-	return count;
-=======
 	mutex_lock(&tz->lock);
 
 	if (hyst == trip->hysteresis)
@@ -271,26 +187,15 @@ unlock:
 	mutex_unlock(&tz->lock);
 
 	return ret ? ret : count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t
 trip_point_hyst_show(struct device *dev, struct device_attribute *attr,
 		     char *buf)
 {
-<<<<<<< HEAD
-	struct thermal_zone_device *tz = to_thermal_zone(dev);
-	int trip_id;
-
-	if (sscanf(attr->attr.name, "trip_point_%d_hyst", &trip_id) != 1)
-		return -EINVAL;
-
-	return sprintf(buf, "%d\n", READ_ONCE(tz->trips[trip_id].trip.hysteresis));
-=======
 	struct thermal_trip *trip = thermal_trip_of_attr(attr, hyst);
 
 	return sprintf(buf, "%d\n", READ_ONCE(trip->hysteresis));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t
@@ -489,89 +394,6 @@ static const struct attribute_group *thermal_zone_attribute_groups[] = {
  */
 static int create_trip_attrs(struct thermal_zone_device *tz)
 {
-<<<<<<< HEAD
-	const struct thermal_trip_desc *td;
-	struct attribute **attrs;
-
-	/* This function works only for zones with at least one trip */
-	if (tz->num_trips <= 0)
-		return -EINVAL;
-
-	tz->trip_type_attrs = kcalloc(tz->num_trips, sizeof(*tz->trip_type_attrs),
-				      GFP_KERNEL);
-	if (!tz->trip_type_attrs)
-		return -ENOMEM;
-
-	tz->trip_temp_attrs = kcalloc(tz->num_trips, sizeof(*tz->trip_temp_attrs),
-				      GFP_KERNEL);
-	if (!tz->trip_temp_attrs) {
-		kfree(tz->trip_type_attrs);
-		return -ENOMEM;
-	}
-
-	tz->trip_hyst_attrs = kcalloc(tz->num_trips,
-				      sizeof(*tz->trip_hyst_attrs),
-				      GFP_KERNEL);
-	if (!tz->trip_hyst_attrs) {
-		kfree(tz->trip_type_attrs);
-		kfree(tz->trip_temp_attrs);
-		return -ENOMEM;
-	}
-
-	attrs = kcalloc(tz->num_trips * 3 + 1, sizeof(*attrs), GFP_KERNEL);
-	if (!attrs) {
-		kfree(tz->trip_type_attrs);
-		kfree(tz->trip_temp_attrs);
-		kfree(tz->trip_hyst_attrs);
-		return -ENOMEM;
-	}
-
-	for_each_trip_desc(tz, td) {
-		int indx = thermal_zone_trip_id(tz, &td->trip);
-
-		/* create trip type attribute */
-		snprintf(tz->trip_type_attrs[indx].name, THERMAL_NAME_LENGTH,
-			 "trip_point_%d_type", indx);
-
-		sysfs_attr_init(&tz->trip_type_attrs[indx].attr.attr);
-		tz->trip_type_attrs[indx].attr.attr.name =
-						tz->trip_type_attrs[indx].name;
-		tz->trip_type_attrs[indx].attr.attr.mode = S_IRUGO;
-		tz->trip_type_attrs[indx].attr.show = trip_point_type_show;
-		attrs[indx] = &tz->trip_type_attrs[indx].attr.attr;
-
-		/* create trip temp attribute */
-		snprintf(tz->trip_temp_attrs[indx].name, THERMAL_NAME_LENGTH,
-			 "trip_point_%d_temp", indx);
-
-		sysfs_attr_init(&tz->trip_temp_attrs[indx].attr.attr);
-		tz->trip_temp_attrs[indx].attr.attr.name =
-						tz->trip_temp_attrs[indx].name;
-		tz->trip_temp_attrs[indx].attr.attr.mode = S_IRUGO;
-		tz->trip_temp_attrs[indx].attr.show = trip_point_temp_show;
-		if (td->trip.flags & THERMAL_TRIP_FLAG_RW_TEMP) {
-			tz->trip_temp_attrs[indx].attr.attr.mode |= S_IWUSR;
-			tz->trip_temp_attrs[indx].attr.store =
-							trip_point_temp_store;
-		}
-		attrs[indx + tz->num_trips] = &tz->trip_temp_attrs[indx].attr.attr;
-
-		snprintf(tz->trip_hyst_attrs[indx].name, THERMAL_NAME_LENGTH,
-			 "trip_point_%d_hyst", indx);
-
-		sysfs_attr_init(&tz->trip_hyst_attrs[indx].attr.attr);
-		tz->trip_hyst_attrs[indx].attr.attr.name =
-					tz->trip_hyst_attrs[indx].name;
-		tz->trip_hyst_attrs[indx].attr.attr.mode = S_IRUGO;
-		tz->trip_hyst_attrs[indx].attr.show = trip_point_hyst_show;
-		if (td->trip.flags & THERMAL_TRIP_FLAG_RW_HYST) {
-			tz->trip_hyst_attrs[indx].attr.attr.mode |= S_IWUSR;
-			tz->trip_hyst_attrs[indx].attr.store =
-					trip_point_hyst_store;
-		}
-		attrs[indx + tz->num_trips * 2] =
-					&tz->trip_hyst_attrs[indx].attr.attr;
-=======
 	struct thermal_trip_desc *td;
 	struct attribute **attrs;
 	int i;
@@ -621,7 +443,6 @@ static int create_trip_attrs(struct thermal_zone_device *tz)
 		}
 		attrs[i + 2 * tz->num_trips] = &trip_attrs->hyst.attr.attr;
 		i++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	attrs[tz->num_trips * 3] = NULL;
 
@@ -638,18 +459,8 @@ static int create_trip_attrs(struct thermal_zone_device *tz)
  */
 static void destroy_trip_attrs(struct thermal_zone_device *tz)
 {
-<<<<<<< HEAD
-	if (!tz)
-		return;
-
-	kfree(tz->trip_type_attrs);
-	kfree(tz->trip_temp_attrs);
-	kfree(tz->trip_hyst_attrs);
-	kfree(tz->trips_attribute_group.attrs);
-=======
 	if (tz)
 		kfree(tz->trips_attribute_group.attrs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int thermal_zone_create_device_groups(struct thermal_zone_device *tz)
@@ -1051,22 +862,12 @@ void thermal_cooling_device_stats_reinit(struct thermal_cooling_device *cdev)
 ssize_t
 trip_point_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
-<<<<<<< HEAD
-	struct thermal_instance *instance;
-
-	instance =
-	    container_of(attr, struct thermal_instance, attr);
-
-	return sprintf(buf, "%d\n",
-		       thermal_zone_trip_id(instance->tz, instance->trip));
-=======
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 	struct thermal_instance *instance;
 
 	instance = container_of(attr, struct thermal_instance, attr);
 
 	return sprintf(buf, "%d\n", thermal_zone_trip_id(tz, instance->trip));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 ssize_t
@@ -1082,10 +883,7 @@ weight_show(struct device *dev, struct device_attribute *attr, char *buf)
 ssize_t weight_store(struct device *dev, struct device_attribute *attr,
 		     const char *buf, size_t count)
 {
-<<<<<<< HEAD
-=======
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct thermal_instance *instance;
 	int ret, weight;
 
@@ -1096,16 +894,6 @@ ssize_t weight_store(struct device *dev, struct device_attribute *attr,
 	instance = container_of(attr, struct thermal_instance, weight_attr);
 
 	/* Don't race with governors using the 'weight' value */
-<<<<<<< HEAD
-	mutex_lock(&instance->tz->lock);
-
-	instance->weight = weight;
-
-	thermal_governor_update_tz(instance->tz,
-				   THERMAL_INSTANCE_WEIGHT_CHANGED);
-
-	mutex_unlock(&instance->tz->lock);
-=======
 	mutex_lock(&tz->lock);
 
 	instance->weight = weight;
@@ -1113,7 +901,6 @@ ssize_t weight_store(struct device *dev, struct device_attribute *attr,
 	thermal_governor_update_tz(tz, THERMAL_INSTANCE_WEIGHT_CHANGED);
 
 	mutex_unlock(&tz->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return count;
 }

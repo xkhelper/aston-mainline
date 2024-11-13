@@ -19,10 +19,6 @@ void arch_crash_save_vmcoreinfo(void)
 #endif
 #endif
 	vmcoreinfo_append_str("NUMBER(KERNEL_LINK_ADDR)=0x%lx\n", KERNEL_LINK_ADDR);
-<<<<<<< HEAD
-	vmcoreinfo_append_str("NUMBER(va_kernel_pa_offset)=0x%lx\n",
-						kernel_map.va_kernel_pa_offset);
-=======
 #ifdef CONFIG_XIP_KERNEL
 	/* TODO: Communicate with crash-utility developers on the information to
 	 * export. The XIP case is more complicated, because the virtual-physical
@@ -32,5 +28,4 @@ void arch_crash_save_vmcoreinfo(void)
 	vmcoreinfo_append_str("NUMBER(va_kernel_pa_offset)=0x%lx\n",
 						kernel_map.va_kernel_pa_offset);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

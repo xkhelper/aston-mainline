@@ -18,11 +18,7 @@
 #include <linux/pm_runtime.h>
 #include <linux/usb/typec_dp.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ucsi.h"
 
 enum enum_fw_mode {
@@ -486,11 +482,8 @@ static void ucsi_ccg_update_set_new_cam_cmd(struct ucsi_ccg *uc,
 
 	port = uc->orig;
 	new_cam = UCSI_SET_NEW_CAM_GET_AM(*cmd);
-<<<<<<< HEAD
-=======
 	if (new_cam >= ARRAY_SIZE(uc->updated))
 		return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	new_port = &uc->updated[new_cam];
 	cam = new_port->linked_idx;
 	enter_new_mode = UCSI_SET_NEW_CAM_ENTER(*cmd);

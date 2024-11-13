@@ -348,22 +348,6 @@ static inline int plo_test_bit(unsigned char nr)
 	return cc == 0;
 }
 
-<<<<<<< HEAD
-static __always_inline void __insn32_query(unsigned int opcode, u8 *query)
-{
-	asm volatile(
-		"	lghi	0,0\n"
-		"	lgr	1,%[query]\n"
-		/* Parameter registers are ignored */
-		"	.insn	rrf,%[opc] << 16,2,4,6,0\n"
-		:
-		: [query] "d" ((unsigned long)query), [opc] "i" (opcode)
-		: "cc", "memory", "0", "1");
-}
-
-#define INSN_SORTL 0xb938
-#define INSN_DFLTCC 0xb939
-=======
 static __always_inline void __sortl_query(u8 (*query)[32])
 {
 	asm volatile(
@@ -387,7 +371,6 @@ static __always_inline void __dfltcc_query(u8 (*query)[32])
 		:
 		: "cc", "0", "1");
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void __init kvm_s390_cpu_feat_init(void)
 {
@@ -441,17 +424,10 @@ static void __init kvm_s390_cpu_feat_init(void)
 			      kvm_s390_available_subfunc.kdsa);
 
 	if (test_facility(150)) /* SORTL */
-<<<<<<< HEAD
-		__insn32_query(INSN_SORTL, kvm_s390_available_subfunc.sortl);
-
-	if (test_facility(151)) /* DFLTCC */
-		__insn32_query(INSN_DFLTCC, kvm_s390_available_subfunc.dfltcc);
-=======
 		__sortl_query(&kvm_s390_available_subfunc.sortl);
 
 	if (test_facility(151)) /* DFLTCC */
 		__dfltcc_query(&kvm_s390_available_subfunc.dfltcc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (MACHINE_HAS_ESOP)
 		allow_cpu_feat(KVM_S390_VM_CPU_FEAT_ESOP);

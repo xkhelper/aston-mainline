@@ -34,20 +34,11 @@ static void playback_prep_freqn(struct usb_stream_kernel *sk, struct urb *urb)
 		urb->iso_frame_desc[pack].length = l;
 		lb += l;
 	}
-<<<<<<< HEAD
-	snd_printdd(KERN_DEBUG "%i\n", lb);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 check:
 	urb->number_of_packets = pack;
 	urb->transfer_buffer_length = lb;
 	s->idle_outsize += lb - s->period_size;
-<<<<<<< HEAD
-	snd_printdd(KERN_DEBUG "idle=%i ul=%i ps=%i\n", s->idle_outsize,
-		    lb, s->period_size);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int init_pipe_urbs(struct usb_stream_kernel *sk,
@@ -197,22 +188,14 @@ struct usb_stream *usb_stream_new(struct usb_stream_kernel *sk,
 	write_size = max_packsize * packets * USB_STREAM_URBDEPTH;
 
 	if (read_size >= 256*PAGE_SIZE || write_size >= 256*PAGE_SIZE) {
-<<<<<<< HEAD
-		snd_printk(KERN_WARNING "a size exceeds 128*PAGE_SIZE\n");
-=======
 		dev_warn(&dev->dev, "%s: a size exceeds 128*PAGE_SIZE\n", __func__);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 
 	sk->s = alloc_pages_exact(read_size,
 				  GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN);
 	if (!sk->s) {
-<<<<<<< HEAD
-		pr_warn("us122l: couldn't allocate read buffer\n");
-=======
 		dev_warn(&dev->dev, "us122l: couldn't allocate read buffer\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 	sk->s->cfg.version = USB_STREAM_INTERFACE_VERSION;
@@ -231,11 +214,7 @@ struct usb_stream *usb_stream_new(struct usb_stream_kernel *sk,
 	sk->write_page = alloc_pages_exact(write_size,
 					   GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN);
 	if (!sk->write_page) {
-<<<<<<< HEAD
-		pr_warn("us122l: couldn't allocate write buffer\n");
-=======
 		dev_warn(&dev->dev, "us122l: couldn't allocate write buffer\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		usb_stream_free(sk);
 		return NULL;
 	}
@@ -264,12 +243,8 @@ static bool balance_check(struct usb_stream_kernel *sk, struct urb *urb)
 
 	if (unlikely(urb->status)) {
 		if (urb->status != -ESHUTDOWN && urb->status != -ENOENT)
-<<<<<<< HEAD
-			snd_printk(KERN_WARNING "status=%i\n", urb->status);
-=======
 			dev_warn(&sk->dev->dev, "%s: status=%i\n", __func__,
 				 urb->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sk->iso_frame_balance = 0x7FFFFFFF;
 		return false;
 	}
@@ -341,19 +316,6 @@ static int usb_stream_prepare_playback(struct usb_stream_kernel *sk,
 check_ok:
 	s->sync_packet -= inurb->number_of_packets;
 	if (unlikely(s->sync_packet < -2 || s->sync_packet > 0)) {
-<<<<<<< HEAD
-		snd_printk(KERN_WARNING "invalid sync_packet = %i;"
-			   " p=%i nop=%i %i %x %x %x > %x\n",
-			   s->sync_packet, p, inurb->number_of_packets,
-			   s->idle_outsize + lb + l,
-			   s->idle_outsize, lb,  l,
-			   s->period_size);
-		return -1;
-	}
-	if (unlikely(lb % s->cfg.frame_size)) {
-		snd_printk(KERN_WARNING"invalid outsize = %i\n",
-			   lb);
-=======
 		dev_warn(&sk->dev->dev,
 			 "%s: invalid sync_packet = %i; p=%i nop=%i %i %x %x %x > %x\n",
 			 __func__,
@@ -366,7 +328,6 @@ check_ok:
 	if (unlikely(lb % s->cfg.frame_size)) {
 		dev_warn(&sk->dev->dev, "%s: invalid outsize = %i\n",
 			 __func__, lb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -1;
 	}
 	s->idle_outsize += lb - s->period_size;
@@ -375,11 +336,7 @@ check_ok:
 	if (s->idle_outsize <= 0)
 		return 0;
 
-<<<<<<< HEAD
-	snd_printk(KERN_WARNING "idle=%i\n", s->idle_outsize);
-=======
 	dev_warn(&sk->dev->dev, "%s: idle=%i\n", __func__, s->idle_outsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -1;
 }
 
@@ -419,11 +376,7 @@ static int submit_urbs(struct usb_stream_kernel *sk,
 	return 0;
 
 report_failure:
-<<<<<<< HEAD
-	snd_printk(KERN_ERR "%i\n", err);
-=======
 	dev_err(&sk->dev->dev, "%s error: %i\n", __func__, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -470,13 +423,8 @@ loop:
 	}
 	if (iu == sk->completed_inurb) {
 		if (l != s->period_size)
-<<<<<<< HEAD
-			printk(KERN_DEBUG"%s:%i %i\n", __func__, __LINE__,
-			       l/(int)s->cfg.frame_size);
-=======
 			dev_dbg(&sk->dev->dev, "%s:%i %i\n", __func__, __LINE__,
 				l/(int)s->cfg.frame_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return;
 	}
@@ -511,13 +459,8 @@ static void stream_idle(struct usb_stream_kernel *sk,
 
 		l = id[p].actual_length;
 		if (unlikely(l == 0 || id[p].status)) {
-<<<<<<< HEAD
-			snd_printk(KERN_WARNING "underrun, status=%u\n",
-				   id[p].status);
-=======
 			dev_warn(&sk->dev->dev, "%s: underrun, status=%u\n",
 				 __func__, id[p].status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err_out;
 		}
 		s->inpacket_head++;
@@ -538,13 +481,8 @@ static void stream_idle(struct usb_stream_kernel *sk,
 	}
 	s->idle_insize += urb_size - s->period_size;
 	if (s->idle_insize < 0) {
-<<<<<<< HEAD
-		snd_printk(KERN_WARNING "%i\n",
-			   (s->idle_insize)/(int)s->cfg.frame_size);
-=======
 		dev_warn(&sk->dev->dev, "%s error: %i\n", __func__,
 			 (s->idle_insize)/(int)s->cfg.frame_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_out;
 	}
 	s->insize_done += urb_size;
@@ -619,30 +557,15 @@ static void stream_start(struct usb_stream_kernel *sk,
 			min_frames += frames_per_packet;
 			diff = urb_size -
 				(min_frames >> 8) * s->cfg.frame_size;
-<<<<<<< HEAD
-			if (diff < max_diff) {
-				snd_printdd(KERN_DEBUG "%i %i %i %i\n",
-					    s->insize_done,
-					    urb_size / (int)s->cfg.frame_size,
-					    inurb->number_of_packets, diff);
-				max_diff = diff;
-			}
-=======
 			if (diff < max_diff)
 				max_diff = diff;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		s->idle_insize -= max_diff - max_diff_0;
 		s->idle_insize += urb_size - s->period_size;
 		if (s->idle_insize < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_WARNING "%i %i %i\n",
-				   s->idle_insize, urb_size, s->period_size);
-=======
 			dev_warn(&sk->dev->dev, "%s idle_insize: %i %i %i\n",
 				 __func__,
 				 s->idle_insize, urb_size, s->period_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return;
 		} else if (s->idle_insize == 0) {
 			s->next_inpacket_split =
@@ -692,11 +615,7 @@ static void i_capture_start(struct urb *urb)
 	int empty = 0;
 
 	if (urb->status) {
-<<<<<<< HEAD
-		snd_printk(KERN_WARNING "status=%i\n", urb->status);
-=======
 		dev_warn(&sk->dev->dev, "%s: status=%i\n", __func__, urb->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -706,11 +625,7 @@ static void i_capture_start(struct urb *urb)
 		if (l < s->cfg.frame_size) {
 			++empty;
 			if (s->state >= usb_stream_sync0) {
-<<<<<<< HEAD
-				snd_printk(KERN_WARNING "%i\n", l);
-=======
 				dev_warn(&sk->dev->dev, "%s: length %i\n", __func__, l);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return;
 			}
 		}
@@ -722,13 +637,8 @@ static void i_capture_start(struct urb *urb)
 	}
 #ifdef SHOW_EMPTY
 	if (empty) {
-<<<<<<< HEAD
-		printk(KERN_DEBUG"%s:%i: %i", __func__, __LINE__,
-		       urb->iso_frame_desc[0].actual_length);
-=======
 		dev_dbg(&sk->dev->dev, "%s:%i: %i", __func__, __LINE__,
 			urb->iso_frame_desc[0].actual_length);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (pack = 1; pack < urb->number_of_packets; ++pack) {
 			int l = urb->iso_frame_desc[pack].actual_length;
 
@@ -755,11 +665,7 @@ static void i_playback_start(struct urb *urb)
 int usb_stream_start(struct usb_stream_kernel *sk)
 {
 	struct usb_stream *s = sk->s;
-<<<<<<< HEAD
-	int frame = 0, iters = 0;
-=======
 	int frame = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int u, err;
 	int try = 0;
 
@@ -794,76 +700,42 @@ dotry:
 			frame = usb_get_current_frame_number(dev);
 			do {
 				now = usb_get_current_frame_number(dev);
-<<<<<<< HEAD
-				++iters;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			} while (now > -1 && now == frame);
 		}
 		err = usb_submit_urb(inurb, GFP_ATOMIC);
 		if (err < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR
-				   "usb_submit_urb(sk->inurb[%i]) returned %i\n",
-				   u, err);
-=======
 			dev_err(&sk->dev->dev,
 				"%s: usb_submit_urb(sk->inurb[%i]) returned %i\n",
 				__func__, u, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return err;
 		}
 		err = usb_submit_urb(outurb, GFP_ATOMIC);
 		if (err < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR
-				   "usb_submit_urb(sk->outurb[%i]) returned %i\n",
-				   u, err);
-=======
 			dev_err(&sk->dev->dev,
 				"%s: usb_submit_urb(sk->outurb[%i]) returned %i\n",
 				__func__, u, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return err;
 		}
 
 		if (inurb->start_frame != outurb->start_frame) {
-<<<<<<< HEAD
-			snd_printd(KERN_DEBUG
-				   "u[%i] start_frames differ in:%u out:%u\n",
-				   u, inurb->start_frame, outurb->start_frame);
-			goto check_retry;
-		}
-	}
-	snd_printdd(KERN_DEBUG "%i %i\n", frame, iters);
-=======
 			dev_dbg(&sk->dev->dev,
 				"%s: u[%i] start_frames differ in:%u out:%u\n",
 				__func__, u, inurb->start_frame, outurb->start_frame);
 			goto check_retry;
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	try = 0;
 check_retry:
 	if (try) {
 		usb_stream_stop(sk);
 		if (try < 5) {
 			msleep(1500);
-<<<<<<< HEAD
-			snd_printd(KERN_DEBUG "goto dotry;\n");
-			goto dotry;
-		}
-		snd_printk(KERN_WARNING
-			   "couldn't start all urbs on the same start_frame.\n");
-=======
 			dev_dbg(&sk->dev->dev, "goto dotry;\n");
 			goto dotry;
 		}
 		dev_warn(&sk->dev->dev,
 			 "%s: couldn't start all urbs on the same start_frame.\n",
 			 __func__);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EFAULT;
 	}
 
@@ -877,10 +749,6 @@ check_retry:
 		int wait_ms = 3000;
 
 		while (s->state != usb_stream_ready && wait_ms > 0) {
-<<<<<<< HEAD
-			snd_printdd(KERN_DEBUG "%i\n", s->state);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			msleep(200);
 			wait_ms -= 200;
 		}

@@ -268,10 +268,7 @@ struct ionic_queue_params {
 	unsigned int ntxq_descs;
 	unsigned int nrxq_descs;
 	u64 rxq_features;
-<<<<<<< HEAD
-=======
 	struct bpf_prog *xdp_prog;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool intr_split;
 	bool cmb_tx;
 	bool cmb_rx;
@@ -284,10 +281,7 @@ static inline void ionic_init_queue_params(struct ionic_lif *lif,
 	qparam->ntxq_descs = lif->ntxq_descs;
 	qparam->nrxq_descs = lif->nrxq_descs;
 	qparam->rxq_features = lif->rxq_features;
-<<<<<<< HEAD
-=======
 	qparam->xdp_prog = lif->xdp_prog;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qparam->intr_split = test_bit(IONIC_LIF_F_SPLIT_INTR, lif->state);
 	qparam->cmb_tx = test_bit(IONIC_LIF_F_CMB_TX_RINGS, lif->state);
 	qparam->cmb_rx = test_bit(IONIC_LIF_F_CMB_RX_RINGS, lif->state);

@@ -65,14 +65,11 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 /* Verdin HDMI_1 Audio */
 &aud2htx {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &backlight {
 	power-supply = <&reg_3p3v>;
 };
@@ -227,14 +224,11 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 /* Verdin HDMI_1 Audio */
 &sound_hdmi {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Verdin UART_1 */
 &uart1 {
 	status = "okay";

@@ -3281,12 +3281,8 @@ static const struct flash_info *spi_nor_match_name(struct spi_nor *nor,
 
 	for (i = 0; i < ARRAY_SIZE(manufacturers); i++) {
 		for (j = 0; j < manufacturers[i]->nparts; j++) {
-<<<<<<< HEAD
-			if (!strcmp(name, manufacturers[i]->parts[j].name)) {
-=======
 			if (manufacturers[i]->parts[j].name &&
 			    !strcmp(name, manufacturers[i]->parts[j].name)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nor->manufacturer = manufacturers[i];
 				return &manufacturers[i]->parts[j];
 			}

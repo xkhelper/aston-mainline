@@ -5,10 +5,7 @@ syscall-y += syscall_table_64.h
 generic-y += early_ioremap.h
 generic-y += flat.h
 generic-y += kvm_para.h
-<<<<<<< HEAD
-=======
 generic-y += mmzone.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 generic-y += parport.h
 generic-y += spinlock.h
 generic-y += spinlock_types.h

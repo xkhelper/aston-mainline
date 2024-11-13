@@ -187,11 +187,7 @@ int dbMount(struct inode *ipbmap)
 	}
 
 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
-<<<<<<< HEAD
-	if (!bmp->db_numag) {
-=======
 	if (!bmp->db_numag || bmp->db_numag > MAXAG) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EINVAL;
 		goto err_release_metapage;
 	}
@@ -656,11 +652,7 @@ int dbNextAG(struct inode *ipbmap)
 	 * average free space.
 	 */
 	for (i = 0 ; i < bmp->db_numag; i++, agpref++) {
-<<<<<<< HEAD
-		if (agpref == bmp->db_numag)
-=======
 		if (agpref >= bmp->db_numag)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			agpref = 0;
 
 		if (atomic_read(&bmp->db_active[agpref]))
@@ -2952,16 +2944,10 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
 static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
 {
 	int ti, n = 0, k, x = 0;
-<<<<<<< HEAD
-	int max_size;
-
-	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
-=======
 	int max_size, max_idx;
 
 	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
 	max_idx = is_ctl ? LPERCTL : LPERDMAP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* first check the root of the tree to see if there is
 	 * sufficient free space.
@@ -2993,11 +2979,8 @@ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
 		 */
 		assert(n < 4);
 	}
-<<<<<<< HEAD
-=======
 	if (le32_to_cpu(tp->dmt_leafidx) >= max_idx)
 		return -ENOSPC;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* set the return to the leftmost leaf describing sufficient
 	 * free space.
@@ -3042,11 +3025,7 @@ static int dbFindBits(u32 word, int l2nb)
 
 	/* scan the word for nb free bits at nb alignments.
 	 */
-<<<<<<< HEAD
-	for (bitno = 0; mask != 0; bitno += nb, mask >>= nb) {
-=======
 	for (bitno = 0; mask != 0; bitno += nb, mask = (mask >> nb)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((mask & word) == mask)
 			break;
 	}

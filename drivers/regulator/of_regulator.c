@@ -338,15 +338,10 @@ static int of_get_regulation_constraints(struct device *dev,
  * @desc: regulator description
  *
  * Populates regulator_init_data structure by extracting data from device
-<<<<<<< HEAD
- * tree node, returns a pointer to the populated structure or NULL if memory
- * alloc fails.
-=======
  * tree node.
  *
  * Return: Pointer to a populated &struct regulator_init_data or NULL if
  *	   memory allocation fails.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct regulator_init_data *of_get_regulator_init_data(struct device *dev,
 					  struct device_node *node,
@@ -398,11 +393,7 @@ static void devm_of_regulator_put_matches(struct device *dev, void *res)
  * in place and an additional of_node reference is taken for each matched
  * regulator.
  *
-<<<<<<< HEAD
- * Returns the number of matches found or a negative error code on failure.
-=======
  * Return: The number of matches found or a negative error number on failure.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int of_regulator_match(struct device *dev, struct device_node *node,
 		       struct of_regulator_match *matches,
@@ -561,9 +552,6 @@ error:
 	return NULL;
 }
 
-<<<<<<< HEAD
-struct regulator_dev *of_find_regulator_by_node(struct device_node *np)
-=======
 /**
  * of_get_child_regulator - get a child regulator device node
  * based on supply name
@@ -629,7 +617,6 @@ static struct device_node *of_get_regulator(struct device *dev, const char *supp
 }
 
 static struct regulator_dev *of_find_regulator_by_node(struct device_node *np)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct device *dev;
 
@@ -638,8 +625,6 @@ static struct regulator_dev *of_find_regulator_by_node(struct device_node *np)
 	return dev ? dev_to_rdev(dev) : NULL;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * of_regulator_dev_lookup - lookup a regulator device with device tree only
  * @dev: Device pointer for regulator supply lookup.
@@ -680,7 +665,6 @@ struct regulator_dev *of_regulator_dev_lookup(struct device *dev,
 	return ERR_PTR(-ENODEV);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Returns number of regulators coupled with rdev.
  */
@@ -741,11 +725,7 @@ static bool of_coupling_find_node(struct device_node *src,
  * - all coupled regulators have the same number of regulator_dev phandles
  * - all regulators are linked to each other
  *
-<<<<<<< HEAD
- * Returns true if all conditions are met.
-=======
  * Return: True if all conditions are met; false otherwise.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 bool of_check_coupling_data(struct regulator_dev *rdev)
 {
@@ -816,13 +796,8 @@ clean:
  *	  "regulator-coupled-with" property
  * @index: Index in phandles array
  *
-<<<<<<< HEAD
- * Returns the regulator_dev pointer parsed from DTS. If it has not been yet
- * registered, returns NULL
-=======
  * Return: Pointer to the &struct regulator_dev parsed from DTS, or %NULL if
  *	   it has not yet been registered.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct regulator_dev *of_parse_coupled_regulator(struct regulator_dev *rdev,
 						 int index)
@@ -866,25 +841,13 @@ static int is_supply_name(const char *name)
 	return 0;
 }
 
-<<<<<<< HEAD
-/*
-=======
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * of_regulator_bulk_get_all - get multiple regulator consumers
  *
  * @dev:	Device to supply
  * @np:		device node to search for consumers
  * @consumers:  Configuration of consumers; clients are stored here.
  *
-<<<<<<< HEAD
- * @return number of regulators on success, an errno on failure.
- *
- * This helper function allows drivers to get several regulator
- * consumers in one operation.  If any of the regulators cannot be
- * acquired then any regulators that were allocated will be freed
- * before returning to the caller.
-=======
  * This helper function allows drivers to get several regulator
  * consumers in one operation.  If any of the regulators cannot be
  * acquired then any regulators that were allocated will be freed
@@ -893,26 +856,17 @@ static int is_supply_name(const char *name)
  *
  * Return: Number of regulators on success, or a negative error number
  *	   on failure.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int of_regulator_bulk_get_all(struct device *dev, struct device_node *np,
 			      struct regulator_bulk_data **consumers)
 {
 	int num_consumers = 0;
 	struct regulator *tmp;
-<<<<<<< HEAD
-=======
 	struct regulator_bulk_data *_consumers = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct property *prop;
 	int i, n = 0, ret;
 	char name[64];
 
-<<<<<<< HEAD
-	*consumers = NULL;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * first pass: get numbers of xxx-supply
 	 * second pass: fill consumers
@@ -922,11 +876,7 @@ restart:
 		i = is_supply_name(prop->name);
 		if (i == 0)
 			continue;
-<<<<<<< HEAD
-		if (!*consumers) {
-=======
 		if (!_consumers) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			num_consumers++;
 			continue;
 		} else {
@@ -934,31 +884,14 @@ restart:
 			name[i] = '\0';
 			tmp = regulator_get(dev, name);
 			if (IS_ERR(tmp)) {
-<<<<<<< HEAD
-				ret = -EINVAL;
-				goto error;
-			}
-			(*consumers)[n].consumer = tmp;
-=======
 				ret = PTR_ERR(tmp);
 				goto error;
 			}
 			_consumers[n].consumer = tmp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			n++;
 			continue;
 		}
 	}
-<<<<<<< HEAD
-	if (*consumers)
-		return num_consumers;
-	if (num_consumers == 0)
-		return 0;
-	*consumers = kmalloc_array(num_consumers,
-				   sizeof(struct regulator_bulk_data),
-				   GFP_KERNEL);
-	if (!*consumers)
-=======
 	if (_consumers) {
 		*consumers = _consumers;
 		return num_consumers;
@@ -969,18 +902,13 @@ restart:
 				   sizeof(struct regulator_bulk_data),
 				   GFP_KERNEL);
 	if (!_consumers)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 	goto restart;
 
 error:
 	while (--n >= 0)
-<<<<<<< HEAD
-		regulator_put(consumers[n]->consumer);
-=======
 		regulator_put(_consumers[n].consumer);
 	kfree(_consumers);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(of_regulator_bulk_get_all);

@@ -2283,11 +2283,8 @@ static int camss_probe(struct platform_device *pdev)
 
 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
 
-<<<<<<< HEAD
-=======
 	pm_runtime_enable(dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	num_subdevs = camss_of_parse_ports(camss);
 	if (num_subdevs < 0) {
 		ret = num_subdevs;
@@ -2328,11 +2325,6 @@ static int camss_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
-	pm_runtime_enable(dev);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_register_subdevs:
@@ -2340,10 +2332,7 @@ err_register_subdevs:
 err_v4l2_device_unregister:
 	v4l2_device_unregister(&camss->v4l2_dev);
 	v4l2_async_nf_cleanup(&camss->notifier);
-<<<<<<< HEAD
-=======
 	pm_runtime_disable(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_genpd_cleanup:
 	camss_genpd_cleanup(camss);
 

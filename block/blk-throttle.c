@@ -1584,8 +1584,6 @@ void blk_throtl_cancel_bios(struct gendisk *disk)
 	spin_unlock_irq(&q->queue_lock);
 }
 
-<<<<<<< HEAD
-=======
 static bool tg_within_limit(struct throtl_grp *tg, struct bio *bio, bool rw)
 {
 	/* throtl is FIFO - if bios are already queued, should queue */
@@ -1602,7 +1600,6 @@ static void tg_dispatch_in_debt(struct throtl_grp *tg, struct bio *bio, bool rw)
 	tg->carryover_ios[rw]--;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool __blk_throtl_bio(struct bio *bio)
 {
 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
@@ -1619,36 +1616,6 @@ bool __blk_throtl_bio(struct bio *bio)
 	sq = &tg->service_queue;
 
 	while (true) {
-<<<<<<< HEAD
-		if (tg->last_low_overflow_time[rw] == 0)
-			tg->last_low_overflow_time[rw] = jiffies;
-		/* throtl is FIFO - if bios are already queued, should queue */
-		if (sq->nr_queued[rw])
-			break;
-
-		/* if above limits, break to queue */
-		if (!tg_may_dispatch(tg, bio, NULL)) {
-			tg->last_low_overflow_time[rw] = jiffies;
-			break;
-		}
-
-		/* within limits, let's charge and dispatch directly */
-		throtl_charge_bio(tg, bio);
-
-		/*
-		 * We need to trim slice even when bios are not being queued
-		 * otherwise it might happen that a bio is not queued for
-		 * a long time and slice keeps on extending and trim is not
-		 * called for a long time. Now if limits are reduced suddenly
-		 * we take into account all the IO dispatched so far at new
-		 * low rate and * newly queued IO gets a really long dispatch
-		 * time.
-		 *
-		 * So keep on trimming slice even if bio is not queued.
-		 */
-		throtl_trim_slice(tg, rw);
-
-=======
 		if (tg_within_limit(tg, bio, rw)) {
 			/* within limits, let's charge and dispatch directly */
 			throtl_charge_bio(tg, bio);
@@ -1678,7 +1645,6 @@ bool __blk_throtl_bio(struct bio *bio)
 			break;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * @bio passed through this layer without being throttled.
 		 * Climb up the ladder.  If we're already at the top, it
@@ -1701,11 +1667,6 @@ bool __blk_throtl_bio(struct bio *bio)
 		   tg->io_disp[rw], tg_iops_limit(tg, rw),
 		   sq->nr_queued[READ], sq->nr_queued[WRITE]);
 
-<<<<<<< HEAD
-	tg->last_low_overflow_time[rw] = jiffies;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	td->nr_queued[rw]++;
 	throtl_add_bio_tg(bio, qn, tg);
 	throttled = true;

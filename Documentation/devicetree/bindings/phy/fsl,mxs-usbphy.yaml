@@ -87,15 +87,12 @@ properties:
     maximum: 119
     default: 100
 
-<<<<<<< HEAD
-=======
   nxp,sim:
     description:
       The system integration module (SIM) provides system control and chip
       configuration registers.
     $ref: /schemas/types.yaml#/definitions/phandle
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg
@@ -119,8 +116,6 @@ allOf:
       required:
         - fsl,anatop
 
-<<<<<<< HEAD
-=======
   - if:
       properties:
         compatible:
@@ -132,7 +127,6 @@ allOf:
       properties:
         nxp,sim: false
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:

@@ -213,8 +213,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	can0: can@fe570000 {
 		compatible = "rockchip,rk3568v2-canfd";
 		reg = <0x0 0xfe570000 0x0 0x1000>;
@@ -254,7 +252,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	combphy0: phy@fe820000 {
 		compatible = "rockchip,rk3568-naneng-combphy";
 		reg = <0x0 0xfe820000 0x0 0x100>;
@@ -299,13 +296,10 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &rng {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &usb_host0_xhci {
 	phys = <&usb2phy0_otg>, <&combphy0 PHY_TYPE_USB3>;
 	phy-names = "usb2-phy", "usb3-phy";

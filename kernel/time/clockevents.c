@@ -190,11 +190,7 @@ int clockevents_tick_resume(struct clock_event_device *dev)
 
 #ifdef CONFIG_GENERIC_CLOCKEVENTS_MIN_ADJUST
 
-<<<<<<< HEAD
-/* Limit min_delta to a jiffie */
-=======
 /* Limit min_delta to a jiffy */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MIN_DELTA_LIMIT		(NSEC_PER_SEC / HZ)
 
 /**

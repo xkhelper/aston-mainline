@@ -1351,8 +1351,6 @@ static void prevent_dealloc_device(struct ib_device *ib_dev)
 {
 }
 
-<<<<<<< HEAD
-=======
 static void ib_device_notify_register(struct ib_device *device)
 {
 	struct net_device *netdev;
@@ -1376,7 +1374,6 @@ static void ib_device_notify_register(struct ib_device *device)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ib_register_device - Register an IB device with IB core
  * @device: Device to register
@@ -1475,11 +1472,8 @@ int ib_register_device(struct ib_device *device, const char *name,
 	dev_set_uevent_suppress(&device->dev, false);
 	/* Mark for userspace that device is ready */
 	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
-<<<<<<< HEAD
-=======
 
 	ib_device_notify_register(device);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ib_device_put(device);
 
 	return 0;
@@ -1522,10 +1516,7 @@ static void __ib_unregister_device(struct ib_device *ib_dev)
 		goto out;
 
 	disable_device(ib_dev);
-<<<<<<< HEAD
-=======
 	rdma_nl_notify_event(ib_dev, 0, RDMA_UNREGISTER_EVENT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Expedite removing unregistered pointers from the hash table */
 	free_netdevs(ib_dev);
@@ -2194,10 +2185,7 @@ static void add_ndev_hash(struct ib_port_data *pdata)
 int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
 			 u32 port)
 {
-<<<<<<< HEAD
-=======
 	enum rdma_nl_notify_event_type etype;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct net_device *old_ndev;
 	struct ib_port_data *pdata;
 	unsigned long flags;
@@ -2229,8 +2217,6 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
 	spin_unlock_irqrestore(&pdata->netdev_lock, flags);
 
 	add_ndev_hash(pdata);
-<<<<<<< HEAD
-=======
 
 	/* Make sure that the device is registered before we send events */
 	if (xa_load(&devices, ib_dev->index) != ib_dev)
@@ -2239,7 +2225,6 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
 	etype = ndev ? RDMA_NETDEV_ATTACH_EVENT : RDMA_NETDEV_DETACH_EVENT;
 	rdma_nl_notify_event(ib_dev, port, etype);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL(ib_device_set_netdev);
@@ -2286,12 +2271,9 @@ struct net_device *ib_device_get_netdev(struct ib_device *ib_dev,
 	if (!rdma_is_port_valid(ib_dev, port))
 		return NULL;
 
-<<<<<<< HEAD
-=======
 	if (!ib_dev->port_data)
 		return NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pdata = &ib_dev->port_data[port];
 
 	/*
@@ -2308,23 +2290,9 @@ struct net_device *ib_device_get_netdev(struct ib_device *ib_dev,
 		spin_unlock(&pdata->netdev_lock);
 	}
 
-<<<<<<< HEAD
-	/*
-	 * If we are starting to unregister expedite things by preventing
-	 * propagation of an unregistering netdev.
-	 */
-	if (res && res->reg_state != NETREG_REGISTERED) {
-		dev_put(res);
-		return NULL;
-	}
-
-	return res;
-}
-=======
 	return res;
 }
 EXPORT_SYMBOL(ib_device_get_netdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * ib_device_get_by_netdev - Find an IB device associated with a netdev

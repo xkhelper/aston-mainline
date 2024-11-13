@@ -19,10 +19,7 @@
 #include "util/symbol.h"
 #include "util/pmus.h"
 #include "util/sample.h"
-<<<<<<< HEAD
-=======
 #include "util/sort.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "util/string2.h"
 #include "util/util.h"
 #include <linux/err.h>
@@ -32,23 +29,16 @@
 
 struct perf_mem {
 	struct perf_tool	tool;
-<<<<<<< HEAD
-	char const		*input_name;
-=======
 	const char		*input_name;
 	const char		*sort_key;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool			hide_unresolved;
 	bool			dump_raw;
 	bool			force;
 	bool			phys_addr;
 	bool			data_page_size;
-<<<<<<< HEAD
-=======
 	bool			all_kernel;
 	bool			all_user;
 	bool			data_type;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			operation;
 	const char		*cpu_list;
 	DECLARE_BITMAP(cpu_bitmap, MAX_NR_CPUS);
@@ -57,11 +47,7 @@ struct perf_mem {
 static int parse_record_events(const struct option *opt,
 			       const char *str, int unset __maybe_unused)
 {
-<<<<<<< HEAD
-	struct perf_mem *mem = *(struct perf_mem **)opt->value;
-=======
 	struct perf_mem *mem = (struct perf_mem *)opt->value;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_pmu *pmu;
 
 	pmu = perf_mem_events_find_pmu();
@@ -81,47 +67,19 @@ static int parse_record_events(const struct option *opt,
 	return 0;
 }
 
-<<<<<<< HEAD
-static const char * const __usage[] = {
-	"perf mem record [<options>] [<command>]",
-	"perf mem record [<options>] -- <command> [<options>]",
-	NULL
-};
-
-static const char * const *record_mem_usage = __usage;
-
-static int __cmd_record(int argc, const char **argv, struct perf_mem *mem)
-=======
 static int __cmd_record(int argc, const char **argv, struct perf_mem *mem,
 			const struct option *options)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int rec_argc, i = 0, j;
 	int start, end;
 	const char **rec_argv;
 	int ret;
-<<<<<<< HEAD
-	bool all_user = false, all_kernel = false;
-	struct perf_mem_event *e;
-	struct perf_pmu *pmu;
-	struct option options[] = {
-	OPT_CALLBACK('e', "event", &mem, "event",
-		     "event selector. use 'perf mem record -e list' to list available events",
-		     parse_record_events),
-	OPT_UINTEGER(0, "ldlat", &perf_mem_events__loads_ldlat, "mem-loads latency"),
-	OPT_INCR('v', "verbose", &verbose,
-		 "be more verbose (show counter open errors, etc)"),
-	OPT_BOOLEAN('U', "all-user", &all_user, "collect only user level data"),
-	OPT_BOOLEAN('K', "all-kernel", &all_kernel, "collect only kernel level data"),
-	OPT_END()
-=======
 	struct perf_mem_event *e;
 	struct perf_pmu *pmu;
 	const char * const record_usage[] = {
 		"perf mem record [<options>] [<command>]",
 		"perf mem record [<options>] -- <command> [<options>]",
 		NULL
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	pmu = perf_mem_events_find_pmu();
@@ -130,20 +88,12 @@ static int __cmd_record(int argc, const char **argv, struct perf_mem *mem,
 		return -1;
 	}
 
-<<<<<<< HEAD
-	if (perf_pmu__mem_events_init(pmu)) {
-=======
 	if (perf_pmu__mem_events_init()) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_err("failed: memory events not supported\n");
 		return -1;
 	}
 
-<<<<<<< HEAD
-	argc = parse_options(argc, argv, options, record_mem_usage,
-=======
 	argc = parse_options(argc, argv, options, record_usage,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     PARSE_OPT_KEEP_UNKNOWN);
 
 	/* Max number of arguments multiplied by number of PMUs that can support them. */
@@ -167,24 +117,6 @@ static int __cmd_record(int argc, const char **argv, struct perf_mem *mem,
 	if (e->tag &&
 	    (mem->operation & MEM_OPERATION_LOAD) &&
 	    (mem->operation & MEM_OPERATION_STORE)) {
-<<<<<<< HEAD
-		e->record = true;
-		rec_argv[i++] = "-W";
-	} else {
-		if (mem->operation & MEM_OPERATION_LOAD) {
-			e = perf_pmu__mem_events_ptr(pmu, PERF_MEM_EVENTS__LOAD);
-			e->record = true;
-		}
-
-		if (mem->operation & MEM_OPERATION_STORE) {
-			e = perf_pmu__mem_events_ptr(pmu, PERF_MEM_EVENTS__STORE);
-			e->record = true;
-		}
-	}
-
-	e = perf_pmu__mem_events_ptr(pmu, PERF_MEM_EVENTS__LOAD);
-	if (e->record)
-=======
 		perf_mem_record[PERF_MEM_EVENTS__LOAD_STORE] = true;
 		rec_argv[i++] = "-W";
 	} else {
@@ -196,7 +128,6 @@ static int __cmd_record(int argc, const char **argv, struct perf_mem *mem,
 	}
 
 	if (perf_mem_record[PERF_MEM_EVENTS__LOAD])
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rec_argv[i++] = "-W";
 
 	rec_argv[i++] = "-d";
@@ -213,17 +144,10 @@ static int __cmd_record(int argc, const char **argv, struct perf_mem *mem,
 		goto out;
 	end = i;
 
-<<<<<<< HEAD
-	if (all_user)
-		rec_argv[i++] = "--all-user";
-
-	if (all_kernel)
-=======
 	if (mem->all_user)
 		rec_argv[i++] = "--all-user";
 
 	if (mem->all_kernel)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rec_argv[i++] = "--all-kernel";
 
 	if (mem->cpu_list) {
@@ -250,11 +174,7 @@ out:
 }
 
 static int
-<<<<<<< HEAD
-dump_raw_samples(struct perf_tool *tool,
-=======
 dump_raw_samples(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 union perf_event *event,
 		 struct perf_sample *sample,
 		 struct machine *machine)
@@ -328,11 +248,7 @@ out_put:
 	return 0;
 }
 
-<<<<<<< HEAD
-static int process_sample_event(struct perf_tool *tool,
-=======
 static int process_sample_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct evsel *evsel __maybe_unused,
@@ -355,9 +271,6 @@ static int report_raw_events(struct perf_mem *mem)
 		.force = mem->force,
 	};
 	int ret;
-<<<<<<< HEAD
-	struct perf_session *session = perf_session__new(&data, &mem->tool);
-=======
 	struct perf_session *session;
 
 	perf_tool__init(&mem->tool, /*ordered_events=*/true);
@@ -375,7 +288,6 @@ static int report_raw_events(struct perf_mem *mem)
 	mem->tool.auxtrace_error = perf_event__process_auxtrace_error;
 
 	session = perf_session__new(&data, &mem->tool);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (IS_ERR(session))
 		return PTR_ERR(session);
@@ -409,31 +321,21 @@ out_delete:
 	perf_session__delete(session);
 	return ret;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static char *get_sort_order(struct perf_mem *mem)
 {
 	bool has_extra_options = (mem->phys_addr | mem->data_page_size) ? true : false;
 	char sort[128];
 
-<<<<<<< HEAD
-=======
 	if (mem->sort_key)
 		scnprintf(sort, sizeof(sort), "--sort=%s", mem->sort_key);
 	else if (mem->data_type)
 		strcpy(sort, "--sort=mem,snoop,tlb,type");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * there is no weight (cost) associated with stores, so don't print
 	 * the column
 	 */
-<<<<<<< HEAD
-	if (!(mem->operation & MEM_OPERATION_LOAD)) {
-=======
 	else if (!(mem->operation & MEM_OPERATION_LOAD)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		strcpy(sort, "--sort=mem,sym,dso,symbol_daddr,"
 			     "dso_daddr,tlb,locked");
 	} else if (has_extra_options) {
@@ -448,12 +350,6 @@ static char *get_sort_order(struct perf_mem *mem)
 	if (mem->data_page_size)
 		strcat(sort, ",data_page_size");
 
-<<<<<<< HEAD
-	return strdup(sort);
-}
-
-static int report_events(int argc, const char **argv, struct perf_mem *mem)
-=======
 	/* make sure it has 'type' sort key even -s option is used */
 	if (mem->data_type && !strstr(sort, "type"))
 		strcat(sort, ",type");
@@ -463,13 +359,10 @@ static int report_events(int argc, const char **argv, struct perf_mem *mem)
 
 static int __cmd_report(int argc, const char **argv, struct perf_mem *mem,
 			const struct option *options)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const char **rep_argv;
 	int ret, i = 0, j, rep_argc;
 	char *new_sort_order;
-<<<<<<< HEAD
-=======
 	const char * const report_usage[] = {
 		"perf mem report [<options>]",
 		NULL
@@ -477,7 +370,6 @@ static int __cmd_report(int argc, const char **argv, struct perf_mem *mem,
 
 	argc = parse_options(argc, argv, options, report_usage,
 			     PARSE_OPT_KEEP_UNKNOWN);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mem->dump_raw)
 		return report_raw_events(mem);
@@ -495,18 +387,11 @@ static int __cmd_report(int argc, const char **argv, struct perf_mem *mem,
 	if (new_sort_order)
 		rep_argv[i++] = new_sort_order;
 
-<<<<<<< HEAD
-	for (j = 1; j < argc; j++, i++)
-		rep_argv[i] = argv[j];
-
-	ret = cmd_report(i, rep_argv);
-=======
 	for (j = 0; j < argc; j++, i++)
 		rep_argv[i] = argv[j];
 
 	ret = cmd_report(i, rep_argv);
 	free(new_sort_order);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free(rep_argv);
 	return ret;
 }
@@ -584,40 +469,17 @@ int cmd_mem(int argc, const char **argv)
 {
 	struct stat st;
 	struct perf_mem mem = {
-<<<<<<< HEAD
-		.tool = {
-			.sample		= process_sample_event,
-			.mmap		= perf_event__process_mmap,
-			.mmap2		= perf_event__process_mmap2,
-			.comm		= perf_event__process_comm,
-			.lost		= perf_event__process_lost,
-			.fork		= perf_event__process_fork,
-			.attr		= perf_event__process_attr,
-			.build_id	= perf_event__process_build_id,
-			.namespaces	= perf_event__process_namespaces,
-			.auxtrace_info  = perf_event__process_auxtrace_info,
-			.auxtrace       = perf_event__process_auxtrace,
-			.auxtrace_error = perf_event__process_auxtrace_error,
-			.ordered_events	= true,
-		},
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.input_name		 = "perf.data",
 		/*
 		 * default to both load an store sampling
 		 */
 		.operation		 = MEM_OPERATION_LOAD | MEM_OPERATION_STORE,
 	};
-<<<<<<< HEAD
-=======
 	char *sort_order_help = sort_help("sort by key(s):", SORT_MODE__MEMORY);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct option mem_options[] = {
 	OPT_CALLBACK('t', "type", &mem.operation,
 		   "type", "memory operations(load,store) Default load,store",
 		    parse_mem_ops),
-<<<<<<< HEAD
-=======
 	OPT_STRING('C', "cpu", &mem.cpu_list, "cpu",
 		   "list of cpus to profile"),
 	OPT_BOOLEAN('f', "force", &mem.force, "don't complain, do it"),
@@ -637,34 +499,21 @@ int cmd_mem(int argc, const char **argv)
 	OPT_PARENT(mem_options)
 	};
 	const struct option report_options[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	OPT_BOOLEAN('D', "dump-raw-samples", &mem.dump_raw,
 		    "dump raw samples in ASCII"),
 	OPT_BOOLEAN('U', "hide-unresolved", &mem.hide_unresolved,
 		    "Only display entries resolved to a symbol"),
 	OPT_STRING('i', "input", &input_name, "file",
 		   "input file name"),
-<<<<<<< HEAD
-	OPT_STRING('C', "cpu", &mem.cpu_list, "cpu",
-		   "list of cpus to profile"),
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	OPT_STRING_NOEMPTY('x', "field-separator", &symbol_conf.field_sep,
 		   "separator",
 		   "separator for columns, no spaces will be added"
 		   " between columns '.' is reserved."),
-<<<<<<< HEAD
-	OPT_BOOLEAN('f', "force", &mem.force, "don't complain, do it"),
-	OPT_BOOLEAN('p', "phys-data", &mem.phys_addr, "Record/Report sample physical addresses"),
-	OPT_BOOLEAN(0, "data-page-size", &mem.data_page_size, "Record/Report sample data address page size"),
-	OPT_END()
-=======
 	OPT_STRING('s', "sort", &mem.sort_key, "key[,key2...]",
 		   sort_order_help),
 	OPT_BOOLEAN('T', "type-profile", &mem.data_type,
 		    "Show data-type profile result"),
 	OPT_PARENT(mem_options)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	const char *const mem_subcommands[] = { "record", "report", NULL };
 	const char *mem_usage[] = {
@@ -673,11 +522,7 @@ int cmd_mem(int argc, const char **argv)
 	};
 
 	argc = parse_options_subcommand(argc, argv, mem_options, mem_subcommands,
-<<<<<<< HEAD
-					mem_usage, PARSE_OPT_KEEP_UNKNOWN);
-=======
 					mem_usage, PARSE_OPT_STOP_AT_NON_OPTION);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!argc || !(strncmp(argv[0], "rec", 3) || mem.operation))
 		usage_with_options(mem_usage, mem_options);
@@ -690,14 +535,6 @@ int cmd_mem(int argc, const char **argv)
 	}
 
 	if (strlen(argv[0]) > 2 && strstarts("record", argv[0]))
-<<<<<<< HEAD
-		return __cmd_record(argc, argv, &mem);
-	else if (strlen(argv[0]) > 2 && strstarts("report", argv[0]))
-		return report_events(argc, argv, &mem);
-	else
-		usage_with_options(mem_usage, mem_options);
-
-=======
 		return __cmd_record(argc, argv, &mem, record_options);
 	else if (strlen(argv[0]) > 2 && strstarts("report", argv[0]))
 		return __cmd_report(argc, argv, &mem, report_options);
@@ -707,6 +544,5 @@ int cmd_mem(int argc, const char **argv)
 	/* free usage string allocated by parse_options_subcommand */
 	free((void *)mem_usage[0]);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

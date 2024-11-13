@@ -92,18 +92,13 @@ int tracefs_cpu_map(struct tracefs_cpu_map_desc *desc, int cpu)
 	if (desc->cpu_fd < 0)
 		return -ENODEV;
 
-<<<<<<< HEAD
-=======
 again:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = mmap(NULL, page_size, PROT_READ, MAP_SHARED, desc->cpu_fd, 0);
 	if (map == MAP_FAILED)
 		return -errno;
 
 	desc->meta = (struct trace_buffer_meta *)map;
 
-<<<<<<< HEAD
-=======
 	/* the meta-page is bigger than the original mapping */
 	if (page_size < desc->meta->meta_struct_len) {
 		int meta_page_size = desc->meta->meta_page_size;
@@ -113,7 +108,6 @@ again:
 		goto again;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -244,8 +238,6 @@ TEST_F(map, data_mmap)
 	data = mmap(NULL, data_len, PROT_READ, MAP_SHARED,
 		    desc->cpu_fd, meta_len);
 	ASSERT_EQ(data, MAP_FAILED);
-<<<<<<< HEAD
-=======
 
 	/* Verify meta-page padding */
 	if (desc->meta->meta_page_size > getpagesize()) {
@@ -260,7 +252,6 @@ TEST_F(map, data_mmap)
 
 		munmap(data, data_len);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 FIXTURE(snapshot) {

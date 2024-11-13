@@ -64,8 +64,6 @@ static bool is_imm8(int value)
 	return value <= 127 && value >= -128;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Let us limit the positive offset to be <= 123.
  * This is to ensure eventual jit convergence For the following patterns:
@@ -116,7 +114,6 @@ static bool is_imm8_jmp_offset(int value)
 	return value <= 123 && value >= -128;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool is_simm32(s64 value)
 {
 	return value == (s64)(s32)value;
@@ -326,11 +323,7 @@ struct jit_context {
 /* Number of bytes emit_patch() needs to generate instructions */
 #define X86_PATCH_SIZE		5
 /* Number of bytes that will be skipped on tailcall */
-<<<<<<< HEAD
-#define X86_TAIL_CALL_OFFSET	(11 + ENDBR_INSN_SIZE)
-=======
 #define X86_TAIL_CALL_OFFSET	(12 + ENDBR_INSN_SIZE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void push_r12(u8 **pprog)
 {
@@ -460,8 +453,6 @@ static void emit_cfi(u8 **pprog, u32 hash)
 	*pprog = prog;
 }
 
-<<<<<<< HEAD
-=======
 static void emit_prologue_tail_call(u8 **pprog, bool is_subprog)
 {
 	u8 *prog = *pprog;
@@ -493,7 +484,6 @@ static void emit_prologue_tail_call(u8 **pprog, bool is_subprog)
 	*pprog = prog;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Emit x86-64 prologue code for BPF program.
  * bpf_tail_call helper will skip the first X86_TAIL_CALL_OFFSET bytes
@@ -515,17 +505,10 @@ static void emit_prologue(u8 **pprog, u32 stack_depth, bool ebpf_from_cbpf,
 			/* When it's the entry of the whole tailcall context,
 			 * zeroing rax means initialising tail_call_cnt.
 			 */
-<<<<<<< HEAD
-			EMIT2(0x31, 0xC0); /* xor eax, eax */
-		else
-			/* Keep the same instruction layout. */
-			EMIT2(0x66, 0x90); /* nop2 */
-=======
 			EMIT3(0x48, 0x31, 0xC0); /* xor rax, rax */
 		else
 			/* Keep the same instruction layout. */
 			emit_nops(&prog, 3);     /* nop3 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/* Exception callback receives FP as third parameter */
 	if (is_exception_cb) {
@@ -551,11 +534,7 @@ static void emit_prologue(u8 **pprog, u32 stack_depth, bool ebpf_from_cbpf,
 	if (stack_depth)
 		EMIT3_off32(0x48, 0x81, 0xEC, round_up(stack_depth, 8));
 	if (tail_call_reachable)
-<<<<<<< HEAD
-		EMIT1(0x50);         /* push rax */
-=======
 		emit_prologue_tail_call(&prog, is_subprog);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*pprog = prog;
 }
 
@@ -691,22 +670,15 @@ static void emit_return(u8 **pprog, u8 *ip)
 	*pprog = prog;
 }
 
-<<<<<<< HEAD
-=======
 #define BPF_TAIL_CALL_CNT_PTR_STACK_OFF(stack)	(-16 - round_up(stack, 8))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Generate the following code:
  *
  * ... bpf_tail_call(void *ctx, struct bpf_array *array, u64 index) ...
  *   if (index >= array->map.max_entries)
  *     goto out;
-<<<<<<< HEAD
- *   if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
-=======
  *   if ((*tcc_ptr)++ >= MAX_TAIL_CALL_CNT)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *     goto out;
  *   prog = array->ptrs[index];
  *   if (prog == NULL)
@@ -719,11 +691,7 @@ static void emit_bpf_tail_call_indirect(struct bpf_prog *bpf_prog,
 					u32 stack_depth, u8 *ip,
 					struct jit_context *ctx)
 {
-<<<<<<< HEAD
-	int tcc_off = -4 - round_up(stack_depth, 8);
-=======
 	int tcc_ptr_off = BPF_TAIL_CALL_CNT_PTR_STACK_OFF(stack_depth);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 *prog = *pprog, *start = *pprog;
 	int offset;
 
@@ -745,18 +713,6 @@ static void emit_bpf_tail_call_indirect(struct bpf_prog *bpf_prog,
 	EMIT2(X86_JBE, offset);                   /* jbe out */
 
 	/*
-<<<<<<< HEAD
-	 * if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
-	 *	goto out;
-	 */
-	EMIT2_off32(0x8B, 0x85, tcc_off);         /* mov eax, dword ptr [rbp - tcc_off] */
-	EMIT3(0x83, 0xF8, MAX_TAIL_CALL_CNT);     /* cmp eax, MAX_TAIL_CALL_CNT */
-
-	offset = ctx->tail_call_indirect_label - (prog + 2 - start);
-	EMIT2(X86_JAE, offset);                   /* jae out */
-	EMIT3(0x83, 0xC0, 0x01);                  /* add eax, 1 */
-	EMIT2_off32(0x89, 0x85, tcc_off);         /* mov dword ptr [rbp - tcc_off], eax */
-=======
 	 * if ((*tcc_ptr)++ >= MAX_TAIL_CALL_CNT)
 	 *	goto out;
 	 */
@@ -765,7 +721,6 @@ static void emit_bpf_tail_call_indirect(struct bpf_prog *bpf_prog,
 
 	offset = ctx->tail_call_indirect_label - (prog + 2 - start);
 	EMIT2(X86_JAE, offset);                   /* jae out */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* prog = array->ptrs[index]; */
 	EMIT4_off32(0x48, 0x8B, 0x8C, 0xD6,       /* mov rcx, [rsi + rdx * 8 + offsetof(...)] */
@@ -780,12 +735,9 @@ static void emit_bpf_tail_call_indirect(struct bpf_prog *bpf_prog,
 	offset = ctx->tail_call_indirect_label - (prog + 2 - start);
 	EMIT2(X86_JE, offset);                    /* je out */
 
-<<<<<<< HEAD
-=======
 	/* Inc tail_call_cnt if the slot is populated. */
 	EMIT4(0x48, 0x83, 0x00, 0x01);            /* add qword ptr [rax], 1 */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (bpf_prog->aux->exception_boundary) {
 		pop_callee_regs(&prog, all_callee_regs_used);
 		pop_r12(&prog);
@@ -795,14 +747,11 @@ static void emit_bpf_tail_call_indirect(struct bpf_prog *bpf_prog,
 			pop_r12(&prog);
 	}
 
-<<<<<<< HEAD
-=======
 	/* Pop tail_call_cnt_ptr. */
 	EMIT1(0x58);                              /* pop rax */
 	/* Pop tail_call_cnt, if it's main prog.
 	 * Pop tail_call_cnt_ptr, if it's subprog.
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EMIT1(0x58);                              /* pop rax */
 	if (stack_depth)
 		EMIT3_off32(0x48, 0x81, 0xC4,     /* add rsp, sd */
@@ -831,27 +780,11 @@ static void emit_bpf_tail_call_direct(struct bpf_prog *bpf_prog,
 				      bool *callee_regs_used, u32 stack_depth,
 				      struct jit_context *ctx)
 {
-<<<<<<< HEAD
-	int tcc_off = -4 - round_up(stack_depth, 8);
-=======
 	int tcc_ptr_off = BPF_TAIL_CALL_CNT_PTR_STACK_OFF(stack_depth);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 *prog = *pprog, *start = *pprog;
 	int offset;
 
 	/*
-<<<<<<< HEAD
-	 * if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
-	 *	goto out;
-	 */
-	EMIT2_off32(0x8B, 0x85, tcc_off);             /* mov eax, dword ptr [rbp - tcc_off] */
-	EMIT3(0x83, 0xF8, MAX_TAIL_CALL_CNT);         /* cmp eax, MAX_TAIL_CALL_CNT */
-
-	offset = ctx->tail_call_direct_label - (prog + 2 - start);
-	EMIT2(X86_JAE, offset);                       /* jae out */
-	EMIT3(0x83, 0xC0, 0x01);                      /* add eax, 1 */
-	EMIT2_off32(0x89, 0x85, tcc_off);             /* mov dword ptr [rbp - tcc_off], eax */
-=======
 	 * if ((*tcc_ptr)++ >= MAX_TAIL_CALL_CNT)
 	 *	goto out;
 	 */
@@ -860,7 +793,6 @@ static void emit_bpf_tail_call_direct(struct bpf_prog *bpf_prog,
 
 	offset = ctx->tail_call_direct_label - (prog + 2 - start);
 	EMIT2(X86_JAE, offset);                       /* jae out */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	poke->tailcall_bypass = ip + (prog - start);
 	poke->adj_off = X86_TAIL_CALL_OFFSET;
@@ -870,12 +802,9 @@ static void emit_bpf_tail_call_direct(struct bpf_prog *bpf_prog,
 	emit_jump(&prog, (u8 *)poke->tailcall_target + X86_PATCH_SIZE,
 		  poke->tailcall_bypass);
 
-<<<<<<< HEAD
-=======
 	/* Inc tail_call_cnt if the slot is populated. */
 	EMIT4(0x48, 0x83, 0x00, 0x01);                /* add qword ptr [rax], 1 */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (bpf_prog->aux->exception_boundary) {
 		pop_callee_regs(&prog, all_callee_regs_used);
 		pop_r12(&prog);
@@ -885,14 +814,11 @@ static void emit_bpf_tail_call_direct(struct bpf_prog *bpf_prog,
 			pop_r12(&prog);
 	}
 
-<<<<<<< HEAD
-=======
 	/* Pop tail_call_cnt_ptr. */
 	EMIT1(0x58);                                  /* pop rax */
 	/* Pop tail_call_cnt, if it's main prog.
 	 * Pop tail_call_cnt_ptr, if it's subprog.
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	EMIT1(0x58);                                  /* pop rax */
 	if (stack_depth)
 		EMIT3_off32(0x48, 0x81, 0xC4, round_up(stack_depth, 8));
@@ -1480,17 +1406,11 @@ static void emit_shiftx(u8 **pprog, u32 dst_reg, u8 src_reg, bool is64, u8 op)
 
 #define INSN_SZ_DIFF (((addrs[i] - addrs[i - 1]) - (prog - temp)))
 
-<<<<<<< HEAD
-/* mov rax, qword ptr [rbp - rounded_stack_depth - 8] */
-#define RESTORE_TAIL_CALL_CNT(stack)				\
-	EMIT3_off32(0x48, 0x8B, 0x85, -round_up(stack, 8) - 8)
-=======
 #define __LOAD_TCC_PTR(off)			\
 	EMIT3_off32(0x48, 0x8B, 0x85, off)
 /* mov rax, qword ptr [rbp - rounded_stack_depth - 16] */
 #define LOAD_TAIL_CALL_CNT_PTR(stack)				\
 	__LOAD_TCC_PTR(BPF_TAIL_CALL_CNT_PTR_STACK_OFF(stack))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int do_jit(struct bpf_prog *bpf_prog, int *addrs, u8 *image, u8 *rw_image,
 		  int oldproglen, struct jit_context *ctx, bool jmp_padding)
@@ -2208,11 +2128,7 @@ populate_extable:
 
 			func = (u8 *) __bpf_call_base + imm32;
 			if (tail_call_reachable) {
-<<<<<<< HEAD
-				RESTORE_TAIL_CALL_CNT(bpf_prog->aux->stack_depth);
-=======
 				LOAD_TAIL_CALL_CNT_PTR(bpf_prog->aux->stack_depth);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ip += 7;
 			}
 			if (!imm32)
@@ -2365,11 +2281,7 @@ emit_cond_jmp:		/* Convert BPF opcode to x86 */
 				return -EFAULT;
 			}
 			jmp_offset = addrs[i + insn->off] - addrs[i];
-<<<<<<< HEAD
-			if (is_imm8(jmp_offset)) {
-=======
 			if (is_imm8_jmp_offset(jmp_offset)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (jmp_padding) {
 					/* To keep the jmp_offset valid, the extra bytes are
 					 * padded before the jump insn, so we subtract the
@@ -2451,11 +2363,7 @@ emit_cond_jmp:		/* Convert BPF opcode to x86 */
 				break;
 			}
 emit_jmp:
-<<<<<<< HEAD
-			if (is_imm8(jmp_offset)) {
-=======
 			if (is_imm8_jmp_offset(jmp_offset)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (jmp_padding) {
 					/* To avoid breaking jmp_offset, the extra bytes
 					 * are padded before the actual jmp insn, so
@@ -2895,13 +2803,10 @@ static int invoke_bpf_mod_ret(const struct btf_func_model *m, u8 **pprog,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /* mov rax, qword ptr [rbp - rounded_stack_depth - 8] */
 #define LOAD_TRAMP_TAIL_CALL_CNT_PTR(stack)	\
 	__LOAD_TCC_PTR(-round_up(stack, 8) - 8)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Example:
  * __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev);
  * its 'struct btf_func_model' will be nr_args=2
@@ -3022,11 +2927,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
 	 *                     [ ...        ]
 	 *                     [ stack_arg2 ]
 	 * RBP - arg_stack_off [ stack_arg1 ]
-<<<<<<< HEAD
-	 * RSP                 [ tail_call_cnt ] BPF_TRAMP_F_TAIL_CALL_CTX
-=======
 	 * RSP                 [ tail_call_cnt_ptr ] BPF_TRAMP_F_TAIL_CALL_CTX
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 
 	/* room for return value of orig_call or fentry prog */
@@ -3155,17 +3056,10 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
 		save_args(m, &prog, arg_stack_off, true);
 
 		if (flags & BPF_TRAMP_F_TAIL_CALL_CTX) {
-<<<<<<< HEAD
-			/* Before calling the original function, restore the
-			 * tail_call_cnt from stack to rax.
-			 */
-			RESTORE_TAIL_CALL_CNT(stack_size);
-=======
 			/* Before calling the original function, load the
 			 * tail_call_cnt_ptr from stack to rax.
 			 */
 			LOAD_TRAMP_TAIL_CALL_CNT_PTR(stack_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (flags & BPF_TRAMP_F_ORIG_STACK) {
@@ -3224,17 +3118,10 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
 			goto cleanup;
 		}
 	} else if (flags & BPF_TRAMP_F_TAIL_CALL_CTX) {
-<<<<<<< HEAD
-		/* Before running the original function, restore the
-		 * tail_call_cnt from stack to rax.
-		 */
-		RESTORE_TAIL_CALL_CNT(stack_size);
-=======
 		/* Before running the original function, load the
 		 * tail_call_cnt_ptr from stack to rax.
 		 */
 		LOAD_TRAMP_TAIL_CALL_CNT_PTR(stack_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* restore return value of orig_call or fentry prog back into RAX */

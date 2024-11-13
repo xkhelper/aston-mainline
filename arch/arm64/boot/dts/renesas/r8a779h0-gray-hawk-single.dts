@@ -5,8 +5,6 @@
  * Copyright (C) 2023 Renesas Electronics Corp.
  * Copyright (C) 2024 Glider bv
  */
-<<<<<<< HEAD
-=======
 /*
  * [How to use Sound]
  *
@@ -26,16 +24,12 @@
  *	> amixer set 'ADC 1' 80%
  *	> arecord xxx hoge.wav
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /dts-v1/;
 
 #include <dt-bindings/gpio/gpio.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/leds/common.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "r8a779h0.dtsi"
 
@@ -53,8 +47,6 @@
 		ethernet0 = &avb0;
 	};
 
-<<<<<<< HEAD
-=======
 	can_transceiver0: can-phy0 {
 		compatible = "nxp,tjr1443";
 		#phy-cells = <0>;
@@ -62,14 +54,11 @@
 		max-bitrate = <5000000>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	chosen {
 		bootargs = "ignore_loglevel rw root=/dev/nfs ip=on";
 		stdout-path = "serial0:921600n8";
 	};
 
-<<<<<<< HEAD
-=======
 	keys {
 		compatible = "gpio-keys";
 
@@ -126,7 +115,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memory@48000000 {
 		device_type = "memory";
 		/* first 128MB is reserved for secure area. */
@@ -155,8 +143,6 @@
 			regulator-boot-on;
 			regulator-always-on;
 	};
-<<<<<<< HEAD
-=======
 
 	sound_mux: sound-mux {
 		compatible = "simple-audio-mux";
@@ -175,7 +161,6 @@
 
 &audio_clkin {
 	clock-frequency = <24576000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &avb0 {
@@ -196,8 +181,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &can_clk {
 	clock-frequency = <40000000>;
 };
@@ -217,7 +200,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &extal_clk {
 	clock-frequency = <16666666>;
 };
@@ -226,8 +208,6 @@
 	clock-frequency = <32768>;
 };
 
-<<<<<<< HEAD
-=======
 &gpio1 {
 	audio-power-hog {
 		gpio-hog;
@@ -237,7 +217,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &hscif0 {
 	pinctrl-0 = <&hscif0_pins>;
 	pinctrl-names = "default";
@@ -290,8 +269,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &i2c3 {
 	pinctrl-0 = <&i2c3_pins>;
 	pinctrl-names = "default";
@@ -315,7 +292,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &mmc0 {
 	pinctrl-0 = <&mmc_pins>;
 	pinctrl-1 = <&mmc_pins>;
@@ -355,8 +331,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	can_clk_pins: can-clk {
 		groups = "can_clk";
 		function = "can_clk";
@@ -372,7 +346,6 @@
 		function = "canfd1";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hscif0_pins: hscif0 {
 		groups = "hscif0_data", "hscif0_ctrl";
 		function = "hscif0";
@@ -388,8 +361,6 @@
 		function = "i2c0";
 	};
 
-<<<<<<< HEAD
-=======
 	i2c3_pins: i2c3 {
 		groups = "i2c3";
 		function = "i2c3";
@@ -400,7 +371,6 @@
 		bias-pull-up;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mmc_pins: mmc {
 		groups = "mmc_data8", "mmc_ctrl", "mmc_ds";
 		function = "mmc";
@@ -421,8 +391,6 @@
 		groups = "scif_clk2";
 		function = "scif_clk2";
 	};
-<<<<<<< HEAD
-=======
 
 	sound_clk_pins: sound_clk {
 		groups = "audio_clkin", "audio_clkout";
@@ -457,7 +425,6 @@
 			};
 		};
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &rpc {

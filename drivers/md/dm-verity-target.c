@@ -22,10 +22,7 @@
 #include <linux/scatterlist.h>
 #include <linux/string.h>
 #include <linux/jump_label.h>
-<<<<<<< HEAD
-=======
 #include <linux/security.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DM_MSG_PREFIX			"verity"
 
@@ -39,20 +36,13 @@
 #define DM_VERITY_OPT_LOGGING		"ignore_corruption"
 #define DM_VERITY_OPT_RESTART		"restart_on_corruption"
 #define DM_VERITY_OPT_PANIC		"panic_on_corruption"
-<<<<<<< HEAD
-=======
 #define DM_VERITY_OPT_ERROR_RESTART	"restart_on_error"
 #define DM_VERITY_OPT_ERROR_PANIC	"panic_on_error"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DM_VERITY_OPT_IGN_ZEROES	"ignore_zero_blocks"
 #define DM_VERITY_OPT_AT_MOST_ONCE	"check_at_most_once"
 #define DM_VERITY_OPT_TASKLET_VERIFY	"try_verify_in_tasklet"
 
-<<<<<<< HEAD
-#define DM_VERITY_OPTS_MAX		(4 + DM_VERITY_OPTS_FEC + \
-=======
 #define DM_VERITY_OPTS_MAX		(5 + DM_VERITY_OPTS_FEC + \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 DM_VERITY_ROOT_HASH_VERIFICATION_OPTS)
 
 static unsigned int dm_verity_prefetch_cluster = DM_VERITY_DEFAULT_PREFETCH_SIZE;
@@ -366,15 +356,9 @@ static int verity_verify_level(struct dm_verity *v, struct dm_verity_io *io,
 		else if (verity_handle_err(v,
 					   DM_VERITY_BLOCK_TYPE_METADATA,
 					   hash_block)) {
-<<<<<<< HEAD
-			struct bio *bio =
-				dm_bio_from_per_bio_data(io,
-							 v->ti->per_io_data_size);
-=======
 			struct bio *bio;
 			io->had_mismatch = true;
 			bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dm_audit_log_bio(DM_MSG_PREFIX, "verify-metadata", bio,
 					 block, 0);
 			r = -EIO;
@@ -498,10 +482,7 @@ static int verity_handle_data_hash_mismatch(struct dm_verity *v,
 		return -EIO; /* Error correction failed; Just return error */
 
 	if (verity_handle_err(v, DM_VERITY_BLOCK_TYPE_DATA, blkno)) {
-<<<<<<< HEAD
-=======
 		io->had_mismatch = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dm_audit_log_bio(DM_MSG_PREFIX, "verify-data", bio, blkno, 0);
 		return -EIO;
 	}
@@ -605,14 +586,11 @@ static inline bool verity_is_system_shutting_down(void)
 		|| system_state == SYSTEM_RESTART;
 }
 
-<<<<<<< HEAD
-=======
 static void restart_io_error(struct work_struct *w)
 {
 	kernel_restart("dm-verity device has I/O error");
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * End one "io" structure with a given error.
  */
@@ -627,8 +605,6 @@ static void verity_finish_io(struct dm_verity_io *io, blk_status_t status)
 	if (!static_branch_unlikely(&use_bh_wq_enabled) || !io->in_bh)
 		verity_fec_finish_io(io);
 
-<<<<<<< HEAD
-=======
 	if (unlikely(status != BLK_STS_OK) &&
 	    unlikely(!(bio->bi_opf & REQ_RAHEAD)) &&
 	    !io->had_mismatch &&
@@ -647,7 +623,6 @@ static void verity_finish_io(struct dm_verity_io *io, blk_status_t status)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bio_endio(bio);
 }
 
@@ -806,10 +781,7 @@ static int verity_map(struct dm_target *ti, struct bio *bio)
 	io->orig_bi_end_io = bio->bi_end_io;
 	io->block = bio->bi_iter.bi_sector >> (v->data_dev_block_bits - SECTOR_SHIFT);
 	io->n_blocks = bio->bi_iter.bi_size >> v->data_dev_block_bits;
-<<<<<<< HEAD
-=======
 	io->had_mismatch = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bio->bi_end_io = verity_end_io;
 	bio->bi_private = io;
@@ -860,11 +832,8 @@ static void verity_status(struct dm_target *ti, status_type_t type,
 				DMEMIT("%02x", v->salt[x]);
 		if (v->mode != DM_VERITY_MODE_EIO)
 			args++;
-<<<<<<< HEAD
-=======
 		if (v->error_mode != DM_VERITY_MODE_EIO)
 			args++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (verity_fec_is_enabled(v))
 			args += DM_VERITY_OPTS_FEC;
 		if (v->zero_digest)
@@ -894,8 +863,6 @@ static void verity_status(struct dm_target *ti, status_type_t type,
 				BUG();
 			}
 		}
-<<<<<<< HEAD
-=======
 		if (v->error_mode != DM_VERITY_MODE_EIO) {
 			DMEMIT(" ");
 			switch (v->error_mode) {
@@ -909,7 +876,6 @@ static void verity_status(struct dm_target *ti, status_type_t type,
 				BUG();
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (v->zero_digest)
 			DMEMIT(" " DM_VERITY_OPT_IGN_ZEROES);
 		if (v->validated_blocks)
@@ -962,8 +928,6 @@ static void verity_status(struct dm_target *ti, status_type_t type,
 				DMEMIT("invalid");
 			}
 		}
-<<<<<<< HEAD
-=======
 		if (v->error_mode != DM_VERITY_MODE_EIO) {
 			DMEMIT(",verity_error_mode=");
 			switch (v->error_mode) {
@@ -977,7 +941,6 @@ static void verity_status(struct dm_target *ti, status_type_t type,
 				DMEMIT("invalid");
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		DMEMIT(";");
 		break;
 	}
@@ -1023,8 +986,6 @@ static void verity_io_hints(struct dm_target *ti, struct queue_limits *limits)
 	limits->dma_alignment = limits->logical_block_size - 1;
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_SECURITY
 
 static int verity_init_sig(struct dm_verity *v, const void *sig,
@@ -1060,7 +1021,6 @@ static inline void verity_free_sig(struct dm_verity *v)
 
 #endif /* CONFIG_SECURITY */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void verity_dtr(struct dm_target *ti)
 {
 	struct dm_verity *v = ti->private;
@@ -1080,10 +1040,7 @@ static void verity_dtr(struct dm_target *ti)
 	kfree(v->initial_hashstate);
 	kfree(v->root_digest);
 	kfree(v->zero_digest);
-<<<<<<< HEAD
-=======
 	verity_free_sig(v);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (v->ahash_tfm) {
 		static_branch_dec(&ahash_enabled);
@@ -1186,8 +1143,6 @@ static int verity_parse_verity_mode(struct dm_verity *v, const char *arg_name)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static inline bool verity_is_verity_error_mode(const char *arg_name)
 {
 	return (!strcasecmp(arg_name, DM_VERITY_OPT_ERROR_RESTART) ||
@@ -1207,7 +1162,6 @@ static int verity_parse_verity_error_mode(struct dm_verity *v, const char *arg_n
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int verity_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
 				 struct dm_verity_sig_opts *verify_args,
 				 bool only_modifier_opts)
@@ -1242,8 +1196,6 @@ static int verity_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
 			}
 			continue;
 
-<<<<<<< HEAD
-=======
 		} else if (verity_is_verity_error_mode(arg_name)) {
 			if (only_modifier_opts)
 				continue;
@@ -1254,7 +1206,6 @@ static int verity_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
 			}
 			continue;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (!strcasecmp(arg_name, DM_VERITY_OPT_IGN_ZEROES)) {
 			if (only_modifier_opts)
 				continue;
@@ -1588,8 +1539,6 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		ti->error = "Root hash verification failed";
 		goto bad;
 	}
-<<<<<<< HEAD
-=======
 
 	r = verity_init_sig(v, verify_args.sig, verify_args.sig_size);
 	if (r < 0) {
@@ -1597,7 +1546,6 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 		goto bad;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	v->hash_per_block_bits =
 		__fls((1 << v->hash_dev_block_bits) / v->digest_size);
 
@@ -1739,10 +1687,6 @@ int dm_verity_get_root_digest(struct dm_target *ti, u8 **root_digest, unsigned i
 	return 0;
 }
 
-<<<<<<< HEAD
-static struct target_type verity_target = {
-	.name		= "verity",
-=======
 #ifdef CONFIG_SECURITY
 
 #ifdef CONFIG_DM_VERITY_VERIFY_ROOTHASH_SIG
@@ -1816,7 +1760,6 @@ bad:
 static struct target_type verity_target = {
 	.name		= "verity",
 /* Note: the LSMs depend on the singleton and immutable features */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.features	= DM_TARGET_SINGLETON | DM_TARGET_IMMUTABLE,
 	.version	= {1, 10, 0},
 	.module		= THIS_MODULE,
@@ -1827,12 +1770,9 @@ static struct target_type verity_target = {
 	.prepare_ioctl	= verity_prepare_ioctl,
 	.iterate_devices = verity_iterate_devices,
 	.io_hints	= verity_io_hints,
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_SECURITY
 	.preresume	= verity_preresume,
 #endif /* CONFIG_SECURITY */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_dm(verity);
 

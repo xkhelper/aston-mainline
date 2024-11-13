@@ -9,10 +9,7 @@ struct mnt_idmap;
 struct user_namespace;
 
 extern struct mnt_idmap nop_mnt_idmap;
-<<<<<<< HEAD
-=======
 extern struct mnt_idmap invalid_mnt_idmap;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern struct user_namespace init_user_ns;
 
 typedef struct {

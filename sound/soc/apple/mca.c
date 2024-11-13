@@ -1179,11 +1179,7 @@ static struct platform_driver apple_mca_driver = {
 		.of_match_table = apple_mca_of_match,
 	},
 	.probe = apple_mca_probe,
-<<<<<<< HEAD
-	.remove_new = apple_mca_remove,
-=======
 	.remove = apple_mca_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(apple_mca_driver);
 

@@ -77,8 +77,6 @@ int zstd_min_clevel(void);
  */
 int zstd_max_clevel(void);
 
-<<<<<<< HEAD
-=======
 /**
  * zstd_default_clevel() - default compression level
  *
@@ -103,7 +101,6 @@ typedef ZSTD_dictLoadMethod_e zstd_dict_load_method;
  */
 typedef ZSTD_dictContentType_e zstd_dict_content_type;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* ======   Parameter Selection   ====== */
 
 /**
@@ -163,8 +160,6 @@ typedef ZSTD_parameters zstd_parameters;
 zstd_parameters zstd_get_params(int level,
 	unsigned long long estimated_src_size);
 
-<<<<<<< HEAD
-=======
 
 /**
  * zstd_get_cparams() - returns zstd_compression_parameters for selected level
@@ -178,7 +173,6 @@ zstd_parameters zstd_get_params(int level,
 zstd_compression_parameters zstd_get_cparams(int level,
 	unsigned long long estimated_src_size, size_t dict_size);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* ======   Single-pass Compression   ====== */
 
 typedef ZSTD_CCtx zstd_cctx;
@@ -223,8 +217,6 @@ zstd_cctx *zstd_init_cctx(void *workspace, size_t workspace_size);
 size_t zstd_compress_cctx(zstd_cctx *cctx, void *dst, size_t dst_capacity,
 	const void *src, size_t src_size, const zstd_parameters *parameters);
 
-<<<<<<< HEAD
-=======
 /**
  * zstd_create_cctx_advanced() - Create compression context
  * @custom_mem:   Custom allocator.
@@ -290,7 +282,6 @@ size_t zstd_compress_using_cdict(zstd_cctx *cctx, void *dst,
 	size_t dst_capacity, const void *src, size_t src_size,
 	const zstd_cdict *cdict);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* ======   Single-pass Decompression   ====== */
 
 typedef ZSTD_DCtx zstd_dctx;
@@ -331,8 +322,6 @@ zstd_dctx *zstd_init_dctx(void *workspace, size_t workspace_size);
 size_t zstd_decompress_dctx(zstd_dctx *dctx, void *dst, size_t dst_capacity,
 	const void *src, size_t src_size);
 
-<<<<<<< HEAD
-=======
 /**
  * struct zstd_ddict - Decompression dictionary.
  * See zstd_lib.h.
@@ -398,7 +387,6 @@ size_t zstd_decompress_using_ddict(zstd_dctx *dctx,
 	const zstd_ddict *ddict);
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* ======   Streaming Buffers   ====== */
 
 /**

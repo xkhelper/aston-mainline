@@ -25,12 +25,6 @@ select:
 
 properties:
   compatible:
-<<<<<<< HEAD
-    items:
-      - const: amlogic,meson-gx-ao-secure
-      - const: syscon
-
-=======
     oneOf:
       - items:
           - const: amlogic,meson-gx-ao-secure
@@ -43,7 +37,6 @@ properties:
               - amlogic,t7-ao-secure
           - const: amlogic,meson-gx-ao-secure
           - const: syscon
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   reg:
     maxItems: 1
 

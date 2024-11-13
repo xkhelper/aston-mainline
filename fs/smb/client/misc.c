@@ -145,12 +145,9 @@ tcon_info_alloc(bool dir_leases_enabled, enum smb3_tcon_ref_trace trace)
 	mutex_init(&ret_buf->fscache_lock);
 #endif
 	trace_smb3_tcon_ref(ret_buf->debug_id, ret_buf->tc_count, trace);
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CIFS_DFS_UPCALL
 	INIT_LIST_HEAD(&ret_buf->dfs_ses_list);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret_buf;
 }
@@ -257,11 +254,7 @@ free_rsp_buf(int resp_buftype, void *rsp)
 }
 
 /* NB: MID can not be set if treeCon not passed in, in that
-<<<<<<< HEAD
-   case it is responsbility of caller to set the mid */
-=======
    case it is responsibility of caller to set the mid */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void
 header_assemble(struct smb_hdr *buffer, char smb_command /* command */ ,
 		const struct cifs_tcon *treeCon, int word_count
@@ -761,19 +754,11 @@ cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode)
 {
 	struct cifsFileInfo *cfile = NULL;
 	struct file_list *tmp_list, *tmp_next_list;
-<<<<<<< HEAD
-	struct list_head file_head;
-=======
 	LIST_HEAD(file_head);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cifs_inode == NULL)
 		return;
 
-<<<<<<< HEAD
-	INIT_LIST_HEAD(&file_head);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock(&cifs_inode->open_file_lock);
 	list_for_each_entry(cfile, &cifs_inode->openFileList, flist) {
 		if (delayed_work_pending(&cfile->deferred)) {
@@ -804,14 +789,8 @@ cifs_close_all_deferred_files(struct cifs_tcon *tcon)
 {
 	struct cifsFileInfo *cfile;
 	struct file_list *tmp_list, *tmp_next_list;
-<<<<<<< HEAD
-	struct list_head file_head;
-
-	INIT_LIST_HEAD(&file_head);
-=======
 	LIST_HEAD(file_head);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock(&tcon->open_file_lock);
 	list_for_each_entry(cfile, &tcon->openFileList, tlist) {
 		if (delayed_work_pending(&cfile->deferred)) {
@@ -841,18 +820,10 @@ cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon, const char *path)
 {
 	struct cifsFileInfo *cfile;
 	struct file_list *tmp_list, *tmp_next_list;
-<<<<<<< HEAD
-	struct list_head file_head;
-	void *page;
-	const char *full_path;
-
-	INIT_LIST_HEAD(&file_head);
-=======
 	void *page;
 	const char *full_path;
 	LIST_HEAD(file_head);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	page = alloc_dentry_path();
 	spin_lock(&tcon->open_file_lock);
 	list_for_each_entry(cfile, &tcon->openFileList, tlist) {
@@ -1140,12 +1111,8 @@ static void tcon_super_cb(struct super_block *sb, void *arg)
 	t2 = cifs_sb_master_tcon(cifs_sb);
 
 	spin_lock(&t2->tc_lock);
-<<<<<<< HEAD
-	if (t1->ses == t2->ses &&
-=======
 	if ((t1->ses == t2->ses ||
 	     t1->ses->dfs_root_ses == t2->ses->dfs_root_ses) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    t1->ses->server == t2->ses->server &&
 	    t2->origin_fullpath &&
 	    dfs_src_pathname_equal(t2->origin_fullpath, t1->origin_fullpath))

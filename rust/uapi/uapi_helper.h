@@ -7,9 +7,6 @@
  */
 
 #include <uapi/asm-generic/ioctl.h>
-<<<<<<< HEAD
-=======
 #include <uapi/linux/mdio.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <uapi/linux/mii.h>
 #include <uapi/linux/ethtool.h>

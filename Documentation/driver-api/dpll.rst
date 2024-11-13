@@ -214,8 +214,6 @@ offset values are fractional with 3-digit decimal places and shell be
 divided with ``DPLL_PIN_PHASE_OFFSET_DIVIDER`` to get integer part and
 modulo divided to get fractional part.
 
-<<<<<<< HEAD
-=======
 Embedded SYNC
 =============
 
@@ -237,7 +235,6 @@ the pin.
   ``DPLL_A_PIN_ESYNC_PULSE``                pulse type of Embedded SYNC
   ========================================= =================================
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Configuration commands group
 ============================
 

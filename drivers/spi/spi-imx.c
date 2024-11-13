@@ -1865,13 +1865,8 @@ out_register_controller:
 		spi_imx_sdma_exit(spi_imx);
 out_runtime_pm_put:
 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
-<<<<<<< HEAD
-	pm_runtime_set_suspended(&pdev->dev);
-	pm_runtime_disable(spi_imx->dev);
-=======
 	pm_runtime_disable(spi_imx->dev);
 	pm_runtime_set_suspended(&pdev->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	clk_disable_unprepare(spi_imx->clk_ipg);
 out_put_per:

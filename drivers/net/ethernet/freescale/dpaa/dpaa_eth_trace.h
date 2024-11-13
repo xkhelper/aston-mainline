@@ -56,11 +56,7 @@ DECLARE_EVENT_CLASS(dpaa_eth_fd,
 		__entry->fd_format = qm_fd_get_format(fd);
 		__entry->fd_offset = qm_fd_get_offset(fd);
 		__entry->fd_length = qm_fd_get_length(fd);
-<<<<<<< HEAD
-		__entry->fd_status = fd->status;
-=======
 		__entry->fd_status = __be32_to_cpu(fd->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__assign_str(name);
 	),
 

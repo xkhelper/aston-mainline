@@ -1474,20 +1474,6 @@ static struct pernet_operations mctp_net_ops = {
 	.exit = mctp_routes_net_exit,
 };
 
-<<<<<<< HEAD
-int __init mctp_routes_init(void)
-{
-	dev_add_pack(&mctp_packet_type);
-
-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_GETROUTE,
-			     NULL, mctp_dump_rtinfo, 0);
-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_NEWROUTE,
-			     mctp_newroute, NULL, 0);
-	rtnl_register_module(THIS_MODULE, PF_MCTP, RTM_DELROUTE,
-			     mctp_delroute, NULL, 0);
-
-	return register_pernet_subsys(&mctp_net_ops);
-=======
 static const struct rtnl_msg_handler mctp_route_rtnl_msg_handlers[] = {
 	{THIS_MODULE, PF_MCTP, RTM_NEWROUTE, mctp_newroute, NULL, 0},
 	{THIS_MODULE, PF_MCTP, RTM_DELROUTE, mctp_delroute, NULL, 0},
@@ -1515,20 +1501,12 @@ err_rtnl:
 err_pernet:
 	dev_remove_pack(&mctp_packet_type);
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void mctp_routes_exit(void)
 {
-<<<<<<< HEAD
-	unregister_pernet_subsys(&mctp_net_ops);
-	rtnl_unregister(PF_MCTP, RTM_DELROUTE);
-	rtnl_unregister(PF_MCTP, RTM_NEWROUTE);
-	rtnl_unregister(PF_MCTP, RTM_GETROUTE);
-=======
 	rtnl_unregister_many(mctp_route_rtnl_msg_handlers);
 	unregister_pernet_subsys(&mctp_net_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_remove_pack(&mctp_packet_type);
 }
 

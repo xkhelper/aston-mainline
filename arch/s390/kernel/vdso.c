@@ -12,21 +12,15 @@
 #include <linux/errno.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
-<<<<<<< HEAD
-=======
 #include <linux/module.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/mm.h>
 #include <linux/slab.h>
 #include <linux/smp.h>
 #include <linux/time_namespace.h>
 #include <linux/random.h>
 #include <vdso/datapage.h>
-<<<<<<< HEAD
-=======
 #include <asm/vdso/vsyscall.h>
 #include <asm/alternative.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/vdso.h>
 
 extern char vdso64_start[], vdso64_end[];
@@ -38,15 +32,6 @@ static union vdso_data_store vdso_data_store __page_aligned_data;
 
 struct vdso_data *vdso_data = vdso_data_store.data;
 
-<<<<<<< HEAD
-enum vvar_pages {
-	VVAR_DATA_PAGE_OFFSET,
-	VVAR_TIMENS_PAGE_OFFSET,
-	VVAR_NR_PAGES,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_TIME_NS
 struct vdso_data *arch_get_vdso_data(void *vvar_page)
 {
@@ -262,10 +247,6 @@ static struct page ** __init vdso_setup_pages(void *start, void *end)
 	return pagelist;
 }
 
-<<<<<<< HEAD
-static int __init vdso_init(void)
-{
-=======
 static void vdso_apply_alternatives(void)
 {
 	const struct elf64_shdr *alt, *shdr;
@@ -285,7 +266,6 @@ static void vdso_apply_alternatives(void)
 static int __init vdso_init(void)
 {
 	vdso_apply_alternatives();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vdso64_mapping.pages = vdso_setup_pages(vdso64_start, vdso64_end);
 	if (IS_ENABLED(CONFIG_COMPAT))
 		vdso32_mapping.pages = vdso_setup_pages(vdso32_start, vdso32_end);

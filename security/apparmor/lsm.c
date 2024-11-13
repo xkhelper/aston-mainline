@@ -1058,35 +1058,12 @@ static int apparmor_userns_create(const struct cred *cred)
 	return error;
 }
 
-<<<<<<< HEAD
-static int apparmor_sk_alloc_security(struct sock *sk, int family, gfp_t flags)
-{
-	struct aa_sk_ctx *ctx;
-
-	ctx = kzalloc(sizeof(*ctx), flags);
-	if (!ctx)
-		return -ENOMEM;
-
-	sk->sk_security = ctx;
-
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void apparmor_sk_free_security(struct sock *sk)
 {
 	struct aa_sk_ctx *ctx = aa_sock(sk);
 
-<<<<<<< HEAD
-	sk->sk_security = NULL;
 	aa_put_label(ctx->label);
 	aa_put_label(ctx->peer);
-	kfree(ctx);
-=======
-	aa_put_label(ctx->label);
-	aa_put_label(ctx->peer);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1441,10 +1418,7 @@ struct lsm_blob_sizes apparmor_blob_sizes __ro_after_init = {
 	.lbs_cred = sizeof(struct aa_label *),
 	.lbs_file = sizeof(struct aa_file_ctx),
 	.lbs_task = sizeof(struct aa_task_ctx),
-<<<<<<< HEAD
-=======
 	.lbs_sock = sizeof(struct aa_sk_ctx),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct lsm_id apparmor_lsmid = {
@@ -1490,10 +1464,6 @@ static struct security_hook_list apparmor_hooks[] __ro_after_init = {
 	LSM_HOOK_INIT(getprocattr, apparmor_getprocattr),
 	LSM_HOOK_INIT(setprocattr, apparmor_setprocattr),
 
-<<<<<<< HEAD
-	LSM_HOOK_INIT(sk_alloc_security, apparmor_sk_alloc_security),
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LSM_HOOK_INIT(sk_free_security, apparmor_sk_free_security),
 	LSM_HOOK_INIT(sk_clone_security, apparmor_sk_clone_security),
 

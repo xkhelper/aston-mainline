@@ -360,11 +360,7 @@ static void cg14_init_fix(struct fb_info *info, int linebytes,
 	info->fix.accel = FB_ACCEL_SUN_CG14;
 }
 
-<<<<<<< HEAD
-static struct sbus_mmap_map __cg14_mmap_map[CG14_MMAP_ENTRIES] = {
-=======
 static const struct sbus_mmap_map __cg14_mmap_map[CG14_MMAP_ENTRIES] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{
 		.voff	= CG14_REGS,
 		.poff	= 0x80000000,
@@ -594,11 +590,7 @@ static struct platform_driver cg14_driver = {
 		.of_match_table = cg14_match,
 	},
 	.probe		= cg14_probe,
-<<<<<<< HEAD
-	.remove_new	= cg14_remove,
-=======
 	.remove		= cg14_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init cg14_init(void)

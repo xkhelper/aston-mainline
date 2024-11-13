@@ -135,11 +135,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
 			config->pll_clock_inverters = 0x00;
 		else
 			config->pll_clock_inverters = 0x40;
-<<<<<<< HEAD
-	} else {
-=======
 	} else if (pll->phy->cfg->quirks & DSI_PHY_7NM_QUIRK_V4_1) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (pll_freq <= 1000000000ULL)
 			config->pll_clock_inverters = 0xa0;
 		else if (pll_freq <= 2500000000ULL)
@@ -148,8 +144,6 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
 			config->pll_clock_inverters = 0x00;
 		else
 			config->pll_clock_inverters = 0x40;
-<<<<<<< HEAD
-=======
 	} else {
 		/* 4.2, 4.3 */
 		if (pll_freq <= 1000000000ULL)
@@ -160,7 +154,6 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
 			config->pll_clock_inverters = 0x00;
 		else
 			config->pll_clock_inverters = 0x40;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	config->decimal_div_start = dec;

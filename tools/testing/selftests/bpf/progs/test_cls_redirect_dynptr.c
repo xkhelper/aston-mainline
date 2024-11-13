@@ -503,11 +503,7 @@ static ret_t get_next_hop(struct bpf_dynptr *dynptr, __u64 *offset, encap_header
  *
  *    fill_tuple(&t, foo, sizeof(struct iphdr), 123, 321)
  *
-<<<<<<< HEAD
- * clang will substitue a costant for sizeof, which allows the verifier
-=======
  * clang will substitute a constant for sizeof, which allows the verifier
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * to track it's value. Based on this, it can figure out the constant
  * return value, and calling code works while still being "generic" to
  * IPv4 and IPv6.

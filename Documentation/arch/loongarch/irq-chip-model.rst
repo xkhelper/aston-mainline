@@ -85,8 +85,6 @@ to CPUINTC directly::
     | Devices |
     +---------+
 
-<<<<<<< HEAD
-=======
 Advanced Extended IRQ model
 ===========================
 
@@ -119,7 +117,6 @@ go to PCH-PIC/PCH-LPC and gathered by EIOINTC, and then go to CPUINTC directly::
              | Devices |
              +---------+
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ACPI-related definitions
 ========================
 

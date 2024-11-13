@@ -6,10 +6,6 @@
  ******************************************************************************/
 #include <linux/crc32.h>
 #include <drv_types.h>
-<<<<<<< HEAD
-#include <rtw_debug.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/aes.h>
 
 static const char * const _security_type_str[] = {

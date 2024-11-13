@@ -59,14 +59,6 @@ static void
 ice_repr_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *stats)
 {
 	struct ice_netdev_priv *np = netdev_priv(netdev);
-<<<<<<< HEAD
-	struct ice_eth_stats *eth_stats;
-	struct ice_vsi *vsi;
-
-	if (ice_is_vf_disabled(np->repr->vf))
-		return;
-	vsi = np->repr->src_vsi;
-=======
 	struct ice_repr *repr = np->repr;
 	struct ice_eth_stats *eth_stats;
 	struct ice_vsi *vsi;
@@ -74,7 +66,6 @@ ice_repr_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *stats)
 	if (repr->ops.ready(repr))
 		return;
 	vsi = repr->src_vsi;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ice_update_vsi_stats(vsi);
 	eth_stats = &vsi->eth_stats;
@@ -103,11 +94,7 @@ struct ice_repr *ice_netdev_to_repr(const struct net_device *netdev)
 }
 
 /**
-<<<<<<< HEAD
- * ice_repr_open - Enable port representor's network interface
-=======
  * ice_repr_vf_open - Enable port representor's network interface
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @netdev: network interface device structure
  *
  * The open entry point is called when a port representor's network
@@ -116,11 +103,7 @@ struct ice_repr *ice_netdev_to_repr(const struct net_device *netdev)
  *
  * Returns 0 on success
  */
-<<<<<<< HEAD
-static int ice_repr_open(struct net_device *netdev)
-=======
 static int ice_repr_vf_open(struct net_device *netdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_repr *repr = ice_netdev_to_repr(netdev);
 	struct ice_vf *vf;
@@ -136,10 +119,6 @@ static int ice_repr_vf_open(struct net_device *netdev)
 	return 0;
 }
 
-<<<<<<< HEAD
-/**
- * ice_repr_stop - Disable port representor's network interface
-=======
 static int ice_repr_sf_open(struct net_device *netdev)
 {
 	netif_carrier_on(netdev);
@@ -150,7 +129,6 @@ static int ice_repr_sf_open(struct net_device *netdev)
 
 /**
  * ice_repr_vf_stop - Disable port representor's network interface
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @netdev: network interface device structure
  *
  * The stop entry point is called when a port representor's network
@@ -159,11 +137,7 @@ static int ice_repr_sf_open(struct net_device *netdev)
  *
  * Returns 0 on success
  */
-<<<<<<< HEAD
-static int ice_repr_stop(struct net_device *netdev)
-=======
 static int ice_repr_vf_stop(struct net_device *netdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_repr *repr = ice_netdev_to_repr(netdev);
 	struct ice_vf *vf;
@@ -179,8 +153,6 @@ static int ice_repr_vf_stop(struct net_device *netdev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int ice_repr_sf_stop(struct net_device *netdev)
 {
 	netif_carrier_off(netdev);
@@ -189,7 +161,6 @@ static int ice_repr_sf_stop(struct net_device *netdev)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ice_repr_sp_stats64 - get slow path stats for port representor
  * @dev: network interface device structure
@@ -291,12 +262,6 @@ ice_repr_setup_tc(struct net_device *netdev, enum tc_setup_type type,
 	}
 }
 
-<<<<<<< HEAD
-static const struct net_device_ops ice_repr_netdev_ops = {
-	.ndo_get_stats64 = ice_repr_get_stats64,
-	.ndo_open = ice_repr_open,
-	.ndo_stop = ice_repr_stop,
-=======
 static const struct net_device_ops ice_repr_vf_netdev_ops = {
 	.ndo_get_stats64 = ice_repr_get_stats64,
 	.ndo_open = ice_repr_vf_open,
@@ -311,7 +276,6 @@ static const struct net_device_ops ice_repr_sf_netdev_ops = {
 	.ndo_get_stats64 = ice_repr_get_stats64,
 	.ndo_open = ice_repr_sf_open,
 	.ndo_stop = ice_repr_sf_stop,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ndo_start_xmit = ice_eswitch_port_start_xmit,
 	.ndo_setup_tc = ice_repr_setup_tc,
 	.ndo_has_offload_stats = ice_repr_ndo_has_offload_stats,
@@ -324,25 +288,13 @@ static const struct net_device_ops ice_repr_sf_netdev_ops = {
  */
 bool ice_is_port_repr_netdev(const struct net_device *netdev)
 {
-<<<<<<< HEAD
-	return netdev && (netdev->netdev_ops == &ice_repr_netdev_ops);
-=======
 	return netdev && (netdev->netdev_ops == &ice_repr_vf_netdev_ops ||
 			  netdev->netdev_ops == &ice_repr_sf_netdev_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
  * ice_repr_reg_netdev - register port representor netdev
  * @netdev: pointer to port representor netdev
-<<<<<<< HEAD
- */
-static int
-ice_repr_reg_netdev(struct net_device *netdev)
-{
-	eth_hw_addr_random(netdev);
-	netdev->netdev_ops = &ice_repr_netdev_ops;
-=======
  * @ops: new ops for netdev
  */
 static int
@@ -350,7 +302,6 @@ ice_repr_reg_netdev(struct net_device *netdev, const struct net_device_ops *ops)
 {
 	eth_hw_addr_random(netdev);
 	netdev->netdev_ops = ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ice_set_ethtool_repr_ops(netdev);
 
 	netdev->hw_features |= NETIF_F_HW_TC;
@@ -361,18 +312,6 @@ ice_repr_reg_netdev(struct net_device *netdev, const struct net_device_ops *ops)
 	return register_netdev(netdev);
 }
 
-<<<<<<< HEAD
-static void ice_repr_remove_node(struct devlink_port *devlink_port)
-{
-	devl_rate_leaf_destroy(devlink_port);
-}
-
-/**
- * ice_repr_rem - remove representor from VF
- * @repr: pointer to representor structure
- */
-static void ice_repr_rem(struct ice_repr *repr)
-=======
 static int ice_repr_ready_vf(struct ice_repr *repr)
 {
 	return !ice_check_vf_ready_for_cfg(repr->vf);
@@ -388,38 +327,18 @@ static int ice_repr_ready_sf(struct ice_repr *repr)
  * @repr: pointer to representor structure
  */
 void ice_repr_destroy(struct ice_repr *repr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	free_percpu(repr->stats);
 	free_netdev(repr->netdev);
 	kfree(repr);
 }
 
-<<<<<<< HEAD
-/**
- * ice_repr_rem_vf - remove representor from VF
- * @repr: pointer to representor structure
- */
-void ice_repr_rem_vf(struct ice_repr *repr)
-{
-	ice_repr_remove_node(&repr->vf->devlink_port);
-=======
 static void ice_repr_rem_vf(struct ice_repr *repr)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ice_eswitch_decfg_vsi(repr->src_vsi, repr->parent_mac);
 	unregister_netdev(repr->netdev);
 	ice_devlink_destroy_vf_port(repr->vf);
 	ice_virtchnl_set_dflt_ops(repr->vf);
-<<<<<<< HEAD
-	ice_repr_rem(repr);
-}
-
-static void ice_repr_set_tx_topology(struct ice_pf *pf)
-{
-	struct devlink *devlink;
-
-=======
 }
 
 static void ice_repr_rem_sf(struct ice_repr *repr)
@@ -430,34 +349,19 @@ static void ice_repr_rem_sf(struct ice_repr *repr)
 
 static void ice_repr_set_tx_topology(struct ice_pf *pf, struct devlink *devlink)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* only export if ADQ and DCB disabled and eswitch enabled*/
 	if (ice_is_adq_active(pf) || ice_is_dcb_active(pf) ||
 	    !ice_is_switchdev_running(pf))
 		return;
 
-<<<<<<< HEAD
-	devlink = priv_to_devlink(pf);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ice_devlink_rate_init_tx_topology(devlink, ice_get_main_vsi(pf));
 }
 
 /**
-<<<<<<< HEAD
- * ice_repr_add - add representor for generic VSI
- * @pf: pointer to PF structure
- * @src_vsi: pointer to VSI structure of device to represent
- * @parent_mac: device MAC address
- */
-static struct ice_repr *
-ice_repr_add(struct ice_pf *pf, struct ice_vsi *src_vsi, const u8 *parent_mac)
-=======
  * ice_repr_create - add representor for generic VSI
  * @src_vsi: pointer to VSI structure of device to represent
  */
 static struct ice_repr *ice_repr_create(struct ice_vsi *src_vsi)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ice_netdev_priv *np;
 	struct ice_repr *repr;
@@ -484,14 +388,10 @@ static struct ice_repr *ice_repr_create(struct ice_vsi *src_vsi)
 	np = netdev_priv(repr->netdev);
 	np->repr = repr;
 
-<<<<<<< HEAD
-	ether_addr_copy(repr->parent_mac, parent_mac);
-=======
 	repr->netdev->min_mtu = ETH_MIN_MTU;
 	repr->netdev->max_mtu = ICE_MAX_MTU;
 
 	SET_NETDEV_DEV(repr->netdev, ice_pf_to_dev(src_vsi->back));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return repr;
 
@@ -502,36 +402,6 @@ err_alloc:
 	return ERR_PTR(err);
 }
 
-<<<<<<< HEAD
-struct ice_repr *ice_repr_add_vf(struct ice_vf *vf)
-{
-	struct ice_repr *repr;
-	struct ice_vsi *vsi;
-	int err;
-
-	vsi = ice_get_vf_vsi(vf);
-	if (!vsi)
-		return ERR_PTR(-ENOENT);
-
-	err = ice_devlink_create_vf_port(vf);
-	if (err)
-		return ERR_PTR(err);
-
-	repr = ice_repr_add(vf->pf, vsi, vf->hw_lan_addr);
-	if (IS_ERR(repr)) {
-		err = PTR_ERR(repr);
-		goto err_repr_add;
-	}
-
-	repr->vf = vf;
-
-	repr->netdev->min_mtu = ETH_MIN_MTU;
-	repr->netdev->max_mtu = ICE_MAX_MTU;
-
-	SET_NETDEV_DEV(repr->netdev, ice_pf_to_dev(vf->pf));
-	SET_NETDEV_DEVLINK_PORT(repr->netdev, &vf->devlink_port);
-	err = ice_repr_reg_netdev(repr->netdev);
-=======
 static int ice_repr_add_vf(struct ice_repr *repr)
 {
 	struct ice_vf *vf = repr->vf;
@@ -544,7 +414,6 @@ static int ice_repr_add_vf(struct ice_repr *repr)
 
 	SET_NETDEV_DEVLINK_PORT(repr->netdev, &vf->devlink_port);
 	err = ice_repr_reg_netdev(repr->netdev, &ice_repr_vf_netdev_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto err_netdev;
 
@@ -553,27 +422,15 @@ static int ice_repr_add_vf(struct ice_repr *repr)
 		goto err_cfg_vsi;
 
 	ice_virtchnl_set_repr_ops(vf);
-<<<<<<< HEAD
-	ice_repr_set_tx_topology(vf->pf);
-
-	return repr;
-=======
 
 	devlink = priv_to_devlink(vf->pf);
 	ice_repr_set_tx_topology(vf->pf, devlink);
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 err_cfg_vsi:
 	unregister_netdev(repr->netdev);
 err_netdev:
-<<<<<<< HEAD
-	ice_repr_rem(repr);
-err_repr_add:
-	ice_devlink_destroy_vf_port(vf);
-	return ERR_PTR(err);
-=======
 	ice_devlink_destroy_vf_port(vf);
 	return err;
 }
@@ -656,7 +513,6 @@ struct ice_repr *ice_repr_create_sf(struct ice_dynamic_port *sf)
 	ether_addr_copy(repr->parent_mac, sf->hw_addr);
 
 	return repr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct ice_repr *ice_repr_get(struct ice_pf *pf, u32 id)

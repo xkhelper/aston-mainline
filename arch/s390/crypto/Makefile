@@ -15,10 +15,7 @@ obj-$(CONFIG_CRYPTO_CHACHA_S390) += chacha_s390.o
 obj-$(CONFIG_S390_PRNG) += prng.o
 obj-$(CONFIG_CRYPTO_GHASH_S390) += ghash_s390.o
 obj-$(CONFIG_CRYPTO_CRC32_S390) += crc32-vx_s390.o
-<<<<<<< HEAD
-=======
 obj-$(CONFIG_CRYPTO_HMAC_S390) += hmac_s390.o
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-y += arch_random.o
 
 crc32-vx_s390-y := crc32-vx.o crc32le-vx.o crc32be-vx.o

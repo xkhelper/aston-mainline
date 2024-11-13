@@ -23,12 +23,9 @@ int ib_umem_dmabuf_map_pages(struct ib_umem_dmabuf *umem_dmabuf)
 
 	dma_resv_assert_held(umem_dmabuf->attach->dmabuf->resv);
 
-<<<<<<< HEAD
-=======
 	if (umem_dmabuf->revoked)
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (umem_dmabuf->sgt)
 		goto wait_fence;
 
@@ -116,19 +113,12 @@ void ib_umem_dmabuf_unmap_pages(struct ib_umem_dmabuf *umem_dmabuf)
 }
 EXPORT_SYMBOL(ib_umem_dmabuf_unmap_pages);
 
-<<<<<<< HEAD
-struct ib_umem_dmabuf *ib_umem_dmabuf_get(struct ib_device *device,
-					  unsigned long offset, size_t size,
-					  int fd, int access,
-					  const struct dma_buf_attach_ops *ops)
-=======
 static struct ib_umem_dmabuf *
 ib_umem_dmabuf_get_with_dma_device(struct ib_device *device,
 				   struct device *dma_device,
 				   unsigned long offset, size_t size,
 				   int fd, int access,
 				   const struct dma_buf_attach_ops *ops)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct dma_buf *dmabuf;
 	struct ib_umem_dmabuf *umem_dmabuf;
@@ -167,11 +157,7 @@ ib_umem_dmabuf_get_with_dma_device(struct ib_device *device,
 
 	umem_dmabuf->attach = dma_buf_dynamic_attach(
 					dmabuf,
-<<<<<<< HEAD
-					device->dma_device,
-=======
 					dma_device,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					ops,
 					umem_dmabuf);
 	if (IS_ERR(umem_dmabuf->attach)) {
@@ -187,8 +173,6 @@ out_release_dmabuf:
 	dma_buf_put(dmabuf);
 	return ret;
 }
-<<<<<<< HEAD
-=======
 
 struct ib_umem_dmabuf *ib_umem_dmabuf_get(struct ib_device *device,
 					  unsigned long offset, size_t size,
@@ -198,7 +182,6 @@ struct ib_umem_dmabuf *ib_umem_dmabuf_get(struct ib_device *device,
 	return ib_umem_dmabuf_get_with_dma_device(device, device->dma_device,
 						  offset, size, fd, access, ops);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL(ib_umem_dmabuf_get);
 
 static void
@@ -215,30 +198,18 @@ static struct dma_buf_attach_ops ib_umem_dmabuf_attach_pinned_ops = {
 	.move_notify = ib_umem_dmabuf_unsupported_move_notify,
 };
 
-<<<<<<< HEAD
-struct ib_umem_dmabuf *ib_umem_dmabuf_get_pinned(struct ib_device *device,
-						 unsigned long offset,
-						 size_t size, int fd,
-						 int access)
-=======
 struct ib_umem_dmabuf *
 ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
 					  struct device *dma_device,
 					  unsigned long offset, size_t size,
 					  int fd, int access)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ib_umem_dmabuf *umem_dmabuf;
 	int err;
 
-<<<<<<< HEAD
-	umem_dmabuf = ib_umem_dmabuf_get(device, offset, size, fd, access,
-					 &ib_umem_dmabuf_attach_pinned_ops);
-=======
 	umem_dmabuf = ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
 							 size, fd, access,
 							 &ib_umem_dmabuf_attach_pinned_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(umem_dmabuf))
 		return umem_dmabuf;
 
@@ -262,10 +233,6 @@ err_release:
 	ib_umem_release(&umem_dmabuf->umem);
 	return ERR_PTR(err);
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL(ib_umem_dmabuf_get_pinned);
-
-=======
 EXPORT_SYMBOL(ib_umem_dmabuf_get_pinned_with_dma_device);
 
 struct ib_umem_dmabuf *ib_umem_dmabuf_get_pinned(struct ib_device *device,
@@ -296,20 +263,11 @@ end:
 }
 EXPORT_SYMBOL(ib_umem_dmabuf_revoke);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void ib_umem_dmabuf_release(struct ib_umem_dmabuf *umem_dmabuf)
 {
 	struct dma_buf *dmabuf = umem_dmabuf->attach->dmabuf;
 
-<<<<<<< HEAD
-	dma_resv_lock(dmabuf->resv, NULL);
-	ib_umem_dmabuf_unmap_pages(umem_dmabuf);
-	if (umem_dmabuf->pinned)
-		dma_buf_unpin(umem_dmabuf->attach);
-	dma_resv_unlock(dmabuf->resv);
-=======
 	ib_umem_dmabuf_revoke(umem_dmabuf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dma_buf_detach(dmabuf, umem_dmabuf->attach);
 	dma_buf_put(dmabuf);

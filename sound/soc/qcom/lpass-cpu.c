@@ -1242,11 +1242,8 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
 	/* Allocation for i2sctl regmap fields */
 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
 					GFP_KERNEL);
-<<<<<<< HEAD
-=======
 	if (!drvdata->i2sctl)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Initialize bitfields for dai I2SCTL register */
 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,

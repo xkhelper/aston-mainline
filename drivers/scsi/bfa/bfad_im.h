@@ -134,10 +134,6 @@ struct bfad_fcp_binding {
 struct bfad_im_s {
 	struct bfad_s         *bfad;
 	struct workqueue_struct *drv_workq;
-<<<<<<< HEAD
-	char            drv_workq_name[KOBJ_NAME_LEN];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct work_struct	aen_im_notify_work;
 };
 

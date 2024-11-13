@@ -1277,11 +1277,7 @@ static void pci_oxsemi_tornado_set_divisor(struct uart_port *port,
 	serial_icr_write(up, UART_TCR, tcr);
 	serial_icr_write(up, UART_CPR, cpr);
 	serial_icr_write(up, UART_CKS, cpr2);
-<<<<<<< HEAD
-	serial8250_do_set_divisor(port, baud, quot, 0);
-=======
 	serial8250_do_set_divisor(port, baud, quot);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

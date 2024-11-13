@@ -82,11 +82,7 @@ struct ti_iodelay_reg_data {
 	u32 reg_start_offset;
 	u32 reg_nr_per_pin;
 
-<<<<<<< HEAD
-	struct regmap_config *regmap_config;
-=======
 	const struct regmap_config *regmap_config;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -278,8 +274,6 @@ static int ti_iodelay_pinconf_set(struct ti_iodelay_device *iod,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ti_iodelay_pinconf_deinit_dev() - deinit the iodelay device
  * @data:	IODelay device
  *
@@ -296,7 +290,6 @@ static void ti_iodelay_pinconf_deinit_dev(void *data)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ti_iodelay_pinconf_init_dev() - Initialize IODelay device
  * @iod: iodelay device
  *
@@ -318,14 +311,11 @@ static int ti_iodelay_pinconf_init_dev(struct ti_iodelay_device *iod)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
 	r = devm_add_action_or_reset(iod->dev, ti_iodelay_pinconf_deinit_dev,
 				     iod);
 	if (r)
 		return r;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Read up Recalibration sequence done by bootloader */
 	r = regmap_read(iod->regmap, reg->reg_refclk_offset, &val);
 	if (r)
@@ -385,24 +375,6 @@ static int ti_iodelay_pinconf_init_dev(struct ti_iodelay_device *iod)
 }
 
 /**
-<<<<<<< HEAD
- * ti_iodelay_pinconf_deinit_dev() - deinit the iodelay device
- * @iod:	IODelay device
- *
- * Deinitialize the IODelay device (basically just lock the region back up.
- */
-static void ti_iodelay_pinconf_deinit_dev(struct ti_iodelay_device *iod)
-{
-	const struct ti_iodelay_reg_data *reg = iod->reg_data;
-
-	/* lock the iodelay region back again */
-	regmap_update_bits(iod->regmap, reg->reg_global_lock_offset,
-			   reg->global_lock_mask, reg->global_lock_val);
-}
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ti_iodelay_get_pingroup() - Find the group mapped by a group selector
  * @iod: iodelay device
  * @selector: Group Selector
@@ -804,22 +776,14 @@ static int ti_iodelay_alloc_pins(struct device *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
-static struct regmap_config dra7_iodelay_regmap_config = {
-=======
 static const struct regmap_config dra7_iodelay_regmap_config = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits = 32,
 	.reg_stride = 4,
 	.val_bits = 32,
 	.max_register = 0xd1c,
 };
 
-<<<<<<< HEAD
-static struct ti_iodelay_reg_data dra7_iodelay_data = {
-=======
 static const struct ti_iodelay_reg_data dra7_iodelay_data = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.signature_mask = 0x0003f000,
 	.signature_value = 0x29,
 	.lock_mask = 0x00000400,
@@ -919,35 +883,11 @@ static int ti_iodelay_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
-	platform_set_drvdata(pdev, iod);
-
-	return pinctrl_enable(iod->pctl);
-}
-
-/**
- * ti_iodelay_remove() - standard remove
- * @pdev: platform device
- */
-static void ti_iodelay_remove(struct platform_device *pdev)
-{
-	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
-
-	ti_iodelay_pinconf_deinit_dev(iod);
-
-	/* Expect other allocations to be freed by devm */
-}
-
-static struct platform_driver ti_iodelay_driver = {
-	.probe = ti_iodelay_probe,
-	.remove_new = ti_iodelay_remove,
-=======
 	return pinctrl_enable(iod->pctl);
 }
 
 static struct platform_driver ti_iodelay_driver = {
 	.probe = ti_iodelay_probe,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		   .name = DRIVER_NAME,
 		   .of_match_table = ti_iodelay_of_match,

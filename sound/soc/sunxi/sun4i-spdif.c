@@ -726,11 +726,7 @@ static struct platform_driver sun4i_spdif_driver = {
 		.pm	= &sun4i_spdif_pm,
 	},
 	.probe		= sun4i_spdif_probe,
-<<<<<<< HEAD
-	.remove_new	= sun4i_spdif_remove,
-=======
 	.remove		= sun4i_spdif_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(sun4i_spdif_driver);

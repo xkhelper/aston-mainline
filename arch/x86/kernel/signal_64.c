@@ -260,24 +260,15 @@ SYSCALL_DEFINE0(rt_sigreturn)
 
 	set_current_blocked(&set);
 
-<<<<<<< HEAD
-=======
 	if (restore_altstack(&frame->uc.uc_stack))
 		goto badframe;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!restore_sigcontext(regs, &frame->uc.uc_mcontext, uc_flags))
 		goto badframe;
 
 	if (restore_signal_shadow_stack())
 		goto badframe;
 
-<<<<<<< HEAD
-	if (restore_altstack(&frame->uc.uc_stack))
-		goto badframe;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return regs->ax;
 
 badframe:

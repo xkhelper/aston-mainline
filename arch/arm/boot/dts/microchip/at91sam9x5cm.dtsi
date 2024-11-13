@@ -120,21 +120,13 @@
 	leds {
 		compatible = "gpio-leds";
 
-<<<<<<< HEAD
-		pb18 {
-=======
 		led-pb18 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "pb18";
 			gpios = <&pioB 18 GPIO_ACTIVE_LOW>;
 			linux,default-trigger = "heartbeat";
 		};
 
-<<<<<<< HEAD
-		pd21 {
-=======
 		led-pd21 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "pd21";
 			gpios = <&pioD 21 GPIO_ACTIVE_HIGH>;
 		};

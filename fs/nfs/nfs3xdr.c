@@ -21,22 +21,13 @@
 #include <linux/nfs3.h>
 #include <linux/nfs_fs.h>
 #include <linux/nfsacl.h>
-<<<<<<< HEAD
-=======
 #include <linux/nfs_common.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "nfstrace.h"
 #include "internal.h"
 
 #define NFSDBG_FACILITY		NFSDBG_XDR
 
-<<<<<<< HEAD
-/* Mapping from NFS error code to "errno" error code. */
-#define errno_NFSERR_IO		EIO
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Declare the space requirements for NFS arguments and replies as
  * number of 32bit-words
@@ -99,11 +90,6 @@
 				NFS3_pagepad_sz)
 #define ACL3_setaclres_sz	(1+NFS3_post_op_attr_sz)
 
-<<<<<<< HEAD
-static int nfs3_stat_to_errno(enum nfs_stat);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Map file type to S_IFMT bits
  */
@@ -1417,11 +1403,7 @@ static int nfs3_xdr_dec_getattr3res(struct rpc_rqst *req,
 out:
 	return error;
 out_default:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1460,11 +1442,7 @@ static int nfs3_xdr_dec_setattr3res(struct rpc_rqst *req,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1514,11 +1492,7 @@ out_default:
 	error = decode_post_op_attr(xdr, result->dir_attr, userns);
 	if (unlikely(error))
 		goto out;
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1560,11 +1534,7 @@ static int nfs3_xdr_dec_access3res(struct rpc_rqst *req,
 out:
 	return error;
 out_default:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1605,11 +1575,7 @@ static int nfs3_xdr_dec_readlink3res(struct rpc_rqst *req,
 out:
 	return error;
 out_default:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1689,11 +1655,7 @@ static int nfs3_xdr_dec_read3res(struct rpc_rqst *req, struct xdr_stream *xdr,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1763,11 +1725,7 @@ static int nfs3_xdr_dec_write3res(struct rpc_rqst *req, struct xdr_stream *xdr,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1834,11 +1792,7 @@ out_default:
 	error = decode_wcc_data(xdr, result->dir_attr, userns);
 	if (unlikely(error))
 		goto out;
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1878,11 +1832,7 @@ static int nfs3_xdr_dec_remove3res(struct rpc_rqst *req,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1928,11 +1878,7 @@ static int nfs3_xdr_dec_rename3res(struct rpc_rqst *req,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1977,11 +1923,7 @@ static int nfs3_xdr_dec_link3res(struct rpc_rqst *req, struct xdr_stream *xdr,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -2156,11 +2098,7 @@ out_default:
 	error = decode_post_op_attr(xdr, result->dir_attr, rpc_rqst_userns(req));
 	if (unlikely(error))
 		goto out;
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2226,11 +2164,7 @@ static int nfs3_xdr_dec_fsstat3res(struct rpc_rqst *req,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2306,11 +2240,7 @@ static int nfs3_xdr_dec_fsinfo3res(struct rpc_rqst *req,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2371,11 +2301,7 @@ static int nfs3_xdr_dec_pathconf3res(struct rpc_rqst *req,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -2421,11 +2347,7 @@ static int nfs3_xdr_dec_commit3res(struct rpc_rqst *req,
 out:
 	return error;
 out_status:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_NFS_V3_ACL
@@ -2491,11 +2413,7 @@ static int nfs3_xdr_dec_getacl3res(struct rpc_rqst *req,
 out:
 	return error;
 out_default:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int nfs3_xdr_dec_setacl3res(struct rpc_rqst *req,
@@ -2514,83 +2432,11 @@ static int nfs3_xdr_dec_setacl3res(struct rpc_rqst *req,
 out:
 	return error;
 out_default:
-<<<<<<< HEAD
-	return nfs3_stat_to_errno(status);
-=======
 	return nfs_stat_to_errno(status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif  /* CONFIG_NFS_V3_ACL */
 
-<<<<<<< HEAD
-
-/*
- * We need to translate between nfs status return values and
- * the local errno values which may not be the same.
- */
-static const struct {
-	int stat;
-	int errno;
-} nfs_errtbl[] = {
-	{ NFS_OK,		0		},
-	{ NFSERR_PERM,		-EPERM		},
-	{ NFSERR_NOENT,		-ENOENT		},
-	{ NFSERR_IO,		-errno_NFSERR_IO},
-	{ NFSERR_NXIO,		-ENXIO		},
-/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
-	{ NFSERR_ACCES,		-EACCES		},
-	{ NFSERR_EXIST,		-EEXIST		},
-	{ NFSERR_XDEV,		-EXDEV		},
-	{ NFSERR_NODEV,		-ENODEV		},
-	{ NFSERR_NOTDIR,	-ENOTDIR	},
-	{ NFSERR_ISDIR,		-EISDIR		},
-	{ NFSERR_INVAL,		-EINVAL		},
-	{ NFSERR_FBIG,		-EFBIG		},
-	{ NFSERR_NOSPC,		-ENOSPC		},
-	{ NFSERR_ROFS,		-EROFS		},
-	{ NFSERR_MLINK,		-EMLINK		},
-	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
-	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
-	{ NFSERR_DQUOT,		-EDQUOT		},
-	{ NFSERR_STALE,		-ESTALE		},
-	{ NFSERR_REMOTE,	-EREMOTE	},
-#ifdef EWFLUSH
-	{ NFSERR_WFLUSH,	-EWFLUSH	},
-#endif
-	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
-	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
-	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
-	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
-	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
-	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
-	{ NFSERR_BADTYPE,	-EBADTYPE	},
-	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
-	{ -1,			-EIO		}
-};
-
-/**
- * nfs3_stat_to_errno - convert an NFS status code to a local errno
- * @status: NFS status code to convert
- *
- * Returns a local errno value, or -EIO if the NFS status code is
- * not recognized.  This function is used jointly by NFSv2 and NFSv3.
- */
-static int nfs3_stat_to_errno(enum nfs_stat status)
-{
-	int i;
-
-	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
-		if (nfs_errtbl[i].stat == (int)status)
-			return nfs_errtbl[i].errno;
-	}
-	dprintk("NFS: Unrecognized nfs status value: %u\n", status);
-	return nfs_errtbl[i].errno;
-}
-
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PROC(proc, argtype, restype, timer)				\
 [NFS3PROC_##proc] = {							\
 	.p_proc      = NFS3PROC_##proc,					\

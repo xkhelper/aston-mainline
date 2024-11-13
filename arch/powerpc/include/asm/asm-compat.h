@@ -26,34 +26,23 @@
 #define PPC_MIN_STKFRM	112
 
 #ifdef __BIG_ENDIAN__
-<<<<<<< HEAD
-#define LHZX_BE	stringify_in_c(lhzx)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define LWZX_BE	stringify_in_c(lwzx)
 #define LDX_BE	stringify_in_c(ldx)
 #define STWX_BE	stringify_in_c(stwx)
 #define STDX_BE	stringify_in_c(stdx)
 #else
-<<<<<<< HEAD
-#define LHZX_BE	stringify_in_c(lhbrx)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define LWZX_BE	stringify_in_c(lwbrx)
 #define LDX_BE	stringify_in_c(ldbrx)
 #define STWX_BE	stringify_in_c(stwbrx)
 #define STDX_BE	stringify_in_c(stdbrx)
 #endif
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CC_IS_CLANG
 #define DS_FORM_CONSTRAINT "Z<>"
 #else
 #define DS_FORM_CONSTRAINT "YZ<>"
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else /* 32-bit */
 
 /* operations for longs and pointers */

@@ -1437,11 +1437,7 @@ static void ath10k_recalc_radar_detection(struct ath10k *ar)
 		 * by indicating that radar was detected.
 		 */
 		ath10k_warn(ar, "failed to start CAC: %d\n", ret);
-<<<<<<< HEAD
-		ieee80211_radar_detected(ar->hw);
-=======
 		ieee80211_radar_detected(ar->hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 

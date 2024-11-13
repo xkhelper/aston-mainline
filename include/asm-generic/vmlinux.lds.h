@@ -133,10 +133,7 @@
 	*(__dl_sched_class)			\
 	*(__rt_sched_class)			\
 	*(__fair_sched_class)			\
-<<<<<<< HEAD
-=======
 	*(__ext_sched_class)			\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*(__idle_sched_class)			\
 	__sched_class_lowest = .;
 
@@ -922,13 +919,10 @@
 
 #define RUNTIME_CONST(t,x) NAMED_SECTION(runtime_##t##_##x)
 
-<<<<<<< HEAD
-=======
 #define RUNTIME_CONST_VARIABLES						\
 		RUNTIME_CONST(shift, d_hash_shift)			\
 		RUNTIME_CONST(ptr, dentry_hashtable)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Alignment must be consistent with (kunit_suite *) in include/kunit/test.h */
 #define KUNIT_TABLE()							\
 		. = ALIGN(8);						\

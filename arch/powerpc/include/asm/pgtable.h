@@ -65,10 +65,7 @@ static inline unsigned long pte_pfn(pte_t pte)
 /*
  * Select all bits except the pfn
  */
-<<<<<<< HEAD
-=======
 #define pte_pgprot pte_pgprot
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline pgprot_t pte_pgprot(pte_t pte)
 {
 	unsigned long pte_flags;

@@ -25,15 +25,12 @@ static inline void *phys_to_virt(unsigned long address)
 	return __va(address);
 }
 
-<<<<<<< HEAD
-=======
 #define virt_to_phys virt_to_phys
 static inline phys_addr_t virt_to_phys(volatile void *address)
 {
 	return (phys_addr_t)address;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void reserve_bootmem_region(phys_addr_t start, phys_addr_t end, int nid);
 
 static inline void totalram_pages_inc(void)

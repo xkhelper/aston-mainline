@@ -52,11 +52,8 @@ static int mt7921_thermal_init(struct mt792x_phy *phy)
 
 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
 			      wiphy_name(wiphy));
-<<<<<<< HEAD
-=======
 	if (!name)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
 						       mt7921_hwmon_groups);
@@ -88,11 +85,7 @@ mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
 		}
 
 		/* UNII-4 */
-<<<<<<< HEAD
-		if (IS_UNII_INVALID(0, 5850, 5925))
-=======
 		if (IS_UNII_INVALID(0, 5845, 5925))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ch->flags |= IEEE80211_CHAN_DISABLED;
 	}
 

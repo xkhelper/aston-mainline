@@ -40,13 +40,6 @@ static int lock_extent_direct(struct inode *inode, u64 lockstart, u64 lockend,
 	struct btrfs_ordered_extent *ordered;
 	int ret = 0;
 
-<<<<<<< HEAD
-	while (1) {
-		if (nowait) {
-			if (!try_lock_extent(io_tree, lockstart, lockend,
-					     cached_state))
-				return -EAGAIN;
-=======
 	/* Direct lock must be taken before the extent lock. */
 	if (nowait) {
 		if (!try_lock_dio_extent(io_tree, lockstart, lockend, cached_state))
@@ -62,7 +55,6 @@ static int lock_extent_direct(struct inode *inode, u64 lockstart, u64 lockend,
 				ret = -EAGAIN;
 				break;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			lock_extent(io_tree, lockstart, lockend, cached_state);
 		}
@@ -138,11 +130,8 @@ static int lock_extent_direct(struct inode *inode, u64 lockstart, u64 lockend,
 		cond_resched();
 	}
 
-<<<<<<< HEAD
-=======
 	if (ret)
 		unlock_dio_extent(io_tree, lockstart, lockend, cached_state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -376,11 +365,7 @@ static int btrfs_dio_iomap_begin(struct inode *inode, loff_t start,
 	int ret = 0;
 	u64 len = length;
 	const u64 data_alloc_len = length;
-<<<<<<< HEAD
-	bool unlock_extents = false;
-=======
 	u32 unlock_bits = EXTENT_LOCKED;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * We could potentially fault if we have a buffer > PAGE_SIZE, and if
@@ -541,10 +526,6 @@ static int btrfs_dio_iomap_begin(struct inode *inode, loff_t start,
 						    start, &len, flags);
 		if (ret < 0)
 			goto unlock_err;
-<<<<<<< HEAD
-		unlock_extents = true;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Recalc len in case the new em is smaller than requested */
 		len = min(len, em->len - (start - em->start));
 		if (dio_data->data_space_reserved) {
@@ -565,27 +546,8 @@ static int btrfs_dio_iomap_begin(struct inode *inode, loff_t start,
 							       release_offset,
 							       release_len);
 		}
-<<<<<<< HEAD
-	} else {
-		/*
-		 * We need to unlock only the end area that we aren't using.
-		 * The rest is going to be unlocked by the endio routine.
-		 */
-		lockstart = start + len;
-		if (lockstart < lockend)
-			unlock_extents = true;
 	}
 
-	if (unlock_extents)
-		unlock_extent(&BTRFS_I(inode)->io_tree, lockstart, lockend,
-			      &cached_state);
-	else
-		free_extent_state(cached_state);
-
-=======
-	}
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Translate extent map information to iomap.
 	 * We trim the extents (and move the addr) even though iomap code does
@@ -604,13 +566,6 @@ static int btrfs_dio_iomap_begin(struct inode *inode, loff_t start,
 	iomap->length = len;
 	free_extent_map(em);
 
-<<<<<<< HEAD
-	return 0;
-
-unlock_err:
-	unlock_extent(&BTRFS_I(inode)->io_tree, lockstart, lockend,
-		      &cached_state);
-=======
 	/*
 	 * Reads will hold the EXTENT_DIO_LOCKED bit until the io is completed,
 	 * writes only hold it for this part.  We hold the extent lock until
@@ -638,7 +593,6 @@ unlock_err:
 	 */
 	clear_extent_bit(&BTRFS_I(inode)->io_tree, lockstart, lockend,
 			 EXTENT_LOCKED | EXTENT_DIO_LOCKED, &cached_state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err:
 	if (dio_data->data_space_reserved) {
 		btrfs_free_reserved_data_space(BTRFS_I(inode),
@@ -661,13 +615,8 @@ static int btrfs_dio_iomap_end(struct inode *inode, loff_t pos, loff_t length,
 
 	if (!write && (iomap->type == IOMAP_HOLE)) {
 		/* If reading from a hole, unlock and return */
-<<<<<<< HEAD
-		unlock_extent(&BTRFS_I(inode)->io_tree, pos, pos + length - 1,
-			      NULL);
-=======
 		unlock_dio_extent(&BTRFS_I(inode)->io_tree, pos,
 				  pos + length - 1, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -678,13 +627,8 @@ static int btrfs_dio_iomap_end(struct inode *inode, loff_t pos, loff_t length,
 			btrfs_finish_ordered_extent(dio_data->ordered, NULL,
 						    pos, length, false);
 		else
-<<<<<<< HEAD
-			unlock_extent(&BTRFS_I(inode)->io_tree, pos,
-				      pos + length - 1, NULL);
-=======
 			unlock_dio_extent(&BTRFS_I(inode)->io_tree, pos,
 					  pos + length - 1, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -ENOTBLK;
 	}
 	if (write) {
@@ -716,13 +660,8 @@ static void btrfs_dio_end_io(struct btrfs_bio *bbio)
 					    dip->file_offset, dip->bytes,
 					    !bio->bi_status);
 	} else {
-<<<<<<< HEAD
-		unlock_extent(&inode->io_tree, dip->file_offset,
-			      dip->file_offset + dip->bytes - 1, NULL);
-=======
 		unlock_dio_extent(&inode->io_tree, dip->file_offset,
 				  dip->file_offset + dip->bytes - 1, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	bbio->bio.bi_private = bbio->private;
@@ -806,11 +745,7 @@ static void btrfs_dio_submit_io(const struct iomap_iter *iter, struct bio *bio,
 		}
 	}
 
-<<<<<<< HEAD
-	btrfs_submit_bio(bbio, 0);
-=======
 	btrfs_submit_bbio(bbio, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct iomap_ops btrfs_dio_iomap_ops = {

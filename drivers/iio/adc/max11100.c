@@ -12,11 +12,7 @@
 #include <linux/module.h>
 #include <linux/regulator/consumer.h>
 #include <linux/spi/spi.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/iio/iio.h>
 #include <linux/iio/driver.h>
@@ -147,13 +143,8 @@ static int max11100_probe(struct spi_device *spi)
 }
 
 static const struct of_device_id max11100_ids[] = {
-<<<<<<< HEAD
-	{.compatible = "maxim,max11100"},
-	{ },
-=======
 	{ .compatible = "maxim,max11100" },
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, max11100_ids);
 

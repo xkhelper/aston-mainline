@@ -70,8 +70,6 @@ config SLUB_DEBUG_ON
 	  off in a kernel built with CONFIG_SLUB_DEBUG_ON by specifying
 	  "slab_debug=-".
 
-<<<<<<< HEAD
-=======
 config SLUB_RCU_DEBUG
 	bool "Enable UAF detection in TYPESAFE_BY_RCU caches (for KASAN)"
 	depends on SLUB_DEBUG
@@ -104,7 +102,6 @@ config SLUB_RCU_DEBUG
 
 	  If unsure, say N.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config PAGE_OWNER
 	bool "Track page owner"
 	depends on DEBUG_KERNEL && STACKTRACE_SUPPORT

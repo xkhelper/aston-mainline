@@ -1157,10 +1157,6 @@ static int iuu_remove_sysfs_attrs(struct usb_serial_port *port)
 
 static struct usb_serial_driver iuu_device = {
 	.driver = {
-<<<<<<< HEAD
-		   .owner = THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   .name = "iuu_phoenix",
 		   },
 	.id_table = id_table,

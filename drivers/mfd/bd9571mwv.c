@@ -93,11 +93,7 @@ static const struct regmap_irq bd9571mwv_irqs[] = {
 		       BD9571MWV_INT_INTREQ_BKUP_TRG_INT),
 };
 
-<<<<<<< HEAD
-static struct regmap_irq_chip bd9571mwv_irq_chip = {
-=======
 static const struct regmap_irq_chip bd9571mwv_irq_chip = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "bd9571mwv",
 	.status_base	= BD9571MWV_INT_INTREQ,
 	.mask_base	= BD9571MWV_INT_INTMASK,
@@ -163,11 +159,7 @@ static const struct regmap_config bd9574mwf_regmap_config = {
 	.max_register	= 0xff,
 };
 
-<<<<<<< HEAD
-static struct regmap_irq_chip bd9574mwf_irq_chip = {
-=======
 static const struct regmap_irq_chip bd9574mwf_irq_chip = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "bd9574mwf",
 	.status_base	= BD9571MWV_INT_INTREQ,
 	.mask_base	= BD9571MWV_INT_INTMASK,

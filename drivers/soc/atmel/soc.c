@@ -101,8 +101,6 @@ static const struct at91_soc socs[] __initconst = {
 		 AT91_CIDR_VERSION_MASK, SAM9X60_D6K_EXID_MATCH,
 		 "sam9x60 8MiB SDRAM SiP", "sam9x60"),
 #endif
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_SOC_SAM9X7
 	AT91_SOC(SAM9X7_CIDR_MATCH, AT91_CIDR_MATCH_MASK,
 		 AT91_CIDR_VERSION_MASK, SAM9X70_EXID_MATCH,
@@ -126,7 +124,6 @@ static const struct at91_soc socs[] __initconst = {
 		 AT91_CIDR_VERSION_MASK, SAM9X75_EXID_MATCH,
 		 "sam9x75 250MB DDR3L SiP", "sam9x7"),
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SOC_SAMA5
 	AT91_SOC(SAMA5D2_CIDR_MATCH, AT91_CIDR_MATCH_MASK,
 		 AT91_CIDR_VERSION_MASK, SAMA5D21CU_EXID_MATCH,

@@ -13,11 +13,7 @@
 #include <drm/ttm/ttm_device.h>
 #include <drm/ttm/ttm_placement.h>
 #include <drm/ttm/ttm_tt.h>
-<<<<<<< HEAD
-#include <drm/xe_drm.h>
-=======
 #include <uapi/drm/xe_drm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xe_device.h"
 #include "xe_dma_buf.h"
@@ -684,13 +680,8 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
 	tt_has_data = ttm && (ttm_tt_is_populated(ttm) ||
 			      (ttm->page_flags & TTM_TT_FLAG_SWAPPED));
 
-<<<<<<< HEAD
-	move_lacks_source = handle_system_ccs ? (!bo->ccs_cleared)  :
-						(!mem_type_is_vram(old_mem_type) && !tt_has_data);
-=======
 	move_lacks_source = !old_mem || (handle_system_ccs ? (!bo->ccs_cleared) :
 					 (!mem_type_is_vram(old_mem_type) && !tt_has_data));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	needs_clear = (ttm && ttm->page_flags & TTM_TT_FLAG_ZERO_ALLOC) ||
 		(!ttm && ttm_bo->type == ttm_bo_type_device);
@@ -767,9 +758,6 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
 
 	xe_assert(xe, migrate);
 	trace_xe_bo_move(bo, new_mem->mem_type, old_mem_type, move_lacks_source);
-<<<<<<< HEAD
-	xe_pm_runtime_get_noresume(xe);
-=======
 	if (xe_rpm_reclaim_safe(xe)) {
 		/*
 		 * We might be called through swapout in the validation path of
@@ -780,7 +768,6 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
 		drm_WARN_ON(&xe->drm, handle_system_ccs);
 		xe_pm_runtime_get_noresume(xe);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (xe_bo_is_pinned(bo) && !xe_bo_is_user(bo)) {
 		/*
@@ -815,10 +802,6 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
 			}
 		}
 	} else {
-<<<<<<< HEAD
-		if (move_lacks_source)
-			fence = xe_migrate_clear(migrate, bo, new_mem);
-=======
 		if (move_lacks_source) {
 			u32 flags = 0;
 
@@ -829,7 +812,6 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
 
 			fence = xe_migrate_clear(migrate, bo, new_mem, flags);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			fence = xe_migrate_copy(migrate, bo, bo, old_mem,
 						new_mem, handle_system_ccs);
@@ -1125,11 +1107,7 @@ static void xe_ttm_bo_destroy(struct ttm_buffer_object *ttm_bo)
 
 	xe_assert(xe, list_empty(&ttm_bo->base.gpuva.list));
 
-<<<<<<< HEAD
-	if (bo->ggtt_node.size)
-=======
 	if (bo->ggtt_node && bo->ggtt_node->base.size)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xe_ggtt_remove_bo(bo->tile->mem.ggtt, bo);
 
 #ifdef CONFIG_PROC_FS
@@ -1303,15 +1281,6 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
 	if (flags & (XE_BO_FLAG_VRAM_MASK | XE_BO_FLAG_STOLEN) &&
 	    !(flags & XE_BO_FLAG_IGNORE_MIN_PAGE_SIZE) &&
 	    ((xe->info.vram_flags & XE_VRAM_FLAGS_NEED64K) ||
-<<<<<<< HEAD
-	     (flags & XE_BO_NEEDS_64K))) {
-		aligned_size = ALIGN(size, SZ_64K);
-		if (type != ttm_bo_type_device)
-			size = ALIGN(size, SZ_64K);
-		flags |= XE_BO_FLAG_INTERNAL_64K;
-		alignment = SZ_64K >> PAGE_SHIFT;
-
-=======
 	     (flags & (XE_BO_FLAG_NEEDS_64K | XE_BO_FLAG_NEEDS_2M)))) {
 		size_t align = flags & XE_BO_FLAG_NEEDS_2M ? SZ_2M : SZ_64K;
 
@@ -1320,7 +1289,6 @@ struct xe_bo *___xe_bo_create_locked(struct xe_device *xe, struct xe_bo *bo,
 			size = ALIGN(size, align);
 		flags |= XE_BO_FLAG_INTERNAL_64K;
 		alignment = align >> PAGE_SHIFT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		aligned_size = ALIGN(size, SZ_4K);
 		flags &= ~XE_BO_FLAG_INTERNAL_64K;
@@ -1540,18 +1508,10 @@ struct xe_bo *xe_bo_create_locked(struct xe_device *xe, struct xe_tile *tile,
 struct xe_bo *xe_bo_create_user(struct xe_device *xe, struct xe_tile *tile,
 				struct xe_vm *vm, size_t size,
 				u16 cpu_caching,
-<<<<<<< HEAD
-				enum ttm_bo_type type,
-				u32 flags)
-{
-	struct xe_bo *bo = __xe_bo_create_locked(xe, tile, vm, size, 0, ~0ULL,
-						 cpu_caching, type,
-=======
 				u32 flags)
 {
 	struct xe_bo *bo = __xe_bo_create_locked(xe, tile, vm, size, 0, ~0ULL,
 						 cpu_caching, ttm_bo_type_device,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						 flags | XE_BO_FLAG_USER);
 	if (!IS_ERR(bo))
 		xe_bo_unlock_vm_held(bo);
@@ -2046,8 +2006,6 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
 
 	bo_flags |= args->placement << (ffs(XE_BO_FLAG_SYSTEM) - 1);
 
-<<<<<<< HEAD
-=======
 	/* CCS formats need physical placement at a 64K alignment in VRAM. */
 	if ((bo_flags & XE_BO_FLAG_VRAM_MASK) &&
 	    (bo_flags & XE_BO_FLAG_SCANOUT) &&
@@ -2055,7 +2013,6 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
 	    IS_ALIGNED(args->size, SZ_64K))
 		bo_flags |= XE_BO_FLAG_NEEDS_64K;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (args->flags & DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM) {
 		if (XE_IOCTL_DBG(xe, !(bo_flags & XE_BO_FLAG_VRAM_MASK)))
 			return -EINVAL;
@@ -2085,11 +2042,7 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
 	}
 
 	bo = xe_bo_create_user(xe, NULL, vm, args->size, args->cpu_caching,
-<<<<<<< HEAD
-			       ttm_bo_type_device, bo_flags);
-=======
 			       bo_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (vm)
 		xe_vm_unlock(vm);
@@ -2367,8 +2320,6 @@ void xe_bo_put_commit(struct llist_head *deferred)
 		drm_gem_object_free(&bo->ttm.base.refcount);
 }
 
-<<<<<<< HEAD
-=======
 void xe_bo_put(struct xe_bo *bo)
 {
 	might_sleep();
@@ -2383,7 +2334,6 @@ void xe_bo_put(struct xe_bo *bo)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * xe_bo_dumb_create - Create a dumb bo as backing for a fb
  * @file_priv: ...
@@ -2412,10 +2362,6 @@ int xe_bo_dumb_create(struct drm_file *file_priv,
 
 	bo = xe_bo_create_user(xe, NULL, NULL, args->size,
 			       DRM_XE_GEM_CPU_CACHING_WC,
-<<<<<<< HEAD
-			       ttm_bo_type_device,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       XE_BO_FLAG_VRAM_IF_DGFX(xe_device_get_root_tile(xe)) |
 			       XE_BO_FLAG_SCANOUT |
 			       XE_BO_FLAG_NEEDS_CPU_ACCESS);

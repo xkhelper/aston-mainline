@@ -1543,13 +1543,10 @@ enum drm_dp_phy {
 #define DP_SYMBOL_ERROR_COUNT_LANE2_PHY_REPEATER1	    0xf0039 /* 1.3 */
 #define DP_SYMBOL_ERROR_COUNT_LANE3_PHY_REPEATER1	    0xf003b /* 1.3 */
 
-<<<<<<< HEAD
-=======
 #define DP_OUI_PHY_REPEATER1				    0xf003d /* 1.3 */
 #define DP_OUI_PHY_REPEATER(dp_phy) \
 	DP_LTTPR_REG(dp_phy, DP_OUI_PHY_REPEATER1)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define __DP_FEC1_BASE					    0xf0290 /* 1.4 */
 #define __DP_FEC2_BASE					    0xf0298 /* 1.4 */
 #define DP_FEC_BASE(dp_phy) \

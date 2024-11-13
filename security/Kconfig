@@ -19,8 +19,6 @@ config SECURITY_DMESG_RESTRICT
 
 	  If you are unsure how to answer this question, answer N.
 
-<<<<<<< HEAD
-=======
 choice
 	prompt "Allow /proc/pid/mem access override"
 	default PROC_MEM_ALWAYS_FORCE
@@ -53,7 +51,6 @@ config PROC_MEM_NO_FORCE
 
 endchoice
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config SECURITY
 	bool "Enable different security models"
 	depends on SYSFS
@@ -227,10 +224,7 @@ source "security/yama/Kconfig"
 source "security/safesetid/Kconfig"
 source "security/lockdown/Kconfig"
 source "security/landlock/Kconfig"
-<<<<<<< HEAD
-=======
 source "security/ipe/Kconfig"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 source "security/integrity/Kconfig"
 
@@ -270,19 +264,11 @@ endchoice
 
 config LSM
 	string "Ordered list of enabled LSMs"
-<<<<<<< HEAD
-	default "landlock,lockdown,yama,loadpin,safesetid,smack,selinux,tomoyo,apparmor,bpf" if DEFAULT_SECURITY_SMACK
-	default "landlock,lockdown,yama,loadpin,safesetid,apparmor,selinux,smack,tomoyo,bpf" if DEFAULT_SECURITY_APPARMOR
-	default "landlock,lockdown,yama,loadpin,safesetid,tomoyo,bpf" if DEFAULT_SECURITY_TOMOYO
-	default "landlock,lockdown,yama,loadpin,safesetid,bpf" if DEFAULT_SECURITY_DAC
-	default "landlock,lockdown,yama,loadpin,safesetid,selinux,smack,tomoyo,apparmor,bpf"
-=======
 	default "landlock,lockdown,yama,loadpin,safesetid,smack,selinux,tomoyo,apparmor,ipe,bpf" if DEFAULT_SECURITY_SMACK
 	default "landlock,lockdown,yama,loadpin,safesetid,apparmor,selinux,smack,tomoyo,ipe,bpf" if DEFAULT_SECURITY_APPARMOR
 	default "landlock,lockdown,yama,loadpin,safesetid,tomoyo,ipe,bpf" if DEFAULT_SECURITY_TOMOYO
 	default "landlock,lockdown,yama,loadpin,safesetid,ipe,bpf" if DEFAULT_SECURITY_DAC
 	default "landlock,lockdown,yama,loadpin,safesetid,selinux,smack,tomoyo,apparmor,ipe,bpf"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  A comma-separated list of LSMs, in initialization order.
 	  Any LSMs left off this list, except for those with order

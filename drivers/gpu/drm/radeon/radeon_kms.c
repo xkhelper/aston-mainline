@@ -104,21 +104,9 @@ done_free:
 int radeon_driver_load_kms(struct drm_device *dev, unsigned long flags)
 {
 	struct pci_dev *pdev = to_pci_dev(dev->dev);
-<<<<<<< HEAD
-	struct radeon_device *rdev;
-	int r, acpi_status;
-
-	rdev = kzalloc(sizeof(struct radeon_device), GFP_KERNEL);
-	if (rdev == NULL) {
-		return -ENOMEM;
-	}
-	dev->dev_private = (void *)rdev;
-
-=======
 	struct radeon_device *rdev = dev->dev_private;
 	int r, acpi_status;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef __alpha__
 	rdev->hose = pdev->sysdata;
 #endif

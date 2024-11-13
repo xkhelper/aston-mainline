@@ -886,10 +886,6 @@ MODULE_DEVICE_TABLE(of, tvout_of_match);
 struct platform_driver sti_tvout_driver = {
 	.driver = {
 		.name = "sti-tvout",
-<<<<<<< HEAD
-		.owner = THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = tvout_of_match,
 	},
 	.probe = sti_tvout_probe,

@@ -335,10 +335,7 @@ static const struct of_device_id brcmstb_usb_pinmap_of_match[] = {
 	{ .compatible = "brcm,usb-pinmap" },
 	{ },
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(of, brcmstb_usb_pinmap_of_match);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver brcmstb_usb_pinmap_driver = {
 	.driver = {

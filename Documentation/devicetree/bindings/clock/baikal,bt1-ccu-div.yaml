@@ -134,11 +134,6 @@ properties:
   "#reset-cells":
     const: 1
 
-<<<<<<< HEAD
-  clocks: true
-
-  clock-names: true
-=======
   clocks:
     minItems: 3
     maxItems: 4
@@ -146,7 +141,6 @@ properties:
   clock-names:
     minItems: 3
     maxItems: 4
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 additionalProperties: false
 

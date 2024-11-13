@@ -2,10 +2,6 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __DML2_PMO_DCN3_H__
 #define __DML2_PMO_DCN3_H__
 

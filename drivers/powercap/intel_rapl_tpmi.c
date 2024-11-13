@@ -15,12 +15,8 @@
 #include <linux/module.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
-#define TPMI_RAPL_VERSION 1
-=======
 #define TPMI_RAPL_MAJOR_VERSION 0
 #define TPMI_RAPL_MINOR_VERSION 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* 1 header + 10 registers + 5 reserved. 8 bytes for each. */
 #define TPMI_RAPL_DOMAIN_SIZE 128
@@ -159,13 +155,6 @@ static int parse_one_domain(struct tpmi_rapl_package *trp, u32 offset)
 	tpmi_domain_size = tpmi_domain_header >> 16 & 0xff;
 	tpmi_domain_flags = tpmi_domain_header >> 32 & 0xffff;
 
-<<<<<<< HEAD
-	if (tpmi_domain_version != TPMI_RAPL_VERSION) {
-		pr_warn(FW_BUG "Unsupported version:%d\n", tpmi_domain_version);
-		return -ENODEV;
-	}
-
-=======
 	if (tpmi_domain_version == TPMI_VERSION_INVALID) {
 		pr_warn(FW_BUG "Invalid version\n");
 		return -ENODEV;
@@ -181,7 +170,6 @@ static int parse_one_domain(struct tpmi_rapl_package *trp, u32 offset)
 		pr_info("Ignore: Unsupported minor version:%ld\n",
 			TPMI_MINOR_VERSION(tpmi_domain_version));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Domain size: in unit of 128 Bytes */
 	if (tpmi_domain_size != 1) {
 		pr_warn(FW_BUG "Invalid Domain size %d\n", tpmi_domain_size);
@@ -204,11 +192,7 @@ static int parse_one_domain(struct tpmi_rapl_package *trp, u32 offset)
 			pr_warn(FW_BUG "System domain must support Domain Info register\n");
 			return -ENODEV;
 		}
-<<<<<<< HEAD
-		tpmi_domain_info = readq(trp->base + offset + TPMI_RAPL_REG_DOMAIN_INFO);
-=======
 		tpmi_domain_info = readq(trp->base + offset + TPMI_RAPL_REG_DOMAIN_INFO * 8);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!(tpmi_domain_info & TPMI_RAPL_DOMAIN_ROOT))
 			return 0;
 		domain_type = RAPL_DOMAIN_PLATFORM;

@@ -69,10 +69,7 @@ static ssize_t t7xx_mode_store(struct device *dev,
 {
 	struct t7xx_pci_dev *t7xx_dev;
 	struct pci_dev *pdev;
-<<<<<<< HEAD
-=======
 	enum t7xx_mode mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int index = 0;
 
 	pdev = to_pci_dev(dev);
@@ -80,14 +77,6 @@ static ssize_t t7xx_mode_store(struct device *dev,
 	if (!t7xx_dev)
 		return -ENODEV;
 
-<<<<<<< HEAD
-	index = sysfs_match_string(t7xx_mode_names, buf);
-	if (index == T7XX_FASTBOOT_SWITCHING) {
-		WRITE_ONCE(t7xx_dev->mode, T7XX_FASTBOOT_SWITCHING);
-	} else if (index == T7XX_RESET) {
-		WRITE_ONCE(t7xx_dev->mode, T7XX_RESET);
-		t7xx_acpi_pldr_func(t7xx_dev);
-=======
 	mode = READ_ONCE(t7xx_dev->mode);
 
 	index = sysfs_match_string(t7xx_mode_names, buf);
@@ -104,7 +93,6 @@ static ssize_t t7xx_mode_store(struct device *dev,
 	} else if (index == T7XX_RESET) {
 		pm_runtime_resume(dev);
 		t7xx_reset_device(t7xx_dev, PLDR);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return count;
@@ -469,11 +457,7 @@ static int t7xx_pcie_reinit(struct t7xx_pci_dev *t7xx_dev, bool is_d3)
 
 	if (is_d3) {
 		t7xx_mhccif_init(t7xx_dev);
-<<<<<<< HEAD
-		return t7xx_pci_pm_reinit(t7xx_dev);
-=======
 		t7xx_pci_pm_reinit(t7xx_dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -508,8 +492,6 @@ static int t7xx_send_fsm_command(struct t7xx_pci_dev *t7xx_dev, u32 event)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 int t7xx_pci_reprobe_early(struct t7xx_pci_dev *t7xx_dev)
 {
 	enum t7xx_mode mode = READ_ONCE(t7xx_dev->mode);
@@ -537,7 +519,6 @@ int t7xx_pci_reprobe(struct t7xx_pci_dev *t7xx_dev, bool boot)
 	return t7xx_send_fsm_command(t7xx_dev, FSM_CMD_START);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __t7xx_pci_pm_resume(struct pci_dev *pdev, bool state_check)
 {
 	struct t7xx_pci_dev *t7xx_dev;
@@ -564,24 +545,11 @@ static int __t7xx_pci_pm_resume(struct pci_dev *pdev, bool state_check)
 		if (prev_state == PM_RESUME_REG_STATE_L3 ||
 		    (prev_state == PM_RESUME_REG_STATE_INIT &&
 		     atr_reg_val == ATR_SRC_ADDR_INVALID)) {
-<<<<<<< HEAD
-			ret = t7xx_send_fsm_command(t7xx_dev, FSM_CMD_STOP);
-			if (ret)
-				return ret;
-
-			ret = t7xx_pcie_reinit(t7xx_dev, true);
-			if (ret)
-				return ret;
-
-			t7xx_clear_rgu_irq(t7xx_dev);
-			return t7xx_send_fsm_command(t7xx_dev, FSM_CMD_START);
-=======
 			ret = t7xx_pci_reprobe_early(t7xx_dev);
 			if (ret)
 				return ret;
 
 			return t7xx_pci_reprobe(t7xx_dev, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (prev_state == PM_RESUME_REG_STATE_EXP ||

@@ -67,11 +67,8 @@ enum net_attach_type {
 	NET_ATTACH_TYPE_XDP_GENERIC,
 	NET_ATTACH_TYPE_XDP_DRIVER,
 	NET_ATTACH_TYPE_XDP_OFFLOAD,
-<<<<<<< HEAD
-=======
 	NET_ATTACH_TYPE_TCX_INGRESS,
 	NET_ATTACH_TYPE_TCX_EGRESS,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const char * const attach_type_strings[] = {
@@ -79,11 +76,8 @@ static const char * const attach_type_strings[] = {
 	[NET_ATTACH_TYPE_XDP_GENERIC]	= "xdpgeneric",
 	[NET_ATTACH_TYPE_XDP_DRIVER]	= "xdpdrv",
 	[NET_ATTACH_TYPE_XDP_OFFLOAD]	= "xdpoffload",
-<<<<<<< HEAD
-=======
 	[NET_ATTACH_TYPE_TCX_INGRESS]	= "tcx_ingress",
 	[NET_ATTACH_TYPE_TCX_EGRESS]	= "tcx_egress",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const char * const attach_loc_strings[] = {
@@ -492,15 +486,9 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
 		if (prog_flags[i] || json_output) {
 			NET_START_ARRAY("prog_flags", "%s ");
 			for (j = 0; prog_flags[i] && j < 32; j++) {
-<<<<<<< HEAD
-				if (!(prog_flags[i] & (1 << j)))
-					continue;
-				NET_DUMP_UINT_ONLY(1 << j);
-=======
 				if (!(prog_flags[i] & (1U << j)))
 					continue;
 				NET_DUMP_UINT_ONLY(1U << j);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			NET_END_ARRAY("");
 		}
@@ -509,15 +497,9 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
 			if (link_flags[i] || json_output) {
 				NET_START_ARRAY("link_flags", "%s ");
 				for (j = 0; link_flags[i] && j < 32; j++) {
-<<<<<<< HEAD
-					if (!(link_flags[i] & (1 << j)))
-						continue;
-					NET_DUMP_UINT_ONLY(1 << j);
-=======
 					if (!(link_flags[i] & (1U << j)))
 						continue;
 					NET_DUMP_UINT_ONLY(1U << j);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 				NET_END_ARRAY("");
 			}
@@ -669,8 +651,6 @@ static int do_attach_detach_xdp(int progfd, enum net_attach_type attach_type,
 	return bpf_xdp_attach(ifindex, progfd, flags, NULL);
 }
 
-<<<<<<< HEAD
-=======
 static int get_tcx_type(enum net_attach_type attach_type)
 {
 	switch (attach_type) {
@@ -697,7 +677,6 @@ static int do_detach_tcx(int targetfd, enum net_attach_type attach_type)
 	return bpf_prog_detach(targetfd, type);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int do_attach(int argc, char **argv)
 {
 	enum net_attach_type attach_type;
@@ -735,12 +714,6 @@ static int do_attach(int argc, char **argv)
 		}
 	}
 
-<<<<<<< HEAD
-	/* attach xdp prog */
-	if (is_prefix("xdp", attach_type_strings[attach_type]))
-		err = do_attach_detach_xdp(progfd, attach_type, ifindex,
-					   overwrite);
-=======
 	switch (attach_type) {
 	/* attach xdp prog */
 	case NET_ATTACH_TYPE_XDP:
@@ -758,7 +731,6 @@ static int do_attach(int argc, char **argv)
 		break;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		p_err("interface %s attach failed: %s",
 		      attach_type_strings[attach_type], strerror(-err));
@@ -792,12 +764,6 @@ static int do_detach(int argc, char **argv)
 	if (ifindex < 1)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	/* detach xdp prog */
-	progfd = -1;
-	if (is_prefix("xdp", attach_type_strings[attach_type]))
-		err = do_attach_detach_xdp(progfd, attach_type, ifindex, NULL);
-=======
 	switch (attach_type) {
 	/* detach xdp prog */
 	case NET_ATTACH_TYPE_XDP:
@@ -815,7 +781,6 @@ static int do_detach(int argc, char **argv)
 	default:
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (err < 0) {
 		p_err("interface %s detach failed: %s",
@@ -915,12 +880,9 @@ static void show_link_netfilter(void)
 		nf_link_count++;
 	}
 
-<<<<<<< HEAD
-=======
 	if (!nf_link_info)
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qsort(nf_link_info, nf_link_count, sizeof(*nf_link_info), netfilter_link_compar);
 
 	for (id = 0; id < nf_link_count; id++) {
@@ -1025,12 +987,8 @@ static int do_help(int argc, char **argv)
 		"       %1$s %2$s help\n"
 		"\n"
 		"       " HELP_SPEC_PROGRAM "\n"
-<<<<<<< HEAD
-		"       ATTACH_TYPE := { xdp | xdpgeneric | xdpdrv | xdpoffload }\n"
-=======
 		"       ATTACH_TYPE := { xdp | xdpgeneric | xdpdrv | xdpoffload | tcx_ingress\n"
 		"                        | tcx_egress }\n"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"       " HELP_SPEC_OPTIONS " }\n"
 		"\n"
 		"Note: Only xdp, tcx, tc, netkit, flow_dissector and netfilter attachments\n"

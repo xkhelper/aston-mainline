@@ -1,15 +1,5 @@
 [
   {
-<<<<<<< HEAD
-    "EventCode": "0x300F4",
-    "EventName": "PM_RUN_INST_CMPL_CONC",
-    "BriefDescription": "PowerPC instruction completed by this thread when all threads in the core had the run-latch set."
-  },
-  {
-    "EventCode": "0x400F6",
-    "EventName": "PM_BR_MPRED_CMPL",
-    "BriefDescription": "A mispredicted branch completed. Includes direction and target."
-=======
     "EventCode": "0x1002C",
     "EventName": "PM_LD_PREFETCH_CACHE_LINE_MISS",
     "BriefDescription": "The L1 cache was reloaded with a line that fulfills a prefetch request."
@@ -28,6 +18,5 @@
     "EventCode": "0x300F4",
     "EventName": "PM_RUN_INST_CMPL_CONC",
     "BriefDescription": "PowerPC instruction completed by this thread when all threads in the core had the run-latch set."
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   }
 ]

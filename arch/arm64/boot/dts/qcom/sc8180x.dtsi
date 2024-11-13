@@ -2507,8 +2507,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		usb_mp_hsphy0: phy@88e4000 {
 			compatible = "qcom,sc8180x-usb-hs-phy",
 				     "qcom,usb-snps-hs-7nm-phy";
@@ -2537,7 +2535,6 @@
 			status = "disabled";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		usb_prim_qmpphy: phy@88e8000 {
 			compatible = "qcom,sc8180x-qmp-usb3-dp-phy";
 			reg = <0 0x088e8000 0 0x3000>;
@@ -2586,8 +2583,6 @@
 			};
 		};
 
-<<<<<<< HEAD
-=======
 		usb_mp_qmpphy0: phy@88eb000 {
 			compatible = "qcom,sc8180x-qmp-usb3-uni-phy";
 			reg = <0 0x088eb000 0 0x1000>;
@@ -2642,7 +2637,6 @@
 			status = "disabled";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		usb_sec_qmpphy: phy@88ee000 {
 			compatible = "qcom,sc8180x-qmp-usb3-dp-phy";
 			reg = <0 0x088ed000 0 0x3000>;
@@ -2710,19 +2704,6 @@
 			qcom,bcm-voters = <&apps_bcm_voter>;
 		};
 
-<<<<<<< HEAD
-		usb_prim: usb@a6f8800 {
-			compatible = "qcom,sc8180x-dwc3", "qcom,dwc3";
-			reg = <0 0x0a6f8800 0 0x400>;
-			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
-					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
-					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
-					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
-			interrupt-names = "hs_phy_irq",
-					  "ss_phy_irq",
-					  "dm_hs_phy_irq",
-					  "dp_hs_phy_irq";
-=======
 		usb_mp: usb@a4f8800 {
 			compatible = "qcom,sc8180x-dwc3-mp", "qcom,dwc3";
 			reg = <0 0x0a4f8800 0 0x400>;
@@ -2806,7 +2787,6 @@
 					  "dp_hs_phy_irq",
 					  "dm_hs_phy_irq",
 					  "ss_phy_irq";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			clocks = <&gcc GCC_CFG_NOC_USB3_PRIM_AXI_CLK>,
 				 <&gcc GCC_USB30_PRIM_MASTER_CLK>,
@@ -2888,14 +2868,6 @@
 				      "xo";
 			resets = <&gcc GCC_USB30_SEC_BCR>;
 			power-domains = <&gcc USB30_SEC_GDSC>;
-<<<<<<< HEAD
-			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
-					      <&pdc 40 IRQ_TYPE_LEVEL_HIGH>,
-					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>,
-					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>;
-			interrupt-names = "hs_phy_irq", "ss_phy_irq",
-					  "dm_hs_phy_irq", "dp_hs_phy_irq";
-=======
 
 			interrupts-extended = <&intc GIC_SPI 135 IRQ_TYPE_LEVEL_HIGH>,
 					      <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
@@ -2907,7 +2879,6 @@
 					  "dp_hs_phy_irq",
 					  "dm_hs_phy_irq",
 					  "ss_phy_irq";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			assigned-clocks = <&gcc GCC_USB30_SEC_MOCK_UTMI_CLK>,
 					  <&gcc GCC_USB30_SEC_MASTER_CLK>;

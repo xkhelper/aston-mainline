@@ -9,23 +9,13 @@
 #include <linux/errno.h>
 #include <linux/types.h>
 
-<<<<<<< HEAD
-struct drm_i915_private;
 struct drm_connector_state;
 struct drm_modeset_acquire_ctx;
-
-=======
-struct drm_connector_state;
-struct drm_modeset_acquire_ctx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_atomic_state;
 struct intel_connector;
 struct intel_crtc;
 struct intel_crtc_state;
-<<<<<<< HEAD
-=======
 struct intel_display;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_dp;
 struct intel_encoder;
 struct intel_link_bw_limits;
@@ -62,13 +52,8 @@ int intel_dp_tunnel_atomic_check_state(struct intel_atomic_state *state,
 
 void intel_dp_tunnel_atomic_alloc_bw(struct intel_atomic_state *state);
 
-<<<<<<< HEAD
-int intel_dp_tunnel_mgr_init(struct drm_i915_private *i915);
-void intel_dp_tunnel_mgr_cleanup(struct drm_i915_private *i915);
-=======
 int intel_dp_tunnel_mgr_init(struct intel_display *display);
 void intel_dp_tunnel_mgr_cleanup(struct intel_display *display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else
 
@@ -135,20 +120,12 @@ intel_dp_tunnel_atomic_alloc_bw(struct intel_atomic_state *state)
 }
 
 static inline int
-<<<<<<< HEAD
-intel_dp_tunnel_mgr_init(struct drm_i915_private *i915)
-=======
 intel_dp_tunnel_mgr_init(struct intel_display *display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }
 
-<<<<<<< HEAD
-static inline void intel_dp_tunnel_mgr_cleanup(struct drm_i915_private *i915) {}
-=======
 static inline void intel_dp_tunnel_mgr_cleanup(struct intel_display *display) {}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* CONFIG_DRM_I915_DP_TUNNEL */
 

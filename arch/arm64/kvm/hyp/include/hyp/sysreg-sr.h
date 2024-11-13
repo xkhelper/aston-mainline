@@ -16,11 +16,6 @@
 #include <asm/kvm_hyp.h>
 #include <asm/kvm_mmu.h>
 
-<<<<<<< HEAD
-static inline void __sysreg_save_common_state(struct kvm_cpu_context *ctxt)
-{
-	ctxt_sys_reg(ctxt, MDSCR_EL1)	= read_sysreg(mdscr_el1);
-=======
 static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt);
 
 static inline void __sysreg_save_common_state(struct kvm_cpu_context *ctxt)
@@ -30,7 +25,6 @@ static inline void __sysreg_save_common_state(struct kvm_cpu_context *ctxt)
 	// POR_EL0 can affect uaccess, so must be saved/restored early.
 	if (ctxt_has_s1poe(ctxt))
 		ctxt_sys_reg(ctxt, POR_EL0)	= read_sysreg_s(SYS_POR_EL0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void __sysreg_save_user_state(struct kvm_cpu_context *ctxt)
@@ -78,8 +72,6 @@ static inline bool ctxt_has_tcrx(struct kvm_cpu_context *ctxt)
 	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64MMFR3_EL1, TCRX, IMP);
 }
 
-<<<<<<< HEAD
-=======
 static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt)
 {
 	struct kvm_vcpu *vcpu;
@@ -91,7 +83,6 @@ static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt)
 	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64MMFR3_EL1, S1POE, IMP);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
 {
 	ctxt_sys_reg(ctxt, SCTLR_EL1)	= read_sysreg_el1(SYS_SCTLR);
@@ -106,12 +97,9 @@ static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
 			ctxt_sys_reg(ctxt, PIR_EL1)	= read_sysreg_el1(SYS_PIR);
 			ctxt_sys_reg(ctxt, PIRE0_EL1)	= read_sysreg_el1(SYS_PIRE0);
 		}
-<<<<<<< HEAD
-=======
 
 		if (ctxt_has_s1poe(ctxt))
 			ctxt_sys_reg(ctxt, POR_EL1)	= read_sysreg_el1(SYS_POR);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	ctxt_sys_reg(ctxt, ESR_EL1)	= read_sysreg_el1(SYS_ESR);
 	ctxt_sys_reg(ctxt, AFSR0_EL1)	= read_sysreg_el1(SYS_AFSR0);
@@ -152,13 +140,10 @@ static inline void __sysreg_save_el2_return_state(struct kvm_cpu_context *ctxt)
 static inline void __sysreg_restore_common_state(struct kvm_cpu_context *ctxt)
 {
 	write_sysreg(ctxt_sys_reg(ctxt, MDSCR_EL1),  mdscr_el1);
-<<<<<<< HEAD
-=======
 
 	// POR_EL0 can affect uaccess, so must be saved/restored early.
 	if (ctxt_has_s1poe(ctxt))
 		write_sysreg_s(ctxt_sys_reg(ctxt, POR_EL0),	SYS_POR_EL0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void __sysreg_restore_user_state(struct kvm_cpu_context *ctxt)
@@ -197,12 +182,9 @@ static inline void __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt)
 			write_sysreg_el1(ctxt_sys_reg(ctxt, PIR_EL1),	SYS_PIR);
 			write_sysreg_el1(ctxt_sys_reg(ctxt, PIRE0_EL1),	SYS_PIRE0);
 		}
-<<<<<<< HEAD
-=======
 
 		if (ctxt_has_s1poe(ctxt))
 			write_sysreg_el1(ctxt_sys_reg(ctxt, POR_EL1),	SYS_POR);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	write_sysreg_el1(ctxt_sys_reg(ctxt, ESR_EL1),	SYS_ESR);
 	write_sysreg_el1(ctxt_sys_reg(ctxt, AFSR0_EL1),	SYS_AFSR0);

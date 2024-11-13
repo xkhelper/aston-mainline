@@ -17,10 +17,7 @@
  * GNU General Public License for more details.
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/bitfield.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/err.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
@@ -36,11 +33,6 @@
 #include <linux/mfd/axp20x.h>
 
 #define AXP20X_PWR_STATUS_BAT_CHARGING	BIT(2)
-<<<<<<< HEAD
-
-#define AXP20X_PWR_OP_BATT_PRESENT	BIT(5)
-#define AXP20X_PWR_OP_BATT_ACTIVATED	BIT(3)
-=======
 #define AXP717_PWR_STATUS_MASK		GENMASK(6, 5)
 #define AXP717_PWR_STATUS_BAT_STANDBY	0
 #define AXP717_PWR_STATUS_BAT_CHRG	1
@@ -54,7 +46,6 @@
 #define AXP717_BATT_UVLO_2_5V		BIT(2)
 #define AXP717_BATT_OVER_TEMP		BIT(1)
 #define AXP717_BATT_UNDER_TEMP		BIT(0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define AXP209_FG_PERCENT		GENMASK(6, 0)
 #define AXP22X_FG_VALID			BIT(7)
@@ -69,13 +60,6 @@
 #define AXP22X_CHRG_CTRL1_TGT_4_22V	(1 << 5)
 #define AXP22X_CHRG_CTRL1_TGT_4_24V	(3 << 5)
 
-<<<<<<< HEAD
-#define AXP813_CHRG_CTRL1_TGT_4_35V	(3 << 5)
-
-#define AXP20X_CHRG_CTRL1_TGT_CURR	GENMASK(3, 0)
-
-#define AXP20X_V_OFF_MASK		GENMASK(2, 0)
-=======
 #define AXP717_CHRG_ENABLE		BIT(1)
 #define AXP717_CHRG_CV_VOLT_MASK	GENMASK(2, 0)
 #define AXP717_CHRG_CV_4_0V		0
@@ -104,18 +88,10 @@
 #define AXP717_BAT_CV_MAX_UV		5000000
 #define AXP717_BAT_CC_MIN_UA		0
 #define AXP717_BAT_CC_MAX_UA		3008000
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct axp20x_batt_ps;
 
 struct axp_data {
-<<<<<<< HEAD
-	int	ccc_scale;
-	int	ccc_offset;
-	bool	has_fg_valid;
-	int	(*get_max_voltage)(struct axp20x_batt_ps *batt, int *val);
-	int	(*set_max_voltage)(struct axp20x_batt_ps *batt, int val);
-=======
 	int		ccc_scale;
 	int		ccc_offset;
 	unsigned int	ccc_reg;
@@ -129,7 +105,6 @@ struct axp_data {
 	void	(*set_bat_info)(struct platform_device *pdev,
 				struct axp20x_batt_ps *axp_batt,
 				struct power_supply_battery_info *info);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct axp20x_batt_ps {
@@ -202,8 +177,6 @@ static int axp22x_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int axp717_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 					  int *val)
 {
@@ -237,7 +210,6 @@ static int axp717_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int axp813_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 					  int *val)
 {
@@ -283,8 +255,6 @@ static int axp20x_get_constant_charge_current(struct axp20x_batt_ps *axp,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int axp717_get_constant_charge_current(struct axp20x_batt_ps *axp,
 					      int *val)
 {
@@ -300,7 +270,6 @@ static int axp717_get_constant_charge_current(struct axp20x_batt_ps *axp,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int axp20x_battery_get_prop(struct power_supply *psy,
 				   enum power_supply_property psp,
 				   union power_supply_propval *val)
@@ -424,19 +393,11 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
 		val->intval = reg & AXP209_FG_PERCENT;
 		break;
 
-<<<<<<< HEAD
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		return axp20x_batt->data->get_max_voltage(axp20x_batt,
-							  &val->intval);
-
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-=======
 	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		return axp20x_batt->data->get_max_voltage(axp20x_batt,
 							  &val->intval);
 
 	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = regmap_read(axp20x_batt->regmap, AXP20X_V_OFF, &reg);
 		if (ret)
 			return ret;
@@ -461,8 +422,6 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int axp717_battery_get_prop(struct power_supply *psy,
 				   enum power_supply_property psp,
 				   union power_supply_propval *val)
@@ -628,7 +587,6 @@ static int axp717_battery_get_prop(struct power_supply *psy,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int axp22x_battery_set_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 					  int val)
 {
@@ -685,8 +643,6 @@ static int axp20x_battery_set_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 				  AXP20X_CHRG_CTRL1_TGT_VOLT, val);
 }
 
-<<<<<<< HEAD
-=======
 static int axp717_battery_set_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 					  int val)
 {
@@ -716,7 +672,6 @@ static int axp717_battery_set_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 				  AXP717_CHRG_CV_VOLT_MASK, val);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int axp20x_set_constant_charge_current(struct axp20x_batt_ps *axp_batt,
 					      int charge_current)
 {
@@ -733,8 +688,6 @@ static int axp20x_set_constant_charge_current(struct axp20x_batt_ps *axp_batt,
 				  AXP20X_CHRG_CTRL1_TGT_CURR, charge_current);
 }
 
-<<<<<<< HEAD
-=======
 static int axp717_set_constant_charge_current(struct axp20x_batt_ps *axp,
 					      int charge_current)
 {
@@ -753,7 +706,6 @@ static int axp717_set_constant_charge_current(struct axp20x_batt_ps *axp,
 				  AXP717_ICC_CHARGER_LIM_MASK, val);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int axp20x_set_max_constant_charge_current(struct axp20x_batt_ps *axp,
 						  int charge_current)
 {
@@ -798,8 +750,6 @@ static int axp20x_set_voltage_min_design(struct axp20x_batt_ps *axp_batt,
 				  AXP20X_V_OFF_MASK, val1);
 }
 
-<<<<<<< HEAD
-=======
 static int axp717_set_voltage_min_design(struct axp20x_batt_ps *axp_batt,
 					 int min_voltage)
 {
@@ -813,7 +763,6 @@ static int axp717_set_voltage_min_design(struct axp20x_batt_ps *axp_batt,
 				  AXP717_V_OFF_MASK, val1);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int axp20x_battery_set_prop(struct power_supply *psy,
 				   enum power_supply_property psp,
 				   const union power_supply_propval *val)
@@ -821,17 +770,10 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
 	struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-<<<<<<< HEAD
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-		return axp20x_set_voltage_min_design(axp20x_batt, val->intval);
-
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-=======
 	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
 		return axp20x_set_voltage_min_design(axp20x_batt, val->intval);
 
 	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return axp20x_batt->data->set_max_voltage(axp20x_batt, val->intval);
 
 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
@@ -857,8 +799,6 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
 	}
 }
 
-<<<<<<< HEAD
-=======
 static int axp717_battery_set_prop(struct power_supply *psy,
 				   enum power_supply_property psp,
 				   const union power_supply_propval *val)
@@ -895,7 +835,6 @@ static int axp717_battery_set_prop(struct power_supply *psy,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static enum power_supply_property axp20x_battery_props[] = {
 	POWER_SUPPLY_PROP_PRESENT,
 	POWER_SUPPLY_PROP_ONLINE,
@@ -905,13 +844,6 @@ static enum power_supply_property axp20x_battery_props[] = {
 	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
 	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
 	POWER_SUPPLY_PROP_HEALTH,
-<<<<<<< HEAD
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_CAPACITY,
-};
-
-=======
 	POWER_SUPPLY_PROP_VOLTAGE_MAX,
 	POWER_SUPPLY_PROP_VOLTAGE_MIN,
 	POWER_SUPPLY_PROP_CAPACITY,
@@ -931,25 +863,16 @@ static enum power_supply_property axp717_battery_props[] = {
 	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int axp20x_battery_prop_writeable(struct power_supply *psy,
 					 enum power_supply_property psp)
 {
 	return psp == POWER_SUPPLY_PROP_STATUS ||
-<<<<<<< HEAD
-	       psp == POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN ||
-	       psp == POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN ||
-=======
 	       psp == POWER_SUPPLY_PROP_VOLTAGE_MIN ||
 	       psp == POWER_SUPPLY_PROP_VOLTAGE_MAX ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT ||
 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
 }
 
-<<<<<<< HEAD
-static const struct power_supply_desc axp20x_batt_ps_desc = {
-=======
 static int axp717_battery_prop_writeable(struct power_supply *psy,
 					 enum power_supply_property psp)
 {
@@ -960,7 +883,6 @@ static int axp717_battery_prop_writeable(struct power_supply *psy,
 }
 
 static const struct power_supply_desc axp209_batt_ps_desc = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "axp20x-battery",
 	.type = POWER_SUPPLY_TYPE_BATTERY,
 	.properties = axp20x_battery_props,
@@ -970,13 +892,6 @@ static const struct power_supply_desc axp209_batt_ps_desc = {
 	.set_property = axp20x_battery_set_prop,
 };
 
-<<<<<<< HEAD
-static const struct axp_data axp209_data = {
-	.ccc_scale = 100000,
-	.ccc_offset = 300000,
-	.get_max_voltage = axp20x_battery_get_max_voltage,
-	.set_max_voltage = axp20x_battery_set_max_voltage,
-=======
 static const struct power_supply_desc axp717_batt_ps_desc = {
 	.name = "axp20x-battery",
 	.type = POWER_SUPPLY_TYPE_BATTERY,
@@ -1096,17 +1011,11 @@ static const struct axp_data axp209_data = {
 	.set_max_voltage = axp20x_battery_set_max_voltage,
 	.cfg_iio_chan = axp209_bat_cfg_iio_channels,
 	.set_bat_info = axp209_set_battery_info,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct axp_data axp221_data = {
 	.ccc_scale = 150000,
 	.ccc_offset = 300000,
-<<<<<<< HEAD
-	.has_fg_valid = true,
-	.get_max_voltage = axp22x_battery_get_max_voltage,
-	.set_max_voltage = axp22x_battery_set_max_voltage,
-=======
 	.ccc_reg = AXP20X_CHRG_CTRL1,
 	.ccc_mask = AXP20X_CHRG_CTRL1_TGT_CURR,
 	.has_fg_valid = true,
@@ -1127,17 +1036,11 @@ static const struct axp_data axp717_data = {
 	.set_max_voltage = axp717_battery_set_max_voltage,
 	.cfg_iio_chan = axp717_bat_cfg_iio_channels,
 	.set_bat_info = axp717_set_battery_info,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct axp_data axp813_data = {
 	.ccc_scale = 200000,
 	.ccc_offset = 200000,
-<<<<<<< HEAD
-	.has_fg_valid = true,
-	.get_max_voltage = axp813_battery_get_max_voltage,
-	.set_max_voltage = axp20x_battery_set_max_voltage,
-=======
 	.ccc_reg = AXP20X_CHRG_CTRL1,
 	.ccc_mask = AXP20X_CHRG_CTRL1_TGT_CURR,
 	.has_fg_valid = true,
@@ -1146,7 +1049,6 @@ static const struct axp_data axp813_data = {
 	.set_max_voltage = axp20x_battery_set_max_voltage,
 	.cfg_iio_chan = axp209_bat_cfg_iio_channels,
 	.set_bat_info = axp209_set_battery_info,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct of_device_id axp20x_battery_ps_id[] = {
@@ -1157,12 +1059,9 @@ static const struct of_device_id axp20x_battery_ps_id[] = {
 		.compatible = "x-powers,axp221-battery-power-supply",
 		.data = (void *)&axp221_data,
 	}, {
-<<<<<<< HEAD
-=======
 		.compatible = "x-powers,axp717-battery-power-supply",
 		.data = (void *)&axp717_data,
 	}, {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "x-powers,axp813-battery-power-supply",
 		.data = (void *)&axp813_data,
 	}, { /* sentinel */ },
@@ -1175,10 +1074,7 @@ static int axp20x_power_probe(struct platform_device *pdev)
 	struct power_supply_config psy_cfg = {};
 	struct power_supply_battery_info *info;
 	struct device *dev = &pdev->dev;
-<<<<<<< HEAD
-=======
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!of_device_is_available(pdev->dev.of_node))
 		return -ENODEV;
@@ -1190,32 +1086,6 @@ static int axp20x_power_probe(struct platform_device *pdev)
 
 	axp20x_batt->dev = &pdev->dev;
 
-<<<<<<< HEAD
-	axp20x_batt->batt_v = devm_iio_channel_get(&pdev->dev, "batt_v");
-	if (IS_ERR(axp20x_batt->batt_v)) {
-		if (PTR_ERR(axp20x_batt->batt_v) == -ENODEV)
-			return -EPROBE_DEFER;
-		return PTR_ERR(axp20x_batt->batt_v);
-	}
-
-	axp20x_batt->batt_chrg_i = devm_iio_channel_get(&pdev->dev,
-							"batt_chrg_i");
-	if (IS_ERR(axp20x_batt->batt_chrg_i)) {
-		if (PTR_ERR(axp20x_batt->batt_chrg_i) == -ENODEV)
-			return -EPROBE_DEFER;
-		return PTR_ERR(axp20x_batt->batt_chrg_i);
-	}
-
-	axp20x_batt->batt_dischrg_i = devm_iio_channel_get(&pdev->dev,
-							   "batt_dischrg_i");
-	if (IS_ERR(axp20x_batt->batt_dischrg_i)) {
-		if (PTR_ERR(axp20x_batt->batt_dischrg_i) == -ENODEV)
-			return -EPROBE_DEFER;
-		return PTR_ERR(axp20x_batt->batt_dischrg_i);
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	axp20x_batt->regmap = dev_get_regmap(pdev->dev.parent, NULL);
 	platform_set_drvdata(pdev, axp20x_batt);
 
@@ -1224,17 +1094,12 @@ static int axp20x_power_probe(struct platform_device *pdev)
 
 	axp20x_batt->data = (struct axp_data *)of_device_get_match_data(dev);
 
-<<<<<<< HEAD
-	axp20x_batt->batt = devm_power_supply_register(&pdev->dev,
-						       &axp20x_batt_ps_desc,
-=======
 	ret = axp20x_batt->data->cfg_iio_chan(pdev, axp20x_batt);
 	if (ret)
 		return ret;
 
 	axp20x_batt->batt = devm_power_supply_register(&pdev->dev,
 						       axp20x_batt->data->bat_ps_desc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						       &psy_cfg);
 	if (IS_ERR(axp20x_batt->batt)) {
 		dev_err(&pdev->dev, "failed to register power supply: %ld\n",
@@ -1243,42 +1108,15 @@ static int axp20x_power_probe(struct platform_device *pdev)
 	}
 
 	if (!power_supply_get_battery_info(axp20x_batt->batt, &info)) {
-<<<<<<< HEAD
-		int vmin = info->voltage_min_design_uv;
-		int ccc = info->constant_charge_current_max_ua;
-
-		if (vmin > 0 && axp20x_set_voltage_min_design(axp20x_batt,
-							      vmin))
-			dev_err(&pdev->dev,
-				"couldn't set voltage_min_design\n");
-
-		/* Set max to unverified value to be able to set CCC */
-		axp20x_batt->max_ccc = ccc;
-
-		if (ccc <= 0 || axp20x_set_constant_charge_current(axp20x_batt,
-								   ccc)) {
-			dev_err(&pdev->dev,
-				"couldn't set constant charge current from DT: fallback to minimum value\n");
-			ccc = 300000;
-			axp20x_batt->max_ccc = ccc;
-			axp20x_set_constant_charge_current(axp20x_batt, ccc);
-		}
-=======
 		axp20x_batt->data->set_bat_info(pdev, axp20x_batt, info);
 		power_supply_put_battery_info(axp20x_batt->batt, info);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
 	 * Update max CCC to a valid value if battery info is present or set it
 	 * to current register value by default.
 	 */
-<<<<<<< HEAD
-	axp20x_get_constant_charge_current(axp20x_batt,
-					   &axp20x_batt->max_ccc);
-=======
 	axp20x_get_constant_charge_current(axp20x_batt, &axp20x_batt->max_ccc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

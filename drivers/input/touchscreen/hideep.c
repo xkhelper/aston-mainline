@@ -17,11 +17,7 @@
 #include <linux/input/mt.h>
 #include <linux/input/touchscreen.h>
 #include <linux/regulator/consumer.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define HIDEEP_TS_NAME			"HiDeep Touchscreen"
 #define HIDEEP_I2C_NAME			"hideep_ts"

@@ -449,11 +449,6 @@ extern int ceph_osdc_init(struct ceph_osd_client *osdc,
 extern void ceph_osdc_stop(struct ceph_osd_client *osdc);
 extern void ceph_osdc_reopen_osds(struct ceph_osd_client *osdc);
 
-<<<<<<< HEAD
-extern void ceph_osdc_handle_reply(struct ceph_osd_client *osdc,
-				   struct ceph_msg *msg);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void ceph_osdc_handle_map(struct ceph_osd_client *osdc,
 				 struct ceph_msg *msg);
 void ceph_osdc_update_epoch_barrier(struct ceph_osd_client *osdc, u32 eb);

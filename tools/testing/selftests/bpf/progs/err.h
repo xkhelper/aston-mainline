@@ -5,8 +5,6 @@
 #define MAX_ERRNO 4095
 #define IS_ERR_VALUE(x) (unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO
 
-<<<<<<< HEAD
-=======
 #define __STR(x) #x
 
 #define set_if_not_errno_or_zero(x, y)			\
@@ -17,7 +15,6 @@
 		      : "+r"(x));			\
 })
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int IS_ERR_OR_NULL(const void *ptr)
 {
 	return !ptr || IS_ERR_VALUE((unsigned long)ptr);

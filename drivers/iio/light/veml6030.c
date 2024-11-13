@@ -99,14 +99,8 @@ static const char * const period_values[] = {
 static ssize_t in_illuminance_period_available_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
 {
-<<<<<<< HEAD
-	int ret, reg, x;
-	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-	struct veml6030_data *data = iio_priv(indio_dev);
-=======
 	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
 	int ret, reg, x;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
 	if (ret) {
@@ -528,11 +522,7 @@ static int veml6030_read_raw(struct iio_dev *indio_dev,
 			}
 			if (mask == IIO_CHAN_INFO_PROCESSED) {
 				*val = (reg * data->cur_resolution) / 10000;
-<<<<<<< HEAD
-				*val2 = (reg * data->cur_resolution) % 10000;
-=======
 				*val2 = (reg * data->cur_resolution) % 10000 * 100;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return IIO_VAL_INT_PLUS_MICRO;
 			}
 			*val = reg;
@@ -789,11 +779,7 @@ static int veml6030_hw_init(struct iio_dev *indio_dev)
 
 	/* Cache currently active measurement parameters */
 	data->cur_gain = 3;
-<<<<<<< HEAD
-	data->cur_resolution = 4608;
-=======
 	data->cur_resolution = 5376;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data->cur_integration_time = 3;
 
 	return ret;

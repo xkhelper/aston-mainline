@@ -831,11 +831,7 @@ wd33c93_intr(struct Scsi_Host *instance)
 		/* construct an IDENTIFY message with correct disconnect bit */
 
 		hostdata->outgoing_msg[0] = IDENTIFY(0, cmd->device->lun);
-<<<<<<< HEAD
-		if (scsi_pointer->phase)
-=======
 		if (WD33C93_scsi_pointer(cmd)->phase)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			hostdata->outgoing_msg[0] |= 0x40;
 
 		if (hostdata->sync_stat[cmd->device->id] == SS_FIRST) {

@@ -349,11 +349,6 @@ static DECLARE_WORK(disable_freq_invariance_work,
 DEFINE_PER_CPU(unsigned long, arch_freq_scale) = SCHED_CAPACITY_SCALE;
 EXPORT_PER_CPU_SYMBOL_GPL(arch_freq_scale);
 
-<<<<<<< HEAD
-static void scale_freq_tick(u64 acnt, u64 mcnt)
-{
-	u64 freq_scale;
-=======
 static DEFINE_STATIC_KEY_FALSE(arch_hybrid_cap_scale_key);
 
 struct arch_hybrid_cpu_scale {
@@ -437,7 +432,6 @@ EXPORT_SYMBOL_GPL(arch_scale_cpu_capacity);
 static void scale_freq_tick(u64 acnt, u64 mcnt)
 {
 	u64 freq_scale, freq_ratio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!arch_scale_freq_invariant())
 		return;
@@ -445,16 +439,12 @@ static void scale_freq_tick(u64 acnt, u64 mcnt)
 	if (check_shl_overflow(acnt, 2*SCHED_CAPACITY_SHIFT, &acnt))
 		goto error;
 
-<<<<<<< HEAD
-	if (check_mul_overflow(mcnt, arch_max_freq_ratio, &mcnt) || !mcnt)
-=======
 	if (static_branch_unlikely(&arch_hybrid_cap_scale_key))
 		freq_ratio = READ_ONCE(this_cpu_ptr(arch_cpu_scale)->freq_ratio);
 	else
 		freq_ratio = arch_max_freq_ratio;
 
 	if (check_mul_overflow(mcnt, freq_ratio, &mcnt) || !mcnt)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto error;
 
 	freq_scale = div64_u64(acnt, mcnt);

@@ -16,10 +16,7 @@
 #include "tests.h"
 #include "debug.h"
 #include "event.h"
-<<<<<<< HEAD
-=======
 #include "parse-events.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "../perf-sys.h"
 #include "cloexec.h"
 
@@ -54,11 +51,7 @@ static int __event(bool is_x, void *addr, struct perf_event_attr *attr)
 	attr->config = 0;
 	attr->bp_type = is_x ? HW_BREAKPOINT_X : HW_BREAKPOINT_W;
 	attr->bp_addr = (unsigned long) addr;
-<<<<<<< HEAD
-	attr->bp_len = sizeof(long);
-=======
 	attr->bp_len = is_x ? default_breakpoint_len() : sizeof(long);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	attr->sample_period = 1;
 	attr->sample_type = PERF_SAMPLE_IP;
@@ -100,10 +93,7 @@ static int bp_accounting(int wp_cnt, int share)
 	attr_mod = attr;
 	attr_mod.bp_type = HW_BREAKPOINT_X;
 	attr_mod.bp_addr = (unsigned long) test_function;
-<<<<<<< HEAD
-=======
 	attr_mod.bp_len = default_breakpoint_len();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ioctl(fd[0], PERF_EVENT_IOC_MODIFY_ATTRIBUTES, &attr_mod);
 	TEST_ASSERT_VAL("failed to modify wp\n", ret == 0);

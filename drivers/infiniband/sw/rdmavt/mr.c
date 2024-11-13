@@ -348,21 +348,13 @@ struct ib_mr *rvt_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 
 	umem = ib_umem_get(pd->device, start, length, mr_access_flags);
 	if (IS_ERR(umem))
-<<<<<<< HEAD
-		return (void *)umem;
-=======
 		return ERR_CAST(umem);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	n = ib_umem_num_pages(umem);
 
 	mr = __rvt_alloc_mr(n, pd);
 	if (IS_ERR(mr)) {
-<<<<<<< HEAD
-		ret = (struct ib_mr *)mr;
-=======
 		ret = ERR_CAST(mr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto bail_umem;
 	}
 
@@ -550,11 +542,7 @@ struct ib_mr *rvt_alloc_mr(struct ib_pd *pd, enum ib_mr_type mr_type,
 
 	mr = __rvt_alloc_mr(max_num_sg, pd);
 	if (IS_ERR(mr))
-<<<<<<< HEAD
-		return (struct ib_mr *)mr;
-=======
 		return ERR_CAST(mr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return &mr->ibmr;
 }

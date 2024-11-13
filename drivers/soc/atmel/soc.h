@@ -44,10 +44,7 @@ at91_soc_init(const struct at91_soc *socs);
 #define AT91SAM9X5_CIDR_MATCH		0x019a05a0
 #define AT91SAM9N12_CIDR_MATCH		0x019a07a0
 #define SAM9X60_CIDR_MATCH		0x019b35a0
-<<<<<<< HEAD
-=======
 #define SAM9X7_CIDR_MATCH		0x09750020
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SAMA7G5_CIDR_MATCH		0x00162100
 
 #define AT91SAM9M11_EXID_MATCH		0x00000001
@@ -70,8 +67,6 @@ at91_soc_init(const struct at91_soc *socs);
 #define SAM9X60_D1G_EXID_MATCH		0x00000010
 #define SAM9X60_D6K_EXID_MATCH		0x00000011
 
-<<<<<<< HEAD
-=======
 #define SAM9X70_EXID_MATCH		0x00000005
 #define SAM9X72_EXID_MATCH		0x00000004
 #define SAM9X75_D1G_EXID_MATCH		0x00000018
@@ -80,7 +75,6 @@ at91_soc_init(const struct at91_soc *socs);
 #define SAM9X75_D5M_EXID_MATCH		0x00000010
 #define SAM9X75_EXID_MATCH		0x00000000
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SAMA7G51_EXID_MATCH		0x3
 #define SAMA7G52_EXID_MATCH		0x2
 #define SAMA7G53_EXID_MATCH		0x1

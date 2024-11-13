@@ -8,12 +8,9 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/acpi.h>
-<<<<<<< HEAD
-=======
 #include <linux/bits.h>
 #include <linux/device.h>
 #include <linux/dev_printk.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/dmi.h>
 #include <linux/input.h>
 #include <linux/input/sparse-keymap.h>
@@ -37,8 +34,6 @@ MODULE_AUTHOR("Matan Ziv-Av");
 MODULE_DESCRIPTION("LG WMI Hotkey Driver");
 MODULE_LICENSE("GPL");
 
-<<<<<<< HEAD
-=======
 static bool fw_debug;
 module_param(fw_debug, bool, 0);
 MODULE_PARM_DESC(fw_debug, "Enable printing of firmware debug messages");
@@ -59,7 +54,6 @@ MODULE_PARM_DESC(fw_debug, "Enable printing of firmware debug messages");
 #define LG_ADDRESS_SPACE_DEBUG_MSG_START_ADR	0x3E8
 #define LG_ADDRESS_SPACE_DEBUG_MSG_END_ADR	0x5E8
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define WMI_EVENT_GUID0	"E4FB94F9-7F2B-4173-AD1A-CD1D95086248"
 #define WMI_EVENT_GUID1	"023B133E-49D1-4E10-B313-698220140DC2"
 #define WMI_EVENT_GUID2	"37BE1AC0-C3F2-4B1F-BFBE-8FDEAF2814D6"
@@ -211,29 +205,11 @@ static union acpi_object *lg_wmbb(struct device *dev, u32 method_id, u32 arg1, u
 	return (union acpi_object *)buffer.pointer;
 }
 
-<<<<<<< HEAD
-static void wmi_notify(u32 value, void *context)
-{
-	struct acpi_buffer response = { ACPI_ALLOCATE_BUFFER, NULL };
-	union acpi_object *obj;
-	acpi_status status;
-	long data = (long)context;
-
-	pr_debug("event guid %li\n", data);
-	status = wmi_get_event_data(value, &response);
-	if (ACPI_FAILURE(status)) {
-		pr_err("Bad event status 0x%x\n", status);
-		return;
-	}
-
-	obj = (union acpi_object *)response.pointer;
-=======
 static void wmi_notify(union acpi_object *obj, void *context)
 {
 	long data = (long)context;
 
 	pr_debug("event guid %li\n", data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!obj)
 		return;
 
@@ -255,10 +231,6 @@ static void wmi_notify(union acpi_object *obj, void *context)
 
 	pr_debug("Type: %i    Eventcode: 0x%llx\n", obj->type,
 		 obj->integer.value);
-<<<<<<< HEAD
-	kfree(response.pointer);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void wmi_input_setup(void)
@@ -686,8 +658,6 @@ static struct platform_driver pf_driver = {
 	}
 };
 
-<<<<<<< HEAD
-=======
 static acpi_status lg_laptop_address_space_write(struct device *dev, acpi_physical_address address,
 						 size_t size, u64 value)
 {
@@ -789,7 +759,6 @@ static void lg_laptop_remove_address_space_handler(void *data)
 					  &lg_laptop_address_space_handler);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int acpi_add(struct acpi_device *device)
 {
 	struct platform_device_info pdev_info = {
@@ -797,10 +766,7 @@ static int acpi_add(struct acpi_device *device)
 		.name = PLATFORM_NAME,
 		.id = PLATFORM_DEVID_NONE,
 	};
-<<<<<<< HEAD
-=======
 	acpi_status status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 	const char *product;
 	int year = 2017;
@@ -808,8 +774,6 @@ static int acpi_add(struct acpi_device *device)
 	if (pf_device)
 		return 0;
 
-<<<<<<< HEAD
-=======
 	status = acpi_install_address_space_handler(device->handle, LG_ADDRESS_SPACE_ID,
 						    &lg_laptop_address_space_handler,
 						    NULL, &device->dev);
@@ -821,7 +785,6 @@ static int acpi_add(struct acpi_device *device)
 	if (ret < 0)
 		return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = platform_driver_register(&pf_driver);
 	if (ret)
 		return ret;

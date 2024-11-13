@@ -54,11 +54,7 @@
 	};
 
 	apb@80000000 {
-<<<<<<< HEAD
-		apbh@80000000 {
-=======
 		apbh-bus@80000000 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ssp0: spi@80010000 {
 				compatible = "fsl,imx23-mmc";
 				pinctrl-names = "default";
@@ -105,11 +101,7 @@
 			};
 		};
 
-<<<<<<< HEAD
-		apbx@80040000 {
-=======
 		apbx-bus@80040000 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			i2c: i2c@80058000 {
 				pinctrl-names = "default";
 				pinctrl-0 = <&i2c_pins_a>;

@@ -167,8 +167,6 @@ static const struct flash_info sst_nor_parts[] = {
 	}
 };
 
-<<<<<<< HEAD
-=======
 static int sst_nor_write_data(struct spi_nor *nor, loff_t to, size_t len,
 			      const u_char *buf)
 {
@@ -184,7 +182,6 @@ static int sst_nor_write_data(struct spi_nor *nor, loff_t to, size_t len,
 	return spi_nor_wait_till_ready(nor);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
 			 size_t *retlen, const u_char *buf)
 {
@@ -206,23 +203,10 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
 
 	/* Start write from odd address. */
 	if (to % 2) {
-<<<<<<< HEAD
-		nor->program_opcode = SPINOR_OP_BP;
-
-		/* write one byte. */
-		ret = spi_nor_write_data(nor, to, 1, buf);
-		if (ret < 0)
-			goto out;
-		WARN(ret != 1, "While writing 1 byte written %i bytes\n", ret);
-		ret = spi_nor_wait_till_ready(nor);
-		if (ret)
-			goto out;
-=======
 		/* write one byte. */
 		ret = sst_nor_write_data(nor, to, 1, buf);
 		if (ret < 0)
 			goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		to++;
 		actual++;
@@ -230,24 +214,11 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
 
 	/* Write out most of the data here. */
 	for (; actual < len - 1; actual += 2) {
-<<<<<<< HEAD
-		nor->program_opcode = SPINOR_OP_AAI_WP;
-
-		/* write two bytes. */
-		ret = spi_nor_write_data(nor, to, 2, buf + actual);
-		if (ret < 0)
-			goto out;
-		WARN(ret != 2, "While writing 2 bytes written %i bytes\n", ret);
-		ret = spi_nor_wait_till_ready(nor);
-		if (ret)
-			goto out;
-=======
 		/* write two bytes. */
 		ret = sst_nor_write_data(nor, to, 2, buf + actual);
 		if (ret < 0)
 			goto out;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		to += 2;
 		nor->sst_write_second = true;
 	}
@@ -267,20 +238,9 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
 		if (ret)
 			goto out;
 
-<<<<<<< HEAD
-		nor->program_opcode = SPINOR_OP_BP;
-		ret = spi_nor_write_data(nor, to, 1, buf + actual);
-		if (ret < 0)
-			goto out;
-		WARN(ret != 1, "While writing 1 byte written %i bytes\n", ret);
-		ret = spi_nor_wait_till_ready(nor);
-		if (ret)
-			goto out;
-=======
 		ret = sst_nor_write_data(nor, to, 1, buf + actual);
 		if (ret < 0)
 			goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		actual += 1;
 

@@ -36,14 +36,6 @@ const struct trace_print_flags pageflag_names[] = {
 	{0, NULL}
 };
 
-<<<<<<< HEAD
-const struct trace_print_flags pagetype_names[] = {
-	__def_pagetype_names,
-	{0, NULL}
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct trace_print_flags gfpflag_names[] = {
 	__def_gfpflag_names,
 	{0, NULL}
@@ -54,8 +46,6 @@ const struct trace_print_flags vmaflag_names[] = {
 	{0, NULL}
 };
 
-<<<<<<< HEAD
-=======
 #define DEF_PAGETYPE_NAME(_name) [PGTY_##_name - 0xf0] =  __stringify(_name)
 
 static const char *page_type_names[] = {
@@ -77,7 +67,6 @@ static const char *page_type_name(unsigned int page_type)
 	return page_type_names[i];
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __dump_folio(struct folio *folio, struct page *page,
 		unsigned long pfn, unsigned long idx)
 {
@@ -85,11 +74,7 @@ static void __dump_folio(struct folio *folio, struct page *page,
 	int mapcount = atomic_read(&page->_mapcount);
 	char *type = "";
 
-<<<<<<< HEAD
-	mapcount = page_type_has_type(mapcount) ? 0 : mapcount + 1;
-=======
 	mapcount = page_mapcount_is_type(mapcount) ? 0 : mapcount + 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
 			folio_ref_count(folio), mapcount, mapping,
 			folio->index + idx, pfn);
@@ -123,12 +108,8 @@ static void __dump_folio(struct folio *folio, struct page *page,
 	pr_warn("%sflags: %pGp%s\n", type, &folio->flags,
 		is_migrate_cma_folio(folio, pfn) ? " CMA" : "");
 	if (page_has_type(&folio->page))
-<<<<<<< HEAD
-		pr_warn("page_type: %pGt\n", &folio->page.page_type);
-=======
 		pr_warn("page_type: %x(%s)\n", folio->page.page_type >> 24,
 				page_type_name(folio->page.page_type));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	print_hex_dump(KERN_WARNING, "raw: ", DUMP_PREFIX_NONE, 32,
 			sizeof(unsigned long), page,

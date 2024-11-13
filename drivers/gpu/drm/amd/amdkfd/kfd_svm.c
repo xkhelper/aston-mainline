@@ -309,14 +309,6 @@ static void svm_range_free(struct svm_range *prange, bool do_unmap)
 }
 
 static void
-<<<<<<< HEAD
-svm_range_set_default_attributes(int32_t *location, int32_t *prefetch_loc,
-				 uint8_t *granularity, uint32_t *flags)
-{
-	*location = KFD_IOCTL_SVM_LOCATION_UNDEFINED;
-	*prefetch_loc = KFD_IOCTL_SVM_LOCATION_UNDEFINED;
-	*granularity = 9;
-=======
 svm_range_set_default_attributes(struct svm_range_list *svms, int32_t *location,
 				 int32_t *prefetch_loc, uint8_t *granularity,
 				 uint32_t *flags)
@@ -324,7 +316,6 @@ svm_range_set_default_attributes(struct svm_range_list *svms, int32_t *location,
 	*location = KFD_IOCTL_SVM_LOCATION_UNDEFINED;
 	*prefetch_loc = KFD_IOCTL_SVM_LOCATION_UNDEFINED;
 	*granularity = svms->default_granularity;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*flags =
 		KFD_IOCTL_SVM_FLAG_HOST_ACCESS | KFD_IOCTL_SVM_FLAG_COHERENT;
 }
@@ -368,11 +359,7 @@ svm_range *svm_range_new(struct svm_range_list *svms, uint64_t start,
 		bitmap_copy(prange->bitmap_access, svms->bitmap_supported,
 			    MAX_GPU_INSTANCE);
 
-<<<<<<< HEAD
-	svm_range_set_default_attributes(&prange->preferred_loc,
-=======
 	svm_range_set_default_attributes(svms, &prange->preferred_loc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 &prange->prefetch_loc,
 					 &prange->granularity, &prange->flags);
 
@@ -418,8 +405,6 @@ static void svm_range_bo_release(struct kref *kref)
 		spin_lock(&svm_bo->list_lock);
 	}
 	spin_unlock(&svm_bo->list_lock);
-<<<<<<< HEAD
-=======
 
 	if (mmget_not_zero(svm_bo->eviction_fence->mm)) {
 		struct kfd_process_device *pdd;
@@ -441,7 +426,6 @@ static void svm_range_bo_release(struct kref *kref)
 		mmput(mm);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!dma_fence_is_signaled(&svm_bo->eviction_fence->base))
 		/* We're not in the eviction worker. Signal the fence. */
 		dma_fence_signal(&svm_bo->eviction_fence->base);
@@ -569,10 +553,7 @@ int
 svm_range_vram_node_new(struct kfd_node *node, struct svm_range *prange,
 			bool clear)
 {
-<<<<<<< HEAD
-=======
 	struct kfd_process_device *pdd;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct amdgpu_bo_param bp;
 	struct svm_range_bo *svm_bo;
 	struct amdgpu_bo_user *ubo;
@@ -664,13 +645,10 @@ svm_range_vram_node_new(struct kfd_node *node, struct svm_range *prange,
 	list_add(&prange->svm_bo_list, &svm_bo->range_list);
 	spin_unlock(&svm_bo->list_lock);
 
-<<<<<<< HEAD
-=======
 	pdd = svm_range_get_pdd_by_node(prange, node);
 	if (pdd)
 		atomic64_add(amdgpu_bo_size(bo), &pdd->vram_usage);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 reserve_bo_failed:
@@ -1100,10 +1078,7 @@ svm_range_split_adjust(struct svm_range *new, struct svm_range *old,
 	new->mapped_to_gpu = old->mapped_to_gpu;
 	bitmap_copy(new->bitmap_access, old->bitmap_access, MAX_GPU_INSTANCE);
 	bitmap_copy(new->bitmap_aip, old->bitmap_aip, MAX_GPU_INSTANCE);
-<<<<<<< HEAD
-=======
 	atomic_set(&new->queue_refcount, atomic_read(&old->queue_refcount));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -2045,10 +2020,7 @@ static struct svm_range *svm_range_clone(struct svm_range *old)
 	new->vram_pages = old->vram_pages;
 	bitmap_copy(new->bitmap_access, old->bitmap_access, MAX_GPU_INSTANCE);
 	bitmap_copy(new->bitmap_aip, old->bitmap_aip, MAX_GPU_INSTANCE);
-<<<<<<< HEAD
-=======
 	atomic_set(&new->queue_refcount, atomic_read(&old->queue_refcount));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return new;
 }
@@ -2317,22 +2289,10 @@ static void svm_range_drain_retry_fault(struct svm_range_list *svms)
 {
 	struct kfd_process_device *pdd;
 	struct kfd_process *p;
-<<<<<<< HEAD
-	int drain;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint32_t i;
 
 	p = container_of(svms, struct kfd_process, svms);
 
-<<<<<<< HEAD
-restart:
-	drain = atomic_read(&svms->drain_pagefaults);
-	if (!drain)
-		return;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_set_bit(i, svms->bitmap_supported, p->n_pdds) {
 		pdd = p->pdds[i];
 		if (!pdd)
@@ -2352,11 +2312,6 @@ restart:
 
 		pr_debug("drain retry fault gpu %d svms 0x%p done\n", i, svms);
 	}
-<<<<<<< HEAD
-	if (atomic_cmpxchg(&svms->drain_pagefaults, drain, 0) != drain)
-		goto restart;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void svm_range_deferred_list_work(struct work_struct *work)
@@ -2378,22 +2333,8 @@ static void svm_range_deferred_list_work(struct work_struct *work)
 			 prange->start, prange->last, prange->work_item.op);
 
 		mm = prange->work_item.mm;
-<<<<<<< HEAD
-retry:
-		mmap_write_lock(mm);
-
-		/* Checking for the need to drain retry faults must be inside
-		 * mmap write lock to serialize with munmap notifiers.
-		 */
-		if (unlikely(atomic_read(&svms->drain_pagefaults))) {
-			mmap_write_unlock(mm);
-			svm_range_drain_retry_fault(svms);
-			goto retry;
-		}
-=======
 
 		mmap_write_lock(mm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Remove from deferred_list must be inside mmap write lock, for
 		 * two race cases:
@@ -2514,8 +2455,6 @@ svm_range_unmap_from_cpu(struct mm_struct *mm, struct svm_range *prange,
 	struct kfd_process *p;
 	unsigned long s, l;
 	bool unmap_parent;
-<<<<<<< HEAD
-=======
 	uint32_t i;
 
 	if (atomic_read(&prange->queue_refcount)) {
@@ -2527,7 +2466,6 @@ svm_range_unmap_from_cpu(struct mm_struct *mm, struct svm_range *prange,
 		if (r)
 			pr_debug("failed %d to quiesce KFD queues\n", r);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	p = kfd_lookup_process_by_mm(mm);
 	if (!p)
@@ -2537,13 +2475,6 @@ svm_range_unmap_from_cpu(struct mm_struct *mm, struct svm_range *prange,
 	pr_debug("svms 0x%p prange 0x%p [0x%lx 0x%lx] [0x%lx 0x%lx]\n", svms,
 		 prange, prange->start, prange->last, start, last);
 
-<<<<<<< HEAD
-	/* Make sure pending page faults are drained in the deferred worker
-	 * before the range is freed to avoid straggler interrupts on
-	 * unmapped memory causing "phantom faults".
-	 */
-	atomic_inc(&svms->drain_pagefaults);
-=======
 	/* calculate time stamps that are used to decide which page faults need be
 	 * dropped or handled before unmap pages from gpu vm
 	 */
@@ -2576,7 +2507,6 @@ svm_range_unmap_from_cpu(struct mm_struct *mm, struct svm_range *prange,
 		if (ih->rptr != checkpoint_wptr)
 			svms->checkpoint_ts[i] = amdgpu_ih_decode_iv_ts(adev, ih, checkpoint_wptr, -1);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	unmap_parent = start <= prange->start && last >= prange->last;
 
@@ -2800,16 +2730,10 @@ svm_range_get_range_boundaries(struct kfd_process *p, int64_t addr,
 	*is_heap_stack = vma_is_initial_heap(vma) || vma_is_initial_stack(vma);
 
 	start_limit = max(vma->vm_start >> PAGE_SHIFT,
-<<<<<<< HEAD
-		      (unsigned long)ALIGN_DOWN(addr, 2UL << 8));
-	end_limit = min(vma->vm_end >> PAGE_SHIFT,
-		    (unsigned long)ALIGN(addr + 1, 2UL << 8));
-=======
 		      (unsigned long)ALIGN_DOWN(addr, 1UL << p->svms.default_granularity));
 	end_limit = min(vma->vm_end >> PAGE_SHIFT,
 		    (unsigned long)ALIGN(addr + 1, 1UL << p->svms.default_granularity));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* First range that starts after the fault address */
 	node = interval_tree_iter_first(&p->svms.objects, addr + 1, ULONG_MAX);
 	if (node) {
@@ -3024,11 +2948,7 @@ svm_fault_allowed(struct vm_area_struct *vma, bool write_fault)
 int
 svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
 			uint32_t vmid, uint32_t node_id,
-<<<<<<< HEAD
-			uint64_t addr, bool write_fault)
-=======
 			uint64_t addr, uint64_t ts, bool write_fault)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long start, last, size;
 	struct mm_struct *mm = NULL;
@@ -3038,11 +2958,7 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
 	ktime_t timestamp = ktime_get_boottime();
 	struct kfd_node *node;
 	int32_t best_loc;
-<<<<<<< HEAD
-	int32_t gpuidx = MAX_GPU_INSTANCE;
-=======
 	int32_t gpuid, gpuidx = MAX_GPU_INSTANCE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool write_locked = false;
 	struct vm_area_struct *vma;
 	bool migration = false;
@@ -3063,17 +2979,11 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
 	pr_debug("restoring svms 0x%p fault address 0x%llx\n", svms, addr);
 
 	if (atomic_read(&svms->drain_pagefaults)) {
-<<<<<<< HEAD
-		pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
-=======
 		pr_debug("page fault handling disabled, drop fault 0x%llx\n", addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		r = 0;
 		goto out;
 	}
 
-<<<<<<< HEAD
-=======
 	node = kfd_node_by_irq_ids(adev, node_id, vmid);
 	if (!node) {
 		pr_debug("kfd node does not exist node_id: %d, vmid: %d\n", node_id,
@@ -3101,7 +3011,6 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
 			svms->checkpoint_ts[gpuidx] = 0;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!p->xnack_enabled) {
 		pr_debug("XNACK not enabled for pasid 0x%x\n", pasid);
 		r = -EFAULT;
@@ -3118,16 +3027,6 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
 		goto out;
 	}
 
-<<<<<<< HEAD
-	node = kfd_node_by_irq_ids(adev, node_id, vmid);
-	if (!node) {
-		pr_debug("kfd node does not exist node_id: %d, vmid: %d\n", node_id,
-			 vmid);
-		r = -EFAULT;
-		goto out;
-	}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mmap_read_lock(mm);
 retry_write_locked:
 	mutex_lock(&svms->lock);
@@ -3342,14 +3241,9 @@ void svm_range_list_fini(struct kfd_process *p)
 	/*
 	 * Ensure no retry fault comes in afterwards, as page fault handler will
 	 * not find kfd process and take mm lock to recover fault.
-<<<<<<< HEAD
-	 */
-	atomic_inc(&p->svms.drain_pagefaults);
-=======
 	 * stop kfd page fault handing, then wait pending page faults got drained
 	 */
 	atomic_set(&p->svms.drain_pagefaults, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	svm_range_drain_retry_fault(&p->svms);
 
 	list_for_each_entry_safe(prange, next, &p->svms.list, list) {
@@ -3383,15 +3277,12 @@ int svm_range_list_init(struct kfd_process *p)
 		if (KFD_IS_SVM_API_SUPPORTED(p->pdds[i]->dev->adev))
 			bitmap_set(svms->bitmap_supported, i, 1);
 
-<<<<<<< HEAD
-=======
 	 /* Value of default granularity cannot exceed 0x1B, the
 	  * number of pages supported by a 4-level paging table
 	  */
 	svms->default_granularity = min_t(u8, amdgpu_svm_default_granularity, 0x1B);
 	pr_debug("Default SVM Granularity to use: %d\n", svms->default_granularity);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3919,11 +3810,7 @@ svm_range_get_attr(struct kfd_process *p, struct mm_struct *mm,
 	node = interval_tree_iter_first(&svms->objects, start, last);
 	if (!node) {
 		pr_debug("range attrs not found return default values\n");
-<<<<<<< HEAD
-		svm_range_set_default_attributes(&location, &prefetch_loc,
-=======
 		svm_range_set_default_attributes(svms, &location, &prefetch_loc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						 &granularity, &flags_and);
 		flags_or = flags_and;
 		if (p->xnack_enabled)

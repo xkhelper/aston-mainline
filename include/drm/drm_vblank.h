@@ -79,8 +79,6 @@ struct drm_pending_vblank_event {
 };
 
 /**
-<<<<<<< HEAD
-=======
  * struct drm_vblank_crtc_config - vblank configuration for a CRTC
  */
 struct drm_vblank_crtc_config {
@@ -106,7 +104,6 @@ struct drm_vblank_crtc_config {
 };
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * struct drm_vblank_crtc - vblank tracking for a CRTC
  *
  * This structure tracks the vblank state for one CRTC.
@@ -127,13 +124,8 @@ struct drm_vblank_crtc {
 	wait_queue_head_t queue;
 	/**
 	 * @disable_timer: Disable timer for the delayed vblank disabling
-<<<<<<< HEAD
-	 * hysteresis logic. Vblank disabling is controlled through the
-	 * drm_vblank_offdelay module option and the setting of the
-=======
 	 * hysteresis logic. Vblank disabling is controlled through
 	 * &drm_vblank_crtc_config.offdelay_ms and the setting of the
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * &drm_device.max_vblank_count value.
 	 */
 	struct timer_list disable_timer;
@@ -232,15 +224,12 @@ struct drm_vblank_crtc {
 	struct drm_display_mode hwmode;
 
 	/**
-<<<<<<< HEAD
-=======
 	 * @config: Stores vblank configuration values for a given CRTC.
 	 * Also, see drm_crtc_vblank_on_config().
 	 */
 	struct drm_vblank_crtc_config config;
 
 	/**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * @enabled: Tracks the enabling state of the corresponding &drm_crtc to
 	 * avoid double-disabling and hence corrupting saved state. Needed by
 	 * drivers not using atomic KMS, since those might go through their CRTC
@@ -289,11 +278,8 @@ void drm_wait_one_vblank(struct drm_device *dev, unsigned int pipe);
 void drm_crtc_wait_one_vblank(struct drm_crtc *crtc);
 void drm_crtc_vblank_off(struct drm_crtc *crtc);
 void drm_crtc_vblank_reset(struct drm_crtc *crtc);
-<<<<<<< HEAD
-=======
 void drm_crtc_vblank_on_config(struct drm_crtc *crtc,
 			       const struct drm_vblank_crtc_config *config);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void drm_crtc_vblank_on(struct drm_crtc *crtc);
 u64 drm_crtc_accurate_vblank_count(struct drm_crtc *crtc);
 void drm_crtc_vblank_restore(struct drm_crtc *crtc);

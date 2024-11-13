@@ -207,11 +207,7 @@ static inline bool rdt_get_mb_table(struct rdt_resource *r)
 	return false;
 }
 
-<<<<<<< HEAD
-static bool __get_mem_config_intel(struct rdt_resource *r)
-=======
 static __init bool __get_mem_config_intel(struct rdt_resource *r)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
 	union cpuid_0x10_3_eax eax;
@@ -245,11 +241,7 @@ static __init bool __get_mem_config_intel(struct rdt_resource *r)
 	return true;
 }
 
-<<<<<<< HEAD
-static bool __rdt_get_mem_config_amd(struct rdt_resource *r)
-=======
 static __init bool __rdt_get_mem_config_amd(struct rdt_resource *r)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rdt_hw_resource *hw_res = resctrl_to_arch_res(r);
 	u32 eax, ebx, ecx, edx, subleaf;

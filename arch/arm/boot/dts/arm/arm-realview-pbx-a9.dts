@@ -97,11 +97,7 @@
 		interrupts = <1 14 0xf04>;
 	};
 
-<<<<<<< HEAD
-	pmu: pmu@0 {
-=======
 	pmu: pmu {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		compatible = "arm,cortex-a9-pmu";
 		interrupt-parent = <&intc>;
 		interrupts = <0 44 IRQ_TYPE_LEVEL_HIGH>,

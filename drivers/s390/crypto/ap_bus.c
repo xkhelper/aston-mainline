@@ -107,10 +107,7 @@ debug_info_t *ap_dbf_info;
 static bool ap_scan_bus(void);
 static bool ap_scan_bus_result; /* result of last ap_scan_bus() */
 static DEFINE_MUTEX(ap_scan_bus_mutex); /* mutex ap_scan_bus() invocations */
-<<<<<<< HEAD
-=======
 static struct task_struct *ap_scan_bus_task; /* thread holding the scan mutex */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static atomic64_t ap_scan_bus_count; /* counter ap_scan_bus() invocations */
 static int ap_scan_bus_time = AP_CONFIG_TIME;
 static struct timer_list ap_scan_bus_timer;
@@ -737,11 +734,7 @@ static void ap_check_bindings_complete(void)
 			if (!completion_done(&ap_apqn_bindings_complete)) {
 				complete_all(&ap_apqn_bindings_complete);
 				ap_send_bindings_complete_uevent();
-<<<<<<< HEAD
-				pr_debug("%s all apqn bindings complete\n", __func__);
-=======
 				pr_debug("all apqn bindings complete\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	}
@@ -776,11 +769,7 @@ int ap_wait_apqn_bindings_complete(unsigned long timeout)
 	else if (l == 0 && timeout)
 		rc = -ETIME;
 
-<<<<<<< HEAD
-	pr_debug("%s rc=%d\n", __func__, rc);
-=======
 	pr_debug("rc=%d\n", rc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc;
 }
 EXPORT_SYMBOL(ap_wait_apqn_bindings_complete);
@@ -807,12 +796,7 @@ static int __ap_revise_reserved(struct device *dev, void *dummy)
 		drvres = to_ap_drv(dev->driver)->flags
 			& AP_DRIVER_FLAG_DEFAULT;
 		if (!!devres != !!drvres) {
-<<<<<<< HEAD
-			pr_debug("%s reprobing queue=%02x.%04x\n",
-				 __func__, card, queue);
-=======
 			pr_debug("reprobing queue=%02x.%04x\n", card, queue);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rc = device_reprobe(dev);
 			if (rc)
 				AP_DBF_WARN("%s reprobing queue=%02x.%04x failed\n",
@@ -1016,23 +1000,12 @@ bool ap_bus_force_rescan(void)
 	unsigned long scan_counter = atomic64_read(&ap_scan_bus_count);
 	bool rc = false;
 
-<<<<<<< HEAD
-	pr_debug(">%s scan counter=%lu\n", __func__, scan_counter);
-=======
 	pr_debug("> scan counter=%lu\n", scan_counter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Only trigger AP bus scans after the initial scan is done */
 	if (scan_counter <= 0)
 		goto out;
 
-<<<<<<< HEAD
-	/* Try to acquire the AP scan bus mutex */
-	if (mutex_trylock(&ap_scan_bus_mutex)) {
-		/* mutex acquired, run the AP bus scan */
-		ap_scan_bus_result = ap_scan_bus();
-		rc = ap_scan_bus_result;
-=======
 	/*
 	 * There is one unlikely but nevertheless valid scenario where the
 	 * thread holding the mutex may try to send some crypto load but
@@ -1052,7 +1025,6 @@ bool ap_bus_force_rescan(void)
 		ap_scan_bus_result = ap_scan_bus();
 		rc = ap_scan_bus_result;
 		ap_scan_bus_task = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mutex_unlock(&ap_scan_bus_mutex);
 		goto out;
 	}
@@ -1071,11 +1043,7 @@ bool ap_bus_force_rescan(void)
 	mutex_unlock(&ap_scan_bus_mutex);
 
 out:
-<<<<<<< HEAD
-	pr_debug("%s rc=%d\n", __func__, rc);
-=======
 	pr_debug("rc=%d\n", rc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc;
 }
 EXPORT_SYMBOL(ap_bus_force_rescan);
@@ -1089,11 +1057,7 @@ static int ap_bus_cfg_chg(struct notifier_block *nb,
 	if (action != CHSC_NOTIFY_AP_CFG)
 		return NOTIFY_DONE;
 
-<<<<<<< HEAD
-	pr_debug("%s config change, forcing bus rescan\n", __func__);
-=======
 	pr_debug("config change, forcing bus rescan\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ap_bus_force_rescan();
 
@@ -1900,20 +1864,12 @@ static inline void ap_scan_domains(struct ap_card *ac)
 		}
 		/* if no queue device exists, create a new one */
 		if (!aq) {
-<<<<<<< HEAD
-			aq = ap_queue_create(qid, ac->ap_dev.device_type);
-=======
 			aq = ap_queue_create(qid, ac);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!aq) {
 				AP_DBF_WARN("%s(%d,%d) ap_queue_create() failed\n",
 					    __func__, ac->id, dom);
 				continue;
 			}
-<<<<<<< HEAD
-			aq->card = ac;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			aq->config = !decfg;
 			aq->chkstop = chkstop;
 			aq->se_bstate = hwinfo.bs;
@@ -1957,13 +1913,8 @@ static inline void ap_scan_domains(struct ap_card *ac)
 				aq->last_err_rc = AP_RESPONSE_CHECKSTOPPED;
 			}
 			spin_unlock_bh(&aq->lock);
-<<<<<<< HEAD
-			pr_debug("%s(%d,%d) queue dev checkstop on\n",
-				 __func__, ac->id, dom);
-=======
 			pr_debug("(%d,%d) queue dev checkstop on\n",
 				 ac->id, dom);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* 'receive' pending messages with -EAGAIN */
 			ap_flush_queue(aq);
 			goto put_dev_and_continue;
@@ -1973,13 +1924,8 @@ static inline void ap_scan_domains(struct ap_card *ac)
 			if (aq->dev_state > AP_DEV_STATE_UNINITIATED)
 				_ap_queue_init_state(aq);
 			spin_unlock_bh(&aq->lock);
-<<<<<<< HEAD
-			pr_debug("%s(%d,%d) queue dev checkstop off\n",
-				 __func__, ac->id, dom);
-=======
 			pr_debug("(%d,%d) queue dev checkstop off\n",
 				 ac->id, dom);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto put_dev_and_continue;
 		}
 		/* config state change */
@@ -1991,13 +1937,8 @@ static inline void ap_scan_domains(struct ap_card *ac)
 				aq->last_err_rc = AP_RESPONSE_DECONFIGURED;
 			}
 			spin_unlock_bh(&aq->lock);
-<<<<<<< HEAD
-			pr_debug("%s(%d,%d) queue dev config off\n",
-				 __func__, ac->id, dom);
-=======
 			pr_debug("(%d,%d) queue dev config off\n",
 				 ac->id, dom);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ap_send_config_uevent(&aq->ap_dev, aq->config);
 			/* 'receive' pending messages with -EAGAIN */
 			ap_flush_queue(aq);
@@ -2008,13 +1949,8 @@ static inline void ap_scan_domains(struct ap_card *ac)
 			if (aq->dev_state > AP_DEV_STATE_UNINITIATED)
 				_ap_queue_init_state(aq);
 			spin_unlock_bh(&aq->lock);
-<<<<<<< HEAD
-			pr_debug("%s(%d,%d) queue dev config on\n",
-				 __func__, ac->id, dom);
-=======
 			pr_debug("(%d,%d) queue dev config on\n",
 				 ac->id, dom);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ap_send_config_uevent(&aq->ap_dev, aq->config);
 			goto put_dev_and_continue;
 		}
@@ -2086,13 +2022,8 @@ static inline void ap_scan_adapter(int ap)
 			ap_scan_rm_card_dev_and_queue_devs(ac);
 			put_device(dev);
 		} else {
-<<<<<<< HEAD
-			pr_debug("%s(%d) no type info (no APQN found), ignored\n",
-				 __func__, ap);
-=======
 			pr_debug("(%d) no type info (no APQN found), ignored\n",
 				 ap);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		return;
 	}
@@ -2104,12 +2035,7 @@ static inline void ap_scan_adapter(int ap)
 			ap_scan_rm_card_dev_and_queue_devs(ac);
 			put_device(dev);
 		} else {
-<<<<<<< HEAD
-			pr_debug("%s(%d) no valid type (0) info, ignored\n",
-				 __func__, ap);
-=======
 			pr_debug("(%d) no valid type (0) info, ignored\n", ap);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		return;
 	}
@@ -2288,11 +2214,7 @@ static bool ap_scan_bus(void)
 	bool config_changed;
 	int ap;
 
-<<<<<<< HEAD
-	pr_debug(">%s\n", __func__);
-=======
 	pr_debug(">\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* (re-)fetch configuration via QCI */
 	config_changed = ap_get_configuration();
@@ -2333,11 +2255,7 @@ static bool ap_scan_bus(void)
 	}
 
 	if (atomic64_inc_return(&ap_scan_bus_count) == 1) {
-<<<<<<< HEAD
-		pr_debug("%s init scan complete\n", __func__);
-=======
 		pr_debug("init scan complete\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ap_send_init_scan_done_uevent();
 	}
 
@@ -2345,11 +2263,7 @@ static bool ap_scan_bus(void)
 
 	mod_timer(&ap_scan_bus_timer, jiffies + ap_scan_bus_time * HZ);
 
-<<<<<<< HEAD
-	pr_debug("<%s config_changed=%d\n", __func__, config_changed);
-=======
 	pr_debug("< config_changed=%d\n", config_changed);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return config_changed;
 }
@@ -2382,13 +2296,9 @@ static void ap_scan_bus_wq_callback(struct work_struct *unused)
 	 * system_long_wq which invokes this function here again.
 	 */
 	if (mutex_trylock(&ap_scan_bus_mutex)) {
-<<<<<<< HEAD
-		ap_scan_bus_result = ap_scan_bus();
-=======
 		ap_scan_bus_task = current;
 		ap_scan_bus_result = ap_scan_bus();
 		ap_scan_bus_task = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mutex_unlock(&ap_scan_bus_mutex);
 	}
 }

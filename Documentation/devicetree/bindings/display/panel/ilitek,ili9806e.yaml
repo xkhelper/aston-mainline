@@ -16,10 +16,7 @@ properties:
   compatible:
     items:
       - enum:
-<<<<<<< HEAD
-=======
           - densitron,dmt028vghmcmi-1d
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - ortustech,com35h3p70ulc
       - const: ilitek,ili9806e
 

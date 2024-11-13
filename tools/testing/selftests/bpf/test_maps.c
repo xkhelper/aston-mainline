@@ -1515,11 +1515,7 @@ again:
 		       value == key);
 	}
 
-<<<<<<< HEAD
-	/* Now let's delete all elemenets in parallel. */
-=======
 	/* Now let's delete all elements in parallel. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data[1] = DO_DELETE;
 	run_parallel(TASKS, test_update_delete, data);
 

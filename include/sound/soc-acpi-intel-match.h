@@ -33,10 +33,7 @@ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_rpl_machines[];
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_mtl_machines[];
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_machines[];
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_machines[];
-<<<<<<< HEAD
-=======
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_ptl_machines[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_cnl_sdw_machines[];
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_cfl_sdw_machines[];
@@ -48,10 +45,7 @@ extern struct snd_soc_acpi_mach snd_soc_acpi_intel_rpl_sdw_machines[];
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_mtl_sdw_machines[];
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_lnl_sdw_machines[];
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[];
-<<<<<<< HEAD
-=======
 extern struct snd_soc_acpi_mach snd_soc_acpi_intel_ptl_sdw_machines[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * generic table used for HDA codec-based platforms, possibly with

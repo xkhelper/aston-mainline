@@ -61,13 +61,8 @@ static noinline int nft_socket_cgroup_subtree_level(void)
 	struct cgroup *cgrp = cgroup_get_from_path("/");
 	int level;
 
-<<<<<<< HEAD
-	if (!cgrp)
-		return -ENOENT;
-=======
 	if (IS_ERR(cgrp))
 		return PTR_ERR(cgrp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	level = cgrp->level;
 
@@ -280,12 +275,7 @@ static bool nft_socket_reduce(struct nft_regs_track *track,
 }
 
 static int nft_socket_validate(const struct nft_ctx *ctx,
-<<<<<<< HEAD
-			       const struct nft_expr *expr,
-			       const struct nft_data **data)
-=======
 			       const struct nft_expr *expr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (ctx->family != NFPROTO_IPV4 &&
 	    ctx->family != NFPROTO_IPV6 &&

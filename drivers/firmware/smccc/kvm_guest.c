@@ -39,11 +39,8 @@ void __init kvm_init_hyp_services(void)
 
 	pr_info("hypervisor services detected (0x%08lx 0x%08lx 0x%08lx 0x%08lx)\n",
 		 res.a3, res.a2, res.a1, res.a0);
-<<<<<<< HEAD
-=======
 
 	kvm_arch_init_hyp_services();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 bool kvm_arm_hyp_service_available(u32 func_id)

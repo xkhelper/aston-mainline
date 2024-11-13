@@ -45,11 +45,7 @@
 		reg = <0x80000000 0x80000>;
 		ranges;
 
-<<<<<<< HEAD
-		apbh@80000000 {
-=======
 		apbh-bus@80000000 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "simple-bus";
 			#address-cells = <1>;
 			#size-cells = <1>;
@@ -480,11 +476,7 @@
 			};
 		};
 
-<<<<<<< HEAD
-		apbx@80040000 {
-=======
 		apbx-bus@80040000 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "simple-bus";
 			#address-cells = <1>;
 			#size-cells = <1>;

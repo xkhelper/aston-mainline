@@ -9,10 +9,7 @@
 #include <linux/init.h>
 #include <linux/interconnect.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
-=======
 #include <linux/io.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/of.h>

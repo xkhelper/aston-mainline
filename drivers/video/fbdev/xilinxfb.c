@@ -488,11 +488,7 @@ MODULE_DEVICE_TABLE(of, xilinxfb_of_match);
 
 static struct platform_driver xilinxfb_of_driver = {
 	.probe = xilinxfb_of_probe,
-<<<<<<< HEAD
-	.remove_new = xilinxfb_of_remove,
-=======
 	.remove = xilinxfb_of_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = DRIVER_NAME,
 		.of_match_table = xilinxfb_of_match,

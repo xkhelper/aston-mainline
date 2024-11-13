@@ -17,10 +17,7 @@
 #include <linux/fs.h>
 #include <linux/iomap.h>
 #include <linux/module.h>
-<<<<<<< HEAD
-=======
 #include <linux/io_uring/cmd.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "blk.h"
 
 static inline struct inode *bdev_file_inode(struct file *file)
@@ -455,22 +452,6 @@ static void blkdev_readahead(struct readahead_control *rac)
 }
 
 static int blkdev_write_begin(struct file *file, struct address_space *mapping,
-<<<<<<< HEAD
-		loff_t pos, unsigned len, struct page **pagep, void **fsdata)
-{
-	return block_write_begin(mapping, pos, len, pagep, blkdev_get_block);
-}
-
-static int blkdev_write_end(struct file *file, struct address_space *mapping,
-		loff_t pos, unsigned len, unsigned copied, struct page *page,
-		void *fsdata)
-{
-	int ret;
-	ret = block_write_end(file, mapping, pos, len, copied, page, fsdata);
-
-	unlock_page(page);
-	put_page(page);
-=======
 		loff_t pos, unsigned len, struct folio **foliop, void **fsdata)
 {
 	return block_write_begin(mapping, pos, len, foliop, blkdev_get_block);
@@ -485,7 +466,6 @@ static int blkdev_write_end(struct file *file, struct address_space *mapping,
 
 	folio_unlock(folio);
 	folio_put(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -686,11 +666,7 @@ blkdev_direct_write(struct kiocb *iocb, struct iov_iter *from)
 
 static ssize_t blkdev_buffered_write(struct kiocb *iocb, struct iov_iter *from)
 {
-<<<<<<< HEAD
-	return iomap_file_buffered_write(iocb, from, &blkdev_iomap_ops);
-=======
 	return iomap_file_buffered_write(iocb, from, &blkdev_iomap_ops, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -796,11 +772,7 @@ reexpand:
 
 #define	BLKDEV_FALLOC_FL_SUPPORTED					\
 		(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |		\
-<<<<<<< HEAD
-		 FALLOC_FL_ZERO_RANGE | FALLOC_FL_NO_HIDE_STALE)
-=======
 		 FALLOC_FL_ZERO_RANGE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static long blkdev_fallocate(struct file *file, int mode, loff_t start,
 			     loff_t len)
@@ -859,17 +831,6 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
 					     len >> SECTOR_SHIFT, GFP_KERNEL,
 					     BLKDEV_ZERO_NOFALLBACK);
 		break;
-<<<<<<< HEAD
-	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
-		error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
-		if (error)
-			goto fail;
-
-		error = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
-					     len >> SECTOR_SHIFT, GFP_KERNEL);
-		break;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		error = -EOPNOTSUPP;
 	}
@@ -905,10 +866,7 @@ const struct file_operations def_blk_fops = {
 	.splice_read	= filemap_splice_read,
 	.splice_write	= iter_file_splice_write,
 	.fallocate	= blkdev_fallocate,
-<<<<<<< HEAD
-=======
 	.uring_cmd	= blkdev_uring_cmd,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.fop_flags	= FOP_BUFFER_RASYNC,
 };
 

@@ -15,11 +15,6 @@ struct ice_repr_pcpu_stats {
 	u64 tx_drops;
 };
 
-<<<<<<< HEAD
-struct ice_repr {
-	struct ice_vsi *src_vsi;
-	struct ice_vf *vf;
-=======
 enum ice_repr_type {
 	ICE_REPR_TYPE_VF,
 	ICE_REPR_TYPE_SF,
@@ -27,19 +22,12 @@ enum ice_repr_type {
 
 struct ice_repr {
 	struct ice_vsi *src_vsi;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct net_device *netdev;
 	struct metadata_dst *dst;
 	struct ice_esw_br_port *br_port;
 	struct ice_repr_pcpu_stats __percpu *stats;
 	u32 id;
 	u8 parent_mac[ETH_ALEN];
-<<<<<<< HEAD
-};
-
-struct ice_repr *ice_repr_add_vf(struct ice_vf *vf);
-void ice_repr_rem_vf(struct ice_repr *repr);
-=======
 	enum ice_repr_type type;
 	union {
 		struct ice_vf *vf;
@@ -56,7 +44,6 @@ struct ice_repr *ice_repr_create_vf(struct ice_vf *vf);
 struct ice_repr *ice_repr_create_sf(struct ice_dynamic_port *sf);
 
 void ice_repr_destroy(struct ice_repr *repr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void ice_repr_start_tx_queues(struct ice_repr *repr);
 void ice_repr_stop_tx_queues(struct ice_repr *repr);

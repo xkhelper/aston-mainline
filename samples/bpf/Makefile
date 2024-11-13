@@ -13,10 +13,6 @@ tprogs-y += sockex1
 tprogs-y += sockex2
 tprogs-y += sockex3
 tprogs-y += tracex1
-<<<<<<< HEAD
-tprogs-y += tracex2
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 tprogs-y += tracex3
 tprogs-y += tracex4
 tprogs-y += tracex5
@@ -66,10 +62,6 @@ sockex1-objs := sockex1_user.o
 sockex2-objs := sockex2_user.o
 sockex3-objs := sockex3_user.o
 tracex1-objs := tracex1_user.o $(TRACE_HELPERS)
-<<<<<<< HEAD
-tracex2-objs := tracex2_user.o
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 tracex3-objs := tracex3_user.o
 tracex4-objs := tracex4_user.o
 tracex5-objs := tracex5_user.o $(TRACE_HELPERS)
@@ -111,10 +103,6 @@ always-y += sockex1_kern.o
 always-y += sockex2_kern.o
 always-y += sockex3_kern.o
 always-y += tracex1.bpf.o
-<<<<<<< HEAD
-always-y += tracex2.bpf.o
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 always-y += tracex3.bpf.o
 always-y += tracex4.bpf.o
 always-y += tracex5.bpf.o
@@ -178,13 +166,10 @@ BPF_EXTRA_CFLAGS += -I$(srctree)/arch/mips/include/asm/mach-generic
 endif
 endif
 
-<<<<<<< HEAD
-=======
 ifeq ($(ARCH), x86)
 BPF_EXTRA_CFLAGS += -fcf-protection
 endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TPROGS_CFLAGS += -Wall -O2
 TPROGS_CFLAGS += -Wmissing-prototypes
 TPROGS_CFLAGS += -Wstrict-prototypes
@@ -421,11 +406,7 @@ $(obj)/%.o: $(src)/%.c
 		-Wno-gnu-variable-sized-type-not-at-end \
 		-Wno-address-of-packed-member -Wno-tautological-compare \
 		-Wno-unknown-warning-option $(CLANG_ARCH_ARGS) \
-<<<<<<< HEAD
-		-fno-asynchronous-unwind-tables -fcf-protection \
-=======
 		-fno-asynchronous-unwind-tables \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		-I$(srctree)/samples/bpf/ -include asm_goto_workaround.h \
 		-O2 -emit-llvm -Xclang -disable-llvm-passes -c $< -o - | \
 		$(OPT) -O2 -mtriple=bpf-pc-linux | $(LLVM_DIS) | \

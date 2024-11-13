@@ -424,11 +424,7 @@ static int jit_repipe_code_load(struct jit_buf_desc *jd, union jr_entry *jr)
 {
 	struct perf_sample sample;
 	union perf_event *event;
-<<<<<<< HEAD
-	struct perf_tool *tool = jd->session->tool;
-=======
 	const struct perf_tool *tool = jd->session->tool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint64_t code, addr;
 	uintptr_t uaddr;
 	char *filename;
@@ -547,11 +543,7 @@ static int jit_repipe_code_move(struct jit_buf_desc *jd, union jr_entry *jr)
 {
 	struct perf_sample sample;
 	union perf_event *event;
-<<<<<<< HEAD
-	struct perf_tool *tool = jd->session->tool;
-=======
 	const struct perf_tool *tool = jd->session->tool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *filename;
 	size_t size;
 	struct stat st;
@@ -718,11 +710,7 @@ jit_process_dump(struct jit_buf_desc *jd)
 }
 
 static int
-<<<<<<< HEAD
-jit_inject(struct jit_buf_desc *jd, char *path)
-=======
 jit_inject(struct jit_buf_desc *jd, const char *path)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret;
 
@@ -749,11 +737,7 @@ jit_inject(struct jit_buf_desc *jd, const char *path)
  * as captured in the RECORD_MMAP record
  */
 static int
-<<<<<<< HEAD
-jit_detect(char *mmap_name, pid_t pid, struct nsinfo *nsi)
-=======
 jit_detect(const char *mmap_name, pid_t pid, struct nsinfo *nsi)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  {
 	char *p;
 	char *end = NULL;
@@ -837,11 +821,7 @@ int
 jit_process(struct perf_session *session,
 	    struct perf_data *output,
 	    struct machine *machine,
-<<<<<<< HEAD
-	    char *filename,
-=======
 	    const char *filename,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    pid_t pid,
 	    pid_t tid,
 	    u64 *nbytes)

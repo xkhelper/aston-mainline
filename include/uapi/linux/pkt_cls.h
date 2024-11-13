@@ -246,18 +246,6 @@ struct tc_u32_key {
 };
 
 struct tc_u32_sel {
-<<<<<<< HEAD
-	unsigned char		flags;
-	unsigned char		offshift;
-	unsigned char		nkeys;
-
-	__be16			offmask;
-	__u16			off;
-	short			offoff;
-
-	short			hoff;
-	__be32			hmask;
-=======
 	/* New members MUST be added within the __struct_group() macro below. */
 	__struct_group(tc_u32_sel_hdr, hdr, /* no attrs */,
 		unsigned char		flags;
@@ -271,7 +259,6 @@ struct tc_u32_sel {
 		short			hoff;
 		__be32			hmask;
 	);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct tc_u32_key	keys[];
 };
 

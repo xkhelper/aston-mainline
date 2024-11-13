@@ -217,14 +217,6 @@ enum optc_dsc_mode {
 };
 
 struct dc_bias_and_scale {
-<<<<<<< HEAD
-	uint16_t scale_red;
-	uint16_t bias_red;
-	uint16_t scale_green;
-	uint16_t bias_green;
-	uint16_t scale_blue;
-	uint16_t bias_blue;
-=======
 	uint32_t scale_red;
 	uint32_t bias_red;
 	uint32_t scale_green;
@@ -232,7 +224,6 @@ struct dc_bias_and_scale {
 	uint32_t scale_blue;
 	uint32_t bias_blue;
 	bool bias_and_scale_valid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum test_pattern_dyn_range {

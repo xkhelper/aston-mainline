@@ -44,10 +44,7 @@ static void __init sclp_early_facilities_detect(void)
 	sclp.has_ibs = !!(sccb->fac117 & 0x20);
 	sclp.has_gisaf = !!(sccb->fac118 & 0x08);
 	sclp.has_hvs = !!(sccb->fac119 & 0x80);
-<<<<<<< HEAD
-=======
 	sclp.has_wti = !!(sccb->fac119 & 0x40);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sclp.has_kss = !!(sccb->fac98 & 0x01);
 	sclp.has_aisii = !!(sccb->fac118 & 0x40);
 	sclp.has_aeni = !!(sccb->fac118 & 0x20);

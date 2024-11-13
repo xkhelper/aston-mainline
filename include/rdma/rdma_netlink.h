@@ -6,11 +6,8 @@
 #include <linux/netlink.h>
 #include <uapi/rdma/rdma_netlink.h>
 
-<<<<<<< HEAD
-=======
 struct ib_device;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	RDMA_NLDEV_ATTR_EMPTY_STRING = 1,
 	RDMA_NLDEV_ATTR_ENTRY_STRLEN = 16,
@@ -115,8 +112,6 @@ int rdma_nl_multicast(struct net *net, struct sk_buff *skb,
  */
 bool rdma_nl_chk_listeners(unsigned int group);
 
-<<<<<<< HEAD
-=======
 /**
  * Prepare and send an event message
  * @ib: the IB device which triggered the event
@@ -127,7 +122,6 @@ bool rdma_nl_chk_listeners(unsigned int group);
 int rdma_nl_notify_event(struct ib_device *ib, u32 port_num,
 			 enum rdma_nl_notify_event_type type);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct rdma_link_ops {
 	struct list_head list;
 	const char *type;

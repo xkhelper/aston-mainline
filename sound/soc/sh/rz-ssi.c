@@ -52,10 +52,7 @@
 #define SSIFCR_RIE		BIT(2)
 #define SSIFCR_TFRST		BIT(1)
 #define SSIFCR_RFRST		BIT(0)
-<<<<<<< HEAD
-=======
 #define SSIFCR_FIFO_RST		(SSIFCR_TFRST | SSIFCR_RFRST)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SSIFSR_TDC_MASK		0x3f
 #define SSIFSR_TDC_SHIFT	24
@@ -134,8 +131,6 @@ struct rz_ssi_priv {
 	bool lrckp_fsync_fall;	/* LR clock polarity (SSICR.LRCKP) */
 	bool bckp_rise;	/* Bit clock polarity (SSICR.BCKP) */
 	bool dma_rt;
-<<<<<<< HEAD
-=======
 
 	/* Full duplex communication support */
 	struct {
@@ -144,7 +139,6 @@ struct rz_ssi_priv {
 		unsigned int sample_width;
 		unsigned int sample_bits;
 	} hw_params_cache;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void rz_ssi_dma_complete(void *data);
@@ -223,14 +217,11 @@ static bool rz_ssi_stream_is_valid(struct rz_ssi_priv *ssi,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static inline bool rz_ssi_is_stream_running(struct rz_ssi_stream *strm)
 {
 	return strm->substream && strm->running;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void rz_ssi_stream_init(struct rz_ssi_stream *strm,
 			       struct snd_pcm_substream *substream)
 {
@@ -326,66 +317,10 @@ static int rz_ssi_clk_setup(struct rz_ssi_priv *ssi, unsigned int rate,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int rz_ssi_start(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
-{
-	bool is_play = rz_ssi_stream_is_play(ssi, strm->substream);
-	u32 ssicr, ssifcr;
-
-	ssicr = rz_ssi_reg_readl(ssi, SSICR);
-	ssifcr = rz_ssi_reg_readl(ssi, SSIFCR) & ~0xF;
-
-	/* FIFO interrupt thresholds */
-	if (rz_ssi_is_dma_enabled(ssi))
-		rz_ssi_reg_writel(ssi, SSISCR, 0);
-	else
-		rz_ssi_reg_writel(ssi, SSISCR,
-				  SSISCR_TDES(strm->fifo_sample_size / 2 - 1) |
-				  SSISCR_RDFS(0));
-
-	/* enable IRQ */
-	if (is_play) {
-		ssicr |= SSICR_TUIEN | SSICR_TOIEN;
-		ssifcr |= SSIFCR_TIE | SSIFCR_RFRST;
-	} else {
-		ssicr |= SSICR_RUIEN | SSICR_ROIEN;
-		ssifcr |= SSIFCR_RIE | SSIFCR_TFRST;
-	}
-
-	rz_ssi_reg_writel(ssi, SSICR, ssicr);
-	rz_ssi_reg_writel(ssi, SSIFCR, ssifcr);
-
-	/* Clear all error flags */
-	rz_ssi_reg_mask_setl(ssi, SSISR,
-			     (SSISR_TOIRQ | SSISR_TUIRQ | SSISR_ROIRQ |
-			      SSISR_RUIRQ), 0);
-
-	strm->running = 1;
-	ssicr |= is_play ? SSICR_TEN : SSICR_REN;
-	rz_ssi_reg_writel(ssi, SSICR, ssicr);
-
-	return 0;
-}
-
-static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
-{
-	int timeout;
-
-	strm->running = 0;
-
-	/* Disable TX/RX */
-	rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
-
-	/* Cancel all remaining DMA transactions */
-	if (rz_ssi_is_dma_enabled(ssi))
-		dmaengine_terminate_async(strm->dma_ch);
-
-=======
 static void rz_ssi_set_idle(struct rz_ssi_priv *ssi)
 {
 	int timeout;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Disable irqs */
 	rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TUIEN | SSICR_TOIEN |
 			     SSICR_RUIEN | SSICR_ROIEN, 0);
@@ -410,8 +345,6 @@ static void rz_ssi_set_idle(struct rz_ssi_priv *ssi)
 	/* Hold FIFOs in reset */
 	rz_ssi_reg_mask_setl(ssi, SSIFCR, 0,
 			     SSIFCR_TFRST | SSIFCR_RFRST);
-<<<<<<< HEAD
-=======
 }
 
 static int rz_ssi_start(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
@@ -488,7 +421,6 @@ static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
 		dmaengine_terminate_async(strm->dma_ch);
 
 	rz_ssi_set_idle(ssi);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -621,63 +553,12 @@ static int rz_ssi_pio_send(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
 
 static irqreturn_t rz_ssi_interrupt(int irq, void *data)
 {
-<<<<<<< HEAD
-	struct rz_ssi_stream *strm = NULL;
-=======
 	struct rz_ssi_stream *strm_playback = NULL;
 	struct rz_ssi_stream *strm_capture = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rz_ssi_priv *ssi = data;
 	u32 ssisr = rz_ssi_reg_readl(ssi, SSISR);
 
 	if (ssi->playback.substream)
-<<<<<<< HEAD
-		strm = &ssi->playback;
-	else if (ssi->capture.substream)
-		strm = &ssi->capture;
-	else
-		return IRQ_HANDLED; /* Left over TX/RX interrupt */
-
-	if (irq == ssi->irq_int) { /* error or idle */
-		if (ssisr & SSISR_TUIRQ)
-			strm->uerr_num++;
-		if (ssisr & SSISR_TOIRQ)
-			strm->oerr_num++;
-		if (ssisr & SSISR_RUIRQ)
-			strm->uerr_num++;
-		if (ssisr & SSISR_ROIRQ)
-			strm->oerr_num++;
-
-		if (ssisr & (SSISR_TUIRQ | SSISR_TOIRQ | SSISR_RUIRQ |
-			     SSISR_ROIRQ)) {
-			/* Error handling */
-			/* You must reset (stop/restart) after each interrupt */
-			rz_ssi_stop(ssi, strm);
-
-			/* Clear all flags */
-			rz_ssi_reg_mask_setl(ssi, SSISR, SSISR_TOIRQ |
-					     SSISR_TUIRQ | SSISR_ROIRQ |
-					     SSISR_RUIRQ, 0);
-
-			/* Add/remove more data */
-			strm->transfer(ssi, strm);
-
-			/* Resume */
-			rz_ssi_start(ssi, strm);
-		}
-	}
-
-	if (!strm->running)
-		return IRQ_HANDLED;
-
-	/* tx data empty */
-	if (irq == ssi->irq_tx)
-		strm->transfer(ssi, &ssi->playback);
-
-	/* rx data full */
-	if (irq == ssi->irq_rx) {
-		strm->transfer(ssi, &ssi->capture);
-=======
 		strm_playback = &ssi->playback;
 	if (ssi->capture.substream)
 		strm_capture = &ssi->capture;
@@ -748,24 +629,14 @@ static irqreturn_t rz_ssi_interrupt(int irq, void *data)
 	/* rx data full */
 	if (irq == ssi->irq_rx && rz_ssi_is_stream_running(&ssi->capture)) {
 		strm_capture->transfer(ssi, &ssi->capture);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rz_ssi_reg_mask_setl(ssi, SSIFSR, SSIFSR_RDF, 0);
 	}
 
 	if (irq == ssi->irq_rt) {
-<<<<<<< HEAD
-		struct snd_pcm_substream *substream = strm->substream;
-
-		if (rz_ssi_stream_is_play(ssi, substream)) {
-			strm->transfer(ssi, &ssi->playback);
-		} else {
-			strm->transfer(ssi, &ssi->capture);
-=======
 		if (ssi->playback.substream) {
 			strm_playback->transfer(ssi, &ssi->playback);
 		} else {
 			strm_capture->transfer(ssi, &ssi->capture);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rz_ssi_reg_mask_setl(ssi, SSIFSR, SSIFSR_RDF, 0);
 		}
 	}
@@ -925,18 +796,12 @@ static int rz_ssi_dai_trigger(struct snd_pcm_substream *substream, int cmd,
 	switch (cmd) {
 	case SNDRV_PCM_TRIGGER_START:
 		/* Soft Reset */
-<<<<<<< HEAD
-		rz_ssi_reg_mask_setl(ssi, SSIFCR, 0, SSIFCR_SSIRST);
-		rz_ssi_reg_mask_setl(ssi, SSIFCR, SSIFCR_SSIRST, 0);
-		udelay(5);
-=======
 		if (!rz_ssi_is_stream_running(&ssi->playback) &&
 		    !rz_ssi_is_stream_running(&ssi->capture)) {
 			rz_ssi_reg_mask_setl(ssi, SSIFCR, 0, SSIFCR_SSIRST);
 			rz_ssi_reg_mask_setl(ssi, SSIFCR, SSIFCR_SSIRST, 0);
 			udelay(5);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		rz_ssi_stream_init(strm, substream);
 
@@ -1027,8 +892,6 @@ static int rz_ssi_dai_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static bool rz_ssi_is_valid_hw_params(struct rz_ssi_priv *ssi, unsigned int rate,
 				      unsigned int channels,
 				      unsigned int sample_width,
@@ -1054,23 +917,16 @@ static void rz_ssi_cache_hw_params(struct rz_ssi_priv *ssi, unsigned int rate,
 	ssi->hw_params_cache.sample_bits = sample_bits;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rz_ssi_dai_hw_params(struct snd_pcm_substream *substream,
 				struct snd_pcm_hw_params *params,
 				struct snd_soc_dai *dai)
 {
 	struct rz_ssi_priv *ssi = snd_soc_dai_get_drvdata(dai);
-<<<<<<< HEAD
-	unsigned int sample_bits = hw_param_interval(params,
-					SNDRV_PCM_HW_PARAM_SAMPLE_BITS)->min;
-	unsigned int channels = params_channels(params);
-=======
 	struct rz_ssi_stream *strm = rz_ssi_stream_get(ssi, substream);
 	unsigned int sample_bits = hw_param_interval(params,
 					SNDRV_PCM_HW_PARAM_SAMPLE_BITS)->min;
 	unsigned int channels = params_channels(params);
 	unsigned int rate = params_rate(params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sample_bits != 16) {
 		dev_err(ssi->dev, "Unsupported sample width: %d\n",
@@ -1084,10 +940,6 @@ static int rz_ssi_dai_hw_params(struct snd_pcm_substream *substream,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	return rz_ssi_clk_setup(ssi, params_rate(params),
-				params_channels(params));
-=======
 	if (rz_ssi_is_stream_running(&ssi->playback) ||
 	    rz_ssi_is_stream_running(&ssi->capture)) {
 		if (rz_ssi_is_valid_hw_params(ssi, rate, channels,
@@ -1102,7 +954,6 @@ static int rz_ssi_dai_hw_params(struct snd_pcm_substream *substream,
 			       sample_bits);
 
 	return rz_ssi_clk_setup(ssi, rate, channels);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct snd_soc_dai_ops rz_ssi_dai_ops = {
@@ -1353,11 +1204,7 @@ static struct platform_driver rz_ssi_driver = {
 		.of_match_table = rz_ssi_of_match,
 	},
 	.probe		= rz_ssi_probe,
-<<<<<<< HEAD
-	.remove_new	= rz_ssi_remove,
-=======
 	.remove		= rz_ssi_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(rz_ssi_driver);

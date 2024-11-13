@@ -18,11 +18,7 @@
 #include <linux/delay.h>
 #include <linux/util_macros.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* I2C commands: */
 #define HP206C_CMD_SOFT_RST	0x06

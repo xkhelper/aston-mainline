@@ -1154,8 +1154,6 @@
 			<&mcu_r5fss0_core1_memory_region>;
 };
 
-<<<<<<< HEAD
-=======
 &main_r5fss0 {
 	ti,cluster-mode = <0>;
 };
@@ -1209,7 +1207,6 @@
 	status = "reserved";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &main_r5fss0_core0 {
 	status = "okay";
 	mboxes = <&mailbox0_cluster1 &mbox_main_r5fss0_core0>;
@@ -1463,18 +1460,11 @@
 
 	serdes1_pcie0_link: phy@0 {
 		reg = <0>;
-<<<<<<< HEAD
-		cdns,num-lanes = <2>;
-		#phy-cells = <0>;
-		cdns,phy-type = <PHY_TYPE_PCIE>;
-		resets = <&serdes_wiz1 1>, <&serdes_wiz1 2>;
-=======
 		cdns,num-lanes = <4>;
 		#phy-cells = <0>;
 		cdns,phy-type = <PHY_TYPE_PCIE>;
 		resets = <&serdes_wiz1 1>, <&serdes_wiz1 2>,
 			 <&serdes_wiz1 3>, <&serdes_wiz1 4>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

@@ -236,15 +236,12 @@ struct mptcp_pm_data {
 	struct mptcp_rm_list rm_list_rx;
 };
 
-<<<<<<< HEAD
-=======
 struct mptcp_pm_local {
 	struct mptcp_addr_info	addr;
 	u8			flags;
 	int			ifindex;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mptcp_pm_addr_entry {
 	struct list_head	list;
 	struct mptcp_addr_info	addr;
@@ -534,17 +531,11 @@ struct mptcp_subflow_context {
 		valid_csum_seen : 1,        /* at least one csum validated */
 		is_mptfo : 1,	    /* subflow is doing TFO */
 		close_event_done : 1,       /* has done the post-closed part */
-<<<<<<< HEAD
-		__unused : 9;
-	bool	data_avail;
-	bool	scheduled;
-=======
 		mpc_drop : 1,	    /* the MPC option has been dropped in a rtx */
 		__unused : 8;
 	bool	data_avail;
 	bool	scheduled;
 	bool	pm_listener;	    /* a listener managed by the kernel PM? */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32	remote_nonce;
 	u64	thmac;
 	u32	local_nonce;
@@ -708,14 +699,11 @@ unsigned int mptcp_stale_loss_cnt(const struct net *net);
 unsigned int mptcp_close_timeout(const struct sock *sk);
 int mptcp_get_pm_type(const struct net *net);
 const char *mptcp_get_scheduler(const struct net *net);
-<<<<<<< HEAD
-=======
 
 void mptcp_active_disable(struct sock *sk);
 bool mptcp_active_should_disable(struct sock *ssk);
 void mptcp_active_enable(struct sock *sk);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mptcp_get_available_schedulers(char *buf, size_t maxlen);
 void __mptcp_subflow_fully_established(struct mptcp_sock *msk,
 				       struct mptcp_subflow_context *subflow,
@@ -744,11 +732,7 @@ bool mptcp_addresses_equal(const struct mptcp_addr_info *a,
 void mptcp_local_address(const struct sock_common *skc, struct mptcp_addr_info *addr);
 
 /* called with sk socket lock held */
-<<<<<<< HEAD
-int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_addr_info *loc,
-=======
 int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_pm_local *local,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    const struct mptcp_addr_info *remote);
 int mptcp_subflow_create_socket(struct sock *sk, unsigned short family,
 				struct socket **new_sock);
@@ -1043,17 +1027,6 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
 struct mptcp_pm_add_entry *
 mptcp_lookup_anno_list_by_saddr(const struct mptcp_sock *msk,
 				const struct mptcp_addr_info *addr);
-<<<<<<< HEAD
-int mptcp_pm_get_flags_and_ifindex_by_id(struct mptcp_sock *msk,
-					 unsigned int id,
-					 u8 *flags, int *ifindex);
-int mptcp_pm_nl_get_flags_and_ifindex_by_id(struct mptcp_sock *msk, unsigned int id,
-					    u8 *flags, int *ifindex);
-int mptcp_userspace_pm_get_flags_and_ifindex_by_id(struct mptcp_sock *msk,
-						   unsigned int id,
-						   u8 *flags, int *ifindex);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int mptcp_pm_set_flags(struct sk_buff *skb, struct genl_info *info);
 int mptcp_pm_nl_set_flags(struct sk_buff *skb, struct genl_info *info);
 int mptcp_userspace_pm_set_flags(struct sk_buff *skb, struct genl_info *info);
@@ -1186,10 +1159,6 @@ static inline void mptcp_pm_close_subflow(struct mptcp_sock *msk)
 	spin_unlock_bh(&msk->pm.lock);
 }
 
-<<<<<<< HEAD
-void mptcp_sockopt_sync(struct mptcp_sock *msk, struct sock *ssk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mptcp_sockopt_sync_locked(struct mptcp_sock *msk, struct sock *ssk);
 
 static inline struct mptcp_ext *mptcp_get_ext(const struct sk_buff *skb)
@@ -1253,8 +1222,6 @@ static inline void mptcp_do_fallback(struct sock *ssk)
 
 #define pr_fallback(a) pr_debug("%s:fallback to TCP (msk=%p)\n", __func__, a)
 
-<<<<<<< HEAD
-=======
 static inline void mptcp_subflow_early_fallback(struct mptcp_sock *msk,
 						struct mptcp_subflow_context *subflow)
 {
@@ -1263,7 +1230,6 @@ static inline void mptcp_subflow_early_fallback(struct mptcp_sock *msk,
 	__mptcp_do_fallback(msk);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool mptcp_check_infinite_map(struct sk_buff *skb)
 {
 	struct mptcp_ext *mpext;

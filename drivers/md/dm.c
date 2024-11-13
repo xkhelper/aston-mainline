@@ -2030,12 +2030,6 @@ static void dm_submit_bio(struct bio *bio)
 	struct dm_table *map;
 
 	map = dm_get_live_table(md, &srcu_idx);
-<<<<<<< HEAD
-
-	/* If suspended, or map not yet available, queue this IO for later */
-	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)) ||
-	    unlikely(!map)) {
-=======
 	if (unlikely(!map)) {
 		DMERR_LIMIT("%s: mapping table unavailable, erroring io",
 			    dm_device_name(md));
@@ -2045,7 +2039,6 @@ static void dm_submit_bio(struct bio *bio)
 
 	/* If suspended, queue this IO for later */
 	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (bio->bi_opf & REQ_NOWAIT)
 			bio_wouldblock_error(bio);
 		else if (bio->bi_opf & REQ_RAHEAD)
@@ -2297,15 +2290,10 @@ static struct mapped_device *alloc_dev(int minor)
 	 * override accordingly.
 	 */
 	md->disk = blk_alloc_disk(NULL, md->numa_node_id);
-<<<<<<< HEAD
-	if (IS_ERR(md->disk))
-		goto bad;
-=======
 	if (IS_ERR(md->disk)) {
 		md->disk = NULL;
 		goto bad;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	md->queue = md->disk->queue;
 
 	init_waitqueue_head(&md->wait);

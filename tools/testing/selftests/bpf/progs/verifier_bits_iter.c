@@ -15,11 +15,8 @@ int bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign,
 int *bpf_iter_bits_next(struct bpf_iter_bits *it) __ksym __weak;
 void bpf_iter_bits_destroy(struct bpf_iter_bits *it) __ksym __weak;
 
-<<<<<<< HEAD
-=======
 u64 bits_array[511] = {};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SEC("iter.s/cgroup")
 __description("bits iter without destroy")
 __failure __msg("Unreleased reference")
@@ -92,11 +89,7 @@ int bits_memalloc(void)
 	int *bit;
 
 	__builtin_memset(&data, 0xf0, sizeof(data)); /* 4 * 16 */
-<<<<<<< HEAD
-	bpf_for_each(bits, bit, &data[0], sizeof(data) / sizeof(u64))
-=======
 	bpf_for_each(bits, bit, &data[0], ARRAY_SIZE(data))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nr++;
 	return nr;
 }
@@ -119,26 +112,16 @@ int bit_index(void)
 }
 
 SEC("syscall")
-<<<<<<< HEAD
-__description("bits nomem")
-__success __retval(0)
-int bits_nomem(void)
-=======
 __description("bits too big")
 __success __retval(0)
 int bits_too_big(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 data[4];
 	int nr = 0;
 	int *bit;
 
 	__builtin_memset(&data, 0xff, sizeof(data));
-<<<<<<< HEAD
-	bpf_for_each(bits, bit, &data[0], 513) /* Be greater than 512 */
-=======
 	bpf_for_each(bits, bit, &data[0], 512) /* Be greater than 511 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nr++;
 	return nr;
 }
@@ -170,8 +153,6 @@ int zero_words(void)
 		nr++;
 	return nr;
 }
-<<<<<<< HEAD
-=======
 
 SEC("syscall")
 __description("huge words")
@@ -225,4 +206,3 @@ int bad_words(void)
 
 	return nr;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

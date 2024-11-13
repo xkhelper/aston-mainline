@@ -191,12 +191,7 @@ SECTIONS
 	. = ALIGN(PAGE_SIZE);
 	INIT_DATA_SECTION(0x100)
 
-<<<<<<< HEAD
-	RUNTIME_CONST(shift, d_hash_shift)
-	RUNTIME_CONST(ptr, dentry_hashtable)
-=======
 	RUNTIME_CONST_VARIABLES
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	PERCPU_SECTION(0x100)
 

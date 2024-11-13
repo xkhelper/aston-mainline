@@ -484,12 +484,6 @@ cifsConvertToUTF16(__le16 *target, const char *source, int srclen,
 			/**
 			 * Remap spaces and periods found at the end of every
 			 * component of the path. The special cases of '.' and
-<<<<<<< HEAD
-			 * '..' do not need to be dealt with explicitly because
-			 * they are addressed in namei.c:link_path_walk().
-			 **/
-			if ((i == srclen - 1) || (source[i+1] == '\\'))
-=======
 			 * '..' are need to be handled because of symlinks.
 			 * They are treated as non-end-of-string to avoid
 			 * remapping and breaking symlinks pointing to . or ..
@@ -505,7 +499,6 @@ cifsConvertToUTF16(__le16 *target, const char *source, int srclen,
 				 (i == srclen-1 || source[i+1] == '\\'))
 				end_of_string = false; /* ".." case */
 			else if ((i == srclen - 1) || (source[i+1] == '\\'))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				end_of_string = true;
 			else
 				end_of_string = false;

@@ -621,11 +621,7 @@ void generic_shutdown_super(struct super_block *sb)
 		sync_filesystem(sb);
 		sb->s_flags &= ~SB_ACTIVE;
 
-<<<<<<< HEAD
-		cgroup_writeback_umount();
-=======
 		cgroup_writeback_umount(sb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Evict all inodes with zero refcount. */
 		evict_inodes(sb);
@@ -1600,15 +1596,6 @@ int setup_bdev_super(struct super_block *sb, int sb_flags,
 EXPORT_SYMBOL_GPL(setup_bdev_super);
 
 /**
-<<<<<<< HEAD
- * get_tree_bdev - Get a superblock based on a single block device
- * @fc: The filesystem context holding the parameters
- * @fill_super: Helper to initialise a new superblock
- */
-int get_tree_bdev(struct fs_context *fc,
-		int (*fill_super)(struct super_block *,
-				  struct fs_context *))
-=======
  * get_tree_bdev_flags - Get a superblock based on a single block device
  * @fc: The filesystem context holding the parameters
  * @fill_super: Helper to initialise a new superblock
@@ -1617,7 +1604,6 @@ int get_tree_bdev(struct fs_context *fc,
 int get_tree_bdev_flags(struct fs_context *fc,
 		int (*fill_super)(struct super_block *sb,
 				  struct fs_context *fc), unsigned int flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct super_block *s;
 	int error = 0;
@@ -1628,17 +1614,10 @@ int get_tree_bdev_flags(struct fs_context *fc,
 
 	error = lookup_bdev(fc->source, &dev);
 	if (error) {
-<<<<<<< HEAD
-		errorf(fc, "%s: Can't lookup blockdev", fc->source);
-		return error;
-	}
-
-=======
 		if (!(flags & GET_TREE_BDEV_QUIET_LOOKUP))
 			errorf(fc, "%s: Can't lookup blockdev", fc->source);
 		return error;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fc->sb_flags |= SB_NOSEC;
 	s = sget_dev(fc, dev);
 	if (IS_ERR(s))
@@ -1666,8 +1645,6 @@ int get_tree_bdev_flags(struct fs_context *fc,
 	fc->root = dget(s->s_root);
 	return 0;
 }
-<<<<<<< HEAD
-=======
 EXPORT_SYMBOL_GPL(get_tree_bdev_flags);
 
 /**
@@ -1681,7 +1658,6 @@ int get_tree_bdev(struct fs_context *fc,
 {
 	return get_tree_bdev_flags(fc, fill_super, 0);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL(get_tree_bdev);
 
 static int test_bdev_super(struct super_block *s, void *data)
@@ -1943,11 +1919,7 @@ static void lockdep_sb_freeze_release(struct super_block *sb)
 	int level;
 
 	for (level = SB_FREEZE_LEVELS - 1; level >= 0; level--)
-<<<<<<< HEAD
-		percpu_rwsem_release(sb->s_writers.rw_sem + level, 0, _THIS_IP_);
-=======
 		percpu_rwsem_release(sb->s_writers.rw_sem + level, _THIS_IP_);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

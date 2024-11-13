@@ -202,8 +202,6 @@ PMD-mappable transparent hugepage::
 
 	cat /sys/kernel/mm/transparent_hugepage/hpage_pmd_size
 
-<<<<<<< HEAD
-=======
 All THPs at fault and collapse time will be added to _deferred_list,
 and will therefore be split under memory presure if they are considered
 "underused". A THP is underused if the number of zero-filled pages in
@@ -214,7 +212,6 @@ this behaviour by writing 0 to shrink_underused, and enable it by writing
 	echo 0 > /sys/kernel/mm/transparent_hugepage/shrink_underused
 	echo 1 > /sys/kernel/mm/transparent_hugepage/shrink_underused
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 khugepaged will be automatically started when PMD-sized THP is enabled
 (either of the per-size anon control or the top-level control are set
 to "always" or "madvise"), and it'll be automatically shutdown when
@@ -297,15 +294,6 @@ that THP is shared. Exceeding the number would block the collapse::
 
 A higher value may increase memory footprint for some workloads.
 
-<<<<<<< HEAD
-Boot parameter
-==============
-
-You can change the sysfs boot time defaults of Transparent Hugepage
-Support by passing the parameter ``transparent_hugepage=always`` or
-``transparent_hugepage=madvise`` or ``transparent_hugepage=never``
-to the kernel command line.
-=======
 Boot parameters
 ===============
 
@@ -337,7 +325,6 @@ However, if a valid ``thp_anon`` setting is provided by the user, the
 PMD_ORDER THP policy will be overridden. If the policy for PMD_ORDER
 is not defined within a valid ``thp_anon``, its policy will default to
 ``never``.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Hugepages in tmpfs/shmem
 ========================
@@ -494,15 +481,12 @@ thp_deferred_split_page
 	splitting it would free up some memory. Pages on split queue are
 	going to be split under memory pressure.
 
-<<<<<<< HEAD
-=======
 thp_underused_split_page
 	is incremented when a huge page on the split queue was split
 	because it was underused. A THP is underused if the number of
 	zero pages in the THP is above a certain threshold
 	(/sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none).
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 thp_split_pmd
 	is incremented every time a PMD split into table of PTEs.
 	This can happen, for instance, when application calls mprotect() or
@@ -583,8 +567,6 @@ split_deferred
         it would free up some memory. Pages on split queue are going to
         be split under memory pressure, if splitting is possible.
 
-<<<<<<< HEAD
-=======
 nr_anon
        the number of anonymous THP we have in the whole system. These THPs
        might be currently entirely mapped or have partially unmapped/unused
@@ -597,7 +579,6 @@ nr_anon_partially_mapped
        an anonymous THP as "partially mapped" and count it here, even though it
        is not actually partially mapped anymore.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 As the system ages, allocating huge pages may be expensive as the
 system uses memory compaction to copy data around memory to free a
 huge page for use. There are some counters in ``/proc/vmstat`` to help

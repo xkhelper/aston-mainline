@@ -32,8 +32,6 @@ struct mnt_idmap nop_mnt_idmap = {
 };
 EXPORT_SYMBOL_GPL(nop_mnt_idmap);
 
-<<<<<<< HEAD
-=======
 /*
  * Carries the invalid idmapping of a full 0-4294967295 {g,u}id range.
  * This means that all {g,u}ids are mapped to INVALID_VFS{G,U}ID.
@@ -43,7 +41,6 @@ struct mnt_idmap invalid_mnt_idmap = {
 };
 EXPORT_SYMBOL_GPL(invalid_mnt_idmap);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * initial_idmapping - check whether this is the initial mapping
  * @ns: idmapping to check
@@ -87,11 +84,8 @@ vfsuid_t make_vfsuid(struct mnt_idmap *idmap,
 
 	if (idmap == &nop_mnt_idmap)
 		return VFSUIDT_INIT(kuid);
-<<<<<<< HEAD
-=======
 	if (idmap == &invalid_mnt_idmap)
 		return INVALID_VFSUID;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (initial_idmapping(fs_userns))
 		uid = __kuid_val(kuid);
 	else
@@ -129,11 +123,8 @@ vfsgid_t make_vfsgid(struct mnt_idmap *idmap,
 
 	if (idmap == &nop_mnt_idmap)
 		return VFSGIDT_INIT(kgid);
-<<<<<<< HEAD
-=======
 	if (idmap == &invalid_mnt_idmap)
 		return INVALID_VFSGID;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (initial_idmapping(fs_userns))
 		gid = __kgid_val(kgid);
 	else
@@ -162,11 +153,8 @@ kuid_t from_vfsuid(struct mnt_idmap *idmap,
 
 	if (idmap == &nop_mnt_idmap)
 		return AS_KUIDT(vfsuid);
-<<<<<<< HEAD
-=======
 	if (idmap == &invalid_mnt_idmap)
 		return INVALID_UID;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uid = map_id_up(&idmap->uid_map, __vfsuid_val(vfsuid));
 	if (uid == (uid_t)-1)
 		return INVALID_UID;
@@ -194,11 +182,8 @@ kgid_t from_vfsgid(struct mnt_idmap *idmap,
 
 	if (idmap == &nop_mnt_idmap)
 		return AS_KGIDT(vfsgid);
-<<<<<<< HEAD
-=======
 	if (idmap == &invalid_mnt_idmap)
 		return INVALID_GID;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gid = map_id_up(&idmap->gid_map, __vfsgid_val(vfsgid));
 	if (gid == (gid_t)-1)
 		return INVALID_GID;
@@ -260,17 +245,6 @@ static int copy_mnt_idmap(struct uid_gid_map *map_from,
 		return 0;
 	}
 
-<<<<<<< HEAD
-	forward = kmemdup(map_from->forward,
-			  nr_extents * sizeof(struct uid_gid_extent),
-			  GFP_KERNEL_ACCOUNT);
-	if (!forward)
-		return -ENOMEM;
-
-	reverse = kmemdup(map_from->reverse,
-			  nr_extents * sizeof(struct uid_gid_extent),
-			  GFP_KERNEL_ACCOUNT);
-=======
 	forward = kmemdup_array(map_from->forward, nr_extents,
 				sizeof(struct uid_gid_extent),
 				GFP_KERNEL_ACCOUNT);
@@ -280,7 +254,6 @@ static int copy_mnt_idmap(struct uid_gid_map *map_from,
 	reverse = kmemdup_array(map_from->reverse, nr_extents,
 				sizeof(struct uid_gid_extent),
 				GFP_KERNEL_ACCOUNT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!reverse) {
 		kfree(forward);
 		return -ENOMEM;
@@ -340,11 +313,7 @@ struct mnt_idmap *alloc_mnt_idmap(struct user_namespace *mnt_userns)
  */
 struct mnt_idmap *mnt_idmap_get(struct mnt_idmap *idmap)
 {
-<<<<<<< HEAD
-	if (idmap != &nop_mnt_idmap)
-=======
 	if (idmap != &nop_mnt_idmap && idmap != &invalid_mnt_idmap)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		refcount_inc(&idmap->count);
 
 	return idmap;
@@ -360,12 +329,8 @@ EXPORT_SYMBOL_GPL(mnt_idmap_get);
  */
 void mnt_idmap_put(struct mnt_idmap *idmap)
 {
-<<<<<<< HEAD
-	if (idmap != &nop_mnt_idmap && refcount_dec_and_test(&idmap->count))
-=======
 	if (idmap != &nop_mnt_idmap && idmap != &invalid_mnt_idmap &&
 	    refcount_dec_and_test(&idmap->count))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		free_mnt_idmap(idmap);
 }
 EXPORT_SYMBOL_GPL(mnt_idmap_put);

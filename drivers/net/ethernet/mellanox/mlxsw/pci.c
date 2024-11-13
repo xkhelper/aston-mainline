@@ -389,12 +389,6 @@ static void mlxsw_pci_wqe_frag_unmap(struct mlxsw_pci *mlxsw_pci, char *wqe,
 	dma_unmap_single(&pdev->dev, mapaddr, frag_len, direction);
 }
 
-<<<<<<< HEAD
-static struct sk_buff *mlxsw_pci_rdq_build_skb(struct page *pages[],
-					       u16 byte_count)
-{
-	unsigned int linear_data_size;
-=======
 static struct sk_buff *mlxsw_pci_rdq_build_skb(struct mlxsw_pci_queue *q,
 					       struct page *pages[],
 					       u16 byte_count)
@@ -402,14 +396,11 @@ static struct sk_buff *mlxsw_pci_rdq_build_skb(struct mlxsw_pci_queue *q,
 	struct mlxsw_pci_queue *cq = q->u.rdq.cq;
 	unsigned int linear_data_size;
 	struct page_pool *page_pool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct sk_buff *skb;
 	int page_index = 0;
 	bool linear_only;
 	void *data;
 
-<<<<<<< HEAD
-=======
 	linear_only = byte_count + MLXSW_PCI_RX_BUF_SW_OVERHEAD <= PAGE_SIZE;
 	linear_data_size = linear_only ? byte_count :
 					 PAGE_SIZE -
@@ -419,7 +410,6 @@ static struct sk_buff *mlxsw_pci_rdq_build_skb(struct mlxsw_pci_queue *q,
 	page_pool_dma_sync_for_cpu(page_pool, pages[page_index],
 				   MLXSW_PCI_SKB_HEADROOM, linear_data_size);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data = page_address(pages[page_index]);
 	net_prefetch(data);
 
@@ -427,14 +417,6 @@ static struct sk_buff *mlxsw_pci_rdq_build_skb(struct mlxsw_pci_queue *q,
 	if (unlikely(!skb))
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
-	linear_only = byte_count + MLXSW_PCI_RX_BUF_SW_OVERHEAD <= PAGE_SIZE;
-	linear_data_size = linear_only ? byte_count :
-					 PAGE_SIZE -
-					 MLXSW_PCI_RX_BUF_SW_OVERHEAD;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	skb_reserve(skb, MLXSW_PCI_SKB_HEADROOM);
 	skb_put(skb, linear_data_size);
 
@@ -450,10 +432,7 @@ static struct sk_buff *mlxsw_pci_rdq_build_skb(struct mlxsw_pci_queue *q,
 
 		page = pages[page_index];
 		frag_size = min(byte_count, PAGE_SIZE);
-<<<<<<< HEAD
-=======
 		page_pool_dma_sync_for_cpu(page_pool, page, 0, frag_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
 				page, 0, frag_size, PAGE_SIZE);
 		byte_count -= frag_size;
@@ -789,11 +768,7 @@ static void mlxsw_pci_cqe_rdq_handle(struct mlxsw_pci *mlxsw_pci,
 	if (err)
 		goto out;
 
-<<<<<<< HEAD
-	skb = mlxsw_pci_rdq_build_skb(pages, byte_count);
-=======
 	skb = mlxsw_pci_rdq_build_skb(q, pages, byte_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(skb)) {
 		dev_err_ratelimited(&pdev->dev, "Failed to build skb for RDQ\n");
 		mlxsw_pci_rdq_pages_recycle(q, pages, num_sg_entries);
@@ -1021,20 +996,13 @@ static int mlxsw_pci_cq_page_pool_init(struct mlxsw_pci_queue *q,
 	if (cq_type != MLXSW_PCI_CQ_RDQ)
 		return 0;
 
-<<<<<<< HEAD
-	pp_params.flags = PP_FLAG_DMA_MAP;
-=======
 	pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pp_params.pool_size = MLXSW_PCI_WQE_COUNT * mlxsw_pci->num_sg_entries;
 	pp_params.nid = dev_to_node(&mlxsw_pci->pdev->dev);
 	pp_params.dev = &mlxsw_pci->pdev->dev;
 	pp_params.napi = &q->u.cq.napi;
 	pp_params.dma_dir = DMA_FROM_DEVICE;
-<<<<<<< HEAD
-=======
 	pp_params.max_len = PAGE_SIZE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	page_pool = page_pool_create(&pp_params);
 	if (IS_ERR(page_pool))

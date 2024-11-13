@@ -145,11 +145,8 @@ struct smc_clc_v2_extension {
 	);
 	u8 user_eids[][SMC_MAX_EID_LEN];
 };
-<<<<<<< HEAD
-=======
 static_assert(offsetof(struct smc_clc_v2_extension, user_eids) == sizeof(struct smc_clc_v2_extension_fixed),
 	      "struct member likely outside of struct_group_tagged()");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct smc_clc_msg_proposal_prefix {	/* prefix part of clc proposal message*/
 	__be32 outgoing_subnet;	/* subnet mask */
@@ -174,11 +171,8 @@ struct smc_clc_smcd_v2_extension {
 	);
 	struct smc_clc_smcd_gid_chid gidchid[];
 };
-<<<<<<< HEAD
-=======
 static_assert(offsetof(struct smc_clc_smcd_v2_extension, gidchid) == sizeof(struct smc_clc_smcd_v2_extension_fixed),
 	      "struct member likely outside of struct_group_tagged()");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct smc_clc_msg_proposal {	/* clc proposal message sent by Linux */
 	struct smc_clc_msg_hdr hdr;

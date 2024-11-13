@@ -11,10 +11,7 @@
 
 #include <linux/sched.h>
 #include <linux/nodemask.h>
-<<<<<<< HEAD
-=======
 #include <linux/list.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/rculist.h>
 #include <linux/cgroupstats.h>
 #include <linux/fs.h>
@@ -32,11 +29,6 @@
 
 struct kernel_clone_args;
 
-<<<<<<< HEAD
-#ifdef CONFIG_CGROUPS
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * All weight knobs on the default hierarchy should use the following min,
  * default and max values.  The default value is the logarithmic center of
@@ -46,11 +38,8 @@ struct kernel_clone_args;
 #define CGROUP_WEIGHT_DFL		100
 #define CGROUP_WEIGHT_MAX		10000
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CGROUPS
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	CSS_TASK_ITER_PROCS    = (1U << 0),  /* walk only threadgroup leaders */
 	CSS_TASK_ITER_THREADED = (1U << 1),  /* walk all threaded css_sets in the domain */
@@ -866,9 +855,6 @@ static inline void cgroup_bpf_put(struct cgroup *cgrp) {}
 
 struct cgroup *task_get_cgroup1(struct task_struct *tsk, int hierarchy_id);
 
-<<<<<<< HEAD
-=======
 struct cgroup_of_peak *of_peak(struct kernfs_open_file *of);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _LINUX_CGROUP_H */

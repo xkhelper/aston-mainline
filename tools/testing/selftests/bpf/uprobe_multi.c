@@ -2,10 +2,6 @@
 
 #include <stdio.h>
 #include <string.h>
-<<<<<<< HEAD
-#include <sdt.h>
-
-=======
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/mman.h>
@@ -21,7 +17,6 @@ int __attribute__((weak)) uprobe(void)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define __PASTE(a, b) a##b
 #define PASTE(a, b) __PASTE(a, b)
 
@@ -93,8 +88,6 @@ static int usdt(void)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 extern char build_id_start[];
 extern char build_id_end[];
 
@@ -119,7 +112,6 @@ int __attribute__((weak)) trigger_uprobe(bool build_id_resident)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int main(int argc, char **argv)
 {
 	if (argc != 2)
@@ -129,13 +121,10 @@ int main(int argc, char **argv)
 		return bench();
 	if (!strcmp("usdt", argv[1]))
 		return usdt();
-<<<<<<< HEAD
-=======
 	if (!strcmp("uprobe-paged-out", argv[1]))
 		return trigger_uprobe(false /* page-out build ID */);
 	if (!strcmp("uprobe-paged-in", argv[1]))
 		return trigger_uprobe(true /* page-in build ID */);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 error:
 	fprintf(stderr, "usage: %s <bench|usdt>\n", argv[0]);

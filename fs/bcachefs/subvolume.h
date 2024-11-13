@@ -26,18 +26,13 @@ int bch2_subvolume_trigger(struct btree_trans *, enum btree_id, unsigned,
 int bch2_subvol_has_children(struct btree_trans *, u32);
 int bch2_subvolume_get(struct btree_trans *, unsigned,
 		       bool, int, struct bch_subvolume *);
-<<<<<<< HEAD
-=======
 int __bch2_subvolume_get_snapshot(struct btree_trans *, u32,
 				  u32 *, bool);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_subvolume_get_snapshot(struct btree_trans *, u32, u32 *);
 
 int bch2_subvol_is_ro_trans(struct btree_trans *, u32);
 int bch2_subvol_is_ro(struct bch_fs *, u32);
 
-<<<<<<< HEAD
-=======
 static inline struct bkey_s_c
 bch2_btree_iter_peek_in_subvolume_upto_type(struct btree_iter *iter, struct bpos end,
 					    u32 subvolid, unsigned flags)
@@ -83,7 +78,6 @@ bch2_btree_iter_peek_in_subvolume_upto_type(struct btree_iter *iter, struct bpos
 					_end, _subvolid, _flags, _k, _do);	\
 })
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_delete_dead_snapshots(struct bch_fs *);
 void bch2_delete_dead_snapshots_async(struct bch_fs *);
 

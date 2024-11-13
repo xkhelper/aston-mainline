@@ -15,10 +15,7 @@
 #include <linux/kernel.h>
 #include <linux/slab.h>
 #include <linux/spi/spi.h>
-<<<<<<< HEAD
-=======
 #include <linux/seq_file.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/err.h>
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
@@ -108,9 +105,6 @@
 #define AD9467_DEF_OUTPUT_MODE		0x08
 #define AD9467_REG_VREF_MASK		0x0F
 
-<<<<<<< HEAD
-#define AD9647_MAX_TEST_POINTS		32
-=======
 /*
  * Analog Devices AD9643 14-Bit, 170/210/250 MSPS ADC
  */
@@ -135,7 +129,6 @@
 #define AD9647_MAX_TEST_POINTS		32
 #define AD9467_CAN_INVERT(st)	\
 	(!(st)->info->has_dco || (st)->info->has_dco_invert)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct ad9467_chip_info {
 	const char *name;
@@ -144,19 +137,12 @@ struct ad9467_chip_info {
 	unsigned int num_channels;
 	const unsigned int (*scale_table)[2];
 	int num_scales;
-<<<<<<< HEAD
-=======
 	unsigned long test_mask;
 	unsigned int test_mask_len;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long max_rate;
 	unsigned int default_output_mode;
 	unsigned int vref_mask;
 	unsigned int num_lanes;
-<<<<<<< HEAD
-	/* data clock output */
-	bool has_dco;
-=======
 	unsigned int dco_en;
 	unsigned int test_points;
 	/* data clock output */
@@ -168,7 +154,6 @@ struct ad9467_chan_test_mode {
 	struct ad9467_state *st;
 	unsigned int idx;
 	u8 mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ad9467_state {
@@ -176,11 +161,8 @@ struct ad9467_state {
 	struct iio_backend *back;
 	struct spi_device *spi;
 	struct clk *clk;
-<<<<<<< HEAD
-=======
 	/* used for debugfs */
 	struct ad9467_chan_test_mode *chan_test;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int output_mode;
 	unsigned int (*scales)[2];
 	/*
@@ -193,11 +175,8 @@ struct ad9467_state {
 	 * at the io delay control section.
 	 */
 	DECLARE_BITMAP(calib_map, AD9647_MAX_TEST_POINTS * 2);
-<<<<<<< HEAD
-=======
 	/* number of bits of the map */
 	unsigned int calib_map_size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct gpio_desc *pwrdown_gpio;
 	/* ensure consistent state obtained on multiple related accesses */
 	struct mutex lock;
@@ -271,8 +250,6 @@ static const unsigned int ad9467_scale_table[][2] = {
 	{2300, 8}, {2400, 9}, {2500, 10},
 };
 
-<<<<<<< HEAD
-=======
 static const unsigned int ad9643_scale_table[][2] = {
 	{2087, 0x0F}, {2065, 0x0E}, {2042, 0x0D}, {2020, 0x0C}, {1997, 0x0B},
 	{1975, 0x0A}, {1952, 0x09}, {1930, 0x08}, {1907, 0x07}, {1885, 0x06},
@@ -291,7 +268,6 @@ static const unsigned int ad9652_scale_table[][2] = {
 	 {1250, 0}, {1125, 1}, {1200, 2}, {1250, 3}, {1000, 5},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __ad9467_get_scale(struct ad9467_state *st, int index,
 			       unsigned int *val, unsigned int *val2)
 {
@@ -305,22 +281,14 @@ static void __ad9467_get_scale(struct ad9467_state *st, int index,
 	*val2 = tmp % 1000000;
 }
 
-<<<<<<< HEAD
-#define AD9467_CHAN(_chan, _si, _bits, _sign)				\
-=======
 #define AD9467_CHAN(_chan, avai_mask, _si, _bits, _sign)		\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {									\
 	.type = IIO_VOLTAGE,						\
 	.indexed = 1,							\
 	.channel = _chan,						\
 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
-<<<<<<< HEAD
-	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
-=======
 	.info_mask_shared_by_type_available = avai_mask,		\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scan_index = _si,						\
 	.scan_type = {							\
 		.sign = _sign,						\
@@ -330,13 +298,6 @@ static void __ad9467_get_scale(struct ad9467_state *st, int index,
 }
 
 static const struct iio_chan_spec ad9434_channels[] = {
-<<<<<<< HEAD
-	AD9467_CHAN(0, 0, 12, 's'),
-};
-
-static const struct iio_chan_spec ad9467_channels[] = {
-	AD9467_CHAN(0, 0, 16, 's'),
-=======
 	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
 };
 
@@ -373,7 +334,6 @@ static const char * const ad9467_test_modes[] = {
 	[AN877_ADC_TESTMODE_ONE_BIT_HIGH] = "one_bit_high",
 	[AN877_ADC_TESTMODE_MIXED_BIT_FREQUENCY] = "mixed_bit_frequency",
 	[AN877_ADC_TESTMODE_RAMP] = "ramp",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct ad9467_chip_info ad9467_chip_tbl = {
@@ -384,13 +344,10 @@ static const struct ad9467_chip_info ad9467_chip_tbl = {
 	.num_scales = ARRAY_SIZE(ad9467_scale_table),
 	.channels = ad9467_channels,
 	.num_channels = ARRAY_SIZE(ad9467_channels),
-<<<<<<< HEAD
-=======
 	.test_points = AD9647_MAX_TEST_POINTS,
 	.test_mask = GENMASK(AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE,
 			     AN877_ADC_TESTMODE_OFF),
 	.test_mask_len = AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE + 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.default_output_mode = AD9467_DEF_OUTPUT_MODE,
 	.vref_mask = AD9467_REG_VREF_MASK,
 	.num_lanes = 8,
@@ -404,12 +361,9 @@ static const struct ad9467_chip_info ad9434_chip_tbl = {
 	.num_scales = ARRAY_SIZE(ad9434_scale_table),
 	.channels = ad9434_channels,
 	.num_channels = ARRAY_SIZE(ad9434_channels),
-<<<<<<< HEAD
-=======
 	.test_points = AD9647_MAX_TEST_POINTS,
 	.test_mask = GENMASK(AN877_ADC_TESTMODE_USER, AN877_ADC_TESTMODE_OFF),
 	.test_mask_len = AN877_ADC_TESTMODE_USER + 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
 	.vref_mask = AD9434_REG_VREF_MASK,
 	.num_lanes = 6,
@@ -423,11 +377,6 @@ static const struct ad9467_chip_info ad9265_chip_tbl = {
 	.num_scales = ARRAY_SIZE(ad9265_scale_table),
 	.channels = ad9467_channels,
 	.num_channels = ARRAY_SIZE(ad9467_channels),
-<<<<<<< HEAD
-	.default_output_mode = AD9265_DEF_OUTPUT_MODE,
-	.vref_mask = AD9265_REG_VREF_MASK,
-	.has_dco = true,
-=======
 	.test_points = AD9647_MAX_TEST_POINTS,
 	.test_mask = GENMASK(AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE,
 			     AN877_ADC_TESTMODE_OFF),
@@ -487,17 +436,11 @@ static const struct ad9467_chip_info ad9652_chip_tbl = {
 	.test_mask_len = AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE + 1,
 	.vref_mask = AD9652_REG_VREF_MASK,
 	.has_dco = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
 {
 	const struct ad9467_chip_info *info = st->info;
-<<<<<<< HEAD
-	unsigned int i, vref_val;
-	int ret;
-
-=======
 	unsigned int vref_val;
 	unsigned int i = 0;
 	int ret;
@@ -506,7 +449,6 @@ static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
 	if (info->num_scales == 1)
 		goto out_get_scale;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ad9467_spi_read(st, AN877_ADC_REG_VREF);
 	if (ret < 0)
 		return ret;
@@ -521,10 +463,7 @@ static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
 	if (i == info->num_scales)
 		return -ERANGE;
 
-<<<<<<< HEAD
-=======
 out_get_scale:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__ad9467_get_scale(st, i, val, val2);
 
 	return IIO_VAL_INT_PLUS_MICRO;
@@ -539,11 +478,8 @@ static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
 
 	if (val != 0)
 		return -EINVAL;
-<<<<<<< HEAD
-=======
 	if (info->num_scales == 1)
 		return -EOPNOTSUPP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < info->num_scales; i++) {
 		__ad9467_get_scale(st, i, &scale_val[0], &scale_val[1]);
@@ -575,9 +511,6 @@ static int ad9467_outputmode_set(struct ad9467_state *st, unsigned int mode)
 				AN877_ADC_TRANSFER_SYNC);
 }
 
-<<<<<<< HEAD
-static int ad9647_calibrate_prepare(struct ad9467_state *st)
-=======
 static int ad9467_testmode_set(struct ad9467_state *st, unsigned int chan,
 			       unsigned int test_mode)
 {
@@ -609,26 +542,10 @@ static int ad9467_testmode_set(struct ad9467_state *st, unsigned int chan,
 static int ad9467_backend_testmode_on(struct ad9467_state *st,
 				      unsigned int chan,
 				      enum iio_backend_test_pattern pattern)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct iio_backend_data_fmt data = {
 		.enable = false,
 	};
-<<<<<<< HEAD
-	unsigned int c;
-	int ret;
-
-	ret = ad9467_spi_write(st, AN877_ADC_REG_TEST_IO,
-			       AN877_ADC_TESTMODE_PN9_SEQ);
-	if (ret)
-		return ret;
-
-	ret = ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
-			       AN877_ADC_TRANSFER_SYNC);
-	if (ret)
-		return ret;
-
-=======
 	int ret;
 
 	ret = iio_backend_data_format_set(st->back, chan, &data);
@@ -668,36 +585,22 @@ static int ad9647_calibrate_prepare(struct ad9467_state *st)
 	unsigned int c;
 	int ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ad9467_outputmode_set(st, st->info->default_output_mode);
 	if (ret)
 		return ret;
 
 	for (c = 0; c < st->info->num_channels; c++) {
-<<<<<<< HEAD
-		ret = iio_backend_data_format_set(st->back, c, &data);
-=======
 		ret = ad9467_testmode_set(st, c, AN877_ADC_TESTMODE_PN9_SEQ);
 		if (ret)
 			return ret;
 
 		ret = ad9467_backend_testmode_on(st, c,
 						 IIO_BACKEND_ADI_PRBS_9A);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 	}
 
-<<<<<<< HEAD
-	ret = iio_backend_test_pattern_set(st->back, 0,
-					   IIO_BACKEND_ADI_PRBS_9A);
-	if (ret)
-		return ret;
-
-	return iio_backend_chan_enable(st->back, 0);
-=======
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ad9647_calibrate_polarity_set(struct ad9467_state *st,
@@ -754,11 +657,7 @@ static int ad9467_calibrate_apply(struct ad9467_state *st, unsigned int val)
 
 	if (st->info->has_dco) {
 		ret = ad9467_spi_write(st, AN877_ADC_REG_OUTPUT_DELAY,
-<<<<<<< HEAD
-				       val);
-=======
 				       val | st->info->dco_en);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 
@@ -777,26 +676,6 @@ static int ad9467_calibrate_apply(struct ad9467_state *st, unsigned int val)
 
 static int ad9647_calibrate_stop(struct ad9467_state *st)
 {
-<<<<<<< HEAD
-	struct iio_backend_data_fmt data = {
-		.sign_extend = true,
-		.enable = true,
-	};
-	unsigned int c, mode;
-	int ret;
-
-	ret = iio_backend_chan_disable(st->back, 0);
-	if (ret)
-		return ret;
-
-	ret = iio_backend_test_pattern_set(st->back, 0,
-					   IIO_BACKEND_NO_TEST_PATTERN);
-	if (ret)
-		return ret;
-
-	for (c = 0; c < st->info->num_channels; c++) {
-		ret = iio_backend_data_format_set(st->back, c, &data);
-=======
 	unsigned int c, mode;
 	int ret;
 
@@ -806,56 +685,29 @@ static int ad9647_calibrate_stop(struct ad9467_state *st)
 			return ret;
 
 		ret = ad9467_testmode_set(st, c, AN877_ADC_TESTMODE_OFF);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 	}
 
 	mode = st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
-<<<<<<< HEAD
-	ret = ad9467_outputmode_set(st, mode);
-	if (ret)
-		return ret;
-
-	ret = ad9467_spi_write(st, AN877_ADC_REG_TEST_IO,
-			       AN877_ADC_TESTMODE_OFF);
-	if (ret)
-		return ret;
-
-	return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
-			       AN877_ADC_TRANSFER_SYNC);
-=======
 	return ad9467_outputmode_set(st, mode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ad9467_calibrate(struct ad9467_state *st)
 {
-<<<<<<< HEAD
-	unsigned int point, val, inv_val, cnt, inv_cnt = 0;
-=======
 	unsigned int point, val, inv_val, cnt, inv_cnt = 0, c;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Half of the bitmap is for the inverted signal. The number of test
 	 * points is the same though...
 	 */
-<<<<<<< HEAD
-	unsigned int test_points = AD9647_MAX_TEST_POINTS;
-=======
 	unsigned int test_points = st->info->test_points;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long sample_rate = clk_get_rate(st->clk);
 	struct device *dev = &st->spi->dev;
 	bool invert = false, stat;
 	int ret;
 
 	/* all points invalid */
-<<<<<<< HEAD
-	bitmap_fill(st->calib_map, BITS_PER_TYPE(st->calib_map));
-=======
 	bitmap_fill(st->calib_map, st->calib_map_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ad9647_calibrate_prepare(st);
 	if (ret)
@@ -865,22 +717,11 @@ retune:
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	for (point = 0; point < test_points; point++) {
-=======
 	for (point = 0; point < st->info->test_points; point++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = ad9467_calibrate_apply(st, point);
 		if (ret)
 			return ret;
 
-<<<<<<< HEAD
-		ret = iio_backend_chan_status(st->back, 0, &stat);
-		if (ret)
-			return ret;
-
-		__assign_bit(point + invert * test_points, st->calib_map, stat);
-=======
 		for (c = 0; c < st->info->num_channels; c++) {
 			ret = iio_backend_chan_status(st->back, c, &stat);
 			if (ret)
@@ -901,7 +742,6 @@ retune:
 				__clear_bit(point + invert * test_points,
 					    st->calib_map);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (!invert) {
@@ -912,10 +752,6 @@ retune:
 		 * a row.
 		 */
 		if (cnt < 3) {
-<<<<<<< HEAD
-			invert = true;
-			goto retune;
-=======
 			if (AD9467_CAN_INVERT(st)) {
 				invert = true;
 				goto retune;
@@ -923,7 +759,6 @@ retune:
 
 			if (!cnt)
 				return -EIO;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	} else {
 		inv_cnt = ad9467_find_optimal_point(st->calib_map, test_points,
@@ -1060,11 +895,7 @@ static int ad9467_update_scan_mode(struct iio_dev *indio_dev,
 	return 0;
 }
 
-<<<<<<< HEAD
-static const struct iio_info ad9467_info = {
-=======
 static struct iio_info ad9467_info = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read_raw = ad9467_read_raw,
 	.write_raw = ad9467_write_raw,
 	.update_scan_mode = ad9467_update_scan_mode,
@@ -1147,8 +978,6 @@ static int ad9467_iio_backend_get(struct ad9467_state *st)
 	return -ENODEV;
 }
 
-<<<<<<< HEAD
-=======
 static int ad9467_test_mode_available_show(struct seq_file *s, void *ignored)
 {
 	struct ad9467_state *st = s->private;
@@ -1271,17 +1100,12 @@ static const struct file_operations ad9467_chan_test_mode_fops = {
 	.owner = THIS_MODULE,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t ad9467_dump_calib_table(struct file *file,
 				       char __user *userbuf,
 				       size_t count, loff_t *ppos)
 {
 	struct ad9467_state *st = file->private_data;
-<<<<<<< HEAD
-	unsigned int bit, size = BITS_PER_TYPE(st->calib_map);
-=======
 	unsigned int bit;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* +2 for the newline and +1 for the string termination */
 	unsigned char map[AD9647_MAX_TEST_POINTS * 2 + 3];
 	ssize_t len = 0;
@@ -1290,13 +1114,8 @@ static ssize_t ad9467_dump_calib_table(struct file *file,
 	if (*ppos)
 		goto out_read;
 
-<<<<<<< HEAD
-	for (bit = 0; bit < size; bit++) {
-		if (bit == size / 2)
-=======
 	for (bit = 0; bit < st->calib_map_size; bit++) {
 		if (AD9467_CAN_INVERT(st) && bit == st->calib_map_size / 2)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			len += scnprintf(map + len, sizeof(map) - len, "\n");
 
 		len += scnprintf(map + len, sizeof(map) - len, "%c",
@@ -1319,19 +1138,12 @@ static void ad9467_debugfs_init(struct iio_dev *indio_dev)
 {
 	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
 	struct ad9467_state *st = iio_priv(indio_dev);
-<<<<<<< HEAD
-=======
 	char attr_name[32];
 	unsigned int chan;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!IS_ENABLED(CONFIG_DEBUG_FS))
 		return;
 
-<<<<<<< HEAD
-	debugfs_create_file("calibration_table_dump", 0400, d, st,
-			    &ad9467_calib_table_fops);
-=======
 	st->chan_test = devm_kcalloc(&st->spi->dev, st->info->num_channels,
 				     sizeof(*st->chan_test), GFP_KERNEL);
 	if (!st->chan_test)
@@ -1353,7 +1165,6 @@ static void ad9467_debugfs_init(struct iio_dev *indio_dev)
 			    &ad9467_test_mode_available_fops);
 
 	iio_backend_debugfs_add(st->back, indio_dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ad9467_probe(struct spi_device *spi)
@@ -1374,13 +1185,10 @@ static int ad9467_probe(struct spi_device *spi)
 	if (!st->info)
 		return -ENODEV;
 
-<<<<<<< HEAD
-=======
 	st->calib_map_size = st->info->test_points;
 	if (AD9467_CAN_INVERT(st))
 		st->calib_map_size *= 2;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	st->clk = devm_clk_get_enabled(&spi->dev, "adc-clk");
 	if (IS_ERR(st->clk))
 		return PTR_ERR(st->clk);
@@ -1405,11 +1213,8 @@ static int ad9467_probe(struct spi_device *spi)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-=======
 	if (st->info->num_scales > 1)
 		ad9467_info.read_avail = ad9467_read_avail;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	indio_dev->name = st->info->name;
 	indio_dev->channels = st->info->channels;
 	indio_dev->num_channels = st->info->num_channels;
@@ -1444,14 +1249,10 @@ static const struct of_device_id ad9467_of_match[] = {
 	{ .compatible = "adi,ad9265", .data = &ad9265_chip_tbl, },
 	{ .compatible = "adi,ad9434", .data = &ad9434_chip_tbl, },
 	{ .compatible = "adi,ad9467", .data = &ad9467_chip_tbl, },
-<<<<<<< HEAD
-	{}
-=======
 	{ .compatible = "adi,ad9643", .data = &ad9643_chip_tbl, },
 	{ .compatible = "adi,ad9649", .data = &ad9649_chip_tbl, },
 	{ .compatible = "adi,ad9652", .data = &ad9652_chip_tbl, },
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, ad9467_of_match);
 
@@ -1459,14 +1260,10 @@ static const struct spi_device_id ad9467_ids[] = {
 	{ "ad9265", (kernel_ulong_t)&ad9265_chip_tbl },
 	{ "ad9434", (kernel_ulong_t)&ad9434_chip_tbl },
 	{ "ad9467", (kernel_ulong_t)&ad9467_chip_tbl },
-<<<<<<< HEAD
-	{}
-=======
 	{ "ad9643", (kernel_ulong_t)&ad9643_chip_tbl },
 	{ "ad9649", (kernel_ulong_t)&ad9649_chip_tbl, },
 	{ "ad9652", (kernel_ulong_t)&ad9652_chip_tbl, },
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(spi, ad9467_ids);
 

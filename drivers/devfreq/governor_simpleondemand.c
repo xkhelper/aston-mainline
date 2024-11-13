@@ -140,8 +140,5 @@ static void __exit devfreq_simple_ondemand_exit(void)
 	return;
 }
 module_exit(devfreq_simple_ondemand_exit);
-<<<<<<< HEAD
-=======
 MODULE_DESCRIPTION("DEVFREQ Simple On-demand governor");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL");

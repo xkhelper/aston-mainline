@@ -681,11 +681,7 @@ static int sof_es8336_probe(struct platform_device *pdev)
 			dai_links[0].codecs->dai_name = "ES8326 HiFi";
 	} else {
 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
-<<<<<<< HEAD
-		return -ENXIO;
-=======
 		return -ENOENT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	codec_dev = acpi_get_first_physical_node(adev);
@@ -822,8 +818,6 @@ static const struct platform_device_id board_ids[] = {
 					SOF_ES8336_SPEAKERS_EN_GPIO1_QUIRK |
 					SOF_ES8336_JD_INVERTED),
 	},
-<<<<<<< HEAD
-=======
 	{
 		.name = "arl_es83x6_c1_h02",
 		.driver_data = (kernel_ulong_t)(SOF_ES8336_SSP_CODEC(1) |
@@ -834,7 +828,6 @@ static const struct platform_device_id board_ids[] = {
 					SOF_ES8336_SPEAKERS_EN_GPIO1_QUIRK |
 					SOF_ES8336_JD_INVERTED),
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(platform, board_ids);
@@ -845,11 +838,7 @@ static struct platform_driver sof_es8336_driver = {
 		.pm = &snd_soc_pm_ops,
 	},
 	.probe = sof_es8336_probe,
-<<<<<<< HEAD
-	.remove_new = sof_es8336_remove,
-=======
 	.remove = sof_es8336_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table = board_ids,
 };
 module_platform_driver(sof_es8336_driver);

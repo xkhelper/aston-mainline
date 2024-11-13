@@ -12,11 +12,7 @@
 
 #include <linux/iio/iio.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ADIS16130_CON         0x0
 #define ADIS16130_CON_RD      (1 << 6)

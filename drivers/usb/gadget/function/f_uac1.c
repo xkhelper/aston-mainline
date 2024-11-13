@@ -377,31 +377,10 @@ enum {
 	STR_AS_OUT_IF_ALT1,
 	STR_AS_IN_IF_ALT0,
 	STR_AS_IN_IF_ALT1,
-<<<<<<< HEAD
-};
-
-static struct usb_string strings_uac1[] = {
-	/* [STR_AC_IF].s = DYNAMIC, */
-	[STR_USB_OUT_IT].s = "Playback Input terminal",
-	[STR_USB_OUT_IT_CH_NAMES].s = "Playback Channels",
-	[STR_IO_OUT_OT].s = "Playback Output terminal",
-	[STR_IO_IN_IT].s = "Capture Input terminal",
-	[STR_IO_IN_IT_CH_NAMES].s = "Capture Channels",
-	[STR_USB_IN_OT].s = "Capture Output terminal",
-	[STR_FU_IN].s = "Capture Volume",
-	[STR_FU_OUT].s = "Playback Volume",
-	[STR_AS_OUT_IF_ALT0].s = "Playback Inactive",
-	[STR_AS_OUT_IF_ALT1].s = "Playback Active",
-	[STR_AS_IN_IF_ALT0].s = "Capture Inactive",
-	[STR_AS_IN_IF_ALT1].s = "Capture Active",
-	{ },
-};
-=======
 	NUM_STR_DESCRIPTORS,
 };
 
 static struct usb_string strings_uac1[NUM_STR_DESCRIPTORS + 1] = {};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct usb_gadget_strings str_uac1 = {
 	.language = 0x0409,	/* en-us */
@@ -1272,8 +1251,6 @@ static int f_audio_bind(struct usb_configuration *c, struct usb_function *f)
 
 	strings_uac1[STR_AC_IF].s = audio_opts->function_name;
 
-<<<<<<< HEAD
-=======
 	strings_uac1[STR_USB_OUT_IT].s = audio_opts->c_it_name;
 	strings_uac1[STR_USB_OUT_IT_CH_NAMES].s = audio_opts->c_it_ch_name;
 	strings_uac1[STR_IO_OUT_OT].s = audio_opts->c_ot_name;
@@ -1288,7 +1265,6 @@ static int f_audio_bind(struct usb_configuration *c, struct usb_function *f)
 	strings_uac1[STR_AS_IN_IF_ALT0].s = "Capture Inactive";
 	strings_uac1[STR_AS_IN_IF_ALT1].s = "Capture Active";
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	us = usb_gstrings_attach(cdev, uac1_strings, ARRAY_SIZE(strings_uac1));
 	if (IS_ERR(us))
 		return PTR_ERR(us);
@@ -1705,10 +1681,6 @@ UAC1_ATTRIBUTE(bool, c_volume_present);
 UAC1_ATTRIBUTE(s16, c_volume_min);
 UAC1_ATTRIBUTE(s16, c_volume_max);
 UAC1_ATTRIBUTE(s16, c_volume_res);
-<<<<<<< HEAD
-UAC1_ATTRIBUTE_STRING(function_name);
-
-=======
 
 UAC1_ATTRIBUTE_STRING(function_name);
 
@@ -1722,7 +1694,6 @@ UAC1_ATTRIBUTE_STRING(c_it_ch_name);
 UAC1_ATTRIBUTE_STRING(c_ot_name);
 UAC1_ATTRIBUTE_STRING(c_fu_vol_name);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct configfs_attribute *f_uac1_attrs[] = {
 	&f_uac1_opts_attr_c_chmask,
 	&f_uac1_opts_attr_c_srate,
@@ -1746,8 +1717,6 @@ static struct configfs_attribute *f_uac1_attrs[] = {
 
 	&f_uac1_opts_attr_function_name,
 
-<<<<<<< HEAD
-=======
 	&f_uac1_opts_attr_p_it_name,
 	&f_uac1_opts_attr_p_it_ch_name,
 	&f_uac1_opts_attr_p_ot_name,
@@ -1758,7 +1727,6 @@ static struct configfs_attribute *f_uac1_attrs[] = {
 	&f_uac1_opts_attr_c_ot_name,
 	&f_uac1_opts_attr_c_fu_vol_name,
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL,
 };
 
@@ -1813,8 +1781,6 @@ static struct usb_function_instance *f_audio_alloc_inst(void)
 
 	scnprintf(opts->function_name, sizeof(opts->function_name), "AC Interface");
 
-<<<<<<< HEAD
-=======
 	scnprintf(opts->p_it_name, sizeof(opts->p_it_name), "Capture Input terminal");
 	scnprintf(opts->p_it_ch_name, sizeof(opts->p_it_ch_name), "Capture Channels");
 	scnprintf(opts->p_ot_name, sizeof(opts->p_ot_name), "Capture Output terminal");
@@ -1825,7 +1791,6 @@ static struct usb_function_instance *f_audio_alloc_inst(void)
 	scnprintf(opts->c_ot_name, sizeof(opts->c_ot_name), "Playback Output terminal");
 	scnprintf(opts->c_fu_vol_name, sizeof(opts->c_fu_vol_name), "Playback Volume");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return &opts->func_inst;
 }
 

@@ -17,16 +17,6 @@
 #include <linux/clk.h>
 #include <linux/init.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
-#include <linux/dmaengine.h>
-#include <linux/module.h>
-#include <linux/mod_devicetable.h>
-#include <linux/platform_device.h>
-#include <linux/slab.h>
-
-#include <linux/platform_data/dma-ep93xx.h>
-
-=======
 #include <linux/dma-mapping.h>
 #include <linux/dmaengine.h>
 #include <linux/module.h>
@@ -36,7 +26,6 @@
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dmaengine.h"
 
 /* M2P registers */
@@ -116,8 +105,6 @@
 #define DMA_MAX_CHAN_BYTES		0xffff
 #define DMA_MAX_CHAN_DESCRIPTORS	32
 
-<<<<<<< HEAD
-=======
 /*
  * M2P channels.
  *
@@ -143,7 +130,6 @@ enum ep93xx_dma_type {
 	M2M_DMA,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ep93xx_dma_engine;
 static int ep93xx_dma_slave_config_write(struct dma_chan *chan,
 					 enum dma_transfer_direction dir,
@@ -169,23 +155,17 @@ struct ep93xx_dma_desc {
 	struct list_head		node;
 };
 
-<<<<<<< HEAD
-=======
 struct ep93xx_dma_chan_cfg {
 	u8				port;
 	enum dma_transfer_direction	dir;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct ep93xx_dma_chan - an EP93xx DMA M2P/M2M channel
  * @chan: dmaengine API channel
  * @edma: pointer to the engine device
  * @regs: memory mapped registers
-<<<<<<< HEAD
-=======
  * @dma_cfg: channel number, direction
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @irq: interrupt number of the channel
  * @clk: clock used by this channel
  * @tasklet: channel specific tasklet used for callbacks
@@ -209,21 +189,12 @@ struct ep93xx_dma_chan_cfg {
  * descriptor in the chain. When a descriptor is moved to the @active queue,
  * the first and chained descriptors are flattened into a single list.
  *
-<<<<<<< HEAD
- * @chan.private holds pointer to &struct ep93xx_dma_data which contains
- * necessary channel configuration information. For memcpy channels this must
- * be %NULL.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct ep93xx_dma_chan {
 	struct dma_chan			chan;
 	const struct ep93xx_dma_engine	*edma;
 	void __iomem			*regs;
-<<<<<<< HEAD
-=======
 	struct ep93xx_dma_chan_cfg	dma_cfg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int				irq;
 	struct clk			*clk;
 	struct tasklet_struct		tasklet;
@@ -275,14 +246,11 @@ struct ep93xx_dma_engine {
 	struct ep93xx_dma_chan	channels[] __counted_by(num_channels);
 };
 
-<<<<<<< HEAD
-=======
 struct ep93xx_edma_data {
 	u32	id;
 	size_t	num_channels;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct device *chan2dev(struct ep93xx_dma_chan *edmac)
 {
 	return &edmac->chan.dev->device;
@@ -293,8 +261,6 @@ static struct ep93xx_dma_chan *to_ep93xx_dma_chan(struct dma_chan *chan)
 	return container_of(chan, struct ep93xx_dma_chan, chan);
 }
 
-<<<<<<< HEAD
-=======
 static inline bool ep93xx_dma_chan_is_m2p(struct dma_chan *chan)
 {
 	if (device_is_compatible(chan->device->dev, "cirrus,ep9301-dma-m2p"))
@@ -320,7 +286,6 @@ ep93xx_dma_chan_direction(struct dma_chan *chan)
 	return (chan->chan_id % 2 == 0) ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ep93xx_dma_set_active - set new active descriptor chain
  * @edmac: channel
@@ -413,16 +378,9 @@ static void m2p_set_control(struct ep93xx_dma_chan *edmac, u32 control)
 
 static int m2p_hw_setup(struct ep93xx_dma_chan *edmac)
 {
-<<<<<<< HEAD
-	struct ep93xx_dma_data *data = edmac->chan.private;
-	u32 control;
-
-	writel(data->port & 0xf, edmac->regs + M2P_PPALLOC);
-=======
 	u32 control;
 
 	writel(edmac->dma_cfg.port & 0xf, edmac->regs + M2P_PPALLOC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	control = M2P_CONTROL_CH_ERROR_INT | M2P_CONTROL_ICE
 		| M2P_CONTROL_ENABLE;
@@ -559,26 +517,15 @@ static int m2p_hw_interrupt(struct ep93xx_dma_chan *edmac)
 
 static int m2m_hw_setup(struct ep93xx_dma_chan *edmac)
 {
-<<<<<<< HEAD
-	const struct ep93xx_dma_data *data = edmac->chan.private;
-	u32 control = 0;
-
-	if (!data) {
-=======
 	u32 control = 0;
 
 	if (edmac->dma_cfg.dir == DMA_MEM_TO_MEM) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* This is memcpy channel, nothing to configure */
 		writel(control, edmac->regs + M2M_CONTROL);
 		return 0;
 	}
 
-<<<<<<< HEAD
-	switch (data->port) {
-=======
 	switch (edmac->dma_cfg.port) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case EP93XX_DMA_SSP:
 		/*
 		 * This was found via experimenting - anything less than 5
@@ -588,11 +535,7 @@ static int m2m_hw_setup(struct ep93xx_dma_chan *edmac)
 		control = (5 << M2M_CONTROL_PWSC_SHIFT);
 		control |= M2M_CONTROL_NO_HDSK;
 
-<<<<<<< HEAD
-		if (data->direction == DMA_MEM_TO_DEV) {
-=======
 		if (edmac->dma_cfg.dir == DMA_MEM_TO_DEV) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			control |= M2M_CONTROL_DAH;
 			control |= M2M_CONTROL_TM_TX;
 			control |= M2M_CONTROL_RSS_SSPTX;
@@ -608,11 +551,7 @@ static int m2m_hw_setup(struct ep93xx_dma_chan *edmac)
 		 * This IDE part is totally untested. Values below are taken
 		 * from the EP93xx Users's Guide and might not be correct.
 		 */
-<<<<<<< HEAD
-		if (data->direction == DMA_MEM_TO_DEV) {
-=======
 		if (edmac->dma_cfg.dir == DMA_MEM_TO_DEV) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* Worst case from the UG */
 			control = (3 << M2M_CONTROL_PWSC_SHIFT);
 			control |= M2M_CONTROL_DAH;
@@ -667,10 +606,6 @@ static void m2m_fill_desc(struct ep93xx_dma_chan *edmac)
 
 static void m2m_hw_submit(struct ep93xx_dma_chan *edmac)
 {
-<<<<<<< HEAD
-	struct ep93xx_dma_data *data = edmac->chan.private;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 control = readl(edmac->regs + M2M_CONTROL);
 
 	/*
@@ -696,11 +631,7 @@ static void m2m_hw_submit(struct ep93xx_dma_chan *edmac)
 	control |= M2M_CONTROL_ENABLE;
 	writel(control, edmac->regs + M2M_CONTROL);
 
-<<<<<<< HEAD
-	if (!data) {
-=======
 	if (edmac->dma_cfg.dir == DMA_MEM_TO_MEM) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * For memcpy channels the software trigger must be asserted
 		 * in order to start the memcpy operation.
@@ -762,11 +693,7 @@ static int m2m_hw_interrupt(struct ep93xx_dma_chan *edmac)
 		 */
 		if (ep93xx_dma_advance_active(edmac)) {
 			m2m_fill_desc(edmac);
-<<<<<<< HEAD
-			if (done && !edmac->chan.private) {
-=======
 			if (done && edmac->dma_cfg.dir == DMA_MEM_TO_MEM) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				/* Software trigger for memcpy channel */
 				control = readl(edmac->regs + M2M_CONTROL);
 				control |= M2M_CONTROL_START;
@@ -971,11 +898,7 @@ static dma_cookie_t ep93xx_dma_tx_submit(struct dma_async_tx_descriptor *tx)
 	desc = container_of(tx, struct ep93xx_dma_desc, txd);
 
 	/*
-<<<<<<< HEAD
-	 * If nothing is currently prosessed, we push this descriptor
-=======
 	 * If nothing is currently processed, we push this descriptor
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * directly to the hardware. Otherwise we put the descriptor
 	 * to the pending queue.
 	 */
@@ -1001,30 +924,11 @@ static dma_cookie_t ep93xx_dma_tx_submit(struct dma_async_tx_descriptor *tx)
 static int ep93xx_dma_alloc_chan_resources(struct dma_chan *chan)
 {
 	struct ep93xx_dma_chan *edmac = to_ep93xx_dma_chan(chan);
-<<<<<<< HEAD
-	struct ep93xx_dma_data *data = chan->private;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const char *name = dma_chan_name(chan);
 	int ret, i;
 
 	/* Sanity check the channel parameters */
 	if (!edmac->edma->m2m) {
-<<<<<<< HEAD
-		if (!data)
-			return -EINVAL;
-		if (data->port < EP93XX_DMA_I2S1 ||
-		    data->port > EP93XX_DMA_IRDA)
-			return -EINVAL;
-		if (data->direction != ep93xx_dma_chan_direction(chan))
-			return -EINVAL;
-	} else {
-		if (data) {
-			switch (data->port) {
-			case EP93XX_DMA_SSP:
-			case EP93XX_DMA_IDE:
-				if (!is_slave_direction(data->direction))
-=======
 		if (edmac->dma_cfg.port < EP93XX_DMA_I2S1 ||
 		    edmac->dma_cfg.port > EP93XX_DMA_IRDA)
 			return -EINVAL;
@@ -1036,7 +940,6 @@ static int ep93xx_dma_alloc_chan_resources(struct dma_chan *chan)
 			case EP93XX_DMA_SSP:
 			case EP93XX_DMA_IDE:
 				if (!is_slave_direction(edmac->dma_cfg.dir))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					return -EINVAL;
 				break;
 			default:
@@ -1045,12 +948,6 @@ static int ep93xx_dma_alloc_chan_resources(struct dma_chan *chan)
 		}
 	}
 
-<<<<<<< HEAD
-	if (data && data->name)
-		name = data->name;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = clk_prepare_enable(edmac->clk);
 	if (ret)
 		return ret;
@@ -1179,11 +1076,7 @@ fail:
  * @chan: channel
  * @sgl: list of buffers to transfer
  * @sg_len: number of entries in @sgl
-<<<<<<< HEAD
- * @dir: direction of tha DMA transfer
-=======
  * @dir: direction of the DMA transfer
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @flags: flags for the descriptor
  * @context: operation context (ignored)
  *
@@ -1473,38 +1366,6 @@ static void ep93xx_dma_issue_pending(struct dma_chan *chan)
 	ep93xx_dma_advance_work(to_ep93xx_dma_chan(chan));
 }
 
-<<<<<<< HEAD
-static int __init ep93xx_dma_probe(struct platform_device *pdev)
-{
-	struct ep93xx_dma_platform_data *pdata = dev_get_platdata(&pdev->dev);
-	struct ep93xx_dma_engine *edma;
-	struct dma_device *dma_dev;
-	int ret, i;
-
-	edma = kzalloc(struct_size(edma, channels, pdata->num_channels), GFP_KERNEL);
-	if (!edma)
-		return -ENOMEM;
-
-	dma_dev = &edma->dma_dev;
-	edma->m2m = platform_get_device_id(pdev)->driver_data;
-	edma->num_channels = pdata->num_channels;
-
-	INIT_LIST_HEAD(&dma_dev->channels);
-	for (i = 0; i < pdata->num_channels; i++) {
-		const struct ep93xx_dma_chan_data *cdata = &pdata->channels[i];
-		struct ep93xx_dma_chan *edmac = &edma->channels[i];
-
-		edmac->chan.device = dma_dev;
-		edmac->regs = cdata->base;
-		edmac->irq = cdata->irq;
-		edmac->edma = edma;
-
-		edmac->clk = clk_get(NULL, cdata->name);
-		if (IS_ERR(edmac->clk)) {
-			dev_warn(&pdev->dev, "failed to get clock for %s\n",
-				 cdata->name);
-			continue;
-=======
 static struct ep93xx_dma_engine *ep93xx_dma_of_probe(struct platform_device *pdev)
 {
 	const struct ep93xx_edma_data *data;
@@ -1555,7 +1416,6 @@ static struct ep93xx_dma_engine *ep93xx_dma_of_probe(struct platform_device *pde
 			dev_err_probe(dev, PTR_ERR(edmac->clk),
 				      "no %s clock found\n", dma_clk_name);
 			return ERR_CAST(edmac->clk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		spin_lock_init(&edmac->lock);
@@ -1568,8 +1428,6 @@ static struct ep93xx_dma_engine *ep93xx_dma_of_probe(struct platform_device *pde
 			      &dma_dev->channels);
 	}
 
-<<<<<<< HEAD
-=======
 	return edma;
 }
 
@@ -1654,7 +1512,6 @@ static int ep93xx_dma_probe(struct platform_device *pdev)
 
 	dma_dev = &edma->dma_dev;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dma_cap_zero(dma_dev->cap_mask);
 	dma_cap_set(DMA_SLAVE, dma_dev->cap_mask);
 	dma_cap_set(DMA_CYCLIC, dma_dev->cap_mask);
@@ -1691,19 +1548,6 @@ static int ep93xx_dma_probe(struct platform_device *pdev)
 	}
 
 	ret = dma_async_device_register(dma_dev);
-<<<<<<< HEAD
-	if (unlikely(ret)) {
-		for (i = 0; i < edma->num_channels; i++) {
-			struct ep93xx_dma_chan *edmac = &edma->channels[i];
-			if (!IS_ERR_OR_NULL(edmac->clk))
-				clk_put(edmac->clk);
-		}
-		kfree(edma);
-	} else {
-		dev_info(dma_dev->dev, "EP93xx M2%s DMA ready\n",
-			 edma->m2m ? "M" : "P");
-	}
-=======
 	if (ret)
 		return ret;
 
@@ -1723,13 +1567,10 @@ static int ep93xx_dma_probe(struct platform_device *pdev)
 
 err_dma_unregister:
 	dma_async_device_unregister(dma_dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static const struct ep93xx_edma_data edma_m2p = {
 	.id = M2P_DMA,
 	.num_channels = 10,
@@ -1747,7 +1588,6 @@ static const struct of_device_id ep93xx_dma_of_ids[] = {
 };
 MODULE_DEVICE_TABLE(of, ep93xx_dma_of_ids);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct platform_device_id ep93xx_dma_driver_ids[] = {
 	{ "ep93xx-dma-m2p", 0 },
 	{ "ep93xx-dma-m2m", 1 },
@@ -1757,17 +1597,6 @@ static const struct platform_device_id ep93xx_dma_driver_ids[] = {
 static struct platform_driver ep93xx_dma_driver = {
 	.driver		= {
 		.name	= "ep93xx-dma",
-<<<<<<< HEAD
-	},
-	.id_table	= ep93xx_dma_driver_ids,
-};
-
-static int __init ep93xx_dma_module_init(void)
-{
-	return platform_driver_probe(&ep93xx_dma_driver, ep93xx_dma_probe);
-}
-subsys_initcall(ep93xx_dma_module_init);
-=======
 		.of_match_table = ep93xx_dma_of_ids,
 	},
 	.id_table	= ep93xx_dma_driver_ids,
@@ -1775,7 +1604,6 @@ subsys_initcall(ep93xx_dma_module_init);
 };
 
 module_platform_driver(ep93xx_dma_driver);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_AUTHOR("Mika Westerberg <mika.westerberg@iki.fi>");
 MODULE_DESCRIPTION("EP93xx DMA driver");

@@ -7,11 +7,7 @@
 #ifndef __MT7601U_DMA_H
 #define __MT7601U_DMA_H
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/skbuff.h>
 
 #define MT_DMA_HDR_LEN			4

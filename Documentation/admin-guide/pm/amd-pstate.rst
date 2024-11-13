@@ -251,13 +251,9 @@ performance supported in `AMD CPPC Performance Capability <perf_cap_>`_).
 In some ASICs, the highest CPPC performance is not the one in the ``_CPC``
 table, so we need to expose it to sysfs. If boost is not active, but
 still supported, this maximum frequency will be larger than the one in
-<<<<<<< HEAD
-``cpuinfo``.
-=======
 ``cpuinfo``. On systems that support preferred core, the driver will have
 different values for some cores than others and this will reflect the values
 advertised by the platform at bootup.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 This attribute is read-only.
 
 ``amd_pstate_lowest_nonlinear_freq``
@@ -268,8 +264,6 @@ lowest non-linear performance in `AMD CPPC Performance Capability
 <perf_cap_>`_.)
 This attribute is read-only.
 
-<<<<<<< HEAD
-=======
 ``amd_pstate_hw_prefcore``
 
 Whether the platform supports the preferred core feature and it has been
@@ -281,7 +275,6 @@ The performance ranking of the core. This number doesn't have any unit, but
 larger numbers are preferred at the time of reading. This can change at
 runtime based on platform conditions. This attribute is read-only.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ``energy_performance_available_preferences``
 
 A list of all the supported EPP preferences that could be used for

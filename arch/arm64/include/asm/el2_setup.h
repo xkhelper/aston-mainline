@@ -165,54 +165,32 @@
 	mrs	x1, id_aa64dfr0_el1
 	ubfx	x1, x1, #ID_AA64DFR0_EL1_PMSVer_SHIFT, #4
 	cmp	x1, #3
-<<<<<<< HEAD
-	b.lt	.Lset_debug_fgt_\@
-	/* Disable PMSNEVFR_EL1 read and write traps */
-	orr	x0, x0, #(1 << 62)
-
-.Lset_debug_fgt_\@:
-=======
 	b.lt	.Lskip_spe_fgt_\@
 	/* Disable PMSNEVFR_EL1 read and write traps */
 	orr	x0, x0, #(1 << 62)
 
 .Lskip_spe_fgt_\@:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	msr_s	SYS_HDFGRTR_EL2, x0
 	msr_s	SYS_HDFGWTR_EL2, x0
 
 	mov	x0, xzr
 	mrs	x1, id_aa64pfr1_el1
 	ubfx	x1, x1, #ID_AA64PFR1_EL1_SME_SHIFT, #4
-<<<<<<< HEAD
-	cbz	x1, .Lset_pie_fgt_\@
-=======
 	cbz	x1, .Lskip_debug_fgt_\@
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Disable nVHE traps of TPIDR2 and SMPRI */
 	orr	x0, x0, #HFGxTR_EL2_nSMPRI_EL1_MASK
 	orr	x0, x0, #HFGxTR_EL2_nTPIDR2_EL0_MASK
 
-<<<<<<< HEAD
-.Lset_pie_fgt_\@:
-	mrs_s	x1, SYS_ID_AA64MMFR3_EL1
-	ubfx	x1, x1, #ID_AA64MMFR3_EL1_S1PIE_SHIFT, #4
-	cbz	x1, .Lset_fgt_\@
-=======
 .Lskip_debug_fgt_\@:
 	mrs_s	x1, SYS_ID_AA64MMFR3_EL1
 	ubfx	x1, x1, #ID_AA64MMFR3_EL1_S1PIE_SHIFT, #4
 	cbz	x1, .Lskip_pie_fgt_\@
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Disable trapping of PIR_EL1 / PIRE0_EL1 */
 	orr	x0, x0, #HFGxTR_EL2_nPIR_EL1
 	orr	x0, x0, #HFGxTR_EL2_nPIRE0_EL1
 
-<<<<<<< HEAD
-.Lset_fgt_\@:
-=======
 .Lskip_pie_fgt_\@:
 	mrs_s	x1, SYS_ID_AA64MMFR3_EL1
 	ubfx	x1, x1, #ID_AA64MMFR3_EL1_S1POE_SHIFT, #4
@@ -222,25 +200,18 @@
 	orr	x0, x0, #HFGxTR_EL2_nPOR_EL0
 
 .Lskip_poe_fgt_\@:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	msr_s	SYS_HFGRTR_EL2, x0
 	msr_s	SYS_HFGWTR_EL2, x0
 	msr_s	SYS_HFGITR_EL2, xzr
 
 	mrs	x1, id_aa64pfr0_el1		// AMU traps UNDEF without AMU
 	ubfx	x1, x1, #ID_AA64PFR0_EL1_AMU_SHIFT, #4
-<<<<<<< HEAD
-	cbz	x1, .Lskip_fgt_\@
-
-	msr_s	SYS_HAFGRTR_EL2, xzr
-=======
 	cbz	x1, .Lskip_amu_fgt_\@
 
 	msr_s	SYS_HAFGRTR_EL2, xzr
 
 .Lskip_amu_fgt_\@:
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .Lskip_fgt_\@:
 .endm
 

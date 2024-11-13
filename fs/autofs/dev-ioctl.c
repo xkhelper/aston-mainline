@@ -110,10 +110,7 @@ static inline void free_dev_ioctl(struct autofs_dev_ioctl *param)
  */
 static int validate_dev_ioctl(int cmd, struct autofs_dev_ioctl *param)
 {
-<<<<<<< HEAD
-=======
 	unsigned int inr = _IOC_NR(cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	err = check_dev_ioctl_version(cmd, param);
@@ -132,9 +129,6 @@ static int validate_dev_ioctl(int cmd, struct autofs_dev_ioctl *param)
 			goto out;
 		}
 
-<<<<<<< HEAD
-		err = check_name(param->path);
-=======
 		/* Setting the per-dentry expire timeout requires a trailing
 		 * path component, ie. no '/', so invert the logic of the
 		 * check_name() return for AUTOFS_DEV_IOCTL_TIMEOUT_CMD.
@@ -142,18 +136,12 @@ static int validate_dev_ioctl(int cmd, struct autofs_dev_ioctl *param)
 		err = check_name(param->path);
 		if (inr == AUTOFS_DEV_IOCTL_TIMEOUT_CMD)
 			err = err ? 0 : -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err) {
 			pr_warn("invalid path supplied for cmd(0x%08x)\n",
 				cmd);
 			goto out;
 		}
 	} else {
-<<<<<<< HEAD
-		unsigned int inr = _IOC_NR(cmd);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (inr == AUTOFS_DEV_IOCTL_OPENMOUNT_CMD ||
 		    inr == AUTOFS_DEV_IOCTL_REQUESTER_CMD ||
 		    inr == AUTOFS_DEV_IOCTL_ISMOUNTPOINT_CMD) {
@@ -413,9 +401,6 @@ static int autofs_dev_ioctl_catatonic(struct file *fp,
 	return 0;
 }
 
-<<<<<<< HEAD
-/* Set the autofs mount timeout */
-=======
 /*
  * Set the autofs mount expire timeout.
  *
@@ -440,18 +425,10 @@ static int autofs_dev_ioctl_catatonic(struct file *fp,
  * set which disables expiration for the mount point, lastly the flag
  * and the timeout are set enabling the dentry to use this timeout.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int autofs_dev_ioctl_timeout(struct file *fp,
 				    struct autofs_sb_info *sbi,
 				    struct autofs_dev_ioctl *param)
 {
-<<<<<<< HEAD
-	unsigned long timeout;
-
-	timeout = param->timeout.timeout;
-	param->timeout.timeout = sbi->exp_timeout / HZ;
-	sbi->exp_timeout = timeout * HZ;
-=======
 	unsigned long timeout = param->timeout.timeout;
 
 	/* If setting the expire timeout for an individual indirect
@@ -515,7 +492,6 @@ static int autofs_dev_ioctl_timeout(struct file *fp,
 		dput(dentry);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

@@ -592,11 +592,7 @@ static void ep93xxfb_remove(struct platform_device *pdev)
 
 static struct platform_driver ep93xxfb_driver = {
 	.probe		= ep93xxfb_probe,
-<<<<<<< HEAD
-	.remove_new	= ep93xxfb_remove,
-=======
 	.remove		= ep93xxfb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name	= "ep93xx-fb",
 	},

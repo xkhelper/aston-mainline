@@ -75,12 +75,8 @@ static const char gve_gstrings_adminq_stats[][ETH_GSTRING_LEN] = {
 	"adminq_destroy_tx_queue_cnt", "adminq_destroy_rx_queue_cnt",
 	"adminq_dcfg_device_resources_cnt", "adminq_set_driver_parameter_cnt",
 	"adminq_report_stats_cnt", "adminq_report_link_speed_cnt", "adminq_get_ptype_map_cnt",
-<<<<<<< HEAD
-	"adminq_query_flow_rules", "adminq_cfg_flow_rule",
-=======
 	"adminq_query_flow_rules", "adminq_cfg_flow_rule", "adminq_cfg_rss_cnt",
 	"adminq_query_rss_cnt",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const char gve_gstrings_priv_flags[][ETH_GSTRING_LEN] = {
@@ -458,11 +454,8 @@ gve_get_ethtool_stats(struct net_device *netdev,
 	data[i++] = priv->adminq_get_ptype_map_cnt;
 	data[i++] = priv->adminq_query_flow_rules_cnt;
 	data[i++] = priv->adminq_cfg_flow_rule_cnt;
-<<<<<<< HEAD
-=======
 	data[i++] = priv->adminq_cfg_rss_cnt;
 	data[i++] = priv->adminq_query_rss_cnt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void gve_get_channels(struct net_device *netdev,
@@ -848,8 +841,6 @@ static int gve_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd, u
 	return err;
 }
 
-<<<<<<< HEAD
-=======
 static u32 gve_get_rxfh_key_size(struct net_device *netdev)
 {
 	struct gve_priv *priv = netdev_priv(netdev);
@@ -885,7 +876,6 @@ static int gve_set_rxfh(struct net_device *netdev, struct ethtool_rxfh_param *rx
 	return gve_adminq_configure_rss(priv, rxfh);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct ethtool_ops gve_ethtool_ops = {
 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS,
 	.supported_ring_params = ETHTOOL_RING_USE_TCP_DATA_SPLIT,
@@ -899,13 +889,10 @@ const struct ethtool_ops gve_ethtool_ops = {
 	.get_channels = gve_get_channels,
 	.set_rxnfc = gve_set_rxnfc,
 	.get_rxnfc = gve_get_rxnfc,
-<<<<<<< HEAD
-=======
 	.get_rxfh_indir_size = gve_get_rxfh_indir_size,
 	.get_rxfh_key_size = gve_get_rxfh_key_size,
 	.get_rxfh = gve_get_rxfh,
 	.set_rxfh = gve_set_rxfh,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_link = ethtool_op_get_link,
 	.get_coalesce = gve_get_coalesce,
 	.set_coalesce = gve_set_coalesce,

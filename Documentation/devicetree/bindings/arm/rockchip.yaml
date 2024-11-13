@@ -96,8 +96,6 @@ properties:
           - const: coolpi,pi-cm5
           - const: rockchip,rk3588
 
-<<<<<<< HEAD
-=======
       - description: Cool Pi CM5 GenBook
         items:
           - enum:
@@ -105,7 +103,6 @@ properties:
           - const: coolpi,pi-cm5
           - const: rockchip,rk3588
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - description: Cool Pi 4 Model B
         items:
           - const: coolpi,pi-4b
@@ -158,15 +155,12 @@ properties:
           - const: engicam,px30-core
           - const: rockchip,px30
 
-<<<<<<< HEAD
-=======
       - description: Firefly Core-PX30-JD4 on MB-JD4-PX30 baseboard
         items:
           - const: firefly,px30-jd4-core-mb
           - const: firefly,px30-jd4-core
           - const: rockchip,px30
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - description: Firefly Firefly-RK3288
         items:
           - enum:
@@ -235,10 +229,7 @@ properties:
               - friendlyarm,nanopi-r2c
               - friendlyarm,nanopi-r2c-plus
               - friendlyarm,nanopi-r2s
-<<<<<<< HEAD
-=======
               - friendlyarm,nanopi-r2s-plus
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - const: rockchip,rk3328
 
       - description: FriendlyElec NanoPi4 series boards
@@ -266,17 +257,11 @@ properties:
               - friendlyarm,nanopi-r6s
           - const: rockchip,rk3588s
 
-<<<<<<< HEAD
-      - description: FriendlyElec NanoPC T6
-        items:
-          - const: friendlyarm,nanopc-t6
-=======
       - description: FriendlyElec NanoPC T6 series boards
         items:
           - enum:
               - friendlyarm,nanopc-t6
               - friendlyarm,nanopc-t6-lts
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - const: rockchip,rk3588
 
       - description: FriendlyElec CM3588-based boards
@@ -286,14 +271,11 @@ properties:
           - const: friendlyarm,cm3588
           - const: rockchip,rk3588
 
-<<<<<<< HEAD
-=======
       - description: GameForce Ace
         items:
           - const: gameforce,ace
           - const: rockchip,rk3588s
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - description: GameForce Chi
         items:
           - const: gameforce,chi
@@ -620,11 +602,6 @@ properties:
 
       - description: Hardkernel Odroid M1
         items:
-<<<<<<< HEAD
-          - const: rockchip,rk3568-odroid-m1
-          - const: rockchip,rk3568
-
-=======
           - const: hardkernel,odroid-m1
           - const: rockchip,rk3568
 
@@ -638,7 +615,6 @@ properties:
           - const: hardkernel,odroid-m2
           - const: rockchip,rk3588s
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - description: Hugsun X99 TV Box
         items:
           - const: hugsun,x99
@@ -677,14 +653,11 @@ properties:
           - const: leez,p710
           - const: rockchip,rk3399
 
-<<<<<<< HEAD
-=======
       - description: LCKFB Taishan Pi RK3566
         items:
           - const: lckfb,tspi-rk3566
           - const: rockchip,rk3566
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - description: Lunzn FastRhino R66S / R68S
         items:
           - enum:

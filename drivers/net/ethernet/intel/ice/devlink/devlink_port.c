@@ -5,12 +5,9 @@
 
 #include "ice.h"
 #include "devlink.h"
-<<<<<<< HEAD
-=======
 #include "devlink_port.h"
 #include "ice_lib.h"
 #include "ice_fltr.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int ice_active_port_option = -1;
 
@@ -491,8 +488,6 @@ void ice_devlink_destroy_vf_port(struct ice_vf *vf)
 	devl_rate_leaf_destroy(&vf->devlink_port);
 	devl_port_unregister(&vf->devlink_port);
 }
-<<<<<<< HEAD
-=======
 
 /**
  * ice_devlink_create_sf_dev_port - Register virtual port for a subfunction
@@ -1002,4 +997,3 @@ ice_devlink_port_new(struct devlink *devlink,
 
 	return ice_alloc_dynamic_port(pf, new_attr, extack, devlink_port);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

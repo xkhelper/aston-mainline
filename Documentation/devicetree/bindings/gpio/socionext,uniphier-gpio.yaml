@@ -55,24 +55,8 @@ properties:
 patternProperties:
   "^.+-hog(-[0-9]+)?$":
     type: object
-<<<<<<< HEAD
-    properties:
-      gpio-hog: true
-      gpios: true
-      input: true
-      output-high: true
-      output-low: true
-      line-name: true
-
     required:
       - gpio-hog
-      - gpios
-
-    additionalProperties: false
-=======
-    required:
-      - gpio-hog
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 required:
   - compatible

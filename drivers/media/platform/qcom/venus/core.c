@@ -430,10 +430,7 @@ static void venus_remove(struct platform_device *pdev)
 	struct device *dev = core->dev;
 	int ret;
 
-<<<<<<< HEAD
-=======
 	cancel_delayed_work_sync(&core->work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = pm_runtime_get_sync(dev);
 	WARN_ON(ret < 0);
 

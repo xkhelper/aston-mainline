@@ -120,11 +120,7 @@
 			no-map;
 		};
 
-<<<<<<< HEAD
-		c66_1_dma_memory_region: c66-dma-memory@a6000000 {
-=======
 		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "shared-dma-pool";
 			reg = <0x00 0xa6000000 0x00 0x100000>;
 			no-map;
@@ -136,11 +132,7 @@
 			no-map;
 		};
 
-<<<<<<< HEAD
-		c66_0_dma_memory_region: c66-dma-memory@a7000000 {
-=======
 		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "shared-dma-pool";
 			reg = <0x00 0xa7000000 0x00 0x100000>;
 			no-map;
@@ -1319,8 +1311,6 @@
 			<&mcu_r5fss0_core1_memory_region>;
 };
 
-<<<<<<< HEAD
-=======
 &main_r5fss0 {
 	ti,cluster-mode = <0>;
 };
@@ -1358,7 +1348,6 @@
 	status = "reserved";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &main_r5fss0_core0 {
 	mboxes = <&mailbox0_cluster1 &mbox_main_r5fss0_core0>;
 	memory-region = <&main_r5fss0_core0_dma_memory_region>,

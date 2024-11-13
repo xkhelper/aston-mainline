@@ -4,11 +4,7 @@
 #define STE_DMA40_H
 
 /*
-<<<<<<< HEAD
- * Maxium size for a single dma descriptor
-=======
  * Maximum size for a single dma descriptor
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Size is limited to 16 bits.
  * Size is in the units of addr-widths (1,2,4,8 bytes)
  * Larger transfers will be split up to multiple linked desc

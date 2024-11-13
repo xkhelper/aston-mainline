@@ -125,8 +125,6 @@
 			};
 		};
 	};
-<<<<<<< HEAD
-=======
 
 	flash-led-controller@53 {
 		compatible = "silergy,sy7802";
@@ -147,7 +145,6 @@
 			led-sources = <0>, <1>;
 		};
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &blsp_i2c3 {
@@ -301,8 +298,6 @@
 		bias-disable;
 	};
 
-<<<<<<< HEAD
-=======
 	camera_rear_flash_default: camera-rear-flash-default-state {
 		pins = "gpio9", "gpio16", "gpio117";
 		function = "gpio";
@@ -310,7 +305,6 @@
 		bias-disable;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gpio_keys_default: gpio-keys-default-state {
 		pins = "gpio107";
 		function = "gpio";

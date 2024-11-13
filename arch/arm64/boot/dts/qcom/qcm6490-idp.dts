@@ -641,8 +641,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &sdc2_clk {
 	bias-disable;
 	drive-strength = <16>;
@@ -658,7 +656,6 @@
 	drive-strength = <10>;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &sdhc_1 {
 	non-removable;
 	no-sd;
@@ -670,11 +667,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-&tlmm {
-	gpio-reserved-ranges = <32 2>, /* ADSP */
-			       <48 4>; /* NFC */
-=======
 &sdhc_2 {
 	status = "okay";
 
@@ -696,7 +688,6 @@
 		function = "gpio";
 		bias-pull-up;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &uart5 {

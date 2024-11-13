@@ -171,11 +171,7 @@ static const struct stmmac_hwif_entry {
 		.mac = &dwmac4_ops,
 		.hwtimestamp = &stmmac_ptp,
 		.mode = NULL,
-<<<<<<< HEAD
-		.tc = &dwmac510_tc_ops,
-=======
 		.tc = &dwmac4_tc_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.mmc = &dwmac_mmc_ops,
 		.est = &dwmac510_est_ops,
 		.setup = dwmac4_setup,
@@ -256,11 +252,7 @@ static const struct stmmac_hwif_entry {
 		.mac = &dwxgmac210_ops,
 		.hwtimestamp = &stmmac_ptp,
 		.mode = NULL,
-<<<<<<< HEAD
-		.tc = &dwmac510_tc_ops,
-=======
 		.tc = &dwxgmac_tc_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.mmc = &dwxgmac_mmc_ops,
 		.est = &dwmac510_est_ops,
 		.setup = dwxgmac2_setup,
@@ -281,11 +273,7 @@ static const struct stmmac_hwif_entry {
 		.mac = &dwxlgmac2_ops,
 		.hwtimestamp = &stmmac_ptp,
 		.mode = NULL,
-<<<<<<< HEAD
-		.tc = &dwmac510_tc_ops,
-=======
 		.tc = &dwxgmac_tc_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.mmc = &dwxgmac_mmc_ops,
 		.est = &dwmac510_est_ops,
 		.setup = dwxlgmac2_setup,

@@ -985,11 +985,7 @@ int ipv6_setsockopt(struct sock *sk, int level, int optname, sockptr_t optval,
 	int err;
 
 	if (level == SOL_IP && sk->sk_type != SOCK_RAW)
-<<<<<<< HEAD
-		return udp_prot.setsockopt(sk, level, optname, optval, optlen);
-=======
 		return ip_setsockopt(sk, level, optname, optval, optlen);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (level != SOL_IPV6)
 		return -ENOPROTOOPT;
@@ -1479,11 +1475,7 @@ int ipv6_getsockopt(struct sock *sk, int level, int optname,
 	int err;
 
 	if (level == SOL_IP && sk->sk_type != SOCK_RAW)
-<<<<<<< HEAD
-		return udp_prot.getsockopt(sk, level, optname, optval, optlen);
-=======
 		return ip_getsockopt(sk, level, optname, optval, optlen);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (level != SOL_IPV6)
 		return -ENOPROTOOPT;

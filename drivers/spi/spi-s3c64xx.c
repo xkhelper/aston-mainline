@@ -245,11 +245,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
 	loops = msecs_to_loops(1);
 	do {
 		val = readl(regs + S3C64XX_SPI_STATUS);
-<<<<<<< HEAD
-	} while (TX_FIFO_LVL(val, sdd) && loops--);
-=======
 	} while (TX_FIFO_LVL(val, sdd) && --loops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (loops == 0)
 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
@@ -262,11 +258,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
 			readl(regs + S3C64XX_SPI_RX_DATA);
 		else
 			break;
-<<<<<<< HEAD
-	} while (loops--);
-=======
 	} while (--loops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (loops == 0)
 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
@@ -1645,10 +1637,7 @@ static const struct platform_device_id s3c64xx_spi_driver_ids[] = {
 	},
 	{ },
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(platform, s3c64xx_spi_driver_ids);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct of_device_id s3c64xx_spi_dt_match[] = {
 	{ .compatible = "google,gs101-spi",

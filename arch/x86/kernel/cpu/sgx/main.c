@@ -475,26 +475,6 @@ struct sgx_epc_page *__sgx_alloc_epc_page(void)
 {
 	struct sgx_epc_page *page;
 	int nid_of_current = numa_node_id();
-<<<<<<< HEAD
-	int nid = nid_of_current;
-
-	if (node_isset(nid_of_current, sgx_numa_mask)) {
-		page = __sgx_alloc_epc_page_from_node(nid_of_current);
-		if (page)
-			return page;
-	}
-
-	/* Fall back to the non-local NUMA nodes: */
-	while (true) {
-		nid = next_node_in(nid, sgx_numa_mask);
-		if (nid == nid_of_current)
-			break;
-
-		page = __sgx_alloc_epc_page_from_node(nid);
-		if (page)
-			return page;
-	}
-=======
 	int nid_start, nid;
 
 	/*
@@ -514,7 +494,6 @@ struct sgx_epc_page *__sgx_alloc_epc_page(void)
 
 		nid = next_node_in(nid, sgx_numa_mask);
 	} while (nid != nid_start);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ERR_PTR(-ENOMEM);
 }
@@ -754,11 +733,7 @@ out:
 	return 0;
 }
 
-<<<<<<< HEAD
-/**
-=======
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * A section metric is concatenated in a way that @low bits 12-31 define the
  * bits 12-31 of the metric and @high bits 0-19 define the bits 32-51 of the
  * metric.
@@ -873,8 +848,6 @@ static bool __init sgx_page_cache_init(void)
 		return false;
 	}
 
-<<<<<<< HEAD
-=======
 	for_each_online_node(nid) {
 		if (!node_isset(nid, sgx_numa_mask) &&
 		    node_state(nid, N_MEMORY) && node_state(nid, N_CPU))
@@ -882,7 +855,6 @@ static bool __init sgx_page_cache_init(void)
 				nid);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return true;
 }
 
@@ -931,17 +903,10 @@ int sgx_set_attribute(unsigned long *allowed_attributes,
 {
 	struct fd f = fdget(attribute_fd);
 
-<<<<<<< HEAD
-	if (!f.file)
-		return -EINVAL;
-
-	if (f.file->f_op != &sgx_provision_fops) {
-=======
 	if (!fd_file(f))
 		return -EINVAL;
 
 	if (fd_file(f)->f_op != &sgx_provision_fops) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 		return -EINVAL;
 	}

@@ -10,11 +10,7 @@
 #include <linux/perf_event.h>
 #include <linux/perf/arm_pmuv3.h>
 
-<<<<<<< HEAD
-#define ARMV8_PMU_CYCLE_IDX		(ARMV8_PMU_MAX_COUNTERS - 1)
-=======
 #define KVM_ARMV8_PMU_MAX_COUNTERS	32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if IS_ENABLED(CONFIG_HW_PERF_EVENTS) && IS_ENABLED(CONFIG_KVM)
 struct kvm_pmc {
@@ -23,23 +19,14 @@ struct kvm_pmc {
 };
 
 struct kvm_pmu_events {
-<<<<<<< HEAD
-	u32 events_host;
-	u32 events_guest;
-=======
 	u64 events_host;
 	u64 events_guest;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct kvm_pmu {
 	struct irq_work overflow_work;
 	struct kvm_pmu_events events;
-<<<<<<< HEAD
-	struct kvm_pmc pmc[ARMV8_PMU_MAX_COUNTERS];
-=======
 	struct kvm_pmc pmc[KVM_ARMV8_PMU_MAX_COUNTERS];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int irq_num;
 	bool created;
 	bool irq_level;

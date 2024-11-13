@@ -283,8 +283,6 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
 	int i;
 
 	/*
-<<<<<<< HEAD
-=======
 	 * MSM8998 LPASS SMMU reports 13 context banks, but accessing
 	 * the last context bank crashes the system.
 	 */
@@ -299,7 +297,6 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
 	}
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Some platforms support more than the Arm SMMU architected maximum of
 	 * 128 stream matching groups. For unknown reasons, the additional
 	 * groups don't exhibit the same behavior as the architected registers,
@@ -355,8 +352,6 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int qcom_adreno_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
 {
 	/* Support for 16K pages is advertised on some SoCs, but it doesn't seem to work */
@@ -370,7 +365,6 @@ static int qcom_adreno_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void qcom_smmu_write_s2cr(struct arm_smmu_device *smmu, int idx)
 {
 	struct arm_smmu_s2cr *s2cr = smmu->s2crs + idx;
@@ -469,10 +463,7 @@ static const struct arm_smmu_impl sdm845_smmu_500_impl = {
 
 static const struct arm_smmu_impl qcom_adreno_smmu_v2_impl = {
 	.init_context = qcom_adreno_smmu_init_context,
-<<<<<<< HEAD
-=======
 	.cfg_probe = qcom_adreno_smmuv2_cfg_probe,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.def_domain_type = qcom_smmu_def_domain_type,
 	.alloc_context_bank = qcom_adreno_smmu_alloc_context_bank,
 	.write_sctlr = qcom_adreno_smmu_write_sctlr,

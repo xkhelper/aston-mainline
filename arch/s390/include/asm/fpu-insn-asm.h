@@ -407,8 +407,6 @@
 	MRXBOPC	0, 0x0E, v1
 .endm
 
-<<<<<<< HEAD
-=======
 /* VECTOR STORE BYTE REVERSED ELEMENTS */
 	.macro	VSTBR	vr1, disp, index="%r0", base, m
 	VX_NUM	v1, \vr1
@@ -431,7 +429,6 @@
 	VSTBR	\vr1, \disp, \index, \base, 4
 .endm
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* VECTOR STORE MULTIPLE */
 .macro	VSTM	vfrom, vto, disp, base, hint=3
 	VX_NUM	v1, \vfrom

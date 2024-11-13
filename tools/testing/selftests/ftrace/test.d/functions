@@ -193,8 +193,6 @@ ftrace_errlog_check() { # err-prefix command-with-error-pos-by-^ command-file
     # "  Command: " and "^\n" => 13
     test $(expr 13 + $pos) -eq $N
 }
-<<<<<<< HEAD
-=======
 
 # Helper to get the tracefs mount point
 get_mount_point() {
@@ -220,4 +218,3 @@ get_mnt_options() {
 
 	echo "$opts"
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

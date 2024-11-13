@@ -299,11 +299,7 @@ static const struct of_device_id stm32_dfsdm_of_match[] = {
 		.compatible = "st,stm32mp1-dfsdm",
 		.data = &stm32mp1_dfsdm_data,
 	},
-<<<<<<< HEAD
-	{}
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, stm32_dfsdm_of_match);
 

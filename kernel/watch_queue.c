@@ -666,13 +666,8 @@ struct watch_queue *get_watch_queue(int fd)
 	struct fd f;
 
 	f = fdget(fd);
-<<<<<<< HEAD
-	if (f.file) {
-		pipe = get_pipe_info(f.file, false);
-=======
 	if (fd_file(f)) {
 		pipe = get_pipe_info(fd_file(f), false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (pipe && pipe->watch_queue) {
 			wqueue = pipe->watch_queue;
 			kref_get(&wqueue->usage);

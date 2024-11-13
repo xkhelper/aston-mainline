@@ -28,11 +28,7 @@
 static int
 base907c_image_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = wndw->wndw.push;
-=======
 	struct nvif_push *push = &wndw->wndw.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 10)))
@@ -69,11 +65,7 @@ base907c_image_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 static int
 base907c_xlut_clr(struct nv50_wndw *wndw)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = wndw->wndw.push;
-=======
 	struct nvif_push *push = &wndw->wndw.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 6)))
@@ -92,11 +84,7 @@ base907c_xlut_clr(struct nv50_wndw *wndw)
 static int
 base907c_xlut_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = wndw->wndw.push;
-=======
 	struct nvif_push *push = &wndw->wndw.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 6)))
@@ -168,11 +156,7 @@ base907c_csc(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw,
 static int
 base907c_csc_clr(struct nv50_wndw *wndw)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = wndw->wndw.push;
-=======
 	struct nvif_push *push = &wndw->wndw.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 2)))
@@ -186,11 +170,7 @@ base907c_csc_clr(struct nv50_wndw *wndw)
 static int
 base907c_csc_set(struct nv50_wndw *wndw, struct nv50_wndw_atom *asyw)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = wndw->wndw.push;
-=======
 	struct nvif_push *push = &wndw->wndw.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 13)))

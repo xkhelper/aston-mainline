@@ -17,11 +17,7 @@ src_feature_tests  = getenv('srctree') + '/tools/build/feature'
 
 def clang_has_option(option):
     cc_output = Popen([cc, cc_options + option, path.join(src_feature_tests, "test-hello.c") ], stderr=PIPE).stderr.readlines()
-<<<<<<< HEAD
-    return [o for o in cc_output if ((b"unknown argument" in o) or (b"is not supported" in o))] == [ ]
-=======
     return [o for o in cc_output if ((b"unknown argument" in o) or (b"is not supported" in o) or (b"unknown warning option" in o))] == [ ]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 if cc_is_clang:
     from sysconfig import get_config_vars
@@ -67,11 +63,8 @@ cflags = getenv('CFLAGS', '').split()
 cflags += ['-fno-strict-aliasing', '-Wno-write-strings', '-Wno-unused-parameter', '-Wno-redundant-decls' ]
 if cc_is_clang:
     cflags += ["-Wno-unused-command-line-argument" ]
-<<<<<<< HEAD
-=======
     if clang_has_option("-Wno-cast-function-type-mismatch"):
         cflags += ["-Wno-cast-function-type-mismatch" ]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 else:
     cflags += ['-Wno-cast-function-type' ]
 

@@ -7749,8 +7749,6 @@ static struct ibm_struct volume_driver_data = {
  * 	EC 0x2f (HFSP) might be available *for reading*, but do not use
  * 	it for writing.
  *
-<<<<<<< HEAD
-=======
  * TPACPI_FAN_RD_ACPI_FANG:
  * 	ACPI FANG method: returns fan control register
  *
@@ -7773,7 +7771,6 @@ static struct ibm_struct volume_driver_data = {
  *
  *	see TPACPI_FAN_RD_ACPI_FANG
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * TPACPI_FAN_WR_TPEC:
  * 	ThinkPad EC register 0x2f (HFSP): fan control loop mode
  * 	Supported on almost all ThinkPads
@@ -7907,10 +7904,7 @@ enum {					/* Fan control constants */
 enum fan_status_access_mode {
 	TPACPI_FAN_NONE = 0,		/* No fan status or control */
 	TPACPI_FAN_RD_ACPI_GFAN,	/* Use ACPI GFAN */
-<<<<<<< HEAD
-=======
 	TPACPI_FAN_RD_ACPI_FANG,	/* Use ACPI FANG */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TPACPI_FAN_RD_TPEC,		/* Use ACPI EC regs 0x2f, 0x84-0x85 */
 	TPACPI_FAN_RD_TPEC_NS,		/* Use non-standard ACPI EC regs (eg: L13 Yoga gen2 etc.) */
 };
@@ -7918,10 +7912,7 @@ enum fan_status_access_mode {
 enum fan_control_access_mode {
 	TPACPI_FAN_WR_NONE = 0,		/* No fan control */
 	TPACPI_FAN_WR_ACPI_SFAN,	/* Use ACPI SFAN */
-<<<<<<< HEAD
-=======
 	TPACPI_FAN_WR_ACPI_FANW,	/* Use ACPI FANW */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TPACPI_FAN_WR_TPEC,		/* Use ACPI EC reg 0x2f */
 	TPACPI_FAN_WR_ACPI_FANS,	/* Use ACPI FANS and EC reg 0x2f */
 };
@@ -7945,10 +7936,7 @@ static u8 fan_control_resume_level;
 static int fan_watchdog_maxinterval;
 
 static bool fan_with_ns_addr;
-<<<<<<< HEAD
-=======
 static bool ecfw_with_fan_dec_rpm;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct mutex fan_mutex;
 
@@ -7959,11 +7947,6 @@ TPACPI_HANDLE(fans, ec, "FANS");	/* X31, X40, X41 */
 TPACPI_HANDLE(gfan, ec, "GFAN",	/* 570 */
 	   "\\FSPD",		/* 600e/x, 770e, 770x */
 	   );			/* all others */
-<<<<<<< HEAD
-TPACPI_HANDLE(sfan, ec, "SFAN",	/* 570 */
-	   "JFNS",		/* 770x-JL */
-	   );			/* all others */
-=======
 TPACPI_HANDLE(fang, ec, "FANG",	/* E531 */
 	   );			/* all others */
 TPACPI_HANDLE(sfan, ec, "SFAN",	/* 570 */
@@ -7971,7 +7954,6 @@ TPACPI_HANDLE(sfan, ec, "SFAN",	/* 570 */
 	   );			/* all others */
 TPACPI_HANDLE(fanw, ec, "FANW",	/* E531 */
 	   );			/* all others */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Unitialized HFSP quirk: ACPI DSDT and EC fail to initialize the
@@ -8078,8 +8060,6 @@ static int fan_get_status(u8 *status)
 
 		break;
 	}
-<<<<<<< HEAD
-=======
 	case TPACPI_FAN_RD_ACPI_FANG: {
 		/* E531 */
 		int mode, speed;
@@ -8097,7 +8077,6 @@ static int fan_get_status(u8 *status)
 
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case TPACPI_FAN_RD_TPEC:
 		/* all except 570, 600e/x, 770e, 770x */
 		if (unlikely(!acpi_ec_read(fan_status_offset, &s)))
@@ -8212,8 +8191,6 @@ static int fan2_get_speed(unsigned int *speed)
 		if (speed)
 			*speed = lo ? FAN_RPM_CAL_CONST / lo : 0;
 		break;
-<<<<<<< HEAD
-=======
 	case TPACPI_FAN_RD_ACPI_FANG: {
 		/* E531 */
 		int speed_tmp;
@@ -8225,7 +8202,6 @@ static int fan2_get_speed(unsigned int *speed)
 			*speed =  speed_tmp * 65535 / 100;
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	default:
 		return -ENXIO;
@@ -8285,8 +8261,6 @@ static int fan_set_level(int level)
 			tp_features.fan_ctrl_status_undef = 0;
 		break;
 
-<<<<<<< HEAD
-=======
 	case TPACPI_FAN_WR_ACPI_FANW:
 		if (!(level & TP_EC_FAN_AUTO) && (level < 0 || level > 7))
 			return -EINVAL;
@@ -8313,7 +8287,6 @@ static int fan_set_level(int level)
 		}
 		break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -ENXIO;
 	}
@@ -8346,11 +8319,7 @@ static int fan_set_level_safe(int level)
 
 static int fan_set_enable(void)
 {
-<<<<<<< HEAD
-	u8 s;
-=======
 	u8 s = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int rc;
 
 	if (!fan_control_allowed)
@@ -8396,8 +8365,6 @@ static int fan_set_enable(void)
 			rc = 0;
 		break;
 
-<<<<<<< HEAD
-=======
 	case TPACPI_FAN_WR_ACPI_FANW:
 		if (!acpi_evalf(fanw_handle, NULL, NULL, "vdd", 0x8106, 0x05)) {
 			rc = -EIO;
@@ -8411,7 +8378,6 @@ static int fan_set_enable(void)
 		rc = 0;
 		break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		rc = -ENXIO;
 	}
@@ -8454,8 +8420,6 @@ static int fan_set_disable(void)
 			fan_control_desired_level = 0;
 		break;
 
-<<<<<<< HEAD
-=======
 	case TPACPI_FAN_WR_ACPI_FANW:
 		if (!acpi_evalf(fanw_handle, NULL, NULL, "vdd", 0x8106, 0x45)) {
 			rc = -EIO;
@@ -8472,7 +8436,6 @@ static int fan_set_disable(void)
 		rc = 0;
 		break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		rc = -ENXIO;
 	}
@@ -8506,8 +8469,6 @@ static int fan_set_speed(int speed)
 			rc = -EINVAL;
 		break;
 
-<<<<<<< HEAD
-=======
 	case TPACPI_FAN_WR_ACPI_FANW:
 		if (speed >= 0 && speed <= 65535) {
 			if (!acpi_evalf(fanw_handle, NULL, NULL, "vdd", 0x8106, 0x45)) {
@@ -8525,7 +8486,6 @@ static int fan_set_speed(int speed)
 			rc = -EINVAL;
 		break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		rc = -ENXIO;
 	}
@@ -8723,15 +8683,11 @@ static ssize_t fan_fan1_input_show(struct device *dev,
 	if (res < 0)
 		return res;
 
-<<<<<<< HEAD
-	return sysfs_emit(buf, "%u\n", speed);
-=======
 	/* Check for fan speeds displayed in hexadecimal */
 	if (!ecfw_with_fan_dec_rpm)
 		return sysfs_emit(buf, "%u\n", speed);
 	else
 		return sysfs_emit(buf, "%x\n", speed);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static DEVICE_ATTR(fan1_input, S_IRUGO, fan_fan1_input_show, NULL);
@@ -8748,15 +8704,11 @@ static ssize_t fan_fan2_input_show(struct device *dev,
 	if (res < 0)
 		return res;
 
-<<<<<<< HEAD
-	return sysfs_emit(buf, "%u\n", speed);
-=======
 	/* Check for fan speeds displayed in hexadecimal */
 	if (!ecfw_with_fan_dec_rpm)
 		return sysfs_emit(buf, "%u\n", speed);
 	else
 		return sysfs_emit(buf, "%x\n", speed);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static DEVICE_ATTR(fan2_input, S_IRUGO, fan_fan2_input_show, NULL);
@@ -8832,10 +8784,7 @@ static const struct attribute_group fan_driver_attr_group = {
 #define TPACPI_FAN_2CTL		0x0004		/* selects fan2 control */
 #define TPACPI_FAN_NOFAN	0x0008		/* no fan available */
 #define TPACPI_FAN_NS		0x0010		/* For EC with non-Standard register addresses */
-<<<<<<< HEAD
-=======
 #define TPACPI_FAN_DECRPM	0x0020		/* For ECFW's with RPM in register as decimal */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
 	TPACPI_QEC_IBM('1', 'Y', TPACPI_FAN_Q1),
@@ -8864,10 +8813,7 @@ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
 	TPACPI_Q_LNV3('R', '1', 'D', TPACPI_FAN_NS),	/* 11e Gen5 GL-R */
 	TPACPI_Q_LNV3('R', '0', 'V', TPACPI_FAN_NS),	/* 11e Gen5 KL-Y */
 	TPACPI_Q_LNV3('N', '1', 'O', TPACPI_FAN_NOFAN),	/* X1 Tablet (2nd gen) */
-<<<<<<< HEAD
-=======
 	TPACPI_Q_LNV3('R', '0', 'Q', TPACPI_FAN_DECRPM),/* L480 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init fan_init(struct ibm_init_struct *iibm)
@@ -8892,13 +8838,10 @@ static int __init fan_init(struct ibm_init_struct *iibm)
 		TPACPI_ACPIHANDLE_INIT(gfan);
 		TPACPI_ACPIHANDLE_INIT(sfan);
 	}
-<<<<<<< HEAD
-=======
 	if (tpacpi_is_lenovo()) {
 		TPACPI_ACPIHANDLE_INIT(fang);
 		TPACPI_ACPIHANDLE_INIT(fanw);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	quirks = tpacpi_check_quirks(fan_quirk_table,
 				     ARRAY_SIZE(fan_quirk_table));
@@ -8915,11 +8858,6 @@ static int __init fan_init(struct ibm_init_struct *iibm)
 		tp_features.fan_ctrl_status_undef = 1;
 	}
 
-<<<<<<< HEAD
-	if (gfan_handle) {
-		/* 570, 600e/x, 770e, 770x */
-		fan_status_access_mode = TPACPI_FAN_RD_ACPI_GFAN;
-=======
 	/* Check for the EC/BIOS with RPM reported in decimal*/
 	if (quirks & TPACPI_FAN_DECRPM) {
 		pr_info("ECFW with fan RPM as decimal in EC register\n");
@@ -8933,7 +8871,6 @@ static int __init fan_init(struct ibm_init_struct *iibm)
 	} else if (fang_handle) {
 		/* E531 */
 		fan_status_access_mode = TPACPI_FAN_RD_ACPI_FANG;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		/* all other ThinkPads: note that even old-style
 		 * ThinkPad ECs supports the fan control register */
@@ -8980,14 +8917,11 @@ static int __init fan_init(struct ibm_init_struct *iibm)
 		fan_control_access_mode = TPACPI_FAN_WR_ACPI_SFAN;
 		fan_control_commands |=
 		    TPACPI_FAN_CMD_LEVEL | TPACPI_FAN_CMD_ENABLE;
-<<<<<<< HEAD
-=======
 	} else if (fanw_handle) {
 		/* E531 */
 		fan_control_access_mode = TPACPI_FAN_WR_ACPI_FANW;
 		fan_control_commands |=
 		    TPACPI_FAN_CMD_LEVEL | TPACPI_FAN_CMD_SPEED | TPACPI_FAN_CMD_ENABLE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		if (!gfan_handle) {
 			/* gfan without sfan means no fan control */
@@ -9139,10 +9073,7 @@ static int fan_read(struct seq_file *m)
 
 	case TPACPI_FAN_RD_TPEC_NS:
 	case TPACPI_FAN_RD_TPEC:
-<<<<<<< HEAD
-=======
 	case TPACPI_FAN_RD_ACPI_FANG:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* all except 570, 600e/x, 770e, 770x */
 		rc = fan_get_status_safe(&status);
 		if (rc)
@@ -9154,15 +9085,11 @@ static int fan_read(struct seq_file *m)
 		if (rc < 0)
 			return rc;
 
-<<<<<<< HEAD
-		seq_printf(m, "speed:\t\t%d\n", speed);
-=======
 		/* Check for fan speeds displayed in hexadecimal */
 		if (!ecfw_with_fan_dec_rpm)
 			seq_printf(m, "speed:\t\t%d\n", speed);
 		else
 			seq_printf(m, "speed:\t\t%x\n", speed);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (fan_status_access_mode == TPACPI_FAN_RD_TPEC_NS) {
 			/*
@@ -9171,11 +9098,7 @@ static int fan_read(struct seq_file *m)
 			 * No other levels settings available
 			 */
 			seq_printf(m, "level:\t\t%s\n", status & FAN_NS_CTRL ? "unknown" : "auto");
-<<<<<<< HEAD
-		} else {
-=======
 		} else if (fan_status_access_mode == TPACPI_FAN_RD_TPEC) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (status & TP_EC_FAN_FULLSPEED)
 				/* Disengaged mode takes precedence */
 				seq_printf(m, "level:\t\tdisengaged\n");

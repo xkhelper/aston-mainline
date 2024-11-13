@@ -85,22 +85,13 @@
 #include <linux/netconf.h>
 #include <linux/random.h>
 #include <linux/uaccess.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
 #include <linux/export.h>
 #include <linux/ioam6.h>
 
-<<<<<<< HEAD
-#define	INFINITY_LIFE_TIME	0xFFFFFFFF
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define IPV6_MAX_STRLEN \
 	sizeof("ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255")
 
@@ -246,10 +237,7 @@ static struct ipv6_devconf ipv6_devconf __read_mostly = {
 	.ioam6_id_wide		= IOAM6_DEFAULT_IF_ID_WIDE,
 	.ndisc_evict_nocarrier	= 1,
 	.ra_honor_pio_life	= 0,
-<<<<<<< HEAD
-=======
 	.ra_honor_pio_pflag	= 0,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct ipv6_devconf ipv6_devconf_dflt __read_mostly = {
@@ -313,10 +301,7 @@ static struct ipv6_devconf ipv6_devconf_dflt __read_mostly = {
 	.ioam6_id_wide		= IOAM6_DEFAULT_IF_ID_WIDE,
 	.ndisc_evict_nocarrier	= 1,
 	.ra_honor_pio_life	= 0,
-<<<<<<< HEAD
-=======
 	.ra_honor_pio_pflag	= 0,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Check if link is ready: is it up and is a valid qdisc available */
@@ -2777,10 +2762,7 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)
 	u32 addr_flags = 0;
 	struct inet6_dev *in6_dev;
 	struct net *net = dev_net(dev);
-<<<<<<< HEAD
-=======
 	bool ignore_autoconf = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pinfo = (struct prefix_info *) opt;
 
@@ -2883,12 +2865,8 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)
 
 	/* Try to figure out our local address for this prefix */
 
-<<<<<<< HEAD
-	if (pinfo->autoconf && in6_dev->cnf.autoconf) {
-=======
 	ignore_autoconf = READ_ONCE(in6_dev->cnf.ra_honor_pio_pflag) && pinfo->preferpd;
 	if (pinfo->autoconf && in6_dev->cnf.autoconf && !ignore_autoconf) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct in6_addr addr;
 		bool tokenized = false, dev_addr_generated = false;
 
@@ -5641,12 +5619,7 @@ static void inet6_ifa_notify(int event, struct inet6_ifaddr *ifa)
 	rtnl_notify(skb, net, 0, RTNLGRP_IPV6_IFADDR, NULL, GFP_ATOMIC);
 	return;
 errout:
-<<<<<<< HEAD
-	if (err < 0)
-		rtnl_set_sk_err(net, RTNLGRP_IPV6_IFADDR, err);
-=======
 	rtnl_set_sk_err(net, RTNLGRP_IPV6_IFADDR, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ipv6_store_devconf(const struct ipv6_devconf *cnf,
@@ -6201,12 +6174,7 @@ void inet6_ifinfo_notify(int event, struct inet6_dev *idev)
 	rtnl_notify(skb, net, 0, RTNLGRP_IPV6_IFINFO, NULL, GFP_ATOMIC);
 	return;
 errout:
-<<<<<<< HEAD
-	if (err < 0)
-		rtnl_set_sk_err(net, RTNLGRP_IPV6_IFINFO, err);
-=======
 	rtnl_set_sk_err(net, RTNLGRP_IPV6_IFINFO, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline size_t inet6_prefix_nlmsg_size(void)
@@ -6273,12 +6241,7 @@ static void inet6_prefix_notify(int event, struct inet6_dev *idev,
 	rtnl_notify(skb, net, 0, RTNLGRP_IPV6_PREFIX, NULL, GFP_ATOMIC);
 	return;
 errout:
-<<<<<<< HEAD
-	if (err < 0)
-		rtnl_set_sk_err(net, RTNLGRP_IPV6_PREFIX, err);
-=======
 	rtnl_set_sk_err(net, RTNLGRP_IPV6_PREFIX, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __ipv6_ifa_notify(int event, struct inet6_ifaddr *ifp)
@@ -6962,8 +6925,6 @@ static const struct ctl_table addrconf_sysctl[] = {
 		.extra1		= SYSCTL_ZERO,
 		.extra2		= SYSCTL_ONE,
 	},
-<<<<<<< HEAD
-=======
 	{
 		.procname	= "ra_honor_pio_pflag",
 		.data		= &ipv6_devconf.ra_honor_pio_pflag,
@@ -6973,7 +6934,6 @@ static const struct ctl_table addrconf_sysctl[] = {
 		.extra1		= SYSCTL_ZERO,
 		.extra2		= SYSCTL_ONE,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_IPV6_ROUTER_PREF
 	{
 		.procname	= "accept_ra_rtr_pref",

@@ -2,10 +2,7 @@
 #ifndef _LINUX_MMAN_H
 #define _LINUX_MMAN_H
 
-<<<<<<< HEAD
-=======
 #include <linux/fs.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/mm.h>
 #include <linux/percpu_counter.h>
 
@@ -98,11 +95,7 @@ static inline void vm_unacct_memory(long pages)
 #endif
 
 #ifndef arch_calc_vm_flag_bits
-<<<<<<< HEAD
-#define arch_calc_vm_flag_bits(flags) 0
-=======
 #define arch_calc_vm_flag_bits(file, flags) 0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #ifndef arch_validate_prot
@@ -159,21 +152,13 @@ calc_vm_prot_bits(unsigned long prot, unsigned long pkey)
  * Combine the mmap "flags" argument into "vm_flags" used internally.
  */
 static inline unsigned long
-<<<<<<< HEAD
-calc_vm_flag_bits(unsigned long flags)
-=======
 calc_vm_flag_bits(struct file *file, unsigned long flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
 	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
 	       _calc_vm_trans(flags, MAP_SYNC,	     VM_SYNC      ) |
 	       _calc_vm_trans(flags, MAP_STACK,	     VM_NOHUGEPAGE) |
-<<<<<<< HEAD
-	       arch_calc_vm_flag_bits(flags);
-=======
 	       arch_calc_vm_flag_bits(file, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 unsigned long vm_commit_limit(void);
@@ -204,18 +189,6 @@ static inline bool arch_memory_deny_write_exec_supported(void)
  *
  *	d)	mmap(PROT_READ | PROT_EXEC)
  *		mmap(PROT_READ | PROT_EXEC | PROT_BTI)
-<<<<<<< HEAD
- */
-static inline bool map_deny_write_exec(struct vm_area_struct *vma,  unsigned long vm_flags)
-{
-	if (!test_bit(MMF_HAS_MDWE, &current->mm->flags))
-		return false;
-
-	if ((vm_flags & VM_EXEC) && (vm_flags & VM_WRITE))
-		return true;
-
-	if (!(vma->vm_flags & VM_EXEC) && (vm_flags & VM_EXEC))
-=======
  *
  * This is only applicable if the user has set the Memory-Deny-Write-Execute
  * (MDWE) protection mask for the current process.
@@ -241,7 +214,6 @@ static inline bool map_deny_write_exec(unsigned long old, unsigned long new)
 
 	/* ...nor previously non-executable VMAs becoming executable. */
 	if (!(old & VM_EXEC))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 
 	return false;

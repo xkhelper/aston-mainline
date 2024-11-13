@@ -613,12 +613,9 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
 
 	val_cr4 |= FSL_SAI_CR4_FRSZ(slots);
 
-<<<<<<< HEAD
-=======
 	/* Set to avoid channel swap */
 	val_cr4 |= FSL_SAI_CR4_FCONT;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Set to output mode to avoid tri-stated data pins */
 	if (tx)
 		val_cr4 |= FSL_SAI_CR4_CHMOD;
@@ -705,11 +702,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
 
 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
-<<<<<<< HEAD
-			   FSL_SAI_CR4_CHMOD_MASK,
-=======
 			   FSL_SAI_CR4_CHMOD_MASK | FSL_SAI_CR4_FCONT_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   val_cr4);
 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
@@ -1827,11 +1820,7 @@ static const struct dev_pm_ops fsl_sai_pm_ops = {
 
 static struct platform_driver fsl_sai_driver = {
 	.probe = fsl_sai_probe,
-<<<<<<< HEAD
-	.remove_new = fsl_sai_remove,
-=======
 	.remove = fsl_sai_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "fsl-sai",
 		.pm = &fsl_sai_pm_ops,

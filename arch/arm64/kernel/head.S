@@ -167,10 +167,6 @@ SYM_CODE_END(record_mmu_state)
  * Preserve the arguments passed by the bootloader in x0 .. x3
  */
 SYM_CODE_START_LOCAL(preserve_boot_args)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 /*
  * it seems that whenever the kernel is being relocated, all the operations
  * are done on the x21 directly so set the fdt pointer as if it was
@@ -192,12 +188,6 @@ SYM_CODE_START_LOCAL(preserve_boot_args)
 	mov	x21, x23			// use x0 as fdt pointer
 1:
 	mov	x1, x22 			// restore x1
-<<<<<<< HEAD
-=======
-	mov	x21, x0				// x21=FDT
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 	adr_l	x0, boot_args			// record the contents of
 	stp	x21, x1, [x0]			// x0 .. x3 at kernel entry

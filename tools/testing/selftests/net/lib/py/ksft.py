@@ -1,10 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 
 import builtins
-<<<<<<< HEAD
-=======
 import functools
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 import inspect
 import sys
 import time
@@ -14,10 +11,7 @@ from .utils import global_defer_queue
 
 KSFT_RESULT = None
 KSFT_RESULT_ALL = True
-<<<<<<< HEAD
-=======
 KSFT_DISRUPTIVE = True
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 class KsftFailEx(Exception):
@@ -40,10 +34,6 @@ def _fail(*args):
     global KSFT_RESULT
     KSFT_RESULT = False
 
-<<<<<<< HEAD
-    frame = inspect.stack()[2]
-    ksft_pr("At " + frame.filename + " line " + str(frame.lineno) + ":")
-=======
     stack = inspect.stack()
     started = False
     for frame in reversed(stack[2:]):
@@ -56,7 +46,6 @@ def _fail(*args):
         ksft_pr("Check| At " + frame.filename + ", line " + str(frame.lineno) +
                 ", in " + frame.function + ":")
         ksft_pr("Check|     " + frame.code_context[0].strip())
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     ksft_pr(*args)
 
 
@@ -66,15 +55,12 @@ def ksft_eq(a, b, comment=""):
         _fail("Check failed", a, "!=", b, comment)
 
 
-<<<<<<< HEAD
-=======
 def ksft_ne(a, b, comment=""):
     global KSFT_RESULT
     if a == b:
         _fail("Check failed", a, "==", b, comment)
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 def ksft_true(a, comment=""):
     if not a:
         _fail("Check failed", a, "does not eval to True", comment)
@@ -159,8 +145,6 @@ def ksft_flush_defer():
             KSFT_RESULT = False
 
 
-<<<<<<< HEAD
-=======
 def ksft_disruptive(func):
     """
     Decorator that marks the test as disruptive (e.g. the test
@@ -199,7 +183,6 @@ def ksft_setup(env):
     return env
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 def ksft_run(cases=None, globs=None, case_pfx=None, args=()):
     cases = cases or []
 

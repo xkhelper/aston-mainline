@@ -638,11 +638,7 @@ int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	if (data->mcc != UEFI_MCC_CHINA) {
-=======
 	if (data->mcc != BIOS_MCC_CHINA) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EINVAL;
 		IWL_DEBUG_RADIO(fwrt, "UEFI WRDD is supported only for CN\n");
 		goto out;
@@ -733,8 +729,6 @@ out:
 	kfree(data);
 	return ret;
 }
-<<<<<<< HEAD
-=======
 
 int iwl_uefi_get_puncturing(struct iwl_fw_runtime *fwrt)
 {
@@ -764,4 +758,3 @@ int iwl_uefi_get_puncturing(struct iwl_fw_runtime *fwrt)
 	return puncturing;
 }
 IWL_EXPORT_SYMBOL(iwl_uefi_get_puncturing);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

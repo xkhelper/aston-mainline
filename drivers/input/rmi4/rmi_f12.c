@@ -24,10 +24,7 @@ enum rmi_f12_object_type {
 };
 
 #define F12_DATA1_BYTES_PER_OBJ			8
-<<<<<<< HEAD
-=======
 #define RMI_F12_QUERY_RESOLUTION		29
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct f12_data {
 	struct rmi_2d_sensor sensor;
@@ -77,11 +74,8 @@ static int rmi_f12_read_sensor_tuning(struct f12_data *f12)
 	int pitch_y = 0;
 	int rx_receivers = 0;
 	int tx_receivers = 0;
-<<<<<<< HEAD
-=======
 	u16 query_dpm_addr = 0;
 	int dpm_resolution = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	item = rmi_get_register_desc_item(&f12->control_reg_desc, 8);
 	if (!item) {
@@ -131,21 +125,6 @@ static int rmi_f12_read_sensor_tuning(struct f12_data *f12)
 		offset += 4;
 	}
 
-<<<<<<< HEAD
-	if (rmi_register_desc_has_subpacket(item, 3)) {
-		rx_receivers = buf[offset];
-		tx_receivers = buf[offset + 1];
-		offset += 2;
-	}
-
-	/* Skip over sensor flags */
-	if (rmi_register_desc_has_subpacket(item, 4))
-		offset += 1;
-
-	sensor->x_mm = (pitch_x * rx_receivers) >> 12;
-	sensor->y_mm = (pitch_y * tx_receivers) >> 12;
-
-=======
 	/*
 	 * Use the Query DPM feature when the resolution query register
 	 * exists.
@@ -179,7 +158,6 @@ static int rmi_f12_read_sensor_tuning(struct f12_data *f12)
 		sensor->y_mm = (pitch_y * tx_receivers) >> 12;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rmi_dbg(RMI_DEBUG_FN, &fn->dev, "%s: x_mm: %d y_mm: %d\n", __func__,
 		sensor->x_mm, sensor->y_mm);
 

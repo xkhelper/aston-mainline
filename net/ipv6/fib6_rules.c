@@ -27,10 +27,7 @@ struct fib6_rule {
 	struct rt6key		src;
 	struct rt6key		dst;
 	dscp_t			dscp;
-<<<<<<< HEAD
-=======
 	u8			dscp_full:1;	/* DSCP or TOS selector */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static bool fib6_rule_matchall(const struct fib_rule *rule)
@@ -349,8 +346,6 @@ INDIRECT_CALLABLE_SCOPE int fib6_rule_match(struct fib_rule *rule,
 	return 1;
 }
 
-<<<<<<< HEAD
-=======
 static int fib6_nl2rule_dscp(const struct nlattr *nla, struct fib6_rule *rule6,
 			     struct netlink_ext_ack *extack)
 {
@@ -365,7 +360,6 @@ static int fib6_nl2rule_dscp(const struct nlattr *nla, struct fib6_rule *rule6,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
 			       struct fib_rule_hdr *frh,
 			       struct nlattr **tb,
@@ -382,12 +376,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
 	}
 	rule6->dscp = inet_dsfield_to_dscp(frh->tos);
 
-<<<<<<< HEAD
-=======
 	if (tb[FRA_DSCP] && fib6_nl2rule_dscp(tb[FRA_DSCP], rule6, extack) < 0)
 		goto errout;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rule->action == FR_ACT_TO_TBL && !rule->l3mdev) {
 		if (rule->table == RT6_TABLE_UNSPEC) {
 			NL_SET_ERR_MSG(extack, "Invalid table");
@@ -440,11 +431,6 @@ static int fib6_rule_compare(struct fib_rule *rule, struct fib_rule_hdr *frh,
 	if (frh->dst_len && (rule6->dst.plen != frh->dst_len))
 		return 0;
 
-<<<<<<< HEAD
-	if (frh->tos && inet_dscp_to_dsfield(rule6->dscp) != frh->tos)
-		return 0;
-
-=======
 	if (frh->tos &&
 	    (rule6->dscp_full ||
 	     inet_dscp_to_dsfield(rule6->dscp) != frh->tos))
@@ -458,7 +444,6 @@ static int fib6_rule_compare(struct fib_rule *rule, struct fib_rule_hdr *frh,
 			return 0;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (frh->src_len &&
 	    nla_memcmp(tb[FRA_SRC], &rule6->src.addr, sizeof(struct in6_addr)))
 		return 0;
@@ -477,9 +462,6 @@ static int fib6_rule_fill(struct fib_rule *rule, struct sk_buff *skb,
 
 	frh->dst_len = rule6->dst.plen;
 	frh->src_len = rule6->src.plen;
-<<<<<<< HEAD
-	frh->tos = inet_dscp_to_dsfield(rule6->dscp);
-=======
 
 	if (rule6->dscp_full) {
 		frh->tos = 0;
@@ -489,7 +471,6 @@ static int fib6_rule_fill(struct fib_rule *rule, struct sk_buff *skb,
 	} else {
 		frh->tos = inet_dscp_to_dsfield(rule6->dscp);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((rule6->dst.plen &&
 	     nla_put_in6_addr(skb, FRA_DST, &rule6->dst.addr)) ||
@@ -505,12 +486,8 @@ nla_put_failure:
 static size_t fib6_rule_nlmsg_payload(struct fib_rule *rule)
 {
 	return nla_total_size(16) /* dst */
-<<<<<<< HEAD
-	       + nla_total_size(16); /* src */
-=======
 	       + nla_total_size(16) /* src */
 	       + nla_total_size(1); /* dscp */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void fib6_rule_flush_cache(struct fib_rules_ops *ops)

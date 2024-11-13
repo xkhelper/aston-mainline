@@ -87,8 +87,6 @@ config BCACHEFS_SIX_OPTIMISTIC_SPIN
 	is held by another thread, spin for a short while, as long as the
 	thread owning the lock is running.
 
-<<<<<<< HEAD
-=======
 config BCACHEFS_PATH_TRACEPOINTS
 	bool "Extra btree_path tracepoints"
 	depends on BCACHEFS_FS
@@ -96,7 +94,6 @@ config BCACHEFS_PATH_TRACEPOINTS
 	Enable extra tracepoints for debugging btree_path operations; we don't
 	normally want these enabled because they happen at very high rates.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config MEAN_AND_VARIANCE_UNIT_TEST
 	tristate "mean_and_variance unit tests" if !KUNIT_ALL_TESTS
 	depends on KUNIT

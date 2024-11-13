@@ -492,25 +492,19 @@ static void asus_kbd_backlight_work(struct work_struct *work)
  */
 static bool asus_kbd_wmi_led_control_present(struct hid_device *hdev)
 {
-<<<<<<< HEAD
-=======
 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 value;
 	int ret;
 
 	if (!IS_ENABLED(CONFIG_ASUS_WMI))
 		return false;
 
-<<<<<<< HEAD
-=======
 	if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD &&
 			dmi_check_system(asus_use_hid_led_dmi_ids)) {
 		hid_info(hdev, "using HID for asus::kbd_backlight\n");
 		return false;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = asus_wmi_evaluate_method(ASUS_WMI_METHODID_DSTS,
 				       ASUS_WMI_DEVID_KBD_BACKLIGHT, 0, &value);
 	hid_dbg(hdev, "WMI backlight check: rc %d value %x", ret, value);
@@ -1132,11 +1126,7 @@ static const __u8 asus_g752_fixed_rdesc[] = {
         0x2A, 0xFF, 0x00,		/*   Usage Maximum (0xFF)       */
 };
 
-<<<<<<< HEAD
-static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
-=======
 static const __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int *rsize)
 {
 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);

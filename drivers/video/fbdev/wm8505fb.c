@@ -392,11 +392,7 @@ static const struct of_device_id wmt_dt_ids[] = {
 
 static struct platform_driver wm8505fb_driver = {
 	.probe		= wm8505fb_probe,
-<<<<<<< HEAD
-	.remove_new	= wm8505fb_remove,
-=======
 	.remove		= wm8505fb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= DRIVER_NAME,
 		.of_match_table = wmt_dt_ids,

@@ -79,11 +79,7 @@ struct uclogic_params_pen {
 	 * Pointer to report descriptor part describing the pen inputs.
 	 * Allocated with kmalloc. NULL if the part is not specified.
 	 */
-<<<<<<< HEAD
-	__u8 *desc_ptr;
-=======
 	const __u8 *desc_ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Size of the report descriptor.
 	 * Only valid, if "desc_ptr" is not NULL.
@@ -122,11 +118,7 @@ struct uclogic_params_frame {
 	 * Pointer to report descriptor part describing the frame inputs.
 	 * Allocated with kmalloc. NULL if the part is not specified.
 	 */
-<<<<<<< HEAD
-	__u8 *desc_ptr;
-=======
 	const __u8 *desc_ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Size of the report descriptor.
 	 * Only valid, if "desc_ptr" is not NULL.
@@ -220,11 +212,7 @@ struct uclogic_params {
 	 * allocated with kmalloc. NULL if no common part is needed.
 	 * Only valid, if "invalid" is false.
 	 */
-<<<<<<< HEAD
-	__u8 *desc_ptr;
-=======
 	const __u8 *desc_ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Size of the common part of the replacement report descriptor.
 	 * Only valid, if "desc_ptr" is valid and not NULL.
@@ -251,11 +239,7 @@ struct uclogic_drvdata {
 	/* Interface parameters */
 	struct uclogic_params params;
 	/* Pointer to the replacement report descriptor. NULL if none. */
-<<<<<<< HEAD
-	__u8 *desc_ptr;
-=======
 	const __u8 *desc_ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Size of the replacement report descriptor.
 	 * Only valid if desc_ptr is not NULL
@@ -277,11 +261,7 @@ extern int uclogic_params_init(struct uclogic_params *params,
 
 /* Get a replacement report descriptor for a tablet's interface. */
 extern int uclogic_params_get_desc(const struct uclogic_params *params,
-<<<<<<< HEAD
-					__u8 **pdesc,
-=======
 					const __u8 **pdesc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					unsigned int *psize);
 
 /* Free resources used by tablet interface's parameters */

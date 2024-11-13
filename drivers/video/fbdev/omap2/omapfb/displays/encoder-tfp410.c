@@ -245,11 +245,7 @@ MODULE_DEVICE_TABLE(of, tfp410_of_match);
 
 static struct platform_driver tfp410_driver = {
 	.probe	= tfp410_probe,
-<<<<<<< HEAD
-	.remove_new = tfp410_remove,
-=======
 	.remove	= tfp410_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver	= {
 		.name	= "tfp410",
 		.of_match_table = tfp410_of_match,

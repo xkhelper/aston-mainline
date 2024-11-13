@@ -481,13 +481,6 @@ mlxsw_sp_ipip_ol_netdev_change_gre6(struct mlxsw_sp *mlxsw_sp,
 				    struct mlxsw_sp_ipip_entry *ipip_entry,
 				    struct netlink_ext_ack *extack)
 {
-<<<<<<< HEAD
-	struct mlxsw_sp_ipip_parms new_parms;
-
-	new_parms = mlxsw_sp_ipip_netdev_parms_init_gre6(ipip_entry->ol_dev);
-	return mlxsw_sp_ipip_ol_netdev_change_gre(mlxsw_sp, ipip_entry,
-						  &new_parms, extack);
-=======
 	u32 new_kvdl_index, old_kvdl_index = ipip_entry->dip_kvdl_index;
 	struct in6_addr old_addr6 = ipip_entry->parms.daddr.addr6;
 	struct mlxsw_sp_ipip_parms new_parms;
@@ -515,7 +508,6 @@ err_change_gre:
 	ipip_entry->dip_kvdl_index = old_kvdl_index;
 	mlxsw_sp_ipv6_addr_put(mlxsw_sp, &new_parms.daddr.addr6);
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int

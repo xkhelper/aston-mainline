@@ -9,11 +9,7 @@ perf-ftrace - simple wrapper for kernel's ftrace functionality
 SYNOPSIS
 --------
 [verse]
-<<<<<<< HEAD
-'perf ftrace' {trace|latency} <command>
-=======
 'perf ftrace' {trace|latency|profile} <command>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 DESCRIPTION
 -----------
@@ -27,12 +23,9 @@ kernel's ftrace infrastructure.
   'perf ftrace latency' calculates execution latency of a given function
   (optionally with BPF) and display it as a histogram.
 
-<<<<<<< HEAD
-=======
   'perf ftrace profile' show a execution profile for each function including
   total, average, max time and the number of calls.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 The following options apply to perf ftrace.
 
 COMMON OPTIONS
@@ -135,10 +128,7 @@ OPTIONS for 'perf ftrace trace'
 	  - verbose      - Show process names, PIDs, timestamps, etc.
 	  - thresh=<n>   - Setup trace duration threshold in microseconds.
 	  - depth=<n>    - Set max depth for function graph tracer to follow.
-<<<<<<< HEAD
-=======
 	  - tail         - Print function name at the end.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 OPTIONS for 'perf ftrace latency'
@@ -159,8 +149,6 @@ OPTIONS for 'perf ftrace latency'
 	Use nano-second instead of micro-second as a base unit of the histogram.
 
 
-<<<<<<< HEAD
-=======
 OPTIONS for 'perf ftrace profile'
 ---------------------------------
 
@@ -203,7 +191,6 @@ OPTIONS for 'perf ftrace profile'
 	total, avg, max, count, name.  Default is 'total'.
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SEE ALSO
 --------
 linkperf:perf-record[1], linkperf:perf-trace[1]

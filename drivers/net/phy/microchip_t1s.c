@@ -268,8 +268,6 @@ static int lan86xx_read_status(struct phy_device *phydev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /* OPEN Alliance 10BASE-T1x compliance MAC-PHYs will have both C22 and
  * C45 registers space. If the PHY is discovered via C22 bus protocol it assumes
  * it uses C22 protocol and always uses C22 registers indirect access to access
@@ -298,7 +296,6 @@ static int lan865x_phy_write_mmd(struct phy_device *phydev, int devnum,
 	return __mdiobus_c45_write(bus, addr, devnum, regnum, val);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct phy_driver microchip_t1s_driver[] = {
 	{
 		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVB1),
@@ -316,11 +313,8 @@ static struct phy_driver microchip_t1s_driver[] = {
 		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
 		.config_init        = lan865x_revb0_config_init,
 		.read_status        = lan86xx_read_status,
-<<<<<<< HEAD
-=======
 		.read_mmd           = lan865x_phy_read_mmd,
 		.write_mmd          = lan865x_phy_write_mmd,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
 		.set_plca_cfg	    = genphy_c45_plca_set_cfg,
 		.get_plca_status    = genphy_c45_plca_get_status,

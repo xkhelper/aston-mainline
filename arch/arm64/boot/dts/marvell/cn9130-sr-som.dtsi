@@ -136,11 +136,7 @@
 		};
 
 		cp0_mdio_pins: cp0-mdio-pins {
-<<<<<<< HEAD
-			marvell,pins = "mpp40", "mpp41";
-=======
 			marvell,pins = "mpp0", "mpp1";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			marvell,function = "ge";
 		};
 

@@ -939,11 +939,7 @@ static void stm32_spdifrx_remove(struct platform_device *pdev)
 {
 	struct stm32_spdifrx_data *spdifrx = platform_get_drvdata(pdev);
 
-<<<<<<< HEAD
-	if (spdifrx->ctrl_chan)
-=======
 	if (!IS_ERR(spdifrx->ctrl_chan))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dma_release_channel(spdifrx->ctrl_chan);
 
 	if (spdifrx->dmab)
@@ -1076,11 +1072,7 @@ static struct platform_driver stm32_spdifrx_driver = {
 		.pm = &stm32_spdifrx_pm_ops,
 	},
 	.probe = stm32_spdifrx_probe,
-<<<<<<< HEAD
-	.remove_new = stm32_spdifrx_remove,
-=======
 	.remove = stm32_spdifrx_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(stm32_spdifrx_driver);

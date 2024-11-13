@@ -12,8 +12,6 @@
 
 #include <asm-generic/irq.h>
 
-<<<<<<< HEAD
-=======
 #define INVALID_CONTEXT UINT_MAX
 
 #ifdef CONFIG_SMP
@@ -21,13 +19,10 @@ void arch_trigger_cpumask_backtrace(const cpumask_t *mask, int exclude_cpu);
 #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void riscv_set_intc_hwnode_fn(struct fwnode_handle *(*fn)(void));
 
 struct fwnode_handle *riscv_get_intc_hwnode(void);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ACPI
 
 enum riscv_irqchip_type {
@@ -81,5 +76,4 @@ static inline int __init acpi_rintc_get_imsic_mmio_info(u32 index, struct resour
 
 #endif /* CONFIG_ACPI */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _ASM_RISCV_IRQ_H */

@@ -13,11 +13,7 @@
 #ifndef __U_OS_DESC_H__
 #define __U_OS_DESC_H__
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/nls.h>
 
 #define USB_EXT_PROP_DW_SIZE			0

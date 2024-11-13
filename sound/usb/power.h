@@ -6,10 +6,7 @@ struct snd_usb_power_domain {
 	int pd_id;              /* UAC3 Power Domain ID */
 	int pd_d1d0_rec;        /* D1 to D0 recovery time */
 	int pd_d2d0_rec;        /* D2 to D0 recovery time */
-<<<<<<< HEAD
-=======
 	struct usb_host_interface *ctrl_iface; /* Control interface */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum {

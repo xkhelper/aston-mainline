@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
-<<<<<<< HEAD
- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-=======
  * Copyright (c) 2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/bitfield.h>
@@ -18,12 +14,9 @@
 #include <media/v4l2-flash-led-class.h>
 
 /* registers definitions */
-<<<<<<< HEAD
-=======
 #define FLASH_REVISION_REG		0x00
 #define FLASH_4CH_REVISION_V0P1		0x01
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define FLASH_TYPE_REG			0x04
 #define FLASH_TYPE_VAL			0x18
 
@@ -83,8 +76,6 @@
 
 #define UA_PER_MA			1000
 
-<<<<<<< HEAD
-=======
 /* thermal threshold constants */
 #define OTST_3CH_MIN_VAL		3
 #define OTST1_4CH_MIN_VAL		0
@@ -95,7 +86,6 @@
 #define OTST2_MAX_CURRENT_MA		500
 #define OTST3_MAX_CURRENT_MA		200
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum hw_type {
 	QCOM_MVFLASH_3CH,
 	QCOM_MVFLASH_4CH,
@@ -121,12 +111,9 @@ enum {
 	REG_IRESOLUTION,
 	REG_CHAN_STROBE,
 	REG_CHAN_EN,
-<<<<<<< HEAD
-=======
 	REG_THERM_THRSH1,
 	REG_THERM_THRSH2,
 	REG_THERM_THRSH3,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	REG_MAX_COUNT,
 };
 
@@ -140,12 +127,9 @@ static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
 	REG_FIELD(0x47, 0, 5),                  /* iresolution	*/
 	REG_FIELD_ID(0x49, 0, 2, 3, 1),         /* chan_strobe	*/
 	REG_FIELD(0x4c, 0, 2),                  /* chan_en	*/
-<<<<<<< HEAD
-=======
 	REG_FIELD(0x56, 0, 2),			/* therm_thrsh1 */
 	REG_FIELD(0x57, 0, 2),			/* therm_thrsh2 */
 	REG_FIELD(0x58, 0, 2),			/* therm_thrsh3 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
@@ -158,11 +142,8 @@ static struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
 	REG_FIELD(0x49, 0, 3),			/* iresolution	*/
 	REG_FIELD_ID(0x4a, 0, 6, 4, 1),		/* chan_strobe	*/
 	REG_FIELD(0x4e, 0, 3),			/* chan_en	*/
-<<<<<<< HEAD
-=======
 	REG_FIELD(0x7a, 0, 2),			/* therm_thrsh1 */
 	REG_FIELD(0x78, 0, 2),			/* therm_thrsh2 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct qcom_flash_data {
@@ -170,17 +151,11 @@ struct qcom_flash_data {
 	struct regmap_field     *r_fields[REG_MAX_COUNT];
 	struct mutex		lock;
 	enum hw_type		hw_type;
-<<<<<<< HEAD
-	u8			leds_count;
-	u8			max_channels;
-	u8			chan_en_bits;
-=======
 	u32			total_ma;
 	u8			leds_count;
 	u8			max_channels;
 	u8			chan_en_bits;
 	u8			revision;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct qcom_flash_led {
@@ -191,10 +166,7 @@ struct qcom_flash_led {
 	u32				max_timeout_ms;
 	u32				flash_current_ma;
 	u32				flash_timeout_ms;
-<<<<<<< HEAD
-=======
 	u32				current_in_use_ma;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8				*chan_id;
 	u8				chan_count;
 	bool				enabled;
@@ -224,8 +196,6 @@ static int set_flash_module_en(struct qcom_flash_led *led, bool en)
 	return rc;
 }
 
-<<<<<<< HEAD
-=======
 static int update_allowed_flash_current(struct qcom_flash_led *led, u32 *current_ma, bool strobe)
 {
 	struct qcom_flash_data *flash_data = led->flash_data;
@@ -347,7 +317,6 @@ unlock:
 	return rc;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int set_flash_current(struct qcom_flash_led *led, u32 current_ma, enum led_mode mode)
 {
 	struct qcom_flash_data *flash_data = led->flash_data;
@@ -489,13 +458,10 @@ static int qcom_flash_strobe_set(struct led_classdev_flash *fled_cdev, bool stat
 	if (rc)
 		return rc;
 
-<<<<<<< HEAD
-=======
 	rc = update_allowed_flash_current(led, &led->flash_current_ma, state);
 	if (rc < 0)
 		return rc;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = set_flash_current(led, led->flash_current_ma, FLASH_MODE);
 	if (rc)
 		return rc;
@@ -612,13 +578,10 @@ static int qcom_flash_led_brightness_set(struct led_classdev *led_cdev,
 	if (rc)
 		return rc;
 
-<<<<<<< HEAD
-=======
 	rc = update_allowed_flash_current(led, &current_ma, enable);
 	if (rc < 0)
 		return rc;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = set_flash_current(led, current_ma, TORCH_MODE);
 	if (rc)
 		return rc;
@@ -897,8 +860,6 @@ static int qcom_flash_led_probe(struct platform_device *pdev)
 		flash_data->hw_type = QCOM_MVFLASH_4CH;
 		flash_data->max_channels = 4;
 		regs = mvflash_4ch_regs;
-<<<<<<< HEAD
-=======
 
 		rc = regmap_read(regmap, reg_base + FLASH_REVISION_REG, &val);
 		if (rc < 0) {
@@ -907,7 +868,6 @@ static int qcom_flash_led_probe(struct platform_device *pdev)
 		}
 
 		flash_data->revision = val;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		dev_err(dev, "flash LED subtype %#x is not yet supported\n", val);
 		return -ENODEV;

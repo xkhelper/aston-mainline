@@ -18,10 +18,7 @@
 #include <linux/sunrpc/svcauth.h>
 #include <linux/err.h>
 #include <linux/hash.h>
-<<<<<<< HEAD
-=======
 #include <linux/user_namespace.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <trace/events/sunrpc.h>
 
@@ -102,10 +99,6 @@ enum svc_auth_status svc_authenticate(struct svc_rqst *rqstp)
 	rqstp->rq_authop = aops;
 	return aops->accept(rqstp);
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(svc_authenticate);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * svc_set_client - Assign an appropriate 'auth_domain' as the client
@@ -183,8 +176,6 @@ rpc_authflavor_t svc_auth_flavor(struct svc_rqst *rqstp)
 }
 EXPORT_SYMBOL_GPL(svc_auth_flavor);
 
-<<<<<<< HEAD
-=======
 /**
  * svcauth_map_clnt_to_svc_cred_local - maps a generic cred
  * to a svc_cred suitable for use in nfsd.
@@ -212,7 +203,6 @@ void svcauth_map_clnt_to_svc_cred_local(struct rpc_clnt *clnt,
 }
 EXPORT_SYMBOL_GPL(svcauth_map_clnt_to_svc_cred_local);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**************************************************
  * 'auth_domains' are stored in a hash table indexed by name.
  * When the last reference to an 'auth_domain' is dropped,

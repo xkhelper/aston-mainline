@@ -31,11 +31,6 @@ struct jadard_panel_desc {
 	bool reset_before_power_off_vcioo;
 	unsigned int vcioo_to_lp11_delay_ms;
 	unsigned int lp11_to_reset_delay_ms;
-<<<<<<< HEAD
-	unsigned int exit_sleep_to_display_on_delay_ms;
-	unsigned int display_on_delay_ms;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int backlight_off_to_display_off_delay_ms;
 	unsigned int display_off_to_enter_sleep_delay_ms;
 	unsigned int enter_sleep_to_reset_down_delay_ms;
@@ -51,8 +46,6 @@ struct jadard {
 	struct gpio_desc *reset;
 };
 
-<<<<<<< HEAD
-=======
 #define JD9365DA_DCS_SWITCH_PAGE	0xe0
 
 #define jd9365da_switch_page(dsi_ctx, page) \
@@ -66,35 +59,11 @@ static void jadard_enable_standard_cmds(struct mipi_dsi_multi_context *dsi_ctx)
 	mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0x80, 0x03);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct jadard *panel_to_jadard(struct drm_panel *panel)
 {
 	return container_of(panel, struct jadard, panel);
 }
 
-<<<<<<< HEAD
-static int jadard_enable(struct drm_panel *panel)
-{
-	struct jadard *jadard = panel_to_jadard(panel);
-	struct mipi_dsi_multi_context dsi_ctx = { .dsi = jadard->dsi };
-
-	msleep(120);
-
-	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
-
-	if (jadard->desc->exit_sleep_to_display_on_delay_ms)
-		mipi_dsi_msleep(&dsi_ctx, jadard->desc->exit_sleep_to_display_on_delay_ms);
-
-	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
-
-	if (jadard->desc->display_on_delay_ms)
-		mipi_dsi_msleep(&dsi_ctx, jadard->desc->display_on_delay_ms);
-
-	return dsi_ctx.accum_err;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int jadard_disable(struct drm_panel *panel)
 {
 	struct jadard *jadard = panel_to_jadard(panel);
@@ -211,10 +180,6 @@ static const struct drm_panel_funcs jadard_funcs = {
 	.disable = jadard_disable,
 	.unprepare = jadard_unprepare,
 	.prepare = jadard_prepare,
-<<<<<<< HEAD
-	.enable = jadard_enable,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_modes = jadard_get_modes,
 	.get_orientation = jadard_panel_get_orientation,
 };
@@ -223,19 +188,10 @@ static int radxa_display_8hd_ad002_init_cmds(struct jadard *jadard)
 {
 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = jadard->dsi };
 
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x00);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE1, 0x93);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE2, 0x65);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE3, 0xF8);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x80, 0x03);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x01);
-=======
 	jd9365da_switch_page(&dsi_ctx, 0x00);
 	jadard_enable_standard_cmds(&dsi_ctx);
 
 	jd9365da_switch_page(&dsi_ctx, 0x01);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x00, 0x00);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x01, 0x7E);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x03, 0x00);
@@ -308,12 +264,8 @@ static int radxa_display_8hd_ad002_init_cmds(struct jadard *jadard)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x80, 0x37);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x81, 0x23);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x82, 0x10);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x02);
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x02);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x00, 0x47);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x01, 0x47);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x02, 0x45);
@@ -397,20 +349,13 @@ static int radxa_display_8hd_ad002_init_cmds(struct jadard *jadard)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x7C, 0x00);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x7D, 0x03);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x7E, 0x7B);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x04);
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x04);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x00, 0x0E);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x02, 0xB3);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x09, 0x60);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x0E, 0x2A);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x36, 0x59);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x00);
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x00);
 
@@ -419,7 +364,6 @@ static int radxa_display_8hd_ad002_init_cmds(struct jadard *jadard)
 	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
 
 	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return dsi_ctx.accum_err;
 };
@@ -451,19 +395,10 @@ static int cz101b4001_init_cmds(struct jadard *jadard)
 {
 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = jadard->dsi };
 
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x00);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE1, 0x93);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE2, 0x65);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE3, 0xF8);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x80, 0x03);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x01);
-=======
 	jd9365da_switch_page(&dsi_ctx, 0x00);
 	jadard_enable_standard_cmds(&dsi_ctx);
 
 	jd9365da_switch_page(&dsi_ctx, 0x01);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x00, 0x00);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x01, 0x3B);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x0C, 0x74);
@@ -531,12 +466,8 @@ static int cz101b4001_init_cmds(struct jadard *jadard)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x80, 0x20);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x81, 0x0F);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x82, 0x00);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x02);
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x02);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x00, 0x02);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x01, 0x02);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x02, 0x00);
@@ -649,22 +580,12 @@ static int cz101b4001_init_cmds(struct jadard *jadard)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x7A, 0x17);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x7D, 0x14);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x7E, 0x82);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x04);
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x04);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x00, 0x0E);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x02, 0xB3);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x09, 0x61);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x0E, 0x48);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE0, 0x00);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE6, 0x02);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE7, 0x0C);
-
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x00);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xE6, 0x02);
@@ -676,7 +597,6 @@ static int cz101b4001_init_cmds(struct jadard *jadard)
 
 	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return dsi_ctx.accum_err;
 };
 
@@ -707,19 +627,10 @@ static int kingdisplay_kd101ne3_init_cmds(struct jadard *jadard)
 {
 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = jadard->dsi };
 
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe0, 0x00);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe1, 0x93);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe2, 0x65);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe3, 0xf8);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x80, 0x03);
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe0, 0x01);
-=======
 	jd9365da_switch_page(&dsi_ctx, 0x00);
 	jadard_enable_standard_cmds(&dsi_ctx);
 
 	jd9365da_switch_page(&dsi_ctx, 0x01);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x0c, 0x74);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x17, 0x00);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x18, 0xc7);
@@ -785,12 +696,8 @@ static int kingdisplay_kd101ne3_init_cmds(struct jadard *jadard)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x80, 0x26);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x81, 0x14);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x82, 0x02);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe0, 0x02);
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x02);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x00, 0x52);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x01, 0x5f);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x02, 0x5f);
@@ -904,19 +811,12 @@ static int kingdisplay_kd101ne3_init_cmds(struct jadard *jadard)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x76, 0x00);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x77, 0x05);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x78, 0x2a);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe0, 0x04);
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x04);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x00, 0x0e);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x02, 0xb3);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x09, 0x61);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x0e, 0x48);
-<<<<<<< HEAD
-	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xe0, 0x00);
-=======
 
 	jd9365da_switch_page(&dsi_ctx, 0x00);
 
@@ -929,7 +829,6 @@ static int kingdisplay_kd101ne3_init_cmds(struct jadard *jadard)
 	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
 
 	mipi_dsi_msleep(&dsi_ctx, 20);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return dsi_ctx.accum_err;
 };
@@ -959,10 +858,6 @@ static const struct jadard_panel_desc kingdisplay_kd101ne3_40ti_desc = {
 	.reset_before_power_off_vcioo = true,
 	.vcioo_to_lp11_delay_ms = 5,
 	.lp11_to_reset_delay_ms = 10,
-<<<<<<< HEAD
-	.exit_sleep_to_display_on_delay_ms = 120,
-	.display_on_delay_ms = 20,
-=======
 	.backlight_off_to_display_off_delay_ms = 100,
 	.display_off_to_enter_sleep_delay_ms = 50,
 	.enter_sleep_to_reset_down_delay_ms = 100,
@@ -1214,7 +1109,6 @@ static const struct jadard_panel_desc melfas_lmfbx101117480_desc = {
 	.reset_before_power_off_vcioo = true,
 	.vcioo_to_lp11_delay_ms = 5,
 	.lp11_to_reset_delay_ms = 10,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.backlight_off_to_display_off_delay_ms = 100,
 	.display_off_to_enter_sleep_delay_ms = 50,
 	.enter_sleep_to_reset_down_delay_ms = 100,
@@ -1297,13 +1191,10 @@ static const struct of_device_id jadard_of_match[] = {
 		.data = &kingdisplay_kd101ne3_40ti_desc
 	},
 	{
-<<<<<<< HEAD
-=======
 		.compatible = "melfas,lmfbx101117480",
 		.data = &melfas_lmfbx101117480_desc
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "radxa,display-10hd-ad001",
 		.data = &cz101b4001_desc
 	},

@@ -161,8 +161,6 @@ int drm_panel_unprepare(struct drm_panel *panel)
 	if (!panel)
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * If you are seeing the warning below it likely means one of two things:
 	 * - Your panel driver incorrectly calls drm_panel_unprepare() in its
@@ -172,7 +170,6 @@ int drm_panel_unprepare(struct drm_panel *panel)
 	 *   In this case the warning is harmless though ideally you should
 	 *   figure out how to reverse the order of the shutdown() callbacks.
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!panel->prepared) {
 		dev_warn(panel->dev, "Skipping unprepare of already unprepared panel\n");
 		return 0;
@@ -257,8 +254,6 @@ int drm_panel_disable(struct drm_panel *panel)
 	if (!panel)
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * If you are seeing the warning below it likely means one of two things:
 	 * - Your panel driver incorrectly calls drm_panel_disable() in its
@@ -268,7 +263,6 @@ int drm_panel_disable(struct drm_panel *panel)
 	 *   In this case the warning is harmless though ideally you should
 	 *   figure out how to reverse the order of the shutdown() callbacks.
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!panel->enabled) {
 		dev_warn(panel->dev, "Skipping disable of already disabled panel\n");
 		return 0;

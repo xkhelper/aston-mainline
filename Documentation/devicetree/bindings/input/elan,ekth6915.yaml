@@ -23,13 +23,9 @@ properties:
           - enum:
               - elan,ekth5015m
           - const: elan,ekth6915
-<<<<<<< HEAD
-      - const: elan,ekth6915
-=======
       - enum:
           - elan,ekth6915
           - elan,ekth6a12nay
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     const: 0x10

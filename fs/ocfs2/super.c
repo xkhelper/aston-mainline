@@ -1571,23 +1571,13 @@ static int __init ocfs2_init(void)
 
 	ocfs2_set_locking_protocol();
 
-<<<<<<< HEAD
-	status = register_quota_format(&ocfs2_quota_format);
-	if (status < 0)
-		goto out3;
-=======
 	register_quota_format(&ocfs2_quota_format);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = register_filesystem(&ocfs2_fs_type);
 	if (!status)
 		return 0;
 
 	unregister_quota_format(&ocfs2_quota_format);
-<<<<<<< HEAD
-out3:
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	debugfs_remove(ocfs2_debugfs_root);
 	ocfs2_free_mem_caches();
 out2:
@@ -2365,13 +2355,8 @@ static int ocfs2_verify_volume(struct ocfs2_dinode *di,
 			     (unsigned long long)bh->b_blocknr);
 		} else if (le32_to_cpu(di->id2.i_super.s_clustersize_bits) < 12 ||
 			    le32_to_cpu(di->id2.i_super.s_clustersize_bits) > 20) {
-<<<<<<< HEAD
-			mlog(ML_ERROR, "bad cluster size found: %u\n",
-			     1 << le32_to_cpu(di->id2.i_super.s_clustersize_bits));
-=======
 			mlog(ML_ERROR, "bad cluster size bit found: %u\n",
 			     le32_to_cpu(di->id2.i_super.s_clustersize_bits));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (!le64_to_cpu(di->id2.i_super.s_root_blkno)) {
 			mlog(ML_ERROR, "bad root_blkno: 0\n");
 		} else if (!le64_to_cpu(di->id2.i_super.s_system_dir_blkno)) {

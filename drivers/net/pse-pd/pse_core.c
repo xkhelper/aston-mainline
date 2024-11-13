@@ -113,11 +113,7 @@ static void pse_release_pis(struct pse_controller_dev *pcdev)
 {
 	int i;
 
-<<<<<<< HEAD
-	for (i = 0; i <= pcdev->nr_lines; i++) {
-=======
 	for (i = 0; i < pcdev->nr_lines; i++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		of_node_put(pcdev->pi[i].pairset[0].np);
 		of_node_put(pcdev->pi[i].pairset[1].np);
 		of_node_put(pcdev->pi[i].np);
@@ -651,11 +647,7 @@ static int of_pse_match_pi(struct pse_controller_dev *pcdev,
 {
 	int i;
 
-<<<<<<< HEAD
-	for (i = 0; i <= pcdev->nr_lines; i++) {
-=======
 	for (i = 0; i < pcdev->nr_lines; i++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (pcdev->pi[i].np == np)
 			return i;
 	}
@@ -793,8 +785,6 @@ static int pse_ethtool_c33_set_config(struct pse_control *psec,
 	 */
 	switch (config->c33_admin_control) {
 	case ETHTOOL_C33_PSE_ADMIN_STATE_ENABLED:
-<<<<<<< HEAD
-=======
 		/* We could have mismatch between admin_state_enabled and
 		 * state reported by regulator_is_enabled. This can occur when
 		 * the PI is forcibly turn off by the controller. Call
@@ -806,7 +796,6 @@ static int pse_ethtool_c33_set_config(struct pse_control *psec,
 			if (err)
 				break;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!psec->pcdev->pi[psec->id].admin_state_enabled)
 			err = regulator_enable(psec->ps);
 		break;

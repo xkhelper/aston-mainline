@@ -2172,8 +2172,6 @@ TRACE_EVENT(svcrdma_qp_error,
 	)
 );
 
-<<<<<<< HEAD
-=======
 TRACE_EVENT(svcrdma_device_removal,
 	TP_PROTO(
 		const struct rdma_cm_id *id
@@ -2197,7 +2195,6 @@ TRACE_EVENT(svcrdma_device_removal,
 	)
 );
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DECLARE_EVENT_CLASS(svcrdma_sendqueue_class,
 	TP_PROTO(
 		const struct svcxprt_rdma *rdma,

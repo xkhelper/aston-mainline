@@ -127,12 +127,6 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
 			     unsigned long len);
 int copy_hugetlb_page_range(struct mm_struct *, struct mm_struct *,
 			    struct vm_area_struct *, struct vm_area_struct *);
-<<<<<<< HEAD
-struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
-				      unsigned long address, unsigned int flags,
-				      unsigned int *page_mask);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void unmap_hugepage_range(struct vm_area_struct *,
 			  unsigned long, unsigned long, struct page *,
 			  zap_flags_t);
@@ -698,12 +692,9 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
 struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
 				nodemask_t *nmask, gfp_t gfp_mask,
 				bool allow_alloc_fallback);
-<<<<<<< HEAD
-=======
 struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
 					  nodemask_t *nmask, gfp_t gfp_mask);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
 			pgoff_t idx);
 void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
@@ -908,18 +899,11 @@ static inline bool hugepage_movable_supported(struct hstate *h)
 /* Movability of hugepages depends on migration support. */
 static inline gfp_t htlb_alloc_mask(struct hstate *h)
 {
-<<<<<<< HEAD
-	if (hugepage_movable_supported(h))
-		return GFP_HIGHUSER_MOVABLE;
-	else
-		return GFP_HIGHUSER;
-=======
 	gfp_t gfp = __GFP_COMP | __GFP_NOWARN;
 
 	gfp |= hugepage_movable_supported(h) ? GFP_HIGHUSER_MOVABLE : GFP_HIGHUSER;
 
 	return gfp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline gfp_t htlb_modify_alloc_mask(struct hstate *h, gfp_t gfp_mask)
@@ -1079,8 +1063,6 @@ static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
 }
 
 static inline struct folio *
-<<<<<<< HEAD
-=======
 alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
 			    nodemask_t *nmask, gfp_t gfp_mask)
 {
@@ -1088,7 +1070,6 @@ alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
 }
 
 static inline struct folio *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
 			nodemask_t *nmask, gfp_t gfp_mask,
 			bool allow_alloc_fallback)
@@ -1278,11 +1259,7 @@ static inline __init void hugetlb_cma_reserve(int order)
 }
 #endif
 
-<<<<<<< HEAD
-#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
-=======
 #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool hugetlb_pmd_shared(pte_t *pte)
 {
 	return page_count(virt_to_page(pte)) > 1;
@@ -1318,12 +1295,7 @@ bool __vma_private_lock(struct vm_area_struct *vma);
 static inline pte_t *
 hugetlb_walk(struct vm_area_struct *vma, unsigned long addr, unsigned long sz)
 {
-<<<<<<< HEAD
-#if defined(CONFIG_HUGETLB_PAGE) && \
-	defined(CONFIG_ARCH_WANT_HUGE_PMD_SHARE) && defined(CONFIG_LOCKDEP)
-=======
 #if defined(CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING) && defined(CONFIG_LOCKDEP)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
 
 	/*

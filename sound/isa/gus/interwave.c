@@ -52,17 +52,9 @@ static int pcm_channels[SNDRV_CARDS] = {[0 ... (SNDRV_CARDS - 1)] = 2};
 static int effect[SNDRV_CARDS];
 
 #ifdef SNDRV_STB
-<<<<<<< HEAD
-#define PFX "interwave-stb: "
 #define INTERWAVE_DRIVER	"snd_interwave_stb"
 #define INTERWAVE_PNP_DRIVER	"interwave-stb"
 #else
-#define PFX "interwave: "
-=======
-#define INTERWAVE_DRIVER	"snd_interwave_stb"
-#define INTERWAVE_PNP_DRIVER	"interwave-stb"
-#else
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define INTERWAVE_DRIVER	"snd_interwave"
 #define INTERWAVE_PNP_DRIVER	"interwave"
 #endif
@@ -154,11 +146,7 @@ static void snd_interwave_i2c_setlines(struct snd_i2c_bus *bus, int ctrl, int da
 	unsigned long port = bus->private_value;
 
 #if 0
-<<<<<<< HEAD
-	printk(KERN_DEBUG "i2c_setlines - 0x%lx <- %i,%i\n", port, ctrl, data);
-=======
 	dev_dbg(bus->card->dev, "i2c_setlines - 0x%lx <- %i,%i\n", port, ctrl, data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	outb((data << 1) | ctrl, port);
 	udelay(10);
@@ -171,11 +159,7 @@ static int snd_interwave_i2c_getclockline(struct snd_i2c_bus *bus)
 
 	res = inb(port) & 1;
 #if 0
-<<<<<<< HEAD
-	printk(KERN_DEBUG "i2c_getclockline - 0x%lx -> %i\n", port, res);
-=======
 	dev_dbg(bus->card->dev, "i2c_getclockline - 0x%lx -> %i\n", port, res);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	return res;
 }
@@ -189,11 +173,7 @@ static int snd_interwave_i2c_getdataline(struct snd_i2c_bus *bus, int ack)
 		udelay(10);
 	res = (inb(port) & 2) >> 1;
 #if 0
-<<<<<<< HEAD
-	printk(KERN_DEBUG "i2c_getdataline - 0x%lx -> %i\n", port, res);
-=======
 	dev_dbg(bus->card->dev, "i2c_getdataline - 0x%lx -> %i\n", port, res);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	return res;
 }
@@ -233,11 +213,7 @@ static int snd_interwave_detect_stb(struct snd_interwave *iwcard,
 						      "InterWave (I2C bus)");
 	}
 	if (iwcard->i2c_res == NULL) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "interwave: can't grab i2c bus port\n");
-=======
 		dev_err(card->dev, "interwave: can't grab i2c bus port\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 
@@ -270,11 +246,7 @@ static int snd_interwave_detect(struct snd_interwave *iwcard,
 	snd_gf1_i_write8(gus, SNDRV_GF1_GB_RESET, 0);	/* reset GF1 */
 	d = snd_gf1_i_look8(gus, SNDRV_GF1_GB_RESET);
 	if ((d & 0x07) != 0) {
-<<<<<<< HEAD
-		snd_printdd("[0x%lx] check 1 failed - 0x%x\n", gus->gf1.port, d);
-=======
 		dev_dbg(gus->card->dev, "[0x%lx] check 1 failed - 0x%x\n", gus->gf1.port, d);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 	udelay(160);
@@ -282,11 +254,7 @@ static int snd_interwave_detect(struct snd_interwave *iwcard,
 	udelay(160);
 	d = snd_gf1_i_look8(gus, SNDRV_GF1_GB_RESET);
 	if ((d & 0x07) != 1) {
-<<<<<<< HEAD
-		snd_printdd("[0x%lx] check 2 failed - 0x%x\n", gus->gf1.port, d);
-=======
 		dev_dbg(gus->card->dev, "[0x%lx] check 2 failed - 0x%x\n", gus->gf1.port, d);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 	spin_lock_irqsave(&gus->reg_lock, flags);
@@ -295,12 +263,6 @@ static int snd_interwave_detect(struct snd_interwave *iwcard,
 	rev2 = snd_gf1_look8(gus, SNDRV_GF1_GB_VERSION_NUMBER);
 	snd_gf1_write8(gus, SNDRV_GF1_GB_VERSION_NUMBER, rev1);
 	spin_unlock_irqrestore(&gus->reg_lock, flags);
-<<<<<<< HEAD
-	snd_printdd("[0x%lx] InterWave check - rev1=0x%x, rev2=0x%x\n", gus->gf1.port, rev1, rev2);
-	if ((rev1 & 0xf0) == (rev2 & 0xf0) &&
-	    (rev1 & 0x0f) != (rev2 & 0x0f)) {
-		snd_printdd("[0x%lx] InterWave check - passed\n", gus->gf1.port);
-=======
 	dev_dbg(gus->card->dev,
 		"[0x%lx] InterWave check - rev1=0x%x, rev2=0x%x\n",
 		gus->gf1.port, rev1, rev2);
@@ -308,7 +270,6 @@ static int snd_interwave_detect(struct snd_interwave *iwcard,
 	    (rev1 & 0x0f) != (rev2 & 0x0f)) {
 		dev_dbg(gus->card->dev,
 			"[0x%lx] InterWave check - passed\n", gus->gf1.port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gus->interwave = 1;
 		strcpy(gus->card->shortname, "AMD InterWave");
 		gus->revision = rev1 >> 4;
@@ -318,11 +279,7 @@ static int snd_interwave_detect(struct snd_interwave *iwcard,
 		return snd_interwave_detect_stb(iwcard, gus, dev, rbus);
 #endif
 	}
-<<<<<<< HEAD
-	snd_printdd("[0x%lx] InterWave check - failed\n", gus->gf1.port);
-=======
 	dev_dbg(gus->card->dev, "[0x%lx] InterWave check - failed\n", gus->gf1.port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -ENODEV;
 }
 
@@ -371,11 +328,7 @@ static void snd_interwave_bank_sizes(struct snd_gus_card *gus, int *sizes)
 			snd_gf1_poke(gus, local, d);
 			snd_gf1_poke(gus, local + 1, d + 1);
 #if 0
-<<<<<<< HEAD
-			printk(KERN_DEBUG "d = 0x%x, local = 0x%x, "
-=======
 			dev_dbg(gus->card->dev, "d = 0x%x, local = 0x%x, "
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       "local + 1 = 0x%x, idx << 22 = 0x%x\n",
 			       d,
 			       snd_gf1_peek(gus, local),
@@ -390,11 +343,7 @@ static void snd_interwave_bank_sizes(struct snd_gus_card *gus, int *sizes)
 		}
 	}
 #if 0
-<<<<<<< HEAD
-	printk(KERN_DEBUG "sizes: %i %i %i %i\n",
-=======
 	dev_dbg(gus->card->dev, "sizes: %i %i %i %i\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	       sizes[0], sizes[1], sizes[2], sizes[3]);
 #endif
 }
@@ -449,20 +398,12 @@ static void snd_interwave_detect_memory(struct snd_gus_card *gus)
 		lmct = (psizes[3] << 24) | (psizes[2] << 16) |
 		    (psizes[1] << 8) | psizes[0];
 #if 0
-<<<<<<< HEAD
-		printk(KERN_DEBUG "lmct = 0x%08x\n", lmct);
-=======
 		dev_dbg(gus->card->dev, "lmct = 0x%08x\n", lmct);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 		for (i = 0; i < ARRAY_SIZE(lmc); i++)
 			if (lmct == lmc[i]) {
 #if 0
-<<<<<<< HEAD
-				printk(KERN_DEBUG "found !!! %i\n", i);
-=======
 				dev_dbg(gus->card->dev, "found !!! %i\n", i);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 				snd_gf1_write16(gus, SNDRV_GF1_GW_MEMORY_CONFIG, (snd_gf1_look16(gus, SNDRV_GF1_GW_MEMORY_CONFIG) & 0xfff0) | i);
 				snd_interwave_bank_sizes(gus, psizes);
@@ -626,20 +567,12 @@ static int snd_interwave_pnp(int dev, struct snd_interwave *iwcard,
 
 	err = pnp_activate_dev(pdev);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "InterWave PnP configure failure (out of resources?)\n");
-=======
 		dev_err(&pdev->dev, "InterWave PnP configure failure (out of resources?)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	if (pnp_port_start(pdev, 0) + 0x100 != pnp_port_start(pdev, 1) ||
 	    pnp_port_start(pdev, 0) + 0x10c != pnp_port_start(pdev, 2)) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "PnP configure failure (wrong ports)\n");
-=======
 		dev_err(&pdev->dev, "PnP configure failure (wrong ports)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOENT;
 	}
 	port[dev] = pnp_port_start(pdev, 0);
@@ -647,13 +580,6 @@ static int snd_interwave_pnp(int dev, struct snd_interwave *iwcard,
 	if (dma2[dev] >= 0)
 		dma2[dev] = pnp_dma(pdev, 1);
 	irq[dev] = pnp_irq(pdev, 0);
-<<<<<<< HEAD
-	snd_printdd("isapnp IW: sb port=0x%llx, gf1 port=0x%llx, codec port=0x%llx\n",
-			(unsigned long long)pnp_port_start(pdev, 0),
-			(unsigned long long)pnp_port_start(pdev, 1),
-			(unsigned long long)pnp_port_start(pdev, 2));
-	snd_printdd("isapnp IW: dma1=%i, dma2=%i, irq=%i\n", dma1[dev], dma2[dev], irq[dev]);
-=======
 	dev_dbg(&pdev->dev,
 		"isapnp IW: sb port=0x%llx, gf1 port=0x%llx, codec port=0x%llx\n",
 		(unsigned long long)pnp_port_start(pdev, 0),
@@ -662,27 +588,18 @@ static int snd_interwave_pnp(int dev, struct snd_interwave *iwcard,
 	dev_dbg(&pdev->dev,
 		"isapnp IW: dma1=%i, dma2=%i, irq=%i\n",
 		dma1[dev], dma2[dev], irq[dev]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef SNDRV_STB
 	/* Tone Control initialization */
 	pdev = iwcard->devtc;
 
 	err = pnp_activate_dev(pdev);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "InterWave ToneControl PnP configure failure (out of resources?)\n");
-		return err;
-	}
-	port_tc[dev] = pnp_port_start(pdev, 0);
-	snd_printdd("isapnp IW: tone control port=0x%lx\n", port_tc[dev]);
-=======
 		dev_err(&pdev->dev,
 			"InterWave ToneControl PnP configure failure (out of resources?)\n");
 		return err;
 	}
 	port_tc[dev] = pnp_port_start(pdev, 0);
 	dev_dbg(&pdev->dev, "isapnp IW: tone control port=0x%lx\n", port_tc[dev]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	return 0;
 }
@@ -748,11 +665,7 @@ static int snd_interwave_probe(struct snd_card *card, int dev,
 
 	if (devm_request_irq(card->dev, xirq, snd_interwave_interrupt, 0,
 			     "InterWave", iwcard)) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR PFX "unable to grab IRQ %d\n", xirq);
-=======
 		dev_err(card->dev, "unable to grab IRQ %d\n", xirq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	iwcard->irq = xirq;
@@ -872,33 +785,21 @@ static int snd_interwave_isa_probe(struct device *pdev,
 	if (irq[dev] == SNDRV_AUTO_IRQ) {
 		irq[dev] = snd_legacy_find_free_irq(possible_irqs);
 		if (irq[dev] < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR PFX "unable to find a free IRQ\n");
-=======
 			dev_err(pdev, "unable to find a free IRQ\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
 	if (dma1[dev] == SNDRV_AUTO_DMA) {
 		dma1[dev] = snd_legacy_find_free_dma(possible_dmas);
 		if (dma1[dev] < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR PFX "unable to find a free DMA1\n");
-=======
 			dev_err(pdev, "unable to find a free DMA1\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
 	if (dma2[dev] == SNDRV_AUTO_DMA) {
 		dma2[dev] = snd_legacy_find_free_dma(possible_dmas);
 		if (dma2[dev] < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR PFX "unable to find a free DMA2\n");
-=======
 			dev_err(pdev, "unable to find a free DMA2\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}

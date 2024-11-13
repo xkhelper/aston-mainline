@@ -359,13 +359,6 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
 			extoff = NULL;
 			break;
 		}
-<<<<<<< HEAD
-		if (extoff->n_samples > PTP_MAX_SAMPLES
-		    || extoff->rsv[0] || extoff->rsv[1] || extoff->rsv[2]) {
-			err = -EINVAL;
-			break;
-		}
-=======
 		if (extoff->n_samples > PTP_MAX_SAMPLES ||
 		    extoff->rsv[0] || extoff->rsv[1] ||
 		    (extoff->clockid != CLOCK_REALTIME &&
@@ -375,7 +368,6 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
 			break;
 		}
 		sts.clockid = extoff->clockid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (i = 0; i < extoff->n_samples; i++) {
 			err = ptp->info->gettimex64(ptp->info, &ts, &sts);
 			if (err)

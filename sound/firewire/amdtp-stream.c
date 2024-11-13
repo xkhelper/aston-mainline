@@ -172,12 +172,9 @@ static int apply_constraint_to_size(struct snd_pcm_hw_params *params,
 			step = max(step, amdtp_syt_intervals[i]);
 	}
 
-<<<<<<< HEAD
-=======
 	if (step == 0)
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	t.min = roundup(s->min, step);
 	t.max = rounddown(s->max, step);
 	t.integer = 1;
@@ -621,8 +618,6 @@ static void update_pcm_pointers(struct amdtp_stream *s,
 		// The program in user process should periodically check the status of intermediate
 		// buffer associated to PCM substream to process PCM frames in the buffer, instead
 		// of receiving notification of period elapsed by poll wait.
-<<<<<<< HEAD
-=======
 		//
 		// Use another work item for period elapsed event to prevent the following AB/BA
 		// deadlock:
@@ -639,7 +634,6 @@ static void update_pcm_pointers(struct amdtp_stream *s,
 		//  snd_pcm_stream_lock_irqsave()             disable_work_sync()
 		//                 v                                   v
 		//     wait until release of B                wait until A exits
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!pcm->runtime->no_period_wakeup)
 			queue_work(system_highpri_wq, &s->period_work);
 	}
@@ -1080,10 +1074,6 @@ static void generate_rx_packet_descs(struct amdtp_stream *s, struct pkt_desc *de
 
 static inline void cancel_stream(struct amdtp_stream *s)
 {
-<<<<<<< HEAD
-	s->packet_index = -1;
-	if (in_softirq())
-=======
 	struct work_struct *work = current_work();
 
 	s->packet_index = -1;
@@ -1093,7 +1083,6 @@ static inline void cancel_stream(struct amdtp_stream *s)
 	// snd_pcm_ops.pointer() under acquiring PCM stream(group) lock and causes dead lock at
 	// snd_pcm_stop_xrun().
 	if (work && work != &s->period_work)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		amdtp_stream_pcm_abort(s);
 	WRITE_ONCE(s->pcm_buffer_pointer, SNDRV_PCM_POS_XRUN);
 }
@@ -1893,18 +1882,9 @@ unsigned long amdtp_domain_stream_pcm_pointer(struct amdtp_domain *d,
 	struct amdtp_stream *irq_target = d->irq_target;
 
 	if (irq_target && amdtp_stream_running(irq_target)) {
-<<<<<<< HEAD
-		// use wq to prevent AB/BA deadlock competition for
-		// substream lock:
-		// fw_iso_context_flush_completions() acquires
-		// lock by ohci_flush_iso_completions(),
-		// amdtp-stream process_rx_packets() attempts to
-		// acquire same lock by snd_pcm_elapsed()
-=======
 		// The work item to call snd_pcm_period_elapsed() can reach here by the call of
 		// snd_pcm_ops.pointer(), however less packets would be available then. Therefore
 		// the following call is just for user process contexts.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (current_work() != &s->period_work)
 			fw_iso_context_flush_completions(irq_target->context);
 	}

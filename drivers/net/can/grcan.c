@@ -1725,11 +1725,7 @@ static struct platform_driver grcan_driver = {
 		.of_match_table = grcan_match,
 	},
 	.probe = grcan_probe,
-<<<<<<< HEAD
-	.remove_new = grcan_remove,
-=======
 	.remove = grcan_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(grcan_driver);

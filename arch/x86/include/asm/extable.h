@@ -37,10 +37,6 @@ struct pt_regs;
 
 extern int fixup_exception(struct pt_regs *regs, int trapnr,
 			   unsigned long error_code, unsigned long fault_addr);
-<<<<<<< HEAD
-extern int fixup_bug(struct pt_regs *regs, int trapnr);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int ex_get_fixup_type(unsigned long ip);
 extern void early_fixup_exception(struct pt_regs *regs, int trapnr);
 

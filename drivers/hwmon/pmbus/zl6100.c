@@ -22,11 +22,6 @@ enum chips { zl2004, zl2005, zl2006, zl2008, zl2105, zl2106, zl6100, zl6105,
 
 struct zl6100_data {
 	int id;
-<<<<<<< HEAD
-	ktime_t access;		/* chip access time */
-	int delay;		/* Delay between chip accesses in uS */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pmbus_driver_info info;
 };
 
@@ -125,19 +120,6 @@ static u16 zl6100_d2l(long val)
 	return (mantissa & 0x7ff) | ((exponent << 11) & 0xf800);
 }
 
-<<<<<<< HEAD
-/* Some chips need a delay between accesses */
-static inline void zl6100_wait(const struct zl6100_data *data)
-{
-	if (data->delay) {
-		s64 delta = ktime_us_delta(ktime_get(), data->access);
-		if (delta < data->delay)
-			udelay(data->delay - delta);
-	}
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int zl6100_read_word_data(struct i2c_client *client, int page,
 				 int phase, int reg)
 {
@@ -180,13 +162,7 @@ static int zl6100_read_word_data(struct i2c_client *client, int page,
 		break;
 	}
 
-<<<<<<< HEAD
-	zl6100_wait(data);
 	ret = pmbus_read_word_data(client, page, phase, vreg);
-	data->access = ktime_get();
-=======
-	ret = pmbus_read_word_data(client, page, phase, vreg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		return ret;
 
@@ -205,20 +181,11 @@ static int zl6100_read_word_data(struct i2c_client *client, int page,
 static int zl6100_read_byte_data(struct i2c_client *client, int page, int reg)
 {
 	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-<<<<<<< HEAD
-	struct zl6100_data *data = to_zl6100_data(info);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret, status;
 
 	if (page >= info->pages)
 		return -ENXIO;
 
-<<<<<<< HEAD
-	zl6100_wait(data);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (reg) {
 	case PMBUS_VIRT_STATUS_VMON:
 		ret = pmbus_read_byte_data(client, 0,
@@ -241,10 +208,6 @@ static int zl6100_read_byte_data(struct i2c_client *client, int page, int reg)
 		ret = pmbus_read_byte_data(client, page, reg);
 		break;
 	}
-<<<<<<< HEAD
-	data->access = ktime_get();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -253,12 +216,7 @@ static int zl6100_write_word_data(struct i2c_client *client, int page, int reg,
 				  u16 word)
 {
 	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-<<<<<<< HEAD
-	struct zl6100_data *data = to_zl6100_data(info);
-	int ret, vreg;
-=======
 	int vreg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (page >= info->pages)
 		return -ENXIO;
@@ -288,31 +246,7 @@ static int zl6100_write_word_data(struct i2c_client *client, int page, int reg,
 		vreg = reg;
 	}
 
-<<<<<<< HEAD
-	zl6100_wait(data);
-	ret = pmbus_write_word_data(client, page, vreg, word);
-	data->access = ktime_get();
-
-	return ret;
-}
-
-static int zl6100_write_byte(struct i2c_client *client, int page, u8 value)
-{
-	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
-	struct zl6100_data *data = to_zl6100_data(info);
-	int ret;
-
-	if (page >= info->pages)
-		return -ENXIO;
-
-	zl6100_wait(data);
-	ret = pmbus_write_byte(client, page, value);
-	data->access = ktime_get();
-
-	return ret;
-=======
 	return pmbus_write_word_data(client, page, vreg, word);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct i2c_device_id zl6100_id[] = {
@@ -390,18 +324,7 @@ static int zl6100_probe(struct i2c_client *client)
 	 * supported chips are known to require a wait time between I2C
 	 * accesses.
 	 */
-<<<<<<< HEAD
-	data->delay = delay;
-
-	/*
-	 * Since there was a direct I2C device access above, wait before
-	 * accessing the chip again.
-	 */
-	data->access = ktime_get();
-	zl6100_wait(data);
-=======
 	udelay(delay);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info = &data->info;
 
@@ -435,12 +358,7 @@ static int zl6100_probe(struct i2c_client *client)
 		if (ret < 0)
 			return ret;
 
-<<<<<<< HEAD
-		data->access = ktime_get();
-		zl6100_wait(data);
-=======
 		udelay(delay);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (ret & ZL8802_MFR_PHASES_MASK)
 			info->func[1] |= PMBUS_HAVE_IOUT | PMBUS_HAVE_STATUS_IOUT;
@@ -453,12 +371,7 @@ static int zl6100_probe(struct i2c_client *client)
 			if (ret < 0)
 				return ret;
 
-<<<<<<< HEAD
-			data->access = ktime_get();
-			zl6100_wait(data);
-=======
 			udelay(delay);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			ret = i2c_smbus_read_word_data(client, ZL8802_MFR_USER_CONFIG);
 			if (ret < 0)
@@ -467,12 +380,7 @@ static int zl6100_probe(struct i2c_client *client)
 			if (ret & ZL8802_MFR_XTEMP_ENABLE_2)
 				info->func[i] |= PMBUS_HAVE_TEMP2;
 
-<<<<<<< HEAD
-			data->access = ktime_get();
-			zl6100_wait(data);
-=======
 			udelay(delay);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		ret = i2c_smbus_read_word_data(client, ZL8802_MFR_USER_GLOBAL_CONFIG);
 		if (ret < 0)
@@ -489,22 +397,12 @@ static int zl6100_probe(struct i2c_client *client)
 			info->func[0] |= PMBUS_HAVE_TEMP2;
 	}
 
-<<<<<<< HEAD
-	data->access = ktime_get();
-	zl6100_wait(data);
-
-	info->read_word_data = zl6100_read_word_data;
-	info->read_byte_data = zl6100_read_byte_data;
-	info->write_word_data = zl6100_write_word_data;
-	info->write_byte = zl6100_write_byte;
-=======
 	udelay(delay);
 
 	info->access_delay = delay;
 	info->read_word_data = zl6100_read_word_data;
 	info->read_byte_data = zl6100_read_byte_data;
 	info->write_word_data = zl6100_write_word_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return pmbus_do_probe(client, info);
 }

@@ -62,10 +62,6 @@ static int mon_stat_release(struct inode *inode, struct file *file)
 const struct file_operations mon_fops_stat = {
 	.owner =	THIS_MODULE,
 	.open =		mon_stat_open,
-<<<<<<< HEAD
-	.llseek =	no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read =		mon_stat_read,
 	/* .write =	mon_stat_write, */
 	/* .poll =		mon_stat_poll, */

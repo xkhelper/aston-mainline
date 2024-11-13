@@ -1319,8 +1319,6 @@
 		status = "okay";
 		clock-frequency = <100000>;
 
-<<<<<<< HEAD
-=======
 		power-sensor@42 {
 			compatible = "ti,ina3221";
 			reg = <0x42>;
@@ -1371,7 +1369,6 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		exp1: gpio@74 {
 			compatible = "ti,tca9539";
 			reg = <0x74>;
@@ -1570,10 +1567,7 @@
 		bus-width = <4>;
 
 		cd-gpios = <&gpio TEGRA_GPIO(Z, 1) GPIO_ACTIVE_LOW>;
-<<<<<<< HEAD
-=======
 		wp-gpios = <&gpio TEGRA_GPIO(Z, 4) GPIO_ACTIVE_HIGH>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		vqmmc-supply = <&vddio_sdmmc>;
 		vmmc-supply = <&vdd_3v3_sd>;
@@ -1660,11 +1654,7 @@
 		regulator-name = "VDD_3V3_SD";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-<<<<<<< HEAD
-		gpio = <&gpio TEGRA_GPIO(Z, 4) GPIO_ACTIVE_HIGH>;
-=======
 		gpio = <&gpio TEGRA_GPIO(Z, 3) GPIO_ACTIVE_HIGH>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		enable-active-high;
 		vin-supply = <&vdd_3v3_sys>;
 

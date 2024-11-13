@@ -7,11 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
 title: Brcmstb PCIe Host Controller
 
 maintainers:
-<<<<<<< HEAD
-  - Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-=======
   - Jim Quinlan <james.quinlan@broadcom.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   compatible:
@@ -20,20 +16,12 @@ properties:
           - brcm,bcm2711-pcie # The Raspberry Pi 4
           - brcm,bcm4908-pcie
           - brcm,bcm7211-pcie # Broadcom STB version of RPi4
-<<<<<<< HEAD
-          - brcm,bcm7278-pcie # Broadcom 7278 Arm
-          - brcm,bcm7216-pcie # Broadcom 7216 Arm
-          - brcm,bcm7445-pcie # Broadcom 7445 Arm
-          - brcm,bcm7425-pcie # Broadcom 7425 MIPs
-          - brcm,bcm7435-pcie # Broadcom 7435 MIPs
-=======
           - brcm,bcm7216-pcie # Broadcom 7216 Arm
           - brcm,bcm7278-pcie # Broadcom 7278 Arm
           - brcm,bcm7425-pcie # Broadcom 7425 MIPs
           - brcm,bcm7435-pcie # Broadcom 7435 MIPs
           - brcm,bcm7445-pcie # Broadcom 7445 Arm
           - brcm,bcm7712-pcie # Broadcom STB sibling of Rpi 5
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1
@@ -108,8 +96,6 @@ properties:
       minItems: 1
       maxItems: 3
 
-<<<<<<< HEAD
-=======
   resets:
     minItems: 1
     maxItems: 3
@@ -118,7 +104,6 @@ properties:
     minItems: 1
     maxItems: 3
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg
@@ -142,12 +127,7 @@ allOf:
     then:
       properties:
         resets:
-<<<<<<< HEAD
-          items:
-            - description: reset controller handling the PERST# signal
-=======
           maxItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
         reset-names:
           items:
@@ -164,12 +144,7 @@ allOf:
     then:
       properties:
         resets:
-<<<<<<< HEAD
-          items:
-            - description: phandle pointing to the RESCAL reset controller
-=======
           maxItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
         reset-names:
           items:
@@ -179,8 +154,6 @@ allOf:
         - resets
         - reset-names
 
-<<<<<<< HEAD
-=======
   - if:
       properties:
         compatible:
@@ -202,7 +175,6 @@ allOf:
         - resets
         - reset-names
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:

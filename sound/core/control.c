@@ -79,11 +79,7 @@ static int snd_ctl_open(struct inode *inode, struct file *file)
 		ctl->preferred_subdevice[i] = -1;
 	ctl->pid = get_pid(task_pid(current));
 	file->private_data = ctl;
-<<<<<<< HEAD
-	scoped_guard(write_lock_irqsave, &card->ctl_files_rwlock)
-=======
 	scoped_guard(write_lock_irqsave, &card->controls_rwlock)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		list_add_tail(&ctl->list, &card->ctl_files);
 	snd_card_unref(card);
 	return 0;
@@ -121,11 +117,7 @@ static int snd_ctl_release(struct inode *inode, struct file *file)
 	file->private_data = NULL;
 	card = ctl->card;
 
-<<<<<<< HEAD
-	scoped_guard(write_lock_irqsave, &card->ctl_files_rwlock)
-=======
 	scoped_guard(write_lock_irqsave, &card->controls_rwlock)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		list_del(&ctl->list);
 
 	scoped_guard(rwsem_write, &card->controls_rwsem) {
@@ -165,11 +157,7 @@ void snd_ctl_notify(struct snd_card *card, unsigned int mask,
 	if (card->shutdown)
 		return;
 
-<<<<<<< HEAD
-	guard(read_lock_irqsave)(&card->ctl_files_rwlock);
-=======
 	guard(read_lock_irqsave)(&card->controls_rwlock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_SND_MIXER_OSS)
 	card->mixer_oss_change_count++;
 #endif
@@ -249,18 +237,11 @@ static int snd_ctl_new(struct snd_kcontrol **kctl, unsigned int count,
 	if (!*kctl)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
 	(*kctl)->count = count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (idx = 0; idx < count; idx++) {
 		(*kctl)->vd[idx].access = access;
 		(*kctl)->vd[idx].owner = file;
 	}
-<<<<<<< HEAD
-	(*kctl)->count = count;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -489,11 +470,7 @@ static int __snd_ctl_add_replace(struct snd_card *card,
 	if (id.index > UINT_MAX - kcontrol->count)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	old = snd_ctl_find_id_locked(card, &id);
-=======
 	old = snd_ctl_find_id(card, &id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!old) {
 		if (mode == CTL_REPLACE)
 			return -EINVAL;
@@ -514,19 +491,12 @@ static int __snd_ctl_add_replace(struct snd_card *card,
 	if (snd_ctl_find_hole(card, kcontrol->count) < 0)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	list_add_tail(&kcontrol->list, &card->controls);
-	card->controls_count += kcontrol->count;
-	kcontrol->id.numid = card->last_numid + 1;
-	card->last_numid += kcontrol->count;
-=======
 	scoped_guard(write_lock_irq, &card->controls_rwlock) {
 		list_add_tail(&kcontrol->list, &card->controls);
 		card->controls_count += kcontrol->count;
 		kcontrol->id.numid = card->last_numid + 1;
 		card->last_numid += kcontrol->count;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	add_hash_entries(card, kcontrol);
 
@@ -611,23 +581,15 @@ static int __snd_ctl_remove(struct snd_card *card,
 
 	if (snd_BUG_ON(!card || !kcontrol))
 		return -EINVAL;
-<<<<<<< HEAD
-	list_del(&kcontrol->list);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (remove_hash)
 		remove_hash_entries(card, kcontrol);
 
-<<<<<<< HEAD
-	card->controls_count -= kcontrol->count;
-=======
 	scoped_guard(write_lock_irq, &card->controls_rwlock) {
 		list_del(&kcontrol->list);
 		card->controls_count -= kcontrol->count;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (idx = 0; idx < kcontrol->count; idx++)
 		snd_ctl_notify_one(card, SNDRV_CTL_EVENT_MASK_REMOVE, kcontrol, idx);
 	snd_ctl_free_one(kcontrol);
@@ -677,11 +639,7 @@ int snd_ctl_remove_id(struct snd_card *card, struct snd_ctl_elem_id *id)
 	struct snd_kcontrol *kctl;
 
 	guard(rwsem_write)(&card->controls_rwsem);
-<<<<<<< HEAD
-	kctl = snd_ctl_find_id_locked(card, id);
-=======
 	kctl = snd_ctl_find_id(card, id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kctl == NULL)
 		return -ENOENT;
 	return snd_ctl_remove_locked(card, kctl);
@@ -706,11 +664,7 @@ static int snd_ctl_remove_user_ctl(struct snd_ctl_file * file,
 	int idx;
 
 	guard(rwsem_write)(&card->controls_rwsem);
-<<<<<<< HEAD
-	kctl = snd_ctl_find_id_locked(card, id);
-=======
 	kctl = snd_ctl_find_id(card, id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kctl == NULL)
 		return -ENOENT;
 	if (!(kctl->vd[0].access & SNDRV_CTL_ELEM_ACCESS_USER))
@@ -742,11 +696,7 @@ int snd_ctl_activate_id(struct snd_card *card, struct snd_ctl_elem_id *id,
 	int ret;
 
 	down_write(&card->controls_rwsem);
-<<<<<<< HEAD
-	kctl = snd_ctl_find_id_locked(card, id);
-=======
 	kctl = snd_ctl_find_id(card, id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kctl == NULL) {
 		ret = -ENOENT;
 		goto unlock;
@@ -800,11 +750,7 @@ int snd_ctl_rename_id(struct snd_card *card, struct snd_ctl_elem_id *src_id,
 	int saved_numid;
 
 	guard(rwsem_write)(&card->controls_rwsem);
-<<<<<<< HEAD
-	kctl = snd_ctl_find_id_locked(card, src_id);
-=======
 	kctl = snd_ctl_find_id(card, src_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kctl == NULL)
 		return -ENOENT;
 	saved_numid = kctl->id.numid;
@@ -846,10 +792,7 @@ snd_ctl_find_numid_slow(struct snd_card *card, unsigned int numid)
 {
 	struct snd_kcontrol *kctl;
 
-<<<<<<< HEAD
-=======
 	guard(read_lock_irqsave)(&card->controls_rwlock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry(kctl, &card->controls, list) {
 		if (kctl->id.numid <= numid && kctl->id.numid + kctl->count > numid)
 			return kctl;
@@ -859,35 +802,6 @@ snd_ctl_find_numid_slow(struct snd_card *card, unsigned int numid)
 #endif /* !CONFIG_SND_CTL_FAST_LOOKUP */
 
 /**
-<<<<<<< HEAD
- * snd_ctl_find_numid_locked - find the control instance with the given number-id
- * @card: the card instance
- * @numid: the number-id to search
- *
- * Finds the control instance with the given number-id from the card.
- *
- * The caller must down card->controls_rwsem before calling this function
- * (if the race condition can happen).
- *
- * Return: The pointer of the instance if found, or %NULL if not.
- */
-struct snd_kcontrol *
-snd_ctl_find_numid_locked(struct snd_card *card, unsigned int numid)
-{
-	if (snd_BUG_ON(!card || !numid))
-		return NULL;
-	lockdep_assert_held(&card->controls_rwsem);
-#ifdef CONFIG_SND_CTL_FAST_LOOKUP
-	return xa_load(&card->ctl_numids, numid);
-#else
-	return snd_ctl_find_numid_slow(card, numid);
-#endif
-}
-EXPORT_SYMBOL(snd_ctl_find_numid_locked);
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * snd_ctl_find_numid - find the control instance with the given number-id
  * @card: the card instance
  * @numid: the number-id to search
@@ -896,19 +810,11 @@ EXPORT_SYMBOL(snd_ctl_find_numid_locked);
  *
  * Return: The pointer of the instance if found, or %NULL if not.
  *
-<<<<<<< HEAD
- * Note that this function takes card->controls_rwsem lock internally.
-=======
  * Note that this function takes card->controls_rwlock lock internally.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct snd_kcontrol *snd_ctl_find_numid(struct snd_card *card,
 					unsigned int numid)
 {
-<<<<<<< HEAD
-	guard(rwsem_read)(&card->controls_rwsem);
-	return snd_ctl_find_numid_locked(card, numid);
-=======
 	if (snd_BUG_ON(!card || !numid))
 		return NULL;
 
@@ -917,52 +823,10 @@ struct snd_kcontrol *snd_ctl_find_numid(struct snd_card *card,
 #else
 	return snd_ctl_find_numid_slow(card, numid);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(snd_ctl_find_numid);
 
 /**
-<<<<<<< HEAD
- * snd_ctl_find_id_locked - find the control instance with the given id
- * @card: the card instance
- * @id: the id to search
- *
- * Finds the control instance with the given id from the card.
- *
- * The caller must down card->controls_rwsem before calling this function
- * (if the race condition can happen).
- *
- * Return: The pointer of the instance if found, or %NULL if not.
- */
-struct snd_kcontrol *snd_ctl_find_id_locked(struct snd_card *card,
-					    const struct snd_ctl_elem_id *id)
-{
-	struct snd_kcontrol *kctl;
-
-	if (snd_BUG_ON(!card || !id))
-		return NULL;
-	lockdep_assert_held(&card->controls_rwsem);
-	if (id->numid != 0)
-		return snd_ctl_find_numid_locked(card, id->numid);
-#ifdef CONFIG_SND_CTL_FAST_LOOKUP
-	kctl = xa_load(&card->ctl_hash, get_ctl_id_hash(id));
-	if (kctl && elem_id_matches(kctl, id))
-		return kctl;
-	if (!card->ctl_hash_collision)
-		return NULL; /* we can rely on only hash table */
-#endif
-	/* no matching in hash table - try all as the last resort */
-	list_for_each_entry(kctl, &card->controls, list)
-		if (elem_id_matches(kctl, id))
-			return kctl;
-
-	return NULL;
-}
-EXPORT_SYMBOL(snd_ctl_find_id_locked);
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * snd_ctl_find_id - find the control instance with the given id
  * @card: the card instance
  * @id: the id to search
@@ -971,19 +835,11 @@ EXPORT_SYMBOL(snd_ctl_find_id_locked);
  *
  * Return: The pointer of the instance if found, or %NULL if not.
  *
-<<<<<<< HEAD
- * Note that this function takes card->controls_rwsem lock internally.
-=======
  * Note that this function takes card->controls_rwlock lock internally.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct snd_kcontrol *snd_ctl_find_id(struct snd_card *card,
 				     const struct snd_ctl_elem_id *id)
 {
-<<<<<<< HEAD
-	guard(rwsem_read)(&card->controls_rwsem);
-	return snd_ctl_find_id_locked(card, id);
-=======
 	struct snd_kcontrol *kctl;
 
 	if (snd_BUG_ON(!card || !id))
@@ -1005,7 +861,6 @@ struct snd_kcontrol *snd_ctl_find_id(struct snd_card *card,
 			return kctl;
 
 	return NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(snd_ctl_find_id);
 
@@ -1279,14 +1134,7 @@ static int __snd_ctl_elem_info(struct snd_card *card,
 #ifdef CONFIG_SND_DEBUG
 	info->access = 0;
 #endif
-<<<<<<< HEAD
-	result = snd_power_ref_and_wait(card);
-	if (!result)
-		result = kctl->info(kctl, info);
-	snd_power_unref(card);
-=======
 	result = kctl->info(kctl, info);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (result >= 0) {
 		snd_BUG_ON(info->access);
 		index_offset = snd_ctl_get_ioff(kctl, &info->id);
@@ -1315,11 +1163,7 @@ static int snd_ctl_elem_info(struct snd_ctl_file *ctl,
 	struct snd_kcontrol *kctl;
 
 	guard(rwsem_read)(&card->controls_rwsem);
-<<<<<<< HEAD
-	kctl = snd_ctl_find_id_locked(card, &info->id);
-=======
 	kctl = snd_ctl_find_id(card, &info->id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!kctl)
 		return -ENOENT;
 	return __snd_ctl_elem_info(card, kctl, info, ctl);
@@ -1328,24 +1172,17 @@ static int snd_ctl_elem_info(struct snd_ctl_file *ctl,
 static int snd_ctl_elem_info_user(struct snd_ctl_file *ctl,
 				  struct snd_ctl_elem_info __user *_info)
 {
-<<<<<<< HEAD
-=======
 	struct snd_card *card = ctl->card;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct snd_ctl_elem_info info;
 	int result;
 
 	if (copy_from_user(&info, _info, sizeof(info)))
 		return -EFAULT;
-<<<<<<< HEAD
-	result = snd_ctl_elem_info(ctl, &info);
-=======
 	result = snd_power_ref_and_wait(card);
 	if (result)
 		return result;
 	result = snd_ctl_elem_info(ctl, &info);
 	snd_power_unref(card);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (result < 0)
 		return result;
 	/* drop internal access flags */
@@ -1367,11 +1204,7 @@ static int snd_ctl_elem_read(struct snd_card *card,
 	int ret;
 
 	guard(rwsem_read)(&card->controls_rwsem);
-<<<<<<< HEAD
-	kctl = snd_ctl_find_id_locked(card, &control->id);
-=======
 	kctl = snd_ctl_find_id(card, &control->id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!kctl)
 		return -ENOENT;
 
@@ -1393,14 +1226,7 @@ static int snd_ctl_elem_read(struct snd_card *card,
 
 	if (!snd_ctl_skip_validation(&info))
 		fill_remaining_elem_value(control, &info, pattern);
-<<<<<<< HEAD
-	ret = snd_power_ref_and_wait(card);
-	if (!ret)
-		ret = kctl->get(kctl, control);
-	snd_power_unref(card);
-=======
 	ret = kctl->get(kctl, control);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		return ret;
 	if (!snd_ctl_skip_validation(&info) &&
@@ -1423,11 +1249,6 @@ static int snd_ctl_elem_read_user(struct snd_card *card,
 
 	control = memdup_user(_control, sizeof(*control));
 	if (IS_ERR(control))
-<<<<<<< HEAD
-		return PTR_ERR(no_free_ptr(control));
-
-	result = snd_ctl_elem_read(card, control);
-=======
 		return PTR_ERR(control);
 
 	result = snd_power_ref_and_wait(card);
@@ -1435,7 +1256,6 @@ static int snd_ctl_elem_read_user(struct snd_card *card,
 		return result;
 	result = snd_ctl_elem_read(card, control);
 	snd_power_unref(card);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (result < 0)
 		return result;
 
@@ -1450,17 +1270,10 @@ static int snd_ctl_elem_write(struct snd_card *card, struct snd_ctl_file *file,
 	struct snd_kcontrol *kctl;
 	struct snd_kcontrol_volatile *vd;
 	unsigned int index_offset;
-<<<<<<< HEAD
-	int result;
-
-	down_write(&card->controls_rwsem);
-	kctl = snd_ctl_find_id_locked(card, &control->id);
-=======
 	int result = 0;
 
 	down_write(&card->controls_rwsem);
 	kctl = snd_ctl_find_id(card, &control->id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kctl == NULL) {
 		up_write(&card->controls_rwsem);
 		return -ENOENT;
@@ -1475,14 +1288,8 @@ static int snd_ctl_elem_write(struct snd_card *card, struct snd_ctl_file *file,
 	}
 
 	snd_ctl_build_ioff(&control->id, kctl, index_offset);
-<<<<<<< HEAD
-	result = snd_power_ref_and_wait(card);
-	/* validate input values */
-	if (IS_ENABLED(CONFIG_SND_CTL_INPUT_VALIDATION) && !result) {
-=======
 	/* validate input values */
 	if (IS_ENABLED(CONFIG_SND_CTL_INPUT_VALIDATION)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct snd_ctl_elem_info info;
 
 		memset(&info, 0, sizeof(info));
@@ -1494,10 +1301,6 @@ static int snd_ctl_elem_write(struct snd_card *card, struct snd_ctl_file *file,
 	}
 	if (!result)
 		result = kctl->put(kctl, control);
-<<<<<<< HEAD
-	snd_power_unref(card);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (result < 0) {
 		up_write(&card->controls_rwsem);
 		return result;
@@ -1523,12 +1326,6 @@ static int snd_ctl_elem_write_user(struct snd_ctl_file *file,
 
 	control = memdup_user(_control, sizeof(*control));
 	if (IS_ERR(control))
-<<<<<<< HEAD
-		return PTR_ERR(no_free_ptr(control));
-
-	card = file->card;
-	result = snd_ctl_elem_write(card, file, control);
-=======
 		return PTR_ERR(control);
 
 	card = file->card;
@@ -1537,7 +1334,6 @@ static int snd_ctl_elem_write_user(struct snd_ctl_file *file,
 		return result;
 	result = snd_ctl_elem_write(card, file, control);
 	snd_power_unref(card);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (result < 0)
 		return result;
 
@@ -1557,11 +1353,7 @@ static int snd_ctl_elem_lock(struct snd_ctl_file *file,
 	if (copy_from_user(&id, _id, sizeof(id)))
 		return -EFAULT;
 	guard(rwsem_write)(&card->controls_rwsem);
-<<<<<<< HEAD
-	kctl = snd_ctl_find_id_locked(card, &id);
-=======
 	kctl = snd_ctl_find_id(card, &id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!kctl)
 		return -ENOENT;
 	vd = &kctl->vd[snd_ctl_get_ioff(kctl, &id)];
@@ -1582,11 +1374,7 @@ static int snd_ctl_elem_unlock(struct snd_ctl_file *file,
 	if (copy_from_user(&id, _id, sizeof(id)))
 		return -EFAULT;
 	guard(rwsem_write)(&card->controls_rwsem);
-<<<<<<< HEAD
-	kctl = snd_ctl_find_id_locked(card, &id);
-=======
 	kctl = snd_ctl_find_id(card, &id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!kctl)
 		return -ENOENT;
 	vd = &kctl->vd[snd_ctl_get_ioff(kctl, &id)];
@@ -1853,11 +1641,8 @@ static int snd_ctl_elem_add(struct snd_ctl_file *file,
 	count = info->owner;
 	if (count == 0)
 		count = 1;
-<<<<<<< HEAD
-=======
 	if (count > MAX_CONTROL_COUNT)
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Arrange access permissions if needed. */
 	access = info->access;
@@ -2019,11 +1804,7 @@ static int call_tlv_handler(struct snd_ctl_file *file, int op_flag,
 		{SNDRV_CTL_TLV_OP_CMD,   SNDRV_CTL_ELEM_ACCESS_TLV_COMMAND},
 	};
 	struct snd_kcontrol_volatile *vd = &kctl->vd[snd_ctl_get_ioff(kctl, id)];
-<<<<<<< HEAD
-	int i, ret;
-=======
 	int i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Check support of the request for this element. */
 	for (i = 0; i < ARRAY_SIZE(pairs); ++i) {
@@ -2041,15 +1822,7 @@ static int call_tlv_handler(struct snd_ctl_file *file, int op_flag,
 	    vd->owner != NULL && vd->owner != file)
 		return -EPERM;
 
-<<<<<<< HEAD
-	ret = snd_power_ref_and_wait(file->card);
-	if (!ret)
-		ret = kctl->tlv.c(kctl, op_flag, size, buf);
-	snd_power_unref(file->card);
-	return ret;
-=======
 	return kctl->tlv.c(kctl, op_flag, size, buf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int read_tlv_buf(struct snd_kcontrol *kctl, struct snd_ctl_elem_id *id,
@@ -2100,11 +1873,7 @@ static int snd_ctl_tlv_ioctl(struct snd_ctl_file *file,
 	container_size = header.length;
 	container = buf->tlv;
 
-<<<<<<< HEAD
-	kctl = snd_ctl_find_numid_locked(file->card, header.numid);
-=======
 	kctl = snd_ctl_find_numid(file->card, header.numid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (kctl == NULL)
 		return -ENOENT;
 
@@ -2166,18 +1935,6 @@ static long snd_ctl_ioctl(struct file *file, unsigned int cmd, unsigned long arg
 	case SNDRV_CTL_IOCTL_SUBSCRIBE_EVENTS:
 		return snd_ctl_subscribe_events(ctl, ip);
 	case SNDRV_CTL_IOCTL_TLV_READ:
-<<<<<<< HEAD
-		scoped_guard(rwsem_read, &ctl->card->controls_rwsem)
-			err = snd_ctl_tlv_ioctl(ctl, argp, SNDRV_CTL_TLV_OP_READ);
-		return err;
-	case SNDRV_CTL_IOCTL_TLV_WRITE:
-		scoped_guard(rwsem_write, &ctl->card->controls_rwsem)
-			err = snd_ctl_tlv_ioctl(ctl, argp, SNDRV_CTL_TLV_OP_WRITE);
-		return err;
-	case SNDRV_CTL_IOCTL_TLV_COMMAND:
-		scoped_guard(rwsem_write, &ctl->card->controls_rwsem)
-			err = snd_ctl_tlv_ioctl(ctl, argp, SNDRV_CTL_TLV_OP_CMD);
-=======
 		err = snd_power_ref_and_wait(card);
 		if (err < 0)
 			return err;
@@ -2200,7 +1957,6 @@ static long snd_ctl_ioctl(struct file *file, unsigned int cmd, unsigned long arg
 		scoped_guard(rwsem_write, &card->controls_rwsem)
 			err = snd_ctl_tlv_ioctl(ctl, argp, SNDRV_CTL_TLV_OP_CMD);
 		snd_power_unref(card);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	case SNDRV_CTL_IOCTL_POWER:
 		return -ENOPROTOOPT;
@@ -2404,11 +2160,7 @@ int snd_ctl_get_preferred_subdevice(struct snd_card *card, int type)
 	struct snd_ctl_file *kctl;
 	int subdevice = -1;
 
-<<<<<<< HEAD
-	guard(read_lock_irqsave)(&card->ctl_files_rwlock);
-=======
 	guard(read_lock_irqsave)(&card->controls_rwlock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry(kctl, &card->ctl_files, list) {
 		if (kctl->pid == task_pid(current)) {
 			subdevice = kctl->preferred_subdevice[type];
@@ -2517,10 +2269,6 @@ static const struct file_operations snd_ctl_f_ops =
 	.read =		snd_ctl_read,
 	.open =		snd_ctl_open,
 	.release =	snd_ctl_release,
-<<<<<<< HEAD
-	.llseek =	no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.poll =		snd_ctl_poll,
 	.unlocked_ioctl =	snd_ctl_ioctl,
 	.compat_ioctl =	snd_ctl_ioctl_compat,
@@ -2561,11 +2309,7 @@ static int snd_ctl_dev_disconnect(struct snd_device *device)
 	struct snd_card *card = device->device_data;
 	struct snd_ctl_file *ctl;
 
-<<<<<<< HEAD
-	scoped_guard(read_lock_irqsave, &card->ctl_files_rwlock) {
-=======
 	scoped_guard(read_lock_irqsave, &card->controls_rwlock) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		list_for_each_entry(ctl, &card->ctl_files, list) {
 			wake_up(&ctl->change_sleep);
 			snd_kill_fasync(ctl->fasync, SIGIO, POLL_ERR);

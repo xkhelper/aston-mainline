@@ -130,8 +130,6 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
 		      pgoff_t nr, const struct mm_walk_ops *ops,
 		      void *private);
 
-<<<<<<< HEAD
-=======
 typedef int __bitwise folio_walk_flags_t;
 
 /*
@@ -190,5 +188,4 @@ struct folio *folio_walk_start(struct folio_walk *fw,
 	vma_pgtable_walk_end(__vma); \
 } while (0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _LINUX_PAGEWALK_H */

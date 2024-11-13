@@ -244,8 +244,6 @@ specification the ioctl returns an ``EINVAL`` error code.
       - 0x01000000
       - The device supports the :c:func:`read()` and/or
 	:c:func:`write()` I/O methods.
-<<<<<<< HEAD
-=======
     * - ``V4L2_CAP_EDID``
       - 0x02000000
       - The device stores the EDID for a video input, or retrieves the EDID for a video
@@ -257,7 +255,6 @@ specification the ioctl returns an ``EINVAL`` error code.
 
         For a video output this is typically read from an external device such as an
         HDMI splitter accessed by a serial port.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     * - ``V4L2_CAP_STREAMING``
       - 0x04000000
       - The device supports the :ref:`streaming <mmap>` I/O method.

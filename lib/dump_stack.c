@@ -73,10 +73,7 @@ void dump_stack_print_info(const char *log_lvl)
 
 	print_worker_info(log_lvl, current);
 	print_stop_info(log_lvl, current);
-<<<<<<< HEAD
-=======
 	print_scx_info(log_lvl, current);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

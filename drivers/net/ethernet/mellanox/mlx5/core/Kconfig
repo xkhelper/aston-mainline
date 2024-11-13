@@ -172,8 +172,6 @@ config MLX5_SW_STEERING
 	help
 	Build support for software-managed steering in the NIC.
 
-<<<<<<< HEAD
-=======
 config MLX5_HW_STEERING
 	bool "Mellanox Technologies hardware-managed steering"
 	depends on MLX5_CORE_EN && MLX5_ESWITCH
@@ -184,7 +182,6 @@ config MLX5_HW_STEERING
 	written to ICM by HW (as opposed to SW in software-managed steering),
 	which allows higher rate of rule insertion.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config MLX5_SF
 	bool "Mellanox Technologies subfunction device support using auxiliary device"
 	depends on MLX5_CORE && MLX5_CORE_EN

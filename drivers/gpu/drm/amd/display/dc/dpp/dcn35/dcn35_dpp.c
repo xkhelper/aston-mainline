@@ -59,8 +59,6 @@ void dpp35_dppclk_control(
 				DISPCLK_R_GATE_DISABLE, 0);
 }
 
-<<<<<<< HEAD
-=======
 void dpp35_program_bias_and_scale_fcnv(
 	struct dpp *dpp_base,
 	struct dc_bias_and_scale *params)
@@ -86,7 +84,6 @@ void dpp35_program_bias_and_scale_fcnv(
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct dpp_funcs dcn35_dpp_funcs = {
 	.dpp_program_gamcor_lut		= dpp3_program_gamcor_lut,
 	.dpp_read_state				= dpp30_read_state,
@@ -109,11 +106,7 @@ static struct dpp_funcs dcn35_dpp_funcs = {
 	.dpp_program_shaper_lut		= NULL, // CM SHAPER block is removed in DCN3.2 DPP, (it is in MPCC, programmable before or after BLND)
 	.dpp_program_3dlut			= NULL, // CM 3DLUT block is removed in DCN3.2 DPP, (it is in MPCC, programmable before or after BLND)
 
-<<<<<<< HEAD
-	.dpp_program_bias_and_scale	= NULL,
-=======
 	.dpp_program_bias_and_scale	= dpp35_program_bias_and_scale_fcnv,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.dpp_cnv_set_alpha_keyer	= dpp2_cnv_set_alpha_keyer,
 	.set_cursor_attributes		= dpp3_set_cursor_attributes,
 	.set_cursor_position		= dpp1_set_cursor_position,

@@ -109,9 +109,6 @@ bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait);
 
 void dc_dmub_srv_apply_idle_power_optimizations(const struct dc *dc, bool allow_idle);
 
-<<<<<<< HEAD
-void dc_dmub_srv_set_power_state(struct dc_dmub_srv *dc_dmub_srv, enum dc_acpi_cm_power_state powerState);
-=======
 /**
  * dc_dmub_srv_set_power_state() - Sets the power state for DMUB service.
  *
@@ -135,7 +132,6 @@ void dc_dmub_srv_set_power_state(struct dc_dmub_srv *dc_dmub_srv, enum dc_acpi_c
  */
 void dc_dmub_srv_notify_fw_dc_power_state(struct dc_dmub_srv *dc_dmub_srv,
 					  enum dc_acpi_cm_power_state power_state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * @dc_dmub_srv_should_detect() - Checks if link detection is required.

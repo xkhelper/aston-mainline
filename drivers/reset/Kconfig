@@ -66,8 +66,6 @@ config RESET_BRCMSTB_RESCAL
 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
 	  BCM7216.
 
-<<<<<<< HEAD
-=======
 config RESET_EYEQ
 	bool "Mobileye EyeQ reset controller"
 	depends on MACH_EYEQ5 || MACH_EYEQ6H || COMPILE_TEST
@@ -81,7 +79,6 @@ config RESET_EYEQ
 	  Registers are located in a shared register region called OLB. EyeQ6H
 	  has multiple reset instances.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config RESET_GPIO
 	tristate "GPIO reset controller"
 	depends on GPIOLIB

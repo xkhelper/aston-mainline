@@ -405,11 +405,7 @@ static struct platform_driver of_fixed_factor_clk_driver = {
 		.of_match_table = of_fixed_factor_clk_ids,
 	},
 	.probe = of_fixed_factor_clk_probe,
-<<<<<<< HEAD
-	.remove_new = of_fixed_factor_clk_remove,
-=======
 	.remove = of_fixed_factor_clk_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 builtin_platform_driver(of_fixed_factor_clk_driver);
 #endif

@@ -49,14 +49,11 @@
 
 #include <trace/events/ext4.h>
 
-<<<<<<< HEAD
-=======
 static void ext4_journalled_zero_new_buffers(handle_t *handle,
 					    struct inode *inode,
 					    struct folio *folio,
 					    unsigned from, unsigned to);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __u32 ext4_inode_csum(struct inode *inode, struct ext4_inode *raw,
 			      struct ext4_inode_info *ei)
 {
@@ -486,9 +483,6 @@ static int ext4_map_query_blocks(handle_t *handle, struct inode *inode,
 	status = map->m_flags & EXT4_MAP_UNWRITTEN ?
 			EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
 	ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
-<<<<<<< HEAD
-			      map->m_pblk, status);
-=======
 			      map->m_pblk, status, 0);
 	return retval;
 }
@@ -572,7 +566,6 @@ static int ext4_map_create_blocks(handle_t *handle, struct inode *inode,
 	ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
 			      map->m_pblk, status, flags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return retval;
 }
 
@@ -670,36 +663,7 @@ int ext4_map_blocks(handle_t *handle, struct inode *inode,
 	 * file system block.
 	 */
 	down_read(&EXT4_I(inode)->i_data_sem);
-<<<<<<< HEAD
-	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
-		retval = ext4_ext_map_blocks(handle, inode, map, 0);
-	} else {
-		retval = ext4_ind_map_blocks(handle, inode, map, 0);
-	}
-	if (retval > 0) {
-		unsigned int status;
-
-		if (unlikely(retval != map->m_len)) {
-			ext4_warning(inode->i_sb,
-				     "ES len assertion failed for inode "
-				     "%lu: retval %d != map->m_len %d",
-				     inode->i_ino, retval, map->m_len);
-			WARN_ON(1);
-		}
-
-		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
-				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
-		if (!(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE) &&
-		    !(status & EXTENT_STATUS_WRITTEN) &&
-		    ext4_es_scan_range(inode, &ext4_es_is_delayed, map->m_lblk,
-				       map->m_lblk + map->m_len - 1))
-			status |= EXTENT_STATUS_DELAYED;
-		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
-				      map->m_pblk, status);
-	}
-=======
 	retval = ext4_map_query_blocks(handle, inode, map);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	up_read((&EXT4_I(inode)->i_data_sem));
 
 found:
@@ -729,95 +693,13 @@ found:
 			return retval;
 
 	/*
-<<<<<<< HEAD
-	 * Here we clear m_flags because after allocating an new extent,
-	 * it will be set again.
-	 */
-	map->m_flags &= ~EXT4_MAP_FLAGS;
-
-	/*
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * New blocks allocate and/or writing to unwritten extent
 	 * will possibly result in updating i_data, so we take
 	 * the write lock of i_data_sem, and call get_block()
 	 * with create == 1 flag.
 	 */
 	down_write(&EXT4_I(inode)->i_data_sem);
-<<<<<<< HEAD
-
-	/*
-	 * We need to check for EXT4 here because migrate
-	 * could have changed the inode type in between
-	 */
-	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)) {
-		retval = ext4_ext_map_blocks(handle, inode, map, flags);
-	} else {
-		retval = ext4_ind_map_blocks(handle, inode, map, flags);
-
-		if (retval > 0 && map->m_flags & EXT4_MAP_NEW) {
-			/*
-			 * We allocated new blocks which will result in
-			 * i_data's format changing.  Force the migrate
-			 * to fail by clearing migrate flags
-			 */
-			ext4_clear_inode_state(inode, EXT4_STATE_EXT_MIGRATE);
-		}
-	}
-
-	if (retval > 0) {
-		unsigned int status;
-
-		if (unlikely(retval != map->m_len)) {
-			ext4_warning(inode->i_sb,
-				     "ES len assertion failed for inode "
-				     "%lu: retval %d != map->m_len %d",
-				     inode->i_ino, retval, map->m_len);
-			WARN_ON(1);
-		}
-
-		/*
-		 * We have to zeroout blocks before inserting them into extent
-		 * status tree. Otherwise someone could look them up there and
-		 * use them before they are really zeroed. We also have to
-		 * unmap metadata before zeroing as otherwise writeback can
-		 * overwrite zeros with stale data from block device.
-		 */
-		if (flags & EXT4_GET_BLOCKS_ZERO &&
-		    map->m_flags & EXT4_MAP_MAPPED &&
-		    map->m_flags & EXT4_MAP_NEW) {
-			ret = ext4_issue_zeroout(inode, map->m_lblk,
-						 map->m_pblk, map->m_len);
-			if (ret) {
-				retval = ret;
-				goto out_sem;
-			}
-		}
-
-		/*
-		 * If the extent has been zeroed out, we don't need to update
-		 * extent status tree.
-		 */
-		if ((flags & EXT4_GET_BLOCKS_PRE_IO) &&
-		    ext4_es_lookup_extent(inode, map->m_lblk, NULL, &es)) {
-			if (ext4_es_is_written(&es))
-				goto out_sem;
-		}
-		status = map->m_flags & EXT4_MAP_UNWRITTEN ?
-				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
-		if (!(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE) &&
-		    !(status & EXTENT_STATUS_WRITTEN) &&
-		    ext4_es_scan_range(inode, &ext4_es_is_delayed, map->m_lblk,
-				       map->m_lblk + map->m_len - 1))
-			status |= EXTENT_STATUS_DELAYED;
-		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
-				      map->m_pblk, status);
-	}
-
-out_sem:
-=======
 	retval = ext4_map_create_blocks(handle, inode, map, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	up_write((&EXT4_I(inode)->i_data_sem));
 	if (retval > 0 && map->m_flags & EXT4_MAP_MAPPED) {
 		ret = check_block_validity(inode, map);
@@ -1123,34 +1005,6 @@ static int ext4_dirty_journalled_data(handle_t *handle, struct buffer_head *bh)
 int do_journal_get_write_access(handle_t *handle, struct inode *inode,
 				struct buffer_head *bh)
 {
-<<<<<<< HEAD
-	int dirty = buffer_dirty(bh);
-	int ret;
-
-	if (!buffer_mapped(bh) || buffer_freed(bh))
-		return 0;
-	/*
-	 * __block_write_begin() could have dirtied some buffers. Clean
-	 * the dirty bit as jbd2_journal_get_write_access() could complain
-	 * otherwise about fs integrity issues. Setting of the dirty bit
-	 * by __block_write_begin() isn't a real problem here as we clear
-	 * the bit before releasing a page lock and thus writeback cannot
-	 * ever write the buffer.
-	 */
-	if (dirty)
-		clear_buffer_dirty(bh);
-	BUFFER_TRACE(bh, "get write access");
-	ret = ext4_journal_get_write_access(handle, inode->i_sb, bh,
-					    EXT4_JTR_NONE);
-	if (!ret && dirty)
-		ret = ext4_dirty_journalled_data(handle, bh);
-	return ret;
-}
-
-#ifdef CONFIG_FS_ENCRYPTION
-static int ext4_block_write_begin(struct folio *folio, loff_t pos, unsigned len,
-				  get_block_t *get_block)
-=======
 	if (!buffer_mapped(bh) || buffer_freed(bh))
 		return 0;
 	BUFFER_TRACE(bh, "get write access");
@@ -1161,7 +1015,6 @@ static int ext4_block_write_begin(struct folio *folio, loff_t pos, unsigned len,
 int ext4_block_write_begin(handle_t *handle, struct folio *folio,
 			   loff_t pos, unsigned len,
 			   get_block_t *get_block)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned from = pos & (PAGE_SIZE - 1);
 	unsigned to = from + len;
@@ -1174,10 +1027,7 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
 	struct buffer_head *bh, *head, *wait[2];
 	int nr_wait = 0;
 	int i;
-<<<<<<< HEAD
-=======
 	bool should_journal_data = ext4_should_journal_data(inode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	BUG_ON(!folio_test_locked(folio));
 	BUG_ON(from > PAGE_SIZE);
@@ -1207,12 +1057,6 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
 			if (err)
 				break;
 			if (buffer_new(bh)) {
-<<<<<<< HEAD
-				if (folio_test_uptodate(folio)) {
-					clear_buffer_new(bh);
-					set_buffer_uptodate(bh);
-					mark_buffer_dirty(bh);
-=======
 				/*
 				 * We may be zeroing partial buffers or all new
 				 * buffers in case of failure. Prepare JBD2 for
@@ -1229,7 +1073,6 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
 					 * folio_zero_new_buffers().
 					 */
 					set_buffer_uptodate(bh);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					continue;
 				}
 				if (block_end > to || block_start < from)
@@ -1259,15 +1102,11 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
 			err = -EIO;
 	}
 	if (unlikely(err)) {
-<<<<<<< HEAD
-		folio_zero_new_buffers(folio, from, to);
-=======
 		if (should_journal_data)
 			ext4_journalled_zero_new_buffers(handle, inode, folio,
 							 from, to);
 		else
 			folio_zero_new_buffers(folio, from, to);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (fscrypt_inode_uses_fs_layer_crypto(inode)) {
 		for (i = 0; i < nr_wait; i++) {
 			int err2;
@@ -1283,10 +1122,6 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
 
 	return err;
 }
-<<<<<<< HEAD
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * To preserve ordering, it is essential that the hole instantiation and
@@ -1297,11 +1132,7 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
  */
 static int ext4_write_begin(struct file *file, struct address_space *mapping,
 			    loff_t pos, unsigned len,
-<<<<<<< HEAD
-			    struct page **pagep, void **fsdata)
-=======
 			    struct folio **foliop, void **fsdata)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct inode *inode = mapping->host;
 	int ret, needed_blocks;
@@ -1326,11 +1157,7 @@ static int ext4_write_begin(struct file *file, struct address_space *mapping,
 
 	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA)) {
 		ret = ext4_try_to_write_inline_data(mapping, inode, pos, len,
-<<<<<<< HEAD
-						    pagep);
-=======
 						    foliop);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			return ret;
 		if (ret == 1)
@@ -1376,28 +1203,12 @@ retry_journal:
 	/* In case writeback began while the folio was unlocked */
 	folio_wait_stable(folio);
 
-<<<<<<< HEAD
-#ifdef CONFIG_FS_ENCRYPTION
-	if (ext4_should_dioread_nolock(inode))
-		ret = ext4_block_write_begin(folio, pos, len,
-					     ext4_get_block_unwritten);
-	else
-		ret = ext4_block_write_begin(folio, pos, len, ext4_get_block);
-#else
-	if (ext4_should_dioread_nolock(inode))
-		ret = __block_write_begin(&folio->page, pos, len,
-					  ext4_get_block_unwritten);
-	else
-		ret = __block_write_begin(&folio->page, pos, len, ext4_get_block);
-#endif
-=======
 	if (ext4_should_dioread_nolock(inode))
 		ret = ext4_block_write_begin(handle, folio, pos, len,
 					     ext4_get_block_unwritten);
 	else
 		ret = ext4_block_write_begin(handle, folio, pos, len,
 					     ext4_get_block);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ret && ext4_should_journal_data(inode)) {
 		ret = ext4_walk_page_buffers(handle, inode,
 					     folio_buffers(folio), from, to,
@@ -1410,11 +1221,7 @@ retry_journal:
 
 		folio_unlock(folio);
 		/*
-<<<<<<< HEAD
-		 * __block_write_begin may have instantiated a few blocks
-=======
 		 * ext4_block_write_begin may have instantiated a few blocks
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * outside i_size.  Trim these off again. Don't need
 		 * i_size_read because we hold i_rwsem.
 		 *
@@ -1443,11 +1250,7 @@ retry_journal:
 		folio_put(folio);
 		return ret;
 	}
-<<<<<<< HEAD
-	*pagep = &folio->page;
-=======
 	*foliop = folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1475,14 +1278,8 @@ static int write_end_fn(handle_t *handle, struct inode *inode,
 static int ext4_write_end(struct file *file,
 			  struct address_space *mapping,
 			  loff_t pos, unsigned len, unsigned copied,
-<<<<<<< HEAD
-			  struct page *page, void *fsdata)
-{
-	struct folio *folio = page_folio(page);
-=======
 			  struct folio *folio, void *fsdata)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	handle_t *handle = ext4_journal_current_handle();
 	struct inode *inode = mapping->host;
 	loff_t old_size = inode->i_size;
@@ -1497,11 +1294,7 @@ static int ext4_write_end(struct file *file,
 		return ext4_write_inline_data_end(inode, pos, len, copied,
 						  folio);
 
-<<<<<<< HEAD
-	copied = block_write_end(file, mapping, pos, len, copied, page, fsdata);
-=======
 	copied = block_write_end(file, mapping, pos, len, copied, folio, fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * it's important to update i_size while still holding folio lock:
 	 * page writeout could otherwise come in and zero beyond i_size.
@@ -1575,15 +1368,9 @@ static void ext4_journalled_zero_new_buffers(handle_t *handle,
 					size = min(to, block_end) - start;
 
 					folio_zero_range(folio, start, size);
-<<<<<<< HEAD
-					write_end_fn(handle, inode, bh);
-				}
-				clear_buffer_new(bh);
-=======
 				}
 				clear_buffer_new(bh);
 				write_end_fn(handle, inode, bh);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 		block_start = block_end;
@@ -1594,14 +1381,8 @@ static void ext4_journalled_zero_new_buffers(handle_t *handle,
 static int ext4_journalled_write_end(struct file *file,
 				     struct address_space *mapping,
 				     loff_t pos, unsigned len, unsigned copied,
-<<<<<<< HEAD
-				     struct page *page, void *fsdata)
-{
-	struct folio *folio = page_folio(page);
-=======
 				     struct folio *folio, void *fsdata)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	handle_t *handle = ext4_journal_current_handle();
 	struct inode *inode = mapping->host;
 	loff_t old_size = inode->i_size;
@@ -1860,11 +1641,7 @@ static int ext4_clu_alloc_state(struct inode *inode, ext4_lblk_t lblk)
 	int ret;
 
 	/* Has delalloc reservation? */
-<<<<<<< HEAD
-	if (ext4_es_scan_clu(inode, &ext4_es_is_delonly, lblk))
-=======
 	if (ext4_es_scan_clu(inode, &ext4_es_is_delayed, lblk))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 
 	/* Already been allocated? */
@@ -1985,11 +1762,7 @@ found:
 		 * Delayed extent could be allocated by fallocate.
 		 * So we need to check it.
 		 */
-<<<<<<< HEAD
-		if (ext4_es_is_delonly(&es)) {
-=======
 		if (ext4_es_is_delayed(&es)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			map->m_flags |= EXT4_MAP_DELAYED;
 			return 0;
 		}
@@ -2424,14 +2197,6 @@ static int mpage_map_one_extent(handle_t *handle, struct mpage_da_data *mpd)
 	 * writeback and there is nothing we can do about it so it might result
 	 * in data loss.  So use reserved blocks to allocate metadata if
 	 * possible.
-<<<<<<< HEAD
-	 *
-	 * We pass in the magic EXT4_GET_BLOCKS_DELALLOC_RESERVE if
-	 * the blocks in question are delalloc blocks.  This indicates
-	 * that the blocks and quotas has already been checked when
-	 * the data was copied into the page cache.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	get_blocks_flags = EXT4_GET_BLOCKS_CREATE |
 			   EXT4_GET_BLOCKS_METADATA_NOFAIL |
@@ -2439,11 +2204,6 @@ static int mpage_map_one_extent(handle_t *handle, struct mpage_da_data *mpd)
 	dioread_nolock = ext4_should_dioread_nolock(inode);
 	if (dioread_nolock)
 		get_blocks_flags |= EXT4_GET_BLOCKS_IO_CREATE_EXT;
-<<<<<<< HEAD
-	if (map->m_flags & BIT(BH_Delay))
-		get_blocks_flags |= EXT4_GET_BLOCKS_DELALLOC_RESERVE;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = ext4_map_blocks(handle, inode, map, get_blocks_flags);
 	if (err < 0)
@@ -3137,11 +2897,7 @@ static int ext4_nonda_switch(struct super_block *sb)
 
 static int ext4_da_write_begin(struct file *file, struct address_space *mapping,
 			       loff_t pos, unsigned len,
-<<<<<<< HEAD
-			       struct page **pagep, void **fsdata)
-=======
 			       struct folio **foliop, void **fsdata)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret, retries = 0;
 	struct folio *folio;
@@ -3156,22 +2912,14 @@ static int ext4_da_write_begin(struct file *file, struct address_space *mapping,
 	if (ext4_nonda_switch(inode->i_sb) || ext4_verity_in_progress(inode)) {
 		*fsdata = (void *)FALL_BACK_TO_NONDELALLOC;
 		return ext4_write_begin(file, mapping, pos,
-<<<<<<< HEAD
-					len, pagep, fsdata);
-=======
 					len, foliop, fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	*fsdata = (void *)0;
 	trace_ext4_da_write_begin(inode, pos, len);
 
 	if (ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA)) {
 		ret = ext4_da_write_inline_data_begin(mapping, inode, pos, len,
-<<<<<<< HEAD
-						      pagep, fsdata);
-=======
 						      foliop, fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			return ret;
 		if (ret == 1)
@@ -3184,16 +2932,8 @@ retry:
 	if (IS_ERR(folio))
 		return PTR_ERR(folio);
 
-<<<<<<< HEAD
-#ifdef CONFIG_FS_ENCRYPTION
-	ret = ext4_block_write_begin(folio, pos, len, ext4_da_get_block_prep);
-#else
-	ret = __block_write_begin(&folio->page, pos, len, ext4_da_get_block_prep);
-#endif
-=======
 	ret = ext4_block_write_begin(NULL, folio, pos, len,
 				     ext4_da_get_block_prep);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		folio_unlock(folio);
 		folio_put(folio);
@@ -3211,11 +2951,7 @@ retry:
 		return ret;
 	}
 
-<<<<<<< HEAD
-	*pagep = &folio->page;
-=======
 	*foliop = folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -3261,11 +2997,7 @@ static int ext4_da_do_write_end(struct address_space *mapping,
 	 * flag, which all that's needed to trigger page writeback.
 	 */
 	copied = block_write_end(NULL, mapping, pos, len, copied,
-<<<<<<< HEAD
-			&folio->page, NULL);
-=======
 			folio, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	new_i_size = pos + copied;
 
 	/*
@@ -3316,17 +3048,6 @@ static int ext4_da_do_write_end(struct address_space *mapping,
 static int ext4_da_write_end(struct file *file,
 			     struct address_space *mapping,
 			     loff_t pos, unsigned len, unsigned copied,
-<<<<<<< HEAD
-			     struct page *page, void *fsdata)
-{
-	struct inode *inode = mapping->host;
-	int write_mode = (int)(unsigned long)fsdata;
-	struct folio *folio = page_folio(page);
-
-	if (write_mode == FALL_BACK_TO_NONDELALLOC)
-		return ext4_write_end(file, mapping, pos,
-				      len, copied, &folio->page, fsdata);
-=======
 			     struct folio *folio, void *fsdata)
 {
 	struct inode *inode = mapping->host;
@@ -3335,7 +3056,6 @@ static int ext4_da_write_end(struct file *file,
 	if (write_mode == FALL_BACK_TO_NONDELALLOC)
 		return ext4_write_end(file, mapping, pos,
 				      len, copied, folio, fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_ext4_da_write_end(inode, pos, len, copied);
 
@@ -4317,11 +4037,7 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
 						    stop_block);
 
 		ext4_es_insert_extent(inode, first_block, hole_len, ~0,
-<<<<<<< HEAD
-				      EXTENT_STATUS_HOLE);
-=======
 				      EXTENT_STATUS_HOLE, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		up_write(&EXT4_I(inode)->i_data_sem);
 	}
 	ext4_fc_track_range(handle, inode, first_block, stop_block);
@@ -5530,14 +5246,9 @@ static void ext4_wait_for_tail_page_commit(struct inode *inode)
 {
 	unsigned offset;
 	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
-<<<<<<< HEAD
-	tid_t commit_tid = 0;
-	int ret;
-=======
 	tid_t commit_tid;
 	int ret;
 	bool has_transaction;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	offset = inode->i_size & (PAGE_SIZE - 1);
 	/*
@@ -5562,14 +5273,6 @@ static void ext4_wait_for_tail_page_commit(struct inode *inode)
 		folio_put(folio);
 		if (ret != -EBUSY)
 			return;
-<<<<<<< HEAD
-		commit_tid = 0;
-		read_lock(&journal->j_state_lock);
-		if (journal->j_committing_transaction)
-			commit_tid = journal->j_committing_transaction->t_tid;
-		read_unlock(&journal->j_state_lock);
-		if (commit_tid)
-=======
 		has_transaction = false;
 		read_lock(&journal->j_state_lock);
 		if (journal->j_committing_transaction) {
@@ -5578,7 +5281,6 @@ static void ext4_wait_for_tail_page_commit(struct inode *inode)
 		}
 		read_unlock(&journal->j_state_lock);
 		if (has_transaction)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			jbd2_log_wait_commit(journal, commit_tid);
 	}
 }
@@ -6487,12 +6189,8 @@ retry_alloc:
 		if (folio_pos(folio) + len > size)
 			len = size - folio_pos(folio);
 
-<<<<<<< HEAD
-		err = __block_write_begin(&folio->page, 0, len, ext4_get_block);
-=======
 		err = ext4_block_write_begin(handle, folio, 0, len,
 					     ext4_get_block);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!err) {
 			ret = VM_FAULT_SIGBUS;
 			if (ext4_journal_folio_buffers(handle, folio, len))

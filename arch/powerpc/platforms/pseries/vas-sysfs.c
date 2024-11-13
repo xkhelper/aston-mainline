@@ -162,21 +162,13 @@ static const struct sysfs_ops vas_sysfs_ops = {
 	.store	=	vas_type_store,
 };
 
-<<<<<<< HEAD
-static struct kobj_type vas_def_attr_type = {
-=======
 static const struct kobj_type vas_def_attr_type = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.release	=	vas_type_release,
 		.sysfs_ops      =       &vas_sysfs_ops,
 		.default_groups	=	vas_def_capab_groups,
 };
 
-<<<<<<< HEAD
-static struct kobj_type vas_qos_attr_type = {
-=======
 static const struct kobj_type vas_qos_attr_type = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.release	=	vas_type_release,
 		.sysfs_ops	=	&vas_sysfs_ops,
 		.default_groups	=	vas_qos_capab_groups,

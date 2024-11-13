@@ -517,11 +517,6 @@ typedef struct page *pgtable_t;
 
 extern pteval_t __supported_pte_mask;
 extern pteval_t __default_kernel_pte_mask;
-<<<<<<< HEAD
-extern void set_nx(void);
-extern int nx_enabled;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define pgprot_writecombine	pgprot_writecombine
 extern pgprot_t pgprot_writecombine(pgprot_t prot);

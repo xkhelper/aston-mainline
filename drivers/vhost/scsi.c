@@ -27,11 +27,7 @@
 #include <linux/miscdevice.h>
 #include <linux/blk_types.h>
 #include <linux/bio.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <scsi/scsi_common.h>
 #include <scsi/scsi_proto.h>
 #include <target/target_core_base.h>
@@ -1033,22 +1029,6 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
 		/* virtio-scsi spec requires byte 0 of the lun to be 1 */
 		vq_err(vq, "Illegal virtio-scsi lun: %u\n", *vc->lunp);
 	} else {
-<<<<<<< HEAD
-		struct vhost_scsi_tpg **vs_tpg, *tpg;
-
-		vs_tpg = vhost_vq_get_backend(vq);	/* validated at handler entry */
-
-		tpg = READ_ONCE(vs_tpg[*vc->target]);
-		if (unlikely(!tpg)) {
-			vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
-		} else {
-			if (tpgp)
-				*tpgp = tpg;
-			ret = 0;
-		}
-	}
-
-=======
 		struct vhost_scsi_tpg **vs_tpg, *tpg = NULL;
 
 		if (vc->target) {
@@ -1066,7 +1046,6 @@ vhost_scsi_get_req(struct vhost_virtqueue *vq, struct vhost_scsi_ctx *vc,
 		ret = 0;
 	}
 out:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

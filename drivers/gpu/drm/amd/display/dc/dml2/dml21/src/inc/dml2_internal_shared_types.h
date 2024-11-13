@@ -2,10 +2,6 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __DML2_INTERNAL_SHARED_TYPES_H__
 #define __DML2_INTERNAL_SHARED_TYPES_H__
 
@@ -110,22 +106,16 @@ struct dml2_dpmm_map_watermarks_params_in_out {
 	struct dml2_display_cfg_programming *programming;
 };
 
-<<<<<<< HEAD
-=======
 struct dml2_dpmm_scratch {
 	struct dml2_display_cfg_programming programming;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dml2_dpmm_instance {
 	bool (*map_mode_to_soc_dpm)(struct dml2_dpmm_map_mode_to_soc_dpm_params_in_out *in_out);
 	bool (*map_watermarks)(struct dml2_dpmm_map_watermarks_params_in_out *in_out);
 	bool (*unit_test)(void);
-<<<<<<< HEAD
-=======
 
 	struct dml2_dpmm_scratch dpmm_scratch;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -281,10 +271,7 @@ struct dml2_fams2_meta {
 	unsigned int contention_delay_otg_vlines;
 	unsigned int min_allow_width_otg_vlines;
 	unsigned int nom_vtotal;
-<<<<<<< HEAD
-=======
 	unsigned int vblank_start;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	double nom_refresh_rate_hz;
 	double nom_frame_time_us;
 	unsigned int max_vtotal;
@@ -613,11 +600,7 @@ struct dml2_pmo_optimize_for_stutter_in_out {
 	struct display_configuation_with_meta *optimized_display_config;
 };
 
-<<<<<<< HEAD
-enum dml2_pmo_pstate_strategy {
-=======
 enum dml2_pmo_pstate_method {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dml2_pmo_pstate_strategy_na = 0,
 	/* hw exclusive modes */
 	dml2_pmo_pstate_strategy_vactive = 1,
@@ -635,14 +618,11 @@ enum dml2_pmo_pstate_method {
 	dml2_pmo_pstate_strategy_reserved_fw_drr_var = 22,
 };
 
-<<<<<<< HEAD
-=======
 struct dml2_pmo_pstate_strategy {
 	enum dml2_pmo_pstate_method per_stream_pstate_method[DML2_MAX_PLANES];
 	bool allow_state_increase;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PMO_NO_DRR_STRATEGY_MASK (((1 << (dml2_pmo_pstate_strategy_reserved_fw - dml2_pmo_pstate_strategy_na + 1)) - 1) << dml2_pmo_pstate_strategy_na)
 #define PMO_DRR_STRATEGY_MASK (((1 << (dml2_pmo_pstate_strategy_reserved_fw_drr_var - dml2_pmo_pstate_strategy_fw_vactive_drr + 1)) - 1) << dml2_pmo_pstate_strategy_fw_vactive_drr)
 #define PMO_DRR_CLAMPED_STRATEGY_MASK (((1 << (dml2_pmo_pstate_strategy_reserved_fw_drr_clamped - dml2_pmo_pstate_strategy_fw_vactive_drr + 1)) - 1) << dml2_pmo_pstate_strategy_fw_vactive_drr)
@@ -665,12 +645,7 @@ struct dml2_pmo_scratch {
 			int stream_mask;
 		} pmo_dcn3;
 		struct {
-<<<<<<< HEAD
-			enum dml2_pmo_pstate_strategy per_stream_pstate_strategy[DML2_MAX_PLANES][DML2_PMO_PSTATE_CANDIDATE_LIST_SIZE];
-			bool allow_state_increase_for_strategy[DML2_PMO_PSTATE_CANDIDATE_LIST_SIZE];
-=======
 			struct dml2_pmo_pstate_strategy pstate_strategy_candidates[DML2_PMO_PSTATE_CANDIDATE_LIST_SIZE];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			int num_pstate_candidates;
 			int cur_pstate_candidate;
 
@@ -696,10 +671,7 @@ struct dml2_pmo_scratch {
 			unsigned int num_timing_groups;
 			unsigned int synchronized_timing_group_masks[DML2_MAX_PLANES];
 			bool group_is_drr_enabled[DML2_MAX_PLANES];
-<<<<<<< HEAD
-=======
 			bool group_is_drr_active[DML2_MAX_PLANES];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			double group_line_time_us[DML2_MAX_PLANES];
 
 			/* scheduling check locals */
@@ -715,17 +687,10 @@ struct dml2_pmo_init_data {
 	union {
 		struct {
 			/* populated once during initialization */
-<<<<<<< HEAD
-			enum dml2_pmo_pstate_strategy expanded_strategy_list_1_display[PMO_DCN4_MAX_BASE_STRATEGIES * 2][PMO_DCN4_MAX_DISPLAYS];
-			enum dml2_pmo_pstate_strategy expanded_strategy_list_2_display[PMO_DCN4_MAX_BASE_STRATEGIES * 2 * 2][PMO_DCN4_MAX_DISPLAYS];
-			enum dml2_pmo_pstate_strategy expanded_strategy_list_3_display[PMO_DCN4_MAX_BASE_STRATEGIES * 6 * 2][PMO_DCN4_MAX_DISPLAYS];
-			enum dml2_pmo_pstate_strategy expanded_strategy_list_4_display[PMO_DCN4_MAX_BASE_STRATEGIES * 24 * 2][PMO_DCN4_MAX_DISPLAYS];
-=======
 			struct dml2_pmo_pstate_strategy expanded_strategy_list_1_display[PMO_DCN4_MAX_BASE_STRATEGIES * 2];
 			struct dml2_pmo_pstate_strategy expanded_strategy_list_2_display[PMO_DCN4_MAX_BASE_STRATEGIES * 4 * 4];
 			struct dml2_pmo_pstate_strategy expanded_strategy_list_3_display[PMO_DCN4_MAX_BASE_STRATEGIES * 6 * 6 * 6];
 			struct dml2_pmo_pstate_strategy expanded_strategy_list_4_display[PMO_DCN4_MAX_BASE_STRATEGIES * 8 * 8 * 8 * 8];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			unsigned int num_expanded_strategies_per_list[PMO_DCN4_MAX_DISPLAYS];
 		} pmo_dcn4;
 	};

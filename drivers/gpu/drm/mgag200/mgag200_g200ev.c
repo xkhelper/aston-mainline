@@ -192,16 +192,8 @@ static void mgag200_g200ev_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 	struct mgag200_crtc_state *mgag200_crtc_state = to_mgag200_crtc_state(crtc_state);
 	const struct drm_format_info *format = mgag200_crtc_state->format;
 
-<<<<<<< HEAD
-	if (funcs->disable_vidrst)
-		funcs->disable_vidrst(mdev);
-
-	mgag200_set_format_regs(mdev, format);
-	mgag200_set_mode_regs(mdev, adjusted_mode);
-=======
 	mgag200_set_format_regs(mdev, format);
 	mgag200_set_mode_regs(mdev, adjusted_mode, mgag200_crtc_state->set_vidrst);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (funcs->pixpllc_atomic_update)
 		funcs->pixpllc_atomic_update(crtc, old_state);
@@ -214,12 +206,6 @@ static void mgag200_g200ev_crtc_helper_atomic_enable(struct drm_crtc *crtc,
 		mgag200_crtc_set_gamma_linear(mdev, format);
 
 	mgag200_enable_display(mdev);
-<<<<<<< HEAD
-
-	if (funcs->enable_vidrst)
-		funcs->enable_vidrst(mdev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct drm_crtc_helper_funcs mgag200_g200ev_crtc_helper_funcs = {
@@ -266,15 +252,7 @@ static int mgag200_g200ev_pipeline_init(struct mga_device *mdev)
 	drm_mode_crtc_set_gamma_size(crtc, MGAG200_LUT_SIZE);
 	drm_crtc_enable_color_mgmt(crtc, 0, false, MGAG200_LUT_SIZE);
 
-<<<<<<< HEAD
-	ret = mgag200_vga_output_init(mdev);
-	if (ret)
-		return ret;
-
-	ret = mgag200_bmc_output_init(mdev, &mdev->output.vga.connector);
-=======
 	ret = mgag200_vga_bmc_output_init(mdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 

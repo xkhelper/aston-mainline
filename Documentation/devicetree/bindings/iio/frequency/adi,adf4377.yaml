@@ -17,10 +17,7 @@ description: |
    applications.
 
    https://www.analog.com/en/products/adf4377.html
-<<<<<<< HEAD
-=======
    https://www.analog.com/en/products/adf4378.html
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   compatible:
@@ -77,8 +74,6 @@ required:
 
 allOf:
   - $ref: /schemas/spi/spi-peripheral-props.yaml#
-<<<<<<< HEAD
-=======
   - if:
       properties:
         compatible:
@@ -88,7 +83,6 @@ allOf:
     then:
       properties:
         clk2-enable-gpios: false
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 unevaluatedProperties: false
 

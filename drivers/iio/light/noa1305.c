@@ -29,10 +29,7 @@
 #define   NOA1305_INTEGR_TIME_25MS	0x05
 #define   NOA1305_INTEGR_TIME_12_5MS	0x06
 #define   NOA1305_INTEGR_TIME_6_25MS	0x07
-<<<<<<< HEAD
-=======
 #define   NOA1305_INTEGR_TIME_MASK	0x07
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define NOA1305_REG_INT_SELECT		0x3
 #define   NOA1305_INT_SEL_ACTIVE_HIGH	0x01
 #define   NOA1305_INT_SEL_ACTIVE_LOW	0x02
@@ -47,8 +44,6 @@
 #define NOA1305_DEVICE_ID	0x0519
 #define NOA1305_DRIVER_NAME	"noa1305"
 
-<<<<<<< HEAD
-=======
 static int noa1305_scale_available[] = {
 	100, 8 * 77,		/* 800 ms */
 	100, 4 * 77,		/* 400 ms */
@@ -71,17 +66,12 @@ static int noa1305_int_time_available[] = {
 	0, 6250,		/* 6.25 ms */
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct noa1305_priv {
 	struct i2c_client *client;
 	struct regmap *regmap;
 };
 
-<<<<<<< HEAD
-static int noa1305_measure(struct noa1305_priv *priv)
-=======
 static int noa1305_measure(struct noa1305_priv *priv, int *val)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__le16 data;
 	int ret;
@@ -91,13 +81,9 @@ static int noa1305_measure(struct noa1305_priv *priv, int *val)
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	return le16_to_cpu(data);
-=======
 	*val = le16_to_cpu(data);
 
 	return IIO_VAL_INT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int noa1305_scale(struct noa1305_priv *priv, int *val, int *val2)
@@ -115,54 +101,13 @@ static int noa1305_scale(struct noa1305_priv *priv, int *val, int *val2)
 	 * Integration Constant = 7.7
 	 * Integration Time in Seconds
 	 */
-<<<<<<< HEAD
-	switch (data) {
-	case NOA1305_INTEGR_TIME_800MS:
-		*val = 100;
-		*val2 = 77 * 8;
-		break;
-	case NOA1305_INTEGR_TIME_400MS:
-		*val = 100;
-		*val2 = 77 * 4;
-		break;
-	case NOA1305_INTEGR_TIME_200MS:
-		*val = 100;
-		*val2 = 77 * 2;
-		break;
-	case NOA1305_INTEGR_TIME_100MS:
-		*val = 100;
-		*val2 = 77;
-		break;
-	case NOA1305_INTEGR_TIME_50MS:
-		*val = 1000;
-		*val2 = 77 * 5;
-		break;
-	case NOA1305_INTEGR_TIME_25MS:
-		*val = 10000;
-		*val2 = 77 * 25;
-		break;
-	case NOA1305_INTEGR_TIME_12_5MS:
-		*val = 100000;
-		*val2 = 77 * 125;
-		break;
-	case NOA1305_INTEGR_TIME_6_25MS:
-		*val = 1000000;
-		*val2 = 77 * 625;
-		break;
-	default:
-		return -EINVAL;
-	}
-=======
 	data &= NOA1305_INTEGR_TIME_MASK;
 	*val = noa1305_scale_available[2 * data + 0];
 	*val2 = noa1305_scale_available[2 * data + 1];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return IIO_VAL_FRACTIONAL;
 }
 
-<<<<<<< HEAD
-=======
 static int noa1305_int_time(struct noa1305_priv *priv, int *val, int *val2)
 {
 	int data;
@@ -179,54 +124,11 @@ static int noa1305_int_time(struct noa1305_priv *priv, int *val, int *val2)
 	return IIO_VAL_INT_PLUS_MICRO;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct iio_chan_spec noa1305_channels[] = {
 	{
 		.type = IIO_LIGHT,
 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
-<<<<<<< HEAD
-	}
-};
-
-static int noa1305_read_raw(struct iio_dev *indio_dev,
-				struct iio_chan_spec const *chan,
-				int *val, int *val2, long mask)
-{
-	int ret = -EINVAL;
-	struct noa1305_priv *priv = iio_priv(indio_dev);
-
-	switch (mask) {
-	case IIO_CHAN_INFO_RAW:
-		switch (chan->type) {
-		case IIO_LIGHT:
-			ret = noa1305_measure(priv);
-			if (ret < 0)
-				return ret;
-			*val = ret;
-			return IIO_VAL_INT;
-		default:
-			break;
-		}
-		break;
-	case IIO_CHAN_INFO_SCALE:
-		switch (chan->type) {
-		case IIO_LIGHT:
-			return noa1305_scale(priv, val, val2);
-		default:
-			break;
-		}
-		break;
-	default:
-		break;
-	}
-
-	return ret;
-}
-
-static const struct iio_info noa1305_info = {
-	.read_raw = noa1305_read_raw,
-=======
 		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE),
 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
 		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME),
@@ -306,7 +208,6 @@ static const struct iio_info noa1305_info = {
 	.read_avail = noa1305_read_avail,
 	.read_raw = noa1305_read_raw,
 	.write_raw = noa1305_write_raw,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static bool noa1305_writable_reg(struct device *dev, unsigned int reg)

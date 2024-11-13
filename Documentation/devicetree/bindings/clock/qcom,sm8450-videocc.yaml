@@ -44,16 +44,10 @@ required:
   - compatible
   - clocks
   - power-domains
-<<<<<<< HEAD
-  - required-opps
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - '#power-domain-cells'
 
 allOf:
   - $ref: qcom,gcc.yaml#
-<<<<<<< HEAD
-=======
   - if:
       properties:
         compatible:
@@ -64,7 +58,6 @@ allOf:
     then:
       required:
         - required-opps
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 unevaluatedProperties: false
 

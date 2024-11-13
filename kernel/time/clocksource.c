@@ -113,10 +113,6 @@ static u64 suspend_start;
 
 /*
  * Threshold: 0.0312s, when doubled: 0.0625s.
-<<<<<<< HEAD
- * Also a default for cs->uncertainty_margin when registering clocks.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #define WATCHDOG_THRESHOLD (NSEC_PER_SEC >> 5)
 
@@ -128,8 +124,6 @@ static u64 suspend_start;
  *
  * The default of 500 parts per million is based on NTP's limits.
  * If a clocksource is good enough for NTP, it is good enough for us!
-<<<<<<< HEAD
-=======
  *
  * In other words, by default, even if a clocksource is extremely
  * precise (for example, with a sub-nanosecond period), the maximum
@@ -137,7 +131,6 @@ static u64 suspend_start;
  * under test is not permitted to go below the 500ppm minimum defined
  * by MAX_SKEW_USEC.  This 500ppm minimum may be overridden using the
  * CLOCKSOURCE_WATCHDOG_MAX_SKEW_US Kconfig option.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #ifdef CONFIG_CLOCKSOURCE_WATCHDOG_MAX_SKEW_US
 #define MAX_SKEW_USEC	CONFIG_CLOCKSOURCE_WATCHDOG_MAX_SKEW_US
@@ -145,8 +138,6 @@ static u64 suspend_start;
 #define MAX_SKEW_USEC	(125 * WATCHDOG_INTERVAL / HZ)
 #endif
 
-<<<<<<< HEAD
-=======
 /*
  * Default for maximum permissible skew when cs->uncertainty_margin is
  * not specified, and the lower bound even when cs->uncertainty_margin
@@ -154,7 +145,6 @@ static u64 suspend_start;
  * clocks with unspecifed cs->uncertainty_margin, so this macro is used
  * even in CONFIG_CLOCKSOURCE_WATCHDOG=n kernels.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define WATCHDOG_MAX_SKEW (MAX_SKEW_USEC * NSEC_PER_USEC)
 
 #ifdef CONFIG_CLOCKSOURCE_WATCHDOG
@@ -254,10 +244,7 @@ enum wd_read_status {
 
 static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow, u64 *wdnow)
 {
-<<<<<<< HEAD
-=======
 	int64_t md = 2 * watchdog->uncertainty_margin;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int nretries, max_retries;
 	int64_t wd_delay, wd_seq_delay;
 	u64 wd_end, wd_end2;
@@ -272,11 +259,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow, 
 		local_irq_enable();
 
 		wd_delay = cycles_to_nsec_safe(watchdog, *wdnow, wd_end);
-<<<<<<< HEAD
-		if (wd_delay <= WATCHDOG_MAX_SKEW) {
-=======
 		if (wd_delay <= md + cs->uncertainty_margin) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (nretries > 1 && nretries >= max_retries) {
 				pr_warn("timekeeping watchdog on CPU%d: %s retried %d times before success\n",
 					smp_processor_id(), watchdog->name, nretries);
@@ -289,21 +272,12 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow, 
 		 * there is too much external interferences that cause
 		 * significant delay in reading both clocksource and watchdog.
 		 *
-<<<<<<< HEAD
-		 * If consecutive WD read-back delay > WATCHDOG_MAX_SKEW/2,
-		 * report system busy, reinit the watchdog and skip the current
-		 * watchdog test.
-		 */
-		wd_seq_delay = cycles_to_nsec_safe(watchdog, wd_end, wd_end2);
-		if (wd_seq_delay > WATCHDOG_MAX_SKEW/2)
-=======
 		 * If consecutive WD read-back delay > md, report
 		 * system busy, reinit the watchdog and skip the current
 		 * watchdog test.
 		 */
 		wd_seq_delay = cycles_to_nsec_safe(watchdog, wd_end, wd_end2);
 		if (wd_seq_delay > md)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto skip_test;
 	}
 
@@ -1186,16 +1160,6 @@ void __clocksource_update_freq_scale(struct clocksource *cs, u32 scale, u32 freq
 	}
 
 	/*
-<<<<<<< HEAD
-	 * If the uncertainty margin is not specified, calculate it.
-	 * If both scale and freq are non-zero, calculate the clock
-	 * period, but bound below at 2*WATCHDOG_MAX_SKEW.  However,
-	 * if either of scale or freq is zero, be very conservative and
-	 * take the tens-of-milliseconds WATCHDOG_THRESHOLD value for the
-	 * uncertainty margin.  Allow stupidly small uncertainty margins
-	 * to be specified by the caller for testing purposes, but warn
-	 * to discourage production use of this capability.
-=======
 	 * If the uncertainty margin is not specified, calculate it.  If
 	 * both scale and freq are non-zero, calculate the clock period, but
 	 * bound below at 2*WATCHDOG_MAX_SKEW, that is, 500ppm by default.
@@ -1209,7 +1173,6 @@ void __clocksource_update_freq_scale(struct clocksource *cs, u32 scale, u32 freq
 	 * watchdog clocksource and the clocksource under test will be at
 	 * least 500ppm by default.  For more information, please see the
 	 * comment preceding CONFIG_CLOCKSOURCE_WATCHDOG_MAX_SKEW_US above.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if (scale && freq && !cs->uncertainty_margin) {
 		cs->uncertainty_margin = NSEC_PER_SEC / (scale * freq);

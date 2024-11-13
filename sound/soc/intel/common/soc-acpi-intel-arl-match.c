@@ -7,10 +7,7 @@
 
 #include <sound/soc-acpi.h>
 #include <sound/soc-acpi-intel-match.h>
-<<<<<<< HEAD
-=======
 #include <sound/soc-acpi-intel-ssp-common.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct snd_soc_acpi_endpoint single_endpoint = {
 	.num = 0,
@@ -19,8 +16,6 @@ static const struct snd_soc_acpi_endpoint single_endpoint = {
 	.group_id = 0,
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_endpoint spk_l_endpoint = {
 	.num = 0,
 	.aggregated = 1,
@@ -127,7 +122,6 @@ static const struct snd_soc_acpi_adr_device cs35l56_3_l1_adr[] = {
 	},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_endpoint cs42l43_endpoints[] = {
 	{ /* Jack Playback Endpoint */
 		.num = 0,
@@ -164,8 +158,6 @@ static const struct snd_soc_acpi_adr_device cs42l43_0_adr[] = {
 	}
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_adr_device cs42l43_2_adr[] = {
 	{
 		.adr = 0x00023001FA424301ull,
@@ -175,7 +167,6 @@ static const struct snd_soc_acpi_adr_device cs42l43_2_adr[] = {
 	}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_adr_device rt711_0_adr[] = {
 	{
 		.adr = 0x000020025D071100ull,
@@ -200,8 +191,6 @@ static const struct snd_soc_acpi_link_adr arl_cs42l43_l0[] = {
 		.num_adr = ARRAY_SIZE(cs42l43_0_adr),
 		.adr_d = cs42l43_0_adr,
 	},
-<<<<<<< HEAD
-=======
 	{}
 };
 
@@ -278,7 +267,6 @@ static const struct snd_soc_acpi_link_adr arl_cs42l43_l0_cs35l56_2_l23[] = {
 		.adr_d = cs35l56_3_l1_adr,
 	},
 	{}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct snd_soc_acpi_link_adr arl_rvp[] = {
@@ -299,9 +287,6 @@ static const struct snd_soc_acpi_link_adr arl_sdca_rvp[] = {
 	{}
 };
 
-<<<<<<< HEAD
-struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_machines[] = {
-=======
 static const struct snd_soc_acpi_codecs arl_essx_83x6 = {
 	.num_codecs = 3,
 	.codecs = { "ESSX8316", "ESSX8326", "ESSX8336"},
@@ -346,7 +331,6 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_machines[] = {
 		.drv_name = "arl_lt6911_hdmi_ssp",
 		.sof_tplg_filename = "sof-arl-hdmi-ssp02.tplg",
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_arl_machines);
@@ -354,8 +338,6 @@ EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_arl_machines);
 /* this table is used when there is no I2S codec present */
 struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[] = {
 	{
-<<<<<<< HEAD
-=======
 		.link_mask = BIT(0) | BIT(2) | BIT(3),
 		.links = arl_cs42l43_l0_cs35l56_l23,
 		.drv_name = "sof_sdw",
@@ -374,15 +356,12 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[] = {
 		.sof_tplg_filename = "sof-arl-cs42l43-l0-cs35l56-l2.tplg",
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.link_mask = BIT(0),
 		.links = arl_cs42l43_l0,
 		.drv_name = "sof_sdw",
 		.sof_tplg_filename = "sof-arl-cs42l43-l0.tplg",
 	},
 	{
-<<<<<<< HEAD
-=======
 		.link_mask = BIT(2),
 		.links = arl_cs42l43_l2,
 		.drv_name = "sof_sdw",
@@ -395,7 +374,6 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[] = {
 		.sof_tplg_filename = "sof-arl-cs42l43-l2-cs35l56-l3.tplg",
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.link_mask = 0x1, /* link0 required */
 		.links = arl_rvp,
 		.drv_name = "sof_sdw",

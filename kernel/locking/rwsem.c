@@ -181,8 +181,6 @@ static inline void rwsem_set_reader_owned(struct rw_semaphore *sem)
 	__rwsem_set_reader_owned(sem, current);
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_DEBUG_RWSEMS
 /*
  * Return just the real task structure pointer of the owner
@@ -193,16 +191,11 @@ static inline struct task_struct *rwsem_owner(struct rw_semaphore *sem)
 		(atomic_long_read(&sem->owner) & ~RWSEM_OWNER_FLAGS_MASK);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Return true if the rwsem is owned by a reader.
  */
 static inline bool is_rwsem_reader_owned(struct rw_semaphore *sem)
 {
-<<<<<<< HEAD
-#ifdef CONFIG_DEBUG_RWSEMS
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Check the count to see if it is write-locked.
 	 */
@@ -210,17 +203,9 @@ static inline bool is_rwsem_reader_owned(struct rw_semaphore *sem)
 
 	if (count & RWSEM_WRITER_MASK)
 		return false;
-<<<<<<< HEAD
-#endif
 	return rwsem_test_oflags(sem, RWSEM_READER_OWNED);
 }
 
-#ifdef CONFIG_DEBUG_RWSEMS
-=======
-	return rwsem_test_oflags(sem, RWSEM_READER_OWNED);
-}
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * With CONFIG_DEBUG_RWSEMS configured, it will make sure that if there
  * is a task pointer in owner of a reader-owned rwsem, it will be the
@@ -288,18 +273,6 @@ static inline bool rwsem_write_trylock(struct rw_semaphore *sem)
 }
 
 /*
-<<<<<<< HEAD
- * Return just the real task structure pointer of the owner
- */
-static inline struct task_struct *rwsem_owner(struct rw_semaphore *sem)
-{
-	return (struct task_struct *)
-		(atomic_long_read(&sem->owner) & ~RWSEM_OWNER_FLAGS_MASK);
-}
-
-/*
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return the real task structure pointer of the owner and the embedded
  * flags in the owner. pflags must be non-NULL.
  */
@@ -656,11 +629,7 @@ static inline bool rwsem_try_write_lock(struct rw_semaphore *sem,
 			 * if it is an RT task or wait in the wait queue
 			 * for too long.
 			 */
-<<<<<<< HEAD
-			if (has_handoff || (!rt_task(waiter->task) &&
-=======
 			if (has_handoff || (!rt_or_dl_task(waiter->task) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    !time_after(jiffies, waiter->timeout)))
 				return false;
 
@@ -943,11 +912,7 @@ static bool rwsem_optimistic_spin(struct rw_semaphore *sem)
 		if (owner_state != OWNER_WRITER) {
 			if (need_resched())
 				break;
-<<<<<<< HEAD
-			if (rt_task(current) &&
-=======
 			if (rt_or_dl_task(current) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   (prev_owner_state != OWNER_WRITER))
 				break;
 		}

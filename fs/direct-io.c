@@ -37,10 +37,6 @@
 #include <linux/rwsem.h>
 #include <linux/uio.h>
 #include <linux/atomic.h>
-<<<<<<< HEAD
-#include <linux/prefetch.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "internal.h"
 
@@ -1124,14 +1120,6 @@ ssize_t __blockdev_direct_IO(struct kiocb *iocb, struct inode *inode,
 	struct blk_plug plug;
 	unsigned long align = offset | iov_iter_alignment(iter);
 
-<<<<<<< HEAD
-	/*
-	 * Avoid references to bdev if not absolutely needed to give
-	 * the early prefetch in the caller enough time.
-	 */
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* watch out for a 0 len io from a tricksy fs */
 	if (iov_iter_rw(iter) == READ && !count)
 		return 0;

@@ -1198,8 +1198,6 @@ to upconvert to 32b float internally?
 	<value value="0x3" name="TESS_CCW_TRIS"/>
 </enum>
 
-<<<<<<< HEAD
-=======
 <enum name="a7xx_cp_perfcounter_select">
 	<value value="0" name="A7XX_PERF_CP_ALWAYS_COUNT"/>
 	<value value="1" name="A7XX_PERF_CP_BUSY_GFX_CORE_IDLE"/>
@@ -2221,7 +2219,6 @@ to upconvert to 32b float internally?
 	<value value="57" name="A7XX_PERF_UFC_TP_L1_FILTER_REQUESTS"/>
 </enum>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 <domain name="A6XX" width="32" prefix="variant" varset="chip">
 	<bitset name="A6XX_RBBM_INT_0_MASK" inline="no" varset="chip">
 		<bitfield name="RBBM_GPU_IDLE" pos="0" type="boolean"/>
@@ -2608,11 +2605,7 @@ to upconvert to 32b float internally?
 	<reg32 offset="0x050e" name="RBBM_PERFCTR_SRAM_INIT_CMD"/>
 	<reg32 offset="0x050f" name="RBBM_PERFCTR_SRAM_INIT_STATUS"/>
 	<reg32 offset="0x0533" name="RBBM_ISDB_CNT"/>
-<<<<<<< HEAD
-	<reg32 offset="0x0534" name="RBBM_NC_MODE_CNTL" variants="A7XX-"/>
-=======
 	<reg32 offset="0x0534" name="RBBM_NC_MODE_CNTL"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	<reg32 offset="0x0535" name="RBBM_SNAPSHOT_STATUS" variants="A7XX-"/>
 
 	<!---
@@ -3212,8 +3205,6 @@ to upconvert to 32b float internally?
 		<value value="3" name="BUFFERS_IN_SYSMEM"/>
 	</enum>
 
-<<<<<<< HEAD
-=======
 	<enum name="a6xx_lrz_feedback_mask">
 		<value value="0x0" name="LRZ_FEEDBACK_NONE"/>
 		<value value="0x1" name="LRZ_FEEDBACK_EARLY_Z"/>
@@ -3223,16 +3214,10 @@ to upconvert to 32b float internally?
 		<value value="0x4" name="LRZ_FEEDBACK_LATE_Z"/>
 	</enum>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	<reg32 offset="0x80a1" name="GRAS_BIN_CONTROL" usage="rp_blit">
 		<bitfield name="BINW" low="0" high="5" shr="5" type="uint"/>
 		<bitfield name="BINH" low="8" high="14" shr="4" type="uint"/>
 		<bitfield name="RENDER_MODE" low="18" high="20" type="a6xx_render_mode"/>
-<<<<<<< HEAD
-		<bitfield name="FORCE_LRZ_WRITE_DIS" pos="21" type="boolean"/>
-		<bitfield name="BUFFERS_LOCATION" low="22" high="23" type="a6xx_buffers_location" variants="A6XX"/>
-		<bitfield name="LRZ_FEEDBACK_ZMODE_MASK" low="24" high="26"/>
-=======
 		<doc>Disable LRZ feedback writes</doc>
 		<bitfield name="FORCE_LRZ_WRITE_DIS" pos="21" type="boolean"/>
 		<bitfield name="BUFFERS_LOCATION" low="22" high="23" type="a6xx_buffers_location" variants="A6XX"/>
@@ -3242,7 +3227,6 @@ to upconvert to 32b float internally?
 			In sysmem mode GRAS_LRZ_CNTL.LRZ_WRITE is not considered.
 		</doc>
 		<bitfield name="LRZ_FEEDBACK_ZMODE_MASK" low="24" high="26" type="a6xx_lrz_feedback_mask"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		<bitfield name="UNK27" pos="27"/>
 	</reg32>
 
@@ -3322,11 +3306,7 @@ to upconvert to 32b float internally?
 			- 0.0 if GREATER
 			- 1.0 if LESS
 		</doc>
-<<<<<<< HEAD
-		<bitfield name="FC_ENABLE" pos="3" type="boolean"/>
-=======
 		<bitfield name="FC_ENABLE" pos="3" type="boolean" variants="A6XX"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		<!-- set when depth-test + depth-write enabled -->
 		<bitfield name="Z_TEST_ENABLE" pos="4" type="boolean"/>
 		<bitfield name="Z_BOUNDS_ENABLE" pos="5" type="boolean"/>
@@ -3340,11 +3320,7 @@ to upconvert to 32b float internally?
 			Disable LRZ based on previous direction and the current one.
 			If DIR_WRITE is not enabled - there is no write to direction buffer.
 		</doc>
-<<<<<<< HEAD
-		<bitfield name="DISABLE_ON_WRONG_DIR" pos="9" type="boolean"/>
-=======
 		<bitfield name="DISABLE_ON_WRONG_DIR" pos="9" type="boolean" variants="A6XX"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		<bitfield name="Z_FUNC" low="11" high="13" type="adreno_compare_func" variants="A7XX-"/>
 	</reg32>
 
@@ -3417,14 +3393,10 @@ to upconvert to 32b float internally?
 		<bitfield name="BASE_MIP_LEVEL" low="28" high="31" type="uint"/>
 	</reg32>
 
-<<<<<<< HEAD
-	<reg32 offset="0x810b" name="GRAS_UNKNOWN_810B" variants="A7XX-" usage="cmd"/>
-=======
 	<reg32 offset="0x810b" name="GRAS_LRZ_CNTL2" variants="A7XX-" usage="rp_blit">
 		<bitfield name="DISABLE_ON_WRONG_DIR" pos="0" type="boolean"/>
 		<bitfield name="FC_ENABLE" pos="1" type="boolean"/>
 	</reg32>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	<!-- 0x810c-0x810f invalid -->
 
@@ -3433,14 +3405,10 @@ to upconvert to 32b float internally?
 	<!-- A bit tentative but it's a color and it is followed by LRZ_CLEAR -->
 	<reg32 offset="0x8111" name="GRAS_LRZ_CLEAR_DEPTH_F32" type="float" variants="A7XX-"/>
 
-<<<<<<< HEAD
-	<reg32 offset="0x8113" name="GRAS_LRZ_DEPTH_BUFFER_INFO" variants="A7XX-" usage="rp_blit"/>
-=======
 	<reg32 offset="0x8113" name="GRAS_LRZ_DEPTH_BUFFER_INFO" variants="A7XX-" usage="rp_blit">
 		<bitfield name="DEPTH_FORMAT" low="0" high="2" type="a6xx_depth_format"/>
 		<bitfield name="UNK3" pos="3"/>
 	</reg32>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	<!-- Always written together and always equal 09510840 00000a62 -->
 	<reg32 offset="0x8120" name="GRAS_UNKNOWN_8120" variants="A7XX-" usage="cmd"/>
@@ -3514,11 +3482,7 @@ to upconvert to 32b float internally?
 		<bitfield name="RENDER_MODE" low="18" high="20" type="a6xx_render_mode"/>
 		<bitfield name="FORCE_LRZ_WRITE_DIS" pos="21" type="boolean"/>
 		<bitfield name="BUFFERS_LOCATION" low="22" high="23" type="a6xx_buffers_location"/>
-<<<<<<< HEAD
-		<bitfield name="LRZ_FEEDBACK_ZMODE_MASK" low="24" high="26"/>
-=======
 		<bitfield name="LRZ_FEEDBACK_ZMODE_MASK" low="24" high="26" type="a6xx_lrz_feedback_mask"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	</reg32>
 
 	<reg32 offset="0x8800" name="RB_BIN_CONTROL" variants="A7XX-" usage="rp_blit">
@@ -3526,11 +3490,7 @@ to upconvert to 32b float internally?
 		<bitfield name="BINH" low="8" high="14" shr="4" type="uint"/>
 		<bitfield name="RENDER_MODE" low="18" high="20" type="a6xx_render_mode"/>
 		<bitfield name="FORCE_LRZ_WRITE_DIS" pos="21" type="boolean"/>
-<<<<<<< HEAD
-		<bitfield name="LRZ_FEEDBACK_ZMODE_MASK" low="24" high="26"/>
-=======
 		<bitfield name="LRZ_FEEDBACK_ZMODE_MASK" low="24" high="26" type="a6xx_lrz_feedback_mask"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	</reg32>
 
 	<reg32 offset="0x8801" name="RB_RENDER_CNTL" variants="A6XX" usage="rp_blit">
@@ -3687,10 +3647,7 @@ to upconvert to 32b float internally?
 			<bitfield name="UNK10" pos="10"/>
 			<bitfield name="LOSSLESSCOMPEN" pos="11" type="boolean"/>
 			<bitfield name="COLOR_SWAP" low="13" high="14" type="a3xx_color_swap"/>
-<<<<<<< HEAD
-=======
 			<bitfield name="MUTABLEEN" pos="16" type="boolean" variants="A7XX-"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		</reg32>
 		<!--
 		at least in gmem, things seem to be aligned to pitch of 64..
@@ -3856,10 +3813,7 @@ to upconvert to 32b float internally?
 		<bitfield name="COLOR_SWAP" low="5" high="6" type="a3xx_color_swap"/>
 		<bitfield name="COLOR_FORMAT" low="7" high="14" type="a6xx_format"/>
 		<bitfield name="UNK15" pos="15" type="boolean"/>
-<<<<<<< HEAD
-=======
 		<bitfield name="MUTABLEEN" pos="16" type="boolean" variants="A7XX-"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	</reg32>
 	<reg64 offset="0x88d8" name="RB_BLIT_DST" type="waddress" align="64" usage="rp_blit"/>
 	<reg32 offset="0x88da" name="RB_BLIT_DST_PITCH" low="0" high="15" shr="6" type="uint" usage="rp_blit"/>
@@ -3976,20 +3930,12 @@ to upconvert to 32b float internally?
 	<reg32 offset="0x8c00" name="RB_2D_BLIT_CNTL" type="a6xx_2d_blit_cntl" usage="rp_blit"/>
 	<reg32 offset="0x8c01" name="RB_2D_UNKNOWN_8C01" low="0" high="31" usage="rp_blit"/>
 
-<<<<<<< HEAD
-	<bitset name="a6xx_2d_surf_info" inline="yes">
-=======
 	<bitset name="a6xx_2d_src_surf_info" inline="yes">
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		<bitfield name="COLOR_FORMAT" low="0" high="7" type="a6xx_format"/>
 		<bitfield name="TILE_MODE" low="8" high="9" type="a6xx_tile_mode"/>
 		<bitfield name="COLOR_SWAP" low="10" high="11" type="a3xx_color_swap"/>
 		<bitfield name="FLAGS" pos="12" type="boolean"/>
 		<bitfield name="SRGB" pos="13" type="boolean"/>
-<<<<<<< HEAD
-		<!-- the rest is only for src -->
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		<bitfield name="SAMPLES" low="14" high="15" type="a3xx_msaa_samples"/>
 		<bitfield name="FILTER" pos="16" type="boolean"/>
 		<bitfield name="UNK17" pos="17" type="boolean"/>
@@ -4000,13 +3946,6 @@ to upconvert to 32b float internally?
 		<bitfield name="UNK22" pos="22" type="boolean"/>
 		<bitfield name="UNK23" low="23" high="26"/>
 		<bitfield name="UNK28" pos="28" type="boolean"/>
-<<<<<<< HEAD
-	</bitset>
-
-	<!-- 0x8c02-0x8c16 invalid -->
-	<!-- TODO: RB_2D_DST_INFO has 17 valid bits (doesn't match a6xx_2d_surf_info) -->
-	<reg32 offset="0x8c17" name="RB_2D_DST_INFO" type="a6xx_2d_surf_info" usage="rp_blit"/>
-=======
 		<bitfield name="MUTABLEEN" pos="29" type="boolean" variants="A7XX-"/>
 	</bitset>
 
@@ -4022,7 +3961,6 @@ to upconvert to 32b float internally?
 
 	<!-- 0x8c02-0x8c16 invalid -->
 	<reg32 offset="0x8c17" name="RB_2D_DST_INFO" type="a6xx_2d_dst_surf_info" usage="rp_blit"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	<reg64 offset="0x8c18" name="RB_2D_DST" type="waddress" align="64" usage="rp_blit"/>
 	<reg32 offset="0x8c1a" name="RB_2D_DST_PITCH" low="0" high="15" shr="6" type="uint" usage="rp_blit"/>
 	<!-- this is a guess but seems likely (for NV12/IYUV): -->
@@ -4042,14 +3980,10 @@ to upconvert to 32b float internally?
 	<reg32 offset="0x8c2d" name="RB_2D_SRC_SOLID_C1" usage="rp_blit"/>
 	<reg32 offset="0x8c2e" name="RB_2D_SRC_SOLID_C2" usage="rp_blit"/>
 	<reg32 offset="0x8c2f" name="RB_2D_SRC_SOLID_C3" usage="rp_blit"/>
-<<<<<<< HEAD
-	<!-- 0x8c34-0x8dff invalid -->
-=======
 
 	<reg32 offset="0x8c34" name="RB_UNKNOWN_8C34" variants="A7XX-" usage="cmd"/>
 
 	<!-- 0x8c35-0x8dff invalid -->
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	<!-- always 0x1 ? either doesn't exist for a650 or write-only: -->
 	<reg32 offset="0x8e01" name="RB_UNKNOWN_8E01" usage="cmd"/>
@@ -5397,11 +5331,7 @@ to upconvert to 32b float internally?
 	badly named or the functionality moved in a6xx.  But downstream kernel
 	calls this "a6xx_sp_ps_tp_2d_cluster"
 	 -->
-<<<<<<< HEAD
-	<reg32 offset="0xb4c0" name="SP_PS_2D_SRC_INFO" type="a6xx_2d_surf_info" variants="A6XX" usage="rp_blit"/>
-=======
 	<reg32 offset="0xb4c0" name="SP_PS_2D_SRC_INFO" type="a6xx_2d_src_surf_info" variants="A6XX" usage="rp_blit"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	<reg32 offset="0xb4c1" name="SP_PS_2D_SRC_SIZE" variants="A6XX" usage="rp_blit">
 		<bitfield name="WIDTH" low="0" high="14" type="uint"/>
 		<bitfield name="HEIGHT" low="15" high="29" type="uint"/>
@@ -5412,11 +5342,7 @@ to upconvert to 32b float internally?
 		<bitfield name="PITCH" low="9" high="23" shr="6" type="uint"/>
 	</reg32>
 
-<<<<<<< HEAD
-	<reg32 offset="0xb2c0" name="SP_PS_2D_SRC_INFO" type="a6xx_2d_surf_info" variants="A7XX-" usage="rp_blit"/>
-=======
 	<reg32 offset="0xb2c0" name="SP_PS_2D_SRC_INFO" type="a6xx_2d_src_surf_info" variants="A7XX-" usage="rp_blit"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	<reg32 offset="0xb2c1" name="SP_PS_2D_SRC_SIZE" variants="A7XX">
 		<bitfield name="WIDTH" low="0" high="14" type="uint"/>
 		<bitfield name="HEIGHT" low="15" high="29" type="uint"/>
@@ -5459,16 +5385,12 @@ to upconvert to 32b float internally?
 	<!-- always 0x100000 or 0x1000000? -->
 	<reg32 offset="0xb600" name="TPL1_DBG_ECO_CNTL" low="0" high="25" usage="cmd"/>
 	<reg32 offset="0xb601" name="TPL1_ADDR_MODE_CNTL" type="a5xx_address_mode"/>
-<<<<<<< HEAD
-	<reg32 offset="0xb602" name="TPL1_DBG_ECO_CNTL1" usage="cmd"/>
-=======
 	<reg32 offset="0xb602" name="TPL1_DBG_ECO_CNTL1" usage="cmd">
 		<!-- Affects UBWC in some way, if BLIT_OP_SCALE is done with this bit set
 		     and if other blit is done without it - UBWC image may be copied incorrectly.
 		 -->
 		<bitfield name="TP_UBWC_FLAG_HINT" pos="18" type="boolean"/>
 	</reg32>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	<reg32 offset="0xb604" name="TPL1_NC_MODE_CNTL">
 		<bitfield name="MODE" pos="0" type="boolean"/>
 		<bitfield name="LOWER_BIT" low="1" high="2" type="uint"/>
@@ -5490,12 +5412,8 @@ to upconvert to 32b float internally?
 	<reg32 offset="0xb60b" name="TPL1_BICUBIC_WEIGHTS_TABLE_3" low="0" high="29" variants="A7XX" usage="cmd"/>
 	<reg32 offset="0xb60c" name="TPL1_BICUBIC_WEIGHTS_TABLE_4" low="0" high="29" variants="A7XX" usage="cmd"/>
 
-<<<<<<< HEAD
-	<array offset="0xb610" name="TPL1_PERFCTR_TP_SEL" stride="1" length="12"/>
-=======
 	<array offset="0xb610" name="TPL1_PERFCTR_TP_SEL" stride="1" length="12" variants="A6XX"/>
 	<array offset="0xb610" name="TPL1_PERFCTR_TP_SEL" stride="1" length="18" variants="A7XX"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	<!-- TODO: 4 more perfcntr sel at 0xb620 ? -->
 
@@ -5726,17 +5644,6 @@ to upconvert to 32b float internally?
 		<bitfield name="UNK6" pos="6" type="boolean"/>
 	</reg32>
 
-<<<<<<< HEAD
-	<reg32 offset="0xbb00" name="HLSQ_DRAW_CMD">
-		<bitfield name="STATE_ID" low="0" high="7"/>
-	</reg32>
-
-	<reg32 offset="0xbb01" name="HLSQ_DISPATCH_CMD">
-		<bitfield name="STATE_ID" low="0" high="7"/>
-	</reg32>
-
-	<reg32 offset="0xbb02" name="HLSQ_EVENT_CMD">
-=======
 	<reg32 offset="0xbb00" name="HLSQ_DRAW_CMD" variants="A6XX">
 		<bitfield name="STATE_ID" low="0" high="7"/>
 	</reg32>
@@ -5746,7 +5653,6 @@ to upconvert to 32b float internally?
 	</reg32>
 
 	<reg32 offset="0xbb02" name="HLSQ_EVENT_CMD" variants="A6XX">
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		<!-- I think only the low bit is actually used? -->
 		<bitfield name="STATE_ID" low="16" high="23"/>
 		<bitfield name="EVENT" low="0" high="6" type="vgt_event_type"/>
@@ -5779,8 +5685,6 @@ to upconvert to 32b float internally?
 		<bitfield name="GFX_BINDLESS" low="14" high="18" type="hex"/>
 	</reg32>
 
-<<<<<<< HEAD
-=======
 	<reg32 offset="0xab1c" name="HLSQ_DRAW_CMD" variants="A7XX-">
 		<bitfield name="STATE_ID" low="0" high="7"/>
 	</reg32>
@@ -5794,7 +5698,6 @@ to upconvert to 32b float internally?
 		<bitfield name="EVENT" low="0" high="6" type="vgt_event_type"/>
 	</reg32>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	<reg32 offset="0xab1f" name="HLSQ_INVALIDATE_CMD" variants="A7XX-" usage="cmd">
 		<doc>
 			This register clears pending loads queued up by
@@ -5963,11 +5866,7 @@ to upconvert to 32b float internally?
 	<reg32 offset="3" name="3"/>
 </domain>
 
-<<<<<<< HEAD
-<domain name="A6XX_TEX_CONST" width="32">
-=======
 <domain name="A6XX_TEX_CONST" width="32" varset="chip">
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	<doc>Texture constant dwords</doc>
 	<enum name="a6xx_tex_swiz"> <!-- same as a4xx? -->
 		<value name="A6XX_TEX_X" value="0"/>
@@ -6007,10 +5906,7 @@ to upconvert to 32b float internally?
 	<reg32 offset="1" name="1">
 		<bitfield name="WIDTH" low="0" high="14" type="uint"/>
 		<bitfield name="HEIGHT" low="15" high="29" type="uint"/>
-<<<<<<< HEAD
-=======
 		<bitfield name="MUTABLEEN" pos="31" type="boolean" variants="A7XX-"/>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	</reg32>
 	<reg32 offset="2" name="2">
 		<!--

@@ -206,10 +206,7 @@ Hardware Monitoring Kernel Drivers
    sch5636
    scpi-hwmon
    sfctemp
-<<<<<<< HEAD
-=======
    sg2042-mcu
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    sht15
    sht21
    sht3x

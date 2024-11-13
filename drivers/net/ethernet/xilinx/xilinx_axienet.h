@@ -29,18 +29,6 @@
 /* Configuration options */
 
 /* Accept all incoming packets. Default: disabled (cleared) */
-<<<<<<< HEAD
-#define XAE_OPTION_PROMISC			(1 << 0)
-
-/* Jumbo frame support for Tx & Rx. Default: disabled (cleared) */
-#define XAE_OPTION_JUMBO			(1 << 1)
-
-/* VLAN Rx & Tx frame support. Default: disabled (cleared) */
-#define XAE_OPTION_VLAN				(1 << 2)
-
-/* Enable recognition of flow control frames on Rx. Default: enabled (set) */
-#define XAE_OPTION_FLOW_CONTROL			(1 << 4)
-=======
 #define XAE_OPTION_PROMISC			BIT(0)
 
 /* Jumbo frame support for Tx & Rx. Default: disabled (cleared) */
@@ -51,25 +39,16 @@
 
 /* Enable recognition of flow control frames on Rx. Default: enabled (set) */
 #define XAE_OPTION_FLOW_CONTROL			BIT(4)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Strip FCS and PAD from incoming frames. Note: PAD from VLAN frames is not
  * stripped. Default: disabled (set)
  */
-<<<<<<< HEAD
-#define XAE_OPTION_FCS_STRIP			(1 << 5)
-=======
 #define XAE_OPTION_FCS_STRIP			BIT(5)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Generate FCS field and add PAD automatically for outgoing frames.
  * Default: enabled (set)
  */
-<<<<<<< HEAD
-#define XAE_OPTION_FCS_INSERT			(1 << 6)
-=======
 #define XAE_OPTION_FCS_INSERT			BIT(6)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Enable Length/Type error checking for incoming frames. When this option is
  * set, the MAC will filter frames that have a mismatched type/length field
@@ -77,15 +56,6 @@
  * types of frames are encountered. When this option is cleared, the MAC will
  * allow these types of frames to be received. Default: enabled (set)
  */
-<<<<<<< HEAD
-#define XAE_OPTION_LENTYPE_ERR			(1 << 7)
-
-/* Enable the transmitter. Default: enabled (set) */
-#define XAE_OPTION_TXEN				(1 << 11)
-
-/*  Enable the receiver. Default: enabled (set) */
-#define XAE_OPTION_RXEN				(1 << 12)
-=======
 #define XAE_OPTION_LENTYPE_ERR			BIT(7)
 
 /* Enable the transmitter. Default: enabled (set) */
@@ -93,7 +63,6 @@
 
 /*  Enable the receiver. Default: enabled (set) */
 #define XAE_OPTION_RXEN				BIT(12)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*  Default options set when device is initialized or reset */
 #define XAE_OPTION_DEFAULTS				   \
@@ -187,10 +156,7 @@
 #define XAE_TPID0_OFFSET	0x00000028 /* VLAN TPID0 register */
 #define XAE_TPID1_OFFSET	0x0000002C /* VLAN TPID1 register */
 #define XAE_PPST_OFFSET		0x00000030 /* PCS PMA Soft Temac Status Reg */
-<<<<<<< HEAD
-=======
 #define XAE_STATS_OFFSET	0x00000200 /* Statistics counters */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define XAE_RCW0_OFFSET		0x00000400 /* Rx Configuration Word 0 */
 #define XAE_RCW1_OFFSET		0x00000404 /* Rx Configuration Word 1 */
 #define XAE_TC_OFFSET		0x00000408 /* Tx Configuration */
@@ -198,10 +164,7 @@
 #define XAE_EMMC_OFFSET		0x00000410 /* MAC speed configuration */
 #define XAE_PHYC_OFFSET		0x00000414 /* RX Max Frame Configuration */
 #define XAE_ID_OFFSET		0x000004F8 /* Identification register */
-<<<<<<< HEAD
-=======
 #define XAE_ABILITY_OFFSET	0x000004FC /* Ability Register offset */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define XAE_MDIO_MC_OFFSET	0x00000500 /* MDIO Setup */
 #define XAE_MDIO_MCR_OFFSET	0x00000504 /* MDIO Control */
 #define XAE_MDIO_MWD_OFFSET	0x00000508 /* MDIO Write Data */
@@ -212,11 +175,8 @@
 #define XAE_FFE_OFFSET		0x0000070C /* Frame Filter Enable */
 #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
 #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
-<<<<<<< HEAD
-=======
 #define XAE_AM0_OFFSET		0x00000750 /* Frame Filter Mask Value Bytes 3-0 */
 #define XAE_AM1_OFFSET		0x00000754 /* Frame Filter Mask Value Bytes 7-4 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define XAE_TX_VLAN_DATA_OFFSET 0x00004000 /* TX VLAN data table address */
 #define XAE_RX_VLAN_DATA_OFFSET 0x00008000 /* RX VLAN data table address */
@@ -328,8 +288,6 @@
 #define XAE_PHYC_SGLINKSPD_100		0x40000000 /* SGMII link 100 Mbit */
 #define XAE_PHYC_SGLINKSPD_1000		0x80000000 /* SGMII link 1000 Mbit */
 
-<<<<<<< HEAD
-=======
 /* Bit masks for Axi Ethernet ability register */
 #define XAE_ABILITY_PFC			BIT(16)
 #define XAE_ABILITY_FRAME_FILTER	BIT(10)
@@ -340,7 +298,6 @@
 #define XAE_ABILITY_100M		BIT(1)
 #define XAE_ABILITY_10M			BIT(0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Bit masks for Axi Ethernet MDIO interface MC register */
 #define XAE_MDIO_MC_MDIOEN_MASK		0x00000040 /* MII management enable */
 #define XAE_MDIO_MC_CLOCK_DIVIDE_MAX	0x3F	   /* Maximum MDIO divisor */
@@ -384,20 +341,12 @@
 #define XAE_MULTICAST_CAM_TABLE_NUM	4
 
 /* Axi Ethernet Synthesis features */
-<<<<<<< HEAD
-#define XAE_FEATURE_PARTIAL_RX_CSUM	(1 << 0)
-#define XAE_FEATURE_PARTIAL_TX_CSUM	(1 << 1)
-#define XAE_FEATURE_FULL_RX_CSUM	(1 << 2)
-#define XAE_FEATURE_FULL_TX_CSUM	(1 << 3)
-#define XAE_FEATURE_DMA_64BIT		(1 << 4)
-=======
 #define XAE_FEATURE_PARTIAL_RX_CSUM	BIT(0)
 #define XAE_FEATURE_PARTIAL_TX_CSUM	BIT(1)
 #define XAE_FEATURE_FULL_RX_CSUM	BIT(2)
 #define XAE_FEATURE_FULL_TX_CSUM	BIT(3)
 #define XAE_FEATURE_DMA_64BIT		BIT(4)
 #define XAE_FEATURE_STATS		BIT(5)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define XAE_NO_CSUM_OFFLOAD		0
 
@@ -411,8 +360,6 @@
 #define XLNX_MII_STD_SELECT_REG		0x11
 #define XLNX_MII_STD_SELECT_SGMII	BIT(0)
 
-<<<<<<< HEAD
-=======
 /* enum temac_stat - TEMAC statistics counters
  *
  * Index of statistics counters within the TEMAC. This must match the
@@ -468,7 +415,6 @@ enum temac_stat {
 	STAT_COUNT,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct axidma_bd - Axi Dma buffer descriptor layout
  * @next:         MM2S/S2MM Next Descriptor Pointer
@@ -559,8 +505,6 @@ struct skbuf_dma_descriptor {
  * @tx_packets: TX packet count for statistics
  * @tx_bytes:	TX byte count for statistics
  * @tx_stat_sync: Synchronization object for TX stats
-<<<<<<< HEAD
-=======
  * @hw_stat_base: Base offset for statistics counters. This may be nonzero if
  *                the statistics counteres were reset or wrapped around.
  * @hw_last_counter: Last-seen value of each statistic counter
@@ -571,7 +515,6 @@ struct skbuf_dma_descriptor {
  * @stats_lock: Lock for @hw_stats_seqcount
  * @stats_work: Work for reading the hardware statistics counters often enough
  *              to catch overflows.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @dma_err_task: Work structure to process Axi DMA errors
  * @stopping:   Set when @dma_err_task shouldn't do anything because we are
  *              about to stop the device.
@@ -586,11 +529,6 @@ struct skbuf_dma_descriptor {
  *		  supported, the maximum frame size would be 9k. Else it is
  *		  1522 bytes (assuming support for basic VLAN)
  * @rxmem:	Stores rx memory size for jumbo frame handling.
-<<<<<<< HEAD
- * @csum_offload_on_tx_path:	Stores the checksum selection on TX side.
- * @csum_offload_on_rx_path:	Stores the checksum selection on RX side.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @coalesce_count_rx:	Store the irq coalesce on RX side.
  * @coalesce_usec_rx:	IRQ coalesce delay for RX
  * @coalesce_count_tx:	Store the irq coalesce on TX side.
@@ -648,8 +586,6 @@ struct axienet_local {
 	u64_stats_t tx_bytes;
 	struct u64_stats_sync tx_stat_sync;
 
-<<<<<<< HEAD
-=======
 	u64 hw_stat_base[STAT_COUNT];
 	u32 hw_last_counter[STAT_COUNT];
 	seqcount_mutex_t hw_stats_seqcount;
@@ -657,7 +593,6 @@ struct axienet_local {
 	struct delayed_work stats_work;
 	bool reset_in_progress;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct work_struct dma_err_task;
 	bool stopping;
 
@@ -672,12 +607,6 @@ struct axienet_local {
 	u32 max_frm_size;
 	u32 rxmem;
 
-<<<<<<< HEAD
-	int csum_offload_on_tx_path;
-	int csum_offload_on_rx_path;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 coalesce_count_rx;
 	u32 coalesce_usec_rx;
 	u32 coalesce_count_tx;

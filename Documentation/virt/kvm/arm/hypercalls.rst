@@ -44,8 +44,6 @@ Provides a discovery mechanism for other KVM/arm64 hypercalls.
 ----------------------------------------
 
 See ptp_kvm.rst
-<<<<<<< HEAD
-=======
 
 ``ARM_SMCCC_KVM_FUNC_HYP_MEMINFO``
 ----------------------------------
@@ -144,4 +142,3 @@ region is equal to the memory protection granule advertised by
 |                     |          |    +---------------------------------------------+
 |                     |          |    | ``INVALID_PARAMETER (-3)``                  |
 +---------------------+----------+----+---------------------------------------------+
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

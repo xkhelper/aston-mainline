@@ -49,11 +49,7 @@ static bool start_test(char *addr_str,
 		goto err;
 
 	/* connect to server */
-<<<<<<< HEAD
-	*cli_fd = connect_to_fd_opts(*srv_fd, SOCK_STREAM, cli_opts);
-=======
 	*cli_fd = connect_to_fd_opts(*srv_fd, cli_opts);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ASSERT_NEQ(*cli_fd, -1, "connect_to_fd_opts"))
 		goto err;
 
@@ -289,11 +285,7 @@ static void test_dctcp_fallback(void)
 	dctcp_skel = bpf_dctcp__open();
 	if (!ASSERT_OK_PTR(dctcp_skel, "dctcp_skel"))
 		return;
-<<<<<<< HEAD
-	strcpy(dctcp_skel->rodata->fallback, "cubic");
-=======
 	strcpy(dctcp_skel->rodata->fallback_cc, "cubic");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ASSERT_OK(bpf_dctcp__load(dctcp_skel), "bpf_dctcp__load"))
 		goto done;
 

@@ -31,10 +31,7 @@ struct ice_dpll_pin {
 	struct dpll_pin_properties prop;
 	u32 freq;
 	s32 phase_adjust;
-<<<<<<< HEAD
-=======
 	u8 status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /** ice_dpll - store info required for DPLL control

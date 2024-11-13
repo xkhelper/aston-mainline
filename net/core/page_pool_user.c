@@ -4,19 +4,12 @@
 #include <linux/netdevice.h>
 #include <linux/xarray.h>
 #include <net/net_debug.h>
-<<<<<<< HEAD
-#include <net/page_pool/types.h>
-#include <net/page_pool/helpers.h>
-#include <net/sock.h>
-
-=======
 #include <net/netdev_rx_queue.h>
 #include <net/page_pool/helpers.h>
 #include <net/page_pool/types.h>
 #include <net/sock.h>
 
 #include "devmem.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "page_pool_priv.h"
 #include "netdev-genl-gen.h"
 
@@ -221,10 +214,7 @@ static int
 page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
 		  const struct genl_info *info)
 {
-<<<<<<< HEAD
-=======
 	struct net_devmem_dmabuf_binding *binding = pool->mp_priv;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	size_t inflight, refsz;
 	void *hdr;
 
@@ -254,12 +244,9 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
 			 pool->user.detach_time))
 		goto err_cancel;
 
-<<<<<<< HEAD
-=======
 	if (binding && nla_put_u32(rsp, NETDEV_A_PAGE_POOL_DMABUF, binding->id))
 		goto err_cancel;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	genlmsg_end(rsp, hdr);
 
 	return 0;
@@ -363,8 +350,6 @@ void page_pool_unlist(struct page_pool *pool)
 	mutex_unlock(&page_pools_lock);
 }
 
-<<<<<<< HEAD
-=======
 int page_pool_check_memory_provider(struct net_device *dev,
 				    struct netdev_rx_queue *rxq)
 {
@@ -389,7 +374,6 @@ int page_pool_check_memory_provider(struct net_device *dev,
 	return -ENODATA;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void page_pool_unreg_netdev_wipe(struct net_device *netdev)
 {
 	struct page_pool *pool;

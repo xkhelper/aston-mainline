@@ -58,10 +58,7 @@ int host1x_memory_context_list_init(struct host1x *host1x)
 		ctx->dev.parent = host1x->dev;
 		ctx->dev.release = host1x_memory_context_release;
 
-<<<<<<< HEAD
-=======
 		ctx->dev.dma_parms = &ctx->dma_parms;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dma_set_max_seg_size(&ctx->dev, UINT_MAX);
 
 		err = device_add(&ctx->dev);

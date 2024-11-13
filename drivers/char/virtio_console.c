@@ -1093,10 +1093,6 @@ static const struct file_operations port_fops = {
 	.poll  = port_fops_poll,
 	.release = port_fops_release,
 	.fasync = port_fops_fasync,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -2010,33 +2006,16 @@ static int virtcons_probe(struct virtio_device *vdev)
 		multiport = true;
 	}
 
-<<<<<<< HEAD
-	err = init_vqs(portdev);
-	if (err < 0) {
-		dev_err(&vdev->dev, "Error %d initializing vqs\n", err);
-		goto free_chrdev;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_init(&portdev->ports_lock);
 	INIT_LIST_HEAD(&portdev->ports);
 	INIT_LIST_HEAD(&portdev->list);
 
-<<<<<<< HEAD
-	virtio_device_ready(portdev->vdev);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_WORK(&portdev->config_work, &config_work_handler);
 	INIT_WORK(&portdev->control_work, &control_work_handler);
 
 	if (multiport) {
 		spin_lock_init(&portdev->c_ivq_lock);
 		spin_lock_init(&portdev->c_ovq_lock);
-<<<<<<< HEAD
-
-=======
 	}
 
 	err = init_vqs(portdev);
@@ -2048,7 +2027,6 @@ static int virtcons_probe(struct virtio_device *vdev)
 	virtio_device_ready(portdev->vdev);
 
 	if (multiport) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = fill_queue(portdev->c_ivq, &portdev->c_ivq_lock);
 		if (err < 0) {
 			dev_err(&vdev->dev,

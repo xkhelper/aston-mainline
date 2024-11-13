@@ -1117,8 +1117,6 @@ ath12k_htt_print_tx_tqm_pdev_stats_tlv(const void *tag_buf, u16 tag_len,
 	stats_req->buf_len = len;
 }
 
-<<<<<<< HEAD
-=======
 static void
 ath12k_htt_print_tx_de_cmn_stats_tlv(const void *tag_buf, u16 tag_len,
 				     struct debug_htt_stats_req *stats_req)
@@ -1449,7 +1447,6 @@ ath12k_htt_print_tx_de_compl_stats_tlv(const void *tag_buf, u16 tag_len,
 	stats_req->buf_len = len;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
 					  u16 tag, u16 len, const void *tag_buf,
 					  void *user_data)
@@ -1531,8 +1528,6 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
 	case HTT_STATS_TX_TQM_PDEV_TAG:
 		ath12k_htt_print_tx_tqm_pdev_stats_tlv(tag_buf, len, stats_req);
 		break;
-<<<<<<< HEAD
-=======
 	case HTT_STATS_TX_DE_CMN_TAG:
 		ath12k_htt_print_tx_de_cmn_stats_tlv(tag_buf, len, stats_req);
 		break;
@@ -1557,7 +1552,6 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
 	case HTT_STATS_TX_DE_COMPL_STATS_TAG:
 		ath12k_htt_print_tx_de_compl_stats_tlv(tag_buf, len, stats_req);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		break;
 	}

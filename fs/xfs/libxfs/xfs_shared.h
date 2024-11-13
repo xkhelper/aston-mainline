@@ -224,12 +224,9 @@ struct xfs_ino_geometry {
 	/* precomputed value for di_flags2 */
 	uint64_t	new_diflags2;
 
-<<<<<<< HEAD
-=======
 	/* minimum folio order of a page cache allocation */
 	unsigned int	min_folio_order;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #endif /* __XFS_SHARED_H__ */

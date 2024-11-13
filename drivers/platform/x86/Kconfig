@@ -1000,12 +1000,8 @@ config TOPSTAR_LAPTOP
 
 config SERIAL_MULTI_INSTANTIATE
 	tristate "Serial bus multi instantiate pseudo device driver"
-<<<<<<< HEAD
-	depends on I2C && SPI && ACPI
-=======
 	depends on ACPI
 	depends on (I2C && !SPI) || (!I2C && SPI) || (I2C && SPI)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Some ACPI-based systems list multiple devices in a single ACPI
 	  firmware-node. This driver will instantiate separate clients

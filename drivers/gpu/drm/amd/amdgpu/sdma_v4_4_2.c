@@ -46,8 +46,6 @@
 MODULE_FIRMWARE("amdgpu/sdma_4_4_2.bin");
 MODULE_FIRMWARE("amdgpu/sdma_4_4_5.bin");
 
-<<<<<<< HEAD
-=======
 static const struct amdgpu_hwip_reg_entry sdma_reg_list_4_4_2[] = {
 	SOC15_REG_ENTRY_STR(GC, 0, regSDMA_STATUS_REG),
 	SOC15_REG_ENTRY_STR(GC, 0, regSDMA_STATUS1_REG),
@@ -95,7 +93,6 @@ static const struct amdgpu_hwip_reg_entry sdma_reg_list_4_4_2[] = {
 	SOC15_REG_ENTRY_STR(GC, 0, regSDMA_VM_CNTL)
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define mmSMNAID_AID0_MCA_SMU 0x03b30400
 
 #define WREG32_SDMA(instance, offset, value) \
@@ -1341,11 +1338,8 @@ static int sdma_v4_4_2_sw_init(void *handle)
 	int r, i;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 	u32 aid_id;
-<<<<<<< HEAD
-=======
 	uint32_t reg_count = ARRAY_SIZE(sdma_reg_list_4_4_2);
 	uint32_t *ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* SDMA trap event */
 	for (i = 0; i < adev->sdma.num_inst_per_aid; i++) {
@@ -1441,8 +1435,6 @@ static int sdma_v4_4_2_sw_init(void *handle)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Allocate memory for SDMA IP Dump buffer */
 	ptr = kcalloc(adev->sdma.num_instances * reg_count, sizeof(uint32_t), GFP_KERNEL);
 	if (ptr)
@@ -1450,7 +1442,6 @@ static int sdma_v4_4_2_sw_init(void *handle)
 	else
 		DRM_ERROR("Failed to allocated memory for SDMA IP Dump\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return r;
 }
 
@@ -1471,11 +1462,8 @@ static int sdma_v4_4_2_sw_fini(void *handle)
 	else
 		amdgpu_sdma_destroy_inst_ctx(adev, false);
 
-<<<<<<< HEAD
-=======
 	kfree(adev->sdma.ip_dump);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1869,8 +1857,6 @@ static void sdma_v4_4_2_get_clockgating_state(void *handle, u64 *flags)
 		*flags |= AMD_CG_SUPPORT_SDMA_LS;
 }
 
-<<<<<<< HEAD
-=======
 static void sdma_v4_4_2_print_ip_state(void *handle, struct drm_printer *p)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
@@ -1913,7 +1899,6 @@ static void sdma_v4_4_2_dump_ip_state(void *handle)
 	amdgpu_gfx_off_ctrl(adev, true);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct amd_ip_funcs sdma_v4_4_2_ip_funcs = {
 	.name = "sdma_v4_4_2",
 	.early_init = sdma_v4_4_2_early_init,
@@ -1930,11 +1915,8 @@ const struct amd_ip_funcs sdma_v4_4_2_ip_funcs = {
 	.set_clockgating_state = sdma_v4_4_2_set_clockgating_state,
 	.set_powergating_state = sdma_v4_4_2_set_powergating_state,
 	.get_clockgating_state = sdma_v4_4_2_get_clockgating_state,
-<<<<<<< HEAD
-=======
 	.dump_ip_state = sdma_v4_4_2_dump_ip_state,
 	.print_ip_state = sdma_v4_4_2_print_ip_state,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ring_funcs sdma_v4_4_2_ring_funcs = {
@@ -2261,11 +2243,7 @@ static void sdma_v4_4_2_inst_query_ras_error_count(struct amdgpu_device *adev,
 					AMDGPU_RAS_ERROR__MULTI_UNCORRECTABLE,
 					&ue_count);
 
-<<<<<<< HEAD
-	amdgpu_ras_error_statistic_ue_count(err_data, &mcm_info, NULL, ue_count);
-=======
 	amdgpu_ras_error_statistic_ue_count(err_data, &mcm_info, ue_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void sdma_v4_4_2_query_ras_error_count(struct amdgpu_device *adev,

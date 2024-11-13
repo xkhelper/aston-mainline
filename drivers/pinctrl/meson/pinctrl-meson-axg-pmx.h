@@ -17,11 +17,7 @@ struct meson_pmx_bank {
 };
 
 struct meson_axg_pmx_data {
-<<<<<<< HEAD
-	struct meson_pmx_bank *pmx_banks;
-=======
 	const struct meson_pmx_bank *pmx_banks;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int num_pmx_banks;
 };
 

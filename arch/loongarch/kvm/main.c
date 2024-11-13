@@ -261,11 +261,7 @@ long kvm_arch_dev_ioctl(struct file *filp,
 	return -ENOIOCTLCMD;
 }
 
-<<<<<<< HEAD
-int kvm_arch_hardware_enable(void)
-=======
 int kvm_arch_enable_virtualization_cpu(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long env, gcfg = 0;
 
@@ -304,11 +300,7 @@ int kvm_arch_enable_virtualization_cpu(void)
 	return 0;
 }
 
-<<<<<<< HEAD
-void kvm_arch_hardware_disable(void)
-=======
 void kvm_arch_disable_virtualization_cpu(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	write_csr_gcfg(0);
 	write_csr_gstat(0);

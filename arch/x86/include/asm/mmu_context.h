@@ -88,9 +88,6 @@ static inline void switch_ldt(struct mm_struct *prev, struct mm_struct *next)
 #ifdef CONFIG_ADDRESS_MASKING
 static inline unsigned long mm_lam_cr3_mask(struct mm_struct *mm)
 {
-<<<<<<< HEAD
-	return mm->context.lam_cr3_mask;
-=======
 	/*
 	 * When switch_mm_irqs_off() is called for a kthread, it may race with
 	 * LAM enablement. switch_mm_irqs_off() uses the LAM mask to do two
@@ -98,7 +95,6 @@ static inline unsigned long mm_lam_cr3_mask(struct mm_struct *mm)
 	 * reads a single value for both.
 	 */
 	return READ_ONCE(mm->context.lam_cr3_mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void dup_lam(struct mm_struct *oldmm, struct mm_struct *mm)
@@ -242,14 +238,6 @@ static inline bool is_64bit_mm(struct mm_struct *mm)
 }
 #endif
 
-<<<<<<< HEAD
-static inline void arch_unmap(struct mm_struct *mm, unsigned long start,
-			      unsigned long end)
-{
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * We only want to enforce protection keys on the current process
  * because we effectively have no access to PKRU for other

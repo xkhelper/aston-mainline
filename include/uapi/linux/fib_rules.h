@@ -67,10 +67,7 @@ enum {
 	FRA_IP_PROTO,	/* ip proto */
 	FRA_SPORT_RANGE, /* sport */
 	FRA_DPORT_RANGE, /* dport */
-<<<<<<< HEAD
-=======
 	FRA_DSCP,	/* dscp */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__FRA_MAX
 };
 

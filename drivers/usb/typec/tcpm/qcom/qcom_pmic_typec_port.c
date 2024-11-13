@@ -432,10 +432,6 @@ static int qcom_pmic_typec_port_get_cc(struct tcpc_dev *tcpc,
 			val = TYPEC_CC_RP_DEF;
 			break;
 		}
-<<<<<<< HEAD
-		val = TYPEC_CC_RP_DEF;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (misc & CC_ORIENTATION)

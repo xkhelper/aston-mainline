@@ -36,9 +36,6 @@ EXPORT_SYMBOL(generic_ro_fops);
 
 static inline bool unsigned_offsets(struct file *file)
 {
-<<<<<<< HEAD
-	return file->f_mode & FMODE_UNSIGNED_OFFSET;
-=======
 	return file->f_op->fop_flags & FOP_UNSIGNED_OFFSET;
 }
 
@@ -69,7 +66,6 @@ static loff_t vfs_setpos_cookie(struct file *file, loff_t offset,
 			*cookie = 0;
 	}
 	return offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -86,26 +82,11 @@ static loff_t vfs_setpos_cookie(struct file *file, loff_t offset,
  */
 loff_t vfs_setpos(struct file *file, loff_t offset, loff_t maxsize)
 {
-<<<<<<< HEAD
-	if (offset < 0 && !unsigned_offsets(file))
-		return -EINVAL;
-	if (offset > maxsize)
-		return -EINVAL;
-
-	if (offset != file->f_pos) {
-		file->f_pos = offset;
-		file->f_version = 0;
-	}
-	return offset;
-=======
 	return vfs_setpos_cookie(file, offset, maxsize, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(vfs_setpos);
 
 /**
-<<<<<<< HEAD
-=======
  * must_set_pos - check whether f_pos has to be updated
  * @file: file to seek on
  * @offset: offset to use
@@ -159,7 +140,6 @@ static int must_set_pos(struct file *file, loff_t *offset, int whence, loff_t eo
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * generic_file_llseek_size - generic llseek implementation for regular files
  * @file:	file structure to seek on
  * @offset:	file offset to seek to
@@ -179,47 +159,6 @@ loff_t
 generic_file_llseek_size(struct file *file, loff_t offset, int whence,
 		loff_t maxsize, loff_t eof)
 {
-<<<<<<< HEAD
-	switch (whence) {
-	case SEEK_END:
-		offset += eof;
-		break;
-	case SEEK_CUR:
-		/*
-		 * Here we special-case the lseek(fd, 0, SEEK_CUR)
-		 * position-querying operation.  Avoid rewriting the "same"
-		 * f_pos value back to the file because a concurrent read(),
-		 * write() or lseek() might have altered it
-		 */
-		if (offset == 0)
-			return file->f_pos;
-		/*
-		 * f_lock protects against read/modify/write race with other
-		 * SEEK_CURs. Note that parallel writes and reads behave
-		 * like SEEK_SET.
-		 */
-		spin_lock(&file->f_lock);
-		offset = vfs_setpos(file, file->f_pos + offset, maxsize);
-		spin_unlock(&file->f_lock);
-		return offset;
-	case SEEK_DATA:
-		/*
-		 * In the generic case the entire file is data, so as long as
-		 * offset isn't at the end of the file then the offset is data.
-		 */
-		if ((unsigned long long)offset >= eof)
-			return -ENXIO;
-		break;
-	case SEEK_HOLE:
-		/*
-		 * There is a virtual hole at the end of the file, so as long as
-		 * offset isn't i_size or larger, return i_size.
-		 */
-		if ((unsigned long long)offset >= eof)
-			return -ENXIO;
-		offset = eof;
-		break;
-=======
 	int ret;
 
 	ret = must_set_pos(file, &offset, whence, eof);
@@ -236,7 +175,6 @@ generic_file_llseek_size(struct file *file, loff_t offset, int whence,
 		 */
 		guard(spinlock)(&file->f_lock);
 		return vfs_setpos(file, file->f_pos + offset, maxsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return vfs_setpos(file, offset, maxsize);
@@ -244,8 +182,6 @@ generic_file_llseek_size(struct file *file, loff_t offset, int whence,
 EXPORT_SYMBOL(generic_file_llseek_size);
 
 /**
-<<<<<<< HEAD
-=======
  * generic_llseek_cookie - versioned llseek implementation
  * @file:	file structure to seek on
  * @offset:	file offset to seek to
@@ -291,7 +227,6 @@ loff_t generic_llseek_cookie(struct file *file, loff_t offset, int whence,
 EXPORT_SYMBOL(generic_llseek_cookie);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * generic_file_llseek - generic llseek implementation for regular files
  * @file:	file structure to seek on
  * @offset:	file offset to seek to
@@ -430,15 +365,8 @@ loff_t default_llseek(struct file *file, loff_t offset, int whence)
 	}
 	retval = -EINVAL;
 	if (offset >= 0 || unsigned_offsets(file)) {
-<<<<<<< HEAD
-		if (offset != file->f_pos) {
-			file->f_pos = offset;
-			file->f_version = 0;
-		}
-=======
 		if (offset != file->f_pos)
 			file->f_pos = offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		retval = offset;
 	}
 out:
@@ -459,20 +387,12 @@ static off_t ksys_lseek(unsigned int fd, off_t offset, unsigned int whence)
 {
 	off_t retval;
 	struct fd f = fdget_pos(fd);
-<<<<<<< HEAD
-	if (!f.file)
-=======
 	if (!fd_file(f))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 
 	retval = -EINVAL;
 	if (whence <= SEEK_MAX) {
-<<<<<<< HEAD
-		loff_t res = vfs_llseek(f.file, offset, whence);
-=======
 		loff_t res = vfs_llseek(fd_file(f), offset, whence);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		retval = res;
 		if (res != (loff_t)retval)
 			retval = -EOVERFLOW;	/* LFS: should only happen on 32 bit platforms */
@@ -503,22 +423,14 @@ SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
 	struct fd f = fdget_pos(fd);
 	loff_t offset;
 
-<<<<<<< HEAD
-	if (!f.file)
-=======
 	if (!fd_file(f))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 
 	retval = -EINVAL;
 	if (whence > SEEK_MAX)
 		goto out_putf;
 
-<<<<<<< HEAD
-	offset = vfs_llseek(f.file, ((loff_t) offset_high << 32) | offset_low,
-=======
 	offset = vfs_llseek(fd_file(f), ((loff_t) offset_high << 32) | offset_low,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			whence);
 
 	retval = (int)offset;
@@ -791,26 +703,15 @@ ssize_t ksys_read(unsigned int fd, char __user *buf, size_t count)
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 
-<<<<<<< HEAD
-	if (f.file) {
-		loff_t pos, *ppos = file_ppos(f.file);
-=======
 	if (fd_file(f)) {
 		loff_t pos, *ppos = file_ppos(fd_file(f));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ppos) {
 			pos = *ppos;
 			ppos = &pos;
 		}
-<<<<<<< HEAD
-		ret = vfs_read(f.file, buf, count, ppos);
-		if (ret >= 0 && ppos)
-			f.file->f_pos = pos;
-=======
 		ret = vfs_read(fd_file(f), buf, count, ppos);
 		if (ret >= 0 && ppos)
 			fd_file(f)->f_pos = pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput_pos(f);
 	}
 	return ret;
@@ -826,26 +727,15 @@ ssize_t ksys_write(unsigned int fd, const char __user *buf, size_t count)
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 
-<<<<<<< HEAD
-	if (f.file) {
-		loff_t pos, *ppos = file_ppos(f.file);
-=======
 	if (fd_file(f)) {
 		loff_t pos, *ppos = file_ppos(fd_file(f));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ppos) {
 			pos = *ppos;
 			ppos = &pos;
 		}
-<<<<<<< HEAD
-		ret = vfs_write(f.file, buf, count, ppos);
-		if (ret >= 0 && ppos)
-			f.file->f_pos = pos;
-=======
 		ret = vfs_write(fd_file(f), buf, count, ppos);
 		if (ret >= 0 && ppos)
 			fd_file(f)->f_pos = pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput_pos(f);
 	}
 
@@ -868,17 +758,10 @@ ssize_t ksys_pread64(unsigned int fd, char __user *buf, size_t count,
 		return -EINVAL;
 
 	f = fdget(fd);
-<<<<<<< HEAD
-	if (f.file) {
-		ret = -ESPIPE;
-		if (f.file->f_mode & FMODE_PREAD)
-			ret = vfs_read(f.file, buf, count, &pos);
-=======
 	if (fd_file(f)) {
 		ret = -ESPIPE;
 		if (fd_file(f)->f_mode & FMODE_PREAD)
 			ret = vfs_read(fd_file(f), buf, count, &pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 
@@ -909,17 +792,10 @@ ssize_t ksys_pwrite64(unsigned int fd, const char __user *buf,
 		return -EINVAL;
 
 	f = fdget(fd);
-<<<<<<< HEAD
-	if (f.file) {
-		ret = -ESPIPE;
-		if (f.file->f_mode & FMODE_PWRITE)  
-			ret = vfs_write(f.file, buf, count, &pos);
-=======
 	if (fd_file(f)) {
 		ret = -ESPIPE;
 		if (fd_file(f)->f_mode & FMODE_PWRITE)
 			ret = vfs_write(fd_file(f), buf, count, &pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 
@@ -1202,26 +1078,15 @@ static ssize_t do_readv(unsigned long fd, const struct iovec __user *vec,
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 
-<<<<<<< HEAD
-	if (f.file) {
-		loff_t pos, *ppos = file_ppos(f.file);
-=======
 	if (fd_file(f)) {
 		loff_t pos, *ppos = file_ppos(fd_file(f));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ppos) {
 			pos = *ppos;
 			ppos = &pos;
 		}
-<<<<<<< HEAD
-		ret = vfs_readv(f.file, vec, vlen, ppos, flags);
-		if (ret >= 0 && ppos)
-			f.file->f_pos = pos;
-=======
 		ret = vfs_readv(fd_file(f), vec, vlen, ppos, flags);
 		if (ret >= 0 && ppos)
 			fd_file(f)->f_pos = pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput_pos(f);
 	}
 
@@ -1237,26 +1102,15 @@ static ssize_t do_writev(unsigned long fd, const struct iovec __user *vec,
 	struct fd f = fdget_pos(fd);
 	ssize_t ret = -EBADF;
 
-<<<<<<< HEAD
-	if (f.file) {
-		loff_t pos, *ppos = file_ppos(f.file);
-=======
 	if (fd_file(f)) {
 		loff_t pos, *ppos = file_ppos(fd_file(f));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ppos) {
 			pos = *ppos;
 			ppos = &pos;
 		}
-<<<<<<< HEAD
-		ret = vfs_writev(f.file, vec, vlen, ppos, flags);
-		if (ret >= 0 && ppos)
-			f.file->f_pos = pos;
-=======
 		ret = vfs_writev(fd_file(f), vec, vlen, ppos, flags);
 		if (ret >= 0 && ppos)
 			fd_file(f)->f_pos = pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput_pos(f);
 	}
 
@@ -1282,17 +1136,10 @@ static ssize_t do_preadv(unsigned long fd, const struct iovec __user *vec,
 		return -EINVAL;
 
 	f = fdget(fd);
-<<<<<<< HEAD
-	if (f.file) {
-		ret = -ESPIPE;
-		if (f.file->f_mode & FMODE_PREAD)
-			ret = vfs_readv(f.file, vec, vlen, &pos, flags);
-=======
 	if (fd_file(f)) {
 		ret = -ESPIPE;
 		if (fd_file(f)->f_mode & FMODE_PREAD)
 			ret = vfs_readv(fd_file(f), vec, vlen, &pos, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 
@@ -1312,17 +1159,10 @@ static ssize_t do_pwritev(unsigned long fd, const struct iovec __user *vec,
 		return -EINVAL;
 
 	f = fdget(fd);
-<<<<<<< HEAD
-	if (f.file) {
-		ret = -ESPIPE;
-		if (f.file->f_mode & FMODE_PWRITE)
-			ret = vfs_writev(f.file, vec, vlen, &pos, flags);
-=======
 	if (fd_file(f)) {
 		ret = -ESPIPE;
 		if (fd_file(f)->f_mode & FMODE_PWRITE)
 			ret = vfs_writev(fd_file(f), vec, vlen, &pos, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 
@@ -1488,21 +1328,6 @@ static ssize_t do_sendfile(int out_fd, int in_fd, loff_t *ppos,
 	 */
 	retval = -EBADF;
 	in = fdget(in_fd);
-<<<<<<< HEAD
-	if (!in.file)
-		goto out;
-	if (!(in.file->f_mode & FMODE_READ))
-		goto fput_in;
-	retval = -ESPIPE;
-	if (!ppos) {
-		pos = in.file->f_pos;
-	} else {
-		pos = *ppos;
-		if (!(in.file->f_mode & FMODE_PREAD))
-			goto fput_in;
-	}
-	retval = rw_verify_area(READ, in.file, &pos, count);
-=======
 	if (!fd_file(in))
 		goto out;
 	if (!(fd_file(in)->f_mode & FMODE_READ))
@@ -1516,7 +1341,6 @@ static ssize_t do_sendfile(int out_fd, int in_fd, loff_t *ppos,
 			goto fput_in;
 	}
 	retval = rw_verify_area(READ, fd_file(in), &pos, count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (retval < 0)
 		goto fput_in;
 	if (count > MAX_RW_COUNT)
@@ -1527,15 +1351,6 @@ static ssize_t do_sendfile(int out_fd, int in_fd, loff_t *ppos,
 	 */
 	retval = -EBADF;
 	out = fdget(out_fd);
-<<<<<<< HEAD
-	if (!out.file)
-		goto fput_in;
-	if (!(out.file->f_mode & FMODE_WRITE))
-		goto fput_out;
-	in_inode = file_inode(in.file);
-	out_inode = file_inode(out.file);
-	out_pos = out.file->f_pos;
-=======
 	if (!fd_file(out))
 		goto fput_in;
 	if (!(fd_file(out)->f_mode & FMODE_WRITE))
@@ -1543,7 +1358,6 @@ static ssize_t do_sendfile(int out_fd, int in_fd, loff_t *ppos,
 	in_inode = file_inode(fd_file(in));
 	out_inode = file_inode(fd_file(out));
 	out_pos = fd_file(out)->f_pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!max)
 		max = min(in_inode->i_sb->s_maxbytes, out_inode->i_sb->s_maxbytes);
@@ -1563,23 +1377,6 @@ static ssize_t do_sendfile(int out_fd, int in_fd, loff_t *ppos,
 	 * and the application is arguably buggy if it doesn't expect
 	 * EAGAIN on a non-blocking file descriptor.
 	 */
-<<<<<<< HEAD
-	if (in.file->f_flags & O_NONBLOCK)
-		fl = SPLICE_F_NONBLOCK;
-#endif
-	opipe = get_pipe_info(out.file, true);
-	if (!opipe) {
-		retval = rw_verify_area(WRITE, out.file, &out_pos, count);
-		if (retval < 0)
-			goto fput_out;
-		retval = do_splice_direct(in.file, &pos, out.file, &out_pos,
-					  count, fl);
-	} else {
-		if (out.file->f_flags & O_NONBLOCK)
-			fl |= SPLICE_F_NONBLOCK;
-
-		retval = splice_file_to_pipe(in.file, opipe, &pos, count, fl);
-=======
 	if (fd_file(in)->f_flags & O_NONBLOCK)
 		fl = SPLICE_F_NONBLOCK;
 #endif
@@ -1595,21 +1392,11 @@ static ssize_t do_sendfile(int out_fd, int in_fd, loff_t *ppos,
 			fl |= SPLICE_F_NONBLOCK;
 
 		retval = splice_file_to_pipe(fd_file(in), opipe, &pos, count, fl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (retval > 0) {
 		add_rchar(current, retval);
 		add_wchar(current, retval);
-<<<<<<< HEAD
-		fsnotify_access(in.file);
-		fsnotify_modify(out.file);
-		out.file->f_pos = out_pos;
-		if (ppos)
-			*ppos = pos;
-		else
-			in.file->f_pos = pos;
-=======
 		fsnotify_access(fd_file(in));
 		fsnotify_modify(fd_file(out));
 		fd_file(out)->f_pos = out_pos;
@@ -1617,7 +1404,6 @@ static ssize_t do_sendfile(int out_fd, int in_fd, loff_t *ppos,
 			*ppos = pos;
 		else
 			fd_file(in)->f_pos = pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	inc_syscr(current);
@@ -1890,19 +1676,11 @@ SYSCALL_DEFINE6(copy_file_range, int, fd_in, loff_t __user *, off_in,
 	ssize_t ret = -EBADF;
 
 	f_in = fdget(fd_in);
-<<<<<<< HEAD
-	if (!f_in.file)
-		goto out2;
-
-	f_out = fdget(fd_out);
-	if (!f_out.file)
-=======
 	if (!fd_file(f_in))
 		goto out2;
 
 	f_out = fdget(fd_out);
 	if (!fd_file(f_out))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out1;
 
 	ret = -EFAULT;
@@ -1910,33 +1688,21 @@ SYSCALL_DEFINE6(copy_file_range, int, fd_in, loff_t __user *, off_in,
 		if (copy_from_user(&pos_in, off_in, sizeof(loff_t)))
 			goto out;
 	} else {
-<<<<<<< HEAD
-		pos_in = f_in.file->f_pos;
-=======
 		pos_in = fd_file(f_in)->f_pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (off_out) {
 		if (copy_from_user(&pos_out, off_out, sizeof(loff_t)))
 			goto out;
 	} else {
-<<<<<<< HEAD
-		pos_out = f_out.file->f_pos;
-=======
 		pos_out = fd_file(f_out)->f_pos;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = -EINVAL;
 	if (flags != 0)
 		goto out;
 
-<<<<<<< HEAD
-	ret = vfs_copy_file_range(f_in.file, pos_in, f_out.file, pos_out, len,
-=======
 	ret = vfs_copy_file_range(fd_file(f_in), pos_in, fd_file(f_out), pos_out, len,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  flags);
 	if (ret > 0) {
 		pos_in += ret;
@@ -1946,22 +1712,14 @@ SYSCALL_DEFINE6(copy_file_range, int, fd_in, loff_t __user *, off_in,
 			if (copy_to_user(off_in, &pos_in, sizeof(loff_t)))
 				ret = -EFAULT;
 		} else {
-<<<<<<< HEAD
-			f_in.file->f_pos = pos_in;
-=======
 			fd_file(f_in)->f_pos = pos_in;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (off_out) {
 			if (copy_to_user(off_out, &pos_out, sizeof(loff_t)))
 				ret = -EFAULT;
 		} else {
-<<<<<<< HEAD
-			f_out.file->f_pos = pos_out;
-=======
 			fd_file(f_out)->f_pos = pos_out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

@@ -498,10 +498,6 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
  *	     controller has native support for memory like operations.
  * @mem_caps: controller capabilities for the handling of memory operations.
  * @unprepare_message: undo any work done by prepare_message().
-<<<<<<< HEAD
- * @slave_abort: abort the ongoing transfer request on an SPI slave controller
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @target_abort: abort the ongoing transfer request on an SPI target controller
  * @cs_gpiods: Array of GPIO descriptors to use as chip select lines; one per CS
  *	number. Any individual value may be NULL for CS lines that
@@ -728,14 +724,7 @@ struct spi_controller {
 			       struct spi_message *message);
 	int (*unprepare_message)(struct spi_controller *ctlr,
 				 struct spi_message *message);
-<<<<<<< HEAD
-	union {
-		int (*slave_abort)(struct spi_controller *ctlr);
-		int (*target_abort)(struct spi_controller *ctlr);
-	};
-=======
 	int (*target_abort)(struct spi_controller *ctlr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * These hooks are for drivers that use a generic implementation
@@ -809,14 +798,6 @@ static inline void spi_controller_put(struct spi_controller *ctlr)
 		put_device(&ctlr->dev);
 }
 
-<<<<<<< HEAD
-static inline bool spi_controller_is_slave(struct spi_controller *ctlr)
-{
-	return IS_ENABLED(CONFIG_SPI_SLAVE) && ctlr->slave;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool spi_controller_is_target(struct spi_controller *ctlr)
 {
 	return IS_ENABLED(CONFIG_SPI_SLAVE) && ctlr->target;
@@ -1306,10 +1287,6 @@ extern int devm_spi_optimize_message(struct device *dev, struct spi_device *spi,
 
 extern int spi_setup(struct spi_device *spi);
 extern int spi_async(struct spi_device *spi, struct spi_message *message);
-<<<<<<< HEAD
-extern int spi_slave_abort(struct spi_device *spi);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int spi_target_abort(struct spi_device *spi);
 
 static inline size_t

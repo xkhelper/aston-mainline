@@ -28,12 +28,9 @@ properties:
       - adi,ad9265
       - adi,ad9434
       - adi,ad9467
-<<<<<<< HEAD
-=======
       - adi,ad9643
       - adi,ad9649
       - adi,ad9652
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1

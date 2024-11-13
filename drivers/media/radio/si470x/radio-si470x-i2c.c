@@ -28,11 +28,7 @@
 /* I2C Device ID List */
 static const struct i2c_device_id si470x_i2c_id[] = {
 	/* Generic Entry */
-<<<<<<< HEAD
-	{ "si470x", 0 },
-=======
 	{ "si470x" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Terminating entry */
 	{ }
 };

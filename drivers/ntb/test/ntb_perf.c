@@ -1227,11 +1227,7 @@ static ssize_t perf_dbgfs_read_info(struct file *filep, char __user *ubuf,
 			"\tOut buffer addr 0x%pK\n", peer->outbuf);
 
 		pos += scnprintf(buf + pos, buf_size - pos,
-<<<<<<< HEAD
-			"\tOut buff phys addr %pa[p]\n", &peer->out_phys_addr);
-=======
 			"\tOut buff phys addr %pap\n", &peer->out_phys_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		pos += scnprintf(buf + pos, buf_size - pos,
 			"\tOut buffer size %pa\n", &peer->outbuf_size);

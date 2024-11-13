@@ -113,8 +113,6 @@ to apply at each uncore* level.
 
 Support for "current_freq_khz" is available only at each fabric cluster
 level (i.e., in uncore* directory).
-<<<<<<< HEAD
-=======
 
 Efficiency vs. Latency Tradeoff
 -------------------------------
@@ -174,4 +172,3 @@ Example system configuration below, which does following:
   elc_high_threshold_percent:95
   elc_high_threshold_enable:1
   elc_low_threshold_percent:10
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

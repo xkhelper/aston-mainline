@@ -419,8 +419,6 @@ static int bond_vlan_rx_kill_vid(struct net_device *bond_dev,
 
 #ifdef CONFIG_XFRM_OFFLOAD
 /**
-<<<<<<< HEAD
-=======
  * bond_ipsec_dev - Get active device for IPsec offload
  * @xs: pointer to transformer state struct
  *
@@ -456,7 +454,6 @@ static struct net_device *bond_ipsec_dev(struct xfrm_state *xs)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * bond_ipsec_add_sa - program device with a security association
  * @xs: pointer to transformer state struct
  * @extack: extack point to fill failure reason
@@ -678,32 +675,12 @@ out:
  **/
 static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
 {
-<<<<<<< HEAD
-	struct net_device *bond_dev = xs->xso.dev;
-	struct net_device *real_dev;
-	struct slave *curr_active;
-	struct bonding *bond;
-	bool ok = false;
-
-	bond = netdev_priv(bond_dev);
-	rcu_read_lock();
-	curr_active = rcu_dereference(bond->curr_active_slave);
-	if (!curr_active)
-		goto out;
-	real_dev = curr_active->dev;
-
-	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)
-		goto out;
-
-	if (!xs->xso.real_dev)
-=======
 	struct net_device *real_dev;
 	bool ok = false;
 
 	rcu_read_lock();
 	real_dev = bond_ipsec_dev(xs);
 	if (!real_dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 
 	if (!real_dev->xfrmdev_ops ||
@@ -717,8 +694,6 @@ out:
 	return ok;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * bond_advance_esn_state - ESN support for IPSec HW offload
  * @xs: pointer to transformer state struct
@@ -767,17 +742,13 @@ out:
 	rcu_read_unlock();
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct xfrmdev_ops bond_xfrmdev_ops = {
 	.xdo_dev_state_add = bond_ipsec_add_sa,
 	.xdo_dev_state_delete = bond_ipsec_del_sa,
 	.xdo_dev_state_free = bond_ipsec_free_sa,
 	.xdo_dev_offload_ok = bond_ipsec_offload_ok,
-<<<<<<< HEAD
-=======
 	.xdo_dev_state_advance_esn = bond_advance_esn_state,
 	.xdo_dev_state_update_stats = bond_xfrm_update_stats,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 #endif /* CONFIG_XFRM_OFFLOAD */
 
@@ -2403,11 +2374,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
 			goto err_sysfs_del;
 		}
 
-<<<<<<< HEAD
-		res = slave_dev->netdev_ops->ndo_bpf(slave_dev, &xdp);
-=======
 		res = dev_xdp_propagate(slave_dev, &xdp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (res < 0) {
 			/* ndo_bpf() sets extack error message */
 			slave_dbg(bond_dev, slave_dev, "Error %d calling ndo_bpf\n", res);
@@ -2543,11 +2510,7 @@ static int __bond_release_one(struct net_device *bond_dev,
 			.prog	 = NULL,
 			.extack  = NULL,
 		};
-<<<<<<< HEAD
-		if (slave_dev->netdev_ops->ndo_bpf(slave_dev, &xdp))
-=======
 		if (dev_xdp_propagate(slave_dev, &xdp))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			slave_warn(bond_dev, slave_dev, "failed to unload XDP program\n");
 	}
 
@@ -5647,15 +5610,9 @@ bond_xdp_get_xmit_slave(struct net_device *bond_dev, struct xdp_buff *xdp)
 		break;
 
 	default:
-<<<<<<< HEAD
-		/* Should never happen. Mode guarded by bond_xdp_check() */
-		netdev_err(bond_dev, "Unknown bonding mode %d for xdp xmit\n", BOND_MODE(bond));
-		WARN_ON_ONCE(1);
-=======
 		if (net_ratelimit())
 			netdev_err(bond_dev, "Unknown bonding mode %d for xdp xmit\n",
 				   BOND_MODE(bond));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 	}
 
@@ -5743,11 +5700,7 @@ static int bond_xdp_set(struct net_device *dev, struct bpf_prog *prog,
 			goto err;
 		}
 
-<<<<<<< HEAD
-		err = slave_dev->netdev_ops->ndo_bpf(slave_dev, &xdp);
-=======
 		err = dev_xdp_propagate(slave_dev, &xdp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err < 0) {
 			/* ndo_bpf() sets extack error message */
 			slave_err(dev, slave_dev, "Error %d calling ndo_bpf\n", err);
@@ -5779,11 +5732,7 @@ err:
 		if (slave == rollback_slave)
 			break;
 
-<<<<<<< HEAD
-		err_unwind = slave_dev->netdev_ops->ndo_bpf(slave_dev, &xdp);
-=======
 		err_unwind = dev_xdp_propagate(slave_dev, &xdp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err_unwind < 0)
 			slave_err(dev, slave_dev,
 				  "Error %d when unwinding XDP program change\n", err_unwind);
@@ -5937,12 +5886,6 @@ static int bond_ethtool_get_ts_info(struct net_device *bond_dev,
 	if (real_dev) {
 		ret = ethtool_get_ts_info_by_layer(real_dev, info);
 	} else {
-<<<<<<< HEAD
-		info->phc_index = -1;
-		info->so_timestamping = SOF_TIMESTAMPING_RX_SOFTWARE |
-					SOF_TIMESTAMPING_SOFTWARE;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Check if all slaves support software tx timestamping */
 		rcu_read_lock();
 		bond_for_each_slave_rcu(bond, slave, iter) {
@@ -6056,14 +5999,10 @@ void bond_setup(struct net_device *bond_dev)
 #endif /* CONFIG_XFRM_OFFLOAD */
 
 	/* don't acquire bond device's netif_tx_lock when transmitting */
-<<<<<<< HEAD
-	bond_dev->features |= NETIF_F_LLTX;
-=======
 	bond_dev->lltx = true;
 
 	/* Don't allow bond devices to change network namespaces. */
 	bond_dev->netns_local = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* By default, we declare the bond to be fully
 	 * VLAN hardware accelerated capable. Special
@@ -6072,12 +6011,6 @@ void bond_setup(struct net_device *bond_dev)
 	 * capable
 	 */
 
-<<<<<<< HEAD
-	/* Don't allow bond devices to change network namespaces. */
-	bond_dev->features |= NETIF_F_NETNS_LOCAL;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bond_dev->hw_features = BOND_VLAN_FEATURES |
 				NETIF_F_HW_VLAN_CTAG_RX |
 				NETIF_F_HW_VLAN_CTAG_FILTER |
@@ -6522,12 +6455,8 @@ static int bond_init(struct net_device *bond_dev)
 
 	netdev_dbg(bond_dev, "Begin bond_init\n");
 
-<<<<<<< HEAD
-	bond->wq = alloc_ordered_workqueue(bond_dev->name, WQ_MEM_RECLAIM);
-=======
 	bond->wq = alloc_ordered_workqueue("%s", WQ_MEM_RECLAIM,
 					   bond_dev->name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!bond->wq)
 		return -ENOMEM;
 

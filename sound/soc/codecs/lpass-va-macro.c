@@ -1738,11 +1738,7 @@ static struct platform_driver va_macro_driver = {
 		.pm = &va_macro_pm_ops,
 	},
 	.probe = va_macro_probe,
-<<<<<<< HEAD
-	.remove_new = va_macro_remove,
-=======
 	.remove = va_macro_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(va_macro_driver);

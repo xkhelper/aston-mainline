@@ -14,12 +14,6 @@
 #include <linux/pfn.h>
 #include <asm/sections.h>
 
-<<<<<<< HEAD
-struct pglist_data *node_data[MAX_NUMNODES] __read_mostly;
-EXPORT_SYMBOL_GPL(node_data);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * On SH machines the conventional approach is to stash system RAM
  * in node 0, and other memory blocks in to node 1 and up, ordered by

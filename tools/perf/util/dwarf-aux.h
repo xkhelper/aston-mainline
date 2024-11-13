@@ -9,10 +9,7 @@
 #include <elfutils/libdw.h>
 #include <elfutils/libdwfl.h>
 #include <elfutils/version.h>
-<<<<<<< HEAD
-=======
 #include <errno.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct strbuf;
 
@@ -60,11 +57,8 @@ const char *die_get_decl_file(Dwarf_Die *dw_die);
 /* Get type die */
 Dwarf_Die *die_get_type(Dwarf_Die *vr_die, Dwarf_Die *die_mem);
 
-<<<<<<< HEAD
-=======
 /* Get a type die, but skip qualifiers */
 Dwarf_Die *__die_get_real_type(Dwarf_Die *vr_die, Dwarf_Die *die_mem);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Get a type die, but skip qualifiers and typedef */
 Dwarf_Die *die_get_real_type(Dwarf_Die *vr_die, Dwarf_Die *die_mem);
 

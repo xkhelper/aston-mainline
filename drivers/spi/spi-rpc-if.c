@@ -14,11 +14,7 @@
 
 #include <memory/renesas-rpc-if.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void rpcif_spi_mem_prepare(struct spi_device *spi_dev,
 				  const struct spi_mem_op *spi_op,
@@ -202,11 +198,6 @@ static int __maybe_unused rpcif_spi_resume(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(rpcif_spi_pm_ops, rpcif_spi_suspend, rpcif_spi_resume);
 
-<<<<<<< HEAD
-static struct platform_driver rpcif_spi_driver = {
-	.probe	= rpcif_spi_probe,
-	.remove_new = rpcif_spi_remove,
-=======
 static const struct platform_device_id rpc_if_spi_id_table[] = {
 	{ .name = "rpc-if-spi" },
 	{ /* sentinel */ }
@@ -217,7 +208,6 @@ static struct platform_driver rpcif_spi_driver = {
 	.probe	= rpcif_spi_probe,
 	.remove_new = rpcif_spi_remove,
 	.id_table = rpc_if_spi_id_table,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name	= "rpc-if-spi",
 #ifdef CONFIG_PM_SLEEP

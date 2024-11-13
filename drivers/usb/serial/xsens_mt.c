@@ -49,10 +49,6 @@ static int xsens_mt_probe(struct usb_serial *serial,
 
 static struct usb_serial_driver xsens_mt_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner = THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name = "xsens_mt",
 	},
 	.id_table = id_table,

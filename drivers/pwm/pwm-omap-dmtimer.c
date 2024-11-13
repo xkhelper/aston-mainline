@@ -355,11 +355,7 @@ static int pwm_omap_dmtimer_probe(struct platform_device *pdev)
 		goto err_platdata;
 	}
 
-<<<<<<< HEAD
-	if (!of_get_property(timer, "ti,timer-pwm", NULL)) {
-=======
 	if (!of_property_read_bool(timer, "ti,timer-pwm")) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(&pdev->dev, "Missing ti,timer-pwm capability\n");
 		ret = -ENODEV;
 		goto err_timer_property;
@@ -459,11 +455,7 @@ static struct platform_driver pwm_omap_dmtimer_driver = {
 		.of_match_table = pwm_omap_dmtimer_of_match,
 	},
 	.probe = pwm_omap_dmtimer_probe,
-<<<<<<< HEAD
-	.remove_new = pwm_omap_dmtimer_remove,
-=======
 	.remove = pwm_omap_dmtimer_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(pwm_omap_dmtimer_driver);
 

@@ -352,11 +352,7 @@
 			mboxes = <&apcs_glb 0>;
 
 			rpm_requests: rpm-requests {
-<<<<<<< HEAD
-				compatible = "qcom,rpm-msm8998";
-=======
 				compatible = "qcom,rpm-msm8998", "qcom,glink-smd-rpm";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,glink-channels = "rpm_requests";
 
 				rpmcc: clock-controller {
@@ -1590,8 +1586,6 @@
 				      "gpll0";
 		};
 
-<<<<<<< HEAD
-=======
 		lpass_q6_smmu: iommu@5100000 {
 			compatible = "qcom,msm8998-smmu-v2", "qcom,smmu-v2";
 			reg = <0x05100000 0x40000>;
@@ -1619,7 +1613,6 @@
 			status = "disabled";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		remoteproc_slpi: remoteproc@5800000 {
 			compatible = "qcom,msm8998-slpi-pas";
 			reg = <0x05800000 0x4040>;

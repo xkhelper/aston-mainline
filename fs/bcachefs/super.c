@@ -184,10 +184,7 @@ static DEFINE_MUTEX(bch_fs_list_lock);
 
 DECLARE_WAIT_QUEUE_HEAD(bch2_read_only_wait);
 
-<<<<<<< HEAD
-=======
 static void bch2_dev_unlink(struct bch_dev *);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void bch2_dev_free(struct bch_dev *);
 static int bch2_dev_alloc(struct bch_fs *, unsigned);
 static int bch2_dev_sysfs_online(struct bch_fs *, struct bch_dev *);
@@ -374,11 +371,7 @@ void bch2_fs_read_only(struct bch_fs *c)
 	    test_bit(BCH_FS_clean_shutdown, &c->flags) &&
 	    c->recovery_pass_done >= BCH_RECOVERY_PASS_journal_replay) {
 		BUG_ON(c->journal.last_empty_seq != journal_cur_seq(&c->journal));
-<<<<<<< HEAD
-		BUG_ON(atomic_read(&c->btree_cache.dirty));
-=======
 		BUG_ON(atomic_long_read(&c->btree_cache.nr_dirty));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		BUG_ON(atomic_long_read(&c->btree_key_cache.nr_dirty));
 		BUG_ON(c->btree_write_buffer.inc.keys.nr);
 		BUG_ON(c->btree_write_buffer.flushing.keys.nr);
@@ -551,10 +544,7 @@ static void __bch2_fs_free(struct bch_fs *c)
 	bch2_fs_fs_io_direct_exit(c);
 	bch2_fs_fs_io_buffered_exit(c);
 	bch2_fs_fsio_exit(c);
-<<<<<<< HEAD
-=======
 	bch2_fs_vfs_exit(c);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch2_fs_ec_exit(c);
 	bch2_fs_encryption_exit(c);
 	bch2_fs_nocow_locking_exit(c);
@@ -631,13 +621,7 @@ void __bch2_fs_stop(struct bch_fs *c)
 	up_write(&c->state_lock);
 
 	for_each_member_device(c, ca)
-<<<<<<< HEAD
-		if (ca->kobj.state_in_sysfs &&
-		    ca->disk_sb.bdev)
-			sysfs_remove_link(bdev_kobj(ca->disk_sb.bdev), "bcachefs");
-=======
 		bch2_dev_unlink(ca);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (c->kobj.state_in_sysfs)
 		kobject_del(&c->kobj);
@@ -826,10 +810,6 @@ static struct bch_fs *bch2_fs_alloc(struct bch_sb *sb, struct bch_opts opts)
 
 	c->copy_gc_enabled		= 1;
 	c->rebalance.enabled		= 1;
-<<<<<<< HEAD
-	c->promote_whole_extents	= true;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	c->journal.flush_write_time	= &c->times[BCH_TIME_journal_flush_write];
 	c->journal.noflush_write_time	= &c->times[BCH_TIME_journal_noflush_write];
@@ -945,10 +925,7 @@ static struct bch_fs *bch2_fs_alloc(struct bch_sb *sb, struct bch_opts opts)
 	    bch2_fs_encryption_init(c) ?:
 	    bch2_fs_compress_init(c) ?:
 	    bch2_fs_ec_init(c) ?:
-<<<<<<< HEAD
-=======
 	    bch2_fs_vfs_init(c) ?:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    bch2_fs_fsio_init(c) ?:
 	    bch2_fs_fs_io_buffered_init(c) ?:
 	    bch2_fs_fs_io_direct_init(c);
@@ -1209,13 +1186,7 @@ static void bch2_dev_free(struct bch_dev *ca)
 {
 	cancel_work_sync(&ca->io_error_work);
 
-<<<<<<< HEAD
-	if (ca->kobj.state_in_sysfs &&
-	    ca->disk_sb.bdev)
-		sysfs_remove_link(bdev_kobj(ca->disk_sb.bdev), "bcachefs");
-=======
 	bch2_dev_unlink(ca);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ca->kobj.state_in_sysfs)
 		kobject_del(&ca->kobj);
@@ -1252,14 +1223,7 @@ static void __bch2_dev_offline(struct bch_fs *c, struct bch_dev *ca)
 	percpu_ref_kill(&ca->io_ref);
 	wait_for_completion(&ca->io_ref_completion);
 
-<<<<<<< HEAD
-	if (ca->kobj.state_in_sysfs) {
-		sysfs_remove_link(bdev_kobj(ca->disk_sb.bdev), "bcachefs");
-		sysfs_remove_link(&ca->kobj, "block");
-	}
-=======
 	bch2_dev_unlink(ca);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bch2_free_super(&ca->disk_sb);
 	bch2_dev_journal_exit(ca);
@@ -1281,8 +1245,6 @@ static void bch2_dev_io_ref_complete(struct percpu_ref *ref)
 	complete(&ca->io_ref_completion);
 }
 
-<<<<<<< HEAD
-=======
 static void bch2_dev_unlink(struct bch_dev *ca)
 {
 	struct kobject *b;
@@ -1303,7 +1265,6 @@ static void bch2_dev_unlink(struct bch_dev *ca)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int bch2_dev_sysfs_online(struct bch_fs *c, struct bch_dev *ca)
 {
 	int ret;
@@ -1645,36 +1606,6 @@ int bch2_dev_set_state(struct bch_fs *c, struct bch_dev *ca,
 
 /* Device add/removal: */
 
-<<<<<<< HEAD
-static int bch2_dev_remove_alloc(struct bch_fs *c, struct bch_dev *ca)
-{
-	struct bpos start	= POS(ca->dev_idx, 0);
-	struct bpos end		= POS(ca->dev_idx, U64_MAX);
-	int ret;
-
-	/*
-	 * We clear the LRU and need_discard btrees first so that we don't race
-	 * with bch2_do_invalidates() and bch2_do_discards()
-	 */
-	ret =   bch2_btree_delete_range(c, BTREE_ID_lru, start, end,
-					BTREE_TRIGGER_norun, NULL) ?:
-		bch2_btree_delete_range(c, BTREE_ID_need_discard, start, end,
-					BTREE_TRIGGER_norun, NULL) ?:
-		bch2_btree_delete_range(c, BTREE_ID_freespace, start, end,
-					BTREE_TRIGGER_norun, NULL) ?:
-		bch2_btree_delete_range(c, BTREE_ID_backpointers, start, end,
-					BTREE_TRIGGER_norun, NULL) ?:
-		bch2_btree_delete_range(c, BTREE_ID_alloc, start, end,
-					BTREE_TRIGGER_norun, NULL) ?:
-		bch2_btree_delete_range(c, BTREE_ID_bucket_gens, start, end,
-					BTREE_TRIGGER_norun, NULL) ?:
-		bch2_dev_usage_remove(c, ca->dev_idx);
-	bch_err_msg(c, ret, "removing dev alloc info");
-	return ret;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_dev_remove(struct bch_fs *c, struct bch_dev *ca, int flags)
 {
 	struct bch_member *m;
@@ -1786,12 +1717,6 @@ int bch2_dev_add(struct bch_fs *c, const char *path)
 	struct bch_opts opts = bch2_opts_empty();
 	struct bch_sb_handle sb;
 	struct bch_dev *ca = NULL;
-<<<<<<< HEAD
-	struct bch_sb_field_members_v2 *mi;
-	struct bch_member dev_mi;
-	unsigned dev_idx, nr_devices, u64s;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct printbuf errbuf = PRINTBUF;
 	struct printbuf label = PRINTBUF;
 	int ret;
@@ -1801,11 +1726,7 @@ int bch2_dev_add(struct bch_fs *c, const char *path)
 	if (ret)
 		goto err;
 
-<<<<<<< HEAD
-	dev_mi = bch2_sb_member_get(sb.sb, sb.sb->dev_idx);
-=======
 	struct bch_member dev_mi = bch2_sb_member_get(sb.sb, sb.sb->dev_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (BCH_MEMBER_GROUP(&dev_mi)) {
 		bch2_disk_path_to_text_sb(&label, sb.sb, BCH_MEMBER_GROUP(&dev_mi) - 1);
@@ -1843,57 +1764,6 @@ int bch2_dev_add(struct bch_fs *c, const char *path)
 		goto err_unlock;
 
 	if (dynamic_fault("bcachefs:add:no_slot"))
-<<<<<<< HEAD
-		goto no_slot;
-
-	if (c->sb.nr_devices < BCH_SB_MEMBERS_MAX) {
-		dev_idx = c->sb.nr_devices;
-		goto have_slot;
-	}
-
-	int best = -1;
-	u64 best_last_mount = 0;
-	for (dev_idx = 0; dev_idx < BCH_SB_MEMBERS_MAX; dev_idx++) {
-		struct bch_member m = bch2_sb_member_get(c->disk_sb.sb, dev_idx);
-		if (bch2_member_alive(&m))
-			continue;
-
-		u64 last_mount = le64_to_cpu(m.last_mount);
-		if (best < 0 || last_mount < best_last_mount) {
-			best = dev_idx;
-			best_last_mount = last_mount;
-		}
-	}
-	if (best >= 0) {
-		dev_idx = best;
-		goto have_slot;
-	}
-no_slot:
-	ret = -BCH_ERR_ENOSPC_sb_members;
-	bch_err_msg(c, ret, "setting up new superblock");
-	goto err_unlock;
-
-have_slot:
-	nr_devices = max_t(unsigned, dev_idx + 1, c->sb.nr_devices);
-
-	mi = bch2_sb_field_get(c->disk_sb.sb, members_v2);
-	u64s = DIV_ROUND_UP(sizeof(struct bch_sb_field_members_v2) +
-			    le16_to_cpu(mi->member_bytes) * nr_devices, sizeof(u64));
-
-	mi = bch2_sb_field_resize(&c->disk_sb, members_v2, u64s);
-	if (!mi) {
-		ret = -BCH_ERR_ENOSPC_sb_members;
-		bch_err_msg(c, ret, "setting up new superblock");
-		goto err_unlock;
-	}
-	struct bch_member *m = bch2_members_v2_get_mut(c->disk_sb.sb, dev_idx);
-
-	/* success: */
-
-	*m = dev_mi;
-	m->last_mount = cpu_to_le64(ktime_get_real_seconds());
-	c->disk_sb.sb->nr_devices	= nr_devices;
-=======
 		goto err_unlock;
 
 	ret = bch2_sb_member_alloc(c);
@@ -1907,7 +1777,6 @@ have_slot:
 
 	dev_mi.last_mount = cpu_to_le64(ktime_get_real_seconds());
 	*bch2_members_v2_get_mut(c->disk_sb.sb, dev_idx) = dev_mi;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ca->disk_sb.sb->dev_idx	= dev_idx;
 	bch2_dev_attach(c, ca, dev_idx);
@@ -2103,11 +1972,7 @@ int bch2_dev_resize(struct bch_fs *c, struct bch_dev *ca, u64 nbuckets)
 		};
 		u64 v[3] = { nbuckets - old_nbuckets, 0, 0 };
 
-<<<<<<< HEAD
-		ret   = bch2_trans_do(ca->fs, NULL, NULL, 0,
-=======
 		ret   = bch2_trans_commit_do(ca->fs, NULL, NULL, 0,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				bch2_disk_accounting_mod(trans, &acc, v, ARRAY_SIZE(v), false)) ?:
 			bch2_dev_freespace_init(c, ca, old_nbuckets, nbuckets);
 		if (ret)

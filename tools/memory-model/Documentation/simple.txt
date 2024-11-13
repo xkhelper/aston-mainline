@@ -266,9 +266,5 @@ More complex use cases
 ======================
 
 If the alternatives above do not do what you need, please look at the
-<<<<<<< HEAD
-recipes-pairs.txt file to peel off the next layer of the memory-ordering
-=======
 recipes.txt file to peel off the next layer of the memory-ordering
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 onion.

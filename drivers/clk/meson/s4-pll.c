@@ -799,11 +799,7 @@ static const struct reg_sequence s4_init_regs[] = {
 	{ .reg = ANACTRL_MPLL_CTRL0,	.def = 0x00000543 },
 };
 
-<<<<<<< HEAD
-static struct regmap_config clkc_regmap_config = {
-=======
 static const struct regmap_config clkc_regmap_config = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits       = 32,
 	.val_bits       = 32,
 	.reg_stride     = 4,
@@ -877,7 +873,4 @@ module_platform_driver(s4_driver);
 MODULE_DESCRIPTION("Amlogic S4 PLL Clock Controller driver");
 MODULE_AUTHOR("Yu Tu <yu.tu@amlogic.com>");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
 MODULE_IMPORT_NS(CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

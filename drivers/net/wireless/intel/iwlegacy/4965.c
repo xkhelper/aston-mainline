@@ -20,11 +20,7 @@
 #include <linux/units.h>
 #include <net/mac80211.h>
 #include <linux/etherdevice.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "common.h"
 #include "4965.h"

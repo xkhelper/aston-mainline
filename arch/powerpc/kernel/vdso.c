@@ -81,8 +81,6 @@ static int vdso64_mremap(const struct vm_special_mapping *sm, struct vm_area_str
 	return vdso_mremap(sm, new_vma, &vdso64_end - &vdso64_start);
 }
 
-<<<<<<< HEAD
-=======
 static void vdso_close(const struct vm_special_mapping *sm, struct vm_area_struct *vma)
 {
 	struct mm_struct *mm = vma->vm_mm;
@@ -98,7 +96,6 @@ static void vdso_close(const struct vm_special_mapping *sm, struct vm_area_struc
 	mm->context.vdso = NULL;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
 			     struct vm_area_struct *vma, struct vm_fault *vmf);
 
@@ -110,19 +107,13 @@ static struct vm_special_mapping vvar_spec __ro_after_init = {
 static struct vm_special_mapping vdso32_spec __ro_after_init = {
 	.name = "[vdso]",
 	.mremap = vdso32_mremap,
-<<<<<<< HEAD
-=======
 	.close = vdso_close,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct vm_special_mapping vdso64_spec __ro_after_init = {
 	.name = "[vdso]",
 	.mremap = vdso64_mremap,
-<<<<<<< HEAD
-=======
 	.close = vdso_close,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #ifdef CONFIG_TIME_NS
@@ -223,16 +214,6 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
 	/* Add required alignment. */
 	vdso_base = ALIGN(vdso_base, VDSO_ALIGNMENT);
 
-<<<<<<< HEAD
-	/*
-	 * Put vDSO base into mm struct. We need to do this before calling
-	 * install_special_mapping or the perf counter mmap tracking code
-	 * will fail to recognise it as a vDSO.
-	 */
-	mm->context.vdso = (void __user *)vdso_base + vvar_size;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vma = _install_special_mapping(mm, vdso_base, vvar_size,
 				       VM_READ | VM_MAYREAD | VM_IO |
 				       VM_DONTDUMP | VM_PFNMAP, &vvar_spec);
@@ -252,12 +233,6 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
 	vma = _install_special_mapping(mm, vdso_base + vvar_size, vdso_size,
 				       VM_READ | VM_EXEC | VM_MAYREAD |
 				       VM_MAYWRITE | VM_MAYEXEC, vdso_spec);
-<<<<<<< HEAD
-	if (IS_ERR(vma))
-		do_munmap(mm, vdso_base, vvar_size, NULL);
-
-	return PTR_ERR_OR_ZERO(vma);
-=======
 	if (IS_ERR(vma)) {
 		do_munmap(mm, vdso_base, vvar_size, NULL);
 		return PTR_ERR(vma);
@@ -267,7 +242,6 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
 	mm->context.vdso = (void __user *)vdso_base + vvar_size;
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
@@ -281,11 +255,6 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 		return -EINTR;
 
 	rc = __arch_setup_additional_pages(bprm, uses_interp);
-<<<<<<< HEAD
-	if (rc)
-		mm->context.vdso = NULL;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mmap_write_unlock(mm);
 	return rc;

@@ -1881,8 +1881,6 @@ int ena_com_get_link_params(struct ena_com_dev *ena_dev,
 	return ena_com_get_feature(ena_dev, resp, ENA_ADMIN_LINK_CONFIG, 0);
 }
 
-<<<<<<< HEAD
-=======
 static int ena_get_dev_stats(struct ena_com_dev *ena_dev,
 			     struct ena_com_stats_ctx *ctx,
 			     enum ena_admin_get_stats_type type)
@@ -1933,7 +1931,6 @@ static void ena_com_set_supported_customer_metrics(struct ena_com_dev *ena_dev)
 			   "Failed to query customer metrics support. error: %d\n", ret);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ena_com_get_dev_attr_feat(struct ena_com_dev *ena_dev,
 			      struct ena_com_dev_get_features_ctx *get_feat_ctx)
 {
@@ -2013,11 +2010,8 @@ int ena_com_get_dev_attr_feat(struct ena_com_dev *ena_dev,
 	else
 		return rc;
 
-<<<<<<< HEAD
-=======
 	ena_com_set_supported_customer_metrics(ena_dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2162,36 +2156,6 @@ int ena_com_dev_reset(struct ena_com_dev *ena_dev,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int ena_get_dev_stats(struct ena_com_dev *ena_dev,
-			     struct ena_com_stats_ctx *ctx,
-			     enum ena_admin_get_stats_type type)
-{
-	struct ena_admin_aq_get_stats_cmd *get_cmd = &ctx->get_cmd;
-	struct ena_admin_acq_get_stats_resp *get_resp = &ctx->get_resp;
-	struct ena_com_admin_queue *admin_queue;
-	int ret;
-
-	admin_queue = &ena_dev->admin_queue;
-
-	get_cmd->aq_common_descriptor.opcode = ENA_ADMIN_GET_STATS;
-	get_cmd->aq_common_descriptor.flags = 0;
-	get_cmd->type = type;
-
-	ret =  ena_com_execute_admin_command(admin_queue,
-					     (struct ena_admin_aq_entry *)get_cmd,
-					     sizeof(*get_cmd),
-					     (struct ena_admin_acq_entry *)get_resp,
-					     sizeof(*get_resp));
-
-	if (unlikely(ret))
-		netdev_err(ena_dev->net_device, "Failed to get stats. error: %d\n", ret);
-
-	return ret;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ena_com_get_eni_stats(struct ena_com_dev *ena_dev,
 			  struct ena_admin_eni_stats *stats)
 {
@@ -2213,8 +2177,6 @@ int ena_com_get_eni_stats(struct ena_com_dev *ena_dev,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 int ena_com_get_ena_srd_info(struct ena_com_dev *ena_dev,
 			     struct ena_admin_ena_srd_info *info)
 {
@@ -2236,7 +2198,6 @@ int ena_com_get_ena_srd_info(struct ena_com_dev *ena_dev,
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ena_com_get_dev_basic_stats(struct ena_com_dev *ena_dev,
 				struct ena_admin_basic_stats *stats)
 {
@@ -2252,8 +2213,6 @@ int ena_com_get_dev_basic_stats(struct ena_com_dev *ena_dev,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 int ena_com_get_customer_metrics(struct ena_com_dev *ena_dev, char *buffer, u32 len)
 {
 	struct ena_admin_aq_get_stats_cmd *get_cmd;
@@ -2298,7 +2257,6 @@ int ena_com_get_customer_metrics(struct ena_com_dev *ena_dev, char *buffer, u32 
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ena_com_set_dev_mtu(struct ena_com_dev *ena_dev, u32 mtu)
 {
 	struct ena_com_admin_queue *admin_queue;
@@ -2838,8 +2796,6 @@ int ena_com_allocate_debug_area(struct ena_com_dev *ena_dev,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 int ena_com_allocate_customer_metrics_buffer(struct ena_com_dev *ena_dev)
 {
 	struct ena_customer_metrics *customer_metrics = &ena_dev->customer_metrics;
@@ -2858,7 +2814,6 @@ int ena_com_allocate_customer_metrics_buffer(struct ena_com_dev *ena_dev)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void ena_com_delete_host_info(struct ena_com_dev *ena_dev)
 {
 	struct ena_host_attribute *host_attr = &ena_dev->host_attr;
@@ -2881,8 +2836,6 @@ void ena_com_delete_debug_area(struct ena_com_dev *ena_dev)
 	}
 }
 
-<<<<<<< HEAD
-=======
 void ena_com_delete_customer_metrics_buffer(struct ena_com_dev *ena_dev)
 {
 	struct ena_customer_metrics *customer_metrics = &ena_dev->customer_metrics;
@@ -2896,7 +2849,6 @@ void ena_com_delete_customer_metrics_buffer(struct ena_com_dev *ena_dev)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ena_com_set_host_attributes(struct ena_com_dev *ena_dev)
 {
 	struct ena_host_attribute *host_attr = &ena_dev->host_attr;

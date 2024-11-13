@@ -33,8 +33,6 @@
 })
 #endif
 
-<<<<<<< HEAD
-=======
 #ifdef masked_user_access_begin
  #define can_do_masked_user_access() 1
 #else
@@ -43,7 +41,6 @@
  #define mask_user_address(src) (src)
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Architectures should provide two primitives (raw_copy_{to,from}_user())
  * and get rid of their private instances of copy_{to,from}_user() and
@@ -163,9 +160,6 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
 {
 	unsigned long res = n;
 	might_fault();
-<<<<<<< HEAD
-	if (!should_fail_usercopy() && likely(access_ok(from, n))) {
-=======
 	if (should_fail_usercopy())
 		goto fail;
 	if (can_do_masked_user_access())
@@ -173,21 +167,12 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
 	else {
 		if (!access_ok(from, n))
 			goto fail;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Ensure that bad access_ok() speculation will not
 		 * lead to nasty side effects *after* the copy is
 		 * finished:
 		 */
 		barrier_nospec();
-<<<<<<< HEAD
-		instrument_copy_from_user_before(to, from, n);
-		res = raw_copy_from_user(to, from, n);
-		instrument_copy_from_user_after(to, from, n, res);
-	}
-	if (unlikely(res))
-		memset(to + (n - res), 0, res);
-=======
 	}
 	instrument_copy_from_user_before(to, from, n);
 	res = raw_copy_from_user(to, from, n);
@@ -196,7 +181,6 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
 		return 0;
 fail:
 	memset(to + (n - res), 0, res);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return res;
 }
 extern __must_check unsigned long

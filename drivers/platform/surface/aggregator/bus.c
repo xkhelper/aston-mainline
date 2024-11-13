@@ -6,10 +6,7 @@
  */
 
 #include <linux/device.h>
-<<<<<<< HEAD
-=======
 #include <linux/of.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/property.h>
 #include <linux/slab.h>
 
@@ -445,10 +442,7 @@ static int ssam_add_client_device(struct device *parent, struct ssam_controller 
 
 	sdev->dev.parent = parent;
 	sdev->dev.fwnode = fwnode_handle_get(node);
-<<<<<<< HEAD
-=======
 	sdev->dev.of_node = to_of_node(node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	status = ssam_device_add(sdev);
 	if (status)

@@ -68,8 +68,6 @@ static const struct snd_pcm_hardware acp_pcm_hardware_capture = {
 	.periods_max = CAPTURE_MAX_NUM_PERIODS,
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_pcm_hardware acp6x_pcm_hardware_playback = {
 	.info = SNDRV_PCM_INFO_INTERLEAVED |
 		SNDRV_PCM_INFO_BLOCK_TRANSFER |
@@ -110,7 +108,6 @@ static const struct snd_pcm_hardware acp6x_pcm_hardware_capture = {
 	.periods_max = CAPTURE_MAX_NUM_PERIODS,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int acp_machine_select(struct acp_dev_data *adata)
 {
 	struct snd_soc_acpi_mach *mach;
@@ -180,19 +177,6 @@ static irqreturn_t i2s_irq_handler(int irq, void *data)
 void config_pte_for_stream(struct acp_dev_data *adata, struct acp_stream *stream)
 {
 	struct acp_resource *rsrc = adata->rsrc;
-<<<<<<< HEAD
-	u32 pte_reg, pte_size, reg_val;
-
-	/* Use ATU base Group5 */
-	pte_reg = ACPAXI2AXI_ATU_BASE_ADDR_GRP_5;
-	pte_size =  ACPAXI2AXI_ATU_PAGE_SIZE_GRP_5;
-	stream->reg_offset = 0x02000000;
-
-	/* Group Enable */
-	reg_val = rsrc->sram_pte_offset;
-	writel(reg_val | BIT(31), adata->acp_base + pte_reg);
-	writel(PAGE_SIZE_4K_ENABLE,  adata->acp_base + pte_size);
-=======
 	u32 reg_val;
 
 	reg_val = rsrc->sram_pte_offset;
@@ -207,7 +191,6 @@ void config_pte_for_stream(struct acp_dev_data *adata, struct acp_stream *stream
 	writel(reg_val | BIT(31), adata->acp_base + ACPAXI2AXI_ATU_BASE_ADDR_GRP_5);
 	writel(PAGE_SIZE_4K_ENABLE,  adata->acp_base + ACPAXI2AXI_ATU_PAGE_SIZE_GRP_5);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	writel(0x01, adata->acp_base + ACPAXI2AXI_ATU_CTRL);
 }
 EXPORT_SYMBOL_NS_GPL(config_pte_for_stream, SND_SOC_ACP_COMMON);
@@ -221,9 +204,6 @@ void config_acp_dma(struct acp_dev_data *adata, struct acp_stream *stream, int s
 	u32 low, high, val;
 	u16 page_idx;
 
-<<<<<<< HEAD
-	val = stream->pte_offset;
-=======
 	switch (adata->platform) {
 	case ACP70:
 	case ACP71:
@@ -258,7 +238,6 @@ void config_acp_dma(struct acp_dev_data *adata, struct acp_stream *stream, int s
 		val = stream->pte_offset;
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (page_idx = 0; page_idx < num_pages; page_idx++) {
 		/* Load the low address of page int ACP SRAM through SRBM */
@@ -280,10 +259,7 @@ static int acp_dma_open(struct snd_soc_component *component, struct snd_pcm_subs
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	struct device *dev = component->dev;
 	struct acp_dev_data *adata = dev_get_drvdata(dev);
-<<<<<<< HEAD
-=======
 	struct acp_chip_info *chip;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct acp_stream *stream;
 	int ret;
 
@@ -292,13 +268,6 @@ static int acp_dma_open(struct snd_soc_component *component, struct snd_pcm_subs
 		return -ENOMEM;
 
 	stream->substream = substream;
-<<<<<<< HEAD
-
-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-		runtime->hw = acp_pcm_hardware_playback;
-	else
-		runtime->hw = acp_pcm_hardware_capture;
-=======
 	chip = dev_get_platdata(dev);
 	switch (chip->acp_rev) {
 	case ACP63_DEV:
@@ -316,7 +285,6 @@ static int acp_dma_open(struct snd_soc_component *component, struct snd_pcm_subs
 			runtime->hw = acp_pcm_hardware_capture;
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_BYTES, DMA_SIZE);
 	if (ret) {

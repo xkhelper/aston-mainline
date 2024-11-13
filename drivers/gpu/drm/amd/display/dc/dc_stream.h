@@ -142,10 +142,7 @@ union stream_update_flags {
 		uint32_t mst_bw : 1;
 		uint32_t crtc_timing_adjust : 1;
 		uint32_t fams_changed : 1;
-<<<<<<< HEAD
-=======
 		uint32_t scaler_sharpener : 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} bits;
 
 	uint32_t raw;
@@ -163,15 +160,12 @@ struct test_pattern {
 
 struct dc_stream_debug_options {
 	char force_odm_combine_segments;
-<<<<<<< HEAD
-=======
 	/*
 	 * When force_odm_combine_segments is non zero, allow dc to
 	 * temporarily transition to ODM bypass when minimal transition state
 	 * is required to prevent visual glitches showing on the screen
 	 */
 	char allow_transition_for_forced_odm;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define LUMINANCE_DATA_TABLE_SIZE 10
@@ -273,11 +267,8 @@ struct dc_stream_state {
 
 	struct dc_cursor_attributes cursor_attributes;
 	struct dc_cursor_position cursor_position;
-<<<<<<< HEAD
-=======
 	bool hw_cursor_req;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint32_t sdr_white_level; // for boosting (SDR) cursor in HDR mode
 
 	/* from stream struct */
@@ -318,10 +309,7 @@ struct dc_stream_state {
 	bool is_phantom;
 
 	struct luminance_data lumin_data;
-<<<<<<< HEAD
-=======
 	bool scaler_sharpener_update;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define ABM_LEVEL_IMMEDIATE_DISABLE 255
@@ -366,11 +354,8 @@ struct dc_stream_update {
 
 	struct dc_cursor_attributes *cursor_attributes;
 	struct dc_cursor_position *cursor_position;
-<<<<<<< HEAD
-=======
 	bool *hw_cursor_req;
 	bool *scaler_sharpener_update;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 bool dc_is_stream_unchanged(

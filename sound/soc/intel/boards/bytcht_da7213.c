@@ -258,15 +258,11 @@ static int bytcht_da7213_probe(struct platform_device *pdev)
 		snprintf(codec_name, sizeof(codec_name),
 			 "i2c-%s", acpi_dev_name(adev));
 		dailink[dai_index].codecs->name = codec_name;
-<<<<<<< HEAD
-	}
-=======
 	} else {
 		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
 		return -ENOENT;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acpi_dev_put(adev);
 
 	/* override platform name, if required */

@@ -86,12 +86,6 @@ static DECLARE_RWSEM(minor_rwsem);
 static int dvb_device_open(struct inode *inode, struct file *file)
 {
 	struct dvb_device *dvbdev;
-<<<<<<< HEAD
-
-	mutex_lock(&dvbdev_mutex);
-	down_read(&minor_rwsem);
-	dvbdev = dvb_minors[iminor(inode)];
-=======
 	unsigned int minor = iminor(inode);
 
 	if (minor >= MAX_DVB_MINORS)
@@ -101,7 +95,6 @@ static int dvb_device_open(struct inode *inode, struct file *file)
 	down_read(&minor_rwsem);
 
 	dvbdev = dvb_minors[minor];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (dvbdev && dvbdev->fops) {
 		int err = 0;
@@ -537,14 +530,10 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
 		if (!dvb_minors[minor])
 			break;
-<<<<<<< HEAD
-	if (minor == MAX_DVB_MINORS) {
-=======
 #else
 	minor = nums2minor(adap->num, type, id);
 #endif
 	if (minor >= MAX_DVB_MINORS) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (new_node) {
 			list_del(&new_node->list_head);
 			kfree(dvbdevfops);
@@ -557,13 +546,7 @@ int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
 		mutex_unlock(&dvbdev_register_lock);
 		return -EINVAL;
 	}
-<<<<<<< HEAD
-#else
-	minor = nums2minor(adap->num, type, id);
-#endif
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dvbdev->minor = minor;
 	dvb_minors[minor] = dvb_device_get(dvbdev);
 	up_write(&minor_rwsem);

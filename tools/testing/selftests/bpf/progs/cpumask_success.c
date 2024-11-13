@@ -31,8 +31,6 @@ struct kptr_nested_deep {
 	struct kptr_nested_pair ptr_pairs[3];
 };
 
-<<<<<<< HEAD
-=======
 struct kptr_nested_deep_array_1_2 {
 	int dummy;
 	struct bpf_cpumask __kptr * mask[CPUMASK_KPTR_FIELDS_MAX];
@@ -78,18 +76,14 @@ struct kptr_nested_deep_array_3 {
 	struct kptr_nested_deep_array_3_1 d_1[CPUMASK_KPTR_FIELDS_MAX];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 private(MASK) static struct bpf_cpumask __kptr * global_mask_array[2];
 private(MASK) static struct bpf_cpumask __kptr * global_mask_array_l2[2][1];
 private(MASK) static struct bpf_cpumask __kptr * global_mask_array_one[1];
 private(MASK) static struct kptr_nested global_mask_nested[2];
 private(MASK_DEEP) static struct kptr_nested_deep global_mask_nested_deep;
-<<<<<<< HEAD
-=======
 private(MASK_1) static struct kptr_nested_deep_array_1 global_mask_nested_deep_array_1;
 private(MASK_2) static struct kptr_nested_deep_array_2 global_mask_nested_deep_array_2;
 private(MASK_3) static struct kptr_nested_deep_array_3 global_mask_nested_deep_array_3;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static bool is_test_task(void)
 {
@@ -597,19 +591,12 @@ static int _global_mask_array_rcu(struct bpf_cpumask **mask0,
 		goto err_exit;
 	}
 
-<<<<<<< HEAD
-	/* [<mask 0>, NULL] */
-	if (!*mask0 || *mask1) {
-=======
 	/* [<mask 0>, *] */
 	if (!*mask0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = 2;
 		goto err_exit;
 	}
 
-<<<<<<< HEAD
-=======
 	if (!mask1)
 		goto err_exit;
 
@@ -619,7 +606,6 @@ static int _global_mask_array_rcu(struct bpf_cpumask **mask0,
 		goto err_exit;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local = create_cpumask();
 	if (!local) {
 		err = 9;
@@ -703,8 +689,6 @@ int BPF_PROG(test_global_mask_nested_deep_rcu, struct task_struct *task, u64 clo
 }
 
 SEC("tp_btf/task_newtask")
-<<<<<<< HEAD
-=======
 int BPF_PROG(test_global_mask_nested_deep_array_rcu, struct task_struct *task, u64 clone_flags)
 {
 	int i;
@@ -722,7 +706,6 @@ int BPF_PROG(test_global_mask_nested_deep_array_rcu, struct task_struct *task, u
 }
 
 SEC("tp_btf/task_newtask")
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int BPF_PROG(test_cpumask_weight, struct task_struct *task, u64 clone_flags)
 {
 	struct bpf_cpumask *local;

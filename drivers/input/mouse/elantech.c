@@ -17,11 +17,7 @@
 #include <linux/platform_device.h>
 #include <linux/serio.h>
 #include <linux/libps2.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "psmouse.h"
 #include "elantech.h"
 #include "elan_i2c.h"

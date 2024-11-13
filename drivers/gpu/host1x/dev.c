@@ -404,16 +404,10 @@ static struct iommu_domain *host1x_iommu_attach(struct host1x *host)
 		if (err < 0)
 			goto put_group;
 
-<<<<<<< HEAD
-		host->domain = iommu_domain_alloc(&platform_bus_type);
-		if (!host->domain) {
-			err = -ENOMEM;
-=======
 		host->domain = iommu_paging_domain_alloc(host->dev);
 		if (IS_ERR(host->domain)) {
 			err = PTR_ERR(host->domain);
 			host->domain = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto put_cache;
 		}
 
@@ -631,15 +625,6 @@ static int host1x_probe(struct platform_device *pdev)
 		goto free_contexts;
 	}
 
-<<<<<<< HEAD
-	err = host1x_intr_init(host);
-	if (err) {
-		dev_err(&pdev->dev, "failed to initialize interrupts\n");
-		goto deinit_syncpt;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_enable(&pdev->dev);
 
 	err = devm_tegra_core_dev_init_opp_table_common(&pdev->dev);
@@ -651,15 +636,12 @@ static int host1x_probe(struct platform_device *pdev)
 	if (err)
 		goto pm_disable;
 
-<<<<<<< HEAD
-=======
 	err = host1x_intr_init(host);
 	if (err) {
 		dev_err(&pdev->dev, "failed to initialize interrupts\n");
 		goto pm_put;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	host1x_debug_init(host);
 
 	err = host1x_register(host);
@@ -676,21 +658,11 @@ unregister:
 	host1x_unregister(host);
 deinit_debugfs:
 	host1x_debug_deinit(host);
-<<<<<<< HEAD
-
-	pm_runtime_put_sync_suspend(&pdev->dev);
-pm_disable:
-	pm_runtime_disable(&pdev->dev);
-
-	host1x_intr_deinit(host);
-deinit_syncpt:
-=======
 	host1x_intr_deinit(host);
 pm_put:
 	pm_runtime_put_sync_suspend(&pdev->dev);
 pm_disable:
 	pm_runtime_disable(&pdev->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	host1x_syncpt_deinit(host);
 free_contexts:
 	host1x_memory_context_list_free(&host->context_list);

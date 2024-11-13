@@ -123,11 +123,7 @@ static s32 brcmf_btcoex_params_read(struct brcmf_if *ifp, u32 addr, u32 *data)
 {
 	*data = addr;
 
-<<<<<<< HEAD
-	return brcmf_fil_iovar_int_get(ifp, "btc_params", data);
-=======
 	return brcmf_fil_iovar_int_query(ifp, "btc_params", data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

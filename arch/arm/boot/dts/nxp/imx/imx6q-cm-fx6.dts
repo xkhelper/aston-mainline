@@ -127,14 +127,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-	sound-spdif {
-		compatible = "fsl,imx-audio-spdif";
-		model = "imx-spdif";
-		spdif-controller = <&spdif>;
-		spdif-out;
-		spdif-in;
-=======
 	spdif_out: spdif-out {
 		compatible = "linux,spdif-dit";
 		#sound-dai-cells = <0>;
@@ -150,7 +142,6 @@
 		model = "imx-spdif";
 		audio-cpu = <&spdif>;
 		audio-codec = <&spdif_out>, <&spdif_in>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

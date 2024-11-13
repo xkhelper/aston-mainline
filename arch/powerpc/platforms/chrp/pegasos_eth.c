@@ -14,11 +14,7 @@
 #include <linux/ioport.h>
 #include <linux/device.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
-#include <linux/mv643xx.h>
-=======
 #include <linux/mv643xx_eth.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pci.h>
 
 #define PEGASOS2_MARVELL_REGBASE 		(0xf1000000)
@@ -29,22 +25,15 @@
 #define PEGASOS2_SRAM_BASE_ETH_PORT0			(PEGASOS2_SRAM_BASE)
 #define PEGASOS2_SRAM_BASE_ETH_PORT1			(PEGASOS2_SRAM_BASE_ETH_PORT0 + (PEGASOS2_SRAM_SIZE / 2) )
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PEGASOS2_SRAM_RXRING_SIZE		(PEGASOS2_SRAM_SIZE/4)
 #define PEGASOS2_SRAM_TXRING_SIZE		(PEGASOS2_SRAM_SIZE/4)
 
 #undef BE_VERBOSE
 
-<<<<<<< HEAD
-=======
 #define MV64340_BASE_ADDR_ENABLE                                    0x278
 #define MV64340_INTEGRATED_SRAM_BASE_ADDR                           0x268
 #define MV64340_SRAM_CONFIG                                         0x380
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct resource mv643xx_eth_shared_resources[] = {
 	[0] = {
 		.name	= "ethernet shared base",

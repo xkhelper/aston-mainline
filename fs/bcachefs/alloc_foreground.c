@@ -162,13 +162,10 @@ static void open_bucket_free_unused(struct bch_fs *c, struct open_bucket *ob)
 	       ARRAY_SIZE(c->open_buckets_partial));
 
 	spin_lock(&c->freelist_lock);
-<<<<<<< HEAD
-=======
 	rcu_read_lock();
 	bch2_dev_rcu(c, ob->dev)->nr_partial_buckets++;
 	rcu_read_unlock();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ob->on_partial_list = true;
 	c->open_buckets_partial[c->open_buckets_partial_nr++] =
 		ob - c->open_buckets;
@@ -607,10 +604,7 @@ static struct open_bucket *bch2_bucket_alloc_trans(struct btree_trans *trans,
 				      enum bch_watermark watermark,
 				      enum bch_data_type data_type,
 				      struct closure *cl,
-<<<<<<< HEAD
-=======
 				      bool nowait,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct bch_dev_usage *usage)
 {
 	struct bch_fs *c = trans->c;
@@ -620,11 +614,7 @@ static struct open_bucket *bch2_bucket_alloc_trans(struct btree_trans *trans,
 	struct bucket_alloc_state s = {
 		.btree_bitmap = data_type == BCH_DATA_btree,
 	};
-<<<<<<< HEAD
-	bool waiting = false;
-=======
 	bool waiting = nowait;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 again:
 	bch2_dev_usage_read_fast(ca, usage);
 	avail = dev_buckets_free(ca, *usage, watermark);
@@ -698,15 +688,9 @@ struct open_bucket *bch2_bucket_alloc(struct bch_fs *c, struct bch_dev *ca,
 	struct bch_dev_usage usage;
 	struct open_bucket *ob;
 
-<<<<<<< HEAD
-	bch2_trans_do(c, NULL, NULL, 0,
-		      PTR_ERR_OR_ZERO(ob = bch2_bucket_alloc_trans(trans, ca, watermark,
-							data_type, cl, &usage)));
-=======
 	bch2_trans_do(c,
 		      PTR_ERR_OR_ZERO(ob = bch2_bucket_alloc_trans(trans, ca, watermark,
 							data_type, cl, false, &usage)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ob;
 }
 
@@ -769,10 +753,6 @@ static int add_new_bucket(struct bch_fs *c,
 			   unsigned nr_replicas,
 			   unsigned *nr_effective,
 			   bool *have_cache,
-<<<<<<< HEAD
-			   unsigned flags,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   struct open_bucket *ob)
 {
 	unsigned durability = ob_dev(c, ob)->mi.durability;
@@ -799,11 +779,7 @@ int bch2_bucket_alloc_set_trans(struct btree_trans *trans,
 		      unsigned nr_replicas,
 		      unsigned *nr_effective,
 		      bool *have_cache,
-<<<<<<< HEAD
-		      unsigned flags,
-=======
 		      enum bch_write_flags flags,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		      enum bch_data_type data_type,
 		      enum bch_watermark watermark,
 		      struct closure *cl)
@@ -829,12 +805,8 @@ int bch2_bucket_alloc_set_trans(struct btree_trans *trans,
 			continue;
 		}
 
-<<<<<<< HEAD
-		ob = bch2_bucket_alloc_trans(trans, ca, watermark, data_type, cl, &usage);
-=======
 		ob = bch2_bucket_alloc_trans(trans, ca, watermark, data_type,
 					     cl, flags & BCH_WRITE_ALLOC_NOWAIT, &usage);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!IS_ERR(ob))
 			bch2_dev_stripe_increment_inlined(ca, stripe, &usage);
 		bch2_dev_put(ca);
@@ -848,11 +820,7 @@ int bch2_bucket_alloc_set_trans(struct btree_trans *trans,
 
 		if (add_new_bucket(c, ptrs, devs_may_alloc,
 				   nr_replicas, nr_effective,
-<<<<<<< HEAD
-				   have_cache, flags, ob)) {
-=======
 				   have_cache, ob)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = 0;
 			break;
 		}
@@ -878,11 +846,7 @@ static int bucket_alloc_from_stripe(struct btree_trans *trans,
 			 unsigned *nr_effective,
 			 bool *have_cache,
 			 enum bch_watermark watermark,
-<<<<<<< HEAD
-			 unsigned flags,
-=======
 			 enum bch_write_flags flags,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 struct closure *cl)
 {
 	struct bch_fs *c = trans->c;
@@ -924,11 +888,7 @@ got_bucket:
 
 	ret = add_new_bucket(c, ptrs, devs_may_alloc,
 			     nr_replicas, nr_effective,
-<<<<<<< HEAD
-			     have_cache, flags, ob);
-=======
 			     have_cache, ob);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_put_head:
 	bch2_ec_stripe_head_put(c, h);
 	return ret;
@@ -967,11 +927,7 @@ static int bucket_alloc_set_writepoint(struct bch_fs *c,
 				       unsigned nr_replicas,
 				       unsigned *nr_effective,
 				       bool *have_cache,
-<<<<<<< HEAD
-				       bool ec, unsigned flags)
-=======
 				       bool ec)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct open_buckets ptrs_skip = { .nr = 0 };
 	struct open_bucket *ob;
@@ -983,11 +939,7 @@ static int bucket_alloc_set_writepoint(struct bch_fs *c,
 					have_cache, ec, ob))
 			ret = add_new_bucket(c, ptrs, devs_may_alloc,
 				       nr_replicas, nr_effective,
-<<<<<<< HEAD
-				       have_cache, flags, ob);
-=======
 				       have_cache, ob);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			ob_push(c, &ptrs_skip, ob);
 	}
@@ -1003,12 +955,7 @@ static int bucket_alloc_set_partial(struct bch_fs *c,
 				    unsigned nr_replicas,
 				    unsigned *nr_effective,
 				    bool *have_cache, bool ec,
-<<<<<<< HEAD
-				    enum bch_watermark watermark,
-				    unsigned flags)
-=======
 				    enum bch_watermark watermark)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i, ret = 0;
 
@@ -1029,11 +976,7 @@ static int bucket_alloc_set_partial(struct bch_fs *c,
 			u64 avail;
 
 			bch2_dev_usage_read_fast(ca, &usage);
-<<<<<<< HEAD
-			avail = dev_buckets_free(ca, usage, watermark);
-=======
 			avail = dev_buckets_free(ca, usage, watermark) + ca->nr_partial_buckets;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!avail)
 				continue;
 
@@ -1042,11 +985,6 @@ static int bucket_alloc_set_partial(struct bch_fs *c,
 					  i);
 			ob->on_partial_list = false;
 
-<<<<<<< HEAD
-			ret = add_new_bucket(c, ptrs, devs_may_alloc,
-					     nr_replicas, nr_effective,
-					     have_cache, flags, ob);
-=======
 			rcu_read_lock();
 			bch2_dev_rcu(c, ob->dev)->nr_partial_buckets--;
 			rcu_read_unlock();
@@ -1054,7 +992,6 @@ static int bucket_alloc_set_partial(struct bch_fs *c,
 			ret = add_new_bucket(c, ptrs, devs_may_alloc,
 					     nr_replicas, nr_effective,
 					     have_cache, ob);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (ret)
 				break;
 		}
@@ -1074,11 +1011,7 @@ static int __open_bucket_add_buckets(struct btree_trans *trans,
 			unsigned *nr_effective,
 			bool *have_cache,
 			enum bch_watermark watermark,
-<<<<<<< HEAD
-			unsigned flags,
-=======
 			enum bch_write_flags flags,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct closure *_cl)
 {
 	struct bch_fs *c = trans->c;
@@ -1097,28 +1030,15 @@ static int __open_bucket_add_buckets(struct btree_trans *trans,
 	open_bucket_for_each(c, ptrs, ob, i)
 		__clear_bit(ob->dev, devs.d);
 
-<<<<<<< HEAD
-	if (erasure_code && ec_open_bucket(c, ptrs))
-		return 0;
-
-	ret = bucket_alloc_set_writepoint(c, ptrs, wp, &devs,
-				 nr_replicas, nr_effective,
-				 have_cache, erasure_code, flags);
-=======
 	ret = bucket_alloc_set_writepoint(c, ptrs, wp, &devs,
 				 nr_replicas, nr_effective,
 				 have_cache, erasure_code);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
 	ret = bucket_alloc_set_partial(c, ptrs, wp, &devs,
 				 nr_replicas, nr_effective,
-<<<<<<< HEAD
-				 have_cache, erasure_code, watermark, flags);
-=======
 				 have_cache, erasure_code, watermark);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1159,20 +1079,12 @@ static int open_bucket_add_buckets(struct btree_trans *trans,
 			unsigned *nr_effective,
 			bool *have_cache,
 			enum bch_watermark watermark,
-<<<<<<< HEAD
-			unsigned flags,
-=======
 			enum bch_write_flags flags,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct closure *cl)
 {
 	int ret;
 
-<<<<<<< HEAD
-	if (erasure_code) {
-=======
 	if (erasure_code && !ec_open_bucket(trans->c, ptrs)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = __open_bucket_add_buckets(trans, ptrs, wp,
 				devs_have, target, erasure_code,
 				nr_replicas, nr_effective, have_cache,
@@ -1287,9 +1199,6 @@ void bch2_open_buckets_stop(struct bch_fs *c, struct bch_dev *ca,
 			--c->open_buckets_partial_nr;
 			swap(c->open_buckets_partial[i],
 			     c->open_buckets_partial[c->open_buckets_partial_nr]);
-<<<<<<< HEAD
-			ob->on_partial_list = false;
-=======
 
 			ob->on_partial_list = false;
 
@@ -1297,7 +1206,6 @@ void bch2_open_buckets_stop(struct bch_fs *c, struct bch_dev *ca,
 			bch2_dev_rcu(c, ob->dev)->nr_partial_buckets--;
 			rcu_read_unlock();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			spin_unlock(&c->freelist_lock);
 			bch2_open_bucket_put(c, ob);
 			spin_lock(&c->freelist_lock);
@@ -1479,11 +1387,7 @@ int bch2_alloc_sectors_start_trans(struct btree_trans *trans,
 			     unsigned nr_replicas,
 			     unsigned nr_replicas_required,
 			     enum bch_watermark watermark,
-<<<<<<< HEAD
-			     unsigned flags,
-=======
 			     enum bch_write_flags flags,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     struct closure *cl,
 			     struct write_point **wp_ret)
 {
@@ -1499,11 +1403,6 @@ int bch2_alloc_sectors_start_trans(struct btree_trans *trans,
 	if (!IS_ENABLED(CONFIG_BCACHEFS_ERASURE_CODING))
 		erasure_code = false;
 
-<<<<<<< HEAD
-	BUG_ON(flags & BCH_WRITE_ONLY_SPECIFIED_DEVS);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BUG_ON(!nr_replicas || !nr_replicas_required);
 retry:
 	ptrs.nr		= 0;
@@ -1608,20 +1507,12 @@ err:
 	    try_decrease_writepoints(trans, write_points_nr))
 		goto retry;
 
-<<<<<<< HEAD
-	if (bch2_err_matches(ret, BCH_ERR_open_buckets_empty) ||
-	    bch2_err_matches(ret, BCH_ERR_freelist_empty))
-		return cl
-			? -BCH_ERR_bucket_alloc_blocked
-			: -BCH_ERR_ENOSPC_bucket_alloc;
-=======
 	if (cl && bch2_err_matches(ret, BCH_ERR_open_buckets_empty))
 		ret = -BCH_ERR_bucket_alloc_blocked;
 
 	if (cl && !(flags & BCH_WRITE_ALLOC_NOWAIT) &&
 	    bch2_err_matches(ret, BCH_ERR_freelist_empty))
 		ret = -BCH_ERR_bucket_alloc_blocked;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -1733,12 +1624,7 @@ void bch2_open_buckets_to_text(struct printbuf *out, struct bch_fs *c,
 	     ob < c->open_buckets + ARRAY_SIZE(c->open_buckets);
 	     ob++) {
 		spin_lock(&ob->lock);
-<<<<<<< HEAD
-		if (ob->valid && !ob->on_partial_list &&
-		    (!ca || ob->dev == ca->dev_idx))
-=======
 		if (ob->valid && (!ca || ob->dev == ca->dev_idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bch2_open_bucket_to_text(out, c, ob);
 		spin_unlock(&ob->lock);
 	}
@@ -1856,16 +1742,6 @@ void bch2_dev_alloc_debug_to_text(struct printbuf *out, struct bch_dev *ca)
 	for (unsigned i = 0; i < ARRAY_SIZE(c->open_buckets); i++)
 		nr[c->open_buckets[i].data_type]++;
 
-<<<<<<< HEAD
-	printbuf_tabstops_reset(out);
-	printbuf_tabstop_push(out, 12);
-	printbuf_tabstop_push(out, 16);
-	printbuf_tabstop_push(out, 16);
-	printbuf_tabstop_push(out, 16);
-	printbuf_tabstop_push(out, 16);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch2_dev_usage_to_text(out, ca, &stats);
 
 	prt_newline(out);

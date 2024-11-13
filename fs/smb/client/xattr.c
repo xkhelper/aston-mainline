@@ -162,11 +162,7 @@ static int cifs_xattr_set(const struct xattr_handler *handler,
 	case XATTR_CIFS_ACL:
 	case XATTR_CIFS_NTSD:
 	case XATTR_CIFS_NTSD_FULL: {
-<<<<<<< HEAD
-		struct cifs_ntsd *pacl;
-=======
 		struct smb_ntsd *pacl;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!value)
 			goto out;
@@ -319,11 +315,7 @@ static int cifs_xattr_get(const struct xattr_handler *handler,
 		 * fetch owner and DACL otherwise
 		 */
 		u32 acllen, extra_info;
-<<<<<<< HEAD
-		struct cifs_ntsd *pacl;
-=======
 		struct smb_ntsd *pacl;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (pTcon->ses->server->ops->get_acl == NULL)
 			goto out; /* rc already EOPNOTSUPP */

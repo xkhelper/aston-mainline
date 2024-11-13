@@ -352,8 +352,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
 		},
 	},
 	/*
-<<<<<<< HEAD
-=======
 	 * The ASUS ROG M16 from 2023 has many events which wake it from s2idle
 	 * resulting in excessive battery drain and risk of laptop overheating,
 	 * these events can be caused by the MMC or  y AniMe display if installed.
@@ -368,7 +366,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
 		},
 	},
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * https://bugzilla.kernel.org/show_bug.cgi?id=189431
 	 * Lenovo G50-45 is a platform later than 2012, but needs nvs memory
 	 * saving during S3.

@@ -300,11 +300,6 @@ sub check_sphinx()
 	}
 
 	$cur_version = get_sphinx_version($sphinx);
-<<<<<<< HEAD
-	die ("$sphinx returned an error") if (!$cur_version);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	die "$sphinx didn't return its version" if (!$cur_version);
 
 	if ($cur_version lt $min_version) {

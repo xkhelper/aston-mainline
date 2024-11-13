@@ -314,10 +314,6 @@ struct cdns_pcie {
 /**
  * struct cdns_pcie_rc - private data for this PCIe Root Complex driver
  * @pcie: Cadence PCIe controller
-<<<<<<< HEAD
- * @dev: pointer to PCIe device
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @cfg_res: start/end offsets in the physical system memory to map PCI
  *           configuration space accesses
  * @cfg_base: IO mapped window to access the PCI configuration space of a
@@ -524,17 +520,12 @@ static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
 }
 
 #ifdef CONFIG_PCIE_CADENCE_HOST
-<<<<<<< HEAD
-=======
 int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc);
 int cdns_pcie_host_init(struct cdns_pcie_rc *rc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int cdns_pcie_host_setup(struct cdns_pcie_rc *rc);
 void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int devfn,
 			       int where);
 #else
-<<<<<<< HEAD
-=======
 static inline int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc)
 {
 	return 0;
@@ -545,7 +536,6 @@ static inline int cdns_pcie_host_init(struct cdns_pcie_rc *rc)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
 {
 	return 0;

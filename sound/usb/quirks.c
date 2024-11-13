@@ -167,13 +167,8 @@ static int create_fixed_stream_quirk(struct snd_usb_audio *chip,
 		return -EINVAL;
 	}
 	if (fp->nr_rates > 0) {
-<<<<<<< HEAD
-		rate_table = kmemdup(fp->rate_table,
-				     sizeof(int) * fp->nr_rates, GFP_KERNEL);
-=======
 		rate_table = kmemdup_array(fp->rate_table, fp->nr_rates, sizeof(int),
 					   GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!rate_table) {
 			kfree(fp);
 			return -ENOMEM;
@@ -1394,8 +1389,6 @@ static int snd_usb_motu_m_series_boot_quirk(struct usb_device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int snd_usb_rme_digiface_boot_quirk(struct usb_device *dev)
 {
 	/* Disable mixer, internal clock, all outputs ADAT, 48kHz, TMS off */
@@ -1417,7 +1410,6 @@ static int snd_usb_rme_digiface_boot_quirk(struct usb_device *dev)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Setup quirks
  */
@@ -1645,11 +1637,8 @@ int snd_usb_apply_boot_quirk(struct usb_device *dev,
 		    get_iface_desc(intf->altsetting)->bInterfaceNumber < 3)
 			return snd_usb_motu_microbookii_boot_quirk(dev);
 		break;
-<<<<<<< HEAD
-=======
 	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
 		return snd_usb_rme_digiface_boot_quirk(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -1805,8 +1794,6 @@ static void mbox3_set_format_quirk(struct snd_usb_substream *subs,
 		dev_warn(&subs->dev->dev, "MBOX3: Couldn't set the sample rate");
 }
 
-<<<<<<< HEAD
-=======
 static const int rme_digiface_rate_table[] = {
 	32000, 44100, 48000, 0,
 	64000, 88200, 96000, 0,
@@ -1839,7 +1826,6 @@ static int rme_digiface_set_format_quirk(struct snd_usb_substream *subs)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
 			      const struct audioformat *fmt)
 {
@@ -1864,12 +1850,9 @@ void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
 	case USB_ID(0x0dba, 0x5000):
 		mbox3_set_format_quirk(subs, fmt); /* Digidesign Mbox 3 */
 		break;
-<<<<<<< HEAD
-=======
 	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
 		rme_digiface_set_format_quirk(subs);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -2131,11 +2114,8 @@ struct usb_audio_quirk_flags_table {
 
 static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
 	/* Device matches */
-<<<<<<< HEAD
-=======
 	DEVICE_FLG(0x03f0, 0x654a, /* HP 320 FHD Webcam */
 		   QUIRK_FLAG_GET_SAMPLE_RATE),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DEVICE_FLG(0x041e, 0x3000, /* Creative SB Extigy */
 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
 	DEVICE_FLG(0x041e, 0x4080, /* Creative Live Cam VF0610 */
@@ -2243,11 +2223,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
 	DEVICE_FLG(0x17aa, 0x104d, /* Lenovo ThinkStation P620 Internal Speaker + Front Headset */
 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
-<<<<<<< HEAD
-=======
 	DEVICE_FLG(0x1852, 0x5062, /* Luxman D-08u */
 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DEVICE_FLG(0x1852, 0x5065, /* Luxman DA-06 */
 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
 	DEVICE_FLG(0x1901, 0x0191, /* GE B850V3 CP2114 audio interface */
@@ -2306,11 +2283,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
-<<<<<<< HEAD
-=======
 	DEVICE_FLG(0x2d95, 0x8011, /* VIVO USB-C HEADSET */
 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */

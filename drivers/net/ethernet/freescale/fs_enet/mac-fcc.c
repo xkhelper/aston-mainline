@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 // SPDX-License-Identifier: GPL-2.0-only
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * FCC driver for Motorola MPC82xx (PQ2).
  *
@@ -10,13 +7,6 @@
  *
  * 2005 (c) MontaVista Software, Inc.
  * Vitaly Bordug <vbordug@ru.mvista.com>
-<<<<<<< HEAD
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2. This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/module.h>
@@ -32,10 +22,6 @@
 #include <linux/etherdevice.h>
 #include <linux/skbuff.h>
 #include <linux/spinlock.h>
-<<<<<<< HEAD
-#include <linux/mii.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/ethtool.h>
 #include <linux/bitops.h>
 #include <linux/fs.h>
@@ -249,12 +235,8 @@ static void set_multicast_list(struct net_device *dev)
 		set_promiscuous_mode(dev);
 }
 
-<<<<<<< HEAD
-static void restart(struct net_device *dev)
-=======
 static void restart(struct net_device *dev, phy_interface_t interface,
 		    int speed, int duplex)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct fs_enet_private *fep = netdev_priv(dev);
 	const struct fs_platform_info *fpi = fep->fpi;
@@ -378,13 +360,8 @@ static void restart(struct net_device *dev, phy_interface_t interface,
 	fs_init_bds(dev);
 
 	/* adjust to speed (for RMII mode) */
-<<<<<<< HEAD
-	if (fpi->use_rmii) {
-		if (dev->phydev->speed == 100)
-=======
 	if (interface == PHY_INTERFACE_MODE_RMII) {
 		if (speed == SPEED_100)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			C8(fcccp, fcc_gfemr, 0x20);
 		else
 			S8(fcccp, fcc_gfemr, 0x20);
@@ -406,19 +383,11 @@ static void restart(struct net_device *dev, phy_interface_t interface,
 
 	W32(fccp, fcc_fpsmr, FCC_PSMR_ENCRC);
 
-<<<<<<< HEAD
-	if (fpi->use_rmii)
-		S32(fccp, fcc_fpsmr, FCC_PSMR_RMII);
-
-	/* adjust to duplex mode */
-	if (dev->phydev->duplex)
-=======
 	if (interface == PHY_INTERFACE_MODE_RMII)
 		S32(fccp, fcc_fpsmr, FCC_PSMR_RMII);
 
 	/* adjust to duplex mode */
 	if (duplex == DUPLEX_FULL)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		S32(fccp, fcc_fpsmr, FCC_PSMR_FDE | FCC_PSMR_LPB);
 	else
 		C32(fccp, fcc_fpsmr, FCC_PSMR_FDE | FCC_PSMR_LPB);

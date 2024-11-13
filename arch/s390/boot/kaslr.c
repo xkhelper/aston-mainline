@@ -32,11 +32,7 @@ struct prng_parm {
 static int check_prng(void)
 {
 	if (!cpacf_query_func(CPACF_KMC, CPACF_KMC_PRNG)) {
-<<<<<<< HEAD
-		sclp_early_printk("KASLR disabled: CPU has no PRNG\n");
-=======
 		boot_printk("KASLR disabled: CPU has no PRNG\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	if (cpacf_query_func(CPACF_PRNO, CPACF_PRNO_TRNG))

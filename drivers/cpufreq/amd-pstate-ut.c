@@ -54,21 +54,14 @@ static void amd_pstate_ut_acpi_cpc_valid(u32 index);
 static void amd_pstate_ut_check_enabled(u32 index);
 static void amd_pstate_ut_check_perf(u32 index);
 static void amd_pstate_ut_check_freq(u32 index);
-<<<<<<< HEAD
-=======
 static void amd_pstate_ut_check_driver(u32 index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct amd_pstate_ut_struct amd_pstate_ut_cases[] = {
 	{"amd_pstate_ut_acpi_cpc_valid",   amd_pstate_ut_acpi_cpc_valid   },
 	{"amd_pstate_ut_check_enabled",    amd_pstate_ut_check_enabled    },
 	{"amd_pstate_ut_check_perf",       amd_pstate_ut_check_perf       },
-<<<<<<< HEAD
-	{"amd_pstate_ut_check_freq",       amd_pstate_ut_check_freq       }
-=======
 	{"amd_pstate_ut_check_freq",       amd_pstate_ut_check_freq       },
 	{"amd_pstate_ut_check_driver",	   amd_pstate_ut_check_driver     }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static bool get_shared_mem(void)
@@ -266,8 +259,6 @@ skip_test:
 	cpufreq_cpu_put(policy);
 }
 
-<<<<<<< HEAD
-=======
 static int amd_pstate_set_mode(enum amd_pstate_mode mode)
 {
 	const char *mode_str = amd_pstate_get_mode_string(mode);
@@ -305,7 +296,6 @@ out:
 					    AMD_PSTATE_UT_RESULT_PASS;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init amd_pstate_ut_init(void)
 {
 	u32 i = 0, arr_size = ARRAY_SIZE(amd_pstate_ut_cases);

@@ -10,10 +10,7 @@
 
 #include <linux/uio.h>
 #include <linux/bvec.h>
-<<<<<<< HEAD
-=======
 #include <linux/folio_queue.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 typedef size_t (*iov_step_f)(void *iter_base, size_t progress, size_t len,
 			     void *priv, void *priv2);
@@ -145,8 +142,6 @@ size_t iterate_bvec(struct iov_iter *iter, size_t len, void *priv, void *priv2,
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Handle ITER_FOLIOQ.
  */
 static __always_inline
@@ -201,7 +196,6 @@ size_t iterate_folioq(struct iov_iter *iter, size_t len, void *priv, void *priv2
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Handle ITER_XARRAY.
  */
 static __always_inline
@@ -310,11 +304,8 @@ size_t iterate_and_advance2(struct iov_iter *iter, size_t len, void *priv,
 		return iterate_bvec(iter, len, priv, priv2, step);
 	if (iov_iter_is_kvec(iter))
 		return iterate_kvec(iter, len, priv, priv2, step);
-<<<<<<< HEAD
-=======
 	if (iov_iter_is_folioq(iter))
 		return iterate_folioq(iter, len, priv, priv2, step);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (iov_iter_is_xarray(iter))
 		return iterate_xarray(iter, len, priv, priv2, step);
 	return iterate_discard(iter, len, priv, priv2, step);
@@ -337,8 +328,6 @@ size_t iterate_and_advance(struct iov_iter *iter, size_t len, void *priv,
 	return iterate_and_advance2(iter, len, priv, NULL, ustep, step);
 }
 
-<<<<<<< HEAD
-=======
 /**
  * iterate_and_advance_kernel - Iterate over a kernel-internal iterator
  * @iter: The iterator to iterate over.
@@ -386,5 +375,4 @@ size_t iterate_and_advance_kernel(struct iov_iter *iter, size_t len, void *priv,
 	return iterate_discard(iter, len, priv, priv2, step);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _LINUX_IOV_ITER_H */

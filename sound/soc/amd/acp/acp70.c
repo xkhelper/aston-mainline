@@ -25,25 +25,17 @@
 
 #define DRV_NAME "acp_asoc_acp70"
 
-<<<<<<< HEAD
-=======
 #define CLK7_CLK0_DFS_CNTL_N1		0X0006C1A4
 #define CLK0_DIVIDER			0X19
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct acp_resource rsrc = {
 	.offset = 0,
 	.no_of_ctrls = 2,
 	.irqp_used = 1,
 	.soc_mclk = true,
 	.irq_reg_offset = 0x1a00,
-<<<<<<< HEAD
-	.scratch_reg_offset = 0x12800,
-	.sram_pte_offset = 0x03802800,
-=======
 	.scratch_reg_offset = 0x10000,
 	.sram_pte_offset = 0x03800000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct snd_soc_acpi_mach snd_soc_acpi_amd_acp70_acp_machines[] = {
@@ -60,25 +52,6 @@ static struct snd_soc_dai_driver acp70_dai[] = {
 	.id = I2S_SP_INSTANCE,
 	.playback = {
 		.stream_name = "I2S SP Playback",
-<<<<<<< HEAD
-		.rates = SNDRV_PCM_RATE_8000_96000,
-		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
-			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-		.channels_min = 2,
-		.channels_max = 8,
-		.rate_min = 8000,
-		.rate_max = 96000,
-	},
-	.capture = {
-		.stream_name = "I2S SP Capture",
-		.rates = SNDRV_PCM_RATE_8000_48000,
-		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
-			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-		.channels_min = 2,
-		.channels_max = 2,
-		.rate_min = 8000,
-		.rate_max = 48000,
-=======
 		.rates = SNDRV_PCM_RATE_8000_192000,
 		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
 			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
@@ -96,7 +69,6 @@ static struct snd_soc_dai_driver acp70_dai[] = {
 		.channels_max = 32,
 		.rate_min = 8000,
 		.rate_max = 192000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.ops = &asoc_acp_cpu_dai_ops,
 },
@@ -105,25 +77,6 @@ static struct snd_soc_dai_driver acp70_dai[] = {
 	.id = I2S_BT_INSTANCE,
 	.playback = {
 		.stream_name = "I2S BT Playback",
-<<<<<<< HEAD
-		.rates = SNDRV_PCM_RATE_8000_96000,
-		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
-			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-		.channels_min = 2,
-		.channels_max = 8,
-		.rate_min = 8000,
-		.rate_max = 96000,
-	},
-	.capture = {
-		.stream_name = "I2S BT Capture",
-		.rates = SNDRV_PCM_RATE_8000_48000,
-		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
-			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-		.channels_min = 2,
-		.channels_max = 2,
-		.rate_min = 8000,
-		.rate_max = 48000,
-=======
 		.rates = SNDRV_PCM_RATE_8000_192000,
 		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
 			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
@@ -141,7 +94,6 @@ static struct snd_soc_dai_driver acp70_dai[] = {
 		.channels_max = 32,
 		.rate_min = 8000,
 		.rate_max = 192000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.ops = &asoc_acp_cpu_dai_ops,
 },
@@ -150,25 +102,6 @@ static struct snd_soc_dai_driver acp70_dai[] = {
 	.id = I2S_HS_INSTANCE,
 	.playback = {
 		.stream_name = "I2S HS Playback",
-<<<<<<< HEAD
-		.rates = SNDRV_PCM_RATE_8000_96000,
-		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
-			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-		.channels_min = 2,
-		.channels_max = 8,
-		.rate_min = 8000,
-		.rate_max = 96000,
-	},
-	.capture = {
-		.stream_name = "I2S HS Capture",
-		.rates = SNDRV_PCM_RATE_8000_48000,
-		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
-			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
-		.channels_min = 2,
-		.channels_max = 8,
-		.rate_min = 8000,
-		.rate_max = 48000,
-=======
 		.rates = SNDRV_PCM_RATE_8000_192000,
 		.formats = SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S8 |
 			   SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
@@ -186,7 +119,6 @@ static struct snd_soc_dai_driver acp70_dai[] = {
 		.channels_max = 32,
 		.rate_min = 8000,
 		.rate_max = 192000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.ops = &asoc_acp_cpu_dai_ops,
 },
@@ -205,8 +137,6 @@ static struct snd_soc_dai_driver acp70_dai[] = {
 },
 };
 
-<<<<<<< HEAD
-=======
 static int acp70_i2s_master_clock_generate(struct acp_dev_data *adata)
 {
 	struct pci_dev *smn_dev;
@@ -230,17 +160,13 @@ static int acp70_i2s_master_clock_generate(struct acp_dev_data *adata)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int acp_acp70_audio_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct acp_chip_info *chip;
 	struct acp_dev_data *adata;
 	struct resource *res;
-<<<<<<< HEAD
-=======
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	chip = dev_get_platdata(&pdev->dev);
 	if (!chip || !chip->base) {
@@ -248,15 +174,11 @@ static int acp_acp70_audio_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-	if (chip->acp_rev != ACP70_DEV) {
-=======
 	switch (chip->acp_rev) {
 	case ACP70_DEV:
 	case ACP71_DEV:
 		break;
 	default:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(&pdev->dev, "Un-supported ACP Revision %d\n", chip->acp_rev);
 		return -ENODEV;
 	}
@@ -287,28 +209,21 @@ static int acp_acp70_audio_probe(struct platform_device *pdev)
 	adata->num_dai = ARRAY_SIZE(acp70_dai);
 	adata->rsrc = &rsrc;
 	adata->machines = snd_soc_acpi_amd_acp70_acp_machines;
-<<<<<<< HEAD
-	adata->platform = ACP70;
-=======
 	if (chip->acp_rev == ACP70_DEV)
 		adata->platform = ACP70;
 	else
 		adata->platform = ACP71;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	adata->flag = chip->flag;
 	acp_machine_select(adata);
 
 	dev_set_drvdata(dev, adata);
-<<<<<<< HEAD
-=======
 
 	ret = acp70_i2s_master_clock_generate(adata);
 	if (ret) {
 		dev_err(&pdev->dev, "Failed to set I2S master clock as 196.608MHz\n");
 		return ret;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acp_enable_interrupts(adata);
 	acp_platform_register(dev);
 	pm_runtime_set_autosuspend_delay(&pdev->dev, ACP_SUSPEND_DELAY_MS);
@@ -363,11 +278,7 @@ static const struct dev_pm_ops acp70_dma_pm_ops = {
 
 static struct platform_driver acp70_driver = {
 	.probe = acp_acp70_audio_probe,
-<<<<<<< HEAD
-	.remove_new = acp_acp70_audio_remove,
-=======
 	.remove = acp_acp70_audio_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "acp_asoc_acp70",
 		.pm = &acp70_dma_pm_ops,

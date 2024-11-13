@@ -4,11 +4,7 @@
 
 use super::{AllocError, Flags};
 use alloc::boxed::Box;
-<<<<<<< HEAD
-use core::mem::MaybeUninit;
-=======
 use core::{mem::MaybeUninit, ptr, result::Result};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /// Extensions to [`Box`].
 pub trait BoxExt<T>: Sized {
@@ -21,8 +17,6 @@ pub trait BoxExt<T>: Sized {
     ///
     /// The allocation may fail, in which case an error is returned.
     fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
-<<<<<<< HEAD
-=======
 
     /// Drops the contents, but keeps the allocation.
     ///
@@ -41,7 +35,6 @@ pub trait BoxExt<T>: Sized {
     /// # Ok::<(), Error>(())
     /// ```
     fn drop_contents(this: Self) -> Box<MaybeUninit<T>>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 impl<T> BoxExt<T> for Box<T> {
@@ -80,8 +73,6 @@ impl<T> BoxExt<T> for Box<T> {
         // zero-sized types, we use `NonNull::dangling`.
         Ok(unsafe { Box::from_raw(ptr) })
     }
-<<<<<<< HEAD
-=======
 
     fn drop_contents(this: Self) -> Box<MaybeUninit<T>> {
         let ptr = Box::into_raw(this);
@@ -95,5 +86,4 @@ impl<T> BoxExt<T> for Box<T> {
         // reads, since the pointer came from `Box::into_raw` and the type is `MaybeUninit<T>`.
         unsafe { Box::from_raw(ptr) }
     }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

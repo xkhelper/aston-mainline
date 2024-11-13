@@ -14,12 +14,6 @@
 #include <linux/node.h>
 #include <asm/numa.h>
 
-<<<<<<< HEAD
-struct pglist_data *node_data[MAX_NUMNODES];
-EXPORT_SYMBOL(node_data);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __init numa_setup(void)
 {
 	int nid;

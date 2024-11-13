@@ -774,10 +774,7 @@ bool dcn21_fast_validate_bw(struct dc *dc,
 {
 	bool out = false;
 	int split[MAX_PIPES] = { 0 };
-<<<<<<< HEAD
-=======
 	bool merge[MAX_PIPES] = { false };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int pipe_cnt, i, pipe_idx, vlevel;
 
 	ASSERT(pipes);
@@ -820,11 +817,7 @@ bool dcn21_fast_validate_bw(struct dc *dc,
 			goto validate_fail;
 	}
 
-<<<<<<< HEAD
-	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, NULL);
-=======
 	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, merge);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0, pipe_idx = 0; i < dc->res_pool->pipe_count; i++) {
 		struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];

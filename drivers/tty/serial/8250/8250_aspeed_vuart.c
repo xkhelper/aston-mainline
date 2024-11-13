@@ -561,10 +561,7 @@ static const struct of_device_id aspeed_vuart_table[] = {
 	{ .compatible = "aspeed,ast2500-vuart" },
 	{ },
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(of, aspeed_vuart_table);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver aspeed_vuart_driver = {
 	.driver = {

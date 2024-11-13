@@ -4,10 +4,7 @@
  * Authors:
  * Fabien Parent <fparent@baylibre.com>
  * Bernhard Rosenkränzer <bero@baylibre.com>
-<<<<<<< HEAD
-=======
  * Alexandre Mergnat <amergnat@baylibre.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 /dts-v1/;
@@ -90,8 +87,6 @@
 			reg = <0 0x43200000 0 0x00c00000>;
 		};
 	};
-<<<<<<< HEAD
-=======
 
 	sound: sound {
 		compatible = "mediatek,mt8365-mt6357";
@@ -114,7 +109,6 @@
 &afe {
 	mediatek,dmic-mode = <1>;
 	status = "okay";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &cpu0 {
@@ -207,11 +201,6 @@
 	interrupts-extended = <&pio 145 IRQ_TYPE_LEVEL_HIGH>;
 	interrupt-controller;
 	#interrupt-cells = <2>;
-<<<<<<< HEAD
-};
-
-&pio {
-=======
 	mediatek,micbias0-microvolt = <1900000>;
 	mediatek,micbias1-microvolt = <1700000>;
 };
@@ -278,7 +267,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ethernet_pins: ethernet-pins {
 		phy_reset_pins {
 			pinmux = <MT8365_PIN_133_TDM_TX_DATA1__FUNC_GPIO133>;

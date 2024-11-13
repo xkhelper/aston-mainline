@@ -486,8 +486,6 @@ int dc_fixpt_s4d19(struct fixed31_32 arg)
 	else
 		return ux_dy(arg.value, 4, 19);
 }
-<<<<<<< HEAD
-=======
 
 struct fixed31_32 dc_fixpt_from_ux_dy(unsigned int value,
 	unsigned int integer_bits,
@@ -515,4 +513,3 @@ struct fixed31_32 dc_fixpt_from_int_dy(unsigned int int_value,
 	fixpt_value.value |= (long long)frac_value << (FIXED31_32_BITS_PER_FRACTIONAL_PART - fractional_bits);
 	return fixpt_value;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

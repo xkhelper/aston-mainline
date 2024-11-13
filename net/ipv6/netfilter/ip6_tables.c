@@ -1773,11 +1773,7 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
 		goto out_free;
 	}
 
-<<<<<<< HEAD
-	ops = kmemdup(template_ops, sizeof(*ops) * num_ops, GFP_KERNEL);
-=======
 	ops = kmemdup_array(template_ops, num_ops, sizeof(*ops), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ops) {
 		ret = -ENOMEM;
 		goto out_free;

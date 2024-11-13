@@ -32,22 +32,6 @@ mt76x2_stop(struct ieee80211_hw *hw, bool suspend)
 	mt76x2_stop_hardware(dev);
 }
 
-<<<<<<< HEAD
-static void
-mt76x2_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
-{
-	cancel_delayed_work_sync(&dev->cal_work);
-	tasklet_disable(&dev->mt76.pre_tbtt_tasklet);
-	tasklet_disable(&dev->dfs_pd.dfs_tasklet);
-
-	mutex_lock(&dev->mt76.mutex);
-	set_bit(MT76_RESET, &dev->mphy.state);
-
-	mt76_set_channel(&dev->mphy);
-
-	mt76x2_mac_stop(dev, true);
-	mt76x2_phy_set_channel(dev, chandef);
-=======
 int mt76x2e_set_channel(struct mt76_phy *phy)
 {
 	struct mt76x02_dev *dev = container_of(phy->dev, struct mt76x02_dev, mt76);
@@ -57,27 +41,16 @@ int mt76x2e_set_channel(struct mt76_phy *phy)
 
 	mt76x2_mac_stop(dev, true);
 	mt76x2_phy_set_channel(dev, &phy->chandef);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mt76x02_mac_cc_reset(dev);
 	mt76x02_dfs_init_params(dev);
 
 	mt76x2_mac_resume(dev);
 
-<<<<<<< HEAD
-	clear_bit(MT76_RESET, &dev->mphy.state);
-	mutex_unlock(&dev->mt76.mutex);
-
-	tasklet_enable(&dev->dfs_pd.dfs_tasklet);
-	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
-
-	mt76_txq_schedule_all(&dev->mphy);
-=======
 	tasklet_enable(&dev->dfs_pd.dfs_tasklet);
 	tasklet_enable(&dev->mt76.pre_tbtt_tasklet);
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -114,16 +87,8 @@ mt76x2_config(struct ieee80211_hw *hw, u32 changed)
 
 	mutex_unlock(&dev->mt76.mutex);
 
-<<<<<<< HEAD
-	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
-		ieee80211_stop_queues(hw);
-		mt76x2_set_channel(dev, &hw->conf.chandef);
-		ieee80211_wake_queues(hw);
-	}
-=======
 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
 		mt76_update_channel(&dev->mphy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

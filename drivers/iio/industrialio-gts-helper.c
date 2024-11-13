@@ -307,22 +307,15 @@ static int iio_gts_build_avail_scale_table(struct iio_gts *gts)
 	if (ret)
 		goto err_free_out;
 
-<<<<<<< HEAD
-=======
 	for (i = 0; i < gts->num_itime; i++)
 		kfree(per_time_gains[i]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(per_time_gains);
 	gts->per_time_avail_scale_tables = per_time_scales;
 
 	return 0;
 
 err_free_out:
-<<<<<<< HEAD
-	for (i--; i; i--) {
-=======
 	for (i--; i >= 0; i--) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(per_time_scales[i]);
 		kfree(per_time_gains[i]);
 	}

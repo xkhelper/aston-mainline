@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
 #include <linux/bpf.h>
-<<<<<<< HEAD
-=======
 #include <limits.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <bpf/bpf_helpers.h>
 #include "bpf_misc.h"
 
@@ -774,8 +771,6 @@ __naked void smod64_zero_divisor(void)
 "	::: __clobber_all);
 }
 
-<<<<<<< HEAD
-=======
 SEC("socket")
 __description("SDIV64, overflow r/r, LLONG_MIN/-1")
 __success __retval(1)
@@ -1214,7 +1209,6 @@ __naked void smod32_ri_divisor_neg_1(void)
 	: __clobber_all);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 
 SEC("socket")

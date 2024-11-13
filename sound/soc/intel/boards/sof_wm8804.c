@@ -270,15 +270,11 @@ static int sof_wm8804_probe(struct platform_device *pdev)
 		snprintf(codec_name, sizeof(codec_name),
 			 "%s%s", "i2c-", acpi_dev_name(adev));
 		dailink[dai_index].codecs->name = codec_name;
-<<<<<<< HEAD
-	}
-=======
 	} else {
 		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
 		return -ENOENT;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acpi_dev_put(adev);
 
 	snd_soc_card_set_drvdata(card, ctx);
@@ -298,11 +294,7 @@ static struct platform_driver sof_wm8804_driver = {
 		.pm = &snd_soc_pm_ops,
 	},
 	.probe = sof_wm8804_probe,
-<<<<<<< HEAD
-	.remove_new = sof_wm8804_remove,
-=======
 	.remove = sof_wm8804_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(sof_wm8804_driver);
 

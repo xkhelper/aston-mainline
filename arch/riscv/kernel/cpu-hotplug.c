@@ -58,11 +58,7 @@ void arch_cpuhp_cleanup_dead_cpu(unsigned int cpu)
 	if (cpu_ops->cpu_is_stopped)
 		ret = cpu_ops->cpu_is_stopped(cpu);
 	if (ret)
-<<<<<<< HEAD
-		pr_warn("CPU%d may not have stopped: %d\n", cpu, ret);
-=======
 		pr_warn("CPU%u may not have stopped: %d\n", cpu, ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

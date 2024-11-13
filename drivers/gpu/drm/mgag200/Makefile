@@ -12,10 +12,7 @@ mgag200-y := \
 	mgag200_g200se.o \
 	mgag200_g200wb.o \
 	mgag200_mode.o \
-<<<<<<< HEAD
-=======
 	mgag200_vga_bmc.o \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mgag200_vga.o
 
 obj-$(CONFIG_DRM_MGAG200) += mgag200.o

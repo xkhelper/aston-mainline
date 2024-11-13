@@ -441,10 +441,7 @@ static int efa_ib_device_add(struct efa_dev *dev)
 	efa_set_host_info(dev);
 
 	dev->ibdev.node_type = RDMA_NODE_UNSPECIFIED;
-<<<<<<< HEAD
-=======
 	dev->ibdev.node_guid = dev->dev_attr.guid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->ibdev.phys_port_cnt = 1;
 	dev->ibdev.num_comp_vectors = dev->neqs ?: 1;
 	dev->ibdev.dev.parent = &pdev->dev;

@@ -8,10 +8,7 @@
  */
 
 #include <linux/bitfield.h>
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/io.h>
@@ -534,21 +531,12 @@ static int rzg2l_irqc_parse_interrupts(struct rzg2l_irqc_priv *priv,
 static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *parent,
 				  const struct irq_chip *irq_chip)
 {
-<<<<<<< HEAD
-	struct irq_domain *irq_domain, *parent_domain;
-	struct platform_device *pdev;
-	struct reset_control *resetn;
-	int ret;
-
-	pdev = of_find_device_by_node(node);
-=======
 	struct platform_device *pdev = of_find_device_by_node(node);
 	struct device *dev __free(put_device) = pdev ? &pdev->dev : NULL;
 	struct irq_domain *irq_domain, *parent_domain;
 	struct reset_control *resetn;
 	int ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!pdev)
 		return -ENODEV;
 
@@ -604,8 +592,6 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
 
 	register_syscore_ops(&rzg2l_irqc_syscore_ops);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Prevent the cleanup function from invoking put_device by assigning
 	 * NULL to dev.
@@ -617,7 +603,6 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
 	 */
 	dev = NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 pm_put:

@@ -15,18 +15,11 @@
 #include <sound/ump_convert.h>
 
 #include <linux/usb/ch9.h>
-<<<<<<< HEAD
-=======
 #include <linux/usb/func_utils.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/usb/gadget.h>
 #include <linux/usb/audio.h>
 #include <linux/usb/midi-v2.h>
 
-<<<<<<< HEAD
-#include "u_f.h"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "u_midi2.h"
 
 struct f_midi2;

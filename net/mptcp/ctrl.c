@@ -12,10 +12,7 @@
 #include <net/netns/generic.h>
 
 #include "protocol.h"
-<<<<<<< HEAD
-=======
 #include "mib.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MPTCP_SYSCTL_PATH "net/mptcp"
 
@@ -31,16 +28,11 @@ struct mptcp_pernet {
 #endif
 
 	unsigned int add_addr_timeout;
-<<<<<<< HEAD
-	unsigned int close_timeout;
-	unsigned int stale_loss_cnt;
-=======
 	unsigned int blackhole_timeout;
 	unsigned int close_timeout;
 	unsigned int stale_loss_cnt;
 	atomic_t active_disable_times;
 	unsigned long active_disable_stamp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 mptcp_enabled;
 	u8 checksum_enabled;
 	u8 allow_join_initial_addr_port;
@@ -99,11 +91,8 @@ static void mptcp_pernet_set_defaults(struct mptcp_pernet *pernet)
 {
 	pernet->mptcp_enabled = 1;
 	pernet->add_addr_timeout = TCP_RTO_MAX;
-<<<<<<< HEAD
-=======
 	pernet->blackhole_timeout = 3600;
 	atomic_set(&pernet->active_disable_times, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pernet->close_timeout = TCP_TIMEWAIT_LEN;
 	pernet->checksum_enabled = 0;
 	pernet->allow_join_initial_addr_port = 1;
@@ -168,8 +157,6 @@ static int proc_available_schedulers(const struct ctl_table *ctl,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int proc_blackhole_detect_timeout(const struct ctl_table *table,
 					 int write, void *buffer, size_t *lenp,
 					 loff_t *ppos)
@@ -184,7 +171,6 @@ static int proc_blackhole_detect_timeout(const struct ctl_table *table,
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct ctl_table mptcp_sysctl_table[] = {
 	{
 		.procname = "enabled",
@@ -251,8 +237,6 @@ static struct ctl_table mptcp_sysctl_table[] = {
 		.mode = 0644,
 		.proc_handler = proc_dointvec_jiffies,
 	},
-<<<<<<< HEAD
-=======
 	{
 		.procname = "blackhole_timeout",
 		.maxlen = sizeof(unsigned int),
@@ -260,7 +244,6 @@ static struct ctl_table mptcp_sysctl_table[] = {
 		.proc_handler = proc_blackhole_detect_timeout,
 		.extra1 = SYSCTL_ZERO,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int mptcp_pernet_new_table(struct net *net, struct mptcp_pernet *pernet)
@@ -284,10 +267,7 @@ static int mptcp_pernet_new_table(struct net *net, struct mptcp_pernet *pernet)
 	table[6].data = &pernet->scheduler;
 	/* table[7] is for available_schedulers which is read-only info */
 	table[8].data = &pernet->close_timeout;
-<<<<<<< HEAD
-=======
 	table[9].data = &pernet->blackhole_timeout;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hdr = register_net_sysctl_sz(net, MPTCP_SYSCTL_PATH, table,
 				     ARRAY_SIZE(mptcp_sysctl_table));
@@ -325,8 +305,6 @@ static void mptcp_pernet_del_table(struct mptcp_pernet *pernet) {}
 
 #endif /* CONFIG_SYSCTL */
 
-<<<<<<< HEAD
-=======
 /* The following code block is to deal with middle box issues with MPTCP,
  * similar to what is done with TFO.
  * The proposed solution is to disable active MPTCP globally when SYN+MPC are
@@ -432,7 +410,6 @@ void mptcp_active_detect_blackhole(struct sock *ssk, bool expired)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __net_init mptcp_net_init(struct net *net)
 {
 	struct mptcp_pernet *pernet = mptcp_get_pernet(net);

@@ -127,19 +127,12 @@ static void __virtio_config_changed(struct virtio_device *dev)
 {
 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
 
-<<<<<<< HEAD
-	if (!dev->config_enabled)
-		dev->config_change_pending = true;
-	else if (drv && drv->config_changed)
-		drv->config_changed(dev);
-=======
 	if (!dev->config_core_enabled || dev->config_driver_disabled)
 		dev->config_change_pending = true;
 	else if (drv && drv->config_changed) {
 		drv->config_changed(dev);
 		dev->config_change_pending = false;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void virtio_config_changed(struct virtio_device *dev)
@@ -152,22 +145,6 @@ void virtio_config_changed(struct virtio_device *dev)
 }
 EXPORT_SYMBOL_GPL(virtio_config_changed);
 
-<<<<<<< HEAD
-static void virtio_config_disable(struct virtio_device *dev)
-{
-	spin_lock_irq(&dev->config_lock);
-	dev->config_enabled = false;
-	spin_unlock_irq(&dev->config_lock);
-}
-
-static void virtio_config_enable(struct virtio_device *dev)
-{
-	spin_lock_irq(&dev->config_lock);
-	dev->config_enabled = true;
-	if (dev->config_change_pending)
-		__virtio_config_changed(dev);
-	dev->config_change_pending = false;
-=======
 /**
  * virtio_config_driver_disable - disable config change reporting by drivers
  * @dev: the device to reset
@@ -213,7 +190,6 @@ static void virtio_config_core_enable(struct virtio_device *dev)
 	dev->config_core_enabled = true;
 	if (dev->config_change_pending)
 		__virtio_config_changed(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irq(&dev->config_lock);
 }
 
@@ -373,11 +349,7 @@ static int virtio_dev_probe(struct device *_d)
 	if (drv->scan)
 		drv->scan(dev);
 
-<<<<<<< HEAD
-	virtio_config_enable(dev);
-=======
 	virtio_config_core_enable(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -392,11 +364,7 @@ static void virtio_dev_remove(struct device *_d)
 	struct virtio_device *dev = dev_to_virtio(_d);
 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
 
-<<<<<<< HEAD
-	virtio_config_disable(dev);
-=======
 	virtio_config_core_disable(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	drv->remove(dev);
 
@@ -508,11 +476,7 @@ int register_virtio_device(struct virtio_device *dev)
 		goto out_ida_remove;
 
 	spin_lock_init(&dev->config_lock);
-<<<<<<< HEAD
-	dev->config_enabled = false;
-=======
 	dev->config_core_enabled = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->config_change_pending = false;
 
 	INIT_LIST_HEAD(&dev->vqs);
@@ -569,22 +533,14 @@ int virtio_device_freeze(struct virtio_device *dev)
 	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
 	int ret;
 
-<<<<<<< HEAD
-	virtio_config_disable(dev);
-=======
 	virtio_config_core_disable(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->failed = dev->config->get_status(dev) & VIRTIO_CONFIG_S_FAILED;
 
 	if (drv && drv->freeze) {
 		ret = drv->freeze(dev);
 		if (ret) {
-<<<<<<< HEAD
-			virtio_config_enable(dev);
-=======
 			virtio_config_core_enable(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 	}
@@ -634,11 +590,7 @@ int virtio_device_restore(struct virtio_device *dev)
 	if (!(dev->config->get_status(dev) & VIRTIO_CONFIG_S_DRIVER_OK))
 		virtio_device_ready(dev);
 
-<<<<<<< HEAD
-	virtio_config_enable(dev);
-=======
 	virtio_config_core_enable(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 

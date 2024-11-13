@@ -719,11 +719,7 @@ static void e4000_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id e4000_id_table[] = {
-<<<<<<< HEAD
-	{"e4000", 0},
-=======
 	{ "e4000" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, e4000_id_table);

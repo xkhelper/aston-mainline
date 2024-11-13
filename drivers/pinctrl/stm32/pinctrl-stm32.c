@@ -1374,12 +1374,6 @@ static int stm32_gpiolib_register_bank(struct stm32_pinctrl *pctl, struct fwnode
 
 	for (i = 0; i < npins; i++) {
 		stm32_pin = stm32_pctrl_get_desc_pin_from_gpio(pctl, bank, i);
-<<<<<<< HEAD
-		if (stm32_pin && stm32_pin->pin.name)
-			names[i] = devm_kasprintf(dev, GFP_KERNEL, "%s", stm32_pin->pin.name);
-		else
-			names[i] = NULL;
-=======
 		if (stm32_pin && stm32_pin->pin.name) {
 			names[i] = devm_kasprintf(dev, GFP_KERNEL, "%s", stm32_pin->pin.name);
 			if (!names[i]) {
@@ -1389,7 +1383,6 @@ static int stm32_gpiolib_register_bank(struct stm32_pinctrl *pctl, struct fwnode
 		} else {
 			names[i] = NULL;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	bank->gpio_chip.names = (const char * const *)names;

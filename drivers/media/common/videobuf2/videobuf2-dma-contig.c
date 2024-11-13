@@ -854,12 +854,7 @@ int vb2_dma_contig_set_max_seg_size(struct device *dev, unsigned int size)
 		return -ENODEV;
 	}
 	if (dma_get_max_seg_size(dev) < size)
-<<<<<<< HEAD
-		return dma_set_max_seg_size(dev, size);
-
-=======
 		dma_set_max_seg_size(dev, size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(vb2_dma_contig_set_max_seg_size);

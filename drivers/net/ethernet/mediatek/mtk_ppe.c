@@ -8,16 +8,11 @@
 #include <linux/platform_device.h>
 #include <linux/if_ether.h>
 #include <linux/if_vlan.h>
-<<<<<<< HEAD
-#include <net/dst_metadata.h>
-#include <net/dsa.h>
-=======
 
 #include <net/dst_metadata.h>
 #include <net/dsa.h>
 #include <net/ipv6.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "mtk_eth_soc.h"
 #include "mtk_ppe.h"
 #include "mtk_ppe_regs.h"
@@ -346,10 +341,6 @@ int mtk_foe_entry_set_ipv6_tuple(struct mtk_eth *eth,
 {
 	int type = mtk_get_ib1_pkt_type(eth, entry->ib1);
 	u32 *src, *dest;
-<<<<<<< HEAD
-	int i;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (type) {
 	case MTK_PPE_PKT_TYPE_IPV4_DSLITE:
@@ -370,15 +361,8 @@ int mtk_foe_entry_set_ipv6_tuple(struct mtk_eth *eth,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	for (i = 0; i < 4; i++)
-		src[i] = be32_to_cpu(src_addr[i]);
-	for (i = 0; i < 4; i++)
-		dest[i] = be32_to_cpu(dest_addr[i]);
-=======
 	ipv6_addr_be32_to_cpu(src, src_addr);
 	ipv6_addr_be32_to_cpu(dest, dest_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

@@ -23,15 +23,10 @@ struct phy_device;
 int ethnl_cable_test_alloc(struct phy_device *phydev, u8 cmd);
 void ethnl_cable_test_free(struct phy_device *phydev);
 void ethnl_cable_test_finished(struct phy_device *phydev);
-<<<<<<< HEAD
-int ethnl_cable_test_result(struct phy_device *phydev, u8 pair, u8 result);
-int ethnl_cable_test_fault_length(struct phy_device *phydev, u8 pair, u32 cm);
-=======
 int ethnl_cable_test_result_with_src(struct phy_device *phydev, u8 pair,
 				     u8 result, u32 src);
 int ethnl_cable_test_fault_length_with_src(struct phy_device *phydev, u8 pair,
 					   u32 cm, u32 src);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ethnl_cable_test_amplitude(struct phy_device *phydev, u8 pair, s16 mV);
 int ethnl_cable_test_pulse(struct phy_device *phydev, u16 mV);
 int ethnl_cable_test_step(struct phy_device *phydev, u32 first, u32 last,
@@ -61,24 +56,14 @@ static inline void ethnl_cable_test_free(struct phy_device *phydev)
 static inline void ethnl_cable_test_finished(struct phy_device *phydev)
 {
 }
-<<<<<<< HEAD
-static inline int ethnl_cable_test_result(struct phy_device *phydev, u8 pair,
-					  u8 result)
-=======
 static inline int ethnl_cable_test_result_with_src(struct phy_device *phydev,
 						   u8 pair, u8 result, u32 src)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return -EOPNOTSUPP;
 }
 
-<<<<<<< HEAD
-static inline int ethnl_cable_test_fault_length(struct phy_device *phydev,
-						u8 pair, u32 cm)
-=======
 static inline int ethnl_cable_test_fault_length_with_src(struct phy_device *phydev,
 							 u8 pair, u32 cm, u32 src)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return -EOPNOTSUPP;
 }
@@ -136,8 +121,6 @@ static inline bool ethtool_dev_mm_supported(struct net_device *dev)
 }
 
 #endif /* IS_ENABLED(CONFIG_ETHTOOL_NETLINK) */
-<<<<<<< HEAD
-=======
 
 static inline int ethnl_cable_test_result(struct phy_device *phydev, u8 pair,
 					  u8 result)
@@ -153,5 +136,4 @@ static inline int ethnl_cable_test_fault_length(struct phy_device *phydev,
 						      ETHTOOL_A_CABLE_INF_SRC_TDR);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _LINUX_ETHTOOL_NETLINK_H_ */

@@ -252,8 +252,6 @@ config MMC_SDHCI_OF_SPARX5
 
 	  If unsure, say N.
 
-<<<<<<< HEAD
-=======
 config MMC_SDHCI_OF_MA35D1
 	tristate "SDHCI OF support for the MA35D1 SDHCI controller"
 	depends on ARCH_MA35 || COMPILE_TEST
@@ -266,7 +264,6 @@ config MMC_SDHCI_OF_MA35D1
 
 	  If unsure, say N.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config MMC_SDHCI_CADENCE
 	tristate "SDHCI support for the Cadence SD/SDIO/eMMC controller"
 	depends on MMC_SDHCI_PLTFM

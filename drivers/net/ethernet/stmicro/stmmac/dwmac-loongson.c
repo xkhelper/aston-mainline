@@ -8,11 +8,6 @@
 #include <linux/device.h>
 #include <linux/of_irq.h>
 #include "stmmac.h"
-<<<<<<< HEAD
-
-static int loongson_default_data(struct plat_stmmacenet_data *plat)
-{
-=======
 #include "dwmac_dma.h"
 #include "dwmac1000.h"
 
@@ -89,19 +84,14 @@ static void loongson_default_data(struct pci_dev *pdev,
 	/* Get bus_id, this can be overwritten later */
 	plat->bus_id = pci_dev_id(pdev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	plat->clk_csr = 2;	/* clk_csr_i = 20-35MHz & MDC = clk_csr_i/16 */
 	plat->has_gmac = 1;
 	plat->force_sf_dma_mode = 1;
 
 	/* Set default value for multicast hash bins */
-<<<<<<< HEAD
-	plat->multicast_filter_bins = HASH_TABLE_SIZE;
-=======
 	plat->multicast_filter_bins = 256;
 
 	plat->mac_interface = PHY_INTERFACE_MODE_NA;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Set default value for unicast filter entries */
 	plat->unicast_filter_entries = 1;
@@ -109,13 +99,6 @@ static void loongson_default_data(struct pci_dev *pdev,
 	/* Set the maxmtu to a default of JUMBO_LEN */
 	plat->maxmtu = JUMBO_LEN;
 
-<<<<<<< HEAD
-	/* Set default number of RX and TX queues to use */
-	plat->tx_queues_to_use = 1;
-	plat->rx_queues_to_use = 1;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Disable Priority config by default */
 	plat->tx_queues_cfg[0].use_prio = false;
 	plat->rx_queues_cfg[0].use_prio = false;
@@ -123,21 +106,14 @@ static void loongson_default_data(struct pci_dev *pdev,
 	/* Disable RX queues routing by default */
 	plat->rx_queues_cfg[0].pkt_route = 0x0;
 
-<<<<<<< HEAD
-=======
 	plat->clk_ref_rate = 125000000;
 	plat->clk_ptp_rate = 125000000;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Default to phy auto-detection */
 	plat->phy_addr = -1;
 
 	plat->dma_cfg->pbl = 32;
 	plat->dma_cfg->pblx8 = true;
-<<<<<<< HEAD
-
-	plat->multicast_filter_bins = 256;
-=======
 }
 
 static int loongson_gmac_data(struct pci_dev *pdev,
@@ -537,30 +513,16 @@ static int loongson_dwmac_acpi_config(struct pci_dev *pdev,
 
 	res->irq = pdev->irq;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 {
 	struct plat_stmmacenet_data *plat;
-<<<<<<< HEAD
-	struct stmmac_resources res;
-	struct device_node *np;
-	int ret, i, phy_mode;
-
-	np = dev_of_node(&pdev->dev);
-
-	if (!np) {
-		pr_info("dwmac_loongson_pci: No OF node\n");
-		return -ENODEV;
-	}
-=======
 	struct stmmac_pci_info *info;
 	struct stmmac_resources res;
 	struct loongson_data *ld;
 	int ret, i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	plat = devm_kzalloc(&pdev->dev, sizeof(*plat), GFP_KERNEL);
 	if (!plat)
@@ -572,19 +534,6 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
 	if (!plat->mdio_bus_data)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	plat->mdio_node = of_get_child_by_name(np, "mdio");
-	if (plat->mdio_node) {
-		dev_info(&pdev->dev, "Found MDIO subnode\n");
-		plat->mdio_bus_data->needs_reset = true;
-	}
-
-	plat->dma_cfg = devm_kzalloc(&pdev->dev, sizeof(*plat->dma_cfg), GFP_KERNEL);
-	if (!plat->dma_cfg) {
-		ret = -ENOMEM;
-		goto err_put_node;
-	}
-=======
 	plat->dma_cfg = devm_kzalloc(&pdev->dev, sizeof(*plat->dma_cfg), GFP_KERNEL);
 	if (!plat->dma_cfg)
 		return -ENOMEM;
@@ -592,23 +541,16 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
 	ld = devm_kzalloc(&pdev->dev, sizeof(*ld), GFP_KERNEL);
 	if (!ld)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Enable pci device */
 	ret = pci_enable_device(pdev);
 	if (ret) {
 		dev_err(&pdev->dev, "%s: ERROR: failed to enable device\n", __func__);
-<<<<<<< HEAD
-		goto err_put_node;
-	}
-
-=======
 		return ret;
 	}
 
 	pci_set_master(pdev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Get the base address of device */
 	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
 		if (pci_resource_len(pdev, i) == 0)
@@ -619,61 +561,6 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
 		break;
 	}
 
-<<<<<<< HEAD
-	plat->bus_id = of_alias_get_id(np, "ethernet");
-	if (plat->bus_id < 0)
-		plat->bus_id = pci_dev_id(pdev);
-
-	phy_mode = device_get_phy_mode(&pdev->dev);
-	if (phy_mode < 0) {
-		dev_err(&pdev->dev, "phy_mode not found\n");
-		ret = phy_mode;
-		goto err_disable_device;
-	}
-
-	plat->phy_interface = phy_mode;
-	plat->mac_interface = PHY_INTERFACE_MODE_GMII;
-
-	pci_set_master(pdev);
-
-	loongson_default_data(plat);
-	pci_enable_msi(pdev);
-	memset(&res, 0, sizeof(res));
-	res.addr = pcim_iomap_table(pdev)[0];
-
-	res.irq = of_irq_get_byname(np, "macirq");
-	if (res.irq < 0) {
-		dev_err(&pdev->dev, "IRQ macirq not found\n");
-		ret = -ENODEV;
-		goto err_disable_msi;
-	}
-
-	res.wol_irq = of_irq_get_byname(np, "eth_wake_irq");
-	if (res.wol_irq < 0) {
-		dev_info(&pdev->dev, "IRQ eth_wake_irq not found, using macirq\n");
-		res.wol_irq = res.irq;
-	}
-
-	res.lpi_irq = of_irq_get_byname(np, "eth_lpi");
-	if (res.lpi_irq < 0) {
-		dev_err(&pdev->dev, "IRQ eth_lpi not found\n");
-		ret = -ENODEV;
-		goto err_disable_msi;
-	}
-
-	ret = stmmac_dvr_probe(&pdev->dev, plat, &res);
-	if (ret)
-		goto err_disable_msi;
-
-	return ret;
-
-err_disable_msi:
-	pci_disable_msi(pdev);
-err_disable_device:
-	pci_disable_device(pdev);
-err_put_node:
-	of_node_put(plat->mdio_node);
-=======
 	memset(&res, 0, sizeof(res));
 	res.addr = pcim_iomap_table(pdev)[0];
 
@@ -711,7 +598,6 @@ err_plat_clear:
 		loongson_dwmac_msi_clear(pdev);
 err_disable_device:
 	pci_disable_device(pdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -719,13 +605,6 @@ static void loongson_dwmac_remove(struct pci_dev *pdev)
 {
 	struct net_device *ndev = dev_get_drvdata(&pdev->dev);
 	struct stmmac_priv *priv = netdev_priv(ndev);
-<<<<<<< HEAD
-	int i;
-
-	of_node_put(priv->plat->mdio_node);
-	stmmac_dvr_remove(&pdev->dev);
-
-=======
 	struct loongson_data *ld;
 	int i;
 
@@ -738,7 +617,6 @@ static void loongson_dwmac_remove(struct pci_dev *pdev)
 	if (ld->loongson_id == DWMAC_CORE_LS_MULTICHAN)
 		loongson_dwmac_msi_clear(pdev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
 		if (pci_resource_len(pdev, i) == 0)
 			continue;
@@ -746,10 +624,6 @@ static void loongson_dwmac_remove(struct pci_dev *pdev)
 		break;
 	}
 
-<<<<<<< HEAD
-	pci_disable_msi(pdev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pci_disable_device(pdev);
 }
 
@@ -792,12 +666,8 @@ static SIMPLE_DEV_PM_OPS(loongson_dwmac_pm_ops, loongson_dwmac_suspend,
 			 loongson_dwmac_resume);
 
 static const struct pci_device_id loongson_dwmac_id_table[] = {
-<<<<<<< HEAD
-	{ PCI_VDEVICE(LOONGSON, 0x7a03) },
-=======
 	{ PCI_DEVICE_DATA(LOONGSON, GMAC, &loongson_gmac_pci_info) },
 	{ PCI_DEVICE_DATA(LOONGSON, GNET, &loongson_gnet_pci_info) },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(pci, loongson_dwmac_id_table);
@@ -816,8 +686,5 @@ module_pci_driver(loongson_dwmac_driver);
 
 MODULE_DESCRIPTION("Loongson DWMAC PCI driver");
 MODULE_AUTHOR("Qing Zhang <zhangqing@loongson.cn>");
-<<<<<<< HEAD
-=======
 MODULE_AUTHOR("Yanteng Si <siyanteng@loongson.cn>");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL v2");

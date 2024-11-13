@@ -17,17 +17,10 @@
 #include "clk-exynos-arm64.h"
 
 /* NOTE: Must be equal to the last clock ID increased by one */
-<<<<<<< HEAD
-#define CLKS_NR_TOP			(CLK_GOUT_FSYS_USB30DRD + 1)
-#define CLKS_NR_CORE			(CLK_GOUT_TREX_P_CORE_PCLK_P_CORE + 1)
-#define CLKS_NR_PERI			(CLK_GOUT_WDT1_PCLK + 1)
-#define CLKS_NR_FSYS			(CLK_GOUT_MMC_SDIO_SDCLKIN + 1)
-=======
 #define CLKS_NR_TOP			(CLK_MOUT_SHARED1_PLL + 1)
 #define CLKS_NR_CORE			(CLK_GOUT_TREX_P_CORE_PCLK_P_CORE + 1)
 #define CLKS_NR_PERI			(CLK_GOUT_WDT1_PCLK + 1)
 #define CLKS_NR_FSYS			(CLK_FSYS_USB30DRD_REF_CLK + 1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* ---- CMU_TOP ------------------------------------------------------------- */
 
@@ -169,13 +162,10 @@ static const struct samsung_pll_clock top_pll_clks[] __initconst = {
 	    NULL),
 };
 
-<<<<<<< HEAD
-=======
 /* List of parent clocks for Muxes in CMU_TOP */
 PNAME(mout_shared0_pll_p)	= { "oscclk", "fout_shared0_pll" };
 PNAME(mout_shared1_pll_p)	= { "oscclk", "fout_shared1_pll" };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* List of parent clocks for Muxes in CMU_TOP: for CMU_CORE */
 PNAME(mout_core_bus_p)		= { "dout_shared0_div2", "dout_shared1_div2",
 				    "dout_shared0_div3", "dout_shared0_div3" };
@@ -203,15 +193,12 @@ PNAME(mout_fsys_mmc_sdio_p)	= { "dout_shared0_div2", "dout_shared1_div2" };
 PNAME(mout_fsys_usb30drd_p)	= { "dout_shared0_div4", "dout_shared1_div4" };
 
 static const struct samsung_mux_clock top_mux_clks[] __initconst = {
-<<<<<<< HEAD
-=======
 	/* TOP */
 	MUX(CLK_MOUT_SHARED0_PLL, "mout_shared0_pll", mout_shared0_pll_p,
 	    PLL_CON0_PLL_SHARED0, 4, 1),
 	MUX(CLK_MOUT_SHARED1_PLL, "mout_shared1_pll", mout_shared1_pll_p,
 	    PLL_CON0_PLL_SHARED1, 4, 1),
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* CORE */
 	MUX(CLK_MOUT_CORE_BUS, "mout_core_bus", mout_core_bus_p,
 	    CLK_CON_MUX_MUX_CLKCMU_CORE_BUS, 0, 2),
@@ -255,19 +242,6 @@ static const struct samsung_mux_clock top_mux_clks[] __initconst = {
 
 static const struct samsung_div_clock top_div_clks[] __initconst = {
 	/* TOP */
-<<<<<<< HEAD
-	DIV(CLK_DOUT_SHARED0_DIV2, "dout_shared0_div2", "fout_shared0_pll",
-	    CLK_CON_DIV_PLL_SHARED0_DIV2, 0, 1),
-	DIV(CLK_DOUT_SHARED0_DIV3, "dout_shared0_div3", "fout_shared0_pll",
-	    CLK_CON_DIV_PLL_SHARED0_DIV3, 0, 2),
-	DIV(CLK_DOUT_SHARED0_DIV4, "dout_shared0_div4", "dout_shared0_div2",
-	    CLK_CON_DIV_PLL_SHARED0_DIV4, 0, 1),
-	DIV(CLK_DOUT_SHARED0_DIV5, "dout_shared0_div5", "fout_shared0_pll",
-	    CLK_CON_DIV_PLL_SHARED0_DIV5, 0, 3),
-	DIV(CLK_DOUT_SHARED1_DIV2, "dout_shared1_div2", "fout_shared1_pll",
-	    CLK_CON_DIV_PLL_SHARED1_DIV2, 0, 1),
-	DIV(CLK_DOUT_SHARED1_DIV3, "dout_shared1_div3", "fout_shared1_pll",
-=======
 	DIV(CLK_DOUT_SHARED0_DIV2, "dout_shared0_div2", "mout_shared0_pll",
 	    CLK_CON_DIV_PLL_SHARED0_DIV2, 0, 1),
 	DIV(CLK_DOUT_SHARED0_DIV3, "dout_shared0_div3", "mout_shared0_pll",
@@ -279,7 +253,6 @@ static const struct samsung_div_clock top_div_clks[] __initconst = {
 	DIV(CLK_DOUT_SHARED1_DIV2, "dout_shared1_div2", "mout_shared1_pll",
 	    CLK_CON_DIV_PLL_SHARED1_DIV2, 0, 1),
 	DIV(CLK_DOUT_SHARED1_DIV3, "dout_shared1_div3", "mout_shared1_pll",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    CLK_CON_DIV_PLL_SHARED1_DIV3, 0, 2),
 	DIV(CLK_DOUT_SHARED1_DIV4, "dout_shared1_div4", "dout_shared1_div2",
 	    CLK_CON_DIV_PLL_SHARED1_DIV4, 0, 1),
@@ -713,21 +686,6 @@ static const struct samsung_cmu_info core_cmu_info __initconst = {
 /* ---- CMU_FSYS ------------------------------------------------------------ */
 
 /* Register Offset definitions for CMU_FSYS (0x13400000) */
-<<<<<<< HEAD
-#define PLL_CON0_MUX_CLKCMU_FSYS_BUS_USER	0x0100
-#define PLL_CON0_MUX_CLKCMU_FSYS_MMC_CARD_USER	0x0120
-#define PLL_CON0_MUX_CLKCMU_FSYS_MMC_EMBD_USER	0x0140
-#define PLL_CON0_MUX_CLKCMU_FSYS_MMC_SDIO_USER	0x0160
-#define PLL_CON0_MUX_CLKCMU_FSYS_USB30DRD_USER	0x0180
-#define CLK_CON_GAT_GOUT_FSYS_MMC_CARD_I_ACLK	0x2030
-#define CLK_CON_GAT_GOUT_FSYS_MMC_CARD_SDCLKIN	0x2034
-#define CLK_CON_GAT_GOUT_FSYS_MMC_EMBD_I_ACLK	0x2038
-#define CLK_CON_GAT_GOUT_FSYS_MMC_EMBD_SDCLKIN	0x203c
-#define CLK_CON_GAT_GOUT_FSYS_MMC_SDIO_I_ACLK	0x2040
-#define CLK_CON_GAT_GOUT_FSYS_MMC_SDIO_SDCLKIN	0x2044
-
-static const unsigned long fsys_clk_regs[] __initconst = {
-=======
 #define PLL_LOCKTIME_PLL_USB				0x0000
 #define PLL_CON0_MUX_CLKCMU_FSYS_BUS_USER		0x0100
 #define PLL_CON0_MUX_CLKCMU_FSYS_MMC_CARD_USER		0x0120
@@ -750,25 +708,19 @@ static const unsigned long fsys_clk_regs[] __initconst = {
 
 static const unsigned long fsys_clk_regs[] __initconst = {
 	PLL_LOCKTIME_PLL_USB,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PLL_CON0_MUX_CLKCMU_FSYS_BUS_USER,
 	PLL_CON0_MUX_CLKCMU_FSYS_MMC_CARD_USER,
 	PLL_CON0_MUX_CLKCMU_FSYS_MMC_EMBD_USER,
 	PLL_CON0_MUX_CLKCMU_FSYS_MMC_SDIO_USER,
 	PLL_CON0_MUX_CLKCMU_FSYS_USB30DRD_USER,
-<<<<<<< HEAD
-=======
 	PLL_CON0_PLL_USB,
 	CLK_CON_GAT_CLK_FSYS_USB20PHY_CLKCORE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	CLK_CON_GAT_GOUT_FSYS_MMC_CARD_I_ACLK,
 	CLK_CON_GAT_GOUT_FSYS_MMC_CARD_SDCLKIN,
 	CLK_CON_GAT_GOUT_FSYS_MMC_EMBD_I_ACLK,
 	CLK_CON_GAT_GOUT_FSYS_MMC_EMBD_SDCLKIN,
 	CLK_CON_GAT_GOUT_FSYS_MMC_SDIO_I_ACLK,
 	CLK_CON_GAT_GOUT_FSYS_MMC_SDIO_SDCLKIN,
-<<<<<<< HEAD
-=======
 	CLK_CON_GAT_GOUT_FSYS_USB30DRD_ACLK_20PHYCTRL,
 	CLK_CON_GAT_GOUT_FSYS_USB30DRD_ACLK_30PHYCTRL_0,
 	CLK_CON_GAT_GOUT_FSYS_USB30DRD_ACLK_30PHYCTRL_1,
@@ -784,7 +736,6 @@ static const struct samsung_pll_clock fsys_pll_clks[] __initconst = {
 	PLL(pll_1418x, CLK_FOUT_USB_PLL, "fout_usb_pll", "oscclk",
 	    PLL_LOCKTIME_PLL_USB, PLL_CON0_PLL_USB,
 	    pll_usb_rate_table),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* List of parent clocks for Muxes in CMU_FSYS */
@@ -793,10 +744,7 @@ PNAME(mout_fsys_mmc_card_user_p)	= { "oscclk", "dout_fsys_mmc_card" };
 PNAME(mout_fsys_mmc_embd_user_p)	= { "oscclk", "dout_fsys_mmc_embd" };
 PNAME(mout_fsys_mmc_sdio_user_p)	= { "oscclk", "dout_fsys_mmc_sdio" };
 PNAME(mout_fsys_usb30drd_user_p)	= { "oscclk", "dout_fsys_usb30drd" };
-<<<<<<< HEAD
-=======
 PNAME(mout_usb_pll_p)			= { "oscclk", "fout_usb_pll" };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct samsung_mux_clock fsys_mux_clks[] __initconst = {
 	MUX(CLK_MOUT_FSYS_BUS_USER, "mout_fsys_bus_user", mout_fsys_bus_user_p,
@@ -810,14 +758,6 @@ static const struct samsung_mux_clock fsys_mux_clks[] __initconst = {
 	MUX_F(CLK_MOUT_FSYS_MMC_SDIO_USER, "mout_fsys_mmc_sdio_user",
 	      mout_fsys_mmc_sdio_user_p, PLL_CON0_MUX_CLKCMU_FSYS_MMC_SDIO_USER,
 	      4, 1, CLK_SET_RATE_PARENT, 0),
-<<<<<<< HEAD
-	MUX_F(CLK_MOUT_FSYS_USB30DRD_USER, "mout_fsys_usb30drd_user",
-	      mout_fsys_usb30drd_user_p, PLL_CON0_MUX_CLKCMU_FSYS_USB30DRD_USER,
-	      4, 1, CLK_SET_RATE_PARENT, 0),
-};
-
-static const struct samsung_gate_clock fsys_gate_clks[] __initconst = {
-=======
 	MUX(CLK_MOUT_FSYS_USB30DRD_USER, "mout_fsys_usb30drd_user",
 	      mout_fsys_usb30drd_user_p, PLL_CON0_MUX_CLKCMU_FSYS_USB30DRD_USER,
 	      4, 1),
@@ -828,7 +768,6 @@ static const struct samsung_gate_clock fsys_gate_clks[] __initconst = {
 static const struct samsung_gate_clock fsys_gate_clks[] __initconst = {
 	GATE(CLK_FSYS_USB20PHY_CLKCORE, "clk_fsys_usb20phy_clkcore", "mout_usb_pll",
 	     CLK_CON_GAT_CLK_FSYS_USB20PHY_CLKCORE, 21, CLK_SET_RATE_PARENT, 0),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	GATE(CLK_GOUT_MMC_CARD_ACLK, "gout_mmc_card_aclk", "mout_fsys_bus_user",
 	     CLK_CON_GAT_GOUT_FSYS_MMC_CARD_I_ACLK, 21, 0, 0),
 	GATE(CLK_GOUT_MMC_CARD_SDCLKIN, "gout_mmc_card_sdclkin",
@@ -844,11 +783,6 @@ static const struct samsung_gate_clock fsys_gate_clks[] __initconst = {
 	GATE(CLK_GOUT_MMC_SDIO_SDCLKIN, "gout_mmc_sdio_sdclkin",
 	     "mout_fsys_mmc_sdio_user", CLK_CON_GAT_GOUT_FSYS_MMC_SDIO_SDCLKIN,
 	     21, CLK_SET_RATE_PARENT, 0),
-<<<<<<< HEAD
-};
-
-static const struct samsung_cmu_info fsys_cmu_info __initconst = {
-=======
 	GATE(CLK_FSYS_USB30DRD_ACLK_20PHYCTRL, "clk_fsys_usb30drd_aclk_20phyctrl",
 	     "mout_fsys_bus_user", CLK_CON_GAT_GOUT_FSYS_USB30DRD_ACLK_20PHYCTRL, 21, 0, 0),
 	GATE(CLK_FSYS_USB30DRD_ACLK_30PHYCTRL_0, "clk_fsys_usb30drd_aclk_30phyctrl_0",
@@ -864,7 +798,6 @@ static const struct samsung_cmu_info fsys_cmu_info __initconst = {
 static const struct samsung_cmu_info fsys_cmu_info __initconst = {
 	.pll_clks		= fsys_pll_clks,
 	.nr_pll_clks		= ARRAY_SIZE(fsys_pll_clks),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.mux_clks		= fsys_mux_clks,
 	.nr_mux_clks		= ARRAY_SIZE(fsys_mux_clks),
 	.gate_clks		= fsys_gate_clks,

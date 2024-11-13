@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// SPDX-License-Identifier: GPL-2.0-only 
-=======
 // SPDX-License-Identifier: GPL-2.0-only
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "util/cgroup.h"
 #include "util/data.h"
@@ -51,11 +47,7 @@
 
 unsigned int proc_map_timeout = DEFAULT_PROC_MAP_PARSE_TIMEOUT;
 
-<<<<<<< HEAD
-int perf_tool__process_synth_event(struct perf_tool *tool,
-=======
 int perf_tool__process_synth_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   union perf_event *event,
 				   struct machine *machine,
 				   perf_event__handler_t process)
@@ -195,11 +187,7 @@ static int perf_event__prepare_comm(union perf_event *event, pid_t pid, pid_t ti
 	return 0;
 }
 
-<<<<<<< HEAD
-pid_t perf_event__synthesize_comm(struct perf_tool *tool,
-=======
 pid_t perf_event__synthesize_comm(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 union perf_event *event, pid_t pid,
 					 perf_event__handler_t process,
 					 struct machine *machine)
@@ -230,11 +218,7 @@ static void perf_event__get_ns_link_info(pid_t pid, const char *ns,
 	}
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_namespaces(struct perf_tool *tool,
-=======
 int perf_event__synthesize_namespaces(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      union perf_event *event,
 				      pid_t pid, pid_t tgid,
 				      perf_event__handler_t process,
@@ -273,11 +257,7 @@ int perf_event__synthesize_namespaces(const struct perf_tool *tool,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int perf_event__synthesize_fork(struct perf_tool *tool,
-=======
 static int perf_event__synthesize_fork(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       union perf_event *event,
 				       pid_t pid, pid_t tgid, pid_t ppid,
 				       perf_event__handler_t process,
@@ -438,11 +418,7 @@ out:
 	dso__put(dso);
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_mmap_events(struct perf_tool *tool,
-=======
 int perf_event__synthesize_mmap_events(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       union perf_event *event,
 				       pid_t pid, pid_t tgid,
 				       perf_event__handler_t process,
@@ -566,11 +542,7 @@ out:
 }
 
 #ifdef HAVE_FILE_HANDLE
-<<<<<<< HEAD
-static int perf_event__synthesize_cgroup(struct perf_tool *tool,
-=======
 static int perf_event__synthesize_cgroup(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 union perf_event *event,
 					 char *path, size_t mount_len,
 					 perf_event__handler_t process,
@@ -610,11 +582,7 @@ static int perf_event__synthesize_cgroup(const struct perf_tool *tool,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int perf_event__walk_cgroup_tree(struct perf_tool *tool,
-=======
 static int perf_event__walk_cgroup_tree(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					union perf_event *event,
 					char *path, size_t mount_len,
 					perf_event__handler_t process,
@@ -662,11 +630,7 @@ static int perf_event__walk_cgroup_tree(const struct perf_tool *tool,
 	return ret;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_cgroups(struct perf_tool *tool,
-=======
 int perf_event__synthesize_cgroups(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   perf_event__handler_t process,
 				   struct machine *machine)
 {
@@ -693,11 +657,7 @@ int perf_event__synthesize_cgroups(const struct perf_tool *tool,
 	return 0;
 }
 #else
-<<<<<<< HEAD
-int perf_event__synthesize_cgroups(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__synthesize_cgroups(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   perf_event__handler_t process __maybe_unused,
 				   struct machine *machine __maybe_unused)
 {
@@ -706,11 +666,7 @@ int perf_event__synthesize_cgroups(const struct perf_tool *tool __maybe_unused,
 #endif
 
 struct perf_event__synthesize_modules_maps_cb_args {
-<<<<<<< HEAD
-	struct perf_tool *tool;
-=======
 	const struct perf_tool *tool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_event__handler_t process;
 	struct machine *machine;
 	union perf_event *event;
@@ -761,11 +717,7 @@ static int perf_event__synthesize_modules_maps_cb(struct map *map, void *data)
 	return 0;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_modules(struct perf_tool *tool, perf_event__handler_t process,
-=======
 int perf_event__synthesize_modules(const struct perf_tool *tool, perf_event__handler_t process,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   struct machine *machine)
 {
 	int rc;
@@ -811,11 +763,7 @@ static int __event__synthesize_thread(union perf_event *comm_event,
 				      union perf_event *fork_event,
 				      union perf_event *namespaces_event,
 				      pid_t pid, int full, perf_event__handler_t process,
-<<<<<<< HEAD
-				      struct perf_tool *tool, struct machine *machine,
-=======
 				      const struct perf_tool *tool, struct machine *machine,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      bool needs_mmap, bool mmap_data)
 {
 	char filename[PATH_MAX];
@@ -904,11 +852,7 @@ static int __event__synthesize_thread(union perf_event *comm_event,
 	return rc;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_thread_map(struct perf_tool *tool,
-=======
 int perf_event__synthesize_thread_map(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct perf_thread_map *threads,
 				      perf_event__handler_t process,
 				      struct machine *machine,
@@ -985,11 +929,7 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
-static int __perf_event__synthesize_threads(struct perf_tool *tool,
-=======
 static int __perf_event__synthesize_threads(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    perf_event__handler_t process,
 					    struct machine *machine,
 					    bool needs_mmap,
@@ -1053,11 +993,7 @@ out:
 }
 
 struct synthesize_threads_arg {
-<<<<<<< HEAD
-	struct perf_tool *tool;
-=======
 	const struct perf_tool *tool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_event__handler_t process;
 	struct machine *machine;
 	bool needs_mmap;
@@ -1079,11 +1015,7 @@ static void *synthesize_threads_worker(void *arg)
 	return NULL;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_threads(struct perf_tool *tool,
-=======
 int perf_event__synthesize_threads(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   perf_event__handler_t process,
 				   struct machine *machine,
 				   bool needs_mmap, bool mmap_data,
@@ -1172,22 +1104,14 @@ free_dirent:
 	return err;
 }
 
-<<<<<<< HEAD
-int __weak perf_event__synthesize_extra_kmaps(struct perf_tool *tool __maybe_unused,
-=======
 int __weak perf_event__synthesize_extra_kmaps(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					      perf_event__handler_t process __maybe_unused,
 					      struct machine *machine __maybe_unused)
 {
 	return 0;
 }
 
-<<<<<<< HEAD
-static int __perf_event__synthesize_kernel_mmap(struct perf_tool *tool,
-=======
 static int __perf_event__synthesize_kernel_mmap(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						perf_event__handler_t process,
 						struct machine *machine)
 {
@@ -1259,11 +1183,7 @@ static int __perf_event__synthesize_kernel_mmap(const struct perf_tool *tool,
 	return err;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_kernel_mmap(struct perf_tool *tool,
-=======
 int perf_event__synthesize_kernel_mmap(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       perf_event__handler_t process,
 				       struct machine *machine)
 {
@@ -1276,11 +1196,7 @@ int perf_event__synthesize_kernel_mmap(const struct perf_tool *tool,
 	return perf_event__synthesize_extra_kmaps(tool, process, machine);
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_thread_map2(struct perf_tool *tool,
-=======
 int perf_event__synthesize_thread_map2(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct perf_thread_map *threads,
 				      perf_event__handler_t process,
 				      struct machine *machine)
@@ -1430,11 +1346,7 @@ static struct perf_record_cpu_map *cpu_map_event__new(const struct perf_cpu_map 
 }
 
 
-<<<<<<< HEAD
-int perf_event__synthesize_cpu_map(struct perf_tool *tool,
-=======
 int perf_event__synthesize_cpu_map(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   const struct perf_cpu_map *map,
 				   perf_event__handler_t process,
 				   struct machine *machine)
@@ -1452,11 +1364,7 @@ int perf_event__synthesize_cpu_map(const struct perf_tool *tool,
 	return err;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_stat_config(struct perf_tool *tool,
-=======
 int perf_event__synthesize_stat_config(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       struct perf_stat_config *config,
 				       perf_event__handler_t process,
 				       struct machine *machine)
@@ -1495,11 +1403,7 @@ int perf_event__synthesize_stat_config(const struct perf_tool *tool,
 	return err;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_stat(struct perf_tool *tool,
-=======
 int perf_event__synthesize_stat(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				struct perf_cpu cpu, u32 thread, u64 id,
 				struct perf_counts_values *count,
 				perf_event__handler_t process,
@@ -1521,11 +1425,7 @@ int perf_event__synthesize_stat(const struct perf_tool *tool,
 	return process(tool, (union perf_event *) &event, NULL, machine);
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_stat_round(struct perf_tool *tool,
-=======
 int perf_event__synthesize_stat_round(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      u64 evtime, u64 type,
 				      perf_event__handler_t process,
 				      struct machine *machine)
@@ -1926,11 +1826,7 @@ int perf_event__synthesize_id_sample(__u64 *array, u64 type, const struct perf_s
 	return (void *)array - (void *)start;
 }
 
-<<<<<<< HEAD
-int __perf_event__synthesize_id_index(struct perf_tool *tool, perf_event__handler_t process,
-=======
 int __perf_event__synthesize_id_index(const struct perf_tool *tool, perf_event__handler_t process,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct evlist *evlist, struct machine *machine, size_t from)
 {
 	union perf_event *ev;
@@ -2022,21 +1918,13 @@ out_err:
 	return err;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_id_index(struct perf_tool *tool, perf_event__handler_t process,
-=======
 int perf_event__synthesize_id_index(const struct perf_tool *tool, perf_event__handler_t process,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    struct evlist *evlist, struct machine *machine)
 {
 	return __perf_event__synthesize_id_index(tool, process, evlist, machine, 0);
 }
 
-<<<<<<< HEAD
-int __machine__synthesize_threads(struct machine *machine, struct perf_tool *tool,
-=======
 int __machine__synthesize_threads(struct machine *machine, const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  struct target *target, struct perf_thread_map *threads,
 				  perf_event__handler_t process, bool needs_mmap,
 				  bool data_mmap, unsigned int nr_threads_synthesize)
@@ -2097,11 +1985,7 @@ static struct perf_record_event_update *event_update_event__new(size_t size, u64
 	return ev;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_event_update_unit(struct perf_tool *tool, struct evsel *evsel,
-=======
 int perf_event__synthesize_event_update_unit(const struct perf_tool *tool, struct evsel *evsel,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     perf_event__handler_t process)
 {
 	size_t size = strlen(evsel->unit);
@@ -2118,11 +2002,7 @@ int perf_event__synthesize_event_update_unit(const struct perf_tool *tool, struc
 	return err;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_event_update_scale(struct perf_tool *tool, struct evsel *evsel,
-=======
 int perf_event__synthesize_event_update_scale(const struct perf_tool *tool, struct evsel *evsel,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					      perf_event__handler_t process)
 {
 	struct perf_record_event_update *ev;
@@ -2139,11 +2019,7 @@ int perf_event__synthesize_event_update_scale(const struct perf_tool *tool, stru
 	return err;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_event_update_name(struct perf_tool *tool, struct evsel *evsel,
-=======
 int perf_event__synthesize_event_update_name(const struct perf_tool *tool, struct evsel *evsel,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     perf_event__handler_t process)
 {
 	struct perf_record_event_update *ev;
@@ -2160,11 +2036,7 @@ int perf_event__synthesize_event_update_name(const struct perf_tool *tool, struc
 	return err;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_event_update_cpus(struct perf_tool *tool, struct evsel *evsel,
-=======
 int perf_event__synthesize_event_update_cpus(const struct perf_tool *tool, struct evsel *evsel,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     perf_event__handler_t process)
 {
 	struct synthesize_cpu_map_data syn_data = { .map = evsel->core.own_cpus };
@@ -2187,11 +2059,7 @@ int perf_event__synthesize_event_update_cpus(const struct perf_tool *tool, struc
 	return err;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_attrs(struct perf_tool *tool, struct evlist *evlist,
-=======
 int perf_event__synthesize_attrs(const struct perf_tool *tool, struct evlist *evlist,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 perf_event__handler_t process)
 {
 	struct evsel *evsel;
@@ -2219,11 +2087,7 @@ static bool has_scale(struct evsel *evsel)
 	return evsel->scale != 1;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_extra_attr(struct perf_tool *tool, struct evlist *evsel_list,
-=======
 int perf_event__synthesize_extra_attr(const struct perf_tool *tool, struct evlist *evsel_list,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      perf_event__handler_t process, bool is_pipe)
 {
 	struct evsel *evsel;
@@ -2279,11 +2143,7 @@ int perf_event__synthesize_extra_attr(const struct perf_tool *tool, struct evlis
 	return 0;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_attr(struct perf_tool *tool, struct perf_event_attr *attr,
-=======
 int perf_event__synthesize_attr(const struct perf_tool *tool, struct perf_event_attr *attr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				u32 ids, u64 *id, perf_event__handler_t process)
 {
 	union perf_event *ev;
@@ -2317,11 +2177,7 @@ int perf_event__synthesize_attr(const struct perf_tool *tool, struct perf_event_
 }
 
 #ifdef HAVE_LIBTRACEEVENT
-<<<<<<< HEAD
-int perf_event__synthesize_tracing_data(struct perf_tool *tool, int fd, struct evlist *evlist,
-=======
 int perf_event__synthesize_tracing_data(const struct perf_tool *tool, int fd, struct evlist *evlist,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					perf_event__handler_t process)
 {
 	union perf_event ev;
@@ -2344,11 +2200,7 @@ int perf_event__synthesize_tracing_data(const struct perf_tool *tool, int fd, st
 	if (!tdata)
 		return -1;
 
-<<<<<<< HEAD
-	memset(&ev, 0, sizeof(ev));
-=======
 	memset(&ev, 0, sizeof(ev.tracing_data));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ev.tracing_data.header.type = PERF_RECORD_HEADER_TRACING_DATA;
 	size = tdata->size;
@@ -2373,10 +2225,6 @@ int perf_event__synthesize_tracing_data(const struct perf_tool *tool, int fd, st
 }
 #endif
 
-<<<<<<< HEAD
-int perf_event__synthesize_build_id(struct perf_tool *tool, struct dso *pos, u16 misc,
-				    perf_event__handler_t process, struct machine *machine)
-=======
 int perf_event__synthesize_build_id(const struct perf_tool *tool,
 				    struct perf_sample *sample,
 				    struct machine *machine,
@@ -2385,32 +2233,10 @@ int perf_event__synthesize_build_id(const struct perf_tool *tool,
 				    __u16 misc,
 				    const struct build_id *bid,
 				    const char *filename)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	union perf_event ev;
 	size_t len;
 
-<<<<<<< HEAD
-	if (!dso__hit(pos))
-		return 0;
-
-	memset(&ev, 0, sizeof(ev));
-
-	len = dso__long_name_len(pos) + 1;
-	len = PERF_ALIGN(len, NAME_ALIGN);
-	ev.build_id.size = min(dso__bid(pos)->size, sizeof(dso__bid(pos)->data));
-	memcpy(&ev.build_id.build_id, dso__bid(pos)->data, ev.build_id.size);
-	ev.build_id.header.type = PERF_RECORD_HEADER_BUILD_ID;
-	ev.build_id.header.misc = misc | PERF_RECORD_MISC_BUILD_ID_SIZE;
-	ev.build_id.pid = machine->pid;
-	ev.build_id.header.size = sizeof(ev.build_id) + len;
-	memcpy(&ev.build_id.filename, dso__long_name(pos), dso__long_name_len(pos));
-
-	return process(tool, &ev, NULL, machine);
-}
-
-int perf_event__synthesize_stat_events(struct perf_stat_config *config, struct perf_tool *tool,
-=======
 	len = sizeof(ev.build_id) + strlen(filename) + 1;
 	len = PERF_ALIGN(len, sizeof(u64));
 
@@ -2501,7 +2327,6 @@ int perf_event__synthesize_mmap2_build_id(const struct perf_tool *tool,
 }
 
 int perf_event__synthesize_stat_events(struct perf_stat_config *config, const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       struct evlist *evlist, perf_event__handler_t process, bool attrs)
 {
 	int err;
@@ -2538,11 +2363,7 @@ int perf_event__synthesize_stat_events(struct perf_stat_config *config, const st
 
 extern const struct perf_header_feature_ops feat_ops[HEADER_LAST_FEATURE];
 
-<<<<<<< HEAD
-int perf_event__synthesize_features(struct perf_tool *tool, struct perf_session *session,
-=======
 int perf_event__synthesize_features(const struct perf_tool *tool, struct perf_session *session,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    struct evlist *evlist, perf_event__handler_t process)
 {
 	struct perf_header *header = &session->header;
@@ -2605,11 +2426,7 @@ int perf_event__synthesize_features(const struct perf_tool *tool, struct perf_se
 	return ret;
 }
 
-<<<<<<< HEAD
-int perf_event__synthesize_for_pipe(struct perf_tool *tool,
-=======
 int perf_event__synthesize_for_pipe(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    struct perf_session *session,
 				    struct perf_data *data,
 				    perf_event__handler_t process)

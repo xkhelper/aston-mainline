@@ -482,13 +482,8 @@
 		reg = <0x1d>;
 	};
 
-<<<<<<< HEAD
-	lm75@48 {
-		compatible = "nxp,lm75";
-=======
 	temperature-sensor@48 {
 		compatible = "national,lm75b";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x48>;
 	};
 

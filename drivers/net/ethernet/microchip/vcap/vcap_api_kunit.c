@@ -1444,11 +1444,8 @@ static void vcap_api_encode_rule_test(struct kunit *test)
 
 	ret = vcap_del_rule(&test_vctrl, &test_netdev, id);
 	KUNIT_EXPECT_EQ(test, 0, ret);
-<<<<<<< HEAD
-=======
 
 	vcap_free_rule(rule);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void vcap_api_set_rule_counter_test(struct kunit *test)

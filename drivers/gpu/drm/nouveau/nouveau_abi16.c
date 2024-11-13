@@ -46,29 +46,9 @@ nouveau_abi16(struct drm_file *file_priv)
 		struct nouveau_abi16 *abi16;
 		cli->abi16 = abi16 = kzalloc(sizeof(*abi16), GFP_KERNEL);
 		if (cli->abi16) {
-<<<<<<< HEAD
-			struct nv_device_v0 args = {
-				.device = ~0ULL,
-			};
-
-			INIT_LIST_HEAD(&abi16->channels);
-
-			/* allocate device object targeting client's default
-			 * device (ie. the one that belongs to the fd it
-			 * opened)
-			 */
-			if (nvif_device_ctor(&cli->base.object, "abi16Device",
-					     0, NV_DEVICE, &args, sizeof(args),
-					     &abi16->device) == 0)
-				return cli->abi16;
-
-			kfree(cli->abi16);
-			cli->abi16 = NULL;
-=======
 			abi16->cli = cli;
 			INIT_LIST_HEAD(&abi16->channels);
 			INIT_LIST_HEAD(&abi16->objects);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	return cli->abi16;
@@ -88,17 +68,11 @@ nouveau_abi16_get(struct drm_file *file_priv)
 int
 nouveau_abi16_put(struct nouveau_abi16 *abi16, int ret)
 {
-<<<<<<< HEAD
-	struct nouveau_cli *cli = (void *)abi16->device.object.client;
-=======
 	struct nouveau_cli *cli = abi16->cli;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&cli->mutex);
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /* Tracks objects created via the DRM_NOUVEAU_NVIF ioctl.
  *
  * The only two types of object that userspace ever allocated via this
@@ -160,7 +134,6 @@ nouveau_abi16_obj_new(struct nouveau_abi16 *abi16, enum nouveau_abi16_obj_type t
 	return obj;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 s32
 nouveau_abi16_swclass(struct nouveau_drm *drm)
 {
@@ -238,10 +211,6 @@ nouveau_abi16_chan_fini(struct nouveau_abi16 *abi16,
 void
 nouveau_abi16_fini(struct nouveau_abi16 *abi16)
 {
-<<<<<<< HEAD
-	struct nouveau_cli *cli = (void *)abi16->device.object.client;
-	struct nouveau_abi16_chan *chan, *temp;
-=======
 	struct nouveau_cli *cli = abi16->cli;
 	struct nouveau_abi16_chan *chan, *temp;
 	struct nouveau_abi16_obj *obj, *tmp;
@@ -250,19 +219,12 @@ nouveau_abi16_fini(struct nouveau_abi16 *abi16)
 	list_for_each_entry_safe(obj, tmp, &abi16->objects, head) {
 		nouveau_abi16_obj_del(obj);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* cleanup channels */
 	list_for_each_entry_safe(chan, temp, &abi16->channels, head) {
 		nouveau_abi16_chan_fini(abi16, chan);
 	}
 
-<<<<<<< HEAD
-	/* destroy the device object */
-	nvif_device_dtor(&abi16->device);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(cli->abi16);
 	cli->abi16 = NULL;
 }
@@ -287,13 +249,8 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
 	struct nouveau_cli *cli = nouveau_cli(file_priv);
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	struct nvif_device *device = &drm->client.device;
-<<<<<<< HEAD
-	struct nvkm_device *nvkm_device = nvxx_device(&drm->client.device);
-	struct nvkm_gr *gr = nvxx_gr(device);
-=======
 	struct nvkm_device *nvkm_device = nvxx_device(drm);
 	struct nvkm_gr *gr = nvxx_gr(drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_nouveau_getparam *getparam = data;
 	struct pci_dev *pdev = to_pci_dev(dev->dev);
 
@@ -384,11 +341,7 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	struct nouveau_abi16 *abi16 = nouveau_abi16_get(file_priv);
 	struct nouveau_abi16_chan *chan;
-<<<<<<< HEAD
-	struct nvif_device *device;
-=======
 	struct nvif_device *device = &cli->device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 engine, runm;
 	int ret;
 
@@ -405,10 +358,6 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 	 */
 	__nouveau_cli_disable_uvmm_noinit(cli);
 
-<<<<<<< HEAD
-	device = &abi16->device;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	engine = NV_DEVICE_HOST_RUNLIST_ENGINES_GR;
 
 	/* hack to allow channel engine type specification on kepler */
@@ -456,11 +405,7 @@ nouveau_abi16_ioctl_channel_alloc(ABI16_IOCTL_ARGS)
 	list_add(&chan->head, &abi16->channels);
 
 	/* create channel object and initialise dma and fence management */
-<<<<<<< HEAD
-	ret = nouveau_channel_new(drm, device, false, runm, init->fb_ctxdma_handle,
-=======
 	ret = nouveau_channel_new(cli, false, runm, init->fb_ctxdma_handle,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  init->tt_ctxdma_handle, &chan->chan);
 	if (ret)
 		goto done;
@@ -562,47 +507,6 @@ nouveau_abi16_chan(struct nouveau_abi16 *abi16, int channel)
 }
 
 int
-<<<<<<< HEAD
-nouveau_abi16_usif(struct drm_file *file_priv, void *data, u32 size)
-{
-	union {
-		struct nvif_ioctl_v0 v0;
-	} *args = data;
-	struct nouveau_abi16_chan *chan;
-	struct nouveau_abi16 *abi16;
-	int ret = -ENOSYS;
-
-	if (!(ret = nvif_unpack(ret, &data, &size, args->v0, 0, 0, true))) {
-		switch (args->v0.type) {
-		case NVIF_IOCTL_V0_NEW:
-		case NVIF_IOCTL_V0_MTHD:
-		case NVIF_IOCTL_V0_SCLASS:
-			break;
-		default:
-			return -EACCES;
-		}
-	} else
-		return ret;
-
-	if (!(abi16 = nouveau_abi16(file_priv)))
-		return -ENOMEM;
-
-	if (args->v0.token != ~0ULL) {
-		if (!(chan = nouveau_abi16_chan(abi16, args->v0.token)))
-			return -EINVAL;
-		args->v0.object = nvif_handle(&chan->chan->user);
-		args->v0.owner  = NVIF_IOCTL_V0_OWNER_ANY;
-		return 0;
-	}
-
-	args->v0.object = nvif_handle(&abi16->device.object);
-	args->v0.owner  = NVIF_IOCTL_V0_OWNER_ANY;
-	return 0;
-}
-
-int
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nouveau_abi16_ioctl_channel_free(ABI16_IOCTL_ARGS)
 {
 	struct drm_nouveau_channel_free *req = data;
@@ -626,10 +530,6 @@ nouveau_abi16_ioctl_grobj_alloc(ABI16_IOCTL_ARGS)
 	struct nouveau_abi16 *abi16 = nouveau_abi16_get(file_priv);
 	struct nouveau_abi16_chan *chan;
 	struct nouveau_abi16_ntfy *ntfy;
-<<<<<<< HEAD
-	struct nvif_client *client;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nvif_sclass *sclass;
 	s32 oclass = 0;
 	int ret, i;
@@ -639,10 +539,6 @@ nouveau_abi16_ioctl_grobj_alloc(ABI16_IOCTL_ARGS)
 
 	if (init->handle == ~0)
 		return nouveau_abi16_put(abi16, -EINVAL);
-<<<<<<< HEAD
-	client = abi16->device.object.client;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	chan = nouveau_abi16_chan(abi16, init->channel);
 	if (!chan)
@@ -707,15 +603,8 @@ nouveau_abi16_ioctl_grobj_alloc(ABI16_IOCTL_ARGS)
 
 	list_add(&ntfy->head, &chan->notifiers);
 
-<<<<<<< HEAD
-	client->route = NVDRM_OBJECT_ABI16;
 	ret = nvif_object_ctor(&chan->chan->user, "abi16EngObj", init->handle,
 			       oclass, NULL, 0, &ntfy->object);
-	client->route = NVDRM_OBJECT_NVIF;
-=======
-	ret = nvif_object_ctor(&chan->chan->user, "abi16EngObj", init->handle,
-			       oclass, NULL, 0, &ntfy->object);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ret)
 		nouveau_abi16_ntfy_fini(chan, ntfy);
@@ -730,29 +619,17 @@ nouveau_abi16_ioctl_notifierobj_alloc(ABI16_IOCTL_ARGS)
 	struct nouveau_abi16 *abi16 = nouveau_abi16_get(file_priv);
 	struct nouveau_abi16_chan *chan;
 	struct nouveau_abi16_ntfy *ntfy;
-<<<<<<< HEAD
-	struct nvif_device *device = &abi16->device;
-	struct nvif_client *client;
-=======
 	struct nvif_device *device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nv_dma_v0 args = {};
 	int ret;
 
 	if (unlikely(!abi16))
 		return -ENOMEM;
-<<<<<<< HEAD
-=======
 	device = &abi16->cli->device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* completely unnecessary for these chipsets... */
 	if (unlikely(device->info.family >= NV_DEVICE_INFO_V0_FERMI))
 		return nouveau_abi16_put(abi16, -EINVAL);
-<<<<<<< HEAD
-	client = abi16->device.object.client;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	chan = nouveau_abi16_chan(abi16, info->channel);
 	if (!chan)
@@ -789,17 +666,9 @@ nouveau_abi16_ioctl_notifierobj_alloc(ABI16_IOCTL_ARGS)
 		args.limit += chan->ntfy->offset;
 	}
 
-<<<<<<< HEAD
-	client->route = NVDRM_OBJECT_ABI16;
 	ret = nvif_object_ctor(&chan->chan->user, "abi16Ntfy", info->handle,
 			       NV_DMA_IN_MEMORY, &args, sizeof(args),
 			       &ntfy->object);
-	client->route = NVDRM_OBJECT_NVIF;
-=======
-	ret = nvif_object_ctor(&chan->chan->user, "abi16Ntfy", info->handle,
-			       NV_DMA_IN_MEMORY, &args, sizeof(args),
-			       &ntfy->object);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto done;
 
@@ -839,8 +708,6 @@ nouveau_abi16_ioctl_gpuobj_free(ABI16_IOCTL_ARGS)
 
 	return nouveau_abi16_put(abi16, ret);
 }
-<<<<<<< HEAD
-=======
 
 static int
 nouveau_abi16_ioctl_mthd(struct nouveau_abi16 *abi16, struct nvif_ioctl_v0 *ioctl, u32 argc)
@@ -1021,4 +888,3 @@ done_free:
 	kfree(ioctl);
 	return ret;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

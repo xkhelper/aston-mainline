@@ -25,10 +25,7 @@
 #include "namei.h"
 #include "ocfs2_trace.h"
 #include "file.h"
-<<<<<<< HEAD
-=======
 #include "symlink.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/bio.h>
 #include <linux/blkdev.h>
@@ -1396,16 +1393,6 @@ static int cmp_refcount_rec_by_cpos(const void *a, const void *b)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void swap_refcount_rec(void *a, void *b, int size)
-{
-	struct ocfs2_refcount_rec *l = a, *r = b;
-
-	swap(*l, *r);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The refcount cpos are ordered by their 64bit cpos,
  * But we will use the low 32 bit to be the e_cpos in the b-tree.
@@ -1481,11 +1468,7 @@ static int ocfs2_divide_leaf_refcount_block(struct buffer_head *ref_leaf_bh,
 	 */
 	sort(&rl->rl_recs, le16_to_cpu(rl->rl_used),
 	     sizeof(struct ocfs2_refcount_rec),
-<<<<<<< HEAD
-	     cmp_refcount_rec_by_low_cpos, swap_refcount_rec);
-=======
 	     cmp_refcount_rec_by_low_cpos, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ocfs2_find_refcount_split_pos(rl, &cpos, &split_index);
 	if (ret) {
@@ -1510,19 +1493,11 @@ static int ocfs2_divide_leaf_refcount_block(struct buffer_head *ref_leaf_bh,
 
 	sort(&rl->rl_recs, le16_to_cpu(rl->rl_used),
 	     sizeof(struct ocfs2_refcount_rec),
-<<<<<<< HEAD
-	     cmp_refcount_rec_by_cpos, swap_refcount_rec);
-
-	sort(&new_rl->rl_recs, le16_to_cpu(new_rl->rl_used),
-	     sizeof(struct ocfs2_refcount_rec),
-	     cmp_refcount_rec_by_cpos, swap_refcount_rec);
-=======
 	     cmp_refcount_rec_by_cpos, NULL);
 
 	sort(&new_rl->rl_recs, le16_to_cpu(new_rl->rl_used),
 	     sizeof(struct ocfs2_refcount_rec),
 	     cmp_refcount_rec_by_cpos, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	*split_cpos = cpos;
 	return 0;
@@ -4174,14 +4149,9 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
 	int ret;
 	struct inode *inode = d_inode(old_dentry);
 	struct buffer_head *new_bh = NULL;
-<<<<<<< HEAD
-
-	if (OCFS2_I(inode)->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
-=======
 	struct ocfs2_inode_info *oi = OCFS2_I(inode);
 
 	if (oi->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EINVAL;
 		mlog_errno(ret);
 		goto out;
@@ -4207,8 +4177,6 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
 		goto out_unlock;
 	}
 
-<<<<<<< HEAD
-=======
 	if ((oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) &&
 	    (oi->ip_dyn_features & OCFS2_INLINE_XATTR_FL)) {
 		/*
@@ -4229,7 +4197,6 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ocfs2_create_reflink_node(inode, old_bh,
 					new_inode, new_bh, preserve);
 	if (ret) {
@@ -4237,11 +4204,7 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
 		goto inode_unlock;
 	}
 
-<<<<<<< HEAD
-	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
-=======
 	if (oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = ocfs2_reflink_xattrs(inode, old_bh,
 					   new_inode, new_bh,
 					   preserve);

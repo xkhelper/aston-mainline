@@ -405,11 +405,7 @@ static const unsigned int i2s_out_ch01_ao_pins[] = { GPIOAO_11 };
 
 static const unsigned int hdmi_cec_ao_pins[]	= { GPIOAO_12 };
 
-<<<<<<< HEAD
-static struct meson_pmx_group meson8_cbus_groups[] = {
-=======
 static const struct meson_pmx_group meson8_cbus_groups[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	GPIO_GROUP(GPIOX_0),
 	GPIO_GROUP(GPIOX_1),
 	GPIO_GROUP(GPIOX_2),
@@ -749,11 +745,7 @@ static const struct meson_pmx_group meson8_cbus_groups[] = {
 	GROUP(sdxc_cmd_b,	2,	4),
 };
 
-<<<<<<< HEAD
-static struct meson_pmx_group meson8_aobus_groups[] = {
-=======
 static const struct meson_pmx_group meson8_aobus_groups[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	GPIO_GROUP(GPIOAO_0),
 	GPIO_GROUP(GPIOAO_1),
 	GPIO_GROUP(GPIOAO_2),
@@ -1023,11 +1015,7 @@ static const char * const hdmi_cec_ao_groups[] = {
 	"hdmi_cec_ao"
 };
 
-<<<<<<< HEAD
-static struct meson_pmx_func meson8_cbus_functions[] = {
-=======
 static const struct meson_pmx_func meson8_cbus_functions[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	FUNCTION(gpio_periphs),
 	FUNCTION(sd_a),
 	FUNCTION(sdxc_a),
@@ -1063,11 +1051,7 @@ static const struct meson_pmx_func meson8_cbus_functions[] = {
 	FUNCTION(spdif),
 };
 
-<<<<<<< HEAD
-static struct meson_pmx_func meson8_aobus_functions[] = {
-=======
 static const struct meson_pmx_func meson8_aobus_functions[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	FUNCTION(gpio_aobus),
 	FUNCTION(uart_ao),
 	FUNCTION(remote),
@@ -1079,11 +1063,7 @@ static const struct meson_pmx_func meson8_aobus_functions[] = {
 	FUNCTION(hdmi_cec_ao),
 };
 
-<<<<<<< HEAD
-static struct meson_bank meson8_cbus_banks[] = {
-=======
 static const struct meson_bank meson8_cbus_banks[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*   name    first     last         irq       pullen  pull    dir     out     in  */
 	BANK("X",    GPIOX_0,  GPIOX_21,    112, 133, 4,  0,  4,  0,  0,  0,  1,  0,  2,  0),
 	BANK("Y",    GPIOY_0,  GPIOY_16,    95,  111, 3,  0,  3,  0,  3,  0,  4,  0,  5,  0),
@@ -1094,20 +1074,12 @@ static const struct meson_bank meson8_cbus_banks[] = {
 	BANK("BOOT", BOOT_0,   BOOT_18,     39,   57, 2,  0,  2,  0,  9,  0, 10,  0, 11,  0),
 };
 
-<<<<<<< HEAD
-static struct meson_bank meson8_aobus_banks[] = {
-=======
 static const struct meson_bank meson8_aobus_banks[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*   name    first     last         irq    pullen  pull    dir     out     in  */
 	BANK("AO",   GPIOAO_0, GPIO_TEST_N, 0, 13, 0, 16,  0,  0,  0,  0,  0, 16,  1,  0),
 };
 
-<<<<<<< HEAD
-static struct meson_pinctrl_data meson8_cbus_pinctrl_data = {
-=======
 static const struct meson_pinctrl_data meson8_cbus_pinctrl_data = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "cbus-banks",
 	.pins		= meson8_cbus_pins,
 	.groups		= meson8_cbus_groups,
@@ -1120,11 +1092,7 @@ static const struct meson_pinctrl_data meson8_cbus_pinctrl_data = {
 	.pmx_ops	= &meson8_pmx_ops,
 };
 
-<<<<<<< HEAD
-static struct meson_pinctrl_data meson8_aobus_pinctrl_data = {
-=======
 static const struct meson_pinctrl_data meson8_aobus_pinctrl_data = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "ao-bank",
 	.pins		= meson8_aobus_pins,
 	.groups		= meson8_aobus_groups,

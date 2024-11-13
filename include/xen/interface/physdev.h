@@ -256,8 +256,6 @@ struct physdev_pci_device_add {
  */
 #define PHYSDEVOP_prepare_msix          30
 #define PHYSDEVOP_release_msix          31
-<<<<<<< HEAD
-=======
 /*
  * Notify the hypervisor that a PCI device has been reset, so that any
  * internally cached state is regenerated.  Should be called after any
@@ -265,7 +263,6 @@ struct physdev_pci_device_add {
  */
 #define PHYSDEVOP_pci_device_reset      32
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct physdev_pci_device {
     /* IN */
     uint16_t seg;
@@ -273,8 +270,6 @@ struct physdev_pci_device {
     uint8_t devfn;
 };
 
-<<<<<<< HEAD
-=======
 struct pci_device_reset {
     struct physdev_pci_device dev;
 #define PCI_DEVICE_RESET_COLD 0x0
@@ -285,7 +280,6 @@ struct pci_device_reset {
     uint32_t flags;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PHYSDEVOP_DBGP_RESET_PREPARE    1
 #define PHYSDEVOP_DBGP_RESET_DONE       2
 

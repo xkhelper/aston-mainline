@@ -21,11 +21,7 @@ config CRYPTO_DEV_PADLOCK
 	  (so called VIA PadLock ACE, Advanced Cryptography Engine)
 	  that provides instructions for very fast cryptographic
 	  operations with supported algorithms.
-<<<<<<< HEAD
-	  
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	  The instructions are used only when the CPU supports them.
 	  Otherwise software encryption is used.
 
@@ -82,20 +78,6 @@ config ZCRYPT
 config PKEY
 	tristate "Kernel API for protected key handling"
 	depends on S390
-<<<<<<< HEAD
-	depends on ZCRYPT
-	help
-	  With this option enabled the pkey kernel module provides an API
-	  for creation and handling of protected keys. Other parts of the
-	  kernel or userspace applications may use these functions.
-
-	  Select this option if you want to enable the kernel and userspace
-	  API for proteced key handling.
-
-	  Please note that creation of protected keys from secure keys
-	  requires to have at least one CEX card in coprocessor mode
-	  available at runtime.
-=======
 	help
 	  With this option enabled the pkey kernel modules provide an API
 	  for creation and handling of protected keys. Other parts of the
@@ -169,7 +151,6 @@ config PKEY_PCKMO
 	  If you have selected the PKEY option then you should also enable
 	  this option unless you are sure you never need to derive protected
 	  keys from clear key values directly via PCKMO.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config CRYPTO_PAES_S390
 	tristate "PAES cipher algorithms"

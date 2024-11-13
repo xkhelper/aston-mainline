@@ -897,11 +897,7 @@ static int nbpf_config(struct dma_chan *dchan,
 	/*
 	 * We could check config->slave_id to match chan->terminal here,
 	 * but with DT they would be coming from the same source, so
-<<<<<<< HEAD
-	 * such a check would be superflous
-=======
 	 * such a check would be superfluous
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 
 	chan->slave_dst_addr = config->dst_addr;

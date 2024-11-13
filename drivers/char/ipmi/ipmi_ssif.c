@@ -980,11 +980,7 @@ static void msg_written_handler(struct ssif_info *ssif_info, int result,
 			ipmi_ssif_unlock_cond(ssif_info, flags);
 			start_get(ssif_info);
 		} else {
-<<<<<<< HEAD
-			/* Wait a jiffie then request the next message */
-=======
 			/* Wait a jiffy then request the next message */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ssif_info->waiting_alert = true;
 			ssif_info->retries_left = SSIF_RECV_RETRIES;
 			if (!ssif_info->stopping)
@@ -1372,10 +1368,6 @@ static int ssif_detect(struct i2c_client *client, struct i2c_board_info *info)
 	rv = do_cmd(client, 2, msg, &len, resp);
 	if (rv)
 		rv = -ENODEV;
-<<<<<<< HEAD
-	else
-		strscpy(info->type, DEVICE_NAME, I2C_NAME_SIZE);
-=======
 	else {
 	    if (len < 3) {
 		rv = -ENODEV;
@@ -1390,7 +1382,6 @@ static int ssif_detect(struct i2c_client *client, struct i2c_board_info *info)
 	    if (!rv && info)
 		strscpy(info->type, DEVICE_NAME, I2C_NAME_SIZE);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(resp);
 	return rv;
 }
@@ -1725,8 +1716,6 @@ static int ssif_probe(struct i2c_client *client)
 		ipmi_addr_src_to_str(ssif_info->addr_source),
 		client->addr, client->adapter->name, slave_addr);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Send a get device id command and validate its response to
 	 * make sure a valid BMC is there.
@@ -1737,7 +1726,6 @@ static int ssif_probe(struct i2c_client *client)
 		goto out;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Now check for system interface capabilities */
 	msg[0] = IPMI_NETFN_APP_REQUEST << 2;
 	msg[1] = IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_CMD;
@@ -2119,10 +2107,7 @@ static const struct platform_device_id ssif_plat_ids[] = {
     { "dmi-ipmi-ssif", 0 },
     { }
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(platform, ssif_plat_ids);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver ipmi_driver = {
 	.driver = {

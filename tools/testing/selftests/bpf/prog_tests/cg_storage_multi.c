@@ -214,11 +214,7 @@ static void test_isolated(int parent_cgroup_fd, int child_cgroup_fd)
 	/* Attach to parent and child cgroup, trigger packet from child.
 	 * Assert that there is six additional runs, parent cgroup egresses and
 	 * ingress, child cgroup egresses and ingress.
-<<<<<<< HEAD
-	 * Assert that egree and ingress storages are separate.
-=======
 	 * Assert that egress and ingress storages are separate.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	child_egress1_link = bpf_program__attach_cgroup(obj->progs.egress1,
 							child_cgroup_fd);

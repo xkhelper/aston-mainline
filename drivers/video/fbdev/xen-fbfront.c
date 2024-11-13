@@ -407,10 +407,7 @@ static int xenfb_probe(struct xenbus_device *dev,
 	/* complete the abuse: */
 	fb_info->pseudo_palette = fb_info->par;
 	fb_info->par = info;
-<<<<<<< HEAD
-=======
 	fb_info->device = &dev->dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fb_info->screen_buffer = info->fb;
 

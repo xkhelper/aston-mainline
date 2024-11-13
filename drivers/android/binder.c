@@ -277,11 +277,7 @@ _binder_proc_lock(struct binder_proc *proc, int line)
 }
 
 /**
-<<<<<<< HEAD
- * binder_proc_unlock() - Release spinlock for given binder_proc
-=======
  * binder_proc_unlock() - Release outer lock for given binder_proc
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @proc:                struct binder_proc to acquire
  *
  * Release lock acquired via binder_proc_lock()
@@ -1356,10 +1352,7 @@ static void binder_free_ref(struct binder_ref *ref)
 	if (ref->node)
 		binder_free_node(ref->node);
 	kfree(ref->death);
-<<<<<<< HEAD
-=======
 	kfree(ref->freeze);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(ref);
 }
 
@@ -1554,11 +1547,7 @@ static void binder_thread_dec_tmpref(struct binder_thread *thread)
  * by threads that are being released. When done with the binder_proc,
  * this function is called to decrement the counter and free the
  * proc if appropriate (proc has been released, all threads have
-<<<<<<< HEAD
- * been released and not currenly in-use to process a transaction).
-=======
  * been released and not currently in-use to process a transaction).
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static void binder_proc_dec_tmpref(struct binder_proc *proc)
 {
@@ -3854,8 +3843,6 @@ err_invalid_target_handle:
 	}
 }
 
-<<<<<<< HEAD
-=======
 static int
 binder_request_freeze_notification(struct binder_proc *proc,
 				   struct binder_thread *thread,
@@ -4005,7 +3992,6 @@ binder_freeze_notification_done(struct binder_proc *proc,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * binder_free_buf() - free the specified buffer
  * @proc:	binder proc that owns buffer
@@ -4489,8 +4475,6 @@ static int binder_thread_write(struct binder_proc *proc,
 			binder_inner_proc_unlock(proc);
 		} break;
 
-<<<<<<< HEAD
-=======
 		case BC_REQUEST_FREEZE_NOTIFICATION: {
 			struct binder_handle_cookie handle_cookie;
 			int error;
@@ -4529,7 +4513,6 @@ static int binder_thread_write(struct binder_proc *proc,
 				return error;
 		} break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		default:
 			pr_err("%d:%d unknown command %u\n",
 			       proc->pid, thread->pid, cmd);
@@ -4919,8 +4902,6 @@ retry:
 			if (cmd == BR_DEAD_BINDER)
 				goto done; /* DEAD_BINDER notifications can cause transactions */
 		} break;
-<<<<<<< HEAD
-=======
 
 		case BINDER_WORK_FROZEN_BINDER: {
 			struct binder_ref_freeze *freeze;
@@ -4961,7 +4942,6 @@ retry:
 			binder_stat_br(proc, thread, BR_CLEAR_FREEZE_NOTIFICATION_DONE);
 		} break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		default:
 			binder_inner_proc_unlock(proc);
 			pr_err("%d:%d: bad work type %d\n",
@@ -5570,8 +5550,6 @@ static bool binder_txns_pending_ilocked(struct binder_proc *proc)
 	return false;
 }
 
-<<<<<<< HEAD
-=======
 static void binder_add_freeze_work(struct binder_proc *proc, bool is_frozen)
 {
 	struct rb_node *n;
@@ -5614,7 +5592,6 @@ static void binder_add_freeze_work(struct binder_proc *proc, bool is_frozen)
 	binder_inner_proc_unlock(proc);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int binder_ioctl_freeze(struct binder_freeze_info *info,
 			       struct binder_proc *target_proc)
 {
@@ -5626,10 +5603,7 @@ static int binder_ioctl_freeze(struct binder_freeze_info *info,
 		target_proc->async_recv = false;
 		target_proc->is_frozen = false;
 		binder_inner_proc_unlock(target_proc);
-<<<<<<< HEAD
-=======
 		binder_add_freeze_work(target_proc, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -5662,11 +5636,8 @@ static int binder_ioctl_freeze(struct binder_freeze_info *info,
 		binder_inner_proc_lock(target_proc);
 		target_proc->is_frozen = false;
 		binder_inner_proc_unlock(target_proc);
-<<<<<<< HEAD
-=======
 	} else {
 		binder_add_freeze_work(target_proc, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;
@@ -6042,10 +6013,7 @@ static int binder_open(struct inode *nodp, struct file *filp)
 	binder_stats_created(BINDER_STAT_PROC);
 	proc->pid = current->group_leader->pid;
 	INIT_LIST_HEAD(&proc->delivered_death);
-<<<<<<< HEAD
-=======
 	INIT_LIST_HEAD(&proc->delivered_freeze);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&proc->waiting_threads);
 	filp->private_data = proc;
 
@@ -6597,13 +6565,9 @@ static const char * const binder_return_strings[] = {
 	"BR_FAILED_REPLY",
 	"BR_FROZEN_REPLY",
 	"BR_ONEWAY_SPAM_SUSPECT",
-<<<<<<< HEAD
-	"BR_TRANSACTION_PENDING_FROZEN"
-=======
 	"BR_TRANSACTION_PENDING_FROZEN",
 	"BR_FROZEN_BINDER",
 	"BR_CLEAR_FREEZE_NOTIFICATION_DONE",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const char * const binder_command_strings[] = {
@@ -6626,12 +6590,9 @@ static const char * const binder_command_strings[] = {
 	"BC_DEAD_BINDER_DONE",
 	"BC_TRANSACTION_SG",
 	"BC_REPLY_SG",
-<<<<<<< HEAD
-=======
 	"BC_REQUEST_FREEZE_NOTIFICATION",
 	"BC_CLEAR_FREEZE_NOTIFICATION",
 	"BC_FREEZE_NOTIFICATION_DONE",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const char * const binder_objstat_strings[] = {
@@ -6641,12 +6602,8 @@ static const char * const binder_objstat_strings[] = {
 	"ref",
 	"death",
 	"transaction",
-<<<<<<< HEAD
-	"transaction_complete"
-=======
 	"transaction_complete",
 	"freeze",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void print_binder_stats(struct seq_file *m, const char *prefix,

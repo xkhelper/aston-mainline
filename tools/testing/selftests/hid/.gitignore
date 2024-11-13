@@ -2,8 +2,5 @@ bpftool
 *.skel.h
 /tools
 hid_bpf
-<<<<<<< HEAD
-=======
 hidraw
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 results

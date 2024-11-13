@@ -59,8 +59,6 @@ enum hdmi_infoframe_type {
 #define HDMI_DRM_INFOFRAME_SIZE    26
 #define HDMI_VENDOR_INFOFRAME_SIZE  4
 
-<<<<<<< HEAD
-=======
 /*
  * HDMI 1.3a table 5-14 states that the largest InfoFrame_length is 27,
  * not including the packet header or checksum byte. We include the
@@ -70,7 +68,6 @@ enum hdmi_infoframe_type {
  */
 #define HDMI_MAX_INFOFRAME_SIZE    27
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define HDMI_INFOFRAME_SIZE(type)	\
 	(HDMI_INFOFRAME_HEADER_SIZE + HDMI_ ## type ## _INFOFRAME_SIZE)
 

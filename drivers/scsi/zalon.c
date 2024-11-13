@@ -139,11 +139,7 @@ zalon_probe(struct parisc_device *dev)
 		return -ENODEV;
 
 	if (request_irq(dev->irq, ncr53c8xx_intr, IRQF_SHARED, "zalon", host)) {
-<<<<<<< HEAD
-	  dev_printk(KERN_ERR, &dev->dev, "irq problem with %d, detaching\n ",
-=======
 		dev_printk(KERN_ERR, &dev->dev, "irq problem with %d, detaching\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		     dev->irq);
 		goto fail;
 	}

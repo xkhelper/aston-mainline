@@ -502,11 +502,7 @@ static void tea5764_i2c_remove(struct i2c_client *client)
 
 /* I2C subsystem interface */
 static const struct i2c_device_id tea5764_id[] = {
-<<<<<<< HEAD
-	{ "radio-tea5764", 0 },
-=======
 	{ "radio-tea5764" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }					/* Terminating entry */
 };
 MODULE_DEVICE_TABLE(i2c, tea5764_id);

@@ -2853,11 +2853,7 @@ static int psp_load_non_psp_fw(struct psp_context *psp)
 		if (ret)
 			return ret;
 
-<<<<<<< HEAD
-		/* Start rlc autoload after psp recieved all the gfx firmware */
-=======
 		/* Start rlc autoload after psp received all the gfx firmware */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (psp->autoload_supported && ucode->ucode_id == (amdgpu_sriov_vf(adev) ?
 		    adev->virt.autoload_ucode_id : AMDGPU_UCODE_ID_RLC_G)) {
 			ret = psp_rlc_autoload_start(psp);
@@ -3429,17 +3425,11 @@ int psp_init_sos_microcode(struct psp_context *psp, const char *chip_name)
 	const struct psp_firmware_header_v1_2 *sos_hdr_v1_2;
 	const struct psp_firmware_header_v1_3 *sos_hdr_v1_3;
 	const struct psp_firmware_header_v2_0 *sos_hdr_v2_0;
-<<<<<<< HEAD
-	int err = 0;
-	uint8_t *ucode_array_start_addr;
-	int fw_index = 0;
-=======
 	const struct psp_firmware_header_v2_1 *sos_hdr_v2_1;
 	int fw_index, fw_bin_count, start_index = 0;
 	const struct psp_fw_bin_desc *fw_bin;
 	uint8_t *ucode_array_start_addr;
 	int err = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = amdgpu_ucode_request(adev, &adev->psp.sos_fw, "amdgpu/%s_sos.bin", chip_name);
 	if (err)
@@ -3490,23 +3480,14 @@ int psp_init_sos_microcode(struct psp_context *psp, const char *chip_name)
 	case 2:
 		sos_hdr_v2_0 = (const struct psp_firmware_header_v2_0 *)adev->psp.sos_fw->data;
 
-<<<<<<< HEAD
-		if (le32_to_cpu(sos_hdr_v2_0->psp_fw_bin_count) >= UCODE_MAX_PSP_PACKAGING) {
-=======
 		fw_bin_count = le32_to_cpu(sos_hdr_v2_0->psp_fw_bin_count);
 
 		if (fw_bin_count >= UCODE_MAX_PSP_PACKAGING) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev_err(adev->dev, "packed SOS count exceeds maximum limit\n");
 			err = -EINVAL;
 			goto out;
 		}
 
-<<<<<<< HEAD
-		for (fw_index = 0; fw_index < le32_to_cpu(sos_hdr_v2_0->psp_fw_bin_count); fw_index++) {
-			err = parse_sos_bin_descriptor(psp,
-						       &sos_hdr_v2_0->psp_fw_bin[fw_index],
-=======
 		if (sos_hdr_v2_0->header.header_version_minor == 1) {
 			sos_hdr_v2_1 = (const struct psp_firmware_header_v2_1 *)adev->psp.sos_fw->data;
 
@@ -3523,7 +3504,6 @@ int psp_init_sos_microcode(struct psp_context *psp, const char *chip_name)
 
 		for (fw_index = start_index; fw_index < fw_bin_count; fw_index++) {
 			err = parse_sos_bin_descriptor(psp, fw_bin + fw_index,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						       sos_hdr_v2_0);
 			if (err)
 				goto out;

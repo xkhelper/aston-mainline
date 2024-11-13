@@ -173,11 +173,8 @@ static void __init __snp_fixup_e820_tables(u64 pa)
 		e820__range_update(pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
 		e820__range_update_table(e820_table_kexec, pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
 		e820__range_update_table(e820_table_firmware, pa, PMD_SIZE, E820_TYPE_RAM, E820_TYPE_RESERVED);
-<<<<<<< HEAD
-=======
 		if (!memblock_is_region_reserved(pa, PMD_SIZE))
 			memblock_reserve(pa, PMD_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 

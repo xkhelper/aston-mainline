@@ -329,11 +329,7 @@ static void sp_remove(struct platform_device *pdev)
 
 static struct platform_driver sp_driver = {
 	.probe = sp_probe,
-<<<<<<< HEAD
-	.remove_new = sp_remove,
-=======
 	.remove = sp_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = DRV_NAME,
 		.of_match_table = sp_of_table,

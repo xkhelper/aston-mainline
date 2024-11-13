@@ -129,8 +129,6 @@ static const u32 cxtbl[] = {
 
 static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
 	/* firmware version must be in decreasing order for each chip */
-<<<<<<< HEAD
-=======
 	{RTL8852BT, RTW89_FW_VER_CODE(0, 29, 90, 0),
 	 .fcxbtcrpt = 7, .fcxtdma = 7,    .fcxslots = 7, .fcxcysta = 7,
 	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
@@ -138,7 +136,6 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
 	 .fwlrole = 7,   .frptmap = 3,    .fcxctrl = 7,  .fcxinit = 7,
 	 .fwevntrptl = 1, .drvinfo_type = 1, .info_buf = 1800, .max_role_num = 6,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{RTL8922A, RTW89_FW_VER_CODE(0, 35, 8, 0),
 	 .fcxbtcrpt = 8, .fcxtdma = 7,    .fcxslots = 7, .fcxcysta = 7,
 	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
@@ -1361,13 +1358,10 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
 			pfinfo = &pfwinfo->rpt_ctrl.finfo.v8;
 			pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo.v8);
 			break;
-<<<<<<< HEAD
-=======
 		} else if (ver->fcxbtcrpt == 7) {
 			pfinfo = &pfwinfo->rpt_ctrl.finfo.v7;
 			pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo.v7);
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			goto err;
 		}
@@ -1672,8 +1666,6 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
 				     pfwinfo->event[BTF_EVNT_RPT]);
 
 			dm->error.map.bt_rfk_timeout = bt->rfk_info.map.timeout;
-<<<<<<< HEAD
-=======
 		} else if (ver->fcxbtcrpt == 7) {
 			prpt->v7 = pfwinfo->rpt_ctrl.finfo.v7;
 			pfwinfo->rpt_en_map = le32_to_cpu(prpt->v7.rpt_info.en);
@@ -1706,7 +1698,6 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
 			_chk_btc_err(rtwdev, BTC_DCNT_RPT_HANG, val1);
 			_chk_btc_err(rtwdev, BTC_DCNT_WL_FW_VER_MATCH, 0);
 			_chk_btc_err(rtwdev, BTC_DCNT_BTTX_HANG, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (ver->fcxbtcrpt == 8) {
 			prpt->v8 = pfwinfo->rpt_ctrl.finfo.v8;
 			pfwinfo->rpt_en_map = le32_to_cpu(prpt->v8.rpt_info.en);
@@ -2449,11 +2440,7 @@ static void rtw89_btc_fw_en_rpt(struct rtw89_dev *rtwdev,
 	if (val == fwinfo->rpt_en_map)
 		return;
 
-<<<<<<< HEAD
-	if (btc->ver->fcxbtcrpt == 8) {
-=======
 	if (btc->ver->fcxbtcrpt == 7 || btc->ver->fcxbtcrpt == 8) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		r.v8.type = SET_REPORT_EN;
 		r.v8.fver = btc->ver->fcxbtcrpt;
 		r.v8.len = sizeof(r.v8.map);
@@ -2623,13 +2610,10 @@ static void _fw_set_drv_info(struct rtw89_dev *rtwdev, u8 type)
 			rtw89_fw_h2c_cxdrv_role_v1(rtwdev, type);
 		else if (ver->fwlrole == 2)
 			rtw89_fw_h2c_cxdrv_role_v2(rtwdev, type);
-<<<<<<< HEAD
-=======
 		else if (ver->fwlrole == 7)
 			rtw89_fw_h2c_cxdrv_role_v7(rtwdev, type);
 		else if (ver->fwlrole == 8)
 			rtw89_fw_h2c_cxdrv_role_v8(rtwdev, type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case CXDRVINFO_CTRL:
 		if (ver->drvinfo_type == 1)
@@ -2811,11 +2795,7 @@ static void _set_gnt_v1(struct rtw89_dev *rtwdev, u8 phy_map,
 	rtw89_mac_cfg_gnt_v2(rtwdev, &dm->gnt);
 }
 
-<<<<<<< HEAD
-#define BTC_TDMA_WLROLE_MAX 2
-=======
 #define BTC_TDMA_WLROLE_MAX 3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void _set_bt_ignore_wlan_act(struct rtw89_dev *rtwdev, u8 enable)
 {
@@ -3065,18 +3045,12 @@ static void _set_bt_afh_info(struct rtw89_dev *rtwdev)
 	struct rtw89_btc_wl_role_info *wl_rinfo = &wl->role_info;
 	struct rtw89_btc_wl_role_info_v1 *wl_rinfo_v1 = &wl->role_info_v1;
 	struct rtw89_btc_wl_role_info_v2 *wl_rinfo_v2 = &wl->role_info_v2;
-<<<<<<< HEAD
-=======
 	struct rtw89_btc_wl_role_info_v7 *wl_rinfo_v7 = &wl->role_info_v7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtw89_btc_wl_role_info_v8 *wl_rinfo_v8 = &wl->role_info_v8;
 	struct rtw89_btc_wl_active_role *r;
 	struct rtw89_btc_wl_active_role_v1 *r1;
 	struct rtw89_btc_wl_active_role_v2 *r2;
-<<<<<<< HEAD
-=======
 	struct rtw89_btc_wl_active_role_v7 *r7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtw89_btc_wl_rlink *rlink;
 	u8 en = 0, i, ch = 0, bw = 0;
 	u8 mode, connect_cnt;
@@ -3093,12 +3067,9 @@ static void _set_bt_afh_info(struct rtw89_dev *rtwdev)
 	} else if (ver->fwlrole == 2) {
 		mode = wl_rinfo_v2->link_mode;
 		connect_cnt = wl_rinfo_v2->connect_cnt;
-<<<<<<< HEAD
-=======
 	} else if (ver->fwlrole == 7) {
 		mode = wl_rinfo_v7->link_mode;
 		connect_cnt = wl_rinfo_v7->connect_cnt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (ver->fwlrole == 8) {
 		mode = wl_rinfo_v8->link_mode;
 		connect_cnt = wl_rinfo_v8->connect_cnt;
@@ -3117,10 +3088,7 @@ static void _set_bt_afh_info(struct rtw89_dev *rtwdev)
 			r = &wl_rinfo->active_role[i];
 			r1 = &wl_rinfo_v1->active_role_v1[i];
 			r2 = &wl_rinfo_v2->active_role_v2[i];
-<<<<<<< HEAD
-=======
 			r7 = &wl_rinfo_v7->active_role[i];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rlink = &wl_rinfo_v8->rlink[i][0];
 
 			if (ver->fwlrole == 0 &&
@@ -3141,15 +3109,12 @@ static void _set_bt_afh_info(struct rtw89_dev *rtwdev)
 				ch = r2->ch;
 				bw = r2->bw;
 				break;
-<<<<<<< HEAD
-=======
 			} else if (ver->fwlrole == 7 &&
 				   (r7->role == RTW89_WIFI_ROLE_P2P_GO ||
 				    r7->role == RTW89_WIFI_ROLE_P2P_CLIENT)) {
 				ch = r7->ch;
 				bw = r7->bw;
 				break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			} else if (ver->fwlrole == 8 &&
 				   (rlink->role == RTW89_WIFI_ROLE_P2P_GO ||
 				    rlink->role == RTW89_WIFI_ROLE_P2P_CLIENT)) {
@@ -3165,10 +3130,7 @@ static void _set_bt_afh_info(struct rtw89_dev *rtwdev)
 			r = &wl_rinfo->active_role[i];
 			r1 = &wl_rinfo_v1->active_role_v1[i];
 			r2 = &wl_rinfo_v2->active_role_v2[i];
-<<<<<<< HEAD
-=======
 			r7 = &wl_rinfo_v7->active_role[i];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rlink = &wl_rinfo_v8->rlink[i][0];
 
 			if (ver->fwlrole == 0 &&
@@ -3186,14 +3148,11 @@ static void _set_bt_afh_info(struct rtw89_dev *rtwdev)
 				ch = r2->ch;
 				bw = r2->bw;
 				break;
-<<<<<<< HEAD
-=======
 			} else if (ver->fwlrole == 7 &&
 				   r7->connected && r7->band == RTW89_BAND_2G) {
 				ch = r7->ch;
 				bw = r7->bw;
 				break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			} else if (ver->fwlrole == 8 &&
 				   rlink->connected && rlink->rf_band == RTW89_BAND_2G) {
 				ch = rlink->ch;
@@ -3252,10 +3211,7 @@ static bool _check_freerun(struct rtw89_dev *rtwdev)
 	struct rtw89_btc_wl_role_info *wl_rinfo = &wl->role_info;
 	struct rtw89_btc_wl_role_info_v1 *wl_rinfo_v1 = &wl->role_info_v1;
 	struct rtw89_btc_wl_role_info_v2 *wl_rinfo_v2 = &wl->role_info_v2;
-<<<<<<< HEAD
-=======
 	struct rtw89_btc_wl_role_info_v7 *wl_rinfo_v7 = &wl->role_info_v7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtw89_btc_wl_role_info_v8 *wl_rinfo_v8 = &wl->role_info_v8;
 	struct rtw89_btc_bt_link_info *bt_linfo = &bt->link_info;
 	struct rtw89_btc_bt_hid_desc *hid = &bt_linfo->hid_desc;
@@ -3274,11 +3230,8 @@ static bool _check_freerun(struct rtw89_dev *rtwdev)
 		connect_cnt = wl_rinfo_v1->connect_cnt;
 	else if (ver->fwlrole == 2)
 		connect_cnt = wl_rinfo_v2->connect_cnt;
-<<<<<<< HEAD
-=======
 	else if (ver->fwlrole == 7)
 		connect_cnt = wl_rinfo_v7->connect_cnt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (ver->fwlrole == 8)
 		connect_cnt = wl_rinfo_v8->connect_cnt;
 
@@ -4197,11 +4150,8 @@ static void _set_ant_v0(struct rtw89_dev *rtwdev, bool force_exec,
 		dbcc_chg = wl->role_info_v1.dbcc_chg;
 	else if (btc->ver->fwlrole == 2)
 		dbcc_chg = wl->role_info_v2.dbcc_chg;
-<<<<<<< HEAD
-=======
 	else if (btc->ver->fwlrole == 7)
 		dbcc_chg = wl->role_info_v7.dbcc_chg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (btc->ver->fwlrole == 8)
 		dbcc_chg = wl->role_info_v8.dbcc_chg;
 
@@ -4874,10 +4824,7 @@ static void _set_btg_ctrl(struct rtw89_dev *rtwdev)
 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
 	struct rtw89_btc_wl_role_info_v1 *wl_rinfo_v1 = &wl->role_info_v1;
 	struct rtw89_btc_wl_role_info_v2 *wl_rinfo_v2 = &wl->role_info_v2;
-<<<<<<< HEAD
-=======
 	struct rtw89_btc_wl_role_info_v7 *wl_rinfo_v7 = &wl->role_info_v7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtw89_btc_wl_role_info_v8 *wl_rinfo_v8 = &wl->role_info_v8;
 	struct rtw89_btc_wl_role_info *wl_rinfo_v0 = &wl->role_info;
 	struct rtw89_btc_wl_dbcc_info *wl_dinfo = &wl->dbcc_info;
@@ -4899,11 +4846,8 @@ static void _set_btg_ctrl(struct rtw89_dev *rtwdev)
 		wl_rinfo.link_mode = wl_rinfo_v1->link_mode;
 	else if (ver->fwlrole == 2)
 		wl_rinfo.link_mode = wl_rinfo_v2->link_mode;
-<<<<<<< HEAD
-=======
 	else if (ver->fwlrole == 7)
 		wl_rinfo.link_mode = wl_rinfo_v7->link_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (ver->fwlrole == 8)
 		wl_rinfo.link_mode = wl_rinfo_v8->link_mode;
 	else
@@ -4919,11 +4863,8 @@ static void _set_btg_ctrl(struct rtw89_dev *rtwdev)
 			wl_rinfo.dbcc_2g_phy = wl_rinfo_v1->dbcc_2g_phy;
 		} else if (ver->fwlrole == 2) {
 			wl_rinfo.dbcc_2g_phy = wl_rinfo_v2->dbcc_2g_phy;
-<<<<<<< HEAD
-=======
 		} else if (ver->fwlrole == 7) {
 			wl_rinfo.dbcc_2g_phy = wl_rinfo_v7->dbcc_2g_phy;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (ver->fwlrole == 8) {
 			wl_rinfo.dbcc_2g_phy = wl_rinfo_v8->dbcc_2g_phy;
 		} else {
@@ -4969,14 +4910,6 @@ static void _set_wl_preagc_ctrl(struct rtw89_dev *rtwdev)
 	struct rtw89_btc *btc = &rtwdev->btc;
 	struct rtw89_btc_bt_link_info *bt_linfo = &btc->cx.bt.link_info;
 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
-<<<<<<< HEAD
-	struct rtw89_btc_wl_role_info_v2 *wl_rinfo = &wl->role_info_v2;
-	const struct rtw89_chip_info *chip = rtwdev->chip;
-	const struct rtw89_btc_ver *ver = btc->ver;
-	struct rtw89_btc_bt_info *bt = &btc->cx.bt;
-	struct rtw89_btc_dm *dm = &btc->dm;
-	u8 is_preagc, val;
-=======
 	struct rtw89_btc_wl_role_info_v2 *rinfo_v2 = &wl->role_info_v2;
 	struct rtw89_btc_wl_role_info_v7 *rinfo_v7 = &wl->role_info_v7;
 	struct rtw89_btc_wl_role_info_v8 *rinfo_v8 = &wl->role_info_v8;
@@ -4986,34 +4919,10 @@ static void _set_wl_preagc_ctrl(struct rtw89_dev *rtwdev)
 	u8 is_preagc, val, link_mode, dbcc_2g_phy;
 	u8 role_ver = rtwdev->btc.ver->fwlrole;
 	bool dbcc_en;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (btc->manual_ctrl)
 		return;
 
-<<<<<<< HEAD
-	if (wl_rinfo->link_mode == BTC_WLINK_25G_MCC)
-		is_preagc = BTC_PREAGC_BB_FWCTRL;
-	else if (!(bt->run_patch_code && bt->enable.now))
-		is_preagc = BTC_PREAGC_DISABLE;
-	else if (wl_rinfo->link_mode == BTC_WLINK_5G)
-		is_preagc = BTC_PREAGC_DISABLE;
-	else if (wl_rinfo->link_mode == BTC_WLINK_NOLINK ||
-		 btc->cx.bt.link_info.profile_cnt.now == 0)
-		is_preagc = BTC_PREAGC_DISABLE;
-	else if (dm->tdma_now.type != CXTDMA_OFF &&
-		 !bt_linfo->hfp_desc.exist &&
-		 !bt_linfo->hid_desc.exist &&
-		 dm->fddt_train == BTC_FDDT_DISABLE)
-		is_preagc = BTC_PREAGC_DISABLE;
-	else if (ver->fwlrole == 2 && wl_rinfo->dbcc_en &&
-		 wl_rinfo->dbcc_2g_phy != RTW89_PHY_1)
-		is_preagc = BTC_PREAGC_DISABLE;
-	else if (btc->ant_type == BTC_ANT_SHARED)
-		is_preagc = BTC_PREAGC_DISABLE;
-	else
-		is_preagc = BTC_PREAGC_ENABLE;
-=======
 	if (role_ver == 2) {
 		dbcc_en = rinfo_v2->dbcc_en;
 		link_mode = rinfo_v2->link_mode;
@@ -5051,7 +4960,6 @@ static void _set_wl_preagc_ctrl(struct rtw89_dev *rtwdev)
 	} else {
 		is_preagc = BTC_PREAGC_ENABLE;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (dm->wl_pre_agc_rb != dm->wl_pre_agc &&
 	    dm->wl_pre_agc_rb != BTC_PREAGC_NOTFOUND) {
@@ -5154,10 +5062,7 @@ static void _set_wl_tx_limit(struct rtw89_dev *rtwdev)
 	struct rtw89_btc_wl_role_info *wl_rinfo = &wl->role_info;
 	struct rtw89_btc_wl_role_info_v1 *wl_rinfo_v1 = &wl->role_info_v1;
 	struct rtw89_btc_wl_role_info_v2 *wl_rinfo_v2 = &wl->role_info_v2;
-<<<<<<< HEAD
-=======
 	struct rtw89_btc_wl_role_info_v7 *wl_rinfo_v7 = &wl->role_info_v7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtw89_btc_wl_role_info_v8 *wl_rinfo_v8 = &wl->role_info_v8;
 	struct rtw89_txtime_data data = {.rtwdev = rtwdev};
 	u8 mode, igno_bt, tx_retry;
@@ -5174,11 +5079,8 @@ static void _set_wl_tx_limit(struct rtw89_dev *rtwdev)
 		mode = wl_rinfo_v1->link_mode;
 	else if (ver->fwlrole == 2)
 		mode = wl_rinfo_v2->link_mode;
-<<<<<<< HEAD
-=======
 	else if (ver->fwlrole == 7)
 		mode = wl_rinfo_v7->link_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (ver->fwlrole == 8)
 		mode = wl_rinfo_v8->link_mode;
 	else
@@ -5238,10 +5140,7 @@ static void _set_bt_rx_agc(struct rtw89_dev *rtwdev)
 	struct rtw89_btc_wl_role_info *wl_rinfo = &wl->role_info;
 	struct rtw89_btc_wl_role_info_v1 *wl_rinfo_v1 = &wl->role_info_v1;
 	struct rtw89_btc_wl_role_info_v2 *wl_rinfo_v2 = &wl->role_info_v2;
-<<<<<<< HEAD
-=======
 	struct rtw89_btc_wl_role_info_v7 *wl_rinfo_v7 = &wl->role_info_v7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtw89_btc_wl_role_info_v8 *wl_rinfo_v8 = &wl->role_info_v8;
 	struct rtw89_btc_bt_info *bt = &btc->cx.bt;
 	bool bt_hi_lna_rx = false;
@@ -5253,11 +5152,8 @@ static void _set_bt_rx_agc(struct rtw89_dev *rtwdev)
 		mode = wl_rinfo_v1->link_mode;
 	else if (ver->fwlrole == 2)
 		mode = wl_rinfo_v2->link_mode;
-<<<<<<< HEAD
-=======
 	else if (ver->fwlrole == 7)
 		mode = wl_rinfo_v7->link_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (ver->fwlrole == 8)
 		mode = wl_rinfo_v8->link_mode;
 	else
@@ -5563,11 +5459,6 @@ static void _action_wl_2g_scc_v2(struct rtw89_dev *rtwdev)
 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
 	struct rtw89_btc_bt_info *bt = &btc->cx.bt;
 	struct rtw89_btc_dm *dm = &btc->dm;
-<<<<<<< HEAD
-	struct rtw89_btc_wl_role_info_v2 *wl_rinfo = &wl->role_info_v2;
-	u16 policy_type = BTC_CXP_OFF_BT;
-	u32 dur;
-=======
 	struct rtw89_btc_wl_role_info_v2 *rinfo_v2 = &wl->role_info_v2;
 	struct rtw89_btc_wl_role_info_v7 *rinfo_v7 = &wl->role_info_v7;
 	u32 dur, mrole_type, mrole_noa_duration;
@@ -5582,17 +5473,12 @@ static void _action_wl_2g_scc_v2(struct rtw89_dev *rtwdev)
 	} else {
 		return;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (btc->ant_type == BTC_ANT_DEDICATED) {
 		policy_type = BTC_CXP_OFF_EQ0;
 	} else {
 		/* shared-antenna */
-<<<<<<< HEAD
-		switch (wl_rinfo->mrole_type) {
-=======
 		switch (mrole_type) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		case BTC_WLMROLE_STA_GC:
 			dm->wl_scc.null_role1 = RTW89_WIFI_ROLE_STATION;
 			dm->wl_scc.null_role2 = RTW89_WIFI_ROLE_P2P_CLIENT;
@@ -5610,11 +5496,7 @@ static void _action_wl_2g_scc_v2(struct rtw89_dev *rtwdev)
 		case BTC_WLMROLE_STA_GO_NOA:
 			dm->wl_scc.null_role1 = RTW89_WIFI_ROLE_STATION;
 			dm->wl_scc.null_role2 = RTW89_WIFI_ROLE_NONE;
-<<<<<<< HEAD
-			dur = wl_rinfo->mrole_noa_duration;
-=======
 			dur = mrole_noa_duration;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (wl->status.map._4way) {
 				dm->wl_scc.ebt_null = 0;
@@ -5796,8 +5678,6 @@ _update_rssi_state(struct rtw89_dev *rtwdev, u8 pre_state, u8 rssi, u8 thresh)
 	return next_state;
 }
 
-<<<<<<< HEAD
-=======
 static void _wl_req_mac(struct rtw89_dev *rtwdev, u8 mac)
 {
 	if (mac == RTW89_MAC_0)
@@ -5806,7 +5686,6 @@ static void _wl_req_mac(struct rtw89_dev *rtwdev, u8 mac)
 		rtw89_write32_set(rtwdev, R_AX_BTC_CFG, B_AX_WL_SRC);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static
 void _update_dbcc_band(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
 {
@@ -6305,14 +6184,6 @@ static u8 _chk_dbcc(struct rtw89_dev *rtwdev, struct rtw89_btc_chdef *ch,
 		    u8 *phy, u8 *role, u8 *dbcc_2g_phy)
 {
 	struct rtw89_btc_wl_info *wl = &rtwdev->btc.cx.wl;
-<<<<<<< HEAD
-	struct rtw89_btc_wl_role_info_v8 *wl_rinfo = &wl->role_info_v8;
-	bool is_2g_ch_exist = false, is_multi_role_in_2g_phy = false;
-	u8 j, k, dbcc_2g_cid, dbcc_2g_cid2;
-
-	/* find out the 2G-PHY by connect-id ->ch  */
-	for (j = 0; j < wl_rinfo->connect_cnt; j++) {
-=======
 	struct rtw89_btc_wl_role_info_v7 *rinfo_v7 = &wl->role_info_v7;
 	struct rtw89_btc_wl_role_info_v8 *rinfo_v8 = &wl->role_info_v8;
 	bool is_2g_ch_exist = false, is_multi_role_in_2g_phy = false;
@@ -6327,7 +6198,6 @@ static u8 _chk_dbcc(struct rtw89_dev *rtwdev, struct rtw89_btc_chdef *ch,
 
 	/* find out the 2G-PHY by connect-id ->ch  */
 	for (j = 0; j < connect_cnt; j++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ch[j].center_ch <= 14) {
 			is_2g_ch_exist = true;
 			break;
@@ -6342,19 +6212,11 @@ static u8 _chk_dbcc(struct rtw89_dev *rtwdev, struct rtw89_btc_chdef *ch,
 	*dbcc_2g_phy = phy[dbcc_2g_cid];
 
 	/* connect_cnt <= 2 */
-<<<<<<< HEAD
-	if (wl_rinfo->connect_cnt < BTC_TDMA_WLROLE_MAX)
-		return (_get_role_link_mode((role[dbcc_2g_cid])));
-
-	/* find the other-port in the 2G-PHY, ex: PHY-0:6G, PHY1: mcc/scc */
-	for (k = 0; k < wl_rinfo->connect_cnt; k++) {
-=======
 	if (connect_cnt < BTC_TDMA_WLROLE_MAX)
 		return (_get_role_link_mode((role[dbcc_2g_cid])));
 
 	/* find the other-port in the 2G-PHY, ex: PHY-0:6G, PHY1: mcc/scc */
 	for (k = 0; k < connect_cnt; k++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (k == dbcc_2g_cid)
 			continue;
 
@@ -6381,11 +6243,6 @@ static u8 _chk_dbcc(struct rtw89_dev *rtwdev, struct rtw89_btc_chdef *ch,
 static void _update_role_link_mode(struct rtw89_dev *rtwdev,
 				   bool client_joined, u32 noa)
 {
-<<<<<<< HEAD
-	struct rtw89_btc_wl_role_info_v8 *wl_rinfo = &rtwdev->btc.cx.wl.role_info_v8;
-	u32 type = BTC_WLMROLE_NONE, dur = 0;
-	u32 wl_role = wl_rinfo->role_map;
-=======
 	struct rtw89_btc_wl_role_info_v8 *rinfo_v8 = &rtwdev->btc.cx.wl.role_info_v8;
 	struct rtw89_btc_wl_role_info_v7 *rinfo_v7 = &rtwdev->btc.cx.wl.role_info_v7;
 	u8 role_ver = rtwdev->btc.ver->fwlrole;
@@ -6404,20 +6261,10 @@ static void _update_role_link_mode(struct rtw89_dev *rtwdev,
 	} else {
 		return;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* if no client_joined, don't care P2P-GO/AP role */
 	if (((wl_role & BIT(RTW89_WIFI_ROLE_P2P_GO)) ||
 	     (wl_role & BIT(RTW89_WIFI_ROLE_AP))) && !client_joined) {
-<<<<<<< HEAD
-		if (wl_rinfo->link_mode == BTC_WLINK_2G_SCC) {
-			wl_rinfo->link_mode = BTC_WLINK_2G_STA;
-			wl_rinfo->connect_cnt--;
-		} else if (wl_rinfo->link_mode == BTC_WLINK_2G_GO ||
-			wl_rinfo->link_mode == BTC_WLINK_2G_AP) {
-			wl_rinfo->link_mode = BTC_WLINK_NOLINK;
-			wl_rinfo->connect_cnt--;
-=======
 		if (link_mode == BTC_WLINK_2G_SCC) {
 			if (role_ver == 7) {
 				rinfo_v7->link_mode = BTC_WLINK_2G_STA;
@@ -6435,24 +6282,15 @@ static void _update_role_link_mode(struct rtw89_dev *rtwdev,
 				rinfo_v8->link_mode = BTC_WLINK_NOLINK;
 				rinfo_v8->connect_cnt--;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	/* Identify 2-Role type  */
-<<<<<<< HEAD
-	if (wl_rinfo->connect_cnt >= 2 &&
-	    (wl_rinfo->link_mode == BTC_WLINK_2G_SCC ||
-	     wl_rinfo->link_mode == BTC_WLINK_2G_MCC ||
-	     wl_rinfo->link_mode == BTC_WLINK_25G_MCC ||
-	     wl_rinfo->link_mode == BTC_WLINK_5G)) {
-=======
 	if (connect_cnt >= 2 &&
 	    (link_mode == BTC_WLINK_2G_SCC ||
 	     link_mode == BTC_WLINK_2G_MCC ||
 	     link_mode == BTC_WLINK_25G_MCC ||
 	     link_mode == BTC_WLINK_5G)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((wl_role & BIT(RTW89_WIFI_ROLE_P2P_GO)) ||
 		    (wl_role & BIT(RTW89_WIFI_ROLE_AP)))
 			type = noa ? BTC_WLMROLE_STA_GO_NOA : BTC_WLMROLE_STA_GO;
@@ -6464,10 +6302,6 @@ static void _update_role_link_mode(struct rtw89_dev *rtwdev,
 		dur = noa;
 	}
 
-<<<<<<< HEAD
-	wl_rinfo->mrole_type = type;
-	wl_rinfo->mrole_noa_duration = dur;
-=======
 	if (role_ver == 7) {
 		rinfo_v7->mrole_type = type;
 		rinfo_v7->mrole_noa_duration = dur;
@@ -6631,7 +6465,6 @@ static void _update_wl_info_v7(struct rtw89_dev *rtwdev, u8 rid)
 	}
 	_wl_req_mac(rtwdev, mac);
 	_fw_set_drv_info(rtwdev, CXDRVINFO_ROLE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void _update_wl_info_v8(struct rtw89_dev *rtwdev, u8 role_id, u8 rlink_id,
@@ -6976,10 +6809,7 @@ void _run_coex(struct rtw89_dev *rtwdev, enum btc_reason_and_action reason)
 	struct rtw89_btc_wl_role_info *wl_rinfo = &wl->role_info;
 	struct rtw89_btc_wl_role_info_v1 *wl_rinfo_v1 = &wl->role_info_v1;
 	struct rtw89_btc_wl_role_info_v2 *wl_rinfo_v2 = &wl->role_info_v2;
-<<<<<<< HEAD
-=======
 	struct rtw89_btc_wl_role_info_v7 *wl_rinfo_v7 = &wl->role_info_v7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtw89_btc_wl_role_info_v8 *wl_rinfo_v8 = &wl->role_info_v8;
 	u8 mode, igno_bt, always_freerun;
 
@@ -6995,11 +6825,8 @@ void _run_coex(struct rtw89_dev *rtwdev, enum btc_reason_and_action reason)
 		mode = wl_rinfo_v1->link_mode;
 	else if (ver->fwlrole == 2)
 		mode = wl_rinfo_v2->link_mode;
-<<<<<<< HEAD
-=======
 	else if (ver->fwlrole == 7)
 		mode = wl_rinfo_v7->link_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (ver->fwlrole == 8)
 		mode = wl_rinfo_v8->link_mode;
 	else
@@ -7146,11 +6973,7 @@ void _run_coex(struct rtw89_dev *rtwdev, enum btc_reason_and_action reason)
 			_action_wl_2g_scc(rtwdev);
 		else if (ver->fwlrole == 1)
 			_action_wl_2g_scc_v1(rtwdev);
-<<<<<<< HEAD
-		else if (ver->fwlrole == 2)
-=======
 		else if (ver->fwlrole == 2 || ver->fwlrole == 7)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			_action_wl_2g_scc_v2(rtwdev);
 		else if (ver->fwlrole == 8)
 			_action_wl_2g_scc_v8(rtwdev);
@@ -7662,11 +7485,7 @@ void rtw89_btc_ntfy_role_info(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif
 			      struct rtw89_sta *rtwsta, enum btc_role_state state)
 {
 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev,
-<<<<<<< HEAD
-						       rtwvif->sub_entity_idx);
-=======
 						       rtwvif->chanctx_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ieee80211_vif *vif = rtwvif_to_vif(rtwvif);
 	struct ieee80211_sta *sta = rtwsta_to_sta(rtwsta);
 	struct rtw89_btc *btc = &rtwdev->btc;
@@ -7747,12 +7566,9 @@ void rtw89_btc_ntfy_role_info(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif
 	} else if (ver->fwlrole == 2) {
 		*wlinfo = r;
 		_update_wl_info_v2(rtwdev);
-<<<<<<< HEAD
-=======
 	} else if (ver->fwlrole == 7) {
 		*wlinfo = r;
 		_update_wl_info_v7(rtwdev, r.pid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (ver->fwlrole == 8) {
 		wlinfo = &wl->rlink_info[r.pid][rlink_id];
 		*wlinfo = r;
@@ -8359,10 +8175,7 @@ static void _show_wl_info(struct rtw89_dev *rtwdev, struct seq_file *m)
 	struct rtw89_btc_wl_role_info *wl_rinfo = &wl->role_info;
 	struct rtw89_btc_wl_role_info_v1 *wl_rinfo_v1 = &wl->role_info_v1;
 	struct rtw89_btc_wl_role_info_v2 *wl_rinfo_v2 = &wl->role_info_v2;
-<<<<<<< HEAD
-=======
 	struct rtw89_btc_wl_role_info_v7 *wl_rinfo_v7 = &wl->role_info_v7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rtw89_btc_wl_role_info_v8 *wl_rinfo_v8 = &wl->role_info_v8;
 	u8 mode;
 
@@ -8377,11 +8190,8 @@ static void _show_wl_info(struct rtw89_dev *rtwdev, struct seq_file *m)
 		mode = wl_rinfo_v1->link_mode;
 	else if (ver->fwlrole == 2)
 		mode = wl_rinfo_v2->link_mode;
-<<<<<<< HEAD
-=======
 	else if (ver->fwlrole == 7)
 		mode = wl_rinfo_v7->link_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (ver->fwlrole == 8)
 		mode = wl_rinfo_v8->link_mode;
 	else
@@ -10800,8 +10610,6 @@ static void _show_summary_v105(struct rtw89_dev *rtwdev, struct seq_file *m)
 		   cnt[BTC_NCNT_CUSTOMERIZE]);
 }
 
-<<<<<<< HEAD
-=======
 static void _show_summary_v7(struct rtw89_dev *rtwdev, struct seq_file *m)
 {
 	struct rtw89_btc_btf_fwinfo *pfwinfo = &rtwdev->btc.fwinfo;
@@ -10904,7 +10712,6 @@ static void _show_summary_v7(struct rtw89_dev *rtwdev, struct seq_file *m)
 		   cnt[BTC_NCNT_COUNTRYCODE]);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void _show_summary_v8(struct rtw89_dev *rtwdev, struct seq_file *m)
 {
 	struct rtw89_btc_btf_fwinfo *pfwinfo = &rtwdev->btc.fwinfo;
@@ -11057,11 +10864,8 @@ void rtw89_btc_dump_info(struct rtw89_dev *rtwdev, struct seq_file *m)
 		_show_summary_v5(rtwdev, m);
 	else if (ver->fcxbtcrpt == 105)
 		_show_summary_v105(rtwdev, m);
-<<<<<<< HEAD
-=======
 	else if (ver->fcxbtcrpt == 7)
 		_show_summary_v7(rtwdev, m);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (ver->fcxbtcrpt == 8)
 		_show_summary_v8(rtwdev, m);
 }

@@ -135,10 +135,6 @@
 /*
  * Section
  */
-<<<<<<< HEAD
-#define PMD_SECT_VALID		(_AT(pmdval_t, 1) << 0)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PMD_SECT_USER		(_AT(pmdval_t, 1) << 6)		/* AP[1] */
 #define PMD_SECT_RDONLY		(_AT(pmdval_t, 1) << 7)		/* AP[2] */
 #define PMD_SECT_S		(_AT(pmdval_t, 3) << 8)
@@ -203,8 +199,6 @@
 #define PTE_PI_IDX_3	54	/* UXN */
 
 /*
-<<<<<<< HEAD
-=======
  * POIndex[2:0] encoding (Permission Overlay Extension)
  */
 #define PTE_PO_IDX_0	(_AT(pteval_t, 1) << 60)
@@ -215,20 +209,16 @@
 
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Memory Attribute override for Stage-2 (MemAttr[3:0])
  */
 #define PTE_S2_MEMATTR(t)	(_AT(pteval_t, (t)) << 2)
 
 /*
-<<<<<<< HEAD
-=======
  * Hierarchical permission for Stage-1 tables
  */
 #define S1_TABLE_AP		(_AT(pmdval_t, 3) << 61)
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Highest possible physical address supported.
  */
 #define PHYS_MASK_SHIFT		(CONFIG_ARM64_PA_BITS)
@@ -322,13 +312,10 @@
 #define TCR_TBI1		(UL(1) << 38)
 #define TCR_HA			(UL(1) << 39)
 #define TCR_HD			(UL(1) << 40)
-<<<<<<< HEAD
-=======
 #define TCR_HPD0_SHIFT		41
 #define TCR_HPD0		(UL(1) << TCR_HPD0_SHIFT)
 #define TCR_HPD1_SHIFT		42
 #define TCR_HPD1		(UL(1) << TCR_HPD1_SHIFT)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define TCR_TBID0		(UL(1) << 51)
 #define TCR_TBID1		(UL(1) << 52)
 #define TCR_NFD0		(UL(1) << 53)

@@ -169,12 +169,9 @@ struct vsock_transport {
 	void (*notify_buffer_size)(struct vsock_sock *, u64 *);
 	int (*notify_set_rcvlowat)(struct vsock_sock *vsk, int val);
 
-<<<<<<< HEAD
-=======
 	/* SIOCOUTQ ioctl */
 	ssize_t (*unsent_bytes)(struct vsock_sock *vsk);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Shutdown. */
 	int (*shutdown)(struct vsock_sock *, int);
 

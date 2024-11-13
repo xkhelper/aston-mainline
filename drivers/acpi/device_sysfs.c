@@ -439,12 +439,6 @@ static ssize_t description_show(struct device *dev,
 				char *buf)
 {
 	struct acpi_device *acpi_dev = to_acpi_device(dev);
-<<<<<<< HEAD
-	int result;
-
-	if (acpi_dev->pnp.str_obj == NULL)
-		return 0;
-=======
 	struct acpi_buffer buffer = {ACPI_ALLOCATE_BUFFER, NULL};
 	union acpi_object *str_obj;
 	acpi_status status;
@@ -457,30 +451,21 @@ static ssize_t description_show(struct device *dev,
 		return -EIO;
 
 	str_obj = buffer.pointer;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The _STR object contains a Unicode identifier for a device.
 	 * We need to convert to utf-8 so it can be displayed.
 	 */
 	result = utf16s_to_utf8s(
-<<<<<<< HEAD
-		(wchar_t *)acpi_dev->pnp.str_obj->buffer.pointer,
-		acpi_dev->pnp.str_obj->buffer.length,
-=======
 		(wchar_t *)str_obj->buffer.pointer,
 		str_obj->buffer.length,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		UTF16_LITTLE_ENDIAN, buf,
 		PAGE_SIZE - 1);
 
 	buf[result++] = '\n';
 
-<<<<<<< HEAD
-=======
 	kfree(str_obj);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return result;
 }
 static DEVICE_ATTR_RO(description);
@@ -532,73 +517,6 @@ static ssize_t status_show(struct device *dev, struct device_attribute *attr,
 }
 static DEVICE_ATTR_RO(status);
 
-<<<<<<< HEAD
-/**
- * acpi_device_setup_files - Create sysfs attributes of an ACPI device.
- * @dev: ACPI device object.
- */
-int acpi_device_setup_files(struct acpi_device *dev)
-{
-	struct acpi_buffer buffer = {ACPI_ALLOCATE_BUFFER, NULL};
-	acpi_status status;
-	int result = 0;
-
-	/*
-	 * Devices gotten from FADT don't have a "path" attribute
-	 */
-	if (dev->handle) {
-		result = device_create_file(&dev->dev, &dev_attr_path);
-		if (result)
-			goto end;
-	}
-
-	if (!list_empty(&dev->pnp.ids)) {
-		result = device_create_file(&dev->dev, &dev_attr_hid);
-		if (result)
-			goto end;
-
-		result = device_create_file(&dev->dev, &dev_attr_modalias);
-		if (result)
-			goto end;
-	}
-
-	/*
-	 * If device has _STR, 'description' file is created
-	 */
-	if (acpi_has_method(dev->handle, "_STR")) {
-		status = acpi_evaluate_object(dev->handle, "_STR",
-					NULL, &buffer);
-		if (ACPI_FAILURE(status))
-			buffer.pointer = NULL;
-		dev->pnp.str_obj = buffer.pointer;
-		result = device_create_file(&dev->dev, &dev_attr_description);
-		if (result)
-			goto end;
-	}
-
-	if (dev->pnp.type.bus_address)
-		result = device_create_file(&dev->dev, &dev_attr_adr);
-	if (acpi_device_uid(dev))
-		result = device_create_file(&dev->dev, &dev_attr_uid);
-
-	if (acpi_has_method(dev->handle, "_SUN")) {
-		result = device_create_file(&dev->dev, &dev_attr_sun);
-		if (result)
-			goto end;
-	}
-
-	if (acpi_has_method(dev->handle, "_HRV")) {
-		result = device_create_file(&dev->dev, &dev_attr_hrv);
-		if (result)
-			goto end;
-	}
-
-	if (acpi_has_method(dev->handle, "_STA")) {
-		result = device_create_file(&dev->dev, &dev_attr_status);
-		if (result)
-			goto end;
-	}
-=======
 static struct attribute *acpi_attrs[] = {
 	&dev_attr_path.attr,
 	&dev_attr_hid.attr,
@@ -643,34 +561,11 @@ static bool acpi_show_attr(struct acpi_device *dev, const struct device_attribut
 
 	if (attr == &dev_attr_status)
 		return acpi_has_method(dev->handle, "_STA");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If device has _EJ0, 'eject' file is created that is used to trigger
 	 * hot-removal function from userland.
 	 */
-<<<<<<< HEAD
-	if (acpi_has_method(dev->handle, "_EJ0")) {
-		result = device_create_file(&dev->dev, &dev_attr_eject);
-		if (result)
-			return result;
-	}
-
-	if (dev->flags.power_manageable) {
-		result = device_create_file(&dev->dev, &dev_attr_power_state);
-		if (result)
-			return result;
-
-		if (dev->power.flags.power_resources)
-			result = device_create_file(&dev->dev,
-						    &dev_attr_real_power_state);
-	}
-
-	acpi_expose_nondev_subnodes(&dev->dev.kobj, &dev->data);
-
-end:
-	return result;
-=======
 	if (attr == &dev_attr_eject)
 		return acpi_has_method(dev->handle, "_EJ0");
 
@@ -713,7 +608,6 @@ const struct attribute_group *acpi_groups[] = {
 void acpi_device_setup_files(struct acpi_device *dev)
 {
 	acpi_expose_nondev_subnodes(&dev->dev.kobj, &dev->data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -723,44 +617,4 @@ void acpi_device_setup_files(struct acpi_device *dev)
 void acpi_device_remove_files(struct acpi_device *dev)
 {
 	acpi_hide_nondev_subnodes(&dev->data);
-<<<<<<< HEAD
-
-	if (dev->flags.power_manageable) {
-		device_remove_file(&dev->dev, &dev_attr_power_state);
-		if (dev->power.flags.power_resources)
-			device_remove_file(&dev->dev,
-					   &dev_attr_real_power_state);
-	}
-
-	/*
-	 * If device has _STR, remove 'description' file
-	 */
-	if (acpi_has_method(dev->handle, "_STR")) {
-		kfree(dev->pnp.str_obj);
-		device_remove_file(&dev->dev, &dev_attr_description);
-	}
-	/*
-	 * If device has _EJ0, remove 'eject' file.
-	 */
-	if (acpi_has_method(dev->handle, "_EJ0"))
-		device_remove_file(&dev->dev, &dev_attr_eject);
-
-	if (acpi_has_method(dev->handle, "_SUN"))
-		device_remove_file(&dev->dev, &dev_attr_sun);
-
-	if (acpi_has_method(dev->handle, "_HRV"))
-		device_remove_file(&dev->dev, &dev_attr_hrv);
-
-	if (acpi_device_uid(dev))
-		device_remove_file(&dev->dev, &dev_attr_uid);
-	if (dev->pnp.type.bus_address)
-		device_remove_file(&dev->dev, &dev_attr_adr);
-	device_remove_file(&dev->dev, &dev_attr_modalias);
-	device_remove_file(&dev->dev, &dev_attr_hid);
-	if (acpi_has_method(dev->handle, "_STA"))
-		device_remove_file(&dev->dev, &dev_attr_status);
-	if (dev->handle)
-		device_remove_file(&dev->dev, &dev_attr_path);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

@@ -46,12 +46,9 @@ static unsigned int igc_tsn_new_flags(struct igc_adapter *adapter)
 	if (is_cbs_enabled(adapter))
 		new_flags |= IGC_FLAG_TSN_QAV_ENABLED;
 
-<<<<<<< HEAD
-=======
 	if (adapter->strict_priority_enable)
 		new_flags |= IGC_FLAG_TSN_LEGACY_ENABLED;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return new_flags;
 }
 
@@ -108,8 +105,6 @@ bool igc_tsn_is_taprio_activated_by_user(struct igc_adapter *adapter)
 		adapter->taprio_offload_enable;
 }
 
-<<<<<<< HEAD
-=======
 static void igc_tsn_tx_arb(struct igc_adapter *adapter, u16 *queue_per_tc)
 {
 	struct igc_hw *hw = &adapter->hw;
@@ -130,16 +125,12 @@ static void igc_tsn_tx_arb(struct igc_adapter *adapter, u16 *queue_per_tc)
 	wr32(IGC_TXARB, txarb);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Returns the TSN specific registers to their default values after
  * the adapter is reset.
  */
 static int igc_tsn_disable_offload(struct igc_adapter *adapter)
 {
-<<<<<<< HEAD
-=======
 	u16 queue_per_tc[4] = { 3, 2, 1, 0 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct igc_hw *hw = &adapter->hw;
 	u32 tqavctrl;
 	int i;
@@ -166,9 +157,6 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
 	wr32(IGC_QBVCYCLET_S, 0);
 	wr32(IGC_QBVCYCLET, NSEC_PER_SEC);
 
-<<<<<<< HEAD
-	adapter->flags &= ~IGC_FLAG_TSN_QBV_ENABLED;
-=======
 	/* Reset mqprio TC configuration. */
 	netdev_reset_tc(adapter->netdev);
 
@@ -179,7 +167,6 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
 
 	adapter->flags &= ~IGC_FLAG_TSN_QBV_ENABLED;
 	adapter->flags &= ~IGC_FLAG_TSN_LEGACY_ENABLED;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -218,8 +205,6 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
 	if (igc_is_device_id_i226(hw))
 		igc_tsn_set_retx_qbvfullthreshold(adapter);
 
-<<<<<<< HEAD
-=======
 	if (adapter->strict_priority_enable) {
 		int err;
 
@@ -254,7 +239,6 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
 		return 0;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < adapter->num_tx_queues; i++) {
 		struct igc_ring *ring = adapter->tx_ring[i];
 		u32 txqctl = 0;

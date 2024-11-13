@@ -2,10 +2,7 @@
 /* Converted from tools/testing/selftests/bpf/verifier/search_pruning.c */
 
 #include <linux/bpf.h>
-<<<<<<< HEAD
-=======
 #include <../../../include/linux/filter.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <bpf/bpf_helpers.h>
 #include "bpf_misc.h"
 
@@ -340,8 +337,6 @@ l0_%=:	r1 = 42;					\
 	: __clobber_all);
 }
 
-<<<<<<< HEAD
-=======
 /* Without checkpoint forcibly inserted at the back-edge a loop this
  * test would take a very long time to verify.
  */
@@ -364,5 +359,4 @@ __naked void short_loop1(void)
 	: __clobber_all);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 char _license[] SEC("license") = "GPL";

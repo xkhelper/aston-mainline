@@ -2312,11 +2312,7 @@ static int hist_entry__typeoff_snprintf(struct hist_entry *he, char *bf,
 				 he->mem_type_off, true);
 	buf[4095] = '\0';
 
-<<<<<<< HEAD
-	return repsep_snprintf(bf, size, "%s %+d (%s)", he_type->self.type_name,
-=======
 	return repsep_snprintf(bf, size, "%s +%#x (%s)", he_type->self.type_name,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       he->mem_type_off, buf);
 }
 
@@ -2330,8 +2326,6 @@ struct sort_entry sort_type_offset = {
 	.se_width_idx	= HISTC_TYPE_OFFSET,
 };
 
-<<<<<<< HEAD
-=======
 /* --sort typecln */
 
 /* TODO: use actual value in the system */
@@ -2383,7 +2377,6 @@ struct sort_entry sort_type_cacheline = {
 	.se_width_idx	= HISTC_TYPE_CACHELINE,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct sort_dimension {
 	const char		*name;
@@ -2442,10 +2435,7 @@ static struct sort_dimension common_sort_dimensions[] = {
 	DIM(SORT_ANNOTATE_DATA_TYPE, "type", sort_type),
 	DIM(SORT_ANNOTATE_DATA_TYPE_OFFSET, "typeoff", sort_type_offset),
 	DIM(SORT_SYM_OFFSET, "symoff", sort_sym_offset),
-<<<<<<< HEAD
-=======
 	DIM(SORT_ANNOTATE_DATA_TYPE_CACHELINE, "typecln", sort_type_cacheline),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #undef DIM
@@ -4022,11 +4012,7 @@ static void add_hpp_sort_string(struct strbuf *sb, struct hpp_dimension *s, int 
 		add_key(sb, s[i].name, llen);
 }
 
-<<<<<<< HEAD
-char *sort_help(const char *prefix)
-=======
 char *sort_help(const char *prefix, enum sort_mode mode)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct strbuf sb;
 	char *s;
@@ -4038,19 +4024,12 @@ char *sort_help(const char *prefix, enum sort_mode mode)
 			    ARRAY_SIZE(hpp_sort_dimensions), &len);
 	add_sort_string(&sb, common_sort_dimensions,
 			    ARRAY_SIZE(common_sort_dimensions), &len);
-<<<<<<< HEAD
-	add_sort_string(&sb, bstack_sort_dimensions,
-			    ARRAY_SIZE(bstack_sort_dimensions), &len);
-	add_sort_string(&sb, memory_sort_dimensions,
-			    ARRAY_SIZE(memory_sort_dimensions), &len);
-=======
 	if (mode == SORT_MODE__NORMAL || mode == SORT_MODE__BRANCH)
 		add_sort_string(&sb, bstack_sort_dimensions,
 				ARRAY_SIZE(bstack_sort_dimensions), &len);
 	if (mode == SORT_MODE__NORMAL || mode == SORT_MODE__MEMORY)
 		add_sort_string(&sb, memory_sort_dimensions,
 				ARRAY_SIZE(memory_sort_dimensions), &len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s = strbuf_detach(&sb, NULL);
 	strbuf_release(&sb);
 	return s;

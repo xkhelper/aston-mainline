@@ -27,11 +27,8 @@
 #include <ctype.h>
 #include <limits.h>
 
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
 #define KSYM_NAME_LEN		512
@@ -173,16 +170,7 @@ static struct sym_entry *read_symbol(FILE *in, char **buf, size_t *buf_len)
 	 * compressed together */
 	len++;
 
-<<<<<<< HEAD
-	sym = malloc(sizeof(*sym) + len + 1);
-	if (!sym) {
-		fprintf(stderr, "kallsyms failure: "
-			"unable to allocate required amount of memory\n");
-		exit(EXIT_FAILURE);
-	}
-=======
 	sym = xmalloc(sizeof(*sym) + len + 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sym->addr = addr;
 	sym->len = len;
 	sym->sym[0] = type;
@@ -287,16 +275,7 @@ static void read_map(const char *in)
 
 		if (table_cnt >= table_size) {
 			table_size += 10000;
-<<<<<<< HEAD
-			table = realloc(table, sizeof(*table) * table_size);
-			if (!table) {
-				fprintf(stderr, "out of memory\n");
-				fclose(fp);
-				exit (1);
-			}
-=======
 			table = xrealloc(table, sizeof(*table) * table_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		table[table_cnt++] = sym;
@@ -313,18 +292,6 @@ static void output_label(const char *label)
 	printf("%s:\n", label);
 }
 
-<<<<<<< HEAD
-/* Provide proper symbols relocatability by their '_text' relativeness. */
-static void output_address(unsigned long long addr)
-{
-	if (_text <= addr)
-		printf("\tPTR\t_text + %#llx\n", addr - _text);
-	else
-		printf("\tPTR\t_text - %#llx\n", _text - addr);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* uncompress a compressed symbol. When this function is called, the best table
  * might still be compressed itself, so the function needs to be recursive */
 static int expand_symbol(const unsigned char *data, int len, char *result)
@@ -407,16 +374,7 @@ static void write_src(void)
 	/* table of offset markers, that give the offset in the compressed stream
 	 * every 256 symbols */
 	markers_cnt = (table_cnt + 255) / 256;
-<<<<<<< HEAD
-	markers = malloc(sizeof(*markers) * markers_cnt);
-	if (!markers) {
-		fprintf(stderr, "kallsyms failure: "
-			"unable to allocate required memory\n");
-		exit(EXIT_FAILURE);
-	}
-=======
 	markers = xmalloc(sizeof(*markers) * markers_cnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	output_label("kallsyms_names");
 	off = 0;
@@ -497,19 +455,6 @@ static void write_src(void)
 		 */
 
 		long long offset;
-<<<<<<< HEAD
-		int overflow;
-
-		if (!absolute_percpu) {
-			offset = table[i]->addr - relative_base;
-			overflow = (offset < 0 || offset > UINT_MAX);
-		} else if (symbol_absolute(table[i])) {
-			offset = table[i]->addr;
-			overflow = (offset < 0 || offset > INT_MAX);
-		} else {
-			offset = relative_base - table[i]->addr - 1;
-			overflow = (offset < INT_MIN || offset >= 0);
-=======
 		bool overflow;
 
 		if (!absolute_percpu) {
@@ -521,7 +466,6 @@ static void write_src(void)
 		} else {
 			offset = relative_base - table[i]->addr - 1;
 			overflow = offset < INT_MIN || offset >= 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		if (overflow) {
 			fprintf(stderr, "kallsyms failure: "
@@ -535,15 +479,11 @@ static void write_src(void)
 	printf("\n");
 
 	output_label("kallsyms_relative_base");
-<<<<<<< HEAD
-	output_address(relative_base);
-=======
 	/* Provide proper symbols relocatability by their '_text' relativeness. */
 	if (_text <= relative_base)
 		printf("\tPTR\t_text + %#llx\n", relative_base - _text);
 	else
 		printf("\tPTR\t_text - %#llx\n", _text - relative_base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printf("\n");
 
 	sort_symbols_by_name();

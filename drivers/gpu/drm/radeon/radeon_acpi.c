@@ -405,19 +405,11 @@ static int radeon_atif_handler(struct radeon_device *rdev,
 	if (req.pending & ATIF_DGPU_DISPLAY_EVENT) {
 		if ((rdev->flags & RADEON_IS_PX) &&
 		    radeon_atpx_dgpu_req_power_for_displays()) {
-<<<<<<< HEAD
-			pm_runtime_get_sync(rdev->ddev->dev);
-			/* Just fire off a uevent and let userspace tell us what to do */
-			drm_helper_hpd_irq_event(rdev->ddev);
-			pm_runtime_mark_last_busy(rdev->ddev->dev);
-			pm_runtime_put_autosuspend(rdev->ddev->dev);
-=======
 			pm_runtime_get_sync(rdev_to_drm(rdev)->dev);
 			/* Just fire off a uevent and let userspace tell us what to do */
 			drm_helper_hpd_irq_event(rdev_to_drm(rdev));
 			pm_runtime_mark_last_busy(rdev_to_drm(rdev)->dev);
 			pm_runtime_put_autosuspend(rdev_to_drm(rdev)->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	/* TODO: check other events */
@@ -744,11 +736,7 @@ int radeon_acpi_init(struct radeon_device *rdev)
 		struct radeon_encoder *target = NULL;
 
 		/* Find the encoder controlling the brightness */
-<<<<<<< HEAD
-		list_for_each_entry(tmp, &rdev->ddev->mode_config.encoder_list,
-=======
 		list_for_each_entry(tmp, &rdev_to_drm(rdev)->mode_config.encoder_list,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				head) {
 			struct radeon_encoder *enc = to_radeon_encoder(tmp);
 

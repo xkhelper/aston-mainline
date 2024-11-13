@@ -116,13 +116,8 @@ int fd_statfs(int fd, struct kstatfs *st)
 {
 	struct fd f = fdget_raw(fd);
 	int error = -EBADF;
-<<<<<<< HEAD
-	if (f.file) {
-		error = vfs_statfs(&f.file->f_path, st);
-=======
 	if (fd_file(f)) {
 		error = vfs_statfs(&fd_file(f)->f_path, st);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 	}
 	return error;

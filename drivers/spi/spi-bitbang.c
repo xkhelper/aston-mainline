@@ -54,40 +54,28 @@ static unsigned int bitbang_txrx_8(struct spi_device *spi,
 	struct spi_transfer	*t,
 	unsigned int flags)
 {
-<<<<<<< HEAD
-=======
 	struct spi_bitbang	*bitbang;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		bits = t->bits_per_word;
 	unsigned int		count = t->len;
 	const u8		*tx = t->tx_buf;
 	u8			*rx = t->rx_buf;
 
-<<<<<<< HEAD
-=======
 	bitbang = spi_controller_get_devdata(spi->controller);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (likely(count > 0)) {
 		u8		word = 0;
 
 		if (tx)
 			word = *tx++;
-<<<<<<< HEAD
-=======
 		else
 			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFF : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		word = txrx_word(spi, ns, word, bits, flags);
 		if (rx)
 			*rx++ = word;
 		count -= 1;
 	}
-<<<<<<< HEAD
-=======
 	if (bitbang->set_mosi_idle)
 		bitbang->set_mosi_idle(spi);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return t->len - count;
 }
 
@@ -97,40 +85,28 @@ static unsigned int bitbang_txrx_16(struct spi_device *spi,
 	struct spi_transfer	*t,
 	unsigned int flags)
 {
-<<<<<<< HEAD
-=======
 	struct spi_bitbang	*bitbang;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		bits = t->bits_per_word;
 	unsigned int		count = t->len;
 	const u16		*tx = t->tx_buf;
 	u16			*rx = t->rx_buf;
 
-<<<<<<< HEAD
-=======
 	bitbang = spi_controller_get_devdata(spi->controller);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (likely(count > 1)) {
 		u16		word = 0;
 
 		if (tx)
 			word = *tx++;
-<<<<<<< HEAD
-=======
 		else
 			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFFFF : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		word = txrx_word(spi, ns, word, bits, flags);
 		if (rx)
 			*rx++ = word;
 		count -= 2;
 	}
-<<<<<<< HEAD
-=======
 	if (bitbang->set_mosi_idle)
 		bitbang->set_mosi_idle(spi);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return t->len - count;
 }
 
@@ -140,40 +116,28 @@ static unsigned int bitbang_txrx_32(struct spi_device *spi,
 	struct spi_transfer	*t,
 	unsigned int flags)
 {
-<<<<<<< HEAD
-=======
 	struct spi_bitbang	*bitbang;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		bits = t->bits_per_word;
 	unsigned int		count = t->len;
 	const u32		*tx = t->tx_buf;
 	u32			*rx = t->rx_buf;
 
-<<<<<<< HEAD
-=======
 	bitbang = spi_controller_get_devdata(spi->controller);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (likely(count > 3)) {
 		u32		word = 0;
 
 		if (tx)
 			word = *tx++;
-<<<<<<< HEAD
-=======
 		else
 			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFFFFFFFF : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		word = txrx_word(spi, ns, word, bits, flags);
 		if (rx)
 			*rx++ = word;
 		count -= 4;
 	}
-<<<<<<< HEAD
-=======
 	if (bitbang->set_mosi_idle)
 		bitbang->set_mosi_idle(spi);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return t->len - count;
 }
 
@@ -249,12 +213,9 @@ int spi_bitbang_setup(struct spi_device *spi)
 			goto err_free;
 	}
 
-<<<<<<< HEAD
-=======
 	if (bitbang->set_mosi_idle)
 		bitbang->set_mosi_idle(spi);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_dbg(&spi->dev, "%s, %u nsec/bit\n", __func__, 2 * cs->nsecs);
 
 	return 0;

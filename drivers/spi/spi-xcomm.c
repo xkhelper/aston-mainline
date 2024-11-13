@@ -12,11 +12,7 @@
 #include <linux/i2c.h>
 #include <linux/gpio/driver.h>
 #include <linux/spi/spi.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SPI_XCOMM_SETTINGS_LEN_OFFSET		10
 #define SPI_XCOMM_SETTINGS_3WIRE		BIT(6)

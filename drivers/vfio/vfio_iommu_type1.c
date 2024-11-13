@@ -513,19 +513,10 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
 			    unsigned long vaddr, unsigned long *pfn,
 			    bool write_fault)
 {
-<<<<<<< HEAD
-	pte_t *ptep;
-	pte_t pte;
-	spinlock_t *ptl;
-	int ret;
-
-	ret = follow_pte(vma, vaddr, &ptep, &ptl);
-=======
 	struct follow_pfnmap_args args = { .vma = vma, .address = vaddr };
 	int ret;
 
 	ret = follow_pfnmap_start(&args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		bool unlocked = false;
 
@@ -539,32 +530,17 @@ static int follow_fault_pfn(struct vm_area_struct *vma, struct mm_struct *mm,
 		if (ret)
 			return ret;
 
-<<<<<<< HEAD
-		ret = follow_pte(vma, vaddr, &ptep, &ptl);
-=======
 		ret = follow_pfnmap_start(&args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 	}
 
-<<<<<<< HEAD
-	pte = ptep_get(ptep);
-
-	if (write_fault && !pte_write(pte))
-		ret = -EFAULT;
-	else
-		*pfn = pte_pfn(pte);
-
-	pte_unmap_unlock(ptep, ptl);
-=======
 	if (write_fault && !args.writable)
 		ret = -EFAULT;
 	else
 		*pfn = args.pfn;
 
 	follow_pfnmap_end(&args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

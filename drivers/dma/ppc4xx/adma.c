@@ -9,11 +9,7 @@
  */
 
 /*
-<<<<<<< HEAD
- * This driver supports the asynchrounous DMA copy and RAID engines available
-=======
  * This driver supports the asynchronous DMA copy and RAID engines available
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * on the AMCC PPC440SPe Processors.
  * Based on the Intel Xscale(R) family of I/O Processors (IOP 32x, 33x, 134x)
  * ADMA driver written by D.Williams.

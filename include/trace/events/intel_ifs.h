@@ -35,8 +35,6 @@ TRACE_EVENT(ifs_status,
 		__entry->status)
 );
 
-<<<<<<< HEAD
-=======
 TRACE_EVENT(ifs_sbaf,
 
 	TP_PROTO(int batch, union ifs_sbaf activate, union ifs_sbaf_status status),
@@ -64,7 +62,6 @@ TRACE_EVENT(ifs_sbaf,
 		__entry->status)
 );
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _TRACE_IFS_H */
 
 /* This part must be outside protection */

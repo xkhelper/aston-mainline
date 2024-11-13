@@ -221,12 +221,8 @@ static int process_branch_callback(struct evsel *evsel,
 	if (a.map != NULL)
 		dso__set_hit(map__dso(a.map));
 
-<<<<<<< HEAD
-	hist__account_cycles(sample->branch_stack, al, sample, false, NULL);
-=======
 	hist__account_cycles(sample->branch_stack, al, sample, false,
 			     NULL, evsel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = hist_entry_iter__add(&iter, &a, PERF_MAX_STACK_DEPTH, ann);
 out:
@@ -284,11 +280,7 @@ static int evsel__add_sample(struct evsel *evsel, struct perf_sample *sample,
 	return ret;
 }
 
-<<<<<<< HEAD
-static int process_sample_event(struct perf_tool *tool,
-=======
 static int process_sample_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct evsel *evsel,
@@ -405,17 +397,10 @@ static void print_annotate_item_stat(struct list_head *head, const char *title)
 	printf("total %d, ok %d (%.1f%%), bad %d (%.1f%%)\n\n", total,
 	       total_good, 100.0 * total_good / (total ?: 1),
 	       total_bad, 100.0 * total_bad / (total ?: 1));
-<<<<<<< HEAD
-	printf("  %-10s: %5s %5s\n", "Name", "Good", "Bad");
-	printf("-----------------------------------------------------------\n");
-	list_for_each_entry(istat, head, list)
-		printf("  %-10s: %5d %5d\n", istat->name, istat->good, istat->bad);
-=======
 	printf("  %-20s: %5s %5s\n", "Name/opcode", "Good", "Bad");
 	printf("-----------------------------------------------------------\n");
 	list_for_each_entry(istat, head, list)
 		printf("  %-20s: %5d %5d\n", istat->name, istat->good, istat->bad);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printf("\n");
 }
 
@@ -648,8 +633,6 @@ static int __cmd_annotate(struct perf_annotate *ann)
 	evlist__for_each_entry(session->evlist, pos) {
 		struct hists *hists = evsel__hists(pos);
 		u32 nr_samples = hists->stats.nr_samples;
-<<<<<<< HEAD
-=======
 		struct ui_progress prog;
 		struct evsel *evsel;
 
@@ -658,20 +641,14 @@ static int __cmd_annotate(struct perf_annotate *ann)
 
 		for_each_group_member(evsel, pos)
 			nr_samples += evsel__hists(evsel)->stats.nr_samples;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (nr_samples == 0)
 			continue;
 
-<<<<<<< HEAD
-		if (!symbol_conf.event_group || !evsel__is_group_leader(pos))
-			continue;
-=======
 		ui_progress__init(&prog, nr_samples,
 				  "Sorting group events for output...");
 		evsel__output_resort(pos, &prog);
 		ui_progress__finish();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		hists__find_annotations(hists, pos, ann);
 	}
@@ -720,32 +697,7 @@ static const char * const annotate_usage[] = {
 
 int cmd_annotate(int argc, const char **argv)
 {
-<<<<<<< HEAD
-	struct perf_annotate annotate = {
-		.tool = {
-			.sample	= process_sample_event,
-			.mmap	= perf_event__process_mmap,
-			.mmap2	= perf_event__process_mmap2,
-			.comm	= perf_event__process_comm,
-			.exit	= perf_event__process_exit,
-			.fork	= perf_event__process_fork,
-			.namespaces = perf_event__process_namespaces,
-			.attr	= perf_event__process_attr,
-			.build_id = perf_event__process_build_id,
-#ifdef HAVE_LIBTRACEEVENT
-			.tracing_data   = perf_event__process_tracing_data,
-#endif
-			.id_index	= perf_event__process_id_index,
-			.auxtrace_info	= perf_event__process_auxtrace_info,
-			.auxtrace	= perf_event__process_auxtrace,
-			.feature	= process_feature_event,
-			.ordered_events = true,
-			.ordering_requires_timestamps = true,
-		},
-	};
-=======
 	struct perf_annotate annotate = {};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_data data = {
 		.mode  = PERF_DATA_MODE_READ,
 	};
@@ -833,11 +785,8 @@ int cmd_annotate(int argc, const char **argv)
 		    "Show stats for the data type annotation"),
 	OPT_BOOLEAN(0, "insn-stat", &annotate.insn_stat,
 		    "Show instruction stats for the data type annotation"),
-<<<<<<< HEAD
-=======
 	OPT_BOOLEAN(0, "skip-empty", &symbol_conf.skip_empty,
 		    "Do not display empty (or dummy) events in the output"),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	OPT_END()
 	};
 	int ret;
@@ -907,8 +856,6 @@ int cmd_annotate(int argc, const char **argv)
 
 	data.path = input_name;
 
-<<<<<<< HEAD
-=======
 	perf_tool__init(&annotate.tool, /*ordered_events=*/true);
 	annotate.tool.sample	= process_sample_event;
 	annotate.tool.mmap	= perf_event__process_mmap;
@@ -928,7 +875,6 @@ int cmd_annotate(int argc, const char **argv)
 	annotate.tool.feature	= process_feature_event;
 	annotate.tool.ordering_requires_timestamps = true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	annotate.session = perf_session__new(&data, &annotate.tool);
 	if (IS_ERR(annotate.session))
 		return PTR_ERR(annotate.session);
@@ -981,13 +927,6 @@ int cmd_annotate(int argc, const char **argv)
 		sort_order = "dso,symbol";
 
 	/*
-<<<<<<< HEAD
-	 * Set SORT_MODE__BRANCH so that annotate display IPC/Cycle
-	 * if branch info is in perf data in TUI mode.
-	 */
-	if ((use_browser == 1 || annotate.use_stdio2) && annotate.has_br_stack)
-		sort__mode = SORT_MODE__BRANCH;
-=======
 	 * Set SORT_MODE__BRANCH so that annotate displays IPC/Cycle and
 	 * branch counters, if the corresponding branch info is available
 	 * in the perf data in the TUI mode.
@@ -997,7 +936,6 @@ int cmd_annotate(int argc, const char **argv)
 		if (annotate.session->evlist->nr_br_cntr > 0)
 			annotate_opts.show_br_cntr = true;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (setup_sorting(NULL) < 0)
 		usage_with_options(annotate_usage, options);

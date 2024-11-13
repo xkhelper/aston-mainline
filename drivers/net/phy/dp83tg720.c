@@ -3,19 +3,13 @@
  * Copyright (c) 2023 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
  */
 #include <linux/bitfield.h>
-<<<<<<< HEAD
-=======
 #include <linux/ethtool_netlink.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/phy.h>
 
-<<<<<<< HEAD
-=======
 #include "open_alliance_helpers.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DP83TG720S_PHY_ID			0x2000a284
 
 /* MDIO_MMD_VEND2 registers */
@@ -23,8 +17,6 @@
 #define DP83TG720S_STS_MII_INT			BIT(7)
 #define DP83TG720S_LINK_STATUS			BIT(0)
 
-<<<<<<< HEAD
-=======
 /* TDR Configuration Register (0x1E) */
 #define DP83TG720S_TDR_CFG			0x1e
 /* 1b = TDR start, 0b = No TDR */
@@ -36,7 +28,6 @@
 /* 1b = TDR fail, 0b = TDR success */
 #define DP83TG720S_TDR_FAIL			BIT(0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DP83TG720S_PHY_RESET			0x1f
 #define DP83TG720S_HW_RESET			BIT(15)
 
@@ -45,8 +36,6 @@
 /* Power Mode 0 is Normal mode */
 #define DP83TG720S_LPS_CFG3_PWR_MODE_0		BIT(0)
 
-<<<<<<< HEAD
-=======
 /* Open Aliance 1000BaseT1 compatible HDD.TDR Fault Status Register */
 #define DP83TG720S_TDR_FAULT_STATUS		0x30f
 
@@ -65,27 +54,21 @@
 /* Register 0x0576: TDR Master Link Down Control */
 #define DP83TG720S_TDR_MASTER_LINK_DOWN		0x576
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DP83TG720S_RGMII_DELAY_CTRL		0x602
 /* In RGMII mode, Enable or disable the internal delay for RXD */
 #define DP83TG720S_RGMII_RX_CLK_SEL		BIT(1)
 /* In RGMII mode, Enable or disable the internal delay for TXD */
 #define DP83TG720S_RGMII_TX_CLK_SEL		BIT(0)
 
-<<<<<<< HEAD
-=======
 /* Register 0x083F: Unknown Register */
 #define DP83TG720S_UNKNOWN_083F			0x83f
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DP83TG720S_SQI_REG_1			0x871
 #define DP83TG720S_SQI_OUT_WORST		GENMASK(7, 5)
 #define DP83TG720S_SQI_OUT			GENMASK(3, 1)
 
 #define DP83TG720_SQI_MAX			7
 
-<<<<<<< HEAD
-=======
 /**
  * dp83tg720_cable_test_start - Start the cable test for the DP83TG720 PHY.
  * @phydev: Pointer to the phy_device structure.
@@ -202,7 +185,6 @@ static int dp83tg720_cable_test_get_status(struct phy_device *phydev,
 	return phy_init_hw(phydev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int dp83tg720_config_aneg(struct phy_device *phydev)
 {
 	int ret;
@@ -364,21 +346,15 @@ static struct phy_driver dp83tg720_driver[] = {
 	PHY_ID_MATCH_MODEL(DP83TG720S_PHY_ID),
 	.name		= "TI DP83TG720S",
 
-<<<<<<< HEAD
-=======
 	.flags          = PHY_POLL_CABLE_TEST,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config_aneg	= dp83tg720_config_aneg,
 	.read_status	= dp83tg720_read_status,
 	.get_features	= genphy_c45_pma_read_ext_abilities,
 	.config_init	= dp83tg720_config_init,
 	.get_sqi	= dp83tg720_get_sqi,
 	.get_sqi_max	= dp83tg720_get_sqi_max,
-<<<<<<< HEAD
-=======
 	.cable_test_start = dp83tg720_cable_test_start,
 	.cable_test_get_status = dp83tg720_cable_test_get_status,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	.suspend	= genphy_suspend,
 	.resume		= genphy_resume,

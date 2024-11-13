@@ -234,11 +234,7 @@ MODULE_DEVICE_TABLE(of, panel_dpi_of_match);
 
 static struct platform_driver panel_dpi_driver = {
 	.probe = panel_dpi_probe,
-<<<<<<< HEAD
-	.remove_new = panel_dpi_remove,
-=======
 	.remove = panel_dpi_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "panel-dpi",
 		.of_match_table = panel_dpi_of_match,

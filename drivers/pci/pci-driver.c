@@ -1670,11 +1670,7 @@ static void pci_dma_cleanup(struct device *dev)
 		iommu_device_unuse_default_domain(dev);
 }
 
-<<<<<<< HEAD
-struct bus_type pci_bus_type = {
-=======
 const struct bus_type pci_bus_type = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "pci",
 	.match		= pci_bus_match,
 	.uevent		= pci_uevent,

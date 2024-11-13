@@ -73,11 +73,7 @@ struct da9055_regulator_info {
 
 struct da9055_regulator {
 	struct da9055 *da9055;
-<<<<<<< HEAD
-	struct da9055_regulator_info *info;
-=======
 	const struct da9055_regulator_info *info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct regulator_dev *rdev;
 	enum gpio_select reg_rselect;
 };
@@ -85,11 +81,7 @@ struct da9055_regulator {
 static unsigned int da9055_buck_get_mode(struct regulator_dev *rdev)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret, mode = 0;
 
 	ret = da9055_reg_read(regulator->da9055, info->mode.reg);
@@ -115,11 +107,7 @@ static int da9055_buck_set_mode(struct regulator_dev *rdev,
 					unsigned int mode)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int val = 0;
 
 	switch (mode) {
@@ -141,11 +129,7 @@ static int da9055_buck_set_mode(struct regulator_dev *rdev,
 static unsigned int da9055_ldo_get_mode(struct regulator_dev *rdev)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	ret = da9055_reg_read(regulator->da9055, info->volt.reg_b);
@@ -161,11 +145,7 @@ static unsigned int da9055_ldo_get_mode(struct regulator_dev *rdev)
 static int da9055_ldo_set_mode(struct regulator_dev *rdev, unsigned int mode)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct da9055_volt_reg volt = info->volt;
 	int val = 0;
 
@@ -187,11 +167,7 @@ static int da9055_ldo_set_mode(struct regulator_dev *rdev, unsigned int mode)
 static int da9055_regulator_get_voltage_sel(struct regulator_dev *rdev)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct da9055_volt_reg volt = info->volt;
 	int ret, sel;
 
@@ -223,11 +199,7 @@ static int da9055_regulator_set_voltage_sel(struct regulator_dev *rdev,
 					    unsigned int selector)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	/*
@@ -270,11 +242,7 @@ static int da9055_regulator_set_suspend_voltage(struct regulator_dev *rdev,
 						int uV)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	/* Select register set B for suspend voltage ramping. */
@@ -296,11 +264,7 @@ static int da9055_regulator_set_suspend_voltage(struct regulator_dev *rdev,
 static int da9055_suspend_enable(struct regulator_dev *rdev)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Select register set B for voltage ramping. */
 	if (regulator->reg_rselect == NO_GPIO)
@@ -313,11 +277,7 @@ static int da9055_suspend_enable(struct regulator_dev *rdev)
 static int da9055_suspend_disable(struct regulator_dev *rdev)
 {
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Diselect register set B. */
 	if (regulator->reg_rselect == NO_GPIO)
@@ -436,11 +396,7 @@ static const struct regulator_ops da9055_ldo_ops = {
 	},\
 }
 
-<<<<<<< HEAD
-static struct da9055_regulator_info da9055_regulator_info[] = {
-=======
 static const struct da9055_regulator_info da9055_regulator_info[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DA9055_BUCK(BUCK1, 25, 725, 2075, 6, 9, 0xc, 2),
 	DA9055_BUCK(BUCK2, 25, 925, 2500, 6, 0, 3, 0),
 	DA9055_LDO(LDO1, 50, 900, 3300, 6, 2),
@@ -461,11 +417,7 @@ static int da9055_gpio_init(struct device *dev,
 			    struct regulator_config *config,
 			    struct da9055_pdata *pdata, int id)
 {
-<<<<<<< HEAD
-	struct da9055_regulator_info *info = regulator->info;
-=======
 	const struct da9055_regulator_info *info = regulator->info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct gpio_desc *ren;
 	struct gpio_desc *ena;
 	struct gpio_desc *rsel;
@@ -539,15 +491,9 @@ static irqreturn_t da9055_ldo5_6_oc_irq(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
-static inline struct da9055_regulator_info *find_regulator_info(int id)
-{
-	struct da9055_regulator_info *info;
-=======
 static inline const struct da9055_regulator_info *find_regulator_info(int id)
 {
 	const struct da9055_regulator_info *info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(da9055_regulator_info); i++) {

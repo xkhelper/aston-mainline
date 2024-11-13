@@ -53,11 +53,7 @@ static void mouse_button_fixup(struct hid_device *hdev,
 	rdesc[padding_bit + 1] = MOUSE_BUTTONS_MAX - nbuttons;
 }
 
-<<<<<<< HEAD
-static __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
-=======
 static const __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int *rsize)
 {
 	switch (hdev->product) {

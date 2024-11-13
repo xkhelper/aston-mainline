@@ -526,11 +526,7 @@ struct quota_info {
 	const struct quota_format_ops *ops[MAXQUOTAS];	/* Operations for each type */
 };
 
-<<<<<<< HEAD
-int register_quota_format(struct quota_format_type *fmt);
-=======
 void register_quota_format(struct quota_format_type *fmt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void unregister_quota_format(struct quota_format_type *fmt);
 
 struct quota_module_name {

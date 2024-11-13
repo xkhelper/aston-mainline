@@ -293,11 +293,7 @@ static irqreturn_t max30102_interrupt_handler(int irq, void *private)
 	struct iio_dev *indio_dev = private;
 	struct max30102_data *data = iio_priv(indio_dev);
 	unsigned int measurements = bitmap_weight(indio_dev->active_scan_mask,
-<<<<<<< HEAD
-						  indio_dev->masklength);
-=======
 						  iio_get_masklength(indio_dev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret, cnt = 0;
 
 	mutex_lock(&data->lock);

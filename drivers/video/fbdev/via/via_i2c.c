@@ -265,11 +265,7 @@ static struct platform_driver via_i2c_driver = {
 		.name = "viafb-i2c",
 	},
 	.probe = viafb_i2c_probe,
-<<<<<<< HEAD
-	.remove_new = viafb_i2c_remove,
-=======
 	.remove = viafb_i2c_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 int viafb_i2c_init(void)

@@ -1162,11 +1162,7 @@ static void gsc_abort(struct exynos_drm_ipp *ipp,
 	}
 }
 
-<<<<<<< HEAD
-static struct exynos_drm_ipp_funcs ipp_funcs = {
-=======
 static const struct exynos_drm_ipp_funcs ipp_funcs = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.commit = gsc_commit,
 	.abort = gsc_abort,
 };
@@ -1178,11 +1174,7 @@ static int gsc_bind(struct device *dev, struct device *master, void *data)
 	struct exynos_drm_ipp *ipp = &ctx->ipp;
 
 	ctx->drm_dev = drm_dev;
-<<<<<<< HEAD
-	ctx->drm_dev = drm_dev;
-=======
 	ipp->drm_dev = drm_dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	exynos_drm_register_dma(drm_dev, dev, &ctx->dma_priv);
 
 	exynos_drm_ipp_register(dev, ipp, &ipp_funcs,

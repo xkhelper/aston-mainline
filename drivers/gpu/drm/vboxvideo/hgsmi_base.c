@@ -139,9 +139,6 @@ int hgsmi_update_pointer_shape(struct gen_pool *ctx, u32 flags,
 		flags |= VBOX_MOUSE_POINTER_VISIBLE;
 	}
 
-<<<<<<< HEAD
-	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len, HGSMI_CH_VBVA,
-=======
 	/*
 	 * The 4 extra bytes come from switching struct vbva_mouse_pointer_shape
 	 * from having a 4 bytes fixed array at the end to using a proper VLA
@@ -151,7 +148,6 @@ int hgsmi_update_pointer_shape(struct gen_pool *ctx, u32 flags,
 	 * to avoid regressions.
 	 */
 	p = hgsmi_buffer_alloc(ctx, sizeof(*p) + pixel_len + 4, HGSMI_CH_VBVA,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       VBVA_MOUSE_POINTER_SHAPE);
 	if (!p)
 		return -ENOMEM;

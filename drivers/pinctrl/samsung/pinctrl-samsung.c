@@ -122,13 +122,8 @@ static int add_map_configs(struct device *dev, struct pinctrl_map **map,
 	if (WARN_ON(*num_maps == *reserved_maps))
 		return -ENOSPC;
 
-<<<<<<< HEAD
-	dup_configs = kmemdup(configs, num_configs * sizeof(*dup_configs),
-			      GFP_KERNEL);
-=======
 	dup_configs = kmemdup_array(configs, num_configs, sizeof(*dup_configs),
 				    GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!dup_configs)
 		return -ENOMEM;
 
@@ -256,10 +251,6 @@ static int samsung_dt_node_to_map(struct pinctrl_dev *pctldev,
 {
 	struct samsung_pinctrl_drv_data *drvdata;
 	unsigned reserved_maps;
-<<<<<<< HEAD
-	struct device_node *np;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	drvdata = pinctrl_dev_get_drvdata(pctldev);
@@ -274,19 +265,11 @@ static int samsung_dt_node_to_map(struct pinctrl_dev *pctldev,
 							&reserved_maps,
 							num_maps);
 
-<<<<<<< HEAD
-	for_each_child_of_node(np_config, np) {
-=======
 	for_each_child_of_node_scoped(np_config, np) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = samsung_dt_subnode_to_map(drvdata, pctldev->dev, np, map,
 						&reserved_maps, num_maps);
 		if (ret < 0) {
 			samsung_dt_free_map(pctldev, *map, *num_maps);
-<<<<<<< HEAD
-			of_node_put(np);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 	}
@@ -838,26 +821,16 @@ static struct samsung_pmx_func *samsung_pinctrl_create_functions(
 		struct device_node *func_np;
 
 		if (!of_get_child_count(cfg_np)) {
-<<<<<<< HEAD
-			if (!of_find_property(cfg_np,
-			    "samsung,pin-function", NULL))
-=======
 			if (!of_property_present(cfg_np,
 			    "samsung,pin-function"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 			++func_cnt;
 			continue;
 		}
 
 		for_each_child_of_node(cfg_np, func_np) {
-<<<<<<< HEAD
-			if (!of_find_property(func_np,
-			    "samsung,pin-function", NULL))
-=======
 			if (!of_property_present(func_np,
 			    "samsung,pin-function"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 			++func_cnt;
 		}
@@ -874,25 +847,12 @@ static struct samsung_pmx_func *samsung_pinctrl_create_functions(
 	 * and create pin groups and pin function lists.
 	 */
 	func_cnt = 0;
-<<<<<<< HEAD
-	for_each_child_of_node(dev_np, cfg_np) {
-		struct device_node *func_np;
-
-		if (!of_get_child_count(cfg_np)) {
-			ret = samsung_pinctrl_create_function(dev, drvdata,
-							cfg_np, func);
-			if (ret < 0) {
-				of_node_put(cfg_np);
-				return ERR_PTR(ret);
-			}
-=======
 	for_each_child_of_node_scoped(dev_np, cfg_np) {
 		if (!of_get_child_count(cfg_np)) {
 			ret = samsung_pinctrl_create_function(dev, drvdata,
 							cfg_np, func);
 			if (ret < 0)
 				return ERR_PTR(ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (ret > 0) {
 				++func;
 				++func_cnt;
@@ -900,22 +860,11 @@ static struct samsung_pmx_func *samsung_pinctrl_create_functions(
 			continue;
 		}
 
-<<<<<<< HEAD
-		for_each_child_of_node(cfg_np, func_np) {
-			ret = samsung_pinctrl_create_function(dev, drvdata,
-						func_np, func);
-			if (ret < 0) {
-				of_node_put(func_np);
-				of_node_put(cfg_np);
-				return ERR_PTR(ret);
-			}
-=======
 		for_each_child_of_node_scoped(cfg_np, func_np) {
 			ret = samsung_pinctrl_create_function(dev, drvdata,
 						func_np, func);
 			if (ret < 0)
 				return ERR_PTR(ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (ret > 0) {
 				++func;
 				++func_cnt;
@@ -1039,8 +988,6 @@ static int samsung_pinctrl_unregister(struct platform_device *pdev,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static void samsung_pud_value_init(struct samsung_pinctrl_drv_data *drvdata)
 {
 	unsigned int  *pud_val = drvdata->pud_val;
@@ -1112,7 +1059,6 @@ static int samsung_gpio_set_config(struct gpio_chip *gc, unsigned int offset,
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct gpio_chip samsung_gpiolib_chip = {
 	.request = gpiochip_generic_request,
 	.free = gpiochip_generic_free,
@@ -1122,10 +1068,7 @@ static const struct gpio_chip samsung_gpiolib_chip = {
 	.direction_output = samsung_gpio_direction_output,
 	.to_irq = samsung_gpio_to_irq,
 	.add_pin_ranges = samsung_add_pin_ranges,
-<<<<<<< HEAD
-=======
 	.set_config = samsung_gpio_set_config,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.owner = THIS_MODULE,
 };
 
@@ -1357,14 +1300,11 @@ static int samsung_pinctrl_probe(struct platform_device *pdev)
 	if (ctrl->eint_wkup_init)
 		ctrl->eint_wkup_init(drvdata);
 
-<<<<<<< HEAD
-=======
 	if (ctrl->pud_value_init)
 		ctrl->pud_value_init(drvdata);
 	else
 		samsung_pud_value_init(drvdata);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = samsung_gpiolib_register(pdev, drvdata);
 	if (ret)
 		goto err_unregister;

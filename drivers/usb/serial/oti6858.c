@@ -138,10 +138,6 @@ static void oti6858_port_remove(struct usb_serial_port *port);
 /* device info */
 static struct usb_serial_driver oti6858_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner =	THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"oti6858",
 	},
 	.id_table =		id_table,

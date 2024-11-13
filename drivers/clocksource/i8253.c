@@ -20,16 +20,6 @@
 DEFINE_RAW_SPINLOCK(i8253_lock);
 EXPORT_SYMBOL(i8253_lock);
 
-<<<<<<< HEAD
-/*
- * Handle PIT quirk in pit_shutdown() where zeroing the counter register
- * restarts the PIT, negating the shutdown. On platforms with the quirk,
- * platform specific code can set this to false.
- */
-bool i8253_clear_counter_on_shutdown __ro_after_init = true;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_CLKSRC_I8253
 /*
  * Since the PIT overflows every tick, its not very useful
@@ -111,8 +101,6 @@ int __init clocksource_i8253_init(void)
 #endif
 
 #ifdef CONFIG_CLKEVT_I8253
-<<<<<<< HEAD
-=======
 void clockevent_i8253_disable(void)
 {
 	raw_spin_lock(&i8253_lock);
@@ -148,26 +136,12 @@ void clockevent_i8253_disable(void)
 	raw_spin_unlock(&i8253_lock);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int pit_shutdown(struct clock_event_device *evt)
 {
 	if (!clockevent_state_oneshot(evt) && !clockevent_state_periodic(evt))
 		return 0;
 
-<<<<<<< HEAD
-	raw_spin_lock(&i8253_lock);
-
-	outb_p(0x30, PIT_MODE);
-
-	if (i8253_clear_counter_on_shutdown) {
-		outb_p(0, PIT_CH0);
-		outb_p(0, PIT_CH0);
-	}
-
-	raw_spin_unlock(&i8253_lock);
-=======
 	clockevent_i8253_disable();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

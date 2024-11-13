@@ -296,27 +296,10 @@ static int ucs1002_set_max_current(struct ucs1002_info *info, u32 val)
 	return 0;
 }
 
-<<<<<<< HEAD
-static enum power_supply_usb_type ucs1002_usb_types[] = {
-	POWER_SUPPLY_USB_TYPE_PD,
-	POWER_SUPPLY_USB_TYPE_SDP,
-	POWER_SUPPLY_USB_TYPE_DCP,
-	POWER_SUPPLY_USB_TYPE_CDP,
-	POWER_SUPPLY_USB_TYPE_UNKNOWN,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ucs1002_set_usb_type(struct ucs1002_info *info, int val)
 {
 	unsigned int mode;
 
-<<<<<<< HEAD
-	if (val < 0 || val >= ARRAY_SIZE(ucs1002_usb_types))
-		return -EINVAL;
-
-	switch (ucs1002_usb_types[val]) {
-=======
 	switch (val) {
 	/*
 	 * POWER_SUPPLY_USB_TYPE_UNKNOWN == 0, map this to dedicated for
@@ -324,7 +307,6 @@ static int ucs1002_set_usb_type(struct ucs1002_info *info, int val)
 	 * which mapped 0 to dedicated.
 	 */
 	case POWER_SUPPLY_USB_TYPE_UNKNOWN:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case POWER_SUPPLY_USB_TYPE_PD:
 		mode = V_SET_ACTIVE_MODE_DEDICATED;
 		break;
@@ -441,16 +423,11 @@ static int ucs1002_property_is_writeable(struct power_supply *psy,
 static const struct power_supply_desc ucs1002_charger_desc = {
 	.name			= "ucs1002",
 	.type			= POWER_SUPPLY_TYPE_USB,
-<<<<<<< HEAD
-	.usb_types		= ucs1002_usb_types,
-	.num_usb_types		= ARRAY_SIZE(ucs1002_usb_types),
-=======
 	.usb_types		= BIT(POWER_SUPPLY_USB_TYPE_SDP) |
 				  BIT(POWER_SUPPLY_USB_TYPE_CDP) |
 				  BIT(POWER_SUPPLY_USB_TYPE_DCP) |
 				  BIT(POWER_SUPPLY_USB_TYPE_PD)  |
 				  BIT(POWER_SUPPLY_USB_TYPE_UNKNOWN),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_property		= ucs1002_get_property,
 	.set_property		= ucs1002_set_property,
 	.property_is_writeable	= ucs1002_property_is_writeable,

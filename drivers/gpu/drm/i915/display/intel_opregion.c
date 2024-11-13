@@ -252,11 +252,7 @@ struct opregion_asle_ext {
 #define OPREGION_SIZE	(8 * 1024)
 
 struct intel_opregion {
-<<<<<<< HEAD
-	struct drm_i915_private *i915;
-=======
 	struct intel_display *display;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct opregion_header *header;
 	struct opregion_acpi *acpi;
@@ -272,15 +268,9 @@ struct intel_opregion {
 	struct notifier_block acpi_notifier;
 };
 
-<<<<<<< HEAD
-static int check_swsci_function(struct drm_i915_private *i915, u32 function)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 static int check_swsci_function(struct intel_display *display, u32 function)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct opregion_swsci *swsci;
 	u32 main_function, sub_function;
 
@@ -310,36 +300,20 @@ static int check_swsci_function(struct intel_display *display, u32 function)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int swsci(struct drm_i915_private *dev_priv,
-		 u32 function, u32 parm, u32 *parm_out)
-{
-	struct opregion_swsci *swsci;
-	struct pci_dev *pdev = to_pci_dev(dev_priv->drm.dev);
-=======
 static int swsci(struct intel_display *display,
 		 u32 function, u32 parm, u32 *parm_out)
 {
 	struct opregion_swsci *swsci;
 	struct pci_dev *pdev = to_pci_dev(display->drm->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 scic, dslp;
 	u16 swsci_val;
 	int ret;
 
-<<<<<<< HEAD
-	ret = check_swsci_function(dev_priv, function);
-	if (ret)
-		return ret;
-
-	swsci = dev_priv->display.opregion->swsci;
-=======
 	ret = check_swsci_function(display, function);
 	if (ret)
 		return ret;
 
 	swsci = display->opregion->swsci;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Driver sleep timeout in ms. */
 	dslp = swsci->dslp;
@@ -357,11 +331,7 @@ static int swsci(struct intel_display *display,
 	/* The spec tells us to do this, but we are the only user... */
 	scic = swsci->scic;
 	if (scic & SWSCI_SCIC_INDICATOR) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm, "SWSCI request already in progress\n");
-=======
 		drm_dbg(display->drm, "SWSCI request already in progress\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 
@@ -385,11 +355,7 @@ static int swsci(struct intel_display *display,
 	/* Poll for the result. */
 #define C (((scic = swsci->scic) & SWSCI_SCIC_INDICATOR) == 0)
 	if (wait_for(C, dslp)) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm, "SWSCI request timed out\n");
-=======
 		drm_dbg(display->drm, "SWSCI request timed out\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ETIMEDOUT;
 	}
 
@@ -398,11 +364,7 @@ static int swsci(struct intel_display *display,
 
 	/* Note: scic == 0 is an error! */
 	if (scic != SWSCI_SCIC_EXIT_STATUS_SUCCESS) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm, "SWSCI request error %u\n", scic);
-=======
 		drm_dbg(display->drm, "SWSCI request error %u\n", scic);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -419,37 +381,16 @@ static int swsci(struct intel_display *display,
 #define DISPLAY_TYPE_EXTERNAL_FLAT_PANEL	2
 #define DISPLAY_TYPE_INTERNAL_FLAT_PANEL	3
 
-<<<<<<< HEAD
-int intel_opregion_notify_encoder(struct intel_encoder *intel_encoder,
-				  bool enable)
-{
-	struct drm_i915_private *dev_priv = to_i915(intel_encoder->base.dev);
-=======
 int intel_opregion_notify_encoder(struct intel_encoder *encoder,
 				  bool enable)
 {
 	struct intel_display *display = to_intel_display(encoder);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 parm = 0;
 	u32 type = 0;
 	u32 port;
 	int ret;
 
 	/* don't care about old stuff for now */
-<<<<<<< HEAD
-	if (!HAS_DDI(dev_priv))
-		return 0;
-
-	/* Avoid port out of bounds checks if SWSCI isn't there. */
-	ret = check_swsci_function(dev_priv, SWSCI_SBCB_DISPLAY_POWER_STATE);
-	if (ret)
-		return ret;
-
-	if (intel_encoder->type == INTEL_OUTPUT_DSI)
-		port = 0;
-	else
-		port = intel_encoder->port;
-=======
 	if (!HAS_DDI(display))
 		return 0;
 
@@ -462,7 +403,6 @@ int intel_opregion_notify_encoder(struct intel_encoder *encoder,
 		port = 0;
 	else
 		port = encoder->port;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (port == PORT_E)  {
 		port = 0;
@@ -479,28 +419,17 @@ int intel_opregion_notify_encoder(struct intel_encoder *encoder,
 	 * number is out of bounds after mapping.
 	 */
 	if (port > 4) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-			    "[ENCODER:%d:%s] port %c (index %u) out of bounds for display power state notification\n",
-			    intel_encoder->base.base.id, intel_encoder->base.name,
-			    port_name(intel_encoder->port), port);
-=======
 		drm_dbg_kms(display->drm,
 			    "[ENCODER:%d:%s] port %c (index %u) out of bounds for display power state notification\n",
 			    encoder->base.base.id, encoder->base.name,
 			    port_name(encoder->port), port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
 	if (!enable)
 		parm |= 4 << 8;
 
-<<<<<<< HEAD
-	switch (intel_encoder->type) {
-=======
 	switch (encoder->type) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case INTEL_OUTPUT_ANALOG:
 		type = DISPLAY_TYPE_CRT;
 		break;
@@ -515,25 +444,15 @@ int intel_opregion_notify_encoder(struct intel_encoder *encoder,
 		type = DISPLAY_TYPE_INTERNAL_FLAT_PANEL;
 		break;
 	default:
-<<<<<<< HEAD
-		drm_WARN_ONCE(&dev_priv->drm, 1,
-			      "unsupported intel_encoder type %d\n",
-			      intel_encoder->type);
-=======
 		drm_WARN_ONCE(display->drm, 1,
 			      "unsupported intel_encoder type %d\n",
 			      encoder->type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
 	parm |= type << (16 + port * 3);
 
-<<<<<<< HEAD
-	return swsci(dev_priv, SWSCI_SBCB_DISPLAY_POWER_STATE, parm, NULL);
-=======
 	return swsci(display, SWSCI_SBCB_DISPLAY_POWER_STATE, parm, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct {
@@ -547,47 +466,23 @@ static const struct {
 	{ PCI_D3cold,	0x04 },
 };
 
-<<<<<<< HEAD
-int intel_opregion_notify_adapter(struct drm_i915_private *dev_priv,
-=======
 int intel_opregion_notify_adapter(struct intel_display *display,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  pci_power_t state)
 {
 	int i;
 
-<<<<<<< HEAD
-	if (!HAS_DDI(dev_priv))
-=======
 	if (!HAS_DDI(display))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	for (i = 0; i < ARRAY_SIZE(power_state_map); i++) {
 		if (state == power_state_map[i].pci_power_state)
-<<<<<<< HEAD
-			return swsci(dev_priv, SWSCI_SBCB_ADAPTER_POWER_STATE,
-=======
 			return swsci(display, SWSCI_SBCB_ADAPTER_POWER_STATE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     power_state_map[i].parm, NULL);
 	}
 
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
-static u32 asle_set_backlight(struct drm_i915_private *dev_priv, u32 bclp)
-{
-	struct intel_connector *connector;
-	struct drm_connector_list_iter conn_iter;
-	struct opregion_asle *asle = dev_priv->display.opregion->asle;
-
-	drm_dbg(&dev_priv->drm, "bclp = 0x%08x\n", bclp);
-
-	if (acpi_video_get_backlight_type() == acpi_backlight_native) {
-		drm_dbg_kms(&dev_priv->drm,
-=======
 static u32 asle_set_backlight(struct intel_display *display, u32 bclp)
 {
 	struct intel_connector *connector;
@@ -598,7 +493,6 @@ static u32 asle_set_backlight(struct intel_display *display, u32 bclp)
 
 	if (acpi_video_get_backlight_type() == acpi_backlight_native) {
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "opregion backlight request ignored\n");
 		return 0;
 	}
@@ -610,89 +504,26 @@ static u32 asle_set_backlight(struct intel_display *display, u32 bclp)
 	if (bclp > 255)
 		return ASLC_BACKLIGHT_FAILED;
 
-<<<<<<< HEAD
-	drm_modeset_lock(&dev_priv->drm.mode_config.connection_mutex, NULL);
-=======
 	drm_modeset_lock(&display->drm->mode_config.connection_mutex, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Update backlight on all connectors that support backlight (usually
 	 * only one).
 	 */
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "updating opregion backlight %d/255\n",
-		    bclp);
-	drm_connector_list_iter_begin(&dev_priv->drm, &conn_iter);
-=======
 	drm_dbg_kms(display->drm, "updating opregion backlight %d/255\n",
 		    bclp);
 	drm_connector_list_iter_begin(display->drm, &conn_iter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_intel_connector_iter(connector, &conn_iter)
 		intel_backlight_set_acpi(connector->base.state, bclp, 255);
 	drm_connector_list_iter_end(&conn_iter);
 	asle->cblv = DIV_ROUND_UP(bclp * 100, 255) | ASLE_CBLV_VALID;
 
-<<<<<<< HEAD
-	drm_modeset_unlock(&dev_priv->drm.mode_config.connection_mutex);
-=======
 	drm_modeset_unlock(&display->drm->mode_config.connection_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 	return 0;
 }
 
-<<<<<<< HEAD
-static u32 asle_set_als_illum(struct drm_i915_private *dev_priv, u32 alsi)
-{
-	/* alsi is the current ALS reading in lux. 0 indicates below sensor
-	   range, 0xffff indicates above sensor range. 1-0xfffe are valid */
-	drm_dbg(&dev_priv->drm, "Illum is not supported\n");
-	return ASLC_ALS_ILLUM_FAILED;
-}
-
-static u32 asle_set_pwm_freq(struct drm_i915_private *dev_priv, u32 pfmb)
-{
-	drm_dbg(&dev_priv->drm, "PWM freq is not supported\n");
-	return ASLC_PWM_FREQ_FAILED;
-}
-
-static u32 asle_set_pfit(struct drm_i915_private *dev_priv, u32 pfit)
-{
-	/* Panel fitting is currently controlled by the X code, so this is a
-	   noop until modesetting support works fully */
-	drm_dbg(&dev_priv->drm, "Pfit is not supported\n");
-	return ASLC_PFIT_FAILED;
-}
-
-static u32 asle_set_supported_rotation_angles(struct drm_i915_private *dev_priv, u32 srot)
-{
-	drm_dbg(&dev_priv->drm, "SROT is not supported\n");
-	return ASLC_ROTATION_ANGLES_FAILED;
-}
-
-static u32 asle_set_button_array(struct drm_i915_private *dev_priv, u32 iuer)
-{
-	if (!iuer)
-		drm_dbg(&dev_priv->drm,
-			"Button array event is not supported (nothing)\n");
-	if (iuer & ASLE_IUER_ROTATION_LOCK_BTN)
-		drm_dbg(&dev_priv->drm,
-			"Button array event is not supported (rotation lock)\n");
-	if (iuer & ASLE_IUER_VOLUME_DOWN_BTN)
-		drm_dbg(&dev_priv->drm,
-			"Button array event is not supported (volume down)\n");
-	if (iuer & ASLE_IUER_VOLUME_UP_BTN)
-		drm_dbg(&dev_priv->drm,
-			"Button array event is not supported (volume up)\n");
-	if (iuer & ASLE_IUER_WINDOWS_BTN)
-		drm_dbg(&dev_priv->drm,
-			"Button array event is not supported (windows)\n");
-	if (iuer & ASLE_IUER_POWER_BTN)
-		drm_dbg(&dev_priv->drm,
-=======
 static u32 asle_set_als_illum(struct intel_display *display, u32 alsi)
 {
 	/* alsi is the current ALS reading in lux. 0 indicates below sensor
@@ -740,21 +571,11 @@ static u32 asle_set_button_array(struct intel_display *display, u32 iuer)
 			"Button array event is not supported (windows)\n");
 	if (iuer & ASLE_IUER_POWER_BTN)
 		drm_dbg(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"Button array event is not supported (power)\n");
 
 	return ASLC_BUTTON_ARRAY_FAILED;
 }
 
-<<<<<<< HEAD
-static u32 asle_set_convertible(struct drm_i915_private *dev_priv, u32 iuer)
-{
-	if (iuer & ASLE_IUER_CONVERTIBLE)
-		drm_dbg(&dev_priv->drm,
-			"Convertible is not supported (clamshell)\n");
-	else
-		drm_dbg(&dev_priv->drm,
-=======
 static u32 asle_set_convertible(struct intel_display *display, u32 iuer)
 {
 	if (iuer & ASLE_IUER_CONVERTIBLE)
@@ -762,41 +583,25 @@ static u32 asle_set_convertible(struct intel_display *display, u32 iuer)
 			"Convertible is not supported (clamshell)\n");
 	else
 		drm_dbg(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"Convertible is not supported (slate)\n");
 
 	return ASLC_CONVERTIBLE_FAILED;
 }
 
-<<<<<<< HEAD
-static u32 asle_set_docking(struct drm_i915_private *dev_priv, u32 iuer)
-{
-	if (iuer & ASLE_IUER_DOCKING)
-		drm_dbg(&dev_priv->drm, "Docking is not supported (docked)\n");
-	else
-		drm_dbg(&dev_priv->drm,
-=======
 static u32 asle_set_docking(struct intel_display *display, u32 iuer)
 {
 	if (iuer & ASLE_IUER_DOCKING)
 		drm_dbg(display->drm, "Docking is not supported (docked)\n");
 	else
 		drm_dbg(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"Docking is not supported (undocked)\n");
 
 	return ASLC_DOCKING_FAILED;
 }
 
-<<<<<<< HEAD
-static u32 asle_isct_state(struct drm_i915_private *dev_priv)
-{
-	drm_dbg(&dev_priv->drm, "ISCT is not supported\n");
-=======
 static u32 asle_isct_state(struct intel_display *display)
 {
 	drm_dbg(display->drm, "ISCT is not supported\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ASLC_ISCT_STATE_FAILED;
 }
 
@@ -804,11 +609,7 @@ static void asle_work(struct work_struct *work)
 {
 	struct intel_opregion *opregion =
 		container_of(work, struct intel_opregion, asle_work);
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = opregion->i915;
-=======
 	struct intel_display *display = opregion->display;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct opregion_asle *asle = opregion->asle;
 	u32 aslc_stat = 0;
 	u32 aslc_req;
@@ -819,44 +620,12 @@ static void asle_work(struct work_struct *work)
 	aslc_req = asle->aslc;
 
 	if (!(aslc_req & ASLC_REQ_MSK)) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm,
-=======
 		drm_dbg(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"No request on ASLC interrupt 0x%08x\n", aslc_req);
 		return;
 	}
 
 	if (aslc_req & ASLC_SET_ALS_ILLUM)
-<<<<<<< HEAD
-		aslc_stat |= asle_set_als_illum(dev_priv, asle->alsi);
-
-	if (aslc_req & ASLC_SET_BACKLIGHT)
-		aslc_stat |= asle_set_backlight(dev_priv, asle->bclp);
-
-	if (aslc_req & ASLC_SET_PFIT)
-		aslc_stat |= asle_set_pfit(dev_priv, asle->pfit);
-
-	if (aslc_req & ASLC_SET_PWM_FREQ)
-		aslc_stat |= asle_set_pwm_freq(dev_priv, asle->pfmb);
-
-	if (aslc_req & ASLC_SUPPORTED_ROTATION_ANGLES)
-		aslc_stat |= asle_set_supported_rotation_angles(dev_priv,
-							asle->srot);
-
-	if (aslc_req & ASLC_BUTTON_ARRAY)
-		aslc_stat |= asle_set_button_array(dev_priv, asle->iuer);
-
-	if (aslc_req & ASLC_CONVERTIBLE_INDICATOR)
-		aslc_stat |= asle_set_convertible(dev_priv, asle->iuer);
-
-	if (aslc_req & ASLC_DOCKING_INDICATOR)
-		aslc_stat |= asle_set_docking(dev_priv, asle->iuer);
-
-	if (aslc_req & ASLC_ISCT_STATE_CHANGE)
-		aslc_stat |= asle_isct_state(dev_priv);
-=======
 		aslc_stat |= asle_set_als_illum(display, asle->alsi);
 
 	if (aslc_req & ASLC_SET_BACKLIGHT)
@@ -883,21 +652,10 @@ static void asle_work(struct work_struct *work)
 
 	if (aslc_req & ASLC_ISCT_STATE_CHANGE)
 		aslc_stat |= asle_isct_state(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	asle->aslc = aslc_stat;
 }
 
-<<<<<<< HEAD
-bool intel_opregion_asle_present(struct drm_i915_private *i915)
-{
-	return i915->display.opregion && i915->display.opregion->asle;
-}
-
-void intel_opregion_asle_intr(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 bool intel_opregion_asle_present(struct intel_display *display)
 {
 	return display->opregion && display->opregion->asle;
@@ -907,7 +665,6 @@ void intel_opregion_asle_intr(struct intel_display *display)
 {
 	struct drm_i915_private *i915 = to_i915(display->drm);
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (opregion && opregion->asle)
 		queue_work(i915->unordered_wq, &opregion->asle_work);
@@ -964,15 +721,9 @@ static void set_did(struct intel_opregion *opregion, int i, u32 val)
 	}
 }
 
-<<<<<<< HEAD
-static void intel_didl_outputs(struct drm_i915_private *dev_priv)
-{
-	struct intel_opregion *opregion = dev_priv->display.opregion;
-=======
 static void intel_didl_outputs(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_connector *connector;
 	struct drm_connector_list_iter conn_iter;
 	int i = 0, max_outputs;
@@ -987,15 +738,9 @@ static void intel_didl_outputs(struct intel_display *display)
 	max_outputs = ARRAY_SIZE(opregion->acpi->didl) +
 		ARRAY_SIZE(opregion->acpi->did2);
 
-<<<<<<< HEAD
-	intel_acpi_device_id_update(dev_priv);
-
-	drm_connector_list_iter_begin(&dev_priv->drm, &conn_iter);
-=======
 	intel_acpi_device_id_update(display);
 
 	drm_connector_list_iter_begin(display->drm, &conn_iter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_intel_connector_iter(connector, &conn_iter) {
 		if (i < max_outputs)
 			set_did(opregion, i, connector->acpi_device_id);
@@ -1003,17 +748,10 @@ static void intel_didl_outputs(struct intel_display *display)
 	}
 	drm_connector_list_iter_end(&conn_iter);
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "%d outputs detected\n", i);
-
-	if (i > max_outputs)
-		drm_err(&dev_priv->drm,
-=======
 	drm_dbg_kms(display->drm, "%d outputs detected\n", i);
 
 	if (i > max_outputs)
 		drm_err(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"More than %d outputs in connector list\n",
 			max_outputs);
 
@@ -1022,15 +760,9 @@ static void intel_didl_outputs(struct intel_display *display)
 		set_did(opregion, i, 0);
 }
 
-<<<<<<< HEAD
-static void intel_setup_cadls(struct drm_i915_private *dev_priv)
-{
-	struct intel_opregion *opregion = dev_priv->display.opregion;
-=======
 static void intel_setup_cadls(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_connector *connector;
 	struct drm_connector_list_iter conn_iter;
 	int i = 0;
@@ -1045,11 +777,7 @@ static void intel_setup_cadls(struct intel_display *display)
 	 * Note that internal panels should be at the front of the connector
 	 * list already, ensuring they're not left out.
 	 */
-<<<<<<< HEAD
-	drm_connector_list_iter_begin(&dev_priv->drm, &conn_iter);
-=======
 	drm_connector_list_iter_begin(display->drm, &conn_iter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_intel_connector_iter(connector, &conn_iter) {
 		if (i >= ARRAY_SIZE(opregion->acpi->cadl))
 			break;
@@ -1062,15 +790,9 @@ static void intel_setup_cadls(struct intel_display *display)
 		opregion->acpi->cadl[i] = 0;
 }
 
-<<<<<<< HEAD
-static void swsci_setup(struct drm_i915_private *dev_priv)
-{
-	struct intel_opregion *opregion = dev_priv->display.opregion;
-=======
 static void swsci_setup(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool requested_callbacks = false;
 	u32 tmp;
 
@@ -1079,11 +801,7 @@ static void swsci_setup(struct intel_display *display)
 	opregion->swsci_sbcb_sub_functions = 1;
 
 	/* We use GBDA to ask for supported GBDA calls. */
-<<<<<<< HEAD
-	if (swsci(dev_priv, SWSCI_GBDA_SUPPORTED_CALLS, 0, &tmp) == 0) {
-=======
 	if (swsci(display, SWSCI_GBDA_SUPPORTED_CALLS, 0, &tmp) == 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* make the bits match the sub-function codes */
 		tmp <<= 1;
 		opregion->swsci_gbda_sub_functions |= tmp;
@@ -1094,11 +812,7 @@ static void swsci_setup(struct intel_display *display)
 	 * must not call interfaces that are not specifically requested by the
 	 * bios.
 	 */
-<<<<<<< HEAD
-	if (swsci(dev_priv, SWSCI_GBDA_REQUESTED_CALLBACKS, 0, &tmp) == 0) {
-=======
 	if (swsci(display, SWSCI_GBDA_REQUESTED_CALLBACKS, 0, &tmp) == 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* here, the bits already match sub-function codes */
 		opregion->swsci_sbcb_sub_functions |= tmp;
 		requested_callbacks = true;
@@ -1109,11 +823,7 @@ static void swsci_setup(struct intel_display *display)
 	 * the callback is _requested_. But we still can't call interfaces that
 	 * are not requested.
 	 */
-<<<<<<< HEAD
-	if (swsci(dev_priv, SWSCI_SBCB_SUPPORTED_CALLBACKS, 0, &tmp) == 0) {
-=======
 	if (swsci(display, SWSCI_SBCB_SUPPORTED_CALLBACKS, 0, &tmp) == 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* make the bits match the sub-function codes */
 		u32 low = tmp & 0x7ff;
 		u32 high = tmp & ~0xfff; /* bit 11 is reserved */
@@ -1123,11 +833,7 @@ static void swsci_setup(struct intel_display *display)
 		if (requested_callbacks) {
 			u32 req = opregion->swsci_sbcb_sub_functions;
 			if ((req & tmp) != req)
-<<<<<<< HEAD
-				drm_dbg(&dev_priv->drm,
-=======
 				drm_dbg(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					"SWSCI BIOS requested (%08x) SBCB callbacks that are not supported (%08x)\n",
 					req, tmp);
 			/* XXX: for now, trust the requested callbacks */
@@ -1137,11 +843,7 @@ static void swsci_setup(struct intel_display *display)
 		}
 	}
 
-<<<<<<< HEAD
-	drm_dbg(&dev_priv->drm,
-=======
 	drm_dbg(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"SWSCI GBDA callbacks %08x, SBCB callbacks %08x\n",
 		opregion->swsci_gbda_sub_functions,
 		opregion->swsci_sbcb_sub_functions);
@@ -1166,17 +868,10 @@ static const struct dmi_system_id intel_no_opregion_vbt[] = {
 	{ }
 };
 
-<<<<<<< HEAD
-int intel_opregion_setup(struct drm_i915_private *dev_priv)
-{
-	struct intel_opregion *opregion;
-	struct pci_dev *pdev = to_pci_dev(dev_priv->drm.dev);
-=======
 int intel_opregion_setup(struct intel_display *display)
 {
 	struct intel_opregion *opregion;
 	struct pci_dev *pdev = to_pci_dev(display->drm->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 asls, mboxes;
 	char buf[sizeof(OPREGION_SIGNATURE)];
 	int err = 0;
@@ -1191,17 +886,10 @@ int intel_opregion_setup(struct intel_display *display)
 	BUILD_BUG_ON(sizeof(struct opregion_asle_ext) != 0x400);
 
 	pci_read_config_dword(pdev, ASLS, &asls);
-<<<<<<< HEAD
-	drm_dbg(&dev_priv->drm, "graphic opregion physical addr: 0x%x\n",
-		asls);
-	if (asls == 0) {
-		drm_dbg(&dev_priv->drm, "ACPI OpRegion not supported!\n");
-=======
 	drm_dbg(display->drm, "graphic opregion physical addr: 0x%x\n",
 		asls);
 	if (asls == 0) {
 		drm_dbg(display->drm, "ACPI OpRegion not supported!\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOTSUPP;
 	}
 
@@ -1209,13 +897,8 @@ int intel_opregion_setup(struct intel_display *display)
 	if (!opregion)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	opregion->i915 = dev_priv;
-	dev_priv->display.opregion = opregion;
-=======
 	opregion->display = display;
 	display->opregion = opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	INIT_WORK(&opregion->asle_work, asle_work);
 
@@ -1228,32 +911,20 @@ int intel_opregion_setup(struct intel_display *display)
 	memcpy(buf, base, sizeof(buf));
 
 	if (memcmp(buf, OPREGION_SIGNATURE, 16)) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm, "opregion signature mismatch\n");
-=======
 		drm_dbg(display->drm, "opregion signature mismatch\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EINVAL;
 		goto err_out;
 	}
 	opregion->header = base;
 
-<<<<<<< HEAD
-	drm_dbg(&dev_priv->drm, "ACPI OpRegion version %u.%u.%u\n",
-=======
 	drm_dbg(display->drm, "ACPI OpRegion version %u.%u.%u\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		opregion->header->over.major,
 		opregion->header->over.minor,
 		opregion->header->over.revision);
 
 	mboxes = opregion->header->mboxes;
 	if (mboxes & MBOX_ACPI) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm, "Public ACPI methods supported\n");
-=======
 		drm_dbg(display->drm, "Public ACPI methods supported\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		opregion->acpi = base + OPREGION_ACPI_OFFSET;
 		/*
 		 * Indicate we handle monitor hotplug events ourselves so we do
@@ -1268,15 +939,6 @@ int intel_opregion_setup(struct intel_display *display)
 		u8 major = opregion->header->over.major;
 
 		if (major >= 3) {
-<<<<<<< HEAD
-			drm_err(&dev_priv->drm, "SWSCI Mailbox #2 present for opregion v3.x, ignoring\n");
-		} else {
-			if (major >= 2)
-				drm_dbg(&dev_priv->drm, "SWSCI Mailbox #2 present for opregion v2.x\n");
-			drm_dbg(&dev_priv->drm, "SWSCI supported\n");
-			opregion->swsci = base + OPREGION_SWSCI_OFFSET;
-			swsci_setup(dev_priv);
-=======
 			drm_err(display->drm, "SWSCI Mailbox #2 present for opregion v3.x, ignoring\n");
 		} else {
 			if (major >= 2)
@@ -1284,36 +946,23 @@ int intel_opregion_setup(struct intel_display *display)
 			drm_dbg(display->drm, "SWSCI supported\n");
 			opregion->swsci = base + OPREGION_SWSCI_OFFSET;
 			swsci_setup(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	if (mboxes & MBOX_ASLE) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm, "ASLE supported\n");
-=======
 		drm_dbg(display->drm, "ASLE supported\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		opregion->asle = base + OPREGION_ASLE_OFFSET;
 
 		opregion->asle->ardy = ASLE_ARDY_NOT_READY;
 	}
 
 	if (mboxes & MBOX_ASLE_EXT) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm, "ASLE extension supported\n");
-=======
 		drm_dbg(display->drm, "ASLE extension supported\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		opregion->asle_ext = base + OPREGION_ASLE_EXT_OFFSET;
 	}
 
 	if (mboxes & MBOX_BACKLIGHT) {
-<<<<<<< HEAD
-		drm_dbg(&dev_priv->drm, "Mailbox #2 for backlight present\n");
-=======
 		drm_dbg(display->drm, "Mailbox #2 for backlight present\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (dmi_check_system(intel_no_opregion_vbt))
@@ -1331,11 +980,7 @@ int intel_opregion_setup(struct intel_display *display)
 		 */
 		if (opregion->header->over.major > 2 ||
 		    opregion->header->over.minor >= 1) {
-<<<<<<< HEAD
-			drm_WARN_ON(&dev_priv->drm, rvda < OPREGION_SIZE);
-=======
 			drm_WARN_ON(display->drm, rvda < OPREGION_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			rvda += asls;
 		}
@@ -1345,23 +990,14 @@ int intel_opregion_setup(struct intel_display *display)
 
 		vbt = opregion->rvda;
 		vbt_size = opregion->asle->rvds;
-<<<<<<< HEAD
-		if (intel_bios_is_valid_vbt(dev_priv, vbt, vbt_size)) {
-			drm_dbg_kms(&dev_priv->drm,
-=======
 		if (intel_bios_is_valid_vbt(display, vbt, vbt_size)) {
 			drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    "Found valid VBT in ACPI OpRegion (RVDA)\n");
 			opregion->vbt = vbt;
 			opregion->vbt_size = vbt_size;
 			goto out;
 		} else {
-<<<<<<< HEAD
-			drm_dbg_kms(&dev_priv->drm,
-=======
 			drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    "Invalid VBT in ACPI OpRegion (RVDA)\n");
 			memunmap(opregion->rvda);
 			opregion->rvda = NULL;
@@ -1379,22 +1015,13 @@ int intel_opregion_setup(struct intel_display *display)
 	vbt_size = (mboxes & MBOX_ASLE_EXT) ?
 		OPREGION_ASLE_EXT_OFFSET : OPREGION_SIZE;
 	vbt_size -= OPREGION_VBT_OFFSET;
-<<<<<<< HEAD
-	if (intel_bios_is_valid_vbt(dev_priv, vbt, vbt_size)) {
-		drm_dbg_kms(&dev_priv->drm,
-=======
 	if (intel_bios_is_valid_vbt(display, vbt, vbt_size)) {
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Found valid VBT in ACPI OpRegion (Mailbox #4)\n");
 		opregion->vbt = vbt;
 		opregion->vbt_size = vbt_size;
 	} else {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Invalid VBT in ACPI OpRegion (Mailbox #4)\n");
 	}
 
@@ -1405,11 +1032,7 @@ err_out:
 	memunmap(base);
 err_memremap:
 	kfree(opregion);
-<<<<<<< HEAD
-	dev_priv->display.opregion = NULL;
-=======
 	display->opregion = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return err;
 }
@@ -1432,41 +1055,25 @@ static const struct dmi_system_id intel_use_opregion_panel_type[] = {
 };
 
 int
-<<<<<<< HEAD
-intel_opregion_get_panel_type(struct drm_i915_private *dev_priv)
-=======
 intel_opregion_get_panel_type(struct intel_display *display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 panel_details;
 	int ret;
 
-<<<<<<< HEAD
-	ret = swsci(dev_priv, SWSCI_GBDA_PANEL_DETAILS, 0x0, &panel_details);
-=======
 	ret = swsci(display, SWSCI_GBDA_PANEL_DETAILS, 0x0, &panel_details);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
 	ret = (panel_details >> 8) & 0xff;
 	if (ret > 0x10) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Invalid OpRegion panel type 0x%x\n", ret);
 		return -EINVAL;
 	}
 
 	/* fall back to VBT panel type? */
 	if (ret == 0x0) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm, "No panel type in OpRegion\n");
-=======
 		drm_dbg_kms(display->drm, "No panel type in OpRegion\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 
@@ -1476,11 +1083,7 @@ intel_opregion_get_panel_type(struct intel_display *display)
 	 * via a quirk list :(
 	 */
 	if (!dmi_check_system(intel_use_opregion_panel_type)) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Ignoring OpRegion panel type (%d)\n", ret - 1);
 		return -ENODEV;
 	}
@@ -1490,11 +1093,7 @@ intel_opregion_get_panel_type(struct intel_display *display)
 
 /**
  * intel_opregion_get_edid - Fetch EDID from ACPI OpRegion mailbox #5
-<<<<<<< HEAD
- * @intel_connector: eDP connector
-=======
  * @connector: eDP connector
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This reads the ACPI Opregion mailbox #5 to extract the EDID that is passed
  * to it.
@@ -1503,18 +1102,10 @@ intel_opregion_get_panel_type(struct intel_display *display)
  * The EDID in the OpRegion, or NULL if there is none or it's invalid.
  *
  */
-<<<<<<< HEAD
-const struct drm_edid *intel_opregion_get_edid(struct intel_connector *intel_connector)
-{
-	struct drm_connector *connector = &intel_connector->base;
-	struct drm_i915_private *i915 = to_i915(connector->dev);
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 const struct drm_edid *intel_opregion_get_edid(struct intel_connector *connector)
 {
 	struct intel_display *display = to_intel_display(connector);
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct drm_edid *drm_edid;
 	const void *edid;
 	int len;
@@ -1526,21 +1117,13 @@ const struct drm_edid *intel_opregion_get_edid(struct intel_connector *connector
 
 	/* Validity corresponds to number of 128-byte blocks */
 	len = (opregion->asle_ext->phed & ASLE_PHED_EDID_VALID_MASK) * 128;
-<<<<<<< HEAD
-	if (!len || !memchr_inv(edid, 0, len))
-=======
 	if (!len || mem_is_zero(edid, len))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 
 	drm_edid = drm_edid_alloc(edid, len);
 
 	if (!drm_edid_valid(drm_edid)) {
-<<<<<<< HEAD
-		drm_dbg_kms(&i915->drm, "Invalid EDID in ACPI OpRegion (Mailbox #5)\n");
-=======
 		drm_dbg_kms(display->drm, "Invalid EDID in ACPI OpRegion (Mailbox #5)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		drm_edid_free(drm_edid);
 		drm_edid = NULL;
 	}
@@ -1548,15 +1131,9 @@ const struct drm_edid *intel_opregion_get_edid(struct intel_connector *connector
 	return drm_edid;
 }
 
-<<<<<<< HEAD
-bool intel_opregion_vbt_present(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 bool intel_opregion_vbt_present(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!opregion || !opregion->vbt)
 		return false;
@@ -1564,15 +1141,9 @@ bool intel_opregion_vbt_present(struct intel_display *display)
 	return true;
 }
 
-<<<<<<< HEAD
-const void *intel_opregion_get_vbt(struct drm_i915_private *i915, size_t *size)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 const void *intel_opregion_get_vbt(struct intel_display *display, size_t *size)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!opregion || !opregion->vbt)
 		return NULL;
@@ -1583,15 +1154,9 @@ const void *intel_opregion_get_vbt(struct intel_display *display, size_t *size)
 	return kmemdup(opregion->vbt, opregion->vbt_size, GFP_KERNEL);
 }
 
-<<<<<<< HEAD
-bool intel_opregion_headless_sku(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 bool intel_opregion_headless_sku(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct opregion_header *header;
 
 	if (!opregion)
@@ -1606,15 +1171,9 @@ bool intel_opregion_headless_sku(struct intel_display *display)
 	return opregion->header->pcon & PCON_HEADLESS_SKU;
 }
 
-<<<<<<< HEAD
-void intel_opregion_register(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 void intel_opregion_register(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!opregion)
 		return;
@@ -1625,18 +1184,6 @@ void intel_opregion_register(struct intel_display *display)
 		register_acpi_notifier(&opregion->acpi_notifier);
 	}
 
-<<<<<<< HEAD
-	intel_opregion_resume(i915);
-}
-
-static void intel_opregion_resume_display(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-
-	if (opregion->acpi) {
-		intel_didl_outputs(i915);
-		intel_setup_cadls(i915);
-=======
 	intel_opregion_resume(display);
 }
 
@@ -1647,7 +1194,6 @@ static void intel_opregion_resume_display(struct intel_display *display)
 	if (opregion->acpi) {
 		intel_didl_outputs(display);
 		intel_setup_cadls(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Notify BIOS we are ready to handle ACPI video ext notifs.
@@ -1664,36 +1210,16 @@ static void intel_opregion_resume_display(struct intel_display *display)
 	}
 
 	/* Some platforms abuse the _DSM to enable MUX */
-<<<<<<< HEAD
-	intel_dsm_get_bios_data_funcs_supported(i915);
-}
-
-void intel_opregion_resume(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 	intel_dsm_get_bios_data_funcs_supported(display);
 }
 
 void intel_opregion_resume(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!opregion)
 		return;
 
-<<<<<<< HEAD
-	if (HAS_DISPLAY(i915))
-		intel_opregion_resume_display(i915);
-
-	intel_opregion_notify_adapter(i915, PCI_D0);
-}
-
-static void intel_opregion_suspend_display(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 	if (HAS_DISPLAY(display))
 		intel_opregion_resume_display(display);
 
@@ -1703,7 +1229,6 @@ static void intel_opregion_suspend_display(struct drm_i915_private *i915)
 static void intel_opregion_suspend_display(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (opregion->asle)
 		opregion->asle->ardy = ASLE_ARDY_NOT_READY;
@@ -1714,32 +1239,13 @@ static void intel_opregion_suspend_display(struct intel_display *display)
 		opregion->acpi->drdy = 0;
 }
 
-<<<<<<< HEAD
-void intel_opregion_suspend(struct drm_i915_private *i915, pci_power_t state)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 void intel_opregion_suspend(struct intel_display *display, pci_power_t state)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!opregion)
 		return;
 
-<<<<<<< HEAD
-	intel_opregion_notify_adapter(i915, state);
-
-	if (HAS_DISPLAY(i915))
-		intel_opregion_suspend_display(i915);
-}
-
-void intel_opregion_unregister(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-
-	intel_opregion_suspend(i915, PCI_D1);
-=======
 	intel_opregion_notify_adapter(display, state);
 
 	if (HAS_DISPLAY(display))
@@ -1751,7 +1257,6 @@ void intel_opregion_unregister(struct intel_display *display)
 	struct intel_opregion *opregion = display->opregion;
 
 	intel_opregion_suspend(display, PCI_D1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!opregion)
 		return;
@@ -1762,15 +1267,9 @@ void intel_opregion_unregister(struct intel_display *display)
 	}
 }
 
-<<<<<<< HEAD
-void intel_opregion_cleanup(struct drm_i915_private *i915)
-{
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 void intel_opregion_cleanup(struct intel_display *display)
 {
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!opregion)
 		return;
@@ -1779,22 +1278,13 @@ void intel_opregion_cleanup(struct intel_display *display)
 	if (opregion->rvda)
 		memunmap(opregion->rvda);
 	kfree(opregion);
-<<<<<<< HEAD
-	i915->display.opregion = NULL;
-=======
 	display->opregion = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int intel_opregion_show(struct seq_file *m, void *unused)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = m->private;
-	struct intel_opregion *opregion = i915->display.opregion;
-=======
 	struct intel_display *display = m->private;
 	struct intel_opregion *opregion = display->opregion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (opregion)
 		seq_write(m, opregion->header, OPREGION_SIZE);
@@ -1804,19 +1294,10 @@ static int intel_opregion_show(struct seq_file *m, void *unused)
 
 DEFINE_SHOW_ATTRIBUTE(intel_opregion);
 
-<<<<<<< HEAD
-void intel_opregion_debugfs_register(struct drm_i915_private *i915)
-{
-	struct drm_minor *minor = i915->drm.primary;
-
-	debugfs_create_file("i915_opregion", 0444, minor->debugfs_root,
-			    i915, &intel_opregion_fops);
-=======
 void intel_opregion_debugfs_register(struct intel_display *display)
 {
 	struct drm_minor *minor = display->drm->primary;
 
 	debugfs_create_file("i915_opregion", 0444, minor->debugfs_root,
 			    display, &intel_opregion_fops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

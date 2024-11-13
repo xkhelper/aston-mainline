@@ -20,8 +20,6 @@ properties:
               - rockchip,rk3568-pipe-grf
               - rockchip,rk3568-pipe-phy-grf
               - rockchip,rk3568-usb2phy-grf
-<<<<<<< HEAD
-=======
               - rockchip,rk3576-bigcore-grf
               - rockchip,rk3576-cci-grf
               - rockchip,rk3576-gpu-grf
@@ -36,7 +34,6 @@ properties:
               - rockchip,rk3576-usbdpphy-grf
               - rockchip,rk3576-vo0-grf
               - rockchip,rk3576-vop-grf
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - rockchip,rk3588-bigcore0-grf
               - rockchip,rk3588-bigcore1-grf
               - rockchip,rk3588-hdptxphy-grf
@@ -81,11 +78,8 @@ properties:
               - rockchip,rk3399-pmugrf
               - rockchip,rk3568-grf
               - rockchip,rk3568-pmugrf
-<<<<<<< HEAD
-=======
               - rockchip,rk3576-ioc-grf
               - rockchip,rk3576-pmu0-grf
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - rockchip,rk3588-usb2phy-grf
               - rockchip,rv1108-grf
               - rockchip,rv1108-pmugrf

@@ -193,11 +193,6 @@ module_param(low_rate_allow, bool, 0444);
 MODULE_PARM_DESC(low_rate_allow,
 		 "Allow IMU rates below the minimum advisable when external clk is used in PPS mode (default: N)");
 
-<<<<<<< HEAD
-#ifdef CONFIG_DEBUG_FS
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t adis16480_show_firmware_revision(struct file *file,
 		char __user *userbuf, size_t count, loff_t *ppos)
 {
@@ -307,21 +302,14 @@ static int adis16480_show_flash_count(void *arg, u64 *val)
 DEFINE_DEBUGFS_ATTRIBUTE(adis16480_flash_count_fops,
 	adis16480_show_flash_count, NULL, "%lld\n");
 
-<<<<<<< HEAD
-static int adis16480_debugfs_init(struct iio_dev *indio_dev)
-=======
 static void adis16480_debugfs_init(struct iio_dev *indio_dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct adis16480 *adis16480 = iio_priv(indio_dev);
 	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
 
-<<<<<<< HEAD
-=======
 	if (!IS_ENABLED(CONFIG_DEBUG_FS))
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	debugfs_create_file_unsafe("firmware_revision", 0400,
 		d, adis16480, &adis16480_firmware_revision_fops);
 	debugfs_create_file_unsafe("firmware_date", 0400,
@@ -332,24 +320,8 @@ static void adis16480_debugfs_init(struct iio_dev *indio_dev)
 		d, adis16480, &adis16480_product_id_fops);
 	debugfs_create_file_unsafe("flash_count", 0400,
 		d, adis16480, &adis16480_flash_count_fops);
-<<<<<<< HEAD
-
-	return 0;
 }
 
-#else
-
-static int adis16480_debugfs_init(struct iio_dev *indio_dev)
-{
-	return 0;
-}
-
-#endif
-
-=======
-}
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int adis16480_set_freq(struct iio_dev *indio_dev, int val, int val2)
 {
 	struct adis16480 *st = iio_priv(indio_dev);
@@ -1413,11 +1385,7 @@ static irqreturn_t adis16480_trigger_handler(int irq, void *p)
 		goto irq_done;
 	}
 
-<<<<<<< HEAD
-	for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength) {
-=======
 	iio_for_each_active_channel(indio_dev, bit) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * When burst mode is used, temperature is the first data
 		 * channel in the sequence, but the temperature scan index

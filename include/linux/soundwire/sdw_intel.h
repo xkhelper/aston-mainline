@@ -227,11 +227,7 @@ struct sdw_intel_ops {
 /**
  * struct sdw_intel_acpi_info - Soundwire Intel information found in ACPI tables
  * @handle: ACPI controller handle
-<<<<<<< HEAD
- * @count: link count found with "sdw-master-count" property
-=======
  * @count: link count found with "sdw-master-count" or "sdw-manager-list" property
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @link_mask: bit-wise mask listing links enabled by BIOS menu
  *
  * this structure could be expanded to e.g. provide all the _ADR
@@ -392,10 +388,7 @@ struct sdw_intel;
 /* struct intel_sdw_hw_ops - SoundWire ops for Intel platforms.
  * @debugfs_init: initialize all debugfs capabilities
  * @debugfs_exit: close and cleanup debugfs capabilities
-<<<<<<< HEAD
-=======
  * @get_link_count: fetch link count from hardware registers
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @register_dai: read all PDI information and register DAIs
  * @check_clock_stop: throw error message if clock is not stopped.
  * @start_bus: normal start
@@ -420,11 +413,8 @@ struct sdw_intel_hw_ops {
 	void (*debugfs_init)(struct sdw_intel *sdw);
 	void (*debugfs_exit)(struct sdw_intel *sdw);
 
-<<<<<<< HEAD
-=======
 	int (*get_link_count)(struct sdw_intel *sdw);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*register_dai)(struct sdw_intel *sdw);
 
 	void (*check_clock_stop)(struct sdw_intel *sdw);
@@ -460,12 +450,9 @@ extern const struct sdw_intel_hw_ops sdw_intel_lnl_hw_ops;
 
 #define SDW_INTEL_DEV_NUM_IDA_MIN           6
 
-<<<<<<< HEAD
-=======
 /*
  * Max number of links supported in hardware
  */
 #define SDW_INTEL_MAX_LINKS                5
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

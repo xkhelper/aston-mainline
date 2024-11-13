@@ -931,10 +931,6 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 	if (IS_ERR(gpu->gpu_cx))
 		gpu->gpu_cx = NULL;
 
-<<<<<<< HEAD
-	gpu->pdev = pdev;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	platform_set_drvdata(pdev, &gpu->adreno_smmu);
 
 	msm_devfreq_init(gpu);

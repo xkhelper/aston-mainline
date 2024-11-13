@@ -53,32 +53,14 @@ new_segment:
 
 	return segments;
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL(blk_rq_count_integrity_sg);
-
-/**
- * blk_rq_map_integrity_sg - Map integrity metadata into a scatterlist
- * @q:		request queue
- * @bio:	bio with integrity metadata attached
-=======
 
 /**
  * blk_rq_map_integrity_sg - Map integrity metadata into a scatterlist
  * @rq:		request to map
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @sglist:	target scatterlist
  *
  * Description: Map the integrity vectors in request into a
  * scatterlist.  The scatterlist must be big enough to hold all
-<<<<<<< HEAD
- * elements.  I.e. sized using blk_rq_count_integrity_sg().
- */
-int blk_rq_map_integrity_sg(struct request_queue *q, struct bio *bio,
-			    struct scatterlist *sglist)
-{
-	struct bio_vec iv, ivprv = { NULL };
-	struct scatterlist *sg = NULL;
-=======
  * elements.  I.e. sized using blk_rq_count_integrity_sg() or
  * rq->nr_integrity_segments.
  */
@@ -88,16 +70,11 @@ int blk_rq_map_integrity_sg(struct request *rq, struct scatterlist *sglist)
 	struct request_queue *q = rq->q;
 	struct scatterlist *sg = NULL;
 	struct bio *bio = rq->bio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int segments = 0;
 	struct bvec_iter iter;
 	int prev = 0;
 
 	bio_for_each_integrity_vec(iv, bio, iter) {
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (prev) {
 			if (!biovec_phys_mergeable(q, &ivprv, &iv))
 				goto new_segment;
@@ -125,21 +102,16 @@ new_segment:
 	if (sg)
 		sg_mark_end(sg);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Something must have been wrong if the figured number of segment
 	 * is bigger than number of req's physical integrity segments
 	 */
 	BUG_ON(segments > rq->nr_integrity_segments);
 	BUG_ON(segments > queue_max_integrity_segments(q));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return segments;
 }
 EXPORT_SYMBOL(blk_rq_map_integrity_sg);
 
-<<<<<<< HEAD
-=======
 int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
 			      ssize_t bytes, u32 seed)
 {
@@ -154,7 +126,6 @@ int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
 }
 EXPORT_SYMBOL_GPL(blk_rq_integrity_map_user);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool blk_integrity_merge_rq(struct request_queue *q, struct request *req,
 			    struct request *next)
 {
@@ -182,10 +153,6 @@ bool blk_integrity_merge_bio(struct request_queue *q, struct request *req,
 			     struct bio *bio)
 {
 	int nr_integrity_segs;
-<<<<<<< HEAD
-	struct bio *next = bio->bi_next;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (blk_integrity_rq(req) == 0 && bio_integrity(bio) == NULL)
 		return true;
@@ -196,23 +163,11 @@ bool blk_integrity_merge_bio(struct request_queue *q, struct request *req,
 	if (bio_integrity(req->bio)->bip_flags != bio_integrity(bio)->bip_flags)
 		return false;
 
-<<<<<<< HEAD
-	bio->bi_next = NULL;
 	nr_integrity_segs = blk_rq_count_integrity_sg(q, bio);
-	bio->bi_next = next;
-
-=======
-	nr_integrity_segs = blk_rq_count_integrity_sg(q, bio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (req->nr_integrity_segments + nr_integrity_segs >
 	    q->limits.max_integrity_segments)
 		return false;
 
-<<<<<<< HEAD
-	req->nr_integrity_segments += nr_integrity_segs;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return true;
 }
 

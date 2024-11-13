@@ -18,10 +18,7 @@
 #include <time.h>
 #include <unistd.h>
 
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "internal.h"
 #include "lkc.h"
 
@@ -399,11 +396,8 @@ load:
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	expr_invalidate_all();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (getline_stripped(&line, &line_asize, in) != -1) {
 		struct menu *choice;
 

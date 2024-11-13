@@ -884,22 +884,14 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
 			dev_err(kfd_device, "Error initializing KFD node\n");
 			goto node_init_error;
 		}
-<<<<<<< HEAD
-=======
 
 		spin_lock_init(&node->watch_points_lock);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfd->nodes[i] = node;
 	}
 
 	svm_range_set_max_pages(kfd->adev);
 
-<<<<<<< HEAD
-	spin_lock_init(&kfd->watch_points_lock);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfd->init_complete = true;
 	dev_info(kfd_device, "added device %x:%x\n", kfd->adev->pdev->vendor,
 		 kfd->adev->pdev->device);
@@ -916,11 +908,7 @@ node_alloc_error:
 kfd_doorbell_error:
 	kfd_gtt_sa_fini(kfd);
 kfd_gtt_sa_init_error:
-<<<<<<< HEAD
-	amdgpu_amdkfd_free_gtt_mem(kfd->adev, kfd->gtt_mem);
-=======
 	amdgpu_amdkfd_free_gtt_mem(kfd->adev, &kfd->gtt_mem);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 alloc_gtt_mem_failure:
 	dev_err(kfd_device,
 		"device %x:%x NOT added due to errors\n",
@@ -938,11 +926,7 @@ void kgd2kfd_device_exit(struct kfd_dev *kfd)
 		kfd_doorbell_fini(kfd);
 		ida_destroy(&kfd->doorbell_ida);
 		kfd_gtt_sa_fini(kfd);
-<<<<<<< HEAD
-		amdgpu_amdkfd_free_gtt_mem(kfd->adev, kfd->gtt_mem);
-=======
 		amdgpu_amdkfd_free_gtt_mem(kfd->adev, &kfd->gtt_mem);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	kfree(kfd);
@@ -1462,8 +1446,6 @@ void kgd2kfd_unlock_kfd(void)
 	mutex_unlock(&kfd_processes_mutex);
 }
 
-<<<<<<< HEAD
-=======
 int kgd2kfd_start_sched(struct kfd_dev *kfd, uint32_t node_id)
 {
 	struct kfd_node *node;
@@ -1503,7 +1485,6 @@ int kgd2kfd_stop_sched(struct kfd_dev *kfd, uint32_t node_id)
 	return node->dqm->ops.halt(node->dqm);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if defined(CONFIG_DEBUG_FS)
 
 /* This function will send a package to HIQ to hang the HWS

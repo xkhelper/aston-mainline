@@ -218,8 +218,6 @@ config COMMON_CLK_EN7523
 	  This driver provides the fixed clocks and gates present on Airoha
 	  ARM silicon.
 
-<<<<<<< HEAD
-=======
 config COMMON_CLK_EP93XX
 	tristate "Clock driver for Cirrus Logic ep93xx SoC"
 	depends on ARCH_EP93XX || COMPILE_TEST
@@ -228,7 +226,6 @@ config COMMON_CLK_EP93XX
 	help
 	  This driver supports the SoC clocks on the Cirrus Logic ep93xx.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config COMMON_CLK_FSL_FLEXSPI
 	tristate "Clock driver for FlexSPI on Layerscape SoCs"
 	depends on ARCH_LAYERSCAPE || COMPILE_TEST
@@ -520,11 +517,6 @@ config CLK_KUNIT_TEST
 	tristate "Basic Clock Framework Kunit Tests" if !KUNIT_ALL_TESTS
 	depends on KUNIT
 	default KUNIT_ALL_TESTS
-<<<<<<< HEAD
-	help
-	  Kunit tests for the common clock framework.
-
-=======
 	select OF_OVERLAY if OF
 	select DTC
 	help
@@ -539,7 +531,6 @@ config CLK_FIXED_RATE_KUNIT_TEST
 	help
 	  KUnit tests for the basic fixed rate clk type.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config CLK_GATE_KUNIT_TEST
 	tristate "Basic gate type Kunit test" if !KUNIT_ALL_TESTS
 	depends on KUNIT

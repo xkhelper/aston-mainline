@@ -649,33 +649,13 @@ static struct attribute_group armv7_pmuv2_events_attr_group = {
 /*
  * Perf Events' indices
  */
-<<<<<<< HEAD
-#define	ARMV7_IDX_CYCLE_COUNTER	0
-#define	ARMV7_IDX_COUNTER0	1
-#define	ARMV7_IDX_COUNTER_LAST(cpu_pmu) \
-	(ARMV7_IDX_CYCLE_COUNTER + cpu_pmu->num_events - 1)
-
-#define	ARMV7_MAX_COUNTERS	32
-#define	ARMV7_COUNTER_MASK	(ARMV7_MAX_COUNTERS - 1)
-
-=======
 #define	ARMV7_IDX_CYCLE_COUNTER	31
 #define	ARMV7_IDX_COUNTER_MAX	31
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * ARMv7 low level PMNC access
  */
 
 /*
-<<<<<<< HEAD
- * Perf Event to low level counters mapping
- */
-#define	ARMV7_IDX_TO_COUNTER(x)	\
-	(((x) - ARMV7_IDX_COUNTER0) & ARMV7_COUNTER_MASK)
-
-/*
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Per-CPU PMNC: config reg
  */
 #define ARMV7_PMNC_E		(1 << 0) /* Enable all counters */
@@ -733,31 +713,17 @@ static inline int armv7_pmnc_has_overflowed(u32 pmnc)
 
 static inline int armv7_pmnc_counter_valid(struct arm_pmu *cpu_pmu, int idx)
 {
-<<<<<<< HEAD
-	return idx >= ARMV7_IDX_CYCLE_COUNTER &&
-		idx <= ARMV7_IDX_COUNTER_LAST(cpu_pmu);
-=======
 	return test_bit(idx, cpu_pmu->cntr_mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int armv7_pmnc_counter_has_overflowed(u32 pmnc, int idx)
 {
-<<<<<<< HEAD
-	return pmnc & BIT(ARMV7_IDX_TO_COUNTER(idx));
-=======
 	return pmnc & BIT(idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void armv7_pmnc_select_counter(int idx)
 {
-<<<<<<< HEAD
-	u32 counter = ARMV7_IDX_TO_COUNTER(idx);
-	asm volatile("mcr p15, 0, %0, c9, c12, 5" : : "r" (counter));
-=======
 	asm volatile("mcr p15, 0, %0, c9, c12, 5" : : "r" (idx));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	isb();
 }
 
@@ -807,48 +773,25 @@ static inline void armv7_pmnc_write_evtsel(int idx, u32 val)
 
 static inline void armv7_pmnc_enable_counter(int idx)
 {
-<<<<<<< HEAD
-	u32 counter = ARMV7_IDX_TO_COUNTER(idx);
-	asm volatile("mcr p15, 0, %0, c9, c12, 1" : : "r" (BIT(counter)));
-=======
 	asm volatile("mcr p15, 0, %0, c9, c12, 1" : : "r" (BIT(idx)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void armv7_pmnc_disable_counter(int idx)
 {
-<<<<<<< HEAD
-	u32 counter = ARMV7_IDX_TO_COUNTER(idx);
-	asm volatile("mcr p15, 0, %0, c9, c12, 2" : : "r" (BIT(counter)));
-=======
 	asm volatile("mcr p15, 0, %0, c9, c12, 2" : : "r" (BIT(idx)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void armv7_pmnc_enable_intens(int idx)
 {
-<<<<<<< HEAD
-	u32 counter = ARMV7_IDX_TO_COUNTER(idx);
-	asm volatile("mcr p15, 0, %0, c9, c14, 1" : : "r" (BIT(counter)));
-=======
 	asm volatile("mcr p15, 0, %0, c9, c14, 1" : : "r" (BIT(idx)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void armv7_pmnc_disable_intens(int idx)
 {
-<<<<<<< HEAD
-	u32 counter = ARMV7_IDX_TO_COUNTER(idx);
-	asm volatile("mcr p15, 0, %0, c9, c14, 2" : : "r" (BIT(counter)));
-	isb();
-	/* Clear the overflow flag in case an interrupt is pending. */
-	asm volatile("mcr p15, 0, %0, c9, c12, 3" : : "r" (BIT(counter)));
-=======
 	asm volatile("mcr p15, 0, %0, c9, c14, 2" : : "r" (BIT(idx)));
 	isb();
 	/* Clear the overflow flag in case an interrupt is pending. */
 	asm volatile("mcr p15, 0, %0, c9, c12, 3" : : "r" (BIT(idx)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	isb();
 }
 
@@ -892,24 +835,12 @@ static void armv7_pmnc_dump_regs(struct arm_pmu *cpu_pmu)
 	asm volatile("mrc p15, 0, %0, c9, c13, 0" : "=r" (val));
 	pr_info("CCNT  =0x%08x\n", val);
 
-<<<<<<< HEAD
-	for (cnt = ARMV7_IDX_COUNTER0;
-			cnt <= ARMV7_IDX_COUNTER_LAST(cpu_pmu); cnt++) {
-		armv7_pmnc_select_counter(cnt);
-		asm volatile("mrc p15, 0, %0, c9, c13, 2" : "=r" (val));
-		pr_info("CNT[%d] count =0x%08x\n",
-			ARMV7_IDX_TO_COUNTER(cnt), val);
-		asm volatile("mrc p15, 0, %0, c9, c13, 1" : "=r" (val));
-		pr_info("CNT[%d] evtsel=0x%08x\n",
-			ARMV7_IDX_TO_COUNTER(cnt), val);
-=======
 	for_each_set_bit(cnt, cpu_pmu->cntr_mask, ARMV7_IDX_COUNTER_MAX) {
 		armv7_pmnc_select_counter(cnt);
 		asm volatile("mrc p15, 0, %0, c9, c13, 2" : "=r" (val));
 		pr_info("CNT[%d] count =0x%08x\n", cnt, val);
 		asm volatile("mrc p15, 0, %0, c9, c13, 1" : "=r" (val));
 		pr_info("CNT[%d] evtsel=0x%08x\n", cnt, val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 #endif
@@ -1006,11 +937,7 @@ static irqreturn_t armv7pmu_handle_irq(struct arm_pmu *cpu_pmu)
 	 */
 	regs = get_irq_regs();
 
-<<<<<<< HEAD
-	for (idx = 0; idx < cpu_pmu->num_events; ++idx) {
-=======
 	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMPMU_MAX_HWEVENTS) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct perf_event *event = cpuc->events[idx];
 		struct hw_perf_event *hwc;
 
@@ -1079,11 +1006,7 @@ static int armv7pmu_get_event_idx(struct pmu_hw_events *cpuc,
 	 * For anything other than a cycle counter, try and use
 	 * the events counters
 	 */
-<<<<<<< HEAD
-	for (idx = ARMV7_IDX_COUNTER0; idx < cpu_pmu->num_events; ++idx) {
-=======
 	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMV7_IDX_COUNTER_MAX) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!test_and_set_bit(idx, cpuc->used_mask))
 			return idx;
 	}
@@ -1129,11 +1052,7 @@ static int armv7pmu_set_event_filter(struct hw_perf_event *event,
 static void armv7pmu_reset(void *info)
 {
 	struct arm_pmu *cpu_pmu = (struct arm_pmu *)info;
-<<<<<<< HEAD
-	u32 idx, nb_cnt = cpu_pmu->num_events, val;
-=======
 	u32 idx, val;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cpu_pmu->secure_access) {
 		asm volatile("mrc p15, 0, %0, c1, c1, 1" : "=r" (val));
@@ -1142,11 +1061,7 @@ static void armv7pmu_reset(void *info)
 	}
 
 	/* The counter and interrupt enable registers are unknown at reset. */
-<<<<<<< HEAD
-	for (idx = ARMV7_IDX_CYCLE_COUNTER; idx < nb_cnt; ++idx) {
-=======
 	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMPMU_MAX_HWEVENTS) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		armv7_pmnc_disable_counter(idx);
 		armv7_pmnc_disable_intens(idx);
 	}
@@ -1225,15 +1140,6 @@ static void armv7pmu_init(struct arm_pmu *cpu_pmu)
 
 static void armv7_read_num_pmnc_events(void *info)
 {
-<<<<<<< HEAD
-	int *nb_cnt = info;
-
-	/* Read the nb of CNTx counters supported from PMNC */
-	*nb_cnt = (armv7_pmnc_read() >> ARMV7_PMNC_N_SHIFT) & ARMV7_PMNC_N_MASK;
-
-	/* Add the CPU cycles counter */
-	*nb_cnt += 1;
-=======
 	int nb_cnt;
 	struct arm_pmu *cpu_pmu = info;
 
@@ -1243,18 +1149,13 @@ static void armv7_read_num_pmnc_events(void *info)
 
 	/* Add the CPU cycles counter */
 	set_bit(ARMV7_IDX_CYCLE_COUNTER, cpu_pmu->cntr_mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int armv7_probe_num_events(struct arm_pmu *arm_pmu)
 {
 	return smp_call_function_any(&arm_pmu->supported_cpus,
 				     armv7_read_num_pmnc_events,
-<<<<<<< HEAD
-				     &arm_pmu->num_events, 1);
-=======
 				     arm_pmu, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int armv7_a8_pmu_init(struct arm_pmu *cpu_pmu)
@@ -1604,11 +1505,7 @@ static void krait_pmu_reset(void *info)
 {
 	u32 vval, fval;
 	struct arm_pmu *cpu_pmu = info;
-<<<<<<< HEAD
-	u32 idx, nb_cnt = cpu_pmu->num_events;
-=======
 	u32 idx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	armv7pmu_reset(info);
 
@@ -1622,11 +1519,7 @@ static void krait_pmu_reset(void *info)
 	venum_post_pmresr(vval, fval);
 
 	/* Reset PMxEVNCTCR to sane default */
-<<<<<<< HEAD
-	for (idx = ARMV7_IDX_CYCLE_COUNTER; idx < nb_cnt; ++idx) {
-=======
 	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMV7_IDX_COUNTER_MAX) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		armv7_pmnc_select_counter(idx);
 		asm volatile("mcr p15, 0, %0, c9, c15, 0" : : "r" (0));
 	}
@@ -1650,11 +1543,7 @@ static int krait_event_to_bit(struct perf_event *event, unsigned int region,
 	 * Lower bits are reserved for use by the counters (see
 	 * armv7pmu_get_event_idx() for more info)
 	 */
-<<<<<<< HEAD
-	bit += ARMV7_IDX_COUNTER_LAST(cpu_pmu) + 1;
-=======
 	bit += bitmap_weight(cpu_pmu->cntr_mask, ARMV7_IDX_COUNTER_MAX);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return bit;
 }
@@ -1937,11 +1826,7 @@ static void scorpion_pmu_reset(void *info)
 {
 	u32 vval, fval;
 	struct arm_pmu *cpu_pmu = info;
-<<<<<<< HEAD
-	u32 idx, nb_cnt = cpu_pmu->num_events;
-=======
 	u32 idx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	armv7pmu_reset(info);
 
@@ -1956,11 +1841,7 @@ static void scorpion_pmu_reset(void *info)
 	venum_post_pmresr(vval, fval);
 
 	/* Reset PMxEVNCTCR to sane default */
-<<<<<<< HEAD
-	for (idx = ARMV7_IDX_CYCLE_COUNTER; idx < nb_cnt; ++idx) {
-=======
 	for_each_set_bit(idx, cpu_pmu->cntr_mask, ARMV7_IDX_COUNTER_MAX) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		armv7_pmnc_select_counter(idx);
 		asm volatile("mcr p15, 0, %0, c9, c15, 0" : : "r" (0));
 	}
@@ -1983,11 +1864,7 @@ static int scorpion_event_to_bit(struct perf_event *event, unsigned int region,
 	 * Lower bits are reserved for use by the counters (see
 	 * armv7pmu_get_event_idx() for more info)
 	 */
-<<<<<<< HEAD
-	bit += ARMV7_IDX_COUNTER_LAST(cpu_pmu) + 1;
-=======
 	bit += bitmap_weight(cpu_pmu->cntr_mask, ARMV7_IDX_COUNTER_MAX);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return bit;
 }

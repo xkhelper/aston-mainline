@@ -1306,8 +1306,6 @@ static irqreturn_t vmbus_percpu_isr(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
-=======
 static void vmbus_percpu_work(struct work_struct *work)
 {
 	unsigned int cpu = smp_processor_id();
@@ -1315,7 +1313,6 @@ static void vmbus_percpu_work(struct work_struct *work)
 	hv_synic_init(cpu);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * vmbus_bus_init -Main vmbus driver initialization routine.
  *
@@ -1326,12 +1323,8 @@ static void vmbus_percpu_work(struct work_struct *work)
  */
 static int vmbus_bus_init(void)
 {
-<<<<<<< HEAD
-	int ret;
-=======
 	int ret, cpu;
 	struct work_struct __percpu *works;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = hv_init();
 	if (ret != 0) {
@@ -1370,23 +1363,16 @@ static int vmbus_bus_init(void)
 	if (ret)
 		goto err_alloc;
 
-<<<<<<< HEAD
-=======
 	works = alloc_percpu(struct work_struct);
 	if (!works) {
 		ret = -ENOMEM;
 		goto err_alloc;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Initialize the per-cpu interrupt state and stimer state.
 	 * Then connect to the host.
 	 */
-<<<<<<< HEAD
-	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "hyperv/vmbus:online",
-				hv_synic_init, hv_synic_cleanup);
-=======
 	cpus_read_lock();
 	for_each_online_cpu(cpu) {
 		struct work_struct *work = per_cpu_ptr(works, cpu);
@@ -1403,7 +1389,6 @@ static int vmbus_bus_init(void)
 						   hv_synic_init, hv_synic_cleanup);
 	cpus_read_unlock();
 	free_percpu(works);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		goto err_alloc;
 	hyperv_cpuhp_online = ret;

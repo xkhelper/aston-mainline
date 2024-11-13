@@ -980,11 +980,7 @@ static void amd_rp_pme_suspend(struct pci_dev *dev)
 		return;
 
 	rp = pcie_find_root_port(dev);
-<<<<<<< HEAD
-	if (!rp->pm_cap)
-=======
 	if (!rp || !rp->pm_cap)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	rp->pme_support &= ~((PCI_PM_CAP_PME_D3hot|PCI_PM_CAP_PME_D3cold) >>
@@ -998,11 +994,7 @@ static void amd_rp_pme_resume(struct pci_dev *dev)
 	u16 pmc;
 
 	rp = pcie_find_root_port(dev);
-<<<<<<< HEAD
-	if (!rp->pm_cap)
-=======
 	if (!rp || !rp->pm_cap)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	pci_read_config_word(rp, rp->pm_cap + PCI_PM_PMC, &pmc);

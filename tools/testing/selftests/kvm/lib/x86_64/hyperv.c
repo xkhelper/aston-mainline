@@ -8,8 +8,6 @@
 #include "processor.h"
 #include "hyperv.h"
 
-<<<<<<< HEAD
-=======
 const struct kvm_cpuid2 *kvm_get_supported_hv_cpuid(void)
 {
 	static struct kvm_cpuid2 *cpuid;
@@ -77,7 +75,6 @@ bool kvm_hv_cpu_has(struct kvm_x86_cpu_feature feature)
 	return kvm_cpuid_has(kvm_get_supported_hv_cpuid(), feature);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct hyperv_test_pages *vcpu_alloc_hyperv_test_pages(struct kvm_vm *vm,
 						       vm_vaddr_t *p_hv_pages_gva)
 {

@@ -367,11 +367,7 @@ static int bch2_make_extent_indirect(struct btree_trans *trans,
 	r_v->k.type	= bkey_type_to_indirect(&orig->k);
 	r_v->k.p	= reflink_iter.pos;
 	bch2_key_resize(&r_v->k, orig->k.size);
-<<<<<<< HEAD
-	r_v->k.version	= orig->k.version;
-=======
 	r_v->k.bversion	= orig->k.bversion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	set_bkey_val_bytes(&r_v->k, sizeof(__le64) + bkey_val_bytes(&orig->k));
 

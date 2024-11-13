@@ -146,12 +146,7 @@ typedef int (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
 /* Expect random access pattern */
 #define FMODE_RANDOM		((__force fmode_t)(1 << 12))
 
-<<<<<<< HEAD
-/* File is huge (eg. /dev/mem): treat loff_t as unsigned */
-#define FMODE_UNSIGNED_OFFSET	((__force fmode_t)(1 << 13))
-=======
 /* FMODE_* bit 13 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* File is opened with O_PATH; almost nothing can be done with it */
 #define FMODE_PATH		((__force fmode_t)(1 << 14))
@@ -413,17 +408,10 @@ struct address_space_operations {
 
 	int (*write_begin)(struct file *, struct address_space *mapping,
 				loff_t pos, unsigned len,
-<<<<<<< HEAD
-				struct page **pagep, void **fsdata);
-	int (*write_end)(struct file *, struct address_space *mapping,
-				loff_t pos, unsigned len, unsigned copied,
-				struct page *page, void *fsdata);
-=======
 				struct folio **foliop, void **fsdata);
 	int (*write_end)(struct file *, struct address_space *mapping,
 				loff_t pos, unsigned len, unsigned copied,
 				struct folio *folio, void *fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Unfortunately this kludge is needed for FIBMAP. Don't use it */
 	sector_t (*bmap)(struct address_space *, sector_t);
@@ -694,12 +682,8 @@ struct inode {
 #endif
 
 	/* Misc */
-<<<<<<< HEAD
-	unsigned long		i_state;
-=======
 	u32			i_state;
 	/* 32-bit hole */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rw_semaphore	i_rwsem;
 
 	unsigned long		dirtied_when;	/* jiffies of first dirtying */
@@ -762,8 +746,6 @@ struct inode {
 	void			*i_private; /* fs or device private pointer */
 } __randomize_layout;
 
-<<<<<<< HEAD
-=======
 /*
  * Get bit address from inode->i_state to use with wait_var_event()
  * infrastructre.
@@ -779,7 +761,6 @@ static inline void inode_wake_up_bit(struct inode *inode, u32 bit)
 	wake_up_var(inode_state_wait_address(inode, bit));
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode);
 
 static inline unsigned int i_blocksize(const struct inode *node)
@@ -982,10 +963,7 @@ static inline unsigned imajor(const struct inode *inode)
 }
 
 struct fown_struct {
-<<<<<<< HEAD
-=======
 	struct file *file;	/* backpointer for security modules */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rwlock_t lock;          /* protects pid, uid, euid fields */
 	struct pid *pid;	/* pid or -pgrp where SIGIO should be sent */
 	enum pid_type pid_type;	/* Kind of process group SIGIO should be sent to */
@@ -1025,54 +1003,6 @@ static inline int ra_has_index(struct file_ra_state *ra, pgoff_t index)
 		index <  ra->start + ra->size);
 }
 
-<<<<<<< HEAD
-/*
- * f_{lock,count,pos_lock} members can be highly contended and share
- * the same cacheline. f_{lock,mode} are very frequently used together
- * and so share the same cacheline as well. The read-mostly
- * f_{path,inode,op} are kept on a separate cacheline.
- */
-struct file {
-	union {
-		/* fput() uses task work when closing and freeing file (default). */
-		struct callback_head 	f_task_work;
-		/* fput() must use workqueue (most kernel threads). */
-		struct llist_node	f_llist;
-		unsigned int 		f_iocb_flags;
-	};
-
-	/*
-	 * Protects f_ep, f_flags.
-	 * Must not be taken from IRQ context.
-	 */
-	spinlock_t		f_lock;
-	fmode_t			f_mode;
-	atomic_long_t		f_count;
-	struct mutex		f_pos_lock;
-	loff_t			f_pos;
-	unsigned int		f_flags;
-	struct fown_struct	f_owner;
-	const struct cred	*f_cred;
-	struct file_ra_state	f_ra;
-	struct path		f_path;
-	struct inode		*f_inode;	/* cached value */
-	const struct file_operations	*f_op;
-
-	u64			f_version;
-#ifdef CONFIG_SECURITY
-	void			*f_security;
-#endif
-	/* needed for tty driver, and maybe others */
-	void			*private_data;
-
-#ifdef CONFIG_EPOLL
-	/* Used by fs/eventpoll.c to link all the hooks to this file */
-	struct hlist_head	*f_ep;
-#endif /* #ifdef CONFIG_EPOLL */
-	struct address_space	*f_mapping;
-	errseq_t		f_wb_err;
-	errseq_t		f_sb_err; /* for syncfs */
-=======
 /**
  * struct file - Represents a file
  * @f_count: reference count
@@ -1136,7 +1066,6 @@ struct file {
 		freeptr_t		f_freeptr;
 	};
 	/* --- cacheline 3 boundary (192 bytes) --- */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } __randomize_layout
   __attribute__((aligned(4)));	/* lest something weird decides that 2 is OK */
 
@@ -1181,15 +1110,12 @@ struct file_lease;
 #define OFFT_OFFSET_MAX	type_max(off_t)
 #endif
 
-<<<<<<< HEAD
-=======
 int file_f_owner_allocate(struct file *file);
 static inline struct fown_struct *file_f_owner(const struct file *file)
 {
 	return READ_ONCE(file->f_owner);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void send_sigio(struct fown_struct *fown, int fd, int band);
 
 static inline struct inode *file_inode(const struct file *f)
@@ -1238,11 +1164,7 @@ extern void __f_setown(struct file *filp, struct pid *, enum pid_type, int force
 extern int f_setown(struct file *filp, int who, int force);
 extern void f_delown(struct file *filp);
 extern pid_t f_getown(struct file *filp);
-<<<<<<< HEAD
-extern int send_sigurg(struct fown_struct *fown);
-=======
 extern int send_sigurg(struct file *file);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * sb->s_flags.  Note that these mirror the equivalent MS_* flags where
@@ -1307,10 +1229,7 @@ extern int send_sigurg(struct file *file);
 #define SB_I_TS_EXPIRY_WARNED 0x00000400 /* warned about timestamp range expiry */
 #define SB_I_RETIRED	0x00000800	/* superblock shouldn't be reused */
 #define SB_I_NOUMASK	0x00001000	/* VFS does not apply umask */
-<<<<<<< HEAD
-=======
 #define SB_I_NOIDMAP	0x00002000	/* No idmapped mounts on this superblock */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Possible states of 'frozen' field */
 enum {
@@ -1389,11 +1308,7 @@ struct super_block {
 	time64_t		   s_time_min;
 	time64_t		   s_time_max;
 #ifdef CONFIG_FSNOTIFY
-<<<<<<< HEAD
-	__u32			s_fsnotify_mask;
-=======
 	u32			s_fsnotify_mask;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct fsnotify_sb_info	*s_fsnotify_info;
 #endif
 
@@ -1809,11 +1724,7 @@ static inline bool __sb_start_write_trylock(struct super_block *sb, int level)
 #define __sb_writers_acquired(sb, lev)	\
 	percpu_rwsem_acquire(&(sb)->s_writers.rw_sem[(lev)-1], 1, _THIS_IP_)
 #define __sb_writers_release(sb, lev)	\
-<<<<<<< HEAD
-	percpu_rwsem_release(&(sb)->s_writers.rw_sem[(lev)-1], 1, _THIS_IP_)
-=======
 	percpu_rwsem_release(&(sb)->s_writers.rw_sem[(lev)-1], _THIS_IP_)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * __sb_write_started - check if sb freeze level is held
@@ -2203,11 +2114,8 @@ struct file_operations {
 #define FOP_DIO_PARALLEL_WRITE	((__force fop_flags_t)(1 << 3))
 /* Contains huge pages */
 #define FOP_HUGE_PAGES		((__force fop_flags_t)(1 << 4))
-<<<<<<< HEAD
-=======
 /* Treat loff_t as unsigned (e.g., /dev/mem) */
 #define FOP_UNSIGNED_OFFSET	((__force fop_flags_t)(1 << 5))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Wrap a directory iterator that needs exclusive inode access */
 int wrap_directory_iterator(struct file *, struct dir_context *,
@@ -2507,11 +2415,6 @@ static inline void kiocb_clone(struct kiocb *kiocb, struct kiocb *kiocb_src,
  *
  * I_REFERENCED		Marks the inode as recently references on the LRU list.
  *
-<<<<<<< HEAD
- * I_DIO_WAKEUP		Never set.  Only used as a key for wait_on_bit().
- *
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * I_WB_SWITCH		Cgroup bdi_writeback switching in progress.  Used to
  *			synchronize competing switching instances and to tell
  *			wb stat updates to grab the i_pages lock.  See
@@ -2534,32 +2437,6 @@ static inline void kiocb_clone(struct kiocb *kiocb, struct kiocb *kiocb_src,
  *			i_count.
  *
  * Q: What is the difference between I_WILL_FREE and I_FREEING?
-<<<<<<< HEAD
- */
-#define I_DIRTY_SYNC		(1 << 0)
-#define I_DIRTY_DATASYNC	(1 << 1)
-#define I_DIRTY_PAGES		(1 << 2)
-#define __I_NEW			3
-#define I_NEW			(1 << __I_NEW)
-#define I_WILL_FREE		(1 << 4)
-#define I_FREEING		(1 << 5)
-#define I_CLEAR			(1 << 6)
-#define __I_SYNC		7
-#define I_SYNC			(1 << __I_SYNC)
-#define I_REFERENCED		(1 << 8)
-#define __I_DIO_WAKEUP		9
-#define I_DIO_WAKEUP		(1 << __I_DIO_WAKEUP)
-#define I_LINKABLE		(1 << 10)
-#define I_DIRTY_TIME		(1 << 11)
-#define I_WB_SWITCH		(1 << 13)
-#define I_OVL_INUSE		(1 << 14)
-#define I_CREATING		(1 << 15)
-#define I_DONTCACHE		(1 << 16)
-#define I_SYNC_QUEUED		(1 << 17)
-#define I_PINNING_NETFS_WB	(1 << 18)
-#define __I_LRU_ISOLATING	19
-#define I_LRU_ISOLATING		(1 << __I_LRU_ISOLATING)
-=======
  *
  * __I_{SYNC,NEW,LRU_ISOLATING} are used to derive unique addresses to wait
  * upon. There's one free address left.
@@ -2586,7 +2463,6 @@ static inline void kiocb_clone(struct kiocb *kiocb, struct kiocb *kiocb_src,
 #define I_DONTCACHE		(1 << 15)
 #define I_SYNC_QUEUED		(1 << 16)
 #define I_PINNING_NETFS_WB	(1 << 17)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
 #define I_DIRTY (I_DIRTY_INODE | I_DIRTY_PAGES)
@@ -2720,12 +2596,6 @@ struct super_block *sget(struct file_system_type *type,
 struct super_block *sget_dev(struct fs_context *fc, dev_t dev);
 
 /* Alas, no aliases. Too much hassle with bringing module.h everywhere */
-<<<<<<< HEAD
-#define fops_get(fops) \
-	(((fops) && try_module_get((fops)->owner) ? (fops) : NULL))
-#define fops_put(fops) \
-	do { if (fops) module_put((fops)->owner); } while(0)
-=======
 #define fops_get(fops) ({						\
 	const struct file_operations *_fops = (fops);			\
 	(((_fops) && try_module_get((_fops)->owner) ? (_fops) : NULL));	\
@@ -2737,7 +2607,6 @@ struct super_block *sget_dev(struct fs_context *fc, dev_t dev);
 		module_put((_fops)->owner);				\
 })
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This one is to be used *ONLY* from ->open() instances.
  * fops must be non-NULL, pinned down *and* module dependencies
@@ -3213,16 +3082,12 @@ extern loff_t default_llseek(struct file *file, loff_t offset, int whence);
 
 extern loff_t vfs_llseek(struct file *file, loff_t offset, int whence);
 
-<<<<<<< HEAD
-extern int inode_init_always(struct super_block *, struct inode *);
-=======
 extern int inode_init_always_gfp(struct super_block *, struct inode *, gfp_t);
 static inline int inode_init_always(struct super_block *sb, struct inode *inode)
 {
 	return inode_init_always_gfp(sb, inode, GFP_NOFS);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void inode_init_once(struct inode *);
 extern void address_space_init_once(struct address_space *mapping);
 extern struct inode * igrab(struct inode *);
@@ -3289,9 +3154,6 @@ static inline bool is_zero_ino(ino_t ino)
 	return (u32)ino == 0;
 }
 
-<<<<<<< HEAD
-extern void __iget(struct inode * inode);
-=======
 /*
  * inode->i_lock must be held
  */
@@ -3300,7 +3162,6 @@ static inline void __iget(struct inode *inode)
 	atomic_inc(&inode->i_count);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void iget_failed(struct inode *);
 extern void clear_inode(struct inode *);
 extern void __destroy_inode(struct inode *);
@@ -3378,19 +3239,12 @@ extern ssize_t iter_file_splice_write(struct pipe_inode_info *,
 extern void
 file_ra_state_init(struct file_ra_state *ra, struct address_space *mapping);
 extern loff_t noop_llseek(struct file *file, loff_t offset, int whence);
-<<<<<<< HEAD
-#define no_llseek NULL
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern loff_t vfs_setpos(struct file *file, loff_t offset, loff_t maxsize);
 extern loff_t generic_file_llseek(struct file *file, loff_t offset, int whence);
 extern loff_t generic_file_llseek_size(struct file *file, loff_t offset,
 		int whence, loff_t maxsize, loff_t eof);
-<<<<<<< HEAD
-=======
 loff_t generic_llseek_cookie(struct file *file, loff_t offset, int whence,
 			     u64 *cookie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern loff_t fixed_size_llseek(struct file *file, loff_t offset,
 		int whence, loff_t size);
 extern loff_t no_seek_end_llseek_size(struct file *, loff_t, int, loff_t);
@@ -3428,13 +3282,9 @@ static inline ssize_t blockdev_direct_IO(struct kiocb *iocb,
 }
 #endif
 
-<<<<<<< HEAD
-void inode_dio_wait(struct inode *inode);
-=======
 bool inode_dio_finished(const struct inode *inode);
 void inode_dio_wait(struct inode *inode);
 void inode_dio_wait_interruptible(struct inode *inode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * inode_dio_begin - signal start of a direct I/O requests
@@ -3458,11 +3308,7 @@ static inline void inode_dio_begin(struct inode *inode)
 static inline void inode_dio_end(struct inode *inode)
 {
 	if (atomic_dec_and_test(&inode->i_dio_count))
-<<<<<<< HEAD
-		wake_up_bit(&inode->i_state, __I_DIO_WAKEUP);
-=======
 		wake_up_var(&inode->i_dio_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 extern void inode_set_flags(struct inode *inode, unsigned int flags,
@@ -3555,11 +3401,7 @@ extern ssize_t noop_direct_IO(struct kiocb *iocb, struct iov_iter *iter);
 extern int simple_empty(struct dentry *);
 extern int simple_write_begin(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len,
-<<<<<<< HEAD
-			struct page **pagep, void **fsdata);
-=======
 			struct folio **foliop, void **fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct address_space_operations ram_aops;
 extern int always_delete_dentry(const struct dentry *);
 extern struct inode *alloc_anon_inode(struct super_block *);
@@ -3683,10 +3525,6 @@ static inline int kiocb_set_rw_flags(struct kiocb *ki, rwf_t flags,
 	if (flags & RWF_NOWAIT) {
 		if (!(ki->ki_filp->f_mode & FMODE_NOWAIT))
 			return -EOPNOTSUPP;
-<<<<<<< HEAD
-		kiocb_flags |= IOCB_NOIO;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (flags & RWF_ATOMIC) {
 		if (rw_type != WRITE)

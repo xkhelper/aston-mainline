@@ -411,35 +411,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_FPU_UNAVAILABLE)
  */
 	. = INTERRUPT_INST_TLB_MISS_603
 InstructionTLBMiss:
-<<<<<<< HEAD
-/*
- * r0:	userspace flag (later scratch)
- * r1:	linux style pte ( later becomes ppc hardware pte )
- * r2:	ptr to linux-style pte
- * r3:	fault address
- */
-	/* Get PTE (linux-style) and check access */
-	mfspr	r3,SPRN_IMISS
-#ifdef CONFIG_EXECMEM
-	lis	r1, TASK_SIZE@h		/* check if kernel address */
-	cmplw	0,r1,r3
-#endif
-	mfspr	r2, SPRN_SDR1
-	li	r1,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC
-	rlwinm	r2, r2, 28, 0xfffff000
-#ifdef CONFIG_EXECMEM
-	li	r0, 3
-	bgt-	112f
-	lis	r2, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
-	li	r0, 0
-	addi	r2, r2, (swapper_pg_dir - PAGE_OFFSET)@l	/* kernel page table */
-#endif
-112:	rlwimi	r2,r3,12,20,29		/* insert top 10 bits of address */
-	lwz	r2,0(r2)		/* get pmd entry */
-	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
-	beq-	InstructionAddressInvalid	/* return if no mapping */
-	rlwimi	r2,r3,22,20,29		/* insert next 10 bits of address */
-=======
 	/* Get PTE (linux-style) and check access */
 	mfspr	r0,SPRN_IMISS
 	mfspr	r2, SPRN_SDR1
@@ -454,17 +425,12 @@ InstructionTLBMiss:
 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
 	beq-	InstructionAddressInvalid	/* return if no mapping */
 	rlwimi	r2,r0,22,20,29		/* insert next 10 bits of address */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lwz	r2,0(r2)		/* get linux-style pte */
 	andc.	r1,r1,r2		/* check access & ~permission */
 	bne-	InstructionAddressInvalid /* return if access not permitted */
 	/* Convert linux-style PTE to low word of PPC-style PTE */
 #ifdef CONFIG_EXECMEM
-<<<<<<< HEAD
-	rlwimi	r2, r0, 0, 31, 31	/* userspace ? -> PP lsb */
-=======
 	rlwimi	r2, r3, 1, 31, 31	/* userspace ? -> PP lsb */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	ori	r1, r1, 0xe06		/* clear out reserved bits */
 	andc	r1, r2, r1		/* PP = user? 1 : 0 */
@@ -472,11 +438,7 @@ BEGIN_FTR_SECTION
 	rlwinm	r1,r1,0,~_PAGE_COHERENT	/* clear M (coherence not required) */
 END_FTR_SECTION_IFCLR(CPU_FTR_NEED_COHERENT)
 	mtspr	SPRN_RPA,r1
-<<<<<<< HEAD
-	tlbli	r3
-=======
 	tlbli	r0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mfspr	r3,SPRN_SRR1		/* Need to restore CR0 */
 	mtcrf	0x80,r3
 	rfi
@@ -505,32 +467,6 @@ InstructionAddressInvalid:
  */
 	. = INTERRUPT_DATA_LOAD_TLB_MISS_603
 DataLoadTLBMiss:
-<<<<<<< HEAD
-/*
- * r0:	userspace flag (later scratch)
- * r1:	linux style pte ( later becomes ppc hardware pte )
- * r2:	ptr to linux-style pte
- * r3:	fault address
- */
-	/* Get PTE (linux-style) and check access */
-	mfspr	r3,SPRN_DMISS
-	lis	r1, TASK_SIZE@h		/* check if kernel address */
-	cmplw	0,r1,r3
-	mfspr	r2, SPRN_SDR1
-	li	r1, _PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_READ
-	rlwinm	r2, r2, 28, 0xfffff000
-	li	r0, 3
-	bgt-	112f
-	lis	r2, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
-	li	r0, 0
-	addi	r2, r2, (swapper_pg_dir - PAGE_OFFSET)@l	/* kernel page table */
-112:	rlwimi	r2,r3,12,20,29		/* insert top 10 bits of address */
-	lwz	r2,0(r2)		/* get pmd entry */
-	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
-	beq-	DataAddressInvalid	/* return if no mapping */
-	rlwimi	r2,r3,22,20,29		/* insert next 10 bits of address */
-	lwz	r2,0(r2)		/* get linux-style pte */
-=======
 	/* Get PTE (linux-style) and check access */
 	mfspr	r0,SPRN_DMISS
 	mfspr	r2, SPRN_SDR1
@@ -544,16 +480,11 @@ DataLoadTLBMiss:
 1:	rlwimi	r2,r0,22,20,29		/* insert next 10 bits of address */
 	lwz	r2,0(r2)		/* get linux-style pte */
 	li	r1, _PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_READ
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	andc.	r1,r1,r2		/* check access & ~permission */
 	bne-	DataAddressInvalid	/* return if access not permitted */
 	/* Convert linux-style PTE to low word of PPC-style PTE */
 	rlwinm	r1,r2,32-9,30,30	/* _PAGE_WRITE -> PP msb */
-<<<<<<< HEAD
-	rlwimi	r2,r0,0,30,31		/* userspace ? -> PP */
-=======
 	rlwimi	r2,r3,2,30,31		/* userspace ? -> PP */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rlwimi	r1,r2,32-3,24,24	/* _PAGE_WRITE -> _PAGE_DIRTY */
 	xori	r1,r1,_PAGE_DIRTY	/* clear dirty when not rw */
 	ori	r1,r1,0xe04		/* clear out reserved bits */
@@ -563,20 +494,6 @@ BEGIN_FTR_SECTION
 END_FTR_SECTION_IFCLR(CPU_FTR_NEED_COHERENT)
 	mtspr	SPRN_RPA,r1
 BEGIN_MMU_FTR_SECTION
-<<<<<<< HEAD
-	li	r0,1
-	mfspr	r1,SPRN_SPRG_603_LRU
-	rlwinm	r2,r3,20,27,31		/* Get Address bits 15:19 */
-	slw	r0,r0,r2
-	xor	r1,r0,r1
-	srw	r0,r1,r2
-	mtspr   SPRN_SPRG_603_LRU,r1
-	mfspr	r2,SPRN_SRR1
-	rlwimi	r2,r0,31-14,14,14
-	mtspr   SPRN_SRR1,r2
-	mtcrf	0x80,r2
-	tlbld	r3
-=======
 	li	r3,1
 	mfspr	r1,SPRN_SPRG_603_LRU
 	rlwinm	r2,r0,20,27,31		/* Get Address bits 15:19 */
@@ -589,16 +506,10 @@ BEGIN_MMU_FTR_SECTION
 	mtspr   SPRN_SRR1,r2
 	mtcrf	0x80,r2
 	tlbld	r0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rfi
 MMU_FTR_SECTION_ELSE
 	mfspr	r2,SPRN_SRR1		/* Need to restore CR0 */
 	mtcrf	0x80,r2
-<<<<<<< HEAD
-	tlbld	r3
-	rfi
-ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
-=======
 	tlbld	r0
 	rfi
 ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
@@ -612,7 +523,6 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
 	stw	r2,0(r1)
 	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
 	b	1b
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DataAddressInvalid:
 	mfspr	r3,SPRN_SRR1
 	rlwinm	r1,r3,9,6,6	/* Get load/store bit */
@@ -636,36 +546,6 @@ DataAddressInvalid:
  */
 	. = INTERRUPT_DATA_STORE_TLB_MISS_603
 DataStoreTLBMiss:
-<<<<<<< HEAD
-/*
- * r0:	userspace flag (later scratch)
- * r1:	linux style pte ( later becomes ppc hardware pte )
- * r2:	ptr to linux-style pte
- * r3:	fault address
- */
-	/* Get PTE (linux-style) and check access */
-	mfspr	r3,SPRN_DMISS
-	lis	r1, TASK_SIZE@h		/* check if kernel address */
-	cmplw	0,r1,r3
-	mfspr	r2, SPRN_SDR1
-	li	r1, _PAGE_RW | _PAGE_DIRTY | _PAGE_PRESENT | _PAGE_ACCESSED
-	rlwinm	r2, r2, 28, 0xfffff000
-	li	r0, 3
-	bgt-	112f
-	lis	r2, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
-	li	r0, 0
-	addi	r2, r2, (swapper_pg_dir - PAGE_OFFSET)@l	/* kernel page table */
-112:	rlwimi	r2,r3,12,20,29		/* insert top 10 bits of address */
-	lwz	r2,0(r2)		/* get pmd entry */
-	rlwinm.	r2,r2,0,0,19		/* extract address of pte page */
-	beq-	DataAddressInvalid	/* return if no mapping */
-	rlwimi	r2,r3,22,20,29		/* insert next 10 bits of address */
-	lwz	r2,0(r2)		/* get linux-style pte */
-	andc.	r1,r1,r2		/* check access & ~permission */
-	bne-	DataAddressInvalid	/* return if access not permitted */
-	/* Convert linux-style PTE to low word of PPC-style PTE */
-	rlwimi	r2,r0,0,31,31		/* userspace ? -> PP lsb */
-=======
 	/* Get PTE (linux-style) and check access */
 	mfspr	r0,SPRN_DMISS
 	mfspr	r2, SPRN_SDR1
@@ -684,7 +564,6 @@ DataStoreTLBMiss:
 	bne-	DataAddressInvalid	/* return if access not permitted */
 	/* Convert linux-style PTE to low word of PPC-style PTE */
 	rlwimi	r2,r3,1,31,31		/* userspace ? -> PP lsb */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	li	r1,0xe06		/* clear out reserved bits & PP msb */
 	andc	r1,r2,r1		/* PP = user? 1: 0 */
 BEGIN_FTR_SECTION
@@ -694,20 +573,6 @@ END_FTR_SECTION_IFCLR(CPU_FTR_NEED_COHERENT)
 	mfspr	r2,SPRN_SRR1		/* Need to restore CR0 */
 	mtcrf	0x80,r2
 BEGIN_MMU_FTR_SECTION
-<<<<<<< HEAD
-	li	r0,1
-	mfspr	r1,SPRN_SPRG_603_LRU
-	rlwinm	r2,r3,20,27,31		/* Get Address bits 15:19 */
-	slw	r0,r0,r2
-	xor	r1,r0,r1
-	srw	r0,r1,r2
-	mtspr   SPRN_SPRG_603_LRU,r1
-	mfspr	r2,SPRN_SRR1
-	rlwimi	r2,r0,31-14,14,14
-	mtspr   SPRN_SRR1,r2
-	mtcrf	0x80,r2
-	tlbld	r3
-=======
 	li	r3,1
 	mfspr	r1,SPRN_SPRG_603_LRU
 	rlwinm	r2,r0,20,27,31		/* Get Address bits 15:19 */
@@ -720,17 +585,10 @@ BEGIN_MMU_FTR_SECTION
 	mtspr   SPRN_SRR1,r2
 	mtcrf	0x80,r2
 	tlbld	r0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rfi
 MMU_FTR_SECTION_ELSE
 	mfspr	r2,SPRN_SRR1		/* Need to restore CR0 */
 	mtcrf	0x80,r2
-<<<<<<< HEAD
-	tlbld	r3
-	rfi
-ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
-
-=======
 	tlbld	r0
 	rfi
 ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
@@ -745,7 +603,6 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_NEED_DTLB_SW_LRU)
 	rlwinm	r2,r2,0,0,19		/* extract address of pte page */
 	b	1b
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef CONFIG_ALTIVEC
 #define altivec_assist_exception	unknown_exception
 #endif

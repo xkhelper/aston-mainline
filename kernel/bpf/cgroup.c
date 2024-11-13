@@ -24,8 +24,6 @@
 DEFINE_STATIC_KEY_ARRAY_FALSE(cgroup_bpf_enabled_key, MAX_CGROUP_BPF_ATTACH_TYPE);
 EXPORT_SYMBOL(cgroup_bpf_enabled_key);
 
-<<<<<<< HEAD
-=======
 /*
  * cgroup bpf destruction makes heavy use of work items and there can be a lot
  * of concurrent destructions.  Use a separate workqueue so that cgroup bpf
@@ -43,7 +41,6 @@ static int __init cgroup_bpf_wq_init(void)
 }
 core_initcall(cgroup_bpf_wq_init);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* __always_inline is necessary to prevent indirect call through run_prog
  * function pointer.
  */
@@ -354,11 +351,7 @@ static void cgroup_bpf_release_fn(struct percpu_ref *ref)
 	struct cgroup *cgrp = container_of(ref, struct cgroup, bpf.refcnt);
 
 	INIT_WORK(&cgrp->bpf.release_work, cgroup_bpf_release);
-<<<<<<< HEAD
-	queue_work(system_wq, &cgrp->bpf.release_work);
-=======
 	queue_work(cgroup_bpf_destroy_wq, &cgrp->bpf.release_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Get underlying bpf_prog of bpf_prog_list entry, regardless if it's through
@@ -2605,11 +2598,8 @@ cgroup_current_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 	case BPF_FUNC_get_cgroup_classid:
 		return &bpf_get_cgroup_classid_curr_proto;
 #endif
-<<<<<<< HEAD
-=======
 	case BPF_FUNC_current_task_under_cgroup:
 		return &bpf_current_task_under_cgroup_proto;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return NULL;
 	}

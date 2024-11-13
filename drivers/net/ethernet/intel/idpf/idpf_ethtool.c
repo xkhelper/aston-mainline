@@ -1296,37 +1296,19 @@ static void idpf_set_msglevel(struct net_device *netdev, u32 data)
 static int idpf_get_link_ksettings(struct net_device *netdev,
 				   struct ethtool_link_ksettings *cmd)
 {
-<<<<<<< HEAD
-	struct idpf_vport *vport;
-
-	idpf_vport_ctrl_lock(netdev);
-	vport = idpf_netdev_to_vport(netdev);
-=======
 	struct idpf_netdev_priv *np = netdev_priv(netdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ethtool_link_ksettings_zero_link_mode(cmd, supported);
 	cmd->base.autoneg = AUTONEG_DISABLE;
 	cmd->base.port = PORT_NONE;
-<<<<<<< HEAD
-	if (vport->link_up) {
-		cmd->base.duplex = DUPLEX_FULL;
-		cmd->base.speed = vport->link_speed_mbps;
-=======
 	if (netif_carrier_ok(netdev)) {
 		cmd->base.duplex = DUPLEX_FULL;
 		cmd->base.speed = np->link_speed_mbps;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		cmd->base.duplex = DUPLEX_UNKNOWN;
 		cmd->base.speed = SPEED_UNKNOWN;
 	}
 
-<<<<<<< HEAD
-	idpf_vport_ctrl_unlock(netdev);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

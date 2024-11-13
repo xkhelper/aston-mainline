@@ -595,11 +595,7 @@ static struct platform_driver ams_delta_driver = {
 		.name = DRV_NAME,
 	},
 	.probe = ams_delta_probe,
-<<<<<<< HEAD
-	.remove_new = ams_delta_remove,
-=======
 	.remove = ams_delta_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(ams_delta_driver);

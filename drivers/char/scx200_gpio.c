@@ -68,10 +68,6 @@ static const struct file_operations scx200_gpio_fileops = {
 	.read    = nsc_gpio_read,
 	.open    = scx200_gpio_open,
 	.release = scx200_gpio_release,
-<<<<<<< HEAD
-	.llseek  = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct cdev scx200_gpio_cdev;  /* use 1 cdev for all pins */

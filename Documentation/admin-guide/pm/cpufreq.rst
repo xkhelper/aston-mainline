@@ -425,13 +425,8 @@ This governor exposes only one tunable:
 
 ``rate_limit_us``
 	Minimum time (in microseconds) that has to pass between two consecutive
-<<<<<<< HEAD
-	runs of governor computations (default: 1000 times the scaling driver's
-	transition latency).
-=======
 	runs of governor computations (default: 1.5 times the scaling driver's
 	transition latency or the maximum 2ms).
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	The purpose of this tunable is to reduce the scheduler context overhead
 	of the governor which might be excessive without it.
@@ -479,19 +474,6 @@ This governor exposes the following tunables:
 	This is how often the governor's worker routine should run, in
 	microseconds.
 
-<<<<<<< HEAD
-	Typically, it is set to values of the order of 10000 (10 ms).  Its
-	default value is equal to the value of ``cpuinfo_transition_latency``
-	for each policy this governor is attached to (but since the unit here
-	is greater by 1000, this means that the time represented by
-	``sampling_rate`` is 1000 times greater than the transition latency by
-	default).
-
-	If this tunable is per-policy, the following shell command sets the time
-	represented by it to be 750 times as high as the transition latency::
-
-	# echo `$(($(cat cpuinfo_transition_latency) * 750 / 1000)) > ondemand/sampling_rate
-=======
 	Typically, it is set to values of the order of 2000 (2 ms).  Its
 	default value is to add a 50% breathing room
 	to ``cpuinfo_transition_latency`` on each policy this governor is
@@ -503,7 +485,6 @@ This governor exposes the following tunables:
 	(the default)::
 
 	# echo `$(($(cat cpuinfo_transition_latency) * 3 / 2)) > ondemand/sampling_rate
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ``up_threshold``
 	If the estimated CPU load is above this value (in percent), the governor

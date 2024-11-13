@@ -80,15 +80,11 @@
 #define __noscs __attribute__((__no_sanitize__("shadow-call-stack")))
 #endif
 
-<<<<<<< HEAD
-#define __no_sanitize_address __attribute__((__no_sanitize_address__))
-=======
 #ifdef __SANITIZE_HWADDRESS__
 #define __no_sanitize_address __attribute__((__no_sanitize__("hwaddress")))
 #else
 #define __no_sanitize_address __attribute__((__no_sanitize_address__))
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if defined(__SANITIZE_THREAD__)
 #define __no_sanitize_thread __attribute__((__no_sanitize_thread__))

@@ -359,11 +359,6 @@ int nicvf_is_intr_enabled(struct nicvf *nic, int int_type, int q_idx);
 /* Register access APIs */
 void nicvf_reg_write(struct nicvf *nic, u64 offset, u64 val);
 u64  nicvf_reg_read(struct nicvf *nic, u64 offset);
-<<<<<<< HEAD
-void nicvf_qset_reg_write(struct nicvf *nic, u64 offset, u64 val);
-u64 nicvf_qset_reg_read(struct nicvf *nic, u64 offset);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void nicvf_queue_reg_write(struct nicvf *nic, u64 offset,
 			   u64 qidx, u64 val);
 u64  nicvf_queue_reg_read(struct nicvf *nic,

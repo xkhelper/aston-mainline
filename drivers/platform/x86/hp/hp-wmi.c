@@ -834,40 +834,16 @@ static struct attribute *hp_wmi_attrs[] = {
 };
 ATTRIBUTE_GROUPS(hp_wmi);
 
-<<<<<<< HEAD
-static void hp_wmi_notify(u32 value, void *context)
-{
-	struct acpi_buffer response = { ACPI_ALLOCATE_BUFFER, NULL };
-	u32 event_id, event_data;
-	union acpi_object *obj;
-	acpi_status status;
-	u32 *location;
-	int key_code;
-
-	status = wmi_get_event_data(value, &response);
-	if (status != AE_OK) {
-		pr_info("bad event status 0x%x\n", status);
-		return;
-	}
-
-	obj = (union acpi_object *)response.pointer;
-
-=======
 static void hp_wmi_notify(union acpi_object *obj, void *context)
 {
 	u32 event_id, event_data;
 	u32 *location;
 	int key_code;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!obj)
 		return;
 	if (obj->type != ACPI_TYPE_BUFFER) {
 		pr_info("Unknown response received %d\n", obj->type);
-<<<<<<< HEAD
-		kfree(obj);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -884,15 +860,8 @@ static void hp_wmi_notify(union acpi_object *obj, void *context)
 		event_data = *(location + 2);
 	} else {
 		pr_info("Unknown buffer length %d\n", obj->buffer.length);
-<<<<<<< HEAD
-		kfree(obj);
 		return;
 	}
-	kfree(obj);
-=======
-		return;
-	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (event_id) {
 	case HPWMI_DOCK_EVENT:

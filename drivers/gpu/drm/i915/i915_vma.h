@@ -389,10 +389,6 @@ void i915_vma_unpin_iomap(struct i915_vma *vma);
  * i915_vma_unpin_fence().
  *
  * Returns:
-<<<<<<< HEAD
- *
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * True if the vma has a fence, false otherwise.
  */
 int __must_check i915_vma_pin_fence(struct i915_vma *vma);

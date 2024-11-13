@@ -7,10 +7,6 @@
 extern int maple_set_rtc_time(struct rtc_time *tm);
 extern void maple_get_rtc_time(struct rtc_time *tm);
 extern time64_t maple_get_boot_time(void);
-<<<<<<< HEAD
-extern void maple_calibrate_decr(void);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void maple_pci_init(void);
 extern void maple_pci_irq_fixup(struct pci_dev *dev);
 extern int maple_pci_get_legacy_ide_irq(struct pci_dev *dev, int channel);

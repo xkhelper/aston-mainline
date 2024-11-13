@@ -15,19 +15,12 @@
 #include <linux/sched/hotplug.h>
 #include <linux/mm_types.h>
 #include <linux/pgtable.h>
-<<<<<<< HEAD
-=======
 #include <linux/pkeys.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/cacheflush.h>
 #include <asm/cpufeature.h>
 #include <asm/daifflags.h>
 #include <asm/proc-fns.h>
-<<<<<<< HEAD
-#include <asm-generic/mm_hooks.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/cputype.h>
 #include <asm/sysreg.h>
 #include <asm/tlbflush.h>
@@ -182,11 +175,6 @@ init_new_context(struct task_struct *tsk, struct mm_struct *mm)
 {
 	atomic64_set(&mm->context.id, 0);
 	refcount_set(&mm->context.pinned, 0);
-<<<<<<< HEAD
-	return 0;
-}
-
-=======
 
 	/* pkey 0 is the default, so always reserve it. */
 	mm->context.pkey_allocation_map = BIT(0);
@@ -217,7 +205,6 @@ static inline void arch_unmap(struct mm_struct *mm,
 {
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ARM64_SW_TTBR0_PAN
 static inline void update_saved_ttbr0(struct task_struct *tsk,
 				      struct mm_struct *mm)
@@ -307,8 +294,6 @@ static inline unsigned long mm_untag_mask(struct mm_struct *mm)
 	return -1UL >> 8;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Only enforce protection keys on the current process, because there is no
  * user context to access POR_EL0 for another address space.
@@ -326,7 +311,6 @@ static inline bool arch_vma_access_permitted(struct vm_area_struct *vma,
 	return por_el0_allows_pkey(vma_pkey(vma), write, execute);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm-generic/mmu_context.h>
 
 #endif /* !__ASSEMBLY__ */

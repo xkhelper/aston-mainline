@@ -350,11 +350,8 @@ int xe_guc_init(struct xe_guc *guc)
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
-=======
 	xe_uc_fw_change_status(&guc->fw, XE_UC_FIRMWARE_LOADABLE);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = devm_add_action_or_reset(xe->drm.dev, guc_fini_hw, guc);
 	if (ret)
 		goto out;
@@ -363,11 +360,6 @@ int xe_guc_init(struct xe_guc *guc)
 
 	xe_guc_comm_init_early(guc);
 
-<<<<<<< HEAD
-	xe_uc_fw_change_status(&guc->fw, XE_UC_FIRMWARE_LOADABLE);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 out:

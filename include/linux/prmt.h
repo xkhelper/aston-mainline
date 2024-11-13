@@ -2,10 +2,6 @@
 
 #ifdef CONFIG_ACPI_PRMT
 void init_prmt(void);
-<<<<<<< HEAD
-#else
-static inline void init_prmt(void) { }
-=======
 int acpi_call_prm_handler(guid_t handler_guid, void *param_buffer);
 #else
 static inline void init_prmt(void) { }
@@ -13,5 +9,4 @@ static inline int acpi_call_prm_handler(guid_t handler_guid, void *param_buffer)
 {
 	return -EOPNOTSUPP;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

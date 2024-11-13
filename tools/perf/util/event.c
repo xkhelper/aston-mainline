@@ -216,11 +216,7 @@ size_t perf_event__fprintf_cgroup(union perf_event *event, FILE *fp)
 		       event->cgroup.id, event->cgroup.path);
 }
 
-<<<<<<< HEAD
-int perf_event__process_comm(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_comm(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct perf_sample *sample,
 			     struct machine *machine)
@@ -228,11 +224,7 @@ int perf_event__process_comm(const struct perf_tool *tool __maybe_unused,
 	return machine__process_comm_event(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_namespaces(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_namespaces(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   union perf_event *event,
 				   struct perf_sample *sample,
 				   struct machine *machine)
@@ -240,11 +232,7 @@ int perf_event__process_namespaces(const struct perf_tool *tool __maybe_unused,
 	return machine__process_namespaces_event(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_cgroup(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_cgroup(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       union perf_event *event,
 			       struct perf_sample *sample,
 			       struct machine *machine)
@@ -252,11 +240,7 @@ int perf_event__process_cgroup(const struct perf_tool *tool __maybe_unused,
 	return machine__process_cgroup_event(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_lost(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_lost(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct perf_sample *sample,
 			     struct machine *machine)
@@ -264,11 +248,7 @@ int perf_event__process_lost(const struct perf_tool *tool __maybe_unused,
 	return machine__process_lost_event(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_aux(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_aux(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    union perf_event *event,
 			    struct perf_sample *sample __maybe_unused,
 			    struct machine *machine)
@@ -276,11 +256,7 @@ int perf_event__process_aux(const struct perf_tool *tool __maybe_unused,
 	return machine__process_aux_event(machine, event);
 }
 
-<<<<<<< HEAD
-int perf_event__process_itrace_start(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_itrace_start(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     union perf_event *event,
 				     struct perf_sample *sample __maybe_unused,
 				     struct machine *machine)
@@ -288,11 +264,7 @@ int perf_event__process_itrace_start(const struct perf_tool *tool __maybe_unused
 	return machine__process_itrace_start_event(machine, event);
 }
 
-<<<<<<< HEAD
-int perf_event__process_aux_output_hw_id(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_aux_output_hw_id(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 union perf_event *event,
 					 struct perf_sample *sample __maybe_unused,
 					 struct machine *machine)
@@ -300,11 +272,7 @@ int perf_event__process_aux_output_hw_id(const struct perf_tool *tool __maybe_un
 	return machine__process_aux_output_hw_id_event(machine, event);
 }
 
-<<<<<<< HEAD
-int perf_event__process_lost_samples(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_lost_samples(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     union perf_event *event,
 				     struct perf_sample *sample,
 				     struct machine *machine)
@@ -312,11 +280,7 @@ int perf_event__process_lost_samples(const struct perf_tool *tool __maybe_unused
 	return machine__process_lost_samples_event(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_switch(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_switch(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       union perf_event *event,
 			       struct perf_sample *sample __maybe_unused,
 			       struct machine *machine)
@@ -324,11 +288,7 @@ int perf_event__process_switch(const struct perf_tool *tool __maybe_unused,
 	return machine__process_switch_event(machine, event);
 }
 
-<<<<<<< HEAD
-int perf_event__process_ksymbol(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_ksymbol(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample __maybe_unused,
 				struct machine *machine)
@@ -336,11 +296,7 @@ int perf_event__process_ksymbol(const struct perf_tool *tool __maybe_unused,
 	return machine__process_ksymbol(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_bpf(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_bpf(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    union perf_event *event,
 			    struct perf_sample *sample,
 			    struct machine *machine)
@@ -348,11 +304,7 @@ int perf_event__process_bpf(const struct perf_tool *tool __maybe_unused,
 	return machine__process_bpf(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_text_poke(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_text_poke(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  union perf_event *event,
 				  struct perf_sample *sample,
 				  struct machine *machine)
@@ -435,11 +387,7 @@ size_t perf_event__fprintf_cpu_map(union perf_event *event, FILE *fp)
 	return ret;
 }
 
-<<<<<<< HEAD
-int perf_event__process_mmap(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_mmap(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct perf_sample *sample,
 			     struct machine *machine)
@@ -447,11 +395,7 @@ int perf_event__process_mmap(const struct perf_tool *tool __maybe_unused,
 	return machine__process_mmap_event(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_mmap2(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_mmap2(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct perf_sample *sample,
 			     struct machine *machine)
@@ -466,11 +410,7 @@ size_t perf_event__fprintf_task(union perf_event *event, FILE *fp)
 		       event->fork.ppid, event->fork.ptid);
 }
 
-<<<<<<< HEAD
-int perf_event__process_fork(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_fork(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct perf_sample *sample,
 			     struct machine *machine)
@@ -478,11 +418,7 @@ int perf_event__process_fork(const struct perf_tool *tool __maybe_unused,
 	return machine__process_fork_event(machine, event, sample);
 }
 
-<<<<<<< HEAD
-int perf_event__process_exit(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_exit(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct perf_sample *sample,
 			     struct machine *machine)
@@ -490,8 +426,6 @@ int perf_event__process_exit(const struct perf_tool *tool __maybe_unused,
 	return machine__process_exit_event(machine, event, sample);
 }
 
-<<<<<<< HEAD
-=======
 int perf_event__exit_del_thread(const struct perf_tool *tool __maybe_unused,
 				union perf_event *event,
 				struct perf_sample *sample __maybe_unused,
@@ -512,7 +446,6 @@ int perf_event__exit_del_thread(const struct perf_tool *tool __maybe_unused,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 size_t perf_event__fprintf_aux(union perf_event *event, FILE *fp)
 {
 	return fprintf(fp, " offset: %#"PRI_lx64" size: %#"PRI_lx64" flags: %#"PRI_lx64" [%s%s%s]\n",
@@ -674,11 +607,7 @@ size_t perf_event__fprintf(union perf_event *event, struct machine *machine, FIL
 	return ret;
 }
 
-<<<<<<< HEAD
-int perf_event__process(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			union perf_event *event,
 			struct perf_sample *sample,
 			struct machine *machine)

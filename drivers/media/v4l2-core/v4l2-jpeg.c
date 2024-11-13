@@ -9,11 +9,7 @@
  * [1] https://www.w3.org/Graphics/JPEG/itu-t81.pdf
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/errno.h>
 #include <linux/kernel.h>
 #include <linux/module.h>

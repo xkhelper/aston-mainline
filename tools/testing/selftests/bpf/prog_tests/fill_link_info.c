@@ -67,14 +67,9 @@ again:
 
 		ASSERT_EQ(info.perf_event.kprobe.cookie, PERF_EVENT_COOKIE, "kprobe_cookie");
 
-<<<<<<< HEAD
-		if (!info.perf_event.kprobe.func_name) {
-			ASSERT_EQ(info.perf_event.kprobe.name_len, 0, "name_len");
-=======
 		ASSERT_EQ(info.perf_event.kprobe.name_len, strlen(KPROBE_FUNC) + 1,
 				  "name_len");
 		if (!info.perf_event.kprobe.func_name) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			info.perf_event.kprobe.func_name = ptr_to_u64(&buf);
 			info.perf_event.kprobe.name_len = sizeof(buf);
 			goto again;
@@ -85,14 +80,9 @@ again:
 		ASSERT_EQ(err, 0, "cmp_kprobe_func_name");
 		break;
 	case BPF_PERF_EVENT_TRACEPOINT:
-<<<<<<< HEAD
-		if (!info.perf_event.tracepoint.tp_name) {
-			ASSERT_EQ(info.perf_event.tracepoint.name_len, 0, "name_len");
-=======
 		ASSERT_EQ(info.perf_event.tracepoint.name_len, strlen(TP_NAME) + 1,
 				  "name_len");
 		if (!info.perf_event.tracepoint.tp_name) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			info.perf_event.tracepoint.tp_name = ptr_to_u64(&buf);
 			info.perf_event.tracepoint.name_len = sizeof(buf);
 			goto again;
@@ -108,14 +98,9 @@ again:
 	case BPF_PERF_EVENT_URETPROBE:
 		ASSERT_EQ(info.perf_event.uprobe.offset, offset, "uprobe_offset");
 
-<<<<<<< HEAD
-		if (!info.perf_event.uprobe.file_name) {
-			ASSERT_EQ(info.perf_event.uprobe.name_len, 0, "name_len");
-=======
 		ASSERT_EQ(info.perf_event.uprobe.name_len, strlen(UPROBE_FILE) + 1,
 				  "name_len");
 		if (!info.perf_event.uprobe.file_name) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			info.perf_event.uprobe.file_name = ptr_to_u64(&buf);
 			info.perf_event.uprobe.name_len = sizeof(buf);
 			goto again;
@@ -435,8 +420,6 @@ verify_umulti_link_info(int fd, bool retprobe, __u64 *offsets,
 	if (!ASSERT_NEQ(err, -1, "readlink"))
 		return -1;
 
-<<<<<<< HEAD
-=======
 	memset(&info, 0, sizeof(info));
 	err = bpf_link_get_info_by_fd(fd, &info, &len);
 	if (!ASSERT_OK(err, "bpf_link_get_info_by_fd"))
@@ -446,7 +429,6 @@ verify_umulti_link_info(int fd, bool retprobe, __u64 *offsets,
 	ASSERT_EQ(info.uprobe_multi.path_size, strlen(path) + 1,
 		  "info.uprobe_multi.path_size");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (bit = 0; bit < 8; bit++) {
 		memset(&info, 0, sizeof(info));
 		info.uprobe_multi.path = ptr_to_u64(path_buf);

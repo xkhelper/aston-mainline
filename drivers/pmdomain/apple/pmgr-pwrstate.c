@@ -177,11 +177,7 @@ static int apple_pmgr_reset_status(struct reset_controller_dev *rcdev, unsigned 
 	return !!(reg & APPLE_PMGR_RESET);
 }
 
-<<<<<<< HEAD
-const struct reset_control_ops apple_pmgr_reset_ops = {
-=======
 static const struct reset_control_ops apple_pmgr_reset_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.assert		= apple_pmgr_reset_assert,
 	.deassert	= apple_pmgr_reset_deassert,
 	.reset		= apple_pmgr_reset_reset,

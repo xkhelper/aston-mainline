@@ -30,11 +30,7 @@
 static int
 head917d_dither(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
-=======
 	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 
@@ -52,11 +48,7 @@ head917d_dither(struct nv50_head *head, struct nv50_head_atom *asyh)
 static int
 head917d_base(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
-=======
 	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	u32 bounds = 0;
 	int ret;
@@ -85,11 +77,7 @@ head917d_base(struct nv50_head *head, struct nv50_head_atom *asyh)
 static int
 head917d_curs_set(struct nv50_head *head, struct nv50_head_atom *asyh)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = nv50_disp(head->base.base.dev)->core->chan.push;
-=======
 	struct nvif_push *push = &nv50_disp(head->base.base.dev)->core->chan.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int i = head->base.index;
 	int ret;
 

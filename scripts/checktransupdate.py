@@ -10,37 +10,11 @@ differences occur, report the file and commits that need to be updated.
 
 The usage is as follows:
 - ./scripts/checktransupdate.py -l zh_CN
-<<<<<<< HEAD
-This will print all the files that need to be updated in the zh_CN locale.
-=======
 This will print all the files that need to be updated or translated in the zh_CN locale.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 - ./scripts/checktransupdate.py Documentation/translations/zh_CN/dev-tools/testing-overview.rst
 This will only print the status of the specified file.
 
 The output is something like:
-<<<<<<< HEAD
-Documentation/translations/zh_CN/dev-tools/testing-overview.rst (1 commits)
-commit 42fb9cfd5b18 ("Documentation: dev-tools: Add link to RV docs")
-"""
-
-import os
-from argparse import ArgumentParser, BooleanOptionalAction
-from datetime import datetime
-
-flag_p_c = False
-flag_p_uf = False
-flag_debug = False
-
-
-def dprint(*args, **kwargs):
-    if flag_debug:
-        print("[DEBUG] ", end="")
-        print(*args, **kwargs)
-
-
-def get_origin_path(file_path):
-=======
 Documentation/dev-tools/kfence.rst
 No translation in the locale of zh_CN
 
@@ -58,7 +32,6 @@ from datetime import datetime
 
 def get_origin_path(file_path):
     """Get the origin path from the translation path"""
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     paths = file_path.split("/")
     tidx = paths.index("translations")
     opaths = paths[:tidx]
@@ -67,27 +40,16 @@ def get_origin_path(file_path):
 
 
 def get_latest_commit_from(file_path, commit):
-<<<<<<< HEAD
-    command = "git log --pretty=format:%H%n%aD%n%cD%n%n%B {} -1 -- {}".format(
-        commit, file_path
-    )
-    dprint(command)
-=======
     """Get the latest commit from the specified commit for the specified file"""
     command = f"git log --pretty=format:%H%n%aD%n%cD%n%n%B {commit} -1 -- {file_path}"
     logging.debug(command)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     pipe = os.popen(command)
     result = pipe.read()
     result = result.split("\n")
     if len(result) <= 1:
         return None
 
-<<<<<<< HEAD
-    dprint("Result: {}".format(result[0]))
-=======
     logging.debug("Result: %s", result[0])
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
     return {
         "hash": result[0],
@@ -98,31 +60,19 @@ def get_latest_commit_from(file_path, commit):
 
 
 def get_origin_from_trans(origin_path, t_from_head):
-<<<<<<< HEAD
-=======
     """Get the latest origin commit from the translation commit"""
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     o_from_t = get_latest_commit_from(origin_path, t_from_head["hash"])
     while o_from_t is not None and o_from_t["author_date"] > t_from_head["author_date"]:
         o_from_t = get_latest_commit_from(origin_path, o_from_t["hash"] + "^")
     if o_from_t is not None:
-<<<<<<< HEAD
-        dprint("tracked origin commit id: {}".format(o_from_t["hash"]))
-=======
         logging.debug("tracked origin commit id: %s", o_from_t["hash"])
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     return o_from_t
 
 
 def get_commits_count_between(opath, commit1, commit2):
-<<<<<<< HEAD
-    command = "git log --pretty=format:%H {}...{} -- {}".format(commit1, commit2, opath)
-    dprint(command)
-=======
     """Get the commits count between two commits for the specified file"""
     command = f"git log --pretty=format:%H {commit1}...{commit2} -- {opath}"
     logging.debug(command)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     pipe = os.popen(command)
     result = pipe.read().split("\n")
     # filter out empty lines
@@ -131,25 +81,13 @@ def get_commits_count_between(opath, commit1, commit2):
 
 
 def pretty_output(commit):
-<<<<<<< HEAD
-    command = "git log --pretty='format:%h (\"%s\")' -1 {}".format(commit)
-    dprint(command)
-=======
     """Pretty print the commit message"""
     command = f"git log --pretty='format:%h (\"%s\")' -1 {commit}"
     logging.debug(command)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     pipe = os.popen(command)
     return pipe.read()
 
 
-<<<<<<< HEAD
-def check_per_file(file_path):
-    opath = get_origin_path(file_path)
-
-    if not os.path.isfile(opath):
-        dprint("Error: Cannot find the origin path for {}".format(file_path))
-=======
 def valid_commit(commit):
     """Check if the commit is valid or not"""
     msg = pretty_output(commit)
@@ -161,46 +99,18 @@ def check_per_file(file_path):
 
     if not os.path.isfile(opath):
         logging.error("Cannot find the origin path for {file_path}")
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         return
 
     o_from_head = get_latest_commit_from(opath, "HEAD")
     t_from_head = get_latest_commit_from(file_path, "HEAD")
 
     if o_from_head is None or t_from_head is None:
-<<<<<<< HEAD
-        print("Error: Cannot find the latest commit for {}".format(file_path))
-=======
         logging.error("Cannot find the latest commit for %s", file_path)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         return
 
     o_from_t = get_origin_from_trans(opath, t_from_head)
 
     if o_from_t is None:
-<<<<<<< HEAD
-        print("Error: Cannot find the latest origin commit for {}".format(file_path))
-        return
-
-    if o_from_head["hash"] == o_from_t["hash"]:
-        if flag_p_uf:
-            print("No update needed for {}".format(file_path))
-        return
-    else:
-        print("{}".format(file_path), end="\t")
-        commits = get_commits_count_between(
-            opath, o_from_t["hash"], o_from_head["hash"]
-        )
-        print("({} commits)".format(len(commits)))
-        if flag_p_c:
-            for commit in commits:
-                msg = pretty_output(commit)
-                if "Merge tag" not in msg:
-                    print("commit", msg)
-
-
-def main():
-=======
         logging.error("Error: Cannot find the latest origin commit for %s", file_path)
         return
 
@@ -285,7 +195,6 @@ def config_logging(log_level, log_file="checktransupdate.log"):
 
 def main():
     """Main function of the script"""
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     script_path = os.path.dirname(os.path.abspath(__file__))
     linux_path = os.path.join(script_path, "..")
 
@@ -293,30 +202,6 @@ def main():
     parser.add_argument(
         "-l",
         "--locale",
-<<<<<<< HEAD
-        help="Locale to check when files are not specified",
-    )
-    parser.add_argument(
-        "--print-commits",
-        action=BooleanOptionalAction,
-        default=True,
-        help="Print commits between the origin and the translation",
-    )
-
-    parser.add_argument(
-        "--print-updated-files",
-        action=BooleanOptionalAction,
-        default=False,
-        help="Print files that do no need to be updated",
-    )
-
-    parser.add_argument(
-        "--debug",
-        action=BooleanOptionalAction,
-        help="Print debug information",
-        default=False,
-    )
-=======
         default="zh_CN",
         type=valid_locales,
         help="Locale to check when files are not specified",
@@ -339,43 +224,12 @@ def main():
         '--logfile',
         default='checktransupdate.log',
         help='Set the logging file (default: checktransupdate.log)')
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
     parser.add_argument(
         "files", nargs="*", help="Files to check, if not specified, check all files"
     )
     args = parser.parse_args()
 
-<<<<<<< HEAD
-    global flag_p_c, flag_p_uf, flag_debug
-    flag_p_c = args.print_commits
-    flag_p_uf = args.print_updated_files
-    flag_debug = args.debug
-
-    # get files related to linux path
-    files = args.files
-    if len(files) == 0:
-        if args.locale is not None:
-            files = (
-                os.popen(
-                    "find {}/Documentation/translations/{} -type f".format(
-                        linux_path, args.locale
-                    )
-                )
-                .read()
-                .split("\n")
-            )
-        else:
-            files = (
-                os.popen(
-                    "find {}/Documentation/translations -type f".format(linux_path)
-                )
-                .read()
-                .split("\n")
-            )
-
-    files = list(filter(lambda x: x != "", files))
-=======
     # Configure logging based on the --log argument
     log_level = getattr(logging, args.log.upper(), logging.INFO)
     config_logging(log_level)
@@ -404,7 +258,6 @@ def main():
                     logging.info(os.path.relpath(os.path.abspath(file), linux_path))
                     logging.info("No translation in the locale of %s\n", args.locale)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     files = list(map(lambda x: os.path.relpath(os.path.abspath(x), linux_path), files))
 
     # cd to linux root directory

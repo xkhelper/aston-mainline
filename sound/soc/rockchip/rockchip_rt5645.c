@@ -233,11 +233,7 @@ MODULE_DEVICE_TABLE(of, rockchip_rt5645_of_match);
 
 static struct platform_driver snd_rk_mc_driver = {
 	.probe = snd_rk_mc_probe,
-<<<<<<< HEAD
-	.remove_new = snd_rk_mc_remove,
-=======
 	.remove = snd_rk_mc_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = DRV_NAME,
 		.pm = &snd_soc_pm_ops,

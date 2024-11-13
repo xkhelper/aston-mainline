@@ -14,14 +14,11 @@
 #include "ps.h"
 #include "usb.h"
 
-<<<<<<< HEAD
-=======
 static bool rtw_switch_usb_mode = true;
 module_param_named(switch_usb_mode, rtw_switch_usb_mode, bool, 0644);
 MODULE_PARM_DESC(switch_usb_mode,
 		 "Set to N to disable switching to USB 3 mode to avoid potential interference in the 2.4 GHz band (default: Y)");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RTW_USB_MAX_RXQ_LEN	512
 
 struct rtw_usb_txcb {
@@ -549,20 +546,12 @@ static void rtw_usb_rx_handler(struct work_struct *work)
 	struct rtw_usb *rtwusb = container_of(work, struct rtw_usb, rx_work);
 	struct rtw_dev *rtwdev = rtwusb->rtwdev;
 	const struct rtw_chip_info *chip = rtwdev->chip;
-<<<<<<< HEAD
-	struct rtw_rx_pkt_stat pkt_stat;
-	struct ieee80211_rx_status rx_status;
-	struct sk_buff *skb;
-	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
-	u32 pkt_offset;
-=======
 	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
 	struct ieee80211_rx_status rx_status;
 	u32 pkt_offset, next_pkt, urb_len;
 	struct rtw_rx_pkt_stat pkt_stat;
 	struct sk_buff *next_skb;
 	struct sk_buff *skb;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 *rx_desc;
 	int limit;
 
@@ -571,33 +560,12 @@ static void rtw_usb_rx_handler(struct work_struct *work)
 		if (!skb)
 			break;
 
-<<<<<<< HEAD
-		rx_desc = skb->data;
-		chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat,
-					 &rx_status);
-		pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
-			     pkt_stat.shift;
-
-		if (pkt_stat.is_c2h) {
-			skb_put(skb, pkt_stat.pkt_len + pkt_offset);
-			rtw_fw_c2h_cmd_rx_irqsafe(rtwdev, pkt_offset, skb);
-			continue;
-		}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (skb_queue_len(&rtwusb->rx_queue) >= RTW_USB_MAX_RXQ_LEN) {
 			dev_dbg_ratelimited(rtwdev->dev, "failed to get rx_queue, overflow\n");
 			dev_kfree_skb_any(skb);
 			continue;
 		}
 
-<<<<<<< HEAD
-		skb_put(skb, pkt_stat.pkt_len);
-		skb_reserve(skb, pkt_offset);
-		memcpy(skb->cb, &rx_status, sizeof(rx_status));
-		ieee80211_rx_irqsafe(rtwdev->hw, skb);
-=======
 		urb_len = skb->len;
 
 		do {
@@ -634,7 +602,6 @@ static void rtw_usb_rx_handler(struct work_struct *work)
 
 			urb_len -= next_pkt;
 		} while (skb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -678,10 +645,7 @@ static void rtw_usb_read_port_complete(struct urb *urb)
 			if (skb)
 				dev_kfree_skb_any(skb);
 		} else {
-<<<<<<< HEAD
-=======
 			skb_put(skb, urb->actual_length);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			skb_queue_tail(&rtwusb->rx_queue, skb);
 			queue_work(rtwusb->rxwq, &rtwusb->rx_work);
 		}
@@ -776,11 +740,6 @@ static void rtw_usb_link_ps(struct rtw_dev *rtwdev, bool enter)
 	/* empty function for rtw_hci_ops */
 }
 
-<<<<<<< HEAD
-static void rtw_usb_interface_cfg(struct rtw_dev *rtwdev)
-{
-	/* empty function for rtw_hci_ops */
-=======
 static void rtw_usb_init_burst_pkt_len(struct rtw_dev *rtwdev)
 {
 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
@@ -843,7 +802,6 @@ static void rtw_usb_dynamic_rx_agg(struct rtw_dev *rtwdev, bool enable)
 		/* Likely not found in USB devices. */
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct rtw_hci_ops rtw_usb_ops = {
@@ -855,10 +813,7 @@ static struct rtw_hci_ops rtw_usb_ops = {
 	.deep_ps = rtw_usb_deep_ps,
 	.link_ps = rtw_usb_link_ps,
 	.interface_cfg = rtw_usb_interface_cfg,
-<<<<<<< HEAD
-=======
 	.dynamic_rx_agg = rtw_usb_dynamic_rx_agg,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	.write8  = rtw_usb_write8,
 	.write16 = rtw_usb_write16,
@@ -973,8 +928,6 @@ static void rtw_usb_intf_deinit(struct rtw_dev *rtwdev,
 	usb_set_intfdata(intf, NULL);
 }
 
-<<<<<<< HEAD
-=======
 static int rtw_usb_switch_mode_new(struct rtw_dev *rtwdev)
 {
 	enum usb_device_speed cur_speed;
@@ -1046,7 +999,6 @@ static int rtw_usb_switch_mode(struct rtw_dev *rtwdev)
 	return rtw_usb_switch_mode_new(rtwdev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
 {
 	struct rtw_dev *rtwdev;
@@ -1102,8 +1054,6 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
 		goto err_destroy_rxwq;
 	}
 
-<<<<<<< HEAD
-=======
 	ret = rtw_usb_switch_mode(rtwdev);
 	if (ret) {
 		/* Not a fail, but we do need to skip rtw_register_hw. */
@@ -1112,7 +1062,6 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
 		goto err_destroy_rxwq;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = rtw_register_hw(rtwdev, rtwdev->hw);
 	if (ret) {
 		rtw_err(rtwdev, "failed to register hw\n");

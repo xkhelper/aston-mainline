@@ -336,11 +336,7 @@ static const struct regmap_access_table m10bmc_pmci_access_table = {
 	.n_yes_ranges	= ARRAY_SIZE(m10bmc_pmci_regmap_range),
 };
 
-<<<<<<< HEAD
-static struct regmap_config m10bmc_pmci_regmap_config = {
-=======
 static const struct regmap_config m10bmc_pmci_regmap_config = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits = 32,
 	.reg_stride = 4,
 	.val_bits = 32,

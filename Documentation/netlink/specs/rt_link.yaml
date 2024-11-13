@@ -903,8 +903,6 @@ definitions:
       - cfm-config
       - cfm-status
       - mst
-<<<<<<< HEAD
-=======
   -
     name: netkit-policy
     type: enum
@@ -921,7 +919,6 @@ definitions:
     entries:
       - name: l2
       - name: l3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 attribute-sets:
   -
@@ -2128,8 +2125,6 @@ attribute-sets:
       -
         name: id
         type: u32
-<<<<<<< HEAD
-=======
   -
     name: linkinfo-netkit-attrs
     name-prefix: ifla-netkit-
@@ -2152,7 +2147,6 @@ attribute-sets:
         name: mode
         type: u32
         enum: netkit-mode
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 sub-messages:
   -
@@ -2191,12 +2185,9 @@ sub-messages:
       -
         value: vrf
         attribute-set: linkinfo-vrf-attrs
-<<<<<<< HEAD
-=======
       -
         value: netkit
         attribute-set: linkinfo-netkit-attrs
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   -
     name: linkinfo-member-data-msg
     formats:

@@ -14,15 +14,6 @@
 #include "mpi-internal.h"
 #include "longlong.h"
 
-<<<<<<< HEAD
-void mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den);
-void mpi_fdiv_qr(MPI quot, MPI rem, MPI dividend, MPI divisor);
-
-void mpi_fdiv_r(MPI rem, MPI dividend, MPI divisor)
-{
-	int divisor_sign = divisor->sign;
-	MPI temp_divisor = NULL;
-=======
 int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den);
 
 int mpi_fdiv_r(MPI rem, MPI dividend, MPI divisor)
@@ -30,7 +21,6 @@ int mpi_fdiv_r(MPI rem, MPI dividend, MPI divisor)
 	int divisor_sign = divisor->sign;
 	MPI temp_divisor = NULL;
 	int err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* We need the original value of the divisor after the remainder has been
 	 * preliminary calculated.	We have to copy it to temporary space if it's
@@ -38,46 +28,6 @@ int mpi_fdiv_r(MPI rem, MPI dividend, MPI divisor)
 	 */
 	if (rem == divisor) {
 		temp_divisor = mpi_copy(divisor);
-<<<<<<< HEAD
-		divisor = temp_divisor;
-	}
-
-	mpi_tdiv_r(rem, dividend, divisor);
-
-	if (((divisor_sign?1:0) ^ (dividend->sign?1:0)) && rem->nlimbs)
-		mpi_add(rem, rem, divisor);
-
-	if (temp_divisor)
-		mpi_free(temp_divisor);
-}
-
-void mpi_fdiv_q(MPI quot, MPI dividend, MPI divisor)
-{
-	MPI tmp = mpi_alloc(mpi_get_nlimbs(quot));
-	mpi_fdiv_qr(quot, tmp, dividend, divisor);
-	mpi_free(tmp);
-}
-
-void mpi_fdiv_qr(MPI quot, MPI rem, MPI dividend, MPI divisor)
-{
-	int divisor_sign = divisor->sign;
-	MPI temp_divisor = NULL;
-
-	if (quot == divisor || rem == divisor) {
-		temp_divisor = mpi_copy(divisor);
-		divisor = temp_divisor;
-	}
-
-	mpi_tdiv_qr(quot, rem, dividend, divisor);
-
-	if ((divisor_sign ^ dividend->sign) && rem->nlimbs) {
-		mpi_sub_ui(quot, quot, 1);
-		mpi_add(rem, rem, divisor);
-	}
-
-	if (temp_divisor)
-		mpi_free(temp_divisor);
-=======
 		if (!temp_divisor)
 			return -ENOMEM;
 		divisor = temp_divisor;
@@ -94,7 +44,6 @@ free_temp_divisor:
 	mpi_free(temp_divisor);
 
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* If den == quot, den needs temporary storage.
@@ -104,21 +53,12 @@ free_temp_divisor:
  *   i.e no extra storage should be allocated.
  */
 
-<<<<<<< HEAD
-void mpi_tdiv_r(MPI rem, MPI num, MPI den)
-{
-	mpi_tdiv_qr(NULL, rem, num, den);
-}
-
-void mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
-=======
 int mpi_tdiv_r(MPI rem, MPI num, MPI den)
 {
 	return mpi_tdiv_qr(NULL, rem, num, den);
 }
 
 int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	mpi_ptr_t np, dp;
 	mpi_ptr_t qp, rp;
@@ -131,23 +71,16 @@ int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
 	mpi_limb_t q_limb;
 	mpi_ptr_t marker[5];
 	int markidx = 0;
-<<<<<<< HEAD
-=======
 	int err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Ensure space is enough for quotient and remainder.
 	 * We need space for an extra limb in the remainder, because it's
 	 * up-shifted (normalized) below.
 	 */
 	rsize = nsize + 1;
-<<<<<<< HEAD
-	mpi_resize(rem, rsize);
-=======
 	err = mpi_resize(rem, rsize);
 	if (err)
 		return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	qsize = rsize - dsize;	  /* qsize cannot be bigger than this.	*/
 	if (qsize <= 0) {
@@ -163,13 +96,6 @@ int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
 			quot->nlimbs = 0;
 			quot->sign = 0;
 		}
-<<<<<<< HEAD
-		return;
-	}
-
-	if (quot)
-		mpi_resize(quot, qsize);
-=======
 		return 0;
 	}
 
@@ -178,7 +104,6 @@ int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
 		if (err)
 			return err;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Read pointers here, when reallocation is finished.  */
 	np = num->d;
@@ -200,17 +125,10 @@ int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
 		rsize = rlimb != 0?1:0;
 		rem->nlimbs = rsize;
 		rem->sign = sign_remainder;
-<<<<<<< HEAD
-		return;
-	}
-
-
-=======
 		return 0;
 	}
 
 	err = -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (quot) {
 		qp = quot->d;
 		/* Make sure QP and NP point to different objects.  Otherwise the
@@ -218,11 +136,8 @@ int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
 		 */
 		if (qp == np) { /* Copy NP object to temporary space.  */
 			np = marker[markidx++] = mpi_alloc_limb_space(nsize);
-<<<<<<< HEAD
-=======
 			if (!np)
 				goto out_free_marker;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			MPN_COPY(np, qp, nsize);
 		}
 	} else /* Put quotient at top of remainder. */
@@ -243,11 +158,8 @@ int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
 		 * the original contents of the denominator.
 		 */
 		tp = marker[markidx++] = mpi_alloc_limb_space(dsize);
-<<<<<<< HEAD
-=======
 		if (!tp)
 			goto out_free_marker;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mpihelp_lshift(tp, dp, dsize, normalization_steps);
 		dp = tp;
 
@@ -269,11 +181,8 @@ int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
 			mpi_ptr_t tp;
 
 			tp = marker[markidx++] = mpi_alloc_limb_space(dsize);
-<<<<<<< HEAD
-=======
 			if (!tp)
 				goto out_free_marker;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			MPN_COPY(tp, dp, dsize);
 			dp = tp;
 		}
@@ -308,20 +217,14 @@ int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den)
 
 	rem->nlimbs = rsize;
 	rem->sign	= sign_remainder;
-<<<<<<< HEAD
-=======
 
 	err = 0;
 
 out_free_marker:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (markidx) {
 		markidx--;
 		mpi_free_limb_space(marker[markidx]);
 	}
-<<<<<<< HEAD
-=======
 
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

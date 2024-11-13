@@ -429,11 +429,6 @@ static struct dentry *autofs_expire_indirect(struct super_block *sb,
 	if (!root)
 		return NULL;
 
-<<<<<<< HEAD
-	timeout = sbi->exp_timeout;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dentry = NULL;
 	while ((dentry = get_next_positive_subdir(dentry, root))) {
 		spin_lock(&sbi->fs_lock);
@@ -444,14 +439,11 @@ static struct dentry *autofs_expire_indirect(struct super_block *sb,
 		}
 		spin_unlock(&sbi->fs_lock);
 
-<<<<<<< HEAD
-=======
 		if (ino->flags & AUTOFS_INF_EXPIRE_SET)
 			timeout = ino->exp_timeout;
 		else
 			timeout = sbi->exp_timeout;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		expired = should_expire(dentry, mnt, timeout, how);
 		if (!expired)
 			continue;

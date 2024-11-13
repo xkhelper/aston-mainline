@@ -163,11 +163,7 @@ static const struct regulator_ops mp5416_buck_ops = {
 	.set_ramp_delay		= regulator_set_ramp_delay_regmap,
 };
 
-<<<<<<< HEAD
-static struct regulator_desc mp5416_regulators_desc[MP5416_MAX_REGULATORS] = {
-=======
 static const struct regulator_desc mp5416_regulators_desc[MP5416_MAX_REGULATORS] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	MP5416BUCK("buck1", 1, mp5416_I_limits1, MP5416_REG_CTL1, BIT(0), 1),
 	MP5416BUCK("buck2", 2, mp5416_I_limits2, MP5416_REG_CTL1, BIT(1), 2),
 	MP5416BUCK("buck3", 3, mp5416_I_limits1, MP5416_REG_CTL1, BIT(2), 1),
@@ -178,11 +174,7 @@ static const struct regulator_desc mp5416_regulators_desc[MP5416_MAX_REGULATORS]
 	MP5416LDO("ldo4", 4, BIT(1)),
 };
 
-<<<<<<< HEAD
-static struct regulator_desc mp5496_regulators_desc[MP5416_MAX_REGULATORS] = {
-=======
 static const struct regulator_desc mp5496_regulators_desc[MP5416_MAX_REGULATORS] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	MP5416BUCK("buck1", 1, mp5416_I_limits1, MP5416_REG_CTL1, BIT(0), 1),
 	MP5416BUCK("buck2", 2, mp5416_I_limits2, MP5416_REG_CTL1, BIT(1), 1),
 	MP5416BUCK("buck3", 3, mp5416_I_limits1, MP5416_REG_CTL1, BIT(2), 1),

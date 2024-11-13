@@ -48,8 +48,6 @@ bool pci_ats_supported(struct pci_dev *dev)
 EXPORT_SYMBOL_GPL(pci_ats_supported);
 
 /**
-<<<<<<< HEAD
-=======
  * pci_prepare_ats - Setup the PS for ATS
  * @dev: the PCI device
  * @ps: the IOMMU page shift
@@ -83,7 +81,6 @@ int pci_prepare_ats(struct pci_dev *dev, int ps)
 EXPORT_SYMBOL_GPL(pci_prepare_ats);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * pci_enable_ats - enable the ATS capability
  * @dev: the PCI device
  * @ps: the IOMMU page shift
@@ -491,13 +488,8 @@ void pci_restore_pasid_state(struct pci_dev *pdev)
  * pci_pasid_features - Check which PASID features are supported
  * @pdev: PCI device structure
  *
-<<<<<<< HEAD
- * Returns a negative value when no PASI capability is present.
- * Otherwise is returns a bitmask with supported features. Current
-=======
  * Return a negative value when no PASID capability is present.
  * Otherwise return a bitmask with supported features. Current
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * features reported are:
  * PCI_PASID_CAP_EXEC - Execute permission supported
  * PCI_PASID_CAP_PRIV - Privileged mode supported

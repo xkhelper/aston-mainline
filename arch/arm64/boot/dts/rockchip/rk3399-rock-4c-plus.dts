@@ -7,12 +7,7 @@
 
 /dts-v1/;
 #include <dt-bindings/leds/common.h>
-<<<<<<< HEAD
-#include "rk3399.dtsi"
-#include "rk3399-t-opp.dtsi"
-=======
 #include "rk3399-t.dtsi"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	model = "Radxa ROCK 4C+";
@@ -57,8 +52,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	rk809-sound {
 		compatible = "simple-audio-card";
 		simple-audio-card,format = "i2s";
@@ -74,7 +67,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sdio_pwrseq: sdio-pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		clocks = <&rk809 1>;
@@ -223,12 +215,6 @@
 		interrupt-parent = <&gpio1>;
 		interrupts = <RK_PC5 IRQ_TYPE_LEVEL_LOW>;
 		#clock-cells = <1>;
-<<<<<<< HEAD
-		clock-output-names = "rk808-clkout1", "rk808-clkout2";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pmic_int_l>;
-		rockchip,system-power-controller;
-=======
 		clock-names = "mclk";
 		clocks = <&cru SCLK_I2S_8CH_OUT>;
 		clock-output-names = "rk808-clkout1", "rk808-clkout2";
@@ -236,7 +222,6 @@
 		pinctrl-0 = <&pmic_int_l>, <&i2s_8ch_mclk>;
 		rockchip,system-power-controller;
 		#sound-dai-cells = <0>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wakeup-source;
 
 		vcc1-supply = <&vcc5v0_sys>;
@@ -478,8 +463,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &i2s0 {
 	status = "okay";
 };
@@ -500,7 +483,6 @@
 		<3 RK_PD7 1 &pcfg_pull_none>;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &i2s2 {
 	status = "okay";
 };
@@ -528,15 +510,12 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	i2s0 {
 		i2s_8ch_mclk: i2s-8ch-mclk {
 			rockchip,pins = <4 RK_PA0 1 &pcfg_pull_none>;
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	leds {
 		user_led1: user-led1 {
 			rockchip,pins = <3 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;

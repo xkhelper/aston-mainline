@@ -2830,29 +2830,17 @@ static int skl_wm_add_affected_planes(struct intel_atomic_state *state,
 }
 
 /*
-<<<<<<< HEAD
- * If Fixed Refresh Rate:
-=======
  * If Fixed Refresh Rate or For VRR case Vmin = Vmax = Flipline:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Program DEEP PKG_C_LATENCY Pkg C with highest valid latency from
  * watermark level1 and up and above. If watermark level 1 is
  * invalid program it with all 1's.
  * Program PKG_C_LATENCY Added Wake Time = DSB execution time
-<<<<<<< HEAD
- * If Variable Refresh Rate:
-=======
  * If Variable Refresh Rate where Vmin != Vmax != Flipline:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Program DEEP PKG_C_LATENCY Pkg C with all 1's.
  * Program PKG_C_LATENCY Added Wake Time = 0
  */
 static void
-<<<<<<< HEAD
-skl_program_dpkgc_latency(struct drm_i915_private *i915, bool vrr_enabled)
-=======
 skl_program_dpkgc_latency(struct drm_i915_private *i915, bool enable_dpkgc)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 max_latency = 0;
 	u32 clear = 0, val = 0;
@@ -2861,25 +2849,15 @@ skl_program_dpkgc_latency(struct drm_i915_private *i915, bool enable_dpkgc)
 	if (DISPLAY_VER(i915) < 20)
 		return;
 
-<<<<<<< HEAD
-	if (vrr_enabled) {
-		max_latency = LNL_PKG_C_LATENCY_MASK;
-		added_wake_time = 0;
-	} else {
-=======
 	if (enable_dpkgc) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		max_latency = skl_watermark_max_latency(i915, 1);
 		if (max_latency == 0)
 			max_latency = LNL_PKG_C_LATENCY_MASK;
 		added_wake_time = DSB_EXE_TIME +
 			i915->display.sagv.block_time_us;
-<<<<<<< HEAD
-=======
 	} else {
 		max_latency = LNL_PKG_C_LATENCY_MASK;
 		added_wake_time = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	clear |= LNL_ADDED_WAKE_TIME_MASK | LNL_PKG_C_LATENCY_MASK;
@@ -2895,11 +2873,7 @@ skl_compute_wm(struct intel_atomic_state *state)
 	struct intel_crtc *crtc;
 	struct intel_crtc_state __maybe_unused *new_crtc_state;
 	int ret, i;
-<<<<<<< HEAD
-	bool vrr_enabled = false;
-=======
 	bool enable_dpkgc = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for_each_new_intel_crtc_in_state(state, crtc, new_crtc_state, i) {
 		ret = skl_build_pipe_wm(state, crtc);
@@ -2925,13 +2899,6 @@ skl_compute_wm(struct intel_atomic_state *state)
 		if (ret)
 			return ret;
 
-<<<<<<< HEAD
-		if (new_crtc_state->vrr.enable)
-			vrr_enabled = true;
-	}
-
-	skl_program_dpkgc_latency(to_i915(state->base.dev), vrr_enabled);
-=======
 		if ((new_crtc_state->vrr.vmin == new_crtc_state->vrr.vmax &&
 		     new_crtc_state->vrr.vmin == new_crtc_state->vrr.flipline) ||
 		    !new_crtc_state->vrr.enable)
@@ -2939,7 +2906,6 @@ skl_compute_wm(struct intel_atomic_state *state)
 	}
 
 	skl_program_dpkgc_latency(to_i915(state->base.dev), enable_dpkgc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	skl_print_wm_changes(state);
 

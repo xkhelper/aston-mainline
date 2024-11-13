@@ -12,12 +12,9 @@
 #include <dt-bindings/phy/phy.h>
 #include <dt-bindings/pinctrl/mediatek,mt8188-pinfunc.h>
 #include <dt-bindings/power/mediatek,mt8188-power.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/reset/mt8188-resets.h>
 #include <dt-bindings/thermal/thermal.h>
 #include <dt-bindings/thermal/mediatek,lvts-thermal.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	compatible = "mediatek,mt8188";
@@ -423,8 +420,6 @@
 		method = "smc";
 	};
 
-<<<<<<< HEAD
-=======
 	thermal_zones: thermal-zones {
 		cpu-little0-thermal {
 			polling-delay = <1000>;
@@ -869,7 +864,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	timer: timer {
 		compatible = "arm,armv8-timer";
 		interrupt-parent = <&gic>;
@@ -917,10 +911,7 @@
 			compatible = "mediatek,mt8188-infracfg-ao", "syscon";
 			reg = <0 0x10001000 0 0x1000>;
 			#clock-cells = <1>;
-<<<<<<< HEAD
-=======
 			#reset-cells = <1>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		pericfg: syscon@10003000 {
@@ -1394,8 +1385,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		lvts_ap: thermal-sensor@1100b000 {
 			compatible = "mediatek,mt8188-lvts-ap";
 			reg = <0 0x1100b000 0 0xc00>;
@@ -1407,7 +1396,6 @@
 			#thermal-sensor-cells = <1>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spi1: spi@11010000 {
 			compatible = "mediatek,mt8188-spi-ipm", "mediatek,spi-ipm";
 			#address-cells = <1>;
@@ -1521,8 +1509,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		lvts_mcu: thermal-sensor@11278000 {
 			compatible = "mediatek,mt8188-lvts-mcu";
 			reg = <0 0x11278000 0 0x1000>;
@@ -1534,7 +1520,6 @@
 			#thermal-sensor-cells = <1>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i2c0: i2c@11280000 {
 			compatible = "mediatek,mt8188-i2c";
 			reg = <0 0x11280000 0 0x1000>,
@@ -1758,8 +1743,6 @@
 			#clock-cells = <1>;
 		};
 
-<<<<<<< HEAD
-=======
 		efuse: efuse@11f20000 {
 			compatible = "mediatek,mt8188-efuse", "mediatek,efuse";
 			reg = <0 0x11f20000 0 0x1000>;
@@ -1771,7 +1754,6 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gpu: gpu@13000000 {
 			compatible = "mediatek,mt8188-mali", "arm,mali-valhall-jm";
 			reg = <0 0x13000000 0 0x4000>;
@@ -1786,10 +1768,7 @@
 					<&spm MT8188_POWER_DOMAIN_MFG3>,
 					<&spm MT8188_POWER_DOMAIN_MFG4>;
 			power-domain-names = "core0", "core1", "core2";
-<<<<<<< HEAD
-=======
 			#cooling-cells = <2>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 

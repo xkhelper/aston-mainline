@@ -5,23 +5,16 @@
  */
 
 #define pr_fmt(fmt) "riscv-imsic: " fmt
-<<<<<<< HEAD
-=======
 #include <linux/acpi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/cpu.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
 #include <linux/irq.h>
 #include <linux/irqchip.h>
 #include <linux/irqchip/chained_irq.h>
-<<<<<<< HEAD
-#include <linux/module.h>
-=======
 #include <linux/irqchip/riscv-imsic.h>
 #include <linux/module.h>
 #include <linux/pci.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/spinlock.h>
 #include <linux/smp.h>
 
@@ -192,11 +185,7 @@ static int __init imsic_early_dt_init(struct device_node *node, struct device_no
 	int rc;
 
 	/* Setup IMSIC state */
-<<<<<<< HEAD
-	rc = imsic_setup_state(fwnode);
-=======
 	rc = imsic_setup_state(fwnode, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		pr_err("%pfwP: failed to setup state (error %d)\n", fwnode, rc);
 		return rc;
@@ -213,8 +202,6 @@ static int __init imsic_early_dt_init(struct device_node *node, struct device_no
 }
 
 IRQCHIP_DECLARE(riscv_imsic, "riscv,imsics", imsic_early_dt_init);
-<<<<<<< HEAD
-=======
 
 #ifdef CONFIG_ACPI
 
@@ -274,4 +261,3 @@ static int __init imsic_early_acpi_init(union acpi_subtable_headers *header,
 IRQCHIP_ACPI_DECLARE(riscv_imsic, ACPI_MADT_TYPE_IMSIC, NULL,
 		     1, imsic_early_acpi_init);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

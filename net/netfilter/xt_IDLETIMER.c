@@ -458,30 +458,6 @@ static void idletimer_tg_destroy_v1(const struct xt_tgdtor_param *par)
 
 static struct xt_target idletimer_tg[] __read_mostly = {
 	{
-<<<<<<< HEAD
-	.name		= "IDLETIMER",
-	.family		= NFPROTO_UNSPEC,
-	.target		= idletimer_tg_target,
-	.targetsize     = sizeof(struct idletimer_tg_info),
-	.usersize	= offsetof(struct idletimer_tg_info, timer),
-	.checkentry	= idletimer_tg_checkentry,
-	.destroy        = idletimer_tg_destroy,
-	.me		= THIS_MODULE,
-	},
-	{
-	.name		= "IDLETIMER",
-	.family		= NFPROTO_UNSPEC,
-	.revision	= 1,
-	.target		= idletimer_tg_target_v1,
-	.targetsize     = sizeof(struct idletimer_tg_info_v1),
-	.usersize	= offsetof(struct idletimer_tg_info_v1, timer),
-	.checkentry	= idletimer_tg_checkentry_v1,
-	.destroy        = idletimer_tg_destroy_v1,
-	.me		= THIS_MODULE,
-	},
-
-
-=======
 		.name		= "IDLETIMER",
 		.family		= NFPROTO_IPV4,
 		.target		= idletimer_tg_target,
@@ -525,7 +501,6 @@ static struct xt_target idletimer_tg[] __read_mostly = {
 		.me		= THIS_MODULE,
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct class *idletimer_tg_class;

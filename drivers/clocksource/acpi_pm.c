@@ -25,13 +25,10 @@
 #include <asm/io.h>
 #include <asm/time.h>
 
-<<<<<<< HEAD
-=======
 static void *suspend_resume_cb_data;
 
 static void (*suspend_resume_callback)(void *data, bool suspend);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The I/O port the PMTMR resides at.
  * The location is detected during setup_arch(),
@@ -65,8 +62,6 @@ u32 acpi_pm_read_verified(void)
 	return v2;
 }
 
-<<<<<<< HEAD
-=======
 void acpi_pmtmr_register_suspend_resume_callback(void (*cb)(void *data, bool suspend), void *data)
 {
 	suspend_resume_callback = cb;
@@ -93,7 +88,6 @@ static void acpi_pm_resume(struct clocksource *cs)
 		suspend_resume_callback(suspend_resume_cb_data, false);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static u64 acpi_pm_read(struct clocksource *cs)
 {
 	return (u64)read_pmtmr();
@@ -105,11 +99,8 @@ static struct clocksource clocksource_acpi_pm = {
 	.read		= acpi_pm_read,
 	.mask		= (u64)ACPI_PM_MASK,
 	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
-<<<<<<< HEAD
-=======
 	.suspend	= acpi_pm_suspend,
 	.resume		= acpi_pm_resume,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 

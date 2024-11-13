@@ -710,13 +710,10 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
 			     DIS_PARTIAL_AUTOSTRIP |
 			     DIS_AUTOSTRIP))
 	},
-<<<<<<< HEAD
-=======
 	{ XE_RTP_NAME("15016589081"),
 	  XE_RTP_RULES(GRAPHICS_VERSION(2004), ENGINE_CLASS(RENDER)),
 	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Xe2_HPG */
 	{ XE_RTP_NAME("15010599737"),
@@ -740,13 +737,10 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
 			     DIS_PARTIAL_AUTOSTRIP |
 			     DIS_AUTOSTRIP))
 	},
-<<<<<<< HEAD
-=======
 	{ XE_RTP_NAME("15016589081"),
 	  XE_RTP_RULES(GRAPHICS_VERSION(2001), ENGINE_CLASS(RENDER)),
 	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	{}
 };
@@ -773,10 +767,7 @@ void xe_wa_process_oob(struct xe_gt *gt)
 
 	xe_rtp_process_ctx_enable_active_tracking(&ctx, gt->wa_active.oob,
 						  ARRAY_SIZE(oob_was));
-<<<<<<< HEAD
-=======
 	gt->wa_active.oob_initialized = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_rtp_process(&ctx, oob_was);
 }
 

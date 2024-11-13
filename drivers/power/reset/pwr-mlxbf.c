@@ -18,10 +18,6 @@
 
 struct pwr_mlxbf {
 	struct work_struct reboot_work;
-<<<<<<< HEAD
-	struct work_struct shutdown_work;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const char *hid;
 };
 
@@ -30,34 +26,17 @@ static void pwr_mlxbf_reboot_work(struct work_struct *work)
 	acpi_bus_generate_netlink_event("button/reboot.*", "Reboot Button", 0x80, 1);
 }
 
-<<<<<<< HEAD
-static void pwr_mlxbf_shutdown_work(struct work_struct *work)
-{
-	acpi_bus_generate_netlink_event("button/power.*", "Power Button", 0x80, 1);
-}
-
-static irqreturn_t pwr_mlxbf_irq(int irq, void *ptr)
-{
-	const char *rst_pwr_hid = "MLNXBF24";
-	const char *low_pwr_hid = "MLNXBF29";
-=======
 static irqreturn_t pwr_mlxbf_irq(int irq, void *ptr)
 {
 	const char *rst_pwr_hid = "MLNXBF24";
 	const char *shutdown_hid = "MLNXBF29";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pwr_mlxbf *priv = ptr;
 
 	if (!strncmp(priv->hid, rst_pwr_hid, 8))
 		schedule_work(&priv->reboot_work);
 
-<<<<<<< HEAD
-	if (!strncmp(priv->hid, low_pwr_hid, 8))
-		schedule_work(&priv->shutdown_work);
-=======
 	if (!strncmp(priv->hid, shutdown_hid, 8))
 		orderly_poweroff(true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return IRQ_HANDLED;
 }
@@ -85,13 +64,6 @@ static int pwr_mlxbf_probe(struct platform_device *pdev)
 	if (irq < 0)
 		return dev_err_probe(dev, irq, "Error getting %s irq.\n", priv->hid);
 
-<<<<<<< HEAD
-	err = devm_work_autocancel(dev, &priv->shutdown_work, pwr_mlxbf_shutdown_work);
-	if (err)
-		return err;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = devm_work_autocancel(dev, &priv->reboot_work, pwr_mlxbf_reboot_work);
 	if (err)
 		return err;

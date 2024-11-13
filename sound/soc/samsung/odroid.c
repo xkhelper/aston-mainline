@@ -341,11 +341,7 @@ static struct platform_driver odroid_audio_driver = {
 		.pm		= &snd_soc_pm_ops,
 	},
 	.probe	= odroid_audio_probe,
-<<<<<<< HEAD
-	.remove_new = odroid_audio_remove,
-=======
 	.remove = odroid_audio_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(odroid_audio_driver);
 

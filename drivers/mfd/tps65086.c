@@ -45,11 +45,7 @@ static const struct regmap_irq tps65086_irqs[] = {
 	REGMAP_IRQ_REG(TPS65086_IRQ_FAULT, 0, TPS65086_IRQ_FAULT_MASK),
 };
 
-<<<<<<< HEAD
-static struct regmap_irq_chip tps65086_irq_chip = {
-=======
 static const struct regmap_irq_chip tps65086_irq_chip = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "tps65086",
 	.status_base = TPS65086_IRQ,
 	.mask_base = TPS65086_IRQ_MASK,

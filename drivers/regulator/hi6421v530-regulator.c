@@ -21,18 +21,10 @@
  * struct hi6421v530_regulator_info - hi6421v530 regulator information
  * @desc: regulator description
  * @mode_mask: ECO mode bitmask of LDOs; for BUCKs, this masks sleep
-<<<<<<< HEAD
- * @eco_microamp: eco mode load upper limit (in uA), valid for LDOs only
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct hi6421v530_regulator_info {
 	struct regulator_desc rdesc;
 	u8 mode_mask;
-<<<<<<< HEAD
-	u32 eco_microamp;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* HI6421v530 regulators */
@@ -74,16 +66,9 @@ static const struct regulator_ops hi6421v530_ldo_ops;
  * emask - enable mask
  * odelay - off/on delay time in uS
  * ecomask - eco mode mask
-<<<<<<< HEAD
- * ecoamp - eco mode load uppler limit in uA
- */
-#define HI6421V530_LDO(_ID, v_table, vreg, vmask, ereg, emask,		\
-		   odelay, ecomask, ecoamp) {				\
-=======
  */
 #define HI6421V530_LDO(_ID, v_table, vreg, vmask, ereg, emask,		\
 		   odelay, ecomask) {					\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.rdesc = {							\
 		.name		 = #_ID,				\
 		.of_match        = of_match_ptr(#_ID),			\
@@ -102,27 +87,10 @@ static const struct regulator_ops hi6421v530_ldo_ops;
 		.off_on_delay	 = odelay,				\
 	},								\
 	.mode_mask	= ecomask,					\
-<<<<<<< HEAD
-	.eco_microamp	= ecoamp,					\
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* HI6421V530 regulator information */
 
-<<<<<<< HEAD
-static struct hi6421v530_regulator_info hi6421v530_regulator_info[] = {
-	HI6421V530_LDO(LDO3, ldo_3_voltages, 0x061, 0xf, 0x060, 0x2,
-		   20000, 0x6, 8000),
-	HI6421V530_LDO(LDO9, ldo_9_11_voltages, 0x06b, 0x7, 0x06a, 0x2,
-		   40000, 0x6, 8000),
-	HI6421V530_LDO(LDO11, ldo_9_11_voltages, 0x06f, 0x7, 0x06e, 0x2,
-		   40000, 0x6, 8000),
-	HI6421V530_LDO(LDO15, ldo_15_16_voltages, 0x077, 0x7, 0x076, 0x2,
-		   40000, 0x6, 8000),
-	HI6421V530_LDO(LDO16, ldo_15_16_voltages, 0x079, 0x7, 0x078, 0x2,
-		   40000, 0x6, 8000),
-=======
 static const struct hi6421v530_regulator_info hi6421v530_regulator_info[] = {
 	HI6421V530_LDO(LDO3, ldo_3_voltages, 0x061, 0xf, 0x060, 0x2,
 		   20000, 0x6),
@@ -134,23 +102,15 @@ static const struct hi6421v530_regulator_info hi6421v530_regulator_info[] = {
 		   40000, 0x6),
 	HI6421V530_LDO(LDO16, ldo_15_16_voltages, 0x079, 0x7, 0x078, 0x2,
 		   40000, 0x6),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static unsigned int hi6421v530_regulator_ldo_get_mode(
 					struct regulator_dev *rdev)
 {
-<<<<<<< HEAD
-	struct hi6421v530_regulator_info *info;
-	unsigned int reg_val;
-
-	info = rdev_get_drvdata(rdev);
-=======
 	const struct hi6421v530_regulator_info *info;
 	unsigned int reg_val;
 
 	info = container_of(rdev->desc, struct hi6421v530_regulator_info, rdesc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	regmap_read(rdev->regmap, rdev->desc->enable_reg, &reg_val);
 
 	if (reg_val & (info->mode_mask))
@@ -162,17 +122,10 @@ static unsigned int hi6421v530_regulator_ldo_get_mode(
 static int hi6421v530_regulator_ldo_set_mode(struct regulator_dev *rdev,
 						unsigned int mode)
 {
-<<<<<<< HEAD
-	struct hi6421v530_regulator_info *info;
-	unsigned int new_mode;
-
-	info = rdev_get_drvdata(rdev);
-=======
 	const struct hi6421v530_regulator_info *info;
 	unsigned int new_mode;
 
 	info = container_of(rdev->desc, struct hi6421v530_regulator_info, rdesc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (mode) {
 	case REGULATOR_MODE_NORMAL:
 		new_mode = 0;
@@ -219,10 +172,6 @@ static int hi6421v530_regulator_probe(struct platform_device *pdev)
 	for (i = 0; i < ARRAY_SIZE(hi6421v530_regulator_info); i++) {
 		config.dev = pdev->dev.parent;
 		config.regmap = pmic->regmap;
-<<<<<<< HEAD
-		config.driver_data = &hi6421v530_regulator_info[i];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		rdev = devm_regulator_register(&pdev->dev,
 				&hi6421v530_regulator_info[i].rdesc,

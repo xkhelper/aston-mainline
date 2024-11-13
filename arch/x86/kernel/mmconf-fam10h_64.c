@@ -9,10 +9,7 @@
 #include <linux/pci.h>
 #include <linux/dmi.h>
 #include <linux/range.h>
-<<<<<<< HEAD
-=======
 #include <linux/acpi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/pci-direct.h>
 #include <linux/sort.h>

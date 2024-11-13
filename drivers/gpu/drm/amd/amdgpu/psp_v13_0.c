@@ -81,11 +81,8 @@ MODULE_FIRMWARE("amdgpu/psp_14_0_4_ta.bin");
 /* memory training timeout define */
 #define MEM_TRAIN_SEND_MSG_TIMEOUT_US	3000000
 
-<<<<<<< HEAD
-=======
 #define regMP1_PUB_SCRATCH0	0x3b10090
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int psp_v13_0_init_microcode(struct psp_context *psp)
 {
 	struct amdgpu_device *adev = psp->adev;
@@ -812,8 +809,6 @@ static bool psp_v13_0_get_ras_capability(struct psp_context *psp)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static bool psp_v13_0_is_aux_sos_load_required(struct psp_context *psp)
 {
 	struct amdgpu_device *adev = psp->adev;
@@ -828,7 +823,6 @@ static bool psp_v13_0_is_aux_sos_load_required(struct psp_context *psp)
 	return (pmfw_ver < 0x557300);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct psp_funcs psp_v13_0_funcs = {
 	.init_microcode = psp_v13_0_init_microcode,
 	.wait_for_bootloader = psp_v13_0_wait_for_bootloader_steady_state,
@@ -852,10 +846,7 @@ static const struct psp_funcs psp_v13_0_funcs = {
 	.vbflash_stat = psp_v13_0_vbflash_status,
 	.fatal_error_recovery_quirk = psp_v13_0_fatal_error_recovery_quirk,
 	.get_ras_capability = psp_v13_0_get_ras_capability,
-<<<<<<< HEAD
-=======
 	.is_aux_sos_load_required = psp_v13_0_is_aux_sos_load_required,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void psp_v13_0_set_psp_funcs(struct psp_context *psp)

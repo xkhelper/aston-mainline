@@ -12,11 +12,7 @@
 #include <linux/wait.h>
 
 #include "iwl-trans.h" /* for IWL_MAX_TID_COUNT */
-<<<<<<< HEAD
-#include "fw-api.h" /* IWL_MVM_STATION_COUNT_MAX */
-=======
 #include "fw-api.h" /* IWL_STATION_COUNT_MAX */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "rs.h"
 
 struct iwl_mvm;
@@ -365,11 +361,7 @@ struct iwl_mvm_mpdu_counter {
  */
 struct iwl_mvm_tpt_counter {
 	spinlock_t lock;
-<<<<<<< HEAD
-	struct iwl_mvm_mpdu_counter per_link[IWL_MVM_FW_MAX_LINK_ID];
-=======
 	struct iwl_mvm_mpdu_counter per_link[IWL_FW_MAX_LINK_ID];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long window_start;
 } ____cacheline_aligned_in_smp;
 

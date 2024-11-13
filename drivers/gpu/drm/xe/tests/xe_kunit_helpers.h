@@ -14,9 +14,6 @@ struct xe_device *xe_kunit_helper_alloc_xe_device(struct kunit *test,
 						  struct device *dev);
 int xe_kunit_helper_xe_device_test_init(struct kunit *test);
 
-<<<<<<< HEAD
-=======
 int xe_kunit_helper_xe_device_live_test_init(struct kunit *test);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

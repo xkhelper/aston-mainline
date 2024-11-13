@@ -838,13 +838,10 @@ void pci_epc_destroy(struct pci_epc *epc)
 {
 	pci_ep_cfs_remove_epc_group(epc->group);
 	device_unregister(&epc->dev);
-<<<<<<< HEAD
-=======
 
 #ifdef CONFIG_PCI_DOMAINS_GENERIC
 	pci_bus_release_domain_nr(&epc->dev, epc->domain_nr);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(pci_epc_destroy);
 
@@ -907,8 +904,6 @@ __pci_epc_create(struct device *dev, const struct pci_epc_ops *ops,
 	epc->dev.release = pci_epc_release;
 	epc->ops = ops;
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_PCI_DOMAINS_GENERIC
 	epc->domain_nr = pci_bus_find_domain_nr(NULL, dev);
 #else
@@ -919,7 +914,6 @@ __pci_epc_create(struct device *dev, const struct pci_epc_ops *ops,
 	WARN_ONCE(1, "This architecture doesn't support generic PCI domains\n");
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = dev_set_name(&epc->dev, "%s", dev_name(dev));
 	if (ret)
 		goto put_dev;

@@ -1474,11 +1474,7 @@ static const struct dev_pm_ops platform_dev_pm_ops = {
 	USE_PLATFORM_PM_SLEEP_OPS
 };
 
-<<<<<<< HEAD
-struct bus_type platform_bus_type = {
-=======
 const struct bus_type platform_bus_type = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name		= "platform",
 	.dev_groups	= platform_dev_groups,
 	.match		= platform_match,

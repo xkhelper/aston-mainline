@@ -882,11 +882,7 @@ struct nvsp_message {
 
 #define VRSS_SEND_TAB_SIZE 16  /* must be power of 2 */
 #define VRSS_CHANNEL_MAX 64
-<<<<<<< HEAD
-#define VRSS_CHANNEL_DEFAULT 8
-=======
 #define VRSS_CHANNEL_DEFAULT 16
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define RNDIS_MAX_PKT_DEFAULT 8
 #define RNDIS_PKT_ALIGN_DEFAULT 8

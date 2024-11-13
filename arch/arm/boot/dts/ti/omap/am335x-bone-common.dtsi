@@ -221,12 +221,6 @@
 		reg = <0x50>;
 		vcc-supply = <&ldo4_reg>;
 
-<<<<<<< HEAD
-		#address-cells = <1>;
-		#size-cells = <1>;
-		baseboard_data: baseboard_data@0 {
-			reg = <0 0x100>;
-=======
 		nvmem-layout {
 			compatible = "fixed-layout";
 			#address-cells = <1>;
@@ -235,7 +229,6 @@
 			baseboard_data: baseboard_data@0 {
 				reg = <0 0x100>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };
@@ -250,12 +243,6 @@
 	cape_eeprom0: cape_eeprom0@54 {
 		compatible = "atmel,24c256";
 		reg = <0x54>;
-<<<<<<< HEAD
-		#address-cells = <1>;
-		#size-cells = <1>;
-		cape0_data: cape_data@0 {
-			reg = <0 0x100>;
-=======
 
 		nvmem-layout {
 			compatible = "fixed-layout";
@@ -265,19 +252,12 @@
 			cape0_data: cape_data@0 {
 				reg = <0 0x100>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 
 	cape_eeprom1: cape_eeprom1@55 {
 		compatible = "atmel,24c256";
 		reg = <0x55>;
-<<<<<<< HEAD
-		#address-cells = <1>;
-		#size-cells = <1>;
-		cape1_data: cape_data@0 {
-			reg = <0 0x100>;
-=======
 
 		nvmem-layout {
 			compatible = "fixed-layout";
@@ -287,19 +267,12 @@
 			cape1_data: cape_data@0 {
 				reg = <0 0x100>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 
 	cape_eeprom2: cape_eeprom2@56 {
 		compatible = "atmel,24c256";
 		reg = <0x56>;
-<<<<<<< HEAD
-		#address-cells = <1>;
-		#size-cells = <1>;
-		cape2_data: cape_data@0 {
-			reg = <0 0x100>;
-=======
 
 		nvmem-layout {
 			compatible = "fixed-layout";
@@ -309,19 +282,12 @@
 			cape2_data: cape_data@0 {
 				reg = <0 0x100>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 
 	cape_eeprom3: cape_eeprom3@57 {
 		compatible = "atmel,24c256";
 		reg = <0x57>;
-<<<<<<< HEAD
-		#address-cells = <1>;
-		#size-cells = <1>;
-		cape3_data: cape_data@0 {
-			reg = <0 0x100>;
-=======
 
 		nvmem-layout {
 			compatible = "fixed-layout";
@@ -331,7 +297,6 @@
 			cape3_data: cape_data@0 {
 				reg = <0 0x100>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };
@@ -444,11 +409,7 @@
 		/* Support GPIO reset on revision C3 boards */
 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
 		reset-assert-us = <300>;
-<<<<<<< HEAD
-		reset-deassert-us = <6500>;
-=======
 		reset-deassert-us = <13000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

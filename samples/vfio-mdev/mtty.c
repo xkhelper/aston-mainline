@@ -927,10 +927,6 @@ static const struct file_operations mtty_save_fops = {
 	.unlocked_ioctl = mtty_precopy_ioctl,
 	.compat_ioctl = compat_ptr_ioctl,
 	.release = mtty_release_migf,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void mtty_save_state(struct mdev_state *mdev_state)
@@ -1085,10 +1081,6 @@ static const struct file_operations mtty_resume_fops = {
 	.owner = THIS_MODULE,
 	.write = mtty_resume_write,
 	.release = mtty_release_migf,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct mtty_migration_file *

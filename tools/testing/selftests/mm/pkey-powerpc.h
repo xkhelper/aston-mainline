@@ -8,14 +8,10 @@
 # define SYS_pkey_free		385
 #endif
 #define REG_IP_IDX		PT_NIP
-<<<<<<< HEAD
-#define REG_TRAPNO		PT_TRAP
-=======
 #define MCONTEXT_IP(mc)		mc.gp_regs[REG_IP_IDX]
 #define MCONTEXT_TRAPNO(mc)	mc.gp_regs[REG_TRAPNO]
 #define REG_TRAPNO		PT_TRAP
 #define MCONTEXT_FPREGS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define gregs			gp_regs
 #define fpregs			fp_regs
 #define si_pkey_offset		0x20

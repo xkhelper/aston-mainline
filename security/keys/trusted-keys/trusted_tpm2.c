@@ -14,11 +14,7 @@
 #include <keys/trusted-type.h>
 #include <keys/trusted_tpm.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "tpm2key.asn1.h"
 

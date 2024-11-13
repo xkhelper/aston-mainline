@@ -7,15 +7,9 @@ kms_3d
 
 # Skip driver specific tests
 ^amdgpu.*
-<<<<<<< HEAD
-msm_.*
-nouveau_.*
-panfrost_.*
-=======
 ^msm.*
 nouveau_.*
 ^panfrost.*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ^v3d.*
 ^vc4.*
 ^vmwgfx*

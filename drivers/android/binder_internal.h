@@ -130,21 +130,13 @@ enum binder_stat_types {
 	BINDER_STAT_DEATH,
 	BINDER_STAT_TRANSACTION,
 	BINDER_STAT_TRANSACTION_COMPLETE,
-<<<<<<< HEAD
-=======
 	BINDER_STAT_FREEZE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BINDER_STAT_COUNT
 };
 
 struct binder_stats {
-<<<<<<< HEAD
-	atomic_t br[_IOC_NR(BR_TRANSACTION_PENDING_FROZEN) + 1];
-	atomic_t bc[_IOC_NR(BC_REPLY_SG) + 1];
-=======
 	atomic_t br[_IOC_NR(BR_CLEAR_FREEZE_NOTIFICATION_DONE) + 1];
 	atomic_t bc[_IOC_NR(BC_FREEZE_NOTIFICATION_DONE) + 1];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	atomic_t obj_created[BINDER_STAT_COUNT];
 	atomic_t obj_deleted[BINDER_STAT_COUNT];
 };
@@ -169,11 +161,8 @@ struct binder_work {
 		BINDER_WORK_DEAD_BINDER,
 		BINDER_WORK_DEAD_BINDER_AND_CLEAR,
 		BINDER_WORK_CLEAR_DEATH_NOTIFICATION,
-<<<<<<< HEAD
-=======
 		BINDER_WORK_FROZEN_BINDER,
 		BINDER_WORK_CLEAR_FREEZE_NOTIFICATION,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} type;
 };
 
@@ -290,8 +279,6 @@ struct binder_ref_death {
 	binder_uintptr_t cookie;
 };
 
-<<<<<<< HEAD
-=======
 struct binder_ref_freeze {
 	struct binder_work work;
 	binder_uintptr_t cookie;
@@ -300,7 +287,6 @@ struct binder_ref_freeze {
 	bool resend:1;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct binder_ref_data - binder_ref counts and id
  * @debug_id:        unique ID for the ref
@@ -333,11 +319,8 @@ struct binder_ref_data {
  *               @node indicates the node must be freed
  * @death:       pointer to death notification (ref_death) if requested
  *               (protected by @node->lock)
-<<<<<<< HEAD
-=======
  * @freeze:      pointer to freeze notification (ref_freeze) if requested
  *               (protected by @node->lock)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Structure to track references from procA to target node (on procB). This
  * structure is unsafe to access without holding @proc->outer_lock.
@@ -354,10 +337,7 @@ struct binder_ref {
 	struct binder_proc *proc;
 	struct binder_node *node;
 	struct binder_ref_death *death;
-<<<<<<< HEAD
-=======
 	struct binder_ref_freeze *freeze;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -411,11 +391,8 @@ struct binder_ref {
  *                        (atomics, no lock needed)
  * @delivered_death:      list of delivered death notification
  *                        (protected by @inner_lock)
-<<<<<<< HEAD
-=======
  * @delivered_freeze:     list of delivered freeze notification
  *                        (protected by @inner_lock)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @max_threads:          cap on number of binder threads
  *                        (protected by @inner_lock)
  * @requested_threads:    number of binder threads requested but not
@@ -463,10 +440,7 @@ struct binder_proc {
 	struct list_head todo;
 	struct binder_stats stats;
 	struct list_head delivered_death;
-<<<<<<< HEAD
-=======
 	struct list_head delivered_freeze;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 max_threads;
 	int requested_threads;
 	int requested_threads_started;

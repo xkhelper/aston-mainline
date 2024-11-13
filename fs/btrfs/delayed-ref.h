@@ -202,10 +202,6 @@ struct btrfs_delayed_ref_root {
 	/* head ref rbtree */
 	struct rb_root_cached href_root;
 
-<<<<<<< HEAD
-	/* dirty extent records */
-	struct rb_root dirty_extent_root;
-=======
 	/*
 	 * Track dirty extent records.
 	 * The keys correspond to the logical address of the extent ("bytenr")
@@ -216,7 +212,6 @@ struct btrfs_delayed_ref_root {
 	 * and makes it unusable (truncated index values) on 32 bits platforms.
 	 */
 	struct xarray dirty_extents;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* this spin lock protects the rbtree and the entries inside */
 	spinlock_t lock;

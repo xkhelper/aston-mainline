@@ -3123,11 +3123,7 @@ static struct clk_branch gcc_pcie_3_pipe_clk = {
 
 static struct clk_branch gcc_pcie_3_pipediv2_clk = {
 	.halt_reg = 0x58060,
-<<<<<<< HEAD
-	.halt_check = BRANCH_HALT_VOTED,
-=======
 	.halt_check = BRANCH_HALT_SKIP,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.clkr = {
 		.enable_reg = 0x52020,
 		.enable_mask = BIT(5),
@@ -3252,11 +3248,7 @@ static struct clk_branch gcc_pcie_4_pipe_clk = {
 
 static struct clk_branch gcc_pcie_4_pipediv2_clk = {
 	.halt_reg = 0x6b054,
-<<<<<<< HEAD
-	.halt_check = BRANCH_HALT_VOTED,
-=======
 	.halt_check = BRANCH_HALT_SKIP,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.clkr = {
 		.enable_reg = 0x52010,
 		.enable_mask = BIT(27),
@@ -3381,11 +3373,7 @@ static struct clk_branch gcc_pcie_5_pipe_clk = {
 
 static struct clk_branch gcc_pcie_5_pipediv2_clk = {
 	.halt_reg = 0x2f054,
-<<<<<<< HEAD
-	.halt_check = BRANCH_HALT_VOTED,
-=======
 	.halt_check = BRANCH_HALT_SKIP,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.clkr = {
 		.enable_reg = 0x52018,
 		.enable_mask = BIT(19),
@@ -3523,11 +3511,7 @@ static struct clk_branch gcc_pcie_6a_pipe_clk = {
 
 static struct clk_branch gcc_pcie_6a_pipediv2_clk = {
 	.halt_reg = 0x31060,
-<<<<<<< HEAD
-	.halt_check = BRANCH_HALT_VOTED,
-=======
 	.halt_check = BRANCH_HALT_SKIP,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.clkr = {
 		.enable_reg = 0x52018,
 		.enable_mask = BIT(28),
@@ -3665,11 +3649,7 @@ static struct clk_branch gcc_pcie_6b_pipe_clk = {
 
 static struct clk_branch gcc_pcie_6b_pipediv2_clk = {
 	.halt_reg = 0x8d060,
-<<<<<<< HEAD
-	.halt_check = BRANCH_HALT_VOTED,
-=======
 	.halt_check = BRANCH_HALT_SKIP,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.clkr = {
 		.enable_reg = 0x52010,
 		.enable_mask = BIT(28),
@@ -6175,11 +6155,7 @@ static struct gdsc gcc_usb3_mp_ss1_phy_gdsc = {
 	.pd = {
 		.name = "gcc_usb3_mp_ss1_phy_gdsc",
 	},
-<<<<<<< HEAD
-	.pwrsts = PWRSTS_OFF_ON,
-=======
 	.pwrsts = PWRSTS_RET_ON,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
 };
 

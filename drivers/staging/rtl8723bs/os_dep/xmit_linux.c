@@ -5,10 +5,6 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
-<<<<<<< HEAD
-#include <rtw_debug.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 uint rtw_remainder_len(struct pkt_file *pfile)
@@ -147,14 +143,8 @@ static int rtw_mlcst2unicst(struct adapter *padapter, struct sk_buff *skb)
 		psta = list_entry(plist, struct sta_info, asoc_list);
 
 		stainfo_offset = rtw_stainfo_offset(pstapriv, psta);
-<<<<<<< HEAD
-		if (stainfo_offset_valid(stainfo_offset)) {
-			chk_alive_list[chk_alive_num++] = stainfo_offset;
-		}
-=======
 		if (stainfo_offset_valid(stainfo_offset))
 			chk_alive_list[chk_alive_num++] = stainfo_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	spin_unlock_bh(&pstapriv->asoc_list_lock);
 

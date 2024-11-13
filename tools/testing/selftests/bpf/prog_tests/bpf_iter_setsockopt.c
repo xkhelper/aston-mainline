@@ -95,11 +95,7 @@ static unsigned short get_local_port(int fd)
 	struct sockaddr_in6 addr;
 	socklen_t addrlen = sizeof(addr);
 
-<<<<<<< HEAD
-	if (!getsockname(fd, &addr, &addrlen))
-=======
 	if (!getsockname(fd, (struct sockaddr *)&addr, &addrlen))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ntohs(addr.sin6_port);
 
 	return 0;

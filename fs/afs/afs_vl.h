@@ -134,16 +134,4 @@ struct afs_uvldbentry__xdr {
 	__be32			spares9;
 };
 
-<<<<<<< HEAD
-struct afs_address_list {
-	refcount_t		usage;
-	unsigned int		version;
-	unsigned int		nr_addrs;
-	struct sockaddr_rxrpc	addrs[];
-};
-
-extern void afs_put_address_list(struct afs_address_list *alist);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* AFS_VL_H */

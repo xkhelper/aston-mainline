@@ -306,8 +306,6 @@ struct lpfc_stats {
 
 struct lpfc_hba;
 
-<<<<<<< HEAD
-=======
 /* Data structure to keep withheld FLOGI_ACC information */
 struct lpfc_defer_flogi_acc {
 	bool flag;
@@ -316,7 +314,6 @@ struct lpfc_defer_flogi_acc {
 	struct lpfc_nodelist *ndlp;
 
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define LPFC_VMID_TIMER   300	/* timer interval in seconds */
 
@@ -1441,13 +1438,7 @@ struct lpfc_hba {
 	uint16_t vlan_id;
 	struct list_head fcf_conn_rec_list;
 
-<<<<<<< HEAD
-	bool defer_flogi_acc_flag;
-	uint16_t defer_flogi_acc_rx_id;
-	uint16_t defer_flogi_acc_ox_id;
-=======
 	struct lpfc_defer_flogi_acc defer_flogi_acc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spinlock_t ct_ev_lock; /* synchronize access to ct_ev_waiters */
 	struct list_head ct_ev_waiters;

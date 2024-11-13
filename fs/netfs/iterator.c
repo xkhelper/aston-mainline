@@ -188,11 +188,6 @@ static size_t netfs_limit_xarray(const struct iov_iter *iter, size_t start_offse
 	return min(span, max_size);
 }
 
-<<<<<<< HEAD
-size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
-			size_t max_size, size_t max_segs)
-{
-=======
 /*
  * Select the span of a folio queue iterator we're going to use.  Limit it by
  * both maximum size and maximum number of segments.  Returns the size of the
@@ -246,7 +241,6 @@ size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
 {
 	if (iov_iter_is_folioq(iter))
 		return netfs_limit_folioq(iter, start_offset, max_size, max_segs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (iov_iter_is_bvec(iter))
 		return netfs_limit_bvec(iter, start_offset, max_size, max_segs);
 	if (iov_iter_is_xarray(iter))

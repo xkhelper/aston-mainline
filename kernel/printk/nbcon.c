@@ -2,13 +2,6 @@
 // Copyright (C) 2022 Linutronix GmbH, John Ogness
 // Copyright (C) 2022 Intel, Thomas Gleixner
 
-<<<<<<< HEAD
-#include <linux/kernel.h>
-#include <linux/console.h>
-#include <linux/delay.h>
-#include <linux/slab.h>
-#include "internal.h"
-=======
 #include <linux/atomic.h>
 #include <linux/bug.h>
 #include <linux/console.h>
@@ -28,7 +21,6 @@
 #include <linux/types.h>
 #include "internal.h"
 #include "printk_ringbuffer.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Printk console printing implementation for consoles which does not depend
  * on the legacy style console_lock mechanism.
@@ -194,12 +186,6 @@ void nbcon_seq_force(struct console *con, u64 seq)
 	u64 valid_seq = max_t(u64, seq, prb_first_valid_seq(prb));
 
 	atomic_long_set(&ACCESS_PRIVATE(con, nbcon_seq), __u64seq_to_ulseq(valid_seq));
-<<<<<<< HEAD
-
-	/* Clear con->seq since nbcon consoles use con->nbcon_seq instead. */
-	con->seq = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -256,8 +242,6 @@ static int nbcon_context_try_acquire_direct(struct nbcon_context *ctxt,
 	struct nbcon_state new;
 
 	do {
-<<<<<<< HEAD
-=======
 		/*
 		 * Panic does not imply that the console is owned. However, it
 		 * is critical that non-panic CPUs during panic are unable to
@@ -265,7 +249,6 @@ static int nbcon_context_try_acquire_direct(struct nbcon_context *ctxt,
 		 * nbcon_waiter_matches(). In particular, the assumption that
 		 * lower priorities are ignored during panic.
 		 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (other_cpu_in_panic())
 			return -EPERM;
 
@@ -297,27 +280,16 @@ static bool nbcon_waiter_matches(struct nbcon_state *cur, int expected_prio)
 	/*
 	 * The request context is well defined by the @req_prio because:
 	 *
-<<<<<<< HEAD
-	 * - Only a context with a higher priority can take over the request.
-=======
 	 * - Only a context with a priority higher than the owner can become
 	 *   a waiter.
 	 * - Only a context with a priority higher than the waiter can
 	 *   directly take over the request.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * - There are only three priorities.
 	 * - Only one CPU is allowed to request PANIC priority.
 	 * - Lower priorities are ignored during panic() until reboot.
 	 *
 	 * As a result, the following scenario is *not* possible:
 	 *
-<<<<<<< HEAD
-	 * 1. Another context with a higher priority directly takes ownership.
-	 * 2. The higher priority context releases the ownership.
-	 * 3. A lower priority context takes the ownership.
-	 * 4. Another context with the same priority as this context
-	 *    creates a request and starts waiting.
-=======
 	 * 1. This context is currently a waiter.
 	 * 2. Another context with a higher priority than this context
 	 *    directly takes ownership.
@@ -331,7 +303,6 @@ static bool nbcon_waiter_matches(struct nbcon_state *cur, int expected_prio)
 	 * Event #3 occurs when panic() has flushed the console.
 	 * Events #4 and #5 are not possible due to the other_cpu_in_panic()
 	 * check in nbcon_context_try_acquire_direct().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 
 	return (cur->req_prio == expected_prio);
@@ -589,10 +560,7 @@ static struct printk_buffers panic_nbcon_pbufs;
  * nbcon_context_try_acquire - Try to acquire nbcon console
  * @ctxt:	The context of the caller
  *
-<<<<<<< HEAD
-=======
  * Context:	Under @ctxt->con->device_lock() or local_irq_save().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Return:	True if the console was acquired. False otherwise.
  *
  * If the caller allowed an unsafe hostile takeover, on success the
@@ -600,10 +568,6 @@ static struct printk_buffers panic_nbcon_pbufs;
  * in an unsafe state. Otherwise, on success the caller may assume
  * the console is not in an unsafe state.
  */
-<<<<<<< HEAD
-__maybe_unused
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool nbcon_context_try_acquire(struct nbcon_context *ctxt)
 {
 	unsigned int cpu = smp_processor_id();
@@ -646,13 +610,6 @@ static bool nbcon_owner_matches(struct nbcon_state *cur, int expected_cpu,
 				int expected_prio)
 {
 	/*
-<<<<<<< HEAD
-	 * Since consoles can only be acquired by higher priorities,
-	 * owning contexts are uniquely identified by @prio. However,
-	 * since contexts can unexpectedly lose ownership, it is
-	 * possible that later another owner appears with the same
-	 * priority. For this reason @cpu is also needed.
-=======
 	 * A similar function, nbcon_waiter_matches(), only deals with
 	 * EMERGENCY and PANIC priorities. However, this function must also
 	 * deal with the NORMAL priority, which requires additional checks
@@ -676,7 +633,6 @@ static bool nbcon_owner_matches(struct nbcon_state *cur, int expected_cpu,
 	 * 4. [Task A] gets running on [CPU X] and sees that the console is
 	 *    still owned by a task on [CPU X] with NBON_PRIO_NORMAL. Thus
 	 *    [Task A] thinks it is the owner when it is not.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 
 	if (cur->prio != expected_prio)
@@ -875,8 +831,6 @@ out:
 	return nbcon_context_can_proceed(ctxt, &cur);
 }
 
-<<<<<<< HEAD
-=======
 static void nbcon_write_context_set_buf(struct nbcon_write_context *wctxt,
 					char *buf, unsigned int len)
 {
@@ -890,7 +844,6 @@ static void nbcon_write_context_set_buf(struct nbcon_write_context *wctxt,
 	wctxt->unsafe_takeover = cur.unsafe_takeover;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * nbcon_enter_unsafe - Enter an unsafe region in the driver
  * @wctxt:	The write context that was handed to the write function
@@ -906,17 +859,12 @@ static void nbcon_write_context_set_buf(struct nbcon_write_context *wctxt,
 bool nbcon_enter_unsafe(struct nbcon_write_context *wctxt)
 {
 	struct nbcon_context *ctxt = &ACCESS_PRIVATE(wctxt, ctxt);
-<<<<<<< HEAD
-
-	return nbcon_context_enter_unsafe(ctxt);
-=======
 	bool is_owner;
 
 	is_owner = nbcon_context_enter_unsafe(ctxt);
 	if (!is_owner)
 		nbcon_write_context_set_buf(wctxt, NULL, 0);
 	return is_owner;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(nbcon_enter_unsafe);
 
@@ -935,25 +883,16 @@ EXPORT_SYMBOL_GPL(nbcon_enter_unsafe);
 bool nbcon_exit_unsafe(struct nbcon_write_context *wctxt)
 {
 	struct nbcon_context *ctxt = &ACCESS_PRIVATE(wctxt, ctxt);
-<<<<<<< HEAD
-
-	return nbcon_context_exit_unsafe(ctxt);
-=======
 	bool ret;
 
 	ret = nbcon_context_exit_unsafe(ctxt);
 	if (!ret)
 		nbcon_write_context_set_buf(wctxt, NULL, 0);
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(nbcon_exit_unsafe);
 
 /**
-<<<<<<< HEAD
- * nbcon_emit_next_record - Emit a record in the acquired context
- * @wctxt:	The write context that will be handed to the write function
-=======
  * nbcon_reacquire_nobuf - Reacquire a console after losing ownership
  *				while printing
  * @wctxt:	The write context that was handed to the write callback
@@ -985,7 +924,6 @@ EXPORT_SYMBOL_GPL(nbcon_reacquire_nobuf);
  * nbcon_emit_next_record - Emit a record in the acquired context
  * @wctxt:	The write context that will be handed to the write function
  * @use_atomic:	True if the write_atomic() callback is to be used
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return:	True if this context still owns the console. False if
  *		ownership was handed over or taken.
@@ -999,12 +937,7 @@ EXPORT_SYMBOL_GPL(nbcon_reacquire_nobuf);
  * When true is returned, @wctxt->ctxt.backlog indicates whether there are
  * still records pending in the ringbuffer,
  */
-<<<<<<< HEAD
-__maybe_unused
-static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt)
-=======
 static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt, bool use_atomic)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct nbcon_context *ctxt = &ACCESS_PRIVATE(wctxt, ctxt);
 	struct console *con = ctxt->console;
@@ -1015,9 +948,6 @@ static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt, bool use_a
 	unsigned long con_dropped;
 	struct nbcon_state cur;
 	unsigned long dropped;
-<<<<<<< HEAD
-	bool done;
-=======
 	unsigned long ulseq;
 
 	/*
@@ -1034,7 +964,6 @@ static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt, bool use_a
 		nbcon_context_release(ctxt);
 		return false;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The printk buffers are filled within an unsafe section. This
@@ -1060,8 +989,6 @@ static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt, bool use_a
 	if (dropped && !is_extended)
 		console_prepend_dropped(&pmsg, dropped);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * If the previous owner was assigned the same record, this context
 	 * has taken over ownership and is replaying the record. Prepend a
@@ -1085,7 +1012,6 @@ static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt, bool use_a
 					__u64seq_to_ulseq(pmsg.seq));
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!nbcon_context_exit_unsafe(ctxt))
 		return false;
 
@@ -1094,24 +1020,6 @@ static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt, bool use_a
 		goto update_con;
 
 	/* Initialize the write context for driver callbacks. */
-<<<<<<< HEAD
-	wctxt->outbuf = &pmsg.pbufs->outbuf[0];
-	wctxt->len = pmsg.outbuf_len;
-	nbcon_state_read(con, &cur);
-	wctxt->unsafe_takeover = cur.unsafe_takeover;
-
-	if (con->write_atomic) {
-		done = con->write_atomic(con, wctxt);
-	} else {
-		nbcon_context_release(ctxt);
-		WARN_ON_ONCE(1);
-		done = false;
-	}
-
-	/* If not done, the emit was aborted. */
-	if (!done)
-		return false;
-=======
 	nbcon_write_context_set_buf(wctxt, &pmsg.pbufs->outbuf[0], pmsg.outbuf_len);
 
 	if (use_atomic)
@@ -1133,7 +1041,6 @@ static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt, bool use_a
 	 * This case is detected and handled when entering unsafe to update
 	 * dropped/seq values.
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Since any dropped message was successfully output, reset the
@@ -1160,20 +1067,6 @@ update_con:
 	return nbcon_context_exit_unsafe(ctxt);
 }
 
-<<<<<<< HEAD
-/**
- * nbcon_alloc - Allocate buffers needed by the nbcon console
- * @con:	Console to allocate buffers for
- *
- * Return:	True on success. False otherwise and the console cannot
- *		be used.
- *
- * This is not part of nbcon_init() because buffer allocation must
- * be performed earlier in the console registration process.
- */
-bool nbcon_alloc(struct console *con)
-{
-=======
 /*
  * nbcon_emit_one - Print one record for an nbcon console using the
  *			specified callback
@@ -1794,7 +1687,6 @@ bool nbcon_alloc(struct console *con)
 	 */
 	atomic_long_set(&ACCESS_PRIVATE(con, nbcon_seq), ULSEQ_MAX(prb));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (con->flags & CON_BOOT) {
 		/*
 		 * Boot console printing is synchronized with legacy console
@@ -1808,8 +1700,6 @@ bool nbcon_alloc(struct console *con)
 			con_printk(KERN_ERR, con, "failed to allocate printing buffer\n");
 			return false;
 		}
-<<<<<<< HEAD
-=======
 
 		if (printk_kthreads_running) {
 			if (!nbcon_kthread_create(con)) {
@@ -1818,36 +1708,12 @@ bool nbcon_alloc(struct console *con)
 				return false;
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return true;
 }
 
 /**
-<<<<<<< HEAD
- * nbcon_init - Initialize the nbcon console specific data
- * @con:	Console to initialize
- *
- * nbcon_alloc() *must* be called and succeed before this function
- * is called.
- *
- * This function expects that the legacy @con->seq has been set.
- */
-void nbcon_init(struct console *con)
-{
-	struct nbcon_state state = { };
-
-	/* nbcon_alloc() must have been called and successful! */
-	BUG_ON(!con->pbufs);
-
-	nbcon_seq_force(con, con->seq);
-	nbcon_state_set(con, &state);
-}
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * nbcon_free - Free and cleanup the nbcon console specific data
  * @con:	Console to free/cleanup nbcon data
  */
@@ -1855,12 +1721,9 @@ void nbcon_free(struct console *con)
 {
 	struct nbcon_state state = { };
 
-<<<<<<< HEAD
-=======
 	if (printk_kthreads_running)
 		nbcon_kthread_stop(con);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nbcon_state_set(con, &state);
 
 	/* Boot consoles share global printk buffers. */
@@ -1869,8 +1732,6 @@ void nbcon_free(struct console *con)
 
 	con->pbufs = NULL;
 }
-<<<<<<< HEAD
-=======
 
 /**
  * nbcon_device_try_acquire - Try to acquire nbcon console and enter unsafe
@@ -1953,4 +1814,3 @@ void nbcon_device_release(struct console *con)
 	console_srcu_read_unlock(cookie);
 }
 EXPORT_SYMBOL_GPL(nbcon_device_release);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

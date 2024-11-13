@@ -1189,11 +1189,7 @@ static int hvfb_probe(struct hv_device *hdev,
 	 * which is almost at the end of list, with priority = INT_MIN + 1.
 	 */
 	par->hvfb_panic_nb.notifier_call = hvfb_on_panic;
-<<<<<<< HEAD
-	par->hvfb_panic_nb.priority = INT_MIN + 10,
-=======
 	par->hvfb_panic_nb.priority = INT_MIN + 10;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	atomic_notifier_chain_register(&panic_notifier_list,
 				       &par->hvfb_panic_nb);
 

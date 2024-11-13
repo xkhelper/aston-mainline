@@ -1045,14 +1045,11 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
 
 	mutex_lock(&kvm->slots_lock);
 
-<<<<<<< HEAD
-=======
 	if (write && atomic_read(&kvm->nr_memslots_dirty_logging)) {
 		ret = -EBUSY;
 		goto out;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (length > 0) {
 		kvm_pfn_t pfn = gfn_to_pfn_prot(kvm, gfn, write, NULL);
 		void *maddr;
@@ -1067,10 +1064,7 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
 		page = pfn_to_online_page(pfn);
 		if (!page) {
 			/* Reject ZONE_DEVICE memory */
-<<<<<<< HEAD
-=======
 			kvm_release_pfn_clean(pfn);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = -EFAULT;
 			goto out;
 		}

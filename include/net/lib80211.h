@@ -92,11 +92,7 @@ struct lib80211_crypto_ops {
 
 struct lib80211_crypt_data {
 	struct list_head list;	/* delayed deletion list */
-<<<<<<< HEAD
-	struct lib80211_crypto_ops *ops;
-=======
 	const struct lib80211_crypto_ops *ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *priv;
 	atomic_t refcnt;
 };
@@ -117,15 +113,9 @@ struct lib80211_crypt_info {
 int lib80211_crypt_info_init(struct lib80211_crypt_info *info, char *name,
                                 spinlock_t *lock);
 void lib80211_crypt_info_free(struct lib80211_crypt_info *info);
-<<<<<<< HEAD
-int lib80211_register_crypto_ops(struct lib80211_crypto_ops *ops);
-int lib80211_unregister_crypto_ops(struct lib80211_crypto_ops *ops);
-struct lib80211_crypto_ops *lib80211_get_crypto_ops(const char *name);
-=======
 int lib80211_register_crypto_ops(const struct lib80211_crypto_ops *ops);
 int lib80211_unregister_crypto_ops(const struct lib80211_crypto_ops *ops);
 const struct lib80211_crypto_ops *lib80211_get_crypto_ops(const char *name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void lib80211_crypt_delayed_deinit(struct lib80211_crypt_info *info,
 				    struct lib80211_crypt_data **crypt);
 

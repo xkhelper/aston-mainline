@@ -340,11 +340,7 @@ choice
 	config RANDSTRUCT_FULL
 		bool "Fully randomize structure layout"
 		depends on CC_HAS_RANDSTRUCT || GCC_PLUGINS
-<<<<<<< HEAD
-		select MODVERSIONS if MODULES
-=======
 		select MODVERSIONS if MODULES && !COMPILE_TEST
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		help
 		  Fully randomize the member layout of sensitive
 		  structures as much as possible, which may have both a
@@ -360,11 +356,7 @@ choice
 	config RANDSTRUCT_PERFORMANCE
 		bool "Limit randomization of structure layout to cache-lines"
 		depends on GCC_PLUGINS
-<<<<<<< HEAD
-		select MODVERSIONS if MODULES
-=======
 		select MODVERSIONS if MODULES && !COMPILE_TEST
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		help
 		  Randomization of sensitive kernel structures will make a
 		  best effort at restricting randomization to cacheline-sized

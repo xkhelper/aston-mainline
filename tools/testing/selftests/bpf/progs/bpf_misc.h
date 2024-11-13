@@ -2,12 +2,9 @@
 #ifndef __BPF_MISC_H__
 #define __BPF_MISC_H__
 
-<<<<<<< HEAD
-=======
 #define XSTR(s) STR(s)
 #define STR(s) #s
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* This set of attributes controls behavior of the
  * test_loader.c:test_loader__run_subtests().
  *
@@ -28,12 +25,6 @@
  *
  * __msg             Message expected to be found in the verifier log.
  *                   Multiple __msg attributes could be specified.
-<<<<<<< HEAD
- * __msg_unpriv      Same as __msg but for unprivileged mode.
- *
- * __regex           Same as __msg, but using a regular expression.
- * __regex_unpriv    Same as __msg_unpriv but using a regular expression.
-=======
  *                   To match a regular expression use "{{" "}}" brackets,
  *                   e.g. "foo{{[0-9]+}}"  matches strings like "foo007".
  *                   Extended POSIX regular expression syntax is allowed
@@ -77,7 +68,6 @@
  *
  * __jited_unpriv    Same as __jited but for unprivileged mode.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * __success         Expect program load success in privileged mode.
  * __success_unpriv  Expect program load success in unprivileged mode.
@@ -112,16 +102,6 @@
  * __auxiliary         Annotated program is not a separate test, but used as auxiliary
  *                     for some other test cases and should always be loaded.
  * __auxiliary_unpriv  Same, but load program in unprivileged mode.
-<<<<<<< HEAD
- */
-#define __msg(msg)		__attribute__((btf_decl_tag("comment:test_expect_msg=" msg)))
-#define __regex(regex)		__attribute__((btf_decl_tag("comment:test_expect_regex=" regex)))
-#define __failure		__attribute__((btf_decl_tag("comment:test_expect_failure")))
-#define __success		__attribute__((btf_decl_tag("comment:test_expect_success")))
-#define __description(desc)	__attribute__((btf_decl_tag("comment:test_description=" desc)))
-#define __msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_msg_unpriv=" msg)))
-#define __regex_unpriv(regex)	__attribute__((btf_decl_tag("comment:test_expect_regex_unpriv=" regex)))
-=======
  *
  * __arch_*          Specify on which architecture the test case should be tested.
  *                   Several __arch_* annotations could be specified at once.
@@ -136,7 +116,6 @@
 #define __msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_msg_unpriv=" XSTR(__COUNTER__) "=" msg)))
 #define __xlated_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_xlated_unpriv=" XSTR(__COUNTER__) "=" msg)))
 #define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited=" XSTR(__COUNTER__) "=" msg)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define __failure_unpriv	__attribute__((btf_decl_tag("comment:test_expect_failure_unpriv")))
 #define __success_unpriv	__attribute__((btf_decl_tag("comment:test_expect_success_unpriv")))
 #define __log_level(lvl)	__attribute__((btf_decl_tag("comment:test_log_level="#lvl)))
@@ -146,13 +125,10 @@
 #define __auxiliary		__attribute__((btf_decl_tag("comment:test_auxiliary")))
 #define __auxiliary_unpriv	__attribute__((btf_decl_tag("comment:test_auxiliary_unpriv")))
 #define __btf_path(path)	__attribute__((btf_decl_tag("comment:test_btf_path=" path)))
-<<<<<<< HEAD
-=======
 #define __arch(arch)		__attribute__((btf_decl_tag("comment:test_arch=" arch)))
 #define __arch_x86_64		__arch("X86_64")
 #define __arch_arm64		__arch("ARM64")
 #define __arch_riscv64		__arch("RISCV64")
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Convenience macro for use with 'asm volatile' blocks */
 #define __naked __attribute__((naked))

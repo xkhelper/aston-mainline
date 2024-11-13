@@ -6,11 +6,7 @@
  */
 
 #include <linux/clk.h>
-<<<<<<< HEAD
-
-=======
 #include <linux/interrupt.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dev.h"
 #include "fence.h"
 #include "intr.h"
@@ -104,13 +100,9 @@ void host1x_intr_handle_interrupt(struct host1x *host, unsigned int id)
 
 int host1x_intr_init(struct host1x *host)
 {
-<<<<<<< HEAD
-	unsigned int id;
-=======
 	struct host1x_intr_irq_data *irq_data;
 	unsigned int id;
 	int i, err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_init(&host->intr_mutex);
 
@@ -121,8 +113,6 @@ int host1x_intr_init(struct host1x *host)
 		INIT_LIST_HEAD(&syncpt->fences.list);
 	}
 
-<<<<<<< HEAD
-=======
 	irq_data = devm_kcalloc(host->dev, host->num_syncpt_irqs, sizeof(irq_data[0]), GFP_KERNEL);
 	if (!irq_data)
 		return -ENOMEM;
@@ -140,7 +130,6 @@ int host1x_intr_init(struct host1x *host)
 			return err;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

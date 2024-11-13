@@ -8,11 +8,7 @@
 #include <linux/libfdt.h>
 #include <linux/of_fdt.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum {
 	SYSTAB,

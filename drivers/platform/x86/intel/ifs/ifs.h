@@ -126,8 +126,6 @@
  * The driver does not make use of this, it only tests one core at a time.
  *
  * .. [#f1] https://github.com/intel/TBD
-<<<<<<< HEAD
-=======
  *
  *
  * Structural Based Functional Test at Field (SBAF):
@@ -149,14 +147,11 @@
  * and each batch test can take hundreds of milliseconds (100-200 ms) to
  * complete. If such a lengthy interruption is undesirable, it is
  * recommended to relocate the time-sensitive applications to other cores.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #include <linux/device.h>
 #include <linux/miscdevice.h>
 
 #define MSR_ARRAY_BIST				0x00000105
-<<<<<<< HEAD
-=======
 
 #define MSR_COPY_SBAF_HASHES			0x000002b8
 #define MSR_SBAF_HASHES_STATUS			0x000002b9
@@ -165,7 +160,6 @@
 #define MSR_ACTIVATE_SBAF			0x000002bc
 #define MSR_SBAF_STATUS				0x000002bd
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MSR_COPY_SCAN_HASHES			0x000002c2
 #define MSR_SCAN_HASHES_STATUS			0x000002c3
 #define MSR_AUTHENTICATE_AND_COPY_CHUNK		0x000002c4
@@ -175,10 +169,7 @@
 #define MSR_ARRAY_TRIGGER			0x000002d6
 #define MSR_ARRAY_STATUS			0x000002d7
 #define MSR_SAF_CTRL				0x000004f0
-<<<<<<< HEAD
-=======
 #define MSR_SBAF_CTRL				0x000004f8
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SCAN_NOT_TESTED				0
 #define SCAN_TEST_PASS				1
@@ -186,10 +177,7 @@
 
 #define IFS_TYPE_SAF			0
 #define IFS_TYPE_ARRAY_BIST		1
-<<<<<<< HEAD
-=======
 #define IFS_TYPE_SBAF			2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ARRAY_GEN0			0
 #define ARRAY_GEN1			1
@@ -239,12 +227,8 @@ union ifs_chunks_auth_status_gen2 {
 		u16	valid_chunks;
 		u16	total_chunks;
 		u32	error_code	:8;
-<<<<<<< HEAD
-		u32	rsvd2		:24;
-=======
 		u32	rsvd2		:8;
 		u32	max_bundle	:16;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -301,8 +285,6 @@ union ifs_array {
 	};
 };
 
-<<<<<<< HEAD
-=======
 /* MSR_ACTIVATE_SBAF bit fields */
 union ifs_sbaf {
 	u64	data;
@@ -331,7 +313,6 @@ union ifs_sbaf_status {
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Driver populated error-codes
  * 0xFD: Test timed out before completing all the chunks.
@@ -340,11 +321,6 @@ union ifs_sbaf_status {
 #define IFS_SW_TIMEOUT				0xFD
 #define IFS_SW_PARTIAL_COMPLETION		0xFE
 
-<<<<<<< HEAD
-struct ifs_test_caps {
-	int	integrity_cap_bit;
-	int	test_num;
-=======
 #define IFS_SUFFIX_SZ		5
 
 struct ifs_test_caps {
@@ -367,7 +343,6 @@ struct ifs_test_msrs {
 	u32	copy_chunks;
 	u32	copy_chunks_status;
 	u32	test_ctrl;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -382,10 +357,7 @@ struct ifs_test_msrs {
  * @generation: IFS test generation enumerated by hardware
  * @chunk_size: size of a test chunk
  * @array_gen: test generation of array test
-<<<<<<< HEAD
-=======
  * @max_bundle: maximum bundle index
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct ifs_data {
 	int	loaded_version;
@@ -398,10 +370,7 @@ struct ifs_data {
 	u32	generation;
 	u32	chunk_size;
 	u32	array_gen;
-<<<<<<< HEAD
-=======
 	u32	max_bundle;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ifs_work {
@@ -411,10 +380,7 @@ struct ifs_work {
 
 struct ifs_device {
 	const struct ifs_test_caps *test_caps;
-<<<<<<< HEAD
-=======
 	const struct ifs_test_msrs *test_msrs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ifs_data rw_data;
 	struct miscdevice misc;
 };
@@ -435,8 +401,6 @@ static inline const struct ifs_test_caps *ifs_get_test_caps(struct device *dev)
 	return d->test_caps;
 }
 
-<<<<<<< HEAD
-=======
 static inline const struct ifs_test_msrs *ifs_get_test_msrs(struct device *dev)
 {
 	struct miscdevice *m = dev_get_drvdata(dev);
@@ -445,7 +409,6 @@ static inline const struct ifs_test_msrs *ifs_get_test_msrs(struct device *dev)
 	return d->test_msrs;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern bool *ifs_pkg_auth;
 int ifs_load_firmware(struct device *dev);
 int do_core_test(int cpu, struct device *dev);

@@ -32,10 +32,6 @@
 
 #include "ivsrcid/isp/irqsrcs_isp_4_1.h"
 
-<<<<<<< HEAD
-#define MAX_ISP410_INT_SRC 8
-
-=======
 #define MAX_ISP410_MEM_RES 2
 #define MAX_ISP410_SENSOR_RES 1
 #define MAX_ISP410_INT_SRC 8
@@ -49,7 +45,6 @@
 #define ISP410_GPIO_SENSOR0_OFFSET 0x6613C
 #define ISP410_GPIO_SENSOR0_SIZE 0x4
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void isp_v4_1_0_set_isp_funcs(struct amdgpu_isp *isp);
 
 #endif

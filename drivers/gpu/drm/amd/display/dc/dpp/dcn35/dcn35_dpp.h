@@ -61,10 +61,7 @@ bool dpp35_construct(struct dcn3_dpp *dpp3, struct dc_context *ctx,
 
 void dpp35_set_fgcg(struct dcn3_dpp *dpp, bool enable);
 
-<<<<<<< HEAD
-=======
 void dpp35_program_bias_and_scale_fcnv(struct dpp *dpp_base,
 		struct dc_bias_and_scale *bias_and_scale);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif // __DCN35_DPP_H

@@ -437,12 +437,9 @@ acpi_status acpi_ex_prep_field_value(struct acpi_create_field_info *info)
 
 		if (info->connection_node) {
 			second_desc = info->connection_node->object;
-<<<<<<< HEAD
-=======
 			if (second_desc == NULL) {
 				break;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!(second_desc->common.flags & AOPOBJ_DATA_VALID)) {
 				status =
 				    acpi_ds_get_buffer_arguments(second_desc);

@@ -10,11 +10,8 @@
 #include <dt-bindings/clock/qcom,sa8775p-gpucc.h>
 #include <dt-bindings/interconnect/qcom,sa8775p-rpmh.h>
 #include <dt-bindings/mailbox/qcom-ipcc.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/firmware/qcom,scm.h>
 #include <dt-bindings/power/qcom,rpmhpd.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/power/qcom-rpmpd.h>
 #include <dt-bindings/soc/qcom,rpmh-rsc.h>
 
@@ -47,11 +44,8 @@
 			enable-method = "psci";
 			qcom,freq-domain = <&cpufreq_hw 0>;
 			next-level-cache = <&L2_0>;
-<<<<<<< HEAD
-=======
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <100>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			L2_0: l2-cache {
 				compatible = "cache";
 				cache-level = <2>;
@@ -72,11 +66,8 @@
 			enable-method = "psci";
 			qcom,freq-domain = <&cpufreq_hw 0>;
 			next-level-cache = <&L2_1>;
-<<<<<<< HEAD
-=======
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <100>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			L2_1: l2-cache {
 				compatible = "cache";
 				cache-level = <2>;
@@ -92,11 +83,8 @@
 			enable-method = "psci";
 			qcom,freq-domain = <&cpufreq_hw 0>;
 			next-level-cache = <&L2_2>;
-<<<<<<< HEAD
-=======
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <100>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			L2_2: l2-cache {
 				compatible = "cache";
 				cache-level = <2>;
@@ -112,11 +100,8 @@
 			enable-method = "psci";
 			qcom,freq-domain = <&cpufreq_hw 0>;
 			next-level-cache = <&L2_3>;
-<<<<<<< HEAD
-=======
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <100>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			L2_3: l2-cache {
 				compatible = "cache";
 				cache-level = <2>;
@@ -132,11 +117,8 @@
 			enable-method = "psci";
 			qcom,freq-domain = <&cpufreq_hw 1>;
 			next-level-cache = <&L2_4>;
-<<<<<<< HEAD
-=======
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <100>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			L2_4: l2-cache {
 				compatible = "cache";
 				cache-level = <2>;
@@ -158,11 +140,8 @@
 			enable-method = "psci";
 			qcom,freq-domain = <&cpufreq_hw 1>;
 			next-level-cache = <&L2_5>;
-<<<<<<< HEAD
-=======
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <100>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			L2_5: l2-cache {
 				compatible = "cache";
 				cache-level = <2>;
@@ -178,11 +157,8 @@
 			enable-method = "psci";
 			qcom,freq-domain = <&cpufreq_hw 1>;
 			next-level-cache = <&L2_6>;
-<<<<<<< HEAD
-=======
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <100>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			L2_6: l2-cache {
 				compatible = "cache";
 				cache-level = <2>;
@@ -198,11 +174,8 @@
 			enable-method = "psci";
 			qcom,freq-domain = <&cpufreq_hw 1>;
 			next-level-cache = <&L2_7>;
-<<<<<<< HEAD
-=======
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <100>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			L2_7: l2-cache {
 				compatible = "cache";
 				cache-level = <2>;
@@ -248,8 +221,6 @@
 				};
 			};
 		};
-<<<<<<< HEAD
-=======
 
 		idle-states {
 			entry-method = "psci";
@@ -292,7 +263,6 @@
 				min-residency-us = <9987>;
 			};
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	dummy-sink {
@@ -422,8 +392,6 @@
 	psci {
 		compatible = "arm,psci-1.0";
 		method = "smc";
-<<<<<<< HEAD
-=======
 
 		CPU_PD0: power-domain-cpu0 {
 			#power-domain-cells = <0>;
@@ -497,7 +465,6 @@
 			#power-domain-cells = <0>;
 			domain-idle-states = <&CLUSTER_SLEEP_APSS_RSC_PC>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	reserved-memory {
@@ -730,8 +697,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	smp2p-adsp {
 		compatible = "qcom,smp2p";
 		qcom,smem = <443>, <429>;
@@ -847,7 +812,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	soc: soc@0 {
 		compatible = "simple-bus";
 		#address-cells = <2>;
@@ -3176,8 +3140,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		pmu@9091000 {
 			compatible = "qcom,sa8775p-llcc-bwmon", "qcom,sc7280-llcc-bwmon";
 			reg = <0x0 0x9091000 0x0 0x1000>;
@@ -3273,7 +3235,6 @@
 			operating-points-v2 = <&cpu_bwmon_opp_table>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		llcc: system-cache-controller@9200000 {
 			compatible = "qcom,sa8775p-llcc";
 			reg = <0x0 0x09200000 0x0 0x80000>,
@@ -3452,10 +3413,7 @@
 			reg = <0x0 0x15000000 0x0 0x100000>;
 			#iommu-cells = <2>;
 			#global-interrupts = <2>;
-<<<<<<< HEAD
-=======
 			dma-coherent;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
@@ -3594,10 +3552,7 @@
 			reg = <0x0 0x15200000 0x0 0x80000>;
 			#iommu-cells = <2>;
 			#global-interrupts = <2>;
-<<<<<<< HEAD
-=======
 			dma-coherent;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			interrupts = <GIC_SPI 920 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 921 IRQ_TYPE_LEVEL_HIGH>,
@@ -3835,8 +3790,6 @@
 			#freq-domain-cells = <1>;
 		};
 
-<<<<<<< HEAD
-=======
 		remoteproc_gpdsp0: remoteproc@20c00000 {
 			compatible = "qcom,sa8775p-gpdsp0-pas";
 			reg = <0x0 0x20c00000 0x0 0x10000>;
@@ -3923,7 +3876,6 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ethernet1: ethernet@23000000 {
 			compatible = "qcom,sa8775p-ethqos";
 			reg = <0x0 0x23000000 0x0 0x10000>,
@@ -3943,15 +3895,12 @@
 				      "ptp_ref",
 				      "phyaux";
 
-<<<<<<< HEAD
-=======
 			interconnects = <&aggre1_noc MASTER_EMAC_1 QCOM_ICC_TAG_ALWAYS
 					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
 					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
 					 &config_noc SLAVE_EMAC1_CFG QCOM_ICC_TAG_ALWAYS>;
 			interconnect-names = "mac-mem", "cpu-mac";
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			power-domains = <&gcc EMAC1_GDSC>;
 
 			phys = <&serdes1>;
@@ -3987,15 +3936,12 @@
 				      "ptp_ref",
 				      "phyaux";
 
-<<<<<<< HEAD
-=======
 			interconnects = <&aggre1_noc MASTER_EMAC QCOM_ICC_TAG_ALWAYS
 					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
 					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
 					 &config_noc SLAVE_EMAC_CFG QCOM_ICC_TAG_ALWAYS>;
 			interconnect-names = "mac-mem", "cpu-mac";
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			power-domains = <&gcc EMAC0_GDSC>;
 
 			phys = <&serdes0>;
@@ -4011,8 +3957,6 @@
 
 			status = "disabled";
 		};
-<<<<<<< HEAD
-=======
 
 		remoteproc_cdsp0: remoteproc@26300000 {
 			compatible = "qcom,sa8775p-cdsp0-pas";
@@ -4576,7 +4520,6 @@
 				};
 			};
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	thermal-zones {

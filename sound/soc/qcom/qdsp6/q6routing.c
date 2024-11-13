@@ -1161,11 +1161,7 @@ static struct platform_driver q6pcm_routing_platform_driver = {
 		.of_match_table = of_match_ptr(q6pcm_routing_device_id),
 	},
 	.probe = q6pcm_routing_probe,
-<<<<<<< HEAD
-	.remove_new = q6pcm_routing_remove,
-=======
 	.remove = q6pcm_routing_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(q6pcm_routing_platform_driver);
 

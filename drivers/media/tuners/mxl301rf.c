@@ -317,11 +317,7 @@ static void mxl301rf_remove(struct i2c_client *client)
 
 
 static const struct i2c_device_id mxl301rf_id[] = {
-<<<<<<< HEAD
-	{"mxl301rf", 0},
-=======
 	{ "mxl301rf" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, mxl301rf_id);

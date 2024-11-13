@@ -221,8 +221,6 @@ mwifiex_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
 		return 0;
 	}
 
-<<<<<<< HEAD
-=======
 	if (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_UAP) {
 		if (ieee80211_is_auth(mgmt->frame_control))
 			mwifiex_dbg(priv->adapter, MSG,
@@ -243,7 +241,6 @@ mwifiex_cfg80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
 				    mgmt->da);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pkt_len = len + ETH_ALEN;
 	skb = dev_alloc_skb(MWIFIEX_MIN_DATA_HEADER_LEN +
 			    MWIFIEX_MGMT_FRAME_HEADER_SIZE +
@@ -291,11 +288,8 @@ mwifiex_cfg80211_update_mgmt_frame_registrations(struct wiphy *wiphy,
 
 	if (mask != priv->mgmt_frame_mask) {
 		priv->mgmt_frame_mask = mask;
-<<<<<<< HEAD
-=======
 		if (priv->host_mlme_reg)
 			priv->mgmt_frame_mask |= HOST_MLME_MGMT_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mwifiex_send_cmd(priv, HostCmd_CMD_MGMT_FRAME_REG,
 				 HostCmd_ACT_GEN_SET, 0,
 				 &priv->mgmt_frame_mask, false);
@@ -531,12 +525,9 @@ mwifiex_cfg80211_set_default_mgmt_key(struct wiphy *wiphy,
 
 	wiphy_dbg(wiphy, "set default mgmt key, key index=%d\n", key_index);
 
-<<<<<<< HEAD
-=======
 	if (priv->adapter->host_mlme_enabled)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(&encrypt_key, 0, sizeof(struct mwifiex_ds_encrypt_key));
 	encrypt_key.key_len = WLAN_KEY_LEN_CCMP;
 	encrypt_key.key_index = key_index;
@@ -882,10 +873,7 @@ static int mwifiex_deinit_priv_params(struct mwifiex_private *priv)
 	struct mwifiex_adapter *adapter = priv->adapter;
 	unsigned long flags;
 
-<<<<<<< HEAD
-=======
 	priv->host_mlme_reg = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	priv->mgmt_frame_mask = 0;
 	if (mwifiex_send_cmd(priv, HostCmd_CMD_MGMT_FRAME_REG,
 			     HostCmd_ACT_GEN_SET, 0,
@@ -1918,11 +1906,7 @@ mwifiex_cfg80211_del_station(struct wiphy *wiphy, struct net_device *dev,
 	struct mwifiex_sta_node *sta_node;
 	u8 deauth_mac[ETH_ALEN];
 
-<<<<<<< HEAD
-	if (!priv->bss_started && priv->wdev.cac_started) {
-=======
 	if (!priv->bss_started && priv->wdev.links[0].cac_started) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mwifiex_dbg(priv->adapter, INFO, "%s: abort CAC!\n", __func__);
 		mwifiex_abort_cac(priv);
 	}
@@ -3524,11 +3508,7 @@ static int mwifiex_cfg80211_suspend(struct wiphy *wiphy,
 
 	for (i = 0; i < adapter->priv_num; i++) {
 		priv = adapter->priv[i];
-<<<<<<< HEAD
-		if (priv && priv->netdev)
-=======
 		if (priv->netdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			netif_device_detach(priv->netdev);
 	}
 
@@ -3600,11 +3580,7 @@ static int mwifiex_cfg80211_resume(struct wiphy *wiphy)
 
 	for (i = 0; i < adapter->priv_num; i++) {
 		priv = adapter->priv[i];
-<<<<<<< HEAD
-		if (priv && priv->netdev)
-=======
 		if (priv->netdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			netif_device_attach(priv->netdev);
 	}
 
@@ -3683,12 +3659,9 @@ static int mwifiex_set_rekey_data(struct wiphy *wiphy, struct net_device *dev,
 	if (!ISSUPP_FIRMWARE_SUPPLICANT(priv->adapter->fw_cap_info))
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
-=======
 	if (priv->adapter->host_mlme_enabled)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return mwifiex_send_cmd(priv, HostCmd_CMD_GTK_REKEY_OFFLOAD_CFG,
 				HostCmd_ACT_GEN_SET, 0, data, true);
 }
@@ -4004,8 +3977,6 @@ mwifiex_cfg80211_tdls_cancel_chan_switch(struct wiphy *wiphy,
 }
 
 static int
-<<<<<<< HEAD
-=======
 mwifiex_cfg80211_uap_add_station(struct mwifiex_private *priv, const u8 *mac,
 				 struct station_parameters *params)
 {
@@ -4033,19 +4004,15 @@ mwifiex_cfg80211_uap_add_station(struct mwifiex_private *priv, const u8 *mac,
 }
 
 static int
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 mwifiex_cfg80211_add_station(struct wiphy *wiphy, struct net_device *dev,
 			     const u8 *mac, struct station_parameters *params)
 {
 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(dev);
 
-<<<<<<< HEAD
-=======
 	if (priv->adapter->host_mlme_enabled &&
 	    (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_UAP))
 		return mwifiex_cfg80211_uap_add_station(priv, mac, params);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(params->sta_flags_set & BIT(NL80211_STA_FLAG_TDLS_PEER)))
 		return -EOPNOTSUPP;
 
@@ -4071,11 +4038,7 @@ mwifiex_cfg80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
 		return -EBUSY;
 	}
 
-<<<<<<< HEAD
-	if (priv->wdev.cac_started)
-=======
 	if (priv->wdev.links[0].cac_started)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 
 	if (cfg80211_chandef_identical(&params->chandef,
@@ -4242,11 +4205,7 @@ static int
 mwifiex_cfg80211_start_radar_detection(struct wiphy *wiphy,
 				       struct net_device *dev,
 				       struct cfg80211_chan_def *chandef,
-<<<<<<< HEAD
-				       u32 cac_time_ms)
-=======
 				       u32 cac_time_ms, int link_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(dev);
 	struct mwifiex_radar_params radar_params;
@@ -4291,13 +4250,10 @@ mwifiex_cfg80211_change_station(struct wiphy *wiphy, struct net_device *dev,
 	int ret;
 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(dev);
 
-<<<<<<< HEAD
-=======
 	if (priv->adapter->host_mlme_enabled &&
 	    (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_UAP))
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* we support change_station handler only for TDLS peers*/
 	if (!(params->sta_flags_set & BIT(NL80211_STA_FLAG_TDLS_PEER)))
 		return -EOPNOTSUPP;
@@ -4314,10 +4270,6 @@ mwifiex_cfg80211_change_station(struct wiphy *wiphy, struct net_device *dev,
 	return ret;
 }
 
-<<<<<<< HEAD
-/* station cfg80211 operations */
-static struct cfg80211_ops mwifiex_cfg80211_ops = {
-=======
 static int
 mwifiex_cfg80211_authenticate(struct wiphy *wiphy,
 			      struct net_device *dev,
@@ -4619,7 +4571,6 @@ mwifiex_cfg80211_probe_client(struct wiphy *wiphy,
 
 /* station cfg80211 operations */
 static const struct cfg80211_ops mwifiex_cfg80211_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.add_virtual_intf = mwifiex_add_virtual_intf,
 	.del_virtual_intf = mwifiex_del_virtual_intf,
 	.change_virtual_intf = mwifiex_cfg80211_change_virtual_intf,
@@ -4754,12 +4705,6 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
 	struct mwifiex_private *priv = adapter->priv[MWIFIEX_BSS_TYPE_STA];
 	u8 *country_code;
 	u32 thr, retry;
-<<<<<<< HEAD
-
-	/* create a new wiphy for use with cfg80211 */
-	wiphy = wiphy_new(&mwifiex_cfg80211_ops,
-			  sizeof(struct mwifiex_adapter *));
-=======
 	struct cfg80211_ops *ops;
 
 	ops = devm_kmemdup(adapter->dev, &mwifiex_cfg80211_ops,
@@ -4769,17 +4714,11 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
 
 	/* create a new wiphy for use with cfg80211 */
 	wiphy = wiphy_new(ops, sizeof(struct mwifiex_adapter *));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!wiphy) {
 		mwifiex_dbg(adapter, ERROR,
 			    "%s: creating new wiphy\n", __func__);
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
-	wiphy->max_scan_ssids = MWIFIEX_MAX_SSID_LIST_LENGTH;
-	wiphy->max_scan_ie_len = MWIFIEX_MAX_VSIE_LEN;
-	wiphy->mgmt_stypes = mwifiex_mgmt_stypes;
-=======
 	if (adapter->host_mlme_enabled) {
 		ops->auth = mwifiex_cfg80211_authenticate;
 		ops->assoc = mwifiex_cfg80211_associate;
@@ -4810,18 +4749,14 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
 	} else {
 		wiphy->mgmt_stypes = mwifiex_mgmt_stypes;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wiphy->max_remain_on_channel_duration = 5000;
 	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
 				 BIT(NL80211_IFTYPE_P2P_CLIENT) |
 				 BIT(NL80211_IFTYPE_P2P_GO) |
 				 BIT(NL80211_IFTYPE_AP);
 
-<<<<<<< HEAD
-=======
 	wiphy->max_num_akm_suites = CFG80211_MAX_NUM_AKM_SUITES;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
 
@@ -4873,26 +4808,18 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
 
 	ether_addr_copy(wiphy->perm_addr, adapter->perm_addr);
 	wiphy->signal_type = CFG80211_SIGNAL_TYPE_MBM;
-<<<<<<< HEAD
-	wiphy->flags |= WIPHY_FLAG_HAVE_AP_SME |
-			WIPHY_FLAG_AP_PROBE_RESP_OFFLOAD |
-=======
 	wiphy->flags |= WIPHY_FLAG_AP_PROBE_RESP_OFFLOAD |
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			WIPHY_FLAG_AP_UAPSD |
 			WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL |
 			WIPHY_FLAG_HAS_CHANNEL_SWITCH |
 			WIPHY_FLAG_NETNS_OK |
 			WIPHY_FLAG_PS_ON_BY_DEFAULT;
 
-<<<<<<< HEAD
-=======
 	if (adapter->host_mlme_enabled)
 		wiphy->flags |= WIPHY_FLAG_REPORTS_OBSS;
 	else
 		wiphy->flags |= WIPHY_FLAG_HAVE_AP_SME;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ISSUPP_TDLS_ENABLED(adapter->fw_cap_info))
 		wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS |
 				WIPHY_FLAG_TDLS_EXTERNAL_SETUP;
@@ -4922,12 +4849,9 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
 			   NL80211_FEATURE_LOW_PRIORITY_SCAN |
 			   NL80211_FEATURE_NEED_OBSS_SCAN;
 
-<<<<<<< HEAD
-=======
 	if (adapter->host_mlme_enabled)
 		wiphy->features |= NL80211_FEATURE_SAE;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
 		wiphy->features |= NL80211_FEATURE_HT_IBSS;
 

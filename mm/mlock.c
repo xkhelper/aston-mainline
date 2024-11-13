@@ -725,26 +725,17 @@ static int apply_mlockall_flags(int flags)
 	}
 
 	for_each_vma(vmi, vma) {
-<<<<<<< HEAD
-=======
 		int error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vm_flags_t newflags;
 
 		newflags = vma->vm_flags & ~VM_LOCKED_MASK;
 		newflags |= to_add;
 
-<<<<<<< HEAD
-		/* Ignore errors */
-		mlock_fixup(&vmi, vma, &prev, vma->vm_start, vma->vm_end,
-			    newflags);
-=======
 		error = mlock_fixup(&vmi, vma, &prev, vma->vm_start, vma->vm_end,
 				    newflags);
 		/* Ignore errors, but prev needs fixing up. */
 		if (error)
 			prev = vma;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cond_resched();
 	}
 out:

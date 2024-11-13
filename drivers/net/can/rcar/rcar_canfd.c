@@ -2118,11 +2118,7 @@ static struct platform_driver rcar_canfd_driver = {
 		.pm = &rcar_canfd_pm_ops,
 	},
 	.probe = rcar_canfd_probe,
-<<<<<<< HEAD
-	.remove_new = rcar_canfd_remove,
-=======
 	.remove = rcar_canfd_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(rcar_canfd_driver);

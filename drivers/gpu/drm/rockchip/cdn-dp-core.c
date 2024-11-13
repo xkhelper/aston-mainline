@@ -266,18 +266,6 @@ static int cdn_dp_connector_get_modes(struct drm_connector *connector)
 
 	mutex_lock(&dp->lock);
 
-<<<<<<< HEAD
-	if (dp->drm_edid) {
-		/* FIXME: get rid of drm_edid_raw() */
-		const struct edid *edid = drm_edid_raw(dp->drm_edid);
-
-		DRM_DEV_DEBUG_KMS(dp->dev, "got edid: width[%d] x height[%d]\n",
-				  edid->width_cm, edid->height_cm);
-
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = drm_edid_connector_add_modes(connector);
 
 	mutex_unlock(&dp->lock);
@@ -372,10 +360,7 @@ static int cdn_dp_firmware_init(struct cdn_dp_device *dp)
 
 static int cdn_dp_get_sink_capability(struct cdn_dp_device *dp)
 {
-<<<<<<< HEAD
-=======
 	const struct drm_display_info *info = &dp->connector.display_info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (!cdn_dp_check_sink_connection(dp))
@@ -393,15 +378,11 @@ static int cdn_dp_get_sink_capability(struct cdn_dp_device *dp)
 					    cdn_dp_get_edid_block, dp);
 	drm_edid_connector_update(&dp->connector, dp->drm_edid);
 
-<<<<<<< HEAD
-	dp->sink_has_audio = dp->connector.display_info.has_audio;
-=======
 	dp->sink_has_audio = info->has_audio;
 
 	if (dp->drm_edid)
 		DRM_DEV_DEBUG_KMS(dp->dev, "got edid: width[%d] x height[%d]\n",
 				  info->width_mm / 10, info->height_mm / 10);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -984,36 +965,21 @@ static void cdn_dp_pd_event_work(struct work_struct *work)
 
 	/* Not connected, notify userspace to disable the block */
 	if (!cdn_dp_connected_port(dp)) {
-<<<<<<< HEAD
-		DRM_DEV_INFO(dp->dev, "Not connected. Disabling cdn\n");
-=======
 		DRM_DEV_INFO(dp->dev, "Not connected; disabling cdn\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dp->connected = false;
 
 	/* Connected but not enabled, enable the block */
 	} else if (!dp->active) {
-<<<<<<< HEAD
-		DRM_DEV_INFO(dp->dev, "Connected, not enabled. Enabling cdn\n");
-		ret = cdn_dp_enable(dp);
-		if (ret) {
-			DRM_DEV_ERROR(dp->dev, "Enable dp failed %d\n", ret);
-=======
 		DRM_DEV_INFO(dp->dev, "Connected, not enabled; enabling cdn\n");
 		ret = cdn_dp_enable(dp);
 		if (ret) {
 			DRM_DEV_ERROR(dp->dev, "Enabling dp failed: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dp->connected = false;
 		}
 
 	/* Enabled and connected to a dongle without a sink, notify userspace */
 	} else if (!cdn_dp_check_sink_connection(dp)) {
-<<<<<<< HEAD
-		DRM_DEV_INFO(dp->dev, "Connected without sink. Assert hpd\n");
-=======
 		DRM_DEV_INFO(dp->dev, "Connected without sink; assert hpd\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dp->connected = false;
 
 	/* Enabled and connected with a sink, re-train if requested */
@@ -1022,19 +988,11 @@ static void cdn_dp_pd_event_work(struct work_struct *work)
 		unsigned int lanes = dp->max_lanes;
 		struct drm_display_mode *mode = &dp->mode;
 
-<<<<<<< HEAD
-		DRM_DEV_INFO(dp->dev, "Connected with sink. Re-train link\n");
-		ret = cdn_dp_train_link(dp);
-		if (ret) {
-			dp->connected = false;
-			DRM_DEV_ERROR(dp->dev, "Train link failed %d\n", ret);
-=======
 		DRM_DEV_INFO(dp->dev, "Connected with sink; re-train link\n");
 		ret = cdn_dp_train_link(dp);
 		if (ret) {
 			dp->connected = false;
 			DRM_DEV_ERROR(dp->dev, "Training link failed: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out;
 		}
 
@@ -1044,13 +1002,7 @@ static void cdn_dp_pd_event_work(struct work_struct *work)
 			ret = cdn_dp_config_video(dp);
 			if (ret) {
 				dp->connected = false;
-<<<<<<< HEAD
-				DRM_DEV_ERROR(dp->dev,
-					      "Failed to config video %d\n",
-					      ret);
-=======
 				DRM_DEV_ERROR(dp->dev, "Failed to configure video: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	}

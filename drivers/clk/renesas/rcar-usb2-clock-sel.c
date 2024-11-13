@@ -212,11 +212,7 @@ static struct platform_driver rcar_usb2_clock_sel_driver = {
 		.pm	= &rcar_usb2_clock_sel_pm_ops,
 	},
 	.probe		= rcar_usb2_clock_sel_probe,
-<<<<<<< HEAD
-	.remove_new	= rcar_usb2_clock_sel_remove,
-=======
 	.remove		= rcar_usb2_clock_sel_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 builtin_platform_driver(rcar_usb2_clock_sel_driver);
 

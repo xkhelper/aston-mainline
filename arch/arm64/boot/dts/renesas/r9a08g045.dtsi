@@ -72,8 +72,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		i2c0: i2c@10090000 {
 			compatible = "renesas,riic-r9a08g045", "renesas,riic-r9a09g057";
 			reg = <0 0x10090000 0 0x400>;
@@ -162,7 +160,6 @@
 			status = "disabled";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cpg: clock-controller@11010000 {
 			compatible = "renesas,r9a08g045-cpg";
 			reg = <0 0x11010000 0 0x10000>;
@@ -272,8 +269,6 @@
 			resets = <&cpg R9A08G045_IA55_RESETN>;
 		};
 
-<<<<<<< HEAD
-=======
 		dmac: dma-controller@11820000 {
 			compatible = "renesas,r9a08g045-dmac",
 				     "renesas,rz-dmac";
@@ -312,7 +307,6 @@
 			dma-channels = <16>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sdhi0: mmc@11c00000  {
 			compatible = "renesas,sdhi-r9a08g045", "renesas,rzg2l-sdhi";
 			reg = <0x0 0x11c00000 0 0x10000>;
@@ -401,13 +395,8 @@
 			#interrupt-cells = <3>;
 			#address-cells = <0>;
 			interrupt-controller;
-<<<<<<< HEAD
-			reg = <0x0 0x12400000 0 0x40000>,
-			      <0x0 0x12440000 0 0x60000>;
-=======
 			reg = <0x0 0x12400000 0 0x20000>,
 			      <0x0 0x12440000 0 0x40000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
 		};
 

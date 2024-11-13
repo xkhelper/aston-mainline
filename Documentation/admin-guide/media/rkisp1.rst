@@ -114,13 +114,6 @@ to be applied to the hardware during a video stream, allowing userspace
 to dynamically modify values such as black level, cross talk corrections
 and others.
 
-<<<<<<< HEAD
-The buffer format is defined by struct :c:type:`rkisp1_params_cfg`, and
-userspace should set
-:ref:`V4L2_META_FMT_RK_ISP1_PARAMS <v4l2-meta-fmt-rk-isp1-params>` as the
-dataformat.
-
-=======
 The ISP driver supports two different parameters configuration methods, the
 `fixed parameters format` or the `extensible parameters format`.
 
@@ -133,7 +126,6 @@ When using the `extensible parameters` method the buffer format is defined by
 struct :c:type:`rkisp1_ext_params_cfg`, and userspace should set
 :ref:`V4L2_META_FMT_RK_ISP1_EXT_PARAMS <v4l2-meta-fmt-rk-isp1-ext-params>` as
 the dataformat.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Capturing Video Frames Example
 ==============================

@@ -133,13 +133,8 @@ static inline int __paes_keyblob2pkey(struct key_blob *kb,
 			if (msleep_interruptible(1000))
 				return -EINTR;
 		}
-<<<<<<< HEAD
-		ret = pkey_keyblob2pkey(kb->key, kb->keylen,
-					pk->protkey, &pk->len, &pk->type);
-=======
 		ret = pkey_key2protkey(kb->key, kb->keylen,
 				       pk->protkey, &pk->len, &pk->type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;
@@ -807,14 +802,10 @@ out_err:
 module_init(paes_s390_init);
 module_exit(paes_s390_fini);
 
-<<<<<<< HEAD
-MODULE_ALIAS_CRYPTO("paes");
-=======
 MODULE_ALIAS_CRYPTO("ecb(paes)");
 MODULE_ALIAS_CRYPTO("cbc(paes)");
 MODULE_ALIAS_CRYPTO("ctr(paes)");
 MODULE_ALIAS_CRYPTO("xts(paes)");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_DESCRIPTION("Rijndael (AES) Cipher Algorithm with protected keys");
 MODULE_LICENSE("GPL");

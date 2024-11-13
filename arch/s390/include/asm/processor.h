@@ -44,10 +44,7 @@ struct pcpu {
 	unsigned long ec_mask;		/* bit mask for ec_xxx functions */
 	unsigned long ec_clk;		/* sigp timestamp for ec_xxx */
 	unsigned long flags;		/* per CPU flags */
-<<<<<<< HEAD
-=======
 	unsigned long capacity;		/* cpu capacity for scheduler */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	signed char state;		/* physical cpu state */
 	signed char polarization;	/* physical polarization */
 	u16 address;			/* physical cpu address */

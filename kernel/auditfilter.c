@@ -1344,11 +1344,7 @@ int audit_filter(int msgtype, unsigned int listtype)
 
 			switch (f->type) {
 			case AUDIT_PID:
-<<<<<<< HEAD
-				pid = task_pid_nr(current);
-=======
 				pid = task_tgid_nr(current);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				result = audit_comparator(pid, f->op, f->val);
 				break;
 			case AUDIT_UID:

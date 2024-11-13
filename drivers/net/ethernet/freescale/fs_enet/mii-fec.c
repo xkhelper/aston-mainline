@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 // SPDX-License-Identifier: GPL-2.0-only
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Combined Ethernet driver for Motorola MPC8xx and MPC82xx.
  *
@@ -10,13 +7,6 @@
  *
  * 2005 (c) MontaVista Software, Inc.
  * Vitaly Bordug <vbordug@ru.mvista.com>
-<<<<<<< HEAD
- *
- * This file is licensed under the terms of the GNU General Public License
- * version 2. This program is licensed "as is" without any warranty of any
- * kind, whether express or implied.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/module.h>

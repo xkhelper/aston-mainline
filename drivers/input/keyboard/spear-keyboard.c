@@ -222,11 +222,7 @@ static int spear_kbd_probe(struct platform_device *pdev)
 	if (IS_ERR(kbd->io_base))
 		return PTR_ERR(kbd->io_base);
 
-<<<<<<< HEAD
-	kbd->clk = devm_clk_get(&pdev->dev, NULL);
-=======
 	kbd->clk = devm_clk_get_prepared(&pdev->dev, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(kbd->clk))
 		return PTR_ERR(kbd->clk);
 
@@ -259,20 +255,9 @@ static int spear_kbd_probe(struct platform_device *pdev)
 		return error;
 	}
 
-<<<<<<< HEAD
-	error = clk_prepare(kbd->clk);
-	if (error)
-		return error;
-
 	error = input_register_device(input_dev);
 	if (error) {
 		dev_err(&pdev->dev, "Unable to register keyboard device\n");
-		clk_unprepare(kbd->clk);
-=======
-	error = input_register_device(input_dev);
-	if (error) {
-		dev_err(&pdev->dev, "Unable to register keyboard device\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return error;
 	}
 
@@ -282,17 +267,6 @@ static int spear_kbd_probe(struct platform_device *pdev)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void spear_kbd_remove(struct platform_device *pdev)
-{
-	struct spear_kbd *kbd = platform_get_drvdata(pdev);
-
-	input_unregister_device(kbd->input);
-	clk_unprepare(kbd->clk);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int spear_kbd_suspend(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
@@ -386,10 +360,6 @@ MODULE_DEVICE_TABLE(of, spear_kbd_id_table);
 
 static struct platform_driver spear_kbd_driver = {
 	.probe		= spear_kbd_probe,
-<<<<<<< HEAD
-	.remove_new	= spear_kbd_remove,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "keyboard",
 		.pm	= pm_sleep_ptr(&spear_kbd_pm_ops),

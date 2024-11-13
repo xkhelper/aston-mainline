@@ -24,11 +24,7 @@
 #include "smb2pdu.h"
 #include "smb2proto.h"
 #include "cached_dir.h"
-<<<<<<< HEAD
-#include "smb2status.h"
-=======
 #include "../common/smb2status.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct reparse_data_buffer *reparse_buf_ptr(struct kvec *iov)
 {
@@ -319,11 +315,7 @@ replay_again:
 							  SMB2_O_INFO_FILE, 0,
 							  sizeof(struct smb311_posix_qinfo *) +
 							  (PATH_MAX * 2) +
-<<<<<<< HEAD
-							  (sizeof(struct cifs_sid) * 2), 0, NULL);
-=======
 							  (sizeof(struct smb_sid) * 2), 0, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			} else {
 				rc = SMB2_query_info_init(tcon, server,
 							  &rqst[num_rqst],
@@ -333,11 +325,7 @@ replay_again:
 							  SMB2_O_INFO_FILE, 0,
 							  sizeof(struct smb311_posix_qinfo *) +
 							  (PATH_MAX * 2) +
-<<<<<<< HEAD
-							  (sizeof(struct cifs_sid) * 2), 0, NULL);
-=======
 							  (sizeof(struct smb_sid) * 2), 0, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			if (!rc && (!cfile || num_rqst > 1)) {
 				smb2_set_next_command(tcon, &rqst[num_rqst]);
@@ -1210,10 +1198,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
 				     const unsigned int xid,
 				     struct cifs_tcon *tcon,
 				     const char *full_path,
-<<<<<<< HEAD
-=======
 				     bool directory,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     struct kvec *reparse_iov,
 				     struct kvec *xattr_iov)
 {
@@ -1221,29 +1206,19 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
 	struct cifsFileInfo *cfile;
 	struct inode *new = NULL;
-<<<<<<< HEAD
-	struct kvec in_iov[2];
-	int cmds[2];
-	int rc;
-=======
 	int out_buftype[4] = {};
 	struct kvec out_iov[4] = {};
 	struct kvec in_iov[2];
 	int cmds[2];
 	int rc;
 	int i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
 			     SYNCHRONIZE | DELETE |
 			     FILE_READ_ATTRIBUTES |
 			     FILE_WRITE_ATTRIBUTES,
 			     FILE_CREATE,
-<<<<<<< HEAD
-			     CREATE_NOT_DIR | OPEN_REPARSE_POINT,
-=======
 			     (directory ? CREATE_NOT_FILE : CREATE_NOT_DIR) | OPEN_REPARSE_POINT,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     ACL_NO_MODE);
 	if (xattr_iov)
 		oparms.ea_cctx = xattr_iov;
@@ -1257,11 +1232,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
 		cmds[1] = SMB2_OP_POSIX_QUERY_INFO;
 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
-<<<<<<< HEAD
-				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
-=======
 				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!rc) {
 			rc = smb311_posix_get_inode_info(&new, full_path,
 							 data, sb, xid);
@@ -1270,18 +1241,12 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
 		cmds[1] = SMB2_OP_QUERY_INFO;
 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
-<<<<<<< HEAD
-				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
-=======
 				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!rc) {
 			rc = cifs_get_inode_info(&new, full_path,
 						 data, sb, xid, NULL);
 		}
 	}
-<<<<<<< HEAD
-=======
 
 
 	/*
@@ -1299,7 +1264,6 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
 	for (i = 0; i < ARRAY_SIZE(out_buftype); i++)
 		free_rsp_buf(out_buftype[i], out_iov[i].iov_base);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc ? ERR_PTR(rc) : new;
 }
 

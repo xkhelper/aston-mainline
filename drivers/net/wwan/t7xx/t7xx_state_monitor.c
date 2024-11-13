@@ -213,19 +213,6 @@ static void fsm_routine_exception(struct t7xx_fsm_ctl *ctl, struct t7xx_fsm_comm
 		fsm_finish_command(ctl, cmd, 0);
 }
 
-<<<<<<< HEAD
-static void t7xx_host_event_notify(struct t7xx_modem *md, unsigned int event_id)
-{
-	u32 value;
-
-	value = ioread32(IREG_BASE(md->t7xx_dev) + T7XX_PCIE_MISC_DEV_STATUS);
-	value &= ~HOST_EVENT_MASK;
-	value |= FIELD_PREP(HOST_EVENT_MASK, event_id);
-	iowrite32(value, IREG_BASE(md->t7xx_dev) + T7XX_PCIE_MISC_DEV_STATUS);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void t7xx_lk_stage_event_handling(struct t7xx_fsm_ctl *ctl, unsigned int status)
 {
 	struct t7xx_modem *md = ctl->md;
@@ -267,10 +254,6 @@ static void t7xx_lk_stage_event_handling(struct t7xx_fsm_ctl *ctl, unsigned int 
 
 static int fsm_stopped_handler(struct t7xx_fsm_ctl *ctl)
 {
-<<<<<<< HEAD
-	ctl->curr_state = FSM_STATE_STOPPED;
-
-=======
 	enum t7xx_mode mode;
 
 	ctl->curr_state = FSM_STATE_STOPPED;
@@ -279,7 +262,6 @@ static int fsm_stopped_handler(struct t7xx_fsm_ctl *ctl)
 	if (mode == T7XX_FASTBOOT_DOWNLOAD || mode == T7XX_FASTBOOT_DUMP)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	t7xx_fsm_broadcast_state(ctl, MD_STATE_STOPPED);
 	return t7xx_md_reset(ctl->md->t7xx_dev);
 }
@@ -298,11 +280,6 @@ static void fsm_routine_stopping(struct t7xx_fsm_ctl *ctl, struct t7xx_fsm_comma
 {
 	struct cldma_ctrl *md_ctrl = ctl->md->md_ctrl[CLDMA_ID_MD];
 	struct t7xx_pci_dev *t7xx_dev = ctl->md->t7xx_dev;
-<<<<<<< HEAD
-	enum t7xx_mode mode = READ_ONCE(t7xx_dev->mode);
-	int err;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ctl->curr_state == FSM_STATE_STOPPED || ctl->curr_state == FSM_STATE_STOPPING) {
 		fsm_finish_command(ctl, cmd, -EINVAL);
@@ -313,27 +290,10 @@ static void fsm_routine_stopping(struct t7xx_fsm_ctl *ctl, struct t7xx_fsm_comma
 	t7xx_fsm_broadcast_state(ctl, MD_STATE_WAITING_TO_STOP);
 	t7xx_cldma_stop(md_ctrl);
 
-<<<<<<< HEAD
-	if (mode == T7XX_FASTBOOT_SWITCHING)
-		t7xx_host_event_notify(ctl->md, FASTBOOT_DL_NOTIFY);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	t7xx_mhccif_h2d_swint_trigger(t7xx_dev, H2D_CH_DRM_DISABLE_AP);
 	/* Wait for the DRM disable to take effect */
 	msleep(FSM_DRM_DISABLE_DELAY_MS);
 
-<<<<<<< HEAD
-	if (mode == T7XX_FASTBOOT_SWITCHING) {
-		t7xx_mhccif_h2d_swint_trigger(t7xx_dev, H2D_CH_DEVICE_RESET);
-	} else {
-		err = t7xx_acpi_fldr_func(t7xx_dev);
-		if (err)
-			t7xx_mhccif_h2d_swint_trigger(t7xx_dev, H2D_CH_DEVICE_RESET);
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fsm_finish_command(ctl, cmd, fsm_stopped_handler(ctl));
 }
 
@@ -437,13 +397,9 @@ static void fsm_routine_start(struct t7xx_fsm_ctl *ctl, struct t7xx_fsm_command 
 
 		case T7XX_DEV_STAGE_LK:
 			dev_dbg(dev, "LK_STAGE Entered\n");
-<<<<<<< HEAD
-			t7xx_lk_stage_event_handling(ctl, status);
-=======
 			t7xx_port_proxy_set_cfg(md, PORT_CFG_ID_EARLY);
 			t7xx_lk_stage_event_handling(ctl, status);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 
 		case T7XX_DEV_STAGE_LINUX:
@@ -465,12 +421,9 @@ static void fsm_routine_start(struct t7xx_fsm_ctl *ctl, struct t7xx_fsm_command 
 	}
 
 finish_command:
-<<<<<<< HEAD
-=======
 	if (ret)
 		t7xx_mode_update(md->t7xx_dev, T7XX_UNKNOWN);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fsm_finish_command(ctl, cmd, ret);
 }
 

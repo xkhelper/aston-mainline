@@ -40,19 +40,6 @@
 
 #include "head_32.h"
 
-<<<<<<< HEAD
-.macro compare_to_kernel_boundary scratch, addr
-#if CONFIG_TASK_SIZE <= 0x80000000 && CONFIG_PAGE_OFFSET >= 0x80000000
-/* By simply checking Address >= 0x80000000, we know if its a kernel address */
-	not.	\scratch, \addr
-#else
-	rlwinm	\scratch, \addr, 16, 0xfff8
-	cmpli	cr0, \scratch, PAGE_OFFSET@h
-#endif
-.endm
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PAGE_SHIFT_512K		19
 #define PAGE_SHIFT_8M		23
 
@@ -202,22 +189,7 @@ instruction_counter:
 	mfspr	r10, SPRN_SRR0	/* Get effective address of fault */
 	INVALIDATE_ADJACENT_PAGES_CPU15(r10, r11)
 	mtspr	SPRN_MD_EPN, r10
-<<<<<<< HEAD
-#ifdef CONFIG_EXECMEM
-	mfcr	r11
-	compare_to_kernel_boundary r10, r10
-#endif
 	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
-#ifdef CONFIG_EXECMEM
-	blt+	3f
-	rlwinm	r10, r10, 0, 20, 31
-	oris	r10, r10, (swapper_pg_dir - PAGE_OFFSET)@ha
-3:
-	mtcr	r11
-#endif
-=======
-	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lwz	r11, (swapper_pg_dir-PAGE_OFFSET)@l(r10)	/* Get level 1 entry */
 	mtspr	SPRN_MD_TWC, r11
 	mfspr	r10, SPRN_MD_TWC
@@ -255,26 +227,12 @@ instruction_counter:
 	START_EXCEPTION(INTERRUPT_DATA_TLB_MISS_8xx, DataStoreTLBMiss)
 	mtspr	SPRN_SPRG_SCRATCH2, r10
 	mtspr	SPRN_M_TW, r11
-<<<<<<< HEAD
-	mfcr	r11
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* If we are faulting a kernel address, we have to use the
 	 * kernel page tables.
 	 */
 	mfspr	r10, SPRN_MD_EPN
-<<<<<<< HEAD
-	compare_to_kernel_boundary r10, r10
 	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
-	blt+	3f
-	rlwinm	r10, r10, 0, 20, 31
-	oris	r10, r10, (swapper_pg_dir - PAGE_OFFSET)@ha
-3:
-	mtcr	r11
-=======
-	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lwz	r11, (swapper_pg_dir-PAGE_OFFSET)@l(r10)	/* Get level 1 entry */
 
 	mtspr	SPRN_MD_TWC, r11
@@ -346,17 +304,6 @@ instruction_counter:
 	cmpwi	cr1, r11, RPN_PATTERN
 	beq-	cr1, FixupDAR	/* must be a buggy dcbX, icbi insn. */
 DARFixed:/* Return from dcbx instruction bug workaround */
-<<<<<<< HEAD
-	EXCEPTION_PROLOG_1
-	/* 0x300 is DataAccess exception, needed by bad_page_fault() */
-	EXCEPTION_PROLOG_2 INTERRUPT_DATA_STORAGE DataTLBError handle_dar_dsisr=1
-	lwz	r4, _DAR(r11)
-	lwz	r5, _DSISR(r11)
-	andis.	r10,r5,DSISR_NOHPTE@h
-	beq+	.Ldtlbie
-	tlbie	r4
-.Ldtlbie:
-=======
 	mfspr	r11, SPRN_DSISR
 	rlwinm	r11, r11, 0, DSISR_NOHPTE
 	cmpwi	cr1, r11, 0
@@ -370,7 +317,6 @@ DARFixed:/* Return from dcbx instruction bug workaround */
 	EXCEPTION_PROLOG_1
 	/* 0x300 is DataAccess exception, needed by bad_page_fault() */
 	EXCEPTION_PROLOG_2 INTERRUPT_DATA_STORAGE DataTLBError handle_dar_dsisr=1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	prepare_transfer_to_handler
 	bl	do_page_fault
 	b	interrupt_return
@@ -424,8 +370,6 @@ DARFixed:/* Return from dcbx instruction bug workaround */
 	__HEAD
 	. = 0x2000
 
-<<<<<<< HEAD
-=======
 FixupPGD:
 	mtspr	SPRN_M_TW, r10
 	mfspr	r10, SPRN_DAR
@@ -450,7 +394,6 @@ FixupPGD:
 	mfspr	r10, SPRN_M_TW
 	b	.Ldtlbie
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* This is the procedure to calculate the data EA for buggy dcbx,dcbi instructions
  * by decoding the registers used by the dcbx instruction and adding them.
  * DAR is set to the calculated address.
@@ -461,11 +404,7 @@ FixupDAR:/* Entry point for dcbx workaround. */
 	mfspr	r10, SPRN_SRR0
 	mtspr	SPRN_MD_EPN, r10
 	rlwinm	r11, r10, 16, 0xfff8
-<<<<<<< HEAD
-	cmpli	cr1, r11, PAGE_OFFSET@h
-=======
 	cmpli	cr1, r11, TASK_SIZE@h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mfspr	r11, SPRN_M_TWB	/* Get level 1 table */
 	blt+	cr1, 3f
 
@@ -555,10 +494,7 @@ FixupDAR:/* Entry point for dcbx workaround. */
 	bctr				/* jump into table */
 152:
 	mfdar	r11
-<<<<<<< HEAD
-=======
 	mtdar	r10
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mtctr	r11			/* restore ctr reg from DAR */
 	mfspr	r11, SPRN_SPRG_THREAD
 	stw	r10, DAR(r11)
@@ -652,13 +588,10 @@ start_here:
 	lis	r0, (MD_TWAM | MD_RSV4I)@h
 	mtspr	SPRN_MD_CTR, r0
 #endif
-<<<<<<< HEAD
-=======
 #ifndef CONFIG_PIN_TLB_TEXT
 	li	r0, 0
 	mtspr	SPRN_MI_CTR, r0
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if !defined(CONFIG_PIN_TLB_DATA) && !defined(CONFIG_PIN_TLB_IMMR)
 	lis	r0, MD_TWAM@h
 	mtspr	SPRN_MD_CTR, r0
@@ -755,10 +688,7 @@ SYM_FUNC_START_LOCAL(initial_mmu)
 	blr
 SYM_FUNC_END(initial_mmu)
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_PIN_TLB
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 _GLOBAL(mmu_pin_tlb)
 	lis	r9, (1f - PAGE_OFFSET)@h
 	ori	r9, r9, (1f - PAGE_OFFSET)@l
@@ -780,10 +710,7 @@ _GLOBAL(mmu_pin_tlb)
 	mtspr	SPRN_MD_CTR, r6
 	tlbia
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_PIN_TLB_TEXT
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LOAD_REG_IMMEDIATE(r5, 28 << 8)
 	LOAD_REG_IMMEDIATE(r6, PAGE_OFFSET)
 	LOAD_REG_IMMEDIATE(r7, MI_SVALID | MI_PS8MEG | _PMD_ACCESSED)
@@ -804,10 +731,7 @@ _GLOBAL(mmu_pin_tlb)
 	bdnzt	lt, 2b
 	lis	r0, MI_RSV4I@h
 	mtspr	SPRN_MI_CTR, r0
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	LOAD_REG_IMMEDIATE(r5, 28 << 8 | MD_TWAM)
 #ifdef CONFIG_PIN_TLB_DATA
@@ -867,7 +791,4 @@ _GLOBAL(mmu_pin_tlb)
 	mtspr	SPRN_SRR1, r10
 	mtspr	SPRN_SRR0, r11
 	rfi
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

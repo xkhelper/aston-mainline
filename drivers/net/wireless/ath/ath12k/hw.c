@@ -926,11 +926,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
 		.supports_dynamic_smps_6ghz = true,
 
 		.iova_mask = 0,
-<<<<<<< HEAD
-=======
 
 		.supports_aspm = false,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.name = "wcn7850 hw2.0",
@@ -992,21 +989,9 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
 		.qmi_cnss_feature_bitmap = BIT(CNSS_QDSS_CFG_MISS_V01) |
 					   BIT(CNSS_PCIE_PERST_NO_PULL_V01),
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.rfkill_pin = 0,
 		.rfkill_cfg = 0,
 		.rfkill_on_level = 0,
-=======
-		.rfkill_pin = 48,
-		.rfkill_cfg = 0,
-		.rfkill_on_level = 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.rfkill_pin = 0,
-		.rfkill_cfg = 0,
-		.rfkill_on_level = 0,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 		.rddm_size = 0x780000,
 
@@ -1021,11 +1006,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
 		.supports_dynamic_smps_6ghz = false,
 
 		.iova_mask = ATH12K_PCIE_MAX_PAYLOAD_SIZE - 1,
-<<<<<<< HEAD
-=======
 
 		.supports_aspm = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.name = "qcn9274 hw2.0",
@@ -1100,11 +1082,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
 		.supports_dynamic_smps_6ghz = true,
 
 		.iova_mask = 0,
-<<<<<<< HEAD
-=======
 
 		.supports_aspm = false,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

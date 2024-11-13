@@ -110,11 +110,7 @@ Bulk of the code is in:
 `kernel/fork.c <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/fork.c>`.
 
 stack_vm_area pointer in task_struct keeps track of the virtually allocated
-<<<<<<< HEAD
-stack and a non-null stack_vm_area pointer serves as a indication that the
-=======
 stack and a non-null stack_vm_area pointer serves as an indication that the
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 virtually mapped kernel stacks are enabled.
 
 ::
@@ -124,13 +120,8 @@ virtually mapped kernel stacks are enabled.
 Stack overflow handling
 -----------------------
 
-<<<<<<< HEAD
-Leading and trailing guard pages help detect stack overflows. When stack
-overflows into the guard pages, handlers have to be careful not overflow
-=======
 Leading and trailing guard pages help detect stack overflows. When the stack
 overflows into the guard pages, handlers have to be careful not to overflow
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 the stack again. When handlers are called, it is likely that very little
 stack space is left.
 
@@ -157,10 +148,6 @@ Conclusions
 - THREAD_INFO_IN_TASK gets rid of arch-specific thread_info entirely and
   simply embed the thread_info (containing only flags) and 'int cpu' into
   task_struct.
-<<<<<<< HEAD
-- The thread stack can be free'ed as soon as the task is dead (without
-=======
 - The thread stack can be freed as soon as the task is dead (without
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   waiting for RCU) and then, if vmapped stacks are in use, cache the
   entire stack for reuse on the same cpu.

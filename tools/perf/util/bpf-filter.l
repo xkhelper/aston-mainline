@@ -9,16 +9,11 @@
 #include "bpf-filter.h"
 #include "bpf-filter-bison.h"
 
-<<<<<<< HEAD
-static int sample(enum perf_bpf_filter_term term)
-{
-=======
 extern int perf_bpf_filter_needs_path;
 
 static int sample(enum perf_bpf_filter_term term)
 {
 	perf_bpf_filter_needs_path = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_bpf_filter_lval.sample.term = term;
 	perf_bpf_filter_lval.sample.part = 0;
 	return BFT_SAMPLE;
@@ -26,17 +21,12 @@ static int sample(enum perf_bpf_filter_term term)
 
 static int sample_part(enum perf_bpf_filter_term term, int part)
 {
-<<<<<<< HEAD
-=======
 	perf_bpf_filter_needs_path = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_bpf_filter_lval.sample.term = term;
 	perf_bpf_filter_lval.sample.part = part;
 	return BFT_SAMPLE;
 }
 
-<<<<<<< HEAD
-=======
 static int sample_path(enum perf_bpf_filter_term term)
 {
 	perf_bpf_filter_needs_path = 1;
@@ -45,7 +35,6 @@ static int sample_path(enum perf_bpf_filter_term term)
 	return BFT_SAMPLE_PATH;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int operator(enum perf_bpf_filter_op op)
 {
 	perf_bpf_filter_lval.op = op;
@@ -71,12 +60,6 @@ static int constant(int val)
 	return BFT_NUM;
 }
 
-<<<<<<< HEAD
-static int error(const char *str)
-{
-	printf("perf_bpf_filter: Unexpected filter %s: %s\n", str, perf_bpf_filter_text);
-	return BFT_ERROR;
-=======
 static int path_or_error(void)
 {
 	if (!perf_bpf_filter_needs_path) {
@@ -86,7 +69,6 @@ static int path_or_error(void)
 	}
 	perf_bpf_filter_lval.path = perf_bpf_filter_text;
 	return BFT_PATH;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 %}
@@ -94,10 +76,7 @@ static int path_or_error(void)
 num_dec		[0-9]+
 num_hex		0[Xx][0-9a-fA-F]+
 space		[ \t]+
-<<<<<<< HEAD
-=======
 path		[^ \t\n]+
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ident		[_a-zA-Z][_a-zA-Z0-9]+
 
 %%
@@ -136,10 +115,7 @@ mem_blk		{ return sample_part(PBF_TERM_DATA_SRC, 7); }
 mem_hops	{ return sample_part(PBF_TERM_DATA_SRC, 8); }
 uid		{ return sample(PBF_TERM_UID); }
 gid		{ return sample(PBF_TERM_GID); }
-<<<<<<< HEAD
-=======
 cgroup		{ return sample_path(PBF_TERM_CGROUP); }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 "=="		{ return operator(PBF_OP_EQ); }
 "!="		{ return operator(PBF_OP_NEQ); }
@@ -198,11 +174,6 @@ hops3		{ return constant(PERF_MEM_HOPS_3); }
 ","		{ return ','; }
 "||"		{ return BFT_LOGICAL_OR; }
 
-<<<<<<< HEAD
-{ident}		{ return error("ident"); }
-.		{ return error("input"); }
-=======
 {path}		{ return path_or_error(); }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 %%

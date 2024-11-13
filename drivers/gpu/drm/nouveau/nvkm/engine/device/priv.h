@@ -45,10 +45,6 @@
 #include <engine/nvdec.h>
 #include <engine/nvjpg.h>
 #include <engine/ofa.h>
-<<<<<<< HEAD
-#include <engine/pm.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <engine/sec.h>
 #include <engine/sec2.h>
 #include <engine/sw.h>
@@ -59,10 +55,6 @@ int  nvkm_device_ctor(const struct nvkm_device_func *,
 		      const struct nvkm_device_quirk *,
 		      struct device *, enum nvkm_device_type, u64 handle,
 		      const char *name, const char *cfg, const char *dbg,
-<<<<<<< HEAD
-		      bool detect, bool mmio, u64 subdev_mask,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		      struct nvkm_device *);
 int  nvkm_device_init(struct nvkm_device *);
 int  nvkm_device_fini(struct nvkm_device *, bool suspend);

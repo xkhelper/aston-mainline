@@ -30,9 +30,6 @@ bool perf_pmus__supports_extended_type(void);
 char *perf_pmus__default_pmu_name(void);
 
 struct perf_pmu *perf_pmus__add_test_pmu(int test_sysfs_dirfd, const char *name);
-<<<<<<< HEAD
-=======
 struct perf_pmu *perf_pmus__fake_pmu(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* __PMUS_H */

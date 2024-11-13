@@ -6,11 +6,7 @@
 #include <kunit/test.h>
 #include <kunit/visibility.h>
 
-<<<<<<< HEAD
-#include "tests/xe_migrate_test.h"
-=======
 #include "tests/xe_kunit_helpers.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "tests/xe_pci_test.h"
 
 #include "xe_pci.h"
@@ -109,12 +105,8 @@ static void test_copy(struct xe_migrate *m, struct xe_bo *bo,
 	}
 
 	xe_map_memset(xe, &remote->vmap, 0, 0xd0, remote->size);
-<<<<<<< HEAD
-	fence = xe_migrate_clear(m, remote, remote->ttm.resource);
-=======
 	fence = xe_migrate_clear(m, remote, remote->ttm.resource,
 				 XE_MIGRATE_CLEAR_FLAG_FULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!sanity_fence_failed(xe, fence, big ? "Clearing remote big bo" :
 				 "Clearing remote small bo", test)) {
 		retval = xe_map_rd(xe, &remote->vmap, 0, u64);
@@ -288,12 +280,8 @@ static void xe_migrate_sanity_test(struct xe_migrate *m, struct kunit *test)
 	kunit_info(test, "Clearing small buffer object\n");
 	xe_map_memset(xe, &tiny->vmap, 0, 0x22, tiny->size);
 	expected = 0;
-<<<<<<< HEAD
-	fence = xe_migrate_clear(m, tiny, tiny->ttm.resource);
-=======
 	fence = xe_migrate_clear(m, tiny, tiny->ttm.resource,
 				 XE_MIGRATE_CLEAR_FLAG_FULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sanity_fence_failed(xe, fence, "Clearing small bo", test))
 		goto out;
 
@@ -314,12 +302,8 @@ static void xe_migrate_sanity_test(struct xe_migrate *m, struct kunit *test)
 	kunit_info(test, "Clearing big buffer object\n");
 	xe_map_memset(xe, &big->vmap, 0, 0x11, big->size);
 	expected = 0;
-<<<<<<< HEAD
-	fence = xe_migrate_clear(m, big, big->ttm.resource);
-=======
 	fence = xe_migrate_clear(m, big, big->ttm.resource,
 				 XE_MIGRATE_CLEAR_FLAG_FULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sanity_fence_failed(xe, fence, "Clearing big bo", test))
 		goto out;
 
@@ -353,11 +337,7 @@ vunmap:
 
 static int migrate_test_run_device(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_tile *tile;
 	int id;
 
@@ -377,13 +357,6 @@ static int migrate_test_run_device(struct xe_device *xe)
 	return 0;
 }
 
-<<<<<<< HEAD
-void xe_migrate_sanity_kunit(struct kunit *test)
-{
-	xe_call_for_each_device(migrate_test_run_device);
-}
-EXPORT_SYMBOL_IF_KUNIT(xe_migrate_sanity_kunit);
-=======
 static void xe_migrate_sanity_kunit(struct kunit *test)
 {
 	struct xe_device *xe = test->priv;
@@ -806,4 +779,3 @@ struct kunit_suite xe_migrate_test_suite = {
 	.init = xe_kunit_helper_xe_device_live_test_init,
 };
 EXPORT_SYMBOL_IF_KUNIT(xe_migrate_test_suite);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

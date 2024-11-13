@@ -52,8 +52,6 @@ rtw89_8852b-objs := rtw8852b.o \
 obj-$(CONFIG_RTW89_8852BE) += rtw89_8852be.o
 rtw89_8852be-objs := rtw8852be.o
 
-<<<<<<< HEAD
-=======
 obj-$(CONFIG_RTW89_8852BT) += rtw89_8852bt.o
 rtw89_8852bt-objs := rtw8852bt.o \
 		    rtw8852bt_rfk.o \
@@ -62,7 +60,6 @@ rtw89_8852bt-objs := rtw8852bt.o \
 obj-$(CONFIG_RTW89_8852BTE) += rtw89_8852bte.o
 rtw89_8852bte-objs := rtw8852bte.o
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_RTW89_8852C) += rtw89_8852c.o
 rtw89_8852c-objs := rtw8852c.o \
 		    rtw8852c_table.o \

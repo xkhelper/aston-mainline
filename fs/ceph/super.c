@@ -126,10 +126,7 @@ static int ceph_sync_fs(struct super_block *sb, int wait)
 	if (!wait) {
 		doutc(cl, "(non-blocking)\n");
 		ceph_flush_dirty_caps(fsc->mdsc);
-<<<<<<< HEAD
-=======
 		ceph_flush_cap_releases(fsc->mdsc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		doutc(cl, "(non-blocking) done\n");
 		return 0;
 	}

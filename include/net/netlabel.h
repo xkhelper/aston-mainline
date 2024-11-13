@@ -30,11 +30,7 @@ struct calipso_doi;
 
 /*
  * NetLabel - A management interface for maintaining network packet label
-<<<<<<< HEAD
- *            mapping tables for explicit packet labling protocols.
-=======
  *            mapping tables for explicit packet labeling protocols.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Network protocols such as CIPSO and RIPSO require a label translation layer
  * to convert the label on the packet into something meaningful on the host

@@ -15,11 +15,7 @@
 #include <linux/ctype.h>
 #include <linux/random.h>
 #include <linux/nvme-auth.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "nvmet.h"
 
@@ -29,8 +25,6 @@ int nvmet_auth_set_key(struct nvmet_host *host, const char *secret,
 	unsigned char key_hash;
 	char *dhchap_secret;
 
-<<<<<<< HEAD
-=======
 	if (!strlen(secret)) {
 		if (set_ctrl) {
 			kfree(host->dhchap_ctrl_secret);
@@ -43,7 +37,6 @@ int nvmet_auth_set_key(struct nvmet_host *host, const char *secret,
 		}
 		return 0;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sscanf(secret, "DHHC-1:%hhd:%*s", &key_hash) != 1)
 		return -EINVAL;
 	if (key_hash > 3) {
@@ -122,10 +115,7 @@ int nvmet_setup_dhgroup(struct nvmet_ctrl *ctrl, u8 dhgroup_id)
 			pr_debug("%s: ctrl %d failed to generate private key, err %d\n",
 				 __func__, ctrl->cntlid, ret);
 			kfree_sensitive(ctrl->dh_key);
-<<<<<<< HEAD
-=======
 			ctrl->dh_key = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 		ctrl->dh_keysize = crypto_kpp_maxsize(ctrl->dh_tfm);

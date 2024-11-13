@@ -395,11 +395,6 @@ int octeon_register_dispatch_fn(struct octeon_device *oct,
 void *octeon_get_dispatch_arg(struct octeon_device *oct,
 			      u16 opcode, u16 subcode);
 
-<<<<<<< HEAD
-void octeon_droq_print_stats(void);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 u32 octeon_droq_check_hw_for_pkts(struct octeon_droq *droq);
 
 int octeon_create_droq(struct octeon_device *oct, u32 q_no,

@@ -111,11 +111,7 @@ const struct bpf_func_proto bpf_map_pop_elem_proto = {
 	.gpl_only	= false,
 	.ret_type	= RET_INTEGER,
 	.arg1_type	= ARG_CONST_MAP_PTR,
-<<<<<<< HEAD
-	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT,
-=======
 	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT | MEM_WRITE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 BPF_CALL_2(bpf_map_peek_elem, struct bpf_map *, map, void *, value)
@@ -128,11 +124,7 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
 	.gpl_only	= false,
 	.ret_type	= RET_INTEGER,
 	.arg1_type	= ARG_CONST_MAP_PTR,
-<<<<<<< HEAD
-	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT,
-=======
 	.arg2_type	= ARG_PTR_TO_MAP_VALUE | MEM_UNINIT | MEM_WRITE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
@@ -166,10 +158,7 @@ const struct bpf_func_proto bpf_get_smp_processor_id_proto = {
 	.func		= bpf_get_smp_processor_id,
 	.gpl_only	= false,
 	.ret_type	= RET_INTEGER,
-<<<<<<< HEAD
-=======
 	.allow_fastcall	= true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 BPF_CALL_0(bpf_get_numa_node_id)
@@ -529,27 +518,15 @@ static int __bpf_strtoll(const char *buf, size_t buf_len, u64 flags,
 }
 
 BPF_CALL_4(bpf_strtol, const char *, buf, size_t, buf_len, u64, flags,
-<<<<<<< HEAD
-	   long *, res)
-=======
 	   s64 *, res)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	long long _res;
 	int err;
 
-<<<<<<< HEAD
-	err = __bpf_strtoll(buf, buf_len, flags, &_res);
-	if (err < 0)
-		return err;
-	if (_res != (long)_res)
-		return -ERANGE;
-=======
 	*res = 0;
 	err = __bpf_strtoll(buf, buf_len, flags, &_res);
 	if (err < 0)
 		return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*res = _res;
 	return err;
 }
@@ -561,39 +538,23 @@ const struct bpf_func_proto bpf_strtol_proto = {
 	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
 	.arg2_type	= ARG_CONST_SIZE,
 	.arg3_type	= ARG_ANYTHING,
-<<<<<<< HEAD
-	.arg4_type	= ARG_PTR_TO_LONG,
-};
-
-BPF_CALL_4(bpf_strtoul, const char *, buf, size_t, buf_len, u64, flags,
-	   unsigned long *, res)
-=======
 	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
 	.arg4_size	= sizeof(s64),
 };
 
 BPF_CALL_4(bpf_strtoul, const char *, buf, size_t, buf_len, u64, flags,
 	   u64 *, res)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long long _res;
 	bool is_negative;
 	int err;
 
-<<<<<<< HEAD
-=======
 	*res = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = __bpf_strtoull(buf, buf_len, flags, &_res, &is_negative);
 	if (err < 0)
 		return err;
 	if (is_negative)
 		return -EINVAL;
-<<<<<<< HEAD
-	if (_res != (unsigned long)_res)
-		return -ERANGE;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*res = _res;
 	return err;
 }
@@ -605,12 +566,8 @@ const struct bpf_func_proto bpf_strtoul_proto = {
 	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
 	.arg2_type	= ARG_CONST_SIZE,
 	.arg3_type	= ARG_ANYTHING,
-<<<<<<< HEAD
-	.arg4_type	= ARG_PTR_TO_LONG,
-=======
 	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
 	.arg4_size	= sizeof(u64),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 BPF_CALL_3(bpf_strncmp, const char *, s1, u32, s1_sz, const char *, s2)
@@ -758,11 +715,7 @@ BPF_CALL_2(bpf_per_cpu_ptr, const void *, ptr, u32, cpu)
 	if (cpu >= nr_cpu_ids)
 		return (unsigned long)NULL;
 
-<<<<<<< HEAD
-	return (unsigned long)per_cpu_ptr((const void __percpu *)ptr, cpu);
-=======
 	return (unsigned long)per_cpu_ptr((const void __percpu *)(const uintptr_t)ptr, cpu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const struct bpf_func_proto bpf_per_cpu_ptr_proto = {
@@ -775,11 +728,7 @@ const struct bpf_func_proto bpf_per_cpu_ptr_proto = {
 
 BPF_CALL_1(bpf_this_cpu_ptr, const void *, percpu_ptr)
 {
-<<<<<<< HEAD
-	return (unsigned long)this_cpu_ptr((const void __percpu *)percpu_ptr);
-=======
 	return (unsigned long)this_cpu_ptr((const void __percpu *)(const uintptr_t)percpu_ptr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const struct bpf_func_proto bpf_this_cpu_ptr_proto = {
@@ -1670,15 +1619,9 @@ void bpf_wq_cancel_and_free(void *val)
 	schedule_work(&work->delete_work);
 }
 
-<<<<<<< HEAD
-BPF_CALL_2(bpf_kptr_xchg, void *, map_value, void *, ptr)
-{
-	unsigned long *kptr = map_value;
-=======
 BPF_CALL_2(bpf_kptr_xchg, void *, dst, void *, ptr)
 {
 	unsigned long *kptr = dst;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* This helper may be inlined by verifier. */
 	return xchg(kptr, (unsigned long)ptr);
@@ -1693,11 +1636,7 @@ static const struct bpf_func_proto bpf_kptr_xchg_proto = {
 	.gpl_only     = false,
 	.ret_type     = RET_PTR_TO_BTF_ID_OR_NULL,
 	.ret_btf_id   = BPF_PTR_POISON,
-<<<<<<< HEAD
-	.arg1_type    = ARG_PTR_TO_KPTR,
-=======
 	.arg1_type    = ARG_KPTR_XCHG_DEST,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.arg2_type    = ARG_PTR_TO_BTF_ID_OR_NULL | OBJ_RELEASE,
 	.arg2_btf_id  = BPF_PTR_POISON,
 };
@@ -1803,11 +1742,7 @@ static const struct bpf_func_proto bpf_dynptr_from_mem_proto = {
 	.arg1_type	= ARG_PTR_TO_UNINIT_MEM,
 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
 	.arg3_type	= ARG_ANYTHING,
-<<<<<<< HEAD
-	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_LOCAL | MEM_UNINIT,
-=======
 	.arg4_type	= ARG_PTR_TO_DYNPTR | DYNPTR_TYPE_LOCAL | MEM_UNINIT | MEM_WRITE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 BPF_CALL_5(bpf_dynptr_read, void *, dst, u32, len, const struct bpf_dynptr_kern *, src,
@@ -2099,10 +2034,7 @@ bpf_base_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
 		return NULL;
 	}
 }
-<<<<<<< HEAD
-=======
 EXPORT_SYMBOL_GPL(bpf_base_func_proto);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void bpf_list_head_free(const struct btf_field *field, void *list_head,
 			struct bpf_spin_lock *spin_lock)
@@ -2527,8 +2459,6 @@ __bpf_kfunc long bpf_task_under_cgroup(struct task_struct *task,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 BPF_CALL_2(bpf_current_task_under_cgroup, struct bpf_map *, map, u32, idx)
 {
 	struct bpf_array *array = container_of(map, struct bpf_array, map);
@@ -2552,7 +2482,6 @@ const struct bpf_func_proto bpf_current_task_under_cgroup_proto = {
 	.arg2_type      = ARG_ANYTHING,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * bpf_task_get_cgroup1 - Acquires the associated cgroup of a task within a
  * specific cgroup1 hierarchy. The cgroup1 hierarchy is identified by its
@@ -2922,17 +2851,6 @@ struct bpf_iter_bits {
 	__u64 __opaque[2];
 } __aligned(8);
 
-<<<<<<< HEAD
-struct bpf_iter_bits_kern {
-	union {
-		unsigned long *bits;
-		unsigned long bits_copy;
-	};
-	u32 nr_bits;
-	int bit;
-} __aligned(8);
-
-=======
 #define BITS_ITER_NR_WORDS_MAX 511
 
 struct bpf_iter_bits_kern {
@@ -2967,18 +2885,13 @@ static void swap_ulong_in_u64(u64 *bits, unsigned int nr)
 #endif
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * bpf_iter_bits_new() - Initialize a new bits iterator for a given memory area
  * @it: The new bpf_iter_bits to be created
  * @unsafe_ptr__ign: A pointer pointing to a memory area to be iterated over
  * @nr_words: The size of the specified memory area, measured in 8-byte units.
-<<<<<<< HEAD
- * Due to the limitation of memalloc, it can't be greater than 512.
-=======
  * The maximum value of @nr_words is @BITS_ITER_NR_WORDS_MAX. This limit may be
  * further reduced by the BPF memory allocator implementation.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This function initializes a new bpf_iter_bits structure for iterating over
  * a memory area which is specified by the @unsafe_ptr__ign and @nr_words. It
@@ -3005,11 +2918,8 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
 
 	if (!unsafe_ptr__ign || !nr_words)
 		return -EINVAL;
-<<<<<<< HEAD
-=======
 	if (nr_words > BITS_ITER_NR_WORDS_MAX)
 		return -E2BIG;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Optimization for u64 mask */
 	if (nr_bits == 64) {
@@ -3017,21 +2927,15 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
 		if (err)
 			return -EFAULT;
 
-<<<<<<< HEAD
-=======
 		swap_ulong_in_u64(&kit->bits_copy, nr_words);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kit->nr_bits = nr_bits;
 		return 0;
 	}
 
-<<<<<<< HEAD
-=======
 	if (bpf_mem_alloc_check_size(false, nr_bytes))
 		return -E2BIG;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Fallback to memalloc */
 	kit->bits = bpf_mem_alloc(&bpf_global_ma, nr_bytes);
 	if (!kit->bits)
@@ -3043,11 +2947,8 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
 		return err;
 	}
 
-<<<<<<< HEAD
-=======
 	swap_ulong_in_u64(kit->bits, nr_words);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kit->nr_bits = nr_bits;
 	return 0;
 }
@@ -3064,19 +2965,6 @@ bpf_iter_bits_new(struct bpf_iter_bits *it, const u64 *unsafe_ptr__ign, u32 nr_w
 __bpf_kfunc int *bpf_iter_bits_next(struct bpf_iter_bits *it)
 {
 	struct bpf_iter_bits_kern *kit = (void *)it;
-<<<<<<< HEAD
-	u32 nr_bits = kit->nr_bits;
-	const unsigned long *bits;
-	int bit;
-
-	if (nr_bits == 0)
-		return NULL;
-
-	bits = nr_bits == 64 ? &kit->bits_copy : kit->bits;
-	bit = find_next_bit(bits, nr_bits, kit->bit + 1);
-	if (bit >= nr_bits) {
-		kit->nr_bits = 0;
-=======
 	int bit = kit->bit, nr_bits = kit->nr_bits;
 	const void *bits;
 
@@ -3087,7 +2975,6 @@ __bpf_kfunc int *bpf_iter_bits_next(struct bpf_iter_bits *it)
 	bit = find_next_bit(bits, nr_bits, bit + 1);
 	if (bit >= nr_bits) {
 		kit->bit = bit;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 	}
 
@@ -3110,8 +2997,6 @@ __bpf_kfunc void bpf_iter_bits_destroy(struct bpf_iter_bits *it)
 	bpf_mem_free(&bpf_global_ma, kit->bits);
 }
 
-<<<<<<< HEAD
-=======
 /**
  * bpf_copy_from_user_str() - Copy a string from an unsafe user address
  * @dst:             Destination address, in kernel space.  This buffer must be
@@ -3153,7 +3038,6 @@ __bpf_kfunc int bpf_copy_from_user_str(void *dst, u32 dst__sz, const void __user
 	return ret + 1;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 __bpf_kfunc_end_defs();
 
 BTF_KFUNCS_START(generic_btf_ids)
@@ -3239,10 +3123,7 @@ BTF_ID_FLAGS(func, bpf_preempt_enable)
 BTF_ID_FLAGS(func, bpf_iter_bits_new, KF_ITER_NEW)
 BTF_ID_FLAGS(func, bpf_iter_bits_next, KF_ITER_NEXT | KF_RET_NULL)
 BTF_ID_FLAGS(func, bpf_iter_bits_destroy, KF_ITER_DESTROY)
-<<<<<<< HEAD
-=======
 BTF_ID_FLAGS(func, bpf_copy_from_user_str, KF_SLEEPABLE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 BTF_KFUNCS_END(common_btf_ids)
 
 static const struct btf_kfunc_id_set common_kfunc_set = {
@@ -3271,10 +3152,7 @@ static int __init kfunc_init(void)
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &generic_kfunc_set);
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &generic_kfunc_set);
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL, &generic_kfunc_set);
-<<<<<<< HEAD
-=======
 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_CGROUP_SKB, &generic_kfunc_set);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ret ?: register_btf_id_dtor_kfuncs(generic_dtors,
 						  ARRAY_SIZE(generic_dtors),
 						  THIS_MODULE);

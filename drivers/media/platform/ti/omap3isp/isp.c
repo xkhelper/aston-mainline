@@ -1965,11 +1965,7 @@ static int isp_attach_iommu(struct isp_device *isp)
 	 * Create the ARM mapping, used by the ARM DMA mapping core to allocate
 	 * VAs. This will allocate a corresponding IOMMU domain.
 	 */
-<<<<<<< HEAD
-	mapping = arm_iommu_create_mapping(&platform_bus_type, SZ_1G, SZ_2G);
-=======
 	mapping = arm_iommu_create_mapping(isp->dev, SZ_1G, SZ_2G);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(mapping)) {
 		dev_err(isp->dev, "failed to create ARM IOMMU mapping\n");
 		return PTR_ERR(mapping);

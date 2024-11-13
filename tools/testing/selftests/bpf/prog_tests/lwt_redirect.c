@@ -47,10 +47,6 @@
 #include <linux/if_ether.h>
 #include <linux/if_packet.h>
 #include <linux/if_tun.h>
-<<<<<<< HEAD
-#include <linux/icmp.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>

@@ -56,10 +56,7 @@
 #include <linux/kprobes.h>
 #include <linux/lockdep.h>
 #include <linux/context_tracking.h>
-<<<<<<< HEAD
-=======
 #include <linux/console.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/sections.h>
 
@@ -577,15 +574,10 @@ static struct lock_trace *save_trace(void)
 		if (!debug_locks_off_graph_unlock())
 			return NULL;
 
-<<<<<<< HEAD
-		print_lockdep_off("BUG: MAX_STACK_TRACE_ENTRIES too low!");
-		dump_stack();
-=======
 		nbcon_cpu_emergency_enter();
 		print_lockdep_off("BUG: MAX_STACK_TRACE_ENTRIES too low!");
 		dump_stack();
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return NULL;
 	}
@@ -796,11 +788,7 @@ static void lockdep_print_held_locks(struct task_struct *p)
 		printk("no locks held by %s/%d.\n", p->comm, task_pid_nr(p));
 	else
 		printk("%d lock%s held by %s/%d:\n", depth,
-<<<<<<< HEAD
-		       depth > 1 ? "s" : "", p->comm, task_pid_nr(p));
-=======
 		       str_plural(depth), p->comm, task_pid_nr(p));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * It's not reliable to print a task's held locks if it's not sleeping
 	 * and it's not the current task.
@@ -902,19 +890,13 @@ look_up_lock_class(const struct lockdep_map *lock, unsigned int subclass)
 	if (unlikely(subclass >= MAX_LOCKDEP_SUBCLASSES)) {
 		instrumentation_begin();
 		debug_locks_off();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_enter();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		printk(KERN_ERR
 			"BUG: looking up invalid subclass: %u\n", subclass);
 		printk(KERN_ERR
 			"turning off the locking correctness validator.\n");
 		dump_stack();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		instrumentation_end();
 		return NULL;
 	}
@@ -991,19 +973,13 @@ static bool assign_lock_key(struct lockdep_map *lock)
 	else {
 		/* Debug-check: all keys must be persistent! */
 		debug_locks_off();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_enter();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_err("INFO: trying to register non-static key.\n");
 		pr_err("The code is fine but needs lockdep annotation, or maybe\n");
 		pr_err("you didn't initialize this object before use?\n");
 		pr_err("turning off the locking correctness validator.\n");
 		dump_stack();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 	}
 
@@ -1347,15 +1323,10 @@ register_lock_class(struct lockdep_map *lock, unsigned int subclass, int force)
 			return NULL;
 		}
 
-<<<<<<< HEAD
-		print_lockdep_off("BUG: MAX_LOCKDEP_KEYS too low!");
-		dump_stack();
-=======
 		nbcon_cpu_emergency_enter();
 		print_lockdep_off("BUG: MAX_LOCKDEP_KEYS too low!");
 		dump_stack();
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 	}
 	nr_lock_classes++;
@@ -1387,19 +1358,13 @@ register_lock_class(struct lockdep_map *lock, unsigned int subclass, int force)
 	if (verbose(class)) {
 		graph_unlock();
 
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_enter();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		printk("\nnew class %px: %s", class->key, class->name);
 		if (class->name_version > 1)
 			printk(KERN_CONT "#%d", class->name_version);
 		printk(KERN_CONT "\n");
 		dump_stack();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!graph_lock()) {
 			return NULL;
@@ -1438,15 +1403,10 @@ static struct lock_list *alloc_list_entry(void)
 		if (!debug_locks_off_graph_unlock())
 			return NULL;
 
-<<<<<<< HEAD
-		print_lockdep_off("BUG: MAX_LOCKDEP_ENTRIES too low!");
-		dump_stack();
-=======
 		nbcon_cpu_emergency_enter();
 		print_lockdep_off("BUG: MAX_LOCKDEP_ENTRIES too low!");
 		dump_stack();
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 	}
 	nr_list_entries++;
@@ -2092,11 +2052,8 @@ static noinline void print_circular_bug(struct lock_list *this,
 
 	depth = get_lock_depth(target);
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	print_circular_bug_header(target, depth, check_src, check_tgt);
 
 	parent = get_lock_parent(target);
@@ -2115,11 +2072,8 @@ static noinline void print_circular_bug(struct lock_list *this,
 
 	printk("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static noinline void print_bfs_bug(int ret)
@@ -2130,12 +2084,9 @@ static noinline void print_bfs_bug(int ret)
 	/*
 	 * Breadth-first-search failed, graph got corrupted?
 	 */
-<<<<<<< HEAD
-=======
 	if (ret == BFS_EQUEUEFULL)
 		pr_warn("Increase LOCKDEP_CIRCULAR_QUEUE_BITS to avoid this warning:\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WARN(1, "lockdep bfs error:%d\n", ret);
 }
 
@@ -2638,11 +2589,8 @@ print_bad_irq_dependency(struct task_struct *curr,
 	if (!debug_locks_off_graph_unlock() || debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("=====================================================\n");
 	pr_warn("WARNING: %s-safe -> %s-unsafe lock order detected\n",
@@ -2692,20 +2640,13 @@ print_bad_irq_dependency(struct task_struct *curr,
 	pr_warn(" and %s-irq-unsafe lock:\n", irqclass);
 	next_root->trace = save_trace();
 	if (!next_root->trace)
-<<<<<<< HEAD
-		return;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	print_shortest_lock_dependencies(forwards_entry, next_root);
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 out:
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const char *state_names[] = {
@@ -3070,11 +3011,8 @@ print_deadlock_bug(struct task_struct *curr, struct held_lock *prev,
 	if (!debug_locks_off_graph_unlock() || debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("============================================\n");
 	pr_warn("WARNING: possible recursive locking detected\n");
@@ -3097,11 +3035,8 @@ print_deadlock_bug(struct task_struct *curr, struct held_lock *prev,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -3699,11 +3634,8 @@ static void print_collision(struct task_struct *curr,
 			struct held_lock *hlock_next,
 			struct lock_chain *chain)
 {
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("============================\n");
 	pr_warn("WARNING: chain_key collision\n");
@@ -3720,11 +3652,8 @@ static void print_collision(struct task_struct *curr,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif
 
@@ -3815,15 +3744,10 @@ static inline int add_chain_cache(struct task_struct *curr,
 		if (!debug_locks_off_graph_unlock())
 			return 0;
 
-<<<<<<< HEAD
-		print_lockdep_off("BUG: MAX_LOCKDEP_CHAINS too low!");
-		dump_stack();
-=======
 		nbcon_cpu_emergency_enter();
 		print_lockdep_off("BUG: MAX_LOCKDEP_CHAINS too low!");
 		dump_stack();
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	chain->chain_key = chain_key;
@@ -3840,15 +3764,10 @@ static inline int add_chain_cache(struct task_struct *curr,
 		if (!debug_locks_off_graph_unlock())
 			return 0;
 
-<<<<<<< HEAD
-		print_lockdep_off("BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!");
-		dump_stack();
-=======
 		nbcon_cpu_emergency_enter();
 		print_lockdep_off("BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!");
 		dump_stack();
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -4087,11 +4006,8 @@ print_usage_bug(struct task_struct *curr, struct held_lock *this,
 	if (!debug_locks_off() || debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("================================\n");
 	pr_warn("WARNING: inconsistent lock state\n");
@@ -4120,11 +4036,8 @@ print_usage_bug(struct task_struct *curr, struct held_lock *this,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -4159,11 +4072,8 @@ print_irq_inversion_bug(struct task_struct *curr,
 	if (!debug_locks_off_graph_unlock() || debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("========================================================\n");
 	pr_warn("WARNING: possible irq lock inversion dependency detected\n");
@@ -4204,20 +4114,13 @@ print_irq_inversion_bug(struct task_struct *curr,
 	pr_warn("\nthe shortest dependencies between 2nd lock and 1st lock:\n");
 	root->trace = save_trace();
 	if (!root->trace)
-<<<<<<< HEAD
-		return;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	print_shortest_lock_dependencies(other, root);
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 out:
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -4294,11 +4197,8 @@ void print_irqtrace_events(struct task_struct *curr)
 {
 	const struct irqtrace_events *trace = &curr->irqtrace;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printk("irq event stamp: %u\n", trace->irq_events);
 	printk("hardirqs last  enabled at (%u): [<%px>] %pS\n",
 		trace->hardirq_enable_event, (void *)trace->hardirq_enable_ip,
@@ -4312,11 +4212,8 @@ void print_irqtrace_events(struct task_struct *curr)
 	printk("softirqs last disabled at (%u): [<%px>] %pS\n",
 		trace->softirq_disable_event, (void *)trace->softirq_disable_ip,
 		(void *)trace->softirq_disable_ip);
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int HARDIRQ_verbose(struct lock_class *class)
@@ -4837,18 +4734,12 @@ unlock:
 	 * We must printk outside of the graph_lock:
 	 */
 	if (ret == 2) {
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_enter();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		printk("\nmarked lock as {%s}:\n", usage_str[new_bit]);
 		print_lock(this);
 		print_irqtrace_events(curr);
 		dump_stack();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;
@@ -4889,11 +4780,8 @@ print_lock_invalid_wait_context(struct task_struct *curr,
 	if (debug_locks_silent)
 		return 0;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("=============================\n");
 	pr_warn("[ BUG: Invalid wait context ]\n");
@@ -4913,11 +4801,8 @@ print_lock_invalid_wait_context(struct task_struct *curr,
 	pr_warn("stack backtrace:\n");
 	dump_stack();
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_exit();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -5125,11 +5010,8 @@ print_lock_nested_lock_not_held(struct task_struct *curr,
 	if (debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("==================================\n");
 	pr_warn("WARNING: Nested lock was not taken\n");
@@ -5150,11 +5032,8 @@ print_lock_nested_lock_not_held(struct task_struct *curr,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int __lock_is_held(const struct lockdep_map *lock, int read);
@@ -5203,19 +5082,13 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
 	debug_class_ops_inc(class);
 
 	if (very_verbose(class)) {
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_enter();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		printk("\nacquire class [%px] %s", class->key, class->name);
 		if (class->name_version > 1)
 			printk(KERN_CONT "#%d", class->name_version);
 		printk(KERN_CONT "\n");
 		dump_stack();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -5342,10 +5215,7 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
 #endif
 	if (unlikely(curr->lockdep_depth >= MAX_LOCK_DEPTH)) {
 		debug_locks_off();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_enter();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		print_lockdep_off("BUG: MAX_LOCK_DEPTH too low!");
 		printk(KERN_DEBUG "depth: %i  max: %lu!\n",
 		       curr->lockdep_depth, MAX_LOCK_DEPTH);
@@ -5353,10 +5223,7 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
 		lockdep_print_held_locks(current);
 		debug_show_all_locks();
 		dump_stack();
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return 0;
 	}
@@ -5376,11 +5243,8 @@ static void print_unlock_imbalance_bug(struct task_struct *curr,
 	if (debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("=====================================\n");
 	pr_warn("WARNING: bad unlock balance detected!\n");
@@ -5397,11 +5261,8 @@ static void print_unlock_imbalance_bug(struct task_struct *curr,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static noinstr int match_held_lock(const struct held_lock *hlock,
@@ -6106,11 +5967,8 @@ static void print_lock_contention_bug(struct task_struct *curr,
 	if (debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("=================================\n");
 	pr_warn("WARNING: bad contention detected!\n");
@@ -6127,11 +5985,8 @@ static void print_lock_contention_bug(struct task_struct *curr,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void
@@ -6411,45 +6266,27 @@ static struct pending_free *get_pending_free(void)
 static void free_zapped_rcu(struct rcu_head *cb);
 
 /*
-<<<<<<< HEAD
- * Schedule an RCU callback if no RCU callback is pending. Must be called with
- * the graph lock held.
- */
-static void call_rcu_zapped(struct pending_free *pf)
-=======
 * See if we need to queue an RCU callback, must called with
 * the lockdep lock held, returns false if either we don't have
 * any pending free or the callback is already scheduled.
 * Otherwise, a call_rcu() must follow this function call.
 */
 static bool prepare_call_rcu_zapped(struct pending_free *pf)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	WARN_ON_ONCE(inside_selftest());
 
 	if (list_empty(&pf->zapped))
-<<<<<<< HEAD
-		return;
-
-	if (delayed_free.scheduled)
-		return;
-=======
 		return false;
 
 	if (delayed_free.scheduled)
 		return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	delayed_free.scheduled = true;
 
 	WARN_ON_ONCE(delayed_free.pf + delayed_free.index != pf);
 	delayed_free.index ^= 1;
 
-<<<<<<< HEAD
-	call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
-=======
 	return true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* The caller must hold the graph lock. May be called from RCU context. */
@@ -6475,10 +6312,7 @@ static void free_zapped_rcu(struct rcu_head *ch)
 {
 	struct pending_free *pf;
 	unsigned long flags;
-<<<<<<< HEAD
-=======
 	bool need_callback;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (WARN_ON_ONCE(ch != &delayed_free.rcu_head))
 		return;
@@ -6490,16 +6324,6 @@ static void free_zapped_rcu(struct rcu_head *ch)
 	pf = delayed_free.pf + (delayed_free.index ^ 1);
 	__free_zapped_classes(pf);
 	delayed_free.scheduled = false;
-<<<<<<< HEAD
-
-	/*
-	 * If there's anything on the open list, close and start a new callback.
-	 */
-	call_rcu_zapped(delayed_free.pf + delayed_free.index);
-
-	lockdep_unlock();
-	raw_local_irq_restore(flags);
-=======
 	need_callback =
 		prepare_call_rcu_zapped(delayed_free.pf + delayed_free.index);
 	lockdep_unlock();
@@ -6512,7 +6336,6 @@ static void free_zapped_rcu(struct rcu_head *ch)
 	if (need_callback)
 		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -6552,10 +6375,7 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
 {
 	struct pending_free *pf;
 	unsigned long flags;
-<<<<<<< HEAD
-=======
 	bool need_callback;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	init_data_structures_once();
 
@@ -6563,18 +6383,11 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
 	lockdep_lock();
 	pf = get_pending_free();
 	__lockdep_free_key_range(pf, start, size);
-<<<<<<< HEAD
-	call_rcu_zapped(pf);
-	lockdep_unlock();
-	raw_local_irq_restore(flags);
-
-=======
 	need_callback = prepare_call_rcu_zapped(pf);
 	lockdep_unlock();
 	raw_local_irq_restore(flags);
 	if (need_callback)
 		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Wait for any possible iterators from look_up_lock_class() to pass
 	 * before continuing to free the memory they refer to.
@@ -6668,10 +6481,7 @@ static void lockdep_reset_lock_reg(struct lockdep_map *lock)
 	struct pending_free *pf;
 	unsigned long flags;
 	int locked;
-<<<<<<< HEAD
-=======
 	bool need_callback = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	raw_local_irq_save(flags);
 	locked = graph_lock();
@@ -6680,20 +6490,13 @@ static void lockdep_reset_lock_reg(struct lockdep_map *lock)
 
 	pf = get_pending_free();
 	__lockdep_reset_lock(pf, lock);
-<<<<<<< HEAD
-	call_rcu_zapped(pf);
-=======
 	need_callback = prepare_call_rcu_zapped(pf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	graph_unlock();
 out_irq:
 	raw_local_irq_restore(flags);
-<<<<<<< HEAD
-=======
 	if (need_callback)
 		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -6737,10 +6540,7 @@ void lockdep_unregister_key(struct lock_class_key *key)
 	struct pending_free *pf;
 	unsigned long flags;
 	bool found = false;
-<<<<<<< HEAD
-=======
 	bool need_callback = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	might_sleep();
 
@@ -6761,21 +6561,14 @@ void lockdep_unregister_key(struct lock_class_key *key)
 	if (found) {
 		pf = get_pending_free();
 		__lockdep_free_key_range(pf, key, 1);
-<<<<<<< HEAD
-		call_rcu_zapped(pf);
-=======
 		need_callback = prepare_call_rcu_zapped(pf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	lockdep_unlock();
 	raw_local_irq_restore(flags);
 
-<<<<<<< HEAD
-=======
 	if (need_callback)
 		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Wait until is_dynamic_key() has finished accessing k->hash_entry. */
 	synchronize_rcu();
 }
@@ -6829,11 +6622,8 @@ print_freed_lock_bug(struct task_struct *curr, const void *mem_from,
 	if (debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("=========================\n");
 	pr_warn("WARNING: held lock freed!\n");
@@ -6846,11 +6636,8 @@ print_freed_lock_bug(struct task_struct *curr, const void *mem_from,
 
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int not_in_range(const void* mem_from, unsigned long mem_len,
@@ -6897,11 +6684,8 @@ static void print_held_locks_bug(void)
 	if (debug_locks_silent)
 		return;
 
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("====================================\n");
 	pr_warn("WARNING: %s/%d still has locks held!\n",
@@ -6911,11 +6695,8 @@ static void print_held_locks_bug(void)
 	lockdep_print_held_locks(current);
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void debug_check_no_locks_held(void)
@@ -6973,10 +6754,7 @@ asmlinkage __visible void lockdep_sys_exit(void)
 	if (unlikely(curr->lockdep_depth)) {
 		if (!debug_locks_off())
 			return;
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_enter();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_warn("\n");
 		pr_warn("================================================\n");
 		pr_warn("WARNING: lock held when returning to user space!\n");
@@ -6985,10 +6763,7 @@ asmlinkage __visible void lockdep_sys_exit(void)
 		pr_warn("%s/%d is leaving the kernel with locks still held!\n",
 				curr->comm, curr->pid);
 		lockdep_print_held_locks(curr);
-<<<<<<< HEAD
-=======
 		nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -7005,10 +6780,7 @@ void lockdep_rcu_suspicious(const char *file, const int line, const char *s)
 	bool rcu = warn_rcu_enter();
 
 	/* Note: the following can be executed concurrently, so be careful. */
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_enter();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("\n");
 	pr_warn("=============================\n");
 	pr_warn("WARNING: suspicious RCU usage\n");
@@ -7047,10 +6819,7 @@ void lockdep_rcu_suspicious(const char *file, const int line, const char *s)
 	lockdep_print_held_locks(curr);
 	pr_warn("\nstack backtrace:\n");
 	dump_stack();
-<<<<<<< HEAD
-=======
 	nbcon_cpu_emergency_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	warn_rcu_exit(rcu);
 }
 EXPORT_SYMBOL_GPL(lockdep_rcu_suspicious);

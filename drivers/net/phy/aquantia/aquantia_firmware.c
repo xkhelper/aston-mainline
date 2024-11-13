@@ -6,11 +6,7 @@
 #include <linux/crc-itu-t.h>
 #include <linux/nvmem-consumer.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "aquantia.h"
 
@@ -357,29 +353,6 @@ int aqr_firmware_load(struct phy_device *phydev)
 {
 	int ret;
 
-<<<<<<< HEAD
-	ret = aqr_wait_reset_complete(phydev);
-	if (ret)
-		return ret;
-
-	/* Check if the firmware is not already loaded by pooling
-	 * the current version returned by the PHY. If 0 is returned,
-	 * no firmware is loaded.
-	 */
-	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_GLOBAL_FW_ID);
-	if (ret > 0)
-		goto exit;
-
-	ret = aqr_firmware_load_nvmem(phydev);
-	if (!ret)
-		goto exit;
-
-	ret = aqr_firmware_load_fs(phydev);
-	if (ret)
-		return ret;
-
-exit:
-=======
 	/* Check if the firmware is not already loaded by polling
 	 * the current version returned by the PHY.
 	 */
@@ -407,6 +380,5 @@ exit:
 		return ret;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

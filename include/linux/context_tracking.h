@@ -26,42 +26,26 @@ extern void user_exit_callable(void);
 static inline void user_enter(void)
 {
 	if (context_tracking_enabled())
-<<<<<<< HEAD
-		ct_user_enter(CONTEXT_USER);
-=======
 		ct_user_enter(CT_STATE_USER);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 }
 static inline void user_exit(void)
 {
 	if (context_tracking_enabled())
-<<<<<<< HEAD
-		ct_user_exit(CONTEXT_USER);
-=======
 		ct_user_exit(CT_STATE_USER);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Called with interrupts disabled.  */
 static __always_inline void user_enter_irqoff(void)
 {
 	if (context_tracking_enabled())
-<<<<<<< HEAD
-		__ct_user_enter(CONTEXT_USER);
-=======
 		__ct_user_enter(CT_STATE_USER);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 }
 static __always_inline void user_exit_irqoff(void)
 {
 	if (context_tracking_enabled())
-<<<<<<< HEAD
-		__ct_user_exit(CONTEXT_USER);
-=======
 		__ct_user_exit(CT_STATE_USER);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline enum ctx_state exception_enter(void)
@@ -73,11 +57,7 @@ static inline enum ctx_state exception_enter(void)
 		return 0;
 
 	prev_ctx = __ct_state();
-<<<<<<< HEAD
-	if (prev_ctx != CONTEXT_KERNEL)
-=======
 	if (prev_ctx != CT_STATE_KERNEL)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ct_user_exit(prev_ctx);
 
 	return prev_ctx;
@@ -87,11 +67,7 @@ static inline void exception_exit(enum ctx_state prev_ctx)
 {
 	if (!IS_ENABLED(CONFIG_HAVE_CONTEXT_TRACKING_USER_OFFSTACK) &&
 	    context_tracking_enabled()) {
-<<<<<<< HEAD
-		if (prev_ctx != CONTEXT_KERNEL)
-=======
 		if (prev_ctx != CT_STATE_KERNEL)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ct_user_enter(prev_ctx);
 	}
 }
@@ -99,11 +75,7 @@ static inline void exception_exit(enum ctx_state prev_ctx)
 static __always_inline bool context_tracking_guest_enter(void)
 {
 	if (context_tracking_enabled())
-<<<<<<< HEAD
-		__ct_user_enter(CONTEXT_GUEST);
-=======
 		__ct_user_enter(CT_STATE_GUEST);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return context_tracking_enabled_this_cpu();
 }
@@ -111,11 +83,7 @@ static __always_inline bool context_tracking_guest_enter(void)
 static __always_inline bool context_tracking_guest_exit(void)
 {
 	if (context_tracking_enabled())
-<<<<<<< HEAD
-		__ct_user_exit(CONTEXT_GUEST);
-=======
 		__ct_user_exit(CT_STATE_GUEST);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return context_tracking_enabled_this_cpu();
 }
@@ -147,15 +115,6 @@ extern void ct_idle_enter(void);
 extern void ct_idle_exit(void);
 
 /*
-<<<<<<< HEAD
- * Is the current CPU in an extended quiescent state?
- *
- * No ordering, as we are sampling CPU-local information.
- */
-static __always_inline bool rcu_dynticks_curr_cpu_in_eqs(void)
-{
-	return !(raw_atomic_read(this_cpu_ptr(&context_tracking.state)) & RCU_DYNTICKS_IDX);
-=======
  * Is RCU watching the current CPU (IOW, it is not in an extended quiescent state)?
  *
  * Note that this returns the actual boolean data (watching / not watching),
@@ -167,7 +126,6 @@ static __always_inline bool rcu_dynticks_curr_cpu_in_eqs(void)
 static __always_inline bool rcu_is_watching_curr_cpu(void)
 {
 	return raw_atomic_read(this_cpu_ptr(&context_tracking.state)) & CT_RCU_WATCHING;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -188,15 +146,9 @@ static __always_inline bool warn_rcu_enter(void)
 	 * lots of the actual reporting also relies on RCU.
 	 */
 	preempt_disable_notrace();
-<<<<<<< HEAD
-	if (rcu_dynticks_curr_cpu_in_eqs()) {
-		ret = true;
-		ct_state_inc(RCU_DYNTICKS_IDX);
-=======
 	if (!rcu_is_watching_curr_cpu()) {
 		ret = true;
 		ct_state_inc(CT_RCU_WATCHING);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;
@@ -205,11 +157,7 @@ static __always_inline bool warn_rcu_enter(void)
 static __always_inline void warn_rcu_exit(bool rcu)
 {
 	if (rcu)
-<<<<<<< HEAD
-		ct_state_inc(RCU_DYNTICKS_IDX);
-=======
 		ct_state_inc(CT_RCU_WATCHING);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	preempt_enable_notrace();
 }
 

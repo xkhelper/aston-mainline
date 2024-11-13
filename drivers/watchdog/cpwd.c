@@ -507,10 +507,6 @@ static const struct file_operations cpwd_fops = {
 	.write =		cpwd_write,
 	.read =			cpwd_read,
 	.release =		cpwd_release,
-<<<<<<< HEAD
-	.llseek =		no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int cpwd_probe(struct platform_device *op)

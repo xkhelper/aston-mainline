@@ -179,8 +179,6 @@
 #define CLK_GOUT_CORE_CCI_PCLK		4
 #define CLK_GOUT_CORE_CMU_CORE_PCLK	5
 
-<<<<<<< HEAD
-=======
 /* CMU_DPUM */
 #define CLK_MOUT_DPUM_BUS_USER		1
 #define CLK_DOUT_DPUM_BUSP		2
@@ -192,7 +190,6 @@
 #define CLK_GOUT_DPUM_SYSMMU_D2_CLK	8
 #define CLK_GOUT_DPUM_SYSMMU_D3_CLK	9
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* CMU_FSYS0 */
 #define CLK_MOUT_FSYS0_BUS_USER		1
 #define CLK_MOUT_FSYS0_PCIE_USER	2

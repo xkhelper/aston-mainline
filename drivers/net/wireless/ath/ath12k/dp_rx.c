@@ -2681,11 +2681,7 @@ try_again:
 		if (push_reason !=
 		    HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION) {
 			dev_kfree_skb_any(msdu);
-<<<<<<< HEAD
-			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
-=======
 			ab->soc_stats.hal_reo_error[ring_id]++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 

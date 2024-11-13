@@ -40,10 +40,7 @@ ALL_TESTS="
 	ping_ipv4
 	ping_ipv6
 	multipath_test
-<<<<<<< HEAD
-=======
 	multipath16_test
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nh_stats_test_v4
 	nh_stats_test_v6
 "
@@ -232,17 +229,11 @@ routing_nh_obj()
 
 multipath4_test()
 {
-<<<<<<< HEAD
-	local desc="$1"
-	local weight_rp12=$2
-	local weight_rp13=$3
-=======
 	local desc=$1; shift
 	local weight_rp12=$1; shift
 	local weight_rp13=$1; shift
 	local ports=${1-sp=1024,dp=0-32768}; shift
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local t0_rp12 t0_rp13 t1_rp12 t1_rp13
 	local packets_rp12 packets_rp13
 
@@ -255,12 +246,8 @@ multipath4_test()
 	t0_rp13=$(link_stats_tx_packets_get $rp13)
 
 	ip vrf exec vrf-h1 $MZ $h1 -q -p 64 -A 192.0.2.2 -B 198.51.100.2 \
-<<<<<<< HEAD
-		-d $MZ_DELAY -t udp "sp=1024,dp=0-32768"
-=======
 		-d $MZ_DELAY -t udp "$ports"
 	sleep 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	t1_rp12=$(link_stats_tx_packets_get $rp12)
 	t1_rp13=$(link_stats_tx_packets_get $rp13)
@@ -275,17 +262,11 @@ multipath4_test()
 
 multipath6_l4_test()
 {
-<<<<<<< HEAD
-	local desc="$1"
-	local weight_rp12=$2
-	local weight_rp13=$3
-=======
 	local desc=$1; shift
 	local weight_rp12=$1; shift
 	local weight_rp13=$1; shift
 	local ports=${1-sp=1024,dp=0-32768}; shift
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local t0_rp12 t0_rp13 t1_rp12 t1_rp13
 	local packets_rp12 packets_rp13
 
@@ -298,12 +279,8 @@ multipath6_l4_test()
 	t0_rp13=$(link_stats_tx_packets_get $rp13)
 
 	$MZ $h1 -6 -q -p 64 -A 2001:db8:1::2 -B 2001:db8:2::2 \
-<<<<<<< HEAD
-		-d $MZ_DELAY -t udp "sp=1024,dp=0-32768"
-=======
 		-d $MZ_DELAY -t udp "$ports"
 	sleep 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	t1_rp12=$(link_stats_tx_packets_get $rp12)
 	t1_rp13=$(link_stats_tx_packets_get $rp13)
@@ -401,8 +378,6 @@ multipath_test()
 	ip nexthop replace id 106 group 104,1/105,1 type resilient
 }
 
-<<<<<<< HEAD
-=======
 multipath16_test()
 {
 	check_nhgw16 104 || return
@@ -438,7 +413,6 @@ multipath16_test()
 	ip nexthop replace id 106 group 104,1/105,1 type resilient
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nh_stats_test_v4()
 {
 	__nh_stats_test_v4 resilient

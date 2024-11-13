@@ -826,8 +826,6 @@ void panthor_vm_idle(struct panthor_vm *vm)
 	mutex_unlock(&ptdev->mmu->as.slots_lock);
 }
 
-<<<<<<< HEAD
-=======
 u32 panthor_vm_page_size(struct panthor_vm *vm)
 {
 	const struct io_pgtable *pgt = io_pgtable_ops_to_pgtable(vm->pgtbl_ops);
@@ -836,7 +834,6 @@ u32 panthor_vm_page_size(struct panthor_vm *vm)
 	return 1u << pg_shift;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void panthor_vm_stop(struct panthor_vm *vm)
 {
 	drm_sched_stop(&vm->sched, NULL);
@@ -844,11 +841,7 @@ static void panthor_vm_stop(struct panthor_vm *vm)
 
 static void panthor_vm_start(struct panthor_vm *vm)
 {
-<<<<<<< HEAD
-	drm_sched_start(&vm->sched, true);
-=======
 	drm_sched_start(&vm->sched);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1040,14 +1033,6 @@ int
 panthor_vm_alloc_va(struct panthor_vm *vm, u64 va, u64 size,
 		    struct drm_mm_node *va_node)
 {
-<<<<<<< HEAD
-	int ret;
-
-	if (!size || (size & ~PAGE_MASK))
-		return -EINVAL;
-
-	if (va != PANTHOR_VM_KERNEL_AUTO_VA && (va & ~PAGE_MASK))
-=======
 	ssize_t vm_pgsz = panthor_vm_page_size(vm);
 	int ret;
 
@@ -1055,7 +1040,6 @@ panthor_vm_alloc_va(struct panthor_vm *vm, u64 va, u64 size,
 		return -EINVAL;
 
 	if (va != PANTHOR_VM_KERNEL_AUTO_VA && !IS_ALIGNED(va, vm_pgsz))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	mutex_lock(&vm->mm_lock);
@@ -1276,11 +1260,6 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
 		goto err_cleanup;
 	}
 
-<<<<<<< HEAD
-	mutex_lock(&bo->gpuva_list_lock);
-	op_ctx->map.vm_bo = drm_gpuvm_bo_obtain_prealloc(preallocated_vm_bo);
-	mutex_unlock(&bo->gpuva_list_lock);
-=======
 	/* drm_gpuvm_bo_obtain_prealloc() will call drm_gpuvm_bo_put() on our
 	 * pre-allocated BO if the <BO,VM> association exists. Given we
 	 * only have one ref on preallocated_vm_bo, drm_gpuvm_bo_destroy() will
@@ -1292,7 +1271,6 @@ static int panthor_vm_prepare_map_op_ctx(struct panthor_vm_op_ctx *op_ctx,
 	op_ctx->map.vm_bo = drm_gpuvm_bo_obtain_prealloc(preallocated_vm_bo);
 	mutex_unlock(&bo->gpuva_list_lock);
 	dma_resv_unlock(panthor_vm_resv(vm));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* If the a vm_bo for this <VM,BO> combination exists, it already
 	 * retains a pin ref, and we can release the one we took earlier.
@@ -1602,13 +1580,9 @@ panthor_vm_pool_get_vm(struct panthor_vm_pool *pool, u32 handle)
 {
 	struct panthor_vm *vm;
 
-<<<<<<< HEAD
-	vm = panthor_vm_get(xa_load(&pool->xa, handle));
-=======
 	xa_lock(&pool->xa);
 	vm = panthor_vm_get(xa_load(&pool->xa, handle));
 	xa_unlock(&pool->xa);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return vm;
 }
@@ -2403,19 +2377,12 @@ panthor_vm_bind_prepare_op_ctx(struct drm_file *file,
 			       const struct drm_panthor_vm_bind_op *op,
 			       struct panthor_vm_op_ctx *op_ctx)
 {
-<<<<<<< HEAD
-=======
 	ssize_t vm_pgsz = panthor_vm_page_size(vm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_gem_object *gem;
 	int ret;
 
 	/* Aligned on page size. */
-<<<<<<< HEAD
-	if ((op->va | op->size) & ~PAGE_MASK)
-=======
 	if (!IS_ALIGNED(op->va | op->size, vm_pgsz))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	switch (op->flags & DRM_PANTHOR_VM_BIND_OP_TYPE_MASK) {

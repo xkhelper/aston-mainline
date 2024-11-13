@@ -13,8 +13,6 @@ void addr_map_symbol__exit(struct addr_map_symbol *ams)
 {
 	map_symbol__exit(&ams->ms);
 }
-<<<<<<< HEAD
-=======
 
 void map_symbol__copy(struct map_symbol *dst, struct map_symbol *src)
 {
@@ -33,4 +31,3 @@ void addr_map_symbol__copy(struct addr_map_symbol *dst, struct addr_map_symbol *
 	dst->phys_addr = src->phys_addr;
 	dst->data_page_size = src->data_page_size;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

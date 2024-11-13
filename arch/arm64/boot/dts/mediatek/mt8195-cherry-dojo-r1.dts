@@ -82,14 +82,6 @@
 	pins-low-power-hdmi-disable {
 		pinmux = <PINMUX_GPIO31__FUNC_GPIO31>,
 			 <PINMUX_GPIO32__FUNC_GPIO32>,
-<<<<<<< HEAD
-			 <PINMUX_GPIO33__FUNC_GPIO33>,
-			 <PINMUX_GPIO34__FUNC_GPIO34>,
-			 <PINMUX_GPIO35__FUNC_GPIO35>;
-		input-enable;
-		bias-pull-down;
-	};
-=======
 			 <PINMUX_GPIO33__FUNC_GPIO33>;
 		input-enable;
 		bias-pull-down;
@@ -101,7 +93,6 @@
 		input-enable;
 		bias-pull-down = <75000>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &sound {

@@ -1132,10 +1132,7 @@ out_bdi_put:
 
 /**
  * cgroup_writeback_umount - flush inode wb switches for umount
-<<<<<<< HEAD
-=======
  * @sb: target super_block
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This function is called when a super_block is about to be destroyed and
  * flushes in-flight inode wb switches.  An inode wb switch goes through
@@ -1144,17 +1141,12 @@ out_bdi_put:
  * rare occurrences and synchronize_rcu() can take a while, perform
  * flushing iff wb switches are in flight.
  */
-<<<<<<< HEAD
-void cgroup_writeback_umount(void)
-{
-=======
 void cgroup_writeback_umount(struct super_block *sb)
 {
 
 	if (!(sb->s_bdi->capabilities & BDI_CAP_WRITEBACK))
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * SB_ACTIVE should be reliably cleared before checking
 	 * isw_nr_in_flight, see generic_shutdown_super().
@@ -1394,14 +1386,6 @@ static void requeue_io(struct inode *inode, struct bdi_writeback *wb)
 
 static void inode_sync_complete(struct inode *inode)
 {
-<<<<<<< HEAD
-	inode->i_state &= ~I_SYNC;
-	/* If inode is clean an unused, put it into LRU now... */
-	inode_add_lru(inode);
-	/* Waiters must see I_SYNC cleared before being woken up */
-	smp_mb();
-	wake_up_bit(&inode->i_state, __I_SYNC);
-=======
 	assert_spin_locked(&inode->i_lock);
 
 	inode->i_state &= ~I_SYNC;
@@ -1409,7 +1393,6 @@ static void inode_sync_complete(struct inode *inode)
 	inode_add_lru(inode);
 	/* Called with inode->i_lock which ensures memory ordering. */
 	inode_wake_up_bit(inode, __I_SYNC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool inode_dirtied_after(struct inode *inode, unsigned long t)
@@ -1528,32 +1511,6 @@ static int write_inode(struct inode *inode, struct writeback_control *wbc)
  * Wait for writeback on an inode to complete. Called with i_lock held.
  * Caller must make sure inode cannot go away when we drop i_lock.
  */
-<<<<<<< HEAD
-static void __inode_wait_for_writeback(struct inode *inode)
-	__releases(inode->i_lock)
-	__acquires(inode->i_lock)
-{
-	DEFINE_WAIT_BIT(wq, &inode->i_state, __I_SYNC);
-	wait_queue_head_t *wqh;
-
-	wqh = bit_waitqueue(&inode->i_state, __I_SYNC);
-	while (inode->i_state & I_SYNC) {
-		spin_unlock(&inode->i_lock);
-		__wait_on_bit(wqh, &wq, bit_wait,
-			      TASK_UNINTERRUPTIBLE);
-		spin_lock(&inode->i_lock);
-	}
-}
-
-/*
- * Wait for writeback on an inode to complete. Caller must have inode pinned.
- */
-void inode_wait_for_writeback(struct inode *inode)
-{
-	spin_lock(&inode->i_lock);
-	__inode_wait_for_writeback(inode);
-	spin_unlock(&inode->i_lock);
-=======
 void inode_wait_for_writeback(struct inode *inode)
 {
 	struct wait_bit_queue_entry wqe;
@@ -1575,7 +1532,6 @@ void inode_wait_for_writeback(struct inode *inode)
 		spin_lock(&inode->i_lock);
 	}
 	finish_wait(wq_head, &wqe.wq_entry);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1586,18 +1542,6 @@ void inode_wait_for_writeback(struct inode *inode)
 static void inode_sleep_on_writeback(struct inode *inode)
 	__releases(inode->i_lock)
 {
-<<<<<<< HEAD
-	DEFINE_WAIT(wait);
-	wait_queue_head_t *wqh = bit_waitqueue(&inode->i_state, __I_SYNC);
-	int sleep;
-
-	prepare_to_wait(wqh, &wait, TASK_UNINTERRUPTIBLE);
-	sleep = inode->i_state & I_SYNC;
-	spin_unlock(&inode->i_lock);
-	if (sleep)
-		schedule();
-	finish_wait(wqh, &wait);
-=======
 	struct wait_bit_queue_entry wqe;
 	struct wait_queue_head *wq_head;
 	bool sleep;
@@ -1612,7 +1556,6 @@ static void inode_sleep_on_writeback(struct inode *inode)
 	if (sleep)
 		schedule();
 	finish_wait(wq_head, &wqe.wq_entry);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1816,11 +1759,7 @@ static int writeback_single_inode(struct inode *inode,
 		 */
 		if (wbc->sync_mode != WB_SYNC_ALL)
 			goto out;
-<<<<<<< HEAD
-		__inode_wait_for_writeback(inode);
-=======
 		inode_wait_for_writeback(inode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	WARN_ON(inode->i_state & I_SYNC);
 	/*

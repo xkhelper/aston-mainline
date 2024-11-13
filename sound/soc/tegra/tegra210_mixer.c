@@ -674,11 +674,7 @@ static struct platform_driver tegra210_mixer_driver = {
 		.pm = &tegra210_mixer_pm_ops,
 	},
 	.probe = tegra210_mixer_platform_probe,
-<<<<<<< HEAD
-	.remove_new = tegra210_mixer_platform_remove,
-=======
 	.remove = tegra210_mixer_platform_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(tegra210_mixer_driver);
 

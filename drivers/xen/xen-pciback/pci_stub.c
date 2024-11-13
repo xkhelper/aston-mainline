@@ -21,12 +21,9 @@
 #include <xen/events.h>
 #include <xen/pci.h>
 #include <xen/xen.h>
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_XEN_ACPI
 #include <xen/acpi.h>
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/xen/hypervisor.h>
 #include <xen/interface/physdev.h>
 #include "pciback.h"
@@ -59,12 +56,9 @@ struct pcistub_device {
 
 	struct pci_dev *dev;
 	struct xen_pcibk_device *pdev;/* non-NULL if struct pci_dev is in use */
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_XEN_ACPI
 	int gsi;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Access to pcistub_devices & seized_devices lists and the initialize_devices
@@ -97,18 +91,13 @@ static struct pcistub_device *pcistub_device_alloc(struct pci_dev *dev)
 
 	kref_init(&psdev->kref);
 	spin_lock_init(&psdev->lock);
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_XEN_ACPI
 	psdev->gsi = -1;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return psdev;
 }
 
-<<<<<<< HEAD
-=======
 static int pcistub_reset_device_state(struct pci_dev *dev)
 {
 	__pci_reset_function_locked(dev);
@@ -119,7 +108,6 @@ static int pcistub_reset_device_state(struct pci_dev *dev)
 		return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Don't call this directly as it's called by pcistub_device_put */
 static void pcistub_device_release(struct kref *kref)
 {
@@ -138,11 +126,7 @@ static void pcistub_device_release(struct kref *kref)
 	/* Call the reset function which does not take lock as this
 	 * is called from "unbind" which takes a device_lock mutex.
 	 */
-<<<<<<< HEAD
-	__pci_reset_function_locked(dev);
-=======
 	pcistub_reset_device_state(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dev_data &&
 	    pci_load_and_free_saved_state(dev, &dev_data->pci_saved_state))
 		dev_info(&dev->dev, "Could not reload PCI state\n");
@@ -242,8 +226,6 @@ static struct pci_dev *pcistub_device_get_pci_dev(struct xen_pcibk_device *pdev,
 	return pci_dev;
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_XEN_ACPI
 static int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
 {
@@ -262,7 +244,6 @@ static int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct pci_dev *pcistub_get_pci_dev_by_slot(struct xen_pcibk_device *pdev,
 					    int domain, int bus,
 					    int slot, int func)
@@ -340,11 +321,7 @@ void pcistub_put_pci_dev(struct pci_dev *dev)
 	 * (so it's ready for the next domain)
 	 */
 	device_lock_assert(&dev->dev);
-<<<<<<< HEAD
-	__pci_reset_function_locked(dev);
-=======
 	pcistub_reset_device_state(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_data = pci_get_drvdata(dev);
 	ret = pci_load_saved_state(dev, dev_data->pci_saved_state);
@@ -414,13 +391,6 @@ static int pcistub_match(struct pci_dev *dev)
 	return found;
 }
 
-<<<<<<< HEAD
-static int pcistub_init_device(struct pci_dev *dev)
-{
-	struct xen_pcibk_dev_data *dev_data;
-	int err = 0;
-
-=======
 static int pcistub_init_device(struct pcistub_device *psdev)
 {
 	struct xen_pcibk_dev_data *dev_data;
@@ -435,7 +405,6 @@ static int pcistub_init_device(struct pcistub_device *psdev)
 
 	dev = psdev->dev;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_dbg(&dev->dev, "initializing...\n");
 
 	/* The PCI backend is not intended to be a module (or to work with
@@ -497,11 +466,6 @@ static int pcistub_init_device(struct pcistub_device *psdev)
 		dev_err(&dev->dev, "Could not store PCI conf saved state!\n");
 	else {
 		dev_dbg(&dev->dev, "resetting (FLR, D3, etc) the device\n");
-<<<<<<< HEAD
-		__pci_reset_function_locked(dev);
-		pci_restore_state(dev);
-	}
-=======
 		err = pcistub_reset_device_state(dev);
 		if (err)
 			goto config_release;
@@ -522,7 +486,6 @@ static int pcistub_init_device(struct pcistub_device *psdev)
 	}
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Now disable the device (this also ensures some private device
 	 * data is setup before we export)
 	 */
@@ -562,11 +525,7 @@ static int __init pcistub_init_devices_late(void)
 
 		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
 
-<<<<<<< HEAD
-		err = pcistub_init_device(psdev->dev);
-=======
 		err = pcistub_init_device(psdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err) {
 			dev_err(&psdev->dev->dev,
 				"error %d initializing device\n", err);
@@ -636,11 +595,7 @@ static int pcistub_seize(struct pci_dev *dev,
 		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
 
 		/* don't want irqs disabled when calling pcistub_init_device */
-<<<<<<< HEAD
-		err = pcistub_init_device(psdev->dev);
-=======
 		err = pcistub_init_device(psdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		spin_lock_irqsave(&pcistub_devices_lock, flags);
 
@@ -865,11 +820,7 @@ static pci_ers_result_t common_process(struct pcistub_device *psdev,
 	}
 	clear_bit(_PCIB_op_pending, (unsigned long *)&pdev->flags);
 
-<<<<<<< HEAD
-	res = (pci_ers_result_t)aer_op->err;
-=======
 	res = (__force pci_ers_result_t)aer_op->err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return res;
 }
 
@@ -1805,25 +1756,19 @@ static int __init xen_pcibk_init(void)
 		bus_register_notifier(&pci_bus_type, &pci_stub_nb);
 #endif
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_XEN_ACPI
 	xen_acpi_register_get_gsi_func(pcistub_get_gsi_from_sbdf);
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
 static void __exit xen_pcibk_cleanup(void)
 {
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_XEN_ACPI
 	xen_acpi_register_get_gsi_func(NULL);
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PCI_IOV
 	bus_unregister_notifier(&pci_bus_type, &pci_stub_nb);
 #endif

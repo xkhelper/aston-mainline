@@ -36,11 +36,7 @@ static void tsi148_remove(struct pci_dev *);
 
 /* Module parameter */
 static bool err_chk;
-<<<<<<< HEAD
-static int geoid;
-=======
 static u32 geoid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const char driver_name[] = "vme_tsi148";
 
@@ -59,22 +55,14 @@ static struct pci_driver tsi148_driver = {
 };
 
 static void reg_join(unsigned int high, unsigned int low,
-<<<<<<< HEAD
-	unsigned long long *variable)
-=======
 		     unsigned long long *variable)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	*variable = (unsigned long long)high << 32;
 	*variable |= (unsigned long long)low;
 }
 
 static void reg_split(unsigned long long variable, unsigned int *high,
-<<<<<<< HEAD
-	unsigned int *low)
-=======
 		      unsigned int *low)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	*low = (unsigned int)variable & 0xFFFFFFFF;
 	*high = (unsigned int)(variable >> 32);
@@ -84,11 +72,7 @@ static void reg_split(unsigned long long variable, unsigned int *high,
  * Wakes up DMA queue.
  */
 static u32 tsi148_DMA_irqhandler(struct tsi148_driver *bridge,
-<<<<<<< HEAD
-	int channel_mask)
-=======
 				 int channel_mask)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 serviced = 0;
 
@@ -223,11 +207,7 @@ static u32 tsi148_IACK_irqhandler(struct tsi148_driver *bridge)
  * Calling VME bus interrupt callback if provided.
  */
 static u32 tsi148_VIRQ_irqhandler(struct vme_bridge *tsi148_bridge,
-<<<<<<< HEAD
-	u32 stat)
-=======
 				  u32 stat)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int vec, i, serviced = 0;
 	struct tsi148_driver *bridge;
@@ -378,11 +358,7 @@ static int tsi148_irq_init(struct vme_bridge *tsi148_bridge)
 }
 
 static void tsi148_irq_exit(struct vme_bridge *tsi148_bridge,
-<<<<<<< HEAD
-	struct pci_dev *pdev)
-=======
 			    struct pci_dev *pdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct tsi148_driver *bridge = tsi148_bridge->driver_priv;
 
@@ -416,11 +392,7 @@ static int tsi148_iack_received(struct tsi148_driver *bridge)
  * Configure VME interrupt
  */
 static void tsi148_irq_set(struct vme_bridge *tsi148_bridge, int level,
-<<<<<<< HEAD
-	int state, int sync)
-=======
 			   int state, int sync)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct pci_dev *pdev;
 	u32 tmp;
@@ -458,11 +430,7 @@ static void tsi148_irq_set(struct vme_bridge *tsi148_bridge, int level,
  * interrupt to be acked.
  */
 static int tsi148_irq_generate(struct vme_bridge *tsi148_bridge, int level,
-<<<<<<< HEAD
-	int statid)
-=======
 			       int statid)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 tmp;
 	struct tsi148_driver *bridge;
@@ -485,11 +453,7 @@ static int tsi148_irq_generate(struct vme_bridge *tsi148_bridge, int level,
 
 	/* XXX Consider implementing a timeout? */
 	wait_event_interruptible(bridge->iack_queue,
-<<<<<<< HEAD
-		tsi148_iack_received(bridge));
-=======
 				 tsi148_iack_received(bridge));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&bridge->vme_int);
 
@@ -500,13 +464,8 @@ static int tsi148_irq_generate(struct vme_bridge *tsi148_bridge, int level,
  * Initialize a slave window with the requested attributes.
  */
 static int tsi148_slave_set(struct vme_slave_resource *image, int enabled,
-<<<<<<< HEAD
-	unsigned long long vme_base, unsigned long long size,
-	dma_addr_t pci_base, u32 aspace, u32 cycle)
-=======
 			    unsigned long long vme_base, unsigned long long size,
 			    dma_addr_t pci_base, u32 aspace, u32 cycle)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int i, addr = 0, granularity = 0;
 	unsigned int temp_ctl = 0;
@@ -648,13 +607,8 @@ static int tsi148_slave_set(struct vme_slave_resource *image, int enabled,
  * Get slave window configuration.
  */
 static int tsi148_slave_get(struct vme_slave_resource *image, int *enabled,
-<<<<<<< HEAD
-	unsigned long long *vme_base, unsigned long long *size,
-	dma_addr_t *pci_base, u32 *aspace, u32 *cycle)
-=======
 			    unsigned long long *vme_base, unsigned long long *size,
 			    dma_addr_t *pci_base, u32 *aspace, u32 *cycle)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int i, granularity = 0, ctl = 0;
 	unsigned int vme_base_low, vme_base_high;
@@ -752,11 +706,7 @@ static int tsi148_slave_get(struct vme_slave_resource *image, int *enabled,
  * Allocate and map PCI Resource
  */
 static int tsi148_alloc_resource(struct vme_master_resource *image,
-<<<<<<< HEAD
-	unsigned long long size)
-=======
 				 unsigned long long size)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long long existing_size;
 	int retval = 0;
@@ -801,15 +751,9 @@ static int tsi148_alloc_resource(struct vme_master_resource *image,
 	image->bus_resource.end = (unsigned long)size;
 	image->bus_resource.flags = IORESOURCE_MEM;
 
-<<<<<<< HEAD
-	retval = pci_bus_alloc_resource(pdev->bus,
-		&image->bus_resource, size, 0x10000, PCIBIOS_MIN_MEM,
-		0, NULL, NULL);
-=======
 	retval = pci_bus_alloc_resource(pdev->bus, &image->bus_resource,
 					size, 0x10000, PCIBIOS_MIN_MEM,
 					0, NULL, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (retval) {
 		dev_err(tsi148_bridge->parent, "Failed to allocate mem resource for window %d size 0x%lx start 0x%lx\n",
 			image->number, (unsigned long)size,
@@ -852,13 +796,8 @@ static void tsi148_free_resource(struct vme_master_resource *image)
  * Set the attributes of an outbound window.
  */
 static int tsi148_master_set(struct vme_master_resource *image, int enabled,
-<<<<<<< HEAD
-	unsigned long long vme_base, unsigned long long size, u32 aspace,
-	u32 cycle, u32 dwidth)
-=======
 			     unsigned long long vme_base, unsigned long long size,
 			     u32 aspace, u32 cycle, u32 dwidth)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval = 0;
 	unsigned int i;
@@ -1092,13 +1031,8 @@ err_window:
  * XXX Not parsing prefetch information.
  */
 static int __tsi148_master_get(struct vme_master_resource *image, int *enabled,
-<<<<<<< HEAD
-	unsigned long long *vme_base, unsigned long long *size, u32 *aspace,
-	u32 *cycle, u32 *dwidth)
-=======
 			       unsigned long long *vme_base, unsigned long long *size,
 			       u32 *aspace, u32 *cycle, u32 *dwidth)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int i, ctl;
 	unsigned int pci_base_low, pci_base_high;
@@ -1206,24 +1140,15 @@ static int __tsi148_master_get(struct vme_master_resource *image, int *enabled,
 }
 
 static int tsi148_master_get(struct vme_master_resource *image, int *enabled,
-<<<<<<< HEAD
-	unsigned long long *vme_base, unsigned long long *size, u32 *aspace,
-	u32 *cycle, u32 *dwidth)
-=======
 			     unsigned long long *vme_base, unsigned long long *size,
 			     u32 *aspace, u32 *cycle, u32 *dwidth)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval;
 
 	spin_lock(&image->lock);
 
 	retval = __tsi148_master_get(image, enabled, vme_base, size, aspace,
-<<<<<<< HEAD
-		cycle, dwidth);
-=======
 				     cycle, dwidth);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_unlock(&image->lock);
 
@@ -1231,11 +1156,7 @@ static int tsi148_master_get(struct vme_master_resource *image, int *enabled,
 }
 
 static ssize_t tsi148_master_read(struct vme_master_resource *image, void *buf,
-<<<<<<< HEAD
-	size_t count, loff_t offset)
-=======
 				  size_t count, loff_t offset)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval, enabled;
 	unsigned long long vme_base, size;
@@ -1320,11 +1241,7 @@ out:
 }
 
 static ssize_t tsi148_master_write(struct vme_master_resource *image, void *buf,
-<<<<<<< HEAD
-	size_t count, loff_t offset)
-=======
 				   size_t count, loff_t offset)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval = 0, enabled;
 	unsigned long long vme_base, size;
@@ -1425,14 +1342,8 @@ out:
  *
  * Requires a previously configured master window, returns final value.
  */
-<<<<<<< HEAD
-static unsigned int tsi148_master_rmw(struct vme_master_resource *image,
-	unsigned int mask, unsigned int compare, unsigned int swap,
-	loff_t offset)
-=======
 static unsigned int tsi148_master_rmw(struct vme_master_resource *image, unsigned int mask,
 				      unsigned int compare, unsigned int swap, loff_t offset)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long long pci_addr;
 	unsigned int pci_addr_high, pci_addr_low;
@@ -1487,11 +1398,7 @@ static unsigned int tsi148_master_rmw(struct vme_master_resource *image, unsigne
 }
 
 static int tsi148_dma_set_vme_src_attributes(struct device *dev, __be32 *attr,
-<<<<<<< HEAD
-	u32 aspace, u32 cycle, u32 dwidth)
-=======
 					     u32 aspace, u32 cycle, u32 dwidth)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 val;
 
@@ -1589,11 +1496,7 @@ static int tsi148_dma_set_vme_src_attributes(struct device *dev, __be32 *attr,
 }
 
 static int tsi148_dma_set_vme_dest_attributes(struct device *dev, __be32 *attr,
-<<<<<<< HEAD
-	u32 aspace, u32 cycle, u32 dwidth)
-=======
 					      u32 aspace, u32 cycle, u32 dwidth)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 val;
 
@@ -1695,13 +1598,8 @@ static int tsi148_dma_set_vme_dest_attributes(struct device *dev, __be32 *attr,
  *
  * Note: DMA engine expects the DMA descriptor to be big endian.
  */
-<<<<<<< HEAD
-static int tsi148_dma_list_add(struct vme_dma_list *list,
-	struct vme_dma_attr *src, struct vme_dma_attr *dest, size_t count)
-=======
 static int tsi148_dma_list_add(struct vme_dma_list *list, struct vme_dma_attr *src,
 			       struct vme_dma_attr *dest, size_t count)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct tsi148_dma_entry *entry, *prev;
 	u32 address_high, address_low, val;
@@ -1754,12 +1652,7 @@ static int tsi148_dma_list_add(struct vme_dma_list *list, struct vme_dma_attr *s
 	case VME_DMA_PCI:
 		pci_attr = src->private;
 
-<<<<<<< HEAD
-		reg_split((unsigned long long)pci_attr->address, &address_high,
-			&address_low);
-=======
 		reg_split((unsigned long long)pci_attr->address, &address_high, &address_low);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		entry->descriptor.dsau = cpu_to_be32(address_high);
 		entry->descriptor.dsal = cpu_to_be32(address_low);
 		entry->descriptor.dsat = cpu_to_be32(TSI148_LCSR_DSAT_TYP_PCI);
@@ -1767,27 +1660,16 @@ static int tsi148_dma_list_add(struct vme_dma_list *list, struct vme_dma_attr *s
 	case VME_DMA_VME:
 		vme_attr = src->private;
 
-<<<<<<< HEAD
-		reg_split((unsigned long long)vme_attr->address, &address_high,
-			&address_low);
-=======
 		reg_split((unsigned long long)vme_attr->address, &address_high, &address_low);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		entry->descriptor.dsau = cpu_to_be32(address_high);
 		entry->descriptor.dsal = cpu_to_be32(address_low);
 		entry->descriptor.dsat = cpu_to_be32(TSI148_LCSR_DSAT_TYP_VME);
 
-<<<<<<< HEAD
-		retval = tsi148_dma_set_vme_src_attributes(
-			tsi148_bridge->parent, &entry->descriptor.dsat,
-			vme_attr->aspace, vme_attr->cycle, vme_attr->dwidth);
-=======
 		retval = tsi148_dma_set_vme_src_attributes(tsi148_bridge->parent,
 							   &entry->descriptor.dsat,
 							   vme_attr->aspace,
 							   vme_attr->cycle,
 							   vme_attr->dwidth);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (retval < 0)
 			goto err_source;
 		break;
@@ -1807,11 +1689,7 @@ static int tsi148_dma_list_add(struct vme_dma_list *list, struct vme_dma_attr *s
 		pci_attr = dest->private;
 
 		reg_split((unsigned long long)pci_attr->address, &address_high,
-<<<<<<< HEAD
-			&address_low);
-=======
 			  &address_low);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		entry->descriptor.ddau = cpu_to_be32(address_high);
 		entry->descriptor.ddal = cpu_to_be32(address_low);
 		entry->descriptor.ddat = cpu_to_be32(TSI148_LCSR_DDAT_TYP_PCI);
@@ -1820,26 +1698,16 @@ static int tsi148_dma_list_add(struct vme_dma_list *list, struct vme_dma_attr *s
 		vme_attr = dest->private;
 
 		reg_split((unsigned long long)vme_attr->address, &address_high,
-<<<<<<< HEAD
-			&address_low);
-=======
 			  &address_low);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		entry->descriptor.ddau = cpu_to_be32(address_high);
 		entry->descriptor.ddal = cpu_to_be32(address_low);
 		entry->descriptor.ddat = cpu_to_be32(TSI148_LCSR_DDAT_TYP_VME);
 
-<<<<<<< HEAD
-		retval = tsi148_dma_set_vme_dest_attributes(
-			tsi148_bridge->parent, &entry->descriptor.ddat,
-			vme_attr->aspace, vme_attr->cycle, vme_attr->dwidth);
-=======
 		retval = tsi148_dma_set_vme_dest_attributes(tsi148_bridge->parent,
 							    &entry->descriptor.ddat,
 							    vme_attr->aspace,
 							    vme_attr->cycle,
 							    vme_attr->dwidth);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (retval < 0)
 			goto err_dest;
 		break;
@@ -1868,11 +1736,7 @@ static int tsi148_dma_list_add(struct vme_dma_list *list, struct vme_dma_attr *s
 	/* Fill out previous descriptors "Next Address" */
 	if (entry->list.prev != &list->entries) {
 		reg_split((unsigned long long)entry->dma_handle, &address_high,
-<<<<<<< HEAD
-			&address_low);
-=======
 			  &address_low);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		prev = list_entry(entry->list.prev, struct tsi148_dma_entry,
 				  list);
 		prev->descriptor.dnlau = cpu_to_be32(address_high);
@@ -1950,11 +1814,7 @@ static int tsi148_dma_list_exec(struct vme_dma_list *list)
 
 	/* Get first bus address and write into registers */
 	entry = list_first_entry(&list->entries, struct tsi148_dma_entry,
-<<<<<<< HEAD
-		list);
-=======
 				 list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&ctrlr->mtx);
 
@@ -1973,11 +1833,7 @@ static int tsi148_dma_list_exec(struct vme_dma_list *list)
 		TSI148_LCSR_DMA[channel] + TSI148_LCSR_OFFSET_DCTL);
 
 	retval = wait_event_interruptible(bridge->dma_queue[channel],
-<<<<<<< HEAD
-		tsi148_dma_busy(ctrlr->parent, channel));
-=======
 					  tsi148_dma_busy(ctrlr->parent, channel));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (retval) {
 		iowrite32be(dctlreg | TSI148_LCSR_DCTL_ABT, bridge->base +
@@ -2028,11 +1884,7 @@ static int tsi148_dma_list_empty(struct vme_dma_list *list)
 		entry = list_entry(pos, struct tsi148_dma_entry, list);
 
 		dma_unmap_single(tsi148_bridge->parent, entry->dma_handle,
-<<<<<<< HEAD
-			sizeof(struct tsi148_dma_descriptor), DMA_TO_DEVICE);
-=======
 				 sizeof(struct tsi148_dma_descriptor), DMA_TO_DEVICE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(entry);
 	}
 
@@ -2047,11 +1899,7 @@ static int tsi148_dma_list_empty(struct vme_dma_list *list)
  * callback is attached and disabled when the last callback is removed.
  */
 static int tsi148_lm_set(struct vme_lm_resource *lm, unsigned long long lm_base,
-<<<<<<< HEAD
-	u32 aspace, u32 cycle)
-=======
 			 u32 aspace, u32 cycle)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 lm_base_high, lm_base_low, lm_ctl = 0;
 	int i;
@@ -2116,11 +1964,7 @@ static int tsi148_lm_set(struct vme_lm_resource *lm, unsigned long long lm_base,
  * or disabled.
  */
 static int tsi148_lm_get(struct vme_lm_resource *lm,
-<<<<<<< HEAD
-	unsigned long long *lm_base, u32 *aspace, u32 *cycle)
-=======
 			 unsigned long long *lm_base, u32 *aspace, u32 *cycle)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 lm_base_high, lm_base_low, lm_ctl, enabled = 0;
 	struct tsi148_driver *bridge;
@@ -2170,11 +2014,7 @@ static int tsi148_lm_get(struct vme_lm_resource *lm,
  * Callback will be passed the monitor triggered.
  */
 static int tsi148_lm_attach(struct vme_lm_resource *lm, int monitor,
-<<<<<<< HEAD
-	void (*callback)(void *), void *data)
-=======
 			    void (*callback)(void *), void *data)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 lm_ctl, tmp;
 	struct vme_bridge *tsi148_bridge;
@@ -2247,11 +2087,7 @@ static int tsi148_lm_detach(struct vme_lm_resource *lm, int monitor)
 	iowrite32be(tmp, bridge->base + TSI148_LCSR_INTEO);
 
 	iowrite32be(TSI148_LCSR_INTC_LMC[monitor],
-<<<<<<< HEAD
-		 bridge->base + TSI148_LCSR_INTC);
-=======
 		    bridge->base + TSI148_LCSR_INTC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Detach callback */
 	bridge->lm_callback[monitor] = NULL;
@@ -2291,11 +2127,7 @@ static int tsi148_slot_get(struct vme_bridge *tsi148_bridge)
 }
 
 static void *tsi148_alloc_consistent(struct device *parent, size_t size,
-<<<<<<< HEAD
-	dma_addr_t *dma)
-=======
 				     dma_addr_t *dma)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct pci_dev *pdev;
 
@@ -2306,11 +2138,7 @@ static void *tsi148_alloc_consistent(struct device *parent, size_t size,
 }
 
 static void tsi148_free_consistent(struct device *parent, size_t size,
-<<<<<<< HEAD
-	void *vaddr, dma_addr_t dma)
-=======
 				   void *vaddr, dma_addr_t dma)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct pci_dev *pdev;
 
@@ -2333,11 +2161,7 @@ static void tsi148_free_consistent(struct device *parent, size_t size,
  * be mapped onto PCI memory.
  */
 static int tsi148_crcsr_init(struct vme_bridge *tsi148_bridge,
-<<<<<<< HEAD
-	struct pci_dev *pdev)
-=======
 			     struct pci_dev *pdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 cbar, crat, vstat;
 	u32 crcsr_bus_high, crcsr_bus_low;
@@ -2378,12 +2202,7 @@ static int tsi148_crcsr_init(struct vme_bridge *tsi148_bridge,
 		dev_info(tsi148_bridge->parent, "CR/CSR already enabled\n");
 	} else {
 		dev_info(tsi148_bridge->parent, "Enabling CR/CSR space\n");
-<<<<<<< HEAD
-		iowrite32be(crat | TSI148_LCSR_CRAT_EN,
-			bridge->base + TSI148_LCSR_CRAT);
-=======
 		iowrite32be(crat | TSI148_LCSR_CRAT_EN, bridge->base + TSI148_LCSR_CRAT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* If we want flushed, error-checked writes, set up a window
@@ -2391,14 +2210,8 @@ static int tsi148_crcsr_init(struct vme_bridge *tsi148_bridge,
 	 * through VME writes.
 	 */
 	if (err_chk) {
-<<<<<<< HEAD
-		retval = tsi148_master_set(bridge->flush_image, 1,
-			(vstat * 0x80000), 0x80000, VME_CRCSR, VME_SCT,
-			VME_D16);
-=======
 		retval = tsi148_master_set(bridge->flush_image, 1, (vstat * 0x80000),
 					   0x80000, VME_CRCSR, VME_SCT, VME_D16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (retval)
 			dev_err(tsi148_bridge->parent, "Configuring flush image failed\n");
 	}
@@ -2407,11 +2220,7 @@ static int tsi148_crcsr_init(struct vme_bridge *tsi148_bridge,
 }
 
 static void tsi148_crcsr_exit(struct vme_bridge *tsi148_bridge,
-<<<<<<< HEAD
-	struct pci_dev *pdev)
-=======
 			      struct pci_dev *pdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 crat;
 	struct tsi148_driver *bridge;
@@ -2421,11 +2230,7 @@ static void tsi148_crcsr_exit(struct vme_bridge *tsi148_bridge,
 	/* Turn off CR/CSR space */
 	crat = ioread32be(bridge->base + TSI148_LCSR_CRAT);
 	iowrite32be(crat & ~TSI148_LCSR_CRAT_EN,
-<<<<<<< HEAD
-		bridge->base + TSI148_LCSR_CRAT);
-=======
 		    bridge->base + TSI148_LCSR_CRAT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Free image */
 	iowrite32be(0, bridge->base + TSI148_LCSR_CROU);
@@ -2447,15 +2252,12 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	struct vme_dma_resource *dma_ctrlr;
 	struct vme_lm_resource *lm;
 
-<<<<<<< HEAD
-=======
 	if (geoid >= VME_MAX_SLOTS) {
 		dev_err(&pdev->dev, "VME geographical address must be between 0 and %d (exclusive), but got %d\n",
 			VME_MAX_SLOTS, geoid);
 		return -EINVAL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* If we want to support more than one of each bridge, we need to
 	 * dynamically generate this so we get one per device
 	 */
@@ -2490,11 +2292,7 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 
 	/* map registers in BAR 0 */
 	tsi148_device->base = ioremap(pci_resource_start(pdev, 0),
-<<<<<<< HEAD
-		4096);
-=======
 				      4096);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!tsi148_device->base) {
 		dev_err(&pdev->dev, "Unable to remap CRG region\n");
 		retval = -EIO;
@@ -2574,11 +2372,7 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		       sizeof(master_image->bus_resource));
 		master_image->kern_base  = NULL;
 		list_add_tail(&master_image->list,
-<<<<<<< HEAD
-			&tsi148_bridge->master_resources);
-=======
 			      &tsi148_bridge->master_resources);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Add slave windows to list */
@@ -2599,11 +2393,7 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 			VME_2eSST267 | VME_2eSST320 | VME_SUPER | VME_USER |
 			VME_PROG | VME_DATA;
 		list_add_tail(&slave_image->list,
-<<<<<<< HEAD
-			&tsi148_bridge->slave_resources);
-=======
 			      &tsi148_bridge->slave_resources);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Add dma engines to list */
@@ -2624,11 +2414,7 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		INIT_LIST_HEAD(&dma_ctrlr->pending);
 		INIT_LIST_HEAD(&dma_ctrlr->running);
 		list_add_tail(&dma_ctrlr->list,
-<<<<<<< HEAD
-			&tsi148_bridge->dma_resources);
-=======
 			      &tsi148_bridge->dma_resources);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Add location monitor to list */
@@ -2666,18 +2452,6 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 
 	data = ioread32be(tsi148_device->base + TSI148_LCSR_VSTAT);
 	dev_info(&pdev->dev, "Board is%s the VME system controller\n",
-<<<<<<< HEAD
-		(data & TSI148_LCSR_VSTAT_SCONS) ? "" : " not");
-	if (!geoid)
-		dev_info(&pdev->dev, "VME geographical address is %d\n",
-			data & TSI148_LCSR_VSTAT_GA_M);
-	else
-		dev_info(&pdev->dev, "VME geographical address is set to %d\n",
-			geoid);
-
-	dev_info(&pdev->dev, "VME Write and flush and error check is %s\n",
-		err_chk ? "enabled" : "disabled");
-=======
 		 (data & TSI148_LCSR_VSTAT_SCONS) ? "" : " not");
 	if (!geoid)
 		dev_info(&pdev->dev, "VME geographical address is %d\n",
@@ -2688,7 +2462,6 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 
 	dev_info(&pdev->dev, "VME Write and flush and error check is %s\n",
 		 err_chk ? "enabled" : "disabled");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	retval = tsi148_crcsr_init(tsi148_bridge, pdev);
 	if (retval) {
@@ -2739,12 +2512,7 @@ err_slave:
 err_master:
 	/* resources are stored in link list */
 	list_for_each_safe(pos, n, &tsi148_bridge->master_resources) {
-<<<<<<< HEAD
-		master_image = list_entry(pos, struct vme_master_resource,
-			list);
-=======
 		master_image = list_entry(pos, struct vme_master_resource, list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		list_del(pos);
 		kfree(master_image);
 	}
@@ -2841,12 +2609,7 @@ static void tsi148_remove(struct pci_dev *pdev)
 
 	/* resources are stored in link list */
 	list_for_each_safe(pos, tmplist, &tsi148_bridge->master_resources) {
-<<<<<<< HEAD
-		master_image = list_entry(pos, struct vme_master_resource,
-			list);
-=======
 		master_image = list_entry(pos, struct vme_master_resource, list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		list_del(pos);
 		kfree(master_image);
 	}
@@ -2868,11 +2631,7 @@ MODULE_PARM_DESC(err_chk, "Check for VME errors on reads and writes");
 module_param(err_chk, bool, 0);
 
 MODULE_PARM_DESC(geoid, "Override geographical addressing");
-<<<<<<< HEAD
-module_param(geoid, int, 0);
-=======
 module_param(geoid, uint, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_DESCRIPTION("VME driver for the Tundra Tempe VME bridge");
 MODULE_LICENSE("GPL");

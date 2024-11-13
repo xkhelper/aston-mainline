@@ -13,23 +13,6 @@
 #include <drm/display/drm_dsc_helper.h>
 
 /**
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
- * msm_dsc_get_slices_per_intf() - calculate number of slices per interface
- * @dsc: Pointer to drm dsc config struct
- * @intf_width: interface width in pixels
- * Returns: Integer representing the number of slices for the given interface
- */
-static inline u32 msm_dsc_get_slices_per_intf(const struct drm_dsc_config *dsc, u32 intf_width)
-{
-	return DIV_ROUND_UP(intf_width, dsc->slice_width);
-}
-
-/**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
  * msm_dsc_get_bytes_per_line() - calculate bytes per line
  * @dsc: Pointer to drm dsc config struct
  * Returns: Integer value representing bytes per line. DSI and DP need

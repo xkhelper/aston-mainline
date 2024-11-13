@@ -64,11 +64,6 @@ int cachefiles_set_object_xattr(struct cachefiles_object *object)
 		memcpy(buf->data, fscache_get_aux(object->cookie), len);
 
 	ret = cachefiles_inject_write_error();
-<<<<<<< HEAD
-	if (ret == 0)
-		ret = vfs_setxattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache,
-				   buf, sizeof(struct cachefiles_xattr) + len, 0);
-=======
 	if (ret == 0) {
 		ret = mnt_want_write_file(file);
 		if (ret == 0) {
@@ -78,7 +73,6 @@ int cachefiles_set_object_xattr(struct cachefiles_object *object)
 			mnt_drop_write_file(file);
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		trace_cachefiles_vfs_error(object, file_inode(file), ret,
 					   cachefiles_trace_setxattr_error);
@@ -163,10 +157,6 @@ int cachefiles_remove_object_xattr(struct cachefiles_cache *cache,
 	int ret;
 
 	ret = cachefiles_inject_remove_error();
-<<<<<<< HEAD
-	if (ret == 0)
-		ret = vfs_removexattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache);
-=======
 	if (ret == 0) {
 		ret = mnt_want_write(cache->mnt);
 		if (ret == 0) {
@@ -175,7 +165,6 @@ int cachefiles_remove_object_xattr(struct cachefiles_cache *cache,
 			mnt_drop_write(cache->mnt);
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		trace_cachefiles_vfs_error(object, d_inode(dentry), ret,
 					   cachefiles_trace_remxattr_error);
@@ -231,11 +220,6 @@ bool cachefiles_set_volume_xattr(struct cachefiles_volume *volume)
 	memcpy(buf->data, p, volume->vcookie->coherency_len);
 
 	ret = cachefiles_inject_write_error();
-<<<<<<< HEAD
-	if (ret == 0)
-		ret = vfs_setxattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache,
-				   buf, len, 0);
-=======
 	if (ret == 0) {
 		ret = mnt_want_write(volume->cache->mnt);
 		if (ret == 0) {
@@ -245,7 +229,6 @@ bool cachefiles_set_volume_xattr(struct cachefiles_volume *volume)
 			mnt_drop_write(volume->cache->mnt);
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		trace_cachefiles_vfs_error(NULL, d_inode(dentry), ret,
 					   cachefiles_trace_setxattr_error);

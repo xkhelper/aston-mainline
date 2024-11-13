@@ -25,10 +25,6 @@
 #include <linux/pagemap.h>
 #include <linux/sched/mm.h>
 #include <linux/sched/task.h>
-<<<<<<< HEAD
-#include <linux/fdtable.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <drm/ttm/ttm_tt.h>
 
 #include <drm/drm_exec.h>
@@ -821,20 +817,6 @@ static int kfd_mem_export_dmabuf(struct kgd_mem *mem)
 	if (!mem->dmabuf) {
 		struct amdgpu_device *bo_adev;
 		struct dma_buf *dmabuf;
-<<<<<<< HEAD
-		int r, fd;
-
-		bo_adev = amdgpu_ttm_adev(mem->bo->tbo.bdev);
-		r = drm_gem_prime_handle_to_fd(&bo_adev->ddev, bo_adev->kfd.client.file,
-					       mem->gem_handle,
-			mem->alloc_flags & KFD_IOC_ALLOC_MEM_FLAGS_WRITABLE ?
-					       DRM_RDWR : 0, &fd);
-		if (r)
-			return r;
-		dmabuf = dma_buf_get(fd);
-		close_fd(fd);
-		if (WARN_ON_ONCE(IS_ERR(dmabuf)))
-=======
 
 		bo_adev = amdgpu_ttm_adev(mem->bo->tbo.bdev);
 		dmabuf = drm_gem_prime_handle_to_dmabuf(&bo_adev->ddev, bo_adev->kfd.client.file,
@@ -842,7 +824,6 @@ static int kfd_mem_export_dmabuf(struct kgd_mem *mem)
 			mem->alloc_flags & KFD_IOC_ALLOC_MEM_FLAGS_WRITABLE ?
 					       DRM_RDWR : 0);
 		if (IS_ERR(dmabuf))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return PTR_ERR(dmabuf);
 		mem->dmabuf = dmabuf;
 	}
@@ -1265,11 +1246,7 @@ static int unreserve_bo_and_vms(struct bo_vm_reservation_context *ctx,
 	return ret;
 }
 
-<<<<<<< HEAD
-static void unmap_bo_from_gpuvm(struct kgd_mem *mem,
-=======
 static int unmap_bo_from_gpuvm(struct kgd_mem *mem,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				struct kfd_mem_attachment *entry,
 				struct amdgpu_sync *sync)
 {
@@ -1277,24 +1254,18 @@ static int unmap_bo_from_gpuvm(struct kgd_mem *mem,
 	struct amdgpu_device *adev = entry->adev;
 	struct amdgpu_vm *vm = bo_va->base.vm;
 
-<<<<<<< HEAD
-=======
 	if (bo_va->queue_refcount) {
 		pr_debug("bo_va->queue_refcount %d\n", bo_va->queue_refcount);
 		return -EBUSY;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	amdgpu_vm_bo_unmap(adev, bo_va, entry->va);
 
 	amdgpu_vm_clear_freed(adev, vm, &bo_va->last_pt_update);
 
 	amdgpu_sync_fence(sync, bo_va->last_pt_update);
-<<<<<<< HEAD
-=======
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int update_gpuvm_pte(struct kgd_mem *mem,
@@ -1468,13 +1439,8 @@ static int init_kfd_vm(struct amdgpu_vm *vm, void **process_info,
 	list_add_tail(&vm->vm_list_node,
 			&(vm->process_info->vm_list_head));
 	vm->process_info->n_vms++;
-<<<<<<< HEAD
-
-	*ef = dma_fence_get(&vm->process_info->eviction_fence->base);
-=======
 	if (ef)
 		*ef = dma_fence_get(&vm->process_info->eviction_fence->base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&vm->process_info->lock);
 
 	return 0;
@@ -1533,11 +1499,7 @@ static int amdgpu_amdkfd_gpuvm_pin_bo(struct amdgpu_bo *bo, u32 domain)
 		}
 	}
 
-<<<<<<< HEAD
-	ret = amdgpu_bo_pin_restricted(bo, domain, 0, 0);
-=======
 	ret = amdgpu_bo_pin(bo, domain);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		pr_err("Error in Pinning BO to domain: %d\n", domain);
 
@@ -2230,14 +2192,10 @@ int amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu(
 		pr_debug("\t unmap VA 0x%llx - 0x%llx from entry %p\n",
 			 entry->va, entry->va + bo_size, entry);
 
-<<<<<<< HEAD
-		unmap_bo_from_gpuvm(mem, entry, ctx.sync);
-=======
 		ret = unmap_bo_from_gpuvm(mem, entry, ctx.sync);
 		if (ret)
 			goto unreserve_out;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		entry->is_mapped = false;
 
 		mem->mapped_to_gpu_memory--;
@@ -2272,19 +2230,12 @@ int amdgpu_amdkfd_gpuvm_sync_memory(
 /**
  * amdgpu_amdkfd_map_gtt_bo_to_gart - Map BO to GART and increment reference count
  * @bo: Buffer object to be mapped
-<<<<<<< HEAD
-=======
  * @bo_gart: Return bo reference
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Before return, bo reference count is incremented. To release the reference and unpin/
  * unmap the BO, call amdgpu_amdkfd_free_gtt_mem.
  */
-<<<<<<< HEAD
-int amdgpu_amdkfd_map_gtt_bo_to_gart(struct amdgpu_bo *bo)
-=======
 int amdgpu_amdkfd_map_gtt_bo_to_gart(struct amdgpu_bo *bo, struct amdgpu_bo **bo_gart)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret;
 
@@ -2311,11 +2262,7 @@ int amdgpu_amdkfd_map_gtt_bo_to_gart(struct amdgpu_bo *bo, struct amdgpu_bo **bo
 
 	amdgpu_bo_unreserve(bo);
 
-<<<<<<< HEAD
-	bo = amdgpu_bo_ref(bo);
-=======
 	*bo_gart = amdgpu_bo_ref(bo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -3258,14 +3205,6 @@ int amdgpu_amdkfd_get_tile_config(struct amdgpu_device *adev,
 	return 0;
 }
 
-<<<<<<< HEAD
-bool amdgpu_amdkfd_bo_mapped_to_dev(struct amdgpu_device *adev, struct kgd_mem *mem)
-{
-	struct kfd_mem_attachment *entry;
-
-	list_for_each_entry(entry, &mem->attachments, list) {
-		if (entry->is_mapped && entry->adev == adev)
-=======
 bool amdgpu_amdkfd_bo_mapped_to_dev(void *drm_priv, struct kgd_mem *mem)
 {
 	struct amdgpu_vm *vm = drm_priv_to_vm(drm_priv);
@@ -3273,7 +3212,6 @@ bool amdgpu_amdkfd_bo_mapped_to_dev(void *drm_priv, struct kgd_mem *mem)
 
 	list_for_each_entry(entry, &mem->attachments, list) {
 		if (entry->is_mapped && entry->bo_va->base.vm == vm)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return true;
 	}
 	return false;

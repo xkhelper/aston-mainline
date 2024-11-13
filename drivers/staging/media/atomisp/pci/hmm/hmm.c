@@ -204,12 +204,6 @@ static ia_css_ptr __hmm_alloc(size_t bytes, enum hmm_bo_type type,
 		goto bind_err;
 	}
 
-<<<<<<< HEAD
-	dev_dbg(atomisp_dev, "pages: 0x%08x (%zu bytes), type: %d, vmalloc %p\n",
-		bo->start, bytes, type, vmalloc_noprof);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return bo->start;
 
 bind_err:
@@ -234,11 +228,6 @@ void hmm_free(ia_css_ptr virt)
 {
 	struct hmm_buffer_object *bo;
 
-<<<<<<< HEAD
-	dev_dbg(atomisp_dev, "%s: free 0x%08x\n", __func__, virt);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (WARN_ON(virt == mmgr_EXCEPTION))
 		return;
 

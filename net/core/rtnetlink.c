@@ -384,8 +384,6 @@ void rtnl_unregister_all(int protocol)
 }
 EXPORT_SYMBOL_GPL(rtnl_unregister_all);
 
-<<<<<<< HEAD
-=======
 int __rtnl_register_many(const struct rtnl_msg_handler *handlers, int n)
 {
 	const struct rtnl_msg_handler *handler;
@@ -415,7 +413,6 @@ void __rtnl_unregister_many(const struct rtnl_msg_handler *handlers, int n)
 }
 EXPORT_SYMBOL_GPL(__rtnl_unregister_many);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static LIST_HEAD(link_ops);
 
 static const struct rtnl_link_ops *rtnl_link_ops_get(const char *kind)
@@ -2035,11 +2032,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
 	[IFLA_NUM_TX_QUEUES]	= { .type = NLA_U32 },
 	[IFLA_NUM_RX_QUEUES]	= { .type = NLA_U32 },
 	[IFLA_GSO_MAX_SEGS]	= { .type = NLA_U32 },
-<<<<<<< HEAD
-	[IFLA_GSO_MAX_SIZE]	= { .type = NLA_U32 },
-=======
 	[IFLA_GSO_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[IFLA_PHYS_PORT_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
 	[IFLA_CARRIER_CHANGES]	= { .type = NLA_U32 },  /* ignored */
 	[IFLA_PHYS_SWITCH_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
@@ -2064,11 +2057,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
 	[IFLA_TSO_MAX_SIZE]	= { .type = NLA_REJECT },
 	[IFLA_TSO_MAX_SEGS]	= { .type = NLA_REJECT },
 	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
-<<<<<<< HEAD
-	[IFLA_GSO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
-=======
 	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
 };
 
@@ -2764,11 +2753,7 @@ static int do_set_proto_down(struct net_device *dev,
 	bool proto_down;
 	int err;
 
-<<<<<<< HEAD
-	if (!(dev->priv_flags & IFF_CHANGE_PROTO_DOWN)) {
-=======
 	if (!dev->change_proto_down) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		NL_SET_ERR_MSG(extack,  "Protodown not supported by device");
 		return -EOPNOTSUPP;
 	}
@@ -4131,12 +4116,7 @@ struct sk_buff *rtmsg_ifinfo_build_skb(int type, struct net_device *dev,
 	}
 	return skb;
 errout:
-<<<<<<< HEAD
-	if (err < 0)
-		rtnl_set_sk_err(net, RTNLGRP_LINK, err);
-=======
 	rtnl_set_sk_err(net, RTNLGRP_LINK, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return NULL;
 }
 

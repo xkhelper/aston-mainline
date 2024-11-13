@@ -44,15 +44,12 @@ struct landlock_ruleset_attr {
 	 * flags`_).
 	 */
 	__u64 handled_access_net;
-<<<<<<< HEAD
-=======
 	/**
 	 * @scoped: Bitmask of scopes (cf. `Scope flags`_)
 	 * restricting a Landlock domain from accessing outside
 	 * resources (e.g. IPCs).
 	 */
 	__u64 scoped;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -283,8 +280,6 @@ struct landlock_net_port_attr {
 #define LANDLOCK_ACCESS_NET_BIND_TCP			(1ULL << 0)
 #define LANDLOCK_ACCESS_NET_CONNECT_TCP			(1ULL << 1)
 /* clang-format on */
-<<<<<<< HEAD
-=======
 
 /**
  * DOC: scope
@@ -309,5 +304,4 @@ struct landlock_net_port_attr {
 #define LANDLOCK_SCOPE_SIGNAL		                (1ULL << 1)
 /* clang-format on*/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _UAPI_LINUX_LANDLOCK_H */

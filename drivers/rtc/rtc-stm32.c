@@ -7,22 +7,16 @@
 #include <linux/bcd.h>
 #include <linux/bitfield.h>
 #include <linux/clk.h>
-<<<<<<< HEAD
-=======
 #include <linux/clk-provider.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/errno.h>
 #include <linux/iopoll.h>
 #include <linux/ioport.h>
 #include <linux/mfd/syscon.h>
 #include <linux/module.h>
 #include <linux/of.h>
-<<<<<<< HEAD
-=======
 #include <linux/pinctrl/pinctrl.h>
 #include <linux/pinctrl/pinconf-generic.h>
 #include <linux/pinctrl/pinmux.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/platform_device.h>
 #include <linux/pm_wakeirq.h>
 #include <linux/regmap.h>
@@ -52,15 +46,12 @@
 #define STM32_RTC_CR_FMT		BIT(6)
 #define STM32_RTC_CR_ALRAE		BIT(8)
 #define STM32_RTC_CR_ALRAIE		BIT(12)
-<<<<<<< HEAD
-=======
 #define STM32_RTC_CR_OSEL		GENMASK(22, 21)
 #define STM32_RTC_CR_OSEL_ALARM_A	FIELD_PREP(STM32_RTC_CR_OSEL, 0x01)
 #define STM32_RTC_CR_COE		BIT(23)
 #define STM32_RTC_CR_TAMPOE		BIT(26)
 #define STM32_RTC_CR_TAMPALRM_TYPE	BIT(30)
 #define STM32_RTC_CR_OUT2EN		BIT(31)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* STM32_RTC_ISR/STM32_RTC_ICSR bit fields */
 #define STM32_RTC_ISR_ALRAWF		BIT(0)
@@ -97,15 +88,12 @@
 /* STM32_RTC_SR/_SCR bit fields */
 #define STM32_RTC_SR_ALRA		BIT(0)
 
-<<<<<<< HEAD
-=======
 /* STM32_RTC_CFGR bit fields */
 #define STM32_RTC_CFGR_OUT2_RMP		BIT(0)
 #define STM32_RTC_CFGR_LSCOEN		GENMASK(2, 1)
 #define STM32_RTC_CFGR_LSCOEN_OUT1	1
 #define STM32_RTC_CFGR_LSCOEN_OUT2_RMP	2
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* STM32_RTC_VERR bit fields */
 #define STM32_RTC_VERR_MINREV_SHIFT	0
 #define STM32_RTC_VERR_MINREV		GENMASK(3, 0)
@@ -135,8 +123,6 @@
 /* STM32 RTC driver time helpers */
 #define SEC_PER_DAY		(24 * 60 * 60)
 
-<<<<<<< HEAD
-=======
 /* STM32 RTC pinctrl helpers */
 #define STM32_RTC_PINMUX(_name, _action, ...) { \
 	.name = (_name), \
@@ -145,7 +131,6 @@
 	.num_groups = ARRAY_SIZE(((const char *[]){ __VA_ARGS__ })), \
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct stm32_rtc;
 
 struct stm32_rtc_registers {
@@ -158,10 +143,7 @@ struct stm32_rtc_registers {
 	u16 wpr;
 	u16 sr;
 	u16 scr;
-<<<<<<< HEAD
-=======
 	u16 cfgr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 verr;
 };
 
@@ -177,11 +159,8 @@ struct stm32_rtc_data {
 	bool need_dbp;
 	bool need_accuracy;
 	bool rif_protected;
-<<<<<<< HEAD
-=======
 	bool has_lsco;
 	bool has_alarm_out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct stm32_rtc {
@@ -194,10 +173,7 @@ struct stm32_rtc {
 	struct clk *rtc_ck;
 	const struct stm32_rtc_data *data;
 	int irq_alarm;
-<<<<<<< HEAD
-=======
 	struct clk *clk_lsco;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct stm32_rtc_rif_resource {
@@ -223,8 +199,6 @@ static void stm32_rtc_wpr_lock(struct stm32_rtc *rtc)
 	writel_relaxed(RTC_WPR_WRONG_KEY, rtc->base + regs->wpr);
 }
 
-<<<<<<< HEAD
-=======
 enum stm32_rtc_pin_name {
 	NONE,
 	OUT1,
@@ -428,7 +402,6 @@ static struct pinctrl_desc stm32_rtc_pdesc = {
 	.pmxops = &stm32_rtc_pinmux_ops,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int stm32_rtc_enter_init_mode(struct stm32_rtc *rtc)
 {
 	const struct stm32_rtc_registers *regs = &rtc->data->regs;
@@ -834,11 +807,8 @@ static const struct stm32_rtc_data stm32_rtc_data = {
 	.need_dbp = true,
 	.need_accuracy = false,
 	.rif_protected = false,
-<<<<<<< HEAD
-=======
 	.has_lsco = false,
 	.has_alarm_out = false,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.regs = {
 		.tr = 0x00,
 		.dr = 0x04,
@@ -849,10 +819,7 @@ static const struct stm32_rtc_data stm32_rtc_data = {
 		.wpr = 0x24,
 		.sr = 0x0C, /* set to ISR offset to ease alarm management */
 		.scr = UNDEF_REG,
-<<<<<<< HEAD
-=======
 		.cfgr = UNDEF_REG,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.verr = UNDEF_REG,
 	},
 	.events = {
@@ -866,11 +833,8 @@ static const struct stm32_rtc_data stm32h7_rtc_data = {
 	.need_dbp = true,
 	.need_accuracy = false,
 	.rif_protected = false,
-<<<<<<< HEAD
-=======
 	.has_lsco = false,
 	.has_alarm_out = false,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.regs = {
 		.tr = 0x00,
 		.dr = 0x04,
@@ -881,10 +845,7 @@ static const struct stm32_rtc_data stm32h7_rtc_data = {
 		.wpr = 0x24,
 		.sr = 0x0C, /* set to ISR offset to ease alarm management */
 		.scr = UNDEF_REG,
-<<<<<<< HEAD
-=======
 		.cfgr = UNDEF_REG,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.verr = UNDEF_REG,
 	},
 	.events = {
@@ -907,11 +868,8 @@ static const struct stm32_rtc_data stm32mp1_data = {
 	.need_dbp = false,
 	.need_accuracy = true,
 	.rif_protected = false,
-<<<<<<< HEAD
-=======
 	.has_lsco = true,
 	.has_alarm_out = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.regs = {
 		.tr = 0x00,
 		.dr = 0x04,
@@ -922,10 +880,7 @@ static const struct stm32_rtc_data stm32mp1_data = {
 		.wpr = 0x24,
 		.sr = 0x50,
 		.scr = 0x5C,
-<<<<<<< HEAD
-=======
 		.cfgr = 0x60,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.verr = 0x3F4,
 	},
 	.events = {
@@ -939,11 +894,8 @@ static const struct stm32_rtc_data stm32mp25_data = {
 	.need_dbp = false,
 	.need_accuracy = true,
 	.rif_protected = true,
-<<<<<<< HEAD
-=======
 	.has_lsco = true,
 	.has_alarm_out = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.regs = {
 		.tr = 0x00,
 		.dr = 0x04,
@@ -954,10 +906,7 @@ static const struct stm32_rtc_data stm32mp25_data = {
 		.wpr = 0x24,
 		.sr = 0x50,
 		.scr = 0x5C,
-<<<<<<< HEAD
-=======
 		.cfgr = 0x60,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.verr = 0x3F4,
 	},
 	.events = {
@@ -975,8 +924,6 @@ static const struct of_device_id stm32_rtc_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, stm32_rtc_of_match);
 
-<<<<<<< HEAD
-=======
 static void stm32_rtc_clean_outs(struct stm32_rtc *rtc)
 {
 	struct stm32_rtc_registers regs = rtc->data->regs;
@@ -1001,7 +948,6 @@ static void stm32_rtc_clean_outs(struct stm32_rtc *rtc)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int stm32_rtc_check_rif(struct stm32_rtc *stm32_rtc,
 			       struct stm32_rtc_rif_resource res)
 {
@@ -1112,10 +1058,7 @@ static int stm32_rtc_probe(struct platform_device *pdev)
 {
 	struct stm32_rtc *rtc;
 	const struct stm32_rtc_registers *regs;
-<<<<<<< HEAD
-=======
 	struct pinctrl_dev *pctl;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	rtc = devm_kzalloc(&pdev->dev, sizeof(*rtc), GFP_KERNEL);
@@ -1237,8 +1180,6 @@ static int stm32_rtc_probe(struct platform_device *pdev)
 		goto err;
 	}
 
-<<<<<<< HEAD
-=======
 	stm32_rtc_clean_outs(rtc);
 
 	ret = devm_pinctrl_register_and_init(&pdev->dev, &stm32_rtc_pdesc, rtc, &pctl);
@@ -1249,7 +1190,6 @@ static int stm32_rtc_probe(struct platform_device *pdev)
 	if (ret)
 		return dev_err_probe(&pdev->dev, ret, "pinctrl enable failed");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * If INITS flag is reset (calendar year field set to 0x00), calendar
 	 * must be initialized
@@ -1288,12 +1228,9 @@ static void stm32_rtc_remove(struct platform_device *pdev)
 	const struct stm32_rtc_registers *regs = &rtc->data->regs;
 	unsigned int cr;
 
-<<<<<<< HEAD
-=======
 	if (!IS_ERR_OR_NULL(rtc->clk_lsco))
 		clk_unregister_gate(rtc->clk_lsco);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Disable interrupts */
 	stm32_rtc_wpr_unlock(rtc);
 	cr = readl_relaxed(rtc->base + regs->cr);

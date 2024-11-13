@@ -421,8 +421,6 @@ struct ftrace_likely_data {
 #define __member_size(p)	__builtin_object_size(p, 1)
 #endif
 
-<<<<<<< HEAD
-=======
 /* Determine if an attribute has been applied to a variable. */
 #if __has_builtin(__builtin_has_attribute)
 #define __annotated(var, attr)	__builtin_has_attribute(var, attr)
@@ -430,7 +428,6 @@ struct ftrace_likely_data {
 #define __annotated(var, attr)	(false)
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Some versions of gcc do not mark 'asm goto' volatile:
  *

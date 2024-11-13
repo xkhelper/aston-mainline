@@ -210,10 +210,7 @@ static int __init asm9260_timer_init(struct device_node *np)
 			DRIVER_NAME, &event_dev);
 	if (ret) {
 		pr_err("Failed to setup irq!\n");
-<<<<<<< HEAD
-=======
 		clk_disable_unprepare(clk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 

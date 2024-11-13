@@ -2,10 +2,6 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dml2_internal_shared_types.h"
 #include "dml_top.h"
 #include "dml2_mcg_factory.h"
@@ -31,10 +27,7 @@ bool dml2_initialize_instance(struct dml2_initialize_instance_in_out *in_out)
 	bool result = false;
 
 	memset(l, 0, sizeof(struct dml2_initialize_instance_locals));
-<<<<<<< HEAD
-=======
 	memset(dml, 0, sizeof(struct dml2_instance));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memcpy(&dml->ip_caps, &in_out->ip_caps, sizeof(struct dml2_ip_capabilities));
 	memcpy(&dml->soc_bbox, &in_out->soc_bb, sizeof(struct dml2_soc_bb));
@@ -103,22 +96,12 @@ bool dml2_check_mode_supported(struct dml2_check_mode_supported_in_out *in_out)
 {
 	struct dml2_instance *dml = (struct dml2_instance *)in_out->dml2_instance;
 	struct dml2_check_mode_supported_locals *l = &dml->scratch.check_mode_supported_locals;
-<<<<<<< HEAD
-	/* Borrow the build_mode_programming_locals programming struct for DPMM call. */
-	struct dml2_display_cfg_programming *dpmm_programming = dml->scratch.build_mode_programming_locals.mode_programming_params.programming;
-=======
 	struct dml2_display_cfg_programming *dpmm_programming = &dml->dpmm_instance.dpmm_scratch.programming;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bool result = false;
 	bool mcache_success = false;
 
-<<<<<<< HEAD
-	if (dpmm_programming)
-		memset(dpmm_programming, 0, sizeof(struct dml2_display_cfg_programming));
-=======
 	memset(dpmm_programming, 0, sizeof(struct dml2_display_cfg_programming));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	setup_unoptimized_display_config_with_meta(dml, &l->base_display_config_with_meta, in_out->display_config);
 
@@ -145,11 +128,7 @@ bool dml2_check_mode_supported(struct dml2_check_mode_supported_in_out *in_out)
 	/*
 	 * Call DPMM to map all requirements to minimum clock state
 	 */
-<<<<<<< HEAD
-	if (result && dpmm_programming) {
-=======
 	if (result) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		l->dppm_map_mode_params.min_clk_table = &dml->min_clk_table;
 		l->dppm_map_mode_params.display_cfg = &l->base_display_config_with_meta;
 		l->dppm_map_mode_params.programming = dpmm_programming;
@@ -287,11 +266,6 @@ bool dml2_build_mode_programming(struct dml2_build_mode_programming_in_out *in_o
 
 	vmin_success = dml2_top_optimization_perform_optimization_phase(&l->optimization_phase_locals, &l->vmin_phase);
 
-<<<<<<< HEAD
-	if (vmin_success) {
-		memcpy(&l->base_display_config_with_meta, &l->optimized_display_config_with_meta, sizeof(struct display_configuation_with_meta));
-		l->base_display_config_with_meta.stage4.success = true;
-=======
 	if (l->optimized_display_config_with_meta.stage4.performed) {
 		/*
 		 * when performed is true, optimization has applied to
@@ -304,7 +278,6 @@ bool dml2_build_mode_programming(struct dml2_build_mode_programming_in_out *in_o
 		 */
 		memcpy(&l->base_display_config_with_meta, &l->optimized_display_config_with_meta, sizeof(struct display_configuation_with_meta));
 		l->base_display_config_with_meta.stage4.success = vmin_success;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*

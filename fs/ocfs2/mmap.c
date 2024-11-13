@@ -53,11 +53,7 @@ static vm_fault_t __ocfs2_page_mkwrite(struct file *file,
 	loff_t pos = page_offset(page);
 	unsigned int len = PAGE_SIZE;
 	pgoff_t last_index;
-<<<<<<< HEAD
-	struct page *locked_page = NULL;
-=======
 	struct folio *locked_folio = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *fsdata;
 	loff_t size = i_size_read(inode);
 
@@ -95,11 +91,7 @@ static vm_fault_t __ocfs2_page_mkwrite(struct file *file,
 		len = ((size - 1) & ~PAGE_MASK) + 1;
 
 	err = ocfs2_write_begin_nolock(mapping, pos, len, OCFS2_WRITE_MMAP,
-<<<<<<< HEAD
-				       &locked_page, &fsdata, di_bh, page);
-=======
 				       &locked_folio, &fsdata, di_bh, page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		if (err != -ENOSPC)
 			mlog_errno(err);
@@ -107,11 +99,7 @@ static vm_fault_t __ocfs2_page_mkwrite(struct file *file,
 		goto out;
 	}
 
-<<<<<<< HEAD
-	if (!locked_page) {
-=======
 	if (!locked_folio) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = VM_FAULT_NOPAGE;
 		goto out;
 	}

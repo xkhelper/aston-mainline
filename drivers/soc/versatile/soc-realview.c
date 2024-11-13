@@ -4,10 +4,7 @@
  *
  * Author: Linus Walleij <linus.walleij@linaro.org>
  */
-<<<<<<< HEAD
-=======
 #include <linux/device.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/slab.h>
@@ -85,8 +82,6 @@ static struct attribute *realview_attrs[] = {
 
 ATTRIBUTE_GROUPS(realview);
 
-<<<<<<< HEAD
-=======
 static void realview_soc_socdev_release(void *data)
 {
 	struct soc_device *soc_dev = data;
@@ -94,7 +89,6 @@ static void realview_soc_socdev_release(void *data)
 	soc_device_unregister(soc_dev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int realview_soc_probe(struct platform_device *pdev)
 {
 	struct regmap *syscon_regmap;
@@ -107,11 +101,7 @@ static int realview_soc_probe(struct platform_device *pdev)
 	if (IS_ERR(syscon_regmap))
 		return PTR_ERR(syscon_regmap);
 
-<<<<<<< HEAD
-	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
-=======
 	soc_dev_attr = devm_kzalloc(&pdev->dev, sizeof(*soc_dev_attr), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!soc_dev_attr)
 		return -ENOMEM;
 
@@ -124,12 +114,6 @@ static int realview_soc_probe(struct platform_device *pdev)
 	soc_dev_attr->family = "Versatile";
 	soc_dev_attr->custom_attr_group = realview_groups[0];
 	soc_dev = soc_device_register(soc_dev_attr);
-<<<<<<< HEAD
-	if (IS_ERR(soc_dev)) {
-		kfree(soc_dev_attr);
-		return -ENODEV;
-	}
-=======
 	if (IS_ERR(soc_dev))
 		return -ENODEV;
 
@@ -138,7 +122,6 @@ static int realview_soc_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = regmap_read(syscon_regmap, REALVIEW_SYS_ID_OFFSET,
 			  &realview_coreid);
 	if (ret)

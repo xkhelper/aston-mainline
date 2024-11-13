@@ -9,11 +9,7 @@
 #include <linux/part_stat.h>
 
 #include <generated/utsrelease.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "nvmet.h"
 
 u32 nvmet_get_log_page_len(struct nvme_command *cmd)
@@ -1019,11 +1015,6 @@ u16 nvmet_parse_admin_cmd(struct nvmet_req *req)
 
 	if (nvme_is_fabrics(cmd))
 		return nvmet_parse_fabrics_admin_cmd(req);
-<<<<<<< HEAD
-	if (unlikely(!nvmet_check_auth_status(req)))
-		return NVME_SC_AUTH_REQUIRED | NVME_STATUS_DNR;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nvmet_is_disc_subsys(nvmet_req_subsys(req)))
 		return nvmet_parse_discovery_cmd(req);
 

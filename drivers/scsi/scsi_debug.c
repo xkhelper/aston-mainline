@@ -47,11 +47,7 @@
 
 #include <net/checksum.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <scsi/scsi.h>
 #include <scsi/scsi_cmnd.h>
@@ -2764,10 +2760,6 @@ static int resp_mode_sense(struct scsi_cmnd *scp,
 	else
 		bd_len = 0;
 	alloc_len = msense_6 ? cmd[4] : get_unaligned_be16(cmd + 7);
-<<<<<<< HEAD
-	memset(arr, 0, SDEBUG_MAX_MSENSE_SZ);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (0x3 == pcontrol) {  /* Saving values not supported */
 		mk_sense_buffer(scp, ILLEGAL_REQUEST, SAVING_PARAMS_UNSUP, 0);
 		return check_condition_result;
@@ -3659,11 +3651,7 @@ static int do_device_access(struct sdeb_store_info *sip, struct scsi_cmnd *scp,
 	enum dma_data_direction dir;
 	struct scsi_data_buffer *sdb = &scp->sdb;
 	u8 *fsp;
-<<<<<<< HEAD
-	int i;
-=======
 	int i, total = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Even though reads are inherently atomic (in this driver), we expect
@@ -3700,30 +3688,16 @@ static int do_device_access(struct sdeb_store_info *sip, struct scsi_cmnd *scp,
 		   fsp + (block * sdebug_sector_size),
 		   sdebug_sector_size, sg_skip, do_write);
 		sdeb_data_sector_unlock(sip, do_write);
-<<<<<<< HEAD
-		if (ret != sdebug_sector_size) {
-			ret += (i * sdebug_sector_size);
-			break;
-		}
-=======
 		total += ret;
 		if (ret != sdebug_sector_size)
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sg_skip += sdebug_sector_size;
 		if (++block >= sdebug_store_sectors)
 			block = 0;
 	}
-<<<<<<< HEAD
-	ret = num * sdebug_sector_size;
-	sdeb_data_unlock(sip, atomic);
-
-	return ret;
-=======
 	sdeb_data_unlock(sip, atomic);
 
 	return total;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Returns number of bytes copied or -1 if error. */

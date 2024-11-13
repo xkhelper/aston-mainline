@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright(c) 2021 Intel Corporation. All rights reserved. */
 #include <linux/libnvdimm.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/device.h>
 #include <linux/module.h>
 #include <linux/ndctl.h>
@@ -106,22 +102,15 @@ static int cxl_pmem_get_config_size(struct cxl_memdev_state *mds,
 				    struct nd_cmd_get_config_size *cmd,
 				    unsigned int buf_len)
 {
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sizeof(*cmd) > buf_len)
 		return -EINVAL;
 
 	*cmd = (struct nd_cmd_get_config_size){
 		.config_size = mds->lsa_size,
 		.max_xfer =
-<<<<<<< HEAD
-			mds->payload_size - sizeof(struct cxl_mbox_set_lsa),
-=======
 			cxl_mbox->payload_size - sizeof(struct cxl_mbox_set_lsa),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	return 0;
@@ -131,10 +120,7 @@ static int cxl_pmem_get_config_data(struct cxl_memdev_state *mds,
 				    struct nd_cmd_get_config_data_hdr *cmd,
 				    unsigned int buf_len)
 {
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_get_lsa get_lsa;
 	struct cxl_mbox_cmd mbox_cmd;
 	int rc;
@@ -156,11 +142,7 @@ static int cxl_pmem_get_config_data(struct cxl_memdev_state *mds,
 		.payload_out = cmd->out_buf,
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cmd->status = 0;
 
 	return rc;
@@ -170,10 +152,7 @@ static int cxl_pmem_set_config_data(struct cxl_memdev_state *mds,
 				    struct nd_cmd_set_config_hdr *cmd,
 				    unsigned int buf_len)
 {
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_set_lsa *set_lsa;
 	struct cxl_mbox_cmd mbox_cmd;
 	int rc;
@@ -200,11 +179,7 @@ static int cxl_pmem_set_config_data(struct cxl_memdev_state *mds,
 		.size_in = struct_size(set_lsa, data, cmd->in_length),
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Set "firmware" status (4-packed bytes at the end of the input
@@ -262,17 +237,6 @@ static int detach_nvdimm(struct device *dev, void *data)
 	if (!is_cxl_nvdimm(dev))
 		return 0;
 
-<<<<<<< HEAD
-	device_lock(dev);
-	if (!dev->driver)
-		goto out;
-
-	cxl_nvd = to_cxl_nvdimm(dev);
-	if (cxl_nvd->cxlmd && cxl_nvd->cxlmd->cxl_nvb == data)
-		release = true;
-out:
-	device_unlock(dev);
-=======
 	scoped_guard(device, dev) {
 		if (dev->driver) {
 			cxl_nvd = to_cxl_nvdimm(dev);
@@ -280,7 +244,6 @@ out:
 				release = true;
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (release)
 		device_release_driver(dev);
 	return 0;

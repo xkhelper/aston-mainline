@@ -119,8 +119,6 @@ config I2C_MUX_MLXCPLD
 	  This driver can also be built as a module.  If so, the module
 	  will be called i2c-mux-mlxcpld.
 
-<<<<<<< HEAD
-=======
 config I2C_MUX_MULE
 	tristate "Theobroma Systems Mule I2C device multiplexer"
 	depends on OF && SENSORS_AMC6821
@@ -137,5 +135,4 @@ config I2C_MUX_MULE
 	  This driver can also be built as a module.  If so, the module
 	  will be called i2c-mux-mule.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endmenu

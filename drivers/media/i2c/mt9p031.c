@@ -15,10 +15,7 @@
 #include <linux/gpio/consumer.h>
 #include <linux/i2c.h>
 #include <linux/log2.h>
-<<<<<<< HEAD
-=======
 #include <linux/mod_devicetable.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_graph.h>
@@ -116,14 +113,6 @@
 #define MT9P031_TEST_PATTERN_RED			0xa2
 #define MT9P031_TEST_PATTERN_BLUE			0xa3
 
-<<<<<<< HEAD
-enum mt9p031_model {
-	MT9P031_MODEL_COLOR,
-	MT9P031_MODEL_MONOCHROME,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mt9p031 {
 	struct v4l2_subdev subdev;
 	struct media_pad pad;
@@ -136,11 +125,7 @@ struct mt9p031 {
 	struct clk *clk;
 	struct regulator_bulk_data regulators[3];
 
-<<<<<<< HEAD
-	enum mt9p031_model model;
-=======
 	u32 code;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct aptina_pll pll;
 	unsigned int clk_div;
 	bool use_pll;
@@ -723,16 +708,7 @@ static int mt9p031_init_state(struct v4l2_subdev *subdev,
 	crop->height = MT9P031_WINDOW_HEIGHT_DEF;
 
 	format = __mt9p031_get_pad_format(mt9p031, sd_state, 0, which);
-<<<<<<< HEAD
-
-	if (mt9p031->model == MT9P031_MODEL_MONOCHROME)
-		format->code = MEDIA_BUS_FMT_Y12_1X12;
-	else
-		format->code = MEDIA_BUS_FMT_SGRBG12_1X12;
-
-=======
 	format->code = mt9p031->code;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	format->width = MT9P031_WINDOW_WIDTH_DEF;
 	format->height = MT9P031_WINDOW_HEIGHT_DEF;
 	format->field = V4L2_FIELD_NONE;
@@ -1117,10 +1093,6 @@ done:
 
 static int mt9p031_probe(struct i2c_client *client)
 {
-<<<<<<< HEAD
-	const struct i2c_device_id *did = i2c_client_get_device_id(client);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mt9p031_platform_data *pdata = mt9p031_get_pdata(client);
 	struct i2c_adapter *adapter = client->adapter;
 	struct mt9p031 *mt9p031;
@@ -1145,11 +1117,7 @@ static int mt9p031_probe(struct i2c_client *client)
 	mt9p031->pdata = pdata;
 	mt9p031->output_control	= MT9P031_OUTPUT_CONTROL_DEF;
 	mt9p031->mode2 = MT9P031_READ_MODE_2_ROW_BLC;
-<<<<<<< HEAD
-	mt9p031->model = did->driver_data;
-=======
 	mt9p031->code = (uintptr_t)i2c_get_match_data(client);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mt9p031->regulators[0].supply = "vdd";
 	mt9p031->regulators[1].supply = "vdd_io";
@@ -1246,28 +1214,6 @@ static void mt9p031_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id mt9p031_id[] = {
-<<<<<<< HEAD
-	{ "mt9p006", MT9P031_MODEL_COLOR },
-	{ "mt9p031", MT9P031_MODEL_COLOR },
-	{ "mt9p031m", MT9P031_MODEL_MONOCHROME },
-	{ }
-};
-MODULE_DEVICE_TABLE(i2c, mt9p031_id);
-
-#if IS_ENABLED(CONFIG_OF)
-static const struct of_device_id mt9p031_of_match[] = {
-	{ .compatible = "aptina,mt9p006", },
-	{ .compatible = "aptina,mt9p031", },
-	{ .compatible = "aptina,mt9p031m", },
-	{ /* sentinel */ },
-};
-MODULE_DEVICE_TABLE(of, mt9p031_of_match);
-#endif
-
-static struct i2c_driver mt9p031_i2c_driver = {
-	.driver = {
-		.of_match_table = of_match_ptr(mt9p031_of_match),
-=======
 	{ "mt9p006", MEDIA_BUS_FMT_SGRBG12_1X12 },
 	{ "mt9p031", MEDIA_BUS_FMT_SGRBG12_1X12 },
 	{ "mt9p031m", MEDIA_BUS_FMT_Y12_1X12 },
@@ -1286,7 +1232,6 @@ MODULE_DEVICE_TABLE(of, mt9p031_of_match);
 static struct i2c_driver mt9p031_i2c_driver = {
 	.driver = {
 		.of_match_table = mt9p031_of_match,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name = "mt9p031",
 	},
 	.probe          = mt9p031_probe,

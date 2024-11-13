@@ -32,10 +32,7 @@ struct reclaim_stat {
 	unsigned nr_ref_keep;
 	unsigned nr_unmap_fail;
 	unsigned nr_lazyfree_fail;
-<<<<<<< HEAD
-=======
 	unsigned nr_demoted;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Stat data for system wide items */

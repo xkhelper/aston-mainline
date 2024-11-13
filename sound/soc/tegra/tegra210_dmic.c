@@ -559,11 +559,7 @@ static struct platform_driver tegra210_dmic_driver = {
 		.pm = &tegra210_dmic_pm_ops,
 	},
 	.probe = tegra210_dmic_probe,
-<<<<<<< HEAD
-	.remove_new = tegra210_dmic_remove,
-=======
 	.remove = tegra210_dmic_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(tegra210_dmic_driver)
 

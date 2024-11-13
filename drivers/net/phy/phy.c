@@ -342,16 +342,6 @@ int phy_mii_ioctl(struct phy_device *phydev, struct ifreq *ifr, int cmd)
 		if (mdio_phy_id_is_c45(mii_data->phy_id)) {
 			prtad = mdio_phy_id_prtad(mii_data->phy_id);
 			devad = mdio_phy_id_devad(mii_data->phy_id);
-<<<<<<< HEAD
-			mii_data->val_out = mdiobus_c45_read(
-				phydev->mdio.bus, prtad, devad,
-				mii_data->reg_num);
-		} else {
-			mii_data->val_out = mdiobus_read(
-				phydev->mdio.bus, mii_data->phy_id,
-				mii_data->reg_num);
-		}
-=======
 			ret = mdiobus_c45_read(phydev->mdio.bus, prtad, devad,
 					       mii_data->reg_num);
 
@@ -365,7 +355,6 @@ int phy_mii_ioctl(struct phy_device *phydev, struct ifreq *ifr, int cmd)
 
 		mii_data->val_out = ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	case SIOCSMIIREG:
@@ -1105,14 +1094,10 @@ int phy_ethtool_ksettings_set(struct phy_device *phydev,
 	if (autoneg != AUTONEG_ENABLE && autoneg != AUTONEG_DISABLE)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	if (autoneg == AUTONEG_ENABLE && linkmode_empty(advertising))
-=======
 	if (autoneg == AUTONEG_ENABLE &&
 	    (linkmode_empty(advertising) ||
 	     !linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
 				phydev->supported)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	if (autoneg == AUTONEG_DISABLE &&

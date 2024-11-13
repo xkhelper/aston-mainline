@@ -48,10 +48,7 @@ static void acpi_rs_dump_address_common(union acpi_resource_data *resource);
 static void
 acpi_rs_dump_descriptor(void *resource, struct acpi_rsdump_info *table);
 
-<<<<<<< HEAD
-=======
 #ifdef ACPI_DEBUGGER
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*******************************************************************************
  *
  * FUNCTION:    acpi_rs_dump_resource_list
@@ -164,10 +161,7 @@ void acpi_rs_dump_irq_list(u8 *route_table)
 					   prt_element, prt_element->length);
 	}
 }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*******************************************************************************
  *

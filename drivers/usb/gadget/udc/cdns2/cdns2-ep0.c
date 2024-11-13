@@ -8,11 +8,7 @@
  */
 
 #include <linux/usb/composite.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "cdns2-gadget.h"
 #include "cdns2-trace.h"

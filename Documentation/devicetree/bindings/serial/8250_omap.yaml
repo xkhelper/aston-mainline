@@ -76,10 +76,7 @@ properties:
   clock-frequency: true
   current-speed: true
   overrun-throttle-ms: true
-<<<<<<< HEAD
-=======
   wakeup-source: true
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 required:
   - compatible

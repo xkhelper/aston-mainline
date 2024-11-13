@@ -85,11 +85,7 @@ static DECLARE_WAIT_QUEUE_HEAD(khugepaged_wait);
  *
  * Note that these are only respected if collapse was initiated by khugepaged.
  */
-<<<<<<< HEAD
-static unsigned int khugepaged_max_ptes_none __read_mostly;
-=======
 unsigned int khugepaged_max_ptes_none __read_mostly;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static unsigned int khugepaged_max_ptes_swap __read_mostly;
 static unsigned int khugepaged_max_ptes_shared __read_mostly;
 
@@ -550,14 +546,6 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
 
 static bool is_refcount_suitable(struct folio *folio)
 {
-<<<<<<< HEAD
-	int expected_refcount;
-
-	expected_refcount = folio_mapcount(folio);
-	if (folio_test_swapcache(folio))
-		expected_refcount += folio_nr_pages(folio);
-
-=======
 	int expected_refcount = folio_mapcount(folio);
 
 	if (!folio_test_anon(folio) || folio_test_swapcache(folio))
@@ -566,7 +554,6 @@ static bool is_refcount_suitable(struct folio *folio)
 	if (folio_test_private(folio))
 		expected_refcount++;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return folio_ref_count(folio) == expected_refcount;
 }
 
@@ -640,13 +627,8 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
 		}
 
 		/*
-<<<<<<< HEAD
-		 * We can do it before isolate_lru_page because the
-		 * page can't be freed from under us. NOTE: PG_lock
-=======
 		 * We can do it before folio_isolate_lru because the
 		 * folio can't be freed from under us. NOTE: PG_lock
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * is needed to serialize against split_huge_page
 		 * when invoked from the VM.
 		 */
@@ -1255,10 +1237,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
 	set_pmd_at(mm, address, pmd, _pmd);
 	update_mmu_cache_pmd(vma, address, pmd);
-<<<<<<< HEAD
-=======
 	deferred_split_folio(folio, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(pmd_ptl);
 
 	folio = NULL;
@@ -1865,11 +1844,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
 		}
 	} while (1);
 
-<<<<<<< HEAD
-	for (index = start; index < end; index++) {
-=======
 	for (index = start; index < end;) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xas_set(&xas, index);
 		folio = xas_load(&xas);
 
@@ -1888,30 +1863,19 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
 					}
 				}
 				nr_none++;
-<<<<<<< HEAD
-=======
 				index++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 			}
 
 			if (xa_is_value(folio) || !folio_test_uptodate(folio)) {
 				xas_unlock_irq(&xas);
 				/* swap in or instantiate fallocated page */
-<<<<<<< HEAD
-				if (shmem_get_folio(mapping->host, index,
-=======
 				if (shmem_get_folio(mapping->host, index, 0,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						&folio, SGP_NOALLOC)) {
 					result = SCAN_FAIL;
 					goto xa_unlocked;
 				}
-<<<<<<< HEAD
-				/* drain lru cache to help isolate_lru_page() */
-=======
 				/* drain lru cache to help folio_isolate_lru() */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				lru_add_drain();
 			} else if (folio_trylock(folio)) {
 				folio_get(folio);
@@ -1926,11 +1890,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
 				page_cache_sync_readahead(mapping, &file->f_ra,
 							  file, index,
 							  end - index);
-<<<<<<< HEAD
-				/* drain lru cache to help isolate_lru_page() */
-=======
 				/* drain lru cache to help folio_isolate_lru() */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				lru_add_drain();
 				folio = filemap_lock_folio(mapping, index);
 				if (IS_ERR(folio)) {
@@ -1985,19 +1945,10 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
 		 * we locked the first folio, then a THP might be there already.
 		 * This will be discovered on the first iteration.
 		 */
-<<<<<<< HEAD
-		if (folio_test_large(folio)) {
-			result = folio_order(folio) == HPAGE_PMD_ORDER &&
-					folio->index == start
-					/* Maybe PMD-mapped */
-					? SCAN_PTE_MAPPED_HUGEPAGE
-					: SCAN_PAGE_COMPOUND;
-=======
 		if (folio_order(folio) == HPAGE_PMD_ORDER &&
 		    folio->index == start) {
 			/* Maybe PMD-mapped */
 			result = SCAN_PTE_MAPPED_HUGEPAGE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out_unlock;
 		}
 
@@ -2037,15 +1988,9 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
 		VM_BUG_ON_FOLIO(folio != xa_load(xas.xa, index), folio);
 
 		/*
-<<<<<<< HEAD
-		 * We control three references to the folio:
-		 *  - we hold a pin on it;
-		 *  - one reference from page cache;
-=======
 		 * We control 2 + nr_pages references to the folio:
 		 *  - we hold a pin on it;
 		 *  - nr_pages reference from page cache;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 *  - one from lru_isolate_folio;
 		 * If those are the only references, then any new usage
 		 * of the folio will have to fetch it from the page
@@ -2053,11 +1998,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
 		 * truncate, so any new usage will be blocked until we
 		 * unlock folio after collapse/during rollback.
 		 */
-<<<<<<< HEAD
-		if (folio_ref_count(folio) != 3) {
-=======
 		if (folio_ref_count(folio) != 2 + folio_nr_pages(folio)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			result = SCAN_PAGE_COUNT;
 			xas_unlock_irq(&xas);
 			folio_putback_lru(folio);
@@ -2068,10 +2009,7 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
 		 * Accumulate the folios that are being collapsed.
 		 */
 		list_add_tail(&folio->lru, &pagelist);
-<<<<<<< HEAD
-=======
 		index += folio_nr_pages(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		continue;
 out_unlock:
 		folio_unlock(folio);
@@ -2119,24 +2057,13 @@ xa_unlocked:
 	index = start;
 	dst = folio_page(new_folio, 0);
 	list_for_each_entry(folio, &pagelist, lru) {
-<<<<<<< HEAD
-=======
 		int i, nr_pages = folio_nr_pages(folio);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		while (index < folio->index) {
 			clear_highpage(dst);
 			index++;
 			dst++;
 		}
-<<<<<<< HEAD
-		if (copy_mc_highpage(dst, folio_page(folio, 0)) > 0) {
-			result = SCAN_COPY_MC;
-			goto rollback;
-		}
-		index++;
-		dst++;
-=======
 
 		for (i = 0; i < nr_pages; i++) {
 			if (copy_mc_highpage(dst, folio_page(folio, i)) > 0) {
@@ -2146,7 +2073,6 @@ xa_unlocked:
 			index++;
 			dst++;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	while (index < end) {
 		clear_highpage(dst);
@@ -2261,11 +2187,7 @@ immap_locked:
 		folio_clear_active(folio);
 		folio_clear_unevictable(folio);
 		folio_unlock(folio);
-<<<<<<< HEAD
-		folio_put_refs(folio, 3);
-=======
 		folio_put_refs(folio, 2 + folio_nr_pages(folio));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	goto out;
@@ -2305,11 +2227,7 @@ rollback:
 	folio_put(new_folio);
 out:
 	VM_BUG_ON(!list_empty(&pagelist));
-<<<<<<< HEAD
-	trace_mm_khugepaged_collapse_file(mm, new_folio, index, is_shmem, addr, file, HPAGE_PMD_NR, result);
-=======
 	trace_mm_khugepaged_collapse_file(mm, new_folio, index, addr, is_shmem, file, HPAGE_PMD_NR, result);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return result;
 }
 
@@ -2334,11 +2252,7 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
 			continue;
 
 		if (xa_is_value(folio)) {
-<<<<<<< HEAD
-			++swap;
-=======
 			swap += 1 << xas_get_order(&xas);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (cc->is_khugepaged &&
 			    swap > khugepaged_max_ptes_swap) {
 				result = SCAN_EXCEED_SWAP_PTE;
@@ -2348,23 +2262,10 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
 			continue;
 		}
 
-<<<<<<< HEAD
-		/*
-		 * TODO: khugepaged should compact smaller compound pages
-		 * into a PMD sized page
-		 */
-		if (folio_test_large(folio)) {
-			result = folio_order(folio) == HPAGE_PMD_ORDER &&
-					folio->index == start
-					/* Maybe PMD-mapped */
-					? SCAN_PTE_MAPPED_HUGEPAGE
-					: SCAN_PAGE_COMPOUND;
-=======
 		if (folio_order(folio) == HPAGE_PMD_ORDER &&
 		    folio->index == start) {
 			/* Maybe PMD-mapped */
 			result = SCAN_PTE_MAPPED_HUGEPAGE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*
 			 * For SCAN_PTE_MAPPED_HUGEPAGE, further processing
 			 * by the caller won't touch the page cache, and so
@@ -2386,12 +2287,7 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
 			break;
 		}
 
-<<<<<<< HEAD
-		if (folio_ref_count(folio) !=
-		    1 + folio_mapcount(folio) + folio_test_private(folio)) {
-=======
 		if (!is_refcount_suitable(folio)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			result = SCAN_PAGE_COUNT;
 			break;
 		}
@@ -2403,11 +2299,7 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
 		 * is just too costly...
 		 */
 
-<<<<<<< HEAD
-		present++;
-=======
 		present += folio_nr_pages(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (need_resched()) {
 			xas_pause(&xas);

@@ -87,8 +87,6 @@ config DRM_PANEL_BOE_TV101WUM_NL6
 	  Say Y here if you want to support for BOE TV101WUM and AUO KD101N80
 	  45NA WUXGA PANEL DSI Video Mode panel
 
-<<<<<<< HEAD
-=======
 config DRM_PANEL_BOE_TV101WUM_LL2
 	tristate "BOE TV101WUM LL2 1200x1920 panel"
 	depends on OF
@@ -98,7 +96,6 @@ config DRM_PANEL_BOE_TV101WUM_LL2
 	  Say Y here if you want to support for BOE TV101WUM-LL2
 	  WUXGA PANEL DSI Video Mode panel
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config DRM_PANEL_EBBG_FT8719
 	tristate "EBBG FT8719 panel driver"
 	depends on OF
@@ -480,10 +477,6 @@ config DRM_PANEL_NOVATEK_NT36523
 	  around the Novatek NT36523 display controller, such as some
 	  Boe panels used in Xiaomi Mi Pad 5 and 5 Pro tablets.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config DRM_PANEL_NOVATEK_NT36532E
 	tristate "Novatek NT36532E panel driver"
 	depends on OF
@@ -495,11 +488,6 @@ config DRM_PANEL_NOVATEK_NT36532E
 	  around the Novatek NT36532E display controller, such as some
 	  Tianma panels used in Xiaomi Pad 6S Pro 12.4 tablets.
 
-<<<<<<< HEAD
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config DRM_PANEL_NOVATEK_NT36672A
 	tristate "Novatek NT36672A DSI panel"
 	depends on OF
@@ -816,12 +804,8 @@ config DRM_PANEL_SHARP_LS060T1SX01
 config DRM_PANEL_SITRONIX_ST7701
 	tristate "Sitronix ST7701 panel driver"
 	depends on OF
-<<<<<<< HEAD
-	depends on DRM_MIPI_DSI
-=======
 	depends on SPI || DRM_MIPI_DSI
 	select DRM_MIPI_DBI if SPI
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	depends on BACKLIGHT_CLASS_DEVICE
 	help
 	  Say Y here if you want to enable support for the Sitronix
@@ -1015,10 +999,6 @@ config DRM_PANEL_XINPENG_XPP055C272
 	  Say Y here if you want to enable support for the Xinpeng
 	  XPP055C272 controller for 720x1280 LCD panels with MIPI/RGB/SPI
 	  system interfaces.
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	  
 config DRM_PANEL_AA551_P_3_A0004
 	tristate "AA551 P 3 A0004"
@@ -1033,9 +1013,3 @@ config DRM_PANEL_AA551_P_3_A0004
 
 endmenu
 
-<<<<<<< HEAD
-=======
-endmenu
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)

@@ -9,11 +9,7 @@
 #include <linux/sched/clock.h>
 
 #include <drm/ttm/ttm_placement.h>
-<<<<<<< HEAD
-#include <drm/xe_drm.h>
-=======
 #include <uapi/drm/xe_drm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "regs/xe_engine_regs.h"
 #include "regs/xe_gt_regs.h"
@@ -165,15 +161,11 @@ query_engine_cycles(struct xe_device *xe,
 			  cpu_clock);
 
 	xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
-<<<<<<< HEAD
-	resp.width = 36;
-=======
 
 	if (GRAPHICS_VER(xe) >= 20)
 		resp.width = 64;
 	else
 		resp.width = 36;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Only write to the output fields of user query */
 	if (put_user(resp.cpu_timestamp, &query_ptr->cpu_timestamp))
@@ -530,13 +522,9 @@ static int query_gt_topology(struct xe_device *xe,
 		if (err)
 			return err;
 
-<<<<<<< HEAD
-		topo.type = DRM_XE_TOPO_EU_PER_DSS;
-=======
 		topo.type = gt->fuse_topo.eu_type == XE_GT_EU_TYPE_SIMD16 ?
 			DRM_XE_TOPO_SIMD16_EU_PER_DSS :
 			DRM_XE_TOPO_EU_PER_DSS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = copy_mask(&query_ptr, &topo,
 				gt->fuse_topo.eu_mask_per_dss,
 				sizeof(gt->fuse_topo.eu_mask_per_dss));

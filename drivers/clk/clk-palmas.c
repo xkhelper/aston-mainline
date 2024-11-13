@@ -281,11 +281,7 @@ static struct platform_driver palmas_clks_driver = {
 		.of_match_table = palmas_clks_of_match,
 	},
 	.probe = palmas_clks_probe,
-<<<<<<< HEAD
-	.remove_new = palmas_clks_remove,
-=======
 	.remove = palmas_clks_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(palmas_clks_driver);

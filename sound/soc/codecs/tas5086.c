@@ -463,15 +463,9 @@ static void tas5086_reset(struct tas5086_private *priv)
 {
 	if (priv->reset) {
 		/* Reset codec - minimum assertion time is 400ns */
-<<<<<<< HEAD
-		gpiod_direction_output(priv->reset, 1);
-		udelay(1);
-		gpiod_set_value(priv->reset, 0);
-=======
 		gpiod_set_value_cansleep(priv->reset, 1);
 		udelay(1);
 		gpiod_set_value_cansleep(priv->reset, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Codec needs ~15ms to wake up */
 		msleep(15);
@@ -872,16 +866,10 @@ static void tas5086_remove(struct snd_soc_component *component)
 {
 	struct tas5086_private *priv = snd_soc_component_get_drvdata(component);
 
-<<<<<<< HEAD
-	if (priv->reset)
-		/* Set codec to the reset state */
-		gpiod_set_value(priv->reset, 1);
-=======
 	if (priv->reset) {
 		/* Set codec to the reset state */
 		gpiod_set_value_cansleep(priv->reset, 1);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	regulator_bulk_disable(ARRAY_SIZE(priv->supplies), priv->supplies);
 };

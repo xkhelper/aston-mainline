@@ -2459,10 +2459,7 @@ static void xs_tcp_setup_socket(struct work_struct *work)
 	case -EHOSTUNREACH:
 	case -EADDRINUSE:
 	case -ENOBUFS:
-<<<<<<< HEAD
-=======
 	case -ENOTCONN:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		printk("%s: connect returned unhandled error %d\n",

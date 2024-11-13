@@ -224,10 +224,6 @@ static long mixcomwd_ioctl(struct file *file,
 
 static const struct file_operations mixcomwd_fops = {
 	.owner		= THIS_MODULE,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write		= mixcomwd_write,
 	.unlocked_ioctl	= mixcomwd_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,

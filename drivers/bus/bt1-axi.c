@@ -146,43 +146,14 @@ static int bt1_axi_request_rst(struct bt1_axi *axi)
 	return ret;
 }
 
-<<<<<<< HEAD
-static void bt1_axi_disable_clk(void *data)
-{
-	struct bt1_axi *axi = data;
-
-	clk_disable_unprepare(axi->aclk);
-}
-
-static int bt1_axi_request_clk(struct bt1_axi *axi)
-{
-	int ret;
-
-	axi->aclk = devm_clk_get(axi->dev, "aclk");
-=======
 static int bt1_axi_request_clk(struct bt1_axi *axi)
 {
 	axi->aclk = devm_clk_get_enabled(axi->dev, "aclk");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(axi->aclk))
 		return dev_err_probe(axi->dev, PTR_ERR(axi->aclk),
 				     "Couldn't get AXI Interconnect clock\n");
 
-<<<<<<< HEAD
-	ret = clk_prepare_enable(axi->aclk);
-	if (ret) {
-		dev_err(axi->dev, "Couldn't enable the AXI clock\n");
-		return ret;
-	}
-
-	ret = devm_add_action_or_reset(axi->dev, bt1_axi_disable_clk, axi);
-	if (ret)
-		dev_err(axi->dev, "Can't add AXI clock disable action\n");
-
-	return ret;
-=======
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int bt1_axi_request_irq(struct bt1_axi *axi)

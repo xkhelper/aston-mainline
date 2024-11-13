@@ -365,11 +365,7 @@ static unsigned long round_jiffies_common(unsigned long j, int cpu,
 	rem = j % HZ;
 
 	/*
-<<<<<<< HEAD
-	 * If the target jiffie is just after a whole second (which can happen
-=======
 	 * If the target jiffy is just after a whole second (which can happen
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * due to delays of the timer irq, long irq off times etc etc) then
 	 * we should round down to the whole second, not up. Use 1/4th second
 	 * as cutoff for this rounding as an extreme upper bound for this.
@@ -676,11 +672,7 @@ static void enqueue_timer(struct timer_base *base, struct timer_list *timer,
 		 * Set the next expiry time and kick the CPU so it
 		 * can reevaluate the wheel:
 		 */
-<<<<<<< HEAD
-		base->next_expiry = bucket_expiry;
-=======
 		WRITE_ONCE(base->next_expiry, bucket_expiry);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		base->timers_pending = true;
 		base->next_expiry_recalc = false;
 		trigger_dyntick_cpu(base, timer);
@@ -1569,11 +1561,8 @@ static inline void timer_base_unlock_expiry(struct timer_base *base)
  * the waiter to acquire the lock and make progress.
  */
 static void timer_sync_wait_running(struct timer_base *base)
-<<<<<<< HEAD
-=======
 	__releases(&base->lock) __releases(&base->expiry_lock)
 	__acquires(&base->expiry_lock) __acquires(&base->lock)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (atomic_read(&base->timer_waiters)) {
 		raw_spin_unlock_irq(&base->lock);
@@ -1911,11 +1900,7 @@ static int next_pending_bucket(struct timer_base *base, unsigned offset,
  *
  * Store next expiry time in base->next_expiry.
  */
-<<<<<<< HEAD
-static void next_expiry_recalc(struct timer_base *base)
-=======
 static void timer_recalc_next_expiry(struct timer_base *base)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long clk, next, adj;
 	unsigned lvl, offset = 0;
@@ -1945,11 +1930,7 @@ static void timer_recalc_next_expiry(struct timer_base *base)
 		 * bits are zero, we look at the next level as is. If not we
 		 * need to advance it by one because that's going to be the
 		 * next expiring bucket in that level. base->clk is the next
-<<<<<<< HEAD
-		 * expiring jiffie. So in case of:
-=======
 		 * expiring jiffy. So in case of:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 *
 		 * LVL5 LVL4 LVL3 LVL2 LVL1 LVL0
 		 *  0    0    0    0    0    0
@@ -1985,11 +1966,7 @@ static void timer_recalc_next_expiry(struct timer_base *base)
 		clk += adj;
 	}
 
-<<<<<<< HEAD
-	base->next_expiry = next;
-=======
 	WRITE_ONCE(base->next_expiry, next);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	base->next_expiry_recalc = false;
 	base->timers_pending = !(next == base->clk + NEXT_TIMER_MAX_DELTA);
 }
@@ -2018,11 +1995,7 @@ static u64 cmp_next_hrtimer_event(u64 basem, u64 expires)
 		return basem;
 
 	/*
-<<<<<<< HEAD
-	 * Round up to the next jiffie. High resolution timers are
-=======
 	 * Round up to the next jiffy. High resolution timers are
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * off, so the hrtimers are expired in the tick and we need to
 	 * make sure that this tick really expires the timer to avoid
 	 * a ping pong of the nohz stop code.
@@ -2036,11 +2009,7 @@ static unsigned long next_timer_interrupt(struct timer_base *base,
 					  unsigned long basej)
 {
 	if (base->next_expiry_recalc)
-<<<<<<< HEAD
-		next_expiry_recalc(base);
-=======
 		timer_recalc_next_expiry(base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Move next_expiry for the empty base into the future to prevent an
@@ -2051,11 +2020,7 @@ static unsigned long next_timer_interrupt(struct timer_base *base,
 	 * easy comparable to find out which base holds the first pending timer.
 	 */
 	if (!base->timers_pending)
-<<<<<<< HEAD
-		base->next_expiry = basej + NEXT_TIMER_MAX_DELTA;
-=======
 		WRITE_ONCE(base->next_expiry, basej + NEXT_TIMER_MAX_DELTA);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return base->next_expiry;
 }
@@ -2289,11 +2254,7 @@ static inline u64 __get_next_timer_interrupt(unsigned long basej, u64 basem,
 					     base_global, &tevt);
 
 	/*
-<<<<<<< HEAD
-	 * If the next event is only one jiffie ahead there is no need to call
-=======
 	 * If the next event is only one jiffy ahead there is no need to call
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * timer migration hierarchy related functions. The value for the next
 	 * global timer in @tevt struct equals then KTIME_MAX. This is also
 	 * true, when the timer base is idle.
@@ -2452,11 +2413,7 @@ static inline void __run_timers(struct timer_base *base)
 		 * jiffies to avoid endless requeuing to current jiffies.
 		 */
 		base->clk++;
-<<<<<<< HEAD
-		next_expiry_recalc(base);
-=======
 		timer_recalc_next_expiry(base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		while (levels--)
 			expire_timers(base, heads + levels);
@@ -2485,11 +2442,7 @@ static void run_timer_base(int index)
 /*
  * This function runs timers and the timer-tq in bottom half context.
  */
-<<<<<<< HEAD
-static __latent_entropy void run_timer_softirq(struct softirq_action *h)
-=======
 static __latent_entropy void run_timer_softirq(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	run_timer_base(BASE_LOCAL);
 	if (IS_ENABLED(CONFIG_NO_HZ_COMMON)) {
@@ -2511,10 +2464,6 @@ static void run_local_timers(void)
 	hrtimer_run_queues();
 
 	for (int i = 0; i < NR_BASES; i++, base++) {
-<<<<<<< HEAD
-		/* Raise the softirq only if required. */
-		if (time_after_eq(jiffies, base->next_expiry) ||
-=======
 		/*
 		 * Raise the softirq only if required.
 		 *
@@ -2549,7 +2498,6 @@ static void run_local_timers(void)
 		 * uses therefore READ_ONCE().
 		 */
 		if (time_after_eq(jiffies, READ_ONCE(base->next_expiry)) ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    (i == BASE_DEF && tmigr_requires_handle_remote())) {
 			raise_softirq(TIMER_SOFTIRQ);
 			return;
@@ -2816,11 +2764,7 @@ void __init init_timers(void)
  */
 void msleep(unsigned int msecs)
 {
-<<<<<<< HEAD
-	unsigned long timeout = msecs_to_jiffies(msecs) + 1;
-=======
 	unsigned long timeout = msecs_to_jiffies(msecs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	while (timeout)
 		timeout = schedule_timeout_uninterruptible(timeout);
@@ -2834,11 +2778,7 @@ EXPORT_SYMBOL(msleep);
  */
 unsigned long msleep_interruptible(unsigned int msecs)
 {
-<<<<<<< HEAD
-	unsigned long timeout = msecs_to_jiffies(msecs) + 1;
-=======
 	unsigned long timeout = msecs_to_jiffies(msecs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	while (timeout && !signal_pending(current))
 		timeout = schedule_timeout_interruptible(timeout);

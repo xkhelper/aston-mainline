@@ -50,10 +50,7 @@ struct sort_datum {
 	int type_rank;
 	const char *sort_name;
 	const char *own_name;
-<<<<<<< HEAD
-=======
 	__u64 disambig_hash;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const char *btf_int_enc_str(__u8 encoding)
@@ -565,16 +562,10 @@ static const char *btf_type_sort_name(const struct btf *btf, __u32 index, bool f
 	case BTF_KIND_ENUM64: {
 		int name_off = t->name_off;
 
-<<<<<<< HEAD
-		/* Use name of the first element for anonymous enums if allowed */
-		if (!from_ref && !t->name_off && btf_vlen(t))
-			name_off = btf_enum(t)->name_off;
-=======
 		if (!from_ref && !name_off && btf_vlen(t))
 			name_off = btf_kind(t) == BTF_KIND_ENUM64 ?
 				btf_enum64(t)->name_off :
 				btf_enum(t)->name_off;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return btf__name_by_offset(btf, name_off);
 	}
@@ -594,8 +585,6 @@ static const char *btf_type_sort_name(const struct btf *btf, __u32 index, bool f
 	return NULL;
 }
 
-<<<<<<< HEAD
-=======
 static __u64 hasher(__u64 hash, __u64 val)
 {
 	return hash * 31 + val;
@@ -662,23 +651,12 @@ static __u64 btf_type_disambig_hash(const struct btf *btf, __u32 id, bool includ
 	return hash;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int btf_type_compare(const void *left, const void *right)
 {
 	const struct sort_datum *d1 = (const struct sort_datum *)left;
 	const struct sort_datum *d2 = (const struct sort_datum *)right;
 	int r;
 
-<<<<<<< HEAD
-	if (d1->type_rank != d2->type_rank)
-		return d1->type_rank < d2->type_rank ? -1 : 1;
-
-	r = strcmp(d1->sort_name, d2->sort_name);
-	if (r)
-		return r;
-
-	return strcmp(d1->own_name, d2->own_name);
-=======
 	r = d1->type_rank - d2->type_rank;
 	r = r ?: strcmp(d1->sort_name, d2->sort_name);
 	r = r ?: strcmp(d1->own_name, d2->own_name);
@@ -689,7 +667,6 @@ static int btf_type_compare(const void *left, const void *right)
 		return d1->disambig_hash < d2->disambig_hash ? -1 : 1;
 
 	return d1->index - d2->index;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct sort_datum *sort_btf_c(const struct btf *btf)
@@ -710,10 +687,7 @@ static struct sort_datum *sort_btf_c(const struct btf *btf)
 		d->type_rank = btf_type_rank(btf, i, false);
 		d->sort_name = btf_type_sort_name(btf, i, false);
 		d->own_name = btf__name_by_offset(btf, t->name_off);
-<<<<<<< HEAD
-=======
 		d->disambig_hash = btf_type_disambig_hash(btf, i, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	qsort(datums, n, sizeof(struct sort_datum), btf_type_compare);

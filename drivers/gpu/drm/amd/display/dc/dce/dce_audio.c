@@ -630,14 +630,11 @@ void dce_aud_az_enable(struct audio *audio)
 			audio->inst, value);
 }
 
-<<<<<<< HEAD
-=======
 void dce_aud_az_disable_hbr_audio(struct audio *audio)
 {
 	set_high_bit_rate_capable(audio, false);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void dce_aud_az_disable(struct audio *audio)
 {
 	uint32_t value;
@@ -1301,10 +1298,7 @@ static const struct audio_funcs funcs = {
 	.az_enable = dce_aud_az_enable,
 	.az_disable = dce_aud_az_disable,
 	.az_configure = dce_aud_az_configure,
-<<<<<<< HEAD
-=======
 	.az_disable_hbr_audio = dce_aud_az_disable_hbr_audio,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.destroy = dce_aud_destroy,
 };
 

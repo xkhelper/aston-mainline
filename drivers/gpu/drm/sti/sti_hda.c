@@ -807,10 +807,6 @@ MODULE_DEVICE_TABLE(of, hda_of_match);
 struct platform_driver sti_hda_driver = {
 	.driver = {
 		.name = "sti-hda",
-<<<<<<< HEAD
-		.owner = THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = hda_of_match,
 	},
 	.probe = sti_hda_probe,

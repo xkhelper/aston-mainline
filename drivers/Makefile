@@ -17,12 +17,9 @@ obj-$(CONFIG_PINCTRL)		+= pinctrl/
 obj-$(CONFIG_GPIOLIB)		+= gpio/
 obj-y				+= pwm/
 
-<<<<<<< HEAD
-=======
 # LEDs must come before PCI, it is needed by NPEM driver
 obj-y				+= leds/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-y				+= pci/
 
 obj-$(CONFIG_PARISC)		+= parisc/
@@ -136,10 +133,6 @@ obj-$(CONFIG_CPU_IDLE)		+= cpuidle/
 obj-y				+= mmc/
 obj-y				+= ufs/
 obj-$(CONFIG_MEMSTICK)		+= memstick/
-<<<<<<< HEAD
-obj-y				+= leds/
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_INFINIBAND)	+= infiniband/
 obj-y				+= firmware/
 obj-$(CONFIG_CRYPTO)		+= crypto/

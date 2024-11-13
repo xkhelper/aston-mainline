@@ -3,10 +3,7 @@
 #define _TOOLS_MMZONE_H
 
 #include <linux/atomic.h>
-<<<<<<< HEAD
-=======
 #include <linux/memory_hotplug.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct pglist_data *first_online_pgdat(void);
 struct pglist_data *next_online_pgdat(struct pglist_data *pgdat);

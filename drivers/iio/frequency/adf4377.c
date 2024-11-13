@@ -20,11 +20,7 @@
 #include <linux/regmap.h>
 #include <linux/units.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* ADF4377 REG0000 Map */
 #define ADF4377_0000_SOFT_RESET_R_MSK		BIT(7)
@@ -404,9 +400,6 @@ enum muxout_select_mode {
 	ADF4377_MUXOUT_HIGH = 0x8,
 };
 
-<<<<<<< HEAD
-struct adf4377_state {
-=======
 struct adf4377_chip_info {
 	const char *name;
 	bool has_gpio_enclk2;
@@ -414,7 +407,6 @@ struct adf4377_chip_info {
 
 struct adf4377_state {
 	const struct adf4377_chip_info	*chip_info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct spi_device	*spi;
 	struct regmap		*regmap;
 	struct clk		*clkin;
@@ -903,13 +895,6 @@ static int adf4377_properties_parse(struct adf4377_state *st)
 		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk1),
 				     "failed to get the CE GPIO\n");
 
-<<<<<<< HEAD
-	st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "clk2-enable",
-						  GPIOD_OUT_LOW);
-	if (IS_ERR(st->gpio_enclk2))
-		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
-				     "failed to get the CE GPIO\n");
-=======
 	if (st->chip_info->has_gpio_enclk2) {
 		st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "clk2-enable",
 							  GPIOD_OUT_LOW);
@@ -917,7 +902,6 @@ static int adf4377_properties_parse(struct adf4377_state *st)
 			return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
 					"failed to get the CE GPIO\n");
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = device_property_match_property_string(&spi->dev, "adi,muxout-select",
 						    adf4377_muxout_modes,
@@ -945,8 +929,6 @@ static int adf4377_freq_change(struct notifier_block *nb, unsigned long action, 
 	return NOTIFY_OK;
 }
 
-<<<<<<< HEAD
-=======
 static const struct adf4377_chip_info adf4377_chip_info = {
 	.name = "adf4377",
 	.has_gpio_enclk2 = true,
@@ -957,7 +939,6 @@ static const struct adf4377_chip_info adf4378_chip_info = {
 	.has_gpio_enclk2 = false,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int adf4377_probe(struct spi_device *spi)
 {
 	struct iio_dev *indio_dev;
@@ -982,10 +963,7 @@ static int adf4377_probe(struct spi_device *spi)
 
 	st->regmap = regmap;
 	st->spi = spi;
-<<<<<<< HEAD
-=======
 	st->chip_info = spi_get_device_match_data(spi);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_init(&st->lock);
 
 	ret = adf4377_properties_parse(st);
@@ -1005,23 +983,15 @@ static int adf4377_probe(struct spi_device *spi)
 }
 
 static const struct spi_device_id adf4377_id[] = {
-<<<<<<< HEAD
-	{ "adf4377", 0 },
-=======
 	{ "adf4377", (kernel_ulong_t)&adf4377_chip_info },
 	{ "adf4378", (kernel_ulong_t)&adf4378_chip_info },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(spi, adf4377_id);
 
 static const struct of_device_id adf4377_of_match[] = {
-<<<<<<< HEAD
-	{ .compatible = "adi,adf4377" },
-=======
 	{ .compatible = "adi,adf4377", .data = &adf4377_chip_info },
 	{ .compatible = "adi,adf4378", .data = &adf4378_chip_info },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(of, adf4377_of_match);

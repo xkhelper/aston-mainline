@@ -105,10 +105,7 @@ struct bnxt_qplib_srq {
 	struct bnxt_qplib_sg_info	sg_info;
 	u16				eventq_hw_ring_id;
 	spinlock_t			lock; /* protect SRQE link list */
-<<<<<<< HEAD
-=======
 	u8				toggle;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct bnxt_qplib_sge {
@@ -173,11 +170,7 @@ struct bnxt_qplib_swqe {
 			};
 			u32		q_key;
 			u32		dst_qp;
-<<<<<<< HEAD
-			u16		avid;
-=======
 			u32		avid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} send;
 
 		/* Send Raw Ethernet and QP1 */
@@ -259,10 +252,7 @@ struct bnxt_qplib_q {
 	struct bnxt_qplib_db_info	dbinfo;
 	struct bnxt_qplib_sg_info	sg_info;
 	u32				max_wqe;
-<<<<<<< HEAD
-=======
 	u32				max_sw_wqe;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16				wqe_size;
 	u16				q_full_delta;
 	u16				max_sge;
@@ -598,11 +588,6 @@ static inline void bnxt_qplib_swq_mod_start(struct bnxt_qplib_q *que, u32 idx)
 	que->swq_start = que->swq[idx].next_idx;
 }
 
-<<<<<<< HEAD
-static inline u32 bnxt_qplib_get_depth(struct bnxt_qplib_q *que)
-{
-	return (que->wqe_size * que->max_wqe) / sizeof(struct sq_sge);
-=======
 static inline u32 bnxt_qplib_get_depth(struct bnxt_qplib_q *que, u8 wqe_mode, bool is_sq)
 {
 	u32 slots;
@@ -613,17 +598,12 @@ static inline u32 bnxt_qplib_get_depth(struct bnxt_qplib_q *que, u8 wqe_mode, bo
 	if (wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE && is_sq)
 		slots = ALIGN(slots, BNXT_VAR_MAX_SLOT_ALIGN);
 	return slots;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline u32 bnxt_qplib_set_sq_size(struct bnxt_qplib_q *que, u8 wqe_mode)
 {
 	return (wqe_mode == BNXT_QPLIB_WQE_MODE_STATIC) ?
-<<<<<<< HEAD
-		que->max_wqe : bnxt_qplib_get_depth(que);
-=======
 		que->max_wqe : bnxt_qplib_get_depth(que, wqe_mode, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline u32 bnxt_qplib_set_sq_max_slot(u8 wqe_mode)
@@ -670,8 +650,6 @@ static inline __le64 bnxt_re_update_msn_tbl(u32 st_idx, u32 npsn, u32 start_psn)
 		(((start_psn) << SQ_MSN_SEARCH_START_PSN_SFT) &
 		SQ_MSN_SEARCH_START_PSN_MASK));
 }
-<<<<<<< HEAD
-=======
 
 static inline bool __is_var_wqe(struct bnxt_qplib_qp *qp)
 {
@@ -682,5 +660,4 @@ static inline bool __is_err_cqe_for_var_wqe(struct bnxt_qplib_qp *qp, u8 status)
 {
 	return (status != CQ_REQ_STATUS_OK) && __is_var_wqe(qp);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __BNXT_QPLIB_FP_H__ */

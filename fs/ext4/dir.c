@@ -133,10 +133,7 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
 	struct super_block *sb = inode->i_sb;
 	struct buffer_head *bh = NULL;
 	struct fscrypt_str fstr = FSTR_INIT(NULL, 0);
-<<<<<<< HEAD
-=======
 	struct dir_private_info *info = file->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = fscrypt_prepare_readdir(inode);
 	if (err)
@@ -233,11 +230,7 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
 		 * readdir(2), then we might be pointing to an invalid
 		 * dirent right now.  Scan from the start of the block
 		 * to make sure. */
-<<<<<<< HEAD
-		if (!inode_eq_iversion(inode, file->f_version)) {
-=======
 		if (!inode_eq_iversion(inode, info->cookie)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			for (i = 0; i < sb->s_blocksize && i < offset; ) {
 				de = (struct ext4_dir_entry_2 *)
 					(bh->b_data + i);
@@ -257,11 +250,7 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
 			offset = i;
 			ctx->pos = (ctx->pos & ~(sb->s_blocksize - 1))
 				| offset;
-<<<<<<< HEAD
-			file->f_version = inode_query_iversion(inode);
-=======
 			info->cookie = inode_query_iversion(inode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		while (ctx->pos < inode->i_size
@@ -291,14 +280,6 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
 					struct fscrypt_str de_name =
 							FSTR_INIT(de->name,
 								de->name_len);
-<<<<<<< HEAD
-
-					/* Directory is encrypted */
-					err = fscrypt_fname_disk_to_usr(inode,
-						EXT4_DIRENT_HASH(de),
-						EXT4_DIRENT_MINOR_HASH(de),
-						&de_name, &fstr);
-=======
 					u32 hash;
 					u32 minor_hash;
 
@@ -313,7 +294,6 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
 					/* Directory is encrypted */
 					err = fscrypt_fname_disk_to_usr(inode,
 						hash, minor_hash, &de_name, &fstr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					de_name = fstr;
 					fstr.len = save_len;
 					if (err)
@@ -413,10 +393,7 @@ static inline loff_t ext4_get_htree_eof(struct file *filp)
 static loff_t ext4_dir_llseek(struct file *file, loff_t offset, int whence)
 {
 	struct inode *inode = file->f_mapping->host;
-<<<<<<< HEAD
-=======
 	struct dir_private_info *info = file->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int dx_dir = is_dx_dir(inode);
 	loff_t ret, htree_max = ext4_get_htree_eof(file);
 
@@ -425,11 +402,7 @@ static loff_t ext4_dir_llseek(struct file *file, loff_t offset, int whence)
 						    htree_max, htree_max);
 	else
 		ret = ext4_llseek(file, offset, whence);
-<<<<<<< HEAD
-	file->f_version = inode_peek_iversion(inode) - 1;
-=======
 	info->cookie = inode_peek_iversion(inode) - 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -466,20 +439,6 @@ static void free_rb_tree_fname(struct rb_root *root)
 	*root = RB_ROOT;
 }
 
-<<<<<<< HEAD
-
-static struct dir_private_info *ext4_htree_create_dir_info(struct file *filp,
-							   loff_t pos)
-{
-	struct dir_private_info *p;
-
-	p = kzalloc(sizeof(*p), GFP_KERNEL);
-	if (!p)
-		return NULL;
-	p->curr_hash = pos2maj_hash(filp, pos);
-	p->curr_minor_hash = pos2min_hash(filp, pos);
-	return p;
-=======
 static void ext4_htree_init_dir_info(struct file *filp, loff_t pos)
 {
 	struct dir_private_info *p = filp->private_data;
@@ -489,7 +448,6 @@ static void ext4_htree_init_dir_info(struct file *filp, loff_t pos)
 		p->curr_minor_hash = pos2min_hash(filp, pos);
 		p->initialized = true;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void ext4_htree_free_dir_info(struct dir_private_info *p)
@@ -601,16 +559,7 @@ static int ext4_dx_readdir(struct file *file, struct dir_context *ctx)
 	struct fname *fname;
 	int ret = 0;
 
-<<<<<<< HEAD
-	if (!info) {
-		info = ext4_htree_create_dir_info(file, ctx->pos);
-		if (!info)
-			return -ENOMEM;
-		file->private_data = info;
-	}
-=======
 	ext4_htree_init_dir_info(file, ctx->pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ctx->pos == ext4_get_htree_eof(file))
 		return 0;	/* EOF */
@@ -643,17 +592,10 @@ static int ext4_dx_readdir(struct file *file, struct dir_context *ctx)
 		 * cached entries.
 		 */
 		if ((!info->curr_node) ||
-<<<<<<< HEAD
-		    !inode_eq_iversion(inode, file->f_version)) {
-			info->curr_node = NULL;
-			free_rb_tree_fname(&info->root);
-			file->f_version = inode_query_iversion(inode);
-=======
 		    !inode_eq_iversion(inode, info->cookie)) {
 			info->curr_node = NULL;
 			free_rb_tree_fname(&info->root);
 			info->cookie = inode_query_iversion(inode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = ext4_htree_fill_tree(file, info->curr_hash,
 						   info->curr_minor_hash,
 						   &info->next_hash);
@@ -724,9 +666,6 @@ int ext4_check_all_de(struct inode *dir, struct buffer_head *bh, void *buf,
 	return 0;
 }
 
-<<<<<<< HEAD
-const struct file_operations ext4_dir_operations = {
-=======
 static int ext4_dir_open(struct inode *inode, struct file *file)
 {
 	struct dir_private_info *info;
@@ -740,7 +679,6 @@ static int ext4_dir_open(struct inode *inode, struct file *file)
 
 const struct file_operations ext4_dir_operations = {
 	.open		= ext4_dir_open,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.llseek		= ext4_dir_llseek,
 	.read		= generic_read_dir,
 	.iterate_shared	= ext4_readdir,

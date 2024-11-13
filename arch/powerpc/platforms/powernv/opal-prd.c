@@ -443,11 +443,7 @@ static struct platform_driver opal_prd_driver = {
 		.of_match_table	= opal_prd_match,
 	},
 	.probe	= opal_prd_probe,
-<<<<<<< HEAD
-	.remove_new = opal_prd_remove,
-=======
 	.remove = opal_prd_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(opal_prd_driver);

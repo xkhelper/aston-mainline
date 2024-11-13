@@ -73,11 +73,8 @@ aborting or finishing any DMA in progress, an implicit
 
 .. tabularcolumns:: |p{4.4cm}|p{4.4cm}|p{8.5cm}|
 
-<<<<<<< HEAD
-=======
 .. cssclass:: longtable
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .. flat-table:: struct v4l2_requestbuffers
     :header-rows:  0
     :stub-columns: 0
@@ -128,17 +125,6 @@ aborting or finishing any DMA in progress, an implicit
 .. _V4L2-BUF-CAP-SUPPORTS-MAX-NUM-BUFFERS:
 .. _V4L2-BUF-CAP-SUPPORTS-REMOVE-BUFS:
 
-<<<<<<< HEAD
-.. raw:: latex
-
-   \footnotesize
-
-.. tabularcolumns:: |p{8.1cm}|p{2.2cm}|p{7.0cm}|
-
-.. cssclass:: longtable
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .. flat-table:: V4L2 Buffer Capabilities Flags
     :header-rows:  0
     :stub-columns: 0
@@ -174,8 +160,6 @@ aborting or finishing any DMA in progress, an implicit
         :ref:`V4L2_BUF_FLAG_NO_CACHE_INVALIDATE <V4L2-BUF-FLAG-NO-CACHE-INVALIDATE>`,
         :ref:`V4L2_BUF_FLAG_NO_CACHE_CLEAN <V4L2-BUF-FLAG-NO-CACHE-CLEAN>` and
         :ref:`V4L2_MEMORY_FLAG_NON_COHERENT <V4L2-MEMORY-FLAG-NON-COHERENT>`.
-<<<<<<< HEAD
-=======
     * - ``V4L2_BUF_CAP_SUPPORTS_MAX_NUM_BUFFERS``
       - 0x00000080
       - If set, then the ``max_num_buffers`` field in ``struct v4l2_create_buffers``
@@ -206,7 +190,6 @@ aborting or finishing any DMA in progress, an implicit
 	only if the buffer is used for :ref:`memory mapping <mmap>` I/O and the
 	queue reports the :ref:`V4L2_BUF_CAP_SUPPORTS_MMAP_CACHE_HINTS
 	<V4L2-BUF-CAP-SUPPORTS-MMAP-CACHE-HINTS>` capability.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 .. raw:: latex
 

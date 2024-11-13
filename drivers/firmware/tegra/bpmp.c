@@ -3,10 +3,7 @@
  * Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk/tegra.h>
 #include <linux/genalloc.h>
 #include <linux/mailbox_client.h>
@@ -28,15 +25,6 @@
 #define MSG_RING	BIT(1)
 #define TAG_SZ		32
 
-<<<<<<< HEAD
-static inline struct tegra_bpmp *
-mbox_client_to_bpmp(struct mbox_client *client)
-{
-	return container_of(client, struct tegra_bpmp, mbox.client);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline const struct tegra_bpmp_ops *
 channel_to_ops(struct tegra_bpmp_channel *channel)
 {
@@ -47,37 +35,15 @@ channel_to_ops(struct tegra_bpmp_channel *channel)
 
 struct tegra_bpmp *tegra_bpmp_get(struct device *dev)
 {
-<<<<<<< HEAD
-	struct platform_device *pdev;
-	struct tegra_bpmp *bpmp;
-	struct device_node *np;
-=======
 	struct device_node *np __free(device_node);
 	struct platform_device *pdev;
 	struct tegra_bpmp *bpmp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	np = of_parse_phandle(dev->of_node, "nvidia,bpmp", 0);
 	if (!np)
 		return ERR_PTR(-ENOENT);
 
 	pdev = of_find_device_by_node(np);
-<<<<<<< HEAD
-	if (!pdev) {
-		bpmp = ERR_PTR(-ENODEV);
-		goto put;
-	}
-
-	bpmp = platform_get_drvdata(pdev);
-	if (!bpmp) {
-		bpmp = ERR_PTR(-EPROBE_DEFER);
-		put_device(&pdev->dev);
-		goto put;
-	}
-
-put:
-	of_node_put(np);
-=======
 	if (!pdev)
 		return ERR_PTR(-ENODEV);
 
@@ -87,7 +53,6 @@ put:
 		return ERR_PTR(-EPROBE_DEFER);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return bpmp;
 }
 EXPORT_SYMBOL_GPL(tegra_bpmp_get);

@@ -38,13 +38,10 @@
 
 void ucsi_notify_common(struct ucsi *ucsi, u32 cci)
 {
-<<<<<<< HEAD
-=======
 	/* Ignore bogus data in CCI if busy indicator is set. */
 	if (cci & UCSI_CCI_BUSY)
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (UCSI_CCI_CONNECTOR(cci))
 		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
 
@@ -106,25 +103,6 @@ static int ucsi_run_command(struct ucsi *ucsi, u64 command, u32 *cci,
 
 	*cci = 0;
 
-<<<<<<< HEAD
-	/*
-	 * Below UCSI 2.0, MESSAGE_IN was limited to 16 bytes. Truncate the
-	 * reads here.
-	 */
-	if (ucsi->version <= UCSI_VERSION_1_2)
-		size = clamp(size, 0, 16);
-
-	ret = ucsi->ops->sync_control(ucsi, command);
-	if (ret)
-		return ret;
-
-	ret = ucsi->ops->read_cci(ucsi, cci);
-	if (ret)
-		return ret;
-
-	if (*cci & UCSI_CCI_BUSY)
-		return -EBUSY;
-=======
 	if (size > UCSI_MAX_DATA_LENGTH(ucsi))
 		return -EINVAL;
 
@@ -136,7 +114,6 @@ static int ucsi_run_command(struct ucsi *ucsi, u64 command, u32 *cci,
 		return ucsi_run_command(ucsi, UCSI_CANCEL, cci, NULL, 0, false) ?: -EBUSY;
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!(*cci & UCSI_CCI_COMMAND_COMPLETE))
 		return -EIO;
@@ -169,28 +146,10 @@ static int ucsi_read_error(struct ucsi *ucsi, u8 connector_num)
 	int ret;
 
 	command = UCSI_GET_ERROR_STATUS | UCSI_CONNECTOR_NUMBER(connector_num);
-<<<<<<< HEAD
-	ret = ucsi_run_command(ucsi, command, &cci,
-			       &error, sizeof(error), false);
-
-	if (cci & UCSI_CCI_BUSY) {
-		ret = ucsi_run_command(ucsi, UCSI_CANCEL, &cci, NULL, 0, false);
-
-		return ret ? ret : -EBUSY;
-	}
-
-	if (ret < 0)
-		return ret;
-
-	if (cci & UCSI_CCI_ERROR)
-		return -EIO;
-
-=======
 	ret = ucsi_run_command(ucsi, command, &cci, &error, sizeof(error), false);
 	if (ret < 0)
 		return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (error) {
 	case UCSI_ERROR_INCOMPATIBLE_PARTNER:
 		return -EOPNOTSUPP;
@@ -266,14 +225,8 @@ static int ucsi_send_command_common(struct ucsi *ucsi, u64 cmd,
 	mutex_lock(&ucsi->ppm_lock);
 
 	ret = ucsi_run_command(ucsi, cmd, &cci, data, size, conn_ack);
-<<<<<<< HEAD
-	if (cci & UCSI_CCI_BUSY)
-		ret = ucsi_run_command(ucsi, UCSI_CANCEL, &cci, NULL, 0, false) ?: -EBUSY;
-	else if (cci & UCSI_CCI_ERROR)
-=======
 
 	if (cci & UCSI_CCI_ERROR)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = ucsi_read_error(ucsi, connector_num);
 
 	mutex_unlock(&ucsi->ppm_lock);
@@ -785,61 +738,6 @@ static struct usb_power_delivery_capabilities *ucsi_get_pd_caps(struct ucsi_conn
 							&pd_caps);
 }
 
-<<<<<<< HEAD
-static int ucsi_read_identity(struct ucsi_connector *con, u8 recipient,
-			      u8 offset, u8 bytes, void *resp)
-{
-	struct ucsi *ucsi = con->ucsi;
-	u64 command;
-	int ret;
-
-	command = UCSI_COMMAND(UCSI_GET_PD_MESSAGE) |
-	    UCSI_CONNECTOR_NUMBER(con->num);
-	command |= UCSI_GET_PD_MESSAGE_RECIPIENT(recipient);
-	command |= UCSI_GET_PD_MESSAGE_OFFSET(offset);
-	command |= UCSI_GET_PD_MESSAGE_BYTES(bytes);
-	command |= UCSI_GET_PD_MESSAGE_TYPE(UCSI_GET_PD_MESSAGE_TYPE_IDENTITY);
-
-	ret = ucsi_send_command(ucsi, command, resp, bytes);
-	if (ret < 0)
-		dev_err(ucsi->dev, "UCSI_GET_PD_MESSAGE failed (%d)\n", ret);
-
-	return ret;
-}
-
-static int ucsi_get_identity(struct ucsi_connector *con, u8 recipient,
-			      struct usb_pd_identity *id)
-{
-	struct ucsi *ucsi = con->ucsi;
-	struct ucsi_pd_message_disc_id resp = {};
-	int ret;
-
-	if (ucsi->version < UCSI_VERSION_2_0) {
-		/*
-		 * Before UCSI v2.0, MESSAGE_IN is 16 bytes which cannot fit
-		 * the 28 byte identity response including the VDM header.
-		 * First request the VDM header, ID Header VDO, Cert Stat VDO
-		 * and Product VDO.
-		 */
-		ret = ucsi_read_identity(con, recipient, 0, 0x10, &resp);
-		if (ret < 0)
-			return ret;
-
-
-		/* Then request Product Type VDO1 through Product Type VDO3. */
-		ret = ucsi_read_identity(con, recipient, 0x10, 0xc,
-					 &resp.vdo[0]);
-		if (ret < 0)
-			return ret;
-
-	} else {
-		/*
-		 * In UCSI v2.0 and after, MESSAGE_IN is large enough to request
-		 * the large enough to request the full Discover Identity
-		 * response at once.
-		 */
-		ret = ucsi_read_identity(con, recipient, 0x0, 0x1c, &resp);
-=======
 static int ucsi_get_pd_message(struct ucsi_connector *con, u8 recipient,
 			       size_t bytes, void *data, u8 type)
 {
@@ -858,39 +756,15 @@ static int ucsi_get_pd_message(struct ucsi_connector *con, u8 recipient,
 		command |= UCSI_GET_PD_MESSAGE_TYPE(type);
 
 		ret = ucsi_send_command(con->ucsi, command, data + offset, len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			return ret;
 	}
 
-<<<<<<< HEAD
-	id->id_header = resp.id_header;
-	id->cert_stat = resp.cert_stat;
-	id->product = resp.product;
-	id->vdo[0] = resp.vdo[0];
-	id->vdo[1] = resp.vdo[1];
-	id->vdo[2] = resp.vdo[2];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static int ucsi_get_partner_identity(struct ucsi_connector *con)
 {
-<<<<<<< HEAD
-	int ret;
-
-	ret = ucsi_get_identity(con, UCSI_RECIPIENT_SOP,
-				 &con->partner_identity);
-	if (ret < 0)
-		return ret;
-
-	ret = typec_partner_set_identity(con->partner);
-	if (ret < 0) {
-		dev_err(con->ucsi->dev, "Failed to set partner identity (%d)\n",
-			ret);
-	}
-=======
 	u32 vdo[7] = {};
 	int ret;
 
@@ -905,27 +779,12 @@ static int ucsi_get_partner_identity(struct ucsi_connector *con)
 	ret = typec_partner_set_identity(con->partner);
 	if (ret < 0)
 		dev_err(con->ucsi->dev, "Failed to set partner identity (%d)\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
 
 static int ucsi_get_cable_identity(struct ucsi_connector *con)
 {
-<<<<<<< HEAD
-	int ret;
-
-	ret = ucsi_get_identity(con, UCSI_RECIPIENT_SOP_P,
-				 &con->cable_identity);
-	if (ret < 0)
-		return ret;
-
-	ret = typec_cable_set_identity(con->cable);
-	if (ret < 0) {
-		dev_err(con->ucsi->dev, "Failed to set cable identity (%d)\n",
-			ret);
-	}
-=======
 	u32 vdo[7] = {};
 	int ret;
 
@@ -939,7 +798,6 @@ static int ucsi_get_cable_identity(struct ucsi_connector *con)
 	ret = typec_cable_set_identity(con->cable);
 	if (ret < 0)
 		dev_err(con->ucsi->dev, "Failed to set cable identity (%d)\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -1083,12 +941,8 @@ static int ucsi_register_cable(struct ucsi_connector *con)
 		break;
 	}
 
-<<<<<<< HEAD
-	desc.identity = &con->cable_identity;
-=======
 	if (con->ucsi->cap.features & UCSI_CAP_GET_PD_MESSAGE)
 		desc.identity = &con->cable_identity;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	desc.active = !!(UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE & cable_prop.flags);
 
 	if (con->ucsi->version >= UCSI_VERSION_2_1)
@@ -1189,12 +1043,8 @@ static int ucsi_register_partner(struct ucsi_connector *con)
 	if (pwr_opmode == UCSI_CONSTAT_PWR_OPMODE_PD)
 		ucsi_register_device_pdos(con);
 
-<<<<<<< HEAD
-	desc.identity = &con->partner_identity;
-=======
 	if (con->ucsi->cap.features & UCSI_CAP_GET_PD_MESSAGE)
 		desc.identity = &con->partner_identity;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	desc.usb_pd = pwr_opmode == UCSI_CONSTAT_PWR_OPMODE_PD;
 
 	partner = typec_register_partner(con->port, &desc);
@@ -1349,13 +1199,10 @@ static void ucsi_handle_connector_change(struct work_struct *work)
 
 	mutex_lock(&con->lock);
 
-<<<<<<< HEAD
-=======
 	if (!test_and_set_bit(EVENT_PENDING, &ucsi->flags))
 		dev_err_once(ucsi->dev, "%s entered without EVENT_PENDING\n",
 			     __func__);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
 
 	ret = ucsi_send_command_common(ucsi, command, &con->status,
@@ -1448,8 +1295,6 @@ EXPORT_SYMBOL_GPL(ucsi_connector_change);
 
 /* -------------------------------------------------------------------------- */
 
-<<<<<<< HEAD
-=======
 /*
  * Hard Reset bit field was defined with value 1 in UCSI spec version 1.0.
  * Starting with spec version 1.1, Hard Reset bit field was removed from the
@@ -1460,21 +1305,16 @@ EXPORT_SYMBOL_GPL(ucsi_connector_change);
  * For performing a Data Reset on LPMs supporting version 2.0 and greater,
  * this function needs to be called with the second argument set to 0.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ucsi_reset_connector(struct ucsi_connector *con, bool hard)
 {
 	u64 command;
 
 	command = UCSI_CONNECTOR_RESET | UCSI_CONNECTOR_NUMBER(con->num);
-<<<<<<< HEAD
-	command |= hard ? UCSI_CONNECTOR_RESET_HARD : 0;
-=======
 
 	if (con->ucsi->version < UCSI_VERSION_1_1)
 		command |= hard ? UCSI_CONNECTOR_RESET_HARD_VER_1_0 : 0;
 	else if (con->ucsi->version >= UCSI_VERSION_2_0)
 		command |= hard ? 0 : UCSI_CONNECTOR_RESET_DATA_VER_2_0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ucsi_send_command(con->ucsi, command, NULL, 0);
 }

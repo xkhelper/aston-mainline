@@ -65,8 +65,6 @@
 		regulator-max-microvolt = <12000000>;
 	};
 
-<<<<<<< HEAD
-=======
 	vcc3v3_wf: vcc3v3-wf-regulator {
 		compatible = "regulator-fixed";
 		regulator-name = "vcc3v3_wf";
@@ -79,7 +77,6 @@
 		vin-supply = <&vcc5v0_sys>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vcc5v0_host: vcc5v0-host-regulator {
 		compatible = "regulator-fixed";
 		regulator-name = "vcc5v0_host";
@@ -129,13 +126,10 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &combphy0_ps {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &combphy2_psu {
 	status = "okay";
 };
@@ -315,8 +309,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &pcie2x1l2 {
 	pinctrl-0 = <&pcie20x1m0_pins>;
 	pinctrl-names = "default";
@@ -325,7 +317,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pinctrl {
 	leds {
 		io_led: io-led {
@@ -333,15 +324,12 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	pcie {
 		pow_en: pow-en {
 			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	power {
 		vcc_5v0_en: vcc-5v0-en {
 			rockchip,pins = <4 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -359,31 +347,6 @@
 			rockchip,pins = <4 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
-<<<<<<< HEAD
-
-	wifibt {
-		wl_reset: wl-reset {
-			rockchip,pins = <0 RK_PD0 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-
-		wl_dis: wl-dis {
-			rockchip,pins = <0 RK_PD5 RK_FUNC_GPIO &pcfg_output_high>;
-		};
-
-		wl_wake_host: wl-wake-host {
-			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-
-		bt_dis: bt-dis {
-			rockchip,pins = <0 RK_PD4 RK_FUNC_GPIO &pcfg_output_high>;
-		};
-
-		bt_wake_host: bt-wake-host {
-			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-	};
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &pwm3 {
@@ -799,11 +762,6 @@
 
 &usb_host0_ehci {
 	status = "okay";
-<<<<<<< HEAD
-	pinctrl-names = "default";
-	pinctrl-0 = <&wl_reset &wl_dis &wl_wake_host &bt_dis &bt_wake_host>;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &usb_host0_ohci {

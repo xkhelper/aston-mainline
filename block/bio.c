@@ -931,12 +931,8 @@ static bool bvec_try_merge_page(struct bio_vec *bv, struct page *page,
 	if (!zone_device_pages_have_same_pgmap(bv->bv_page, page))
 		return false;
 
-<<<<<<< HEAD
-	*same_page = ((vec_end_addr & PAGE_MASK) == page_addr);
-=======
 	*same_page = ((vec_end_addr & PAGE_MASK) == ((page_addr + off) &
 		     PAGE_MASK));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!*same_page) {
 		if (IS_ENABLED(CONFIG_KMSAN))
 			return false;
@@ -1022,8 +1018,6 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * bio_add_hw_folio - attempt to add a folio to a bio with hw constraints
  * @q: the target queue
  * @bio: destination bio
@@ -1047,7 +1041,6 @@ int bio_add_hw_folio(struct request_queue *q, struct bio *bio,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * bio_add_pc_page	- attempt to add page to passthrough bio
  * @q: the target queue
  * @bio: destination bio
@@ -1197,10 +1190,6 @@ void __bio_release_pages(struct bio *bio, bool mark_dirty)
 	struct folio_iter fi;
 
 	bio_for_each_folio_all(fi, bio) {
-<<<<<<< HEAD
-		struct page *page;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		size_t nr_pages;
 
 		if (mark_dirty) {
@@ -1208,18 +1197,9 @@ void __bio_release_pages(struct bio *bio, bool mark_dirty)
 			folio_mark_dirty(fi.folio);
 			folio_unlock(fi.folio);
 		}
-<<<<<<< HEAD
-		page = folio_page(fi.folio, fi.offset / PAGE_SIZE);
-		nr_pages = (fi.offset + fi.length - 1) / PAGE_SIZE -
-			   fi.offset / PAGE_SIZE + 1;
-		do {
-			bio_release_page(bio, page++);
-		} while (--nr_pages != 0);
-=======
 		nr_pages = (fi.offset + fi.length - 1) / PAGE_SIZE -
 			   fi.offset / PAGE_SIZE + 1;
 		unpin_user_folio(fi.folio, nr_pages);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 EXPORT_SYMBOL_GPL(__bio_release_pages);
@@ -1244,13 +1224,8 @@ void bio_iov_bvec_set(struct bio *bio, struct iov_iter *iter)
 	bio_set_flag(bio, BIO_CLONED);
 }
 
-<<<<<<< HEAD
-static int bio_iov_add_page(struct bio *bio, struct page *page,
-		unsigned int len, unsigned int offset)
-=======
 static int bio_iov_add_folio(struct bio *bio, struct folio *folio, size_t len,
 			     size_t offset)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bool same_page = false;
 
@@ -1259,20 +1234,6 @@ static int bio_iov_add_folio(struct bio *bio, struct folio *folio, size_t len,
 
 	if (bio->bi_vcnt > 0 &&
 	    bvec_try_merge_page(&bio->bi_io_vec[bio->bi_vcnt - 1],
-<<<<<<< HEAD
-				page, len, offset, &same_page)) {
-		bio->bi_iter.bi_size += len;
-		if (same_page)
-			bio_release_page(bio, page);
-		return 0;
-	}
-	__bio_add_page(bio, page, len, offset);
-	return 0;
-}
-
-static int bio_iov_add_zone_append_page(struct bio *bio, struct page *page,
-		unsigned int len, unsigned int offset)
-=======
 				folio_page(folio, 0), len, offset,
 				&same_page)) {
 		bio->bi_iter.bi_size += len;
@@ -1286,21 +1247,10 @@ static int bio_iov_add_zone_append_page(struct bio *bio, struct page *page,
 
 static int bio_iov_add_zone_append_folio(struct bio *bio, struct folio *folio,
 					 size_t len, size_t offset)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
 	bool same_page = false;
 
-<<<<<<< HEAD
-	if (bio_add_hw_page(q, bio, page, len, offset,
-			queue_max_zone_append_sectors(q), &same_page) != len)
-		return -EINVAL;
-	if (same_page)
-		bio_release_page(bio, page);
-	return 0;
-}
-
-=======
 	if (bio_add_hw_folio(q, bio, folio, len, offset,
 			queue_max_zone_append_sectors(q), &same_page) != len)
 		return -EINVAL;
@@ -1339,7 +1289,6 @@ static unsigned int get_contig_folio_len(unsigned int *num_pages,
 	return contig_sz;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PAGE_PTRS_PER_BVEC     (sizeof(struct bio_vec) / sizeof(struct page *))
 
 /**
@@ -1359,15 +1308,9 @@ static int __bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
 	unsigned short entries_left = bio->bi_max_vecs - bio->bi_vcnt;
 	struct bio_vec *bv = bio->bi_io_vec + bio->bi_vcnt;
 	struct page **pages = (struct page **)bv;
-<<<<<<< HEAD
-	ssize_t size, left;
-	unsigned len, i = 0;
-	size_t offset;
-=======
 	ssize_t size;
 	unsigned int num_pages, i = 0;
 	size_t offset, folio_offset, left, len;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	/*
@@ -1407,19 +1350,6 @@ static int __bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	for (left = size, i = 0; left > 0; left -= len, i++) {
-		struct page *page = pages[i];
-
-		len = min_t(size_t, PAGE_SIZE - offset, left);
-		if (bio_op(bio) == REQ_OP_ZONE_APPEND) {
-			ret = bio_iov_add_zone_append_page(bio, page, len,
-					offset);
-			if (ret)
-				break;
-		} else
-			bio_iov_add_page(bio, page, len, offset);
-=======
 	for (left = size, i = 0; left > 0; left -= len, i += num_pages) {
 		struct page *page = pages[i];
 		struct folio *folio = page_folio(page);
@@ -1442,7 +1372,6 @@ static int __bio_iov_iter_get_pages(struct bio *bio, struct iov_iter *iter)
 				break;
 		} else
 			bio_iov_add_folio(bio, folio, len, folio_offset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		offset = 0;
 	}

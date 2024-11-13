@@ -300,33 +300,15 @@ static int vboxsf_writepage(struct page *page, struct writeback_control *wbc)
 
 static int vboxsf_write_end(struct file *file, struct address_space *mapping,
 			    loff_t pos, unsigned int len, unsigned int copied,
-<<<<<<< HEAD
-			    struct page *page, void *fsdata)
-{
-	struct inode *inode = mapping->host;
-	struct vboxsf_handle *sf_handle = file->private_data;
-	unsigned int from = pos & ~PAGE_MASK;
-=======
 			    struct folio *folio, void *fsdata)
 {
 	struct inode *inode = mapping->host;
 	struct vboxsf_handle *sf_handle = file->private_data;
 	size_t from = offset_in_folio(folio, pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 nwritten = len;
 	u8 *buf;
 	int err;
 
-<<<<<<< HEAD
-	/* zero the stale part of the page if we did a short copy */
-	if (!PageUptodate(page) && copied < len)
-		zero_user(page, from + copied, len - copied);
-
-	buf = kmap(page);
-	err = vboxsf_write(sf_handle->root, sf_handle->handle,
-			   pos, &nwritten, buf + from);
-	kunmap(page);
-=======
 	/* zero the stale part of the folio if we did a short copy */
 	if (!folio_test_uptodate(folio) && copied < len)
 		folio_zero_range(folio, from + copied, len - copied);
@@ -335,7 +317,6 @@ static int vboxsf_write_end(struct file *file, struct address_space *mapping,
 	err = vboxsf_write(sf_handle->root, sf_handle->handle,
 			   pos, &nwritten, buf + from);
 	kunmap(&folio->page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (err) {
 		nwritten = 0;
@@ -345,26 +326,16 @@ static int vboxsf_write_end(struct file *file, struct address_space *mapping,
 	/* mtime changed */
 	VBOXSF_I(inode)->force_restat = 1;
 
-<<<<<<< HEAD
-	if (!PageUptodate(page) && nwritten == PAGE_SIZE)
-		SetPageUptodate(page);
-=======
 	if (!folio_test_uptodate(folio) && nwritten == folio_size(folio))
 		folio_mark_uptodate(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pos += nwritten;
 	if (pos > inode->i_size)
 		i_size_write(inode, pos);
 
 out:
-<<<<<<< HEAD
-	unlock_page(page);
-	put_page(page);
-=======
 	folio_unlock(folio);
 	folio_put(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return nwritten;
 }
@@ -372,11 +343,7 @@ out:
 /*
  * Note simple_write_begin does not read the page from disk on partial writes
  * this is ok since vboxsf_write_end only writes the written parts of the
-<<<<<<< HEAD
- * page and it does not call SetPageUptodate for partial writes.
-=======
  * page and it does not call folio_mark_uptodate for partial writes.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 const struct address_space_operations vboxsf_reg_aops = {
 	.read_folio = vboxsf_read_folio,

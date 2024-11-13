@@ -281,8 +281,6 @@ config SND_SOC_SOF_LUNARLAKE
 	  Say Y if you have such a device.
 	  If unsure select "N".
 
-<<<<<<< HEAD
-=======
 config SND_SOC_SOF_INTEL_PTL
 	tristate
 	select SND_SOC_SOF_HDA_COMMON
@@ -300,7 +298,6 @@ config SND_SOC_SOF_PANTHERLAKE
 	  Say Y if you have such a device.
 	  If unsure select "N".
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config SND_SOC_SOF_HDA_COMMON
 	tristate
 

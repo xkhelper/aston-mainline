@@ -13,8 +13,6 @@
 #define INSN_UD2	0x0b0f
 #define LEN_UD2		2
 
-<<<<<<< HEAD
-=======
 /*
  * In clang we have UD1s reporting UBSAN failures on X86, 64 and 32bit.
  */
@@ -27,7 +25,6 @@
 #define BUG_UD1			0xfffe
 #define BUG_UD2			0xfffd
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_GENERIC_BUG
 
 #ifdef CONFIG_X86_32

@@ -38,10 +38,7 @@ properties:
     description: A phandle and PM domain specifier as defined by bindings of
       the power controller specified by phandle. See
       Documentation/devicetree/bindings/power/power-domain.yaml for details.
-<<<<<<< HEAD
-=======
     maxItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   mediatek,gce-client-reg:
     description:
@@ -61,12 +58,9 @@ properties:
   clocks:
     items:
       - description: SPLIT Clock
-<<<<<<< HEAD
-=======
       - description: Used for interfacing with the HDMI RX signal source.
       - description: Paired with receiving HDMI RX metadata.
     minItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 required:
   - compatible
@@ -82,11 +76,6 @@ allOf:
             const: mediatek,mt8195-mdp3-split
 
     then:
-<<<<<<< HEAD
-      required:
-        - mediatek,gce-client-reg
-
-=======
       properties:
         clocks:
           minItems: 3
@@ -105,7 +94,6 @@ allOf:
         clocks:
           maxItems: 1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:

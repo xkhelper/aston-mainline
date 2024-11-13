@@ -25,11 +25,7 @@
 #include <scsi/scsi_device.h>
 #include <scsi/scsi_eh.h>
 #include <scsi/scsi_transport_sas.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "smartpqi.h"
 #include "smartpqi_sis.h"
 
@@ -37,19 +33,11 @@
 #define BUILD_TIMESTAMP
 #endif
 
-<<<<<<< HEAD
-#define DRIVER_VERSION		"2.1.26-030"
-#define DRIVER_MAJOR		2
-#define DRIVER_MINOR		1
-#define DRIVER_RELEASE		26
-#define DRIVER_REVISION		30
-=======
 #define DRIVER_VERSION		"2.1.30-031"
 #define DRIVER_MAJOR		2
 #define DRIVER_MINOR		1
 #define DRIVER_RELEASE		30
 #define DRIVER_REVISION		31
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DRIVER_NAME		"Microchip SmartPQI Driver (v" \
 				DRIVER_VERSION BUILD_TIMESTAMP ")"
@@ -104,15 +92,9 @@ static int pqi_aio_submit_r56_write_io(struct pqi_ctrl_info *ctrl_info,
 static void pqi_ofa_ctrl_quiesce(struct pqi_ctrl_info *ctrl_info);
 static void pqi_ofa_ctrl_unquiesce(struct pqi_ctrl_info *ctrl_info);
 static int pqi_ofa_ctrl_restart(struct pqi_ctrl_info *ctrl_info, unsigned int delay_secs);
-<<<<<<< HEAD
-static void pqi_ofa_setup_host_buffer(struct pqi_ctrl_info *ctrl_info);
-static void pqi_ofa_free_host_buffer(struct pqi_ctrl_info *ctrl_info);
-static int pqi_ofa_host_memory_update(struct pqi_ctrl_info *ctrl_info);
-=======
 static void pqi_host_setup_buffer(struct pqi_ctrl_info *ctrl_info, struct pqi_host_memory_descriptor *host_memory_descriptor, u32 total_size, u32 min_size);
 static void pqi_host_free_buffer(struct pqi_ctrl_info *ctrl_info, struct pqi_host_memory_descriptor *host_memory_descriptor);
 static int pqi_host_memory_update(struct pqi_ctrl_info *ctrl_info, struct pqi_host_memory_descriptor *host_memory_descriptor, u16 function_code);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int pqi_device_wait_for_pending_io(struct pqi_ctrl_info *ctrl_info,
 	struct pqi_scsi_dev *device, u8 lun, unsigned long timeout_msecs);
 static void pqi_fail_all_outstanding_requests(struct pqi_ctrl_info *ctrl_info);
@@ -1526,15 +1508,12 @@ static int pqi_get_raid_map(struct pqi_ctrl_info *ctrl_info,
 	if (rc)
 		goto error;
 
-<<<<<<< HEAD
-=======
 	device->raid_io_stats = alloc_percpu(struct pqi_raid_io_stats);
 	if (!device->raid_io_stats) {
 		rc = -ENOMEM;
 		goto error;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	device->raid_map = raid_map;
 
 	return 0;
@@ -2126,13 +2105,10 @@ static void pqi_scsi_update_device(struct pqi_ctrl_info *ctrl_info,
 				/* To prevent this from being freed later. */
 				new_device->raid_map = NULL;
 			}
-<<<<<<< HEAD
-=======
 			if (new_device->raid_bypass_enabled && existing_device->raid_io_stats == NULL) {
 				existing_device->raid_io_stats = new_device->raid_io_stats;
 				new_device->raid_io_stats = NULL;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			existing_device->raid_bypass_configured = new_device->raid_bypass_configured;
 			existing_device->raid_bypass_enabled = new_device->raid_bypass_enabled;
 		}
@@ -2155,10 +2131,7 @@ static void pqi_scsi_update_device(struct pqi_ctrl_info *ctrl_info,
 static inline void pqi_free_device(struct pqi_scsi_dev *device)
 {
 	if (device) {
-<<<<<<< HEAD
-=======
 		free_percpu(device->raid_io_stats);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(device->raid_map);
 		kfree(device);
 	}
@@ -2330,19 +2303,6 @@ static void pqi_update_device_list(struct pqi_ctrl_info *ctrl_info,
 	 * queue depth, device size.
 	 */
 	list_for_each_entry(device, &ctrl_info->scsi_device_list, scsi_device_list_entry) {
-<<<<<<< HEAD
-		if (device->sdev && device->queue_depth != device->advertised_queue_depth) {
-			device->advertised_queue_depth = device->queue_depth;
-			scsi_change_queue_depth(device->sdev, device->advertised_queue_depth);
-			spin_lock_irqsave(&ctrl_info->scsi_device_list_lock, flags);
-			if (pqi_volume_rescan_needed(device)) {
-				device->rescan = false;
-				spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
-				scsi_rescan_device(device->sdev);
-			} else {
-				spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
-			}
-=======
 		/*
 		 * Check for queue depth change.
 		 */
@@ -2360,7 +2320,6 @@ static void pqi_update_device_list(struct pqi_ctrl_info *ctrl_info,
 			scsi_rescan_device(device->sdev);
 		} else {
 			spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -2412,17 +2371,6 @@ static inline void pqi_mask_device(u8 *scsi3addr)
 	scsi3addr[3] |= 0xc0;
 }
 
-<<<<<<< HEAD
-static inline bool pqi_is_multipath_device(struct pqi_scsi_dev *device)
-{
-	if (pqi_is_logical_device(device))
-		return false;
-
-	return (device->path_map & (device->path_map - 1)) != 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool pqi_expose_device(struct pqi_scsi_dev *device)
 {
 	return !device->is_physical_device || !pqi_skip_device(device->scsi3addr);
@@ -3305,8 +3253,6 @@ static void pqi_process_raid_io_error(struct pqi_io_request *io_request)
 			sense_data_length);
 	}
 
-<<<<<<< HEAD
-=======
 	if (pqi_cmd_priv(scmd)->this_residual &&
 	    !pqi_is_logical_device(scmd->device->hostdata) &&
 	    scsi_status == SAM_STAT_CHECK_CONDITION &&
@@ -3321,7 +3267,6 @@ static void pqi_process_raid_io_error(struct pqi_io_request *io_request)
 		scsi_build_sense_buffer(0, scmd->sense_buffer, HARDWARE_ERROR, 0x3e, 0x1);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	scmd->result = scsi_status;
 	set_host_byte(scmd, host_byte);
 }
@@ -3336,20 +3281,12 @@ static void pqi_process_aio_io_error(struct pqi_io_request *io_request)
 	int residual_count;
 	int xfer_count;
 	bool device_offline;
-<<<<<<< HEAD
-	struct pqi_scsi_dev *device;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	scmd = io_request->scmd;
 	error_info = io_request->error_info;
 	host_byte = DID_OK;
 	sense_data_length = 0;
 	device_offline = false;
-<<<<<<< HEAD
-	device = scmd->device->hostdata;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (error_info->service_response) {
 	case PQI_AIO_SERV_RESPONSE_COMPLETE:
@@ -3374,19 +3311,8 @@ static void pqi_process_aio_io_error(struct pqi_io_request *io_request)
 			break;
 		case PQI_AIO_STATUS_AIO_PATH_DISABLED:
 			pqi_aio_path_disabled(io_request);
-<<<<<<< HEAD
-			if (pqi_is_multipath_device(device)) {
-				pqi_device_remove_start(device);
-				host_byte = DID_NO_CONNECT;
-				scsi_status = SAM_STAT_CHECK_CONDITION;
-			} else {
-				scsi_status = SAM_STAT_GOOD;
-				io_request->status = -EAGAIN;
-			}
-=======
 			scsi_status = SAM_STAT_GOOD;
 			io_request->status = -EAGAIN;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case PQI_AIO_STATUS_NO_PATH_TO_DEVICE:
 		case PQI_AIO_STATUS_INVALID_DEVICE:
@@ -3714,11 +3640,7 @@ static void pqi_process_soft_reset(struct pqi_ctrl_info *ctrl_info)
 		ctrl_info->pqi_mode_enabled = false;
 		pqi_save_ctrl_mode(ctrl_info, SIS_MODE);
 		rc = pqi_ofa_ctrl_restart(ctrl_info, delay_secs);
-<<<<<<< HEAD
-		pqi_ofa_free_host_buffer(ctrl_info);
-=======
 		pqi_host_free_buffer(ctrl_info, &ctrl_info->ofa_memory);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pqi_ctrl_ofa_done(ctrl_info);
 		dev_info(&ctrl_info->pci_dev->dev,
 				"Online Firmware Activation: %s\n",
@@ -3729,11 +3651,7 @@ static void pqi_process_soft_reset(struct pqi_ctrl_info *ctrl_info)
 				"Online Firmware Activation ABORTED\n");
 		if (ctrl_info->soft_reset_handshake_supported)
 			pqi_clear_soft_reset_status(ctrl_info);
-<<<<<<< HEAD
-		pqi_ofa_free_host_buffer(ctrl_info);
-=======
 		pqi_host_free_buffer(ctrl_info, &ctrl_info->ofa_memory);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pqi_ctrl_ofa_done(ctrl_info);
 		pqi_ofa_ctrl_unquiesce(ctrl_info);
 		break;
@@ -3743,11 +3661,7 @@ static void pqi_process_soft_reset(struct pqi_ctrl_info *ctrl_info)
 		dev_err(&ctrl_info->pci_dev->dev,
 			"unexpected Online Firmware Activation reset status: 0x%x\n",
 			reset_status);
-<<<<<<< HEAD
-		pqi_ofa_free_host_buffer(ctrl_info);
-=======
 		pqi_host_free_buffer(ctrl_info, &ctrl_info->ofa_memory);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pqi_ctrl_ofa_done(ctrl_info);
 		pqi_ofa_ctrl_unquiesce(ctrl_info);
 		pqi_take_ctrl_offline(ctrl_info, PQI_OFA_RESPONSE_TIMEOUT);
@@ -3762,13 +3676,8 @@ static void pqi_ofa_memory_alloc_worker(struct work_struct *work)
 	ctrl_info = container_of(work, struct pqi_ctrl_info, ofa_memory_alloc_work);
 
 	pqi_ctrl_ofa_start(ctrl_info);
-<<<<<<< HEAD
-	pqi_ofa_setup_host_buffer(ctrl_info);
-	pqi_ofa_host_memory_update(ctrl_info);
-=======
 	pqi_host_setup_buffer(ctrl_info, &ctrl_info->ofa_memory, ctrl_info->ofa_bytes_requested, ctrl_info->ofa_bytes_requested);
 	pqi_host_memory_update(ctrl_info, &ctrl_info->ofa_memory, PQI_VENDOR_GENERAL_OFA_MEMORY_UPDATE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void pqi_ofa_quiesce_worker(struct work_struct *work)
@@ -3808,11 +3717,7 @@ static bool pqi_ofa_process_event(struct pqi_ctrl_info *ctrl_info,
 		dev_info(&ctrl_info->pci_dev->dev,
 			"received Online Firmware Activation cancel request: reason: %u\n",
 			ctrl_info->ofa_cancel_reason);
-<<<<<<< HEAD
-		pqi_ofa_free_host_buffer(ctrl_info);
-=======
 		pqi_host_free_buffer(ctrl_info, &ctrl_info->ofa_memory);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pqi_ctrl_ofa_done(ctrl_info);
 		break;
 	default:
@@ -6043,11 +5948,7 @@ static bool pqi_is_parity_write_stream(struct pqi_ctrl_info *ctrl_info,
 	int rc;
 	struct pqi_scsi_dev *device;
 	struct pqi_stream_data *pqi_stream_data;
-<<<<<<< HEAD
-	struct pqi_scsi_dev_raid_map_data rmd;
-=======
 	struct pqi_scsi_dev_raid_map_data rmd = { 0 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!ctrl_info->enable_stream_detection)
 		return false;
@@ -6089,10 +5990,7 @@ static bool pqi_is_parity_write_stream(struct pqi_ctrl_info *ctrl_info,
 			pqi_stream_data->next_lba = rmd.first_block +
 				rmd.block_cnt;
 			pqi_stream_data->last_accessed = jiffies;
-<<<<<<< HEAD
-=======
 			per_cpu_ptr(device->raid_io_stats, smp_processor_id())->write_stream_cnt++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return true;
 		}
 
@@ -6143,11 +6041,7 @@ static int pqi_scsi_queue_command(struct Scsi_Host *shost, struct scsi_cmnd *scm
 
 	ctrl_info = shost_to_hba(shost);
 
-<<<<<<< HEAD
-	if (pqi_ctrl_offline(ctrl_info) || pqi_device_in_remove(device)) {
-=======
 	if (pqi_ctrl_offline(ctrl_info) || pqi_device_offline(device) || pqi_device_in_remove(device)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		set_host_byte(scmd, DID_NO_CONNECT);
 		pqi_scsi_done(scmd);
 		return 0;
@@ -6175,11 +6069,7 @@ static int pqi_scsi_queue_command(struct Scsi_Host *shost, struct scsi_cmnd *scm
 			rc = pqi_raid_bypass_submit_scsi_cmd(ctrl_info, device, scmd, queue_group);
 			if (rc == 0 || rc == SCSI_MLQUEUE_HOST_BUSY) {
 				raid_bypassed = true;
-<<<<<<< HEAD
-				device->raid_bypass_cnt++;
-=======
 				per_cpu_ptr(device->raid_io_stats, smp_processor_id())->raid_bypass_cnt++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 		if (!raid_bypassed)
@@ -6316,23 +6206,12 @@ static void pqi_fail_io_queued_for_device(struct pqi_ctrl_info *ctrl_info,
 					continue;
 
 				scsi_device = scmd->device->hostdata;
-<<<<<<< HEAD
-				if (scsi_device != device)
-					continue;
-
-				if ((u8)scmd->device->lun != lun)
-					continue;
-
-				list_del(&io_request->request_list_entry);
-				set_host_byte(scmd, DID_RESET);
-=======
 
 				list_del(&io_request->request_list_entry);
 				if (scsi_device == device && (u8)scmd->device->lun == lun)
 					set_host_byte(scmd, DID_RESET);
 				else
 					set_host_byte(scmd, DID_REQUEUE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				pqi_free_io_request(io_request);
 				scsi_dma_unmap(scmd);
 				pqi_scsi_done(scmd);
@@ -7485,12 +7364,8 @@ static ssize_t pqi_raid_bypass_cnt_show(struct device *dev,
 	struct scsi_device *sdev;
 	struct pqi_scsi_dev *device;
 	unsigned long flags;
-<<<<<<< HEAD
-	unsigned int raid_bypass_cnt;
-=======
 	u64 raid_bypass_cnt;
 	int cpu;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sdev = to_scsi_device(dev);
 	ctrl_info = shost_to_hba(sdev->host);
@@ -7506,13 +7381,6 @@ static ssize_t pqi_raid_bypass_cnt_show(struct device *dev,
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-	raid_bypass_cnt = device->raid_bypass_cnt;
-
-	spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
-
-	return scnprintf(buffer, PAGE_SIZE, "0x%x\n", raid_bypass_cnt);
-=======
 	raid_bypass_cnt = 0;
 
 	if (device->raid_io_stats) {
@@ -7524,7 +7392,6 @@ static ssize_t pqi_raid_bypass_cnt_show(struct device *dev,
 	spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
 
 	return scnprintf(buffer, PAGE_SIZE, "0x%llx\n", raid_bypass_cnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t pqi_sas_ncq_prio_enable_show(struct device *dev,
@@ -7606,8 +7473,6 @@ static ssize_t pqi_numa_node_show(struct device *dev,
 	return scnprintf(buffer, PAGE_SIZE, "%d\n", ctrl_info->numa_node);
 }
 
-<<<<<<< HEAD
-=======
 static ssize_t pqi_write_stream_cnt_show(struct device *dev,
 	struct device_attribute *attr, char *buffer)
 {
@@ -7645,7 +7510,6 @@ static ssize_t pqi_write_stream_cnt_show(struct device *dev,
 	return scnprintf(buffer, PAGE_SIZE, "0x%llx\n", write_stream_cnt);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static DEVICE_ATTR(lunid, 0444, pqi_lunid_show, NULL);
 static DEVICE_ATTR(unique_id, 0444, pqi_unique_id_show, NULL);
 static DEVICE_ATTR(path_info, 0444, pqi_path_info_show, NULL);
@@ -7656,10 +7520,7 @@ static DEVICE_ATTR(raid_bypass_cnt, 0444, pqi_raid_bypass_cnt_show, NULL);
 static DEVICE_ATTR(sas_ncq_prio_enable, 0644,
 		pqi_sas_ncq_prio_enable_show, pqi_sas_ncq_prio_enable_store);
 static DEVICE_ATTR(numa_node, 0444, pqi_numa_node_show, NULL);
-<<<<<<< HEAD
-=======
 static DEVICE_ATTR(write_stream_cnt, 0444, pqi_write_stream_cnt_show, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct attribute *pqi_sdev_attrs[] = {
 	&dev_attr_lunid.attr,
@@ -7671,10 +7532,7 @@ static struct attribute *pqi_sdev_attrs[] = {
 	&dev_attr_raid_bypass_cnt.attr,
 	&dev_attr_sas_ncq_prio_enable.attr,
 	&dev_attr_numa_node.attr,
-<<<<<<< HEAD
-=======
 	&dev_attr_write_stream_cnt.attr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL
 };
 
@@ -8065,12 +7923,9 @@ static void pqi_ctrl_update_feature_flags(struct pqi_ctrl_info *ctrl_info,
 	case PQI_FIRMWARE_FEATURE_MULTI_LUN_DEVICE_SUPPORT:
 		ctrl_info->multi_lun_device_supported = firmware_feature->enabled;
 		break;
-<<<<<<< HEAD
-=======
 	case PQI_FIRMWARE_FEATURE_CTRL_LOGGING:
 		ctrl_info->ctrl_logging_supported = firmware_feature->enabled;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pqi_firmware_feature_status(ctrl_info, firmware_feature);
@@ -8176,14 +8031,11 @@ static struct pqi_firmware_feature pqi_firmware_features[] = {
 		.feature_bit = PQI_FIRMWARE_FEATURE_MULTI_LUN_DEVICE_SUPPORT,
 		.feature_status = pqi_ctrl_update_feature_flags,
 	},
-<<<<<<< HEAD
-=======
 	{
 		.feature_name = "Controller Data Logging",
 		.feature_bit = PQI_FIRMWARE_FEATURE_CTRL_LOGGING,
 		.feature_status = pqi_ctrl_update_feature_flags,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void pqi_process_firmware_features(
@@ -8286,10 +8138,7 @@ static void pqi_ctrl_reset_config(struct pqi_ctrl_info *ctrl_info)
 	ctrl_info->firmware_triage_supported = false;
 	ctrl_info->rpl_extended_format_4_5_supported = false;
 	ctrl_info->multi_lun_device_supported = false;
-<<<<<<< HEAD
-=======
 	ctrl_info->ctrl_logging_supported = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int pqi_process_config_table(struct pqi_ctrl_info *ctrl_info)
@@ -8430,12 +8279,9 @@ static void pqi_perform_lockup_action(void)
 	}
 }
 
-<<<<<<< HEAD
-=======
 #define PQI_CTRL_LOG_TOTAL_SIZE	(4 * 1024 * 1024)
 #define PQI_CTRL_LOG_MIN_SIZE	(PQI_CTRL_LOG_TOTAL_SIZE / PQI_HOST_MAX_SG_DESCRIPTORS)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int pqi_ctrl_init(struct pqi_ctrl_info *ctrl_info)
 {
 	int rc;
@@ -8447,15 +8293,12 @@ static int pqi_ctrl_init(struct pqi_ctrl_info *ctrl_info)
 			if (rc)
 				return rc;
 		}
-<<<<<<< HEAD
-=======
 		if (sis_is_ctrl_logging_supported(ctrl_info)) {
 			sis_notify_kdump(ctrl_info);
 			rc = sis_wait_for_ctrl_logging_completion(ctrl_info);
 			if (rc)
 				return rc;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		sis_soft_reset(ctrl_info);
 		ssleep(PQI_POST_RESET_DELAY_SECS);
 	} else {
@@ -8637,14 +8480,11 @@ static int pqi_ctrl_init(struct pqi_ctrl_info *ctrl_info)
 	if (rc)
 		return rc;
 
-<<<<<<< HEAD
-=======
 	if (ctrl_info->ctrl_logging_supported && !reset_devices) {
 		pqi_host_setup_buffer(ctrl_info, &ctrl_info->ctrl_log_memory, PQI_CTRL_LOG_TOTAL_SIZE, PQI_CTRL_LOG_MIN_SIZE);
 		pqi_host_memory_update(ctrl_info, &ctrl_info->ctrl_log_memory, PQI_VENDOR_GENERAL_CTRL_LOG_MEMORY_UPDATE);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = pqi_get_ctrl_product_details(ctrl_info);
 	if (rc) {
 		dev_err(&ctrl_info->pci_dev->dev,
@@ -8829,10 +8669,6 @@ static int pqi_ctrl_init_resume(struct pqi_ctrl_info *ctrl_info)
 		return rc;
 	}
 
-<<<<<<< HEAD
-	if (pqi_ofa_in_progress(ctrl_info))
-		pqi_ctrl_unblock_scan(ctrl_info);
-=======
 	if (pqi_ofa_in_progress(ctrl_info)) {
 		pqi_ctrl_unblock_scan(ctrl_info);
 		if (ctrl_info->ctrl_logging_supported) {
@@ -8849,7 +8685,6 @@ static int pqi_ctrl_init_resume(struct pqi_ctrl_info *ctrl_info)
 					&ctrl_info->ctrl_log_memory);
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pqi_scan_scsi_devices(ctrl_info);
 
@@ -9039,10 +8874,7 @@ static void pqi_remove_ctrl(struct pqi_ctrl_info *ctrl_info)
 		pqi_fail_all_outstanding_requests(ctrl_info);
 		ctrl_info->pqi_mode_enabled = false;
 	}
-<<<<<<< HEAD
-=======
 	pqi_host_free_buffer(ctrl_info, &ctrl_info->ctrl_log_memory);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pqi_unregister_scsi(ctrl_info);
 	if (ctrl_info->pqi_mode_enabled)
 		pqi_revert_to_sis_mode(ctrl_info);
@@ -9068,173 +8900,6 @@ static void pqi_ofa_ctrl_unquiesce(struct pqi_ctrl_info *ctrl_info)
 	pqi_ctrl_unblock_scan(ctrl_info);
 }
 
-<<<<<<< HEAD
-static int pqi_ofa_alloc_mem(struct pqi_ctrl_info *ctrl_info, u32 total_size, u32 chunk_size)
-{
-	int i;
-	u32 sg_count;
-	struct device *dev;
-	struct pqi_ofa_memory *ofap;
-	struct pqi_sg_descriptor *mem_descriptor;
-	dma_addr_t dma_handle;
-
-	ofap = ctrl_info->pqi_ofa_mem_virt_addr;
-
-	sg_count = DIV_ROUND_UP(total_size, chunk_size);
-	if (sg_count == 0 || sg_count > PQI_OFA_MAX_SG_DESCRIPTORS)
-		goto out;
-
-	ctrl_info->pqi_ofa_chunk_virt_addr = kmalloc_array(sg_count, sizeof(void *), GFP_KERNEL);
-	if (!ctrl_info->pqi_ofa_chunk_virt_addr)
-		goto out;
-
-	dev = &ctrl_info->pci_dev->dev;
-
-	for (i = 0; i < sg_count; i++) {
-		ctrl_info->pqi_ofa_chunk_virt_addr[i] =
-			dma_alloc_coherent(dev, chunk_size, &dma_handle, GFP_KERNEL);
-		if (!ctrl_info->pqi_ofa_chunk_virt_addr[i])
-			goto out_free_chunks;
-		mem_descriptor = &ofap->sg_descriptor[i];
-		put_unaligned_le64((u64)dma_handle, &mem_descriptor->address);
-		put_unaligned_le32(chunk_size, &mem_descriptor->length);
-	}
-
-	put_unaligned_le32(CISS_SG_LAST, &mem_descriptor->flags);
-	put_unaligned_le16(sg_count, &ofap->num_memory_descriptors);
-	put_unaligned_le32(sg_count * chunk_size, &ofap->bytes_allocated);
-
-	return 0;
-
-out_free_chunks:
-	while (--i >= 0) {
-		mem_descriptor = &ofap->sg_descriptor[i];
-		dma_free_coherent(dev, chunk_size,
-			ctrl_info->pqi_ofa_chunk_virt_addr[i],
-			get_unaligned_le64(&mem_descriptor->address));
-	}
-	kfree(ctrl_info->pqi_ofa_chunk_virt_addr);
-
-out:
-	return -ENOMEM;
-}
-
-static int pqi_ofa_alloc_host_buffer(struct pqi_ctrl_info *ctrl_info)
-{
-	u32 total_size;
-	u32 chunk_size;
-	u32 min_chunk_size;
-
-	if (ctrl_info->ofa_bytes_requested == 0)
-		return 0;
-
-	total_size = PAGE_ALIGN(ctrl_info->ofa_bytes_requested);
-	min_chunk_size = DIV_ROUND_UP(total_size, PQI_OFA_MAX_SG_DESCRIPTORS);
-	min_chunk_size = PAGE_ALIGN(min_chunk_size);
-
-	for (chunk_size = total_size; chunk_size >= min_chunk_size;) {
-		if (pqi_ofa_alloc_mem(ctrl_info, total_size, chunk_size) == 0)
-			return 0;
-		chunk_size /= 2;
-		chunk_size = PAGE_ALIGN(chunk_size);
-	}
-
-	return -ENOMEM;
-}
-
-static void pqi_ofa_setup_host_buffer(struct pqi_ctrl_info *ctrl_info)
-{
-	struct device *dev;
-	struct pqi_ofa_memory *ofap;
-
-	dev = &ctrl_info->pci_dev->dev;
-
-	ofap = dma_alloc_coherent(dev, sizeof(*ofap),
-		&ctrl_info->pqi_ofa_mem_dma_handle, GFP_KERNEL);
-	if (!ofap)
-		return;
-
-	ctrl_info->pqi_ofa_mem_virt_addr = ofap;
-
-	if (pqi_ofa_alloc_host_buffer(ctrl_info) < 0) {
-		dev_err(dev,
-			"failed to allocate host buffer for Online Firmware Activation\n");
-		dma_free_coherent(dev, sizeof(*ofap), ofap, ctrl_info->pqi_ofa_mem_dma_handle);
-		ctrl_info->pqi_ofa_mem_virt_addr = NULL;
-		return;
-	}
-
-	put_unaligned_le16(PQI_OFA_VERSION, &ofap->version);
-	memcpy(&ofap->signature, PQI_OFA_SIGNATURE, sizeof(ofap->signature));
-}
-
-static void pqi_ofa_free_host_buffer(struct pqi_ctrl_info *ctrl_info)
-{
-	unsigned int i;
-	struct device *dev;
-	struct pqi_ofa_memory *ofap;
-	struct pqi_sg_descriptor *mem_descriptor;
-	unsigned int num_memory_descriptors;
-
-	ofap = ctrl_info->pqi_ofa_mem_virt_addr;
-	if (!ofap)
-		return;
-
-	dev = &ctrl_info->pci_dev->dev;
-
-	if (get_unaligned_le32(&ofap->bytes_allocated) == 0)
-		goto out;
-
-	mem_descriptor = ofap->sg_descriptor;
-	num_memory_descriptors =
-		get_unaligned_le16(&ofap->num_memory_descriptors);
-
-	for (i = 0; i < num_memory_descriptors; i++) {
-		dma_free_coherent(dev,
-			get_unaligned_le32(&mem_descriptor[i].length),
-			ctrl_info->pqi_ofa_chunk_virt_addr[i],
-			get_unaligned_le64(&mem_descriptor[i].address));
-	}
-	kfree(ctrl_info->pqi_ofa_chunk_virt_addr);
-
-out:
-	dma_free_coherent(dev, sizeof(*ofap), ofap,
-		ctrl_info->pqi_ofa_mem_dma_handle);
-	ctrl_info->pqi_ofa_mem_virt_addr = NULL;
-}
-
-static int pqi_ofa_host_memory_update(struct pqi_ctrl_info *ctrl_info)
-{
-	u32 buffer_length;
-	struct pqi_vendor_general_request request;
-	struct pqi_ofa_memory *ofap;
-
-	memset(&request, 0, sizeof(request));
-
-	request.header.iu_type = PQI_REQUEST_IU_VENDOR_GENERAL;
-	put_unaligned_le16(sizeof(request) - PQI_REQUEST_HEADER_LENGTH,
-		&request.header.iu_length);
-	put_unaligned_le16(PQI_VENDOR_GENERAL_HOST_MEMORY_UPDATE,
-		&request.function_code);
-
-	ofap = ctrl_info->pqi_ofa_mem_virt_addr;
-
-	if (ofap) {
-		buffer_length = offsetof(struct pqi_ofa_memory, sg_descriptor) +
-			get_unaligned_le16(&ofap->num_memory_descriptors) *
-			sizeof(struct pqi_sg_descriptor);
-
-		put_unaligned_le64((u64)ctrl_info->pqi_ofa_mem_dma_handle,
-			&request.data.ofa_memory_allocation.buffer_address);
-		put_unaligned_le32(buffer_length,
-			&request.data.ofa_memory_allocation.buffer_length);
-	}
-
-	return pqi_submit_raid_request_synchronous(ctrl_info, &request.header, 0, NULL);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int pqi_ofa_ctrl_restart(struct pqi_ctrl_info *ctrl_info, unsigned int delay_secs)
 {
 	ssleep(delay_secs);
@@ -9242,8 +8907,6 @@ static int pqi_ofa_ctrl_restart(struct pqi_ctrl_info *ctrl_info, unsigned int de
 	return pqi_ctrl_init_resume(ctrl_info);
 }
 
-<<<<<<< HEAD
-=======
 static int pqi_host_alloc_mem(struct pqi_ctrl_info *ctrl_info,
 	struct pqi_host_memory_descriptor *host_memory_descriptor,
 	u32 total_size, u32 chunk_size)
@@ -9418,7 +9081,6 @@ static int pqi_host_memory_update(struct pqi_ctrl_info *ctrl_info,
 	return pqi_submit_raid_request_synchronous(ctrl_info, &request.header, 0, NULL);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct pqi_raid_error_info pqi_ctrl_offline_raid_error_info = {
 	.data_out_result = PQI_DATA_IN_OUT_HARDWARE_ERROR,
 	.status = SAM_STAT_CHECK_CONDITION,
@@ -9892,13 +9554,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-<<<<<<< HEAD
-=======
 			       0x193d, 0x0462)
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       0x193d, 0x1104)
 	},
 	{
@@ -9927,13 +9586,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-<<<<<<< HEAD
-=======
 			       0x193d, 0x1110)
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       0x193d, 0x8460)
 	},
 	{
@@ -9942,13 +9598,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-<<<<<<< HEAD
-=======
 			       0x193d, 0x8462)
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       0x193d, 0xc460)
 	},
 	{
@@ -10057,8 +9710,6 @@ static const struct pci_device_id pqi_pci_id_table[] = {
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-<<<<<<< HEAD
-=======
 			       0x1ff9, 0x00a1)
 	},
 	{
@@ -10067,7 +9718,6 @@ static const struct pci_device_id pqi_pci_id_table[] = {
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       0x19e5, 0xd227)
 	},
 	{
@@ -10660,8 +10310,6 @@ static const struct pci_device_id pqi_pci_id_table[] = {
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-<<<<<<< HEAD
-=======
 			       0x1137, 0x02fe)
 	},
 	{
@@ -10766,7 +10414,6 @@ static const struct pci_device_id pqi_pci_id_table[] = {
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				0x1e93, 0x1000)
 	},
 	{
@@ -10851,13 +10498,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-<<<<<<< HEAD
-=======
 			       0x1ff9, 0x00a3)
 	},
 	{
 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       PCI_ANY_ID, PCI_ANY_ID)
 	},
 	{ 0 }

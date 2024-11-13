@@ -62,13 +62,10 @@ rpm-sources: linux.tar.gz
 
 PHONY += rpm-pkg srcrpm-pkg binrpm-pkg
 
-<<<<<<< HEAD
-=======
 ifneq ($(CC),$(HOSTCC))
 rpm-no-devel = --without=devel
 endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 rpm-pkg:    private build-type := a
 srcrpm-pkg: private build-type := s
 binrpm-pkg: private build-type := b
@@ -79,12 +76,8 @@ rpm-pkg srcrpm-pkg binrpm-pkg: rpmbuild/SPECS/kernel.spec
 	--define='_topdir $(abspath rpmbuild)' \
 	$(if $(filter a b, $(build-type)), \
 		--target $(UTS_MACHINE)-linux --build-in-place --noprep --define='_smp_mflags %{nil}' \
-<<<<<<< HEAD
-		$$(rpm -q rpm >/dev/null 2>&1 || echo --nodeps)) \
-=======
 		$$(rpm -q rpm >/dev/null 2>&1 || echo --nodeps) \
 		$(rpm-no-devel)) \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	$(RPMOPTS))
 
 # deb-pkg srcdeb-pkg bindeb-pkg
@@ -159,12 +152,7 @@ snap-pkg:
 PHONY += pacman-pkg
 pacman-pkg:
 	@ln -srf $(srctree)/scripts/package/PKGBUILD $(objtree)/PKGBUILD
-<<<<<<< HEAD
-	+objtree="$(realpath $(objtree))" \
-		BUILDDIR="$(realpath $(objtree))/pacman" \
-=======
 	+BUILDDIR="$(realpath $(objtree))/pacman" \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		CARCH="$(UTS_MACHINE)" \
 		KBUILD_MAKEFLAGS="$(MAKEFLAGS)" \
 		KBUILD_REVISION="$(shell $(srctree)/scripts/build-version)" \

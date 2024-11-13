@@ -983,11 +983,7 @@ static void lgdt330x_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id lgdt330x_id_table[] = {
-<<<<<<< HEAD
-	{"lgdt330x", 0},
-=======
 	{ "lgdt330x" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, lgdt330x_id_table);

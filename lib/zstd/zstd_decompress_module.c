@@ -44,8 +44,6 @@ size_t zstd_dctx_workspace_bound(void)
 }
 EXPORT_SYMBOL(zstd_dctx_workspace_bound);
 
-<<<<<<< HEAD
-=======
 zstd_dctx *zstd_create_dctx_advanced(zstd_custom_mem custom_mem)
 {
 	return ZSTD_createDCtx_advanced(custom_mem);
@@ -73,7 +71,6 @@ size_t zstd_free_ddict(zstd_ddict *ddict)
 }
 EXPORT_SYMBOL(zstd_free_ddict);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 zstd_dctx *zstd_init_dctx(void *workspace, size_t workspace_size)
 {
 	if (workspace == NULL)
@@ -89,8 +86,6 @@ size_t zstd_decompress_dctx(zstd_dctx *dctx, void *dst, size_t dst_capacity,
 }
 EXPORT_SYMBOL(zstd_decompress_dctx);
 
-<<<<<<< HEAD
-=======
 size_t zstd_decompress_using_ddict(zstd_dctx *dctx,
 	void *dst, size_t dst_capacity, const void* src, size_t src_size,
 	const zstd_ddict* ddict)
@@ -100,7 +95,6 @@ size_t zstd_decompress_using_ddict(zstd_dctx *dctx,
 }
 EXPORT_SYMBOL(zstd_decompress_using_ddict);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 size_t zstd_dstream_workspace_bound(size_t max_window_size)
 {
 	return ZSTD_estimateDStreamSize(max_window_size);

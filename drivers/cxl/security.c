@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright(c) 2022 Intel Corporation. All rights reserved. */
 #include <linux/libnvdimm.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/async.h>
 #include <linux/slab.h>
@@ -18,10 +14,7 @@ static unsigned long cxl_pmem_get_security_flags(struct nvdimm *nvdimm,
 {
 	struct cxl_nvdimm *cxl_nvd = nvdimm_provider_data(nvdimm);
 	struct cxl_memdev *cxlmd = cxl_nvd->cxlmd;
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
 	unsigned long security_flags = 0;
 	struct cxl_get_security_output {
@@ -37,11 +30,7 @@ static unsigned long cxl_pmem_get_security_flags(struct nvdimm *nvdimm,
 		.payload_out = &out,
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0)
 		return 0;
 
@@ -82,11 +71,7 @@ static int cxl_pmem_security_change_key(struct nvdimm *nvdimm,
 {
 	struct cxl_nvdimm *cxl_nvd = nvdimm_provider_data(nvdimm);
 	struct cxl_memdev *cxlmd = cxl_nvd->cxlmd;
-<<<<<<< HEAD
-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_cmd mbox_cmd;
 	struct cxl_set_pass set_pass;
 
@@ -103,11 +88,7 @@ static int cxl_pmem_security_change_key(struct nvdimm *nvdimm,
 		.payload_in = &set_pass,
 	};
 
-<<<<<<< HEAD
-	return cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	return cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int __cxl_pmem_security_disable(struct nvdimm *nvdimm,
@@ -116,11 +97,7 @@ static int __cxl_pmem_security_disable(struct nvdimm *nvdimm,
 {
 	struct cxl_nvdimm *cxl_nvd = nvdimm_provider_data(nvdimm);
 	struct cxl_memdev *cxlmd = cxl_nvd->cxlmd;
-<<<<<<< HEAD
-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_disable_pass dis_pass;
 	struct cxl_mbox_cmd mbox_cmd;
 
@@ -136,11 +113,7 @@ static int __cxl_pmem_security_disable(struct nvdimm *nvdimm,
 		.payload_in = &dis_pass,
 	};
 
-<<<<<<< HEAD
-	return cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	return cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int cxl_pmem_security_disable(struct nvdimm *nvdimm,
@@ -159,20 +132,12 @@ static int cxl_pmem_security_freeze(struct nvdimm *nvdimm)
 {
 	struct cxl_nvdimm *cxl_nvd = nvdimm_provider_data(nvdimm);
 	struct cxl_memdev *cxlmd = cxl_nvd->cxlmd;
-<<<<<<< HEAD
-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_cmd mbox_cmd = {
 		.opcode = CXL_MBOX_OP_FREEZE_SECURITY,
 	};
 
-<<<<<<< HEAD
-	return cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	return cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int cxl_pmem_security_unlock(struct nvdimm *nvdimm,
@@ -180,11 +145,7 @@ static int cxl_pmem_security_unlock(struct nvdimm *nvdimm,
 {
 	struct cxl_nvdimm *cxl_nvd = nvdimm_provider_data(nvdimm);
 	struct cxl_memdev *cxlmd = cxl_nvd->cxlmd;
-<<<<<<< HEAD
-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 pass[NVDIMM_PASSPHRASE_LEN];
 	struct cxl_mbox_cmd mbox_cmd;
 	int rc;
@@ -196,11 +157,7 @@ static int cxl_pmem_security_unlock(struct nvdimm *nvdimm,
 		.payload_in = pass,
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0)
 		return rc;
 
@@ -213,11 +170,7 @@ static int cxl_pmem_security_passphrase_erase(struct nvdimm *nvdimm,
 {
 	struct cxl_nvdimm *cxl_nvd = nvdimm_provider_data(nvdimm);
 	struct cxl_memdev *cxlmd = cxl_nvd->cxlmd;
-<<<<<<< HEAD
-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_cmd mbox_cmd;
 	struct cxl_pass_erase erase;
 	int rc;
@@ -233,11 +186,7 @@ static int cxl_pmem_security_passphrase_erase(struct nvdimm *nvdimm,
 		.payload_in = &erase,
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0)
 		return rc;
 

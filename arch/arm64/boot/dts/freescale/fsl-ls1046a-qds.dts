@@ -237,11 +237,7 @@
 	#address-cells = <1>;
 	#size-cells = <1>;
 
-<<<<<<< HEAD
-	mdio-mux-emi1 {
-=======
 	mdio-mux@54 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		compatible = "mdio-mux-mmioreg", "mdio-mux";
 		mdio-parent-bus = <&mdio0>;
 		#address-cells = <1>;

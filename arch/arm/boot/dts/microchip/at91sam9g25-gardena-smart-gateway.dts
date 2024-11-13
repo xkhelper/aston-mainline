@@ -37,119 +37,71 @@
 	leds {
 		compatible = "gpio-leds";
 
-<<<<<<< HEAD
-		power_blue {
-=======
 		led-power-blue {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:power:blue";
 			gpios = <&pioC 21 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
-<<<<<<< HEAD
-		power_green {
-=======
 		led-power-green {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:power:green";
 			gpios = <&pioC 20 GPIO_ACTIVE_HIGH>;
 			default-state = "on";
 		};
 
-<<<<<<< HEAD
-		power_red {
-=======
 		led-power-red {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:power:red";
 			gpios = <&pioC 19 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
-<<<<<<< HEAD
-		radio_blue {
-=======
 		led-radio-blue {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:radio:blue";
 			gpios = <&pioC 18 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
-<<<<<<< HEAD
-		radio_green {
-=======
 		led-radio-green {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:radio:green";
 			gpios = <&pioC 17 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
-<<<<<<< HEAD
-		radio_red {
-=======
 		led-radio-red {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:radio:red";
 			gpios = <&pioC 16 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
-<<<<<<< HEAD
-		internet_blue {
-=======
 		led-internet-blue {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:internet:blue";
 			gpios = <&pioC 15 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
-<<<<<<< HEAD
-		internet_green {
-=======
 		led-internet-green {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:internet:green";
 			gpios = <&pioC 14 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
-<<<<<<< HEAD
-		internet_red {
-=======
 		led-internet-red {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:internet:red";
 			gpios = <&pioC 13 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 
-<<<<<<< HEAD
-		heartbeat {
-=======
 		led-heartbeat {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "smartgw:heartbeat";
 			gpios = <&pioB 8 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "heartbeat";
 		};
 
-<<<<<<< HEAD
-		pb18 {
-			status = "disabled";
-		};
-
-		pd21 {
-=======
 		led-pb18 {
 			status = "disabled";
 		};
 
 		led-pd21 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 	};

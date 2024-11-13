@@ -708,11 +708,7 @@ static u16 HPIMSGX__init(struct hpi_message *phm,
 		phr->error = HPI_ERROR_PROCESSING_MESSAGE;
 		return phr->error;
 	}
-<<<<<<< HEAD
-	if (hr.error == 0) {
-=======
 	if (hr.error == 0 && hr.u.s.adapter_index < HPI_MAX_ADAPTERS) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* the adapter was created successfully
 		   save the mapping for future use */
 		hpi_entry_points[hr.u.s.adapter_index] = entry_point_func;

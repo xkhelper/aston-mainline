@@ -5,10 +5,7 @@
 !*.h
 !*.S
 !*.sh
-<<<<<<< HEAD
-=======
 !.gitignore
 !config
 !settings
 !Makefile
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

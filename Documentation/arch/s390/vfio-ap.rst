@@ -999,8 +999,6 @@ the vfio_ap mediated device to which it is assigned as long as each new APQN
 resulting from plugging it in references a queue device bound to the vfio_ap
 device driver.
 
-<<<<<<< HEAD
-=======
 Driver Features
 ===============
 The vfio_ap driver exposes a sysfs file containing supported features.
@@ -1031,7 +1029,6 @@ the following features are advertised:
 | ap_config    | ap_config interface for one-shot modifications to mdev config |
 +--------------+---------------------------------------------------------------+
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Limitations
 ===========
 Live guest migration is not supported for guests using AP devices without

@@ -11,10 +11,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lkc.h"
 #include "internal.h"
 #include "preprocess.h"
@@ -162,10 +159,6 @@ config_stmt: config_entry_start config_option_list
 			yynerrs++;
 		}
 
-<<<<<<< HEAD
-		list_add_tail(&current_entry->sym->choice_link,
-			      &current_choice->choice_members);
-=======
 		/*
 		 * If the same symbol appears twice in a choice block, the list
 		 * node would be added twice, leading to a broken linked list.
@@ -174,7 +167,6 @@ config_stmt: config_entry_start config_option_list
 		if (list_empty(&current_entry->sym->choice_link))
 			list_add_tail(&current_entry->sym->choice_link,
 				      &current_choice->choice_members);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	printd(DEBUG_PARSE, "%s:%d:endconfig\n", cur_filename, cur_lineno);
@@ -545,17 +537,6 @@ void conf_parse(const char *name)
 		yydebug = 1;
 	yyparse();
 
-<<<<<<< HEAD
-	/*
-	 * FIXME:
-	 * cur_filename and cur_lineno are used even after yyparse();
-	 * menu_finalize() calls menu_add_symbol(). This should be fixed.
-	 */
-	cur_filename = "<none>";
-	cur_lineno = 0;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	str_printf(&autoconf_cmd,
 		   "\n"
 		   "$(autoconfig): $(deps_config)\n"
@@ -733,13 +714,6 @@ static void print_symbol(FILE *out, const struct menu *menu)
 			print_quoted_string(out, prop->text);
 			fputc('\n', out);
 			break;
-<<<<<<< HEAD
-		case P_SYMBOL:
-			fputs( "  symbol ", out);
-			fprintf(out, "%s\n", prop->menu->sym->name);
-			break;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		default:
 			fprintf(out, "  unknown prop %d!\n", prop->type);
 			break;

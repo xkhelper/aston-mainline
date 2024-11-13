@@ -3,8 +3,6 @@
 #include <linux/mm.h>
 #include <linux/io.h>
 
-<<<<<<< HEAD
-=======
 static ioremap_prot_hook_t ioremap_prot_hook;
 
 int arm64_ioremap_prot_hook_register(ioremap_prot_hook_t hook)
@@ -16,15 +14,11 @@ int arm64_ioremap_prot_hook_register(ioremap_prot_hook_t hook)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
 			   unsigned long prot)
 {
 	unsigned long last_addr = phys_addr + size - 1;
-<<<<<<< HEAD
-=======
 	pgprot_t pgprot = __pgprot(prot);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Don't allow outside PHYS_MASK */
 	if (last_addr & ~PHYS_MASK)
@@ -34,9 +28,6 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
 	if (WARN_ON(pfn_is_map_memory(__phys_to_pfn(phys_addr))))
 		return NULL;
 
-<<<<<<< HEAD
-	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
-=======
 	/*
 	 * If a hook is registered (e.g. for confidential computing
 	 * purposes), call that now and barf if it fails.
@@ -47,7 +38,6 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
 	}
 
 	return generic_ioremap_prot(phys_addr, size, pgprot);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(ioremap_prot);
 

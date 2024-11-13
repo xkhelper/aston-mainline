@@ -644,11 +644,7 @@ unsigned long long get_classid_cgroup_id(void)
 /**
  * get_cgroup1_hierarchy_id - Retrieves the ID of a cgroup1 hierarchy from the cgroup1 subsys name.
  * @subsys_name: The cgroup1 subsys name, which can be retrieved from /proc/self/cgroup. It can be
-<<<<<<< HEAD
- * a named cgroup like "name=systemd", a controller name like "net_cls", or multi-contollers like
-=======
  * a named cgroup like "name=systemd", a controller name like "net_cls", or multi-controllers like
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * "net_cls,net_prio".
  */
 int get_cgroup1_hierarchy_id(const char *subsys_name)

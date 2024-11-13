@@ -62,11 +62,7 @@ static int qcom_sdm845_refgen_is_enabled(struct regulator_dev *rdev)
 	return 1;
 }
 
-<<<<<<< HEAD
-static struct regulator_desc sdm845_refgen_desc = {
-=======
 static const struct regulator_desc sdm845_refgen_desc = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.enable_time = 5,
 	.name = "refgen",
 	.owner = THIS_MODULE,
@@ -78,11 +74,7 @@ static const struct regulator_desc sdm845_refgen_desc = {
 	},
 };
 
-<<<<<<< HEAD
-static struct regulator_desc sm8250_refgen_desc = {
-=======
 static const struct regulator_desc sm8250_refgen_desc = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.enable_reg = REFGEN_REG_PWRDWN_CTRL5,
 	.enable_mask = REFGEN_PWRDWN_CTRL5_MASK,
 	.enable_val = REFGEN_PWRDWN_CTRL5_ENABLE,

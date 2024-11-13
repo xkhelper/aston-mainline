@@ -16,10 +16,7 @@
 #include <linux/sprintf.h>
 #include <linux/stacktrace.h>
 #include <linux/string.h>
-<<<<<<< HEAD
-=======
 #include <linux/sched/clock.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <trace/events/error_report.h>
 
 #include <asm/kfence.h>
@@ -112,13 +109,6 @@ static void kfence_print_stack(struct seq_file *seq, const struct kfence_metadat
 	const struct kfence_track *track = show_alloc ? &meta->alloc_track : &meta->free_track;
 	u64 ts_sec = track->ts_nsec;
 	unsigned long rem_nsec = do_div(ts_sec, NSEC_PER_SEC);
-<<<<<<< HEAD
-
-	/* Timestamp matches printk timestamp format. */
-	seq_con_printf(seq, "%s by task %d on cpu %d at %lu.%06lus:\n",
-		       show_alloc ? "allocated" : "freed", track->pid,
-		       track->cpu, (unsigned long)ts_sec, rem_nsec / 1000);
-=======
 	u64 interval_nsec = local_clock() - track->ts_nsec;
 	unsigned long rem_interval_nsec = do_div(interval_nsec, NSEC_PER_SEC);
 
@@ -128,7 +118,6 @@ static void kfence_print_stack(struct seq_file *seq, const struct kfence_metadat
 		       "rcu freeing" : "freed", track->pid,
 		       track->cpu, (unsigned long)ts_sec, rem_nsec / 1000,
 		       (unsigned long)interval_nsec, rem_interval_nsec / 1000);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (track->num_stack_entries) {
 		/* Skip allocation/free internals stack. */
@@ -161,11 +150,7 @@ void kfence_print_object(struct seq_file *seq, const struct kfence_metadata *met
 
 	kfence_print_stack(seq, meta, true);
 
-<<<<<<< HEAD
-	if (meta->state == KFENCE_OBJECT_FREED) {
-=======
 	if (meta->state == KFENCE_OBJECT_FREED || meta->state == KFENCE_OBJECT_RCU_FREEING) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		seq_con_printf(seq, "\n");
 		kfence_print_stack(seq, meta, false);
 	}
@@ -334,11 +319,7 @@ bool __kfence_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *sla
 	kpp->kp_slab_cache = meta->cache;
 	kpp->kp_objp = (void *)meta->addr;
 	kfence_to_kp_stack(&meta->alloc_track, kpp->kp_stack);
-<<<<<<< HEAD
-	if (meta->state == KFENCE_OBJECT_FREED)
-=======
 	if (meta->state == KFENCE_OBJECT_FREED || meta->state == KFENCE_OBJECT_RCU_FREEING)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfence_to_kp_stack(&meta->free_track, kpp->kp_free_stack);
 	/* get_stack_skipnr() ensures the first entry is outside allocator. */
 	kpp->kp_ret = kpp->kp_stack[0];

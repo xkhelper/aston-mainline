@@ -2014,20 +2014,12 @@ void intel_guc_submission_reset_finish(struct intel_guc *guc)
 
 	/*
 	 * Technically possible for either of these values to be non-zero here,
-<<<<<<< HEAD
-	 * but very unlikely + harmless. Regardless let's add a warn so we can
-	 * see in CI if this happens frequently / a precursor to taking down the
-	 * machine.
-	 */
-	GEM_WARN_ON(atomic_read(&guc->outstanding_submission_g2h));
-=======
 	 * but very unlikely + harmless. Regardless let's add an error so we can
 	 * see in CI if this happens frequently / a precursor to taking down the
 	 * machine.
 	 */
 	if (atomic_read(&guc->outstanding_submission_g2h))
 		guc_err(guc, "Unexpected outstanding GuC to Host in reset finish\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	atomic_set(&guc->outstanding_submission_g2h, 0);
 
 	intel_guc_global_policies_update(guc);
@@ -4515,11 +4507,7 @@ static void guc_default_vfuncs(struct intel_engine_cs *engine)
 	/* Wa_16019325821 */
 	/* Wa_14019159160 */
 	if ((engine->class == COMPUTE_CLASS || engine->class == RENDER_CLASS) &&
-<<<<<<< HEAD
-	    IS_GFX_GT_IP_RANGE(engine->gt, IP_VER(12, 70), IP_VER(12, 71)))
-=======
 	    IS_GFX_GT_IP_RANGE(engine->gt, IP_VER(12, 70), IP_VER(12, 74)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		engine->flags |= I915_ENGINE_USES_WA_HOLD_SWITCHOUT;
 
 	/*

@@ -575,19 +575,11 @@ int dwmac5_flex_pps_config(void __iomem *ioaddr, int index,
 
 void dwmac5_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
 			  u32 num_txq, u32 num_rxq,
-<<<<<<< HEAD
-			  bool enable)
-{
-	u32 value;
-
-	if (enable) {
-=======
 			  bool tx_enable, bool pmac_enable)
 {
 	u32 value;
 
 	if (tx_enable) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cfg->fpe_csr = EFPE;
 		value = readl(ioaddr + GMAC_RXQ_CTRL1);
 		value &= ~GMAC_RXQCTRL_FPRQ;
@@ -597,8 +589,6 @@ void dwmac5_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
 		cfg->fpe_csr = 0;
 	}
 	writel(cfg->fpe_csr, ioaddr + MAC_FPE_CTRL_STS);
-<<<<<<< HEAD
-=======
 
 	value = readl(ioaddr + GMAC_INT_EN);
 
@@ -614,7 +604,6 @@ void dwmac5_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
 	}
 
 	writel(value, ioaddr + GMAC_INT_EN);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev)
@@ -631,38 +620,22 @@ int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev)
 
 	if (value & TRSP) {
 		status |= FPE_EVENT_TRSP;
-<<<<<<< HEAD
-		netdev_info(dev, "FPE: Respond mPacket is transmitted\n");
-=======
 		netdev_dbg(dev, "FPE: Respond mPacket is transmitted\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (value & TVER) {
 		status |= FPE_EVENT_TVER;
-<<<<<<< HEAD
-		netdev_info(dev, "FPE: Verify mPacket is transmitted\n");
-=======
 		netdev_dbg(dev, "FPE: Verify mPacket is transmitted\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (value & RRSP) {
 		status |= FPE_EVENT_RRSP;
-<<<<<<< HEAD
-		netdev_info(dev, "FPE: Respond mPacket is received\n");
-=======
 		netdev_dbg(dev, "FPE: Respond mPacket is received\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (value & RVER) {
 		status |= FPE_EVENT_RVER;
-<<<<<<< HEAD
-		netdev_info(dev, "FPE: Verify mPacket is received\n");
-=======
 		netdev_dbg(dev, "FPE: Verify mPacket is received\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return status;
@@ -680,8 +653,6 @@ void dwmac5_fpe_send_mpacket(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
 
 	writel(value, ioaddr + MAC_FPE_CTRL_STS);
 }
-<<<<<<< HEAD
-=======
 
 int dwmac5_fpe_get_add_frag_size(const void __iomem *ioaddr)
 {
@@ -751,4 +722,3 @@ update_mapping:
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

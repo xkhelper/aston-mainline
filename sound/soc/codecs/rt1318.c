@@ -30,11 +30,7 @@
 
 #include "rt1318.h"
 
-<<<<<<< HEAD
-static struct reg_sequence init_list[] = {
-=======
 static const struct reg_sequence init_list[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ 0x0000C000, 0x01},
 	{ 0x0000F20D, 0x00},
 	{ 0x0000F212, 0x3E},
@@ -258,10 +254,6 @@ static const struct reg_sequence init_list[] = {
 	{ 0x0000C320, 0x20},
 	{ 0x0000C203, 0x9C},
 };
-<<<<<<< HEAD
-#define rt1318_INIT_REG_LEN ARRAY_SIZE(init_list)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct reg_default rt1318_reg[] = {
 	{ 0xc000, 0x00 },

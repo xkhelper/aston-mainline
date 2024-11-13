@@ -11,12 +11,8 @@
 	compatible = "facebook,minerva-cmc", "aspeed,ast2600";
 
 	aliases {
-<<<<<<< HEAD
-		serial5 = &uart5;
-=======
 		serial4 = &uart5;
 		serial5 = &uart6;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * PCA9548 (2-0077) provides 8 channels connecting to
 		 * 6 pcs of FCB (Fan Controller Board).
@@ -27,11 +23,8 @@
 		i2c19 = &imux19;
 		i2c20 = &imux20;
 		i2c21 = &imux21;
-<<<<<<< HEAD
-=======
 
 		spi1 = &spi_gpio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	chosen {
@@ -53,13 +46,6 @@
 	leds {
 		compatible = "gpio-leds";
 
-<<<<<<< HEAD
-		led-fan-fault {
-			label = "led-fan-fault";
-			gpios = <&leds_gpio 9 GPIO_ACTIVE_HIGH>;
-			default-state = "off";
-		};
-=======
 		led-0 {
 			label = "bmc_heartbeat_amber";
 			gpios = <&gpio0 ASPEED_GPIO(P, 7) GPIO_ACTIVE_LOW>;
@@ -108,7 +94,6 @@
 			spi-max-frequency = <33000000>;
 			reg = <0>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -138,13 +123,10 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &mdio3 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &fmc {
 	status = "okay";
 	flash@0 {
@@ -162,13 +144,6 @@
 	};
 };
 
-<<<<<<< HEAD
-&rtc {
-	status = "okay";
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &sgpiom0 {
 	status = "okay";
 	ngpios = <128>;
@@ -190,16 +165,6 @@
 		shunt-resistor = <1000>;
 	};
 
-<<<<<<< HEAD
-	power-monitor@67 {
-		compatible = "adi,ltc2945";
-		reg = <0x67>;
-	};
-
-	power-monitor@68 {
-		compatible = "adi,ltc2945";
-		reg = <0x68>;
-=======
 	power-monitor@44 {
 		compatible = "lltc,ltc4287";
 		reg = <0x44>;
@@ -209,7 +174,6 @@
 	power-monitor@43 {
 		compatible = "infineon,xdp710";
 		reg = <0x43>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	leds_gpio: gpio@19 {
@@ -228,15 +192,9 @@
 		reg = <0x4b>;
 	};
 
-<<<<<<< HEAD
-	temperature-sensor@48 {
-		compatible = "ti,tmp75";
-		reg = <0x48>;
-=======
 	temperature-sensor@4f {
 		compatible = "ti,tmp75";
 		reg = <0x4f>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	eeprom@54 {
@@ -271,8 +229,6 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
-<<<<<<< HEAD
-=======
 
 			power-sensor@40 {
 				compatible = "ti,ina238";
@@ -302,7 +258,6 @@
 				compatible = "ti,tmp75";
 				reg = <0x4b>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		imux17: i2c@1 {
@@ -321,8 +276,6 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
-<<<<<<< HEAD
-=======
 
 			power-sensor@40 {
 				compatible = "ti,ina238";
@@ -352,7 +305,6 @@
 				compatible = "ti,tmp75";
 				reg = <0x4b>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		imux18: i2c@2 {
@@ -371,8 +323,6 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
-<<<<<<< HEAD
-=======
 
 			power-sensor@40 {
 				compatible = "ti,ina238";
@@ -402,7 +352,6 @@
 				compatible = "ti,tmp75";
 				reg = <0x4b>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		imux19: i2c@3 {
@@ -421,11 +370,6 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
-<<<<<<< HEAD
-		};
-
-		imux20: i2c@4 {
-=======
 
 			power-sensor@40 {
 				compatible = "ti,ina238";
@@ -458,7 +402,6 @@
 		};
 
 		imux20: i2c@5 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <4>;
@@ -474,11 +417,6 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
-<<<<<<< HEAD
-		};
-
-		imux21: i2c@5 {
-=======
 
 			power-sensor@40 {
 				compatible = "ti,ina238";
@@ -510,7 +448,6 @@
 		};
 
 		imux21: i2c@4 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <5>;
@@ -526,8 +463,6 @@
 				#address-cells = <1>;
 				#size-cells = <0>;
 			};
-<<<<<<< HEAD
-=======
 
 			power-sensor@40 {
 				compatible = "ti,ina238";
@@ -556,7 +491,6 @@
 				compatible = "ti,tmp75";
 				reg = <0x4b>;
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };
@@ -587,16 +521,6 @@
 
 &i2c9 {
 	status = "okay";
-<<<<<<< HEAD
-};
-
-&i2c10 {
-	status = "okay";
-};
-
-&i2c11 {
-	status = "okay";
-=======
 
 	eeprom@50 {
 		compatible = "atmel,24c64";
@@ -607,7 +531,6 @@
 		compatible = "nxp,pcf8563";
 		reg = <0x51>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &i2c12 {
@@ -636,14 +559,11 @@
 		compatible = "atmel,24c128";
 		reg = <0x50>;
 	};
-<<<<<<< HEAD
-=======
 
 	eeprom@56 {
 		compatible = "atmel,24c64";
 		reg = <0x56>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &adc0 {
@@ -661,13 +581,10 @@
 	pinctrl-0 = <&pinctrl_adc10_default>;
 };
 
-<<<<<<< HEAD
-=======
 &ehci0 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &ehci1 {
 	status = "okay";
 };
@@ -694,21 +611,12 @@
 	/*N0-N7*/	"","","","","","","","",
 	/*O0-O7*/	"","","","","","","","",
 	/*P0-P7*/	"","","","","","","","",
-<<<<<<< HEAD
-	/*Q0-Q7*/	"","","","","","","","",
-	/*R0-R7*/	"","","","","","","","",
-	/*S0-S7*/	"","","","","","","","",
-	/*T0-T7*/	"","","","","","","","",
-	/*U0-U7*/	"","","","","","","","",
-	/*V0-V7*/	"","","","","BAT_DETECT","","","",
-=======
 	/*Q0-Q7*/	"","","","","","power-chassis-control","","",
 	/*R0-R7*/	"","","","","","","","",
 	/*S0-S7*/	"","","","","","","","host0-ready",
 	/*T0-T7*/	"","","","","","","","",
 	/*U0-U7*/	"","","","","","","","",
 	/*V0-V7*/	"","","","","BAT_DETECT","","power-chassis-good","",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*W0-W7*/	"","","","","","","","",
 	/*X0-X7*/	"","","BLADE_UART_SEL3","","","","","",
 	/*Y0-Y7*/	"","","","","","","","",
@@ -719,120 +627,6 @@
 	gpio-line-names =
 	/*"input pin","output pin"*/
 	/*A0 - A7*/
-<<<<<<< HEAD
-	"PRSNT_MTIA_BLADE0_N","PWREN_MTIA_BLADE0_EN",
-	"PRSNT_MTIA_BLADE1_N","PWREN_MTIA_BLADE1_EN",
-	"PRSNT_MTIA_BLADE2_N","PWREN_MTIA_BLADE2_EN",
-	"PRSNT_MTIA_BLADE3_N","PWREN_MTIA_BLADE3_EN",
-	"PRSNT_MTIA_BLADE4_N","PWREN_MTIA_BLADE4_EN",
-	"PRSNT_MTIA_BLADE5_N","PWREN_MTIA_BLADE5_EN",
-	"PRSNT_MTIA_BLADE6_N","PWREN_MTIA_BLADE6_EN",
-	"PRSNT_MTIA_BLADE7_N","PWREN_MTIA_BLADE7_EN",
-	/*B0 - B7*/
-	"PRSNT_MTIA_BLADE8_N","PWREN_MTIA_BLADE8_EN",
-	"PRSNT_MTIA_BLADE9_N","PWREN_MTIA_BLADE9_EN",
-	"PRSNT_MTIA_BLADE10_N","PWREN_MTIA_BLADE10_EN",
-	"PRSNT_MTIA_BLADE11_N","PWREN_MTIA_BLADE11_EN",
-	"PRSNT_MTIA_BLADE12_N","PWREN_MTIA_BLADE12_EN",
-	"PRSNT_MTIA_BLADE13_N","PWREN_MTIA_BLADE13_EN",
-	"PRSNT_MTIA_BLADE14_N","PWREN_MTIA_BLADE14_EN",
-	"PRSNT_MTIA_BLADE15_N","PWREN_MTIA_BLADE15_EN",
-	/*C0 - C7*/
-	"PRSNT_NW_BLADE0_N","PWREN_NW_BLADE0_EN",
-	"PRSNT_NW_BLADE1_N","PWREN_NW_BLADE1_EN",
-	"PRSNT_NW_BLADE2_N","PWREN_NW_BLADE2_EN",
-	"PRSNT_NW_BLADE3_N","PWREN_NW_BLADE3_EN",
-	"PRSNT_NW_BLADE4_N","PWREN_NW_BLADE4_EN",
-	"PRSNT_NW_BLADE5_N","PWREN_NW_BLADE5_EN",
-	"PRSNT_FCB_TOP_0_N","PWREN_MTIA_BLADE0_HSC_EN",
-	"PRSNT_FCB_TOP_1_N","PWREN_MTIA_BLADE1_HSC_EN",
-	/*D0 - D7*/
-	"PRSNT_FCB_MIDDLE_0_N","PWREN_MTIA_BLADE2_HSC_EN",
-	"PRSNT_FCB_MIDDLE_1_N","PWREN_MTIA_BLADE3_HSC_EN",
-	"PRSNT_FCB_BOTTOM_0_N","PWREN_MTIA_BLADE4_HSC_EN",
-	"PRSNT_FCB_BOTTOM_1_N","PWREN_MTIA_BLADE5_HSC_EN",
-	"PWRGD_MTIA_BLADE0_PWROK_L_BUF","PWREN_MTIA_BLADE6_HSC_EN",
-	"PWRGD_MTIA_BLADE1_PWROK_L_BUF","PWREN_MTIA_BLADE7_HSC_EN",
-	"PWRGD_MTIA_BLADE2_PWROK_L_BUF","PWREN_MTIA_BLADE8_HSC_EN",
-	"PWRGD_MTIA_BLADE3_PWROK_L_BUF","PWREN_MTIA_BLADE9_HSC_EN",
-	/*E0 - E7*/
-	"PWRGD_MTIA_BLADE4_PWROK_L_BUF","PWREN_MTIA_BLADE10_HSC_EN",
-	"PWRGD_MTIA_BLADE5_PWROK_L_BUF","PWREN_MTIA_BLADE11_HSC_EN",
-	"PWRGD_MTIA_BLADE6_PWROK_L_BUF","PWREN_MTIA_BLADE12_HSC_EN",
-	"PWRGD_MTIA_BLADE7_PWROK_L_BUF","PWREN_MTIA_BLADE13_HSC_EN",
-	"PWRGD_MTIA_BLADE8_PWROK_L_BUF","PWREN_MTIA_BLADE14_HSC_EN",
-	"PWRGD_MTIA_BLADE9_PWROK_L_BUF","PWREN_MTIA_BLADE15_HSC_EN",
-	"PWRGD_MTIA_BLADE10_PWROK_L_BUF","PWREN_NW_BLADE0_HSC_EN",
-	"PWRGD_MTIA_BLADE11_PWROK_L_BUF","PWREN_NW_BLADE1_HSC_EN",
-	/*F0 - F7*/
-	"PWRGD_MTIA_BLADE12_PWROK_L_BUF","PWREN_NW_BLADE2_HSC_EN",
-	"PWRGD_MTIA_BLADE13_PWROK_L_BUF","PWREN_NW_BLADE3_HSC_EN",
-	"PWRGD_MTIA_BLADE14_PWROK_L_BUF","PWREN_NW_BLADE4_HSC_EN",
-	"PWRGD_MTIA_BLADE15_PWROK_L_BUF","PWREN_NW_BLADE5_HSC_EN",
-	"PWRGD_NW_BLADE0_PWROK_L_BUF","PWREN_FCB_TOP_L_EN",
-	"PWRGD_NW_BLADE1_PWROK_L_BUF","PWREN_FCB_TOP_R_EN",
-	"PWRGD_NW_BLADE2_PWROK_L_BUF","PWREN_FCB_MIDDLE_L_EN",
-	"PWRGD_NW_BLADE3_PWROK_L_BUF","PWREN_FCB_MIDDLE_R_EN",
-	/*G0 - G7*/
-	"PWRGD_NW_BLADE4_PWROK_L_BUF","PWREN_FCB_BOTTOM_L_EN",
-	"PWRGD_NW_BLADE5_PWROK_L_BUF","PWREN_FCB_BOTTOM_R_EN",
-	"PWRGD_FCB_TOP_0_PWROK_L_BUF","FM_CMM_AC_CYCLE_N",
-	"PWRGD_FCB_TOP_1_PWROK_L_BUF","MGMT_SFP_TX_DIS",
-	"PWRGD_FCB_MIDDLE_0_PWROK_L_BUF","",
-	"PWRGD_FCB_MIDDLE_1_PWROK_L_BUF","RST_I2CRST_MTIA_BLADE0_1_N",
-	"PWRGD_FCB_BOTTOM_0_PWROK_L_BUF","RST_I2CRST_MTIA_BLADE2_3_N",
-	"PWRGD_FCB_BOTTOM_1_PWROK_L_BUF","RST_I2CRST_MTIA_BLADE4_5_N",
-	/*H0 - H7*/
-	"LEAK_DETECT_MTIA_BLADE0_N_BUF","RST_I2CRST_MTIA_BLADE6_7_N",
-	"LEAK_DETECT_MTIA_BLADE1_N_BUF","RST_I2CRST_MTIA_BLADE8_9_N",
-	"LEAK_DETECT_MTIA_BLADE2_N_BUF","RST_I2CRST_MTIA_BLADE10_11_N",
-	"LEAK_DETECT_MTIA_BLADE3_N_BUF","RST_I2CRST_MTIA_BLADE12_13_N",
-	"LEAK_DETECT_MTIA_BLADE4_N_BUF","RST_I2CRST_MTIA_BLADE14_15_N",
-	"LEAK_DETECT_MTIA_BLADE5_N_BUF","RST_I2CRST_NW_BLADE0_1_2_N",
-	"LEAK_DETECT_MTIA_BLADE6_N_BUF","RST_I2CRST_NW_BLADE3_4_5_N",
-	"LEAK_DETECT_MTIA_BLADE7_N_BUF","RST_I2CRST_FCB_N",
-	/*I0 - I7*/
-	"LEAK_DETECT_MTIA_BLADE8_N_BUF","RST_I2CRST_FCB_B_L_N",
-	"LEAK_DETECT_MTIA_BLADE9_N_BUF","RST_I2CRST_FCB_B_R_N",
-	"LEAK_DETECT_MTIA_BLADE10_N_BUF","RST_I2CRST_FCB_M_L_N",
-	"LEAK_DETECT_MTIA_BLADE11_N_BUF","RST_I2CRST_FCB_M_R_N",
-	"LEAK_DETECT_MTIA_BLADE12_N_BUF","RST_I2CRST_FCB_T_L_N",
-	"LEAK_DETECT_MTIA_BLADE13_N_BUF","RST_I2CRST_FCB_T_R_N",
-	"LEAK_DETECT_MTIA_BLADE14_N_BUF","BMC_READY",
-	"LEAK_DETECT_MTIA_BLADE15_N_BUF","wFM_88E6393X_BIN_UPDATE_EN_N",
-	/*J0 - J7*/
-	"LEAK_DETECT_NW_BLADE0_N_BUF","WATER_VALVE_CLOSED_N",
-	"LEAK_DETECT_NW_BLADE1_N_BUF","",
-	"LEAK_DETECT_NW_BLADE2_N_BUF","",
-	"LEAK_DETECT_NW_BLADE3_N_BUF","",
-	"LEAK_DETECT_NW_BLADE4_N_BUF","",
-	"LEAK_DETECT_NW_BLADE5_N_BUF","",
-	"MTIA_BLADE0_STATUS_LED","",
-	"MTIA_BLADE1_STATUS_LED","",
-	/*K0 - K7*/
-	"MTIA_BLADE2_STATUS_LED","",
-	"MTIA_BLADE3_STATUS_LED","",
-	"MTIA_BLADE4_STATUS_LED","",
-	"MTIA_BLADE5_STATUS_LED","",
-	"MTIA_BLADE6_STATUS_LED","",
-	"MTIA_BLADE7_STATUS_LED","",
-	"MTIA_BLADE8_STATUS_LED","",
-	"MTIA_BLADE9_STATUS_LED","",
-	/*L0 - L7*/
-	"MTIA_BLADE10_STATUS_LED","",
-	"MTIA_BLADE11_STATUS_LED","",
-	"MTIA_BLADE12_STATUS_LED","",
-	"MTIA_BLADE13_STATUS_LED","",
-	"MTIA_BLADE14_STATUS_LED","",
-	"MTIA_BLADE15_STATUS_LED","",
-	"NW_BLADE0_STATUS_LED","",
-	"NW_BLADE1_STATUS_LED","",
-	/*M0 - M7*/
-	"NW_BLADE2_STATUS_LED","",
-	"NW_BLADE3_STATUS_LED","",
-	"NW_BLADE4_STATUS_LED","",
-	"NW_BLADE5_STATUS_LED","",
-=======
 	"PRSNT_MTIA_BLADE0_N","PWREN_MTIA_BLADE0_EN_N",
 	"PRSNT_MTIA_BLADE1_N","PWREN_MTIA_BLADE1_EN_N",
 	"PRSNT_MTIA_BLADE2_N","PWREN_MTIA_BLADE2_EN_N",
@@ -945,7 +739,6 @@
 	"PWRGD_NW_BLADE3_HSC_PWROK_N","",
 	"PWRGD_NW_BLADE4_HSC_PWROK_N","",
 	"PWRGD_NW_BLADE5_HSC_PWROK_N","",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"RPU_READY","",
 	"IT_GEAR_RPU_LINK_N","",
 	"IT_GEAR_LEAK","",
@@ -953,40 +746,16 @@
 	/*N0 - N7*/
 	"VALVE_STS0","",
 	"VALVE_STS1","",
-<<<<<<< HEAD
-	"VALVE_STS2","",
-	"VALVE_STS3","",
-	"CR_TOGGLE_BOOT_BUF_N","",
-	"CMM_LC_RDY_LED_N","",
-	"CMM_LC_UNRDY_LED_N","",
-=======
 	"PCA9555_IRQ0_N","",
 	"PCA9555_IRQ1_N","",
 	"CR_TOGGLE_BOOT_N","",
 	"IRQ_FCB_TOP0_N","",
 	"IRQ_FCB_TOP1_N","",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"CMM_CABLE_CARTRIDGE_PRSNT_BOT_N","",
 	/*O0 - O7*/
 	"CMM_CABLE_CARTRIDGE_PRSNT_TOP_N","",
 	"BOT_BCB_CABLE_PRSNT_N","",
 	"TOP_BCB_CABLE_PRSNT_N","",
-<<<<<<< HEAD
-	"CHASSIS0_LEAK_Q_N","",
-	"CHASSIS1_LEAK_Q_N","",
-	"LEAK0_DETECT","",
-	"LEAK1_DETECT","",
-	"MGMT_SFP_PRSNT_N","",
-	/*P0 - P7*/
-	"MGMT_SFP_TX_FAULT","",
-	"MGMT_SFP_RX_LOS","",
-	"","",
-	"","",
-	"","",
-	"","",
-	"","",
-	"","";
-=======
 	"IRQ_FCB_MID0_N","",
 	"IRQ_FCB_MID1_N","",
 	"CHASSIS_LEAK0_DETECT_N","",
@@ -1001,5 +770,4 @@
 	"IT_GEAR_RPU_LINK_SPARE_N","",
 	"IRQ_FCB_BOT0_N","",
 	"IRQ_FCB_BOT0_N","";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

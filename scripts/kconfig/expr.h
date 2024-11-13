@@ -29,14 +29,6 @@ enum expr_type {
 };
 
 union expr_data {
-<<<<<<< HEAD
-	struct expr *expr;
-	struct symbol *sym;
-};
-
-struct expr {
-	enum expr_type type;
-=======
 	struct expr * const expr;
 	struct symbol * const sym;
 	void *_initdata;
@@ -57,7 +49,6 @@ struct expr {
 	enum expr_type type;
 	tristate val;
 	bool val_is_valid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	union expr_data left, right;
 };
 
@@ -191,10 +182,6 @@ enum prop_type {
 	P_SELECT,   /* select BAR */
 	P_IMPLY,    /* imply BAR */
 	P_RANGE,    /* range 7..100 (for a symbol) */
-<<<<<<< HEAD
-	P_SYMBOL,   /* where a symbol is defined */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct property {
@@ -302,23 +289,12 @@ struct expr *expr_alloc_two(enum expr_type type, struct expr *e1, struct expr *e
 struct expr *expr_alloc_comp(enum expr_type type, struct symbol *s1, struct symbol *s2);
 struct expr *expr_alloc_and(struct expr *e1, struct expr *e2);
 struct expr *expr_alloc_or(struct expr *e1, struct expr *e2);
-<<<<<<< HEAD
-struct expr *expr_copy(const struct expr *org);
-void expr_free(struct expr *e);
-void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
-int expr_eq(struct expr *e1, struct expr *e2);
-tristate expr_calc_value(struct expr *e);
-struct expr *expr_eliminate_dups(struct expr *e);
-struct expr *expr_transform(struct expr *e);
-int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-=======
 void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
 bool expr_eq(struct expr *e1, struct expr *e2);
 tristate expr_calc_value(struct expr *e);
 struct expr *expr_eliminate_dups(struct expr *e);
 struct expr *expr_transform(struct expr *e);
 bool expr_contains_symbol(struct expr *dep, struct symbol *sym);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool expr_depends_symbol(struct expr *dep, struct symbol *sym);
 struct expr *expr_trans_compare(struct expr *e, enum expr_type type, struct symbol *sym);
 
@@ -328,11 +304,7 @@ void expr_gstr_print(const struct expr *e, struct gstr *gs);
 void expr_gstr_print_revdep(struct expr *e, struct gstr *gs,
 			    tristate pr_type, const char *title);
 
-<<<<<<< HEAD
-static inline int expr_is_yes(const struct expr *e)
-=======
 static inline bool expr_is_yes(const struct expr *e)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return !e || (e->type == E_SYMBOL && e->left.sym == &symbol_yes);
 }

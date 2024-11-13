@@ -109,10 +109,6 @@ void dm_zone_endio(struct dm_io *io, struct bio *clone);
 int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
 			unsigned int nr_zones, report_zones_cb cb, void *data);
 bool dm_is_zone_write(struct mapped_device *md, struct bio *bio);
-<<<<<<< HEAD
-int dm_zone_map_bio(struct dm_target_io *io);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int dm_zone_get_reset_bitmap(struct mapped_device *md, struct dm_table *t,
 			     sector_t sector, unsigned int nr_zones,
 			     unsigned long *need_reset);
@@ -122,13 +118,6 @@ static inline bool dm_is_zone_write(struct mapped_device *md, struct bio *bio)
 {
 	return false;
 }
-<<<<<<< HEAD
-static inline int dm_zone_map_bio(struct dm_target_io *tio)
-{
-	return DM_MAPIO_KILL;
-}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 /*

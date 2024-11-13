@@ -516,8 +516,6 @@ void rq_attach_root(struct rq *rq, struct root_domain *rd)
 	if (cpumask_test_cpu(rq->cpu, cpu_active_mask))
 		set_rq_online(rq);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Because the rq is not a task, dl_add_task_root_domain() did not
 	 * move the fair server bw to the rd if it already started.
@@ -526,7 +524,6 @@ void rq_attach_root(struct rq *rq, struct root_domain *rd)
 	if (rq->fair_server.dl_server)
 		__dl_server_attach_root(&rq->fair_server, rq);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rq_unlock_irqrestore(rq, &rf);
 
 	if (old_rd)

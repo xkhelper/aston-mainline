@@ -14,10 +14,7 @@
 #define DATA_RATE_HT_IDX_MASK		GENMASK(4, 0)
 #define DATA_RATE_HT_IDX_MASK_V1	GENMASK(4, 0)
 #define DATA_RATE_MODE_HT		0x1
-<<<<<<< HEAD
-=======
 #define DATA_RATE_HT_NSS_MASK		GENMASK(4, 3)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DATA_RATE_VHT_HE_NSS_MASK	GENMASK(6, 4)
 #define DATA_RATE_VHT_HE_IDX_MASK	GENMASK(3, 0)
 #define DATA_RATE_NSS_MASK_V1		GENMASK(7, 5)
@@ -55,14 +52,11 @@ static inline u8 rtw89_get_data_mcs(struct rtw89_dev *rtwdev, u16 hw_rate)
 	return u16_get_bits(hw_rate, DATA_RATE_VHT_HE_IDX_MASK);
 }
 
-<<<<<<< HEAD
-=======
 static inline u8 rtw89_get_data_ht_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
 {
 	return u16_get_bits(hw_rate, DATA_RATE_HT_NSS_MASK);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline u8 rtw89_get_data_nss(struct rtw89_dev *rtwdev, u16 hw_rate)
 {
 	if (rtwdev->chip->chip_gen == RTW89_CHIP_BE)
@@ -420,11 +414,7 @@ struct rtw89_rxinfo_user {
 #define RTW89_RXINFO_USER_DATA BIT(1)
 #define RTW89_RXINFO_USER_CTRL BIT(2)
 #define RTW89_RXINFO_USER_MGMT BIT(3)
-<<<<<<< HEAD
-#define RTW89_RXINFO_USER_BCM BIT(4)
-=======
 #define RTW89_RXINFO_USER_BCN BIT(4)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RTW89_RXINFO_USER_MACID GENMASK(15, 8)
 
 struct rtw89_rxinfo {
@@ -451,10 +441,7 @@ struct rtw89_phy_sts_hdr {
 } __packed;
 
 #define RTW89_PHY_STS_HDR_W0_IE_MAP GENMASK(4, 0)
-<<<<<<< HEAD
-=======
 #define RTW89_PHY_STS_HDR_W0_HDR_2_EN BIT(5)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RTW89_PHY_STS_HDR_W0_VALID BIT(7)
 #define RTW89_PHY_STS_HDR_W0_LEN GENMASK(15, 8)
 #define RTW89_PHY_STS_HDR_W0_RSSI_AVG GENMASK(31, 24)
@@ -463,8 +450,6 @@ struct rtw89_phy_sts_hdr {
 #define RTW89_PHY_STS_HDR_W1_RSSI_C GENMASK(23, 16)
 #define RTW89_PHY_STS_HDR_W1_RSSI_D GENMASK(31, 24)
 
-<<<<<<< HEAD
-=======
 struct rtw89_phy_sts_hdr_v2 {
 	__le32 w0;
 	__le32 w1;
@@ -472,7 +457,6 @@ struct rtw89_phy_sts_hdr_v2 {
 
 #define RTW89_PHY_STS_HDR_V2_W0_PATH_EN GENMASK(20, 16)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct rtw89_phy_sts_iehdr {
 	__le32 w0;
 };
@@ -576,15 +560,6 @@ struct rtw89_phy_sts_iehdr {
 #define BE_RXD_HDR_OFFSET_MASK GENMASK(20, 16)
 #define BE_RXD_WL_HD_IV_LEN_MASK GENMASK(26, 21)
 
-<<<<<<< HEAD
-struct rtw89_phy_sts_ie0 {
-	__le32 w0;
-	__le32 w1;
-	__le32 w2;
-} __packed;
-
-#define RTW89_PHY_STS_IE01_W0_CH_IDX GENMASK(23, 16)
-=======
 struct rtw89_phy_sts_ie00 {
 	__le32 w0;
 	__le32 w1;
@@ -622,7 +597,6 @@ struct rtw89_phy_sts_ie01 {
 #define RTW89_PHY_STS_IE01_W0_CH_IDX GENMASK(23, 16)
 #define RTW89_PHY_STS_IE01_W0_RSSI_AVG_FD GENMASK(15, 8)
 #define RTW89_PHY_STS_IE01_W0_RX_PATH_EN GENMASK(31, 28)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RTW89_PHY_STS_IE01_W1_FD_CFO GENMASK(19, 8)
 #define RTW89_PHY_STS_IE01_W1_PREMB_CFO GENMASK(31, 20)
 #define RTW89_PHY_STS_IE01_W2_AVG_SNR GENMASK(5, 0)
@@ -631,8 +605,6 @@ struct rtw89_phy_sts_ie01 {
 #define RTW89_PHY_STS_IE01_W2_LDPC BIT(28)
 #define RTW89_PHY_STS_IE01_W2_STBC BIT(30)
 
-<<<<<<< HEAD
-=======
 struct rtw89_phy_sts_ie01_v2 {
 	__le32 w0;
 	__le32 w1;
@@ -652,7 +624,6 @@ struct rtw89_phy_sts_ie01_v2 {
 #define RTW89_PHY_STS_IE01_V2_W9_RPL_FD_C GENMASK(11, 4)
 #define RTW89_PHY_STS_IE01_V2_W9_RPL_FD_D GENMASK(23, 16)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum rtw89_tx_channel {
 	RTW89_TXCH_ACH0	= 0,
 	RTW89_TXCH_ACH1	= 1,

@@ -191,14 +191,10 @@ static inline void hlist_del_init_rcu(struct hlist_node *n)
  * @old : the element to be replaced
  * @new : the new element to insert
  *
-<<<<<<< HEAD
- * The @old entry will be replaced with the @new entry atomically.
-=======
  * The @old entry will be replaced with the @new entry atomically from
  * the perspective of concurrent readers.  It is the caller's responsibility
  * to synchronize with concurrent updaters, if any.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Note: @old should not be empty.
  */
 static inline void list_replace_rcu(struct list_head *old,
@@ -526,13 +522,9 @@ static inline void hlist_del_rcu(struct hlist_node *n)
  * @old : the element to be replaced
  * @new : the new element to insert
  *
-<<<<<<< HEAD
- * The @old entry will be replaced with the @new entry atomically.
-=======
  * The @old entry will be replaced with the @new entry atomically from
  * the perspective of concurrent readers.  It is the caller's responsibility
  * to synchronize with concurrent updaters, if any.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static inline void hlist_replace_rcu(struct hlist_node *old,
 					struct hlist_node *new)

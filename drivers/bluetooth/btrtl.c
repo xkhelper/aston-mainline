@@ -7,11 +7,7 @@
 
 #include <linux/module.h>
 #include <linux/firmware.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/usb.h>
 
 #include <net/bluetooth/bluetooth.h>
@@ -34,10 +30,7 @@
 #define RTL_ROM_LMP_8822B	0x8822
 #define RTL_ROM_LMP_8852A	0x8852
 #define RTL_ROM_LMP_8851B	0x8851
-<<<<<<< HEAD
-=======
 #define RTL_ROM_LMP_8922A	0x8922
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RTL_CONFIG_MAGIC	0x8723ab55
 
 #define RTL_VSC_OP_COREDUMP	0xfcff
@@ -77,10 +70,7 @@ enum btrtl_chip_id {
 	CHIP_ID_8852B = 20,
 	CHIP_ID_8852C = 25,
 	CHIP_ID_8851B = 36,
-<<<<<<< HEAD
-=======
 	CHIP_ID_8922A = 44,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	CHIP_ID_8852BT = 47,
 };
 
@@ -321,8 +311,6 @@ static const struct id_table ic_id_table[] = {
 	  .cfg_name = "rtl_bt/rtl8851bu_config",
 	  .hw_info  = "rtl8851bu" },
 
-<<<<<<< HEAD
-=======
 	/* 8922A */
 	{ IC_INFO(RTL_ROM_LMP_8922A, 0xa, 0xc, HCI_USB),
 	  .config_needed = false,
@@ -332,7 +320,6 @@ static const struct id_table ic_id_table[] = {
 	  .cfg_name = "rtl_bt/rtl8922au_config",
 	  .hw_info  = "rtl8922au" },
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* 8852BT/8852BE-VT */
 	{ IC_INFO(RTL_ROM_LMP_8852A, 0x87, 0xc, HCI_USB),
 	  .config_needed = false,
@@ -679,10 +666,7 @@ static int rtlbt_parse_firmware(struct hci_dev *hdev,
 		{ RTL_ROM_LMP_8852A, 20 },	/* 8852B */
 		{ RTL_ROM_LMP_8852A, 25 },	/* 8852C */
 		{ RTL_ROM_LMP_8851B, 36 },	/* 8851B */
-<<<<<<< HEAD
-=======
 		{ RTL_ROM_LMP_8922A, 44 },	/* 8922A */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{ RTL_ROM_LMP_8852A, 47 },	/* 8852BT */
 	};
 
@@ -906,15 +890,8 @@ static int rtl_load_file(struct hci_dev *hdev, const char *name, u8 **buff)
 	if (ret < 0)
 		return ret;
 	ret = fw->size;
-<<<<<<< HEAD
-	*buff = kvmalloc(fw->size, GFP_KERNEL);
-	if (*buff)
-		memcpy(*buff, fw->data, ret);
-	else
-=======
 	*buff = kvmemdup(fw->data, fw->size, GFP_KERNEL);
 	if (!*buff)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -ENOMEM;
 
 	release_firmware(fw);
@@ -1288,10 +1265,7 @@ int btrtl_download_firmware(struct hci_dev *hdev,
 	case RTL_ROM_LMP_8852A:
 	case RTL_ROM_LMP_8703B:
 	case RTL_ROM_LMP_8851B:
-<<<<<<< HEAD
-=======
 	case RTL_ROM_LMP_8922A:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = btrtl_setup_rtl8723b(hdev, btrtl_dev);
 		break;
 	default:
@@ -1323,10 +1297,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
 	case CHIP_ID_8852B:
 	case CHIP_ID_8852C:
 	case CHIP_ID_8851B:
-<<<<<<< HEAD
-=======
 	case CHIP_ID_8922A:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case CHIP_ID_8852BT:
 		set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED, &hdev->quirks);
 
@@ -1337,10 +1308,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
 			btrealtek_set_flag(hdev, REALTEK_ALT6_CONTINUOUS_TX_CHIP);
 
 		if (btrtl_dev->project_id == CHIP_ID_8852A ||
-<<<<<<< HEAD
-=======
 		    btrtl_dev->project_id == CHIP_ID_8852B ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    btrtl_dev->project_id == CHIP_ID_8852C)
 			set_bit(HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER, &hdev->quirks);
 
@@ -1573,8 +1541,5 @@ MODULE_FIRMWARE("rtl_bt/rtl8852btu_config.bin");
 MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
 MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw_v2.bin");
 MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
-<<<<<<< HEAD
-=======
 MODULE_FIRMWARE("rtl_bt/rtl8922au_fw.bin");
 MODULE_FIRMWARE("rtl_bt/rtl8922au_config.bin");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

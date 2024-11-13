@@ -7,19 +7,11 @@ struct tstamp_data {
 	u64 timestamp;
 	u64 lock;
 	u32 flags;
-<<<<<<< HEAD
-	u32 stack_id;
-};
-
-struct contention_key {
-	u32 stack_id;
-=======
 	s32 stack_id;
 };
 
 struct contention_key {
 	s32 stack_id;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 pid;
 	u64 lock_addr_or_cgroup;
 };

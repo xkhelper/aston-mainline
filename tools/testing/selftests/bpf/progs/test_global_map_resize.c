@@ -3,10 +3,7 @@
 
 #include "vmlinux.h"
 #include <bpf/bpf_helpers.h>
-<<<<<<< HEAD
-=======
 #include <bpf/bpf_tracing.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 char _license[] SEC("license") = "GPL";
 
@@ -19,11 +16,7 @@ const volatile size_t data_array_len;
 int sum = 0;
 int array[1];
 
-<<<<<<< HEAD
-/* custom data secton */
-=======
 /* custom data section */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int my_array[1] SEC(".data.custom");
 
 /* custom data section which should NOT be resizable,
@@ -68,8 +61,6 @@ int data_array_sum(void *ctx)
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
 
 SEC("struct_ops/test_1")
 int BPF_PROG(test_1)
@@ -85,4 +76,3 @@ SEC(".struct_ops.link")
 struct bpf_testmod_ops st_ops_resize = {
 	.test_1 = (void *)test_1
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -14,36 +14,18 @@ expression E;
 -	((E == 1) ? "" : "s")
 +	str_plural(E)
 |
-<<<<<<< HEAD
--	((E != 1) ? "s" : "")
-+	str_plural(E)
-|
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 -	((E > 1) ? "s" : "")
 +	str_plural(E)
 )
 
-<<<<<<< HEAD
-@str_plural_r depends on !patch exists@
-=======
 @str_plural_r depends on !patch@
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 expression E;
 position P;
 @@
 (
-<<<<<<< HEAD
-*	((E@P == 1) ? "" : "s")
-|
-*	((E@P != 1) ? "s" : "")
-|
-*	((E@P > 1) ? "s" : "")
-=======
 *	(E@P == 1) ? "" : "s"
 |
 *	(E@P > 1) ? "s" : ""
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 )
 
 @script:python depends on report@
@@ -52,8 +34,6 @@ e << str_plural_r.E;
 @@
 
 coccilib.report.print_report(p[0], "opportunity for str_plural(%s)" % e)
-<<<<<<< HEAD
-=======
 
 @str_up_down depends on patch disable neg_if_exp@
 expression E;
@@ -320,4 +300,3 @@ e << str_yes_no_r.E;
 @@
 
 coccilib.report.print_report(p[0], "opportunity for str_yes_no(%s)" % e)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

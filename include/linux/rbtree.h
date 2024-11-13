@@ -245,8 +245,6 @@ rb_find_add(struct rb_node *node, struct rb_root *tree,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * rb_find_add_rcu() - find equivalent @node in @tree, or add @node
  * @node: node to look-for / insert
  * @tree: tree to search / modify
@@ -283,7 +281,6 @@ rb_find_add_rcu(struct rb_node *node, struct rb_root *tree,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * rb_find() - find @key in tree @tree
  * @key: key to match
  * @tree: tree to search
@@ -312,8 +309,6 @@ rb_find(const void *key, const struct rb_root *tree,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * rb_find_rcu() - find @key in tree @tree
  * @key: key to match
  * @tree: tree to search
@@ -345,7 +340,6 @@ rb_find_rcu(const void *key, const struct rb_root *tree,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * rb_find_first() - find the first @key in @tree
  * @key: key to match
  * @tree: tree to search

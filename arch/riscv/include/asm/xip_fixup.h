@@ -9,20 +9,6 @@
 
 #ifdef CONFIG_XIP_KERNEL
 .macro XIP_FIXUP_OFFSET reg
-<<<<<<< HEAD
-        REG_L t0, _xip_fixup
-        add \reg, \reg, t0
-.endm
-.macro XIP_FIXUP_FLASH_OFFSET reg
-	la t0, __data_loc
-	REG_L t1, _xip_phys_offset
-	sub \reg, \reg, t1
-	add \reg, \reg, t0
-.endm
-
-_xip_fixup: .dword CONFIG_PHYS_RAM_BASE - CONFIG_XIP_PHYS_ADDR - XIP_OFFSET
-_xip_phys_offset: .dword CONFIG_XIP_PHYS_ADDR + XIP_OFFSET
-=======
 	/* Fix-up address in Flash into address in RAM early during boot before
 	 * MMU is up. Because generated code "thinks" data is in Flash, but it
 	 * is actually in RAM (actually data is also in Flash, but Flash is
@@ -53,7 +39,6 @@ _xip_phys_offset: .dword CONFIG_XIP_PHYS_ADDR + XIP_OFFSET
 	la t0, __data_loc
 	add \reg, \reg, t0
 .endm
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 .macro XIP_FIXUP_OFFSET reg
 .endm

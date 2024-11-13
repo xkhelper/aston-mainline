@@ -306,11 +306,7 @@ static void wil_rx_add_radiotap_header(struct wil6210_priv *wil,
 				       struct sk_buff *skb)
 {
 	struct wil6210_rtap {
-<<<<<<< HEAD
-		struct ieee80211_radiotap_header rthdr;
-=======
 		struct ieee80211_radiotap_header_fixed rthdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* fields should be in the order of bits in rthdr.it_present */
 		/* flags */
 		u8 flags;

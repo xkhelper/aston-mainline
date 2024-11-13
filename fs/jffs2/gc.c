@@ -1171,11 +1171,7 @@ static int jffs2_garbage_collect_dnode(struct jffs2_sb_info *c, struct jffs2_era
 	uint32_t alloclen, offset, orig_end, orig_start;
 	int ret = 0;
 	unsigned char *comprbuf = NULL, *writebuf;
-<<<<<<< HEAD
-	struct page *page;
-=======
 	struct folio *folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned char *pg_ptr;
 
 	memset(&ri, 0, sizeof(ri));
@@ -1321,31 +1317,11 @@ static int jffs2_garbage_collect_dnode(struct jffs2_sb_info *c, struct jffs2_era
 		BUG_ON(start > orig_start);
 	}
 
-<<<<<<< HEAD
-	/* The rules state that we must obtain the page lock *before* f->sem, so
-=======
 	/* The rules state that we must obtain the folio lock *before* f->sem, so
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * drop f->sem temporarily. Since we also hold c->alloc_sem, nothing's
 	 * actually going to *change* so we're safe; we only allow reading.
 	 *
 	 * It is important to note that jffs2_write_begin() will ensure that its
-<<<<<<< HEAD
-	 * page is marked Uptodate before allocating space. That means that if we
-	 * end up here trying to GC the *same* page that jffs2_write_begin() is
-	 * trying to write out, read_cache_page() will not deadlock. */
-	mutex_unlock(&f->sem);
-	page = read_cache_page(inode->i_mapping, start >> PAGE_SHIFT,
-			       __jffs2_read_folio, NULL);
-	if (IS_ERR(page)) {
-		pr_warn("read_cache_page() returned error: %ld\n",
-			PTR_ERR(page));
-		mutex_lock(&f->sem);
-		return PTR_ERR(page);
-	}
-
-	pg_ptr = kmap(page);
-=======
 	 * folio is marked uptodate before allocating space. That means that if we
 	 * end up here trying to GC the *same* folio that jffs2_write_begin() is
 	 * trying to write out, read_cache_folio() will not deadlock. */
@@ -1360,7 +1336,6 @@ static int jffs2_garbage_collect_dnode(struct jffs2_sb_info *c, struct jffs2_era
 	}
 
 	pg_ptr = kmap_local_folio(folio, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&f->sem);
 
 	offset = start;
@@ -1425,11 +1400,6 @@ static int jffs2_garbage_collect_dnode(struct jffs2_sb_info *c, struct jffs2_era
 		}
 	}
 
-<<<<<<< HEAD
-	kunmap(page);
-	put_page(page);
-=======
 	folio_release_kmap(folio, pg_ptr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }

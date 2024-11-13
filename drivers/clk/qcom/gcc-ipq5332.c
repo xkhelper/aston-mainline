@@ -4,20 +4,14 @@
  */
 
 #include <linux/clk-provider.h>
-<<<<<<< HEAD
-=======
 #include <linux/interconnect-provider.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 
 #include <dt-bindings/clock/qcom,ipq5332-gcc.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/interconnect/qcom,ipq5332.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "clk-alpha-pll.h"
 #include "clk-branch.h"
@@ -134,20 +128,6 @@ static struct clk_alpha_pll gpll4_main = {
 			.parent_data = &gcc_parent_data_xo,
 			.num_parents = 1,
 			.ops = &clk_alpha_pll_stromer_ops,
-<<<<<<< HEAD
-			/*
-			 * There are no consumers for this GPLL in kernel yet,
-			 * (will be added soon), so the clock framework
-			 * disables this source. But some of the clocks
-			 * initialized by boot loaders uses this source. So we
-			 * need to keep this clock ON. Add the
-			 * CLK_IGNORE_UNUSED flag so the clock will not be
-			 * disabled. Once the consumer in kernel is added, we
-			 * can get rid of this flag.
-			 */
-			.flags = CLK_IGNORE_UNUSED,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 	},
 };
@@ -3399,10 +3379,7 @@ static struct clk_regmap *gcc_ipq5332_clocks[] = {
 	[GCC_QDSS_DAP_DIV_CLK_SRC] = &gcc_qdss_dap_div_clk_src.clkr,
 	[GCC_QDSS_ETR_USB_CLK] = &gcc_qdss_etr_usb_clk.clkr,
 	[GCC_QDSS_EUD_AT_CLK] = &gcc_qdss_eud_at_clk.clkr,
-<<<<<<< HEAD
-=======
 	[GCC_QDSS_TSCTR_CLK_SRC] = &gcc_qdss_tsctr_clk_src.clkr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[GCC_QPIC_AHB_CLK] = &gcc_qpic_ahb_clk.clkr,
 	[GCC_QPIC_CLK] = &gcc_qpic_clk.clkr,
 	[GCC_QPIC_IO_MACRO_CLK] = &gcc_qpic_io_macro_clk.clkr,
@@ -3643,8 +3620,6 @@ static const struct qcom_reset_map gcc_ipq5332_resets[] = {
 	[GCC_UNIPHY1_XPCS_ARES] = { 0x16060 },
 };
 
-<<<<<<< HEAD
-=======
 #define IPQ_APPS_ID			5332	/* some unique value */
 
 static struct qcom_icc_hws_data icc_ipq5332_hws[] = {
@@ -3663,7 +3638,6 @@ static struct qcom_icc_hws_data icc_ipq5332_hws[] = {
 	{ MASTER_NSSNOC_XO_DCD, SLAVE_NSSNOC_XO_DCD, GCC_NSSNOC_XO_DCD_CLK },
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct regmap_config gcc_ipq5332_regmap_config = {
 	.reg_bits = 32,
 	.reg_stride = 4,
@@ -3692,12 +3666,9 @@ static const struct qcom_cc_desc gcc_ipq5332_desc = {
 	.num_resets = ARRAY_SIZE(gcc_ipq5332_resets),
 	.clk_hws = gcc_ipq5332_hws,
 	.num_clk_hws = ARRAY_SIZE(gcc_ipq5332_hws),
-<<<<<<< HEAD
-=======
 	.icc_hws = icc_ipq5332_hws,
 	.num_icc_hws = ARRAY_SIZE(icc_ipq5332_hws),
 	.icc_first_node_id = IPQ_APPS_ID,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int gcc_ipq5332_probe(struct platform_device *pdev)
@@ -3716,10 +3687,7 @@ static struct platform_driver gcc_ipq5332_driver = {
 	.driver = {
 		.name = "gcc-ipq5332",
 		.of_match_table = gcc_ipq5332_match_table,
-<<<<<<< HEAD
-=======
 		.sync_state = icc_sync_state,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

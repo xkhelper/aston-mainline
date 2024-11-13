@@ -4,10 +4,7 @@
 #include <bpf/bpf_helpers.h>
 #include <bpf/bpf_tracing.h>
 #include <stdbool.h>
-<<<<<<< HEAD
-=======
 #include <stdatomic.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "bpf_arena_common.h"
 
 struct {
@@ -81,10 +78,6 @@ int sub(const void *ctx)
 	return 0;
 }
 
-<<<<<<< HEAD
-__u64 __arena_global and64_value = (0x110ull << 32);
-__u32 __arena_global and32_value = 0x110;
-=======
 #ifdef __BPF_FEATURE_ATOMIC_MEM_ORDERING
 _Atomic __u64 __arena_global and64_value = (0x110ull << 32);
 _Atomic __u32 __arena_global and32_value = 0x110;
@@ -92,7 +85,6 @@ _Atomic __u32 __arena_global and32_value = 0x110;
 __u64 __arena_global and64_value = (0x110ull << 32);
 __u32 __arena_global and32_value = 0x110;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 SEC("raw_tp/sys_enter")
 int and(const void *ctx)
@@ -100,12 +92,6 @@ int and(const void *ctx)
 	if (pid != (bpf_get_current_pid_tgid() >> 32))
 		return 0;
 #ifdef ENABLE_ATOMICS_TESTS
-<<<<<<< HEAD
-
-	__sync_fetch_and_and(&and64_value, 0x011ull << 32);
-	__sync_fetch_and_and(&and32_value, 0x011);
-#endif
-=======
 #ifdef __BPF_FEATURE_ATOMIC_MEM_ORDERING
 	__c11_atomic_fetch_and(&and64_value, 0x011ull << 32, memory_order_relaxed);
 	__c11_atomic_fetch_and(&and32_value, 0x011, memory_order_relaxed);
@@ -114,15 +100,10 @@ int and(const void *ctx)
 	__sync_fetch_and_and(&and32_value, 0x011);
 #endif
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
-<<<<<<< HEAD
-__u32 __arena_global or32_value = 0x110;
-__u64 __arena_global or64_value = (0x110ull << 32);
-=======
 #ifdef __BPF_FEATURE_ATOMIC_MEM_ORDERING
 _Atomic __u32 __arena_global or32_value = 0x110;
 _Atomic __u64 __arena_global or64_value = (0x110ull << 32);
@@ -130,7 +111,6 @@ _Atomic __u64 __arena_global or64_value = (0x110ull << 32);
 __u32 __arena_global or32_value = 0x110;
 __u64 __arena_global or64_value = (0x110ull << 32);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 SEC("raw_tp/sys_enter")
 int or(const void *ctx)
@@ -138,11 +118,6 @@ int or(const void *ctx)
 	if (pid != (bpf_get_current_pid_tgid() >> 32))
 		return 0;
 #ifdef ENABLE_ATOMICS_TESTS
-<<<<<<< HEAD
-	__sync_fetch_and_or(&or64_value, 0x011ull << 32);
-	__sync_fetch_and_or(&or32_value, 0x011);
-#endif
-=======
 #ifdef __BPF_FEATURE_ATOMIC_MEM_ORDERING
 	__c11_atomic_fetch_or(&or64_value, 0x011ull << 32, memory_order_relaxed);
 	__c11_atomic_fetch_or(&or32_value, 0x011, memory_order_relaxed);
@@ -151,15 +126,10 @@ int or(const void *ctx)
 	__sync_fetch_and_or(&or32_value, 0x011);
 #endif
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
-<<<<<<< HEAD
-__u64 __arena_global xor64_value = (0x110ull << 32);
-__u32 __arena_global xor32_value = 0x110;
-=======
 #ifdef __BPF_FEATURE_ATOMIC_MEM_ORDERING
 _Atomic __u64 __arena_global xor64_value = (0x110ull << 32);
 _Atomic __u32 __arena_global xor32_value = 0x110;
@@ -167,7 +137,6 @@ _Atomic __u32 __arena_global xor32_value = 0x110;
 __u64 __arena_global xor64_value = (0x110ull << 32);
 __u32 __arena_global xor32_value = 0x110;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 SEC("raw_tp/sys_enter")
 int xor(const void *ctx)
@@ -175,11 +144,6 @@ int xor(const void *ctx)
 	if (pid != (bpf_get_current_pid_tgid() >> 32))
 		return 0;
 #ifdef ENABLE_ATOMICS_TESTS
-<<<<<<< HEAD
-	__sync_fetch_and_xor(&xor64_value, 0x011ull << 32);
-	__sync_fetch_and_xor(&xor32_value, 0x011);
-#endif
-=======
 #ifdef __BPF_FEATURE_ATOMIC_MEM_ORDERING
 	__c11_atomic_fetch_xor(&xor64_value, 0x011ull << 32, memory_order_relaxed);
 	__c11_atomic_fetch_xor(&xor32_value, 0x011, memory_order_relaxed);
@@ -188,7 +152,6 @@ int xor(const void *ctx)
 	__sync_fetch_and_xor(&xor32_value, 0x011);
 #endif
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

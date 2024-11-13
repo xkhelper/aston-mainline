@@ -5,10 +5,7 @@
  * Copyright (C) 2022 Marek Vasut <marex@denx.de>
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/auxiliary_bus.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk-provider.h>
 #include <linux/device.h>
 #include <linux/io.h>
@@ -17,10 +14,7 @@
 #include <linux/of.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
-<<<<<<< HEAD
-=======
 #include <linux/slab.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <dt-bindings/clock/imx8mp-clock.h>
 
@@ -162,8 +156,6 @@ static const struct clk_parent_data clk_imx8mp_audiomix_pll_bypass_sels[] = {
 		PDM_SEL, 2, 0						\
 	}
 
-<<<<<<< HEAD
-=======
 #define CLK_GATE_PARENT(gname, cname, pname)						\
 	{								\
 		gname"_cg",						\
@@ -173,7 +165,6 @@ static const struct clk_parent_data clk_imx8mp_audiomix_pll_bypass_sels[] = {
 		1, IMX8MP_CLK_AUDIOMIX_##cname % 32			\
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct clk_imx8mp_audiomix_sel {
 	const char			*name;
 	int				clkid;
@@ -191,22 +182,14 @@ static struct clk_imx8mp_audiomix_sel sels[] = {
 	CLK_GATE("earc", EARC_IPG),
 	CLK_GATE("ocrama", OCRAMA_IPG),
 	CLK_GATE("aud2htx", AUD2HTX_IPG),
-<<<<<<< HEAD
-	CLK_GATE("earc_phy", EARC_PHY),
-=======
 	CLK_GATE_PARENT("earc_phy", EARC_PHY, "sai_pll_out_div2"),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	CLK_GATE("sdma2", SDMA2_ROOT),
 	CLK_GATE("sdma3", SDMA3_ROOT),
 	CLK_GATE("spba2", SPBA2_ROOT),
 	CLK_GATE("dsp", DSP_ROOT),
 	CLK_GATE("dspdbg", DSPDBG_ROOT),
 	CLK_GATE("edma", EDMA_ROOT),
-<<<<<<< HEAD
-	CLK_GATE("audpll", AUDPLL_ROOT),
-=======
 	CLK_GATE_PARENT("audpll", AUDPLL_ROOT, "osc_24m"),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	CLK_GATE("mu2", MU2_ROOT),
 	CLK_GATE("mu3", MU3_ROOT),
 	CLK_PDM,
@@ -245,8 +228,6 @@ struct clk_imx8mp_audiomix_priv {
 	struct clk_hw_onecell_data clk_data;
 };
 
-<<<<<<< HEAD
-=======
 #if IS_ENABLED(CONFIG_RESET_CONTROLLER)
 
 static void clk_imx8mp_audiomix_reset_unregister_adev(void *_adev)
@@ -304,7 +285,6 @@ static int clk_imx8mp_audiomix_reset_controller_register(struct clk_imx8mp_audio
 
 #endif /* !CONFIG_RESET_CONTROLLER */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void clk_imx8mp_audiomix_save_restore(struct device *dev, bool save)
 {
 	struct clk_imx8mp_audiomix_priv *priv = dev_get_drvdata(dev);
@@ -357,20 +337,12 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
 	for (i = 0; i < ARRAY_SIZE(sels); i++) {
 		if (sels[i].num_parents == 1) {
 			hw = devm_clk_hw_register_gate_parent_data(dev,
-<<<<<<< HEAD
-				sels[i].name, &sels[i].parent, 0,
-=======
 				sels[i].name, &sels[i].parent, CLK_SET_RATE_PARENT,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				base + sels[i].reg, sels[i].shift, 0, NULL);
 		} else {
 			hw = devm_clk_hw_register_mux_parent_data_table(dev,
 				sels[i].name, sels[i].parents,
-<<<<<<< HEAD
-				sels[i].num_parents, 0,
-=======
 				sels[i].num_parents, CLK_SET_RATE_PARENT,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				base + sels[i].reg,
 				sels[i].shift, sels[i].width,
 				0, NULL, NULL);
@@ -413,12 +385,8 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
 	clk_hw_data->hws[IMX8MP_CLK_AUDIOMIX_SAI_PLL_BYPASS] = hw;
 
 	hw = devm_clk_hw_register_gate(dev, "sai_pll_out", "sai_pll_bypass",
-<<<<<<< HEAD
-				       0, base + SAI_PLL_GNRL_CTL, 13,
-=======
 				       CLK_SET_RATE_PARENT,
 				       base + SAI_PLL_GNRL_CTL, 13,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       0, NULL);
 	if (IS_ERR(hw)) {
 		ret = PTR_ERR(hw);
@@ -427,12 +395,8 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
 	clk_hw_data->hws[IMX8MP_CLK_AUDIOMIX_SAI_PLL_OUT] = hw;
 
 	hw = devm_clk_hw_register_fixed_factor(dev, "sai_pll_out_div2",
-<<<<<<< HEAD
-					       "sai_pll_out", 0, 1, 2);
-=======
 					       "sai_pll_out",
 					       CLK_SET_RATE_PARENT, 1, 2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(hw)) {
 		ret = PTR_ERR(hw);
 		goto err_clk_register;
@@ -443,13 +407,10 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_clk_register;
 
-<<<<<<< HEAD
-=======
 	ret = clk_imx8mp_audiomix_reset_controller_register(dev, priv);
 	if (ret)
 		goto err_clk_register;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_put_sync(dev);
 	return 0;
 
@@ -493,11 +454,7 @@ MODULE_DEVICE_TABLE(of, clk_imx8mp_audiomix_of_match);
 
 static struct platform_driver clk_imx8mp_audiomix_driver = {
 	.probe	= clk_imx8mp_audiomix_probe,
-<<<<<<< HEAD
-	.remove_new = clk_imx8mp_audiomix_remove,
-=======
 	.remove = clk_imx8mp_audiomix_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "imx8mp-audio-blk-ctrl",
 		.of_match_table = clk_imx8mp_audiomix_of_match,

@@ -251,25 +251,19 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
 	if (tick_nohz_full_enabled())
 		tick_nohz_dep_set_task(tsk, bit);
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void tick_dep_clear_task(struct task_struct *tsk,
 				       enum tick_dep_bits bit)
 {
 	if (tick_nohz_full_enabled())
 		tick_nohz_dep_clear_task(tsk, bit);
 }
-<<<<<<< HEAD
-=======
 
 static inline void tick_dep_init_task(struct task_struct *tsk)
 {
 	atomic_set(&tsk->tick_dep_mask, 0);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void tick_dep_set_signal(struct task_struct *tsk,
 				       enum tick_dep_bits bit)
 {
@@ -303,10 +297,7 @@ static inline void tick_dep_set_task(struct task_struct *tsk,
 				     enum tick_dep_bits bit) { }
 static inline void tick_dep_clear_task(struct task_struct *tsk,
 				       enum tick_dep_bits bit) { }
-<<<<<<< HEAD
-=======
 static inline void tick_dep_init_task(struct task_struct *tsk) { }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void tick_dep_set_signal(struct task_struct *tsk,
 				       enum tick_dep_bits bit) { }
 static inline void tick_dep_clear_signal(struct signal_struct *signal,

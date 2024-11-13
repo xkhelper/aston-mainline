@@ -461,11 +461,8 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
 		size_t bytes, struct iov_iter *i)
 {
 	size_t n, copied = 0;
-<<<<<<< HEAD
-=======
 	bool uses_kmap = IS_ENABLED(CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP) ||
 			 PageHighMem(page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!page_copy_sane(page, offset, bytes))
 		return 0;
@@ -476,11 +473,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
 		char *p;
 
 		n = bytes - copied;
-<<<<<<< HEAD
-		if (PageHighMem(page)) {
-=======
 		if (uses_kmap) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			page += offset / PAGE_SIZE;
 			offset %= PAGE_SIZE;
 			n = min_t(size_t, n, PAGE_SIZE - offset);
@@ -491,11 +484,7 @@ size_t copy_page_from_iter_atomic(struct page *page, size_t offset,
 		kunmap_atomic(p);
 		copied += n;
 		offset += n;
-<<<<<<< HEAD
-	} while (PageHighMem(page) && copied != bytes && n > 0);
-=======
 	} while (uses_kmap && copied != bytes && n > 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return copied;
 }
@@ -540,8 +529,6 @@ static void iov_iter_iovec_advance(struct iov_iter *i, size_t size)
 	i->__iov = iov;
 }
 
-<<<<<<< HEAD
-=======
 static void iov_iter_folioq_advance(struct iov_iter *i, size_t size)
 {
 	const struct folio_queue *folioq = i->folioq;
@@ -575,7 +562,6 @@ static void iov_iter_folioq_advance(struct iov_iter *i, size_t size)
 	i->folioq = folioq;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iov_iter_advance(struct iov_iter *i, size_t size)
 {
 	if (unlikely(i->count < size))
@@ -588,19 +574,14 @@ void iov_iter_advance(struct iov_iter *i, size_t size)
 		iov_iter_iovec_advance(i, size);
 	} else if (iov_iter_is_bvec(i)) {
 		iov_iter_bvec_advance(i, size);
-<<<<<<< HEAD
-=======
 	} else if (iov_iter_is_folioq(i)) {
 		iov_iter_folioq_advance(i, size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (iov_iter_is_discard(i)) {
 		i->count -= size;
 	}
 }
 EXPORT_SYMBOL(iov_iter_advance);
 
-<<<<<<< HEAD
-=======
 static void iov_iter_folioq_revert(struct iov_iter *i, size_t unroll)
 {
 	const struct folio_queue *folioq = i->folioq;
@@ -627,7 +608,6 @@ static void iov_iter_folioq_revert(struct iov_iter *i, size_t unroll)
 	i->folioq = folioq;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iov_iter_revert(struct iov_iter *i, size_t unroll)
 {
 	if (!unroll)
@@ -659,12 +639,9 @@ void iov_iter_revert(struct iov_iter *i, size_t unroll)
 			}
 			unroll -= n;
 		}
-<<<<<<< HEAD
-=======
 	} else if (iov_iter_is_folioq(i)) {
 		i->iov_offset = 0;
 		iov_iter_folioq_revert(i, unroll);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else { /* same logics for iovec and kvec */
 		const struct iovec *iov = iter_iov(i);
 		while (1) {
@@ -692,12 +669,9 @@ size_t iov_iter_single_seg_count(const struct iov_iter *i)
 		if (iov_iter_is_bvec(i))
 			return min(i->count, i->bvec->bv_len - i->iov_offset);
 	}
-<<<<<<< HEAD
-=======
 	if (unlikely(iov_iter_is_folioq(i)))
 		return !i->count ? 0 :
 			umin(folioq_folio_size(i->folioq, i->folioq_slot), i->count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return i->count;
 }
 EXPORT_SYMBOL(iov_iter_single_seg_count);
@@ -735,8 +709,6 @@ void iov_iter_bvec(struct iov_iter *i, unsigned int direction,
 EXPORT_SYMBOL(iov_iter_bvec);
 
 /**
-<<<<<<< HEAD
-=======
  * iov_iter_folio_queue - Initialise an I/O iterator to use the folios in a folio queue
  * @i: The iterator to initialise.
  * @direction: The direction of the transfer.
@@ -767,7 +739,6 @@ void iov_iter_folio_queue(struct iov_iter *i, unsigned int direction,
 EXPORT_SYMBOL(iov_iter_folio_queue);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * iov_iter_xarray - Initialise an I/O iterator to use the pages in an xarray
  * @i: The iterator to initialise.
  * @direction: The direction of the transfer.
@@ -893,25 +864,19 @@ bool iov_iter_is_aligned(const struct iov_iter *i, unsigned addr_mask,
 	if (iov_iter_is_bvec(i))
 		return iov_iter_aligned_bvec(i, addr_mask, len_mask);
 
-<<<<<<< HEAD
-=======
 	/* With both xarray and folioq types, we're dealing with whole folios. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (iov_iter_is_xarray(i)) {
 		if (i->count & len_mask)
 			return false;
 		if ((i->xarray_start + i->iov_offset) & addr_mask)
 			return false;
 	}
-<<<<<<< HEAD
-=======
 	if (iov_iter_is_folioq(i)) {
 		if (i->count & len_mask)
 			return false;
 		if (i->iov_offset & addr_mask)
 			return false;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return true;
 }
@@ -976,12 +941,9 @@ unsigned long iov_iter_alignment(const struct iov_iter *i)
 	if (iov_iter_is_bvec(i))
 		return iov_iter_alignment_bvec(i);
 
-<<<<<<< HEAD
-=======
 	/* With both xarray and folioq types, we're dealing with whole folios. */
 	if (iov_iter_is_folioq(i))
 		return i->iov_offset | i->count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (iov_iter_is_xarray(i))
 		return (i->xarray_start + i->iov_offset) | i->count;
 
@@ -1034,8 +996,6 @@ static int want_pages_array(struct page ***res, size_t size,
 	return count;
 }
 
-<<<<<<< HEAD
-=======
 static ssize_t iter_folioq_get_pages(struct iov_iter *iter,
 				     struct page ***ppages, size_t maxsize,
 				     unsigned maxpages, size_t *_start_offset)
@@ -1095,7 +1055,6 @@ static ssize_t iter_folioq_get_pages(struct iov_iter *iter,
 	return extracted;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t iter_xarray_populate_pages(struct page **pages, struct xarray *xa,
 					  pgoff_t index, unsigned int nr_pages)
 {
@@ -1243,11 +1202,8 @@ static ssize_t __iov_iter_get_pages_alloc(struct iov_iter *i,
 		}
 		return maxsize;
 	}
-<<<<<<< HEAD
-=======
 	if (iov_iter_is_folioq(i))
 		return iter_folioq_get_pages(i, pages, maxsize, maxpages, start);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (iov_iter_is_xarray(i))
 		return iter_xarray_get_pages(i, pages, maxsize, maxpages, start);
 	return -EFAULT;
@@ -1332,14 +1288,11 @@ int iov_iter_npages(const struct iov_iter *i, int maxpages)
 		return iov_npages(i, maxpages);
 	if (iov_iter_is_bvec(i))
 		return bvec_npages(i, maxpages);
-<<<<<<< HEAD
-=======
 	if (iov_iter_is_folioq(i)) {
 		unsigned offset = i->iov_offset % PAGE_SIZE;
 		int npages = DIV_ROUND_UP(offset + i->count, PAGE_SIZE);
 		return min(npages, maxpages);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (iov_iter_is_xarray(i)) {
 		unsigned offset = (i->xarray_start + i->iov_offset) % PAGE_SIZE;
 		int npages = DIV_ROUND_UP(offset + i->count, PAGE_SIZE);
@@ -1621,8 +1574,6 @@ void iov_iter_restore(struct iov_iter *i, struct iov_iter_state *state)
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Extract a list of contiguous pages from an ITER_FOLIOQ iterator.  This does
  * not get references on the pages, nor does it get a pin on them.
  */
@@ -1685,7 +1636,6 @@ static ssize_t iov_iter_extract_folioq_pages(struct iov_iter *i,
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Extract a list of contiguous pages from an ITER_XARRAY iterator.  This does not
  * get references on the pages, nor does it get a pin on them.
  */
@@ -1905,13 +1855,8 @@ static ssize_t iov_iter_extract_user_pages(struct iov_iter *i,
  *      added to the pages, but refs will not be taken.
  *      iov_iter_extract_will_pin() will return true.
  *
-<<<<<<< HEAD
- *  (*) If the iterator is ITER_KVEC, ITER_BVEC or ITER_XARRAY, the pages are
- *      merely listed; no extra refs or pins are obtained.
-=======
  *  (*) If the iterator is ITER_KVEC, ITER_BVEC, ITER_FOLIOQ or ITER_XARRAY, the
  *      pages are merely listed; no extra refs or pins are obtained.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *      iov_iter_extract_will_pin() will return 0.
  *
  * Note also:
@@ -1946,13 +1891,10 @@ ssize_t iov_iter_extract_pages(struct iov_iter *i,
 		return iov_iter_extract_bvec_pages(i, pages, maxsize,
 						   maxpages, extraction_flags,
 						   offset0);
-<<<<<<< HEAD
-=======
 	if (iov_iter_is_folioq(i))
 		return iov_iter_extract_folioq_pages(i, pages, maxsize,
 						     maxpages, extraction_flags,
 						     offset0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (iov_iter_is_xarray(i))
 		return iov_iter_extract_xarray_pages(i, pages, maxsize,
 						     maxpages, extraction_flags,

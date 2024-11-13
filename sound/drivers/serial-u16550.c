@@ -224,15 +224,9 @@ static void snd_uart16550_io_loop(struct snd_uart16550 * uart)
 			snd_rawmidi_receive(uart->midi_input[substream], &c, 1);
 
 		if (status & UART_LSR_OE)
-<<<<<<< HEAD
-			snd_printk(KERN_WARNING
-				   "%s: Overrun on device at 0x%lx\n",
-			       uart->rmidi->name, uart->base);
-=======
 			dev_warn(uart->card->dev,
 				 "%s: Overrun on device at 0x%lx\n",
 				 uart->rmidi->name, uart->base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* remember the last stream */
@@ -329,12 +323,8 @@ static int snd_uart16550_detect(struct snd_uart16550 *uart)
 	}
 
 	if (!devm_request_region(uart->card->dev, io_base, 8, "Serial MIDI")) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "u16550: can't grab port 0x%lx\n", io_base);
-=======
 		dev_err(uart->card->dev,
 			"u16550: can't grab port 0x%lx\n", io_base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 
@@ -630,15 +620,9 @@ static int snd_uart16550_output_byte(struct snd_uart16550 *uart,
 		}
 	} else {
 		if (!snd_uart16550_write_buffer(uart, midi_byte)) {
-<<<<<<< HEAD
-			snd_printk(KERN_WARNING
-				   "%s: Buffer overrun on device at 0x%lx\n",
-				   uart->rmidi->name, uart->base);
-=======
 			dev_warn(uart->card->dev,
 				 "%s: Buffer overrun on device at 0x%lx\n",
 				 uart->rmidi->name, uart->base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return 0;
 		}
 	}
@@ -792,24 +776,15 @@ static int snd_uart16550_create(struct snd_card *card,
 
 	err = snd_uart16550_detect(uart);
 	if (err <= 0) {
-<<<<<<< HEAD
-		printk(KERN_ERR "no UART detected at 0x%lx\n", iobase);
-=======
 		dev_err(card->dev, "no UART detected at 0x%lx\n", iobase);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 
 	if (irq >= 0 && irq != SNDRV_AUTO_IRQ) {
 		if (devm_request_irq(card->dev, irq, snd_uart16550_interrupt,
 				     0, "Serial MIDI", uart)) {
-<<<<<<< HEAD
-			snd_printk(KERN_WARNING
-				   "irq %d busy. Using Polling.\n", irq);
-=======
 			dev_warn(card->dev,
 				 "irq %d busy. Using Polling.\n", irq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			uart->irq = irq;
 		}
@@ -905,41 +880,23 @@ static int snd_serial_probe(struct platform_device *devptr)
 	case SNDRV_SERIAL_GENERIC:
 		break;
 	default:
-<<<<<<< HEAD
-		snd_printk(KERN_ERR
-			   "Adaptor type is out of range 0-%d (%d)\n",
-			   SNDRV_SERIAL_MAX_ADAPTOR, adaptor[dev]);
-=======
 		dev_err(&devptr->dev,
 			"Adaptor type is out of range 0-%d (%d)\n",
 			SNDRV_SERIAL_MAX_ADAPTOR, adaptor[dev]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 
 	if (outs[dev] < 1 || outs[dev] > SNDRV_SERIAL_MAX_OUTS) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR
-			   "Count of outputs is out of range 1-%d (%d)\n",
-			   SNDRV_SERIAL_MAX_OUTS, outs[dev]);
-=======
 		dev_err(&devptr->dev,
 			"Count of outputs is out of range 1-%d (%d)\n",
 			SNDRV_SERIAL_MAX_OUTS, outs[dev]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 
 	if (ins[dev] < 1 || ins[dev] > SNDRV_SERIAL_MAX_INS) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR
-			   "Count of inputs is out of range 1-%d (%d)\n",
-			   SNDRV_SERIAL_MAX_INS, ins[dev]);
-=======
 		dev_err(&devptr->dev,
 			"Count of inputs is out of range 1-%d (%d)\n",
 			SNDRV_SERIAL_MAX_INS, ins[dev]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENODEV;
 	}
 
@@ -1019,11 +976,7 @@ static int __init alsa_card_serial_init(void)
 	}
 	if (! cards) {
 #ifdef MODULE
-<<<<<<< HEAD
-		printk(KERN_ERR "serial midi soundcard not found or device busy\n");
-=======
 		pr_err("serial midi soundcard not found or device busy\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 		snd_serial_unregister_all();
 		return -ENODEV;

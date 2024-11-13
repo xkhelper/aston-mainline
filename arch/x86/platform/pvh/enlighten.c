@@ -130,15 +130,11 @@ void __init xen_prepare_pvh(void)
 		BUG();
 	}
 
-<<<<<<< HEAD
-	memset(&pvh_bootparams, 0, sizeof(pvh_bootparams));
-=======
 	/*
 	 * This must not compile to "call memset" because memset() may be
 	 * instrumented.
 	 */
 	__builtin_memset(&pvh_bootparams, 0, sizeof(pvh_bootparams));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hypervisor_specific_init(xen_guest);
 

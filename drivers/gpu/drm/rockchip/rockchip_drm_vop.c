@@ -396,13 +396,8 @@ static void scl_vop_cal_scl_fac(struct vop *vop, const struct vop_win_data *win,
 	if (info->is_yuv)
 		is_yuv = true;
 
-<<<<<<< HEAD
-	if (dst_w > 3840) {
-		DRM_DEV_ERROR(vop->dev, "Maximum dst width (3840) exceeded\n");
-=======
 	if (dst_w > 4096) {
 		DRM_DEV_ERROR(vop->dev, "Maximum dst width (4096) exceeded\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -1588,13 +1583,10 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
 	vop_cfg_done(vop);
 
-<<<<<<< HEAD
-=======
 	/* Ack the DMA transfer of the previous frame (RK3066). */
 	if (VOP_HAS_REG(vop, common, dma_stop))
 		VOP_REG_SET(vop, common, dma_stop, 0);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(&vop->reg_lock);
 
 	/*

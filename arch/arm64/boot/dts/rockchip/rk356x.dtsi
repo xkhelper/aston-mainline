@@ -1113,8 +1113,6 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
-=======
 	rng: rng@fe388000 {
 		compatible = "rockchip,rk3568-rng";
 		reg = <0x0 0xfe388000 0x0 0x4000>;
@@ -1124,7 +1122,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i2s0_8ch: i2s@fe400000 {
 		compatible = "rockchip,rk3568-i2s-tdm";
 		reg = <0x0 0xfe400000 0x0 0x1000>;

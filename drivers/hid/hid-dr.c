@@ -199,11 +199,7 @@ static inline int drff_init(struct hid_device *hid)
 #define PID0011_RDESC_ORIG_SIZE	101
 
 /* Fixed report descriptor for PID 0x011 joystick */
-<<<<<<< HEAD
-static __u8 pid0011_rdesc_fixed[] = {
-=======
 static const __u8 pid0011_rdesc_fixed[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x01,         /*  Usage Page (Desktop),           */
 	0x09, 0x04,         /*  Usage (Joystick),               */
 	0xA1, 0x01,         /*  Collection (Application),       */
@@ -232,24 +228,14 @@ static const __u8 pid0011_rdesc_fixed[] = {
 	0xC0                /*  End Collection                  */
 };
 
-<<<<<<< HEAD
-static __u8 *dr_report_fixup(struct hid_device *hdev, __u8 *rdesc,
-				unsigned int *rsize)
-=======
 static const __u8 *dr_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 				   unsigned int *rsize)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (hdev->product) {
 	case 0x0011:
 		if (*rsize == PID0011_RDESC_ORIG_SIZE) {
-<<<<<<< HEAD
-			rdesc = pid0011_rdesc_fixed;
-			*rsize = sizeof(pid0011_rdesc_fixed);
-=======
 			*rsize = sizeof(pid0011_rdesc_fixed);
 			return pid0011_rdesc_fixed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 	}

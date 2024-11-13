@@ -221,12 +221,8 @@ drm_vprintf(struct drm_printer *p, const char *fmt, va_list *va)
 
 /**
  * struct drm_print_iterator - local struct used with drm_printer_coredump
-<<<<<<< HEAD
- * @data: Pointer to the devcoredump output buffer
-=======
  * @data: Pointer to the devcoredump output buffer, can be NULL if using
  * drm_printer_coredump to determine size of devcoredump
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @start: The offset within the buffer to start writing
  * @remain: The number of bytes to write for this iteration
  */
@@ -271,8 +267,6 @@ struct drm_print_iterator {
  *			coredump_read, ...)
  *	}
  *
-<<<<<<< HEAD
-=======
  * The above example has a time complexity of O(N^2), where N is the size of the
  * devcoredump. This is acceptable for small devcoredumps but scales poorly for
  * larger ones.
@@ -324,7 +318,6 @@ struct drm_print_iterator {
  * devcoredump. This scales better than the previous example for larger
  * devcoredumps.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * RETURNS:
  * The &drm_printer object
  */

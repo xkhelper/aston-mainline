@@ -463,11 +463,7 @@ static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
 	if (gap + pad > gap)
 		gap += pad;
 
-<<<<<<< HEAD
-	if (gap < MIN_GAP)
-=======
 	if (gap < MIN_GAP && MIN_GAP < MAX_GAP)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gap = MIN_GAP;
 	else if (gap > MAX_GAP)
 		gap = MAX_GAP;
@@ -612,8 +608,6 @@ unsigned long vm_mmap(struct file *file, unsigned long addr,
 }
 EXPORT_SYMBOL(vm_mmap);
 
-<<<<<<< HEAD
-=======
 static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
 {
 	/*
@@ -636,7 +630,6 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
 	return flags;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * __kvmalloc_node - attempt to allocate physically contiguous memory, but upon
  * failure, fall back to non-contiguous (vmalloc) allocation.
@@ -656,34 +649,6 @@ static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
  */
 void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node)
 {
-<<<<<<< HEAD
-	gfp_t kmalloc_flags = flags;
-	void *ret;
-
-	/*
-	 * We want to attempt a large physically contiguous block first because
-	 * it is less likely to fragment multiple larger blocks and therefore
-	 * contribute to a long term fragmentation less than vmalloc fallback.
-	 * However make sure that larger requests are not too disruptive - no
-	 * OOM killer and no allocation failure warnings as we have a fallback.
-	 */
-	if (size > PAGE_SIZE) {
-		kmalloc_flags |= __GFP_NOWARN;
-
-		if (!(kmalloc_flags & __GFP_RETRY_MAYFAIL))
-			kmalloc_flags |= __GFP_NORETRY;
-
-		/* nofail semantic is implemented by the vmalloc fallback */
-		kmalloc_flags &= ~__GFP_NOFAIL;
-	}
-
-	ret = __kmalloc_node_noprof(PASS_BUCKET_PARAMS(size, b), kmalloc_flags, node);
-
-	/*
-	 * It doesn't really make sense to fallback to vmalloc for sub page
-	 * requests
-	 */
-=======
 	void *ret;
 
 	/*
@@ -693,7 +658,6 @@ void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t flags, int node)
 	ret = __kmalloc_node_noprof(PASS_BUCKET_PARAMS(size, b),
 				    kmalloc_gfp_adjust(flags, size),
 				    node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret || size <= PAGE_SIZE)
 		return ret;
 
@@ -756,20 +720,6 @@ void kvfree_sensitive(const void *addr, size_t len)
 }
 EXPORT_SYMBOL(kvfree_sensitive);
 
-<<<<<<< HEAD
-void *kvrealloc_noprof(const void *p, size_t oldsize, size_t newsize, gfp_t flags)
-{
-	void *newp;
-
-	if (oldsize >= newsize)
-		return (void *)p;
-	newp = kvmalloc_noprof(newsize, flags);
-	if (!newp)
-		return NULL;
-	memcpy(newp, p, oldsize);
-	kvfree(p);
-	return newp;
-=======
 /**
  * kvrealloc - reallocate memory; contents remain unchanged
  * @p: object to reallocate memory for
@@ -817,7 +767,6 @@ void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
 	}
 
 	return n;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(kvrealloc_noprof);
 

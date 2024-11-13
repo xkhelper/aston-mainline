@@ -128,13 +128,6 @@ static ssize_t __cstate_##_var##_show(struct device *dev,	\
 static struct device_attribute format_attr_##_var =		\
 	__ATTR(_name, 0444, __cstate_##_var##_show, NULL)
 
-<<<<<<< HEAD
-static ssize_t cstate_get_attr_cpumask(struct device *dev,
-				       struct device_attribute *attr,
-				       char *buf);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Model -> events mapping */
 struct cstate_model {
 	unsigned long		core_events;
@@ -209,28 +202,9 @@ static struct attribute_group cstate_format_attr_group = {
 	.attrs = cstate_format_attrs,
 };
 
-<<<<<<< HEAD
-static cpumask_t cstate_core_cpu_mask;
-static DEVICE_ATTR(cpumask, S_IRUGO, cstate_get_attr_cpumask, NULL);
-
-static struct attribute *cstate_cpumask_attrs[] = {
-	&dev_attr_cpumask.attr,
-	NULL,
-};
-
-static struct attribute_group cpumask_attr_group = {
-	.attrs = cstate_cpumask_attrs,
-};
-
 static const struct attribute_group *cstate_attr_groups[] = {
 	&cstate_events_attr_group,
 	&cstate_format_attr_group,
-	&cpumask_attr_group,
-=======
-static const struct attribute_group *cstate_attr_groups[] = {
-	&cstate_events_attr_group,
-	&cstate_format_attr_group,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL,
 };
 
@@ -278,11 +252,6 @@ static struct perf_msr pkg_msr[] = {
 	[PERF_CSTATE_PKG_C10_RES] = { MSR_PKG_C10_RESIDENCY,	&group_cstate_pkg_c10,	test_msr },
 };
 
-<<<<<<< HEAD
-static cpumask_t cstate_pkg_cpu_mask;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* cstate_module PMU */
 static struct pmu cstate_module_pmu;
 static bool has_cstate_module;
@@ -303,34 +272,9 @@ static struct perf_msr module_msr[] = {
 	[PERF_CSTATE_MODULE_C6_RES]  = { MSR_MODULE_C6_RES_MS,	&group_cstate_module_c6,	test_msr },
 };
 
-<<<<<<< HEAD
-static cpumask_t cstate_module_cpu_mask;
-
-static ssize_t cstate_get_attr_cpumask(struct device *dev,
-				       struct device_attribute *attr,
-				       char *buf)
-{
-	struct pmu *pmu = dev_get_drvdata(dev);
-
-	if (pmu == &cstate_core_pmu)
-		return cpumap_print_to_pagebuf(true, buf, &cstate_core_cpu_mask);
-	else if (pmu == &cstate_pkg_pmu)
-		return cpumap_print_to_pagebuf(true, buf, &cstate_pkg_cpu_mask);
-	else if (pmu == &cstate_module_pmu)
-		return cpumap_print_to_pagebuf(true, buf, &cstate_module_cpu_mask);
-	else
-		return 0;
-}
-
 static int cstate_pmu_event_init(struct perf_event *event)
 {
 	u64 cfg = event->attr.config;
-	int cpu;
-=======
-static int cstate_pmu_event_init(struct perf_event *event)
-{
-	u64 cfg = event->attr.config;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (event->attr.type != event->pmu->type)
 		return -ENOENT;
@@ -349,27 +293,13 @@ static int cstate_pmu_event_init(struct perf_event *event)
 		if (!(core_msr_mask & (1 << cfg)))
 			return -EINVAL;
 		event->hw.event_base = core_msr[cfg].msr;
-<<<<<<< HEAD
-		cpu = cpumask_any_and(&cstate_core_cpu_mask,
-				      topology_sibling_cpumask(event->cpu));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (event->pmu == &cstate_pkg_pmu) {
 		if (cfg >= PERF_CSTATE_PKG_EVENT_MAX)
 			return -EINVAL;
 		cfg = array_index_nospec((unsigned long)cfg, PERF_CSTATE_PKG_EVENT_MAX);
 		if (!(pkg_msr_mask & (1 << cfg)))
 			return -EINVAL;
-<<<<<<< HEAD
-
-		event->event_caps |= PERF_EV_CAP_READ_ACTIVE_PKG;
-
 		event->hw.event_base = pkg_msr[cfg].msr;
-		cpu = cpumask_any_and(&cstate_pkg_cpu_mask,
-				      topology_die_cpumask(event->cpu));
-=======
-		event->hw.event_base = pkg_msr[cfg].msr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (event->pmu == &cstate_module_pmu) {
 		if (cfg >= PERF_CSTATE_MODULE_EVENT_MAX)
 			return -EINVAL;
@@ -377,22 +307,10 @@ static int cstate_pmu_event_init(struct perf_event *event)
 		if (!(module_msr_mask & (1 << cfg)))
 			return -EINVAL;
 		event->hw.event_base = module_msr[cfg].msr;
-<<<<<<< HEAD
-		cpu = cpumask_any_and(&cstate_module_cpu_mask,
-				      topology_cluster_cpumask(event->cpu));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		return -ENOENT;
 	}
 
-<<<<<<< HEAD
-	if (cpu >= nr_cpu_ids)
-		return -ENODEV;
-
-	event->cpu = cpu;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	event->hw.config = cfg;
 	event->hw.idx = -1;
 	return 0;
@@ -443,87 +361,6 @@ static int cstate_pmu_event_add(struct perf_event *event, int mode)
 	return 0;
 }
 
-<<<<<<< HEAD
-/*
- * Check if exiting cpu is the designated reader. If so migrate the
- * events when there is a valid target available
- */
-static int cstate_cpu_exit(unsigned int cpu)
-{
-	unsigned int target;
-
-	if (has_cstate_core &&
-	    cpumask_test_and_clear_cpu(cpu, &cstate_core_cpu_mask)) {
-
-		target = cpumask_any_but(topology_sibling_cpumask(cpu), cpu);
-		/* Migrate events if there is a valid target */
-		if (target < nr_cpu_ids) {
-			cpumask_set_cpu(target, &cstate_core_cpu_mask);
-			perf_pmu_migrate_context(&cstate_core_pmu, cpu, target);
-		}
-	}
-
-	if (has_cstate_pkg &&
-	    cpumask_test_and_clear_cpu(cpu, &cstate_pkg_cpu_mask)) {
-
-		target = cpumask_any_but(topology_die_cpumask(cpu), cpu);
-		/* Migrate events if there is a valid target */
-		if (target < nr_cpu_ids) {
-			cpumask_set_cpu(target, &cstate_pkg_cpu_mask);
-			perf_pmu_migrate_context(&cstate_pkg_pmu, cpu, target);
-		}
-	}
-
-	if (has_cstate_module &&
-	    cpumask_test_and_clear_cpu(cpu, &cstate_module_cpu_mask)) {
-
-		target = cpumask_any_but(topology_cluster_cpumask(cpu), cpu);
-		/* Migrate events if there is a valid target */
-		if (target < nr_cpu_ids) {
-			cpumask_set_cpu(target, &cstate_module_cpu_mask);
-			perf_pmu_migrate_context(&cstate_module_pmu, cpu, target);
-		}
-	}
-	return 0;
-}
-
-static int cstate_cpu_init(unsigned int cpu)
-{
-	unsigned int target;
-
-	/*
-	 * If this is the first online thread of that core, set it in
-	 * the core cpu mask as the designated reader.
-	 */
-	target = cpumask_any_and(&cstate_core_cpu_mask,
-				 topology_sibling_cpumask(cpu));
-
-	if (has_cstate_core && target >= nr_cpu_ids)
-		cpumask_set_cpu(cpu, &cstate_core_cpu_mask);
-
-	/*
-	 * If this is the first online thread of that package, set it
-	 * in the package cpu mask as the designated reader.
-	 */
-	target = cpumask_any_and(&cstate_pkg_cpu_mask,
-				 topology_die_cpumask(cpu));
-	if (has_cstate_pkg && target >= nr_cpu_ids)
-		cpumask_set_cpu(cpu, &cstate_pkg_cpu_mask);
-
-	/*
-	 * If this is the first online thread of that cluster, set it
-	 * in the cluster cpu mask as the designated reader.
-	 */
-	target = cpumask_any_and(&cstate_module_cpu_mask,
-				 topology_cluster_cpumask(cpu));
-	if (has_cstate_module && target >= nr_cpu_ids)
-		cpumask_set_cpu(cpu, &cstate_module_cpu_mask);
-
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct attribute_group *core_attr_update[] = {
 	&group_cstate_core_c1,
 	&group_cstate_core_c3,
@@ -560,10 +397,7 @@ static struct pmu cstate_core_pmu = {
 	.stop		= cstate_pmu_event_stop,
 	.read		= cstate_pmu_event_update,
 	.capabilities	= PERF_PMU_CAP_NO_INTERRUPT | PERF_PMU_CAP_NO_EXCLUDE,
-<<<<<<< HEAD
-=======
 	.scope		= PERF_PMU_SCOPE_CORE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.module		= THIS_MODULE,
 };
 
@@ -579,10 +413,7 @@ static struct pmu cstate_pkg_pmu = {
 	.stop		= cstate_pmu_event_stop,
 	.read		= cstate_pmu_event_update,
 	.capabilities	= PERF_PMU_CAP_NO_INTERRUPT | PERF_PMU_CAP_NO_EXCLUDE,
-<<<<<<< HEAD
-=======
 	.scope		= PERF_PMU_SCOPE_PKG,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.module		= THIS_MODULE,
 };
 
@@ -598,10 +429,7 @@ static struct pmu cstate_module_pmu = {
 	.stop		= cstate_pmu_event_stop,
 	.read		= cstate_pmu_event_update,
 	.capabilities	= PERF_PMU_CAP_NO_INTERRUPT | PERF_PMU_CAP_NO_EXCLUDE,
-<<<<<<< HEAD
-=======
 	.scope		= PERF_PMU_SCOPE_CLUSTER,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.module		= THIS_MODULE,
 };
 
@@ -856,12 +684,6 @@ static int __init cstate_probe(const struct cstate_model *cm)
 
 static inline void cstate_cleanup(void)
 {
-<<<<<<< HEAD
-	cpuhp_remove_state_nocalls(CPUHP_AP_PERF_X86_CSTATE_ONLINE);
-	cpuhp_remove_state_nocalls(CPUHP_AP_PERF_X86_CSTATE_STARTING);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (has_cstate_core)
 		perf_pmu_unregister(&cstate_core_pmu);
 
@@ -876,14 +698,6 @@ static int __init cstate_init(void)
 {
 	int err;
 
-<<<<<<< HEAD
-	cpuhp_setup_state(CPUHP_AP_PERF_X86_CSTATE_STARTING,
-			  "perf/x86/cstate:starting", cstate_cpu_init, NULL);
-	cpuhp_setup_state(CPUHP_AP_PERF_X86_CSTATE_ONLINE,
-			  "perf/x86/cstate:online", NULL, cstate_cpu_exit);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (has_cstate_core) {
 		err = perf_pmu_register(&cstate_core_pmu, cstate_core_pmu.name, -1);
 		if (err) {
@@ -896,11 +710,8 @@ static int __init cstate_init(void)
 
 	if (has_cstate_pkg) {
 		if (topology_max_dies_per_package() > 1) {
-<<<<<<< HEAD
-=======
 			/* CLX-AP is multi-die and the cstate is die-scope */
 			cstate_pkg_pmu.scope = PERF_PMU_SCOPE_DIE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = perf_pmu_register(&cstate_pkg_pmu,
 						"cstate_die", -1);
 		} else {

@@ -11,10 +11,6 @@
 #include <linux/cpu.h>
 
 struct cpuinfo_arm {
-<<<<<<< HEAD
-	struct cpu	cpu;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32		cpuid;
 #ifdef CONFIG_SMP
 	unsigned int	loops_per_jiffy;

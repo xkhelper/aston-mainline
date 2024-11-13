@@ -111,11 +111,7 @@
 #define DMUB_MAX_PHANTOM_PLANES ((DMUB_MAX_PLANES) / 2)
 
 /* Trace buffer offset for entry */
-<<<<<<< HEAD
-#define TRACE_BUFFER_ENTRY_OFFSET  16
-=======
 #define TRACE_BUFFER_ENTRY_OFFSET 16
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * Maximum number of dirty rects supported by FW.
@@ -340,13 +336,10 @@ union dmub_psr_debug_flags {
 		 */
 		uint32_t back_to_back_flip : 1;
 
-<<<<<<< HEAD
-=======
 		/**
 		 * Enable visual confirm for IPS
 		 */
 		uint32_t enable_ips_visual_confirm : 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} bitfields;
 
 	/**
@@ -689,11 +682,7 @@ union dmub_fw_boot_options {
 		uint32_t gpint_scratch8: 1; /* 1 if GPINT is in scratch8*/
 		uint32_t usb4_cm_version: 1; /**< 1 CM support */
 		uint32_t dpia_hpd_int_enable_supported: 1; /* 1 if dpia hpd int enable supported */
-<<<<<<< HEAD
-		uint32_t reserved0: 1;
-=======
 		uint32_t enable_non_transparent_setconfig: 1; /* 1 if dpia use conventional dp lt flow*/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		uint32_t disable_clk_ds: 1; /* 1 if disallow dispclk_ds and dppclk_ds*/
 		uint32_t disable_timeout_recovery : 1; /* 1 if timeout recovery should be disabled */
 		uint32_t ips_pg_disable: 1; /* 1 to disable ONO domains power gating*/
@@ -1319,10 +1308,7 @@ enum dmub_cmd_dpia_type {
 	DMUB_CMD__DPIA_DIG1_DPIA_CONTROL = 0,
 	DMUB_CMD__DPIA_SET_CONFIG_ACCESS = 1,
 	DMUB_CMD__DPIA_MST_ALLOC_SLOTS = 2,
-<<<<<<< HEAD
-=======
 	DMUB_CMD__DPIA_SET_TPS_NOTIFICATION = 3,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* DMUB_OUT_CMD__DPIA_NOTIFICATION command types. */
@@ -1894,16 +1880,12 @@ enum dmub_cmd_idle_opt_type {
 	/**
 	 * DCN hardware notify idle.
 	 */
-<<<<<<< HEAD
-	DMUB_CMD__IDLE_OPT_DCN_NOTIFY_IDLE = 2
-=======
 	DMUB_CMD__IDLE_OPT_DCN_NOTIFY_IDLE = 2,
 
 	/**
 	 * DCN hardware notify power state.
 	 */
 	DMUB_CMD__IDLE_OPT_SET_DC_POWER_STATE = 3,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -1931,8 +1913,6 @@ struct dmub_rb_cmd_idle_opt_dcn_notify_idle {
 };
 
 /**
-<<<<<<< HEAD
-=======
  * enum dmub_idle_opt_dc_power_state - DC power states.
  */
 enum dmub_idle_opt_dc_power_state {
@@ -1960,7 +1940,6 @@ struct dmub_rb_cmd_idle_opt_set_dc_power_state {
 };
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * struct dmub_clocks - Clock update notification.
  */
 struct dmub_clocks {
@@ -2161,8 +2140,6 @@ struct dmub_rb_cmd_set_mst_alloc_slots {
 };
 
 /**
-<<<<<<< HEAD
-=======
  * Data passed from driver to FW in a DMUB_CMD__SET_TPS_NOTIFICATION command.
  */
 struct dmub_cmd_tps_notification_data {
@@ -2181,7 +2158,6 @@ struct dmub_rb_cmd_set_tps_notification {
 };
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * DMUB command structure for DPIA HPD int enable control.
  */
 struct dmub_rb_cmd_dpia_hpd_int_enable {
@@ -3103,17 +3079,6 @@ struct dmub_cmd_update_dirty_rect_data {
 	 * Currently the support is only for 0 or 1
 	 */
 	uint8_t panel_inst;
-<<<<<<< HEAD
-	/**
-	 * 16-bit value dicated by driver that indicates the coasting vtotal high byte part.
-	 */
-	uint16_t coasting_vtotal_high;
-	/**
-	 * Explicit padding to 4 byte boundary.
-	 */
-	uint8_t pad[2];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -5359,13 +5324,10 @@ union dmub_rb_cmd {
 	 */
 	struct dmub_rb_cmd_set_mst_alloc_slots set_mst_alloc_slots;
 	/**
-<<<<<<< HEAD
-=======
 	 * Definition of a DMUB_CMD__DPIA_SET_TPS_NOTIFICATION command.
 	 */
 	struct dmub_rb_cmd_set_tps_notification set_tps_notification;
 	/**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Definition of a DMUB_CMD__EDID_CEA command.
 	 */
 	struct dmub_rb_cmd_edid_cea edid_cea;
@@ -5391,13 +5353,10 @@ union dmub_rb_cmd {
 	 * Definition of a DMUB_CMD__IDLE_OPT_DCN_NOTIFY_IDLE command.
 	 */
 	struct dmub_rb_cmd_idle_opt_dcn_notify_idle idle_opt_notify_idle;
-<<<<<<< HEAD
-=======
 	/**
 	 * Definition of a DMUB_CMD__IDLE_OPT_SET_DC_POWER_STATE command.
 	 */
 	struct dmub_rb_cmd_idle_opt_set_dc_power_state idle_opt_set_dc_power_state;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Definition of a DMUB_CMD__REPLAY_COPY_SETTINGS command.
 	 */

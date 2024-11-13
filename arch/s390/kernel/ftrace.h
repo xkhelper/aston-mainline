@@ -18,10 +18,5 @@ extern const char ftrace_shared_hotpatch_trampoline_br[];
 extern const char ftrace_shared_hotpatch_trampoline_br_end[];
 extern const char ftrace_shared_hotpatch_trampoline_exrl[];
 extern const char ftrace_shared_hotpatch_trampoline_exrl_end[];
-<<<<<<< HEAD
-extern const char ftrace_plt_template[];
-extern const char ftrace_plt_template_end[];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _FTRACE_H */

@@ -157,11 +157,7 @@ static struct platform_driver snd_soc_mop500_driver = {
 		.of_match_table = snd_soc_mop500_match,
 	},
 	.probe = mop500_probe,
-<<<<<<< HEAD
-	.remove_new = mop500_remove,
-=======
 	.remove = mop500_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(snd_soc_mop500_driver);

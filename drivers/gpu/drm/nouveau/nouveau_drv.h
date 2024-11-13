@@ -201,10 +201,6 @@ u_memcpya(uint64_t user, unsigned int nmemb, unsigned int size)
 #include <nvif/parent.h>
 
 struct nouveau_drm {
-<<<<<<< HEAD
-	struct nvif_parent parent;
-	struct nouveau_cli master;
-=======
 	struct nvkm_device *nvkm;
 	struct nvif_parent parent;
 	struct mutex client_mutex;
@@ -212,7 +208,6 @@ struct nouveau_drm {
 	struct nvif_device device;
 	struct nvif_mmu mmu;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nouveau_cli client;
 	struct drm_device *dev;
 
@@ -336,31 +331,13 @@ bool nouveau_pmops_runtime(void);
 struct drm_device *
 nouveau_platform_device_create(const struct nvkm_device_tegra_func *,
 			       struct platform_device *, struct nvkm_device **);
-<<<<<<< HEAD
-void nouveau_drm_device_remove(struct drm_device *dev);
-=======
 void nouveau_drm_device_remove(struct nouveau_drm *);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define NV_PRINTK(l,c,f,a...) do {                                             \
 	struct nouveau_cli *_cli = (c);                                        \
 	dev_##l(_cli->drm->dev->dev, "%s: "f, _cli->name, ##a);                \
 } while(0)
 
-<<<<<<< HEAD
-#define NV_FATAL(drm,f,a...) NV_PRINTK(crit, &(drm)->client, f, ##a)
-#define NV_ERROR(drm,f,a...) NV_PRINTK(err, &(drm)->client, f, ##a)
-#define NV_WARN(drm,f,a...) NV_PRINTK(warn, &(drm)->client, f, ##a)
-#define NV_INFO(drm,f,a...) NV_PRINTK(info, &(drm)->client, f, ##a)
-
-#define NV_DEBUG(drm,f,a...) do {                                              \
-	if (drm_debug_enabled(DRM_UT_DRIVER))                                  \
-		NV_PRINTK(info, &(drm)->client, f, ##a);                       \
-} while(0)
-#define NV_ATOMIC(drm,f,a...) do {                                             \
-	if (drm_debug_enabled(DRM_UT_ATOMIC))                                  \
-		NV_PRINTK(info, &(drm)->client, f, ##a);                       \
-=======
 #define NV_PRINTK_(l,drm,f,a...) do {             \
 	dev_##l((drm)->nvkm->dev, "drm: "f, ##a); \
 } while(0)
@@ -376,7 +353,6 @@ void nouveau_drm_device_remove(struct nouveau_drm *);
 #define NV_ATOMIC(drm,f,a...) do {                                             \
 	if (drm_debug_enabled(DRM_UT_ATOMIC))                                  \
 		NV_PRINTK_(info, (drm), f, ##a);                               \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } while(0)
 
 #define NV_PRINTK_ONCE(l,c,f,a...) NV_PRINTK(l##_once,c,f, ##a)
@@ -387,8 +363,6 @@ void nouveau_drm_device_remove(struct nouveau_drm *);
 
 extern int nouveau_modeset;
 
-<<<<<<< HEAD
-=======
 /*XXX: Don't use these in new code.
  *
  * These accessors are used in a few places (mostly older code paths)
@@ -426,5 +400,4 @@ nvxx_device(struct nouveau_drm *drm)
 #include <engine/gr.h>
 
 #define nvxx_gr(a) nvxx_device(a)->gr
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

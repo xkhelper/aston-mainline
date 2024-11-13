@@ -172,8 +172,6 @@ bad_bmap:
 	goto out;
 }
 
-<<<<<<< HEAD
-=======
 static bool is_folio_zero_filled(struct folio *folio)
 {
 	unsigned int pos, last_pos;
@@ -228,7 +226,6 @@ static void swap_zeromap_folio_clear(struct folio *folio)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * We may have stale swap cache pages in memory: notice
  * them here and get rid of the unnecessary final write.
@@ -252,8 +249,6 @@ int swap_writepage(struct page *page, struct writeback_control *wbc)
 		folio_unlock(folio);
 		return ret;
 	}
-<<<<<<< HEAD
-=======
 
 	/*
 	 * Use a bitmap (zeromap) to avoid doing IO for zero-filled pages.
@@ -273,7 +268,6 @@ int swap_writepage(struct page *page, struct writeback_control *wbc)
 		 */
 		swap_zeromap_folio_clear(folio);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (zswap_store(folio)) {
 		folio_unlock(folio);
 		return 0;
@@ -352,13 +346,7 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
 		 * memory for allocating transmit buffers.
 		 * Mark the page dirty and avoid
 		 * folio_rotate_reclaimable but rate-limit the
-<<<<<<< HEAD
-		 * messages but do not flag PageError like
-		 * the normal direct-to-bio case as it could
-		 * be temporary.
-=======
 		 * messages.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
 				   ret, swap_dev_pos(page_swap_entry(page)));
@@ -512,8 +500,6 @@ static void sio_read_complete(struct kiocb *iocb, long ret)
 	mempool_free(sio, sio_pool);
 }
 
-<<<<<<< HEAD
-=======
 static bool swap_read_folio_zeromap(struct folio *folio)
 {
 	int nr_pages = folio_nr_pages(folio);
@@ -536,7 +522,6 @@ static bool swap_read_folio_zeromap(struct folio *folio)
 	return true;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
 {
 	struct swap_info_struct *sis = swp_swap_info(folio->swap);
@@ -585,11 +570,7 @@ static void swap_read_folio_bdev_sync(struct folio *folio,
 	 * attempt to access it in the page fault retry time check.
 	 */
 	get_task_struct(current);
-<<<<<<< HEAD
-	count_vm_event(PSWPIN);
-=======
 	count_vm_events(PSWPIN, folio_nr_pages(folio));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	submit_bio_wait(&bio);
 	__end_swap_bio_read(&bio);
 	put_task_struct(current);
@@ -604,11 +585,7 @@ static void swap_read_folio_bdev_async(struct folio *folio,
 	bio->bi_iter.bi_sector = swap_folio_sector(folio);
 	bio->bi_end_io = end_swap_bio_read;
 	bio_add_folio_nofail(bio, folio, folio_size(folio), 0);
-<<<<<<< HEAD
-	count_vm_event(PSWPIN);
-=======
 	count_vm_events(PSWPIN, folio_nr_pages(folio));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	submit_bio(bio);
 }
 
@@ -635,11 +612,6 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
 	}
 	delayacct_swapin_start();
 
-<<<<<<< HEAD
-	if (zswap_load(folio)) {
-		folio_unlock(folio);
-	} else if (data_race(sis->flags & SWP_FS_OPS)) {
-=======
 	if (swap_read_folio_zeromap(folio)) {
 		folio_unlock(folio);
 		goto finish;
@@ -652,7 +624,6 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
 	zswap_folio_swapin(folio);
 
 	if (data_race(sis->flags & SWP_FS_OPS)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		swap_read_folio_fs(folio, plug);
 	} else if (synchronous) {
 		swap_read_folio_bdev_sync(folio, sis);
@@ -660,10 +631,7 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
 		swap_read_folio_bdev_async(folio, sis);
 	}
 
-<<<<<<< HEAD
-=======
 finish:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (workingset) {
 		delayacct_thrashing_end(&in_thrashing);
 		psi_memstall_leave(&pflags);

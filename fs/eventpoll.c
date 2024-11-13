@@ -420,11 +420,7 @@ static bool busy_loop_ep_timeout(unsigned long start_time,
 
 static bool ep_busy_loop_on(struct eventpoll *ep)
 {
-<<<<<<< HEAD
-	return !!ep->busy_poll_usecs || net_busy_loop_on();
-=======
 	return !!READ_ONCE(ep->busy_poll_usecs) || net_busy_loop_on();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool ep_busy_loop_end(void *p, unsigned long start_time)
@@ -2204,14 +2200,6 @@ static int do_epoll_create(int flags)
 		error = PTR_ERR(file);
 		goto out_free_fd;
 	}
-<<<<<<< HEAD
-#ifdef CONFIG_NET_RX_BUSY_POLL
-	ep->busy_poll_usecs = 0;
-	ep->busy_poll_budget = 0;
-	ep->prefer_busy_poll = false;
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ep->file = file;
 	fd_install(fd, file);
 	return fd;
@@ -2273,29 +2261,17 @@ int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
 
 	error = -EBADF;
 	f = fdget(epfd);
-<<<<<<< HEAD
-	if (!f.file)
-=======
 	if (!fd_file(f))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto error_return;
 
 	/* Get the "struct file *" for the target file */
 	tf = fdget(fd);
-<<<<<<< HEAD
-	if (!tf.file)
-=======
 	if (!fd_file(tf))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto error_fput;
 
 	/* The target file descriptor must support poll */
 	error = -EPERM;
-<<<<<<< HEAD
-	if (!file_can_poll(tf.file))
-=======
 	if (!file_can_poll(fd_file(tf)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto error_tgt_fput;
 
 	/* Check if EPOLLWAKEUP is allowed */
@@ -2308,11 +2284,7 @@ int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
 	 * adding an epoll file descriptor inside itself.
 	 */
 	error = -EINVAL;
-<<<<<<< HEAD
-	if (f.file == tf.file || !is_file_epoll(f.file))
-=======
 	if (fd_file(f) == fd_file(tf) || !is_file_epoll(fd_file(f)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto error_tgt_fput;
 
 	/*
@@ -2323,11 +2295,7 @@ int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
 	if (ep_op_has_event(op) && (epds->events & EPOLLEXCLUSIVE)) {
 		if (op == EPOLL_CTL_MOD)
 			goto error_tgt_fput;
-<<<<<<< HEAD
-		if (op == EPOLL_CTL_ADD && (is_file_epoll(tf.file) ||
-=======
 		if (op == EPOLL_CTL_ADD && (is_file_epoll(fd_file(tf)) ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				(epds->events & ~EPOLLEXCLUSIVE_OK_BITS)))
 			goto error_tgt_fput;
 	}
@@ -2336,11 +2304,7 @@ int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
 	 * At this point it is safe to assume that the "private_data" contains
 	 * our own data structure.
 	 */
-<<<<<<< HEAD
-	ep = f.file->private_data;
-=======
 	ep = fd_file(f)->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * When we insert an epoll file descriptor inside another epoll file
@@ -2361,26 +2325,16 @@ int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
 	if (error)
 		goto error_tgt_fput;
 	if (op == EPOLL_CTL_ADD) {
-<<<<<<< HEAD
-		if (READ_ONCE(f.file->f_ep) || ep->gen == loop_check_gen ||
-		    is_file_epoll(tf.file)) {
-=======
 		if (READ_ONCE(fd_file(f)->f_ep) || ep->gen == loop_check_gen ||
 		    is_file_epoll(fd_file(tf))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mutex_unlock(&ep->mtx);
 			error = epoll_mutex_lock(&epnested_mutex, 0, nonblock);
 			if (error)
 				goto error_tgt_fput;
 			loop_check_gen++;
 			full_check = 1;
-<<<<<<< HEAD
-			if (is_file_epoll(tf.file)) {
-				tep = tf.file->private_data;
-=======
 			if (is_file_epoll(fd_file(tf))) {
 				tep = fd_file(tf)->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				error = -ELOOP;
 				if (ep_loop_check(ep, tep) != 0)
 					goto error_tgt_fput;
@@ -2396,22 +2350,14 @@ int do_epoll_ctl(int epfd, int op, int fd, struct epoll_event *epds,
 	 * above, we can be sure to be able to use the item looked up by
 	 * ep_find() till we release the mutex.
 	 */
-<<<<<<< HEAD
-	epi = ep_find(ep, tf.file, fd);
-=======
 	epi = ep_find(ep, fd_file(tf), fd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	error = -EINVAL;
 	switch (op) {
 	case EPOLL_CTL_ADD:
 		if (!epi) {
 			epds->events |= EPOLLERR | EPOLLHUP;
-<<<<<<< HEAD
-			error = ep_insert(ep, epds, tf.file, fd, full_check);
-=======
 			error = ep_insert(ep, epds, fd_file(tf), fd, full_check);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else
 			error = -EEXIST;
 		break;
@@ -2492,11 +2438,7 @@ static int do_epoll_wait(int epfd, struct epoll_event __user *events,
 
 	/* Get the "struct file *" for the eventpoll file */
 	f = fdget(epfd);
-<<<<<<< HEAD
-	if (!f.file)
-=======
 	if (!fd_file(f))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 
 	/*
@@ -2504,22 +2446,14 @@ static int do_epoll_wait(int epfd, struct epoll_event __user *events,
 	 * the user passed to us _is_ an eventpoll file.
 	 */
 	error = -EINVAL;
-<<<<<<< HEAD
-	if (!is_file_epoll(f.file))
-=======
 	if (!is_file_epoll(fd_file(f)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto error_fput;
 
 	/*
 	 * At this point it is safe to assume that the "private_data" contains
 	 * our own data structure.
 	 */
-<<<<<<< HEAD
-	ep = f.file->private_data;
-=======
 	ep = fd_file(f)->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Time to fish for events ... */
 	error = ep_poll(ep, events, maxevents, to);

@@ -17,10 +17,7 @@
 #define MAX_ENTRIES_HASH_OF_MAPS	64
 #define N_THREADS			8
 #define MAX_MAP_KEY_SIZE		4
-<<<<<<< HEAD
-=======
 #define PCPU_MIN_UNIT_SIZE		32768
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void map_info(int map_fd, struct bpf_map_info *info)
 {
@@ -460,8 +457,6 @@ static void map_percpu_stats_hash_of_maps(void)
 	printf("test_%s:PASS\n", __func__);
 }
 
-<<<<<<< HEAD
-=======
 static void map_percpu_stats_map_value_size(void)
 {
 	int fd;
@@ -478,7 +473,6 @@ static void map_percpu_stats_map_value_size(void)
 	printf("test_%s:PASS\n", __func__);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_map_percpu_stats(void)
 {
 	map_percpu_stats_hash();
@@ -490,8 +484,5 @@ void test_map_percpu_stats(void)
 	map_percpu_stats_percpu_lru_hash();
 	map_percpu_stats_percpu_lru_hash_no_common();
 	map_percpu_stats_hash_of_maps();
-<<<<<<< HEAD
-=======
 	map_percpu_stats_map_value_size();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

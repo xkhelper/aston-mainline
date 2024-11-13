@@ -35,11 +35,7 @@
 #include <linux/usb.h>
 #include <linux/usb/cdc.h>
 #include <asm/byteorder.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/idr.h>
 #include <linux/list.h>
 
@@ -966,18 +962,12 @@ static int get_serial_info(struct tty_struct *tty, struct serial_struct *ss)
 	struct acm *acm = tty->driver_data;
 
 	ss->line = acm->minor;
-<<<<<<< HEAD
-=======
 	mutex_lock(&acm->port.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ss->close_delay	= jiffies_to_msecs(acm->port.close_delay) / 10;
 	ss->closing_wait = acm->port.closing_wait == ASYNC_CLOSING_WAIT_NONE ?
 				ASYNC_CLOSING_WAIT_NONE :
 				jiffies_to_msecs(acm->port.closing_wait) / 10;
-<<<<<<< HEAD
-=======
 	mutex_unlock(&acm->port.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

@@ -29,10 +29,7 @@
 #include <linux/phy.h>
 #include <linux/phylib_stubs.h>
 #include <linux/phy_led_triggers.h>
-<<<<<<< HEAD
-=======
 #include <linux/phy_link_topology.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pse-pd/pse.h>
 #include <linux/property.h>
 #include <linux/rtnetlink.h>
@@ -283,8 +280,6 @@ static struct phy_driver genphy_driver;
 static LIST_HEAD(phy_fixup_list);
 static DEFINE_MUTEX(phy_fixup_lock);
 
-<<<<<<< HEAD
-=======
 static bool phy_drv_wol_enabled(struct phy_device *phydev)
 {
 	struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
@@ -294,7 +289,6 @@ static bool phy_drv_wol_enabled(struct phy_device *phydev)
 	return wol.wolopts != 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
 {
 	struct device_driver *drv = phydev->mdio.dev.driver;
@@ -304,15 +298,12 @@ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
 	if (!drv || !phydrv->suspend)
 		return false;
 
-<<<<<<< HEAD
-=======
 	/* If the PHY on the mido bus is not attached but has WOL enabled
 	 * we cannot suspend the PHY.
 	 */
 	if (!netdev && phy_drv_wol_enabled(phydev))
 		return false;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* PHY not attached? May suspend if the PHY has not already been
 	 * suspended as part of a prior call to phy_disconnect() ->
 	 * phy_detach() -> phy_suspend() because the parent netdev might be the
@@ -1395,8 +1386,6 @@ phy_standalone_show(struct device *dev, struct device_attribute *attr,
 static DEVICE_ATTR_RO(phy_standalone);
 
 /**
-<<<<<<< HEAD
-=======
  * phy_sfp_connect_phy - Connect the SFP module's PHY to the upstream PHY
  * @upstream: pointer to the upstream phy device
  * @phy: pointer to the SFP module's phy device
@@ -1439,7 +1428,6 @@ void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
 EXPORT_SYMBOL(phy_sfp_disconnect_phy);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * phy_sfp_attach - attach the SFP bus to the PHY upstream network device
  * @upstream: pointer to the phy device
  * @bus: sfp bus representing cage being attached
@@ -1581,13 +1569,10 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
 
 		if (phydev->sfp_bus_attached)
 			dev->sfp_bus = phydev->sfp_bus;
-<<<<<<< HEAD
-=======
 
 		err = phy_link_topo_add_phy(dev, phydev, PHY_UPSTREAM_MAC, dev);
 		if (err)
 			goto error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Some Ethernet drivers try to connect to a PHY device before
@@ -2015,10 +2000,7 @@ void phy_detach(struct phy_device *phydev)
 	if (dev) {
 		phydev->attached_dev->phydev = NULL;
 		phydev->attached_dev = NULL;
-<<<<<<< HEAD
-=======
 		phy_link_topo_del_phy(dev, phydev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	phydev->phylink = NULL;
 
@@ -2056,10 +2038,6 @@ EXPORT_SYMBOL(phy_detach);
 
 int phy_suspend(struct phy_device *phydev)
 {
-<<<<<<< HEAD
-	struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct net_device *netdev = phydev->attached_dev;
 	const struct phy_driver *phydrv = phydev->drv;
 	int ret;
@@ -2067,12 +2045,7 @@ int phy_suspend(struct phy_device *phydev)
 	if (phydev->suspended || !phydrv)
 		return 0;
 
-<<<<<<< HEAD
-	phy_ethtool_get_wol(phydev, &wol);
-	phydev->wol_enabled = wol.wolopts ||
-=======
 	phydev->wol_enabled = phy_drv_wol_enabled(phydev) ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      (netdev && netdev->ethtool->wol_enabled);
 	/* If the device has WOL enabled, we cannot suspend the PHY */
 	if (phydev->wol_enabled && !(phydrv->flags & PHY_ALWAYS_CALL_SUSPEND))
@@ -2183,35 +2156,20 @@ EXPORT_SYMBOL(phy_reset_after_clk_enable);
 /**
  * genphy_config_advert - sanitize and advertise auto-negotiation parameters
  * @phydev: target phy_device struct
-<<<<<<< HEAD
-=======
  * @advert: auto-negotiation parameters to advertise
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Description: Writes MII_ADVERTISE with the appropriate values,
  *   after sanitizing the values to make sure we only advertise
  *   what is supported.  Returns < 0 on error, 0 if the PHY's advertisement
  *   hasn't changed, and > 0 if it has changed.
  */
-<<<<<<< HEAD
-static int genphy_config_advert(struct phy_device *phydev)
-=======
 static int genphy_config_advert(struct phy_device *phydev,
 				const unsigned long *advert)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err, bmsr, changed = 0;
 	u32 adv;
 
-<<<<<<< HEAD
-	/* Only allow advertising what this PHY supports */
-	linkmode_and(phydev->advertising, phydev->advertising,
-		     phydev->supported);
-
-	adv = linkmode_adv_to_mii_adv_t(phydev->advertising);
-=======
 	adv = linkmode_adv_to_mii_adv_t(advert);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Setup standard advertisement */
 	err = phy_modify_changed(phydev, MII_ADVERTISE,
@@ -2234,11 +2192,7 @@ static int genphy_config_advert(struct phy_device *phydev,
 	if (!(bmsr & BMSR_ESTATEN))
 		return changed;
 
-<<<<<<< HEAD
-	adv = linkmode_adv_to_mii_ctrl1000_t(phydev->advertising);
-=======
 	adv = linkmode_adv_to_mii_ctrl1000_t(advert);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = phy_modify_changed(phydev, MII_CTRL1000,
 				 ADVERTISE_1000FULL | ADVERTISE_1000HALF,
@@ -2462,12 +2416,9 @@ EXPORT_SYMBOL(genphy_check_and_restart_aneg);
  */
 int __genphy_config_aneg(struct phy_device *phydev, bool changed)
 {
-<<<<<<< HEAD
-=======
 	__ETHTOOL_DECLARE_LINK_MODE_MASK(fixed_advert);
 	const struct phy_setting *set;
 	unsigned long *advert;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	err = genphy_c45_an_config_eee_aneg(phydev);
@@ -2482,12 +2433,6 @@ int __genphy_config_aneg(struct phy_device *phydev, bool changed)
 	else if (err)
 		changed = true;
 
-<<<<<<< HEAD
-	if (AUTONEG_ENABLE != phydev->autoneg)
-		return genphy_setup_forced(phydev);
-
-	err = genphy_config_advert(phydev);
-=======
 	if (phydev->autoneg == AUTONEG_ENABLE) {
 		/* Only allow advertising what this PHY supports */
 		linkmode_and(phydev->advertising, phydev->advertising,
@@ -2507,7 +2452,6 @@ int __genphy_config_aneg(struct phy_device *phydev, bool changed)
 	}
 
 	err = genphy_config_advert(phydev, advert);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0) /* error */
 		return err;
 	else if (err)
@@ -3382,18 +3326,11 @@ static __maybe_unused int phy_led_hw_is_supported(struct led_classdev *led_cdev,
 
 static void phy_leds_unregister(struct phy_device *phydev)
 {
-<<<<<<< HEAD
-	struct phy_led *phyled;
-
-	list_for_each_entry(phyled, &phydev->leds, list) {
-		led_classdev_unregister(&phyled->led_cdev);
-=======
 	struct phy_led *phyled, *tmp;
 
 	list_for_each_entry_safe(phyled, tmp, &phydev->leds, list) {
 		led_classdev_unregister(&phyled->led_cdev);
 		list_del(&phyled->list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -3471,11 +3408,7 @@ static int of_phy_led(struct phy_device *phydev,
 static int of_phy_leds(struct phy_device *phydev)
 {
 	struct device_node *node = phydev->mdio.dev.of_node;
-<<<<<<< HEAD
-	struct device_node *leds, *led;
-=======
 	struct device_node *leds;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (!IS_ENABLED(CONFIG_OF_MDIO))
@@ -3488,16 +3421,9 @@ static int of_phy_leds(struct phy_device *phydev)
 	if (!leds)
 		return 0;
 
-<<<<<<< HEAD
-	for_each_available_child_of_node(leds, led) {
-		err = of_phy_led(phydev, led);
-		if (err) {
-			of_node_put(led);
-=======
 	for_each_available_child_of_node_scoped(leds, led) {
 		err = of_phy_led(phydev, led);
 		if (err) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			of_node_put(leds);
 			phy_leds_unregister(phydev);
 			return err;

@@ -516,8 +516,6 @@ struct ghcb {
 	u32 ghcb_usage;
 } __packed;
 
-<<<<<<< HEAD
-=======
 struct vmcb {
 	struct vmcb_control_area control;
 	union {
@@ -532,7 +530,6 @@ struct vmcb {
 		struct sev_es_save_area host_sev_es_save;
 	};
 } __packed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define EXPECTED_VMCB_SAVE_AREA_SIZE		744
 #define EXPECTED_GHCB_SAVE_AREA_SIZE		1032
@@ -549,10 +546,7 @@ static inline void __unused_size_checks(void)
 	BUILD_BUG_ON(sizeof(struct ghcb_save_area)	!= EXPECTED_GHCB_SAVE_AREA_SIZE);
 	BUILD_BUG_ON(sizeof(struct sev_es_save_area)	!= EXPECTED_SEV_ES_SAVE_AREA_SIZE);
 	BUILD_BUG_ON(sizeof(struct vmcb_control_area)	!= EXPECTED_VMCB_CONTROL_AREA_SIZE);
-<<<<<<< HEAD
-=======
 	BUILD_BUG_ON(offsetof(struct vmcb, save)	!= EXPECTED_VMCB_CONTROL_AREA_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BUILD_BUG_ON(sizeof(struct ghcb)		!= EXPECTED_GHCB_SIZE);
 
 	/* Check offsets of reserved fields */
@@ -589,14 +583,6 @@ static inline void __unused_size_checks(void)
 	BUILD_BUG_RESERVED_OFFSET(ghcb, 0xff0);
 }
 
-<<<<<<< HEAD
-struct vmcb {
-	struct vmcb_control_area control;
-	struct vmcb_save_area save;
-} __packed;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SVM_CPUID_FUNC 0x8000000a
 
 #define SVM_SELECTOR_S_SHIFT 4

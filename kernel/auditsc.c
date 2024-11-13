@@ -2933,11 +2933,7 @@ void __audit_log_nfcfg(const char *name, u8 af, unsigned int nentries,
 	audit_log_format(ab, "table=%s family=%u entries=%u op=%s",
 			 name, af, nentries, audit_nfcfgs[op].s);
 
-<<<<<<< HEAD
-	audit_log_format(ab, " pid=%u", task_pid_nr(current));
-=======
 	audit_log_format(ab, " pid=%u", task_tgid_nr(current));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	audit_log_task_context(ab); /* subj= */
 	audit_log_format(ab, " comm=");
 	audit_log_untrustedstring(ab, get_task_comm(comm, current));

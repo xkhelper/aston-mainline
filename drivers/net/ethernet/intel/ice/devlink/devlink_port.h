@@ -4,8 +4,6 @@
 #ifndef _DEVLINK_PORT_H_
 #define _DEVLINK_PORT_H_
 
-<<<<<<< HEAD
-=======
 #include "../ice.h"
 #include "../ice_sf_eth.h"
 
@@ -40,14 +38,10 @@ struct ice_dynamic_port {
 
 void ice_dealloc_all_dynamic_ports(struct ice_pf *pf);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ice_devlink_create_pf_port(struct ice_pf *pf);
 void ice_devlink_destroy_pf_port(struct ice_pf *pf);
 int ice_devlink_create_vf_port(struct ice_vf *vf);
 void ice_devlink_destroy_vf_port(struct ice_vf *vf);
-<<<<<<< HEAD
-
-=======
 int ice_devlink_create_sf_port(struct ice_dynamic_port *dyn_port);
 void ice_devlink_destroy_sf_port(struct ice_dynamic_port *dyn_port);
 int ice_devlink_create_sf_dev_port(struct ice_sf_dev *sf_dev);
@@ -61,5 +55,4 @@ ice_devlink_port_new(struct devlink *devlink,
 		     const struct devlink_port_new_attrs *new_attr,
 		     struct netlink_ext_ack *extack,
 		     struct devlink_port **devlink_port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _DEVLINK_PORT_H_ */

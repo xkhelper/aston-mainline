@@ -48,8 +48,6 @@ void adf_vf2pf_notify_shutdown(struct adf_accel_dev *accel_dev)
 }
 EXPORT_SYMBOL_GPL(adf_vf2pf_notify_shutdown);
 
-<<<<<<< HEAD
-=======
 void adf_vf2pf_notify_restart_complete(struct adf_accel_dev *accel_dev)
 {
 	struct pfvf_message msg = { .type = ADF_VF2PF_MSGTYPE_RESTARTING_COMPLETE };
@@ -64,7 +62,6 @@ void adf_vf2pf_notify_restart_complete(struct adf_accel_dev *accel_dev)
 }
 EXPORT_SYMBOL_GPL(adf_vf2pf_notify_restart_complete);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int adf_vf2pf_request_version(struct adf_accel_dev *accel_dev)
 {
 	u8 pf_version;

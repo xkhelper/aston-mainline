@@ -116,11 +116,7 @@ static int mc13xxx_spi_write(void *context, const void *data, size_t count)
  * single transfer.
  */
 
-<<<<<<< HEAD
-static struct regmap_bus regmap_mc13xxx_bus = {
-=======
 static const struct regmap_bus regmap_mc13xxx_bus = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write = mc13xxx_spi_write,
 	.read = mc13xxx_spi_read,
 };

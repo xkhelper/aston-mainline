@@ -35,10 +35,7 @@
 
 #include "../../pci.h"
 #include "pcie-designware.h"
-<<<<<<< HEAD
-=======
 #include "pcie-qcom-common.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PARF registers */
 #define PARF_SYS_CTRL				0x00
@@ -49,21 +46,12 @@
 #define PARF_PHY_REFCLK				0x4c
 #define PARF_CONFIG_BITS			0x50
 #define PARF_DBI_BASE_ADDR			0x168
-<<<<<<< HEAD
-=======
 #define PARF_SLV_ADDR_SPACE_SIZE		0x16c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PARF_MHI_CLOCK_RESET_CTRL		0x174
 #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
 #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
 #define PARF_Q2A_FLUSH				0x1ac
 #define PARF_LTSSM				0x1b0
-<<<<<<< HEAD
-#define PARF_SID_OFFSET				0x234
-#define PARF_BDF_TRANSLATE_CFG			0x24c
-#define PARF_SLV_ADDR_SPACE_SIZE		0x358
-#define PARF_NO_SNOOP_OVERIDE			0x3d4
-=======
 #define PARF_INT_ALL_STATUS			0x224
 #define PARF_INT_ALL_CLEAR			0x228
 #define PARF_INT_ALL_MASK			0x22c
@@ -76,7 +64,6 @@
 #define PARF_NO_SNOOP_OVERIDE			0x3d4
 #define PARF_ATU_BASE_ADDR			0x634
 #define PARF_ATU_BASE_ADDR_HI			0x638
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PARF_DEVICE_TYPE			0x1000
 #define PARF_BDF_TO_SID_TABLE_N			0x2000
 #define PARF_BDF_TO_SID_CFG			0x2c00
@@ -131,11 +118,7 @@
 #define PHY_RX0_EQ(x)				FIELD_PREP(GENMASK(26, 24), x)
 
 /* PARF_SLV_ADDR_SPACE_SIZE register value */
-<<<<<<< HEAD
-#define SLV_ADDR_SPACE_SZ			0x10000000
-=======
 #define SLV_ADDR_SPACE_SZ			0x80000000
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PARF_MHI_CLOCK_RESET_CTRL register fields */
 #define AHB_CLK_EN				BIT(0)
@@ -148,12 +131,9 @@
 /* PARF_LTSSM register fields */
 #define LTSSM_EN				BIT(8)
 
-<<<<<<< HEAD
-=======
 /* PARF_INT_ALL_{STATUS/CLEAR/MASK} register fields */
 #define PARF_INT_ALL_LINK_UP			BIT(13)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* PARF_NO_SNOOP_OVERIDE register fields */
 #define WR_NO_SNOOP_OVERIDE_EN			BIT(1)
 #define RD_NO_SNOOP_OVERIDE_EN			BIT(3)
@@ -317,14 +297,11 @@ static int qcom_pcie_start_link(struct dw_pcie *pci)
 {
 	struct qcom_pcie *pcie = to_qcom_pcie(pci);
 
-<<<<<<< HEAD
-=======
 	if (pcie_link_speed[pci->max_link_speed] == PCIE_SPEED_16_0GT) {
 		qcom_pcie_common_set_16gt_equalization(pci);
 		qcom_pcie_common_set_16gt_lane_margining(pci);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Enable Link Training state machine */
 	if (pcie->cfg->ops->ltssm_enable)
 		pcie->cfg->ops->ltssm_enable(pcie);
@@ -366,8 +343,6 @@ static void qcom_pcie_clear_hpc(struct dw_pcie *pci)
 	dw_pcie_dbi_ro_wr_dis(pci);
 }
 
-<<<<<<< HEAD
-=======
 static void qcom_pcie_configure_dbi_base(struct qcom_pcie *pcie)
 {
 	struct dw_pcie *pci = pcie->pci;
@@ -412,7 +387,6 @@ static void qcom_pcie_configure_dbi_atu_base(struct qcom_pcie *pcie)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void qcom_pcie_2_1_0_ltssm_enable(struct qcom_pcie *pcie)
 {
 	u32 val;
@@ -629,12 +603,7 @@ err_assert_reset:
 
 static int qcom_pcie_post_init_1_0_0(struct qcom_pcie *pcie)
 {
-<<<<<<< HEAD
-	/* change DBI base address */
-	writel(0, pcie->parf + PARF_DBI_BASE_ADDR);
-=======
 	qcom_pcie_configure_dbi_base(pcie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
 		u32 val = readl(pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT);
@@ -721,12 +690,7 @@ static int qcom_pcie_post_init_2_3_2(struct qcom_pcie *pcie)
 	val &= ~PHY_TEST_PWR_DOWN;
 	writel(val, pcie->parf + PARF_PHY_CTRL);
 
-<<<<<<< HEAD
-	/* change DBI base address */
-	writel(0, pcie->parf + PARF_DBI_BASE_ADDR);
-=======
 	qcom_pcie_configure_dbi_base(pcie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* MAC PHY_POWERDOWN MUX DISABLE  */
 	val = readl(pcie->parf + PARF_SYS_CTRL);
@@ -908,20 +872,11 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
 	u32 val;
 
-<<<<<<< HEAD
-	writel(SLV_ADDR_SPACE_SZ, pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	val = readl(pcie->parf + PARF_PHY_CTRL);
 	val &= ~PHY_TEST_PWR_DOWN;
 	writel(val, pcie->parf + PARF_PHY_CTRL);
 
-<<<<<<< HEAD
-	writel(0, pcie->parf + PARF_DBI_BASE_ADDR);
-=======
 	qcom_pcie_configure_dbi_atu_base(pcie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	writel(MST_WAKEUP_EN | SLV_WAKEUP_EN | MSTR_ACLK_CGC_DIS
 		| SLV_ACLK_CGC_DIS | CORE_CLK_CGC_DIS |
@@ -1017,12 +972,7 @@ static int qcom_pcie_init_2_7_0(struct qcom_pcie *pcie)
 	val &= ~PHY_TEST_PWR_DOWN;
 	writel(val, pcie->parf + PARF_PHY_CTRL);
 
-<<<<<<< HEAD
-	/* change DBI base address */
-	writel(0, pcie->parf + PARF_DBI_BASE_ADDR);
-=======
 	qcom_pcie_configure_dbi_atu_base(pcie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* MAC PHY_POWERDOWN MUX DISABLE  */
 	val = readl(pcie->parf + PARF_SYS_CTRL);
@@ -1231,21 +1181,11 @@ static int qcom_pcie_post_init_2_9_0(struct qcom_pcie *pcie)
 	u32 val;
 	int i;
 
-<<<<<<< HEAD
-	writel(SLV_ADDR_SPACE_SZ,
-		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	val = readl(pcie->parf + PARF_PHY_CTRL);
 	val &= ~PHY_TEST_PWR_DOWN;
 	writel(val, pcie->parf + PARF_PHY_CTRL);
 
-<<<<<<< HEAD
-	writel(0, pcie->parf + PARF_DBI_BASE_ADDR);
-=======
 	qcom_pcie_configure_dbi_atu_base(pcie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	writel(DEVICE_TYPE_RC, pcie->parf + PARF_DEVICE_TYPE);
 	writel(BYPASS | MSTR_AXI_CLK_EN | AHB_CLK_EN,
@@ -1603,8 +1543,6 @@ static void qcom_pcie_init_debugfs(struct qcom_pcie *pcie)
 				    qcom_pcie_link_transition_count);
 }
 
-<<<<<<< HEAD
-=======
 static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
 {
 	struct qcom_pcie *pcie = data;
@@ -1628,7 +1566,6 @@ static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int qcom_pcie_probe(struct platform_device *pdev)
 {
 	const struct qcom_pcie_cfg *pcie_cfg;
@@ -1639,12 +1576,8 @@ static int qcom_pcie_probe(struct platform_device *pdev)
 	struct dw_pcie_rp *pp;
 	struct resource *res;
 	struct dw_pcie *pci;
-<<<<<<< HEAD
-	int ret;
-=======
 	int ret, irq;
 	char *name;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pcie_cfg = of_device_get_match_data(dev);
 	if (!pcie_cfg || !pcie_cfg->ops) {
@@ -1765,8 +1698,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
 		goto err_phy_exit;
 	}
 
-<<<<<<< HEAD
-=======
 	name = devm_kasprintf(dev, GFP_KERNEL, "qcom_pcie_global_irq%d",
 			      pci_domain_nr(pp->bridge->bus));
 	if (!name) {
@@ -1788,7 +1719,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
 		writel_relaxed(PARF_INT_ALL_LINK_UP, pcie->parf + PARF_INT_ALL_MASK);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	qcom_pcie_icc_opp_update(pcie);
 
 	if (pcie->mhi)
@@ -1796,11 +1726,8 @@ static int qcom_pcie_probe(struct platform_device *pdev)
 
 	return 0;
 
-<<<<<<< HEAD
-=======
 err_host_deinit:
 	dw_pcie_host_deinit(pp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_phy_exit:
 	phy_exit(pcie->phy);
 err_pm_runtime_put:

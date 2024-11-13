@@ -29,17 +29,10 @@
  * hardware. The allocated bandwidth percentage is rounded to the next
  * control step available on the hardware.
  */
-<<<<<<< HEAD
-static bool bw_validate(char *buf, unsigned long *data, struct rdt_resource *r)
-{
-	unsigned long bw;
-	int ret;
-=======
 static bool bw_validate(char *buf, u32 *data, struct rdt_resource *r)
 {
 	int ret;
 	u32 bw;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Only linear delay values is supported for current Intel SKUs.
@@ -49,18 +42,6 @@ static bool bw_validate(char *buf, u32 *data, struct rdt_resource *r)
 		return false;
 	}
 
-<<<<<<< HEAD
-	ret = kstrtoul(buf, 10, &bw);
-	if (ret) {
-		rdt_last_cmd_printf("Non-decimal digit in MB value %s\n", buf);
-		return false;
-	}
-
-	if ((bw < r->membw.min_bw || bw > r->default_ctrl) &&
-	    !is_mba_sc(r)) {
-		rdt_last_cmd_printf("MB value %ld out of range [%d,%d]\n", bw,
-				    r->membw.min_bw, r->default_ctrl);
-=======
 	ret = kstrtou32(buf, 10, &bw);
 	if (ret) {
 		rdt_last_cmd_printf("Invalid MB value %s\n", buf);
@@ -76,7 +57,6 @@ static bool bw_validate(char *buf, u32 *data, struct rdt_resource *r)
 	if (bw < r->membw.min_bw || bw > r->default_ctrl) {
 		rdt_last_cmd_printf("MB value %u out of range [%d,%d]\n",
 				    bw, r->membw.min_bw, r->default_ctrl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 	}
 
@@ -90,11 +70,7 @@ int parse_bw(struct rdt_parse_data *data, struct resctrl_schema *s,
 	struct resctrl_staged_config *cfg;
 	u32 closid = data->rdtgrp->closid;
 	struct rdt_resource *r = s->res;
-<<<<<<< HEAD
-	unsigned long bw_val;
-=======
 	u32 bw_val;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cfg = &d->staged_config[s->conf_type];
 	if (cfg->have_new_ctrl) {

@@ -104,11 +104,7 @@ static int snd_pmac_probe(struct platform_device *devptr)
 			goto __error;
 		break;
 	default:
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "unsupported hardware %d\n", chip->model);
-=======
 		dev_err(&devptr->dev, "unsupported hardware %d\n", chip->model);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EINVAL;
 		goto __error;
 	}

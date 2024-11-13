@@ -127,17 +127,10 @@ static struct folio *afs_dir_get_folio(struct afs_vnode *vnode, pgoff_t index)
 /*
  * Scan a directory block looking for a dirent of the right name.
  */
-<<<<<<< HEAD
-static int afs_dir_scan_block(union afs_xdr_dir_block *block, struct qstr *name,
-			      unsigned int blocknum)
-{
-	union afs_xdr_dirent *de;
-=======
 static int afs_dir_scan_block(const union afs_xdr_dir_block *block, const struct qstr *name,
 			      unsigned int blocknum)
 {
 	const union afs_xdr_dirent *de;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 bitmap;
 	int d, len, n;
 
@@ -499,8 +492,6 @@ error:
 	clear_bit(AFS_VNODE_DIR_VALID, &vnode->flags);
 	goto out_unmap;
 }
-<<<<<<< HEAD
-=======
 
 /*
  * Edit a subdirectory that has been moved between directories to update the
@@ -588,4 +579,3 @@ error:
 	clear_bit(AFS_VNODE_DIR_VALID, &vnode->flags);
 	goto out;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -24,11 +24,7 @@ struct dma_iommu_mapping {
 };
 
 struct dma_iommu_mapping *
-<<<<<<< HEAD
-arm_iommu_create_mapping(const struct bus_type *bus, dma_addr_t base, u64 size);
-=======
 arm_iommu_create_mapping(struct device *dev, dma_addr_t base, u64 size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void arm_iommu_release_mapping(struct dma_iommu_mapping *mapping);
 

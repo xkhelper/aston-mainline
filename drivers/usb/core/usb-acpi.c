@@ -142,8 +142,6 @@ int usb_acpi_set_power_state(struct usb_device *hdev, int index, bool enable)
 }
 EXPORT_SYMBOL_GPL(usb_acpi_set_power_state);
 
-<<<<<<< HEAD
-=======
 /**
  * usb_acpi_add_usb4_devlink - add device link to USB4 Host Interface for tunneled USB3 devices
  *
@@ -191,7 +189,6 @@ static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Private to usb-acpi, all the core needs to know is that
  * port_dev->location is non-zero when it has been set by the firmware.
@@ -312,15 +309,12 @@ usb_acpi_find_companion_for_device(struct usb_device *udev)
 	if (!hub)
 		return NULL;
 
-<<<<<<< HEAD
-=======
 
 	/* Tunneled USB3 devices depend on USB4 Host Interface, set device link to it */
 	if (udev->speed >= USB_SPEED_SUPER &&
 	    udev->tunnel_mode != USB_LINK_NATIVE)
 		usb_acpi_add_usb4_devlink(udev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * This is an embedded USB device connected to a port and such
 	 * devices share port's ACPI companion.

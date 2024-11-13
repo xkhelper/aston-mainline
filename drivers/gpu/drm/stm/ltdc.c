@@ -36,10 +36,7 @@
 #include <drm/drm_probe_helper.h>
 #include <drm/drm_simple_kms_helper.h>
 #include <drm/drm_vblank.h>
-<<<<<<< HEAD
-=======
 #include <drm/drm_managed.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <video/videomode.h>
 
@@ -173,10 +170,7 @@
 #define IER_RRIE	BIT(3)		/* Register Reload Interrupt Enable */
 #define IER_FUEIE	BIT(6)		/* Fifo Underrun Error Interrupt Enable */
 #define IER_CRCIE	BIT(7)		/* CRC Error Interrupt Enable */
-<<<<<<< HEAD
-=======
 #define IER_MASK (IER_LIE | IER_FUWIE | IER_TERRIE | IER_RRIE | IER_FUEIE | IER_CRCIE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define CPSR_CYPOS	GENMASK(15, 0)	/* Current Y position */
 
@@ -195,10 +189,7 @@
 #define LXCR_COLKEN	BIT(1)		/* Color Keying Enable */
 #define LXCR_CLUTEN	BIT(4)		/* Color Look-Up Table ENable */
 #define LXCR_HMEN	BIT(8)		/* Horizontal Mirroring ENable */
-<<<<<<< HEAD
-=======
 #define LXCR_MASK (LXCR_LEN | LXCR_COLKEN | LXCR_CLUTEN | LXCR_HMEN)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define LXWHPCR_WHSTPOS	GENMASK(11, 0)	/* Window Horizontal StarT POSition */
 #define LXWHPCR_WHSPPOS	GENMASK(27, 16)	/* Window Horizontal StoP POSition */
@@ -503,14 +494,6 @@ static inline struct ltdc_device *plane_to_ltdc(struct drm_plane *plane)
 	return (struct ltdc_device *)plane->dev->dev_private;
 }
 
-<<<<<<< HEAD
-static inline struct ltdc_device *encoder_to_ltdc(struct drm_encoder *enc)
-{
-	return (struct ltdc_device *)enc->dev->dev_private;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline enum ltdc_pix_fmt to_ltdc_pixelformat(u32 drm_fmt)
 {
 	enum ltdc_pix_fmt pf;
@@ -799,11 +782,7 @@ static void ltdc_crtc_atomic_enable(struct drm_crtc *crtc,
 	regmap_write(ldev->regmap, LTDC_BCCR, BCCR_BCBLACK);
 
 	/* Enable IRQ */
-<<<<<<< HEAD
-	regmap_set_bits(ldev->regmap, LTDC_IER, IER_FUWIE | IER_FUEIE | IER_RRIE | IER_TERRIE);
-=======
 	regmap_set_bits(ldev->regmap, LTDC_IER, IER_FUWIE | IER_FUEIE | IER_TERRIE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Commit shadow registers = update planes at next vblank */
 	if (!ldev->caps.plane_reg_shadow)
@@ -825,18 +804,10 @@ static void ltdc_crtc_atomic_disable(struct drm_crtc *crtc,
 
 	/* Disable all layers */
 	for (layer_index = 0; layer_index < ldev->caps.nb_layers; layer_index++)
-<<<<<<< HEAD
-		regmap_write_bits(ldev->regmap, LTDC_L1CR + layer_index * LAY_OFS,
-				  LXCR_CLUTEN | LXCR_LEN, 0);
-
-	/* disable IRQ */
-	regmap_clear_bits(ldev->regmap, LTDC_IER, IER_FUWIE | IER_FUEIE | IER_RRIE | IER_TERRIE);
-=======
 		regmap_write_bits(ldev->regmap, LTDC_L1CR + layer_index * LAY_OFS, LXCR_MASK, 0);
 
 	/* Disable IRQ */
 	regmap_clear_bits(ldev->regmap, LTDC_IER, IER_FUWIE | IER_FUEIE | IER_TERRIE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* immediately commit disable of layers before switching off LTDC */
 	if (!ldev->caps.plane_reg_shadow)
@@ -1225,10 +1196,6 @@ static void ltdc_crtc_atomic_print_state(struct drm_printer *p,
 }
 
 static const struct drm_crtc_funcs ltdc_crtc_funcs = {
-<<<<<<< HEAD
-	.destroy = drm_crtc_cleanup,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_config = drm_atomic_helper_set_config,
 	.page_flip = drm_atomic_helper_page_flip,
 	.reset = drm_atomic_helper_crtc_reset,
@@ -1241,10 +1208,6 @@ static const struct drm_crtc_funcs ltdc_crtc_funcs = {
 };
 
 static const struct drm_crtc_funcs ltdc_crtc_with_crc_support_funcs = {
-<<<<<<< HEAD
-	.destroy = drm_crtc_cleanup,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_config = drm_atomic_helper_set_config,
 	.page_flip = drm_atomic_helper_page_flip,
 	.reset = drm_atomic_helper_crtc_reset,
@@ -1506,11 +1469,7 @@ static void ltdc_plane_atomic_update(struct drm_plane *plane,
 	if (newstate->rotation & DRM_MODE_REFLECT_X)
 		val |= LXCR_HMEN;
 
-<<<<<<< HEAD
-	regmap_write_bits(ldev->regmap, LTDC_L1CR + lofs, LXCR_LEN | LXCR_CLUTEN | LXCR_HMEN, val);
-=======
 	regmap_write_bits(ldev->regmap, LTDC_L1CR + lofs, LXCR_MASK, val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Commit shadow registers = update plane at next vblank */
 	if (ldev->caps.plane_reg_shadow)
@@ -1548,14 +1507,10 @@ static void ltdc_plane_atomic_disable(struct drm_plane *plane,
 	u32 lofs = plane->index * LAY_OFS;
 
 	/* Disable layer */
-<<<<<<< HEAD
-	regmap_write_bits(ldev->regmap, LTDC_L1CR + lofs, LXCR_LEN | LXCR_CLUTEN |  LXCR_HMEN, 0);
-=======
 	regmap_write_bits(ldev->regmap, LTDC_L1CR + lofs, LXCR_MASK, 0);
 
 	/* Reset the layer transparency to hide any related background color */
 	regmap_write_bits(ldev->regmap, LTDC_L1CACR + lofs, LXCACR_CONSTA, 0x00);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Commit shadow registers = update plane at next vblank */
 	if (ldev->caps.plane_reg_shadow)
@@ -1588,10 +1543,6 @@ static void ltdc_plane_atomic_print_state(struct drm_printer *p,
 static const struct drm_plane_funcs ltdc_plane_funcs = {
 	.update_plane = drm_atomic_helper_update_plane,
 	.disable_plane = drm_atomic_helper_disable_plane,
-<<<<<<< HEAD
-	.destroy = drm_plane_cleanup,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reset = drm_atomic_helper_plane_reset,
 	.atomic_duplicate_state = drm_atomic_helper_plane_duplicate_state,
 	.atomic_destroy_state = drm_atomic_helper_plane_destroy_state,
@@ -1618,10 +1569,6 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
 	const u64 *modifiers = ltdc_format_modifiers;
 	u32 lofs = index * LAY_OFS;
 	u32 val;
-<<<<<<< HEAD
-	int ret;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Allocate the biggest size according to supported color formats */
 	formats = devm_kzalloc(dev, (ldev->caps.pix_fmt_nb +
@@ -1629,11 +1576,8 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
 			       ARRAY_SIZE(ltdc_drm_fmt_ycbcr_sp) +
 			       ARRAY_SIZE(ltdc_drm_fmt_ycbcr_fp)) *
 			       sizeof(*formats), GFP_KERNEL);
-<<<<<<< HEAD
-=======
 	if (!formats)
 		return NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < ldev->caps.pix_fmt_nb; i++) {
 		drm_fmt = ldev->caps.pix_fmt_drm[i];
@@ -1667,21 +1611,10 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
 		}
 	}
 
-<<<<<<< HEAD
-	plane = devm_kzalloc(dev, sizeof(*plane), GFP_KERNEL);
-	if (!plane)
-		return NULL;
-
-	ret = drm_universal_plane_init(ddev, plane, possible_crtcs,
-				       &ltdc_plane_funcs, formats, nb_fmt,
-				       modifiers, type, NULL);
-	if (ret < 0)
-=======
 	plane = drmm_universal_plane_alloc(ddev, struct drm_plane, dev,
 					   possible_crtcs, &ltdc_plane_funcs, formats,
 					   nb_fmt, modifiers, type, NULL);
 	if (IS_ERR(plane))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NULL;
 
 	if (ldev->caps.ycbcr_input) {
@@ -1704,18 +1637,6 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
 	return plane;
 }
 
-<<<<<<< HEAD
-static void ltdc_plane_destroy_all(struct drm_device *ddev)
-{
-	struct drm_plane *plane, *plane_temp;
-
-	list_for_each_entry_safe(plane, plane_temp,
-				 &ddev->mode_config.plane_list, head)
-		drm_plane_cleanup(plane);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
 {
 	struct ltdc_device *ldev = ddev->dev_private;
@@ -1741,16 +1662,6 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
 
 	/* Init CRTC according to its hardware features */
 	if (ldev->caps.crc)
-<<<<<<< HEAD
-		ret = drm_crtc_init_with_planes(ddev, crtc, primary, NULL,
-						&ltdc_crtc_with_crc_support_funcs, NULL);
-	else
-		ret = drm_crtc_init_with_planes(ddev, crtc, primary, NULL,
-						&ltdc_crtc_funcs, NULL);
-	if (ret) {
-		DRM_ERROR("Can not initialize CRTC\n");
-		goto cleanup;
-=======
 		ret = drmm_crtc_init_with_planes(ddev, crtc, primary, NULL,
 						 &ltdc_crtc_with_crc_support_funcs, NULL);
 	else
@@ -1759,7 +1670,6 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
 	if (ret) {
 		DRM_ERROR("Can not initialize CRTC\n");
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	drm_crtc_helper_add(crtc, &ltdc_crtc_helper_funcs);
@@ -1773,14 +1683,8 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
 	for (i = 1; i < ldev->caps.nb_layers; i++) {
 		overlay = ltdc_plane_create(ddev, DRM_PLANE_TYPE_OVERLAY, i);
 		if (!overlay) {
-<<<<<<< HEAD
-			ret = -ENOMEM;
-			DRM_ERROR("Can not create overlay plane %d\n", i);
-			goto cleanup;
-=======
 			DRM_ERROR("Can not create overlay plane %d\n", i);
 			return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		if (ldev->caps.dynamic_zorder)
 			drm_plane_create_zpos_property(overlay, i, 0, ldev->caps.nb_layers - 1);
@@ -1793,13 +1697,6 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
 	}
 
 	return 0;
-<<<<<<< HEAD
-
-cleanup:
-	ltdc_plane_destroy_all(ddev);
-	return ret;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void ltdc_encoder_disable(struct drm_encoder *encoder)
@@ -1859,38 +1756,19 @@ static int ltdc_encoder_init(struct drm_device *ddev, struct drm_bridge *bridge)
 	struct drm_encoder *encoder;
 	int ret;
 
-<<<<<<< HEAD
-	encoder = devm_kzalloc(ddev->dev, sizeof(*encoder), GFP_KERNEL);
-	if (!encoder)
-		return -ENOMEM;
-=======
 	encoder = drmm_simple_encoder_alloc(ddev, struct drm_encoder, dev,
 					    DRM_MODE_ENCODER_DPI);
 	if (IS_ERR(encoder))
 		return PTR_ERR(encoder);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	encoder->possible_crtcs = CRTC_MASK;
 	encoder->possible_clones = 0;	/* No cloning support */
 
-<<<<<<< HEAD
-	drm_simple_encoder_init(ddev, encoder, DRM_MODE_ENCODER_DPI);
-
-	drm_encoder_helper_add(encoder, &ltdc_encoder_helper_funcs);
-
-	ret = drm_bridge_attach(encoder, bridge, NULL, 0);
-	if (ret) {
-		if (ret != -EPROBE_DEFER)
-			drm_encoder_cleanup(encoder);
-		return ret;
-	}
-=======
 	drm_encoder_helper_add(encoder, &ltdc_encoder_helper_funcs);
 
 	ret = drm_bridge_attach(encoder, bridge, NULL, 0);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	DRM_DEBUG_DRIVER("Bridge encoder:%d created\n", encoder->base.id);
 
@@ -2060,12 +1938,7 @@ int ltdc_load(struct drm_device *ddev)
 			goto err;
 
 		if (panel) {
-<<<<<<< HEAD
-			bridge = drm_panel_bridge_add_typed(panel,
-							    DRM_MODE_CONNECTOR_DPI);
-=======
 			bridge = drmm_panel_bridge_add(ddev, panel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (IS_ERR(bridge)) {
 				DRM_ERROR("panel-bridge endpoint %d\n", i);
 				ret = PTR_ERR(bridge);
@@ -2115,18 +1988,8 @@ int ltdc_load(struct drm_device *ddev)
 		goto err;
 	}
 
-<<<<<<< HEAD
-	/* Disable interrupts */
-	if (ldev->caps.fifo_threshold)
-		regmap_clear_bits(ldev->regmap, LTDC_IER, IER_LIE | IER_RRIE | IER_FUWIE |
-				  IER_TERRIE);
-	else
-		regmap_clear_bits(ldev->regmap, LTDC_IER, IER_LIE | IER_RRIE | IER_FUWIE |
-				  IER_TERRIE | IER_FUEIE);
-=======
 	/* Disable all interrupts */
 	regmap_clear_bits(ldev->regmap, LTDC_IER, IER_MASK);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	DRM_DEBUG_DRIVER("ltdc hw version 0x%08x\n", ldev->caps.hw_version);
 
@@ -2152,11 +2015,7 @@ int ltdc_load(struct drm_device *ddev)
 		}
 	}
 
-<<<<<<< HEAD
-	crtc = devm_kzalloc(dev, sizeof(*crtc), GFP_KERNEL);
-=======
 	crtc = drmm_kzalloc(ddev, sizeof(*crtc), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!crtc) {
 		DRM_ERROR("Failed to allocate crtc\n");
 		ret = -ENOMEM;
@@ -2183,12 +2042,6 @@ int ltdc_load(struct drm_device *ddev)
 
 	return 0;
 err:
-<<<<<<< HEAD
-	for (i = 0; i < nb_endpoints; i++)
-		drm_of_panel_bridge_remove(ddev->dev->of_node, 0, i);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clk_disable_unprepare(ldev->pixel_clk);
 
 	return ret;
@@ -2196,21 +2049,8 @@ err:
 
 void ltdc_unload(struct drm_device *ddev)
 {
-<<<<<<< HEAD
-	struct device *dev = ddev->dev;
-	int nb_endpoints, i;
-
 	DRM_DEBUG_DRIVER("\n");
 
-	nb_endpoints = of_graph_get_endpoint_count(dev->of_node);
-
-	for (i = 0; i < nb_endpoints; i++)
-		drm_of_panel_bridge_remove(ddev->dev->of_node, 0, i);
-
-=======
-	DRM_DEBUG_DRIVER("\n");
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_disable(ddev->dev);
 }
 

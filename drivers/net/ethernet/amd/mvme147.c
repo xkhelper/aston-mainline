@@ -105,13 +105,6 @@ static struct net_device * __init mvme147lance_probe(void)
 	macaddr[3] = address&0xff;
 	eth_hw_addr_set(dev, macaddr);
 
-<<<<<<< HEAD
-	printk("%s: MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
-	       dev->name, dev->base_addr, MVME147_LANCE_IRQ,
-	       dev->dev_addr);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lp = netdev_priv(dev);
 	lp->ram = __get_dma_pages(GFP_ATOMIC, 3);	/* 32K */
 	if (!lp->ram) {
@@ -141,12 +134,9 @@ static struct net_device * __init mvme147lance_probe(void)
 		return ERR_PTR(err);
 	}
 
-<<<<<<< HEAD
-=======
 	netdev_info(dev, "MVME147 at 0x%08lx, irq %d, Hardware Address %pM\n",
 		    dev->base_addr, MVME147_LANCE_IRQ, dev->dev_addr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return dev;
 }
 

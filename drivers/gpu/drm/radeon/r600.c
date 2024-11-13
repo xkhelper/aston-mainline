@@ -950,11 +950,7 @@ void r600_hpd_set_polarity(struct radeon_device *rdev,
 
 void r600_hpd_init(struct radeon_device *rdev)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_connector *connector;
 	unsigned enable = 0;
 
@@ -1021,11 +1017,7 @@ void r600_hpd_init(struct radeon_device *rdev)
 
 void r600_hpd_fini(struct radeon_device *rdev)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_connector *connector;
 	unsigned disable = 0;
 
@@ -3288,11 +3280,7 @@ int r600_init(struct radeon_device *rdev)
 	/* Initialize surface registers */
 	radeon_surface_init(rdev);
 	/* Initialize clocks */
-<<<<<<< HEAD
-	radeon_get_clock_info(rdev->ddev);
-=======
 	radeon_get_clock_info(rdev_to_drm(rdev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Fence driver */
 	radeon_fence_driver_init(rdev);
 	if (rdev->flags & RADEON_IS_AGP) {
@@ -4148,11 +4136,7 @@ restart_ih:
 					DRM_DEBUG("IH: D1 vblank - IH event w/o asserted irq bit?\n");
 
 				if (rdev->irq.crtc_vblank_int[0]) {
-<<<<<<< HEAD
-					drm_handle_vblank(rdev->ddev, 0);
-=======
 					drm_handle_vblank(rdev_to_drm(rdev), 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					rdev->pm.vblank_sync = true;
 					wake_up(&rdev->irq.vblank_queue);
 				}
@@ -4182,11 +4166,7 @@ restart_ih:
 					DRM_DEBUG("IH: D2 vblank - IH event w/o asserted irq bit?\n");
 
 				if (rdev->irq.crtc_vblank_int[1]) {
-<<<<<<< HEAD
-					drm_handle_vblank(rdev->ddev, 1);
-=======
 					drm_handle_vblank(rdev_to_drm(rdev), 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					rdev->pm.vblank_sync = true;
 					wake_up(&rdev->irq.vblank_queue);
 				}
@@ -4378,11 +4358,7 @@ DEFINE_SHOW_ATTRIBUTE(r600_debugfs_mc_info);
 static void r600_debugfs_mc_info_init(struct radeon_device *rdev)
 {
 #if defined(CONFIG_DEBUG_FS)
-<<<<<<< HEAD
-	struct dentry *root = rdev->ddev->primary->debugfs_root;
-=======
 	struct dentry *root = rdev_to_drm(rdev)->primary->debugfs_root;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	debugfs_create_file("r600_mc_info", 0444, root, rdev,
 			    &r600_debugfs_mc_info_fops);

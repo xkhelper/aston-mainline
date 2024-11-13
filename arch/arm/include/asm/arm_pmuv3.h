@@ -127,15 +127,12 @@ static inline u32 read_pmuver(void)
 	return (dfr0 >> 24) & 0xf;
 }
 
-<<<<<<< HEAD
-=======
 static inline bool pmuv3_has_icntr(void)
 {
 	/* FEAT_PMUv3_ICNTR not accessible for 32-bit */
 	return false;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void write_pmcr(u32 val)
 {
 	write_sysreg(val, PMCR);
@@ -161,8 +158,6 @@ static inline u64 read_pmccntr(void)
 	return read_sysreg(PMCCNTR);
 }
 
-<<<<<<< HEAD
-=======
 static inline void write_pmicntr(u64 val) {}
 
 static inline u64 read_pmicntr(void)
@@ -170,7 +165,6 @@ static inline u64 read_pmicntr(void)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void write_pmcntenset(u32 val)
 {
 	write_sysreg(val, PMCNTENSET);
@@ -196,8 +190,6 @@ static inline void write_pmccfiltr(u32 val)
 	write_sysreg(val, PMCCFILTR);
 }
 
-<<<<<<< HEAD
-=======
 static inline void write_pmicfiltr(u64 val) {}
 
 static inline u64 read_pmicfiltr(void)
@@ -205,7 +197,6 @@ static inline u64 read_pmicfiltr(void)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void write_pmovsclr(u32 val)
 {
 	write_sysreg(val, PMOVSR);

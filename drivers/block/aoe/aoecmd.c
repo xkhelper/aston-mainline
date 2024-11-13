@@ -14,11 +14,7 @@
 #include <linux/workqueue.h>
 #include <linux/kthread.h>
 #include <net/net_namespace.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/uio.h>
 #include "aoe.h"
 
@@ -365,10 +361,7 @@ ata_rw_frameinit(struct frame *f)
 	}
 
 	ah->cmdstat = ATA_CMD_PIO_READ | writebit | extbit;
-<<<<<<< HEAD
-=======
 	dev_hold(t->ifp->nd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	skb->dev = t->ifp->nd;
 }
 
@@ -409,11 +402,8 @@ aoecmd_ata_rw(struct aoedev *d)
 		__skb_queue_head_init(&queue);
 		__skb_queue_tail(&queue, skb);
 		aoenet_xmit(&queue);
-<<<<<<< HEAD
-=======
 	} else {
 		dev_put(f->t->ifp->nd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 1;
 }
@@ -496,12 +486,6 @@ resend(struct aoedev *d, struct frame *f)
 	memcpy(h->dst, t->addr, sizeof h->dst);
 	memcpy(h->src, t->ifp->nd->dev_addr, sizeof h->src);
 
-<<<<<<< HEAD
-	skb->dev = t->ifp->nd;
-	skb = skb_clone(skb, GFP_ATOMIC);
-	if (skb == NULL)
-		return;
-=======
 	dev_hold(t->ifp->nd);
 	skb->dev = t->ifp->nd;
 	skb = skb_clone(skb, GFP_ATOMIC);
@@ -509,7 +493,6 @@ resend(struct aoedev *d, struct frame *f)
 		dev_put(t->ifp->nd);
 		return;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	f->sent = ktime_get();
 	__skb_queue_head_init(&queue);
 	__skb_queue_tail(&queue, skb);
@@ -640,11 +623,8 @@ probe(struct aoetgt *t)
 		__skb_queue_head_init(&queue);
 		__skb_queue_tail(&queue, skb);
 		aoenet_xmit(&queue);
-<<<<<<< HEAD
-=======
 	} else {
 		dev_put(f->t->ifp->nd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -1423,10 +1403,7 @@ aoecmd_ata_id(struct aoedev *d)
 	ah->cmdstat = ATA_CMD_ID_ATA;
 	ah->lba3 = 0xa0;
 
-<<<<<<< HEAD
-=======
 	dev_hold(t->ifp->nd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	skb->dev = t->ifp->nd;
 
 	d->rttavg = RTTAVG_INIT;
@@ -1436,11 +1413,8 @@ aoecmd_ata_id(struct aoedev *d)
 	skb = skb_clone(skb, GFP_ATOMIC);
 	if (skb)
 		f->sent = ktime_get();
-<<<<<<< HEAD
-=======
 	else
 		dev_put(t->ifp->nd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return skb;
 }

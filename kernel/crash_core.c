@@ -505,11 +505,7 @@ int crash_check_hotplug_support(void)
 	crash_hotplug_lock();
 	/* Obtain lock while reading crash information */
 	if (!kexec_trylock()) {
-<<<<<<< HEAD
-		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
-=======
 		pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		crash_hotplug_unlock();
 		return 0;
 	}
@@ -524,20 +520,6 @@ int crash_check_hotplug_support(void)
 }
 
 /*
-<<<<<<< HEAD
- * To accurately reflect hot un/plug changes of cpu and memory resources
- * (including onling and offlining of those resources), the elfcorehdr
- * (which is passed to the crash kernel via the elfcorehdr= parameter)
- * must be updated with the new list of CPUs and memories.
- *
- * In order to make changes to elfcorehdr, two conditions are needed:
- * First, the segment containing the elfcorehdr must be large enough
- * to permit a growing number of resources; the elfcorehdr memory size
- * is based on NR_CPUS_DEFAULT and CRASH_MAX_MEMORY_RANGES.
- * Second, purgatory must explicitly exclude the elfcorehdr from the
- * list of segments it checks (since the elfcorehdr changes and thus
- * would require an update to purgatory itself to update the digest).
-=======
  * To accurately reflect hot un/plug changes of CPU and Memory resources
  * (including onling and offlining of those resources), the relevant
  * kexec segments must be updated with latest CPU and Memory resources.
@@ -557,7 +539,6 @@ int crash_check_hotplug_support(void)
  * NR_CPUS_DEFAULT and CRASH_MAX_MEMORY_RANGES. The elfcorehdr is
  * excluded from SHA verification by default if the architecture
  * supports crash hotplug.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu, void *arg)
 {
@@ -566,11 +547,7 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
 	crash_hotplug_lock();
 	/* Obtain lock while changing crash information */
 	if (!kexec_trylock()) {
-<<<<<<< HEAD
-		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
-=======
 		pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		crash_hotplug_unlock();
 		return;
 	}

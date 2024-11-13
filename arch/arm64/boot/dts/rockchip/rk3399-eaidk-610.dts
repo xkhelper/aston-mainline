@@ -8,10 +8,6 @@
 #include <dt-bindings/pwm/pwm.h>
 #include <dt-bindings/usb/pd.h>
 #include "rk3399.dtsi"
-<<<<<<< HEAD
-#include "rk3399-opp.dtsi"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	model = "OPEN AI LAB EAIDK-610";
@@ -545,11 +541,7 @@
 	status = "okay";
 
 	rt5651: audio-codec@1a {
-<<<<<<< HEAD
-		compatible = "rockchip,rt5651";
-=======
 		compatible = "realtek,rt5651";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x1a>;
 		clocks = <&cru SCLK_I2S_8CH_OUT>;
 		clock-names = "mclk";

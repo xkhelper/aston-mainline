@@ -113,10 +113,7 @@ static int __init integrator_soc_init(void)
 		return -ENODEV;
 
 	syscon_regmap = syscon_node_to_regmap(np);
-<<<<<<< HEAD
-=======
 	of_node_put(np);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(syscon_regmap))
 		return PTR_ERR(syscon_regmap);
 

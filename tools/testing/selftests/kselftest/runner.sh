@@ -111,16 +111,11 @@ run_one()
 			stdbuf="/usr/bin/stdbuf --output=L "
 		fi
 		eval kselftest_cmd_args="\$${kselftest_cmd_args_ref:-}"
-<<<<<<< HEAD
-		cmd="$stdbuf ./$BASENAME_TEST $kselftest_cmd_args"
-		if [ ! -x "$TEST" ]; then
-=======
 		if [ -x "$TEST" ]; then
 			cmd="$stdbuf ./$BASENAME_TEST $kselftest_cmd_args"
 		elif [ -x "./ksft_runner.sh" ]; then
 			cmd="$stdbuf ./ksft_runner.sh ./$BASENAME_TEST"
 		else
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			echo "# Warning: file $TEST is not executable"
 
 			if [ $(head -n 1 "$TEST" | cut -c -2) = "#!" ]

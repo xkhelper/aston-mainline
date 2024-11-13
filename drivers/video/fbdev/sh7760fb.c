@@ -575,11 +575,7 @@ static struct platform_driver sh7760_lcdc_driver = {
 		   .name = "sh7760-lcdc",
 		   },
 	.probe = sh7760fb_probe,
-<<<<<<< HEAD
-	.remove_new = sh7760fb_remove,
-=======
 	.remove = sh7760fb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(sh7760_lcdc_driver);

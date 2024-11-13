@@ -14,10 +14,7 @@
 #include "intel_de.h"
 #include "intel_display_irq.h"
 #include "intel_display_types.h"
-<<<<<<< HEAD
-=======
 #include "intel_dpt.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "intel_fb.h"
 #include "intel_fbc.h"
 #include "intel_frontbuffer.h"
@@ -541,11 +538,8 @@ static u32 tgl_plane_min_alignment(struct intel_plane *plane,
 	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS:
 	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC:
 	case I915_FORMAT_MOD_4_TILED_DG2_MC_CCS:
-<<<<<<< HEAD
-=======
 	case I915_FORMAT_MOD_4_TILED_BMG_CCS:
 	case I915_FORMAT_MOD_4_TILED_LNL_CCS:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Align to at least 4x1 main surface
 		 * tiles (16K) to match 64B of AUX.
@@ -957,12 +951,9 @@ static u32 skl_plane_ctl_tiling(u64 fb_modifier)
 		return PLANE_CTL_TILED_4 | PLANE_CTL_RENDER_DECOMPRESSION_ENABLE;
 	case I915_FORMAT_MOD_4_TILED_MTL_MC_CCS:
 		return PLANE_CTL_TILED_4 | PLANE_CTL_MEDIA_DECOMPRESSION_ENABLE;
-<<<<<<< HEAD
-=======
 	case I915_FORMAT_MOD_4_TILED_BMG_CCS:
 	case I915_FORMAT_MOD_4_TILED_LNL_CCS:
 		return PLANE_CTL_TILED_4 | PLANE_CTL_RENDER_DECOMPRESSION_ENABLE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case I915_FORMAT_MOD_Y_TILED_CCS:
 	case I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC:
 		return PLANE_CTL_TILED_Y | PLANE_CTL_RENDER_DECOMPRESSION_ENABLE;
@@ -1100,14 +1091,6 @@ static u32 skl_plane_ctl(const struct intel_crtc_state *crtc_state,
 	if (DISPLAY_VER(dev_priv) == 13)
 		plane_ctl |= adlp_plane_ctl_arb_slots(plane_state);
 
-<<<<<<< HEAD
-	if (GRAPHICS_VER(dev_priv) >= 20 &&
-	    fb->modifier == I915_FORMAT_MOD_4_TILED) {
-		plane_ctl |= PLANE_CTL_RENDER_DECOMPRESSION_ENABLE;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return plane_ctl;
 }
 
@@ -1180,11 +1163,7 @@ static u32 skl_surf_address(const struct intel_plane_state *plane_state,
 		 * within the DPT is always 0.
 		 */
 		drm_WARN_ON(&i915->drm, plane_state->dpt_vma &&
-<<<<<<< HEAD
-			    plane_state->dpt_vma->node.start);
-=======
 			    intel_dpt_offset(plane_state->dpt_vma));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		drm_WARN_ON(&i915->drm, offset & 0x1fffff);
 		return offset >> 9;
 	} else {
@@ -1612,8 +1591,6 @@ static int skl_plane_check_fb(const struct intel_crtc_state *crtc_state,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Display20 onward tile4 hflip is not supported
 	 */
@@ -1625,7 +1602,6 @@ static int skl_plane_check_fb(const struct intel_crtc_state *crtc_state,
 		return -EINVAL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (drm_rotation_90_or_270(rotation)) {
 		if (!intel_fb_supports_90_270_rotation(to_intel_framebuffer(fb))) {
 			drm_dbg_kms(&dev_priv->drm,
@@ -2488,12 +2464,9 @@ static u8 skl_get_plane_caps(struct drm_i915_private *i915,
 	if (gen12_plane_has_mc_ccs(i915, plane_id))
 		caps |= INTEL_PLANE_CAP_CCS_MC;
 
-<<<<<<< HEAD
-=======
 	if (DISPLAY_VER(i915) >= 14 && IS_DGFX(i915))
 		caps |= INTEL_PLANE_CAP_NEED64K_PHYS;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return caps;
 }
 

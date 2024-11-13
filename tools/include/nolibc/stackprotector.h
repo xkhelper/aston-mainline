@@ -18,11 +18,7 @@
  * triggering stack protector errors themselves
  */
 
-<<<<<<< HEAD
-__attribute__((weak,noreturn,section(".text.nolibc_stack_chk")))
-=======
 __attribute__((weak,used,noreturn,section(".text.nolibc_stack_chk")))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __stack_chk_fail(void)
 {
 	pid_t pid;
@@ -38,11 +34,7 @@ void __stack_chk_fail_local(void)
 	__stack_chk_fail();
 }
 
-<<<<<<< HEAD
-__attribute__((weak,section(".data.nolibc_stack_chk")))
-=======
 __attribute__((weak,used,section(".data.nolibc_stack_chk")))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 uintptr_t __stack_chk_guard;
 
 static __no_stack_protector void __stack_chk_init(void)

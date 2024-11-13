@@ -67,11 +67,7 @@ static int radeon_fbdev_create_pinned_object(struct drm_fb_helper *fb_helper,
 	int height = mode_cmd->height;
 	u32 cpp;
 
-<<<<<<< HEAD
-	info = drm_get_format_info(rdev->ddev, mode_cmd);
-=======
 	info = drm_get_format_info(rdev_to_drm(rdev), mode_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cpp = info->cpp[0];
 
 	/* need to align pitch with crtc limits */
@@ -152,24 +148,15 @@ static int radeon_fbdev_fb_open(struct fb_info *info, int user)
 	struct radeon_device *rdev = fb_helper->dev->dev_private;
 	int ret;
 
-<<<<<<< HEAD
-	ret = pm_runtime_get_sync(rdev->ddev->dev);
-=======
 	ret = pm_runtime_get_sync(rdev_to_drm(rdev)->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0 && ret != -EACCES)
 		goto err_pm_runtime_mark_last_busy;
 
 	return 0;
 
 err_pm_runtime_mark_last_busy:
-<<<<<<< HEAD
-	pm_runtime_mark_last_busy(rdev->ddev->dev);
-	pm_runtime_put_autosuspend(rdev->ddev->dev);
-=======
 	pm_runtime_mark_last_busy(rdev_to_drm(rdev)->dev);
 	pm_runtime_put_autosuspend(rdev_to_drm(rdev)->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -178,13 +165,8 @@ static int radeon_fbdev_fb_release(struct fb_info *info, int user)
 	struct drm_fb_helper *fb_helper = info->par;
 	struct radeon_device *rdev = fb_helper->dev->dev_private;
 
-<<<<<<< HEAD
-	pm_runtime_mark_last_busy(rdev->ddev->dev);
-	pm_runtime_put_autosuspend(rdev->ddev->dev);
-=======
 	pm_runtime_mark_last_busy(rdev_to_drm(rdev)->dev);
 	pm_runtime_put_autosuspend(rdev_to_drm(rdev)->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -254,11 +236,7 @@ static int radeon_fbdev_fb_helper_fb_probe(struct drm_fb_helper *fb_helper,
 		ret = -ENOMEM;
 		goto err_radeon_fbdev_destroy_pinned_object;
 	}
-<<<<<<< HEAD
-	ret = radeon_framebuffer_init(rdev->ddev, fb, &mode_cmd, gobj);
-=======
 	ret = radeon_framebuffer_init(rdev_to_drm(rdev), fb, &mode_cmd, gobj);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		DRM_ERROR("failed to initialize framebuffer %d\n", ret);
 		goto err_kfree;
@@ -396,21 +374,12 @@ void radeon_fbdev_setup(struct radeon_device *rdev)
 	fb_helper = kzalloc(sizeof(*fb_helper), GFP_KERNEL);
 	if (!fb_helper)
 		return;
-<<<<<<< HEAD
-	drm_fb_helper_prepare(rdev->ddev, fb_helper, bpp_sel, &radeon_fbdev_fb_helper_funcs);
-
-	ret = drm_client_init(rdev->ddev, &fb_helper->client, "radeon-fbdev",
-			      &radeon_fbdev_client_funcs);
-	if (ret) {
-		drm_err(rdev->ddev, "Failed to register client: %d\n", ret);
-=======
 	drm_fb_helper_prepare(rdev_to_drm(rdev), fb_helper, bpp_sel, &radeon_fbdev_fb_helper_funcs);
 
 	ret = drm_client_init(rdev_to_drm(rdev), &fb_helper->client, "radeon-fbdev",
 			      &radeon_fbdev_client_funcs);
 	if (ret) {
 		drm_err(rdev_to_drm(rdev), "Failed to register client: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_drm_client_init;
 	}
 
@@ -425,22 +394,13 @@ err_drm_client_init:
 
 void radeon_fbdev_set_suspend(struct radeon_device *rdev, int state)
 {
-<<<<<<< HEAD
-	if (rdev->ddev->fb_helper)
-		drm_fb_helper_set_suspend(rdev->ddev->fb_helper, state);
-=======
 	if (rdev_to_drm(rdev)->fb_helper)
 		drm_fb_helper_set_suspend(rdev_to_drm(rdev)->fb_helper, state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 bool radeon_fbdev_robj_is_fb(struct radeon_device *rdev, struct radeon_bo *robj)
 {
-<<<<<<< HEAD
-	struct drm_fb_helper *fb_helper = rdev->ddev->fb_helper;
-=======
 	struct drm_fb_helper *fb_helper = rdev_to_drm(rdev)->fb_helper;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_gem_object *gobj;
 
 	if (!fb_helper)

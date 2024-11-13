@@ -97,9 +97,4 @@ enum {
 	HT_DATA_SC_20_LOWER_OF_40MHZ = 2,
 };
 
-<<<<<<< HEAD
-u32 rtw_ch2freq(u32 ch);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _RTL8711_RF_H_ */

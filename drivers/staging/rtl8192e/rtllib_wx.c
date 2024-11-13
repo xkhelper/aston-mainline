@@ -474,11 +474,7 @@ int rtllib_wx_set_encode_ext(struct rtllib_device *ieee,
 	int i, idx;
 	int group_key = 0;
 	const char *alg, *module;
-<<<<<<< HEAD
-	struct lib80211_crypto_ops *ops;
-=======
 	const struct lib80211_crypto_ops *ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct lib80211_crypt_data **crypt;
 
 	struct rtllib_security sec = {

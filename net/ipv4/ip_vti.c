@@ -443,11 +443,7 @@ static int vti_tunnel_init(struct net_device *dev)
 
 	dev->flags		= IFF_NOARP;
 	dev->addr_len		= 4;
-<<<<<<< HEAD
-	dev->features		|= NETIF_F_LLTX;
-=======
 	dev->lltx		= true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	netif_keep_dst(dev);
 
 	return ip_tunnel_init(dev);

@@ -334,9 +334,6 @@ int main(int argc, char *argv[])
 
 	printf("Watchdog Ticking Away!\n");
 
-<<<<<<< HEAD
-	signal(SIGINT, term);
-=======
 	/*
 	 * Register the signals
 	 */
@@ -344,7 +341,6 @@ int main(int argc, char *argv[])
 	signal(SIGTERM, term);
 	signal(SIGKILL, term);
 	signal(SIGQUIT, term);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	while (1) {
 		keep_alive();

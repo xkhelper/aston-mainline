@@ -52,32 +52,12 @@
 #define AMD_PSTATE_TRANSITION_LATENCY	20000
 #define AMD_PSTATE_TRANSITION_DELAY	1000
 #define AMD_PSTATE_FAST_CPPC_TRANSITION_DELAY 600
-<<<<<<< HEAD
-#define CPPC_HIGHEST_PERF_PERFORMANCE	196
-#define CPPC_HIGHEST_PERF_DEFAULT	166
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define AMD_CPPC_EPP_PERFORMANCE		0x00
 #define AMD_CPPC_EPP_BALANCE_PERFORMANCE	0x80
 #define AMD_CPPC_EPP_BALANCE_POWERSAVE		0xBF
 #define AMD_CPPC_EPP_POWERSAVE			0xFF
 
-<<<<<<< HEAD
-/*
- * enum amd_pstate_mode - driver working mode of amd pstate
- */
-enum amd_pstate_mode {
-	AMD_PSTATE_UNDEFINED = 0,
-	AMD_PSTATE_DISABLE,
-	AMD_PSTATE_PASSIVE,
-	AMD_PSTATE_ACTIVE,
-	AMD_PSTATE_GUIDED,
-	AMD_PSTATE_MAX,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char * const amd_pstate_mode_string[] = {
 	[AMD_PSTATE_UNDEFINED]   = "undefined",
 	[AMD_PSTATE_DISABLE]     = "disable",
@@ -87,8 +67,6 @@ static const char * const amd_pstate_mode_string[] = {
 	NULL,
 };
 
-<<<<<<< HEAD
-=======
 const char *amd_pstate_get_mode_string(enum amd_pstate_mode mode)
 {
 	if (mode < 0 || mode >= AMD_PSTATE_MAX)
@@ -97,7 +75,6 @@ const char *amd_pstate_get_mode_string(enum amd_pstate_mode mode)
 }
 EXPORT_SYMBOL_GPL(amd_pstate_get_mode_string);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct quirk_entry {
 	u32 nominal_freq;
 	u32 lowest_freq;
@@ -389,54 +366,17 @@ static inline int amd_pstate_enable(bool enable)
 	return static_call(amd_pstate_enable)(enable);
 }
 
-<<<<<<< HEAD
-static u32 amd_pstate_highest_perf_set(struct amd_cpudata *cpudata)
-{
-	struct cpuinfo_x86 *c = &cpu_data(0);
-
-	/*
-	 * For AMD CPUs with Family ID 19H and Model ID range 0x70 to 0x7f,
-	 * the highest performance level is set to 196.
-	 * https://bugzilla.kernel.org/show_bug.cgi?id=218759
-	 */
-	if (c->x86 == 0x19 && (c->x86_model >= 0x70 && c->x86_model <= 0x7f))
-		return CPPC_HIGHEST_PERF_PERFORMANCE;
-
-	return CPPC_HIGHEST_PERF_DEFAULT;
-}
-
 static int pstate_init_perf(struct amd_cpudata *cpudata)
 {
 	u64 cap1;
-	u32 highest_perf;
-=======
-static int pstate_init_perf(struct amd_cpudata *cpudata)
-{
-	u64 cap1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int ret = rdmsrl_safe_on_cpu(cpudata->cpu, MSR_AMD_CPPC_CAP1,
 				     &cap1);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	/* For platforms that do not support the preferred core feature, the
-	 * highest_pef may be configured with 166 or 255, to avoid max frequency
-	 * calculated wrongly. we take the AMD_CPPC_HIGHEST_PERF(cap1) value as
-	 * the default max perf.
-	 */
-	if (cpudata->hw_prefcore)
-		highest_perf = amd_pstate_highest_perf_set(cpudata);
-	else
-		highest_perf = AMD_CPPC_HIGHEST_PERF(cap1);
-
-	WRITE_ONCE(cpudata->highest_perf, highest_perf);
-	WRITE_ONCE(cpudata->max_limit_perf, highest_perf);
-=======
 	WRITE_ONCE(cpudata->highest_perf, AMD_CPPC_HIGHEST_PERF(cap1));
 	WRITE_ONCE(cpudata->max_limit_perf, AMD_CPPC_HIGHEST_PERF(cap1));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WRITE_ONCE(cpudata->nominal_perf, AMD_CPPC_NOMINAL_PERF(cap1));
 	WRITE_ONCE(cpudata->lowest_nonlinear_perf, AMD_CPPC_LOWNONLIN_PERF(cap1));
 	WRITE_ONCE(cpudata->lowest_perf, AMD_CPPC_LOWEST_PERF(cap1));
@@ -448,27 +388,13 @@ static int pstate_init_perf(struct amd_cpudata *cpudata)
 static int cppc_init_perf(struct amd_cpudata *cpudata)
 {
 	struct cppc_perf_caps cppc_perf;
-<<<<<<< HEAD
-	u32 highest_perf;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int ret = cppc_get_perf_caps(cpudata->cpu, &cppc_perf);
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	if (cpudata->hw_prefcore)
-		highest_perf = amd_pstate_highest_perf_set(cpudata);
-	else
-		highest_perf = cppc_perf.highest_perf;
-
-	WRITE_ONCE(cpudata->highest_perf, highest_perf);
-	WRITE_ONCE(cpudata->max_limit_perf, highest_perf);
-=======
 	WRITE_ONCE(cpudata->highest_perf, cppc_perf.highest_perf);
 	WRITE_ONCE(cpudata->max_limit_perf, cppc_perf.highest_perf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WRITE_ONCE(cpudata->nominal_perf, cppc_perf.nominal_perf);
 	WRITE_ONCE(cpudata->lowest_nonlinear_perf,
 		   cppc_perf.lowest_nonlinear_perf);
@@ -590,22 +516,15 @@ static void amd_pstate_update(struct amd_cpudata *cpudata, u32 min_perf,
 	}
 
 	if (value == prev)
-<<<<<<< HEAD
-		return;
-=======
 		goto cpufreq_policy_put;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	WRITE_ONCE(cpudata->cppc_req_cached, value);
 
 	amd_pstate_update_perf(cpudata, min_perf, des_perf,
 			       max_perf, fast_switch);
-<<<<<<< HEAD
-=======
 
 cpufreq_policy_put:
 	cpufreq_cpu_put(policy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int amd_pstate_verify(struct cpufreq_policy_data *policy)
@@ -617,13 +536,6 @@ static int amd_pstate_verify(struct cpufreq_policy_data *policy)
 
 static int amd_pstate_update_min_max_limit(struct cpufreq_policy *policy)
 {
-<<<<<<< HEAD
-	u32 max_limit_perf, min_limit_perf, lowest_perf;
-	struct amd_cpudata *cpudata = policy->driver_data;
-
-	max_limit_perf = div_u64(policy->max * cpudata->highest_perf, cpudata->max_freq);
-	min_limit_perf = div_u64(policy->min * cpudata->highest_perf, cpudata->max_freq);
-=======
 	u32 max_limit_perf, min_limit_perf, lowest_perf, max_perf;
 	struct amd_cpudata *cpudata = policy->driver_data;
 
@@ -634,7 +546,6 @@ static int amd_pstate_update_min_max_limit(struct cpufreq_policy *policy)
 
 	max_limit_perf = div_u64(policy->max * max_perf, policy->cpuinfo.max_freq);
 	min_limit_perf = div_u64(policy->min * max_perf, policy->cpuinfo.max_freq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lowest_perf = READ_ONCE(cpudata->lowest_perf);
 	if (min_limit_perf < lowest_perf)
@@ -715,16 +626,12 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
 	unsigned long max_perf, min_perf, des_perf,
 		      cap_perf, lowest_nonlinear_perf;
 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-<<<<<<< HEAD
-	struct amd_cpudata *cpudata = policy->driver_data;
-=======
 	struct amd_cpudata *cpudata;
 
 	if (!policy)
 		return;
 
 	cpudata = policy->driver_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (policy->min != cpudata->min_limit_freq || policy->max != cpudata->max_limit_freq)
 		amd_pstate_update_min_max_limit(policy);
@@ -871,81 +778,22 @@ static void amd_pstste_sched_prefcore_workfn(struct work_struct *work)
 }
 static DECLARE_WORK(sched_prefcore_work, amd_pstste_sched_prefcore_workfn);
 
-<<<<<<< HEAD
-/*
- * Get the highest performance register value.
- * @cpu: CPU from which to get highest performance.
- * @highest_perf: Return address.
- *
- * Return: 0 for success, -EIO otherwise.
- */
-static int amd_pstate_get_highest_perf(int cpu, u32 *highest_perf)
-{
-	int ret;
-
-	if (cpu_feature_enabled(X86_FEATURE_CPPC)) {
-		u64 cap1;
-
-		ret = rdmsrl_safe_on_cpu(cpu, MSR_AMD_CPPC_CAP1, &cap1);
-		if (ret)
-			return ret;
-		WRITE_ONCE(*highest_perf, AMD_CPPC_HIGHEST_PERF(cap1));
-	} else {
-		u64 cppc_highest_perf;
-
-		ret = cppc_get_highest_perf(cpu, &cppc_highest_perf);
-		if (ret)
-			return ret;
-		WRITE_ONCE(*highest_perf, cppc_highest_perf);
-	}
-
-	return (ret);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CPPC_MAX_PERF	U8_MAX
 
 static void amd_pstate_init_prefcore(struct amd_cpudata *cpudata)
 {
-<<<<<<< HEAD
-	int ret, prio;
-	u32 highest_perf;
-
-	ret = amd_pstate_get_highest_perf(cpudata->cpu, &highest_perf);
-	if (ret)
-		return;
-
-	cpudata->hw_prefcore = true;
-	/* check if CPPC preferred core feature is enabled*/
-	if (highest_perf < CPPC_MAX_PERF)
-		prio = (int)highest_perf;
-	else {
-		pr_debug("AMD CPPC preferred core is unsupported!\n");
-		cpudata->hw_prefcore = false;
-		return;
-	}
-
-	if (!amd_pstate_prefcore)
-		return;
-=======
 	/* user disabled or not detected */
 	if (!amd_pstate_prefcore)
 		return;
 
 	cpudata->hw_prefcore = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The priorities can be set regardless of whether or not
 	 * sched_set_itmt_support(true) has been called and it is valid to
 	 * update them at any time after it has been called.
 	 */
-<<<<<<< HEAD
-	sched_set_itmt_core_prio(prio, cpudata->cpu);
-=======
 	sched_set_itmt_core_prio((int)READ_ONCE(cpudata->highest_perf), cpudata->cpu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	schedule_work(&sched_prefcore_work);
 }
@@ -953,22 +801,11 @@ static void amd_pstate_init_prefcore(struct amd_cpudata *cpudata)
 static void amd_pstate_update_limits(unsigned int cpu)
 {
 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-<<<<<<< HEAD
-	struct amd_cpudata *cpudata = policy->driver_data;
-=======
 	struct amd_cpudata *cpudata;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 prev_high = 0, cur_high = 0;
 	int ret;
 	bool highest_perf_changed = false;
 
-<<<<<<< HEAD
-	mutex_lock(&amd_pstate_driver_lock);
-	if ((!amd_pstate_prefcore) || (!cpudata->hw_prefcore))
-		goto free_cpufreq_put;
-
-	ret = amd_pstate_get_highest_perf(cpu, &cur_high);
-=======
 	if (!policy)
 		return;
 
@@ -979,18 +816,12 @@ static void amd_pstate_update_limits(unsigned int cpu)
 
 	mutex_lock(&amd_pstate_driver_lock);
 	ret = amd_get_highest_perf(cpu, &cur_high);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto free_cpufreq_put;
 
 	prev_high = READ_ONCE(cpudata->prefcore_ranking);
-<<<<<<< HEAD
-	if (prev_high != cur_high) {
-		highest_perf_changed = true;
-=======
 	highest_perf_changed = (prev_high != cur_high);
 	if (highest_perf_changed) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WRITE_ONCE(cpudata->prefcore_ranking, cur_high);
 
 		if (cur_high < CPPC_MAX_PERF)
@@ -1054,13 +885,8 @@ static u32 amd_pstate_get_transition_latency(unsigned int cpu)
 static int amd_pstate_init_freq(struct amd_cpudata *cpudata)
 {
 	int ret;
-<<<<<<< HEAD
-	u32 min_freq;
-	u32 highest_perf, max_freq;
-=======
 	u32 min_freq, max_freq;
 	u64 numerator;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 nominal_perf, nominal_freq;
 	u32 lowest_nonlinear_perf, lowest_nonlinear_freq;
 	u32 boost_ratio, lowest_nonlinear_ratio;
@@ -1082,15 +908,10 @@ static int amd_pstate_init_freq(struct amd_cpudata *cpudata)
 
 	nominal_perf = READ_ONCE(cpudata->nominal_perf);
 
-<<<<<<< HEAD
-	highest_perf = READ_ONCE(cpudata->highest_perf);
-	boost_ratio = div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf);
-=======
 	ret = amd_get_boost_ratio_numerator(cpudata->cpu, &numerator);
 	if (ret)
 		return ret;
 	boost_ratio = div_u64(numerator << SCHED_CAPACITY_SHIFT, nominal_perf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	max_freq = (nominal_freq * boost_ratio >> SCHED_CAPACITY_SHIFT) * 1000;
 
 	lowest_nonlinear_perf = READ_ONCE(cpudata->lowest_nonlinear_perf);
@@ -1145,20 +966,12 @@ static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
 
 	cpudata->cpu = policy->cpu;
 
-<<<<<<< HEAD
-	amd_pstate_init_prefcore(cpudata);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = amd_pstate_init_perf(cpudata);
 	if (ret)
 		goto free_cpudata1;
 
-<<<<<<< HEAD
-=======
 	amd_pstate_init_prefcore(cpudata);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = amd_pstate_init_freq(cpudata);
 	if (ret)
 		goto free_cpudata1;
@@ -1393,8 +1206,6 @@ static int amd_pstate_register_driver(int mode)
 		return -EINVAL;
 
 	cppc_state = mode;
-<<<<<<< HEAD
-=======
 
 	ret = amd_pstate_enable(true);
 	if (ret) {
@@ -1404,16 +1215,12 @@ static int amd_pstate_register_driver(int mode)
 		return ret;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = cpufreq_register_driver(current_pstate_driver);
 	if (ret) {
 		amd_pstate_driver_cleanup();
 		return ret;
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1490,11 +1297,7 @@ static ssize_t amd_pstate_show_status(char *buf)
 	return sysfs_emit(buf, "%s\n", amd_pstate_mode_string[cppc_state]);
 }
 
-<<<<<<< HEAD
-static int amd_pstate_update_status(const char *buf, size_t size)
-=======
 int amd_pstate_update_status(const char *buf, size_t size)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int mode_idx;
 
@@ -1511,10 +1314,7 @@ int amd_pstate_update_status(const char *buf, size_t size)
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
 EXPORT_SYMBOL_GPL(amd_pstate_update_status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static ssize_t status_show(struct device *dev,
 			   struct device_attribute *attr, char *buf)
@@ -1632,20 +1432,12 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
 	cpudata->cpu = policy->cpu;
 	cpudata->epp_policy = 0;
 
-<<<<<<< HEAD
-	amd_pstate_init_prefcore(cpudata);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = amd_pstate_init_perf(cpudata);
 	if (ret)
 		goto free_cpudata1;
 
-<<<<<<< HEAD
-=======
 	amd_pstate_init_prefcore(cpudata);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = amd_pstate_init_freq(cpudata);
 	if (ret)
 		goto free_cpudata1;
@@ -1712,23 +1504,13 @@ static void amd_pstate_epp_cpu_exit(struct cpufreq_policy *policy)
 	pr_debug("CPU %d exiting\n", policy->cpu);
 }
 
-<<<<<<< HEAD
-static void amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
-=======
 static int amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
 	u32 max_perf, min_perf, min_limit_perf, max_limit_perf;
 	u64 value;
 	s16 epp;
 
-<<<<<<< HEAD
-	max_perf = READ_ONCE(cpudata->highest_perf);
-	min_perf = READ_ONCE(cpudata->lowest_perf);
-	max_limit_perf = div_u64(policy->max * cpudata->highest_perf, cpudata->max_freq);
-	min_limit_perf = div_u64(policy->min * cpudata->highest_perf, cpudata->max_freq);
-=======
 	if (cpudata->boost_supported && !policy->boost_enabled)
 		max_perf = READ_ONCE(cpudata->nominal_perf);
 	else
@@ -1736,7 +1518,6 @@ static int amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
 	min_perf = READ_ONCE(cpudata->lowest_perf);
 	max_limit_perf = div_u64(policy->max * max_perf, policy->cpuinfo.max_freq);
 	min_limit_perf = div_u64(policy->min * max_perf, policy->cpuinfo.max_freq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (min_limit_perf < min_perf)
 		min_limit_perf = min_perf;
@@ -1776,11 +1557,7 @@ static int amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
 		 * This return value can only be negative for shared_memory
 		 * systems where EPP register read/write not supported.
 		 */
-<<<<<<< HEAD
-		return;
-=======
 		return epp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE)
@@ -1793,20 +1570,13 @@ static int amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
 	}
 
 	WRITE_ONCE(cpudata->cppc_req_cached, value);
-<<<<<<< HEAD
-	amd_pstate_set_epp(cpudata, epp);
-=======
 	return amd_pstate_set_epp(cpudata, epp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int amd_pstate_epp_set_policy(struct cpufreq_policy *policy)
 {
 	struct amd_cpudata *cpudata = policy->driver_data;
-<<<<<<< HEAD
-=======
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!policy->cpuinfo.max_freq)
 		return -ENODEV;
@@ -1816,13 +1586,9 @@ static int amd_pstate_epp_set_policy(struct cpufreq_policy *policy)
 
 	cpudata->policy = policy->policy;
 
-<<<<<<< HEAD
-	amd_pstate_epp_update_limit(policy);
-=======
 	ret = amd_pstate_epp_update_limit(policy);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * policy->cur is never updated with the amd_pstate_epp driver, but it
@@ -2136,15 +1902,12 @@ static int __init amd_pstate_init(void)
 		static_call_update(amd_pstate_update_perf, cppc_update_perf);
 	}
 
-<<<<<<< HEAD
-=======
 	if (amd_pstate_prefcore) {
 		ret = amd_detect_prefcore(&amd_pstate_prefcore);
 		if (ret)
 			return ret;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* enable amd pstate feature */
 	ret = amd_pstate_enable(true);
 	if (ret) {

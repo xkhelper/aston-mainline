@@ -65,10 +65,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
 	struct gru_tlb_global_handle *tgh;
 	int n;
 
-<<<<<<< HEAD
-	preempt_disable();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (uv_numa_blade_id() == gru->gs_blade_id)
 		n = get_on_blade_tgh(gru);
 	else
@@ -82,10 +78,6 @@ static struct gru_tlb_global_handle *get_lock_tgh_handle(struct gru_state
 static void get_unlock_tgh_handle(struct gru_tlb_global_handle *tgh)
 {
 	unlock_tgh_handle(tgh);
-<<<<<<< HEAD
-	preempt_enable();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

@@ -189,13 +189,10 @@ extern void *__vcalloc_noprof(size_t n, size_t size, gfp_t flags) __alloc_size(1
 extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, 2);
 #define vcalloc(...)		alloc_hooks(vcalloc_noprof(__VA_ARGS__))
 
-<<<<<<< HEAD
-=======
 void * __must_check vrealloc_noprof(const void *p, size_t size, gfp_t flags)
 		__realloc_size(2);
 #define vrealloc(...)		alloc_hooks(vrealloc_noprof(__VA_ARGS__))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void vfree(const void *addr);
 extern void vfree_atomic(const void *addr);
 

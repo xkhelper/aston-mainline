@@ -74,12 +74,8 @@
  *            -I../nolibc -o hello hello.c -lgcc
  *
  * The available standard (but limited) include files are:
-<<<<<<< HEAD
- *   ctype.h, errno.h, signal.h, stdarg.h, stdio.h, stdlib.h, string.h, time.h
-=======
  *   ctype.h, errno.h, signal.h, stdarg.h, stdbool.h stdio.h, stdlib.h,
  *   string.h, time.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * In addition, the following ones are expected to be provided by the compiler:
  *   float.h, stddef.h

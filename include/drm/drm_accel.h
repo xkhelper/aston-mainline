@@ -28,12 +28,8 @@
 	.poll		= drm_poll,\
 	.read		= drm_read,\
 	.llseek		= noop_llseek, \
-<<<<<<< HEAD
-	.mmap		= drm_gem_mmap
-=======
 	.mmap		= drm_gem_mmap, \
 	.fop_flags	= FOP_UNSIGNED_OFFSET
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * DEFINE_DRM_ACCEL_FOPS() - macro to generate file operations for accelerators drivers
@@ -56,18 +52,10 @@
 
 #if IS_ENABLED(CONFIG_DRM_ACCEL)
 
-<<<<<<< HEAD
-void accel_core_exit(void);
-int accel_core_init(void);
-void accel_minor_remove(int index);
-int accel_minor_alloc(void);
-void accel_minor_replace(struct drm_minor *minor, int index);
-=======
 extern struct xarray accel_minors_xa;
 
 void accel_core_exit(void);
 int accel_core_init(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void accel_set_device_instance_params(struct device *kdev, int index);
 int accel_open(struct inode *inode, struct file *filp);
 void accel_debugfs_init(struct drm_device *dev);
@@ -85,22 +73,6 @@ static inline int __init accel_core_init(void)
 	return 0;
 }
 
-<<<<<<< HEAD
-static inline void accel_minor_remove(int index)
-{
-}
-
-static inline int accel_minor_alloc(void)
-{
-	return -EOPNOTSUPP;
-}
-
-static inline void accel_minor_replace(struct drm_minor *minor, int index)
-{
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void accel_set_device_instance_params(struct device *kdev, int index)
 {
 }

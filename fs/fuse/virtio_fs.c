@@ -56,20 +56,14 @@ struct virtio_fs_vq {
 	bool connected;
 	long in_flight;
 	struct completion in_flight_zero; /* No inflight requests */
-<<<<<<< HEAD
-=======
 	struct kobject *kobj;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char name[VQ_NAME_LEN];
 } ____cacheline_aligned_in_smp;
 
 /* A virtio-fs device instance */
 struct virtio_fs {
 	struct kobject kobj;
-<<<<<<< HEAD
-=======
 	struct kobject *mqs_kobj;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head list;    /* on virtio_fs_instances */
 	char *tag;
 	struct virtio_fs_vq *vqs;
@@ -208,12 +202,6 @@ static const struct kobj_type virtio_fs_ktype = {
 	.default_groups = virtio_fs_groups,
 };
 
-<<<<<<< HEAD
-/* Make sure virtiofs_mutex is held */
-static void virtio_fs_put(struct virtio_fs *fs)
-{
-	kobject_put(&fs->kobj);
-=======
 static struct virtio_fs_vq *virtio_fs_kobj_to_vq(struct virtio_fs *fs,
 		struct kobject *kobj)
 {
@@ -295,20 +283,13 @@ static void virtio_fs_put(struct virtio_fs *fs)
 	mutex_lock(&virtio_fs_mutex);
 	virtio_fs_put_locked(fs);
 	mutex_unlock(&virtio_fs_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void virtio_fs_fiq_release(struct fuse_iqueue *fiq)
 {
 	struct virtio_fs *vfs = fiq->priv;
 
-<<<<<<< HEAD
-	mutex_lock(&virtio_fs_mutex);
 	virtio_fs_put(vfs);
-	mutex_unlock(&virtio_fs_mutex);
-=======
-	virtio_fs_put(vfs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void virtio_fs_drain_queue(struct virtio_fs_vq *fsvq)
@@ -369,8 +350,6 @@ static void virtio_fs_start_all_queues(struct virtio_fs *fs)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void virtio_fs_delete_queues_sysfs(struct virtio_fs *fs)
 {
 	struct virtio_fs_vq *fsvq;
@@ -415,7 +394,6 @@ out_del:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Add a new instance to the list or return -EEXIST if tag name exists*/
 static int virtio_fs_add_instance(struct virtio_device *vdev,
 				  struct virtio_fs *fs)
@@ -439,19 +417,6 @@ static int virtio_fs_add_instance(struct virtio_device *vdev,
 	 */
 	fs->kobj.kset = virtio_fs_kset;
 	ret = kobject_add(&fs->kobj, NULL, "%d", vdev->index);
-<<<<<<< HEAD
-	if (ret < 0) {
-		mutex_unlock(&virtio_fs_mutex);
-		return ret;
-	}
-
-	ret = sysfs_create_link(&fs->kobj, &vdev->dev.kobj, "device");
-	if (ret < 0) {
-		kobject_del(&fs->kobj);
-		mutex_unlock(&virtio_fs_mutex);
-		return ret;
-	}
-=======
 	if (ret < 0)
 		goto out_unlock;
 
@@ -468,7 +433,6 @@ static int virtio_fs_add_instance(struct virtio_device *vdev,
 	ret = virtio_fs_add_queues_sysfs(fs);
 	if (ret)
 		goto out_remove;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_add_tail(&fs->list, &virtio_fs_instances);
 
@@ -477,8 +441,6 @@ static int virtio_fs_add_instance(struct virtio_device *vdev,
 	kobject_uevent(&fs->kobj, KOBJ_ADD);
 
 	return 0;
-<<<<<<< HEAD
-=======
 
 out_remove:
 	sysfs_remove_link(&fs->kobj, "device");
@@ -489,7 +451,6 @@ out_del:
 out_unlock:
 	mutex_unlock(&virtio_fs_mutex);
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Return the virtio_fs with a given tag, or NULL */
@@ -1218,13 +1179,9 @@ static void virtio_fs_remove(struct virtio_device *vdev)
 	mutex_lock(&virtio_fs_mutex);
 	/* This device is going away. No one should get new reference */
 	list_del_init(&fs->list);
-<<<<<<< HEAD
-	sysfs_remove_link(&fs->kobj, "device");
-=======
 	virtio_fs_delete_queues_sysfs(fs);
 	sysfs_remove_link(&fs->kobj, "device");
 	kobject_put(fs->mqs_kobj);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kobject_del(&fs->kobj);
 	virtio_fs_stop_all_queues(fs);
 	virtio_fs_drain_all_queues_locked(fs);
@@ -1233,11 +1190,7 @@ static void virtio_fs_remove(struct virtio_device *vdev)
 
 	vdev->priv = NULL;
 	/* Put device reference on virtio_fs object */
-<<<<<<< HEAD
-	virtio_fs_put(fs);
-=======
 	virtio_fs_put_locked(fs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&virtio_fs_mutex);
 }
 
@@ -1276,24 +1229,6 @@ static struct virtio_driver virtio_fs_driver = {
 #endif
 };
 
-<<<<<<< HEAD
-static void virtio_fs_wake_forget_and_unlock(struct fuse_iqueue *fiq)
-__releases(fiq->lock)
-{
-	struct fuse_forget_link *link;
-	struct virtio_fs_forget *forget;
-	struct virtio_fs_forget_req *req;
-	struct virtio_fs *fs;
-	struct virtio_fs_vq *fsvq;
-	u64 unique;
-
-	link = fuse_dequeue_forget(fiq, 1, NULL);
-	unique = fuse_get_unique(fiq);
-
-	fs = fiq->priv;
-	fsvq = &fs->vqs[VQ_HIPRIO];
-	spin_unlock(&fiq->lock);
-=======
 static void virtio_fs_send_forget(struct fuse_iqueue *fiq, struct fuse_forget_link *link)
 {
 	struct virtio_fs_forget *forget;
@@ -1301,7 +1236,6 @@ static void virtio_fs_send_forget(struct fuse_iqueue *fiq, struct fuse_forget_li
 	struct virtio_fs *fs = fiq->priv;
 	struct virtio_fs_vq *fsvq = &fs->vqs[VQ_HIPRIO];
 	u64 unique = fuse_get_unique(fiq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Allocate a buffer for the request */
 	forget = kmalloc(sizeof(*forget), GFP_NOFS | __GFP_NOFAIL);
@@ -1321,12 +1255,7 @@ static void virtio_fs_send_forget(struct fuse_iqueue *fiq, struct fuse_forget_li
 	kfree(link);
 }
 
-<<<<<<< HEAD
-static void virtio_fs_wake_interrupt_and_unlock(struct fuse_iqueue *fiq)
-__releases(fiq->lock)
-=======
 static void virtio_fs_send_interrupt(struct fuse_iqueue *fiq, struct fuse_req *req)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * TODO interrupts.
@@ -1335,10 +1264,6 @@ static void virtio_fs_send_interrupt(struct fuse_iqueue *fiq, struct fuse_req *r
 	 * Exceptions are blocking lock operations; for example fcntl(F_SETLKW)
 	 * with shared lock between host and guest.
 	 */
-<<<<<<< HEAD
-	spin_unlock(&fiq->lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Count number of scatter-gather elements required */
@@ -1543,23 +1468,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-static void virtio_fs_wake_pending_and_unlock(struct fuse_iqueue *fiq)
-__releases(fiq->lock)
-{
-	unsigned int queue_id;
-	struct virtio_fs *fs;
-	struct fuse_req *req;
-	struct virtio_fs_vq *fsvq;
-	int ret;
-
-	WARN_ON(list_empty(&fiq->pending));
-	req = list_last_entry(&fiq->pending, struct fuse_req, list);
-	clear_bit(FR_PENDING, &req->flags);
-	list_del_init(&req->list);
-	WARN_ON(!list_empty(&fiq->pending));
-	spin_unlock(&fiq->lock);
-=======
 static void virtio_fs_send_req(struct fuse_iqueue *fiq, struct fuse_req *req)
 {
 	unsigned int queue_id;
@@ -1571,7 +1479,6 @@ static void virtio_fs_send_req(struct fuse_iqueue *fiq, struct fuse_req *req)
 		req->in.h.unique = fuse_get_unique(fiq);
 
 	clear_bit(FR_PENDING, &req->flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fs = fiq->priv;
 	queue_id = VQ_REQUEST + fs->mq_map[raw_smp_processor_id()];
@@ -1609,17 +1516,10 @@ static void virtio_fs_send_req(struct fuse_iqueue *fiq, struct fuse_req *req)
 }
 
 static const struct fuse_iqueue_ops virtio_fs_fiq_ops = {
-<<<<<<< HEAD
-	.wake_forget_and_unlock		= virtio_fs_wake_forget_and_unlock,
-	.wake_interrupt_and_unlock	= virtio_fs_wake_interrupt_and_unlock,
-	.wake_pending_and_unlock	= virtio_fs_wake_pending_and_unlock,
-	.release			= virtio_fs_fiq_release,
-=======
 	.send_forget	= virtio_fs_send_forget,
 	.send_interrupt	= virtio_fs_send_interrupt,
 	.send_req	= virtio_fs_send_req,
 	.release	= virtio_fs_fiq_release,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline void virtio_fs_ctx_set_defaults(struct fuse_fs_context *ctx)
@@ -1819,13 +1719,7 @@ static int virtio_fs_get_tree(struct fs_context *fsc)
 
 out_err:
 	kfree(fc);
-<<<<<<< HEAD
-	mutex_lock(&virtio_fs_mutex);
 	virtio_fs_put(fs);
-	mutex_unlock(&virtio_fs_mutex);
-=======
-	virtio_fs_put(fs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -1855,10 +1749,7 @@ static struct file_system_type virtio_fs_type = {
 	.name		= "virtiofs",
 	.init_fs_context = virtio_fs_init_fs_context,
 	.kill_sb	= virtio_kill_sb,
-<<<<<<< HEAD
-=======
 	.fs_flags	= FS_ALLOW_IDMAP,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int virtio_fs_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)

@@ -127,8 +127,6 @@ properties:
           - const: hoperun,hihope-rzg2m
           - const: renesas,r8a774a1
 
-<<<<<<< HEAD
-=======
       - description: RZ/G2M v3.0 (R8A774A3)
         items:
           - enum:
@@ -141,7 +139,6 @@ properties:
           - const: hoperun,hihope-rzg2m
           - const: renesas,r8a774a3
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - description: RZ/G2N (R8A774B1)
         items:
           - enum:
@@ -531,11 +528,8 @@ properties:
       - description: RZ/V2H(P) (R9A09G057)
         items:
           - enum:
-<<<<<<< HEAD
-=======
               - renesas,rzv2h-evk # RZ/V2H EVK
           - enum:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - renesas,r9a09g057h41 # RZ/V2H
               - renesas,r9a09g057h42 # RZ/V2H with Mali-G31 support
               - renesas,r9a09g057h44 # RZ/V2HP with Mali-G31 + Mali-C55 support

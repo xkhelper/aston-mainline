@@ -2049,11 +2049,7 @@ static struct platform_driver ican3_driver = {
 		.name	= DRV_NAME,
 	},
 	.probe		= ican3_probe,
-<<<<<<< HEAD
-	.remove_new	= ican3_remove,
-=======
 	.remove		= ican3_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(ican3_driver);

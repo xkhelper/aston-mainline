@@ -469,11 +469,7 @@ struct vc4_bo *vc4_bo_create(struct drm_device *dev, size_t unaligned_size,
 
 	if (IS_ERR(dma_obj)) {
 		struct drm_printer p = drm_info_printer(vc4->base.dev);
-<<<<<<< HEAD
-		DRM_ERROR("Failed to allocate from GEM DMA helper:\n");
-=======
 		drm_err(dev, "Failed to allocate from GEM DMA helper:\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vc4_bo_stats_print(&p, vc4);
 		return ERR_PTR(-ENOMEM);
 	}
@@ -706,11 +702,7 @@ static struct dma_buf *vc4_prime_export(struct drm_gem_object *obj, int flags)
 	 */
 	ret = vc4_bo_inc_usecnt(bo);
 	if (ret) {
-<<<<<<< HEAD
-		DRM_ERROR("Failed to increment BO usecnt\n");
-=======
 		drm_err(obj->dev, "Failed to increment BO usecnt\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ERR_PTR(ret);
 	}
 
@@ -1058,17 +1050,10 @@ static void vc4_bo_cache_destroy(struct drm_device *dev, void *unused)
 
 	for (i = 0; i < vc4->num_labels; i++) {
 		if (vc4->bo_labels[i].num_allocated) {
-<<<<<<< HEAD
-			DRM_ERROR("Destroying BO cache with %d %s "
-				  "BOs still allocated\n",
-				  vc4->bo_labels[i].num_allocated,
-				  vc4->bo_labels[i].name);
-=======
 			drm_err(dev, "Destroying BO cache with %d %s "
 				"BOs still allocated\n",
 				vc4->bo_labels[i].num_allocated,
 				vc4->bo_labels[i].name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (is_user_label(i))
@@ -1098,11 +1083,7 @@ int vc4_label_bo_ioctl(struct drm_device *dev, void *data,
 
 	gem_obj = drm_gem_object_lookup(file_priv, args->handle);
 	if (!gem_obj) {
-<<<<<<< HEAD
-		DRM_ERROR("Failed to look up GEM BO %d\n", args->handle);
-=======
 		drm_err(dev, "Failed to look up GEM BO %d\n", args->handle);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(name);
 		return -ENOENT;
 	}

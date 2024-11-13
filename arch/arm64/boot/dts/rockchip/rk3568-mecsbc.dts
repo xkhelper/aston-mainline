@@ -89,8 +89,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &can0 {
 	compatible = "rockchip,rk3568v3-canfd", "rockchip,rk3568v2-canfd";
 	pinctrl-names = "default";
@@ -105,7 +103,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &combphy0 {
 	status = "okay";
 };

@@ -393,11 +393,7 @@ void __init opal_lpc_init(void)
 	for_each_compatible_node(np, NULL, "ibm,power8-lpc") {
 		if (!of_device_is_available(np))
 			continue;
-<<<<<<< HEAD
-		if (!of_get_property(np, "primary", NULL))
-=======
 		if (!of_property_present(np, "primary"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		opal_lpc_chip_id = of_get_ibm_chip_id(np);
 		of_node_put(np);

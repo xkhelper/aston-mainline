@@ -428,11 +428,7 @@ static void coredump_task_exit(struct task_struct *tsk)
 			complete(&core_state->startup);
 
 		for (;;) {
-<<<<<<< HEAD
-			set_current_state(TASK_UNINTERRUPTIBLE|TASK_FREEZABLE);
-=======
 			set_current_state(TASK_IDLE|TASK_FREEZABLE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!self.task) /* see coredump_finish() */
 				break;
 			schedule();
@@ -782,8 +778,6 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
 }
 
 #ifdef CONFIG_DEBUG_STACK_USAGE
-<<<<<<< HEAD
-=======
 unsigned long stack_not_used(struct task_struct *p)
 {
 	unsigned long *n = end_of_stack(p);
@@ -840,7 +834,6 @@ static inline void kstack_histogram(unsigned long used_stack)
 #endif /* CONFIG_VM_EVENT_COUNTERS */
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void check_stack_usage(void)
 {
 	static DEFINE_SPINLOCK(low_water_lock);
@@ -848,10 +841,7 @@ static void check_stack_usage(void)
 	unsigned long free;
 
 	free = stack_not_used(current);
-<<<<<<< HEAD
-=======
 	kstack_histogram(THREAD_SIZE - free);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (free >= lowest_to_date)
 		return;

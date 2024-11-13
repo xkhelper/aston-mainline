@@ -2313,11 +2313,7 @@ static int cdrom_ioctl_media_changed(struct cdrom_device_info *cdi,
 		return -EINVAL;
 
 	/* Prevent arg from speculatively bypassing the length check */
-<<<<<<< HEAD
-	barrier_nospec();
-=======
 	arg = array_index_nospec(arg, cdi->capacity);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info = kmalloc(sizeof(*info), GFP_KERNEL);
 	if (!info)

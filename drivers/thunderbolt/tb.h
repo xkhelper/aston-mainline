@@ -1353,16 +1353,6 @@ int usb4_port_sb_read(struct tb_port *port, enum usb4_sb_target target, u8 index
 int usb4_port_sb_write(struct tb_port *port, enum usb4_sb_target target,
 		       u8 index, u8 reg, const void *buf, u8 size);
 
-<<<<<<< HEAD
-int usb4_port_margining_caps(struct tb_port *port, enum usb4_sb_target target,
-			     u8 index, u32 *caps);
-int usb4_port_hw_margin(struct tb_port *port, enum usb4_sb_target target,
-			u8 index, unsigned int lanes, unsigned int ber_level,
-			bool timing, bool right_high, u32 *results);
-int usb4_port_sw_margin(struct tb_port *port, enum usb4_sb_target target,
-			u8 index, unsigned int lanes, bool timing,
-			bool right_high, u32 counter);
-=======
 /**
  * enum usb4_margin_sw_error_counter - Software margining error counter operation
  * @USB4_MARGIN_SW_ERROR_COUNTER_NOP: No change in counter setup
@@ -1405,7 +1395,6 @@ int usb4_port_hw_margin(struct tb_port *port, enum usb4_sb_target target,
 int usb4_port_sw_margin(struct tb_port *port, enum usb4_sb_target target,
 			u8 index, const struct usb4_port_margining_params *params,
 			u32 *results);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int usb4_port_sw_margin_errors(struct tb_port *port, enum usb4_sb_target target,
 			       u8 index, u32 *errors);
 

@@ -529,11 +529,7 @@ static int of_serdev_register_devices(struct serdev_controller *ctrl)
 	bool found = false;
 
 	for_each_available_child_of_node(ctrl->dev.of_node, node) {
-<<<<<<< HEAD
-		if (!of_get_property(node, "compatible", NULL))
-=======
 		if (!of_property_present(node, "compatible"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		dev_dbg(&ctrl->dev, "adding child %pOF\n", node);

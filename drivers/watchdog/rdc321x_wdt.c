@@ -197,10 +197,6 @@ static ssize_t rdc321x_wdt_write(struct file *file, const char __user *buf,
 
 static const struct file_operations rdc321x_wdt_fops = {
 	.owner		= THIS_MODULE,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl	= rdc321x_wdt_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,
 	.open		= rdc321x_wdt_open,

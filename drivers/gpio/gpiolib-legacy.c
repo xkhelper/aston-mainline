@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-<<<<<<< HEAD
-=======
 #include <linux/bitops.h>
 #include <linux/device.h>
 #include <linux/errno.h>
 #include <linux/export.h>
 #include <linux/gfp.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/gpio/consumer.h>
 #include <linux/gpio/driver.h>
 
@@ -31,12 +28,9 @@ EXPORT_SYMBOL_GPL(gpio_free);
  * @label:	a literal description string of this GPIO
  *
  * **DEPRECATED** This function is deprecated and must not be used in new code.
-<<<<<<< HEAD
-=======
  *
  * Returns:
  * 0 on success, or negative errno on failure.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
 {
@@ -55,18 +49,10 @@ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
 	if (flags & GPIOF_ACTIVE_LOW)
 		set_bit(FLAG_ACTIVE_LOW, &desc->flags);
 
-<<<<<<< HEAD
-	if (flags & GPIOF_DIR_IN)
-		err = gpiod_direction_input(desc);
-	else
-		err = gpiod_direction_output_raw(desc,
-				(flags & GPIOF_INIT_HIGH) ? 1 : 0);
-=======
 	if (flags & GPIOF_IN)
 		err = gpiod_direction_input(desc);
 	else
 		err = gpiod_direction_output_raw(desc, !!(flags & GPIOF_OUT_INIT_HIGH));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (err)
 		goto free_gpio;
@@ -94,8 +80,6 @@ int gpio_request(unsigned gpio, const char *label)
 	return gpiod_request(desc, label);
 }
 EXPORT_SYMBOL_GPL(gpio_request);
-<<<<<<< HEAD
-=======
 
 static void devm_gpio_release(struct device *dev, void *res)
 {
@@ -176,4 +160,3 @@ int devm_gpio_request_one(struct device *dev, unsigned gpio,
 	return 0;
 }
 EXPORT_SYMBOL_GPL(devm_gpio_request_one);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -196,13 +196,8 @@
 			interrupts = <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>;
 			pinctrl-names = "default";
 			pinctrl-0 = <&uart0_pins>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PIUART0>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PIUART0>, <&pismu TMPV770X_CLK_PIUART0>;
 			clock-names = "uartclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -212,13 +207,8 @@
 			interrupts = <GIC_SPI 134 IRQ_TYPE_LEVEL_HIGH>;
 			pinctrl-names = "default";
 			pinctrl-0 = <&uart1_pins>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PIUART1>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PIUART1>, <&pismu TMPV770X_CLK_PIUART1>;
 			clock-names = "uartclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -228,13 +218,8 @@
 			interrupts = <GIC_SPI 135 IRQ_TYPE_LEVEL_HIGH>;
 			pinctrl-names = "default";
 			pinctrl-0 = <&uart2_pins>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PIUART2>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PIUART2>, <&pismu TMPV770X_CLK_PIUART2>;
 			clock-names = "uartclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -244,13 +229,8 @@
 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
 			pinctrl-names = "default";
 			pinctrl-0 = <&uart3_pins>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PIUART2>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PIUART2>, <&pismu TMPV770X_CLK_PIUART2>;
 			clock-names = "uartclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -380,13 +360,8 @@
 			num-cs = <1>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PISPI1>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PISPI1>, <&pismu TMPV770X_CLK_PISPI1>;
 			clock-names = "sspclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -399,13 +374,8 @@
 			num-cs = <1>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PISPI1>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PISPI1>, <&pismu TMPV770X_CLK_PISPI1>;
 			clock-names = "sspclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -418,13 +388,8 @@
 			num-cs = <1>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PISPI2>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PISPI2>, <&pismu TMPV770X_CLK_PISPI2>;
 			clock-names = "sspclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -437,13 +402,8 @@
 			num-cs = <1>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PISPI3>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PISPI3>, <&pismu TMPV770X_CLK_PISPI3>;
 			clock-names = "sspclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -456,13 +416,8 @@
 			num-cs = <1>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PISPI4>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PISPI4>, <&pismu TMPV770X_CLK_PISPI4>;
 			clock-names = "sspclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -475,13 +430,8 @@
 			num-cs = <1>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PISPI5>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PISPI5>, <&pismu TMPV770X_CLK_PISPI5>;
 			clock-names = "sspclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -494,13 +444,8 @@
 			num-cs = <1>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-			clocks = <&pismu TMPV770X_CLK_PISPI6>;
-			clock-names = "apb_pclk";
-=======
 			clocks = <&pismu TMPV770X_CLK_PISPI6>, <&pismu TMPV770X_CLK_PISPI6>;
 			clock-names = "sspclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 

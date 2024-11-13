@@ -52,11 +52,7 @@ struct prm_context_buffer {
 static LIST_HEAD(prm_module_list);
 
 struct prm_handler_info {
-<<<<<<< HEAD
-	guid_t guid;
-=======
 	efi_guid_t guid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	efi_status_t (__efiapi *handler_addr)(u64, void *);
 	u64 static_data_buffer_addr;
 	u64 acpi_param_buffer_addr;
@@ -76,23 +72,13 @@ struct prm_module_info {
 	struct prm_handler_info handlers[] __counted_by(handler_count);
 };
 
-<<<<<<< HEAD
-static u64 efi_pa_va_lookup(u64 pa)
-=======
 static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	efi_memory_desc_t *md;
 	u64 pa_offset = pa & ~PAGE_MASK;
 	u64 page = pa & PAGE_MASK;
 
 	for_each_efi_memory_desc(md) {
-<<<<<<< HEAD
-		if (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE * md->num_pages)
-			return pa_offset + md->virt_addr + page - md->phys_addr;
-	}
-
-=======
 		if ((md->attribute & EFI_MEMORY_RUNTIME) &&
 		    (md->phys_addr < pa && pa < md->phys_addr + PAGE_SIZE * md->num_pages)) {
 			return pa_offset + md->virt_addr + page - md->phys_addr;
@@ -101,7 +87,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
 
 	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -167,11 +152,6 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
 		th = &tm->handlers[cur_handler];
 
 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
-<<<<<<< HEAD
-		th->handler_addr = (void *)efi_pa_va_lookup(handler_info->handler_address);
-		th->static_data_buffer_addr = efi_pa_va_lookup(handler_info->static_data_buffer_address);
-		th->acpi_param_buffer_addr = efi_pa_va_lookup(handler_info->acpi_param_buffer_address);
-=======
 		th->handler_addr =
 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
 
@@ -181,7 +161,6 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
 		th->acpi_param_buffer_addr =
 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
 
 	return 0;
@@ -245,8 +224,6 @@ static struct prm_handler_info *find_prm_handler(const guid_t *guid)
 #define UPDATE_LOCK_ALREADY_HELD 	4
 #define UPDATE_UNLOCK_WITHOUT_LOCK 	5
 
-<<<<<<< HEAD
-=======
 int acpi_call_prm_handler(guid_t handler_guid, void *param_buffer)
 {
 	struct prm_handler_info *handler = find_prm_handler(&handler_guid);
@@ -271,7 +248,6 @@ int acpi_call_prm_handler(guid_t handler_guid, void *param_buffer)
 }
 EXPORT_SYMBOL_GPL(acpi_call_prm_handler);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This is the PlatformRtMechanism opregion space handler.
  * @function: indicates the read/write. In fact as the PlatformRtMechanism
@@ -311,8 +287,6 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
 		if (!handler || !module)
 			goto invalid_guid;
 
-<<<<<<< HEAD
-=======
 		if (!handler->handler_addr ||
 		    !handler->static_data_buffer_addr ||
 		    !handler->acpi_param_buffer_addr) {
@@ -320,7 +294,6 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
 			return AE_OK;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ACPI_COPY_NAMESEG(context.signature, "PRMC");
 		context.revision = 0x0;
 		context.reserved = 0x0;

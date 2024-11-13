@@ -1271,11 +1271,7 @@ static void ov2640_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ov2640_id[] = {
-<<<<<<< HEAD
-	{ "ov2640", 0 },
-=======
 	{ "ov2640" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, ov2640_id);

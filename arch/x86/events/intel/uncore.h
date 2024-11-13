@@ -611,18 +611,12 @@ void skl_uncore_cpu_init(void);
 void icl_uncore_cpu_init(void);
 void tgl_uncore_cpu_init(void);
 void adl_uncore_cpu_init(void);
-<<<<<<< HEAD
-=======
 void lnl_uncore_cpu_init(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mtl_uncore_cpu_init(void);
 void tgl_uncore_mmio_init(void);
 void tgl_l_uncore_mmio_init(void);
 void adl_uncore_mmio_init(void);
-<<<<<<< HEAD
-=======
 void lnl_uncore_mmio_init(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int snb_pci2phy_map_init(int devid);
 
 /* uncore_snbep.c */

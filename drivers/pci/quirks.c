@@ -66,11 +66,7 @@
  * apply this erratum workaround to any downstream ports as long as they
  * support Link Active reporting and have the Link Control 2 register.
  * Restrict the speed to 2.5GT/s then with the Target Link Speed field,
-<<<<<<< HEAD
- * request a retrain and wait 200ms for the data link to go up.
-=======
  * request a retrain and check the result.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * If this turns out successful and we know by the Vendor:Device ID it is
  * safe to do so, then lift the restriction, letting the devices negotiate
@@ -78,11 +74,6 @@
  * firmware may have already arranged and lift it with ports that already
  * report their data link being up.
  *
-<<<<<<< HEAD
- * Return TRUE if the link has been successfully retrained, otherwise FALSE.
- */
-bool pcie_failed_link_retrain(struct pci_dev *dev)
-=======
  * Otherwise revert the speed to the original setting and request a retrain
  * again to remove any residual state, ignoring the result as it's supposed
  * to fail anyway.
@@ -91,46 +82,30 @@ bool pcie_failed_link_retrain(struct pci_dev *dev)
  * if retraining was not needed or we attempted a retrain and it failed.
  */
 int pcie_failed_link_retrain(struct pci_dev *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	static const struct pci_device_id ids[] = {
 		{ PCI_VDEVICE(ASMEDIA, 0x2824) }, /* ASMedia ASM2824 */
 		{}
 	};
 	u16 lnksta, lnkctl2;
-<<<<<<< HEAD
-
-	if (!pci_is_pcie(dev) || !pcie_downstream_port(dev) ||
-	    !pcie_cap_has_lnkctl2(dev) || !dev->link_active_reporting)
-		return false;
-=======
 	int ret = -ENOTTY;
 
 	if (!pci_is_pcie(dev) || !pcie_downstream_port(dev) ||
 	    !pcie_cap_has_lnkctl2(dev) || !dev->link_active_reporting)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pcie_capability_read_word(dev, PCI_EXP_LNKCTL2, &lnkctl2);
 	pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
 	if ((lnksta & (PCI_EXP_LNKSTA_LBMS | PCI_EXP_LNKSTA_DLLLA)) ==
 	    PCI_EXP_LNKSTA_LBMS) {
-<<<<<<< HEAD
-=======
 		u16 oldlnkctl2 = lnkctl2;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pci_info(dev, "broken device, retraining non-functional downstream link at 2.5GT/s\n");
 
 		lnkctl2 &= ~PCI_EXP_LNKCTL2_TLS;
 		lnkctl2 |= PCI_EXP_LNKCTL2_TLS_2_5GT;
 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
 
-<<<<<<< HEAD
-		if (pcie_retrain_link(dev, false)) {
-			pci_info(dev, "retraining failed\n");
-			return false;
-=======
 		ret = pcie_retrain_link(dev, false);
 		if (ret) {
 			pci_info(dev, "retraining failed\n");
@@ -138,7 +113,6 @@ int pcie_failed_link_retrain(struct pci_dev *dev)
 						   oldlnkctl2);
 			pcie_retrain_link(dev, true);
 			return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
@@ -155,15 +129,6 @@ int pcie_failed_link_retrain(struct pci_dev *dev)
 		lnkctl2 |= lnkcap & PCI_EXP_LNKCAP_SLS;
 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
 
-<<<<<<< HEAD
-		if (pcie_retrain_link(dev, false)) {
-			pci_info(dev, "retraining failed\n");
-			return false;
-		}
-	}
-
-	return true;
-=======
 		ret = pcie_retrain_link(dev, false);
 		if (ret) {
 			pci_info(dev, "retraining failed\n");
@@ -172,7 +137,6 @@ int pcie_failed_link_retrain(struct pci_dev *dev)
 	}
 
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ktime_t fixup_debug_start(struct pci_dev *dev,
@@ -3657,11 +3621,8 @@ DECLARE_PCI_FIXUP_FINAL(0x1814, 0x0601, /* Ralink RT2800 802.11n PCI */
 			quirk_broken_intx_masking);
 DECLARE_PCI_FIXUP_FINAL(0x1b7c, 0x0004, /* Ceton InfiniTV4 */
 			quirk_broken_intx_masking);
-<<<<<<< HEAD
-=======
 DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_CREATIVE, PCI_DEVICE_ID_CREATIVE_20K2,
 			quirk_broken_intx_masking);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Realtek RTL8169 PCI Gigabit Ethernet Controller (rev 10)
@@ -4300,13 +4261,10 @@ static void quirk_dma_func0_alias(struct pci_dev *dev)
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
 
-<<<<<<< HEAD
-=======
 /* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void quirk_dma_func1_alias(struct pci_dev *dev)
 {
 	if (PCI_FUNC(dev->devfn) != 1)
@@ -5131,11 +5089,8 @@ static const struct pci_dev_acs_enabled {
 	/* QCOM QDF2xxx root ports */
 	{ PCI_VENDOR_ID_QCOM, 0x0400, pci_quirk_qcom_rp_acs },
 	{ PCI_VENDOR_ID_QCOM, 0x0401, pci_quirk_qcom_rp_acs },
-<<<<<<< HEAD
-=======
 	/* QCOM SA8775P root port */
 	{ PCI_VENDOR_ID_QCOM, 0x0115, pci_quirk_qcom_rp_acs },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* HXT SD4800 root ports. The ACS design is same as QCOM QDF2xxx */
 	{ PCI_VENDOR_ID_HXT, 0x0401, pci_quirk_qcom_rp_acs },
 	/* Intel PCH root ports */

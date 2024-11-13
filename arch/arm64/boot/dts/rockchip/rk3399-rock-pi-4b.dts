@@ -5,13 +5,8 @@
  */
 
 /dts-v1/;
-<<<<<<< HEAD
-#include "rk3399-rock-pi-4.dtsi"
-#include "rk3399-opp.dtsi"
-=======
 #include "rk3399.dtsi"
 #include "rk3399-rock-pi-4.dtsi"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	model = "Radxa ROCK Pi 4B";

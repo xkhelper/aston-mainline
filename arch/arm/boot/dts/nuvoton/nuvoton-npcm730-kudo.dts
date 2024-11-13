@@ -531,13 +531,8 @@
 			reg = <4>;
 
 			// INLET1_T
-<<<<<<< HEAD
-			lm75@5c {
-				compatible = "ti,lm75";
-=======
 			temperature-sensor@5c {
 				compatible = "national,lm75";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x5c>;
 			};
 		};
@@ -548,13 +543,8 @@
 			reg = <5>;
 
 			// OUTLET1_T
-<<<<<<< HEAD
-			lm75@5c {
-				compatible = "ti,lm75";
-=======
 			temperature-sensor@5c {
 				compatible = "national,lm75";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x5c>;
 			};
 		};
@@ -565,13 +555,8 @@
 			reg = <6>;
 
 			// OUTLET2_T
-<<<<<<< HEAD
-			lm75@5c {
-				compatible = "ti,lm75";
-=======
 			temperature-sensor@5c {
 				compatible = "national,lm75";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x5c>;
 			};
 		};
@@ -582,13 +567,8 @@
 			reg = <7>;
 
 			// OUTLET3_T
-<<<<<<< HEAD
-			lm75@5c {
-				compatible = "ti,lm75";
-=======
 			temperature-sensor@5c {
 				compatible = "national,lm75";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x5c>;
 			};
 		};
@@ -717,13 +697,8 @@
 			reg = <3>;
 
 			// M2_ZONE_T
-<<<<<<< HEAD
-			lm75@28 {
-				compatible = "ti,lm75";
-=======
 			temperature-sensor@28 {
 				compatible = "national,lm75";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x28>;
 			};
 		};
@@ -734,13 +709,8 @@
 			reg = <4>;
 
 			// BATT_ZONE_T
-<<<<<<< HEAD
-			lm75@29 {
-				compatible = "ti,lm75";
-=======
 			temperature-sensor@29 {
 				compatible = "national,lm75";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x29>;
 			};
 		};
@@ -751,13 +721,8 @@
 			reg = <5>;
 
 			// NBM1_ZONE_T
-<<<<<<< HEAD
-			lm75@28 {
-				compatible = "ti,lm75";
-=======
 			temperature-sensor@28 {
 				compatible = "national,lm75";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x28>;
 			};
 		};
@@ -767,13 +732,8 @@
 			reg = <6>;
 
 			// NBM2_ZONE_T
-<<<<<<< HEAD
-			lm75@29 {
-				compatible = "ti,lm75";
-=======
 			temperature-sensor@29 {
 				compatible = "national,lm75";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				reg = <0x29>;
 			};
 		};

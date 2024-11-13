@@ -14,14 +14,7 @@ static const struct dpu_caps sc8180x_dpu_caps = {
 	.has_dim_layer = true,
 	.has_idle_pc = true,
 	.has_3d_merge = true,
-<<<<<<< HEAD
-<<<<<<< HEAD
 	.has_active_ctls = true,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	.has_active_ctls = true,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	.max_linewidth = 4096,
 	.pixel_ram_size = DEFAULT_PIXEL_RAM_SIZE,
 	.max_hdeci_exp = MAX_HORZ_DECIMATION,
@@ -41,10 +34,7 @@ static const struct dpu_mdp_cfg sc8180x_mdp = {
 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
-<<<<<<< HEAD
-=======
 		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 
@@ -52,28 +42,12 @@ static const struct dpu_ctl_cfg sc8180x_ctl[] = {
 	{
 		.name = "ctl_0", .id = CTL_0,
 		.base = 0x1000, .len = 0x1e0,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = BIT(DPU_CTL_ACTIVE_CFG),
-=======
-		.features = BIT(DPU_CTL_ACTIVE_CFG) | BIT(DPU_CTL_SPLIT_DISPLAY),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = BIT(DPU_CTL_ACTIVE_CFG),
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 9),
 	}, {
 		.name = "ctl_1", .id = CTL_1,
 		.base = 0x1200, .len = 0x1e0,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = BIT(DPU_CTL_ACTIVE_CFG),
-=======
-		.features = BIT(DPU_CTL_ACTIVE_CFG) | BIT(DPU_CTL_SPLIT_DISPLAY),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = BIT(DPU_CTL_ACTIVE_CFG),
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 10),
 	}, {
 		.name = "ctl_2", .id = CTL_2,
@@ -325,8 +299,6 @@ static const struct dpu_dsc_cfg sc8180x_dsc[] = {
 	},
 };
 
-<<<<<<< HEAD
-=======
 static const struct dpu_wb_cfg sc8180x_wb[] = {
 	{
 		.name = "wb_2", .id = WB_2,
@@ -342,7 +314,6 @@ static const struct dpu_wb_cfg sc8180x_wb[] = {
 	},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct dpu_intf_cfg sc8180x_intf[] = {
 	{
 		.name = "intf_0", .id = INTF_0,
@@ -456,11 +427,8 @@ const struct dpu_mdss_cfg dpu_sc8180x_cfg = {
 	.pingpong = sc8180x_pp,
 	.merge_3d_count = ARRAY_SIZE(sc8180x_merge_3d),
 	.merge_3d = sc8180x_merge_3d,
-<<<<<<< HEAD
-=======
 	.wb_count = ARRAY_SIZE(sc8180x_wb),
 	.wb = sc8180x_wb,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.intf_count = ARRAY_SIZE(sc8180x_intf),
 	.intf = sc8180x_intf,
 	.vbif_count = ARRAY_SIZE(sdm845_vbif),

@@ -199,19 +199,11 @@ static void ksz8863_smi_shutdown(struct mdio_device *mdiodev)
 static const struct of_device_id ksz8863_dt_ids[] = {
 	{
 		.compatible = "microchip,ksz8863",
-<<<<<<< HEAD
-		.data = &ksz_switch_chips[KSZ8830]
-	},
-	{
-		.compatible = "microchip,ksz8873",
-		.data = &ksz_switch_chips[KSZ8830]
-=======
 		.data = &ksz_switch_chips[KSZ88X3]
 	},
 	{
 		.compatible = "microchip,ksz8873",
 		.data = &ksz_switch_chips[KSZ88X3]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{ },
 };

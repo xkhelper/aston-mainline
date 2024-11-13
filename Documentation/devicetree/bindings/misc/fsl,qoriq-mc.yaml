@@ -113,11 +113,7 @@ properties:
 
   msi-parent:
     deprecated: true
-<<<<<<< HEAD
-    $ref: /schemas/types.yaml#/definitions/phandle
-=======
     maxItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     description:
       Describes the MSI controller node handling message
       interrupts for the MC. When there is no translation

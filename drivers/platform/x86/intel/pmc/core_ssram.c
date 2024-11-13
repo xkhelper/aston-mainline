@@ -9,18 +9,11 @@
  */
 
 #include <linux/cleanup.h>
-<<<<<<< HEAD
-=======
 #include <linux/intel_vsec.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pci.h>
 #include <linux/io-64-nonatomic-lo-hi.h>
 
 #include "core.h"
-<<<<<<< HEAD
-#include "../vsec.h"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "../pmt/telemetry.h"
 
 #define SSRAM_HDR_SIZE		0x100
@@ -36,11 +29,7 @@
 #define LPM_REG_COUNT		28
 #define LPM_MODE_OFFSET		1
 
-<<<<<<< HEAD
-DEFINE_FREE(pmc_core_iounmap, void __iomem *, iounmap(_T));
-=======
 DEFINE_FREE(pmc_core_iounmap, void __iomem *, if (_T) iounmap(_T))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static u32 pmc_core_find_guid(struct pmc_info *list, const struct pmc_reg_map *map)
 {
@@ -56,11 +45,7 @@ static int pmc_core_get_lpm_req(struct pmc_dev *pmcdev, struct pmc *pmc)
 	struct telem_endpoint *ep;
 	const u8 *lpm_indices;
 	int num_maps, mode_offset = 0;
-<<<<<<< HEAD
-	int ret, mode, i;
-=======
 	int ret, mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int lpm_size;
 	u32 guid;
 
@@ -131,11 +116,7 @@ static int pmc_core_get_lpm_req(struct pmc_dev *pmcdev, struct pmc *pmc)
 	 *
 	 */
 	mode_offset = LPM_HEADER_OFFSET + LPM_MODE_OFFSET;
-<<<<<<< HEAD
-	pmc_for_each_mode(i, mode, pmcdev) {
-=======
 	pmc_for_each_mode(mode, pmcdev) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u32 *req_offset = pmc->lpm_req_regs + (mode * num_maps);
 		int m;
 
@@ -281,11 +262,8 @@ pmc_core_ssram_get_pmc(struct pmc_dev *pmcdev, int pmc_idx, u32 offset)
 
 	ssram_base = ssram_pcidev->resource[0].start;
 	tmp_ssram = ioremap(ssram_base, SSRAM_HDR_SIZE);
-<<<<<<< HEAD
-=======
 	if (!tmp_ssram)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (pmc_idx != PMC_IDX_MAIN) {
 		/*

@@ -176,8 +176,6 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
 	return __pmd(old_pmd);
 }
 
-<<<<<<< HEAD
-=======
 pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
 		      pud_t *pudp)
 {
@@ -189,7 +187,6 @@ pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
 	return __pud(old_pud);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
 				   unsigned long addr, pmd_t *pmdp, int full)
 {
@@ -273,8 +270,6 @@ pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
 	pmdv &= _HPAGE_CHG_MASK;
 	return pmd_set_protbits(__pmd(pmdv), newprot);
 }
-<<<<<<< HEAD
-=======
 
 pud_t pud_modify(pud_t pud, pgprot_t newprot)
 {
@@ -284,7 +279,6 @@ pud_t pud_modify(pud_t pud, pgprot_t newprot)
 	pudv &= _HPAGE_CHG_MASK;
 	return pud_set_protbits(__pud(pudv), newprot);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
 /* For use by kexec, called with MMU off */

@@ -10,11 +10,7 @@
 
 
 #include <linux/slab.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/bitfield.h>
 
 #include "xhci.h"
@@ -756,8 +752,6 @@ static int xhci_exit_test_mode(struct xhci_hcd *xhci)
 	return xhci_reset(xhci, XHCI_RESET_SHORT_USEC);
 }
 
-<<<<<<< HEAD
-=======
 /**
  * xhci_port_is_tunneled() - Check if USB3 connection is tunneled over USB4
  * @xhci: xhci host controller
@@ -794,7 +788,6 @@ enum usb_link_tunnel_mode xhci_port_is_tunneled(struct xhci_hcd *xhci,
 	return USB_LINK_UNKNOWN;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void xhci_set_link_state(struct xhci_hcd *xhci, struct xhci_port *port,
 			 u32 link_state)
 {

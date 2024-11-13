@@ -715,13 +715,8 @@ int posix_acl_update_mode(struct mnt_idmap *idmap,
 		return error;
 	if (error == 0)
 		*acl = NULL;
-<<<<<<< HEAD
-	if (!vfsgid_in_group_p(i_gid_into_vfsgid(idmap, inode)) &&
-	    !capable_wrt_inode_uidgid(idmap, inode, CAP_FSETID))
-=======
 	if (!in_group_or_capable(idmap, inode,
 				 i_gid_into_vfsgid(idmap, inode)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mode &= ~S_ISGID;
 	*mode_p = mode;
 	return 0;

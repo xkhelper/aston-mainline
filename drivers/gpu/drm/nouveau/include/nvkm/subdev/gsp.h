@@ -210,11 +210,7 @@ struct nvkm_gsp {
 	} *rm;
 
 	struct {
-<<<<<<< HEAD
-		struct mutex mutex;;
-=======
 		struct mutex mutex;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct idr idr;
 	} client_id;
 

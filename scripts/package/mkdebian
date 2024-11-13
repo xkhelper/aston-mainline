@@ -179,11 +179,8 @@ fi
 
 echo $debarch > debian/arch
 
-<<<<<<< HEAD
-=======
 host_gnu=$(dpkg-architecture -a "${debarch}" -q DEB_HOST_GNU_TYPE | sed 's/_/-/g')
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Generate a simple changelog template
 cat <<EOF > debian/changelog
 $sourcename ($packageversion) $distribution; urgency=low
@@ -201,15 +198,11 @@ Priority: optional
 Maintainer: $maintainer
 Rules-Requires-Root: no
 Build-Depends: debhelper-compat (= 12)
-<<<<<<< HEAD
-Build-Depends-Arch: bc, bison, cpio, flex, kmod, libelf-dev:native, libssl-dev:native, rsync
-=======
 Build-Depends-Arch: bc, bison, cpio, flex,
  gcc-${host_gnu} <!pkg.${sourcename}.nokernelheaders>,
  kmod, libelf-dev:native,
  libssl-dev:native, libssl-dev <!pkg.${sourcename}.nokernelheaders>,
  rsync
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Homepage: https://www.kernel.org/
 
 Package: $packagename-$version
@@ -237,10 +230,7 @@ cat <<EOF >> debian/control
 
 Package: linux-headers-$version
 Architecture: $debarch
-<<<<<<< HEAD
-=======
 Build-Profiles: <!pkg.${sourcename}.nokernelheaders>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Description: Linux kernel headers for $version on $debarch
  This package provides kernel header files for $version on $debarch
  .
@@ -255,10 +245,7 @@ cat <<EOF >> debian/control
 Package: linux-image-$version-dbg
 Section: debug
 Architecture: $debarch
-<<<<<<< HEAD
-=======
 Build-Profiles: <!pkg.${sourcename}.nokerneldbg>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Description: Linux kernel debugging symbols for $version
  This package will come in handy if you need to debug the kernel. It provides
  all the necessary debug symbols for the kernel and its modules.

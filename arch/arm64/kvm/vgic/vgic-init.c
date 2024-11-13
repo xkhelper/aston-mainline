@@ -417,10 +417,6 @@ static void __kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
 	kfree(vgic_cpu->private_irqs);
 	vgic_cpu->private_irqs = NULL;
 
-<<<<<<< HEAD
-	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3)
-		vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
-=======
 	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
 		/*
 		 * If this vCPU is being destroyed because of a failed creation
@@ -443,7 +439,6 @@ static void __kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
 
 		vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
@@ -549,19 +544,10 @@ int kvm_vgic_map_resources(struct kvm *kvm)
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
-	dist->ready = true;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dist_base = dist->vgic_dist_base;
 	mutex_unlock(&kvm->arch.config_lock);
 
 	ret = vgic_register_dist_iodev(kvm, dist_base, type);
-<<<<<<< HEAD
-	if (ret)
-		kvm_err("Unable to register VGIC dist MMIO regions\n");
-
-=======
 	if (ret) {
 		kvm_err("Unable to register VGIC dist MMIO regions\n");
 		goto out_slots;
@@ -575,22 +561,14 @@ int kvm_vgic_map_resources(struct kvm *kvm)
 	 * a completely configured distributor.
 	 */
 	dist->ready = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	goto out_slots;
 out:
 	mutex_unlock(&kvm->arch.config_lock);
 out_slots:
-<<<<<<< HEAD
-	mutex_unlock(&kvm->slots_lock);
-
-	if (ret)
-		kvm_vgic_destroy(kvm);
-=======
 	if (ret)
 		kvm_vm_dead(kvm);
 
 	mutex_unlock(&kvm->slots_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

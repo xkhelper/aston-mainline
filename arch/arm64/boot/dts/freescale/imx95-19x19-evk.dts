@@ -5,10 +5,7 @@
 
 /dts-v1/;
 
-<<<<<<< HEAD
-=======
 #include <dt-bindings/pwm/pwm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "imx95.dtsi"
 
 / {
@@ -21,14 +18,11 @@
 		serial0 = &lpuart1;
 	};
 
-<<<<<<< HEAD
-=======
 	bt_sco_codec: audio-codec-bt-sco {
 		#sound-dai-cells = <1>;
 		compatible = "linux,bt-sco";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	chosen {
 		stdout-path = &lpuart1;
 	};
@@ -38,8 +32,6 @@
 		reg = <0x0 0x80000000 0 0x80000000>;
 	};
 
-<<<<<<< HEAD
-=======
 	fan0: pwm-fan {
 		compatible = "pwm-fan";
 		#cooling-cells = <2>;
@@ -47,7 +39,6 @@
 		cooling-levels = <64 128 192 255>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reserved-memory {
 		#address-cells = <2>;
 		#size-cells = <2>;
@@ -62,8 +53,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	reg_3p3v: regulator-3p3v {
 		compatible = "regulator-fixed";
 		regulator-max-microvolt = <3300000>;
@@ -92,7 +81,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reg_m2_pwr: regulator-m2-pwr {
 		compatible = "regulator-fixed";
 		regulator-name = "M.2-power";
@@ -132,8 +120,6 @@
 		enable-active-high;
 		off-on-delay-us = <12000>;
 	};
-<<<<<<< HEAD
-=======
 
 	sound-bt-sco {
 		compatible = "simple-audio-card";
@@ -244,7 +230,6 @@
 		pinctrl-0 = <&pinctrl_i2c4_pcal6408>;
 		vcc-supply = <&reg_3p3v>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &lpi2c7 {
@@ -274,8 +259,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &micfil {
 	#sound-dai-cells = <0>;
 	pinctrl-names = "default";
@@ -293,7 +276,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &mu7 {
 	status = "okay";
 };
@@ -314,8 +296,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &sai1 {
 	#sound-dai-cells = <0>;
 	pinctrl-names = "default";
@@ -352,7 +332,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &usdhc1 {
 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
 	pinctrl-0 = <&pinctrl_usdhc1>;
@@ -384,8 +363,6 @@
 };
 
 &scmi_iomuxc {
-<<<<<<< HEAD
-=======
 	pinctrl_flexspi1: flexspi1grp {
 		fsl,pins = <
 			IMX95_PAD_XSPI1_SS0_B__FLEXSPI1_A_SS0_B			0x3fe
@@ -420,15 +397,12 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_i2c7_pcal6524: i2c7pcal6524grp {
 		fsl,pins = <
 			IMX95_PAD_GPIO_IO36__GPIO5_IO_BIT16			0x31e
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_lpi2c4: lpi2c4grp {
 		fsl,pins = <
 			IMX95_PAD_GPIO_IO30__LPI2C4_SDA			0x40000b9e
@@ -436,7 +410,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_lpi2c7: lpi2c7grp {
 		fsl,pins = <
 			IMX95_PAD_GPIO_IO08__LPI2C7_SDA			0x40000b9e
@@ -456,8 +429,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_pdm: pdmgrp {
 		fsl,pins = <
 			IMX95_PAD_PDM_CLK__AONMIX_TOP_PDM_CLK				0x31e
@@ -506,7 +477,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_uart1: uart1grp {
 		fsl,pins = <
 			IMX95_PAD_UART1_RXD__AONMIX_TOP_LPUART1_RX      0x31e
@@ -610,8 +580,6 @@
 		>;
 	};
 };
-<<<<<<< HEAD
-=======
 
 &thermal_zones {
 	a55-thermal {
@@ -659,4 +627,3 @@
 	pinctrl-0 = <&pinctrl_tpm6>;
 	status = "okay";
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

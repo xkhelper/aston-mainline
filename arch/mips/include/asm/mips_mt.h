@@ -17,11 +17,6 @@ extern int vpelimit;
 extern cpumask_t mt_fpu_cpumask;
 extern unsigned long mt_fpemul_threshold;
 
-<<<<<<< HEAD
-extern void mips_mt_regdump(unsigned long previous_mvpcontrol_value);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_MIPS_MT
 extern void mips_mt_set_cpuoptions(void);
 #else

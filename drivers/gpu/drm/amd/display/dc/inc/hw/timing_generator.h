@@ -172,10 +172,7 @@ struct timing_generator_funcs {
 							int vstartup_start,
 							int vupdate_offset,
 							int vupdate_width,
-<<<<<<< HEAD
-=======
 							int pstate_keepout,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							const enum signal_type signal,
 							bool use_vbios
 	);
@@ -260,12 +257,8 @@ struct timing_generator_funcs {
 			int vready_offset,
 			int vstartup_start,
 			int vupdate_offset,
-<<<<<<< HEAD
-			int vupdate_width);
-=======
 			int vupdate_width,
 			int pstate_keepout);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*enable_optc_clock)(struct timing_generator *tg, bool enable);
 	void (*program_stereo)(struct timing_generator *tg,
 		const struct dc_crtc_timing *timing, struct crtc_stereo_flags *flags);

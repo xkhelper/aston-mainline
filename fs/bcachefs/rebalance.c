@@ -13,10 +13,7 @@
 #include "errcode.h"
 #include "error.h"
 #include "inode.h"
-<<<<<<< HEAD
-=======
 #include "io_write.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "move.h"
 #include "rebalance.h"
 #include "subvolume.h"
@@ -73,13 +70,9 @@ err:
 
 int bch2_set_rebalance_needs_scan(struct bch_fs *c, u64 inum)
 {
-<<<<<<< HEAD
-	int ret = bch2_trans_do(c, NULL, NULL, BCH_TRANS_COMMIT_no_enospc|BCH_TRANS_COMMIT_lazy_rw,
-=======
 	int ret = bch2_trans_commit_do(c, NULL, NULL,
 				       BCH_TRANS_COMMIT_no_enospc|
 				       BCH_TRANS_COMMIT_lazy_rw,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    __bch2_set_rebalance_needs_scan(trans, inum));
 	rebalance_wakeup(c);
 	return ret;
@@ -166,10 +159,7 @@ static struct bkey_s_c next_rebalance_extent(struct btree_trans *trans,
 	data_opts->rewrite_ptrs		=
 		bch2_bkey_ptrs_need_rebalance(c, k, r->target, r->compression);
 	data_opts->target		= r->target;
-<<<<<<< HEAD
-=======
 	data_opts->write_flags		|= BCH_WRITE_ONLY_SPECIFIED_DEVS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!data_opts->rewrite_ptrs) {
 		/*
@@ -277,10 +267,7 @@ static bool rebalance_pred(struct bch_fs *c, void *arg,
 
 	data_opts->rewrite_ptrs		= bch2_bkey_ptrs_need_rebalance(c, k, target, compression);
 	data_opts->target		= target;
-<<<<<<< HEAD
-=======
 	data_opts->write_flags		|= BCH_WRITE_ONLY_SPECIFIED_DEVS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return data_opts->rewrite_ptrs != 0;
 }
 

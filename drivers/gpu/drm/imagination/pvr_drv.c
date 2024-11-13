@@ -28,10 +28,7 @@
 #include <linux/export.h>
 #include <linux/fs.h>
 #include <linux/kernel.h>
-<<<<<<< HEAD
-=======
 #include <linux/list.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
 #include <linux/moduleparam.h>
@@ -1330,11 +1327,8 @@ pvr_drm_driver_open(struct drm_device *drm_dev, struct drm_file *file)
 	 */
 	pvr_file->pvr_dev = pvr_dev;
 
-<<<<<<< HEAD
-=======
 	INIT_LIST_HEAD(&pvr_file->contexts);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xa_init_flags(&pvr_file->ctx_handles, XA_FLAGS_ALLOC1);
 	xa_init_flags(&pvr_file->free_list_handles, XA_FLAGS_ALLOC1);
 	xa_init_flags(&pvr_file->hwrt_handles, XA_FLAGS_ALLOC1);

@@ -765,8 +765,6 @@ The uac2 function provides these attributes in its function directory:
 	req_number       the number of pre-allocated request for both capture
 	                 and playback
 	function_name    name of the interface
-<<<<<<< HEAD
-=======
 	if_ctrl_name     topology control name
 	clksrc_in_name   input clock name
 	clksrc_out_name  output clock name
@@ -778,7 +776,6 @@ The uac2 function provides these attributes in its function directory:
 	c_it_ch_name     capture input first channel name
 	c_ot_name        capture output terminal name
 	c_fu_vol_name    capture functional unit name
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	c_terminal_type  code of the capture terminal type
 	p_terminal_type  code of the playback terminal type
 	================ ====================================================
@@ -971,8 +968,6 @@ The uac1 function provides these attributes in its function directory:
 	req_number       the number of pre-allocated requests for both capture
 	                 and playback
 	function_name    name of the interface
-<<<<<<< HEAD
-=======
 	p_it_name        playback input terminal name
 	p_it_ch_name     playback channels name
 	p_ot_name        playback output terminal name
@@ -981,7 +976,6 @@ The uac1 function provides these attributes in its function directory:
 	c_it_ch_name     capture channels name
 	c_ot_name        capture output terminal name
 	c_fu_vol_name    capture mute/volume functional unit name
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	================ ====================================================
 
 The attributes have sane default values.

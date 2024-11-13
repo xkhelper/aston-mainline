@@ -313,12 +313,9 @@ __mt76_tx_queue_skb(struct mt76_phy *phy, int qid, struct sk_buff *skb,
 		return idx;
 
 	wcid = (struct mt76_wcid *)sta->drv_priv;
-<<<<<<< HEAD
-=======
 	if (!wcid->sta)
 		return idx;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	q->entry[idx].wcid = wcid->idx;
 
 	if (!non_aql)
@@ -336,10 +333,7 @@ mt76_tx(struct mt76_phy *phy, struct ieee80211_sta *sta,
 	struct mt76_wcid *wcid, struct sk_buff *skb)
 {
 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-<<<<<<< HEAD
-=======
 	struct sk_buff_head *head;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mt76_testmode_enabled(phy)) {
 		ieee80211_free_txskb(phy->hw, skb);
@@ -355,11 +349,6 @@ mt76_tx(struct mt76_phy *phy, struct ieee80211_sta *sta,
 
 	info->hw_queue |= FIELD_PREP(MT_TX_HW_QUEUE_PHY, phy->band_idx);
 
-<<<<<<< HEAD
-	spin_lock_bh(&wcid->tx_pending.lock);
-	__skb_queue_tail(&wcid->tx_pending, skb);
-	spin_unlock_bh(&wcid->tx_pending.lock);
-=======
 	if ((info->flags & IEEE80211_TX_CTL_TX_OFFCHAN) ||
 	    (info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK))
 		head = &wcid->tx_offchannel;
@@ -369,7 +358,6 @@ mt76_tx(struct mt76_phy *phy, struct ieee80211_sta *sta,
 	spin_lock_bh(&head->lock);
 	__skb_queue_tail(head, skb);
 	spin_unlock_bh(&head->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_bh(&phy->tx_lock);
 	if (list_empty(&wcid->tx_list))
@@ -500,11 +488,7 @@ mt76_txq_send_burst(struct mt76_phy *phy, struct mt76_queue *q,
 		return idx;
 
 	do {
-<<<<<<< HEAD
-		if (test_bit(MT76_RESET, &phy->state))
-=======
 		if (test_bit(MT76_RESET, &phy->state) || phy->offchannel)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 
 		if (stop || mt76_txq_stopped(q))
@@ -548,11 +532,7 @@ mt76_txq_schedule_list(struct mt76_phy *phy, enum mt76_txq_id qid)
 	while (1) {
 		int n_frames = 0;
 
-<<<<<<< HEAD
-		if (test_bit(MT76_RESET, &phy->state))
-=======
 		if (test_bit(MT76_RESET, &phy->state) || phy->offchannel)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 
 		if (dev->queue_ops->tx_cleanup &&
@@ -598,11 +578,7 @@ void mt76_txq_schedule(struct mt76_phy *phy, enum mt76_txq_id qid)
 {
 	int len;
 
-<<<<<<< HEAD
-	if (qid >= 4)
-=======
 	if (qid >= 4 || phy->offchannel)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	local_bh_disable();
@@ -620,12 +596,8 @@ void mt76_txq_schedule(struct mt76_phy *phy, enum mt76_txq_id qid)
 EXPORT_SYMBOL_GPL(mt76_txq_schedule);
 
 static int
-<<<<<<< HEAD
-mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid)
-=======
 mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
 			       struct sk_buff_head *head)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mt76_dev *dev = phy->dev;
 	struct ieee80211_sta *sta;
@@ -633,13 +605,8 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
 	struct sk_buff *skb;
 	int ret = 0;
 
-<<<<<<< HEAD
-	spin_lock(&wcid->tx_pending.lock);
-	while ((skb = skb_peek(&wcid->tx_pending)) != NULL) {
-=======
 	spin_lock(&head->lock);
 	while ((skb = skb_peek(head)) != NULL) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
 		struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
 		int qid = skb_get_queue_mapping(skb);
@@ -651,22 +618,13 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
 			qid = MT_TXQ_PSD;
 
 		q = phy->q_tx[qid];
-<<<<<<< HEAD
-		if (mt76_txq_stopped(q)) {
-=======
 		if (mt76_txq_stopped(q) || test_bit(MT76_RESET, &phy->state)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = -1;
 			break;
 		}
 
-<<<<<<< HEAD
-		__skb_unlink(skb, &wcid->tx_pending);
-		spin_unlock(&wcid->tx_pending.lock);
-=======
 		__skb_unlink(skb, head);
 		spin_unlock(&head->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		sta = wcid_to_sta(wcid);
 		spin_lock(&q->lock);
@@ -674,26 +632,17 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
 		dev->queue_ops->kick(dev, q);
 		spin_unlock(&q->lock);
 
-<<<<<<< HEAD
-		spin_lock(&wcid->tx_pending.lock);
-	}
-	spin_unlock(&wcid->tx_pending.lock);
-=======
 		spin_lock(&head->lock);
 	}
 	spin_unlock(&head->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
 
 static void mt76_txq_schedule_pending(struct mt76_phy *phy)
 {
-<<<<<<< HEAD
-=======
 	LIST_HEAD(tx_list);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (list_empty(&phy->tx_list))
 		return;
 
@@ -701,24 +650,6 @@ static void mt76_txq_schedule_pending(struct mt76_phy *phy)
 	rcu_read_lock();
 
 	spin_lock(&phy->tx_lock);
-<<<<<<< HEAD
-	while (!list_empty(&phy->tx_list)) {
-		struct mt76_wcid *wcid = NULL;
-		int ret;
-
-		wcid = list_first_entry(&phy->tx_list, struct mt76_wcid, tx_list);
-		list_del_init(&wcid->tx_list);
-
-		spin_unlock(&phy->tx_lock);
-		ret = mt76_txq_schedule_pending_wcid(phy, wcid);
-		spin_lock(&phy->tx_lock);
-
-		if (ret) {
-			if (list_empty(&wcid->tx_list))
-				list_add_tail(&wcid->tx_list, &phy->tx_list);
-			break;
-		}
-=======
 	list_splice_init(&phy->tx_list, &tx_list);
 	while (!list_empty(&tx_list)) {
 		struct mt76_wcid *wcid;
@@ -740,7 +671,6 @@ static void mt76_txq_schedule_pending(struct mt76_phy *phy)
 
 		if (ret < 0)
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	spin_unlock(&phy->tx_lock);
 

@@ -212,16 +212,7 @@ void __init allocate_pgdat(unsigned int nid)
 	get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
 
 #ifdef CONFIG_NUMA
-<<<<<<< HEAD
-	NODE_DATA(nid) = memblock_alloc_try_nid(
-				sizeof(struct pglist_data),
-				SMP_CACHE_BYTES, MEMBLOCK_LOW_LIMIT,
-				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-	if (!NODE_DATA(nid))
-		panic("Can't allocate pgdat for node %d\n", nid);
-=======
 	alloc_node_data(nid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	NODE_DATA(nid)->node_start_pfn = start_pfn;

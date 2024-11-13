@@ -3,25 +3,13 @@ dm-delay
 ========
 
 Device-Mapper's "delay" target delays reads and/or writes
-<<<<<<< HEAD
-and maps them to different devices.
-
-Parameters::
-=======
 and/or flushs and optionally maps them to different devices.
 
 Arguments::
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
     <device> <offset> <delay> [<write_device> <write_offset> <write_delay>
 			       [<flush_device> <flush_offset> <flush_delay>]]
 
-<<<<<<< HEAD
-With separate write parameters, the first set is only used for reads.
-Offsets are specified in sectors.
-Delays are specified in milliseconds.
-
-=======
 Table line has to either have 3, 6 or 9 arguments:
 
 3: apply offset and delay to read, write and flush operations on device
@@ -38,24 +26,10 @@ Offsets are specified in sectors.
 Delays are specified in milliseconds.
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Example scripts
 ===============
 
 ::
-<<<<<<< HEAD
-
-	#!/bin/sh
-	# Create device delaying rw operation for 500ms
-	echo "0 `blockdev --getsz $1` delay $1 0 500" | dmsetup create delayed
-
-::
-
-	#!/bin/sh
-	# Create device delaying only write operation for 500ms and
-	# splitting reads and writes to different devices $1 $2
-	echo "0 `blockdev --getsz $1` delay $1 0 0 $2 0 500" | dmsetup create delayed
-=======
 	#!/bin/sh
 	#
 	# Create mapped device named "delayed" delaying read, write and flush operations for 500ms.
@@ -78,4 +52,3 @@ Example scripts
 	# onto the same backing device at offset 0 sectors.
 	#
 	dmsetup create delayed --table "0 `blockdev --getsz $1` delay $1 0 50 $2 0 100 $1 0 333"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

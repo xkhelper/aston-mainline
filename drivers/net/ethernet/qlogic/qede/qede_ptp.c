@@ -326,35 +326,18 @@ int qede_ptp_get_ts_info(struct qede_dev *edev, struct kernel_ethtool_ts_info *i
 	struct qede_ptp *ptp = edev->ptp;
 
 	if (!ptp) {
-<<<<<<< HEAD
-		info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
-					SOF_TIMESTAMPING_RX_SOFTWARE |
-					SOF_TIMESTAMPING_SOFTWARE;
-		info->phc_index = -1;
-=======
 		info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return 0;
 	}
 
 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
-<<<<<<< HEAD
-				SOF_TIMESTAMPING_RX_SOFTWARE |
-				SOF_TIMESTAMPING_SOFTWARE |
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				SOF_TIMESTAMPING_TX_HARDWARE |
 				SOF_TIMESTAMPING_RX_HARDWARE |
 				SOF_TIMESTAMPING_RAW_HARDWARE;
 
 	if (ptp->clock)
 		info->phc_index = ptp_clock_index(ptp->clock);
-<<<<<<< HEAD
-	else
-		info->phc_index = -1;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
 			   BIT(HWTSTAMP_FILTER_PTP_V1_L4_EVENT) |

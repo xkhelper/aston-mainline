@@ -18,13 +18,10 @@
 #include <asm/syscalls_64.c>
 const int syscalltbl_native_max_id = SYSCALLTBL_x86_64_MAX_ID;
 static const char *const *syscalltbl_native = syscalltbl_x86_64;
-<<<<<<< HEAD
-=======
 #elif defined(__i386__)
 #include <asm/syscalls_32.c>
 const int syscalltbl_native_max_id = SYSCALLTBL_x86_MAX_ID;
 static const char *const *syscalltbl_native = syscalltbl_x86;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #elif defined(__s390x__)
 #include <asm/syscalls_64.c>
 const int syscalltbl_native_max_id = SYSCALLTBL_S390_64_MAX_ID;
@@ -49,14 +46,11 @@ static const char *const *syscalltbl_native = syscalltbl_mips_n64;
 #include <asm/syscalls.c>
 const int syscalltbl_native_max_id = SYSCALLTBL_LOONGARCH_MAX_ID;
 static const char *const *syscalltbl_native = syscalltbl_loongarch;
-<<<<<<< HEAD
-=======
 #else
 const int syscalltbl_native_max_id = 0;
 static const char *const syscalltbl_native[] = {
 	[0] = "unknown",
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 struct syscall {
@@ -193,14 +187,11 @@ int syscalltbl__id(struct syscalltbl *tbl, const char *name)
 	return audit_name_to_syscall(name, tbl->audit_machine);
 }
 
-<<<<<<< HEAD
-=======
 int syscalltbl__id_at_idx(struct syscalltbl *tbl __maybe_unused, int idx)
 {
 	return idx;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int syscalltbl__strglobmatch_next(struct syscalltbl *tbl __maybe_unused,
 				  const char *syscall_glob __maybe_unused, int *idx __maybe_unused)
 {

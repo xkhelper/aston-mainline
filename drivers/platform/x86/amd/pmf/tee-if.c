@@ -160,8 +160,6 @@ static void amd_pmf_apply_policies(struct amd_pmf_dev *dev, struct ta_pmf_enact_
 			dev_dbg(dev->dev, "update SYSTEM_STATE: %s\n",
 				amd_pmf_uevent_as_str(val));
 			break;
-<<<<<<< HEAD
-=======
 
 		case PMF_POLICY_BIOS_OUTPUT_1:
 			amd_pmf_smartpc_apply_bios_output(dev, val, BIT(0), 0);
@@ -202,7 +200,6 @@ static void amd_pmf_apply_policies(struct amd_pmf_dev *dev, struct ta_pmf_enact_
 		case PMF_POLICY_BIOS_OUTPUT_10:
 			amd_pmf_smartpc_apply_bios_output(dev, val, BIT(9), 9);
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }

@@ -12,11 +12,7 @@
 #include <linux/spi/spi.h>
 #include <linux/reset.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/regmap.h>
 #include <linux/mfd/syscon.h>

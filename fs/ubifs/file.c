@@ -211,11 +211,7 @@ static void release_existing_page_budget(struct ubifs_info *c)
 }
 
 static int write_begin_slow(struct address_space *mapping,
-<<<<<<< HEAD
-			    loff_t pos, unsigned len, struct page **pagep)
-=======
 			    loff_t pos, unsigned len, struct folio **foliop)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct inode *inode = mapping->host;
 	struct ubifs_info *c = inode->i_sb->s_fs_info;
@@ -302,11 +298,7 @@ static int write_begin_slow(struct address_space *mapping,
 			ubifs_release_dirty_inode_budget(c, ui);
 	}
 
-<<<<<<< HEAD
-	*pagep = &folio->page;
-=======
 	*foliop = folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -422,11 +414,7 @@ static int allocate_budget(struct ubifs_info *c, struct folio *folio,
  */
 static int ubifs_write_begin(struct file *file, struct address_space *mapping,
 			     loff_t pos, unsigned len,
-<<<<<<< HEAD
-			     struct page **pagep, void **fsdata)
-=======
 			     struct folio **foliop, void **fsdata)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct inode *inode = mapping->host;
 	struct ubifs_info *c = inode->i_sb->s_fs_info;
@@ -495,11 +483,7 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
 		folio_unlock(folio);
 		folio_put(folio);
 
-<<<<<<< HEAD
-		return write_begin_slow(mapping, pos, len, pagep);
-=======
 		return write_begin_slow(mapping, pos, len, foliop);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -508,11 +492,7 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
 	 * with @ui->ui_mutex locked if we are appending pages, and unlocked
 	 * otherwise. This is an optimization (slightly hacky though).
 	 */
-<<<<<<< HEAD
-	*pagep = &folio->page;
-=======
 	*foliop = folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -544,14 +524,8 @@ static void cancel_budget(struct ubifs_info *c, struct folio *folio,
 
 static int ubifs_write_end(struct file *file, struct address_space *mapping,
 			   loff_t pos, unsigned len, unsigned copied,
-<<<<<<< HEAD
-			   struct page *page, void *fsdata)
-{
-	struct folio *folio = page_folio(page);
-=======
 			   struct folio *folio, void *fsdata)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct inode *inode = mapping->host;
 	struct ubifs_inode *ui = ubifs_inode(inode);
 	struct ubifs_info *c = inode->i_sb->s_fs_info;

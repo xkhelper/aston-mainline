@@ -25,14 +25,11 @@
 #define MAX_TILE_COLS 20
 #define MAX_TILE_ROWS 22
 
-<<<<<<< HEAD
-=======
 static bool hevc_use_compression = IS_ENABLED(CONFIG_VIDEO_HANTRO_HEVC_RFC);
 module_param_named(hevc_use_compression, hevc_use_compression, bool, 0644);
 MODULE_PARM_DESC(hevc_use_compression,
 		 "Use reference frame compression for HEVC");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void hantro_hevc_ref_init(struct hantro_ctx *ctx)
 {
 	struct hantro_hevc_dec_hw_ctx *hevc_dec = &ctx->hevc_dec;
@@ -283,11 +280,8 @@ int hantro_hevc_dec_init(struct hantro_ctx *ctx)
 
 	hantro_hevc_ref_init(ctx);
 
-<<<<<<< HEAD
-=======
 	hevc_dec->use_compression =
 		hevc_use_compression & hantro_needs_postproc(ctx, ctx->vpu_dst_fmt);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

@@ -4,10 +4,7 @@
  *
  * Derived from menuconfig.
  */
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "nconf.h"
 #include "lkc.h"
 

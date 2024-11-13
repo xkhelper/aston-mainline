@@ -641,32 +641,12 @@ page_flags_test(int section, int node, int zone, int last_cpupid,
 	test(cmp_buf, "%pGp", &flags);
 }
 
-<<<<<<< HEAD
-static void __init page_type_test(unsigned int page_type, const char *name,
-				  char *cmp_buf)
-{
-	unsigned long size;
-
-	size = scnprintf(cmp_buf, BUF_SIZE, "%#x(", page_type);
-	if (page_type_has_type(page_type))
-		size += scnprintf(cmp_buf + size, BUF_SIZE - size, "%s", name);
-
-	snprintf(cmp_buf + size, BUF_SIZE - size, ")");
-	test(cmp_buf, "%pGt", &page_type);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __init
 flags(void)
 {
 	unsigned long flags;
 	char *cmp_buffer;
 	gfp_t gfp;
-<<<<<<< HEAD
-	unsigned int page_type;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cmp_buffer = kmalloc(BUF_SIZE, GFP_KERNEL);
 	if (!cmp_buffer)
@@ -706,21 +686,6 @@ flags(void)
 	gfp |= __GFP_HIGH;
 	test(cmp_buffer, "%pGg", &gfp);
 
-<<<<<<< HEAD
-	page_type = ~0;
-	page_type_test(page_type, "", cmp_buffer);
-
-	page_type = 10;
-	page_type_test(page_type, "", cmp_buffer);
-
-	page_type = ~PG_buddy;
-	page_type_test(page_type, "buddy", cmp_buffer);
-
-	page_type = ~(PG_table | PG_buddy);
-	page_type_test(page_type, "table|buddy", cmp_buffer);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(cmp_buffer);
 }
 

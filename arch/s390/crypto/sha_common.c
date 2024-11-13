@@ -18,10 +18,7 @@ int s390_sha_update(struct shash_desc *desc, const u8 *data, unsigned int len)
 	struct s390_sha_ctx *ctx = shash_desc_ctx(desc);
 	unsigned int bsize = crypto_shash_blocksize(desc->tfm);
 	unsigned int index, n;
-<<<<<<< HEAD
-=======
 	int fc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* how much is already in the buffer? */
 	index = ctx->count % bsize;
@@ -30,12 +27,6 @@ int s390_sha_update(struct shash_desc *desc, const u8 *data, unsigned int len)
 	if ((index + len) < bsize)
 		goto store;
 
-<<<<<<< HEAD
-	/* process one stored block */
-	if (index) {
-		memcpy(ctx->buf + index, data, bsize - index);
-		cpacf_kimd(ctx->func, ctx->state, ctx->buf, bsize);
-=======
 	fc = ctx->func;
 	if (ctx->first_message_part)
 		fc |= test_facility(86) ? CPACF_KIMD_NIP : 0;
@@ -46,7 +37,6 @@ int s390_sha_update(struct shash_desc *desc, const u8 *data, unsigned int len)
 		cpacf_kimd(fc, ctx->state, ctx->buf, bsize);
 		ctx->first_message_part = 0;
 		fc &= ~CPACF_KIMD_NIP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		data += bsize - index;
 		len -= bsize - index;
 		index = 0;
@@ -55,12 +45,8 @@ int s390_sha_update(struct shash_desc *desc, const u8 *data, unsigned int len)
 	/* process as many blocks as possible */
 	if (len >= bsize) {
 		n = (len / bsize) * bsize;
-<<<<<<< HEAD
-		cpacf_kimd(ctx->func, ctx->state, data, n);
-=======
 		cpacf_kimd(fc, ctx->state, data, n);
 		ctx->first_message_part = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		data += n;
 		len -= n;
 	}
@@ -97,11 +83,7 @@ int s390_sha_final(struct shash_desc *desc, u8 *out)
 	unsigned int bsize = crypto_shash_blocksize(desc->tfm);
 	u64 bits;
 	unsigned int n;
-<<<<<<< HEAD
-	int mbl_offset;
-=======
 	int mbl_offset, fc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	n = ctx->count % bsize;
 	bits = ctx->count * 8;
@@ -135,15 +117,11 @@ int s390_sha_final(struct shash_desc *desc, u8 *out)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	cpacf_klmd(ctx->func, ctx->state, ctx->buf, n);
-=======
 	fc = ctx->func;
 	fc |= test_facility(86) ? CPACF_KLMD_DUFOP : 0;
 	if (ctx->first_message_part)
 		fc |= CPACF_KLMD_NIP;
 	cpacf_klmd(fc, ctx->state, ctx->buf, n);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* copy digest to out */
 	memcpy(out, ctx->state, crypto_shash_digestsize(desc->tfm));

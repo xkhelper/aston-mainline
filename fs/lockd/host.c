@@ -440,11 +440,7 @@ nlm_bind_host(struct nlm_host *host)
 	if ((clnt = host->h_rpcclnt) != NULL) {
 		nlm_rebind_host(host);
 	} else {
-<<<<<<< HEAD
-		unsigned long increment = nlmsvc_timeout;
-=======
 		unsigned long increment = nlm_timeout * HZ;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct rpc_timeout timeparms = {
 			.to_initval	= increment,
 			.to_increment	= increment,

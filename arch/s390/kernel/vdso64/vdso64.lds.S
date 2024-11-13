@@ -4,10 +4,7 @@
  * library
  */
 
-<<<<<<< HEAD
-=======
 #include <asm/vdso/vsyscall.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/page.h>
 #include <asm/vdso.h>
 
@@ -17,10 +14,7 @@ OUTPUT_ARCH(s390:64-bit)
 SECTIONS
 {
 	PROVIDE(_vdso_data = . - __VVAR_PAGES * PAGE_SIZE);
-<<<<<<< HEAD
-=======
 	PROVIDE(_vdso_rng_data = _vdso_data + __VDSO_RND_DATA_OFFSET);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_TIME_NS
 	PROVIDE(_timens_data = _vdso_data + PAGE_SIZE);
 #endif
@@ -50,13 +44,10 @@ SECTIONS
 	.rodata		: { *(.rodata .rodata.* .gnu.linkonce.r.*) }
 	.rodata1	: { *(.rodata1) }
 
-<<<<<<< HEAD
-=======
 	. = ALIGN(8);
 	.altinstructions	: { *(.altinstructions) }
 	.altinstr_replacement	: { *(.altinstr_replacement) }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.dynamic	: { *(.dynamic) }		:text	:dynamic
 
 	.eh_frame_hdr	: { *(.eh_frame_hdr) }		:text	:eh_frame_hdr
@@ -155,10 +146,7 @@ VERSION
 		__kernel_restart_syscall;
 		__kernel_rt_sigreturn;
 		__kernel_sigreturn;
-<<<<<<< HEAD
-=======
 		__kernel_getrandom;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local: *;
 	};
 }

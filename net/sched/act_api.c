@@ -1498,10 +1498,6 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
 			bool skip_sw = tc_skip_sw(fl_flags);
 			bool skip_hw = tc_skip_hw(fl_flags);
 
-<<<<<<< HEAD
-			if (tc_act_bind(act->tcfa_flags))
-				continue;
-=======
 			if (tc_act_bind(act->tcfa_flags)) {
 				/* Action is created by classifier and is not
 				 * standalone. Check that the user did not set
@@ -1525,7 +1521,6 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
 			}
 
 			/* Action is standalone */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (skip_sw != tc_act_skip_sw(act->tcfa_flags) ||
 			    skip_hw != tc_act_skip_hw(act->tcfa_flags)) {
 				NL_SET_ERR_MSG(extack,

@@ -299,10 +299,6 @@ struct cp210x_port_private {
 
 static struct usb_serial_driver cp210x_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner =	THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"cp210x",
 	},
 	.id_table		= id_table,

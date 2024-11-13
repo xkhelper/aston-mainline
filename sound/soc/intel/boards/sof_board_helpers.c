@@ -71,8 +71,6 @@ static int dmic_init(struct snd_soc_pcm_runtime *rtd)
 }
 
 /*
-<<<<<<< HEAD
-=======
  * HDA External Codec DAI Link
  */
 static const struct snd_soc_dapm_widget hda_widgets[] = {
@@ -131,7 +129,6 @@ static int hda_init(struct snd_soc_pcm_runtime *rtd)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * DAI Link Helpers
  */
 
@@ -140,14 +137,11 @@ enum sof_dmic_be_type {
 	SOF_DMIC_16K,
 };
 
-<<<<<<< HEAD
-=======
 enum sof_hda_be_type {
 	SOF_HDA_ANALOG,
 	SOF_HDA_DIGITAL,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* DEFAULT_LINK_ORDER: the order used in sof_rt5682 */
 #define DEFAULT_LINK_ORDER	SOF_LINK_ORDER(SOF_LINK_CODEC, \
 					SOF_LINK_DMIC01,       \
@@ -164,8 +158,6 @@ static struct snd_soc_dai_link_component dmic_component[] = {
 	}
 };
 
-<<<<<<< HEAD
-=======
 SND_SOC_DAILINK_DEF(hda_analog_cpus,
 		    DAILINK_COMP_ARRAY(COMP_CPU("Analog CPU DAI")));
 SND_SOC_DAILINK_DEF(hda_analog_codecs,
@@ -176,7 +168,6 @@ SND_SOC_DAILINK_DEF(hda_digital_cpus,
 SND_SOC_DAILINK_DEF(hda_digital_codecs,
 		    DAILINK_COMP_ARRAY(COMP_CODEC("ehdaudio0D0", "Digital Codec DAI")));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct snd_soc_dai_link_component platform_component[] = {
 	{
 		/* name might be overridden during probe */
@@ -462,8 +453,6 @@ static int set_hdmi_in_link(struct device *dev, struct snd_soc_dai_link *link,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int set_hda_codec_link(struct device *dev, struct snd_soc_dai_link *link,
 			      int be_id, enum sof_hda_be_type be_type)
 {
@@ -513,7 +502,6 @@ static int set_hda_codec_link(struct device *dev, struct snd_soc_dai_link *link,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int calculate_num_links(struct sof_card_private *ctx)
 {
 	int num_links = 0;
@@ -543,13 +531,10 @@ static int calculate_num_links(struct sof_card_private *ctx)
 	/* HDMI-In */
 	num_links += hweight32(ctx->ssp_mask_hdmi_in);
 
-<<<<<<< HEAD
-=======
 	/* HDA external codec */
 	if (ctx->hda_codec_present)
 		num_links += 2;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return num_links;
 }
 
@@ -707,8 +692,6 @@ int sof_intel_board_set_dai_link(struct device *dev, struct snd_soc_card *card,
 				be_id++;
 			}
 			break;
-<<<<<<< HEAD
-=======
 		case SOF_LINK_HDA:
 			/* HDA external codec */
 			if (!ctx->hda_codec_present)
@@ -735,7 +718,6 @@ int sof_intel_board_set_dai_link(struct device *dev, struct snd_soc_card *card,
 
 			idx++;
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		case SOF_LINK_NONE:
 			/* caught here if it's not used as terminator in macro */
 			fallthrough;

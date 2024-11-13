@@ -8,10 +8,6 @@
 
 #include <sound/soc-acpi.h>
 #include <sound/soc-acpi-intel-match.h>
-<<<<<<< HEAD
-#include "../skylake/skl.h"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct snd_soc_acpi_mach snd_soc_acpi_intel_ehl_machines[] = {
 	{

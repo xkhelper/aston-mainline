@@ -161,11 +161,7 @@ struct k3_ring {
 	struct k3_ringacc_proxy_target_regs  __iomem *proxy;
 	dma_addr_t	ring_mem_dma;
 	void		*ring_mem_virt;
-<<<<<<< HEAD
-	struct k3_ring_ops *ops;
-=======
 	const struct k3_ring_ops *ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32		size;
 	enum k3_ring_size elm_size;
 	enum k3_ring_mode mode;
@@ -272,29 +268,17 @@ static int k3_ringacc_ring_pop_mem(struct k3_ring *ring, void *elem);
 static int k3_dmaring_fwd_pop(struct k3_ring *ring, void *elem);
 static int k3_dmaring_reverse_pop(struct k3_ring *ring, void *elem);
 
-<<<<<<< HEAD
-static struct k3_ring_ops k3_ring_mode_ring_ops = {
-=======
 static const struct k3_ring_ops k3_ring_mode_ring_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.push_tail = k3_ringacc_ring_push_mem,
 		.pop_head = k3_ringacc_ring_pop_mem,
 };
 
-<<<<<<< HEAD
-static struct k3_ring_ops k3_dmaring_fwd_ops = {
-=======
 static const struct k3_ring_ops k3_dmaring_fwd_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.push_tail = k3_ringacc_ring_push_mem,
 		.pop_head = k3_dmaring_fwd_pop,
 };
 
-<<<<<<< HEAD
-static struct k3_ring_ops k3_dmaring_reverse_ops = {
-=======
 static const struct k3_ring_ops k3_dmaring_reverse_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Reverse side of the DMA ring can only be popped by SW */
 		.pop_head = k3_dmaring_reverse_pop,
 };
@@ -304,11 +288,7 @@ static int k3_ringacc_ring_pop_io(struct k3_ring *ring, void *elem);
 static int k3_ringacc_ring_push_head_io(struct k3_ring *ring, void *elem);
 static int k3_ringacc_ring_pop_tail_io(struct k3_ring *ring, void *elem);
 
-<<<<<<< HEAD
-static struct k3_ring_ops k3_ring_mode_msg_ops = {
-=======
 static const struct k3_ring_ops k3_ring_mode_msg_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.push_tail = k3_ringacc_ring_push_io,
 		.push_head = k3_ringacc_ring_push_head_io,
 		.pop_tail = k3_ringacc_ring_pop_tail_io,
@@ -320,11 +300,7 @@ static int k3_ringacc_ring_push_tail_proxy(struct k3_ring *ring, void *elem);
 static int k3_ringacc_ring_pop_head_proxy(struct k3_ring *ring, void *elem);
 static int k3_ringacc_ring_pop_tail_proxy(struct k3_ring *ring, void *elem);
 
-<<<<<<< HEAD
-static struct k3_ring_ops k3_ring_mode_proxy_ops = {
-=======
 static const struct k3_ring_ops k3_ring_mode_proxy_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.push_tail = k3_ringacc_ring_push_tail_proxy,
 		.push_head = k3_ringacc_ring_push_head_proxy,
 		.pop_tail = k3_ringacc_ring_pop_tail_proxy,

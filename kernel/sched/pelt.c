@@ -467,8 +467,6 @@ int update_irq_load_avg(struct rq *rq, u64 running)
 	return ret;
 }
 #endif
-<<<<<<< HEAD
-=======
 
 /*
  * Load avg and utiliztion metrics need to be updated periodically and before
@@ -489,4 +487,3 @@ bool update_other_load_avgs(struct rq *rq)
 		update_hw_load_avg(rq_clock_task(rq), rq, hw_pressure) |
 		update_irq_load_avg(rq, 0);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

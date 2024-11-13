@@ -3339,10 +3339,7 @@ static int icl_get_combo_phy_dpll(struct intel_atomic_state *state,
 				  struct intel_crtc *crtc,
 				  struct intel_encoder *encoder)
 {
-<<<<<<< HEAD
-=======
 	struct intel_display *display = to_intel_display(crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *i915 = to_i915(crtc->base.dev);
 	struct intel_crtc_state *crtc_state =
 		intel_atomic_get_new_crtc_state(state, crtc);
@@ -3383,11 +3380,7 @@ static int icl_get_combo_phy_dpll(struct intel_atomic_state *state,
 	}
 
 	/* Eliminate DPLLs from consideration if reserved by HTI */
-<<<<<<< HEAD
-	dpll_mask &= ~intel_hti_dpll_mask(i915);
-=======
 	dpll_mask &= ~intel_hti_dpll_mask(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	port_dpll->pll = intel_find_shared_dpll(state, crtc,
 						&port_dpll->hw_state,

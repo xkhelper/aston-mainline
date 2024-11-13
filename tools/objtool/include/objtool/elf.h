@@ -68,10 +68,7 @@ struct symbol {
 	u8 warned	     : 1;
 	u8 embedded_insn     : 1;
 	u8 local_label       : 1;
-<<<<<<< HEAD
-=======
 	u8 frame_pointer     : 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head pv_target;
 	struct reloc *relocs;
 };

@@ -9,10 +9,7 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
 #include <dt-bindings/spmi/spmi.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "sa8540p.dtsi"
 #include "sa8540p-pmics.dtsi"
@@ -113,8 +110,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	regulator-usb2-vbus {
 		compatible = "regulator-fixed";
 		regulator-name = "USB2_VBUS";
@@ -155,7 +150,6 @@
 		regulator-always-on;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reserved-memory {
 		gpu_mem: gpu-mem@8bf00000 {
 			reg = <0 0x8bf00000 0 0x2000>;
@@ -684,13 +678,10 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &usb_2 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &usb_2_hsphy0 {
 	vdda-pll-supply = <&vreg_l5a>;
 	vdda18-supply = <&vreg_l7g>;
@@ -751,8 +742,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &pmm8540c_gpios {
 	usb2_en: usb2-en-state {
 		pins = "gpio9";
@@ -791,7 +780,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &tlmm {
 	pcie2a_default: pcie2a-default-state {
 		clkreq-n-pins {

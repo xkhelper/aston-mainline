@@ -36,54 +36,33 @@ EXPORT_SYMBOL_GPL(init_binfmt_misc);
  */
 struct user_namespace init_user_ns = {
 	.uid_map = {
-<<<<<<< HEAD
-		.nr_extents = 1,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{
 			.extent[0] = {
 				.first = 0,
 				.lower_first = 0,
 				.count = 4294967295U,
 			},
-<<<<<<< HEAD
-		},
-	},
-	.gid_map = {
-		.nr_extents = 1,
-=======
 			.nr_extents = 1,
 		},
 	},
 	.gid_map = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{
 			.extent[0] = {
 				.first = 0,
 				.lower_first = 0,
 				.count = 4294967295U,
 			},
-<<<<<<< HEAD
-		},
-	},
-	.projid_map = {
-		.nr_extents = 1,
-=======
 			.nr_extents = 1,
 		},
 	},
 	.projid_map = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{
 			.extent[0] = {
 				.first = 0,
 				.lower_first = 0,
 				.count = 4294967295U,
 			},
-<<<<<<< HEAD
-=======
 			.nr_extents = 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 	},
 	.ns.count = REFCOUNT_INIT(3),

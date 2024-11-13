@@ -3,11 +3,7 @@
 
 import datetime
 import random
-<<<<<<< HEAD
-from lib.py import ksft_run, ksft_pr, ksft_exit, ksft_eq, ksft_ge, ksft_lt
-=======
 from lib.py import ksft_run, ksft_pr, ksft_exit, ksft_eq, ksft_ne, ksft_ge, ksft_lt
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 from lib.py import NetDrvEpEnv
 from lib.py import EthtoolFamily, NetdevFamily
 from lib.py import KsftSkipEx
@@ -94,17 +90,10 @@ def _send_traffic_check(cfg, port, name, params):
     ksft_ge(directed, 20000, f"traffic on {name}: " + str(cnts))
     if params.get('noise'):
         ksft_lt(sum(cnts[i] for i in params['noise']), directed / 2,
-<<<<<<< HEAD
-                "traffic on other queues:" + str(cnts))
-    if params.get('empty'):
-        ksft_eq(sum(cnts[i] for i in params['empty']), 0,
-                "traffic on inactive queues: " + str(cnts))
-=======
                 f"traffic on other queues ({name})':" + str(cnts))
     if params.get('empty'):
         ksft_eq(sum(cnts[i] for i in params['empty']), 0,
                 f"traffic on inactive queues ({name}): " + str(cnts))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 def test_rss_key_indir(cfg):
@@ -313,8 +302,6 @@ def test_hitless_key_update(cfg):
     ksft_eq(carrier1 - carrier0, 0)
 
 
-<<<<<<< HEAD
-=======
 def test_rss_context_dump(cfg):
     """
     Test dumping RSS contexts. This tests mostly exercises the kernel APIs.
@@ -387,7 +374,6 @@ def test_rss_context_dump(cfg):
     ksft_eq(expect_tuples, ctx_tuples)
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 def test_rss_context(cfg, ctx_cnt=1, create_with_cfg=None):
     """
     Test separating traffic into RSS contexts.
@@ -628,11 +614,7 @@ def main() -> None:
         ksft_run([test_rss_key_indir, test_rss_queue_reconfigure,
                   test_rss_resize, test_hitless_key_update,
                   test_rss_context, test_rss_context4, test_rss_context32,
-<<<<<<< HEAD
-                  test_rss_context_queue_reconfigure,
-=======
                   test_rss_context_dump, test_rss_context_queue_reconfigure,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
                   test_rss_context_overlap, test_rss_context_overlap2,
                   test_rss_context_out_of_order, test_rss_context4_create_with_cfg],
                  args=(cfg, ))

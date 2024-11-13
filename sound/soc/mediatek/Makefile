@@ -9,7 +9,4 @@ obj-$(CONFIG_SND_SOC_MT8186) += mt8186/
 obj-$(CONFIG_SND_SOC_MT8188) += mt8188/
 obj-$(CONFIG_SND_SOC_MT8192) += mt8192/
 obj-$(CONFIG_SND_SOC_MT8195) += mt8195/
-<<<<<<< HEAD
-=======
 obj-$(CONFIG_SND_SOC_MT8365) += mt8365/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

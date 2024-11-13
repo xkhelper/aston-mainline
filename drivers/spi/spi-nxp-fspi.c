@@ -57,16 +57,6 @@
 #include <linux/spi/spi.h>
 #include <linux/spi/spi-mem.h>
 
-<<<<<<< HEAD
-/*
- * The driver only uses one single LUT entry, that is updated on
- * each call of exec_op(). Index 0 is preset at boot with a basic
- * read operation, so let's use the last entry (31).
- */
-#define	SEQID_LUT			31
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Registers used by the driver */
 #define FSPI_MCR0			0x00
 #define FSPI_MCR0_AHB_TIMEOUT(x)	((x) << 24)
@@ -266,12 +256,6 @@
 #define FSPI_TFDR			0x180
 
 #define FSPI_LUT_BASE			0x200
-<<<<<<< HEAD
-#define FSPI_LUT_OFFSET			(SEQID_LUT * 4 * 4)
-#define FSPI_LUT_REG(idx) \
-	(FSPI_LUT_BASE + FSPI_LUT_OFFSET + (idx) * 4)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* register map end */
 
@@ -347,10 +331,7 @@ struct nxp_fspi_devtype_data {
 	unsigned int txfifo;
 	unsigned int ahb_buf_size;
 	unsigned int quirks;
-<<<<<<< HEAD
-=======
 	unsigned int lut_num;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool little_endian;
 };
 
@@ -359,10 +340,7 @@ static struct nxp_fspi_devtype_data lx2160a_data = {
 	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
 	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
 	.quirks = 0,
-<<<<<<< HEAD
-=======
 	.lut_num = 32,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.little_endian = true,  /* little-endian    */
 };
 
@@ -371,10 +349,7 @@ static struct nxp_fspi_devtype_data imx8mm_data = {
 	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
 	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
 	.quirks = 0,
-<<<<<<< HEAD
-=======
 	.lut_num = 32,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.little_endian = true,  /* little-endian    */
 };
 
@@ -383,10 +358,7 @@ static struct nxp_fspi_devtype_data imx8qxp_data = {
 	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
 	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
 	.quirks = 0,
-<<<<<<< HEAD
-=======
 	.lut_num = 32,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.little_endian = true,  /* little-endian    */
 };
 
@@ -395,8 +367,6 @@ static struct nxp_fspi_devtype_data imx8dxl_data = {
 	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
 	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
 	.quirks = FSPI_QUIRK_USE_IP_ONLY,
-<<<<<<< HEAD
-=======
 	.lut_num = 32,
 	.little_endian = true,  /* little-endian    */
 };
@@ -407,7 +377,6 @@ static struct nxp_fspi_devtype_data imx8ulp_data = {
 	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
 	.quirks = 0,
 	.lut_num = 16,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.little_endian = true,  /* little-endian    */
 };
 
@@ -579,11 +548,8 @@ static void nxp_fspi_prepare_lut(struct nxp_fspi *f,
 	void __iomem *base = f->iobase;
 	u32 lutval[4] = {};
 	int lutidx = 1, i;
-<<<<<<< HEAD
-=======
 	u32 lut_offset = (f->devtype_data->lut_num - 1) * 4 * 4;
 	u32 target_lut_reg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* cmd */
 	lutval[0] |= LUT_DEF(0, LUT_CMD, LUT_PAD(op->cmd.buswidth),
@@ -628,15 +594,10 @@ static void nxp_fspi_prepare_lut(struct nxp_fspi *f,
 	fspi_writel(f, FSPI_LCKER_UNLOCK, f->iobase + FSPI_LCKCR);
 
 	/* fill LUT */
-<<<<<<< HEAD
-	for (i = 0; i < ARRAY_SIZE(lutval); i++)
-		fspi_writel(f, lutval[i], base + FSPI_LUT_REG(i));
-=======
 	for (i = 0; i < ARRAY_SIZE(lutval); i++) {
 		target_lut_reg = FSPI_LUT_BASE + lut_offset + i * 4;
 		fspi_writel(f, lutval[i], base + target_lut_reg);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_dbg(f->dev, "CMD[%02x] lutval[0:%08x 1:%08x 2:%08x 3:%08x], size: 0x%08x\n",
 		op->cmd.opcode, lutval[0], lutval[1], lutval[2], lutval[3], op->data.nbytes);
@@ -803,12 +764,7 @@ static int nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
 			iounmap(f->ahb_addr);
 
 		f->memmap_start = start;
-<<<<<<< HEAD
-		f->memmap_len = len > NXP_FSPI_MIN_IOMAP ?
-				len : NXP_FSPI_MIN_IOMAP;
-=======
 		f->memmap_len = max_t(u32, len, NXP_FSPI_MIN_IOMAP);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		f->ahb_addr = ioremap(f->memmap_phy + f->memmap_start,
 					 f->memmap_len);
@@ -927,11 +883,7 @@ static int nxp_fspi_do_op(struct nxp_fspi *f, const struct spi_mem_op *op)
 	void __iomem *base = f->iobase;
 	int seqnum = 0;
 	int err = 0;
-<<<<<<< HEAD
-	u32 reg;
-=======
 	u32 reg, seqid_lut;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	reg = fspi_readl(f, base + FSPI_IPRXFCR);
 	/* invalid RXFIFO first */
@@ -947,14 +899,9 @@ static int nxp_fspi_do_op(struct nxp_fspi *f, const struct spi_mem_op *op)
 	 * the LUT at each exec_op() call. And also specify the DATA
 	 * length, since it's has not been specified in the LUT.
 	 */
-<<<<<<< HEAD
-	fspi_writel(f, op->data.nbytes |
-		 (SEQID_LUT << FSPI_IPCR1_SEQID_SHIFT) |
-=======
 	seqid_lut = f->devtype_data->lut_num - 1;
 	fspi_writel(f, op->data.nbytes |
 		 (seqid_lut << FSPI_IPCR1_SEQID_SHIFT) |
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 (seqnum << FSPI_IPCR1_SEQNUM_SHIFT),
 		 base + FSPI_IPCR1);
 
@@ -1078,11 +1025,7 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
 {
 	void __iomem *base = f->iobase;
 	int ret, i;
-<<<<<<< HEAD
-	u32 reg;
-=======
 	u32 reg, seqid_lut;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* disable and unprepare clock to avoid glitch pass to controller */
 	nxp_fspi_clk_disable_unprep(f);
@@ -1157,13 +1100,6 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
 	fspi_writel(f, reg, base + FSPI_FLSHB1CR1);
 	fspi_writel(f, reg, base + FSPI_FLSHB2CR1);
 
-<<<<<<< HEAD
-	/* AHB Read - Set lut sequence ID for all CS. */
-	fspi_writel(f, SEQID_LUT, base + FSPI_FLSHA1CR2);
-	fspi_writel(f, SEQID_LUT, base + FSPI_FLSHA2CR2);
-	fspi_writel(f, SEQID_LUT, base + FSPI_FLSHB1CR2);
-	fspi_writel(f, SEQID_LUT, base + FSPI_FLSHB2CR2);
-=======
 	/*
 	 * The driver only uses one single LUT entry, that is updated on
 	 * each call of exec_op(). Index 0 is preset at boot with a basic
@@ -1175,7 +1111,6 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
 	fspi_writel(f, seqid_lut, base + FSPI_FLSHA2CR2);
 	fspi_writel(f, seqid_lut, base + FSPI_FLSHB1CR2);
 	fspi_writel(f, seqid_lut, base + FSPI_FLSHB2CR2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	f->selected = -1;
 
@@ -1370,10 +1305,7 @@ static const struct of_device_id nxp_fspi_dt_ids[] = {
 	{ .compatible = "nxp,imx8mp-fspi", .data = (void *)&imx8mm_data, },
 	{ .compatible = "nxp,imx8qxp-fspi", .data = (void *)&imx8qxp_data, },
 	{ .compatible = "nxp,imx8dxl-fspi", .data = (void *)&imx8dxl_data, },
-<<<<<<< HEAD
-=======
 	{ .compatible = "nxp,imx8ulp-fspi", .data = (void *)&imx8ulp_data, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, nxp_fspi_dt_ids);

@@ -348,11 +348,6 @@ xfs_file_splice_read(
 }
 
 /*
-<<<<<<< HEAD
- * Common pre-write limit and setup checks.
- *
- * Called with the iolocked held either shared and exclusive according to
-=======
  * Take care of zeroing post-EOF blocks when they might exist.
  *
  * Returns 0 if successfully, a negative error for a failure, or 1 if this
@@ -429,7 +424,6 @@ xfs_file_write_zero_eof(
  * Common pre-write limit and setup checks.
  *
  * Called with the iolock held either shared and exclusive according to
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @iolock, and returns with it held.  Might upgrade the iolock to exclusive
  * if called for a direct write beyond i_size.
  */
@@ -439,20 +433,10 @@ xfs_file_write_checks(
 	struct iov_iter		*from,
 	unsigned int		*iolock)
 {
-<<<<<<< HEAD
-	struct file		*file = iocb->ki_filp;
-	struct inode		*inode = file->f_mapping->host;
-	struct xfs_inode	*ip = XFS_I(inode);
-	ssize_t			error = 0;
-	size_t			count = iov_iter_count(from);
-	bool			drained_dio = false;
-	loff_t			isize;
-=======
 	struct inode		*inode = iocb->ki_filp->f_mapping->host;
 	size_t			count = iov_iter_count(from);
 	bool			drained_dio = false;
 	ssize_t			error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 restart:
 	error = generic_write_checks(iocb, from);
@@ -475,11 +459,7 @@ restart:
 	 * exclusively.
 	 */
 	if (*iolock == XFS_IOLOCK_SHARED && !IS_NOSEC(inode)) {
-<<<<<<< HEAD
-		xfs_iunlock(ip, *iolock);
-=======
 		xfs_iunlock(XFS_I(inode), *iolock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*iolock = XFS_IOLOCK_EXCL;
 		error = xfs_ilock_iocb(iocb, *iolock);
 		if (error) {
@@ -490,66 +470,6 @@ restart:
 	}
 
 	/*
-<<<<<<< HEAD
-	 * If the offset is beyond the size of the file, we need to zero any
-	 * blocks that fall between the existing EOF and the start of this
-	 * write.  If zeroing is needed and we are currently holding the iolock
-	 * shared, we need to update it to exclusive which implies having to
-	 * redo all checks before.
-	 *
-	 * We need to serialise against EOF updates that occur in IO completions
-	 * here. We want to make sure that nobody is changing the size while we
-	 * do this check until we have placed an IO barrier (i.e.  hold the
-	 * XFS_IOLOCK_EXCL) that prevents new IO from being dispatched.  The
-	 * spinlock effectively forms a memory barrier once we have the
-	 * XFS_IOLOCK_EXCL so we are guaranteed to see the latest EOF value and
-	 * hence be able to correctly determine if we need to run zeroing.
-	 *
-	 * We can do an unlocked check here safely as IO completion can only
-	 * extend EOF. Truncate is locked out at this point, so the EOF can
-	 * not move backwards, only forwards. Hence we only need to take the
-	 * slow path and spin locks when we are at or beyond the current EOF.
-	 */
-	if (iocb->ki_pos <= i_size_read(inode))
-		goto out;
-
-	spin_lock(&ip->i_flags_lock);
-	isize = i_size_read(inode);
-	if (iocb->ki_pos > isize) {
-		spin_unlock(&ip->i_flags_lock);
-
-		if (iocb->ki_flags & IOCB_NOWAIT)
-			return -EAGAIN;
-
-		if (!drained_dio) {
-			if (*iolock == XFS_IOLOCK_SHARED) {
-				xfs_iunlock(ip, *iolock);
-				*iolock = XFS_IOLOCK_EXCL;
-				xfs_ilock(ip, *iolock);
-				iov_iter_reexpand(from, count);
-			}
-			/*
-			 * We now have an IO submission barrier in place, but
-			 * AIO can do EOF updates during IO completion and hence
-			 * we now need to wait for all of them to drain. Non-AIO
-			 * DIO will have drained before we are given the
-			 * XFS_IOLOCK_EXCL, and so for most cases this wait is a
-			 * no-op.
-			 */
-			inode_dio_wait(inode);
-			drained_dio = true;
-			goto restart;
-		}
-
-		trace_xfs_zero_eof(ip, isize, iocb->ki_pos - isize);
-		error = xfs_zero_range(ip, isize, iocb->ki_pos - isize, NULL);
-		if (error)
-			return error;
-	} else
-		spin_unlock(&ip->i_flags_lock);
-
-out:
-=======
 	 * If the offset is beyond the size of the file, we need to zero all
 	 * blocks that fall between the existing EOF and the start of this
 	 * write.
@@ -568,7 +488,6 @@ out:
 			return error;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return kiocb_modified(iocb);
 }
 
@@ -871,11 +790,7 @@ write_retry:
 
 	trace_xfs_file_buffered_write(iocb, from);
 	ret = iomap_file_buffered_write(iocb, from,
-<<<<<<< HEAD
-			&xfs_buffered_write_iomap_ops);
-=======
 			&xfs_buffered_write_iomap_ops, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If we hit a space limit, try to free up some lingering preallocated
@@ -967,8 +882,6 @@ static inline bool xfs_file_sync_writes(struct file *filp)
 	return false;
 }
 
-<<<<<<< HEAD
-=======
 static int
 xfs_falloc_newsize(
 	struct file		*file,
@@ -1155,7 +1068,6 @@ xfs_falloc_allocate_range(
 	return xfs_falloc_setsize(file, new_size);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define	XFS_FALLOC_FL_SUPPORTED						\
 		(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |		\
 		 FALLOC_FL_COLLAPSE_RANGE | FALLOC_FL_ZERO_RANGE |	\
@@ -1172,11 +1084,6 @@ xfs_file_fallocate(
 	struct xfs_inode	*ip = XFS_I(inode);
 	long			error;
 	uint			iolock = XFS_IOLOCK_EXCL | XFS_MMAPLOCK_EXCL;
-<<<<<<< HEAD
-	loff_t			new_size = 0;
-	bool			do_file_insert = false;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!S_ISREG(inode->i_mode))
 		return -EINVAL;
@@ -1197,161 +1104,10 @@ xfs_file_fallocate(
 	 */
 	inode_dio_wait(inode);
 
-<<<<<<< HEAD
-	/*
-	 * Now AIO and DIO has drained we flush and (if necessary) invalidate
-	 * the cached range over the first operation we are about to run.
-	 *
-	 * We care about zero and collapse here because they both run a hole
-	 * punch over the range first. Because that can zero data, and the range
-	 * of invalidation for the shift operations is much larger, we still do
-	 * the required flush for collapse in xfs_prepare_shift().
-	 *
-	 * Insert has the same range requirements as collapse, and we extend the
-	 * file first which can zero data. Hence insert has the same
-	 * flush/invalidate requirements as collapse and so they are both
-	 * handled at the right time by xfs_prepare_shift().
-	 */
-	if (mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_ZERO_RANGE |
-		    FALLOC_FL_COLLAPSE_RANGE)) {
-		error = xfs_flush_unmap_range(ip, offset, len);
-		if (error)
-			goto out_unlock;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	error = file_modified(file);
 	if (error)
 		goto out_unlock;
 
-<<<<<<< HEAD
-	if (mode & FALLOC_FL_PUNCH_HOLE) {
-		error = xfs_free_file_space(ip, offset, len);
-		if (error)
-			goto out_unlock;
-	} else if (mode & FALLOC_FL_COLLAPSE_RANGE) {
-		if (!xfs_is_falloc_aligned(ip, offset, len)) {
-			error = -EINVAL;
-			goto out_unlock;
-		}
-
-		/*
-		 * There is no need to overlap collapse range with EOF,
-		 * in which case it is effectively a truncate operation
-		 */
-		if (offset + len >= i_size_read(inode)) {
-			error = -EINVAL;
-			goto out_unlock;
-		}
-
-		new_size = i_size_read(inode) - len;
-
-		error = xfs_collapse_file_space(ip, offset, len);
-		if (error)
-			goto out_unlock;
-	} else if (mode & FALLOC_FL_INSERT_RANGE) {
-		loff_t		isize = i_size_read(inode);
-
-		if (!xfs_is_falloc_aligned(ip, offset, len)) {
-			error = -EINVAL;
-			goto out_unlock;
-		}
-
-		/*
-		 * New inode size must not exceed ->s_maxbytes, accounting for
-		 * possible signed overflow.
-		 */
-		if (inode->i_sb->s_maxbytes - isize < len) {
-			error = -EFBIG;
-			goto out_unlock;
-		}
-		new_size = isize + len;
-
-		/* Offset should be less than i_size */
-		if (offset >= isize) {
-			error = -EINVAL;
-			goto out_unlock;
-		}
-		do_file_insert = true;
-	} else {
-		if (!(mode & FALLOC_FL_KEEP_SIZE) &&
-		    offset + len > i_size_read(inode)) {
-			new_size = offset + len;
-			error = inode_newsize_ok(inode, new_size);
-			if (error)
-				goto out_unlock;
-		}
-
-		if (mode & FALLOC_FL_ZERO_RANGE) {
-			/*
-			 * Punch a hole and prealloc the range.  We use a hole
-			 * punch rather than unwritten extent conversion for two
-			 * reasons:
-			 *
-			 *   1.) Hole punch handles partial block zeroing for us.
-			 *   2.) If prealloc returns ENOSPC, the file range is
-			 *       still zero-valued by virtue of the hole punch.
-			 */
-			unsigned int blksize = i_blocksize(inode);
-
-			trace_xfs_zero_file_space(ip);
-
-			error = xfs_free_file_space(ip, offset, len);
-			if (error)
-				goto out_unlock;
-
-			len = round_up(offset + len, blksize) -
-			      round_down(offset, blksize);
-			offset = round_down(offset, blksize);
-		} else if (mode & FALLOC_FL_UNSHARE_RANGE) {
-			error = xfs_reflink_unshare(ip, offset, len);
-			if (error)
-				goto out_unlock;
-		} else {
-			/*
-			 * If always_cow mode we can't use preallocations and
-			 * thus should not create them.
-			 */
-			if (xfs_is_always_cow_inode(ip)) {
-				error = -EOPNOTSUPP;
-				goto out_unlock;
-			}
-		}
-
-		if (!xfs_is_always_cow_inode(ip)) {
-			error = xfs_alloc_file_space(ip, offset, len);
-			if (error)
-				goto out_unlock;
-		}
-	}
-
-	/* Change file size if needed */
-	if (new_size) {
-		struct iattr iattr;
-
-		iattr.ia_valid = ATTR_SIZE;
-		iattr.ia_size = new_size;
-		error = xfs_vn_setattr_size(file_mnt_idmap(file),
-					    file_dentry(file), &iattr);
-		if (error)
-			goto out_unlock;
-	}
-
-	/*
-	 * Perform hole insertion now that the file size has been
-	 * updated so that if we crash during the operation we don't
-	 * leave shifted extents past EOF and hence losing access to
-	 * the data that is contained within them.
-	 */
-	if (do_file_insert) {
-		error = xfs_insert_file_space(ip, offset, len);
-		if (error)
-			goto out_unlock;
-	}
-
-	if (xfs_file_sync_writes(file))
-=======
 	switch (mode & FALLOC_FL_MODE_MASK) {
 	case FALLOC_FL_PUNCH_HOLE:
 		error = xfs_free_file_space(ip, offset, len);
@@ -1377,7 +1133,6 @@ xfs_file_fallocate(
 	}
 
 	if (!error && xfs_file_sync_writes(file))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = xfs_log_force_inode(ip);
 
 out_unlock:
@@ -1513,14 +1268,6 @@ xfs_dir_open(
 	return error;
 }
 
-<<<<<<< HEAD
-STATIC int
-xfs_file_release(
-	struct inode	*inode,
-	struct file	*filp)
-{
-	return xfs_release(XFS_I(inode));
-=======
 /*
  * Don't bother propagating errors.  We're just doing cleanup, and the caller
  * ignores the return value anyway.
@@ -1593,7 +1340,6 @@ xfs_file_release(
 	}
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 STATIC int

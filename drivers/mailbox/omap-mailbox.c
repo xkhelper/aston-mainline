@@ -603,11 +603,7 @@ static struct platform_driver omap_mbox_driver = {
 	.driver	= {
 		.name = "omap-mailbox",
 		.pm = &omap_mbox_pm_ops,
-<<<<<<< HEAD
-		.of_match_table = of_match_ptr(omap_mailbox_of_match),
-=======
 		.of_match_table = omap_mailbox_of_match,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 module_platform_driver(omap_mbox_driver);

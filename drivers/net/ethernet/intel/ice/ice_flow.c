@@ -409,8 +409,6 @@ static const u32 ice_ptypes_gtpc_tid[] = {
 };
 
 /* Packet types for GTPU */
-<<<<<<< HEAD
-=======
 static const struct ice_ptype_attributes ice_attr_gtpu_session[] = {
 	{ ICE_MAC_IPV4_GTPU_IPV4_FRAG,	  ICE_PTYPE_ATTR_GTP_SESSION },
 	{ ICE_MAC_IPV4_GTPU_IPV4_PAY,	  ICE_PTYPE_ATTR_GTP_SESSION },
@@ -434,7 +432,6 @@ static const struct ice_ptype_attributes ice_attr_gtpu_session[] = {
 	{ ICE_MAC_IPV6_GTPU_IPV6_ICMPV6,  ICE_PTYPE_ATTR_GTP_SESSION },
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct ice_ptype_attributes ice_attr_gtpu_eh[] = {
 	{ ICE_MAC_IPV4_GTPU_IPV4_FRAG,	  ICE_PTYPE_ATTR_GTP_PDU_EH },
 	{ ICE_MAC_IPV4_GTPU_IPV4_PAY,	  ICE_PTYPE_ATTR_GTP_PDU_EH },
@@ -1426,11 +1423,7 @@ ice_flow_add_prof_sync(struct ice_hw *hw, enum ice_block blk,
 	/* Add a HW profile for this flow profile */
 	status = ice_add_prof(hw, blk, prof_id, (u8 *)params->ptypes,
 			      params->attr, params->attr_cnt, params->es,
-<<<<<<< HEAD
-			      params->mask, symm);
-=======
 			      params->mask, symm, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (status) {
 		ice_debug(hw, ICE_DBG_FLOW, "Error adding a HW flow profile\n");
 		goto out;
@@ -1553,8 +1546,6 @@ ice_flow_disassoc_prof(struct ice_hw *hw, enum ice_block blk,
 	return status;
 }
 
-<<<<<<< HEAD
-=======
 #define FLAG_GTP_EH_PDU_LINK	BIT_ULL(13)
 #define FLAG_GTP_EH_PDU		BIT_ULL(14)
 
@@ -1639,7 +1630,6 @@ ice_flow_set_parser_prof(struct ice_hw *hw, u16 dest_vsi, u16 fdir_vsi,
 	return status;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ice_flow_add_prof - Add a flow profile for packet segments and matched fields
  * @hw: pointer to the HW struct

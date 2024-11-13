@@ -415,10 +415,7 @@ static void axienet_set_mac_address(struct net_device *ndev,
 static int netdev_set_mac_address(struct net_device *ndev, void *p)
 {
 	struct sockaddr *addr = p;
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	axienet_set_mac_address(ndev, addr->sa_data);
 	return 0;
 }
@@ -440,26 +437,6 @@ static void axienet_set_multicast_list(struct net_device *ndev)
 	u32 reg, af0reg, af1reg;
 	struct axienet_local *lp = netdev_priv(ndev);
 
-<<<<<<< HEAD
-	if (ndev->flags & (IFF_ALLMULTI | IFF_PROMISC) ||
-	    netdev_mc_count(ndev) > XAE_MULTICAST_CAM_TABLE_NUM) {
-		/* We must make the kernel realize we had to move into
-		 * promiscuous mode. If it was a promiscuous mode request
-		 * the flag is already set. If not we set it.
-		 */
-		ndev->flags |= IFF_PROMISC;
-		reg = axienet_ior(lp, XAE_FMI_OFFSET);
-		reg |= XAE_FMI_PM_MASK;
-		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-		dev_info(&ndev->dev, "Promiscuous mode enabled.\n");
-	} else if (!netdev_mc_empty(ndev)) {
-		struct netdev_hw_addr *ha;
-
-		reg = axienet_ior(lp, XAE_FMI_OFFSET);
-		reg &= ~XAE_FMI_PM_MASK;
-		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-
-=======
 	reg = axienet_ior(lp, XAE_FMI_OFFSET);
 	reg &= ~XAE_FMI_PM_MASK;
 	if (ndev->flags & IFF_PROMISC)
@@ -481,7 +458,6 @@ static void axienet_set_multicast_list(struct net_device *ndev)
 	} else if (!netdev_mc_empty(ndev)) {
 		struct netdev_hw_addr *ha;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		netdev_for_each_mc_addr(ha, ndev) {
 			if (i >= XAE_MULTICAST_CAM_TABLE_NUM)
 				break;
@@ -494,31 +470,12 @@ static void axienet_set_multicast_list(struct net_device *ndev)
 			af1reg = (ha->addr[4]);
 			af1reg |= (ha->addr[5] << 8);
 
-<<<<<<< HEAD
-			reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
-=======
 			reg &= 0xFFFFFF00;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg |= i;
 
 			axienet_iow(lp, XAE_FMI_OFFSET, reg);
 			axienet_iow(lp, XAE_AF0_OFFSET, af0reg);
 			axienet_iow(lp, XAE_AF1_OFFSET, af1reg);
-<<<<<<< HEAD
-			axienet_iow(lp, XAE_FFE_OFFSET, 1);
-			i++;
-		}
-	} else {
-		reg = axienet_ior(lp, XAE_FMI_OFFSET);
-		reg &= ~XAE_FMI_PM_MASK;
-
-		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-		dev_info(&ndev->dev, "Promiscuous mode disabled.\n");
-	}
-
-	for (; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
-		reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
-=======
 			axienet_iow(lp, XAE_AM0_OFFSET, 0xffffffff);
 			axienet_iow(lp, XAE_AM1_OFFSET, 0x0000ffff);
 			axienet_iow(lp, XAE_FFE_OFFSET, 1);
@@ -528,7 +485,6 @@ static void axienet_set_multicast_list(struct net_device *ndev)
 
 	for (; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
 		reg &= 0xFFFFFF00;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg |= i;
 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
 		axienet_iow(lp, XAE_FFE_OFFSET, 0);
@@ -563,8 +519,6 @@ static void axienet_setoptions(struct net_device *ndev, u32 options)
 	lp->options |= options;
 }
 
-<<<<<<< HEAD
-=======
 static u64 axienet_stat(struct axienet_local *lp, enum temac_stat stat)
 {
 	u32 counter;
@@ -604,20 +558,16 @@ static void axienet_refresh_stats(struct work_struct *work)
 	schedule_delayed_work(&lp->stats_work, 13 * HZ);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __axienet_device_reset(struct axienet_local *lp)
 {
 	u32 value;
 	int ret;
 
-<<<<<<< HEAD
-=======
 	/* Save statistics counters in case they will be reset */
 	mutex_lock(&lp->stats_lock);
 	if (lp->features & XAE_FEATURE_STATS)
 		axienet_stats_update(lp, true);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Reset Axi DMA. This would reset Axi Ethernet core as well. The reset
 	 * process of Axi DMA takes a while to complete as all pending
 	 * commands/transfers will be flushed or completed during this
@@ -632,11 +582,7 @@ static int __axienet_device_reset(struct axienet_local *lp)
 				XAXIDMA_TX_CR_OFFSET);
 	if (ret) {
 		dev_err(lp->dev, "%s: DMA reset timeout!\n", __func__);
-<<<<<<< HEAD
-		return ret;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Wait for PhyRstCmplt bit to be set, indicating the PHY reset has finished */
@@ -646,12 +592,6 @@ static int __axienet_device_reset(struct axienet_local *lp)
 				XAE_IS_OFFSET);
 	if (ret) {
 		dev_err(lp->dev, "%s: timeout waiting for PhyRstCmplt\n", __func__);
-<<<<<<< HEAD
-		return ret;
-	}
-
-	return 0;
-=======
 		goto out;
 	}
 
@@ -675,7 +615,6 @@ static int __axienet_device_reset(struct axienet_local *lp)
 out:
 	mutex_unlock(&lp->stats_lock);
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -738,12 +677,7 @@ static int axienet_device_reset(struct net_device *ndev)
 	lp->options |= XAE_OPTION_VLAN;
 	lp->options &= (~XAE_OPTION_JUMBO);
 
-<<<<<<< HEAD
-	if ((ndev->mtu > XAE_MTU) &&
-	    (ndev->mtu <= XAE_JUMBO_MTU)) {
-=======
 	if (ndev->mtu > XAE_MTU && ndev->mtu <= XAE_JUMBO_MTU) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		lp->max_frm_size = ndev->mtu + VLAN_ETH_HLEN +
 					XAE_TRL_SIZE;
 
@@ -802,24 +736,15 @@ static int axienet_device_reset(struct net_device *ndev)
  *
  * Would either be called after a successful transmit operation, or after
  * there was an error when setting up the chain.
-<<<<<<< HEAD
- * Returns the number of descriptors handled.
-=======
  * Returns the number of packets handled.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
 				 int nr_bds, bool force, u32 *sizep, int budget)
 {
 	struct axidma_bd *cur_p;
 	unsigned int status;
-<<<<<<< HEAD
-	dma_addr_t phys;
-	int i;
-=======
 	int i, packets = 0;
 	dma_addr_t phys;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < nr_bds; i++) {
 		cur_p = &lp->tx_bd_v[(first_bd + i) % lp->tx_bd_num];
@@ -838,15 +763,10 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
 				 (cur_p->cntrl & XAXIDMA_BD_CTRL_LENGTH_MASK),
 				 DMA_TO_DEVICE);
 
-<<<<<<< HEAD
-		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK))
-			napi_consume_skb(cur_p->skb, budget);
-=======
 		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK)) {
 			napi_consume_skb(cur_p->skb, budget);
 			packets++;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		cur_p->app0 = 0;
 		cur_p->app1 = 0;
@@ -862,9 +782,6 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
 			*sizep += status & XAXIDMA_BD_STS_ACTUAL_LEN_MASK;
 	}
 
-<<<<<<< HEAD
-	return i;
-=======
 	if (!force) {
 		lp->tx_bd_ci += i;
 		if (lp->tx_bd_ci >= lp->tx_bd_num)
@@ -872,7 +789,6 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
 	}
 
 	return packets;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1008,21 +924,13 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
 	skbuf_dma->sg_len = sg_len;
 	dma_tx_desc->callback_param = lp;
 	dma_tx_desc->callback_result = axienet_dma_tx_cb;
-<<<<<<< HEAD
-	dmaengine_submit(dma_tx_desc);
-	dma_async_issue_pending(lp->tx_chan);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	txq = skb_get_tx_queue(lp->ndev, skb);
 	netdev_tx_sent_queue(txq, skb->len);
 	netif_txq_maybe_stop(txq, CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
 			     MAX_SKB_FRAGS + 1, 2 * MAX_SKB_FRAGS);
 
-<<<<<<< HEAD
-=======
 	dmaengine_submit(dma_tx_desc);
 	dma_async_issue_pending(lp->tx_chan);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return NETDEV_TX_OK;
 
 xmit_error_unmap_sg:
@@ -1053,20 +961,10 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
 	u32 size = 0;
 	int packets;
 
-<<<<<<< HEAD
-	packets = axienet_free_tx_chain(lp, lp->tx_bd_ci, budget, false, &size, budget);
-
-	if (packets) {
-		lp->tx_bd_ci += packets;
-		if (lp->tx_bd_ci >= lp->tx_bd_num)
-			lp->tx_bd_ci %= lp->tx_bd_num;
-
-=======
 	packets = axienet_free_tx_chain(lp, lp->tx_bd_ci, lp->tx_bd_num, false,
 					&size, budget);
 
 	if (packets) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u64_stats_update_begin(&lp->tx_stat_sync);
 		u64_stats_add(&lp->tx_packets, packets);
 		u64_stats_add(&lp->tx_bytes, size);
@@ -1153,10 +1051,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 		if (net_ratelimit())
 			netdev_err(ndev, "TX DMA mapping error\n");
 		ndev->stats.tx_dropped++;
-<<<<<<< HEAD
-=======
 		dev_kfree_skb_any(skb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return NETDEV_TX_OK;
 	}
 	desc_set_phys_addr(lp, phys, cur_p);
@@ -1177,10 +1072,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 			ndev->stats.tx_dropped++;
 			axienet_free_tx_chain(lp, orig_tail_ptr, ii + 1,
 					      true, NULL, 0);
-<<<<<<< HEAD
-=======
 			dev_kfree_skb_any(skb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return NETDEV_TX_OK;
 		}
 		desc_set_phys_addr(lp, phys, cur_p);
@@ -1303,13 +1195,7 @@ static int axienet_rx_poll(struct napi_struct *napi, int budget)
 				    csumstatus == XAE_IP_UDP_CSUM_VALIDATED) {
 					skb->ip_summed = CHECKSUM_UNNECESSARY;
 				}
-<<<<<<< HEAD
-			} else if ((lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) != 0 &&
-				   skb->protocol == htons(ETH_P_IP) &&
-				   skb->len > 64) {
-=======
 			} else if (lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				skb->csum = be32_to_cpu(cur_p->app3 & 0xFFFF);
 				skb->ip_summed = CHECKSUM_COMPLETE;
 			}
@@ -1403,16 +1289,10 @@ static irqreturn_t axienet_tx_irq(int irq, void *_ndev)
 		u32 cr = lp->tx_dma_cr;
 
 		cr &= ~(XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
-<<<<<<< HEAD
-		axienet_dma_out32(lp, XAXIDMA_TX_CR_OFFSET, cr);
-
-		napi_schedule(&lp->napi_tx);
-=======
 		if (napi_schedule_prep(&lp->napi_tx)) {
 			axienet_dma_out32(lp, XAXIDMA_TX_CR_OFFSET, cr);
 			__napi_schedule(&lp->napi_tx);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return IRQ_HANDLED;
@@ -1454,16 +1334,10 @@ static irqreturn_t axienet_rx_irq(int irq, void *_ndev)
 		u32 cr = lp->rx_dma_cr;
 
 		cr &= ~(XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
-<<<<<<< HEAD
-		axienet_dma_out32(lp, XAXIDMA_RX_CR_OFFSET, cr);
-
-		napi_schedule(&lp->napi_rx);
-=======
 		if (napi_schedule_prep(&lp->napi_rx)) {
 			axienet_dma_out32(lp, XAXIDMA_RX_CR_OFFSET, cr);
 			__napi_schedule(&lp->napi_rx);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return IRQ_HANDLED;
@@ -1492,11 +1366,7 @@ static irqreturn_t axienet_eth_irq(int irq, void *_ndev)
 		ndev->stats.rx_missed_errors++;
 
 	if (pending & XAE_INT_RXRJECT_MASK)
-<<<<<<< HEAD
-		ndev->stats.rx_frame_errors++;
-=======
 		ndev->stats.rx_dropped++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	axienet_iow(lp, XAE_IS_OFFSET, pending);
 	return IRQ_HANDLED;
@@ -1715,11 +1585,6 @@ static int axienet_open(struct net_device *ndev)
 	int ret;
 	struct axienet_local *lp = netdev_priv(ndev);
 
-<<<<<<< HEAD
-	dev_dbg(&ndev->dev, "%s\n", __func__);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* When we do an Axi Ethernet reset, it resets the complete core
 	 * including the MDIO. MDIO must be disabled before resetting.
 	 * Hold MDIO bus lock to avoid MDIO accesses during the reset.
@@ -1736,12 +1601,9 @@ static int axienet_open(struct net_device *ndev)
 
 	phylink_start(lp->phylink);
 
-<<<<<<< HEAD
-=======
 	/* Start the statistics refresh work */
 	schedule_delayed_work(&lp->stats_work, 0);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (lp->use_dmaengine) {
 		/* Enable interrupts for Axi Ethernet core (if defined) */
 		if (lp->eth_irq > 0) {
@@ -1766,10 +1628,7 @@ err_free_eth_irq:
 	if (lp->eth_irq > 0)
 		free_irq(lp->eth_irq, ndev);
 err_phy:
-<<<<<<< HEAD
-=======
 	cancel_delayed_work_sync(&lp->stats_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phylink_stop(lp->phylink);
 	phylink_disconnect_phy(lp->phylink);
 	return ret;
@@ -1790,11 +1649,6 @@ static int axienet_stop(struct net_device *ndev)
 	struct axienet_local *lp = netdev_priv(ndev);
 	int i;
 
-<<<<<<< HEAD
-	dev_dbg(&ndev->dev, "axienet_close()\n");
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!lp->use_dmaengine) {
 		WRITE_ONCE(lp->stopping, true);
 		flush_work(&lp->dma_err_task);
@@ -1803,11 +1657,8 @@ static int axienet_stop(struct net_device *ndev)
 		napi_disable(&lp->napi_rx);
 	}
 
-<<<<<<< HEAD
-=======
 	cancel_delayed_work_sync(&lp->stats_work);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phylink_stop(lp->phylink);
 	phylink_disconnect_phy(lp->phylink);
 
@@ -1882,10 +1733,7 @@ static int axienet_change_mtu(struct net_device *ndev, int new_mtu)
 static void axienet_poll_controller(struct net_device *ndev)
 {
 	struct axienet_local *lp = netdev_priv(ndev);
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	disable_irq(lp->tx_irq);
 	disable_irq(lp->rx_irq);
 	axienet_rx_irq(lp->tx_irq, ndev);
@@ -1924,8 +1772,6 @@ axienet_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
 		stats->tx_packets = u64_stats_read(&lp->tx_packets);
 		stats->tx_bytes = u64_stats_read(&lp->tx_bytes);
 	} while (u64_stats_fetch_retry(&lp->tx_stat_sync, start));
-<<<<<<< HEAD
-=======
 
 	if (!(lp->features & XAE_FEATURE_STATS))
 		return;
@@ -1955,7 +1801,6 @@ axienet_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
 				   stats->tx_fifo_errors +
 				   stats->tx_window_errors;
 	} while (read_seqcount_retry(&lp->hw_stats_seqcount, start));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct net_device_ops axienet_netdev_ops = {
@@ -2248,8 +2093,6 @@ static int axienet_ethtools_nway_reset(struct net_device *dev)
 	return phylink_ethtool_nway_reset(lp->phylink);
 }
 
-<<<<<<< HEAD
-=======
 static void axienet_ethtools_get_ethtool_stats(struct net_device *dev,
 					       struct ethtool_stats *stats,
 					       u64 *data)
@@ -2457,7 +2300,6 @@ axienet_ethtool_get_rmon_stats(struct net_device *dev,
 	*ranges = axienet_rmon_ranges;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct ethtool_ops axienet_ethtool_ops = {
 	.supported_coalesce_params = ETHTOOL_COALESCE_MAX_FRAMES |
 				     ETHTOOL_COALESCE_USECS,
@@ -2474,8 +2316,6 @@ static const struct ethtool_ops axienet_ethtool_ops = {
 	.get_link_ksettings = axienet_ethtools_get_link_ksettings,
 	.set_link_ksettings = axienet_ethtools_set_link_ksettings,
 	.nway_reset	= axienet_ethtools_nway_reset,
-<<<<<<< HEAD
-=======
 	.get_ethtool_stats = axienet_ethtools_get_ethtool_stats,
 	.get_strings    = axienet_ethtools_get_strings,
 	.get_sset_count = axienet_ethtools_get_sset_count,
@@ -2483,7 +2323,6 @@ static const struct ethtool_ops axienet_ethtool_ops = {
 	.get_eth_mac_stats = axienet_ethtool_get_eth_mac_stats,
 	.get_eth_ctrl_stats = axienet_ethtool_get_eth_ctrl_stats,
 	.get_rmon_stats = axienet_ethtool_get_rmon_stats,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct axienet_local *pcs_to_axienet_local(struct phylink_pcs *pcs)
@@ -2756,13 +2595,10 @@ static int axienet_probe(struct platform_device *pdev)
 	u64_stats_init(&lp->rx_stat_sync);
 	u64_stats_init(&lp->tx_stat_sync);
 
-<<<<<<< HEAD
-=======
 	mutex_init(&lp->stats_lock);
 	seqcount_mutex_init(&lp->hw_stats_seqcount, &lp->stats_lock);
 	INIT_DEFERRABLE_WORK(&lp->stats_work, axienet_refresh_stats);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lp->axi_clk = devm_clk_get_optional(&pdev->dev, "s_axi_lite_clk");
 	if (!lp->axi_clk) {
 		/* For backward compatibility, if named AXI clock is not present,
@@ -2803,61 +2639,28 @@ static int axienet_probe(struct platform_device *pdev)
 	/* Setup checksum offload, but default to off if not specified */
 	lp->features = 0;
 
-<<<<<<< HEAD
-=======
 	if (axienet_ior(lp, XAE_ABILITY_OFFSET) & XAE_ABILITY_STATS)
 		lp->features |= XAE_FEATURE_STATS;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = of_property_read_u32(pdev->dev.of_node, "xlnx,txcsum", &value);
 	if (!ret) {
 		switch (value) {
 		case 1:
-<<<<<<< HEAD
-			lp->csum_offload_on_tx_path =
-				XAE_FEATURE_PARTIAL_TX_CSUM;
-			lp->features |= XAE_FEATURE_PARTIAL_TX_CSUM;
-			/* Can checksum TCP/UDP over IPv4. */
-			ndev->features |= NETIF_F_IP_CSUM;
-			break;
-		case 2:
-			lp->csum_offload_on_tx_path =
-				XAE_FEATURE_FULL_TX_CSUM;
-=======
 			lp->features |= XAE_FEATURE_PARTIAL_TX_CSUM;
 			/* Can checksum any contiguous range */
 			ndev->features |= NETIF_F_HW_CSUM;
 			break;
 		case 2:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			lp->features |= XAE_FEATURE_FULL_TX_CSUM;
 			/* Can checksum TCP/UDP over IPv4. */
 			ndev->features |= NETIF_F_IP_CSUM;
 			break;
-<<<<<<< HEAD
-		default:
-			lp->csum_offload_on_tx_path = XAE_NO_CSUM_OFFLOAD;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	ret = of_property_read_u32(pdev->dev.of_node, "xlnx,rxcsum", &value);
 	if (!ret) {
 		switch (value) {
 		case 1:
-<<<<<<< HEAD
-			lp->csum_offload_on_rx_path =
-				XAE_FEATURE_PARTIAL_RX_CSUM;
-			lp->features |= XAE_FEATURE_PARTIAL_RX_CSUM;
-			break;
-		case 2:
-			lp->csum_offload_on_rx_path =
-				XAE_FEATURE_FULL_RX_CSUM;
-			lp->features |= XAE_FEATURE_FULL_RX_CSUM;
-			break;
-		default:
-			lp->csum_offload_on_rx_path = XAE_NO_CSUM_OFFLOAD;
-=======
 			lp->features |= XAE_FEATURE_PARTIAL_RX_CSUM;
 			ndev->features |= NETIF_F_RXCSUM;
 			break;
@@ -2865,7 +2668,6 @@ static int axienet_probe(struct platform_device *pdev)
 			lp->features |= XAE_FEATURE_FULL_RX_CSUM;
 			ndev->features |= NETIF_F_RXCSUM;
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	/* For supporting jumbo frames, the Axi Ethernet hardware must have
@@ -2915,11 +2717,7 @@ static int axienet_probe(struct platform_device *pdev)
 		goto cleanup_clk;
 	}
 
-<<<<<<< HEAD
-	if (!of_find_property(pdev->dev.of_node, "dmas", NULL)) {
-=======
 	if (!of_property_present(pdev->dev.of_node, "dmas")) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Find the DMA node, map the DMA registers, and decode the DMA IRQs */
 		np = of_parse_phandle(pdev->dev.of_node, "axistream-connected", 0);
 

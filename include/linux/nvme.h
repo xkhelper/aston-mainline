@@ -987,13 +987,8 @@ struct nvme_rw_command {
 	__le16			control;
 	__le32			dsmgmt;
 	__le32			reftag;
-<<<<<<< HEAD
-	__le16			apptag;
-	__le16			appmask;
-=======
 	__le16			lbat;
 	__le16			lbatm;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum {
@@ -1062,13 +1057,8 @@ struct nvme_write_zeroes_cmd {
 	__le16			control;
 	__le32			dsmgmt;
 	__le32			reftag;
-<<<<<<< HEAD
-	__le16			apptag;
-	__le16			appmask;
-=======
 	__le16			lbat;
 	__le16			lbatm;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum nvme_zone_mgmt_action {

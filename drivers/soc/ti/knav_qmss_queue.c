@@ -1076,29 +1076,20 @@ static const char *knav_queue_find_name(struct device_node *node)
 }
 
 static int knav_queue_setup_regions(struct knav_device *kdev,
-<<<<<<< HEAD
-					struct device_node *regions)
-{
-	struct device *dev = kdev->dev;
-=======
 				    struct device_node *node)
 {
 	struct device *dev = kdev->dev;
 	struct device_node *regions __free(device_node) =
 			of_get_child_by_name(node, "descriptor-regions");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct knav_region *region;
 	struct device_node *child;
 	u32 temp[2];
 	int ret;
 
-<<<<<<< HEAD
-=======
 	if (!regions)
 		return dev_err_probe(dev, -ENODEV,
 				     "descriptor-regions not specified\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_child_of_node(regions, child) {
 		region = devm_kzalloc(dev, sizeof(*region), GFP_KERNEL);
 		if (!region) {
@@ -1119,14 +1110,6 @@ static int knav_queue_setup_regions(struct knav_device *kdev,
 			continue;
 		}
 
-<<<<<<< HEAD
-		if (!of_get_property(child, "link-index", NULL)) {
-			dev_err(dev, "No link info for %s\n", region->name);
-			devm_kfree(dev, region);
-			continue;
-		}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = of_property_read_u32(child, "link-index",
 					   &region->link_index);
 		if (ret) {
@@ -1139,16 +1122,9 @@ static int knav_queue_setup_regions(struct knav_device *kdev,
 		INIT_LIST_HEAD(&region->pools);
 		list_add_tail(&region->list, &kdev->regions);
 	}
-<<<<<<< HEAD
-	if (list_empty(&kdev->regions)) {
-		dev_err(dev, "no valid region information found\n");
-		return -ENODEV;
-	}
-=======
 	if (list_empty(&kdev->regions))
 		return dev_err_probe(dev, -ENODEV,
 				     "no valid region information found\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Next, we run through the regions and set things up */
 	for_each_region(kdev, region)
@@ -1330,12 +1306,6 @@ static int knav_setup_queue_range(struct knav_device *kdev,
 }
 
 static int knav_setup_queue_pools(struct knav_device *kdev,
-<<<<<<< HEAD
-				   struct device_node *queue_pools)
-{
-	struct device_node *type, *range;
-
-=======
 				  struct device_node *node)
 {
 	struct device_node *queue_pools __free(device_node) =
@@ -1346,7 +1316,6 @@ static int knav_setup_queue_pools(struct knav_device *kdev,
 		return dev_err_probe(kdev->dev, -ENODEV,
 				     "queue-pools not specified\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_child_of_node(queue_pools, type) {
 		for_each_child_of_node(type, range) {
 			/* return value ignored, we init the rest... */
@@ -1355,16 +1324,9 @@ static int knav_setup_queue_pools(struct knav_device *kdev,
 	}
 
 	/* ... and barf if they all failed! */
-<<<<<<< HEAD
-	if (list_empty(&kdev->queue_ranges)) {
-		dev_err(kdev->dev, "no valid queue range found\n");
-		return -ENODEV;
-	}
-=======
 	if (list_empty(&kdev->queue_ranges))
 		return dev_err_probe(kdev->dev, -ENODEV,
 				     "no valid queue range found\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1432,29 +1394,20 @@ static void __iomem *knav_queue_map_reg(struct knav_device *kdev,
 }
 
 static int knav_queue_init_qmgrs(struct knav_device *kdev,
-<<<<<<< HEAD
-					struct device_node *qmgrs)
-{
-	struct device *dev = kdev->dev;
-=======
 				 struct device_node *node)
 {
 	struct device *dev = kdev->dev;
 	struct device_node *qmgrs __free(device_node) =
 			of_get_child_by_name(node, "qmgrs");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct knav_qmgr_info *qmgr;
 	struct device_node *child;
 	u32 temp[2];
 	int ret;
 
-<<<<<<< HEAD
-=======
 	if (!qmgrs)
 		return dev_err_probe(dev, -ENODEV,
 				     "queue manager info not specified\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_child_of_node(qmgrs, child) {
 		qmgr = devm_kzalloc(dev, sizeof(*qmgr), GFP_KERNEL);
 		if (!qmgr) {
@@ -1726,8 +1679,6 @@ static int knav_queue_start_pdsps(struct knav_device *kdev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int knav_queue_setup_pdsps(struct knav_device *kdev,
 				  struct device_node *node)
 {
@@ -1748,7 +1699,6 @@ static int knav_queue_setup_pdsps(struct knav_device *kdev,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct knav_qmgr_info *knav_find_qmgr(unsigned id)
 {
 	struct knav_qmgr_info *qmgr;
@@ -1836,10 +1786,6 @@ MODULE_DEVICE_TABLE(of, keystone_qmss_of_match);
 static int knav_queue_probe(struct platform_device *pdev)
 {
 	struct device_node *node = pdev->dev.of_node;
-<<<<<<< HEAD
-	struct device_node *qmgrs, *queue_pools, *regions, *pdsps;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device *dev = &pdev->dev;
 	u32 temp[2];
 	int ret;
@@ -1883,52 +1829,17 @@ static int knav_queue_probe(struct platform_device *pdev)
 	kdev->num_queues = temp[1];
 
 	/* Initialize queue managers using device tree configuration */
-<<<<<<< HEAD
-	qmgrs =  of_get_child_by_name(node, "qmgrs");
-	if (!qmgrs) {
-		dev_err(dev, "queue manager info not specified\n");
-		ret = -ENODEV;
-		goto err;
-	}
-	ret = knav_queue_init_qmgrs(kdev, qmgrs);
-	of_node_put(qmgrs);
-=======
 	ret = knav_queue_init_qmgrs(kdev, node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto err;
 
 	/* get pdsp configuration values from device tree */
-<<<<<<< HEAD
-	pdsps =  of_get_child_by_name(node, "pdsps");
-	if (pdsps) {
-		ret = knav_queue_init_pdsps(kdev, pdsps);
-		if (ret)
-			goto err;
-
-		ret = knav_queue_start_pdsps(kdev);
-		if (ret)
-			goto err;
-	}
-	of_node_put(pdsps);
-
-	/* get usable queue range values from device tree */
-	queue_pools = of_get_child_by_name(node, "queue-pools");
-	if (!queue_pools) {
-		dev_err(dev, "queue-pools not specified\n");
-		ret = -ENODEV;
-		goto err;
-	}
-	ret = knav_setup_queue_pools(kdev, queue_pools);
-	of_node_put(queue_pools);
-=======
 	ret = knav_queue_setup_pdsps(kdev, node);
 	if (ret)
 		goto err;
 
 	/* get usable queue range values from device tree */
 	ret = knav_setup_queue_pools(kdev, node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto err;
 
@@ -1950,18 +1861,7 @@ static int knav_queue_probe(struct platform_device *pdev)
 	if (ret)
 		goto err;
 
-<<<<<<< HEAD
-	regions = of_get_child_by_name(node, "descriptor-regions");
-	if (!regions) {
-		dev_err(dev, "descriptor-regions not specified\n");
-		ret = -ENODEV;
-		goto err;
-	}
-	ret = knav_queue_setup_regions(kdev, regions);
-	of_node_put(regions);
-=======
 	ret = knav_queue_setup_regions(kdev, node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto err;
 

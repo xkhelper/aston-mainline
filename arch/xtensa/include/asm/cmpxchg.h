@@ -15,10 +15,7 @@
 
 #include <linux/bits.h>
 #include <linux/stringify.h>
-<<<<<<< HEAD
-=======
 #include <linux/cmpxchg-emu.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * cmpxchg
@@ -78,10 +75,7 @@ static __inline__ unsigned long
 __cmpxchg(volatile void *ptr, unsigned long old, unsigned long new, int size)
 {
 	switch (size) {
-<<<<<<< HEAD
-=======
 	case 1:  return cmpxchg_emu_u8(ptr, old, new);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case 4:  return __cmpxchg_u32(ptr, old, new);
 	default: __cmpxchg_called_with_bad_pointer();
 		 return old;

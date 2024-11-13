@@ -2533,8 +2533,6 @@ struct ethtool_link_settings {
 	 * __u32 map_lp_advertising[link_mode_masks_nwords];
 	 */
 };
-<<<<<<< HEAD
-=======
 
 /**
  * enum phy_upstream - Represents the upstream component a given PHY device
@@ -2551,5 +2549,4 @@ enum phy_upstream {
 	PHY_UPSTREAM_PHY,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _UAPI_LINUX_ETHTOOL_H */

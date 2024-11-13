@@ -374,11 +374,7 @@ static noinline int flush_new_cached_update(struct btree_trans *trans,
 	i->key_cache_already_flushed = true;
 	i->flags |= BTREE_TRIGGER_norun;
 
-<<<<<<< HEAD
-	btree_path_set_should_be_locked(btree_path);
-=======
 	btree_path_set_should_be_locked(trans, btree_path);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = bch2_trans_update_by_path(trans, path_idx, i->k, flags, ip);
 out:
 	bch2_path_put(trans, path_idx, true);
@@ -426,13 +422,9 @@ bch2_trans_update_by_path(struct btree_trans *trans, btree_path_idx_t path_idx,
 			break;
 	}
 
-<<<<<<< HEAD
-	if (!cmp && i < trans->updates + trans->nr_updates) {
-=======
 	bool overwrite = !cmp && i < trans->updates + trans->nr_updates;
 
 	if (overwrite) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		EBUG_ON(i->insert_trigger_run || i->overwrite_trigger_run);
 
 		bch2_path_put(trans, i->path, true);
@@ -459,13 +451,9 @@ bch2_trans_update_by_path(struct btree_trans *trans, btree_path_idx_t path_idx,
 		}
 	}
 
-<<<<<<< HEAD
-	__btree_path_get(trans->paths + i->path, true);
-=======
 	__btree_path_get(trans, trans->paths + i->path, true);
 
 	trace_update_by_path(trans, path, i, overwrite);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If a key is present in the key cache, it must also exist in the
@@ -514,11 +502,7 @@ static noinline int bch2_trans_update_get_key_cache(struct btree_trans *trans,
 			return btree_trans_restart(trans, BCH_ERR_transaction_restart_key_cache_raced);
 		}
 
-<<<<<<< HEAD
-		btree_path_set_should_be_locked(trans->paths + iter->key_cache_path);
-=======
 		btree_path_set_should_be_locked(trans, trans->paths + iter->key_cache_path);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -684,11 +668,7 @@ int bch2_btree_insert(struct bch_fs *c, enum btree_id id, struct bkey_i *k,
 		      struct disk_reservation *disk_res, int flags,
 		      enum btree_iter_update_trigger_flags iter_flags)
 {
-<<<<<<< HEAD
-	return bch2_trans_do(c, disk_res, NULL, flags,
-=======
 	return bch2_trans_commit_do(c, disk_res, NULL, flags,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     bch2_btree_insert_trans(trans, id, k, iter_flags));
 }
 
@@ -885,11 +865,7 @@ __bch2_fs_log_msg(struct bch_fs *c, unsigned commit_flags, const char *fmt,
 		memcpy(l->d, buf.buf, buf.pos);
 		c->journal.early_journal_entries.nr += jset_u64s(u64s);
 	} else {
-<<<<<<< HEAD
-		ret = bch2_trans_do(c, NULL, NULL,
-=======
 		ret = bch2_trans_commit_do(c, NULL, NULL,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			BCH_TRANS_COMMIT_lazy_rw|commit_flags,
 			__bch2_trans_log_msg(trans, &buf, u64s));
 	}

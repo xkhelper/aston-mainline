@@ -40,11 +40,7 @@ static inline unsigned int __inet6_ehashfn(const u32 lhash,
  *
  * The sockhash lock must be held as a reader here.
  */
-<<<<<<< HEAD
-struct sock *__inet6_lookup_established(struct net *net,
-=======
 struct sock *__inet6_lookup_established(const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					struct inet_hashinfo *hashinfo,
 					const struct in6_addr *saddr,
 					const __be16 sport,
@@ -60,11 +56,7 @@ inet6_ehashfn_t inet6_ehashfn;
 
 INDIRECT_CALLABLE_DECLARE(inet6_ehashfn_t udp6_ehashfn);
 
-<<<<<<< HEAD
-struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
-=======
 struct sock *inet6_lookup_reuseport(const struct net *net, struct sock *sk,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    struct sk_buff *skb, int doff,
 				    const struct in6_addr *saddr,
 				    __be16 sport,
@@ -72,11 +64,7 @@ struct sock *inet6_lookup_reuseport(const struct net *net, struct sock *sk,
 				    unsigned short hnum,
 				    inet6_ehashfn_t *ehashfn);
 
-<<<<<<< HEAD
-struct sock *inet6_lookup_listener(struct net *net,
-=======
 struct sock *inet6_lookup_listener(const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   struct inet_hashinfo *hashinfo,
 				   struct sk_buff *skb, int doff,
 				   const struct in6_addr *saddr,
@@ -85,11 +73,7 @@ struct sock *inet6_lookup_listener(const struct net *net,
 				   const unsigned short hnum,
 				   const int dif, const int sdif);
 
-<<<<<<< HEAD
-struct sock *inet6_lookup_run_sk_lookup(struct net *net,
-=======
 struct sock *inet6_lookup_run_sk_lookup(const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					int protocol,
 					struct sk_buff *skb, int doff,
 					const struct in6_addr *saddr,
@@ -98,11 +82,7 @@ struct sock *inet6_lookup_run_sk_lookup(const struct net *net,
 					const u16 hnum, const int dif,
 					inet6_ehashfn_t *ehashfn);
 
-<<<<<<< HEAD
-static inline struct sock *__inet6_lookup(struct net *net,
-=======
 static inline struct sock *__inet6_lookup(const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  struct inet_hashinfo *hashinfo,
 					  struct sk_buff *skb, int doff,
 					  const struct in6_addr *saddr,
@@ -187,11 +167,7 @@ static inline struct sock *__inet6_lookup_skb(struct inet_hashinfo *hashinfo,
 			      iif, sdif, refcounted);
 }
 
-<<<<<<< HEAD
-struct sock *inet6_lookup(struct net *net, struct inet_hashinfo *hashinfo,
-=======
 struct sock *inet6_lookup(const struct net *net, struct inet_hashinfo *hashinfo,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  struct sk_buff *skb, int doff,
 			  const struct in6_addr *saddr, const __be16 sport,
 			  const struct in6_addr *daddr, const __be16 dport,
@@ -199,11 +175,7 @@ struct sock *inet6_lookup(const struct net *net, struct inet_hashinfo *hashinfo,
 
 int inet6_hash(struct sock *sk);
 
-<<<<<<< HEAD
-static inline bool inet6_match(struct net *net, const struct sock *sk,
-=======
 static inline bool inet6_match(const struct net *net, const struct sock *sk,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       const struct in6_addr *saddr,
 			       const struct in6_addr *daddr,
 			       const __portpair ports,

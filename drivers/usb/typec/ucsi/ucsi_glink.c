@@ -278,11 +278,7 @@ static void pmic_glink_ucsi_callback(const void *data, size_t len, void *priv)
 	case UC_UCSI_USBC_NOTIFY_IND:
 		schedule_work(&ucsi->notify_work);
 		break;
-<<<<<<< HEAD
-	};
-=======
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void pmic_glink_ucsi_pdr_notify(void *priv, int state)

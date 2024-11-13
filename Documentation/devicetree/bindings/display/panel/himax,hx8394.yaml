@@ -15,21 +15,12 @@ description:
   such as the HannStar HSD060BHW4 720x1440 TFT LCD panel connected with
   a MIPI-DSI video interface.
 
-<<<<<<< HEAD
-allOf:
-  - $ref: panel-common.yaml#
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 properties:
   compatible:
     items:
       - enum:
           - hannstar,hsd060bhw4
-<<<<<<< HEAD
-=======
           - microchip,ac40t08a-mipi-panel
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - powkiddy,x55-panel
       - const: himax,hx8394
 
@@ -53,10 +44,6 @@ properties:
 required:
   - compatible
   - reg
-<<<<<<< HEAD
-  - reset-gpios
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - backlight
   - port
   - vcc-supply
@@ -64,8 +51,6 @@ required:
 
 additionalProperties: false
 
-<<<<<<< HEAD
-=======
 allOf:
   - $ref: panel-common.yaml#
   - if:
@@ -78,7 +63,6 @@ allOf:
       required:
         - reset-gpios
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 examples:
   - |
     #include <dt-bindings/gpio/gpio.h>

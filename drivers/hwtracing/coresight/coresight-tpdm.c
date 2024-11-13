@@ -439,12 +439,8 @@ static void __tpdm_enable(struct tpdm_drvdata *drvdata)
 }
 
 static int tpdm_enable(struct coresight_device *csdev, struct perf_event *event,
-<<<<<<< HEAD
-		       enum cs_mode mode)
-=======
 		       enum cs_mode mode,
 		       __maybe_unused struct coresight_trace_id_map *id_map)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct tpdm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
@@ -454,14 +450,11 @@ static int tpdm_enable(struct coresight_device *csdev, struct perf_event *event,
 		return -EBUSY;
 	}
 
-<<<<<<< HEAD
-=======
 	if (!coresight_take_mode(csdev, mode)) {
 		spin_unlock(&drvdata->spinlock);
 		return -EBUSY;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__tpdm_enable(drvdata);
 	drvdata->enable = true;
 	spin_unlock(&drvdata->spinlock);
@@ -519,10 +512,7 @@ static void tpdm_disable(struct coresight_device *csdev,
 	}
 
 	__tpdm_disable(drvdata);
-<<<<<<< HEAD
-=======
 	coresight_set_mode(csdev, CS_MODE_DISABLED);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drvdata->enable = false;
 	spin_unlock(&drvdata->spinlock);
 

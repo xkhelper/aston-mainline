@@ -36,8 +36,6 @@
 #define GENMASK_ULL(h, l) \
 	(GENMASK_INPUT_CHECK(h, l) + __GENMASK_ULL(h, l))
 
-<<<<<<< HEAD
-=======
 #if !defined(__ASSEMBLY__)
 /*
  * Missing asm support
@@ -53,5 +51,4 @@
 	(GENMASK_INPUT_CHECK(h, l) + __GENMASK_U128(h, l))
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __LINUX_BITS_H */

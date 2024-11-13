@@ -182,11 +182,6 @@
 #define HCLK_BUS		477
 #define HCLK_PERI		478
 
-<<<<<<< HEAD
-#define CLK_NR_CLKS		(HCLK_PERI + 1)
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* soft-reset indices */
 #define SRST_CORE_B0		0
 #define SRST_CORE_B1		1

@@ -84,15 +84,7 @@ properties:
       - port@0
       - port@1
 
-<<<<<<< HEAD
-  backlight: true
-  enable-gpios: true
-  power-supply: true
-
-additionalProperties: false
-=======
 unevaluatedProperties: false
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 required:
   - compatible

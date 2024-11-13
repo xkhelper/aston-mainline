@@ -42,8 +42,6 @@
 
 #define MAX_POSTPROC_BUFFERS	64
 
-<<<<<<< HEAD
-=======
 #define CBS_SIZE	16	/* compression table size in bytes */
 #define CBS_LUMA	8	/* luminance CBS is composed of 1 8x8 coded block */
 #define CBS_CHROMA_W	(8 * 2)	/* chrominance CBS is composed of two 8x4 coded
@@ -51,7 +49,6 @@
 				 */
 #define CBS_CHROMA_H	4
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct hantro_dev;
 struct hantro_ctx;
 struct hantro_buf;
@@ -154,10 +151,7 @@ struct hantro_hevc_dec_ctrls {
  * @ref_bufs_used:	Bitfield of used reference buffers
  * @ctrls:		V4L2 controls attached to a run
  * @num_tile_cols_allocated: number of allocated tiles
-<<<<<<< HEAD
-=======
  * @use_compression:	use reference buffer compression
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct hantro_hevc_dec_hw_ctx {
 	struct hantro_aux_buf tile_sizes;
@@ -170,10 +164,7 @@ struct hantro_hevc_dec_hw_ctx {
 	u32 ref_bufs_used;
 	struct hantro_hevc_dec_ctrls ctrls;
 	unsigned int num_tile_cols_allocated;
-<<<<<<< HEAD
-=======
 	bool use_compression;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -528,8 +519,6 @@ hantro_hevc_mv_size(unsigned int width, unsigned int height)
 	return width * height / 16;
 }
 
-<<<<<<< HEAD
-=======
 static inline size_t
 hantro_hevc_luma_compressed_size(unsigned int width, unsigned int height)
 {
@@ -557,7 +546,6 @@ hantro_hevc_compressed_size(unsigned int width, unsigned int height)
 	       hantro_hevc_chroma_compressed_size(width, height);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned short hantro_av1_num_sbs(unsigned short dimension)
 {
 	return DIV_ROUND_UP(dimension, 64);
@@ -573,11 +561,8 @@ hantro_av1_mv_size(unsigned int width, unsigned int height)
 
 size_t hantro_g2_chroma_offset(struct hantro_ctx *ctx);
 size_t hantro_g2_motion_vectors_offset(struct hantro_ctx *ctx);
-<<<<<<< HEAD
-=======
 size_t hantro_g2_luma_compress_offset(struct hantro_ctx *ctx);
 size_t hantro_g2_chroma_compress_offset(struct hantro_ctx *ctx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int hantro_g1_mpeg2_dec_run(struct hantro_ctx *ctx);
 int rockchip_vpu2_mpeg2_dec_run(struct hantro_ctx *ctx);

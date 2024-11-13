@@ -1169,10 +1169,7 @@ static const struct qcom_icc_desc msm8953_bimc = {
 	.nodes = msm8953_bimc_nodes,
 	.num_nodes = ARRAY_SIZE(msm8953_bimc_nodes),
 	.qos_offset = 0x8000,
-<<<<<<< HEAD
-=======
 	.ab_coeff = 153,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.regmap_cfg = &msm8953_bimc_regmap_config
 };
 
@@ -1299,10 +1296,7 @@ static const struct qcom_icc_desc msm8953_snoc_mm = {
 	.nodes = msm8953_snoc_mm_nodes,
 	.num_nodes = ARRAY_SIZE(msm8953_snoc_mm_nodes),
 	.qos_offset = 0x7000,
-<<<<<<< HEAD
-=======
 	.ab_coeff = 153,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.regmap_cfg = &msm8953_snoc_regmap_config,
 };
 

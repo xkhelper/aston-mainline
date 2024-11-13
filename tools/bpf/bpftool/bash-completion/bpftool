@@ -1079,11 +1079,7 @@ _bpftool()
             esac
             ;;
         net)
-<<<<<<< HEAD
-            local ATTACH_TYPES='xdp xdpgeneric xdpdrv xdpoffload'
-=======
             local ATTACH_TYPES='xdp xdpgeneric xdpdrv xdpoffload tcx_ingress tcx_egress'
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             case $command in
                 show|list)
                     [[ $prev != "$command" ]] && return 0

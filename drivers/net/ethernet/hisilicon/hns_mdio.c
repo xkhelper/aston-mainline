@@ -575,10 +575,7 @@ static int hns_mdio_probe(struct platform_device *pdev)
 						MDIO_SC_RESET_ST;
 				}
 			}
-<<<<<<< HEAD
-=======
 			of_node_put(reg_args.np);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			dev_warn(&pdev->dev, "find syscon ret = %#x\n", ret);
 			mdio_dev->subctrl_vbase = NULL;

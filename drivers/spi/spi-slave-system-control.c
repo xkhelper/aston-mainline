@@ -136,11 +136,7 @@ static void spi_slave_system_control_remove(struct spi_device *spi)
 {
 	struct spi_slave_system_control_priv *priv = spi_get_drvdata(spi);
 
-<<<<<<< HEAD
-	spi_slave_abort(spi);
-=======
 	spi_target_abort(spi);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wait_for_completion(&priv->finished);
 }
 

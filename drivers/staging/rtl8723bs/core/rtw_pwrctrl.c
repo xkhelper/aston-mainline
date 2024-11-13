@@ -5,10 +5,6 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
-<<<<<<< HEAD
-#include <rtw_debug.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <hal_data.h>
 #include <linux/jiffies.h>
 
@@ -288,20 +284,12 @@ void rtw_set_rpwm(struct adapter *padapter, u8 pslv)
 	if (rpwm & PS_ACK) {
 		unsigned long start_time;
 		u8 cpwm_now;
-<<<<<<< HEAD
-		u8 poll_cnt = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		start_time = jiffies;
 
 		/*  polling cpwm */
 		do {
 			mdelay(1);
-<<<<<<< HEAD
-			poll_cnt++;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rtw_hal_get_hwreg(padapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80) {
 				pwrpriv->cpwm = PS_STATE_S4;

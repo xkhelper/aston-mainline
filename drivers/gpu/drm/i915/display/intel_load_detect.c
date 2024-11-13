@@ -48,39 +48,22 @@ struct drm_atomic_state *
 intel_load_detect_get_pipe(struct drm_connector *connector,
 			   struct drm_modeset_acquire_ctx *ctx)
 {
-<<<<<<< HEAD
-=======
 	struct intel_display *display = to_intel_display(connector->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_encoder *encoder =
 		intel_attached_encoder(to_intel_connector(connector));
 	struct intel_crtc *possible_crtc;
 	struct intel_crtc *crtc = NULL;
-<<<<<<< HEAD
-	struct drm_device *dev = encoder->base.dev;
-	struct drm_i915_private *dev_priv = to_i915(dev);
-	struct drm_mode_config *config = &dev->mode_config;
-=======
 	struct drm_mode_config *config = &display->drm->mode_config;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_atomic_state *state = NULL, *restore_state = NULL;
 	struct drm_connector_state *connector_state;
 	struct intel_crtc_state *crtc_state;
 	int ret;
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "[CONNECTOR:%d:%s], [ENCODER:%d:%s]\n",
-		    connector->base.id, connector->name,
-		    encoder->base.base.id, encoder->base.name);
-
-	drm_WARN_ON(dev, !drm_modeset_is_locked(&config->connection_mutex));
-=======
 	drm_dbg_kms(display->drm, "[CONNECTOR:%d:%s], [ENCODER:%d:%s]\n",
 		    connector->base.id, connector->name,
 		    encoder->base.base.id, encoder->base.name);
 
 	drm_WARN_ON(display->drm, !drm_modeset_is_locked(&config->connection_mutex));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Algorithm gets a little messy:
@@ -105,11 +88,7 @@ intel_load_detect_get_pipe(struct drm_connector *connector,
 	}
 
 	/* Find an unused one (if possible) */
-<<<<<<< HEAD
-	for_each_intel_crtc(dev, possible_crtc) {
-=======
 	for_each_intel_crtc(display->drm, possible_crtc) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!(encoder->base.possible_crtcs &
 		      drm_crtc_mask(&possible_crtc->base)))
 			continue;
@@ -131,24 +110,15 @@ intel_load_detect_get_pipe(struct drm_connector *connector,
 	 * If we didn't find an unused CRTC, don't use any.
 	 */
 	if (!crtc) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "no pipe available for load-detect\n");
 		ret = -ENODEV;
 		goto fail;
 	}
 
 found:
-<<<<<<< HEAD
-	state = drm_atomic_state_alloc(dev);
-	restore_state = drm_atomic_state_alloc(dev);
-=======
 	state = drm_atomic_state_alloc(display->drm);
 	restore_state = drm_atomic_state_alloc(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!state || !restore_state) {
 		ret = -ENOMEM;
 		goto fail;
@@ -193,11 +163,7 @@ found:
 	if (!ret)
 		ret = drm_atomic_add_affected_planes(restore_state, &crtc->base);
 	if (ret) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Failed to create a copy of old state to restore: %i\n",
 			    ret);
 		goto fail;
@@ -205,11 +171,7 @@ found:
 
 	ret = drm_atomic_commit(state);
 	if (ret) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "failed to set mode on load-detect pipe\n");
 		goto fail;
 	}
@@ -241,15 +203,6 @@ void intel_load_detect_release_pipe(struct drm_connector *connector,
 				    struct drm_atomic_state *state,
 				    struct drm_modeset_acquire_ctx *ctx)
 {
-<<<<<<< HEAD
-	struct intel_encoder *intel_encoder =
-		intel_attached_encoder(to_intel_connector(connector));
-	struct drm_i915_private *i915 = to_i915(intel_encoder->base.dev);
-	struct drm_encoder *encoder = &intel_encoder->base;
-	int ret;
-
-	drm_dbg_kms(&i915->drm, "[CONNECTOR:%d:%s], [ENCODER:%d:%s]\n",
-=======
 	struct intel_display *display = to_intel_display(connector->dev);
 	struct intel_encoder *intel_encoder =
 		intel_attached_encoder(to_intel_connector(connector));
@@ -257,7 +210,6 @@ void intel_load_detect_release_pipe(struct drm_connector *connector,
 	int ret;
 
 	drm_dbg_kms(display->drm, "[CONNECTOR:%d:%s], [ENCODER:%d:%s]\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    connector->base.id, connector->name,
 		    encoder->base.id, encoder->name);
 
@@ -266,11 +218,7 @@ void intel_load_detect_release_pipe(struct drm_connector *connector,
 
 	ret = drm_atomic_helper_commit_duplicated_state(state, ctx);
 	if (ret)
-<<<<<<< HEAD
-		drm_dbg_kms(&i915->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "Couldn't release load detect pipe: %i\n", ret);
 	drm_atomic_state_put(state);
 }

@@ -1074,12 +1074,6 @@ static struct svc_export *exp_find(struct cache_detail *cd,
 	return exp;
 }
 
-<<<<<<< HEAD
-__be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
-{
-	struct exp_flavor_info *f, *end = exp->ex_flavors + exp->ex_nflavors;
-	struct svc_xprt *xprt = rqstp->rq_xprt;
-=======
 /**
  * check_nfsd_access - check if access to export is allowed.
  * @exp: svc_export that is being accessed.
@@ -1104,7 +1098,6 @@ __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
 		return nfs_ok;
 
 	xprt = rqstp->rq_xprt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_NONE) {
 		if (!test_bit(XPT_TLS_SESSION, &xprt->xpt_flags))
@@ -1125,29 +1118,17 @@ __be32 check_nfsd_access(struct svc_export *exp, struct svc_rqst *rqstp)
 ok:
 	/* legacy gss-only clients are always OK: */
 	if (exp->ex_client == rqstp->rq_gssclient)
-<<<<<<< HEAD
-		return 0;
-	/* ip-address based client; check sec= export option: */
-	for (f = exp->ex_flavors; f < end; f++) {
-		if (f->pseudoflavor == rqstp->rq_cred.cr_flavor)
-			return 0;
-=======
 		return nfs_ok;
 	/* ip-address based client; check sec= export option: */
 	for (f = exp->ex_flavors; f < end; f++) {
 		if (f->pseudoflavor == rqstp->rq_cred.cr_flavor)
 			return nfs_ok;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/* defaults in absence of sec= options: */
 	if (exp->ex_nflavors == 0) {
 		if (rqstp->rq_cred.cr_flavor == RPC_AUTH_NULL ||
 		    rqstp->rq_cred.cr_flavor == RPC_AUTH_UNIX)
-<<<<<<< HEAD
-			return 0;
-=======
 			return nfs_ok;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* If the compound op contains a spo_must_allowed op,
@@ -1157,17 +1138,10 @@ ok:
 	 */
 
 	if (nfsd4_spo_must_allow(rqstp))
-<<<<<<< HEAD
-		return 0;
-
-denied:
-	return rqstp->rq_vers < 4 ? nfserr_acces : nfserr_wrongsec;
-=======
 		return nfs_ok;
 
 denied:
 	return nfserr_wrongsec;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1210,21 +1184,6 @@ gss:
 	return gssexp;
 }
 
-<<<<<<< HEAD
-struct svc_export *
-rqst_exp_find(struct svc_rqst *rqstp, int fsid_type, u32 *fsidv)
-{
-	struct svc_export *gssexp, *exp = ERR_PTR(-ENOENT);
-	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
-	struct cache_detail *cd = nn->svc_export_cache;
-
-	if (rqstp->rq_client == NULL)
-		goto gss;
-
-	/* First try the auth_unix client: */
-	exp = exp_find(cd, rqstp->rq_client, fsid_type,
-		       fsidv, &rqstp->rq_chandle);
-=======
 /**
  * rqst_exp_find - Find an svc_export in the context of a rqst or similar
  * @reqp:	The handle to be used to suspend the request if a cache-upcall is needed
@@ -1254,7 +1213,6 @@ rqst_exp_find(struct cache_req *reqp, struct net *net,
 
 	/* First try the auth_unix client: */
 	exp = exp_find(cd, cl, fsid_type, fsidv, reqp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (PTR_ERR(exp) == -ENOENT)
 		goto gss;
 	if (IS_ERR(exp))
@@ -1264,16 +1222,9 @@ rqst_exp_find(struct cache_req *reqp, struct net *net,
 		return exp;
 gss:
 	/* Otherwise, try falling back on gss client */
-<<<<<<< HEAD
-	if (rqstp->rq_gssclient == NULL)
-		return exp;
-	gssexp = exp_find(cd, rqstp->rq_gssclient, fsid_type, fsidv,
-						&rqstp->rq_chandle);
-=======
 	if (!gsscl)
 		return exp;
 	gssexp = exp_find(cd, gsscl, fsid_type, fsidv, reqp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (PTR_ERR(gssexp) == -ENOENT)
 		return exp;
 	if (!IS_ERR(exp))
@@ -1304,13 +1255,9 @@ struct svc_export *rqst_find_fsidzero_export(struct svc_rqst *rqstp)
 
 	mk_fsid(FSID_NUM, fsidv, 0, 0, 0, NULL);
 
-<<<<<<< HEAD
-	return rqst_exp_find(rqstp, FSID_NUM, fsidv);
-=======
 	return rqst_exp_find(&rqstp->rq_chandle, SVC_NET(rqstp),
 			     rqstp->rq_client, rqstp->rq_gssclient,
 			     FSID_NUM, fsidv);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

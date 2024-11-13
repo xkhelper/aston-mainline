@@ -10,10 +10,7 @@
 #include <net/netfilter/nf_tables.h>
 #include <net/netfilter/nft_fib.h>
 
-<<<<<<< HEAD
-=======
 #include <net/inet_dscp.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/ip_fib.h>
 #include <net/route.h>
 
@@ -26,11 +23,6 @@ static __be32 get_saddr(__be32 addr)
 	return addr;
 }
 
-<<<<<<< HEAD
-#define DSCP_BITS     0xfc
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void nft_fib4_eval_type(const struct nft_expr *expr, struct nft_regs *regs,
 			const struct nft_pktinfo *pkt)
 {
@@ -73,10 +65,7 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
 		.flowi4_scope = RT_SCOPE_UNIVERSE,
 		.flowi4_iif = LOOPBACK_IFINDEX,
 		.flowi4_uid = sock_net_uid(nft_net(pkt), NULL),
-<<<<<<< HEAD
-=======
 		.flowi4_l3mdev = l3mdev_master_ifindex_rcu(nft_in(pkt)),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	const struct net_device *oif;
 	const struct net_device *found;
@@ -95,12 +84,6 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
 	else
 		oif = NULL;
 
-<<<<<<< HEAD
-	if (priv->flags & NFTA_FIB_F_IIF)
-		fl4.flowi4_l3mdev = l3mdev_master_ifindex_rcu(oif);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nft_hook(pkt) == NF_INET_PRE_ROUTING &&
 	    nft_fib_is_loopback(pkt->skb, nft_in(pkt))) {
 		nft_fib_store_result(dest, priv, nft_in(pkt));
@@ -124,11 +107,7 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
 	if (priv->flags & NFTA_FIB_F_MARK)
 		fl4.flowi4_mark = pkt->skb->mark;
 
-<<<<<<< HEAD
-	fl4.flowi4_tos = iph->tos & DSCP_BITS;
-=======
 	fl4.flowi4_tos = iph->tos & INET_DSCP_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (priv->flags & NFTA_FIB_F_DADDR) {
 		fl4.daddr = iph->daddr;

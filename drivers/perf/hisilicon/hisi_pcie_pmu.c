@@ -141,8 +141,6 @@ static ssize_t bus_show(struct device *dev, struct device_attribute *attr, char 
 }
 static DEVICE_ATTR_RO(bus);
 
-<<<<<<< HEAD
-=======
 static ssize_t bdf_min_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
 	struct hisi_pcie_pmu *pcie_pmu = to_pcie_pmu(dev_get_drvdata(dev));
@@ -159,7 +157,6 @@ static ssize_t bdf_max_show(struct device *dev, struct device_attribute *attr, c
 }
 static DEVICE_ATTR_RO(bdf_max);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct hisi_pcie_reg_pair
 hisi_pcie_parse_reg_value(struct hisi_pcie_pmu *pcie_pmu, u32 reg_off)
 {
@@ -227,11 +224,7 @@ static void hisi_pcie_pmu_writeq(struct hisi_pcie_pmu *pcie_pmu, u32 reg_offset,
 static u64 hisi_pcie_pmu_get_event_ctrl_val(struct perf_event *event)
 {
 	u64 port, trig_len, thr_len, len_mode;
-<<<<<<< HEAD
-	u64 reg = HISI_PCIE_INIT_SET;
-=======
 	u64 reg = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Config HISI_PCIE_EVENT_CTRL according to event. */
 	reg |= FIELD_PREP(HISI_PCIE_EVENT_M, hisi_pcie_get_real_event(event));
@@ -475,18 +468,13 @@ static void hisi_pcie_pmu_set_period(struct perf_event *event)
 	struct hisi_pcie_pmu *pcie_pmu = to_pcie_pmu(event->pmu);
 	struct hw_perf_event *hwc = &event->hw;
 	int idx = hwc->idx;
-<<<<<<< HEAD
-=======
 	u64 orig_cnt, cnt;
 
 	orig_cnt = hisi_pcie_pmu_read_counter(event);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	local64_set(&hwc->prev_count, HISI_PCIE_INIT_VAL);
 	hisi_pcie_pmu_writeq(pcie_pmu, HISI_PCIE_CNT, idx, HISI_PCIE_INIT_VAL);
 	hisi_pcie_pmu_writeq(pcie_pmu, HISI_PCIE_EXT_CNT, idx, HISI_PCIE_INIT_VAL);
-<<<<<<< HEAD
-=======
 
 	/*
 	 * The counter maybe unwritable if the target event is unsupported.
@@ -498,7 +486,6 @@ static void hisi_pcie_pmu_set_period(struct perf_event *event)
 	cnt = hisi_pcie_pmu_read_counter(event);
 	if (orig_cnt == cnt)
 		local64_set(&hwc->prev_count, cnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void hisi_pcie_pmu_enable_counter(struct hisi_pcie_pmu *pcie_pmu, struct hw_perf_event *hwc)
@@ -792,11 +779,8 @@ static const struct attribute_group hisi_pcie_pmu_format_group = {
 
 static struct attribute *hisi_pcie_pmu_bus_attrs[] = {
 	&dev_attr_bus.attr,
-<<<<<<< HEAD
-=======
 	&dev_attr_bdf_max.attr,
 	&dev_attr_bdf_min.attr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL
 };
 

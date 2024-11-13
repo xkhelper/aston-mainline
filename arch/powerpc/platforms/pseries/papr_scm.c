@@ -19,11 +19,7 @@
 #include <uapi/linux/papr_pdsm.h>
 #include <linux/papr_scm.h>
 #include <asm/mce.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/perf_event.h>
 
 #define BIND_ANY_ADDR (~0ul)
@@ -1513,11 +1509,7 @@ static const struct of_device_id papr_scm_match[] = {
 
 static struct platform_driver papr_scm_driver = {
 	.probe = papr_scm_probe,
-<<<<<<< HEAD
-	.remove_new = papr_scm_remove,
-=======
 	.remove = papr_scm_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "papr_scm",
 		.of_match_table = papr_scm_match,

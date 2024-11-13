@@ -524,10 +524,6 @@ int dm_post_suspending(struct dm_target *ti);
 int dm_noflush_suspending(struct dm_target *ti);
 void dm_accept_partial_bio(struct bio *bio, unsigned int n_sectors);
 void dm_submit_bio_remap(struct bio *clone, struct bio *tgt_clone);
-<<<<<<< HEAD
-union map_info *dm_get_rq_mapinfo(struct request *rq);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_BLK_DEV_ZONED
 struct dm_report_zones_args {

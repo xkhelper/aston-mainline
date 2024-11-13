@@ -105,8 +105,6 @@ ct_to_xe(struct xe_guc_ct *ct)
  * enough space to avoid backpressure on the driver. We increase the size
  * of the receive buffer (relative to the send) to ensure a G2H response
  * CTB has a landing spot.
-<<<<<<< HEAD
-=======
  *
  * In addition to submissions, the G2H buffer needs to be able to hold
  * enough space for recoverable page fault notifications. The number of
@@ -115,18 +113,12 @@ ct_to_xe(struct xe_guc_ct *ct)
  * is in a separate page fault worker thread. Therefore we only need to
  * make sure the queue has enough space to handle all of the submissions
  * and responses and an extra buffer for incoming page faults.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #define CTB_DESC_SIZE		ALIGN(sizeof(struct guc_ct_buffer_desc), SZ_2K)
 #define CTB_H2G_BUFFER_SIZE	(SZ_4K)
-<<<<<<< HEAD
-#define CTB_G2H_BUFFER_SIZE	(4 * CTB_H2G_BUFFER_SIZE)
-#define G2H_ROOM_BUFFER_SIZE	(CTB_G2H_BUFFER_SIZE / 4)
-=======
 #define CTB_G2H_BUFFER_SIZE	(SZ_128K)
 #define G2H_ROOM_BUFFER_SIZE	(CTB_G2H_BUFFER_SIZE / 2)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * xe_guc_ct_queue_proc_time_jiffies - Return maximum time to process a full
@@ -532,10 +524,7 @@ static void __g2h_release_space(struct xe_guc_ct *ct, u32 g2h_len)
 	lockdep_assert_held(&ct->fast_lock);
 	xe_gt_assert(ct_to_gt(ct), ct->ctbs.g2h.info.space + g2h_len <=
 		     ct->ctbs.g2h.info.size - ct->ctbs.g2h.info.resv_space);
-<<<<<<< HEAD
-=======
 	xe_gt_assert(ct_to_gt(ct), ct->g2h_outstanding);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ct->ctbs.g2h.info.space += g2h_len;
 	if (!--ct->g2h_outstanding)
@@ -678,25 +667,12 @@ static int __guc_ct_send_locked(struct xe_guc_ct *ct, const u32 *action,
 		num_g2h = 1;
 
 		if (g2h_fence_needs_alloc(g2h_fence)) {
-<<<<<<< HEAD
-			void *ptr;
-
-			g2h_fence->seqno = next_ct_seqno(ct, true);
-			ptr = xa_store(&ct->fence_lookup,
-				       g2h_fence->seqno,
-				       g2h_fence, GFP_ATOMIC);
-			if (IS_ERR(ptr)) {
-				ret = PTR_ERR(ptr);
-				goto out;
-			}
-=======
 			g2h_fence->seqno = next_ct_seqno(ct, true);
 			ret = xa_err(xa_store(&ct->fence_lookup,
 					      g2h_fence->seqno, g2h_fence,
 					      GFP_ATOMIC));
 			if (ret)
 				goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		seqno = g2h_fence->seqno;
@@ -899,22 +875,11 @@ retry:
 retry_same_fence:
 	ret = guc_ct_send(ct, action, len, 0, 0, &g2h_fence);
 	if (unlikely(ret == -ENOMEM)) {
-<<<<<<< HEAD
-		void *ptr;
-
-		/* Retry allocation /w GFP_KERNEL */
-		ptr = xa_store(&ct->fence_lookup,
-			       g2h_fence.seqno,
-			       &g2h_fence, GFP_KERNEL);
-		if (IS_ERR(ptr))
-			return PTR_ERR(ptr);
-=======
 		/* Retry allocation /w GFP_KERNEL */
 		ret = xa_err(xa_store(&ct->fence_lookup, g2h_fence.seqno,
 				      &g2h_fence, GFP_KERNEL));
 		if (ret)
 			return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		goto retry_same_fence;
 	} else if (unlikely(ret)) {
@@ -931,12 +896,6 @@ retry_same_fence:
 	}
 
 	ret = wait_event_timeout(ct->g2h_fence_wq, g2h_fence.done, HZ);
-<<<<<<< HEAD
-	if (!ret) {
-		xe_gt_err(gt, "Timed out wait for G2H, fence %u, action %04x",
-			  g2h_fence.seqno, action[0]);
-		xa_erase_irq(&ct->fence_lookup, g2h_fence.seqno);
-=======
 
 	if (!ret) {
 		LNL_FLUSH_WORK(&ct->g2h_worker);
@@ -959,17 +918,13 @@ retry_same_fence:
 			  g2h_fence.seqno, action[0], str_yes_no(g2h_fence.done));
 		xa_erase_irq(&ct->fence_lookup, g2h_fence.seqno);
 		mutex_unlock(&ct->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ETIME;
 	}
 
 	if (g2h_fence.retry) {
 		xe_gt_dbg(gt, "H2G action %#x retrying: reason %#x\n",
 			  action[0], g2h_fence.reason);
-<<<<<<< HEAD
-=======
 		mutex_unlock(&ct->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto retry;
 	}
 	if (g2h_fence.fail) {
@@ -978,16 +933,12 @@ retry_same_fence:
 		ret = -EIO;
 	}
 
-<<<<<<< HEAD
-	return ret > 0 ? response_buffer ? g2h_fence.response_len : g2h_fence.response_data : ret;
-=======
 	if (ret > 0)
 		ret = response_buffer ? g2h_fence.response_len : g2h_fence.response_data;
 
 	mutex_unlock(&ct->lock);
 
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

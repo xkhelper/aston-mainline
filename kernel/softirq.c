@@ -551,11 +551,7 @@ restart:
 		kstat_incr_softirqs_this_cpu(vec_nr);
 
 		trace_softirq_entry(vec_nr);
-<<<<<<< HEAD
-		h->action(h);
-=======
 		h->action();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		trace_softirq_exit(vec_nr);
 		if (unlikely(prev_count != preempt_count())) {
 			pr_err("huh, entered softirq %u %s %p with preempt_count %08x, exited with %08x?\n",
@@ -704,11 +700,7 @@ void __raise_softirq_irqoff(unsigned int nr)
 	or_softirq_pending(1UL << nr);
 }
 
-<<<<<<< HEAD
-void open_softirq(int nr, void (*action)(struct softirq_action *))
-=======
 void open_softirq(int nr, void (*action)(void))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	softirq_vec[nr].action = action;
 }
@@ -768,12 +760,7 @@ static bool tasklet_clear_sched(struct tasklet_struct *t)
 	return false;
 }
 
-<<<<<<< HEAD
-static void tasklet_action_common(struct softirq_action *a,
-				  struct tasklet_head *tl_head,
-=======
 static void tasklet_action_common(struct tasklet_head *tl_head,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  unsigned int softirq_nr)
 {
 	struct tasklet_struct *list;
@@ -817,18 +804,6 @@ static void tasklet_action_common(struct tasklet_head *tl_head,
 	}
 }
 
-<<<<<<< HEAD
-static __latent_entropy void tasklet_action(struct softirq_action *a)
-{
-	workqueue_softirq_action(false);
-	tasklet_action_common(a, this_cpu_ptr(&tasklet_vec), TASKLET_SOFTIRQ);
-}
-
-static __latent_entropy void tasklet_hi_action(struct softirq_action *a)
-{
-	workqueue_softirq_action(true);
-	tasklet_action_common(a, this_cpu_ptr(&tasklet_hi_vec), HI_SOFTIRQ);
-=======
 static __latent_entropy void tasklet_action(void)
 {
 	workqueue_softirq_action(false);
@@ -839,7 +814,6 @@ static __latent_entropy void tasklet_hi_action(void)
 {
 	workqueue_softirq_action(true);
 	tasklet_action_common(this_cpu_ptr(&tasklet_hi_vec), HI_SOFTIRQ);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void tasklet_setup(struct tasklet_struct *t,

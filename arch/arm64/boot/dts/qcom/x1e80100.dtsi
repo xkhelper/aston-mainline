@@ -4,10 +4,7 @@
  */
 
 #include <dt-bindings/clock/qcom,rpmh.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/clock/qcom,sc8280xp-lpasscc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/clock/qcom,x1e80100-dispcc.h>
 #include <dt-bindings/clock/qcom,x1e80100-gcc.h>
 #include <dt-bindings/clock/qcom,x1e80100-gpucc.h>
@@ -749,11 +746,7 @@
 				 <&sleep_clk>,
 				 <0>,
 				 <&pcie4_phy>,
-<<<<<<< HEAD
-				 <0>,
-=======
 				 <&pcie5_phy>,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 <&pcie6a_phy>,
 				 <0>,
 				 <&usb_1_ss0_qmpphy QMP_USB43DP_USB3_PIPE_CLK>,
@@ -1987,11 +1980,7 @@
 
 			i2c0: i2c@b80000 {
 				compatible = "qcom,geni-i2c";
-<<<<<<< HEAD
-				reg = <0 0xb80000 0 0x4000>;
-=======
 				reg = <0 0x00b80000 0 0x4000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				interrupts = <GIC_SPI 373 IRQ_TYPE_LEVEL_HIGH>;
 
@@ -2154,11 +2143,6 @@
 				status = "disabled";
 			};
 
-<<<<<<< HEAD
-			spi2: spi@b88000 {
-				compatible = "qcom,geni-spi";
-				reg = <0 0xb88000 0 0x4000>;
-=======
 			uart2: serial@b88000 {
 				compatible = "qcom,geni-uart";
 				reg = <0 0x00b88000 0 0x4000>;
@@ -2184,7 +2168,6 @@
 			spi2: spi@b88000 {
 				compatible = "qcom,geni-spi";
 				reg = <0 0x00b88000 0 0x4000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				interrupts = <GIC_SPI 584 IRQ_TYPE_LEVEL_HIGH>;
 
@@ -2283,11 +2266,7 @@
 
 			i2c4: i2c@b90000 {
 				compatible = "qcom,geni-i2c";
-<<<<<<< HEAD
-				reg = <0 0xb90000 0 0x4000>;
-=======
 				reg = <0 0x00b90000 0 0x4000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				interrupts = <GIC_SPI 586 IRQ_TYPE_LEVEL_HIGH>;
 
@@ -2647,11 +2626,8 @@
 			#clock-cells = <1>;
 			#phy-cells = <1>;
 
-<<<<<<< HEAD
-=======
 			orientation-switch;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 
 			ports {
@@ -2720,11 +2696,8 @@
 			#clock-cells = <1>;
 			#phy-cells = <1>;
 
-<<<<<<< HEAD
-=======
 			orientation-switch;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 
 			ports {
@@ -2793,11 +2766,8 @@
 			#clock-cells = <1>;
 			#phy-cells = <1>;
 
-<<<<<<< HEAD
-=======
 			orientation-switch;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 
 			ports {
@@ -2831,11 +2801,7 @@
 
 		cnoc_main: interconnect@1500000 {
 			compatible = "qcom,x1e80100-cnoc-main";
-<<<<<<< HEAD
-			reg = <0 0x1500000 0 0x14400>;
-=======
 			reg = <0 0x01500000 0 0x14400>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2844,11 +2810,7 @@
 
 		config_noc: interconnect@1600000 {
 			compatible = "qcom,x1e80100-cnoc-cfg";
-<<<<<<< HEAD
-			reg = <0 0x1600000 0 0x6600>;
-=======
 			reg = <0 0x01600000 0 0x6600>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2857,11 +2819,7 @@
 
 		system_noc: interconnect@1680000 {
 			compatible = "qcom,x1e80100-system-noc";
-<<<<<<< HEAD
-			reg = <0 0x1680000 0 0x1c080>;
-=======
 			reg = <0 0x01680000 0 0x1c080>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2870,11 +2828,7 @@
 
 		pcie_south_anoc: interconnect@16c0000 {
 			compatible = "qcom,x1e80100-pcie-south-anoc";
-<<<<<<< HEAD
-			reg = <0 0x16c0000 0 0xd080>;
-=======
 			reg = <0 0x016c0000 0 0xd080>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2883,11 +2837,7 @@
 
 		pcie_center_anoc: interconnect@16d0000 {
 			compatible = "qcom,x1e80100-pcie-center-anoc";
-<<<<<<< HEAD
-			reg = <0 0x16d0000 0 0x7000>;
-=======
 			reg = <0 0x016d0000 0 0x7000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2896,11 +2846,7 @@
 
 		aggre1_noc: interconnect@16e0000 {
 			compatible = "qcom,x1e80100-aggre1-noc";
-<<<<<<< HEAD
-			reg = <0 0x16E0000 0 0x14400>;
-=======
 			reg = <0 0x016e0000 0 0x14400>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2909,11 +2855,7 @@
 
 		aggre2_noc: interconnect@1700000 {
 			compatible = "qcom,x1e80100-aggre2-noc";
-<<<<<<< HEAD
-			reg = <0 0x1700000 0 0x1c400>;
-=======
 			reg = <0 0x01700000 0 0x1c400>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2922,11 +2864,7 @@
 
 		pcie_north_anoc: interconnect@1740000 {
 			compatible = "qcom,x1e80100-pcie-north-anoc";
-<<<<<<< HEAD
-			reg = <0 0x1740000 0 0x9080>;
-=======
 			reg = <0 0x01740000 0 0x9080>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2935,11 +2873,7 @@
 
 		usb_center_anoc: interconnect@1750000 {
 			compatible = "qcom,x1e80100-usb-center-anoc";
-<<<<<<< HEAD
-			reg = <0 0x1750000 0 0x8800>;
-=======
 			reg = <0 0x01750000 0 0x8800>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2948,11 +2882,7 @@
 
 		usb_north_anoc: interconnect@1760000 {
 			compatible = "qcom,x1e80100-usb-north-anoc";
-<<<<<<< HEAD
-			reg = <0 0x1760000 0 0x7080>;
-=======
 			reg = <0 0x01760000 0 0x7080>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2961,11 +2891,7 @@
 
 		usb_south_anoc: interconnect@1770000 {
 			compatible = "qcom,x1e80100-usb-south-anoc";
-<<<<<<< HEAD
-			reg = <0 0x1770000 0 0xf080>;
-=======
 			reg = <0 0x01770000 0 0xf080>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -2974,11 +2900,7 @@
 
 		mmss_noc: interconnect@1780000 {
 			compatible = "qcom,x1e80100-mmss-noc";
-<<<<<<< HEAD
-			reg = <0 0x1780000 0 0x5B800>;
-=======
 			reg = <0 0x01780000 0 0x5B800>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -3002,24 +2924,14 @@
 				    "mhi";
 			#address-cells = <3>;
 			#size-cells = <2>;
-<<<<<<< HEAD
-			ranges = <0x01000000 0 0x00000000 0 0x70200000 0 0x100000>,
-				 <0x02000000 0 0x70300000 0 0x70300000 0 0x3d00000>;
-			bus-range = <0 0xff>;
-=======
 			ranges = <0x01000000 0x0 0x00000000 0x0 0x70200000 0x0 0x100000>,
 				 <0x02000000 0x0 0x70300000 0x0 0x70300000 0x0 0x1d00000>;
 			bus-range = <0x00 0xff>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			dma-coherent;
 
 			linux,pci-domain = <6>;
-<<<<<<< HEAD
-			num-lanes = <2>;
-=======
 			num-lanes = <4>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			interrupts = <GIC_SPI 773 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 774 IRQ_TYPE_LEVEL_HIGH>,
@@ -3085,16 +2997,6 @@
 		};
 
 		pcie6a_phy: phy@1bfc000 {
-<<<<<<< HEAD
-			compatible = "qcom,x1e80100-qmp-gen4x2-pcie-phy";
-			reg = <0 0x01bfc000 0 0x2000>;
-
-			clocks = <&gcc GCC_PCIE_6A_PHY_AUX_CLK>,
-				 <&gcc GCC_PCIE_6A_CFG_AHB_CLK>,
-				 <&rpmhcc RPMH_CXO_CLK>,
-				 <&gcc GCC_PCIE_6A_PHY_RCHNG_CLK>,
-				 <&gcc GCC_PCIE_6A_PIPE_CLK>;
-=======
 			compatible = "qcom,x1e80100-qmp-gen4x4-pcie-phy";
 			reg = <0 0x01bfc000 0 0x2000>,
 			      <0 0x01bfe000 0 0x2000>;
@@ -3105,17 +3007,12 @@
 				 <&gcc GCC_PCIE_6A_PHY_RCHNG_CLK>,
 				 <&gcc GCC_PCIE_6A_PIPE_CLK>,
 				 <&gcc GCC_PCIE_6A_PIPEDIV2_CLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "aux",
 				      "cfg_ahb",
 				      "ref",
 				      "rchng",
-<<<<<<< HEAD
-				      "pipe";
-=======
 				      "pipe",
 				      "pipediv2";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			resets = <&gcc GCC_PCIE_6A_PHY_BCR>,
 				 <&gcc GCC_PCIE_6A_NOCSR_COM_PHY_BCR>;
@@ -3127,11 +3024,8 @@
 
 			power-domains = <&gcc GCC_PCIE_6_PHY_GDSC>;
 
-<<<<<<< HEAD
-=======
 			qcom,4ln-config-sel = <&tcsr 0x1a000 0>;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#clock-cells = <0>;
 			clock-output-names = "pcie6a_pipe_clk";
 
@@ -3140,8 +3034,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		pcie5: pci@1c00000 {
 			device_type = "pci";
 			compatible = "qcom,pcie-x1e80100";
@@ -3264,7 +3156,6 @@
 			status = "disabled";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pcie4: pci@1c08000 {
 			device_type = "pci";
 			compatible = "qcom,pcie-x1e80100";
@@ -3282,13 +3173,8 @@
 				    "mhi";
 			#address-cells = <3>;
 			#size-cells = <2>;
-<<<<<<< HEAD
-			ranges = <0x01000000 0 0x00000000 0 0x7c200000 0 0x100000>,
-				 <0x02000000 0 0x7c300000 0 0x7c300000 0 0x3d00000>;
-=======
 			ranges = <0x01000000 0x0 0x00000000 0x0 0x7c200000 0x0 0x100000>,
 				 <0x02000000 0x0 0x7c300000 0x0 0x7c300000 0x0 0x1d00000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bus-range = <0x00 0xff>;
 
 			dma-coherent;
@@ -3338,11 +3224,7 @@
 			assigned-clocks = <&gcc GCC_PCIE_4_AUX_CLK>;
 			assigned-clock-rates = <19200000>;
 
-<<<<<<< HEAD
-			interconnects = <&pcie_south_anoc MASTER_PCIE_4 QCOM_ICC_TAG_ALWAYS
-=======
 			interconnects = <&pcie_north_anoc MASTER_PCIE_4 QCOM_ICC_TAG_ALWAYS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
 					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
 					 &cnoc_main SLAVE_PCIE_4 QCOM_ICC_TAG_ALWAYS>;
@@ -3379,26 +3261,16 @@
 
 			clocks = <&gcc GCC_PCIE_4_AUX_CLK>,
 				 <&gcc GCC_PCIE_4_CFG_AHB_CLK>,
-<<<<<<< HEAD
-				 <&rpmhcc RPMH_CXO_CLK>,
-				 <&gcc GCC_PCIE_4_PHY_RCHNG_CLK>,
-				 <&gcc GCC_PCIE_4_PIPE_CLK>;
-=======
 				 <&tcsr TCSR_PCIE_2L_4_CLKREF_EN>,
 				 <&gcc GCC_PCIE_4_PHY_RCHNG_CLK>,
 				 <&gcc GCC_PCIE_4_PIPE_CLK>,
 				 <&gcc GCC_PCIE_4_PIPEDIV2_CLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "aux",
 				      "cfg_ahb",
 				      "ref",
 				      "rchng",
-<<<<<<< HEAD
-				      "pipe";
-=======
 				      "pipe",
 				      "pipediv2";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			resets = <&gcc GCC_PCIE_4_PHY_BCR>;
 			reset-names = "phy";
@@ -3636,11 +3508,7 @@
 
 		nsp_noc: interconnect@320c0000 {
 			compatible = "qcom,x1e80100-nsp-noc";
-<<<<<<< HEAD
-			reg = <0 0x320C0000 0 0xE080>;
-=======
 			reg = <0 0x320C0000 0 0xe080>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -3675,11 +3543,8 @@
 
 			pinctrl-0 = <&wsa2_swr_active>;
 			pinctrl-names = "default";
-<<<<<<< HEAD
-=======
 			resets = <&lpass_audiocc LPASS_AUDIO_SWR_WSA2_CGCR>;
 			reset-names = "swr_audio_cgcr";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,din-ports = <4>;
 			qcom,dout-ports = <9>;
@@ -3728,11 +3593,8 @@
 			pinctrl-0 = <&rx_swr_active>;
 			pinctrl-names = "default";
 
-<<<<<<< HEAD
-=======
 			resets = <&lpass_audiocc LPASS_AUDIO_SWR_RX_CGCR>;
 			reset-names = "swr_audio_cgcr";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			qcom,din-ports = <1>;
 			qcom,dout-ports = <11>;
 
@@ -3797,11 +3659,8 @@
 
 			pinctrl-0 = <&wsa_swr_active>;
 			pinctrl-names = "default";
-<<<<<<< HEAD
-=======
 			resets = <&lpass_audiocc LPASS_AUDIO_SWR_WSA_CGCR>;
 			reset-names = "swr_audio_cgcr";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,din-ports = <4>;
 			qcom,dout-ports = <9>;
@@ -3822,8 +3681,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		lpass_audiocc: clock-controller@6b6c000 {
 			compatible = "qcom,x1e80100-lpassaudiocc", "qcom,sc8280xp-lpassaudiocc";
 			reg = <0 0x06b6c000 0 0x1000>;
@@ -3831,7 +3688,6 @@
 			#reset-cells = <1>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		swr2: soundwire@6d30000 {
 			compatible = "qcom,soundwire-v2.0.0";
 			reg = <0 0x06d30000 0 0x10000>;
@@ -3841,11 +3697,8 @@
 				     <GIC_SPI 520 IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "core", "wakeup";
 			label = "TX";
-<<<<<<< HEAD
-=======
 			resets = <&lpasscc LPASS_AUDIO_SWR_TX_CGCR>;
 			reset-names = "swr_audio_cgcr";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			pinctrl-0 = <&tx_swr_active>;
 			pinctrl-names = "default";
@@ -4002,11 +3855,6 @@
 			};
 		};
 
-<<<<<<< HEAD
-		lpass_ag_noc: interconnect@7e40000 {
-			compatible = "qcom,x1e80100-lpass-ag-noc";
-			reg = <0 0x7e40000 0 0xE080>;
-=======
 		lpasscc: clock-controller@6ea0000 {
 			compatible = "qcom,x1e80100-lpasscc", "qcom,sc8280xp-lpasscc";
 			reg = <0 0x06ea0000 0 0x12000>;
@@ -4017,7 +3865,6 @@
 		lpass_ag_noc: interconnect@7e40000 {
 			compatible = "qcom,x1e80100-lpass-ag-noc";
 			reg = <0 0x07e40000 0 0xe080>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -4026,11 +3873,7 @@
 
 		lpass_lpiaon_noc: interconnect@7400000 {
 			compatible = "qcom,x1e80100-lpass-lpiaon-noc";
-<<<<<<< HEAD
-			reg = <0 0x7400000 0 0x19080>;
-=======
 			reg = <0 0x07400000 0 0x19080>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -4039,11 +3882,7 @@
 
 		lpass_lpicx_noc: interconnect@7430000 {
 			compatible = "qcom,x1e80100-lpass-lpicx-noc";
-<<<<<<< HEAD
-			reg = <0 0x7430000 0 0x3A200>;
-=======
 			reg = <0 0x07430000 0 0x3A200>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			qcom,bcm-voters = <&apps_bcm_voter>;
 
@@ -4064,8 +3903,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		usb_mp_hsphy0: phy@88e1000 {
 			compatible = "qcom,x1e80100-snps-eusb2-phy",
 				     "qcom,sm8550-snps-eusb2-phy";
@@ -4150,7 +3987,6 @@
 			status = "disabled";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		usb_1_ss2: usb@a0f8800 {
 			compatible = "qcom,x1e80100-dwc3", "qcom,dwc3";
 			reg = <0 0x0a0f8800 0 0x400>;
@@ -4325,8 +4161,6 @@
 			};
 		};
 
-<<<<<<< HEAD
-=======
 		usb_mp: usb@a4f8800 {
 			compatible = "qcom,x1e80100-dwc3-mp", "qcom,dwc3";
 			reg = <0 0x0a4f8800 0 0x400>;
@@ -4413,7 +4247,6 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		usb_1_ss0: usb@a6f8800 {
 			compatible = "qcom,x1e80100-dwc3", "qcom,dwc3";
 			reg = <0 0x0a6f8800 0 0x400>;
@@ -4732,19 +4565,11 @@
 
 			mdss_dp0: displayport-controller@ae90000 {
 				compatible = "qcom,x1e80100-dp";
-<<<<<<< HEAD
-				reg = <0 0xae90000 0 0x200>,
-				      <0 0xae90200 0 0x200>,
-				      <0 0xae90400 0 0x600>,
-				      <0 0xae91000 0 0x400>,
-				      <0 0xae91400 0 0x400>;
-=======
 				reg = <0 0x0ae90000 0 0x200>,
 				      <0 0x0ae90200 0 0x200>,
 				      <0 0x0ae90400 0 0x600>,
 				      <0 0x0ae91000 0 0x400>,
 				      <0 0x0ae91400 0 0x400>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				interrupts-extended = <&mdss 12>;
 
@@ -4823,19 +4648,11 @@
 
 			mdss_dp1: displayport-controller@ae98000 {
 				compatible = "qcom,x1e80100-dp";
-<<<<<<< HEAD
-				reg = <0 0xae98000 0 0x200>,
-				      <0 0xae98200 0 0x200>,
-				      <0 0xae98400 0 0x600>,
-				      <0 0xae99000 0 0x400>,
-				      <0 0xae99400 0 0x400>;
-=======
 				reg = <0 0x0ae98000 0 0x200>,
 				      <0 0x0ae98200 0 0x200>,
 				      <0 0x0ae98400 0 0x600>,
 				      <0 0x0ae99000 0 0x400>,
 				      <0 0x0ae99400 0 0x400>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				interrupts-extended = <&mdss 13>;
 
@@ -4914,19 +4731,11 @@
 
 			mdss_dp2: displayport-controller@ae9a000 {
 				compatible = "qcom,x1e80100-dp";
-<<<<<<< HEAD
-				reg = <0 0xae9a000 0 0x200>,
-				      <0 0xae9a200 0 0x200>,
-				      <0 0xae9a400 0 0x600>,
-				      <0 0xae9b000 0 0x400>,
-				      <0 0xae9b400 0 0x400>;
-=======
 				reg = <0 0x0ae9a000 0 0x200>,
 				      <0 0x0ae9a200 0 0x200>,
 				      <0 0x0ae9a400 0 0x600>,
 				      <0 0x0ae9b000 0 0x400>,
 				      <0 0x0ae9b400 0 0x400>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				interrupts-extended = <&mdss 14>;
 
@@ -4943,23 +4752,14 @@
 
 				assigned-clocks = <&dispcc DISP_CC_MDSS_DPTX2_LINK_CLK_SRC>,
 						  <&dispcc DISP_CC_MDSS_DPTX2_PIXEL0_CLK_SRC>;
-<<<<<<< HEAD
-				assigned-clock-parents = <&mdss_dp2_phy 0>,
-							 <&mdss_dp2_phy 1>;
-=======
 				assigned-clock-parents = <&usb_1_ss2_qmpphy QMP_USB43DP_DP_LINK_CLK>,
 							 <&usb_1_ss2_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				operating-points-v2 = <&mdss_dp2_opp_table>;
 
 				power-domains = <&rpmhpd RPMHPD_MMCX>;
 
-<<<<<<< HEAD
-				phys = <&mdss_dp2_phy>;
-=======
 				phys = <&usb_1_ss2_qmpphy QMP_USB43DP_DP_PHY>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				phy-names = "dp";
 
 				#sound-dai-cells = <0>;
@@ -5013,19 +4813,11 @@
 
 			mdss_dp3: displayport-controller@aea0000 {
 				compatible = "qcom,x1e80100-dp";
-<<<<<<< HEAD
-				reg = <0 0xaea0000 0 0x200>,
-				      <0 0xaea0200 0 0x200>,
-				      <0 0xaea0400 0 0x600>,
-				      <0 0xaea1000 0 0x400>,
-				      <0 0xaea1400 0 0x400>;
-=======
 				reg = <0 0x0aea0000 0 0x200>,
 				      <0 0x0aea0200 0 0x200>,
 				      <0 0x0aea0400 0 0x600>,
 				      <0 0x0aea1000 0 0x400>,
 				      <0 0x0aea1400 0 0x400>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				interrupts-extended = <&mdss 15>;
 
@@ -5155,13 +4947,8 @@
 				 <&usb_1_ss0_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>,
 				 <&usb_1_ss1_qmpphy QMP_USB43DP_DP_LINK_CLK>, /* dp1 */
 				 <&usb_1_ss1_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>,
-<<<<<<< HEAD
-				 <&mdss_dp2_phy 0>, /* dp2 */
-				 <&mdss_dp2_phy 1>,
-=======
 				 <&usb_1_ss2_qmpphy QMP_USB43DP_DP_LINK_CLK>, /* dp2 */
 				 <&usb_1_ss2_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 <&mdss_dp3_phy 0>, /* dp3 */
 				 <&mdss_dp3_phy 1>;
 			power-domains = <&rpmhpd RPMHPD_MMCX>;
@@ -5194,14 +4981,11 @@
 			#clock-cells = <0>;
 		};
 
-<<<<<<< HEAD
-=======
 		sram@c3f0000 {
 			compatible = "qcom,rpmh-stats";
 			reg = <0 0x0c3f0000 0 0x400>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spmi: arbiter@c400000 {
 			compatible = "qcom,x1e80100-spmi-pmic-arb";
 			reg = <0 0x0c400000 0 0x3000>,
@@ -5812,14 +5596,6 @@
 				bias-disable;
 			};
 
-<<<<<<< HEAD
-			qup_uart21_default: qup-uart21-default-state {
-				/* TX, RX */
-				pins = "gpio86", "gpio87";
-				function = "qup2_se5";
-				drive-strength = <2>;
-				bias-disable;
-=======
 			qup_uart2_default: qup-uart2-default-state {
 				cts-pins {
 					pins = "gpio8";
@@ -5864,7 +5640,6 @@
 					drive-strength = <2>;
 					bias-disable;
 				};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			};
 		};
 
@@ -6318,12 +6093,8 @@
 			      <0 0x25a00000 0 0x200000>,
 			      <0 0x25c00000 0 0x200000>,
 			      <0 0x25e00000 0 0x200000>,
-<<<<<<< HEAD
-			      <0 0x26000000 0 0x200000>;
-=======
 			      <0 0x26000000 0 0x200000>,
 			      <0 0x26200000 0 0x200000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-names = "llcc0_base",
 				    "llcc1_base",
 				    "llcc2_base",
@@ -6332,12 +6103,8 @@
 				    "llcc5_base",
 				    "llcc6_base",
 				    "llcc7_base",
-<<<<<<< HEAD
-				    "llcc_broadcast_base";
-=======
 				    "llcc_broadcast_base",
 				    "llcc_broadcast_and_base";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			interrupts = <GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>;
 		};
 

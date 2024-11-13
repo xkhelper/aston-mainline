@@ -219,13 +219,7 @@
 void bgx_set_dmac_cam_filter(int node, int bgx_idx, int lmacid, u64 mac, u8 vf);
 void bgx_reset_xcast_mode(int node, int bgx_idx, int lmacid, u8 vf);
 void bgx_set_xcast_mode(int node, int bgx_idx, int lmacid, u8 mode);
-<<<<<<< HEAD
-void octeon_mdiobus_force_mod_depencency(void);
 void bgx_lmac_rx_tx_enable(int node, int bgx_idx, int lmacid, bool enable);
-void bgx_add_dmac_addr(u64 dmac, int node, int bgx_idx, int lmac);
-=======
-void bgx_lmac_rx_tx_enable(int node, int bgx_idx, int lmacid, bool enable);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unsigned bgx_get_map(int node);
 int bgx_get_lmac_count(int node, int bgx);
 const u8 *bgx_get_lmac_mac(int node, int bgx_idx, int lmacid);

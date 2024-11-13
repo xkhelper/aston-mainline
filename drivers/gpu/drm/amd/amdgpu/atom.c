@@ -27,11 +27,7 @@
 #include <linux/slab.h>
 #include <linux/string_helpers.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/drm_util.h>
 

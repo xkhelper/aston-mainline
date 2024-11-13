@@ -50,10 +50,6 @@ static void update_dpia_stream_allocation_table(struct dc_link *link,
 	DC_LOG_MST("dpia : status[%d]: alloc_slots[%d]: used_slots[%d]\n",
 			status, mst_alloc_slots, prev_mst_slots_in_use);
 
-<<<<<<< HEAD
-	ASSERT(link_enc);
-	link_enc->funcs->update_mst_stream_allocation_table(link_enc, table);
-=======
 	if (link_enc)
 		link_enc->funcs->update_mst_stream_allocation_table(link_enc, table);
 }
@@ -79,7 +75,6 @@ static void set_dio_dpia_lane_settings(struct dc_link *link,
 		const struct dc_link_settings *link_settings,
 		const struct dc_lane_settings lane_settings[LANE_COUNT_DP_MAX])
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct link_hwss dpia_link_hwss = {
@@ -93,13 +88,8 @@ static const struct link_hwss dpia_link_hwss = {
 	.ext = {
 		.set_throttled_vcp_size = set_dio_throttled_vcp_size,
 		.enable_dp_link_output = enable_dio_dp_link_output,
-<<<<<<< HEAD
-		.set_dp_link_test_pattern = set_dio_dp_link_test_pattern,
-		.set_dp_lane_settings = set_dio_dp_lane_settings,
-=======
 		.set_dp_link_test_pattern = set_dio_dpia_link_test_pattern,
 		.set_dp_lane_settings = set_dio_dpia_lane_settings,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.update_stream_allocation_table = update_dpia_stream_allocation_table,
 	},
 };

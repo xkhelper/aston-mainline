@@ -224,11 +224,8 @@ struct bnxt_qplib_rcfw {
 	struct bnxt_qplib_crsqe		*crsqe_tbl;
 	int qp_tbl_size;
 	struct bnxt_qplib_qp_node *qp_tbl;
-<<<<<<< HEAD
-=======
 	/* To synchronize the qp-handle hash table */
 	spinlock_t			tbl_lock;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 oos_prev;
 	u32 init_oos_stats;
 	u32 cmdq_depth;

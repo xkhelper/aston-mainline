@@ -10,15 +10,10 @@
 #include <linux/mii.h>
 #include <linux/ethtool.h>
 #include <linux/phy.h>
-<<<<<<< HEAD
-
-/* Vitesse Extended Page Magic Register(s) */
-=======
 #include <linux/bitfield.h>
 
 /* Vitesse Extended Page Magic Register(s) */
 #define MII_VSC73XX_EXT_PAGE_1E		0x01
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MII_VSC82X4_EXT_PAGE_16E	0x10
 #define MII_VSC82X4_EXT_PAGE_17E	0x11
 #define MII_VSC82X4_EXT_PAGE_18E	0x12
@@ -67,8 +62,6 @@
 /* Vitesse Extended Page Access Register */
 #define MII_VSC82X4_EXT_PAGE_ACCESS	0x1f
 
-<<<<<<< HEAD
-=======
 /* Vitesse VSC73XX Extended Control Register */
 #define MII_VSC73XX_PHY_CTRL_EXT3		0x14
 
@@ -91,7 +84,6 @@
 #define MII_VSC73XX_PHY_AUX_CTRL_STAT	MII_NCONFIG
 #define MII_VSC73XX_PACS_NO_MDI_X_IND	BIT(13)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Vitesse VSC8601 Extended PHY Control Register 1 */
 #define MII_VSC8601_EPHY_CTL		0x17
 #define MII_VSC8601_EPHY_CTL_RGMII_SKEW	(1 << 8)
@@ -160,8 +152,6 @@ static int vsc73xx_write_page(struct phy_device *phydev, int page)
 	return __phy_write(phydev, VSC73XX_EXT_PAGE_ACCESS, page);
 }
 
-<<<<<<< HEAD
-=======
 static int vsc73xx_get_downshift(struct phy_device *phydev, u8 *data)
 {
 	int val, enable, cnt;
@@ -230,7 +220,6 @@ static int vsc73xx_set_tunable(struct phy_device *phydev,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void vsc73xx_config_init(struct phy_device *phydev)
 {
 	/* Receiver init */
@@ -240,15 +229,12 @@ static void vsc73xx_config_init(struct phy_device *phydev)
 
 	/* Config LEDs 0x61 */
 	phy_modify(phydev, MII_TPISTATUS, 0xff00, 0x0061);
-<<<<<<< HEAD
-=======
 
 	/* Enable downshift by default */
 	vsc73xx_set_downshift(phydev, MII_VSC73XX_DOWNSHIFT_MAX);
 
 	/* Set Auto MDI-X by default */
 	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int vsc738x_config_init(struct phy_device *phydev)
@@ -349,8 +335,6 @@ static int vsc739x_config_init(struct phy_device *phydev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int vsc73xx_mdix_set(struct phy_device *phydev, u8 mdix)
 {
 	int ret;
@@ -420,7 +404,6 @@ static int vsc73xx_read_status(struct phy_device *phydev)
 	return genphy_read_status(phydev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* This adds a skew for both TX and RX clocks, so the skew should only be
  * applied to "rgmii-id" interfaces. It may not work as expected
  * on "rgmii-txid", "rgmii-rxid" or "rgmii" interfaces.
@@ -618,68 +601,48 @@ static struct phy_driver vsc82xx_driver[] = {
 	.phy_id_mask    = 0x000ffff0,
 	/* PHY_GBIT_FEATURES */
 	.config_init    = vsc738x_config_init,
-<<<<<<< HEAD
-	.read_page      = vsc73xx_read_page,
-	.write_page     = vsc73xx_write_page,
-=======
 	.config_aneg    = vsc73xx_config_aneg,
 	.read_status	= vsc73xx_read_status,
 	.read_page      = vsc73xx_read_page,
 	.write_page     = vsc73xx_write_page,
 	.get_tunable    = vsc73xx_get_tunable,
 	.set_tunable    = vsc73xx_set_tunable,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }, {
 	.phy_id         = PHY_ID_VSC7388,
 	.name           = "Vitesse VSC7388",
 	.phy_id_mask    = 0x000ffff0,
 	/* PHY_GBIT_FEATURES */
 	.config_init    = vsc738x_config_init,
-<<<<<<< HEAD
-	.read_page      = vsc73xx_read_page,
-	.write_page     = vsc73xx_write_page,
-=======
 	.config_aneg    = vsc73xx_config_aneg,
 	.read_status	= vsc73xx_read_status,
 	.read_page      = vsc73xx_read_page,
 	.write_page     = vsc73xx_write_page,
 	.get_tunable    = vsc73xx_get_tunable,
 	.set_tunable    = vsc73xx_set_tunable,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }, {
 	.phy_id         = PHY_ID_VSC7395,
 	.name           = "Vitesse VSC7395",
 	.phy_id_mask    = 0x000ffff0,
 	/* PHY_GBIT_FEATURES */
 	.config_init    = vsc739x_config_init,
-<<<<<<< HEAD
-	.read_page      = vsc73xx_read_page,
-	.write_page     = vsc73xx_write_page,
-=======
 	.config_aneg    = vsc73xx_config_aneg,
 	.read_status	= vsc73xx_read_status,
 	.read_page      = vsc73xx_read_page,
 	.write_page     = vsc73xx_write_page,
 	.get_tunable    = vsc73xx_get_tunable,
 	.set_tunable    = vsc73xx_set_tunable,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }, {
 	.phy_id         = PHY_ID_VSC7398,
 	.name           = "Vitesse VSC7398",
 	.phy_id_mask    = 0x000ffff0,
 	/* PHY_GBIT_FEATURES */
 	.config_init    = vsc739x_config_init,
-<<<<<<< HEAD
-	.read_page      = vsc73xx_read_page,
-	.write_page     = vsc73xx_write_page,
-=======
 	.config_aneg    = vsc73xx_config_aneg,
 	.read_status	= vsc73xx_read_status,
 	.read_page      = vsc73xx_read_page,
 	.write_page     = vsc73xx_write_page,
 	.get_tunable    = vsc73xx_get_tunable,
 	.set_tunable    = vsc73xx_set_tunable,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }, {
 	.phy_id         = PHY_ID_VSC8662,
 	.name           = "Vitesse VSC8662",

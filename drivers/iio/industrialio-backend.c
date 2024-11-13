@@ -32,10 +32,7 @@
 #define dev_fmt(fmt) "iio-backend: " fmt
 
 #include <linux/cleanup.h>
-<<<<<<< HEAD
-=======
 #include <linux/debugfs.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/device.h>
 #include <linux/err.h>
 #include <linux/errno.h>
@@ -44,10 +41,7 @@
 #include <linux/mutex.h>
 #include <linux/property.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
-=======
 #include <linux/stringify.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/types.h>
 
 #include <linux/iio/backend.h>
@@ -60,8 +54,6 @@ struct iio_backend {
 	struct device *dev;
 	struct module *owner;
 	void *priv;
-<<<<<<< HEAD
-=======
 	const char *name;
 	unsigned int cached_reg_addr;
 	/*
@@ -70,7 +62,6 @@ struct iio_backend {
 	 * backend. Used for the debugfs directory name.
 	 */
 	u8 idx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -130,10 +121,6 @@ static DEFINE_MUTEX(iio_back_lock);
 	__ret = iio_backend_check_op(__back, op);		\
 	if (!__ret)						\
 		__back->ops->op(__back, ##args);		\
-<<<<<<< HEAD
-}
-
-=======
 	else							\
 		dev_dbg(__back->dev, "Op(%s) not implemented\n",\
 			__stringify(op));			\
@@ -271,7 +258,6 @@ ssize_t iio_backend_debugfs_print_chan_status(struct iio_backend *back,
 }
 EXPORT_SYMBOL_NS_GPL(iio_backend_debugfs_print_chan_status, IIO_BACKEND);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * iio_backend_chan_enable - Enable a backend channel
  * @back: Backend device
@@ -306,8 +292,6 @@ static void __iio_backend_disable(void *back)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * iio_backend_disable - Backend disable
  * @back: Backend device
  */
@@ -331,7 +315,6 @@ int iio_backend_enable(struct iio_backend *back)
 EXPORT_SYMBOL_NS_GPL(iio_backend_enable, IIO_BACKEND);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * devm_iio_backend_enable - Device managed backend enable
  * @dev: Consumer device for the backend
  * @back: Backend device
@@ -343,11 +326,7 @@ int devm_iio_backend_enable(struct device *dev, struct iio_backend *back)
 {
 	int ret;
 
-<<<<<<< HEAD
-	ret = iio_backend_op_call(back, enable);
-=======
 	ret = iio_backend_enable(back);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -546,8 +525,6 @@ int devm_iio_backend_request_buffer(struct device *dev,
 }
 EXPORT_SYMBOL_NS_GPL(devm_iio_backend_request_buffer, IIO_BACKEND);
 
-<<<<<<< HEAD
-=======
 /**
  * iio_backend_read_raw - Read a channel attribute from a backend device.
  * @back:	Backend device
@@ -567,7 +544,6 @@ int iio_backend_read_raw(struct iio_backend *back,
 }
 EXPORT_SYMBOL_NS_GPL(iio_backend_read_raw, IIO_BACKEND);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct iio_backend *iio_backend_from_indio_dev_parent(const struct device *dev)
 {
 	struct iio_backend *back = ERR_PTR(-ENODEV), *iter;
@@ -662,10 +638,6 @@ EXPORT_SYMBOL_NS_GPL(iio_backend_ext_info_set, IIO_BACKEND);
 
 /**
  * iio_backend_extend_chan_spec - Extend an IIO channel
-<<<<<<< HEAD
- * @indio_dev: IIO device
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @back: Backend device
  * @chan: IIO channel
  *
@@ -675,12 +647,7 @@ EXPORT_SYMBOL_NS_GPL(iio_backend_ext_info_set, IIO_BACKEND);
  * RETURNS:
  * 0 on success, negative error number on failure.
  */
-<<<<<<< HEAD
-int iio_backend_extend_chan_spec(struct iio_dev *indio_dev,
-				 struct iio_backend *back,
-=======
 int iio_backend_extend_chan_spec(struct iio_backend *back,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 struct iio_chan_spec *chan)
 {
 	const struct iio_chan_spec_ext_info *frontend_ext_info = chan->ext_info;
@@ -751,26 +718,10 @@ static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
 	return 0;
 }
 
-<<<<<<< HEAD
-/**
- * devm_iio_backend_get - Device managed backend device get
- * @dev: Consumer device for the backend
- * @name: Backend name
- *
- * Get's the backend associated with @dev.
- *
- * RETURNS:
- * A backend pointer, negative error pointer otherwise.
- */
-struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
-{
-	struct fwnode_handle *fwnode;
-=======
 static struct iio_backend *__devm_iio_backend_fwnode_get(struct device *dev, const char *name,
 							 struct fwnode_handle *fwnode)
 {
 	struct fwnode_handle *fwnode_back;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct iio_backend *back;
 	unsigned int index;
 	int ret;
@@ -785,43 +736,21 @@ static struct iio_backend *__devm_iio_backend_fwnode_get(struct device *dev, con
 		index = 0;
 	}
 
-<<<<<<< HEAD
-	fwnode = fwnode_find_reference(dev_fwnode(dev), "io-backends", index);
-=======
 	fwnode_back = fwnode_find_reference(fwnode, "io-backends", index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(fwnode))
 		return dev_err_cast_probe(dev, fwnode,
 					  "Cannot get Firmware reference\n");
 
 	guard(mutex)(&iio_back_lock);
 	list_for_each_entry(back, &iio_back_list, entry) {
-<<<<<<< HEAD
-		if (!device_match_fwnode(back->dev, fwnode))
-			continue;
-
-		fwnode_handle_put(fwnode);
-=======
 		if (!device_match_fwnode(back->dev, fwnode_back))
 			continue;
 
 		fwnode_handle_put(fwnode_back);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = __devm_iio_backend_get(dev, back);
 		if (ret)
 			return ERR_PTR(ret);
 
-<<<<<<< HEAD
-		return back;
-	}
-
-	fwnode_handle_put(fwnode);
-	return ERR_PTR(-EPROBE_DEFER);
-}
-EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get, IIO_BACKEND);
-
-/**
-=======
 		if (name)
 			back->idx = index;
 
@@ -868,7 +797,6 @@ struct iio_backend *devm_iio_backend_fwnode_get(struct device *dev,
 EXPORT_SYMBOL_NS_GPL(devm_iio_backend_fwnode_get, IIO_BACKEND);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * __devm_iio_backend_get_from_fwnode_lookup - Device managed fwnode backend device get
  * @dev: Consumer device for the backend
  * @fwnode: Firmware node of the backend device
@@ -924,35 +852,20 @@ static void iio_backend_unregister(void *arg)
 /**
  * devm_iio_backend_register - Device managed backend device register
  * @dev: Backend device being registered
-<<<<<<< HEAD
- * @ops: Backend ops
- * @priv: Device private data
- *
- * @ops is mandatory. Not providing it results in -EINVAL.
-=======
  * @info: Backend info
  * @priv: Device private data
  *
  * @info is mandatory. Not providing it results in -EINVAL.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * RETURNS:
  * 0 on success, negative error number on failure.
  */
 int devm_iio_backend_register(struct device *dev,
-<<<<<<< HEAD
-			      const struct iio_backend_ops *ops, void *priv)
-{
-	struct iio_backend *back;
-
-	if (!ops)
-=======
 			      const struct iio_backend_info *info, void *priv)
 {
 	struct iio_backend *back;
 
 	if (!info || !info->ops)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return dev_err_probe(dev, -EINVAL, "No backend ops given\n");
 
 	/*
@@ -965,12 +878,8 @@ int devm_iio_backend_register(struct device *dev,
 	if (!back)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	back->ops = ops;
-=======
 	back->ops = info->ops;
 	back->name = info->name;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	back->owner = dev->driver->owner;
 	back->dev = dev;
 	back->priv = priv;

@@ -76,11 +76,7 @@
 	},
 	.prog_type = BPF_PROG_TYPE_SCHED_CLS,
 	.result = REJECT,
-<<<<<<< HEAD
-	.errstr = "arg#0 expected pointer to ctx, but got PTR",
-=======
 	.errstr = "arg#0 expected pointer to ctx, but got fp",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.fixup_kfunc_btf_id = {
 		{ "bpf_kfunc_call_test_pass_ctx", 2 },
 	},

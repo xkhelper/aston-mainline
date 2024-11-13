@@ -587,11 +587,7 @@ int amdgpu_umsch_mm_init_microcode(struct amdgpu_umsch_mm *umsch)
 		break;
 	}
 
-<<<<<<< HEAD
-	r = amdgpu_ucode_request(adev, &adev->umsch_mm.fw, fw_name);
-=======
 	r = amdgpu_ucode_request(adev, &adev->umsch_mm.fw, "%s", fw_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		release_firmware(adev->umsch_mm.fw);
 		adev->umsch_mm.fw = NULL;

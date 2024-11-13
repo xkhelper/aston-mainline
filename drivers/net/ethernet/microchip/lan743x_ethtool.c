@@ -1034,22 +1034,12 @@ static int lan743x_ethtool_get_ts_info(struct net_device *netdev,
 	struct lan743x_adapter *adapter = netdev_priv(netdev);
 
 	ts_info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
-<<<<<<< HEAD
-				   SOF_TIMESTAMPING_RX_SOFTWARE |
-				   SOF_TIMESTAMPING_SOFTWARE |
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   SOF_TIMESTAMPING_TX_HARDWARE |
 				   SOF_TIMESTAMPING_RX_HARDWARE |
 				   SOF_TIMESTAMPING_RAW_HARDWARE;
 
 	if (adapter->ptp.ptp_clock)
 		ts_info->phc_index = ptp_clock_index(adapter->ptp.ptp_clock);
-<<<<<<< HEAD
-	else
-		ts_info->phc_index = -1;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ts_info->tx_types = BIT(HWTSTAMP_TX_OFF) |
 			    BIT(HWTSTAMP_TX_ON) |
@@ -1064,71 +1054,16 @@ static int lan743x_ethtool_get_eee(struct net_device *netdev,
 				   struct ethtool_keee *eee)
 {
 	struct lan743x_adapter *adapter = netdev_priv(netdev);
-<<<<<<< HEAD
-	struct phy_device *phydev = netdev->phydev;
-	u32 buf;
-	int ret;
-
-	if (!phydev)
-		return -EIO;
-	if (!phydev->drv) {
-		netif_err(adapter, drv, adapter->netdev,
-			  "Missing PHY Driver\n");
-		return -EIO;
-	}
-
-	ret = phy_ethtool_get_eee(phydev, eee);
-	if (ret < 0)
-		return ret;
-
-	buf = lan743x_csr_read(adapter, MAC_CR);
-	if (buf & MAC_CR_EEE_EN_) {
-		/* EEE_TX_LPI_REQ_DLY & tx_lpi_timer are same uSec unit */
-		buf = lan743x_csr_read(adapter, MAC_EEE_TX_LPI_REQ_DLY_CNT);
-		eee->tx_lpi_timer = buf;
-	} else {
-		eee->tx_lpi_timer = 0;
-	}
-
-	return 0;
-=======
 
 	eee->tx_lpi_timer = lan743x_csr_read(adapter,
 					     MAC_EEE_TX_LPI_REQ_DLY_CNT);
 
 	return phylink_ethtool_get_eee(adapter->phylink, eee);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int lan743x_ethtool_set_eee(struct net_device *netdev,
 				   struct ethtool_keee *eee)
 {
-<<<<<<< HEAD
-	struct lan743x_adapter *adapter;
-	struct phy_device *phydev;
-	u32 buf = 0;
-
-	if (!netdev)
-		return -EINVAL;
-	adapter = netdev_priv(netdev);
-	if (!adapter)
-		return -EINVAL;
-	phydev = netdev->phydev;
-	if (!phydev)
-		return -EIO;
-	if (!phydev->drv) {
-		netif_err(adapter, drv, adapter->netdev,
-			  "Missing PHY Driver\n");
-		return -EIO;
-	}
-
-	if (eee->eee_enabled) {
-		buf = (u32)eee->tx_lpi_timer;
-		lan743x_csr_write(adapter, MAC_EEE_TX_LPI_REQ_DLY_CNT, buf);
-	}
-
-	return phy_ethtool_set_eee(phydev, eee);
-=======
 	struct lan743x_adapter *adapter = netdev_priv(netdev);
 	u32 tx_lpi_timer;
 
@@ -1168,7 +1103,6 @@ lan743x_ethtool_get_link_ksettings(struct net_device *netdev,
 	struct lan743x_adapter *adapter = netdev_priv(netdev);
 
 	return phylink_ethtool_ksettings_get(adapter->phylink, cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_PM
@@ -1180,12 +1114,7 @@ static void lan743x_ethtool_get_wol(struct net_device *netdev,
 	wol->supported = 0;
 	wol->wolopts = 0;
 
-<<<<<<< HEAD
-	if (netdev->phydev)
-		phy_ethtool_get_wol(netdev->phydev, wol);
-=======
 	phylink_ethtool_get_wol(adapter->phylink, wol);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (wol->supported != adapter->phy_wol_supported)
 		netif_warn(adapter, drv, adapter->netdev,
@@ -1226,11 +1155,7 @@ static int lan743x_ethtool_set_wol(struct net_device *netdev,
 		    !(adapter->phy_wol_supported & WAKE_MAGICSECURE))
 			phy_wol.wolopts &= ~WAKE_MAGIC;
 
-<<<<<<< HEAD
-		ret = phy_ethtool_set_wol(netdev->phydev, &phy_wol);
-=======
 		ret = phylink_ethtool_set_wol(adapter->phylink, wol);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret && (ret != -EOPNOTSUPP))
 			return ret;
 
@@ -1419,54 +1344,16 @@ static void lan743x_get_pauseparam(struct net_device *dev,
 				   struct ethtool_pauseparam *pause)
 {
 	struct lan743x_adapter *adapter = netdev_priv(dev);
-<<<<<<< HEAD
-	struct lan743x_phy *phy = &adapter->phy;
-
-	if (phy->fc_request_control & FLOW_CTRL_TX)
-		pause->tx_pause = 1;
-	if (phy->fc_request_control & FLOW_CTRL_RX)
-		pause->rx_pause = 1;
-	pause->autoneg = phy->fc_autoneg;
-=======
 
 	phylink_ethtool_get_pauseparam(adapter->phylink, pause);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int lan743x_set_pauseparam(struct net_device *dev,
 				  struct ethtool_pauseparam *pause)
 {
 	struct lan743x_adapter *adapter = netdev_priv(dev);
-<<<<<<< HEAD
-	struct phy_device *phydev = dev->phydev;
-	struct lan743x_phy *phy = &adapter->phy;
-
-	if (!phydev)
-		return -ENODEV;
-
-	if (!phy_validate_pause(phydev, pause))
-		return -EINVAL;
-
-	phy->fc_request_control = 0;
-	if (pause->rx_pause)
-		phy->fc_request_control |= FLOW_CTRL_RX;
-
-	if (pause->tx_pause)
-		phy->fc_request_control |= FLOW_CTRL_TX;
-
-	phy->fc_autoneg = pause->autoneg;
-
-	if (pause->autoneg == AUTONEG_DISABLE)
-		lan743x_mac_flow_ctrl_set_enables(adapter, pause->tx_pause,
-						  pause->rx_pause);
-	else
-		phy_set_asym_pause(phydev, pause->rx_pause,  pause->tx_pause);
-
-	return 0;
-=======
 
 	return phylink_ethtool_set_pauseparam(adapter->phylink, pause);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const struct ethtool_ops lan743x_ethtool_ops = {
@@ -1491,13 +1378,8 @@ const struct ethtool_ops lan743x_ethtool_ops = {
 	.get_ts_info = lan743x_ethtool_get_ts_info,
 	.get_eee = lan743x_ethtool_get_eee,
 	.set_eee = lan743x_ethtool_set_eee,
-<<<<<<< HEAD
-	.get_link_ksettings = phy_ethtool_get_link_ksettings,
-	.set_link_ksettings = phy_ethtool_set_link_ksettings,
-=======
 	.get_link_ksettings = lan743x_ethtool_get_link_ksettings,
 	.set_link_ksettings = lan743x_ethtool_set_link_ksettings,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_regs_len = lan743x_get_regs_len,
 	.get_regs = lan743x_get_regs,
 	.get_pauseparam = lan743x_get_pauseparam,

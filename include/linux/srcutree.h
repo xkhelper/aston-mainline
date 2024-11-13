@@ -129,12 +129,6 @@ struct srcu_struct {
 #define SRCU_STATE_SCAN1	1
 #define SRCU_STATE_SCAN2	2
 
-<<<<<<< HEAD
-#define __SRCU_USAGE_INIT(name)									\
-{												\
-	.lock = __SPIN_LOCK_UNLOCKED(name.lock),						\
-	.srcu_gp_seq_needed = -1UL,								\
-=======
 /*
  * Values for initializing gp sequence fields. Higher values allow wrap arounds to
  * occur earlier.
@@ -152,7 +146,6 @@ struct srcu_struct {
 	.srcu_gp_seq = SRCU_GP_SEQ_INITIAL_VAL,							\
 	.srcu_gp_seq_needed = SRCU_GP_SEQ_INITIAL_VAL_WITH_STATE,				\
 	.srcu_gp_seq_needed_exp = SRCU_GP_SEQ_INITIAL_VAL,					\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.work = __DELAYED_WORK_INITIALIZER(name.work, NULL, 0),					\
 }
 

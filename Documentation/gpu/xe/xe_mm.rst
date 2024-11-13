@@ -7,8 +7,6 @@ Memory Management
 .. kernel-doc:: drivers/gpu/drm/xe/xe_bo_doc.h
    :doc: Buffer Objects (BO)
 
-<<<<<<< HEAD
-=======
 GGTT
 ====
 
@@ -24,7 +22,6 @@ GGTT Internal API
 .. kernel-doc:: drivers/gpu/drm/xe/xe_ggtt.c
    :internal:
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Pagetable building
 ==================
 

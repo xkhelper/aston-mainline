@@ -352,10 +352,7 @@ const struct of_device_id dwc2_of_match_table[] = {
 MODULE_DEVICE_TABLE(of, dwc2_of_match_table);
 
 const struct acpi_device_id dwc2_acpi_match[] = {
-<<<<<<< HEAD
-=======
 	/* This ID refers to the same USB IP as of_device_id brcm,bcm2835-usb */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ "BCM2848", (kernel_ulong_t)dwc2_set_bcm_params },
 	{ },
 };

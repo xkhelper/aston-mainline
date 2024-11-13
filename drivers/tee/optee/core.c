@@ -10,18 +10,13 @@
 #include <linux/errno.h>
 #include <linux/io.h>
 #include <linux/module.h>
-<<<<<<< HEAD
-=======
 #include <linux/rpmb.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/tee_core.h>
 #include <linux/types.h>
 #include "optee_private.h"
 
-<<<<<<< HEAD
-=======
 struct blocking_notifier_head optee_rpmb_intf_added =
 	BLOCKING_NOTIFIER_INIT(optee_rpmb_intf_added);
 
@@ -61,14 +56,11 @@ int optee_rpmb_intf_rdev(struct notifier_block *intf, unsigned long action,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void optee_bus_scan(struct work_struct *work)
 {
 	WARN_ON(optee_enumerate_devices(PTA_CMD_GET_DEVICES_SUPP));
 }
 
-<<<<<<< HEAD
-=======
 static ssize_t rpmb_routing_model_show(struct device *dev,
 				       struct device_attribute *attr, char *buf)
 {
@@ -97,7 +89,6 @@ void optee_set_dev_group(struct optee *optee)
 	tee_device_set_dev_groups(optee->supp_teedev, optee_dev_groups);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int optee_open(struct tee_context *ctx, bool cap_memref_null)
 {
 	struct optee_context_data *ctxdata;
@@ -174,12 +165,9 @@ void optee_release_supp(struct tee_context *ctx)
 
 void optee_remove_common(struct optee *optee)
 {
-<<<<<<< HEAD
-=======
 	blocking_notifier_chain_unregister(&optee_rpmb_intf_added,
 					   &optee->rpmb_intf);
 	cancel_work_sync(&optee->rpmb_scan_bus_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Unregister OP-TEE specific client devices on TEE bus */
 	optee_unregister_devices();
 
@@ -196,27 +184,18 @@ void optee_remove_common(struct optee *optee)
 	tee_shm_pool_free(optee->pool);
 	optee_supp_uninit(&optee->supp);
 	mutex_destroy(&optee->call_queue.mutex);
-<<<<<<< HEAD
-=======
 	rpmb_dev_put(optee->rpmb_dev);
 	mutex_destroy(&optee->rpmb_dev_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int smc_abi_rc;
 static int ffa_abi_rc;
-<<<<<<< HEAD
-
-static int __init optee_core_init(void)
-{
-=======
 static bool intf_is_regged;
 
 static int __init optee_core_init(void)
 {
 	int rc;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The kernel may have crashed at the same time that all available
 	 * secure world threads were suspended and we cannot reschedule the
@@ -227,8 +206,6 @@ static int __init optee_core_init(void)
 	if (is_kdump_kernel())
 		return -ENODEV;
 
-<<<<<<< HEAD
-=======
 	if (IS_REACHABLE(CONFIG_RPMB)) {
 		rc = rpmb_interface_register(&rpmb_class_intf);
 		if (rc)
@@ -236,15 +213,10 @@ static int __init optee_core_init(void)
 		intf_is_regged = true;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	smc_abi_rc = optee_smc_abi_register();
 	ffa_abi_rc = optee_ffa_abi_register();
 
 	/* If both failed there's no point with this module */
-<<<<<<< HEAD
-	if (smc_abi_rc && ffa_abi_rc)
-		return smc_abi_rc;
-=======
 	if (smc_abi_rc && ffa_abi_rc) {
 		if (IS_REACHABLE(CONFIG_RPMB)) {
 			rpmb_interface_unregister(&rpmb_class_intf);
@@ -253,21 +225,17 @@ static int __init optee_core_init(void)
 		return smc_abi_rc;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 module_init(optee_core_init);
 
 static void __exit optee_core_exit(void)
 {
-<<<<<<< HEAD
-=======
 	if (IS_REACHABLE(CONFIG_RPMB) && intf_is_regged) {
 		rpmb_interface_unregister(&rpmb_class_intf);
 		intf_is_regged = false;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!smc_abi_rc)
 		optee_smc_abi_unregister();
 	if (!ffa_abi_rc)

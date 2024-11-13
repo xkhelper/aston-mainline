@@ -223,8 +223,6 @@
 		vin-supply = <&vph_pwr>;
 	};
 
-<<<<<<< HEAD
-=======
 	vreg_usb2_host_en: regulator-usb2-host-en {
 		compatible = "regulator-fixed";
 		regulator-name = "usb2_host_en";
@@ -251,7 +249,6 @@
 		regulator-always-on;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	usbprim-sbu-mux {
 		compatible = "pericom,pi3usb102", "gpio-sbu-mux";
 
@@ -581,13 +578,10 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &pmc8180_pwrkey {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pmc8180c_lpg {
 	status = "okay";
 };
@@ -659,8 +653,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &usb_mp {
 	status = "okay";
 };
@@ -695,7 +687,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &usb_prim_hsphy {
 	vdda-pll-supply = <&vreg_l5e_0p88>;
 	vdda18-supply = <&vreg_l12a_1p8>;

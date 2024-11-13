@@ -559,25 +559,6 @@ static void mmhub_v1_8_get_clockgating(struct amdgpu_device *adev, u64 *flags)
 
 }
 
-<<<<<<< HEAD
-static bool mmhub_v1_8_query_utcl2_poison_status(struct amdgpu_device *adev,
-				int hub_inst)
-{
-	u32 fed, status;
-
-	status = RREG32_SOC15(MMHUB, hub_inst, regVM_L2_PROTECTION_FAULT_STATUS);
-	fed = REG_GET_FIELD(status, VM_L2_PROTECTION_FAULT_STATUS, FED);
-	if (!amdgpu_sriov_vf(adev)) {
-		/* clear page fault status and address */
-		WREG32_P(SOC15_REG_OFFSET(MMHUB, hub_inst,
-			 regVM_L2_PROTECTION_FAULT_CNTL), 1, ~1);
-	}
-
-	return fed;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct amdgpu_mmhub_funcs mmhub_v1_8_funcs = {
 	.get_fb_location = mmhub_v1_8_get_fb_location,
 	.init = mmhub_v1_8_init,
@@ -587,10 +568,6 @@ const struct amdgpu_mmhub_funcs mmhub_v1_8_funcs = {
 	.setup_vm_pt_regs = mmhub_v1_8_setup_vm_pt_regs,
 	.set_clockgating = mmhub_v1_8_set_clockgating,
 	.get_clockgating = mmhub_v1_8_get_clockgating,
-<<<<<<< HEAD
-	.query_utcl2_poison_status = mmhub_v1_8_query_utcl2_poison_status,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ras_err_status_reg_entry mmhub_v1_8_ce_reg_list[] = {
@@ -676,13 +653,8 @@ static void mmhub_v1_8_inst_query_ras_error_count(struct amdgpu_device *adev,
 					AMDGPU_RAS_ERROR__MULTI_UNCORRECTABLE,
 					&ue_count);
 
-<<<<<<< HEAD
-	amdgpu_ras_error_statistic_ce_count(err_data, &mcm_info, NULL, ce_count);
-	amdgpu_ras_error_statistic_ue_count(err_data, &mcm_info, NULL, ue_count);
-=======
 	amdgpu_ras_error_statistic_ce_count(err_data, &mcm_info, ce_count);
 	amdgpu_ras_error_statistic_ue_count(err_data, &mcm_info, ue_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void mmhub_v1_8_query_ras_error_count(struct amdgpu_device *adev,

@@ -28,10 +28,7 @@ config X86_64
 	select ARCH_HAS_GIGANTIC_PAGE
 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
 	select ARCH_SUPPORTS_PER_VMA_LOCK
-<<<<<<< HEAD
-=======
 	select ARCH_SUPPORTS_HUGE_PFNMAP if TRANSPARENT_HUGEPAGE
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select HAVE_ARCH_SOFT_DIRTY
 	select MODULES_USE_ELF_RELA
 	select NEED_DMA_MAP_STATE
@@ -83,10 +80,7 @@ config X86
 	select ARCH_HAS_DEBUG_VIRTUAL
 	select ARCH_HAS_DEBUG_VM_PGTABLE	if !X86_PAE
 	select ARCH_HAS_DEVMEM_IS_ALLOWED
-<<<<<<< HEAD
-=======
 	select ARCH_HAS_DMA_OPS			if GART_IOMMU || XEN
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select ARCH_HAS_EARLY_DEBUG		if KGDB
 	select ARCH_HAS_ELF_RANDOMIZE
 	select ARCH_HAS_FAST_MULTIPLIER
@@ -115,10 +109,7 @@ config X86
 	select ARCH_HAS_DEBUG_WX
 	select ARCH_HAS_ZONE_DMA_SET if EXPERT
 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-<<<<<<< HEAD
-=======
 	select ARCH_HAVE_EXTRA_ELF_NOTES
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
 	select ARCH_MIGHT_HAVE_ACPI_PDC		if ACPI
 	select ARCH_MIGHT_HAVE_PC_PARPORT
@@ -134,10 +125,7 @@ config X86
 	select ARCH_USES_CFI_TRAPS		if X86_64 && CFI_CLANG
 	select ARCH_SUPPORTS_LTO_CLANG
 	select ARCH_SUPPORTS_LTO_CLANG_THIN
-<<<<<<< HEAD
-=======
 	select ARCH_SUPPORTS_RT
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select ARCH_USE_BUILTIN_BSWAP
 	select ARCH_USE_CMPXCHG_LOCKREF		if X86_CMPXCHG64
 	select ARCH_USE_MEMTEST
@@ -312,10 +300,7 @@ config X86
 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
 	select NEED_SG_DMA_LENGTH
-<<<<<<< HEAD
-=======
 	select NUMA_MEMBLKS			if NUMA
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select PCI_DOMAINS			if PCI
 	select PCI_LOCKLESS_CONFIG		if PCI
 	select PERF_EVENTS
@@ -963,10 +948,6 @@ config DMI
 
 config GART_IOMMU
 	bool "Old AMD GART IOMMU support"
-<<<<<<< HEAD
-	select DMA_OPS
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select IOMMU_HELPER
 	select SWIOTLB
 	depends on X86_64 && PCI && AMD_NB
@@ -1622,17 +1603,6 @@ config X86_64_ACPI_NUMA
 	help
 	  Enable ACPI SRAT based node topology detection.
 
-<<<<<<< HEAD
-config NUMA_EMU
-	bool "NUMA emulation"
-	depends on NUMA
-	help
-	  Enable NUMA emulation. A flat machine will be split
-	  into virtual nodes when booted with "numa=fake=N", where N is the
-	  number of nodes. This is only useful for debugging.
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config NODES_SHIFT
 	int "Maximum NUMA Nodes (as a power of 2)" if !MAXSMP
 	range 1 10
@@ -1832,10 +1802,7 @@ config X86_PAT
 	def_bool y
 	prompt "x86 PAT support" if EXPERT
 	depends on MTRR
-<<<<<<< HEAD
-=======
 	select ARCH_USES_PG_ARCH_2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Use PAT attributes to setup page level cache control.
 
@@ -1847,13 +1814,6 @@ config X86_PAT
 
 	  If unsure, say Y.
 
-<<<<<<< HEAD
-config ARCH_USES_PG_UNCACHED
-	def_bool y
-	depends on X86_PAT
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config X86_UMIP
 	def_bool y
 	prompt "User Mode Instruction Prevention" if EXPERT
@@ -1922,13 +1882,10 @@ config X86_INTEL_MEMORY_PROTECTION_KEYS
 
 	  If unsure, say y.
 
-<<<<<<< HEAD
-=======
 config ARCH_PKEY_BITS
 	int
 	default 4
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 choice
 	prompt "TSX enable mode"
 	depends on CPU_SUP_INTEL
@@ -2300,10 +2257,7 @@ config RANDOMIZE_MEMORY_PHYSICAL_PADDING
 config ADDRESS_MASKING
 	bool "Linear Address Masking support"
 	depends on X86_64
-<<<<<<< HEAD
-=======
 	depends on COMPILE_TEST || !CPU_MITIGATIONS # wait for LASS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Linear Address Masking (LAM) modifies the checking that is applied
 	  to 64-bit linear addresses, allowing software to use of the
@@ -2654,26 +2608,6 @@ config MITIGATION_SLS
 	  against straight line speculation. The kernel image might be slightly
 	  larger.
 
-<<<<<<< HEAD
-config MITIGATION_GDS_FORCE
-	bool "Force GDS Mitigation"
-	depends on CPU_SUP_INTEL
-	default n
-	help
-	  Gather Data Sampling (GDS) is a hardware vulnerability which allows
-	  unprivileged speculative access to data which was previously stored in
-	  vector registers.
-
-	  This option is equivalent to setting gather_data_sampling=force on the
-	  command line. The microcode mitigation is used if present, otherwise
-	  AVX is disabled as a mitigation. On affected systems that are missing
-	  the microcode any userspace code that unconditionally uses AVX will
-	  break with this option set.
-
-	  Setting this option on systems not vulnerable to GDS has no effect.
-
-	  If in doubt, say N.
-=======
 config MITIGATION_GDS
 	bool "Mitigate Gather Data Sampling"
 	depends on CPU_SUP_INTEL
@@ -2683,7 +2617,6 @@ config MITIGATION_GDS
 	  vulnerability which allows unprivileged speculative access to data
 	  which was previously stored in vector registers. The attacker uses gather
 	  instructions to infer the stale vector register data.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config MITIGATION_RFDS
 	bool "RFDS Mitigation"
@@ -2706,8 +2639,6 @@ config MITIGATION_SPECTRE_BHI
 	  indirect branches.
 	  See <file:Documentation/admin-guide/hw-vuln/spectre.rst>
 
-<<<<<<< HEAD
-=======
 config MITIGATION_MDS
 	bool "Mitigate Microarchitectural Data Sampling (MDS) hardware bug"
 	depends on CPU_SUP_INTEL
@@ -2809,7 +2740,6 @@ config MITIGATION_SSB
 	  of speculative execution in a similar way to the Meltdown and Spectre
 	  security vulnerabilities.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 config ARCH_HAS_ADD_PAGES
@@ -3139,11 +3069,6 @@ config OLPC_XO15_SCI
 	   - AC adapter status updates
 	   - Battery status updates
 
-<<<<<<< HEAD
-config ALIX
-	bool "PCEngines ALIX System Support (LED setup)"
-	select GPIOLIB
-=======
 config GEODE_COMMON
 	bool
 
@@ -3151,7 +3076,6 @@ config ALIX
 	bool "PCEngines ALIX System Support (LED setup)"
 	select GPIOLIB
 	select GEODE_COMMON
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This option enables system support for the PCEngines ALIX.
 	  At present this just sets up LEDs for GPIO control on
@@ -3166,20 +3090,14 @@ config ALIX
 config NET5501
 	bool "Soekris Engineering net5501 System Support (LEDS, GPIO, etc)"
 	select GPIOLIB
-<<<<<<< HEAD
-=======
 	select GEODE_COMMON
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This option enables system support for the Soekris Engineering net5501.
 
 config GEOS
 	bool "Traverse Technologies GEOS System Support (LEDS, GPIO, etc)"
 	select GPIOLIB
-<<<<<<< HEAD
-=======
 	select GEODE_COMMON
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	depends on DMI
 	help
 	  This option enables system support for the Traverse Technologies GEOS.

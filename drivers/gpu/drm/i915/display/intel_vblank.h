@@ -40,10 +40,6 @@ void intel_wait_for_pipe_scanline_stopped(struct intel_crtc *crtc);
 void intel_wait_for_pipe_scanline_moving(struct intel_crtc *crtc);
 void intel_crtc_update_active_timings(const struct intel_crtc_state *crtc_state,
 				      bool vrr_enable);
-<<<<<<< HEAD
-int intel_crtc_scanline_to_hw(struct intel_crtc *crtc, int scanline);
-=======
 int intel_crtc_scanline_offset(const struct intel_crtc_state *crtc_state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* __INTEL_VBLANK_H__ */

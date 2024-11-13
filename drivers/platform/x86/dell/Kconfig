@@ -49,10 +49,7 @@ config DELL_LAPTOP
 	default m
 	depends on DMI
 	depends on BACKLIGHT_CLASS_DEVICE
-<<<<<<< HEAD
-=======
 	depends on ACPI_BATTERY
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	depends on ACPI_VIDEO || ACPI_VIDEO = n
 	depends on RFKILL || RFKILL = n
 	depends on DELL_WMI || DELL_WMI = n

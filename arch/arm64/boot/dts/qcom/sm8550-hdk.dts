@@ -279,8 +279,6 @@
 			};
 		};
 	};
-<<<<<<< HEAD
-=======
 
 	wcn7850-pmu {
 		compatible = "qcom,wcn7850-pmu";
@@ -340,7 +338,6 @@
 			};
 		};
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &apps_rsc {
@@ -1015,8 +1012,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &pcieport0 {
 	wifi@0 {
 		compatible = "pci17cb,1107";
@@ -1034,7 +1029,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pcie0_phy {
 	vdda-phy-supply = <&vreg_l1e_0p88>;
 	vdda-pll-supply = <&vreg_l3e_1p2>;
@@ -1123,8 +1117,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &pmk8550_gpios {
 	pmk8550_sleep_clk: sleep-clk-state {
 		pins = "gpio3";
@@ -1136,7 +1128,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &qupv3_id_0 {
 	status = "okay";
 };
@@ -1299,8 +1290,6 @@
 		bias-disable;
 		output-low;
 	};
-<<<<<<< HEAD
-=======
 
 	wlan_en: wlan-en-state {
 		pins = "gpio80";
@@ -1308,7 +1297,6 @@
 		drive-strength = <8>;
 		bias-pull-down;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &uart7 {
@@ -1321,22 +1309,6 @@
 	bluetooth {
 		compatible = "qcom,wcn7850-bt";
 
-<<<<<<< HEAD
-		vddio-supply = <&vreg_l15b_1p8>;
-		vddaon-supply = <&vreg_s4e_0p95>;
-		vdddig-supply = <&vreg_s4e_0p95>;
-		vddrfa0p8-supply = <&vreg_s4e_0p95>;
-		vddrfa1p2-supply = <&vreg_s4g_1p25>;
-		vddrfa1p9-supply = <&vreg_s6g_1p86>;
-
-		max-speed = <3200000>;
-
-		enable-gpios = <&tlmm 81 GPIO_ACTIVE_HIGH>;
-		swctrl-gpios = <&tlmm 82 GPIO_ACTIVE_HIGH>;
-
-		pinctrl-0 = <&bt_default>;
-		pinctrl-names = "default";
-=======
 		vddrfacmn-supply = <&vreg_pmu_rfa_cmn>;
 		vddaon-supply = <&vreg_pmu_aon_0p59>;
 		vddwlcx-supply = <&vreg_pmu_wlcx_0p8>;
@@ -1346,7 +1318,6 @@
 		vddrfa1p8-supply = <&vreg_pmu_rfa_1p8>;
 
 		max-speed = <3200000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

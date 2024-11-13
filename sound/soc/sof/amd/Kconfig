@@ -23,10 +23,7 @@ config SND_SOC_SOF_AMD_COMMON
 	select SND_AMD_ACP_CONFIG
 	select SND_SOC_SOF_XTENSA
 	select SND_SOC_SOF_ACP_PROBES
-<<<<<<< HEAD
-=======
 	select SND_SOC_ACPI_AMD_MATCH
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select SND_SOC_ACPI if ACPI
 	help
 	  This option is not user-selectable but automatically handled by
@@ -91,8 +88,6 @@ config SND_SOC_SOF_AMD_ACP63
 	  AMD ACP6.3 version based platforms.
 	  Say Y if you want to enable SOF on ACP6.3 based platform.
 	  If unsure select "N".
-<<<<<<< HEAD
-=======
 
 config SND_SOC_SOF_AMD_ACP70
 	tristate "SOF support for ACP7.0 platform"
@@ -103,5 +98,4 @@ config SND_SOC_SOF_AMD_ACP70
 	  AMD ACP7.0 version based platforms.
 	  Say Y if you want to enable SOF on ACP7.0 based platform.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif

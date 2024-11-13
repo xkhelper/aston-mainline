@@ -36,10 +36,7 @@
 #include "relocation.h"
 #include "super.h"
 #include "tree-checker.h"
-<<<<<<< HEAD
-=======
 #include "raid-stripe-tree.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Relocation overview
@@ -235,73 +232,6 @@ static struct btrfs_backref_node *walk_down_backref(
 	return NULL;
 }
 
-<<<<<<< HEAD
-static void update_backref_node(struct btrfs_backref_cache *cache,
-				struct btrfs_backref_node *node, u64 bytenr)
-{
-	struct rb_node *rb_node;
-	rb_erase(&node->rb_node, &cache->rb_root);
-	node->bytenr = bytenr;
-	rb_node = rb_simple_insert(&cache->rb_root, node->bytenr, &node->rb_node);
-	if (rb_node)
-		btrfs_backref_panic(cache->fs_info, bytenr, -EEXIST);
-}
-
-/*
- * update backref cache after a transaction commit
- */
-static int update_backref_cache(struct btrfs_trans_handle *trans,
-				struct btrfs_backref_cache *cache)
-{
-	struct btrfs_backref_node *node;
-	int level = 0;
-
-	if (cache->last_trans == 0) {
-		cache->last_trans = trans->transid;
-		return 0;
-	}
-
-	if (cache->last_trans == trans->transid)
-		return 0;
-
-	/*
-	 * detached nodes are used to avoid unnecessary backref
-	 * lookup. transaction commit changes the extent tree.
-	 * so the detached nodes are no longer useful.
-	 */
-	while (!list_empty(&cache->detached)) {
-		node = list_entry(cache->detached.next,
-				  struct btrfs_backref_node, list);
-		btrfs_backref_cleanup_node(cache, node);
-	}
-
-	while (!list_empty(&cache->changed)) {
-		node = list_entry(cache->changed.next,
-				  struct btrfs_backref_node, list);
-		list_del_init(&node->list);
-		BUG_ON(node->pending);
-		update_backref_node(cache, node, node->new_bytenr);
-	}
-
-	/*
-	 * some nodes can be left in the pending list if there were
-	 * errors during processing the pending nodes.
-	 */
-	for (level = 0; level < BTRFS_MAX_LEVEL; level++) {
-		list_for_each_entry(node, &cache->pending[level], list) {
-			BUG_ON(!node->pending);
-			if (node->bytenr == node->new_bytenr)
-				continue;
-			update_backref_node(cache, node, node->new_bytenr);
-		}
-	}
-
-	cache->last_trans = 0;
-	return 1;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool reloc_root_is_dead(const struct btrfs_root *root)
 {
 	/*
@@ -557,12 +487,6 @@ static int clone_backref_node(struct btrfs_trans_handle *trans,
 	struct btrfs_backref_edge *new_edge;
 	struct rb_node *rb_node;
 
-<<<<<<< HEAD
-	if (cache->last_trans > 0)
-		update_backref_cache(trans, cache);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rb_node = rb_simple_search(&cache->rb_root, src->commit_root->start);
 	if (rb_node) {
 		node = rb_entry(rb_node, struct btrfs_backref_node, rb_node);
@@ -932,11 +856,7 @@ int btrfs_update_reloc_root(struct btrfs_trans_handle *trans,
 	btrfs_grab_root(reloc_root);
 
 	/* root->reloc_root will stay until current relocation finished */
-<<<<<<< HEAD
-	if (fs_info->reloc_ctl->merge_reloc_tree &&
-=======
 	if (fs_info->reloc_ctl && fs_info->reloc_ctl->merge_reloc_tree &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    btrfs_root_refs(root_item) == 0) {
 		set_bit(BTRFS_ROOT_DEAD_RELOC_TREE, &root->state);
 		/*
@@ -2979,20 +2899,11 @@ static int relocate_one_folio(struct reloc_control *rc,
 	u64 folio_end;
 	u64 cur;
 	int ret;
-<<<<<<< HEAD
-=======
 	const bool use_rst = btrfs_need_stripe_tree_update(fs_info, rc->block_group->flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ASSERT(index <= last_index);
 	folio = filemap_lock_folio(inode->i_mapping, index);
 	if (IS_ERR(folio)) {
-<<<<<<< HEAD
-		page_cache_sync_readahead(inode->i_mapping, ra, NULL,
-					  index, last_index + 1 - index);
-		folio = __filemap_get_folio(inode->i_mapping, index,
-					    FGP_LOCK | FGP_ACCESSED | FGP_CREAT, mask);
-=======
 
 		/*
 		 * On relocation we're doing readahead on the relocation inode,
@@ -3009,18 +2920,13 @@ static int relocate_one_folio(struct reloc_control *rc,
 		folio = __filemap_get_folio(inode->i_mapping, index,
 					    FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
 					    mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(folio))
 			return PTR_ERR(folio);
 	}
 
 	WARN_ON(folio_order(folio));
 
-<<<<<<< HEAD
-	if (folio_test_readahead(folio))
-=======
 	if (folio_test_readahead(folio) && !use_rst)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		page_cache_async_readahead(inode->i_mapping, ra, NULL,
 					   folio, last_index + 1 - index);
 
@@ -3725,17 +3631,9 @@ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
 			break;
 		}
 restart:
-<<<<<<< HEAD
-		if (update_backref_cache(trans, &rc->backref_cache)) {
-			btrfs_end_transaction(trans);
-			trans = NULL;
-			continue;
-		}
-=======
 		if (rc->backref_cache.last_trans != trans->transid)
 			btrfs_backref_release_cache(&rc->backref_cache);
 		rc->backref_cache.last_trans = trans->transid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = find_next_extent(rc, path, &key);
 		if (ret < 0)

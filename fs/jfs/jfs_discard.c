@@ -65,11 +65,7 @@ void jfs_issue_discard(struct inode *ip, u64 blkno, u64 nblocks)
 int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
 {
 	struct inode *ipbmap = JFS_SBI(ip->i_sb)->ipbmap;
-<<<<<<< HEAD
-	struct bmap *bmp = JFS_SBI(ip->i_sb)->bmap;
-=======
 	struct bmap *bmp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct super_block *sb = ipbmap->i_sb;
 	int agno, agno_end;
 	u64 start, end, minlen;
@@ -87,12 +83,6 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
 	if (minlen == 0)
 		minlen = 1;
 
-<<<<<<< HEAD
-	if (minlen > bmp->db_agsize ||
-	    start >= bmp->db_mapsize ||
-	    range->len < sb->s_blocksize)
-		return -EINVAL;
-=======
 	down_read(&sb->s_umount);
 	bmp = JFS_SBI(ip->i_sb)->bmap;
 
@@ -102,7 +92,6 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
 		up_read(&sb->s_umount);
 		return -EINVAL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (end >= bmp->db_mapsize)
 		end = bmp->db_mapsize - 1;
@@ -116,11 +105,8 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
 		trimmed += dbDiscardAG(ip, agno, minlen);
 		agno++;
 	}
-<<<<<<< HEAD
-=======
 
 	up_read(&sb->s_umount);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	range->len = trimmed << sb->s_blocksize_bits;
 
 	return 0;

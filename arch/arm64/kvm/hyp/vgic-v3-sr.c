@@ -268,10 +268,6 @@ void __vgic_v3_activate_traps(struct vgic_v3_cpu_if *cpu_if)
 	 * starting to mess with the rest of the GIC, and VMCR_EL2 in
 	 * particular.  This logic must be called before
 	 * __vgic_v3_restore_state().
-<<<<<<< HEAD
-	 */
-	if (!cpu_if->vgic_sre) {
-=======
 	 *
 	 * However, if the vgic is disabled (ICH_HCR_EL2.EN==0), no GIC is
 	 * provisioned at all. In order to prevent illegal accesses to the
@@ -282,7 +278,6 @@ void __vgic_v3_activate_traps(struct vgic_v3_cpu_if *cpu_if)
 		write_gicreg(ICC_SRE_EL1_SRE, ICC_SRE_EL1);
 		isb();
 	} else if (!cpu_if->vgic_sre) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		write_gicreg(0, ICC_SRE_EL1);
 		isb();
 		write_gicreg(cpu_if->vgic_vmcr, ICH_VMCR_EL2);
@@ -301,14 +296,9 @@ void __vgic_v3_activate_traps(struct vgic_v3_cpu_if *cpu_if)
 	}
 
 	/*
-<<<<<<< HEAD
-	 * Prevent the guest from touching the GIC system registers if
-	 * SRE isn't enabled for GICv3 emulation.
-=======
 	 * Prevent the guest from touching the ICC_SRE_EL1 system
 	 * register. Note that this may not have any effect, as
 	 * ICC_SRE_EL2.Enable being RAO/WI is a valid implementation.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	write_gicreg(read_gicreg(ICC_SRE_EL2) & ~ICC_SRE_EL2_ENABLE,
 		     ICC_SRE_EL2);
@@ -316,18 +306,11 @@ void __vgic_v3_activate_traps(struct vgic_v3_cpu_if *cpu_if)
 	/*
 	 * If we need to trap system registers, we must write
 	 * ICH_HCR_EL2 anyway, even if no interrupts are being
-<<<<<<< HEAD
-	 * injected,
-	 */
-	if (static_branch_unlikely(&vgic_v3_cpuif_trap) ||
-	    cpu_if->its_vpe.its_vm)
-=======
 	 * injected. Note that this also applies if we don't expect
 	 * any system register access (no vgic at all).
 	 */
 	if (static_branch_unlikely(&vgic_v3_cpuif_trap) ||
 	    cpu_if->its_vpe.its_vm || !cpu_if->vgic_sre)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		write_gicreg(cpu_if->vgic_hcr, ICH_HCR_EL2);
 }
 
@@ -353,11 +336,7 @@ void __vgic_v3_deactivate_traps(struct vgic_v3_cpu_if *cpu_if)
 	 * no interrupts were being injected, and we disable it again here.
 	 */
 	if (static_branch_unlikely(&vgic_v3_cpuif_trap) ||
-<<<<<<< HEAD
-	    cpu_if->its_vpe.its_vm)
-=======
 	    cpu_if->its_vpe.its_vm || !cpu_if->vgic_sre)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		write_gicreg(0, ICH_HCR_EL2);
 }
 
@@ -1063,8 +1042,6 @@ static void __vgic_v3_write_ctlr(struct kvm_vcpu *vcpu, u32 vmcr, int rt)
 	write_gicreg(vmcr, ICH_VMCR_EL2);
 }
 
-<<<<<<< HEAD
-=======
 static bool __vgic_v3_check_trap_forwarding(struct kvm_vcpu *vcpu,
 					    u32 sysreg, bool is_read)
 {
@@ -1134,7 +1111,6 @@ static bool __vgic_v3_check_trap_forwarding(struct kvm_vcpu *vcpu,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __vgic_v3_perform_cpuif_access(struct kvm_vcpu *vcpu)
 {
 	int rt;
@@ -1144,12 +1120,9 @@ int __vgic_v3_perform_cpuif_access(struct kvm_vcpu *vcpu)
 	bool is_read;
 	u32 sysreg;
 
-<<<<<<< HEAD
-=======
 	if (kern_hyp_va(vcpu->kvm)->arch.vgic.vgic_model != KVM_DEV_TYPE_ARM_VGIC_V3)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	esr = kvm_vcpu_get_esr(vcpu);
 	if (vcpu_mode_is_32bit(vcpu)) {
 		if (!kvm_condition_valid(vcpu)) {
@@ -1164,12 +1137,9 @@ int __vgic_v3_perform_cpuif_access(struct kvm_vcpu *vcpu)
 
 	is_read = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_READ;
 
-<<<<<<< HEAD
-=======
 	if (__vgic_v3_check_trap_forwarding(vcpu, sysreg, is_read))
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (sysreg) {
 	case SYS_ICC_IAR0_EL1:
 	case SYS_ICC_IAR1_EL1:

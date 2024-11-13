@@ -235,12 +235,8 @@ static struct quota_format_type v1_quota_format = {
 
 static int __init init_v1_quota_format(void)
 {
-<<<<<<< HEAD
-        return register_quota_format(&v1_quota_format);
-=======
 	register_quota_format(&v1_quota_format);
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __exit exit_v1_quota_format(void)

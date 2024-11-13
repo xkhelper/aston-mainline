@@ -301,28 +301,17 @@ static irqreturn_t socfpga_fpga_isr(int irq, void *dev_id)
 
 static int socfpga_fpga_wait_for_config_done(struct socfpga_fpga_priv *priv)
 {
-<<<<<<< HEAD
-	int timeout, ret = 0;
-=======
 	int ret = 0;
 	long time_left;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	socfpga_fpga_disable_irqs(priv);
 	init_completion(&priv->status_complete);
 	socfpga_fpga_enable_irqs(priv, SOCFPGA_FPGMGR_MON_CONF_DONE);
 
-<<<<<<< HEAD
-	timeout = wait_for_completion_interruptible_timeout(
-						&priv->status_complete,
-						msecs_to_jiffies(10));
-	if (timeout == 0)
-=======
 	time_left = wait_for_completion_interruptible_timeout(
 						&priv->status_complete,
 						msecs_to_jiffies(10));
 	if (time_left == 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -ETIMEDOUT;
 
 	socfpga_fpga_disable_irqs(priv);

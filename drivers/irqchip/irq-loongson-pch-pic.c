@@ -17,11 +17,8 @@
 #include <linux/of_irq.h>
 #include <linux/syscore_ops.h>
 
-<<<<<<< HEAD
-=======
 #include "irq-loongson.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Registers */
 #define PCH_PIC_MASK		0x20
 #define PCH_PIC_HTMSI_EN	0x40

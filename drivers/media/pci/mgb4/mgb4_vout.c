@@ -16,10 +16,7 @@
 #include <media/v4l2-ioctl.h>
 #include <media/videobuf2-v4l2.h>
 #include <media/videobuf2-dma-sg.h>
-<<<<<<< HEAD
-=======
 #include <media/v4l2-dv-timings.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "mgb4_core.h"
 #include "mgb4_dma.h"
 #include "mgb4_sysfs.h"
@@ -27,24 +24,16 @@
 #include "mgb4_cmt.h"
 #include "mgb4_vout.h"
 
-<<<<<<< HEAD
-=======
 #define DEFAULT_WIDTH     1280
 #define DEFAULT_HEIGHT    640
 #define DEFAULT_PERIOD    (MGB4_HW_FREQ / 60)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ATTRIBUTE_GROUPS(mgb4_fpdl3_out);
 ATTRIBUTE_GROUPS(mgb4_gmsl_out);
 
 static const struct mgb4_vout_config vout_cfg[] = {
-<<<<<<< HEAD
-	{0, 0, 8, {0x78, 0x60, 0x64, 0x68, 0x74, 0x6C, 0x70, 0x7c}},
-	{1, 1, 9, {0x98, 0x80, 0x84, 0x88, 0x94, 0x8c, 0x90, 0x9c}}
-=======
 	{0, 0, 8, {0x78, 0x60, 0x64, 0x68, 0x74, 0x6C, 0x70, 0x7C, 0xE0}},
 	{1, 1, 9, {0x98, 0x80, 0x84, 0x88, 0x94, 0x8C, 0x90, 0x9C, 0xE4}}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct i2c_board_info fpdl3_ser_info[] = {
@@ -56,8 +45,6 @@ static const struct mgb4_i2c_kv fpdl3_i2c[] = {
 	{0x05, 0xFF, 0x04}, {0x06, 0xFF, 0x01}, {0xC2, 0xFF, 0x80}
 };
 
-<<<<<<< HEAD
-=======
 static const struct v4l2_dv_timings_cap video_timings_cap = {
 	.type = V4L2_DV_BT_656_1120,
 	.bt = {
@@ -101,7 +88,6 @@ static void get_timings(struct mgb4_vout_dev *voutdev,
 	timings->bt.vfrontporch = vsync & 0x000000FF;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void return_all_buffers(struct mgb4_vout_dev *voutdev,
 			       enum vb2_buffer_state state)
 {
@@ -121,15 +107,11 @@ static int queue_setup(struct vb2_queue *q, unsigned int *nbuffers,
 		       struct device *alloc_devs[])
 {
 	struct mgb4_vout_dev *voutdev = vb2_get_drv_priv(q);
-<<<<<<< HEAD
-	unsigned int size;
-=======
 	struct mgb4_regs *video = &voutdev->mgbdev->video;
 	u32 config = mgb4_read_reg(video, voutdev->config->regs.config);
 	u32 pixelsize = (config & (1U << 16)) ? 2 : 4;
 	unsigned int size = (voutdev->width + voutdev->padding) * voutdev->height
 			    * pixelsize;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If I/O reconfiguration is in process, do not allow to start
@@ -139,11 +121,6 @@ static int queue_setup(struct vb2_queue *q, unsigned int *nbuffers,
 	if (test_bit(0, &voutdev->mgbdev->io_reconfig))
 		return -EBUSY;
 
-<<<<<<< HEAD
-	size = (voutdev->width + voutdev->padding) * voutdev->height * 4;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (*nplanes)
 		return sizes[0] < size ? -EINVAL : 0;
 	*nplanes = 1;
@@ -166,17 +143,11 @@ static int buffer_prepare(struct vb2_buffer *vb)
 {
 	struct mgb4_vout_dev *voutdev = vb2_get_drv_priv(vb->vb2_queue);
 	struct device *dev = &voutdev->mgbdev->pdev->dev;
-<<<<<<< HEAD
-	unsigned int size;
-
-	size = (voutdev->width + voutdev->padding) * voutdev->height * 4;
-=======
 	struct mgb4_regs *video = &voutdev->mgbdev->video;
 	u32 config = mgb4_read_reg(video, voutdev->config->regs.config);
 	u32 pixelsize = (config & (1U << 16)) ? 2 : 4;
 	unsigned int size = (voutdev->width + voutdev->padding) * voutdev->height
 			    * pixelsize;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (vb2_plane_size(vb, 0) < size) {
 		dev_err(dev, "buffer too small (%lu < %u)\n",
@@ -275,14 +246,6 @@ static int vidioc_querycap(struct file *file, void *priv,
 static int vidioc_enum_fmt(struct file *file, void *priv,
 			   struct v4l2_fmtdesc *f)
 {
-<<<<<<< HEAD
-	if (f->index != 0)
-		return -EINVAL;
-
-	f->pixelformat = V4L2_PIX_FMT_ABGR32;
-
-	return 0;
-=======
 	struct mgb4_vin_dev *voutdev = video_drvdata(file);
 	struct mgb4_regs *video = &voutdev->mgbdev->video;
 
@@ -295,21 +258,11 @@ static int vidioc_enum_fmt(struct file *file, void *priv,
 	} else {
 		return -EINVAL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int vidioc_g_fmt(struct file *file, void *priv, struct v4l2_format *f)
 {
 	struct mgb4_vout_dev *voutdev = video_drvdata(file);
-<<<<<<< HEAD
-
-	f->fmt.pix.pixelformat = V4L2_PIX_FMT_ABGR32;
-	f->fmt.pix.width = voutdev->width;
-	f->fmt.pix.height = voutdev->height;
-	f->fmt.pix.field = V4L2_FIELD_NONE;
-	f->fmt.pix.colorspace = V4L2_COLORSPACE_RAW;
-	f->fmt.pix.bytesperline = (f->fmt.pix.width + voutdev->padding) * 4;
-=======
 	struct mgb4_regs *video = &voutdev->mgbdev->video;
 	u32 config = mgb4_read_reg(video, voutdev->config->regs.config);
 
@@ -334,7 +287,6 @@ static int vidioc_g_fmt(struct file *file, void *priv, struct v4l2_format *f)
 		f->fmt.pix.bytesperline = (f->fmt.pix.width + voutdev->padding) * 4;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	f->fmt.pix.sizeimage = f->fmt.pix.bytesperline * f->fmt.pix.height;
 
 	return 0;
@@ -343,16 +295,6 @@ static int vidioc_g_fmt(struct file *file, void *priv, struct v4l2_format *f)
 static int vidioc_try_fmt(struct file *file, void *priv, struct v4l2_format *f)
 {
 	struct mgb4_vout_dev *voutdev = video_drvdata(file);
-<<<<<<< HEAD
-
-	f->fmt.pix.pixelformat = V4L2_PIX_FMT_ABGR32;
-	f->fmt.pix.width = voutdev->width;
-	f->fmt.pix.height = voutdev->height;
-	f->fmt.pix.field = V4L2_FIELD_NONE;
-	f->fmt.pix.colorspace = V4L2_COLORSPACE_RAW;
-	f->fmt.pix.bytesperline = max(f->fmt.pix.width * 4,
-				      ALIGN_DOWN(f->fmt.pix.bytesperline, 4));
-=======
 	struct mgb4_regs *video = &voutdev->mgbdev->video;
 	u32 pixelsize;
 
@@ -377,7 +319,6 @@ static int vidioc_try_fmt(struct file *file, void *priv, struct v4l2_format *f)
 						pixelsize);
 	else
 		f->fmt.pix.bytesperline = f->fmt.pix.width * pixelsize;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	f->fmt.pix.sizeimage = f->fmt.pix.bytesperline * f->fmt.pix.height;
 
 	return 0;
@@ -387,20 +328,12 @@ static int vidioc_s_fmt(struct file *file, void *priv, struct v4l2_format *f)
 {
 	struct mgb4_vout_dev *voutdev = video_drvdata(file);
 	struct mgb4_regs *video = &voutdev->mgbdev->video;
-<<<<<<< HEAD
-=======
 	u32 config, pixelsize;
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (vb2_is_busy(&voutdev->queue))
 		return -EBUSY;
 
-<<<<<<< HEAD
-	vidioc_try_fmt(file, priv, f);
-
-	voutdev->padding = (f->fmt.pix.bytesperline - (f->fmt.pix.width * 4)) / 4;
-=======
 	ret = vidioc_try_fmt(file, priv, f);
 	if (ret < 0)
 		return ret;
@@ -428,7 +361,6 @@ static int vidioc_s_fmt(struct file *file, void *priv, struct v4l2_format *f)
 
 	voutdev->padding = (f->fmt.pix.bytesperline - (f->fmt.pix.width
 			    * pixelsize)) / pixelsize;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mgb4_write_reg(video, voutdev->config->regs.padding, voutdev->padding);
 
 	return 0;
@@ -452,17 +384,12 @@ static int vidioc_enum_output(struct file *file, void *priv,
 		return -EINVAL;
 
 	out->type = V4L2_OUTPUT_TYPE_ANALOG;
-<<<<<<< HEAD
-=======
 	out->capabilities = V4L2_OUT_CAP_DV_TIMINGS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	strscpy(out->name, "MGB4", sizeof(out->name));
 
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int vidioc_enum_frameintervals(struct file *file, void *priv,
 				      struct v4l2_frmivalenum *ival)
 {
@@ -579,7 +506,6 @@ static int vidioc_dv_timings_cap(struct file *file, void *fh,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct v4l2_ioctl_ops video_ioctl_ops = {
 	.vidioc_querycap = vidioc_querycap,
 	.vidioc_enum_fmt_vid_out = vidioc_enum_fmt,
@@ -587,10 +513,6 @@ static const struct v4l2_ioctl_ops video_ioctl_ops = {
 	.vidioc_s_fmt_vid_out = vidioc_s_fmt,
 	.vidioc_g_fmt_vid_out = vidioc_g_fmt,
 	.vidioc_enum_output = vidioc_enum_output,
-<<<<<<< HEAD
-	.vidioc_g_output = vidioc_g_output,
-	.vidioc_s_output = vidioc_s_output,
-=======
 	.vidioc_enum_frameintervals = vidioc_enum_frameintervals,
 	.vidioc_g_output = vidioc_g_output,
 	.vidioc_s_output = vidioc_s_output,
@@ -600,7 +522,6 @@ static const struct v4l2_ioctl_ops video_ioctl_ops = {
 	.vidioc_enum_dv_timings = vidioc_enum_dv_timings,
 	.vidioc_g_dv_timings = vidioc_g_dv_timings,
 	.vidioc_s_dv_timings = vidioc_s_dv_timings,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.vidioc_reqbufs = vb2_ioctl_reqbufs,
 	.vidioc_create_bufs = vb2_ioctl_create_bufs,
 	.vidioc_prepare_buf = vb2_ioctl_prepare_buf,
@@ -743,15 +664,6 @@ static void fpga_init(struct mgb4_vout_dev *voutdev)
 
 	mgb4_write_reg(video, regs->config, 0x00000011);
 	mgb4_write_reg(video, regs->resolution,
-<<<<<<< HEAD
-		       (MGB4_DEFAULT_WIDTH << 16) | MGB4_DEFAULT_HEIGHT);
-	mgb4_write_reg(video, regs->hsync, 0x00102020);
-	mgb4_write_reg(video, regs->vsync, 0x40020202);
-	mgb4_write_reg(video, regs->frame_period, MGB4_DEFAULT_PERIOD);
-	mgb4_write_reg(video, regs->padding, 0x00000000);
-
-	voutdev->freq = mgb4_cmt_set_vout_freq(voutdev, 70000 >> 1) << 1;
-=======
 		       (DEFAULT_WIDTH << 16) | DEFAULT_HEIGHT);
 	mgb4_write_reg(video, regs->hsync, 0x00283232);
 	mgb4_write_reg(video, regs->vsync, 0x40141F1E);
@@ -759,7 +671,6 @@ static void fpga_init(struct mgb4_vout_dev *voutdev)
 	mgb4_write_reg(video, regs->padding, 0x00000000);
 
 	voutdev->freq = mgb4_cmt_set_vout_freq(voutdev, 61150 >> 1) << 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mgb4_write_reg(video, regs->config,
 		       (voutdev->config->id + MGB4_VIN_DEVICES) << 2 | 1 << 4);
@@ -785,16 +696,6 @@ static void debugfs_init(struct mgb4_vout_dev *voutdev)
 	voutdev->regs[3].offset = voutdev->config->regs.hsync;
 	voutdev->regs[4].name = "VIDEO_PARAMS_2";
 	voutdev->regs[4].offset = voutdev->config->regs.vsync;
-<<<<<<< HEAD
-	voutdev->regs[5].name = "FRAME_PERIOD";
-	voutdev->regs[5].offset = voutdev->config->regs.frame_period;
-	voutdev->regs[6].name = "PADDING";
-	voutdev->regs[6].offset = voutdev->config->regs.padding;
-
-	voutdev->regset.base = video->membase;
-	voutdev->regset.regs = voutdev->regs;
-	voutdev->regset.nregs = ARRAY_SIZE(voutdev->regs);
-=======
 	voutdev->regs[5].name = "FRAME_LIMIT";
 	voutdev->regs[5].offset = voutdev->config->regs.frame_limit;
 	voutdev->regs[6].name = "PADDING_PIXELS";
@@ -809,7 +710,6 @@ static void debugfs_init(struct mgb4_vout_dev *voutdev)
 
 	voutdev->regset.base = video->membase;
 	voutdev->regset.regs = voutdev->regs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	debugfs_create_regset32("registers", 0444, voutdev->debugfs,
 				&voutdev->regset);

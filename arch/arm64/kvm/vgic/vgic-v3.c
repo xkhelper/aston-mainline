@@ -292,8 +292,6 @@ void vgic_v3_enable(struct kvm_vcpu *vcpu)
 
 	/* Get the show on the road... */
 	vgic_v3->vgic_hcr = ICH_HCR_EN;
-<<<<<<< HEAD
-=======
 }
 
 void vcpu_set_ich_hcr(struct kvm_vcpu *vcpu)
@@ -306,7 +304,6 @@ void vcpu_set_ich_hcr(struct kvm_vcpu *vcpu)
 		return;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (group0_trap)
 		vgic_v3->vgic_hcr |= ICH_HCR_TALL0;
 	if (group1_trap)

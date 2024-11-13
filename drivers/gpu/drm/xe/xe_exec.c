@@ -8,20 +8,13 @@
 #include <drm/drm_device.h>
 #include <drm/drm_exec.h>
 #include <drm/drm_file.h>
-<<<<<<< HEAD
-#include <drm/xe_drm.h>
-=======
 #include <uapi/drm/xe_drm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 
 #include "xe_bo.h"
 #include "xe_device.h"
 #include "xe_exec_queue.h"
-<<<<<<< HEAD
-=======
 #include "xe_hw_engine_group.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_macros.h"
 #include "xe_ring_ops_types.h"
 #include "xe_sched_job.h"
@@ -48,14 +41,6 @@
  * user knows an exec writes to a BO and reads from the BO in the next exec, it
  * is the user's responsibility to pass in / out fence between the two execs).
  *
-<<<<<<< HEAD
- * Implicit dependencies for external BOs are handled by using the dma-buf
- * implicit dependency uAPI (TODO: add link). To make this works each exec must
- * install the job's fence into the DMA_RESV_USAGE_WRITE slot of every external
- * BO mapped in the VM.
- *
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * We do not allow a user to trigger a bind at exec time rather we have a VM
  * bind IOCTL which uses the same in / out fence interface as exec. In that
  * sense, a VM bind is basically the same operation as an exec from the user
@@ -69,13 +54,8 @@
  * behind any pending kernel operations on any external BOs in VM or any BOs
  * private to the VM. This is accomplished by the rebinds waiting on BOs
  * DMA_RESV_USAGE_KERNEL slot (kernel ops) and kernel ops waiting on all BOs
-<<<<<<< HEAD
- * slots (inflight execs are in the DMA_RESV_USAGE_BOOKING for private BOs and
- * in DMA_RESV_USAGE_WRITE for external BOs).
-=======
  * slots (inflight execs are in the DMA_RESV_USAGE_BOOKKEEP for private BOs and
  * for external BOs).
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Rebinds / dma-resv usage applies to non-compute mode VMs only as for compute
  * mode VMs we use preempt fences and a rebind worker (TODO: add link).
@@ -140,11 +120,8 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
 	bool write_locked, skip_retry = false;
 	ktime_t end = 0;
 	int err = 0;
-<<<<<<< HEAD
-=======
 	struct xe_hw_engine_group *group;
 	enum xe_hw_engine_group_execution_mode mode, previous_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (XE_IOCTL_DBG(xe, args->extensions) ||
 	    XE_IOCTL_DBG(xe, args->pad[0] || args->pad[1] || args->pad[2]) ||
@@ -155,14 +132,6 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
 	if (XE_IOCTL_DBG(xe, !q))
 		return -ENOENT;
 
-<<<<<<< HEAD
-	if (XE_IOCTL_DBG(xe, q->flags & EXEC_QUEUE_FLAG_VM))
-		return -EINVAL;
-
-	if (XE_IOCTL_DBG(xe, args->num_batch_buffer &&
-			 q->width != args->num_batch_buffer))
-		return -EINVAL;
-=======
 	if (XE_IOCTL_DBG(xe, q->flags & EXEC_QUEUE_FLAG_VM)) {
 		err = -EINVAL;
 		goto err_exec_queue;
@@ -173,7 +142,6 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
 		err = -EINVAL;
 		goto err_exec_queue;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (XE_IOCTL_DBG(xe, q->ops->reset_status(q))) {
 		err = -ECANCELED;
@@ -216,8 +184,6 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	group = q->hwe->hw_engine_group;
 	mode = xe_hw_engine_group_find_exec_mode(q);
 
@@ -227,7 +193,6 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
 			goto err_syncs;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 retry:
 	if (!xe_vm_in_lr_mode(vm) && xe_vm_userptr_check_repin(vm)) {
 		err = down_write_killable(&vm->lock);
@@ -245,11 +210,7 @@ retry:
 		downgrade_write(&vm->lock);
 		write_locked = false;
 		if (err)
-<<<<<<< HEAD
-			goto err_unlock_list;
-=======
 			goto err_hw_exec_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (!args->num_batch_buffer) {
@@ -263,10 +224,7 @@ retry:
 			fence = xe_sync_in_fence_get(syncs, num_syncs, q, vm);
 			if (IS_ERR(fence)) {
 				err = PTR_ERR(fence);
-<<<<<<< HEAD
-=======
 				xe_vm_unlock(vm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				goto err_unlock_list;
 			}
 			for (i = 0; i < num_syncs; i++)
@@ -346,12 +304,8 @@ retry:
 	xe_sched_job_arm(job);
 	if (!xe_vm_in_lr_mode(vm))
 		drm_gpuvm_resv_add_fence(&vm->gpuvm, exec, &job->drm.s_fence->finished,
-<<<<<<< HEAD
-					 DMA_RESV_USAGE_BOOKKEEP, DMA_RESV_USAGE_WRITE);
-=======
 					 DMA_RESV_USAGE_BOOKKEEP,
 					 DMA_RESV_USAGE_BOOKKEEP);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < num_syncs; i++) {
 		xe_sync_entry_signal(&syncs[i], &job->drm.s_fence->finished);
@@ -371,12 +325,9 @@ retry:
 		spin_unlock(&xe->ttm.lru_lock);
 	}
 
-<<<<<<< HEAD
-=======
 	if (mode == EXEC_MODE_LR)
 		xe_hw_engine_group_resume_faulting_lr_jobs(group);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_repin:
 	if (!xe_vm_in_lr_mode(vm))
 		up_read(&vm->userptr.notifier_lock);
@@ -389,12 +340,9 @@ err_unlock_list:
 	up_read(&vm->lock);
 	if (err == -EAGAIN && !skip_retry)
 		goto retry;
-<<<<<<< HEAD
-=======
 err_hw_exec_mode:
 	if (mode == EXEC_MODE_DMA_FENCE)
 		xe_hw_engine_group_put(group);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_syncs:
 	while (num_syncs--)
 		xe_sync_entry_cleanup(&syncs[num_syncs]);

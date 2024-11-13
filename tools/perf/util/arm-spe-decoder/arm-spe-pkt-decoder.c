@@ -11,11 +11,7 @@
 #include <linux/bitops.h>
 #include <stdarg.h>
 #include <linux/kernel.h>
-<<<<<<< HEAD
-#include <asm-generic/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "arm-spe-pkt-decoder.h"
 

@@ -861,24 +861,11 @@ static void mipi_csis_log_counters(struct mipi_csis_device *csis, bool non_error
 {
 	unsigned int num_events = non_errors ? MIPI_CSIS_NUM_EVENTS
 				: MIPI_CSIS_NUM_EVENTS - 8;
-<<<<<<< HEAD
-=======
 	unsigned int counters[MIPI_CSIS_NUM_EVENTS];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long flags;
 	unsigned int i;
 
 	spin_lock_irqsave(&csis->slock, flags);
-<<<<<<< HEAD
-
-	for (i = 0; i < num_events; ++i) {
-		if (csis->events[i].counter > 0 || csis->debug.enable)
-			dev_info(csis->dev, "%s events: %d\n",
-				 csis->events[i].name,
-				 csis->events[i].counter);
-	}
-	spin_unlock_irqrestore(&csis->slock, flags);
-=======
 	for (i = 0; i < num_events; ++i)
 		counters[i] =  csis->events[i].counter;
 	spin_unlock_irqrestore(&csis->slock, flags);
@@ -889,7 +876,6 @@ static void mipi_csis_log_counters(struct mipi_csis_device *csis, bool non_error
 				 csis->events[i].name,
 				 counters[i]);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int mipi_csis_dump_regs(struct mipi_csis_device *csis)
@@ -1361,11 +1347,7 @@ err_parse:
  * Suspend/resume
  */
 
-<<<<<<< HEAD
-static int __maybe_unused mipi_csis_runtime_suspend(struct device *dev)
-=======
 static int mipi_csis_runtime_suspend(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
@@ -1380,11 +1362,7 @@ static int mipi_csis_runtime_suspend(struct device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int __maybe_unused mipi_csis_runtime_resume(struct device *dev)
-=======
 static int mipi_csis_runtime_resume(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
@@ -1404,13 +1382,8 @@ static int mipi_csis_runtime_resume(struct device *dev)
 }
 
 static const struct dev_pm_ops mipi_csis_pm_ops = {
-<<<<<<< HEAD
-	SET_RUNTIME_PM_OPS(mipi_csis_runtime_suspend, mipi_csis_runtime_resume,
-			   NULL)
-=======
 	RUNTIME_PM_OPS(mipi_csis_runtime_suspend, mipi_csis_runtime_resume,
 		       NULL)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* -----------------------------------------------------------------------------
@@ -1601,11 +1574,7 @@ static struct platform_driver mipi_csis_driver = {
 	.driver		= {
 		.of_match_table = mipi_csis_of_match,
 		.name		= CSIS_DRIVER_NAME,
-<<<<<<< HEAD
-		.pm		= &mipi_csis_pm_ops,
-=======
 		.pm		= pm_ptr(&mipi_csis_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

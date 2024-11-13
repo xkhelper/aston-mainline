@@ -3,11 +3,8 @@
 #include <linux/highmem.h>
 #include <linux/sched.h>
 #include <linux/hugetlb.h>
-<<<<<<< HEAD
-=======
 #include <linux/swap.h>
 #include <linux/swapops.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * We want to know the real level where a entry is located ignoring any
@@ -659,8 +656,6 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
 
 	return err;
 }
-<<<<<<< HEAD
-=======
 
 /**
  * folio_walk_start - walk the page tables to a folio
@@ -867,4 +862,3 @@ found:
 	fw->ptl = ptl;
 	return page_folio(page);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -226,11 +226,7 @@ static void lib80211_wep_print_stats(struct seq_file *m, void *priv)
 	seq_printf(m, "key[%d] alg=WEP len=%d\n", wep->key_idx, wep->key_len);
 }
 
-<<<<<<< HEAD
-static struct lib80211_crypto_ops lib80211_crypt_wep = {
-=======
 static const struct lib80211_crypto_ops lib80211_crypt_wep = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "WEP",
 	.init = lib80211_wep_init,
 	.deinit = lib80211_wep_deinit,

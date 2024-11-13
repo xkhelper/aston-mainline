@@ -535,11 +535,7 @@ int hr222_update_analog_audio_level(struct snd_pcxhr *chip,
 {
 	dev_dbg(chip->card->dev,
 		"hr222_update_analog_audio_level(%s chan=%d)\n",
-<<<<<<< HEAD
-		    is_capture ? "capture" : "playback", channel);
-=======
 		snd_pcm_direction_name(is_capture), channel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (is_capture) {
 		int level_l, level_r, level_mic;
 		/* we have to update all levels */

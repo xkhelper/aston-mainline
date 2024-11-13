@@ -796,12 +796,9 @@ bool iavf_fdir_is_dup_fltr(struct iavf_adapter *adapter, struct iavf_fdir_fltr *
 
 	spin_lock_bh(&adapter->fdir_fltr_lock);
 	list_for_each_entry(tmp, &adapter->fdir_list_head, list) {
-<<<<<<< HEAD
-=======
 		if (iavf_is_raw_fdir(fltr))
 			continue;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (tmp->flow_type != fltr->flow_type)
 			continue;
 
@@ -821,21 +818,6 @@ bool iavf_fdir_is_dup_fltr(struct iavf_adapter *adapter, struct iavf_fdir_fltr *
 }
 
 /**
-<<<<<<< HEAD
- * iavf_find_fdir_fltr_by_loc - find filter with location
- * @adapter: pointer to the VF adapter structure
- * @loc: location to find.
- *
- * Returns pointer to Flow Director filter if found or null
- */
-struct iavf_fdir_fltr *iavf_find_fdir_fltr_by_loc(struct iavf_adapter *adapter, u32 loc)
-{
-	struct iavf_fdir_fltr *rule;
-
-	list_for_each_entry(rule, &adapter->fdir_list_head, list)
-		if (rule->loc == loc)
-			return rule;
-=======
  * iavf_find_fdir_fltr - find FDIR filter
  * @adapter: pointer to the VF adapter structure
  * @is_raw: filter type, is raw (tc u32) or not (ethtool)
@@ -853,23 +835,11 @@ struct iavf_fdir_fltr *iavf_find_fdir_fltr(struct iavf_adapter *adapter,
 		    (!is_raw && rule->loc == data))
 			return rule;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return NULL;
 }
 
 /**
-<<<<<<< HEAD
- * iavf_fdir_list_add_fltr - add a new node to the flow director filter list
- * @adapter: pointer to the VF adapter structure
- * @fltr: filter node to add to structure
- */
-void iavf_fdir_list_add_fltr(struct iavf_adapter *adapter, struct iavf_fdir_fltr *fltr)
-{
-	struct iavf_fdir_fltr *rule, *parent = NULL;
-
-	list_for_each_entry(rule, &adapter->fdir_list_head, list) {
-=======
  * iavf_fdir_add_fltr - add a new node to the flow director filter list
  * @adapter: pointer to the VF adapter structure
  * @fltr: filter node to add to structure
@@ -894,7 +864,6 @@ int iavf_fdir_add_fltr(struct iavf_adapter *adapter,
 		if (iavf_is_raw_fdir(fltr))
 			break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rule->loc >= fltr->loc)
 			break;
 		parent = rule;
@@ -904,8 +873,6 @@ int iavf_fdir_add_fltr(struct iavf_adapter *adapter,
 		list_add(&fltr->list, &parent->list);
 	else
 		list_add(&fltr->list, &adapter->fdir_list_head);
-<<<<<<< HEAD
-=======
 
 	iavf_inc_fdir_active_fltr(adapter, fltr);
 
@@ -957,5 +924,4 @@ int iavf_fdir_del_fltr(struct iavf_adapter *adapter, bool is_raw, u32 data)
 
 	spin_unlock_bh(&adapter->fdir_fltr_lock);
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

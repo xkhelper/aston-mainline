@@ -93,21 +93,10 @@ static int __init ingenic_ost_probe(struct platform_device *pdev)
 		return PTR_ERR(map);
 	}
 
-<<<<<<< HEAD
-	ost->clk = devm_clk_get(dev, "ost");
-	if (IS_ERR(ost->clk))
-		return PTR_ERR(ost->clk);
-
-	err = clk_prepare_enable(ost->clk);
-	if (err)
-		return err;
-
-=======
 	ost->clk = devm_clk_get_enabled(dev, "ost");
 	if (IS_ERR(ost->clk))
 		return PTR_ERR(ost->clk);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Clear counter high/low registers */
 	if (soc_info->is64bit)
 		regmap_write(map, TCU_REG_OST_CNTL, 0);
@@ -136,10 +125,6 @@ static int __init ingenic_ost_probe(struct platform_device *pdev)
 	err = clocksource_register_hz(cs, rate);
 	if (err) {
 		dev_err(dev, "clocksource registration failed");
-<<<<<<< HEAD
-		clk_disable_unprepare(ost->clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 

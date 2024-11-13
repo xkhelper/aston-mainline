@@ -25,10 +25,7 @@
 #include <linux/vmalloc.h>
 #include <linux/set_memory.h>
 #include <linux/kfence.h>
-<<<<<<< HEAD
-=======
 #include <linux/pkeys.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/barrier.h>
 #include <asm/cputype.h>
@@ -1553,8 +1550,6 @@ void __cpu_replace_ttbr1(pgd_t *pgdp, bool cnp)
 
 	cpu_uninstall_idmap();
 }
-<<<<<<< HEAD
-=======
 
 #ifdef CONFIG_ARCH_HAS_PKEYS
 int arch_set_user_pkey_access(struct task_struct *tsk, int pkey, unsigned long init_val)
@@ -1599,4 +1594,3 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey, unsigned long i
 	return 0;
 }
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

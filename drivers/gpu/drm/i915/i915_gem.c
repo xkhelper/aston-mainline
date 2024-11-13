@@ -39,11 +39,6 @@
 #include <drm/drm_cache.h>
 #include <drm/drm_vma_manager.h>
 
-<<<<<<< HEAD
-#include "display/intel_display.h"
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "gem/i915_gem_clflush.h"
 #include "gem/i915_gem_context.h"
 #include "gem/i915_gem_ioctls.h"

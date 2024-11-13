@@ -6,10 +6,7 @@
 // based on previous work and know-how from:
 // Deepak Saxena <dsaxena@plexity.net>
 
-<<<<<<< HEAD
-=======
 #include <linux/bitops.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/gpio/driver.h>
 #include <linux/io.h>
 #include <linux/irq.h>
@@ -17,11 +14,7 @@
 #include <linux/irqchip.h>
 #include <linux/of_irq.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
-#include <linux/bitops.h>
-=======
 #include <linux/property.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IXP4XX_REG_GPOUT	0x00
 #define IXP4XX_REG_GPOE		0x04
@@ -61,24 +54,14 @@
 /**
  * struct ixp4xx_gpio - IXP4 GPIO state container
  * @dev: containing device for this instance
-<<<<<<< HEAD
- * @fwnode: the fwnode for this GPIO chip
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @gc: gpiochip for this instance
  * @base: remapped I/O-memory base
  * @irq_edge: Each bit represents an IRQ: 1: edge-triggered,
  * 0: level triggered
  */
 struct ixp4xx_gpio {
-<<<<<<< HEAD
-	struct device *dev;
-	struct fwnode_handle *fwnode;
-	struct gpio_chip gc;
-=======
 	struct gpio_chip gc;
 	struct device *dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem *base;
 	unsigned long long irq_edge;
 };
@@ -253,10 +236,6 @@ static int ixp4xx_gpio_probe(struct platform_device *pdev)
 		dev_err(dev, "no IRQ parent domain\n");
 		return -ENODEV;
 	}
-<<<<<<< HEAD
-	g->fwnode = of_node_to_fwnode(np);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If either clock output is enabled explicitly in the device tree
@@ -341,11 +320,7 @@ static int ixp4xx_gpio_probe(struct platform_device *pdev)
 
 	girq = &g->gc.irq;
 	gpio_irq_chip_set_chip(girq, &ixp4xx_gpio_irqchip);
-<<<<<<< HEAD
-	girq->fwnode = g->fwnode;
-=======
 	girq->fwnode = dev_fwnode(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	girq->parent_domain = parent;
 	girq->child_to_parent_hwirq = ixp4xx_gpio_child_to_parent_hwirq;
 	girq->handler = handle_bad_irq;

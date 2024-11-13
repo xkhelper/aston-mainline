@@ -207,12 +207,9 @@ static int powernv_flash_set_driver_info(struct device *dev,
 	 * get them
 	 */
 	mtd->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFP", dev->of_node);
-<<<<<<< HEAD
-=======
 	if (!mtd->name)
 		return -ENOMEM;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mtd->type = MTD_NORFLASH;
 	mtd->flags = MTD_WRITEABLE;
 	mtd->size = size;

@@ -40,8 +40,6 @@ static const struct samsung_pin_bank_type bank_type_alive = {
 #define S5P_OTHERS_RET_MMC		(1 << 29)
 #define S5P_OTHERS_RET_UART		(1 << 28)
 
-<<<<<<< HEAD
-=======
 #define S5P_PIN_PULL_DISABLE		0
 #define S5P_PIN_PULL_DOWN		1
 #define S5P_PIN_PULL_UP			2
@@ -55,7 +53,6 @@ static void s5pv210_pud_value_init(struct samsung_pinctrl_drv_data *drvdata)
 	pud_val[PUD_PULL_UP] = S5P_PIN_PULL_UP;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void s5pv210_retention_disable(struct samsung_pinctrl_drv_data *drvdata)
 {
 	void __iomem *clk_base = (void __iomem *)drvdata->retention_ctrl->priv;
@@ -149,10 +146,7 @@ static const struct samsung_pin_ctrl s5pv210_pin_ctrl[] __initconst = {
 		.nr_banks	= ARRAY_SIZE(s5pv210_pin_bank),
 		.eint_gpio_init = exynos_eint_gpio_init,
 		.eint_wkup_init = exynos_eint_wkup_init,
-<<<<<<< HEAD
-=======
 		.pud_value_init	= s5pv210_pud_value_init,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.suspend	= exynos_pinctrl_suspend,
 		.resume		= exynos_pinctrl_resume,
 		.retention_data	= &s5pv210_retention_data,

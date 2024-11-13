@@ -278,11 +278,7 @@ static int debug_show(struct seq_file *f, void *data)
 			seq_printf(f, " W %pS\n",
 				   (void *) cl->waiting_on);
 
-<<<<<<< HEAD
-		seq_puts(f, "\n");
-=======
 		seq_putc(f, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	spin_unlock_irq(&closure_list_lock);

@@ -691,8 +691,6 @@ struct fec_enet_private {
 	/* XDP BPF Program */
 	struct bpf_prog *xdp_prog;
 
-<<<<<<< HEAD
-=======
 	struct {
 		int pps_enable;
 		u64 ns_sys, ns_phc;
@@ -700,16 +698,12 @@ struct fec_enet_private {
 		u8 at_inc_corr;
 	} ptp_saved_state;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 ethtool_stats[];
 };
 
 void fec_ptp_init(struct platform_device *pdev, int irq_idx);
-<<<<<<< HEAD
-=======
 void fec_ptp_restore_state(struct fec_enet_private *fep);
 void fec_ptp_save_state(struct fec_enet_private *fep);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void fec_ptp_stop(struct platform_device *pdev);
 void fec_ptp_start_cyclecounter(struct net_device *ndev);
 int fec_ptp_set(struct net_device *ndev, struct kernel_hwtstamp_config *config,

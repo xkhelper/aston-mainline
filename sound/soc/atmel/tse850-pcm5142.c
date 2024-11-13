@@ -431,11 +431,7 @@ static struct platform_driver tse850_driver = {
 		.of_match_table = tse850_dt_ids,
 	},
 	.probe = tse850_probe,
-<<<<<<< HEAD
-	.remove_new = tse850_remove,
-=======
 	.remove = tse850_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(tse850_driver);

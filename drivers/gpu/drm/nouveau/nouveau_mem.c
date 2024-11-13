@@ -78,33 +78,19 @@ nouveau_mem_map(struct nouveau_mem *mem,
 void
 nouveau_mem_fini(struct nouveau_mem *mem)
 {
-<<<<<<< HEAD
-	nvif_vmm_put(&mem->cli->drm->client.vmm.vmm, &mem->vma[1]);
-	nvif_vmm_put(&mem->cli->drm->client.vmm.vmm, &mem->vma[0]);
-	mutex_lock(&mem->cli->drm->master.lock);
-	nvif_mem_dtor(&mem->mem);
-	mutex_unlock(&mem->cli->drm->master.lock);
-=======
 	nvif_vmm_put(&mem->drm->client.vmm.vmm, &mem->vma[1]);
 	nvif_vmm_put(&mem->drm->client.vmm.vmm, &mem->vma[0]);
 	mutex_lock(&mem->drm->client_mutex);
 	nvif_mem_dtor(&mem->mem);
 	mutex_unlock(&mem->drm->client_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int
 nouveau_mem_host(struct ttm_resource *reg, struct ttm_tt *tt)
 {
 	struct nouveau_mem *mem = nouveau_mem(reg);
-<<<<<<< HEAD
-	struct nouveau_cli *cli = mem->cli;
-	struct nouveau_drm *drm = cli->drm;
-	struct nvif_mmu *mmu = &cli->mmu;
-=======
 	struct nouveau_drm *drm = mem->drm;
 	struct nvif_mmu *mmu = &drm->mmu;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nvif_mem_ram_v0 args = {};
 	u8 type;
 	int ret;
@@ -127,19 +113,11 @@ nouveau_mem_host(struct ttm_resource *reg, struct ttm_tt *tt)
 	else
 		args.dma = tt->dma_address;
 
-<<<<<<< HEAD
-	mutex_lock(&drm->master.lock);
-	ret = nvif_mem_ctor_type(mmu, "ttmHostMem", cli->mem->oclass, type, PAGE_SHIFT,
-				 reg->size,
-				 &args, sizeof(args), &mem->mem);
-	mutex_unlock(&drm->master.lock);
-=======
 	mutex_lock(&drm->client_mutex);
 	ret = nvif_mem_ctor_type(mmu, "ttmHostMem", mmu->mem, type, PAGE_SHIFT,
 				 reg->size,
 				 &args, sizeof(args), &mem->mem);
 	mutex_unlock(&drm->client_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -147,18 +125,6 @@ int
 nouveau_mem_vram(struct ttm_resource *reg, bool contig, u8 page)
 {
 	struct nouveau_mem *mem = nouveau_mem(reg);
-<<<<<<< HEAD
-	struct nouveau_cli *cli = mem->cli;
-	struct nouveau_drm *drm = cli->drm;
-	struct nvif_mmu *mmu = &cli->mmu;
-	u64 size = ALIGN(reg->size, 1 << page);
-	int ret;
-
-	mutex_lock(&drm->master.lock);
-	switch (cli->mem->oclass) {
-	case NVIF_CLASS_MEM_GF100:
-		ret = nvif_mem_ctor_type(mmu, "ttmVram", cli->mem->oclass,
-=======
 	struct nouveau_drm *drm = mem->drm;
 	struct nvif_mmu *mmu = &drm->mmu;
 	u64 size = ALIGN(reg->size, 1 << page);
@@ -168,7 +134,6 @@ nouveau_mem_vram(struct ttm_resource *reg, bool contig, u8 page)
 	switch (mmu->mem) {
 	case NVIF_CLASS_MEM_GF100:
 		ret = nvif_mem_ctor_type(mmu, "ttmVram", mmu->mem,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 drm->ttm.type_vram, page, size,
 					 &(struct gf100_mem_v0) {
 						.contig = contig,
@@ -176,11 +141,7 @@ nouveau_mem_vram(struct ttm_resource *reg, bool contig, u8 page)
 					 &mem->mem);
 		break;
 	case NVIF_CLASS_MEM_NV50:
-<<<<<<< HEAD
-		ret = nvif_mem_ctor_type(mmu, "ttmVram", cli->mem->oclass,
-=======
 		ret = nvif_mem_ctor_type(mmu, "ttmVram", mmu->mem,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 drm->ttm.type_vram, page, size,
 					 &(struct nv50_mem_v0) {
 						.bankswz = mmu->kind[mem->kind] == 2,
@@ -193,11 +154,7 @@ nouveau_mem_vram(struct ttm_resource *reg, bool contig, u8 page)
 		WARN_ON(1);
 		break;
 	}
-<<<<<<< HEAD
-	mutex_unlock(&drm->master.lock);
-=======
 	mutex_unlock(&drm->client_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	reg->start = mem->mem.addr >> PAGE_SHIFT;
 	return ret;
@@ -214,11 +171,7 @@ nouveau_mem_del(struct ttm_resource_manager *man, struct ttm_resource *reg)
 }
 
 int
-<<<<<<< HEAD
-nouveau_mem_new(struct nouveau_cli *cli, u8 kind, u8 comp,
-=======
 nouveau_mem_new(struct nouveau_drm *drm, u8 kind, u8 comp,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct ttm_resource **res)
 {
 	struct nouveau_mem *mem;
@@ -226,11 +179,7 @@ nouveau_mem_new(struct nouveau_drm *drm, u8 kind, u8 comp,
 	if (!(mem = kzalloc(sizeof(*mem), GFP_KERNEL)))
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	mem->cli = cli;
-=======
 	mem->drm = drm;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mem->kind = kind;
 	mem->comp = comp;
 

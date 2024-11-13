@@ -130,10 +130,7 @@ allOf:
     then:
       properties:
         clocks:
-<<<<<<< HEAD
-=======
           minItems: 4
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           maxItems: 4
         clock-names:
           items:

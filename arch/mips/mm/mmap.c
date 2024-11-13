@@ -98,12 +98,8 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
 }
 
 unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
-<<<<<<< HEAD
-	unsigned long len, unsigned long pgoff, unsigned long flags)
-=======
 	unsigned long len, unsigned long pgoff, unsigned long flags,
 	vm_flags_t vm_flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return arch_get_unmapped_area_common(filp,
 			addr0, len, pgoff, flags, UP);
@@ -115,11 +111,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
  */
 unsigned long arch_get_unmapped_area_topdown(struct file *filp,
 	unsigned long addr0, unsigned long len, unsigned long pgoff,
-<<<<<<< HEAD
-	unsigned long flags)
-=======
 	unsigned long flags, vm_flags_t vm_flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return arch_get_unmapped_area_common(filp,
 			addr0, len, pgoff, flags, DOWN);

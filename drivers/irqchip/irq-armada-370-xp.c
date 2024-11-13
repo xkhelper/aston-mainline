@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 // SPDX-License-Identifier: GPL-2.0-only
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Marvell Armada 370 and Armada XP SoC IRQ handling
  *
@@ -11,21 +8,11 @@
  * Gregory CLEMENT <gregory.clement@free-electrons.com>
  * Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  * Ben Dooks <ben.dooks@codethink.co.uk>
-<<<<<<< HEAD
- *
- * This file is licensed under the terms of the GNU General Public
- * License version 2.  This program is licensed "as is" without any
- * warranty of any kind, whether express or implied.
- */
-
-#include <linux/bits.h>
-=======
  */
 
 #include <linux/bitfield.h>
 #include <linux/bits.h>
 #include <linux/err.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/init.h>
@@ -78,21 +65,6 @@
  *                   device
  *
  * The "global interrupt mask/unmask" is modified using the
-<<<<<<< HEAD
- * ARMADA_370_XP_INT_SET_ENABLE_OFFS and
- * ARMADA_370_XP_INT_CLEAR_ENABLE_OFFS registers, which are relative
- * to "main_int_base".
- *
- * The "per-CPU mask/unmask" is modified using the
- * ARMADA_370_XP_INT_SET_MASK_OFFS and
- * ARMADA_370_XP_INT_CLEAR_MASK_OFFS registers, which are relative to
- * "per_cpu_int_base". This base address points to a special address,
- * which automatically accesses the registers of the current CPU.
- *
- * The per-CPU mask/unmask can also be adjusted using the global
- * per-interrupt ARMADA_370_XP_INT_SOURCE_CTL register, which we use
- * to configure interrupt affinity.
-=======
  * MPIC_INT_SET_ENABLE and MPIC_INT_CLEAR_ENABLE
  * registers, which are relative to "mpic->base".
  *
@@ -104,7 +76,6 @@
  * The per-CPU mask/unmask can also be adjusted using the global
  * per-interrupt MPIC_INT_SOURCE_CTL register, which we use to
  * configure interrupt affinity.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Due to this model, all interrupts need to be mask/unmasked at two
  * different levels: at the global level and at the per-CPU level.
@@ -118,14 +89,8 @@
  *    the current CPU, running the ->map() code. This allows to have
  *    the interrupt unmasked at this level in non-SMP
  *    configurations. In SMP configurations, the ->set_affinity()
-<<<<<<< HEAD
- *    callback is called, which using the
- *    ARMADA_370_XP_INT_SOURCE_CTL() readjusts the per-CPU mask/unmask
- *    for the interrupt.
-=======
  *    callback is called, which using the MPIC_INT_SOURCE_CTL()
  *    readjusts the per-CPU mask/unmask for the interrupt.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  *    The ->mask() and ->unmask() operations only mask/unmask the
  *    interrupt at the "global" level.
@@ -147,37 +112,6 @@
  *    at the per-CPU level.
  */
 
-<<<<<<< HEAD
-/* Registers relative to main_int_base */
-#define ARMADA_370_XP_INT_CONTROL		(0x00)
-#define ARMADA_370_XP_SW_TRIG_INT_OFFS		(0x04)
-#define ARMADA_370_XP_INT_SET_ENABLE_OFFS	(0x30)
-#define ARMADA_370_XP_INT_CLEAR_ENABLE_OFFS	(0x34)
-#define ARMADA_370_XP_INT_SOURCE_CTL(irq)	(0x100 + irq*4)
-#define ARMADA_370_XP_INT_SOURCE_CPU_MASK	0xF
-#define ARMADA_370_XP_INT_IRQ_FIQ_MASK(cpuid)	((BIT(0) | BIT(8)) << cpuid)
-
-/* Registers relative to per_cpu_int_base */
-#define ARMADA_370_XP_IN_DRBEL_CAUSE_OFFS	(0x08)
-#define ARMADA_370_XP_IN_DRBEL_MSK_OFFS		(0x0c)
-#define ARMADA_375_PPI_CAUSE			(0x10)
-#define ARMADA_370_XP_CPU_INTACK_OFFS		(0x44)
-#define ARMADA_370_XP_INT_SET_MASK_OFFS		(0x48)
-#define ARMADA_370_XP_INT_CLEAR_MASK_OFFS	(0x4C)
-#define ARMADA_370_XP_INT_FABRIC_MASK_OFFS	(0x54)
-#define ARMADA_370_XP_INT_CAUSE_PERF(cpu)	(1 << cpu)
-
-#define ARMADA_370_XP_MAX_PER_CPU_IRQS		(28)
-
-/* IPI and MSI interrupt definitions for IPI platforms */
-#define IPI_DOORBELL_START                      (0)
-#define IPI_DOORBELL_END                        (8)
-#define IPI_DOORBELL_MASK                       0xFF
-#define PCI_MSI_DOORBELL_START                  (16)
-#define PCI_MSI_DOORBELL_NR                     (16)
-#define PCI_MSI_DOORBELL_END                    (32)
-#define PCI_MSI_DOORBELL_MASK                   0xFFFF0000
-=======
 /* Registers relative to mpic->base */
 #define MPIC_INT_CONTROL			0x00
 #define MPIC_INT_CONTROL_NUMINT_MASK		GENMASK(12, 2)
@@ -207,35 +141,14 @@
 #define PCI_MSI_DOORBELL_START			16
 #define PCI_MSI_DOORBELL_NR			16
 #define PCI_MSI_DOORBELL_MASK			GENMASK(31, 16)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* MSI interrupt definitions for non-IPI platforms */
 #define PCI_MSI_FULL_DOORBELL_START		0
 #define PCI_MSI_FULL_DOORBELL_NR		32
-<<<<<<< HEAD
-#define PCI_MSI_FULL_DOORBELL_END		32
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PCI_MSI_FULL_DOORBELL_MASK		GENMASK(31, 0)
 #define PCI_MSI_FULL_DOORBELL_SRC0_MASK		GENMASK(15, 0)
 #define PCI_MSI_FULL_DOORBELL_SRC1_MASK		GENMASK(31, 16)
 
-<<<<<<< HEAD
-static void __iomem *per_cpu_int_base;
-static void __iomem *main_int_base;
-static struct irq_domain *armada_370_xp_mpic_domain;
-static u32 doorbell_mask_reg;
-static int parent_irq;
-#ifdef CONFIG_PCI_MSI
-static struct irq_domain *armada_370_xp_msi_domain;
-static struct irq_domain *armada_370_xp_msi_inner_domain;
-static DECLARE_BITMAP(msi_used, PCI_MSI_FULL_DOORBELL_NR);
-static DEFINE_MUTEX(msi_used_lock);
-static phys_addr_t msi_doorbell_addr;
-#endif
-
-static inline bool is_ipi_available(void)
-=======
 /**
  * struct mpic - MPIC private data structure
  * @base:		MPIC registers base address
@@ -277,7 +190,6 @@ struct mpic {
 static struct mpic *mpic_data __ro_after_init;
 
 static inline bool mpic_is_ipi_available(struct mpic *mpic)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * We distinguish IPI availability in the IC by the IC not having a
@@ -285,48 +197,12 @@ static inline bool mpic_is_ipi_available(struct mpic *mpic)
 	 * interrupt controller (e.g. GIC) that takes care of inter-processor
 	 * interrupts.
 	 */
-<<<<<<< HEAD
-	return parent_irq <= 0;
-}
-
-static inline u32 msi_doorbell_mask(void)
-{
-	return is_ipi_available() ? PCI_MSI_DOORBELL_MASK :
-				    PCI_MSI_FULL_DOORBELL_MASK;
-}
-
-static inline unsigned int msi_doorbell_start(void)
-{
-	return is_ipi_available() ? PCI_MSI_DOORBELL_START :
-				    PCI_MSI_FULL_DOORBELL_START;
-}
-
-static inline unsigned int msi_doorbell_size(void)
-{
-	return is_ipi_available() ? PCI_MSI_DOORBELL_NR :
-				    PCI_MSI_FULL_DOORBELL_NR;
-}
-
-static inline unsigned int msi_doorbell_end(void)
-{
-	return is_ipi_available() ? PCI_MSI_DOORBELL_END :
-				    PCI_MSI_FULL_DOORBELL_END;
-}
-
-static inline bool is_percpu_irq(irq_hw_number_t irq)
-{
-	if (irq <= ARMADA_370_XP_MAX_PER_CPU_IRQS)
-		return true;
-
-	return false;
-=======
 	return mpic->parent_irq <= 0;
 }
 
 static inline bool mpic_is_percpu_irq(irq_hw_number_t hwirq)
 {
 	return hwirq < MPIC_PER_CPU_IRQS_NR;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -334,30 +210,6 @@ static inline bool mpic_is_percpu_irq(irq_hw_number_t hwirq)
  * For shared global interrupts, mask/unmask global enable bit
  * For CPU interrupts, mask/unmask the calling CPU's bit
  */
-<<<<<<< HEAD
-static void armada_370_xp_irq_mask(struct irq_data *d)
-{
-	irq_hw_number_t hwirq = irqd_to_hwirq(d);
-
-	if (!is_percpu_irq(hwirq))
-		writel(hwirq, main_int_base +
-				ARMADA_370_XP_INT_CLEAR_ENABLE_OFFS);
-	else
-		writel(hwirq, per_cpu_int_base +
-				ARMADA_370_XP_INT_SET_MASK_OFFS);
-}
-
-static void armada_370_xp_irq_unmask(struct irq_data *d)
-{
-	irq_hw_number_t hwirq = irqd_to_hwirq(d);
-
-	if (!is_percpu_irq(hwirq))
-		writel(hwirq, main_int_base +
-				ARMADA_370_XP_INT_SET_ENABLE_OFFS);
-	else
-		writel(hwirq, per_cpu_int_base +
-				ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
-=======
 static void mpic_irq_mask(struct irq_data *d)
 {
 	struct mpic *mpic = irq_data_get_irq_chip_data(d);
@@ -378,36 +230,10 @@ static void mpic_irq_unmask(struct irq_data *d)
 		writel(hwirq, mpic->base + MPIC_INT_SET_ENABLE);
 	else
 		writel(hwirq, mpic->per_cpu + MPIC_INT_CLEAR_MASK);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_PCI_MSI
 
-<<<<<<< HEAD
-static struct irq_chip armada_370_xp_msi_irq_chip = {
-	.name = "MPIC MSI",
-	.irq_mask = pci_msi_mask_irq,
-	.irq_unmask = pci_msi_unmask_irq,
-};
-
-static struct msi_domain_info armada_370_xp_msi_domain_info = {
-	.flags	= (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
-		   MSI_FLAG_MULTI_PCI_MSI | MSI_FLAG_PCI_MSIX),
-	.chip	= &armada_370_xp_msi_irq_chip,
-};
-
-static void armada_370_xp_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
-{
-	unsigned int cpu = cpumask_first(irq_data_get_effective_affinity_mask(data));
-
-	msg->address_lo = lower_32_bits(msi_doorbell_addr);
-	msg->address_hi = upper_32_bits(msi_doorbell_addr);
-	msg->data = BIT(cpu + 8) | (data->hwirq + msi_doorbell_start());
-}
-
-static int armada_370_xp_msi_set_affinity(struct irq_data *irq_data,
-					  const struct cpumask *mask, bool force)
-=======
 static struct irq_chip mpic_msi_irq_chip = {
 	.name		= "MPIC MSI",
 	.irq_mask	= pci_msi_mask_irq,
@@ -431,7 +257,6 @@ static void mpic_compose_msi_msg(struct irq_data *d, struct msi_msg *msg)
 }
 
 static int mpic_msi_set_affinity(struct irq_data *d, const struct cpumask *mask, bool force)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int cpu;
 
@@ -443,32 +268,11 @@ static int mpic_msi_set_affinity(struct irq_data *d, const struct cpumask *mask,
 	if (cpu >= nr_cpu_ids)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	irq_data_update_effective_affinity(irq_data, cpumask_of(cpu));
-=======
 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return IRQ_SET_MASK_OK;
 }
 
-<<<<<<< HEAD
-static struct irq_chip armada_370_xp_msi_bottom_irq_chip = {
-	.name			= "MPIC MSI",
-	.irq_compose_msi_msg	= armada_370_xp_compose_msi_msg,
-	.irq_set_affinity	= armada_370_xp_msi_set_affinity,
-};
-
-static int armada_370_xp_msi_alloc(struct irq_domain *domain, unsigned int virq,
-				   unsigned int nr_irqs, void *args)
-{
-	int hwirq, i;
-
-	mutex_lock(&msi_used_lock);
-	hwirq = bitmap_find_free_region(msi_used, msi_doorbell_size(),
-					order_base_2(nr_irqs));
-	mutex_unlock(&msi_used_lock);
-=======
 static struct irq_chip mpic_msi_bottom_irq_chip = {
 	.name			= "MPIC MSI",
 	.irq_compose_msi_msg	= mpic_compose_msi_msg,
@@ -485,20 +289,13 @@ static int mpic_msi_alloc(struct irq_domain *domain, unsigned int virq, unsigned
 	hwirq = bitmap_find_free_region(mpic->msi_used, mpic->msi_doorbell_size,
 					order_base_2(nr_irqs));
 	mutex_unlock(&mpic->msi_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (hwirq < 0)
 		return -ENOSPC;
 
-<<<<<<< HEAD
-	for (i = 0; i < nr_irqs; i++) {
-		irq_domain_set_info(domain, virq + i, hwirq + i,
-				    &armada_370_xp_msi_bottom_irq_chip,
-=======
 	for (unsigned int i = 0; i < nr_irqs; i++) {
 		irq_domain_set_info(domain, virq + i, hwirq + i,
 				    &mpic_msi_bottom_irq_chip,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    domain->host_data, handle_simple_irq,
 				    NULL, NULL);
 	}
@@ -506,24 +303,6 @@ static int mpic_msi_alloc(struct irq_domain *domain, unsigned int virq, unsigned
 	return 0;
 }
 
-<<<<<<< HEAD
-static void armada_370_xp_msi_free(struct irq_domain *domain,
-				   unsigned int virq, unsigned int nr_irqs)
-{
-	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
-
-	mutex_lock(&msi_used_lock);
-	bitmap_release_region(msi_used, d->hwirq, order_base_2(nr_irqs));
-	mutex_unlock(&msi_used_lock);
-}
-
-static const struct irq_domain_ops armada_370_xp_msi_domain_ops = {
-	.alloc	= armada_370_xp_msi_alloc,
-	.free	= armada_370_xp_msi_free,
-};
-
-static void armada_370_xp_msi_reenable_percpu(void)
-=======
 static void mpic_msi_free(struct irq_domain *domain, unsigned int virq, unsigned int nr_irqs)
 {
 	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
@@ -540,47 +319,10 @@ static const struct irq_domain_ops mpic_msi_domain_ops = {
 };
 
 static void mpic_msi_reenable_percpu(struct mpic *mpic)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 reg;
 
 	/* Enable MSI doorbell mask and combined cpu local interrupt */
-<<<<<<< HEAD
-	reg = readl(per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-	reg |= msi_doorbell_mask();
-	writel(reg, per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-
-	/* Unmask local doorbell interrupt */
-	writel(1, per_cpu_int_base + ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
-}
-
-static int armada_370_xp_msi_init(struct device_node *node,
-				  phys_addr_t main_int_phys_base)
-{
-	msi_doorbell_addr = main_int_phys_base +
-		ARMADA_370_XP_SW_TRIG_INT_OFFS;
-
-	armada_370_xp_msi_inner_domain =
-		irq_domain_add_linear(NULL, msi_doorbell_size(),
-				      &armada_370_xp_msi_domain_ops, NULL);
-	if (!armada_370_xp_msi_inner_domain)
-		return -ENOMEM;
-
-	armada_370_xp_msi_domain =
-		pci_msi_create_irq_domain(of_node_to_fwnode(node),
-					  &armada_370_xp_msi_domain_info,
-					  armada_370_xp_msi_inner_domain);
-	if (!armada_370_xp_msi_domain) {
-		irq_domain_remove(armada_370_xp_msi_inner_domain);
-		return -ENOMEM;
-	}
-
-	armada_370_xp_msi_reenable_percpu();
-
-	/* Unmask low 16 MSI irqs on non-IPI platforms */
-	if (!is_ipi_available())
-		writel(0, per_cpu_int_base + ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
-=======
 	reg = readl(mpic->per_cpu + MPIC_IN_DRBEL_MASK);
 	reg |= mpic->msi_doorbell_mask;
 	writel(reg, mpic->per_cpu + MPIC_IN_DRBEL_MASK);
@@ -623,36 +365,22 @@ static int __init mpic_msi_init(struct mpic *mpic, struct device_node *node,
 	/* Unmask low 16 MSI irqs on non-IPI platforms */
 	if (!mpic_is_ipi_available(mpic))
 		writel(0, mpic->per_cpu + MPIC_INT_CLEAR_MASK);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 #else
-<<<<<<< HEAD
-static __maybe_unused void armada_370_xp_msi_reenable_percpu(void) {}
-
-static inline int armada_370_xp_msi_init(struct device_node *node,
-					 phys_addr_t main_int_phys_base)
-=======
 static __maybe_unused void mpic_msi_reenable_percpu(struct mpic *mpic) {}
 
 static inline int mpic_msi_init(struct mpic *mpic, struct device_node *node,
 				phys_addr_t main_int_phys_base)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }
 #endif
 
-<<<<<<< HEAD
-static void armada_xp_mpic_perf_init(void)
-{
-	unsigned long cpuid;
-=======
 static void mpic_perf_init(struct mpic *mpic)
 {
 	u32 cpuid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * This Performance Counter Overflow interrupt is specific for
@@ -664,40 +392,6 @@ static void mpic_perf_init(struct mpic *mpic)
 	cpuid = cpu_logical_map(smp_processor_id());
 
 	/* Enable Performance Counter Overflow interrupts */
-<<<<<<< HEAD
-	writel(ARMADA_370_XP_INT_CAUSE_PERF(cpuid),
-	       per_cpu_int_base + ARMADA_370_XP_INT_FABRIC_MASK_OFFS);
-}
-
-#ifdef CONFIG_SMP
-static struct irq_domain *ipi_domain;
-
-static void armada_370_xp_ipi_mask(struct irq_data *d)
-{
-	u32 reg;
-	reg = readl(per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-	reg &= ~BIT(d->hwirq);
-	writel(reg, per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-}
-
-static void armada_370_xp_ipi_unmask(struct irq_data *d)
-{
-	u32 reg;
-	reg = readl(per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-	reg |= BIT(d->hwirq);
-	writel(reg, per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-}
-
-static void armada_370_xp_ipi_send_mask(struct irq_data *d,
-					const struct cpumask *mask)
-{
-	unsigned long map = 0;
-	int cpu;
-
-	/* Convert our logical CPU mask into a physical one. */
-	for_each_cpu(cpu, mask)
-		map |= 1 << cpu_logical_map(cpu);
-=======
 	writel(MPIC_INT_CAUSE_PERF(cpuid), mpic->per_cpu + MPIC_INT_FABRIC_MASK);
 }
 
@@ -731,7 +425,6 @@ static void mpic_ipi_send_mask(struct irq_data *d, const struct cpumask *mask)
 	/* Convert our logical CPU mask into a physical one. */
 	for_each_cpu(cpu, mask)
 		map |= BIT(cpu_logical_map(cpu));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Ensure that stores to Normal memory are visible to the
@@ -740,37 +433,6 @@ static void mpic_ipi_send_mask(struct irq_data *d, const struct cpumask *mask)
 	dsb();
 
 	/* submit softirq */
-<<<<<<< HEAD
-	writel((map << 8) | d->hwirq, main_int_base +
-		ARMADA_370_XP_SW_TRIG_INT_OFFS);
-}
-
-static void armada_370_xp_ipi_ack(struct irq_data *d)
-{
-	writel(~BIT(d->hwirq), per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_CAUSE_OFFS);
-}
-
-static struct irq_chip ipi_irqchip = {
-	.name		= "IPI",
-	.irq_ack	= armada_370_xp_ipi_ack,
-	.irq_mask	= armada_370_xp_ipi_mask,
-	.irq_unmask	= armada_370_xp_ipi_unmask,
-	.ipi_send_mask	= armada_370_xp_ipi_send_mask,
-};
-
-static int armada_370_xp_ipi_alloc(struct irq_domain *d,
-					 unsigned int virq,
-					 unsigned int nr_irqs, void *args)
-{
-	int i;
-
-	for (i = 0; i < nr_irqs; i++) {
-		irq_set_percpu_devid(virq + i);
-		irq_domain_set_info(d, virq + i, i, &ipi_irqchip,
-				    d->host_data,
-				    handle_percpu_devid_irq,
-				    NULL, NULL);
-=======
 	writel((map << 8) | d->hwirq, mpic->base + MPIC_SW_TRIG_INT);
 }
 
@@ -796,72 +458,17 @@ static int mpic_ipi_alloc(struct irq_domain *d, unsigned int virq,
 		irq_set_percpu_devid(virq + i);
 		irq_domain_set_info(d, virq + i, i, &mpic_ipi_irqchip, d->host_data,
 				    handle_percpu_devid_irq, NULL, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
 }
 
-<<<<<<< HEAD
-static void armada_370_xp_ipi_free(struct irq_domain *d,
-					 unsigned int virq,
-					 unsigned int nr_irqs)
-=======
 static void mpic_ipi_free(struct irq_domain *d, unsigned int virq,
 			  unsigned int nr_irqs)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/* Not freeing IPIs */
 }
 
-<<<<<<< HEAD
-static const struct irq_domain_ops ipi_domain_ops = {
-	.alloc	= armada_370_xp_ipi_alloc,
-	.free	= armada_370_xp_ipi_free,
-};
-
-static void ipi_resume(void)
-{
-	int i;
-
-	for (i = 0; i < IPI_DOORBELL_END; i++) {
-		int irq;
-
-		irq = irq_find_mapping(ipi_domain, i);
-		if (irq <= 0)
-			continue;
-		if (irq_percpu_is_enabled(irq)) {
-			struct irq_data *d;
-			d = irq_domain_get_irq_data(ipi_domain, irq);
-			armada_370_xp_ipi_unmask(d);
-		}
-	}
-}
-
-static __init void armada_xp_ipi_init(struct device_node *node)
-{
-	int base_ipi;
-
-	ipi_domain = irq_domain_create_linear(of_node_to_fwnode(node),
-					      IPI_DOORBELL_END,
-					      &ipi_domain_ops, NULL);
-	if (WARN_ON(!ipi_domain))
-		return;
-
-	irq_domain_update_bus_token(ipi_domain, DOMAIN_BUS_IPI);
-	base_ipi = irq_domain_alloc_irqs(ipi_domain, IPI_DOORBELL_END, NUMA_NO_NODE, NULL);
-	if (WARN_ON(!base_ipi))
-		return;
-
-	set_smp_ipi_range(base_ipi, IPI_DOORBELL_END);
-}
-
-static int armada_xp_set_affinity(struct irq_data *d,
-				  const struct cpumask *mask_val, bool force)
-{
-	irq_hw_number_t hwirq = irqd_to_hwirq(d);
-	int cpu;
-=======
 static const struct irq_domain_ops mpic_ipi_domain_ops = {
 	.alloc	= mpic_ipi_alloc,
 	.free	= mpic_ipi_free,
@@ -905,83 +512,18 @@ static int mpic_set_affinity(struct irq_data *d, const struct cpumask *mask_val,
 	struct mpic *mpic = irq_data_get_irq_chip_data(d);
 	irq_hw_number_t hwirq = irqd_to_hwirq(d);
 	unsigned int cpu;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Select a single core from the affinity mask which is online */
 	cpu = cpumask_any_and(mask_val, cpu_online_mask);
 
-<<<<<<< HEAD
-	atomic_io_modify(main_int_base + ARMADA_370_XP_INT_SOURCE_CTL(hwirq),
-			 ARMADA_370_XP_INT_SOURCE_CPU_MASK,
-			 BIT(cpu_logical_map(cpu)));
-=======
 	atomic_io_modify(mpic->base + MPIC_INT_SOURCE_CTL(hwirq),
 			 MPIC_INT_SOURCE_CPU_MASK, BIT(cpu_logical_map(cpu)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
 
 	return IRQ_SET_MASK_OK;
 }
 
-<<<<<<< HEAD
-static void armada_xp_mpic_smp_cpu_init(void)
-{
-	u32 control;
-	int nr_irqs, i;
-
-	control = readl(main_int_base + ARMADA_370_XP_INT_CONTROL);
-	nr_irqs = (control >> 2) & 0x3ff;
-
-	for (i = 0; i < nr_irqs; i++)
-		writel(i, per_cpu_int_base + ARMADA_370_XP_INT_SET_MASK_OFFS);
-
-	if (!is_ipi_available())
-		return;
-
-	/* Disable all IPIs */
-	writel(0, per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-
-	/* Clear pending IPIs */
-	writel(0, per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_CAUSE_OFFS);
-
-	/* Unmask IPI interrupt */
-	writel(0, per_cpu_int_base + ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
-}
-
-static void armada_xp_mpic_reenable_percpu(void)
-{
-	unsigned int irq;
-
-	/* Re-enable per-CPU interrupts that were enabled before suspend */
-	for (irq = 0; irq < ARMADA_370_XP_MAX_PER_CPU_IRQS; irq++) {
-		struct irq_data *data;
-		int virq;
-
-		virq = irq_linear_revmap(armada_370_xp_mpic_domain, irq);
-		if (virq == 0)
-			continue;
-
-		data = irq_get_irq_data(virq);
-
-		if (!irq_percpu_is_enabled(virq))
-			continue;
-
-		armada_370_xp_irq_unmask(data);
-	}
-
-	if (is_ipi_available())
-		ipi_resume();
-
-	armada_370_xp_msi_reenable_percpu();
-}
-
-static int armada_xp_mpic_starting_cpu(unsigned int cpu)
-{
-	armada_xp_mpic_perf_init();
-	armada_xp_mpic_smp_cpu_init();
-	armada_xp_mpic_reenable_percpu();
-=======
 static void mpic_smp_cpu_init(struct mpic *mpic)
 {
 	for (irq_hw_number_t i = 0; i < mpic->domain->hwirq_max; i++)
@@ -1028,31 +570,11 @@ static int mpic_starting_cpu(unsigned int cpu)
 	mpic_smp_cpu_init(mpic);
 	mpic_reenable_percpu(mpic);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static int mpic_cascaded_starting_cpu(unsigned int cpu)
 {
-<<<<<<< HEAD
-	armada_xp_mpic_perf_init();
-	armada_xp_mpic_reenable_percpu();
-	enable_percpu_irq(parent_irq, IRQ_TYPE_NONE);
-	return 0;
-}
-#else
-static void armada_xp_mpic_smp_cpu_init(void) {}
-static void ipi_resume(void) {}
-#endif
-
-static struct irq_chip armada_370_xp_irq_chip = {
-	.name		= "MPIC",
-	.irq_mask       = armada_370_xp_irq_mask,
-	.irq_mask_ack   = armada_370_xp_irq_mask,
-	.irq_unmask     = armada_370_xp_irq_unmask,
-#ifdef CONFIG_SMP
-	.irq_set_affinity = armada_xp_set_affinity,
-=======
 	struct mpic *mpic = mpic_data;
 
 	mpic_perf_init(mpic);
@@ -1073,88 +595,10 @@ static struct irq_chip mpic_irq_chip = {
 	.irq_unmask	= mpic_irq_unmask,
 #ifdef CONFIG_SMP
 	.irq_set_affinity = mpic_set_affinity,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	.flags		= IRQCHIP_SKIP_SET_WAKE | IRQCHIP_MASK_ON_SUSPEND,
 };
 
-<<<<<<< HEAD
-static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
-				      unsigned int virq, irq_hw_number_t hw)
-{
-	/* IRQs 0 and 1 cannot be mapped, they are handled internally */
-	if (hw <= 1)
-		return -EINVAL;
-
-	armada_370_xp_irq_mask(irq_get_irq_data(virq));
-	if (!is_percpu_irq(hw))
-		writel(hw, per_cpu_int_base +
-			ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
-	else
-		writel(hw, main_int_base + ARMADA_370_XP_INT_SET_ENABLE_OFFS);
-	irq_set_status_flags(virq, IRQ_LEVEL);
-
-	if (is_percpu_irq(hw)) {
-		irq_set_percpu_devid(virq);
-		irq_set_chip_and_handler(virq, &armada_370_xp_irq_chip,
-					handle_percpu_devid_irq);
-	} else {
-		irq_set_chip_and_handler(virq, &armada_370_xp_irq_chip,
-					handle_level_irq);
-		irqd_set_single_target(irq_desc_get_irq_data(irq_to_desc(virq)));
-	}
-	irq_set_probe(virq);
-
-	return 0;
-}
-
-static const struct irq_domain_ops armada_370_xp_mpic_irq_ops = {
-	.map = armada_370_xp_mpic_irq_map,
-	.xlate = irq_domain_xlate_onecell,
-};
-
-#ifdef CONFIG_PCI_MSI
-static void armada_370_xp_handle_msi_irq(struct pt_regs *regs, bool is_chained)
-{
-	u32 msimask, msinr;
-
-	msimask = readl_relaxed(per_cpu_int_base +
-				ARMADA_370_XP_IN_DRBEL_CAUSE_OFFS);
-	msimask &= msi_doorbell_mask();
-
-	writel(~msimask, per_cpu_int_base +
-	       ARMADA_370_XP_IN_DRBEL_CAUSE_OFFS);
-
-	for (msinr = msi_doorbell_start();
-	     msinr < msi_doorbell_end(); msinr++) {
-		unsigned int irq;
-
-		if (!(msimask & BIT(msinr)))
-			continue;
-
-		irq = msinr - msi_doorbell_start();
-
-		generic_handle_domain_irq(armada_370_xp_msi_inner_domain, irq);
-	}
-}
-#else
-static void armada_370_xp_handle_msi_irq(struct pt_regs *r, bool b) {}
-#endif
-
-static void armada_370_xp_mpic_handle_cascade_irq(struct irq_desc *desc)
-{
-	struct irq_chip *chip = irq_desc_get_chip(desc);
-	unsigned long irqmap, irqn, irqsrc, cpuid;
-
-	chained_irq_enter(chip, desc);
-
-	irqmap = readl_relaxed(per_cpu_int_base + ARMADA_375_PPI_CAUSE);
-	cpuid = cpu_logical_map(smp_processor_id());
-
-	for_each_set_bit(irqn, &irqmap, BITS_PER_LONG) {
-		irqsrc = readl_relaxed(main_int_base +
-				       ARMADA_370_XP_INT_SOURCE_CTL(irqn));
-=======
 static int mpic_irq_map(struct irq_domain *domain, unsigned int virq, irq_hw_number_t hwirq)
 {
 	struct mpic *mpic = domain->host_data;
@@ -1236,22 +680,10 @@ static void mpic_handle_cascade_irq(struct irq_desc *desc)
 
 	for_each_set_bit(i, &cause, MPIC_PER_CPU_IRQS_NR) {
 		irqsrc = readl_relaxed(mpic->base + MPIC_INT_SOURCE_CTL(i));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Check if the interrupt is not masked on current CPU.
 		 * Test IRQ (0-1) and FIQ (8-9) mask bits.
 		 */
-<<<<<<< HEAD
-		if (!(irqsrc & ARMADA_370_XP_INT_IRQ_FIQ_MASK(cpuid)))
-			continue;
-
-		if (irqn == 0 || irqn == 1) {
-			armada_370_xp_handle_msi_irq(NULL, true);
-			continue;
-		}
-
-		generic_handle_domain_irq(armada_370_xp_mpic_domain, irqn);
-=======
 		if (!(irqsrc & MPIC_INT_IRQ_FIQ_MASK(cpuid)))
 			continue;
 
@@ -1261,98 +693,11 @@ static void mpic_handle_cascade_irq(struct irq_desc *desc)
 		}
 
 		generic_handle_domain_irq(mpic->domain, i);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	chained_irq_exit(chip, desc);
 }
 
-<<<<<<< HEAD
-static void __exception_irq_entry
-armada_370_xp_handle_irq(struct pt_regs *regs)
-{
-	u32 irqstat, irqnr;
-
-	do {
-		irqstat = readl_relaxed(per_cpu_int_base +
-					ARMADA_370_XP_CPU_INTACK_OFFS);
-		irqnr = irqstat & 0x3FF;
-
-		if (irqnr > 1022)
-			break;
-
-		if (irqnr > 1) {
-			generic_handle_domain_irq(armada_370_xp_mpic_domain,
-						  irqnr);
-			continue;
-		}
-
-		/* MSI handling */
-		if (irqnr == 1)
-			armada_370_xp_handle_msi_irq(regs, false);
-
-#ifdef CONFIG_SMP
-		/* IPI Handling */
-		if (irqnr == 0) {
-			unsigned long ipimask;
-			int ipi;
-
-			ipimask = readl_relaxed(per_cpu_int_base +
-						ARMADA_370_XP_IN_DRBEL_CAUSE_OFFS)
-				& IPI_DOORBELL_MASK;
-
-			for_each_set_bit(ipi, &ipimask, IPI_DOORBELL_END)
-				generic_handle_domain_irq(ipi_domain, ipi);
-		}
-#endif
-
-	} while (1);
-}
-
-static int armada_370_xp_mpic_suspend(void)
-{
-	doorbell_mask_reg = readl(per_cpu_int_base +
-				  ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-	return 0;
-}
-
-static void armada_370_xp_mpic_resume(void)
-{
-	bool src0, src1;
-	int nirqs;
-	irq_hw_number_t irq;
-
-	/* Re-enable interrupts */
-	nirqs = (readl(main_int_base + ARMADA_370_XP_INT_CONTROL) >> 2) & 0x3ff;
-	for (irq = 0; irq < nirqs; irq++) {
-		struct irq_data *data;
-		int virq;
-
-		virq = irq_linear_revmap(armada_370_xp_mpic_domain, irq);
-		if (virq == 0)
-			continue;
-
-		data = irq_get_irq_data(virq);
-
-		if (!is_percpu_irq(irq)) {
-			/* Non per-CPU interrupts */
-			writel(irq, per_cpu_int_base +
-			       ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
-			if (!irqd_irq_disabled(data))
-				armada_370_xp_irq_unmask(data);
-		} else {
-			/* Per-CPU interrupts */
-			writel(irq, main_int_base +
-			       ARMADA_370_XP_INT_SET_ENABLE_OFFS);
-
-			/*
-			 * Re-enable on the current CPU,
-			 * armada_xp_mpic_reenable_percpu() will take
-			 * care of secondary CPUs when they come up.
-			 */
-			if (irq_percpu_is_enabled(virq))
-				armada_370_xp_irq_unmask(data);
-=======
 static void __exception_irq_entry mpic_handle_irq(struct pt_regs *regs)
 {
 	struct mpic *mpic = irq_get_default_host()->host_data;
@@ -1418,95 +763,10 @@ static void mpic_resume(void)
 			 */
 			if (irq_percpu_is_enabled(virq))
 				mpic_irq_unmask(d);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	/* Reconfigure doorbells for IPIs and MSIs */
-<<<<<<< HEAD
-	writel(doorbell_mask_reg,
-	       per_cpu_int_base + ARMADA_370_XP_IN_DRBEL_MSK_OFFS);
-
-	if (is_ipi_available()) {
-		src0 = doorbell_mask_reg & IPI_DOORBELL_MASK;
-		src1 = doorbell_mask_reg & PCI_MSI_DOORBELL_MASK;
-	} else {
-		src0 = doorbell_mask_reg & PCI_MSI_FULL_DOORBELL_SRC0_MASK;
-		src1 = doorbell_mask_reg & PCI_MSI_FULL_DOORBELL_SRC1_MASK;
-	}
-
-	if (src0)
-		writel(0, per_cpu_int_base + ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
-	if (src1)
-		writel(1, per_cpu_int_base + ARMADA_370_XP_INT_CLEAR_MASK_OFFS);
-
-	if (is_ipi_available())
-		ipi_resume();
-}
-
-static struct syscore_ops armada_370_xp_mpic_syscore_ops = {
-	.suspend	= armada_370_xp_mpic_suspend,
-	.resume		= armada_370_xp_mpic_resume,
-};
-
-static int __init armada_370_xp_mpic_of_init(struct device_node *node,
-					     struct device_node *parent)
-{
-	struct resource main_int_res, per_cpu_int_res;
-	int nr_irqs, i;
-	u32 control;
-
-	BUG_ON(of_address_to_resource(node, 0, &main_int_res));
-	BUG_ON(of_address_to_resource(node, 1, &per_cpu_int_res));
-
-	BUG_ON(!request_mem_region(main_int_res.start,
-				   resource_size(&main_int_res),
-				   node->full_name));
-	BUG_ON(!request_mem_region(per_cpu_int_res.start,
-				   resource_size(&per_cpu_int_res),
-				   node->full_name));
-
-	main_int_base = ioremap(main_int_res.start,
-				resource_size(&main_int_res));
-	BUG_ON(!main_int_base);
-
-	per_cpu_int_base = ioremap(per_cpu_int_res.start,
-				   resource_size(&per_cpu_int_res));
-	BUG_ON(!per_cpu_int_base);
-
-	control = readl(main_int_base + ARMADA_370_XP_INT_CONTROL);
-	nr_irqs = (control >> 2) & 0x3ff;
-
-	for (i = 0; i < nr_irqs; i++)
-		writel(i, main_int_base + ARMADA_370_XP_INT_CLEAR_ENABLE_OFFS);
-
-	armada_370_xp_mpic_domain =
-		irq_domain_add_linear(node, nr_irqs,
-				&armada_370_xp_mpic_irq_ops, NULL);
-	BUG_ON(!armada_370_xp_mpic_domain);
-	irq_domain_update_bus_token(armada_370_xp_mpic_domain, DOMAIN_BUS_WIRED);
-
-	/*
-	 * Initialize parent_irq before calling any other functions, since it is
-	 * used to distinguish between IPI and non-IPI platforms.
-	 */
-	parent_irq = irq_of_parse_and_map(node, 0);
-
-	/* Setup for the boot CPU */
-	armada_xp_mpic_perf_init();
-	armada_xp_mpic_smp_cpu_init();
-
-	armada_370_xp_msi_init(node, main_int_res.start);
-
-	if (parent_irq <= 0) {
-		irq_set_default_host(armada_370_xp_mpic_domain);
-		set_handle_irq(armada_370_xp_handle_irq);
-#ifdef CONFIG_SMP
-		armada_xp_ipi_init(node);
-		cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_ARMADA_XP_STARTING,
-					  "irqchip/armada/ipi:starting",
-					  armada_xp_mpic_starting_cpu, NULL);
-=======
 	writel(mpic->doorbell_mask, mpic->per_cpu + MPIC_IN_DRBEL_MASK);
 
 	if (mpic_is_ipi_available(mpic)) {
@@ -1632,7 +892,6 @@ static int __init mpic_of_init(struct device_node *node, struct device_node *par
 		cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_ARMADA_XP_STARTING,
 					  "irqchip/armada/ipi:starting",
 					  mpic_starting_cpu, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	} else {
 #ifdef CONFIG_SMP
@@ -1640,25 +899,13 @@ static int __init mpic_of_init(struct device_node *node, struct device_node *par
 					  "irqchip/armada/cascade:starting",
 					  mpic_cascaded_starting_cpu, NULL);
 #endif
-<<<<<<< HEAD
-		irq_set_chained_handler(parent_irq,
-					armada_370_xp_mpic_handle_cascade_irq);
-	}
-
-	register_syscore_ops(&armada_370_xp_mpic_syscore_ops);
-=======
 		irq_set_chained_handler_and_data(mpic->parent_irq,
 						 mpic_handle_cascade_irq, mpic);
 	}
 
 	register_syscore_ops(&mpic_syscore_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
-<<<<<<< HEAD
-IRQCHIP_DECLARE(armada_370_xp_mpic, "marvell,mpic", armada_370_xp_mpic_of_init);
-=======
 IRQCHIP_DECLARE(marvell_mpic, "marvell,mpic", mpic_of_init);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

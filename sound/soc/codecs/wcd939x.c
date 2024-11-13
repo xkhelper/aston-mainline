@@ -3683,11 +3683,7 @@ MODULE_DEVICE_TABLE(of, wcd939x_dt_match);
 
 static struct platform_driver wcd939x_codec_driver = {
 	.probe = wcd939x_probe,
-<<<<<<< HEAD
-	.remove_new = wcd939x_remove,
-=======
 	.remove = wcd939x_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "wcd939x_codec",
 		.of_match_table = of_match_ptr(wcd939x_dt_match),

@@ -1916,17 +1916,10 @@ static int prctl_set_mm_exe_file(struct mm_struct *mm, unsigned int fd)
 	int err;
 
 	exe = fdget(fd);
-<<<<<<< HEAD
-	if (!exe.file)
-		return -EBADF;
-
-	inode = file_inode(exe.file);
-=======
 	if (!fd_file(exe))
 		return -EBADF;
 
 	inode = file_inode(fd_file(exe));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Because the original mm->exe_file points to executable file, make
@@ -1934,16 +1927,6 @@ static int prctl_set_mm_exe_file(struct mm_struct *mm, unsigned int fd)
 	 * overall picture.
 	 */
 	err = -EACCES;
-<<<<<<< HEAD
-	if (!S_ISREG(inode->i_mode) || path_noexec(&exe.file->f_path))
-		goto exit;
-
-	err = file_permission(exe.file, MAY_EXEC);
-	if (err)
-		goto exit;
-
-	err = replace_mm_exe_file(mm, exe.file);
-=======
 	if (!S_ISREG(inode->i_mode) || path_noexec(&fd_file(exe)->f_path))
 		goto exit;
 
@@ -1952,7 +1935,6 @@ static int prctl_set_mm_exe_file(struct mm_struct *mm, unsigned int fd)
 		goto exit;
 
 	err = replace_mm_exe_file(mm, fd_file(exe));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 exit:
 	fdput(exe);
 	return err;
@@ -2575,11 +2557,8 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 			error = current->timer_slack_ns;
 		break;
 	case PR_SET_TIMERSLACK:
-<<<<<<< HEAD
-=======
 		if (rt_or_dl_task_policy(current))
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (arg2 <= 0)
 			current->timer_slack_ns =
 					current->default_timer_slack_ns;

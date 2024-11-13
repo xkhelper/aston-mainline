@@ -16,11 +16,7 @@
 #include <linux/string.h>
 #include <linux/wait.h>
 #include <linux/inet.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <rdma/ib_verbs.h>
 #include <rdma/rdma_cm.h>
@@ -43,11 +39,8 @@
 
 #define NVMET_RDMA_BACKLOG 128
 
-<<<<<<< HEAD
-=======
 #define NVMET_RDMA_DISCRETE_RSP_TAG		-1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct nvmet_rdma_srq;
 
 struct nvmet_rdma_cmd {
@@ -84,11 +77,7 @@ struct nvmet_rdma_rsp {
 	u32			invalidate_rkey;
 
 	struct list_head	wait_list;
-<<<<<<< HEAD
-	struct list_head	free_list;
-=======
 	int			tag;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum nvmet_rdma_queue_state {
@@ -111,12 +100,7 @@ struct nvmet_rdma_queue {
 	struct nvmet_sq		nvme_sq;
 
 	struct nvmet_rdma_rsp	*rsps;
-<<<<<<< HEAD
-	struct list_head	free_rsps;
-	spinlock_t		rsps_lock;
-=======
 	struct sbitmap		rsp_tags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nvmet_rdma_cmd	*cmds;
 
 	struct work_struct	release_work;
@@ -189,12 +173,8 @@ static void nvmet_rdma_queue_disconnect(struct nvmet_rdma_queue *queue);
 static void nvmet_rdma_free_rsp(struct nvmet_rdma_device *ndev,
 				struct nvmet_rdma_rsp *r);
 static int nvmet_rdma_alloc_rsp(struct nvmet_rdma_device *ndev,
-<<<<<<< HEAD
-				struct nvmet_rdma_rsp *r);
-=======
 				struct nvmet_rdma_rsp *r,
 				int tag);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct nvmet_fabrics_ops nvmet_rdma_ops;
 
@@ -232,24 +212,12 @@ static inline bool nvmet_rdma_need_data_out(struct nvmet_rdma_rsp *rsp)
 static inline struct nvmet_rdma_rsp *
 nvmet_rdma_get_rsp(struct nvmet_rdma_queue *queue)
 {
-<<<<<<< HEAD
-	struct nvmet_rdma_rsp *rsp;
-	unsigned long flags;
-
-	spin_lock_irqsave(&queue->rsps_lock, flags);
-	rsp = list_first_entry_or_null(&queue->free_rsps,
-				struct nvmet_rdma_rsp, free_list);
-	if (likely(rsp))
-		list_del(&rsp->free_list);
-	spin_unlock_irqrestore(&queue->rsps_lock, flags);
-=======
 	struct nvmet_rdma_rsp *rsp = NULL;
 	int tag;
 
 	tag = sbitmap_get(&queue->rsp_tags);
 	if (tag >= 0)
 		rsp = &queue->rsps[tag];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(!rsp)) {
 		int ret;
@@ -257,21 +225,12 @@ nvmet_rdma_get_rsp(struct nvmet_rdma_queue *queue)
 		rsp = kzalloc(sizeof(*rsp), GFP_KERNEL);
 		if (unlikely(!rsp))
 			return NULL;
-<<<<<<< HEAD
-		ret = nvmet_rdma_alloc_rsp(queue->dev, rsp);
-=======
 		ret = nvmet_rdma_alloc_rsp(queue->dev, rsp,
 				NVMET_RDMA_DISCRETE_RSP_TAG);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (unlikely(ret)) {
 			kfree(rsp);
 			return NULL;
 		}
-<<<<<<< HEAD
-
-		rsp->allocated = true;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return rsp;
@@ -280,25 +239,13 @@ nvmet_rdma_get_rsp(struct nvmet_rdma_queue *queue)
 static inline void
 nvmet_rdma_put_rsp(struct nvmet_rdma_rsp *rsp)
 {
-<<<<<<< HEAD
-	unsigned long flags;
-
-	if (unlikely(rsp->allocated)) {
-=======
 	if (unlikely(rsp->tag == NVMET_RDMA_DISCRETE_RSP_TAG)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nvmet_rdma_free_rsp(rsp->queue->dev, rsp);
 		kfree(rsp);
 		return;
 	}
 
-<<<<<<< HEAD
-	spin_lock_irqsave(&rsp->queue->rsps_lock, flags);
-	list_add_tail(&rsp->free_list, &rsp->queue->free_rsps);
-	spin_unlock_irqrestore(&rsp->queue->rsps_lock, flags);
-=======
 	sbitmap_clear_bit(&rsp->queue->rsp_tags, rsp->tag);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void nvmet_rdma_free_inline_pages(struct nvmet_rdma_device *ndev,
@@ -451,11 +398,7 @@ static void nvmet_rdma_free_cmds(struct nvmet_rdma_device *ndev,
 }
 
 static int nvmet_rdma_alloc_rsp(struct nvmet_rdma_device *ndev,
-<<<<<<< HEAD
-		struct nvmet_rdma_rsp *r)
-=======
 		struct nvmet_rdma_rsp *r, int tag)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/* NVMe CQE / RDMA SEND */
 	r->req.cqe = kmalloc(sizeof(*r->req.cqe), GFP_KERNEL);
@@ -483,10 +426,7 @@ static int nvmet_rdma_alloc_rsp(struct nvmet_rdma_device *ndev,
 	r->read_cqe.done = nvmet_rdma_read_data_done;
 	/* Data Out / RDMA WRITE */
 	r->write_cqe.done = nvmet_rdma_write_data_done;
-<<<<<<< HEAD
-=======
 	r->tag = tag;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -509,39 +449,23 @@ nvmet_rdma_alloc_rsps(struct nvmet_rdma_queue *queue)
 {
 	struct nvmet_rdma_device *ndev = queue->dev;
 	int nr_rsps = queue->recv_queue_size * 2;
-<<<<<<< HEAD
-	int ret = -EINVAL, i;
-=======
 	int ret = -ENOMEM, i;
 
 	if (sbitmap_init_node(&queue->rsp_tags, nr_rsps, -1, GFP_KERNEL,
 			NUMA_NO_NODE, false, true))
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	queue->rsps = kcalloc(nr_rsps, sizeof(struct nvmet_rdma_rsp),
 			GFP_KERNEL);
 	if (!queue->rsps)
-<<<<<<< HEAD
-		goto out;
-=======
 		goto out_free_sbitmap;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < nr_rsps; i++) {
 		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
 
-<<<<<<< HEAD
-		ret = nvmet_rdma_alloc_rsp(ndev, rsp);
-		if (ret)
-			goto out_free;
-
-		list_add_tail(&rsp->free_list, &queue->free_rsps);
-=======
 		ret = nvmet_rdma_alloc_rsp(ndev, rsp, i);
 		if (ret)
 			goto out_free;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -550,11 +474,8 @@ out_free:
 	while (--i >= 0)
 		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
 	kfree(queue->rsps);
-<<<<<<< HEAD
-=======
 out_free_sbitmap:
 	sbitmap_free(&queue->rsp_tags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	return ret;
 }
@@ -567,10 +488,7 @@ static void nvmet_rdma_free_rsps(struct nvmet_rdma_queue *queue)
 	for (i = 0; i < nr_rsps; i++)
 		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
 	kfree(queue->rsps);
-<<<<<<< HEAD
-=======
 	sbitmap_free(&queue->rsp_tags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int nvmet_rdma_post_recv(struct nvmet_rdma_device *ndev,
@@ -660,13 +578,8 @@ static void nvmet_rdma_set_sig_domain(struct blk_integrity *bi,
 	if (control & NVME_RW_PRINFO_PRCHK_REF)
 		domain->sig.dif.ref_remap = true;
 
-<<<<<<< HEAD
-	domain->sig.dif.app_tag = le16_to_cpu(cmd->rw.apptag);
-	domain->sig.dif.apptag_check_mask = le16_to_cpu(cmd->rw.appmask);
-=======
 	domain->sig.dif.app_tag = le16_to_cpu(cmd->rw.lbat);
 	domain->sig.dif.apptag_check_mask = le16_to_cpu(cmd->rw.lbatm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	domain->sig.dif.app_escape = true;
 	if (pi_type == NVME_NS_DPS_PI_TYPE3)
 		domain->sig.dif.ref_escape = true;
@@ -1534,11 +1447,6 @@ nvmet_rdma_alloc_queue(struct nvmet_rdma_device *ndev,
 	INIT_LIST_HEAD(&queue->rsp_wait_list);
 	INIT_LIST_HEAD(&queue->rsp_wr_wait_list);
 	spin_lock_init(&queue->rsp_wr_wait_lock);
-<<<<<<< HEAD
-	INIT_LIST_HEAD(&queue->free_rsps);
-	spin_lock_init(&queue->rsps_lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&queue->queue_list);
 
 	queue->idx = ida_alloc(&nvmet_rdma_queue_ida, GFP_KERNEL);

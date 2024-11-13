@@ -7,10 +7,7 @@
 	.code32
 	.text
 #define _pa(x)          ((x) - __START_KERNEL_map)
-<<<<<<< HEAD
-=======
 #define rva(x)          ((x) - pvh_start_xen)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/elfnote.h>
 #include <linux/init.h>
@@ -19,10 +16,7 @@
 #include <asm/segment.h>
 #include <asm/asm.h>
 #include <asm/boot.h>
-<<<<<<< HEAD
-=======
 #include <asm/pgtable.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/processor-flags.h>
 #include <asm/msr.h>
 #include <asm/nospec-branch.h>
@@ -62,9 +56,6 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	UNWIND_HINT_END_OF_STACK
 	cld
 
-<<<<<<< HEAD
-	lgdt (_pa(gdt))
-=======
 	/*
 	 * See the comment for startup_32 for more details.  We need to
 	 * execute a call to get the execution address to be position
@@ -84,7 +75,6 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	leal rva(gdt_start)(%ebp), %ecx
 	movl %ecx, 2(%eax)
 	lgdt (%eax)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mov $PVH_DS_SEL,%eax
 	mov %eax,%ds
@@ -92,24 +82,14 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	mov %eax,%ss
 
 	/* Stash hvm_start_info. */
-<<<<<<< HEAD
-	mov $_pa(pvh_start_info), %edi
-	mov %ebx, %esi
-	mov _pa(pvh_start_info_sz), %ecx
-=======
 	leal rva(pvh_start_info)(%ebp), %edi
 	mov %ebx, %esi
 	movl rva(pvh_start_info_sz)(%ebp), %ecx
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	shr $2,%ecx
 	rep
 	movsl
 
-<<<<<<< HEAD
-	mov $_pa(early_stack_end), %esp
-=======
 	leal rva(early_stack_end)(%ebp), %esp
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Enable PAE mode. */
 	mov %cr4, %eax
@@ -123,10 +103,6 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	btsl $_EFER_LME, %eax
 	wrmsr
 
-<<<<<<< HEAD
-	/* Enable pre-constructed page tables. */
-	mov $_pa(init_top_pgt), %eax
-=======
 	mov %ebp, %ebx
 	subl $_pa(pvh_start_xen), %ebx /* offset */
 	jz .Lpagetable_done
@@ -168,39 +144,19 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 .Lpagetable_done:
 	/* Enable pre-constructed page tables. */
 	leal rva(pvh_init_top_pgt)(%ebp), %eax
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mov %eax, %cr3
 	mov $(X86_CR0_PG | X86_CR0_PE), %eax
 	mov %eax, %cr0
 
 	/* Jump to 64-bit mode. */
-<<<<<<< HEAD
-	ljmp $PVH_CS_SEL, $_pa(1f)
-=======
 	pushl $PVH_CS_SEL
 	leal  rva(1f)(%ebp), %eax
 	pushl %eax
 	lretl
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* 64-bit entry point. */
 	.code64
 1:
-<<<<<<< HEAD
-	/* Set base address in stack canary descriptor. */
-	mov $MSR_GS_BASE,%ecx
-	mov $_pa(canary), %eax
-	xor %edx, %edx
-	wrmsr
-
-	call xen_prepare_pvh
-
-	/* startup_64 expects boot_params in %rsi. */
-	mov $_pa(pvh_bootparams), %rsi
-	mov $_pa(startup_64), %rax
-	ANNOTATE_RETPOLINE_SAFE
-	jmp *%rax
-=======
 	UNWIND_HINT_END_OF_STACK
 
 	/* Set base address in stack canary descriptor. */
@@ -227,7 +183,6 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
 	/* startup_64 expects boot_params in %rsi. */
 	lea pvh_bootparams(%rip), %rsi
 	jmp startup_64
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else /* CONFIG_X86_64 */
 
@@ -263,11 +218,7 @@ SYM_CODE_END(pvh_start_xen)
 	.balign 8
 SYM_DATA_START_LOCAL(gdt)
 	.word gdt_end - gdt_start
-<<<<<<< HEAD
-	.long _pa(gdt_start)
-=======
 	.long _pa(gdt_start) /* x86-64 will overwrite if relocated. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.word 0
 SYM_DATA_END(gdt)
 SYM_DATA_START_LOCAL(gdt_start)
@@ -287,8 +238,6 @@ SYM_DATA_START_LOCAL(early_stack)
 	.fill BOOT_STACK_SIZE, 1, 0
 SYM_DATA_END_LABEL(early_stack, SYM_L_LOCAL, early_stack_end)
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_X86_64
 /*
  * Xen PVH needs a set of identity mapped and kernel high mapping
@@ -351,6 +300,5 @@ SYM_DATA_END(pvh_level2_kernel_pgt)
 		     .long KERNEL_IMAGE_SIZE - 1)
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ELFNOTE(Xen, XEN_ELFNOTE_PHYS32_ENTRY,
 	             _ASM_PTR (pvh_start_xen - __START_KERNEL_map))

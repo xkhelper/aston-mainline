@@ -7,19 +7,12 @@
 
 #include "dc_spl_types.h"
 
-<<<<<<< HEAD
-=======
 #define ISHARP_LUT_TABLE_SIZE 32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const uint32_t *spl_get_filter_isharp_1D_lut_0(void);
 const uint32_t *spl_get_filter_isharp_1D_lut_0p5x(void);
 const uint32_t *spl_get_filter_isharp_1D_lut_1p0x(void);
 const uint32_t *spl_get_filter_isharp_1D_lut_1p5x(void);
 const uint32_t *spl_get_filter_isharp_1D_lut_2p0x(void);
-<<<<<<< HEAD
-const uint16_t *spl_get_filter_isharp_bs_4tap_64p(void);
-const uint16_t *spl_get_filter_isharp_wide_6tap_64p(void);
-=======
 const uint32_t *spl_get_filter_isharp_1D_lut_3p0x(void);
 uint16_t *spl_get_filter_isharp_bs_4tap_in_6_64p(void);
 uint16_t *spl_get_filter_isharp_bs_4tap_64p(void);
@@ -55,5 +48,4 @@ void spl_set_blur_scale_data(struct dscl_prog_data *dscl_prog_data,
 void spl_build_isharp_1dlut_from_reference_curve(struct spl_fixed31_32 ratio, enum system_setup setup,
 	struct adaptive_sharpness sharpness, enum scale_to_sharpness_policy scale_to_sharpness_policy);
 uint32_t *spl_get_pregen_filter_isharp_1D_lut(enum system_setup setup);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __DC_SPL_ISHARP_FILTERS_H__ */

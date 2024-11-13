@@ -62,11 +62,7 @@ struct usb_gadgetfs_event {
 };
 
 
-<<<<<<< HEAD
-/* The 'g' code is also used by printer gadget ioctl requests.
-=======
 /* The 'g' code is also used by printer and hid gadget ioctl requests.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Don't add any colliding codes to either driver, and keep
  * them in unique ranges (size 0x20 for now).
  */

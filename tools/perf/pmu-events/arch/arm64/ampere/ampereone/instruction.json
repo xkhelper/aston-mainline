@@ -78,12 +78,6 @@
         "ArchStdEvent": "OP_RETIRED"
     },
     {
-<<<<<<< HEAD
-        "ArchStdEvent": "OP_SPEC"
-    },
-    {
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         "PublicDescription": "Operation speculatively executed, NOP",
         "EventCode": "0x100",
         "EventName": "NOP_SPEC",

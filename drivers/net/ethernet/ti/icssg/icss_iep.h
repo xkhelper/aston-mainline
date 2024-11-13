@@ -12,9 +12,6 @@
 #include <linux/ptp_clock_kernel.h>
 #include <linux/regmap.h>
 
-<<<<<<< HEAD
-struct icss_iep;
-=======
 enum {
 	ICSS_IEP_GLOBAL_CFG_REG,
 	ICSS_IEP_GLOBAL_STATUS_REG,
@@ -87,7 +84,6 @@ struct icss_iep {
 	struct work_struct work;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct icss_iep_clockops prueth_iep_clockops;
 
 /* Firmware specific clock operations */

@@ -21,18 +21,10 @@ fi
 bpftrace -e 'kprobe:kvfree_call_rcu,
 	     kprobe:call_rcu,
 	     kprobe:call_rcu_tasks,
-<<<<<<< HEAD
-	     kprobe:call_rcu_tasks_rude,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     kprobe:call_rcu_tasks_trace,
 	     kprobe:call_srcu,
 	     kprobe:rcu_barrier,
 	     kprobe:rcu_barrier_tasks,
-<<<<<<< HEAD
-	     kprobe:rcu_barrier_tasks_rude,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     kprobe:rcu_barrier_tasks_trace,
 	     kprobe:srcu_barrier,
 	     kprobe:synchronize_rcu,

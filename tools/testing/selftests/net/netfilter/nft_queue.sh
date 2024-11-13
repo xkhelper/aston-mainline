@@ -8,11 +8,7 @@
 
 source lib.sh
 ret=0
-<<<<<<< HEAD
-timeout=2
-=======
 timeout=5
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 cleanup()
 {
@@ -29,12 +25,6 @@ cleanup()
 }
 
 checktool "nft --version" "test without nft tool"
-<<<<<<< HEAD
-
-trap cleanup EXIT
-
-setup_ns ns1 ns2 nsrouter
-=======
 checktool "socat -h" "run test without socat"
 
 modprobe -q sctp
@@ -42,7 +32,6 @@ modprobe -q sctp
 trap cleanup EXIT
 
 setup_ns ns1 ns2 ns3 nsrouter
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 TMPFILE0=$(mktemp)
 TMPFILE1=$(mktemp)
@@ -50,23 +39,16 @@ TMPFILE2=$(mktemp)
 TMPFILE3=$(mktemp)
 
 TMPINPUT=$(mktemp)
-<<<<<<< HEAD
-dd conv=sparse status=none if=/dev/zero bs=1M count=200 of="$TMPINPUT"
-=======
 COUNT=200
 [ "$KSFT_MACHINE_SLOW" = "yes" ] && COUNT=25
 dd conv=sparse status=none if=/dev/zero bs=1M count=$COUNT of="$TMPINPUT"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 if ! ip link add veth0 netns "$nsrouter" type veth peer name eth0 netns "$ns1" > /dev/null 2>&1; then
     echo "SKIP: No virtual ethernet pair device support in kernel"
     exit $ksft_skip
 fi
 ip link add veth1 netns "$nsrouter" type veth peer name eth0 netns "$ns2"
-<<<<<<< HEAD
-=======
 ip link add veth2 netns "$nsrouter" type veth peer name eth0 netns "$ns3"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ip -net "$nsrouter" link set veth0 up
 ip -net "$nsrouter" addr add 10.0.1.1/24 dev veth0
@@ -76,10 +58,6 @@ ip -net "$nsrouter" link set veth1 up
 ip -net "$nsrouter" addr add 10.0.2.1/24 dev veth1
 ip -net "$nsrouter" addr add dead:2::1/64 dev veth1 nodad
 
-<<<<<<< HEAD
-ip -net "$ns1" link set eth0 up
-ip -net "$ns2" link set eth0 up
-=======
 ip -net "$nsrouter" link set veth2 up
 ip -net "$nsrouter" addr add 10.0.3.1/24 dev veth2
 ip -net "$nsrouter" addr add dead:3::1/64 dev veth2 nodad
@@ -87,7 +65,6 @@ ip -net "$nsrouter" addr add dead:3::1/64 dev veth2 nodad
 ip -net "$ns1" link set eth0 up
 ip -net "$ns2" link set eth0 up
 ip -net "$ns3" link set eth0 up
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ip -net "$ns1" addr add 10.0.1.99/24 dev eth0
 ip -net "$ns1" addr add dead:1::99/64 dev eth0 nodad
@@ -99,14 +76,11 @@ ip -net "$ns2" addr add dead:2::99/64 dev eth0 nodad
 ip -net "$ns2" route add default via 10.0.2.1
 ip -net "$ns2" route add default via dead:2::1
 
-<<<<<<< HEAD
-=======
 ip -net "$ns3" addr add 10.0.3.99/24 dev eth0
 ip -net "$ns3" addr add dead:3::99/64 dev eth0 nodad
 ip -net "$ns3" route add default via 10.0.3.1
 ip -net "$ns3" route add default via dead:3::1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 load_ruleset() {
 	local name=$1
 	local prio=$2
@@ -292,43 +266,23 @@ listener_ready()
 
 test_tcp_forward()
 {
-<<<<<<< HEAD
-	ip netns exec "$nsrouter" ./nf_queue -q 2 -t "$timeout" &
-=======
 	ip netns exec "$nsrouter" ./nf_queue -q 2 &
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local nfqpid=$!
 
 	timeout 5 ip netns exec "$ns2" socat -u TCP-LISTEN:12345 STDOUT >/dev/null &
 	local rpid=$!
 
 	busywait "$BUSYWAIT_TIMEOUT" listener_ready "$ns2"
-<<<<<<< HEAD
-=======
 	busywait "$BUSYWAIT_TIMEOUT" nf_queue_wait "$nsrouter" 2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ip netns exec "$ns1" socat -u STDIN TCP:10.0.2.99:12345 <"$TMPINPUT" >/dev/null
 
 	wait "$rpid" && echo "PASS: tcp and nfqueue in forward chain"
-<<<<<<< HEAD
-=======
 	kill "$nfqpid"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 test_tcp_localhost()
 {
-<<<<<<< HEAD
-	dd conv=sparse status=none if=/dev/zero bs=1M count=200 of="$TMPINPUT"
-	timeout 5 ip netns exec "$nsrouter" socat -u TCP-LISTEN:12345 STDOUT >/dev/null &
-	local rpid=$!
-
-	ip netns exec "$nsrouter" ./nf_queue -q 3 -t "$timeout" &
-	local nfqpid=$!
-
-	busywait "$BUSYWAIT_TIMEOUT" listener_ready "$nsrouter"
-=======
 	timeout 5 ip netns exec "$nsrouter" socat -u TCP-LISTEN:12345 STDOUT >/dev/null &
 	local rpid=$!
 
@@ -337,29 +291,15 @@ test_tcp_localhost()
 
 	busywait "$BUSYWAIT_TIMEOUT" listener_ready "$nsrouter"
 	busywait "$BUSYWAIT_TIMEOUT" nf_queue_wait "$nsrouter" 3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ip netns exec "$nsrouter" socat -u STDIN TCP:127.0.0.1:12345 <"$TMPINPUT" >/dev/null
 
 	wait "$rpid" && echo "PASS: tcp via loopback"
-<<<<<<< HEAD
-	wait 2>/dev/null
-=======
 	kill "$nfqpid"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 test_tcp_localhost_connectclose()
 {
-<<<<<<< HEAD
-	ip netns exec "$nsrouter" ./connect_close -p 23456 -t "$timeout" &
-	ip netns exec "$nsrouter" ./nf_queue -q 3 -t "$timeout" &
-
-	busywait "$BUSYWAIT_TIMEOUT" nf_queue_wait "$nsrouter" 3
-
-	wait && echo "PASS: tcp via loopback with connect/close"
-	wait 2>/dev/null
-=======
 	ip netns exec "$nsrouter" ./nf_queue -q 3 &
 	local nfqpid=$!
 
@@ -369,7 +309,6 @@ test_tcp_localhost_connectclose()
 
 	kill "$nfqpid"
 	wait && echo "PASS: tcp via loopback with connect/close"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 test_tcp_localhost_requeue()
@@ -434,11 +373,7 @@ table inet filter {
 	}
 }
 EOF
-<<<<<<< HEAD
-	ip netns exec "$ns1" ./nf_queue -q 1 -t "$timeout" &
-=======
 	ip netns exec "$ns1" ./nf_queue -q 1 &
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local nfqpid=$!
 
 	busywait "$BUSYWAIT_TIMEOUT" nf_queue_wait "$ns1" 1
@@ -448,10 +383,7 @@ EOF
 	for n in output post; do
 		for d in tvrf eth0; do
 			if ! ip netns exec "$ns1" nft list chain inet filter "$n" | grep -q "oifname \"$d\" icmp type echo-request counter packets 1"; then
-<<<<<<< HEAD
-=======
 				kill "$nfqpid"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				echo "FAIL: chain $n: icmp packet counter mismatch for device $d" 1>&2
 				ip netns exec "$ns1" nft list ruleset
 				ret=1
@@ -460,10 +392,6 @@ EOF
 		done
 	done
 
-<<<<<<< HEAD
-	wait "$nfqpid" && echo "PASS: icmp+nfqueue via vrf"
-	wait 2>/dev/null
-=======
 	kill "$nfqpid"
 	echo "PASS: icmp+nfqueue via vrf"
 }
@@ -631,7 +559,6 @@ EOF
 	fi
 
 	echo "PASS: both udp receivers got one packet each"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 test_queue_removal()
@@ -647,11 +574,7 @@ table ip filter {
 	}
 }
 EOF
-<<<<<<< HEAD
-	ip netns exec "$ns1" ./nf_queue -q 0 -d 30000 -t "$timeout" &
-=======
 	ip netns exec "$ns1" ./nf_queue -q 0 -d 30000 &
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local nfqpid=$!
 
 	busywait "$BUSYWAIT_TIMEOUT" nf_queue_wait "$ns1" 0
@@ -677,10 +600,7 @@ EOF
 ip netns exec "$nsrouter" sysctl net.ipv6.conf.all.forwarding=1 > /dev/null
 ip netns exec "$nsrouter" sysctl net.ipv4.conf.veth0.forwarding=1 > /dev/null
 ip netns exec "$nsrouter" sysctl net.ipv4.conf.veth1.forwarding=1 > /dev/null
-<<<<<<< HEAD
-=======
 ip netns exec "$nsrouter" sysctl net.ipv4.conf.veth2.forwarding=1 > /dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 load_ruleset "filter" 0
 
@@ -710,23 +630,17 @@ test_queue 10
 # same.  We queue to a second program as well.
 load_ruleset "filter2" 20
 test_queue 20
-<<<<<<< HEAD
-=======
 ip netns exec "$ns1" nft flush ruleset
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 test_tcp_forward
 test_tcp_localhost
 test_tcp_localhost_connectclose
 test_tcp_localhost_requeue
-<<<<<<< HEAD
-=======
 test_sctp_forward
 test_sctp_output
 test_udp_ct_race
 
 # should be last, adds vrf device in ns1 and changes routes
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 test_icmp_vrf
 test_queue_removal
 

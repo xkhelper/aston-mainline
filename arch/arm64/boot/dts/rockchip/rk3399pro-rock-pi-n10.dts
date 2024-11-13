@@ -7,10 +7,6 @@
 
 /dts-v1/;
 #include "rk3399.dtsi"
-<<<<<<< HEAD
-#include "rk3399-opp.dtsi"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <arm/rockchip/rockchip-radxa-dalang-carrier.dtsi>
 #include "rk3399pro-vmarc-som.dtsi"
 

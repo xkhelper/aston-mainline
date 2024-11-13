@@ -16,8 +16,6 @@
 #include <linux/netfs.h>
 #include "internal.h"
 
-<<<<<<< HEAD
-=======
 static void netfs_prepare_dio_read_iterator(struct netfs_io_subrequest *subreq)
 {
 	struct netfs_io_request *rreq = subreq->rreq;
@@ -155,7 +153,6 @@ out:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * netfs_unbuffered_read_iter_locked - Perform an unbuffered or direct I/O read
  * @iocb: The I/O control descriptor describing the read
@@ -171,11 +168,7 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
 	struct netfs_io_request *rreq;
 	ssize_t ret;
 	size_t orig_count = iov_iter_count(iter);
-<<<<<<< HEAD
-	bool async = !is_sync_kiocb(iocb);
-=======
 	bool sync = is_sync_kiocb(iocb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	_enter("");
 
@@ -222,15 +215,6 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
 
 	// TODO: Set up bounce buffer if needed
 
-<<<<<<< HEAD
-	if (async)
-		rreq->iocb = iocb;
-
-	ret = netfs_begin_read(rreq, is_sync_kiocb(iocb));
-	if (ret < 0)
-		goto out; /* May be -EIOCBQUEUED */
-	if (!async) {
-=======
 	if (!sync)
 		rreq->iocb = iocb;
 
@@ -238,7 +222,6 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
 	if (ret < 0)
 		goto out; /* May be -EIOCBQUEUED */
 	if (sync) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		// TODO: Copy from bounce buffer
 		iocb->ki_pos += rreq->transferred;
 		ret = rreq->transferred;
@@ -248,11 +231,6 @@ out:
 	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
 	if (ret > 0)
 		orig_count -= ret;
-<<<<<<< HEAD
-	if (ret != -EIOCBQUEUED)
-		iov_iter_revert(iter, orig_count - iov_iter_count(iter));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 EXPORT_SYMBOL(netfs_unbuffered_read_iter_locked);

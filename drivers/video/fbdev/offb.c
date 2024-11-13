@@ -673,11 +673,7 @@ static struct platform_driver offb_driver_bootx_noscreen = {
 		.name = "bootx-noscreen",
 	},
 	.probe = offb_probe_bootx_noscreen,
-<<<<<<< HEAD
-	.remove_new = offb_remove,
-=======
 	.remove = offb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int offb_probe_display(struct platform_device *pdev)
@@ -699,11 +695,7 @@ static struct platform_driver offb_driver_display = {
 		.of_match_table = offb_of_match_display,
 	},
 	.probe = offb_probe_display,
-<<<<<<< HEAD
-	.remove_new = offb_remove,
-=======
 	.remove = offb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init offb_init(void)

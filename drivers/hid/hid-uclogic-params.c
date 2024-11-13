@@ -19,11 +19,7 @@
 #include "hid-ids.h"
 #include <linux/ctype.h>
 #include <linux/string.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * uclogic_params_pen_inrange_to_str() - Convert a pen in-range reporting type
@@ -685,11 +681,7 @@ void uclogic_params_cleanup(struct uclogic_params *params)
  *	-ENOMEM, if failed to allocate memory.
  */
 int uclogic_params_get_desc(const struct uclogic_params *params,
-<<<<<<< HEAD
-				__u8 **pdesc,
-=======
 				const __u8 **pdesc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				unsigned int *psize)
 {
 	int rc = -ENOMEM;
@@ -777,11 +769,7 @@ static void uclogic_params_init_invalid(struct uclogic_params *params)
 static int uclogic_params_init_with_opt_desc(struct uclogic_params *params,
 					     struct hid_device *hdev,
 					     unsigned int orig_desc_size,
-<<<<<<< HEAD
-					     __u8 *desc_ptr,
-=======
 					     const __u8 *desc_ptr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     unsigned int desc_size)
 {
 	__u8 *desc_copy_ptr = NULL;

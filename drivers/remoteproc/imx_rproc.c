@@ -18,10 +18,7 @@
 #include <linux/of_reserved_mem.h>
 #include <linux/platform_device.h>
 #include <linux/pm_domain.h>
-<<<<<<< HEAD
-=======
 #include <linux/reboot.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/regmap.h>
 #include <linux/remoteproc.h>
 #include <linux/workqueue.h>
@@ -94,11 +91,7 @@ struct imx_rproc_mem {
 #define ATT_CORE_MASK   0xffff
 #define ATT_CORE(I)     BIT((I))
 
-<<<<<<< HEAD
-static int imx_rproc_xtr_mbox_init(struct rproc *rproc);
-=======
 static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void imx_rproc_free_mbox(struct rproc *rproc);
 
 struct imx_rproc {
@@ -127,22 +120,6 @@ struct imx_rproc {
 static const struct imx_rproc_att imx_rproc_att_imx93[] = {
 	/* dev addr , sys addr  , size	    , flags */
 	/* TCM CODE NON-SECURE */
-<<<<<<< HEAD
-	{ 0x0FFC0000, 0x201C0000, 0x00020000, ATT_OWN | ATT_IOMEM },
-	{ 0x0FFE0000, 0x201E0000, 0x00020000, ATT_OWN | ATT_IOMEM },
-
-	/* TCM CODE SECURE */
-	{ 0x1FFC0000, 0x201C0000, 0x00020000, ATT_OWN | ATT_IOMEM },
-	{ 0x1FFE0000, 0x201E0000, 0x00020000, ATT_OWN | ATT_IOMEM },
-
-	/* TCM SYS NON-SECURE*/
-	{ 0x20000000, 0x20200000, 0x00020000, ATT_OWN | ATT_IOMEM },
-	{ 0x20020000, 0x20220000, 0x00020000, ATT_OWN | ATT_IOMEM },
-
-	/* TCM SYS SECURE*/
-	{ 0x30000000, 0x20200000, 0x00020000, ATT_OWN | ATT_IOMEM },
-	{ 0x30020000, 0x20220000, 0x00020000, ATT_OWN | ATT_IOMEM },
-=======
 	{ 0x0FFC0000, 0x201C0000, 0x00040000, ATT_OWN | ATT_IOMEM },
 
 	/* TCM CODE SECURE */
@@ -153,7 +130,6 @@ static const struct imx_rproc_att imx_rproc_att_imx93[] = {
 
 	/* TCM SYS SECURE*/
 	{ 0x30000000, 0x20200000, 0x00040000, ATT_OWN | ATT_IOMEM },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* DDR */
 	{ 0x80000000, 0x80000000, 0x10000000, 0 },
@@ -231,17 +207,9 @@ static const struct imx_rproc_att imx_rproc_att_imx8mq[] = {
 	/* QSPI Code - alias */
 	{ 0x08000000, 0x08000000, 0x08000000, 0 },
 	/* DDR (Code) - alias */
-<<<<<<< HEAD
-	{ 0x10000000, 0x80000000, 0x0FFE0000, 0 },
-	/* TCML */
-	{ 0x1FFE0000, 0x007E0000, 0x00020000, ATT_OWN  | ATT_IOMEM},
-	/* TCMU */
-	{ 0x20000000, 0x00800000, 0x00020000, ATT_OWN  | ATT_IOMEM},
-=======
 	{ 0x10000000, 0x40000000, 0x0FFE0000, 0 },
 	/* TCML/U */
 	{ 0x1FFE0000, 0x007E0000, 0x00040000, ATT_OWN  | ATT_IOMEM},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* OCRAM_S */
 	{ 0x20180000, 0x00180000, 0x00008000, ATT_OWN },
 	/* OCRAM */
@@ -366,10 +334,7 @@ static const struct imx_rproc_dcfg imx_rproc_cfg_imx7ulp = {
 	.att		= imx_rproc_att_imx7ulp,
 	.att_size	= ARRAY_SIZE(imx_rproc_att_imx7ulp),
 	.method		= IMX_RPROC_NONE,
-<<<<<<< HEAD
-=======
 	.flags		= IMX_RPROC_NEED_SYSTEM_OFF,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct imx_rproc_dcfg imx_rproc_cfg_imx7d = {
@@ -406,11 +371,7 @@ static int imx_rproc_start(struct rproc *rproc)
 	struct arm_smccc_res res;
 	int ret;
 
-<<<<<<< HEAD
-	ret = imx_rproc_xtr_mbox_init(rproc);
-=======
 	ret = imx_rproc_xtr_mbox_init(rproc, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -670,11 +631,7 @@ static void imx_rproc_kick(struct rproc *rproc, int vqid)
 
 static int imx_rproc_attach(struct rproc *rproc)
 {
-<<<<<<< HEAD
-	return imx_rproc_xtr_mbox_init(rproc);
-=======
 	return imx_rproc_xtr_mbox_init(rproc, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int imx_rproc_detach(struct rproc *rproc)
@@ -705,8 +662,6 @@ static struct resource_table *imx_rproc_get_loaded_rsc_table(struct rproc *rproc
 	return (struct resource_table *)priv->rsc_table;
 }
 
-<<<<<<< HEAD
-=======
 static struct resource_table *
 imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *fw)
 {
@@ -718,7 +673,6 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
 	return rproc_elf_find_loaded_rsc_table(rproc, fw);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct rproc_ops imx_rproc_ops = {
 	.prepare	= imx_rproc_prepare,
 	.attach		= imx_rproc_attach,
@@ -729,11 +683,7 @@ static const struct rproc_ops imx_rproc_ops = {
 	.da_to_va       = imx_rproc_da_to_va,
 	.load		= rproc_elf_load_segments,
 	.parse_fw	= imx_rproc_parse_fw,
-<<<<<<< HEAD
-	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
-=======
 	.find_loaded_rsc_table = imx_rproc_elf_find_loaded_rsc_table,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_loaded_rsc_table = imx_rproc_get_loaded_rsc_table,
 	.sanity_check	= rproc_elf_sanity_check,
 	.get_boot_addr	= rproc_elf_get_boot_addr,
@@ -846,11 +796,7 @@ static void imx_rproc_rx_callback(struct mbox_client *cl, void *msg)
 	queue_work(priv->workqueue, &priv->rproc_work);
 }
 
-<<<<<<< HEAD
-static int imx_rproc_xtr_mbox_init(struct rproc *rproc)
-=======
 static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct imx_rproc *priv = rproc->priv;
 	struct device *dev = priv->dev;
@@ -868,20 +814,12 @@ static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block)
 	if (priv->tx_ch && priv->rx_ch)
 		return 0;
 
-<<<<<<< HEAD
-	if (!of_get_property(dev->of_node, "mbox-names", NULL))
-=======
 	if (!of_property_present(dev->of_node, "mbox-names"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	cl = &priv->cl;
 	cl->dev = dev;
-<<<<<<< HEAD
-	cl->tx_block = true;
-=======
 	cl->tx_block = tx_block;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cl->tx_tout = 100;
 	cl->knows_txdone = false;
 	cl->rx_callback = imx_rproc_rx_callback;
@@ -1114,8 +1052,6 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int imx_rproc_sys_off_handler(struct sys_off_data *data)
 {
 	struct rproc *rproc = data->cb_data;
@@ -1132,7 +1068,6 @@ static int imx_rproc_sys_off_handler(struct sys_off_data *data)
 	return NOTIFY_DONE;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int imx_rproc_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -1164,13 +1099,9 @@ static int imx_rproc_probe(struct platform_device *pdev)
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
-	ret = imx_rproc_xtr_mbox_init(rproc);
-=======
 	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
 
 	ret = imx_rproc_xtr_mbox_init(rproc, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto err_put_wkq;
 
@@ -1188,13 +1119,6 @@ static int imx_rproc_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_put_scu;
 
-<<<<<<< HEAD
-	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
-
-	if (rproc->state != RPROC_DETACHED)
-		rproc->auto_boot = of_property_read_bool(np, "fsl,auto-boot");
-
-=======
 	if (rproc->state != RPROC_DETACHED)
 		rproc->auto_boot = of_property_read_bool(np, "fsl,auto-boot");
 
@@ -1222,7 +1146,6 @@ static int imx_rproc_probe(struct platform_device *pdev)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = rproc_add(rproc);
 	if (ret) {
 		dev_err(dev, "rproc_add failed\n");

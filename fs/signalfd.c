@@ -159,11 +159,7 @@ static ssize_t signalfd_dequeue(struct signalfd_ctx *ctx, kernel_siginfo_t *info
 	DECLARE_WAITQUEUE(wait, current);
 
 	spin_lock_irq(&current->sighand->siglock);
-<<<<<<< HEAD
-	ret = dequeue_signal(current, &ctx->sigmask, info, &type);
-=======
 	ret = dequeue_signal(&ctx->sigmask, info, &type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (ret) {
 	case 0:
 		if (!nonblock)
@@ -178,11 +174,7 @@ static ssize_t signalfd_dequeue(struct signalfd_ctx *ctx, kernel_siginfo_t *info
 	add_wait_queue(&current->sighand->signalfd_wqh, &wait);
 	for (;;) {
 		set_current_state(TASK_INTERRUPTIBLE);
-<<<<<<< HEAD
-		ret = dequeue_signal(current, &ctx->sigmask, info, &type);
-=======
 		ret = dequeue_signal(&ctx->sigmask, info, &type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret != 0)
 			break;
 		if (signal_pending(current)) {
@@ -297,17 +289,10 @@ static int do_signalfd4(int ufd, sigset_t *mask, int flags)
 		fd_install(ufd, file);
 	} else {
 		struct fd f = fdget(ufd);
-<<<<<<< HEAD
-		if (!f.file)
-			return -EBADF;
-		ctx = f.file->private_data;
-		if (f.file->f_op != &signalfd_fops) {
-=======
 		if (!fd_file(f))
 			return -EBADF;
 		ctx = fd_file(f)->private_data;
 		if (fd_file(f)->f_op != &signalfd_fops) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			fdput(f);
 			return -EINVAL;
 		}

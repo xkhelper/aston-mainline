@@ -867,11 +867,7 @@ static int userns_obj_priv_implicit_token(int mnt_fd, struct token_lsm *lsm_skel
 	}
 	unsetenv(TOKEN_ENVVAR);
 
-<<<<<<< HEAD
-	/* now the same struct_ops skeleton should succeed thanks to libppf
-=======
 	/* now the same struct_ops skeleton should succeed thanks to libbpf
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * creating BPF token from /sys/fs/bpf mount point
 	 */
 	skel = dummy_st_ops_success__open_and_load();
@@ -933,11 +929,7 @@ static int userns_obj_priv_implicit_token_envvar(int mnt_fd, struct token_lsm *l
 	if (!ASSERT_OK(err, "setenv_token_path"))
 		goto err_out;
 
-<<<<<<< HEAD
-	/* now the same struct_ops skeleton should succeed thanks to libppf
-=======
 	/* now the same struct_ops skeleton should succeed thanks to libbpf
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * creating BPF token from custom mount point
 	 */
 	skel = dummy_st_ops_success__open_and_load();

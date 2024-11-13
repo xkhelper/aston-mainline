@@ -57,10 +57,7 @@ Structure of this header is
   ``ETHTOOL_A_HEADER_DEV_INDEX``  u32     device ifindex
   ``ETHTOOL_A_HEADER_DEV_NAME``   string  device name
   ``ETHTOOL_A_HEADER_FLAGS``      u32     flags common for all requests
-<<<<<<< HEAD
-=======
   ``ETHTOOL_A_HEADER_PHY_INDEX``  u32     phy device index
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   ==============================  ======  =============================
 
 ``ETHTOOL_A_HEADER_DEV_INDEX`` and ``ETHTOOL_A_HEADER_DEV_NAME`` identify the
@@ -85,15 +82,12 @@ the behaviour is backward compatible, i.e. requests from old clients not aware
 of the flag should be interpreted the way the client expects. A client must
 not set flags it does not understand.
 
-<<<<<<< HEAD
-=======
 ``ETHTOOL_A_HEADER_PHY_INDEX`` identifies the Ethernet PHY the message relates to.
 As there are numerous commands that are related to PHY configuration, and because
 there may be more than one PHY on the link, the PHY index can be passed in the
 request for the commands that needs it. It is, however, not mandatory, and if it
 is not passed for commands that target a PHY, the net_device.phydev pointer
 is used.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Bit sets
 ========
@@ -947,24 +941,11 @@ Request contents:
   ====================================  ======  ===========================
 
 Kernel checks that requested ring sizes do not exceed limits reported by
-<<<<<<< HEAD
-driver. Driver may impose additional constraints and may not suspport all
-=======
 driver. Driver may impose additional constraints and may not support all
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 attributes.
 
 
 ``ETHTOOL_A_RINGS_CQE_SIZE`` specifies the completion queue event size.
-<<<<<<< HEAD
-Completion queue events(CQE) are the events posted by NIC to indicate the
-completion status of a packet when the packet is sent(like send success or
-error) or received(like pointers to packet fragments). The CQE size parameter
-enables to modify the CQE size other than default size if NIC supports it.
-A bigger CQE can have more receive buffer pointers inturn NIC can transfer
-a bigger frame from wire. Based on the NIC hardware, the overall completion
-queue size can be adjusted in the driver if CQE size is modified.
-=======
 Completion queue events (CQE) are the events posted by NIC to indicate the
 completion status of a packet when the packet is sent (like send success or
 error) or received (like pointers to packet fragments). The CQE size parameter
@@ -972,7 +953,6 @@ enables to modify the CQE size other than default size if NIC supports it.
 A bigger CQE can have more receive buffer pointers, and in turn the NIC can
 transfer a bigger frame from wire. Based on the NIC hardware, the overall
 completion queue size can be adjusted in the driver if CQE size is modified.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 CHANNELS_GET
 ============
@@ -1016,11 +996,7 @@ Request contents:
   =====================================  ======  ==========================
 
 Kernel checks that requested channel counts do not exceed limits reported by
-<<<<<<< HEAD
-driver. Driver may impose additional constraints and may not suspport all
-=======
 driver. Driver may impose additional constraints and may not support all
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 attributes.
 
 
@@ -1338,23 +1314,17 @@ information.
  +-+-+-----------------------------------------+--------+---------------------+
  | | | ``ETHTOOL_A_CABLE_RESULTS_CODE``        | u8     | result code         |
  +-+-+-----------------------------------------+--------+---------------------+
-<<<<<<< HEAD
-=======
  | | | ``ETHTOOL_A_CABLE_RESULT_SRC``          | u32    | information source  |
  +-+-+-----------------------------------------+--------+---------------------+
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  | | ``ETHTOOL_A_CABLE_NEST_FAULT_LENGTH``     | nested | cable length        |
  +-+-+-----------------------------------------+--------+---------------------+
  | | | ``ETHTOOL_A_CABLE_FAULT_LENGTH_PAIR``   | u8     | pair number         |
  +-+-+-----------------------------------------+--------+---------------------+
  | | | ``ETHTOOL_A_CABLE_FAULT_LENGTH_CM``     | u32    | length in cm        |
  +-+-+-----------------------------------------+--------+---------------------+
-<<<<<<< HEAD
-=======
  | | | ``ETHTOOL_A_CABLE_FAULT_LENGTH_SRC``    | u32    | information source  |
  +-+-+-----------------------------------------+--------+---------------------+
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 CABLE_TEST TDR
 ==============
@@ -1798,11 +1768,7 @@ Kernel response contents:
 When set, the optional ``ETHTOOL_A_PODL_PSE_ADMIN_STATE`` attribute identifies
 the operational state of the PoDL PSE functions.  The operational state of the
 PSE function can be changed using the ``ETHTOOL_A_PODL_PSE_ADMIN_CONTROL``
-<<<<<<< HEAD
-action. This option is corresponding to ``IEEE 802.3-2018`` 30.15.1.1.2
-=======
 action. This attribute corresponds to ``IEEE 802.3-2018`` 30.15.1.1.2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 aPoDLPSEAdminState. Possible values are:
 
 .. kernel-doc:: include/uapi/linux/ethtool.h
@@ -1816,13 +1782,8 @@ The same goes for ``ETHTOOL_A_C33_PSE_ADMIN_STATE`` implementing
 
 When set, the optional ``ETHTOOL_A_PODL_PSE_PW_D_STATUS`` attribute identifies
 the power detection status of the PoDL PSE.  The status depend on internal PSE
-<<<<<<< HEAD
-state machine and automatic PD classification support. This option is
-corresponding to ``IEEE 802.3-2018`` 30.15.1.1.3 aPoDLPSEPowerDetectionStatus.
-=======
 state machine and automatic PD classification support. This attribute
 corresponds to ``IEEE 802.3-2018`` 30.15.1.1.3 aPoDLPSEPowerDetectionStatus.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Possible values are:
 
 .. kernel-doc:: include/uapi/linux/ethtool.h
@@ -1836,14 +1797,6 @@ The same goes for ``ETHTOOL_A_C33_PSE_ADMIN_PW_D_STATUS`` implementing
 
 When set, the optional ``ETHTOOL_A_C33_PSE_PW_CLASS`` attribute identifies
 the power class of the C33 PSE. It depends on the class negotiated between
-<<<<<<< HEAD
-the PSE and the PD. This option is corresponding to ``IEEE 802.3-2022``
-30.9.1.1.8 aPSEPowerClassification.
-
-When set, the optional ``ETHTOOL_A_C33_PSE_ACTUAL_PW`` attribute identifies
-This option is corresponding to ``IEEE 802.3-2022`` 30.9.1.1.23 aPSEActualPower.
-Actual power is reported in mW.
-=======
 the PSE and the PD. This attribute corresponds to ``IEEE 802.3-2022``
 30.9.1.1.8 aPSEPowerClassification.
 
@@ -1851,7 +1804,6 @@ When set, the optional ``ETHTOOL_A_C33_PSE_ACTUAL_PW`` attribute identifies
 the actual power drawn by the C33 PSE. This attribute corresponds to
 ``IEEE 802.3-2022`` 30.9.1.1.23 aPSEActualPower. Actual power is reported
 in mW.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 When set, the optional ``ETHTOOL_A_C33_PSE_EXT_STATE`` attribute identifies
 the extended error state of the C33 PSE. Possible values are:
@@ -1900,11 +1852,7 @@ Request contents:
   ======================================  ======  =============================
 
 When set, the optional ``ETHTOOL_A_PODL_PSE_ADMIN_CONTROL`` attribute is used
-<<<<<<< HEAD
-to control PoDL PSE Admin functions. This option is implementing
-=======
 to control PoDL PSE Admin functions. This option implements
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ``IEEE 802.3-2018`` 30.15.1.2.1 acPoDLPSEAdminControl. See
 ``ETHTOOL_A_PODL_PSE_ADMIN_STATE`` for supported values.
 
@@ -1931,12 +1879,6 @@ RSS context of an interface similar to ``ETHTOOL_GRSSH`` ioctl request.
 
 Request contents:
 
-<<<<<<< HEAD
-=====================================  ======  ==========================
-  ``ETHTOOL_A_RSS_HEADER``             nested  request header
-  ``ETHTOOL_A_RSS_CONTEXT``            u32     context number
-=====================================  ======  ==========================
-=======
 =====================================  ======  ============================
   ``ETHTOOL_A_RSS_HEADER``             nested  request header
   ``ETHTOOL_A_RSS_CONTEXT``            u32     context number
@@ -1949,7 +1891,6 @@ by device (only listing contexts of a given netdev). Filtering single
 context number is not supported but ``ETHTOOL_A_RSS_START_CONTEXT``
 can be used to start dumping context from the given number (primarily
 used to ignore context 0s and only dump additional contexts).
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Kernel response contents:
 
@@ -2007,11 +1948,7 @@ When set, the optional ``ETHTOOL_A_PLCA_VERSION`` attribute indicates which
 standard and version the PLCA management interface complies to. When not set,
 the interface is vendor-specific and (possibly) supplied by the driver.
 The OPEN Alliance SIG specifies a standard register map for 10BASE-T1S PHYs
-<<<<<<< HEAD
-embedding the PLCA Reconcialiation Sublayer. See "10BASE-T1S PLCA Management
-=======
 embedding the PLCA Reconciliation Sublayer. See "10BASE-T1S PLCA Management
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Registers" at https://www.opensig.org/about/specifications/.
 
 When set, the optional ``ETHTOOL_A_PLCA_ENABLED`` attribute indicates the
@@ -2073,11 +2010,7 @@ Request contents:
   ``ETHTOOL_A_PLCA_ENABLED``              u8      PLCA Admin State
   ``ETHTOOL_A_PLCA_NODE_ID``              u8      PLCA unique local node ID
   ``ETHTOOL_A_PLCA_NODE_CNT``             u8      Number of PLCA nodes on the
-<<<<<<< HEAD
-                                                  netkork, including the
-=======
                                                   network, including the
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
                                                   coordinator
   ``ETHTOOL_A_PLCA_TO_TMR``               u8      Transmit Opportunity Timer
                                                   value in bit-times (BT)
@@ -2264,8 +2197,6 @@ string.
 The ``ETHTOOL_A_MODULE_FW_FLASH_DONE`` and ``ETHTOOL_A_MODULE_FW_FLASH_TOTAL``
 attributes encode the completed and total amount of work, respectively.
 
-<<<<<<< HEAD
-=======
 PHY_GET
 =======
 
@@ -2309,7 +2240,6 @@ Kernel response contents:
 When ``ETHTOOL_A_PHY_UPSTREAM_TYPE`` is PHY_UPSTREAM_PHY, the PHY's parent is
 another PHY.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Request translation
 ===================
 
@@ -2417,8 +2347,5 @@ are netlink only.
   n/a                                 ``ETHTOOL_MSG_MM_GET``
   n/a                                 ``ETHTOOL_MSG_MM_SET``
   n/a                                 ``ETHTOOL_MSG_MODULE_FW_FLASH_ACT``
-<<<<<<< HEAD
-=======
   n/a                                 ``ETHTOOL_MSG_PHY_GET``
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   =================================== =====================================

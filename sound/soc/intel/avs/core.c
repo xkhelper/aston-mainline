@@ -28,10 +28,7 @@
 #include "avs.h"
 #include "cldma.h"
 #include "messages.h"
-<<<<<<< HEAD
-=======
 #include "pcm.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static u32 pgctl_mask = AZX_PGCTL_LSRMD_MASK;
 module_param(pgctl_mask, uint, 0444);
@@ -251,11 +248,7 @@ static void hdac_stream_update_pos(struct hdac_stream *stream, u64 buffer_size)
 static void hdac_update_stream(struct hdac_bus *bus, struct hdac_stream *stream)
 {
 	if (stream->substream) {
-<<<<<<< HEAD
-		snd_pcm_period_elapsed(stream->substream);
-=======
 		avs_period_elapsed(stream->substream);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (stream->cstream) {
 		u64 buffer_size = stream->cstream->runtime->buffer_size;
 
@@ -430,10 +423,6 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
 	int ret;
 
 	ret = snd_intel_dsp_driver_probe(pci);
-<<<<<<< HEAD
-	if (ret != SND_INTEL_DSP_DRIVER_ANY && ret != SND_INTEL_DSP_DRIVER_AVS)
-		return -ENODEV;
-=======
 	switch (ret) {
 	case SND_INTEL_DSP_DRIVER_ANY:
 	case SND_INTEL_DSP_DRIVER_SST:
@@ -442,7 +431,6 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
 	default:
 		return -ENODEV;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = pcim_enable_device(pci);
 	if (ret < 0)

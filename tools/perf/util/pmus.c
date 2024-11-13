@@ -69,11 +69,7 @@ size_t pmu_name_len_no_suffix(const char *str)
 
 int pmu_name_cmp(const char *lhs_pmu_name, const char *rhs_pmu_name)
 {
-<<<<<<< HEAD
-	unsigned long lhs_num = 0, rhs_num = 0;
-=======
 	unsigned long long lhs_num = 0, rhs_num = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	size_t lhs_pmu_name_len = pmu_name_len_no_suffix(lhs_pmu_name);
 	size_t rhs_pmu_name_len = pmu_name_len_no_suffix(rhs_pmu_name);
 	int ret = strncmp(lhs_pmu_name, rhs_pmu_name,
@@ -83,15 +79,9 @@ int pmu_name_cmp(const char *lhs_pmu_name, const char *rhs_pmu_name)
 		return ret;
 
 	if (lhs_pmu_name_len + 1 < strlen(lhs_pmu_name))
-<<<<<<< HEAD
-		lhs_num = strtoul(&lhs_pmu_name[lhs_pmu_name_len + 1], NULL, 16);
-	if (rhs_pmu_name_len + 1 < strlen(rhs_pmu_name))
-		rhs_num = strtoul(&rhs_pmu_name[rhs_pmu_name_len + 1], NULL, 16);
-=======
 		lhs_num = strtoull(&lhs_pmu_name[lhs_pmu_name_len + 1], NULL, 16);
 	if (rhs_pmu_name_len + 1 < strlen(rhs_pmu_name))
 		rhs_num = strtoull(&rhs_pmu_name[rhs_pmu_name_len + 1], NULL, 16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return lhs_num < rhs_num ? -1 : (lhs_num > rhs_num ? 1 : 0);
 }
@@ -381,10 +371,7 @@ struct sevent {
 	const char *encoding_desc;
 	const char *topic;
 	const char *pmu_name;
-<<<<<<< HEAD
-=======
 	const char *event_type_desc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool deprecated;
 };
 
@@ -458,10 +445,7 @@ static int perf_pmus__print_pmu_events__callback(void *vstate,
 	COPY_STR(encoding_desc);
 	COPY_STR(topic);
 	COPY_STR(pmu_name);
-<<<<<<< HEAD
-=======
 	COPY_STR(event_type_desc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #undef COPY_STR
 	s->deprecated = info->deprecated;
 	state->index++;
@@ -516,11 +500,7 @@ void perf_pmus__print_pmu_events(const struct print_callbacks *print_cb, void *p
 				aliases[j].alias,
 				aliases[j].scale_unit,
 				aliases[j].deprecated,
-<<<<<<< HEAD
-				"Kernel PMU event",
-=======
 				aliases[j].event_type_desc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				aliases[j].desc,
 				aliases[j].long_desc,
 				aliases[j].encoding_desc);
@@ -533,10 +513,7 @@ free:
 		zfree(&aliases[j].encoding_desc);
 		zfree(&aliases[j].topic);
 		zfree(&aliases[j].pmu_name);
-<<<<<<< HEAD
-=======
 		zfree(&aliases[j].event_type_desc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (printed && pager_in_use())
 		printf("\n");
@@ -746,8 +723,6 @@ struct perf_pmu *perf_pmus__add_test_pmu(int test_sysfs_dirfd, const char *name)
 	 */
 	return perf_pmu__lookup(&other_pmus, test_sysfs_dirfd, name, /*eager_load=*/true);
 }
-<<<<<<< HEAD
-=======
 
 struct perf_pmu *perf_pmus__fake_pmu(void)
 {
@@ -759,4 +734,3 @@ struct perf_pmu *perf_pmus__fake_pmu(void)
 
 	return &fake;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

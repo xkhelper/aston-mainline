@@ -345,9 +345,6 @@ static int mana_set_channels(struct net_device *ndev,
 	struct mana_port_context *apc = netdev_priv(ndev);
 	unsigned int new_count = channels->combined_count;
 	unsigned int old_count = apc->num_queues;
-<<<<<<< HEAD
-	int err, err2;
-=======
 	int err;
 
 	err = mana_pre_alloc_rxbufs(apc, ndev->mtu, new_count);
@@ -355,33 +352,15 @@ static int mana_set_channels(struct net_device *ndev,
 		netdev_err(ndev, "Insufficient memory for new allocations");
 		return err;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = mana_detach(ndev, false);
 	if (err) {
 		netdev_err(ndev, "mana_detach failed: %d\n", err);
-<<<<<<< HEAD
-		return err;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	apc->num_queues = new_count;
 	err = mana_attach(ndev);
-<<<<<<< HEAD
-	if (!err)
-		return 0;
-
-	netdev_err(ndev, "mana_attach failed: %d\n", err);
-
-	/* Try to roll it back to the old configuration. */
-	apc->num_queues = old_count;
-	err2 = mana_attach(ndev);
-	if (err2)
-		netdev_err(ndev, "mana re-attach failed: %d\n", err2);
-
-=======
 	if (err) {
 		apc->num_queues = old_count;
 		netdev_err(ndev, "mana_attach failed: %d\n", err);
@@ -461,7 +440,6 @@ static int mana_set_ringparam(struct net_device *ndev,
 	}
 out:
 	mana_pre_dealloc_rxbufs(apc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -476,9 +454,6 @@ const struct ethtool_ops mana_ethtool_ops = {
 	.set_rxfh		= mana_set_rxfh,
 	.get_channels		= mana_get_channels,
 	.set_channels		= mana_set_channels,
-<<<<<<< HEAD
-=======
 	.get_ringparam          = mana_get_ringparam,
 	.set_ringparam          = mana_set_ringparam,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

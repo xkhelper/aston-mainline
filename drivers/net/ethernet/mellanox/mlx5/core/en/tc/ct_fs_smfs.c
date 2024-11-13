@@ -368,11 +368,6 @@ mlx5_ct_fs_smfs_ct_rule_del(struct mlx5_ct_fs *fs, struct mlx5_ct_fs_rule *fs_ru
 	kfree(smfs_rule);
 }
 
-<<<<<<< HEAD
-static struct mlx5_ct_fs_ops fs_smfs_ops = {
-	.ct_rule_add = mlx5_ct_fs_smfs_ct_rule_add,
-	.ct_rule_del = mlx5_ct_fs_smfs_ct_rule_del,
-=======
 static int mlx5_ct_fs_smfs_ct_rule_update(struct mlx5_ct_fs *fs, struct mlx5_ct_fs_rule *fs_rule,
 					  struct mlx5_flow_spec *spec, struct mlx5_flow_attr *attr)
 {
@@ -402,7 +397,6 @@ static struct mlx5_ct_fs_ops fs_smfs_ops = {
 	.ct_rule_add = mlx5_ct_fs_smfs_ct_rule_add,
 	.ct_rule_del = mlx5_ct_fs_smfs_ct_rule_del,
 	.ct_rule_update = mlx5_ct_fs_smfs_ct_rule_update,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	.init = mlx5_ct_fs_smfs_init,
 	.destroy = mlx5_ct_fs_smfs_destroy,

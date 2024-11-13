@@ -287,10 +287,6 @@ struct ath12k_vif {
 	int txpower;
 	bool rsnie_present;
 	bool wpaie_present;
-<<<<<<< HEAD
-	struct ieee80211_chanctx_conf chanctx;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 key_cipher;
 	u8 tx_encap_type;
 	u8 vdev_stats_id;
@@ -298,8 +294,6 @@ struct ath12k_vif {
 	bool ps;
 	struct ath12k_vif_cache *cache;
 	struct ath12k_rekey_data rekey_data;
-<<<<<<< HEAD
-=======
 
 	/* Must be last - ends in a flexible-array member.
 	 *
@@ -307,7 +301,6 @@ struct ath12k_vif {
 	 * especially because it has a flexible array. Find a better way.
 	 */
 	struct ieee80211_chanctx_conf chanctx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ath12k_vif_iter {

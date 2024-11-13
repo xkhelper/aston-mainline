@@ -4,8 +4,6 @@
 
 set -e
 
-<<<<<<< HEAD
-=======
 # Skip if there's no probe command.
 if ! perf | grep probe
 then
@@ -13,7 +11,6 @@ then
         exit 2
 fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # skip if there's no gcc
 if ! [ -x "$(command -v gcc)" ]; then
         echo "failed: no gcc compiler"

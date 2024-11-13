@@ -75,22 +75,14 @@ static irqreturn_t jazz16_interrupt(int irq, void *chip)
 	return snd_sb8dsp_interrupt(chip);
 }
 
-<<<<<<< HEAD
-static int jazz16_configure_ports(unsigned long port,
-=======
 static int jazz16_configure_ports(struct snd_card *card,
 				  unsigned long port,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  unsigned long mpu_port, int idx)
 {
 	unsigned char val;
 
 	if (!request_region(0x201, 1, "jazz16 config")) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "config port region is already in use.\n");
-=======
 		dev_err(card->dev, "config port region is already in use.\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	outb(SB_JAZZ16_WAKEUP - idx, 0x201);
@@ -105,26 +97,15 @@ static int jazz16_configure_ports(struct snd_card *card,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int jazz16_detect_board(unsigned long port,
-=======
 static int jazz16_detect_board(struct snd_card *card, unsigned long port,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       unsigned long mpu_port)
 {
 	int err;
 	int val;
-<<<<<<< HEAD
-	struct snd_sb chip;
-
-	if (!request_region(port, 0x10, "jazz16")) {
-		snd_printk(KERN_ERR "I/O port region is already in use.\n");
-=======
 	struct snd_sb chip = {};
 
 	if (!request_region(port, 0x10, "jazz16")) {
 		dev_err(card->dev, "I/O port region is already in use.\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	/* just to call snd_sbdsp_command/reset/get_byte() */
@@ -133,11 +114,7 @@ static int jazz16_detect_board(struct snd_card *card, unsigned long port,
 	err = snd_sbdsp_reset(&chip);
 	if (err < 0)
 		for (val = 0; val < 4; val++) {
-<<<<<<< HEAD
-			err = jazz16_configure_ports(port, mpu_port, val);
-=======
 			err = jazz16_configure_ports(card, port, mpu_port, val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err < 0)
 				break;
 
@@ -167,13 +144,8 @@ static int jazz16_detect_board(struct snd_card *card, unsigned long port,
 	}
 	snd_sbdsp_get_byte(&chip);
 	err = snd_sbdsp_get_byte(&chip);
-<<<<<<< HEAD
-	snd_printd("Media Vision Jazz16 board detected: rev 0x%x, model 0x%x\n",
-		   val, err);
-=======
 	dev_dbg(card->dev, "Media Vision Jazz16 board detected: rev 0x%x, model 0x%x\n",
 		val, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = 0;
 
@@ -214,54 +186,31 @@ static int snd_jazz16_match(struct device *devptr, unsigned int dev)
 	if (!enable[dev])
 		return 0;
 	if (port[dev] == SNDRV_AUTO_PORT) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "please specify port\n");
-		return 0;
-	} else if (port[dev] == 0x200 || (port[dev] & ~0x270)) {
-		snd_printk(KERN_ERR "incorrect port specified\n");
-=======
 		dev_err(devptr, "please specify port\n");
 		return 0;
 	} else if (port[dev] == 0x200 || (port[dev] & ~0x270)) {
 		dev_err(devptr, "incorrect port specified\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	if (dma8[dev] != SNDRV_AUTO_DMA &&
 	    dma8[dev] != 1 && dma8[dev] != 3) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "dma8 must be 1 or 3\n");
-=======
 		dev_err(devptr, "dma8 must be 1 or 3\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	if (dma16[dev] != SNDRV_AUTO_DMA &&
 	    dma16[dev] != 5 && dma16[dev] != 7) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "dma16 must be 5 or 7\n");
-=======
 		dev_err(devptr, "dma16 must be 5 or 7\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	if (mpu_port[dev] != SNDRV_AUTO_PORT &&
 	    (mpu_port[dev] & ~0x030) != 0x300) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "incorrect mpu_port specified\n");
-=======
 		dev_err(devptr, "incorrect mpu_port specified\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	if (mpu_irq[dev] != SNDRV_AUTO_DMA &&
 	    mpu_irq[dev] != 2 && mpu_irq[dev] != 3 &&
 	    mpu_irq[dev] != 5 && mpu_irq[dev] != 7) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "mpu_irq must be 2, 3, 5 or 7\n");
-=======
 		dev_err(devptr, "mpu_irq must be 2, 3, 5 or 7\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	return 1;
@@ -289,11 +238,7 @@ static int snd_jazz16_probe(struct device *devptr, unsigned int dev)
 	if (xirq == SNDRV_AUTO_IRQ) {
 		xirq = snd_legacy_find_free_irq(possible_irqs);
 		if (xirq < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "unable to find a free IRQ\n");
-=======
 			dev_err(devptr, "unable to find a free IRQ\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -301,11 +246,7 @@ static int snd_jazz16_probe(struct device *devptr, unsigned int dev)
 	if (xdma8 == SNDRV_AUTO_DMA) {
 		xdma8 = snd_legacy_find_free_dma(possible_dmas8);
 		if (xdma8 < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "unable to find a free DMA8\n");
-=======
 			dev_err(devptr, "unable to find a free DMA8\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -313,11 +254,7 @@ static int snd_jazz16_probe(struct device *devptr, unsigned int dev)
 	if (xdma16 == SNDRV_AUTO_DMA) {
 		xdma16 = snd_legacy_find_free_dma(possible_dmas16);
 		if (xdma16 < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "unable to find a free DMA16\n");
-=======
 			dev_err(devptr, "unable to find a free DMA16\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	}
@@ -325,15 +262,9 @@ static int snd_jazz16_probe(struct device *devptr, unsigned int dev)
 	xmpu_port = mpu_port[dev];
 	if (xmpu_port == SNDRV_AUTO_PORT)
 		xmpu_port = 0;
-<<<<<<< HEAD
-	err = jazz16_detect_board(port[dev], xmpu_port);
-	if (err < 0) {
-		printk(KERN_ERR "Media Vision Jazz16 board not detected\n");
-=======
 	err = jazz16_detect_board(card, port[dev], xmpu_port);
 	if (err < 0) {
 		dev_err(devptr, "Media Vision Jazz16 board not detected\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	err = snd_sbdsp_create(card, port[dev], irq[dev],
@@ -349,11 +280,7 @@ static int snd_jazz16_probe(struct device *devptr, unsigned int dev)
 		xmpu_irq = 0;
 	err = jazz16_configure_board(chip, xmpu_irq);
 	if (err < 0) {
-<<<<<<< HEAD
-		printk(KERN_ERR "Media Vision Jazz16 configuration failed\n");
-=======
 		dev_err(devptr, "Media Vision Jazz16 configuration failed\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 
@@ -375,13 +302,8 @@ static int snd_jazz16_probe(struct device *devptr, unsigned int dev)
 	err = snd_opl3_create(card, chip->port, chip->port + 2,
 			      OPL3_HW_AUTO, 1, &opl3);
 	if (err < 0)
-<<<<<<< HEAD
-		snd_printk(KERN_WARNING "no OPL device at 0x%lx-0x%lx\n",
-			   chip->port, chip->port + 2);
-=======
 		dev_warn(devptr, "no OPL device at 0x%lx-0x%lx\n",
 			 chip->port, chip->port + 2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else {
 		err = snd_opl3_hwdep_new(opl3, 0, 1, NULL);
 		if (err < 0)
@@ -396,13 +318,8 @@ static int snd_jazz16_probe(struct device *devptr, unsigned int dev)
 					mpu_port[dev], 0,
 					mpu_irq[dev],
 					NULL) < 0)
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "no MPU-401 device at 0x%lx\n",
-					mpu_port[dev]);
-=======
 			dev_err(devptr, "no MPU-401 device at 0x%lx\n",
 				mpu_port[dev]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	err = snd_card_register(card);

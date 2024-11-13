@@ -19,9 +19,6 @@ fail() { # mesg
 
 FILTER=set_ftrace_filter
 FUNC1="schedule"
-<<<<<<< HEAD
-FUNC2="sched_tick"
-=======
 if grep '^sched_tick\b' available_filter_functions; then
     FUNC2="sched_tick"
 elif grep '^scheduler_tick\b' available_filter_functions; then
@@ -30,7 +27,6 @@ else
     exit_unresolved
 fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ALL_FUNCS="#### all functions enabled ####"
 

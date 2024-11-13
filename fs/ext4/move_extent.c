@@ -17,29 +17,6 @@
  * get_ext_path() - Find an extent path for designated logical block number.
  * @inode:	inode to be searched
  * @lblock:	logical block number to find an extent path
-<<<<<<< HEAD
- * @ppath:	pointer to an extent path pointer (for output)
- *
- * ext4_find_extent wrapper. Return 0 on success, or a negative error value
- * on failure.
- */
-static inline int
-get_ext_path(struct inode *inode, ext4_lblk_t lblock,
-		struct ext4_ext_path **ppath)
-{
-	struct ext4_ext_path *path;
-
-	path = ext4_find_extent(inode, lblock, ppath, EXT4_EX_NOCACHE);
-	if (IS_ERR(path))
-		return PTR_ERR(path);
-	if (path[ext_depth(inode)].p_ext == NULL) {
-		ext4_free_ext_path(path);
-		*ppath = NULL;
-		return -ENODATA;
-	}
-	*ppath = path;
-	return 0;
-=======
  * @path:	pointer to an extent path
  *
  * ext4_find_extent wrapper. Return an extent path pointer on success,
@@ -57,7 +34,6 @@ get_ext_path(struct inode *inode, ext4_lblk_t lblock,
 		return ERR_PTR(-ENODATA);
 	}
 	return path;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -115,17 +91,11 @@ mext_check_coverage(struct inode *inode, ext4_lblk_t from, ext4_lblk_t count,
 	int ret = 0;
 	ext4_lblk_t last = from + count;
 	while (from < last) {
-<<<<<<< HEAD
-		*err = get_ext_path(inode, from, &path);
-		if (*err)
-			goto out;
-=======
 		path = get_ext_path(inode, from, path);
 		if (IS_ERR(path)) {
 			*err = PTR_ERR(path);
 			return ret;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ext = path[ext_depth(inode)].p_ext;
 		if (unwritten != ext4_ext_is_unwritten(ext))
 			goto out;
@@ -194,17 +164,6 @@ mext_folio_double_lock(struct inode *inode1, struct inode *inode2,
 	return 0;
 }
 
-<<<<<<< HEAD
-/* Force page buffers uptodate w/o dropping page's lock */
-static int
-mext_page_mkuptodate(struct folio *folio, unsigned from, unsigned to)
-{
-	struct inode *inode = folio->mapping->host;
-	sector_t block;
-	struct buffer_head *bh, *head, *arr[MAX_BUF_PER_PAGE];
-	unsigned int blocksize, block_start, block_end;
-	int i, err,  nr = 0, partial = 0;
-=======
 /* Force folio buffers uptodate w/o dropping folio's lock */
 static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
 {
@@ -215,7 +174,6 @@ static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
 	int nr = 0;
 	bool partial = false;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BUG_ON(!folio_test_locked(folio));
 	BUG_ON(folio_test_writeback(folio));
 
@@ -227,15 +185,6 @@ static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
 	if (!head)
 		head = create_empty_buffers(folio, blocksize, 0);
 
-<<<<<<< HEAD
-	block = (sector_t)folio->index << (PAGE_SHIFT - inode->i_blkbits);
-	for (bh = head, block_start = 0; bh != head || !block_start;
-	     block++, block_start = block_end, bh = bh->b_this_page) {
-		block_end = block_start + blocksize;
-		if (block_end <= from || block_start >= to) {
-			if (!buffer_uptodate(bh))
-				partial = 1;
-=======
 	block = folio_pos(folio) >> inode->i_blkbits;
 	block_end = 0;
 	bh = head;
@@ -245,17 +194,12 @@ static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
 		if (block_end <= from || block_start >= to) {
 			if (!buffer_uptodate(bh))
 				partial = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 		if (buffer_uptodate(bh))
 			continue;
 		if (!buffer_mapped(bh)) {
-<<<<<<< HEAD
-			err = ext4_get_block(inode, block, bh, 0);
-=======
 			int err = ext4_get_block(inode, block, bh, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err)
 				return err;
 			if (!buffer_mapped(bh)) {
@@ -264,11 +208,6 @@ static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
 				continue;
 			}
 		}
-<<<<<<< HEAD
-		BUG_ON(nr >= MAX_BUF_PER_PAGE);
-		arr[nr++] = bh;
-	}
-=======
 		lock_buffer(bh);
 		if (buffer_uptodate(bh)) {
 			unlock_buffer(bh);
@@ -278,21 +217,10 @@ static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
 		nr++;
 	} while (block++, (bh = bh->b_this_page) != head);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* No io required */
 	if (!nr)
 		goto out;
 
-<<<<<<< HEAD
-	for (i = 0; i < nr; i++) {
-		bh = arr[i];
-		if (!bh_uptodate_or_lock(bh)) {
-			err = ext4_read_bh(bh, 0, NULL);
-			if (err)
-				return err;
-		}
-	}
-=======
 	bh = head;
 	do {
 		if (bh_offset(bh) + blocksize <= from)
@@ -304,7 +232,6 @@ static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
 			continue;
 		return -EIO;
 	} while ((bh = bh->b_this_page) != head);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	if (!partial)
 		folio_mark_uptodate(folio);
@@ -707,17 +634,11 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
 		int offset_in_page;
 		int unwritten, cur_len;
 
-<<<<<<< HEAD
-		ret = get_ext_path(orig_inode, o_start, &path);
-		if (ret)
-			goto out;
-=======
 		path = get_ext_path(orig_inode, o_start, path);
 		if (IS_ERR(path)) {
 			ret = PTR_ERR(path);
 			goto out;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ex = path[path->p_depth].p_ext;
 		cur_blk = le32_to_cpu(ex->ee_block);
 		cur_len = ext4_ext_get_actual_len(ex);

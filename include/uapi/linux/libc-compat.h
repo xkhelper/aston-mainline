@@ -140,28 +140,6 @@
 
 #endif /* _NETINET_IN_H */
 
-<<<<<<< HEAD
-/* Coordinate with glibc netipx/ipx.h header. */
-#if defined(__NETIPX_IPX_H)
-
-#define __UAPI_DEF_SOCKADDR_IPX			0
-#define __UAPI_DEF_IPX_ROUTE_DEFINITION		0
-#define __UAPI_DEF_IPX_INTERFACE_DEFINITION	0
-#define __UAPI_DEF_IPX_CONFIG_DATA		0
-#define __UAPI_DEF_IPX_ROUTE_DEF		0
-
-#else /* defined(__NETIPX_IPX_H) */
-
-#define __UAPI_DEF_SOCKADDR_IPX			1
-#define __UAPI_DEF_IPX_ROUTE_DEFINITION		1
-#define __UAPI_DEF_IPX_INTERFACE_DEFINITION	1
-#define __UAPI_DEF_IPX_CONFIG_DATA		1
-#define __UAPI_DEF_IPX_ROUTE_DEF		1
-
-#endif /* defined(__NETIPX_IPX_H) */
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Definitions for xattr.h */
 #if defined(_SYS_XATTR_H)
 #define __UAPI_DEF_XATTR		0
@@ -243,26 +221,6 @@
 #define __UAPI_DEF_IP6_MTUINFO		1
 #endif
 
-<<<<<<< HEAD
-/* Definitions for ipx.h */
-#ifndef __UAPI_DEF_SOCKADDR_IPX
-#define __UAPI_DEF_SOCKADDR_IPX			1
-#endif
-#ifndef __UAPI_DEF_IPX_ROUTE_DEFINITION
-#define __UAPI_DEF_IPX_ROUTE_DEFINITION		1
-#endif
-#ifndef __UAPI_DEF_IPX_INTERFACE_DEFINITION
-#define __UAPI_DEF_IPX_INTERFACE_DEFINITION	1
-#endif
-#ifndef __UAPI_DEF_IPX_CONFIG_DATA
-#define __UAPI_DEF_IPX_CONFIG_DATA		1
-#endif
-#ifndef __UAPI_DEF_IPX_ROUTE_DEF
-#define __UAPI_DEF_IPX_ROUTE_DEF		1
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Definitions for xattr.h */
 #ifndef __UAPI_DEF_XATTR
 #define __UAPI_DEF_XATTR		1

@@ -8,13 +8,8 @@ test_lru_map
 test_lpm_map
 test_tag
 FEATURE-DUMP.libbpf
-<<<<<<< HEAD
-fixdep
-test_dev_cgroup
-=======
 FEATURE-DUMP.selftests
 fixdep
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /test_progs
 /test_progs-no_alu32
 /test_progs-bpf_gcc
@@ -25,12 +20,6 @@ test_sock
 urandom_read
 test_sockmap
 test_lirc_mode2_user
-<<<<<<< HEAD
-get_cgroup_id_user
-test_skb_cgroup_id_user
-test_cgroup_storage
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 test_flow_dissector
 flow_dissector_load
 test_tcpnotify_user
@@ -39,10 +28,7 @@ test_tcp_check_syncookie_user
 test_sysctl
 xdping
 test_cpp
-<<<<<<< HEAD
-=======
 *.d
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 *.subskel.h
 *.skel.h
 *.lskel.h

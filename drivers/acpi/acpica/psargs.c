@@ -25,11 +25,8 @@ acpi_ps_get_next_package_length(struct acpi_parse_state *parser_state);
 static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
 						       *parser_state);
 
-<<<<<<< HEAD
-=======
 static void acpi_ps_free_field_list(union acpi_parse_object *start);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*******************************************************************************
  *
  * FUNCTION:    acpi_ps_get_next_package_length
@@ -690,8 +687,6 @@ static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
 
 /*******************************************************************************
  *
-<<<<<<< HEAD
-=======
  * FUNCTION:    acpi_ps_free_field_list
  *
  * PARAMETERS:  start               - First Op in field list
@@ -725,7 +720,6 @@ static void acpi_ps_free_field_list(union acpi_parse_object *start)
 
 /*******************************************************************************
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * FUNCTION:    acpi_ps_get_next_arg
  *
  * PARAMETERS:  walk_state          - Current state
@@ -792,13 +786,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
 			while (parser_state->aml < parser_state->pkg_end) {
 				field = acpi_ps_get_next_field(parser_state);
 				if (!field) {
-<<<<<<< HEAD
-=======
 					if (arg) {
 						acpi_ps_free_field_list(arg);
 					}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					return_ACPI_STATUS(AE_NO_MEMORY);
 				}
 
@@ -868,13 +859,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
 			    acpi_ps_get_next_namepath(walk_state, parser_state,
 						      arg,
 						      ACPI_NOT_METHOD_CALL);
-<<<<<<< HEAD
-=======
 			if (ACPI_FAILURE(status)) {
 				acpi_ps_free_op(arg);
 				return_ACPI_STATUS(status);
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			/* Single complex argument, nothing returned */
 
@@ -909,13 +897,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
 			    acpi_ps_get_next_namepath(walk_state, parser_state,
 						      arg,
 						      ACPI_POSSIBLE_METHOD_CALL);
-<<<<<<< HEAD
-=======
 			if (ACPI_FAILURE(status)) {
 				acpi_ps_free_op(arg);
 				return_ACPI_STATUS(status);
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (arg->common.aml_opcode == AML_INT_METHODCALL_OP) {
 

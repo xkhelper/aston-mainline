@@ -34,8 +34,6 @@ available_schedulers - STRING
 	Shows the available schedulers choices that are registered. More packet
 	schedulers may be available, but not loaded.
 
-<<<<<<< HEAD
-=======
 blackhole_timeout - INTEGER (seconds)
 	Initial time period in second to disable MPTCP on active MPTCP sockets
 	when a MPTCP firewall blackhole issue happens. This time period will
@@ -47,7 +45,6 @@ blackhole_timeout - INTEGER (seconds)
 
 	Default: 3600
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 checksum_enabled - BOOLEAN
 	Control whether DSS checksum can be enabled.
 

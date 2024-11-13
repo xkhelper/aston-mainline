@@ -278,8 +278,6 @@ patternProperties:
 
     additionalProperties: false
 
-<<<<<<< HEAD
-=======
   ^pa-stats@[a-f0-9]+$:
     description: |
       PA-STATS sub-module represented as a SysCon. PA_STATS is a set of
@@ -300,7 +298,6 @@ patternProperties:
       reg:
         maxItems: 1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   interrupt-controller@[a-f0-9]+$:
     description: |
       PRUSS INTC Node. Each PRUSS has a single interrupt controller instance

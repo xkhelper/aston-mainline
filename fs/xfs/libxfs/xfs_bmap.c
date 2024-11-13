@@ -79,15 +79,9 @@ xfs_bmap_compute_maxlevels(
 	maxleafents = xfs_iext_max_nextents(xfs_has_large_extent_counts(mp),
 				whichfork);
 	if (whichfork == XFS_DATA_FORK)
-<<<<<<< HEAD
-		sz = XFS_BMDR_SPACE_CALC(MINDBTPTRS);
-	else
-		sz = XFS_BMDR_SPACE_CALC(MINABTPTRS);
-=======
 		sz = xfs_bmdr_space_calc(MINDBTPTRS);
 	else
 		sz = xfs_bmdr_space_calc(MINABTPTRS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	maxrootrecs = xfs_bmdr_maxrecs(sz, 0);
 	minleafrecs = mp->m_bmap_dmnr[0];
@@ -108,13 +102,8 @@ xfs_bmap_compute_attr_offset(
 	struct xfs_mount	*mp)
 {
 	if (mp->m_sb.sb_inodesize == 256)
-<<<<<<< HEAD
-		return XFS_LITINO(mp) - XFS_BMDR_SPACE_CALC(MINABTPTRS);
-	return XFS_BMDR_SPACE_CALC(6 * MINABTPTRS);
-=======
 		return XFS_LITINO(mp) - xfs_bmdr_space_calc(MINABTPTRS);
 	return xfs_bmdr_space_calc(6 * MINABTPTRS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 STATIC int				/* error */
@@ -309,11 +298,7 @@ xfs_check_block(
 	prevp = NULL;
 	for( i = 1; i <= xfs_btree_get_numrecs(block); i++) {
 		dmxr = mp->m_bmap_dmxr[0];
-<<<<<<< HEAD
-		keyp = XFS_BMBT_KEY_ADDR(mp, block, i);
-=======
 		keyp = xfs_bmbt_key_addr(mp, block, i);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (prevp) {
 			ASSERT(be64_to_cpu(prevp->br_startoff) <
@@ -325,17 +310,6 @@ xfs_check_block(
 		 * Compare the block numbers to see if there are dups.
 		 */
 		if (root)
-<<<<<<< HEAD
-			pp = XFS_BMAP_BROOT_PTR_ADDR(mp, block, i, sz);
-		else
-			pp = XFS_BMBT_PTR_ADDR(mp, block, i, dmxr);
-
-		for (j = i+1; j <= be16_to_cpu(block->bb_numrecs); j++) {
-			if (root)
-				thispa = XFS_BMAP_BROOT_PTR_ADDR(mp, block, j, sz);
-			else
-				thispa = XFS_BMBT_PTR_ADDR(mp, block, j, dmxr);
-=======
 			pp = xfs_bmap_broot_ptr_addr(mp, block, i, sz);
 		else
 			pp = xfs_bmbt_ptr_addr(mp, block, i, dmxr);
@@ -345,7 +319,6 @@ xfs_check_block(
 				thispa = xfs_bmap_broot_ptr_addr(mp, block, j, sz);
 			else
 				thispa = xfs_bmbt_ptr_addr(mp, block, j, dmxr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (*thispa == *pp) {
 				xfs_warn(mp, "%s: thispa(%d) == pp(%d) %lld",
 					__func__, j, i,
@@ -400,11 +373,7 @@ xfs_bmap_check_leaf_extents(
 	level = be16_to_cpu(block->bb_level);
 	ASSERT(level > 0);
 	xfs_check_block(block, mp, 1, ifp->if_broot_bytes);
-<<<<<<< HEAD
-	pp = XFS_BMAP_BROOT_PTR_ADDR(mp, block, 1, ifp->if_broot_bytes);
-=======
 	pp = xfs_bmap_broot_ptr_addr(mp, block, 1, ifp->if_broot_bytes);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bno = be64_to_cpu(*pp);
 
 	ASSERT(bno != NULLFSBLOCK);
@@ -437,11 +406,7 @@ xfs_bmap_check_leaf_extents(
 		 */
 
 		xfs_check_block(block, mp, 0, 0);
-<<<<<<< HEAD
-		pp = XFS_BMBT_PTR_ADDR(mp, block, 1, mp->m_bmap_dmxr[1]);
-=======
 		pp = xfs_bmbt_ptr_addr(mp, block, 1, mp->m_bmap_dmxr[1]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bno = be64_to_cpu(*pp);
 		if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbno(mp, bno))) {
 			xfs_btree_mark_sick(cur);
@@ -481,22 +446,14 @@ xfs_bmap_check_leaf_extents(
 		 * conform with the first entry in this one.
 		 */
 
-<<<<<<< HEAD
-		ep = XFS_BMBT_REC_ADDR(mp, block, 1);
-=======
 		ep = xfs_bmbt_rec_addr(mp, block, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (i) {
 			ASSERT(xfs_bmbt_disk_get_startoff(&last) +
 			       xfs_bmbt_disk_get_blockcount(&last) <=
 			       xfs_bmbt_disk_get_startoff(ep));
 		}
 		for (j = 1; j < num_recs; j++) {
-<<<<<<< HEAD
-			nextp = XFS_BMBT_REC_ADDR(mp, block, j + 1);
-=======
 			nextp = xfs_bmbt_rec_addr(mp, block, j + 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ASSERT(xfs_bmbt_disk_get_startoff(ep) +
 			       xfs_bmbt_disk_get_blockcount(ep) <=
 			       xfs_bmbt_disk_get_startoff(nextp));
@@ -627,15 +584,9 @@ xfs_bmap_btree_to_extents(
 	ASSERT(ifp->if_format == XFS_DINODE_FMT_BTREE);
 	ASSERT(be16_to_cpu(rblock->bb_level) == 1);
 	ASSERT(be16_to_cpu(rblock->bb_numrecs) == 1);
-<<<<<<< HEAD
-	ASSERT(xfs_bmbt_maxrecs(mp, ifp->if_broot_bytes, 0) == 1);
-
-	pp = XFS_BMAP_BROOT_PTR_ADDR(mp, rblock, 1, ifp->if_broot_bytes);
-=======
 	ASSERT(xfs_bmbt_maxrecs(mp, ifp->if_broot_bytes, false) == 1);
 
 	pp = xfs_bmap_broot_ptr_addr(mp, rblock, 1, ifp->if_broot_bytes);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cbno = be64_to_cpu(*pp);
 #ifdef DEBUG
 	if (XFS_IS_CORRUPT(cur->bc_mp, !xfs_verify_fsbno(mp, cbno))) {
@@ -763,11 +714,7 @@ xfs_bmap_extents_to_btree(
 	for_each_xfs_iext(ifp, &icur, &rec) {
 		if (isnullstartblock(rec.br_startblock))
 			continue;
-<<<<<<< HEAD
-		arp = XFS_BMBT_REC_ADDR(mp, ablock, 1 + cnt);
-=======
 		arp = xfs_bmbt_rec_addr(mp, ablock, 1 + cnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xfs_bmbt_disk_set_all(arp, &rec);
 		cnt++;
 	}
@@ -777,17 +724,10 @@ xfs_bmap_extents_to_btree(
 	/*
 	 * Fill in the root key and pointer.
 	 */
-<<<<<<< HEAD
-	kp = XFS_BMBT_KEY_ADDR(mp, block, 1);
-	arp = XFS_BMBT_REC_ADDR(mp, ablock, 1);
-	kp->br_startoff = cpu_to_be64(xfs_bmbt_disk_get_startoff(arp));
-	pp = XFS_BMBT_PTR_ADDR(mp, block, 1, xfs_bmbt_get_maxrecs(cur,
-=======
 	kp = xfs_bmbt_key_addr(mp, block, 1);
 	arp = xfs_bmbt_rec_addr(mp, ablock, 1);
 	kp->br_startoff = cpu_to_be64(xfs_bmbt_disk_get_startoff(arp));
 	pp = xfs_bmbt_ptr_addr(mp, block, 1, xfs_bmbt_get_maxrecs(cur,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						be16_to_cpu(block->bb_level)));
 	*pp = cpu_to_be64(args.fsbno);
 
@@ -956,11 +896,7 @@ xfs_bmap_add_attrfork_btree(
 
 	mp = ip->i_mount;
 
-<<<<<<< HEAD
-	if (XFS_BMAP_BMDR_SPACE(block) <= xfs_inode_data_fork_size(ip))
-=======
 	if (xfs_bmap_bmdr_space(block) <= xfs_inode_data_fork_size(ip))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*flags |= XFS_ILOG_DBROOT;
 	else {
 		cur = xfs_bmbt_init_cursor(mp, tp, ip, XFS_DATA_FORK);
@@ -1224,11 +1160,7 @@ xfs_iread_bmbt_block(
 	}
 
 	/* Copy records into the incore cache. */
-<<<<<<< HEAD
-	frp = XFS_BMBT_REC_ADDR(mp, block, 1);
-=======
 	frp = xfs_bmbt_rec_addr(mp, block, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (j = 0; j < num_recs; j++, frp++, ir->loaded++) {
 		struct xfs_bmbt_irec	new;
 		xfs_failaddr_t		fa;
@@ -3180,8 +3112,6 @@ xfs_bmap_extsize_align(
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static inline bool
 xfs_bmap_adjacent_valid(
 	struct xfs_bmalloca	*ap,
@@ -3199,7 +3129,6 @@ xfs_bmap_adjacent_valid(
 		XFS_FSB_TO_AGBNO(mp, x) < mp->m_sb.sb_agblocks;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define XFS_ALLOC_GAP_UNITS	4
 
 /* returns true if ap->blkno was modified */
@@ -3207,52 +3136,25 @@ bool
 xfs_bmap_adjacent(
 	struct xfs_bmalloca	*ap)	/* bmap alloc argument struct */
 {
-<<<<<<< HEAD
-	xfs_fsblock_t	adjust;		/* adjustment to block numbers */
-	xfs_mount_t	*mp;		/* mount point structure */
-	int		rt;		/* true if inode is realtime */
-
-#define	ISVALID(x,y)	\
-	(rt ? \
-		(x) < mp->m_sb.sb_rblocks : \
-		XFS_FSB_TO_AGNO(mp, x) == XFS_FSB_TO_AGNO(mp, y) && \
-		XFS_FSB_TO_AGNO(mp, x) < mp->m_sb.sb_agcount && \
-		XFS_FSB_TO_AGBNO(mp, x) < mp->m_sb.sb_agblocks)
-
-	mp = ap->ip->i_mount;
-	rt = XFS_IS_REALTIME_INODE(ap->ip) &&
-		(ap->datatype & XFS_ALLOC_USERDATA);
-=======
 	xfs_fsblock_t		adjust;		/* adjustment to block numbers */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * If allocating at eof, and there's a previous real block,
 	 * try to use its last block as our starting point.
 	 */
 	if (ap->eof && ap->prev.br_startoff != NULLFILEOFF &&
 	    !isnullstartblock(ap->prev.br_startblock) &&
-<<<<<<< HEAD
-	    ISVALID(ap->prev.br_startblock + ap->prev.br_blockcount,
-		    ap->prev.br_startblock)) {
-=======
 	    xfs_bmap_adjacent_valid(ap,
 			ap->prev.br_startblock + ap->prev.br_blockcount,
 			ap->prev.br_startblock)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ap->blkno = ap->prev.br_startblock + ap->prev.br_blockcount;
 		/*
 		 * Adjust for the gap between prevp and us.
 		 */
 		adjust = ap->offset -
 			(ap->prev.br_startoff + ap->prev.br_blockcount);
-<<<<<<< HEAD
-		if (adjust &&
-		    ISVALID(ap->blkno + adjust, ap->prev.br_startblock))
-=======
 		if (adjust && xfs_bmap_adjacent_valid(ap, ap->blkno + adjust,
 				ap->prev.br_startblock))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ap->blkno += adjust;
 		return true;
 	}
@@ -3275,12 +3177,8 @@ xfs_bmap_adjacent(
 		    !isnullstartblock(ap->prev.br_startblock) &&
 		    (prevbno = ap->prev.br_startblock +
 			       ap->prev.br_blockcount) &&
-<<<<<<< HEAD
-		    ISVALID(prevbno, ap->prev.br_startblock)) {
-=======
 		    xfs_bmap_adjacent_valid(ap, prevbno,
 				ap->prev.br_startblock)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*
 			 * Calculate gap to end of previous block.
 			 */
@@ -3296,13 +3194,8 @@ xfs_bmap_adjacent(
 			 * number, then just use the end of the previous block.
 			 */
 			if (prevdiff <= XFS_ALLOC_GAP_UNITS * ap->length &&
-<<<<<<< HEAD
-			    ISVALID(prevbno + prevdiff,
-				    ap->prev.br_startblock))
-=======
 			    xfs_bmap_adjacent_valid(ap, prevbno + prevdiff,
 					ap->prev.br_startblock))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				prevbno += adjust;
 			else
 				prevdiff += adjust;
@@ -3334,17 +3227,11 @@ xfs_bmap_adjacent(
 			 * offset by our length.
 			 */
 			if (gotdiff <= XFS_ALLOC_GAP_UNITS * ap->length &&
-<<<<<<< HEAD
-			    ISVALID(gotbno - gotdiff, gotbno))
-				gotbno -= adjust;
-			else if (ISVALID(gotbno - ap->length, gotbno)) {
-=======
 			    xfs_bmap_adjacent_valid(ap, gotbno - gotdiff,
 					gotbno))
 				gotbno -= adjust;
 			else if (xfs_bmap_adjacent_valid(ap, gotbno - ap->length,
 					gotbno)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				gotbno -= ap->length;
 				gotdiff += adjust - ap->length;
 			} else
@@ -3372,11 +3259,7 @@ xfs_bmap_adjacent(
 			return true;
 		}
 	}
-<<<<<<< HEAD
-#undef ISVALID
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return false;
 }
 
@@ -3594,33 +3477,6 @@ xfs_bmap_process_allocated_extent(
 	xfs_bmap_alloc_account(ap);
 }
 
-<<<<<<< HEAD
-#ifdef DEBUG
-static int
-xfs_bmap_exact_minlen_extent_alloc(
-	struct xfs_bmalloca	*ap)
-{
-	struct xfs_mount	*mp = ap->ip->i_mount;
-	struct xfs_alloc_arg	args = { .tp = ap->tp, .mp = mp };
-	xfs_fileoff_t		orig_offset;
-	xfs_extlen_t		orig_length;
-	int			error;
-
-	ASSERT(ap->length);
-
-	if (ap->minlen != 1) {
-		ap->blkno = NULLFSBLOCK;
-		ap->length = 0;
-		return 0;
-	}
-
-	orig_offset = ap->offset;
-	orig_length = ap->length;
-
-	args.alloc_minlen_only = 1;
-
-	xfs_bmap_compute_alignments(ap, &args);
-=======
 static int
 xfs_bmap_exact_minlen_extent_alloc(
 	struct xfs_bmalloca	*ap,
@@ -3634,7 +3490,6 @@ xfs_bmap_exact_minlen_extent_alloc(
 	args->alloc_minlen_only = 1;
 	args->minlen = args->maxlen = ap->minlen;
 	args->total = ap->total;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Unlike the longest extent available in an AG, we don't track
@@ -3644,41 +3499,6 @@ xfs_bmap_exact_minlen_extent_alloc(
 	 * we need not be concerned about a drop in performance in
 	 * "debug only" code paths.
 	 */
-<<<<<<< HEAD
-	ap->blkno = XFS_AGB_TO_FSB(mp, 0, 0);
-
-	args.oinfo = XFS_RMAP_OINFO_SKIP_UPDATE;
-	args.minlen = args.maxlen = ap->minlen;
-	args.total = ap->total;
-
-	args.alignment = 1;
-	args.minalignslop = 0;
-
-	args.minleft = ap->minleft;
-	args.wasdel = ap->wasdel;
-	args.resv = XFS_AG_RESV_NONE;
-	args.datatype = ap->datatype;
-
-	error = xfs_alloc_vextent_first_ag(&args, ap->blkno);
-	if (error)
-		return error;
-
-	if (args.fsbno != NULLFSBLOCK) {
-		xfs_bmap_process_allocated_extent(ap, &args, orig_offset,
-			orig_length);
-	} else {
-		ap->blkno = NULLFSBLOCK;
-		ap->length = 0;
-	}
-
-	return 0;
-}
-#else
-
-#define xfs_bmap_exact_minlen_extent_alloc(bma) (-EFSCORRUPTED)
-
-#endif
-=======
 	ap->blkno = XFS_AGB_TO_FSB(ap->ip->i_mount, 0, 0);
 
 	/*
@@ -3689,7 +3509,6 @@ xfs_bmap_exact_minlen_extent_alloc(
 	 */
 	return xfs_bmap_btalloc_low_space(ap, args);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * If we are not low on available data blocks and we are allocating at
@@ -3947,16 +3766,11 @@ xfs_bmap_btalloc(
 	/* Trim the allocation back to the maximum an AG can fit. */
 	args.maxlen = min(ap->length, mp->m_ag_max_usable);
 
-<<<<<<< HEAD
-	if ((ap->datatype & XFS_ALLOC_USERDATA) &&
-	    xfs_inode_is_filestream(ap->ip))
-=======
 	if (unlikely(XFS_TEST_ERROR(false, mp,
 			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
 		error = xfs_bmap_exact_minlen_extent_alloc(ap, &args);
 	else if ((ap->datatype & XFS_ALLOC_USERDATA) &&
 			xfs_inode_is_filestream(ap->ip))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = xfs_bmap_btalloc_filestreams(ap, &args, stripe_align);
 	else
 		error = xfs_bmap_btalloc_best_length(ap, &args, stripe_align);
@@ -4331,46 +4145,6 @@ out:
 }
 
 static int
-<<<<<<< HEAD
-xfs_bmap_alloc_userdata(
-	struct xfs_bmalloca	*bma)
-{
-	struct xfs_mount	*mp = bma->ip->i_mount;
-	int			whichfork = xfs_bmapi_whichfork(bma->flags);
-	int			error;
-
-	/*
-	 * Set the data type being allocated. For the data fork, the first data
-	 * in the file is treated differently to all other allocations. For the
-	 * attribute fork, we only need to ensure the allocated range is not on
-	 * the busy list.
-	 */
-	bma->datatype = XFS_ALLOC_NOBUSY;
-	if (whichfork == XFS_DATA_FORK || whichfork == XFS_COW_FORK) {
-		bma->datatype |= XFS_ALLOC_USERDATA;
-		if (bma->offset == 0)
-			bma->datatype |= XFS_ALLOC_INITIAL_USER_DATA;
-
-		if (mp->m_dalign && bma->length >= mp->m_dalign) {
-			error = xfs_bmap_isaeof(bma, whichfork);
-			if (error)
-				return error;
-		}
-
-		if (XFS_IS_REALTIME_INODE(bma->ip))
-			return xfs_bmap_rtalloc(bma);
-	}
-
-	if (unlikely(XFS_TEST_ERROR(false, mp,
-			XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
-		return xfs_bmap_exact_minlen_extent_alloc(bma);
-
-	return xfs_bmap_btalloc(bma);
-}
-
-static int
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 xfs_bmapi_allocate(
 	struct xfs_bmalloca	*bma)
 {
@@ -4387,17 +4161,6 @@ xfs_bmapi_allocate(
 	else
 		bma->minlen = 1;
 
-<<<<<<< HEAD
-	if (bma->flags & XFS_BMAPI_METADATA) {
-		if (unlikely(XFS_TEST_ERROR(false, mp,
-				XFS_ERRTAG_BMAP_ALLOC_MINLEN_EXTENT)))
-			error = xfs_bmap_exact_minlen_extent_alloc(bma);
-		else
-			error = xfs_bmap_btalloc(bma);
-	} else {
-		error = xfs_bmap_alloc_userdata(bma);
-	}
-=======
 	if (!(bma->flags & XFS_BMAPI_METADATA)) {
 		/*
 		 * For the data and COW fork, the first data in the file is
@@ -4424,7 +4187,6 @@ xfs_bmapi_allocate(
 		error = xfs_bmap_rtalloc(bma);
 	else
 		error = xfs_bmap_btalloc(bma);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		return error;
 	if (bma->blkno == NULLFSBLOCK)
@@ -5042,10 +4804,7 @@ xfs_bmapi_remap(
 	}
 
 	ip->i_nblocks += len;
-<<<<<<< HEAD
-=======
 	ip->i_delayed_blks -= len; /* see xfs_bmap_defer_add */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
 
 	if (ifp->if_format == XFS_DINODE_FMT_BTREE)
@@ -5575,12 +5334,8 @@ xfs_bmap_del_extent_real(
 			 */
 			if (!(tp->t_flags & XFS_TRANS_RTBITMAP_LOCKED)) {
 				tp->t_flags |= XFS_TRANS_RTBITMAP_LOCKED;
-<<<<<<< HEAD
-				xfs_rtbitmap_lock(tp, mp);
-=======
 				xfs_rtbitmap_lock(mp);
 				xfs_rtbitmap_trans_join(tp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			error = xfs_rtfree_blocks(tp, del->br_startblock,
 					del->br_blockcount);

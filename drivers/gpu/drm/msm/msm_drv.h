@@ -33,17 +33,8 @@
 #include <drm/msm_drm.h>
 #include <drm/drm_gem.h>
 
-<<<<<<< HEAD
-#ifdef CONFIG_FAULT_INJECTION
 extern struct fault_attr fail_gem_alloc;
 extern struct fault_attr fail_gem_iova;
-#else
-#  define should_fail(attr, size) 0
-#endif
-=======
-extern struct fault_attr fail_gem_alloc;
-extern struct fault_attr fail_gem_iova;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct msm_kms;
 struct msm_gpu;
@@ -220,11 +211,6 @@ struct msm_drm_private {
 	struct notifier_block vmap_notifier;
 	struct shrinker *shrinker;
 
-<<<<<<< HEAD
-	struct drm_atomic_state *pm_state;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/**
 	 * hangcheck_period: For hang detection, in ms
 	 *
@@ -262,11 +248,6 @@ void msm_atomic_destroy_pending_timer(struct msm_pending_timer *timer);
 void msm_atomic_commit_tail(struct drm_atomic_state *state);
 int msm_atomic_check(struct drm_device *dev, struct drm_atomic_state *state);
 struct drm_atomic_state *msm_atomic_state_alloc(struct drm_device *dev);
-<<<<<<< HEAD
-void msm_atomic_state_clear(struct drm_atomic_state *state);
-void msm_atomic_state_free(struct drm_atomic_state *state);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int msm_crtc_enable_vblank(struct drm_crtc *crtc);
 void msm_crtc_disable_vblank(struct drm_crtc *crtc);

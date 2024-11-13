@@ -320,11 +320,7 @@ static int *cpus_cstate_state;
 static u64 *cpus_pstate_start_times;
 static u64 *cpus_pstate_state;
 
-<<<<<<< HEAD
-static int process_comm_event(struct perf_tool *tool,
-=======
 static int process_comm_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample __maybe_unused,
 			      struct machine *machine __maybe_unused)
@@ -334,11 +330,7 @@ static int process_comm_event(const struct perf_tool *tool,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int process_fork_event(struct perf_tool *tool,
-=======
 static int process_fork_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample __maybe_unused,
 			      struct machine *machine __maybe_unused)
@@ -348,11 +340,7 @@ static int process_fork_event(const struct perf_tool *tool,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int process_exit_event(struct perf_tool *tool,
-=======
 static int process_exit_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample __maybe_unused,
 			      struct machine *machine __maybe_unused)
@@ -583,11 +571,7 @@ typedef int (*tracepoint_handler)(struct timechart *tchart,
 				  struct perf_sample *sample,
 				  const char *backtrace);
 
-<<<<<<< HEAD
-static int process_sample_event(struct perf_tool *tool,
-=======
 static int process_sample_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct evsel *evsel,
@@ -1622,12 +1606,6 @@ static int __cmd_timechart(struct timechart *tchart, const char *output_name)
 		.mode  = PERF_DATA_MODE_READ,
 		.force = tchart->force,
 	};
-<<<<<<< HEAD
-
-	struct perf_session *session = perf_session__new(&data, &tchart->tool);
-	int ret = -EINVAL;
-
-=======
 	struct perf_session *session;
 	int ret = -EINVAL;
 
@@ -1638,7 +1616,6 @@ static int __cmd_timechart(struct timechart *tchart, const char *output_name)
 	tchart->tool.sample		 = process_sample_event;
 
 	session = perf_session__new(&data, &tchart->tool);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(session))
 		return PTR_ERR(session);
 
@@ -1953,16 +1930,6 @@ parse_time(const struct option *opt, const char *arg, int __maybe_unused unset)
 int cmd_timechart(int argc, const char **argv)
 {
 	struct timechart tchart = {
-<<<<<<< HEAD
-		.tool = {
-			.comm		 = process_comm_event,
-			.fork		 = process_fork_event,
-			.exit		 = process_exit_event,
-			.sample		 = process_sample_event,
-			.ordered_events	 = true,
-		},
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.proc_num = 15,
 		.min_time = NSEC_PER_MSEC,
 		.merge_dist = 1000,

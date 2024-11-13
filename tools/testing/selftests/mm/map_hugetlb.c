@@ -4,14 +4,6 @@
  * system call with MAP_HUGETLB flag.  Before running this program make
  * sure the administrator has allocated enough default sized huge pages
  * to cover the 256 MB allocation.
-<<<<<<< HEAD
- *
- * For ia64 architecture, Linux kernel reserves Region number 4 for hugepages.
- * That means the addresses starting with 0x800000... will need to be
- * specified.  Specifying a fixed address is not required on ppc64, i386
- * or x86_64.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #include <stdlib.h>
 #include <stdio.h>
@@ -24,18 +16,6 @@
 #define LENGTH (256UL*1024*1024)
 #define PROTECTION (PROT_READ | PROT_WRITE)
 
-<<<<<<< HEAD
-/* Only ia64 requires this */
-#ifdef __ia64__
-#define ADDR (void *)(0x8000000000000000UL)
-#define FLAGS (MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB | MAP_FIXED)
-#else
-#define ADDR (void *)(0x0UL)
-#define FLAGS (MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB)
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void check_bytes(char *addr)
 {
 	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
@@ -66,11 +46,7 @@ int main(int argc, char **argv)
 	void *addr;
 	size_t hugepage_size;
 	size_t length = LENGTH;
-<<<<<<< HEAD
-	int flags = FLAGS;
-=======
 	int flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int shift = 0;
 
 	hugepage_size = default_huge_page_size();
@@ -95,11 +71,7 @@ int main(int argc, char **argv)
 		ksft_print_msg("Default size hugepages\n");
 	ksft_print_msg("Mapping %lu Mbytes\n", (unsigned long)length >> 20);
 
-<<<<<<< HEAD
-	addr = mmap(ADDR, length, PROTECTION, flags, -1, 0);
-=======
 	addr = mmap(NULL, length, PROTECTION, flags, -1, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (addr == MAP_FAILED)
 		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
 

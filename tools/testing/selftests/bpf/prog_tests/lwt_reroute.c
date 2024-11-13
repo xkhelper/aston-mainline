@@ -49,10 +49,7 @@
  *  is not crashed, it is considered successful.
  */
 #define NETNS "ns_lwt_reroute"
-<<<<<<< HEAD
-=======
 #include <netinet/in.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lwt_helpers.h"
 #include "network_helpers.h"
 #include <linux/net_tstamp.h>

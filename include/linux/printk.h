@@ -9,11 +9,8 @@
 #include <linux/ratelimit_types.h>
 #include <linux/once_lite.h>
 
-<<<<<<< HEAD
-=======
 struct console;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const char linux_banner[];
 extern const char linux_proc_banner[];
 
@@ -166,26 +163,16 @@ int _printk(const char *fmt, ...);
  */
 __printf(1, 2) __cold int _printk_deferred(const char *fmt, ...);
 
-<<<<<<< HEAD
-extern void __printk_safe_enter(void);
-extern void __printk_safe_exit(void);
-=======
 extern void __printk_deferred_enter(void);
 extern void __printk_deferred_exit(void);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The printk_deferred_enter/exit macros are available only as a hack for
  * some code paths that need to defer all printk console printing. Interrupts
  * must be disabled for the deferred duration.
  */
-<<<<<<< HEAD
-#define printk_deferred_enter __printk_safe_enter
-#define printk_deferred_exit __printk_safe_exit
-=======
 #define printk_deferred_enter() __printk_deferred_enter()
 #define printk_deferred_exit() __printk_deferred_exit()
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Please don't use printk_ratelimit(), because it shares ratelimiting state
@@ -213,13 +200,10 @@ extern asmlinkage void dump_stack_lvl(const char *log_lvl) __cold;
 extern asmlinkage void dump_stack(void) __cold;
 void printk_trigger_flush(void);
 void console_try_replay_all(void);
-<<<<<<< HEAD
-=======
 void printk_legacy_allow_panic_sync(void);
 extern bool nbcon_device_try_acquire(struct console *con);
 extern void nbcon_device_release(struct console *con);
 void nbcon_atomic_flush_unsafe(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static inline __printf(1, 0)
 int vprintk(const char *s, va_list args)
@@ -302,8 +286,6 @@ static inline void printk_trigger_flush(void)
 static inline void console_try_replay_all(void)
 {
 }
-<<<<<<< HEAD
-=======
 
 static inline void printk_legacy_allow_panic_sync(void)
 {
@@ -322,7 +304,6 @@ static inline void nbcon_atomic_flush_unsafe(void)
 {
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 bool this_cpu_in_panic(void);

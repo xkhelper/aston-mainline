@@ -114,11 +114,7 @@ void udp_v6_rehash(struct sock *sk)
 	udp_lib_rehash(sk, new_hash);
 }
 
-<<<<<<< HEAD
-static int compute_score(struct sock *sk, struct net *net,
-=======
 static int compute_score(struct sock *sk, const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 const struct in6_addr *saddr, __be16 sport,
 			 const struct in6_addr *daddr, unsigned short hnum,
 			 int dif, int sdif)
@@ -164,11 +160,7 @@ static int compute_score(struct sock *sk, const struct net *net,
 }
 
 /* called with rcu_read_lock() */
-<<<<<<< HEAD
-static struct sock *udp6_lib_lookup2(struct net *net,
-=======
 static struct sock *udp6_lib_lookup2(const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct in6_addr *saddr, __be16 sport,
 		const struct in6_addr *daddr, unsigned int hnum,
 		int dif, int sdif, struct udp_hslot *hslot2,
@@ -225,11 +217,7 @@ rescore:
 }
 
 /* rcu_read_lock() must be held */
-<<<<<<< HEAD
-struct sock *__udp6_lib_lookup(struct net *net,
-=======
 struct sock *__udp6_lib_lookup(const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       const struct in6_addr *saddr, __be16 sport,
 			       const struct in6_addr *daddr, __be16 dport,
 			       int dif, int sdif, struct udp_table *udptable,
@@ -312,11 +300,7 @@ struct sock *udp6_lib_lookup_skb(const struct sk_buff *skb,
  * Does increment socket refcount.
  */
 #if IS_ENABLED(CONFIG_NF_TPROXY_IPV6) || IS_ENABLED(CONFIG_NF_SOCKET_IPV6)
-<<<<<<< HEAD
-struct sock *udp6_lib_lookup(struct net *net, const struct in6_addr *saddr, __be16 sport,
-=======
 struct sock *udp6_lib_lookup(const struct net *net, const struct in6_addr *saddr, __be16 sport,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     const struct in6_addr *daddr, __be16 dport, int dif)
 {
 	struct sock *sk;
@@ -1282,15 +1266,10 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
 			skb_shinfo(skb)->gso_type = SKB_GSO_UDP_L4;
 			skb_shinfo(skb)->gso_segs = DIV_ROUND_UP(datalen,
 								 cork->gso_size);
-<<<<<<< HEAD
-		}
-		goto csum_partial;
-=======
 
 			/* Don't checksum the payload, skb will get segmented */
 			goto csum_partial;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (is_udplite)

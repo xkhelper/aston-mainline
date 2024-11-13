@@ -145,11 +145,7 @@ static int ad9739a_buffer_postdisable(struct iio_dev *indio_dev)
 	struct ad9739a_state *st = iio_priv(indio_dev);
 
 	return iio_backend_data_source_set(st->back, 0,
-<<<<<<< HEAD
-					   IIO_BACKEND_INTERNAL_CONTINUOS_WAVE);
-=======
 					   IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool ad9739a_reg_accessible(struct device *dev, unsigned int reg)
@@ -417,12 +413,7 @@ static int ad9739a_probe(struct spi_device *spi)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	ret = iio_backend_extend_chan_spec(indio_dev, st->back,
-					   &ad9739a_channels[0]);
-=======
 	ret = iio_backend_extend_chan_spec(st->back, &ad9739a_channels[0]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -440,9 +431,6 @@ static int ad9739a_probe(struct spi_device *spi)
 	indio_dev->num_channels = ARRAY_SIZE(ad9739a_channels);
 	indio_dev->setup_ops = &ad9739a_buffer_setup_ops;
 
-<<<<<<< HEAD
-	return devm_iio_device_register(&spi->dev, indio_dev);
-=======
 	ret = devm_iio_device_register(&spi->dev, indio_dev);
 	if (ret)
 		return ret;
@@ -450,7 +438,6 @@ static int ad9739a_probe(struct spi_device *spi)
 	iio_backend_debugfs_add(st->back, indio_dev);
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct of_device_id ad9739a_of_match[] = {

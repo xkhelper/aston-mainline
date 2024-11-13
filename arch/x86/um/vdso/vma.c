@@ -52,16 +52,11 @@ subsys_initcall(init_vdso);
 
 int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 {
-<<<<<<< HEAD
-	int err;
-	struct mm_struct *mm = current->mm;
-=======
 	struct vm_area_struct *vma;
 	struct mm_struct *mm = current->mm;
 	static struct vm_special_mapping vdso_mapping = {
 		.name = "[vdso]",
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!vdso_enabled)
 		return 0;
@@ -69,16 +64,6 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 	if (mmap_write_lock_killable(mm))
 		return -EINTR;
 
-<<<<<<< HEAD
-	err = install_special_mapping(mm, um_vdso_addr, PAGE_SIZE,
-		VM_READ|VM_EXEC|
-		VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
-		vdsop);
-
-	mmap_write_unlock(mm);
-
-	return err;
-=======
 	vdso_mapping.pages = vdsop;
 	vma = _install_special_mapping(mm, um_vdso_addr, PAGE_SIZE,
 		VM_READ|VM_EXEC|
@@ -88,5 +73,4 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 	mmap_write_unlock(mm);
 
 	return IS_ERR(vma) ? PTR_ERR(vma) : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

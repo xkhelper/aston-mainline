@@ -28,10 +28,7 @@
 #include <linux/rcupdate_trace.h>
 #include <linux/reboot.h>
 #include <linux/sched.h>
-<<<<<<< HEAD
-=======
 #include <linux/seq_buf.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/spinlock.h>
 #include <linux/smp.h>
 #include <linux/stat.h>
@@ -138,11 +135,7 @@ struct ref_scale_ops {
 	const char *name;
 };
 
-<<<<<<< HEAD
-static struct ref_scale_ops *cur_ops;
-=======
 static const struct ref_scale_ops *cur_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void un_delay(const int udl, const int ndl)
 {
@@ -178,11 +171,7 @@ static bool rcu_sync_scale_init(void)
 	return true;
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops rcu_ops = {
-=======
 static const struct ref_scale_ops rcu_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= rcu_sync_scale_init,
 	.readsection	= ref_rcu_read_section,
 	.delaysection	= ref_rcu_delay_section,
@@ -216,11 +205,7 @@ static void srcu_ref_scale_delay_section(const int nloops, const int udl, const 
 	}
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops srcu_ops = {
-=======
 static const struct ref_scale_ops srcu_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= rcu_sync_scale_init,
 	.readsection	= srcu_ref_scale_read_section,
 	.delaysection	= srcu_ref_scale_delay_section,
@@ -247,11 +232,7 @@ static void rcu_tasks_ref_scale_delay_section(const int nloops, const int udl, c
 		un_delay(udl, ndl);
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops rcu_tasks_ops = {
-=======
 static const struct ref_scale_ops rcu_tasks_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= rcu_sync_scale_init,
 	.readsection	= rcu_tasks_ref_scale_read_section,
 	.delaysection	= rcu_tasks_ref_scale_delay_section,
@@ -290,11 +271,7 @@ static void rcu_trace_ref_scale_delay_section(const int nloops, const int udl, c
 	}
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops rcu_trace_ops = {
-=======
 static const struct ref_scale_ops rcu_trace_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= rcu_sync_scale_init,
 	.readsection	= rcu_trace_ref_scale_read_section,
 	.delaysection	= rcu_trace_ref_scale_delay_section,
@@ -333,11 +310,7 @@ static void ref_refcnt_delay_section(const int nloops, const int udl, const int 
 	}
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops refcnt_ops = {
-=======
 static const struct ref_scale_ops refcnt_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= rcu_sync_scale_init,
 	.readsection	= ref_refcnt_section,
 	.delaysection	= ref_refcnt_delay_section,
@@ -374,11 +347,7 @@ static void ref_rwlock_delay_section(const int nloops, const int udl, const int 
 	}
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops rwlock_ops = {
-=======
 static const struct ref_scale_ops rwlock_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= ref_rwlock_init,
 	.readsection	= ref_rwlock_section,
 	.delaysection	= ref_rwlock_delay_section,
@@ -415,11 +384,7 @@ static void ref_rwsem_delay_section(const int nloops, const int udl, const int n
 	}
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops rwsem_ops = {
-=======
 static const struct ref_scale_ops rwsem_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= ref_rwsem_init,
 	.readsection	= ref_rwsem_section,
 	.delaysection	= ref_rwsem_delay_section,
@@ -454,11 +419,7 @@ static void ref_lock_delay_section(const int nloops, const int udl, const int nd
 	preempt_enable();
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops lock_ops = {
-=======
 static const struct ref_scale_ops lock_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.readsection	= ref_lock_section,
 	.delaysection	= ref_lock_delay_section,
 	.name		= "lock"
@@ -493,11 +454,7 @@ static void ref_lock_irq_delay_section(const int nloops, const int udl, const in
 	preempt_enable();
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops lock_irq_ops = {
-=======
 static const struct ref_scale_ops lock_irq_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.readsection	= ref_lock_irq_section,
 	.delaysection	= ref_lock_irq_delay_section,
 	.name		= "lock-irq"
@@ -533,11 +490,7 @@ static void ref_acqrel_delay_section(const int nloops, const int udl, const int 
 	preempt_enable();
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops acqrel_ops = {
-=======
 static const struct ref_scale_ops acqrel_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.readsection	= ref_acqrel_section,
 	.delaysection	= ref_acqrel_delay_section,
 	.name		= "acqrel"
@@ -571,11 +524,7 @@ static void ref_clock_delay_section(const int nloops, const int udl, const int n
 	stopopts = x;
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops clock_ops = {
-=======
 static const struct ref_scale_ops clock_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.readsection	= ref_clock_section,
 	.delaysection	= ref_clock_delay_section,
 	.name		= "clock"
@@ -607,11 +556,7 @@ static void ref_jiffies_delay_section(const int nloops, const int udl, const int
 	stopopts = x;
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops jiffies_ops = {
-=======
 static const struct ref_scale_ops jiffies_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.readsection	= ref_jiffies_section,
 	.delaysection	= ref_jiffies_delay_section,
 	.name		= "jiffies"
@@ -761,15 +706,9 @@ static void refscale_typesafe_ctor(void *rtsp_in)
 	preempt_enable();
 }
 
-<<<<<<< HEAD
-static struct ref_scale_ops typesafe_ref_ops;
-static struct ref_scale_ops typesafe_lock_ops;
-static struct ref_scale_ops typesafe_seqlock_ops;
-=======
 static const struct ref_scale_ops typesafe_ref_ops;
 static const struct ref_scale_ops typesafe_lock_ops;
 static const struct ref_scale_ops typesafe_seqlock_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 // Initialize for a typesafe test.
 static bool typesafe_init(void)
@@ -830,11 +769,7 @@ static void typesafe_cleanup(void)
 }
 
 // The typesafe_init() function distinguishes these structures by address.
-<<<<<<< HEAD
-static struct ref_scale_ops typesafe_ref_ops = {
-=======
 static const struct ref_scale_ops typesafe_ref_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= typesafe_init,
 	.cleanup	= typesafe_cleanup,
 	.readsection	= typesafe_read_section,
@@ -842,11 +777,7 @@ static const struct ref_scale_ops typesafe_ref_ops = {
 	.name		= "typesafe_ref"
 };
 
-<<<<<<< HEAD
-static struct ref_scale_ops typesafe_lock_ops = {
-=======
 static const struct ref_scale_ops typesafe_lock_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= typesafe_init,
 	.cleanup	= typesafe_cleanup,
 	.readsection	= typesafe_read_section,
@@ -854,11 +785,7 @@ static const struct ref_scale_ops typesafe_lock_ops = {
 	.name		= "typesafe_lock"
 };
 
-<<<<<<< HEAD
-static struct ref_scale_ops typesafe_seqlock_ops = {
-=======
 static const struct ref_scale_ops typesafe_seqlock_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.init		= typesafe_init,
 	.cleanup	= typesafe_cleanup,
 	.readsection	= typesafe_read_section,
@@ -965,38 +892,13 @@ static u64 process_durations(int n)
 {
 	int i;
 	struct reader_task *rt;
-<<<<<<< HEAD
-	char buf1[64];
-=======
 	struct seq_buf s;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *buf;
 	u64 sum = 0;
 
 	buf = kmalloc(800 + 64, GFP_KERNEL);
 	if (!buf)
 		return 0;
-<<<<<<< HEAD
-	buf[0] = 0;
-	sprintf(buf, "Experiment #%d (Format: <THREAD-NUM>:<Total loop time in ns>)",
-		exp_idx);
-
-	for (i = 0; i < n && !torture_must_stop(); i++) {
-		rt = &(reader_tasks[i]);
-		sprintf(buf1, "%d: %llu\t", i, rt->last_duration_ns);
-
-		if (i % 5 == 0)
-			strcat(buf, "\n");
-		if (strlen(buf) >= 800) {
-			pr_alert("%s", buf);
-			buf[0] = 0;
-		}
-		strcat(buf, buf1);
-
-		sum += rt->last_duration_ns;
-	}
-	pr_alert("%s\n", buf);
-=======
 	seq_buf_init(&s, buf, 800 + 64);
 
 	seq_buf_printf(&s, "Experiment #%d (Format: <THREAD-NUM>:<Total loop time in ns>)",
@@ -1018,7 +920,6 @@ static u64 process_durations(int n)
 		sum += rt->last_duration_ns;
 	}
 	pr_alert("%s\n", seq_buf_str(&s));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kfree(buf);
 	return sum;
@@ -1125,11 +1026,7 @@ end:
 }
 
 static void
-<<<<<<< HEAD
-ref_scale_print_module_parms(struct ref_scale_ops *cur_ops, const char *tag)
-=======
 ref_scale_print_module_parms(const struct ref_scale_ops *cur_ops, const char *tag)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	pr_alert("%s" SCALE_FLAG
 		 "--- %s:  verbose=%d verbose_batched=%d shutdown=%d holdoff=%d lookup_instances=%ld loops=%ld nreaders=%d nruns=%d readdelay=%d\n", scale_type, tag,
@@ -1184,11 +1081,7 @@ ref_scale_init(void)
 {
 	long i;
 	int firsterr = 0;
-<<<<<<< HEAD
-	static struct ref_scale_ops *scale_ops[] = {
-=======
 	static const struct ref_scale_ops *scale_ops[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		&rcu_ops, &srcu_ops, RCU_TRACE_OPS RCU_TASKS_OPS &refcnt_ops, &rwlock_ops,
 		&rwsem_ops, &lock_ops, &lock_irq_ops, &acqrel_ops, &clock_ops, &jiffies_ops,
 		&typesafe_ref_ops, &typesafe_lock_ops, &typesafe_seqlock_ops,

@@ -77,27 +77,6 @@ static void amdgpu_bo_user_destroy(struct ttm_buffer_object *tbo)
 	amdgpu_bo_destroy(tbo);
 }
 
-<<<<<<< HEAD
-static void amdgpu_bo_vm_destroy(struct ttm_buffer_object *tbo)
-{
-	struct amdgpu_device *adev = amdgpu_ttm_adev(tbo->bdev);
-	struct amdgpu_bo *shadow_bo = ttm_to_amdgpu_bo(tbo), *bo;
-	struct amdgpu_bo_vm *vmbo;
-
-	bo = shadow_bo->parent;
-	vmbo = to_amdgpu_bo_vm(bo);
-	/* in case amdgpu_device_recover_vram got NULL of bo->parent */
-	if (!list_empty(&vmbo->shadow_list)) {
-		mutex_lock(&adev->shadow_list_lock);
-		list_del_init(&vmbo->shadow_list);
-		mutex_unlock(&adev->shadow_list_lock);
-	}
-
-	amdgpu_bo_destroy(tbo);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * amdgpu_bo_is_amdgpu_bo - check if the buffer object is an &amdgpu_bo
  * @bo: buffer object to be checked
@@ -111,12 +90,7 @@ static void amdgpu_bo_vm_destroy(struct ttm_buffer_object *tbo)
 bool amdgpu_bo_is_amdgpu_bo(struct ttm_buffer_object *bo)
 {
 	if (bo->destroy == &amdgpu_bo_destroy ||
-<<<<<<< HEAD
-	    bo->destroy == &amdgpu_bo_user_destroy ||
-	    bo->destroy == &amdgpu_bo_vm_destroy)
-=======
 	    bo->destroy == &amdgpu_bo_user_destroy)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 
 	return false;
@@ -590,10 +564,7 @@ int amdgpu_bo_create(struct amdgpu_device *adev,
 	if (bo == NULL)
 		return -ENOMEM;
 	drm_gem_private_object_init(adev_to_drm(adev), &bo->tbo.base, size);
-<<<<<<< HEAD
-=======
 	bo->tbo.base.funcs = &amdgpu_gem_object_funcs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bo->vm_bo = NULL;
 	bo->preferred_domains = bp->preferred_domain ? bp->preferred_domain :
 		bp->domain;
@@ -734,55 +705,6 @@ int amdgpu_bo_create_vm(struct amdgpu_device *adev,
 }
 
 /**
-<<<<<<< HEAD
- * amdgpu_bo_add_to_shadow_list - add a BO to the shadow list
- *
- * @vmbo: BO that will be inserted into the shadow list
- *
- * Insert a BO to the shadow list.
- */
-void amdgpu_bo_add_to_shadow_list(struct amdgpu_bo_vm *vmbo)
-{
-	struct amdgpu_device *adev = amdgpu_ttm_adev(vmbo->bo.tbo.bdev);
-
-	mutex_lock(&adev->shadow_list_lock);
-	list_add_tail(&vmbo->shadow_list, &adev->shadow_list);
-	vmbo->shadow->parent = amdgpu_bo_ref(&vmbo->bo);
-	vmbo->shadow->tbo.destroy = &amdgpu_bo_vm_destroy;
-	mutex_unlock(&adev->shadow_list_lock);
-}
-
-/**
- * amdgpu_bo_restore_shadow - restore an &amdgpu_bo shadow
- *
- * @shadow: &amdgpu_bo shadow to be restored
- * @fence: dma_fence associated with the operation
- *
- * Copies a buffer object's shadow content back to the object.
- * This is used for recovering a buffer from its shadow in case of a gpu
- * reset where vram context may be lost.
- *
- * Returns:
- * 0 for success or a negative error code on failure.
- */
-int amdgpu_bo_restore_shadow(struct amdgpu_bo *shadow, struct dma_fence **fence)
-
-{
-	struct amdgpu_device *adev = amdgpu_ttm_adev(shadow->tbo.bdev);
-	struct amdgpu_ring *ring = adev->mman.buffer_funcs_ring;
-	uint64_t shadow_addr, parent_addr;
-
-	shadow_addr = amdgpu_bo_gpu_offset(shadow);
-	parent_addr = amdgpu_bo_gpu_offset(shadow->parent);
-
-	return amdgpu_copy_buffer(ring, shadow_addr, parent_addr,
-				  amdgpu_bo_size(shadow), NULL, fence,
-				  true, false, 0);
-}
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * amdgpu_bo_kmap - map an &amdgpu_bo buffer object
  * @bo: &amdgpu_bo buffer object to be mapped
  * @ptr: kernel virtual address to be returned
@@ -865,11 +787,7 @@ struct amdgpu_bo *amdgpu_bo_ref(struct amdgpu_bo *bo)
 	if (bo == NULL)
 		return NULL;
 
-<<<<<<< HEAD
-	ttm_bo_get(&bo->tbo);
-=======
 	drm_gem_object_get(&bo->tbo.base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return bo;
 }
 
@@ -881,35 +799,14 @@ struct amdgpu_bo *amdgpu_bo_ref(struct amdgpu_bo *bo)
  */
 void amdgpu_bo_unref(struct amdgpu_bo **bo)
 {
-<<<<<<< HEAD
-	struct ttm_buffer_object *tbo;
-
-	if ((*bo) == NULL)
-		return;
-
-	tbo = &((*bo)->tbo);
-	ttm_bo_put(tbo);
-=======
 	if ((*bo) == NULL)
 		return;
 
 	drm_gem_object_put(&(*bo)->tbo.base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*bo = NULL;
 }
 
 /**
-<<<<<<< HEAD
- * amdgpu_bo_pin_restricted - pin an &amdgpu_bo buffer object
- * @bo: &amdgpu_bo buffer object to be pinned
- * @domain: domain to be pinned to
- * @min_offset: the start of requested address range
- * @max_offset: the end of requested address range
- *
- * Pins the buffer object according to requested domain and address range. If
- * the memory is unbound gart memory, binds the pages into gart table. Adjusts
- * pin_count and pin_size accordingly.
-=======
  * amdgpu_bo_pin - pin an &amdgpu_bo buffer object
  * @bo: &amdgpu_bo buffer object to be pinned
  * @domain: domain to be pinned to
@@ -917,28 +814,15 @@ void amdgpu_bo_unref(struct amdgpu_bo **bo)
  * Pins the buffer object according to requested domain. If the memory is
  * unbound gart memory, binds the pages into gart table. Adjusts pin_count and
  * pin_size accordingly.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Pinning means to lock pages in memory along with keeping them at a fixed
  * offset. It is required when a buffer can not be moved, for example, when
  * a display buffer is being scanned out.
  *
-<<<<<<< HEAD
- * Compared with amdgpu_bo_pin(), this function gives more flexibility on
- * where to pin a buffer if there are specific restrictions on where a buffer
- * must be located.
- *
- * Returns:
- * 0 for success or a negative error code on failure.
- */
-int amdgpu_bo_pin_restricted(struct amdgpu_bo *bo, u32 domain,
-			     u64 min_offset, u64 max_offset)
-=======
  * Returns:
  * 0 for success or a negative error code on failure.
  */
 int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
 	struct ttm_operation_ctx ctx = { false, false };
@@ -947,12 +831,6 @@ int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain)
 	if (amdgpu_ttm_tt_get_usermm(bo->tbo.ttm))
 		return -EPERM;
 
-<<<<<<< HEAD
-	if (WARN_ON_ONCE(min_offset > max_offset))
-		return -EINVAL;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Check domain to be pinned to against preferred domains */
 	if (bo->preferred_domains & domain)
 		domain = bo->preferred_domains & domain;
@@ -978,17 +856,6 @@ int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain)
 			return -EINVAL;
 
 		ttm_bo_pin(&bo->tbo);
-<<<<<<< HEAD
-
-		if (max_offset != 0) {
-			u64 domain_start = amdgpu_ttm_domain_start(adev,
-								   mem_type);
-			WARN_ON_ONCE(max_offset <
-				     (amdgpu_bo_gpu_offset(bo) - domain_start));
-		}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -1005,20 +872,6 @@ int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain)
 		bo->flags |= AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
 	amdgpu_bo_placement_from_domain(bo, domain);
 	for (i = 0; i < bo->placement.num_placement; i++) {
-<<<<<<< HEAD
-		unsigned int fpfn, lpfn;
-
-		fpfn = min_offset >> PAGE_SHIFT;
-		lpfn = max_offset >> PAGE_SHIFT;
-
-		if (fpfn > bo->placements[i].fpfn)
-			bo->placements[i].fpfn = fpfn;
-		if (!bo->placements[i].lpfn ||
-		    (lpfn && lpfn < bo->placements[i].lpfn))
-			bo->placements[i].lpfn = lpfn;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (bo->flags & AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS &&
 		    bo->placements[i].mem_type == TTM_PL_VRAM)
 			bo->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
@@ -1045,27 +898,6 @@ error:
 }
 
 /**
-<<<<<<< HEAD
- * amdgpu_bo_pin - pin an &amdgpu_bo buffer object
- * @bo: &amdgpu_bo buffer object to be pinned
- * @domain: domain to be pinned to
- *
- * A simple wrapper to amdgpu_bo_pin_restricted().
- * Provides a simpler API for buffers that do not have any strict restrictions
- * on where a buffer must be located.
- *
- * Returns:
- * 0 for success or a negative error code on failure.
- */
-int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain)
-{
-	bo->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
-	return amdgpu_bo_pin_restricted(bo, domain, 0, 0);
-}
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * amdgpu_bo_unpin - unpin an &amdgpu_bo buffer object
  * @bo: &amdgpu_bo buffer object to be unpinned
  *

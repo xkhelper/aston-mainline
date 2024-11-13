@@ -135,16 +135,11 @@ impl Error {
     /// Returns the error encoded as a pointer.
     #[allow(dead_code)]
     pub(crate) fn to_ptr<T>(self) -> *mut T {
-<<<<<<< HEAD
-        // SAFETY: `self.0` is a valid error due to its invariant.
-        unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
-=======
         #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
         // SAFETY: `self.0` is a valid error due to its invariant.
         unsafe {
             bindings::ERR_PTR(self.0.into()) as *mut _
         }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 
     /// Returns a string representing the error, if one exists.

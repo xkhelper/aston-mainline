@@ -27,8 +27,6 @@ properties:
       A list off component DAPM widget. Each entry is a pair of strings,
       the first being the widget type, the second being the widget name
 
-<<<<<<< HEAD
-=======
   clocks:
     minItems: 1
     maxItems: 3
@@ -36,7 +34,6 @@ properties:
       Base PLL clocks of audio susbsytem, used to configure base clock
       frequencies for different audio use-cases.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 patternProperties:
   "^dai-link-[0-9]+$":
     type: object

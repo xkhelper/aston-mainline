@@ -30,12 +30,6 @@
 #include <linux/iommu.h>
 #include <linux/of_device.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-
-#include <soc/tegra/fuse.h>
-#include <soc/tegra/pmc.h>
-=======
 #include <linux/unaligned.h>
 
 #include <soc/tegra/fuse.h>
@@ -59,5 +53,4 @@
 	iowrite32_native(lower_32_bits(_v), &_p[0]);                           \
 	iowrite32_native(upper_32_bits(_v), &_p[1]);                           \
 } while(0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

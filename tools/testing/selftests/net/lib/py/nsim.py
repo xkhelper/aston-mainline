@@ -1,9 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 
-<<<<<<< HEAD
-=======
 import errno
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 import json
 import os
 import random

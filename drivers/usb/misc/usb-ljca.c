@@ -18,11 +18,7 @@
 #include <linux/usb.h>
 #include <linux/usb/ljca.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* command flags */
 #define LJCA_ACK_FLAG			BIT(0)

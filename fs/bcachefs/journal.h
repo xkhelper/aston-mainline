@@ -401,11 +401,7 @@ void bch2_journal_entry_res_resize(struct journal *,
 int bch2_journal_flush_seq_async(struct journal *, u64, struct closure *);
 void bch2_journal_flush_async(struct journal *, struct closure *);
 
-<<<<<<< HEAD
-int bch2_journal_flush_seq(struct journal *, u64);
-=======
 int bch2_journal_flush_seq(struct journal *, u64, unsigned);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_journal_flush(struct journal *);
 bool bch2_journal_noflush_seq(struct journal *, u64);
 int bch2_journal_meta(struct journal *);

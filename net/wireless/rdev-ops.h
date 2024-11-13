@@ -1200,46 +1200,27 @@ static inline int
 rdev_start_radar_detection(struct cfg80211_registered_device *rdev,
 			   struct net_device *dev,
 			   struct cfg80211_chan_def *chandef,
-<<<<<<< HEAD
-			   u32 cac_time_ms)
-=======
 			   u32 cac_time_ms, int link_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret = -EOPNOTSUPP;
 
 	trace_rdev_start_radar_detection(&rdev->wiphy, dev, chandef,
-<<<<<<< HEAD
-					 cac_time_ms);
-	if (rdev->ops->start_radar_detection)
-		ret = rdev->ops->start_radar_detection(&rdev->wiphy, dev,
-						       chandef, cac_time_ms);
-=======
 					 cac_time_ms, link_id);
 	if (rdev->ops->start_radar_detection)
 		ret = rdev->ops->start_radar_detection(&rdev->wiphy, dev,
 						       chandef, cac_time_ms,
 						       link_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_rdev_return_int(&rdev->wiphy, ret);
 	return ret;
 }
 
 static inline void
 rdev_end_cac(struct cfg80211_registered_device *rdev,
-<<<<<<< HEAD
-	     struct net_device *dev)
-{
-	trace_rdev_end_cac(&rdev->wiphy, dev);
-	if (rdev->ops->end_cac)
-		rdev->ops->end_cac(&rdev->wiphy, dev);
-=======
 	     struct net_device *dev, unsigned int link_id)
 {
 	trace_rdev_end_cac(&rdev->wiphy, dev, link_id);
 	if (rdev->ops->end_cac)
 		rdev->ops->end_cac(&rdev->wiphy, dev, link_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_rdev_return_void(&rdev->wiphy);
 }
 

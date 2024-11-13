@@ -74,8 +74,6 @@ struct xe_vm_pgtable_update {
 	u32 flags;
 };
 
-<<<<<<< HEAD
-=======
 /** struct xe_vm_pgtable_update_op - Page table update operation */
 struct xe_vm_pgtable_update_op {
 	/** @entries: entries to update for this operation */
@@ -124,5 +122,4 @@ struct xe_vm_pgtable_update_ops {
 	bool wait_vm_kernel;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

@@ -7,14 +7,9 @@ use alloc::boxed::Box;
 use core::{
     cell::UnsafeCell,
     marker::{PhantomData, PhantomPinned},
-<<<<<<< HEAD
-    mem::MaybeUninit,
-    ops::{Deref, DerefMut},
-=======
     mem::{ManuallyDrop, MaybeUninit},
     ops::{Deref, DerefMut},
     pin::Pin,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     ptr::NonNull,
 };
 
@@ -32,14 +27,10 @@ pub trait ForeignOwnable: Sized {
 
     /// Converts a Rust-owned object to a foreign-owned one.
     ///
-<<<<<<< HEAD
-    /// The foreign representation is a pointer to void.
-=======
     /// The foreign representation is a pointer to void. There are no guarantees for this pointer.
     /// For example, it might be invalid, dangling or pointing to uninitialized memory. Using it in
     /// any way except for [`ForeignOwnable::from_foreign`], [`ForeignOwnable::borrow`],
     /// [`ForeignOwnable::try_from_foreign`] can result in undefined behavior.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     fn into_foreign(self) -> *const core::ffi::c_void;
 
     /// Borrows a foreign-owned object.
@@ -102,8 +93,6 @@ impl<T: 'static> ForeignOwnable for Box<T> {
     }
 }
 
-<<<<<<< HEAD
-=======
 impl<T: 'static> ForeignOwnable for Pin<Box<T>> {
     type Borrowed<'a> = Pin<&'a T>;
 
@@ -130,7 +119,6 @@ impl<T: 'static> ForeignOwnable for Pin<Box<T>> {
     }
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 impl ForeignOwnable for () {
     type Borrowed<'a> = ();
 
@@ -408,8 +396,6 @@ impl<T: AlwaysRefCounted> ARef<T> {
             _p: PhantomData,
         }
     }
-<<<<<<< HEAD
-=======
 
     /// Consumes the `ARef`, returning a raw pointer.
     ///
@@ -439,7 +425,6 @@ impl<T: AlwaysRefCounted> ARef<T> {
     pub fn into_raw(me: Self) -> NonNull<T> {
         ManuallyDrop::new(me).ptr
     }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 impl<T: AlwaysRefCounted> Clone for ARef<T> {

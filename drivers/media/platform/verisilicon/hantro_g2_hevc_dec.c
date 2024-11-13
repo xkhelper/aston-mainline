@@ -367,20 +367,14 @@ static int set_ref(struct hantro_ctx *ctx)
 	const struct v4l2_ctrl_hevc_decode_params *decode_params = ctrls->decode_params;
 	const struct v4l2_hevc_dpb_entry *dpb = decode_params->dpb;
 	dma_addr_t luma_addr, chroma_addr, mv_addr = 0;
-<<<<<<< HEAD
-=======
 	dma_addr_t compress_luma_addr, compress_chroma_addr = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct hantro_dev *vpu = ctx->dev;
 	struct vb2_v4l2_buffer *vb2_dst;
 	struct hantro_decoded_buffer *dst;
 	size_t cr_offset = hantro_g2_chroma_offset(ctx);
 	size_t mv_offset = hantro_g2_motion_vectors_offset(ctx);
-<<<<<<< HEAD
-=======
 	size_t compress_luma_offset = hantro_g2_luma_compress_offset(ctx);
 	size_t compress_chroma_offset = hantro_g2_chroma_compress_offset(ctx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 max_ref_frames;
 	u16 dpb_longterm_e;
 	static const struct hantro_reg cur_poc[] = {
@@ -454,11 +448,8 @@ static int set_ref(struct hantro_ctx *ctx)
 
 		chroma_addr = luma_addr + cr_offset;
 		mv_addr = luma_addr + mv_offset;
-<<<<<<< HEAD
-=======
 		compress_luma_addr = luma_addr + compress_luma_offset;
 		compress_chroma_addr = luma_addr + compress_chroma_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (dpb[i].flags & V4L2_HEVC_DPB_ENTRY_LONG_TERM_REFERENCE)
 			dpb_longterm_e |= BIT(V4L2_HEVC_DPB_ENTRIES_NUM_MAX - 1 - i);
@@ -466,11 +457,8 @@ static int set_ref(struct hantro_ctx *ctx)
 		hantro_write_addr(vpu, G2_REF_LUMA_ADDR(i), luma_addr);
 		hantro_write_addr(vpu, G2_REF_CHROMA_ADDR(i), chroma_addr);
 		hantro_write_addr(vpu, G2_REF_MV_ADDR(i), mv_addr);
-<<<<<<< HEAD
-=======
 		hantro_write_addr(vpu, G2_REF_COMP_LUMA_ADDR(i), compress_luma_addr);
 		hantro_write_addr(vpu, G2_REF_COMP_CHROMA_ADDR(i), compress_chroma_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	vb2_dst = hantro_get_dst_buf(ctx);
@@ -484,12 +472,6 @@ static int set_ref(struct hantro_ctx *ctx)
 
 	chroma_addr = luma_addr + cr_offset;
 	mv_addr = luma_addr + mv_offset;
-<<<<<<< HEAD
-
-	hantro_write_addr(vpu, G2_REF_LUMA_ADDR(i), luma_addr);
-	hantro_write_addr(vpu, G2_REF_CHROMA_ADDR(i), chroma_addr);
-	hantro_write_addr(vpu, G2_REF_MV_ADDR(i++), mv_addr);
-=======
 	compress_luma_addr = luma_addr + compress_luma_offset;
 	compress_chroma_addr = luma_addr + compress_chroma_offset;
 
@@ -498,26 +480,19 @@ static int set_ref(struct hantro_ctx *ctx)
 	hantro_write_addr(vpu, G2_REF_MV_ADDR(i), mv_addr);
 	hantro_write_addr(vpu, G2_REF_COMP_LUMA_ADDR(i), compress_luma_addr);
 	hantro_write_addr(vpu, G2_REF_COMP_CHROMA_ADDR(i++), compress_chroma_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	hantro_write_addr(vpu, G2_OUT_LUMA_ADDR, luma_addr);
 	hantro_write_addr(vpu, G2_OUT_CHROMA_ADDR, chroma_addr);
 	hantro_write_addr(vpu, G2_OUT_MV_ADDR, mv_addr);
-<<<<<<< HEAD
-=======
 	hantro_write_addr(vpu, G2_OUT_COMP_LUMA_ADDR, compress_luma_addr);
 	hantro_write_addr(vpu, G2_OUT_COMP_CHROMA_ADDR, compress_chroma_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (; i < V4L2_HEVC_DPB_ENTRIES_NUM_MAX; i++) {
 		hantro_write_addr(vpu, G2_REF_LUMA_ADDR(i), 0);
 		hantro_write_addr(vpu, G2_REF_CHROMA_ADDR(i), 0);
 		hantro_write_addr(vpu, G2_REF_MV_ADDR(i), 0);
-<<<<<<< HEAD
-=======
 		hantro_write_addr(vpu, G2_REF_COMP_LUMA_ADDR(i), 0);
 		hantro_write_addr(vpu, G2_REF_COMP_CHROMA_ADDR(i), 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	hantro_reg_write(vpu, &g2_refer_lterm_e, dpb_longterm_e);
@@ -634,12 +609,7 @@ int hantro_g2_hevc_dec_run(struct hantro_ctx *ctx)
 	/* Don't disable output */
 	hantro_reg_write(vpu, &g2_out_dis, 0);
 
-<<<<<<< HEAD
-	/* Don't compress buffers */
-	hantro_reg_write(vpu, &g2_ref_compress_bypass, 1);
-=======
 	hantro_reg_write(vpu, &g2_ref_compress_bypass, !ctx->hevc_dec.use_compression);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Bus width and max burst */
 	hantro_reg_write(vpu, &g2_buswidth, BUS_WIDTH_128);

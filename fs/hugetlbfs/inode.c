@@ -388,22 +388,14 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
 static int hugetlbfs_write_begin(struct file *file,
 			struct address_space *mapping,
 			loff_t pos, unsigned len,
-<<<<<<< HEAD
-			struct page **pagep, void **fsdata)
-=======
 			struct folio **foliop, void **fsdata)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return -EINVAL;
 }
 
 static int hugetlbfs_write_end(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len, unsigned copied,
-<<<<<<< HEAD
-			struct page *page, void *fsdata)
-=======
 			struct folio *folio, void *fsdata)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	BUG();
 	return -EINVAL;

@@ -304,20 +304,12 @@
 	};
 
 	cooling-maps {
-<<<<<<< HEAD
-		map1 {
-=======
 		map0 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			trip = <&package_fan0>;
 			cooling-device = <&fan THERMAL_NO_LIMIT 1>;
 		};
 
-<<<<<<< HEAD
-		map2 {
-=======
 		map1 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			trip = <&package_fan1>;
 			cooling-device = <&fan 2 THERMAL_NO_LIMIT>;
 		};

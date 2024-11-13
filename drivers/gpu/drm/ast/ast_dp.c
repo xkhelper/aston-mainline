@@ -4,18 +4,6 @@
 
 #include <linux/firmware.h>
 #include <linux/delay.h>
-<<<<<<< HEAD
-#include <drm/drm_print.h>
-#include "ast_drv.h"
-
-bool ast_astdp_is_connected(struct ast_device *ast)
-{
-	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xD1, ASTDP_MCU_FW_EXECUTING))
-		return false;
-	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, ASTDP_HPD))
-		return false;
-	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDC, ASTDP_LINK_SUCCESS))
-=======
 
 #include <drm/drm_atomic_state_helper.h>
 #include <drm/drm_edid.h>
@@ -28,42 +16,10 @@ bool ast_astdp_is_connected(struct ast_device *ast)
 static bool ast_astdp_is_connected(struct ast_device *ast)
 {
 	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, AST_IO_VGACRDF_HPD))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 	return true;
 }
 
-<<<<<<< HEAD
-int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata)
-{
-	struct ast_device *ast = to_ast_device(dev);
-	u8 i = 0, j = 0;
-
-	/*
-	 * CRD1[b5]: DP MCU FW is executing
-	 * CRDC[b0]: DP link success
-	 * CRDF[b0]: DP HPD
-	 * CRE5[b0]: Host reading EDID process is done
-	 */
-	if (!(ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xD1, ASTDP_MCU_FW_EXECUTING) &&
-		ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDC, ASTDP_LINK_SUCCESS) &&
-		ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, ASTDP_HPD) &&
-		ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xE5,
-								ASTDP_HOST_EDID_READ_DONE_MASK))) {
-		goto err_astdp_edid_not_ready;
-	}
-
-	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE5, (u8) ~ASTDP_HOST_EDID_READ_DONE_MASK,
-							0x00);
-
-	for (i = 0; i < 32; i++) {
-		/*
-		 * CRE4[7:0]: Read-Pointer for EDID (Unit: 4bytes); valid range: 0~64
-		 */
-		ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE4,
-				       ASTDP_AND_CLEAR_MASK, (u8)i);
-		j = 0;
-=======
 static int ast_astdp_read_edid_block(void *data, u8 *buf, unsigned int block, size_t len)
 {
 	struct ast_device *ast = data;
@@ -100,47 +56,11 @@ static int ast_astdp_read_edid_block(void *data, u8 *buf, unsigned int block, si
 		 * CRE4[7:0]: Read-Pointer for EDID (Unit: 4bytes); valid range: 0~64
 		 */
 		ast_set_index_reg(ast, AST_IO_VGACRI, 0xe4, vgacre4);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * CRD7[b0]: valid flag for EDID
 		 * CRD6[b0]: mirror read pointer for EDID
 		 */
-<<<<<<< HEAD
-		while ((ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xD7,
-				ASTDP_EDID_VALID_FLAG_MASK) != 0x01) ||
-			(ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xD6,
-						ASTDP_EDID_READ_POINTER_MASK) != i)) {
-			/*
-			 * Delay are getting longer with each retry.
-			 * 1. The Delays are often 2 loops when users request "Display Settings"
-			 *	  of right-click of mouse.
-			 * 2. The Delays are often longer a lot when system resume from S3/S4.
-			 */
-			mdelay(j+1);
-
-			if (!(ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xD1,
-							ASTDP_MCU_FW_EXECUTING) &&
-				ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDC,
-							ASTDP_LINK_SUCCESS) &&
-				ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, ASTDP_HPD))) {
-				goto err_astdp_jump_out_loop_of_edid;
-			}
-
-			j++;
-			if (j > 200)
-				goto err_astdp_jump_out_loop_of_edid;
-		}
-
-		*(ediddata) = ast_get_index_reg_mask(ast, AST_IO_VGACRI,
-							0xD8, ASTDP_EDID_READ_DATA_MASK);
-		*(ediddata + 1) = ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xD9,
-								ASTDP_EDID_READ_DATA_MASK);
-		*(ediddata + 2) = ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDA,
-								ASTDP_EDID_READ_DATA_MASK);
-		*(ediddata + 3) = ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDB,
-								ASTDP_EDID_READ_DATA_MASK);
-=======
 		for (j = 0; j < 200; ++j) {
 			u8 vgacrd7, vgacrd6;
 
@@ -172,7 +92,6 @@ static int ast_astdp_read_edid_block(void *data, u8 *buf, unsigned int block, si
 		ediddata[1] = ast_get_index_reg(ast, AST_IO_VGACRI, 0xd9);
 		ediddata[2] = ast_get_index_reg(ast, AST_IO_VGACRI, 0xda);
 		ediddata[3] = ast_get_index_reg(ast, AST_IO_VGACRI, 0xdb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (i == 31) {
 			/*
@@ -184,37 +103,6 @@ static int ast_astdp_read_edid_block(void *data, u8 *buf, unsigned int block, si
 			 *		The Bytes-126 indicates the Number of extensions to
 			 *		follow. 0 represents noextensions.
 			 */
-<<<<<<< HEAD
-			*(ediddata + 3) = *(ediddata + 3) + *(ediddata + 2);
-			*(ediddata + 2) = 0;
-		}
-
-		ediddata += 4;
-	}
-
-	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE5, (u8) ~ASTDP_HOST_EDID_READ_DONE_MASK,
-							ASTDP_HOST_EDID_READ_DONE);
-
-	return 0;
-
-err_astdp_jump_out_loop_of_edid:
-	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE5,
-							(u8) ~ASTDP_HOST_EDID_READ_DONE_MASK,
-							ASTDP_HOST_EDID_READ_DONE);
-	return (~(j+256) + 1);
-
-err_astdp_edid_not_ready:
-	if (!(ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xD1, ASTDP_MCU_FW_EXECUTING)))
-		return (~0xD1 + 1);
-	if (!(ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDC, ASTDP_LINK_SUCCESS)))
-		return (~0xDC + 1);
-	if (!(ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, ASTDP_HPD)))
-		return (~0xDF + 1);
-	if (!(ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xE5, ASTDP_HOST_EDID_READ_DONE_MASK)))
-		return (~0xE5 + 1);
-
-	return	0;
-=======
 			ediddata[3] = ediddata[3] + ediddata[2];
 			ediddata[2] = 0;
 		}
@@ -231,43 +119,11 @@ out:
 	mutex_unlock(&ast->modeset_lock);
 
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
  * Launch Aspeed DP
  */
-<<<<<<< HEAD
-void ast_dp_launch(struct drm_device *dev)
-{
-	u32 i = 0;
-	u8 bDPExecute = 1;
-	struct ast_device *ast = to_ast_device(dev);
-
-	// Wait one second then timeout.
-	while (ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xD1, ASTDP_MCU_FW_EXECUTING) !=
-		ASTDP_MCU_FW_EXECUTING) {
-		i++;
-		// wait 100 ms
-		msleep(100);
-
-		if (i >= 10) {
-			// DP would not be ready.
-			bDPExecute = 0;
-			break;
-		}
-	}
-
-	if (!bDPExecute)
-		drm_err(dev, "Wait DPMCU executing timeout\n");
-
-	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE5,
-			       (u8) ~ASTDP_HOST_EDID_READ_DONE_MASK,
-			       ASTDP_HOST_EDID_READ_DONE);
-}
-
-bool ast_dp_power_is_on(struct ast_device *ast)
-=======
 int ast_dp_launch(struct ast_device *ast)
 {
 	struct drm_device *dev = &ast->base;
@@ -294,7 +150,6 @@ int ast_dp_launch(struct ast_device *ast)
 }
 
 static bool ast_dp_power_is_on(struct ast_device *ast)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u8 vgacre3;
 
@@ -303,11 +158,7 @@ static bool ast_dp_power_is_on(struct ast_device *ast)
 	return !(vgacre3 & AST_DP_PHY_SLEEP);
 }
 
-<<<<<<< HEAD
-void ast_dp_power_on_off(struct drm_device *dev, bool on)
-=======
 static void ast_dp_power_on_off(struct drm_device *dev, bool on)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ast_device *ast = to_ast_device(dev);
 	// Read and Turn off DP PHY sleep
@@ -319,13 +170,6 @@ static void ast_dp_power_on_off(struct drm_device *dev, bool on)
 
 	// DP Power on/off
 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE3, (u8) ~AST_DP_PHY_SLEEP, bE3);
-<<<<<<< HEAD
-}
-
-
-
-void ast_dp_set_on_off(struct drm_device *dev, bool on)
-=======
 
 	msleep(50);
 }
@@ -349,7 +193,6 @@ static void ast_dp_link_training(struct ast_device *ast)
 }
 
 static void ast_dp_set_on_off(struct drm_device *dev, bool on)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ast_device *ast = to_ast_device(dev);
 	u8 video_on_off = on;
@@ -358,23 +201,6 @@ static void ast_dp_set_on_off(struct drm_device *dev, bool on)
 	// Video On/Off
 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE3, (u8) ~AST_DP_VIDEO_ENABLE, on);
 
-<<<<<<< HEAD
-	// If DP plug in and link successful then check video on / off status
-	if (ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDC, ASTDP_LINK_SUCCESS) &&
-		ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, ASTDP_HPD)) {
-		video_on_off <<= 4;
-		while (ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF,
-						ASTDP_MIRROR_VIDEO_ENABLE) != video_on_off) {
-			// wait 1 ms
-			mdelay(1);
-			if (++i > 200)
-				break;
-		}
-	}
-}
-
-void ast_dp_set_mode(struct drm_crtc *crtc, struct ast_vbios_mode_info *vbios_mode)
-=======
 	video_on_off <<= 4;
 	while (ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF,
 						ASTDP_MIRROR_VIDEO_ENABLE) != video_on_off) {
@@ -386,7 +212,6 @@ void ast_dp_set_mode(struct drm_crtc *crtc, struct ast_vbios_mode_info *vbios_mo
 }
 
 static void ast_dp_set_mode(struct drm_crtc *crtc, struct ast_vbios_mode_info *vbios_mode)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ast_device *ast = to_ast_device(crtc->dev);
 
@@ -459,8 +284,6 @@ static void ast_dp_set_mode(struct drm_crtc *crtc, struct ast_vbios_mode_info *v
 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE1, ASTDP_AND_CLEAR_MASK, ASTDP_MISC1);
 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xE2, ASTDP_AND_CLEAR_MASK, ModeIdx);
 }
-<<<<<<< HEAD
-=======
 
 static void ast_wait_for_vretrace(struct ast_device *ast)
 {
@@ -646,4 +469,3 @@ int ast_astdp_output_init(struct ast_device *ast)
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

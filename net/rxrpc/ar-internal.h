@@ -856,10 +856,6 @@ bool rxrpc_new_incoming_call(struct rxrpc_local *local,
 			     struct rxrpc_connection *conn,
 			     struct sockaddr_rxrpc *peer_srx,
 			     struct sk_buff *skb);
-<<<<<<< HEAD
-void rxrpc_accept_incoming_calls(struct rxrpc_local *);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int rxrpc_user_charge_accept(struct rxrpc_sock *, unsigned long);
 
 /*
@@ -972,10 +968,6 @@ void rxrpc_connect_client_calls(struct rxrpc_local *local);
 void rxrpc_expose_client_call(struct rxrpc_call *);
 void rxrpc_disconnect_client_call(struct rxrpc_bundle *, struct rxrpc_call *);
 void rxrpc_deactivate_bundle(struct rxrpc_bundle *bundle);
-<<<<<<< HEAD
-void rxrpc_put_client_conn(struct rxrpc_connection *, enum rxrpc_conn_trace);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void rxrpc_discard_expired_client_conns(struct rxrpc_local *local);
 void rxrpc_clean_up_local_conns(struct rxrpc_local *);
 
@@ -1064,11 +1056,7 @@ bool rxrpc_direct_abort(struct sk_buff *skb, enum rxrpc_abort_reason why,
 int rxrpc_io_thread(void *data);
 static inline void rxrpc_wake_up_io_thread(struct rxrpc_local *local)
 {
-<<<<<<< HEAD
-	wake_up_process(local->io_thread);
-=======
 	wake_up_process(READ_ONCE(local->io_thread));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline bool rxrpc_protocol_error(struct sk_buff *skb, enum rxrpc_abort_reason why)

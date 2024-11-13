@@ -6,20 +6,14 @@
  * Author: Arnaud Pouliquen <arnaud.pouliquen@st.com>.
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/iio/backend.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/iio/iio.h>
 #include <linux/iio/triggered_buffer.h>
 #include <linux/module.h>
 #include <linux/mod_devicetable.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
-=======
 #include <linux/property.h>
 #include <linux/regulator/consumer.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct iio_info iio_sd_mod_iio_info;
 
@@ -33,9 +27,6 @@ static const struct iio_chan_spec iio_sd_mod_ch = {
 	},
 };
 
-<<<<<<< HEAD
-static int iio_sd_mod_probe(struct platform_device *pdev)
-=======
 struct iio_sd_backend_priv {
 	struct regulator *vref;
 	int vref_mv;
@@ -89,7 +80,6 @@ static const struct iio_backend_info sd_backend_info = {
 };
 
 static int iio_sd_mod_register(struct platform_device *pdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct device *dev = &pdev->dev;
 	struct iio_dev *iio;
@@ -110,8 +100,6 @@ static int iio_sd_mod_register(struct platform_device *pdev)
 	return devm_iio_device_register(&pdev->dev, iio);
 }
 
-<<<<<<< HEAD
-=======
 static int iio_sd_mod_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -151,7 +139,6 @@ static int iio_sd_mod_probe(struct platform_device *pdev)
 	return devm_iio_backend_register(&pdev->dev, &sd_backend_info, priv);
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct of_device_id sd_adc_of_match[] = {
 	{ .compatible = "sd-modulator" },
 	{ .compatible = "ads1201" },
@@ -172,7 +159,4 @@ module_platform_driver(iio_sd_mod_adc);
 MODULE_DESCRIPTION("Basic sigma delta modulator");
 MODULE_AUTHOR("Arnaud Pouliquen <arnaud.pouliquen@st.com>");
 MODULE_LICENSE("GPL v2");
-<<<<<<< HEAD
-=======
 MODULE_IMPORT_NS(IIO_BACKEND);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -211,40 +211,6 @@ int cxl_await_media_ready(struct cxl_dev_state *cxlds)
 }
 EXPORT_SYMBOL_NS_GPL(cxl_await_media_ready, CXL);
 
-<<<<<<< HEAD
-static int wait_for_valid(struct pci_dev *pdev, int d)
-{
-	u32 val;
-	int rc;
-
-	/*
-	 * Memory_Info_Valid: When set, indicates that the CXL Range 1 Size high
-	 * and Size Low registers are valid. Must be set within 1 second of
-	 * deassertion of reset to CXL device. Likely it is already set by the
-	 * time this runs, but otherwise give a 1.5 second timeout in case of
-	 * clock skew.
-	 */
-	rc = pci_read_config_dword(pdev, d + CXL_DVSEC_RANGE_SIZE_LOW(0), &val);
-	if (rc)
-		return rc;
-
-	if (val & CXL_DVSEC_MEM_INFO_VALID)
-		return 0;
-
-	msleep(1500);
-
-	rc = pci_read_config_dword(pdev, d + CXL_DVSEC_RANGE_SIZE_LOW(0), &val);
-	if (rc)
-		return rc;
-
-	if (val & CXL_DVSEC_MEM_INFO_VALID)
-		return 0;
-
-	return -ETIMEDOUT;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cxl_set_mem_enable(struct cxl_dev_state *cxlds, u16 val)
 {
 	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
@@ -325,13 +291,6 @@ static int devm_cxl_enable_hdm(struct device *host, struct cxl_hdm *cxlhdm)
 	return devm_add_action_or_reset(host, disable_hdm, cxlhdm);
 }
 
-<<<<<<< HEAD
-int cxl_dvsec_rr_decode(struct device *dev, int d,
-			struct cxl_endpoint_dvsec_info *info)
-{
-	struct pci_dev *pdev = to_pci_dev(dev);
-	int hdm_count, rc, i, ranges = 0;
-=======
 int cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
 			struct cxl_endpoint_dvsec_info *info)
 {
@@ -339,7 +298,6 @@ int cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
 	struct cxl_dev_state *cxlds = pci_get_drvdata(pdev);
 	int hdm_count, rc, i, ranges = 0;
 	int d = cxlds->cxl_dvsec;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 cap, ctrl;
 
 	if (!d) {
@@ -366,15 +324,6 @@ int cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
 	if (!hdm_count || hdm_count > 2)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	rc = wait_for_valid(pdev, d);
-	if (rc) {
-		dev_dbg(dev, "Failure awaiting MEM_INFO_VALID (%d)\n", rc);
-		return rc;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The current DVSEC values are moot if the memory capability is
 	 * disabled, and they will remain moot after the HDM Decoder
@@ -392,13 +341,10 @@ int cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
 		u64 base, size;
 		u32 temp;
 
-<<<<<<< HEAD
-=======
 		rc = cxl_dvsec_mem_range_valid(cxlds, i);
 		if (rc)
 			return rc;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rc = pci_read_config_dword(
 			pdev, d + CXL_DVSEC_RANGE_SIZE_HIGH(i), &temp);
 		if (rc)
@@ -413,13 +359,6 @@ int cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
 
 		size |= temp & CXL_DVSEC_MEM_SIZE_LOW_MASK;
 		if (!size) {
-<<<<<<< HEAD
-			info->dvsec_range[i] = (struct range) {
-				.start = 0,
-				.end = CXL_RESOURCE_NONE,
-			};
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 
@@ -437,19 +376,10 @@ int cxl_dvsec_rr_decode(struct device *dev, struct cxl_port *port,
 
 		base |= temp & CXL_DVSEC_MEM_BASE_LOW_MASK;
 
-<<<<<<< HEAD
-		info->dvsec_range[i] = (struct range) {
-			.start = base,
-			.end = base + size - 1
-		};
-
-		ranges++;
-=======
 		info->dvsec_range[ranges++] = (struct range) {
 			.start = base,
 			.end = base + size - 1
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	info->ranges = ranges;
@@ -496,9 +426,6 @@ int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-	for (i = 0, allowed = 0; info->mem_enabled && i < info->ranges; i++) {
-=======
 	if (!info->mem_enabled) {
 		rc = devm_cxl_enable_hdm(&port->dev, cxlhdm);
 		if (rc)
@@ -508,7 +435,6 @@ int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
 	}
 
 	for (i = 0, allowed = 0; i < info->ranges; i++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct device *cxld_dev;
 
 		cxld_dev = device_find_child(&root->dev, &info->dvsec_range[i],
@@ -522,11 +448,7 @@ int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
 		allowed++;
 	}
 
-<<<<<<< HEAD
-	if (!allowed && info->mem_enabled) {
-=======
 	if (!allowed) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(dev, "Range register decodes outside platform defined CXL ranges.\n");
 		return -ENXIO;
 	}
@@ -540,18 +462,7 @@ int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
 	 * match. If at least one DVSEC range is enabled and allowed, skip HDM
 	 * Decoder Capability Enable.
 	 */
-<<<<<<< HEAD
-	if (info->mem_enabled)
-		return 0;
-
-	rc = devm_cxl_enable_hdm(&port->dev, cxlhdm);
-	if (rc)
-		return rc;
-
-	return devm_cxl_enable_mem(&port->dev, cxlds);
-=======
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_NS_GPL(cxl_hdm_decode_init, CXL);
 
@@ -825,24 +736,6 @@ static bool cxl_handle_endpoint_ras(struct cxl_dev_state *cxlds)
 
 static void cxl_dport_map_rch_aer(struct cxl_dport *dport)
 {
-<<<<<<< HEAD
-	struct cxl_rcrb_info *ri = &dport->rcrb;
-	void __iomem *dport_aer = NULL;
-	resource_size_t aer_phys;
-	struct device *host;
-
-	if (dport->rch && ri->aer_cap) {
-		host = dport->reg_map.host;
-		aer_phys = ri->aer_cap + ri->base;
-		dport_aer = devm_cxl_iomap_block(host, aer_phys,
-				sizeof(struct aer_capability_regs));
-	}
-
-	dport->regs.dport_aer = dport_aer;
-}
-
-static void cxl_dport_map_regs(struct cxl_dport *dport)
-=======
 	resource_size_t aer_phys;
 	struct device *host;
 	u16 aer_cap;
@@ -857,7 +750,6 @@ static void cxl_dport_map_regs(struct cxl_dport *dport)
 }
 
 static void cxl_dport_map_ras(struct cxl_dport *dport)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cxl_register_map *map = &dport->reg_map;
 	struct device *dev = dport->dport_dev;
@@ -867,31 +759,16 @@ static void cxl_dport_map_ras(struct cxl_dport *dport)
 	else if (cxl_map_component_regs(map, &dport->regs.component,
 					BIT(CXL_CM_CAP_CAP_ID_RAS)))
 		dev_dbg(dev, "Failed to map RAS capability.\n");
-<<<<<<< HEAD
-
-	if (dport->rch)
-		cxl_dport_map_rch_aer(dport);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void cxl_disable_rch_root_ints(struct cxl_dport *dport)
 {
 	void __iomem *aer_base = dport->regs.dport_aer;
-<<<<<<< HEAD
-	struct pci_host_bridge *bridge;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 aer_cmd_mask, aer_cmd;
 
 	if (!aer_base)
 		return;
 
-<<<<<<< HEAD
-	bridge = to_pci_host_bridge(dport->dport_dev);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Disable RCH root port command interrupts.
 	 * CXL 3.0 12.2.1.1 - RCH Downstream Port-detected Errors
@@ -900,36 +777,6 @@ static void cxl_disable_rch_root_ints(struct cxl_dport *dport)
 	 * the root cmd register's interrupts is required. But, PCI spec
 	 * shows these are disabled by default on reset.
 	 */
-<<<<<<< HEAD
-	if (bridge->native_aer) {
-		aer_cmd_mask = (PCI_ERR_ROOT_CMD_COR_EN |
-				PCI_ERR_ROOT_CMD_NONFATAL_EN |
-				PCI_ERR_ROOT_CMD_FATAL_EN);
-		aer_cmd = readl(aer_base + PCI_ERR_ROOT_COMMAND);
-		aer_cmd &= ~aer_cmd_mask;
-		writel(aer_cmd, aer_base + PCI_ERR_ROOT_COMMAND);
-	}
-}
-
-void cxl_setup_parent_dport(struct device *host, struct cxl_dport *dport)
-{
-	struct device *dport_dev = dport->dport_dev;
-
-	if (dport->rch) {
-		struct pci_host_bridge *host_bridge = to_pci_host_bridge(dport_dev);
-
-		if (host_bridge->native_aer)
-			dport->rcrb.aer_cap = cxl_rcrb_to_aer(dport_dev, dport->rcrb.base);
-	}
-
-	dport->reg_map.host = host;
-	cxl_dport_map_regs(dport);
-
-	if (dport->rch)
-		cxl_disable_rch_root_ints(dport);
-}
-EXPORT_SYMBOL_NS_GPL(cxl_setup_parent_dport, CXL);
-=======
 	aer_cmd_mask = (PCI_ERR_ROOT_CMD_COR_EN |
 			PCI_ERR_ROOT_CMD_NONFATAL_EN |
 			PCI_ERR_ROOT_CMD_FATAL_EN);
@@ -959,7 +806,6 @@ void cxl_dport_init_ras_reporting(struct cxl_dport *dport, struct device *host)
 	}
 }
 EXPORT_SYMBOL_NS_GPL(cxl_dport_init_ras_reporting, CXL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void cxl_handle_rdport_cor_ras(struct cxl_dev_state *cxlds,
 					  struct cxl_dport *dport)
@@ -1026,17 +872,6 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
 	struct pci_dev *pdev = to_pci_dev(cxlds->dev);
 	struct aer_capability_regs aer_regs;
 	struct cxl_dport *dport;
-<<<<<<< HEAD
-	struct cxl_port *port;
-	int severity;
-
-	port = cxl_pci_find_port(pdev, &dport);
-	if (!port)
-		return;
-
-	put_device(&port->dev);
-
-=======
 	int severity;
 
 	struct cxl_port *port __free(put_cxl_port) =
@@ -1044,7 +879,6 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
 	if (!port)
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!cxl_rch_get_aer_info(dport->regs.dport_aer, &aer_regs))
 		return;
 
@@ -1197,8 +1031,6 @@ bool cxl_endpoint_decoder_reset_detected(struct cxl_port *port)
 				     __cxl_endpoint_decoder_reset_detected);
 }
 EXPORT_SYMBOL_NS_GPL(cxl_endpoint_decoder_reset_detected, CXL);
-<<<<<<< HEAD
-=======
 
 int cxl_pci_get_bandwidth(struct pci_dev *pdev, struct access_coordinate *c)
 {
@@ -1222,4 +1054,3 @@ int cxl_pci_get_bandwidth(struct pci_dev *pdev, struct access_coordinate *c)
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

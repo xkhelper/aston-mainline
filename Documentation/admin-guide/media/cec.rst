@@ -42,20 +42,14 @@ dongles):
   ``persistent_config``: by default this is off, but when set to 1 the driver
   will store the current settings to the device's internal eeprom and restore
   it the next time the device is connected to the USB port.
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 - RainShadow Tech. Note: this driver does not support the persistent_config
   module option of the Pulse-Eight driver. The hardware supports it, but I
   have no plans to add this feature. But I accept patches :-)
 
-<<<<<<< HEAD
-=======
 - Extron DA HD 4K PLUS HDMI Distribution Amplifier. See
   :ref:`extron_da_hd_4k_plus` for more information.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Miscellaneous:
 
 - vivid: emulates a CEC receiver and CEC transmitter.
@@ -388,8 +382,6 @@ it later using ``--analyze-pin``.
 
 You can also use this as a full-fledged CEC device by configuring it
 using ``cec-ctl --tv -p0.0.0.0`` or ``cec-ctl --playback -p1.0.0.0``.
-<<<<<<< HEAD
-=======
 
 .. _extron_da_hd_4k_plus:
 
@@ -473,4 +465,3 @@ then the Hotplug Detect pin of the HDMI input will go low if all the detected
 Hotplug Detect pins of the HDMI Outputs are also low.
 
 This option may be changed dynamically.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

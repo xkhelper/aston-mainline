@@ -660,8 +660,6 @@ enum {
 #define FBNIC_SIG_PCS_INTR_MASK		0x11816		/* 0x46058 */
 #define FBNIC_CSR_END_SIG		0x1184e /* CSR section delimiter */
 
-<<<<<<< HEAD
-=======
 #define FBNIC_CSR_START_MAC_STAT	0x11a00
 #define FBNIC_MAC_STAT_RX_BYTE_COUNT_L	0x11a08		/* 0x46820 */
 #define FBNIC_MAC_STAT_RX_BYTE_COUNT_H	0x11a09		/* 0x46824 */
@@ -699,7 +697,6 @@ enum {
 #define FBNIC_MAC_STAT_TX_MULTICAST_H	0x11a4b		/* 0x4692c */
 #define FBNIC_MAC_STAT_TX_BROADCAST_L	0x11a4c		/* 0x46930 */
 #define FBNIC_MAC_STAT_TX_BROADCAST_H	0x11a4d		/* 0x46934 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* PUL User Registers */
 #define FBNIC_CSR_START_PUL_USER	0x31000	/* CSR section delimiter */
 #define FBNIC_PUL_OB_TLP_HDR_AW_CFG	0x3103d		/* 0xc40f4 */

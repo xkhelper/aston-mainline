@@ -155,10 +155,6 @@ int qcom_snd_parse_of(struct snd_soc_card *card)
 
 		if (platform || !codec) {
 			/* DPCM */
-<<<<<<< HEAD
-			snd_soc_dai_link_set_capabilities(link);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			link->ignore_suspend = 1;
 			link->nonatomic = 1;
 		}

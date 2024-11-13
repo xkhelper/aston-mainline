@@ -135,13 +135,8 @@ struct vnt_private {
 	struct vnt_tx_desc *apCurrTD[TYPE_MAXTD];
 	struct vnt_tx_desc *tail_td[TYPE_MAXTD];
 
-<<<<<<< HEAD
-	struct vnt_tx_desc *apTD0Rings;
-	struct vnt_tx_desc *apTD1Rings;
-=======
 	struct vnt_tx_desc *ap_td0_rings;
 	struct vnt_tx_desc *ap_td1_rings;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct vnt_rx_desc *aRD0Ring;
 	struct vnt_rx_desc *aRD1Ring;
@@ -194,17 +189,10 @@ struct vnt_private {
 
 	u8		byBBType; /* 0:11A, 1:11B, 2:11G */
 	u8		packet_type; /*
-<<<<<<< HEAD
-				       * 0:11a,1:11b,2:11gb (only CCK
-				       * in BasicRate), 3:11ga (OFDM in
-				       * Basic Rate)
-				       */
-=======
 				      * 0:11a,1:11b,2:11gb (only CCK
 				      * in BasicRate), 3:11ga (OFDM in
 				      * Basic Rate)
 				      */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned short wBasicRate;
 	unsigned char byACKRate;
 	unsigned char byTopOFDMBasicRate;

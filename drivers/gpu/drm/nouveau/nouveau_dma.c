@@ -72,11 +72,7 @@ void
 nv50_dma_push(struct nouveau_channel *chan, u64 offset, u32 length,
 	      bool no_prefetch)
 {
-<<<<<<< HEAD
-	struct nvif_user *user = &chan->drm->client.device.user;
-=======
 	struct nvif_user *user = &chan->cli->drm->client.device.user;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nouveau_bo *pb = chan->push.buffer;
 	int ip = (chan->dma.ib_put * 2) + chan->dma.ib_base;
 

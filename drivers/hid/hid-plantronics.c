@@ -38,15 +38,10 @@
 			    (usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER)
 
 #define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
-<<<<<<< HEAD
-
-#define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
-=======
 #define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
 
 #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
 #define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct plt_drv_data {
 	unsigned long device_type;
@@ -144,8 +139,6 @@ static int plantronics_event(struct hid_device *hdev, struct hid_field *field,
 
 		drv_data->last_volume_key_ts = cur_ts;
 	}
-<<<<<<< HEAD
-=======
 	if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
 		unsigned long prev_ts, cur_ts;
 
@@ -161,7 +154,6 @@ static int plantronics_event(struct hid_device *hdev, struct hid_field *field,
 
 		drv_data->last_volume_key_ts = cur_ts;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -235,15 +227,12 @@ static const struct hid_device_id plantronics_devices[] = {
 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
 					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
 		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
-<<<<<<< HEAD
-=======
 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
 					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
 		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
 					 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
 		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
 	{ }
 };

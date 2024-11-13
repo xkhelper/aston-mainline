@@ -179,13 +179,6 @@ void nilfs_btnode_delete(struct buffer_head *bh)
 }
 
 /**
-<<<<<<< HEAD
- * nilfs_btnode_prepare_change_key
- *  prepare to move contents of the block for old key to one of new key.
- *  the old buffer will not be removed, but might be reused for new buffer.
- *  it might return -ENOMEM because of memory allocation errors,
- *  and might return -EIO because of disk read errors.
-=======
  * nilfs_btnode_prepare_change_key - prepare to change the search key of a
  *                                   b-tree node block
  * @btnc: page cache in which the b-tree node block is buffered
@@ -212,7 +205,6 @@ void nilfs_btnode_delete(struct buffer_head *bh)
  * Return: 0 on success, or the following negative error code on failure.
  * * %-EIO	- I/O error (metadata corruption).
  * * %-ENOMEM	- Insufficient memory available.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int nilfs_btnode_prepare_change_key(struct address_space *btnc,
 				    struct nilfs_btnode_chkey_ctxt *ctxt)
@@ -274,10 +266,6 @@ retry:
 }
 
 /**
-<<<<<<< HEAD
- * nilfs_btnode_commit_change_key
- *  commit the change_key operation prepared by prepare_change_key().
-=======
  * nilfs_btnode_commit_change_key - commit the change of the search key of
  *                                  a b-tree node block
  * @btnc: page cache in which the b-tree node block is buffered
@@ -293,7 +281,6 @@ retry:
  *
  * As with nilfs_btnode_prepare_change_key(), the current implementation does
  * not support folio sizes larger than the page size.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void nilfs_btnode_commit_change_key(struct address_space *btnc,
 				    struct nilfs_btnode_chkey_ctxt *ctxt)
@@ -332,10 +319,6 @@ void nilfs_btnode_commit_change_key(struct address_space *btnc,
 }
 
 /**
-<<<<<<< HEAD
- * nilfs_btnode_abort_change_key
- *  abort the change_key operation prepared by prepare_change_key().
-=======
  * nilfs_btnode_abort_change_key - abort the change of the search key of a
  *                                 b-tree node block
  * @btnc: page cache in which the b-tree node block is buffered
@@ -349,7 +332,6 @@ void nilfs_btnode_commit_change_key(struct address_space *btnc,
  *
  * As with nilfs_btnode_prepare_change_key(), the current implementation does
  * not support folio sizes larger than the page size.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void nilfs_btnode_abort_change_key(struct address_space *btnc,
 				   struct nilfs_btnode_chkey_ctxt *ctxt)

@@ -8,10 +8,7 @@
 #include <linux/delay.h>
 
 #include <drm/drm_managed.h>
-<<<<<<< HEAD
-=======
 #include <drm/drm_print.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <generated/xe_wa_oob.h>
 
@@ -169,18 +166,11 @@ static int query_compatibility_version(struct xe_gsc *gsc)
 		return err;
 	}
 
-<<<<<<< HEAD
-	compat->major = version_query_rd(xe, &bo->vmap, rd_offset, compat_major);
-	compat->minor = version_query_rd(xe, &bo->vmap, rd_offset, compat_minor);
-
-	xe_gt_info(gt, "found GSC cv%u.%u\n", compat->major, compat->minor);
-=======
 	compat->major = version_query_rd(xe, &bo->vmap, rd_offset, proj_major);
 	compat->minor = version_query_rd(xe, &bo->vmap, rd_offset, compat_major);
 	compat->patch = version_query_rd(xe, &bo->vmap, rd_offset, compat_minor);
 
 	xe_gt_info(gt, "found GSC cv%u.%u.%u\n", compat->major, compat->minor, compat->patch);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out_bo:
 	xe_bo_unpin_map_no_vm(bo);
@@ -345,17 +335,11 @@ static int gsc_er_complete(struct xe_gt *gt)
 	if (er_status == GSCI_TIMER_STATUS_TIMER_EXPIRED) {
 		/*
 		 * XXX: we should trigger an FLR here, but we don't have support
-<<<<<<< HEAD
-		 * for that yet.
-		 */
-		xe_gt_err(gt, "GSC ER timed out!\n");
-=======
 		 * for that yet. Since we can't recover from the error, we
 		 * declare the device as wedged.
 		 */
 		xe_gt_err(gt, "GSC ER timed out!\n");
 		xe_device_declare_wedged(gt_to_xe(gt));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 	}
 
@@ -470,14 +454,6 @@ static void free_resources(void *arg)
 		xe_exec_queue_put(gsc->q);
 		gsc->q = NULL;
 	}
-<<<<<<< HEAD
-
-	if (gsc->private) {
-		xe_bo_unpin_map_no_vm(gsc->private);
-		gsc->private = NULL;
-	}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc)
@@ -497,16 +473,9 @@ int xe_gsc_init_post_hwconfig(struct xe_gsc *gsc)
 	if (!hwe)
 		return -ENODEV;
 
-<<<<<<< HEAD
-	bo = xe_bo_create_pin_map(xe, tile, NULL, SZ_4M,
-				  ttm_bo_type_kernel,
-				  XE_BO_FLAG_STOLEN |
-				  XE_BO_FLAG_GGTT);
-=======
 	bo = xe_managed_bo_create_pin_map(xe, tile, SZ_4M,
 					  XE_BO_FLAG_STOLEN |
 					  XE_BO_FLAG_GGTT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(bo))
 		return PTR_ERR(bo);
 
@@ -566,14 +535,10 @@ void xe_gsc_load_start(struct xe_gsc *gsc)
 
 	/* GSC FW survives GT reset and D3Hot */
 	if (gsc_fw_is_loaded(gt)) {
-<<<<<<< HEAD
-		xe_uc_fw_change_status(&gsc->fw, XE_UC_FIRMWARE_TRANSFERRED);
-=======
 		if (xe_gsc_proxy_init_done(gsc))
 			xe_uc_fw_change_status(&gsc->fw, XE_UC_FIRMWARE_RUNNING);
 		else
 			xe_uc_fw_change_status(&gsc->fw, XE_UC_FIRMWARE_TRANSFERRED);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -625,8 +590,6 @@ void xe_gsc_wa_14015076503(struct xe_gt *gt, bool prep)
 		msleep(200);
 	}
 }
-<<<<<<< HEAD
-=======
 
 /**
  * xe_gsc_print_info - print info about GSC FW status
@@ -659,4 +622,3 @@ void xe_gsc_print_info(struct xe_gsc *gsc, struct drm_printer *p)
 
 	xe_force_wake_put(gt_to_fw(gt), XE_FW_GSC);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -6,21 +6,14 @@
  */
 
 #include <linux/bitfield.h>
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/module.h>
 #include <linux/regulator/consumer.h>
 #include <linux/spi/spi.h>
 #include <linux/units.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/iio/buffer.h>
 #include <linux/iio/trigger_consumer.h>
@@ -149,11 +142,7 @@ enum tsc2046_state {
 struct tsc2046_adc_priv {
 	struct spi_device *spi;
 	const struct tsc2046_adc_dcfg *dcfg;
-<<<<<<< HEAD
-	struct regulator *vref_reg;
-=======
 	bool internal_vref;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct iio_trigger *trig;
 	struct hrtimer trig_timer;
@@ -269,11 +258,7 @@ static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
 	case TI_TSC2046_ADDR_VBAT:
 	case TI_TSC2046_ADDR_TEMP0:
 		pd |= TI_TSC2046_SER;
-<<<<<<< HEAD
-		if (!priv->vref_reg)
-=======
 		if (priv->internal_vref)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pd |= TI_TSC2046_PD1_VREF_ON;
 	}
 
@@ -289,10 +274,6 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
 				u32 *effective_speed_hz)
 {
 	struct tsc2046_adc_ch_cfg *ch = &priv->ch_cfg[ch_idx];
-<<<<<<< HEAD
-	struct tsc2046_adc_atom *rx_buf, *tx_buf;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int val, val_normalized = 0;
 	int ret, i, count_skip = 0, max_count;
 	struct spi_transfer xfer;
@@ -306,20 +287,6 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
 		max_count = 1;
 	}
 
-<<<<<<< HEAD
-	if (sizeof(*tx_buf) * max_count > PAGE_SIZE)
-		return -ENOSPC;
-
-	tx_buf = kcalloc(max_count, sizeof(*tx_buf), GFP_KERNEL);
-	if (!tx_buf)
-		return -ENOMEM;
-
-	rx_buf = kcalloc(max_count, sizeof(*rx_buf), GFP_KERNEL);
-	if (!rx_buf) {
-		ret = -ENOMEM;
-		goto free_tx;
-	}
-=======
 	if (sizeof(struct tsc2046_adc_atom) * max_count > PAGE_SIZE)
 		return -ENOSPC;
 
@@ -334,7 +301,6 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
 								GFP_KERNEL);
 	if (!rx_buf)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Do not enable automatic power down on working samples. Otherwise the
@@ -362,11 +328,7 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
 	if (ret) {
 		dev_err_ratelimited(&priv->spi->dev, "SPI transfer failed %pe\n",
 				    ERR_PTR(ret));
-<<<<<<< HEAD
-		goto free_bufs;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (effective_speed_hz)
@@ -377,18 +339,7 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
 		val_normalized += val;
 	}
 
-<<<<<<< HEAD
-	ret = DIV_ROUND_UP(val_normalized, max_count - count_skip);
-
-free_bufs:
-	kfree(rx_buf);
-free_tx:
-	kfree(tx_buf);
-
-	return ret;
-=======
 	return DIV_ROUND_UP(val_normalized, max_count - count_skip);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static size_t tsc2046_adc_group_set_layout(struct tsc2046_adc_priv *priv,
@@ -790,52 +741,6 @@ static void tsc2046_adc_parse_fwnode(struct tsc2046_adc_priv *priv)
 	}
 }
 
-<<<<<<< HEAD
-static void tsc2046_adc_regulator_disable(void *data)
-{
-	struct tsc2046_adc_priv *priv = data;
-
-	regulator_disable(priv->vref_reg);
-}
-
-static int tsc2046_adc_configure_regulator(struct tsc2046_adc_priv *priv)
-{
-	struct device *dev = &priv->spi->dev;
-	int ret;
-
-	priv->vref_reg = devm_regulator_get_optional(dev, "vref");
-	if (IS_ERR(priv->vref_reg)) {
-		/* If regulator exists but can't be get, return an error */
-		if (PTR_ERR(priv->vref_reg) != -ENODEV)
-			return PTR_ERR(priv->vref_reg);
-		priv->vref_reg = NULL;
-	}
-	if (!priv->vref_reg) {
-		/* Use internal reference */
-		priv->vref_mv = TI_TSC2046_INT_VREF;
-		return 0;
-	}
-
-	ret = regulator_enable(priv->vref_reg);
-	if (ret)
-		return ret;
-
-	ret = devm_add_action_or_reset(dev, tsc2046_adc_regulator_disable,
-				       priv);
-	if (ret)
-		return ret;
-
-	ret = regulator_get_voltage(priv->vref_reg);
-	if (ret < 0)
-		return ret;
-
-	priv->vref_mv = ret / MILLI;
-
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int tsc2046_adc_probe(struct spi_device *spi)
 {
 	const struct tsc2046_adc_dcfg *dcfg;
@@ -877,12 +782,6 @@ static int tsc2046_adc_probe(struct spi_device *spi)
 	indio_dev->num_channels = dcfg->num_channels;
 	indio_dev->info = &tsc2046_adc_info;
 
-<<<<<<< HEAD
-	ret = tsc2046_adc_configure_regulator(priv);
-	if (ret)
-		return ret;
-
-=======
 	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
 	if (ret < 0 && ret != -ENODEV)
 		return ret;
@@ -890,7 +789,6 @@ static int tsc2046_adc_probe(struct spi_device *spi)
 	priv->internal_vref = ret == -ENODEV;
 	priv->vref_mv = priv->internal_vref ? TI_TSC2046_INT_VREF : ret / MILLI;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tsc2046_adc_parse_fwnode(priv);
 
 	ret = tsc2046_adc_setup_spi_msg(priv);

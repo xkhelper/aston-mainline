@@ -876,12 +876,7 @@ static irqreturn_t bma180_trigger_handler(int irq, void *p)
 
 	mutex_lock(&data->mutex);
 
-<<<<<<< HEAD
-	for_each_set_bit(bit, indio_dev->active_scan_mask,
-			 indio_dev->masklength) {
-=======
 	iio_for_each_active_channel(indio_dev, bit) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = bma180_get_data_reg(data, bit);
 		if (ret < 0) {
 			mutex_unlock(&data->mutex);

@@ -37,10 +37,6 @@ Todolist:
 
    reporting-issues
    reporting-regressions
-<<<<<<< HEAD
-   security-bugs
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    bug-hunting
    bug-bisect
    tainted-kernels

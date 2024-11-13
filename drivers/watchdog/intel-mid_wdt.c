@@ -20,14 +20,8 @@
 #include <linux/types.h>
 #include <linux/watchdog.h>
 
-<<<<<<< HEAD
-#include <linux/platform_data/intel-mid_wdt.h>
-
-#include <asm/intel_scu_ipc.h>
-=======
 #include <linux/platform_data/x86/intel-mid_wdt.h>
 #include <linux/platform_data/x86/intel_scu_ipc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IPC_WATCHDOG 0xf8
 

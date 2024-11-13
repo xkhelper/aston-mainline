@@ -30,27 +30,18 @@ static void snd_gf1_dma_program(struct snd_gus_card * gus,
 	unsigned char dma_cmd;
 	unsigned int address_high;
 
-<<<<<<< HEAD
-	snd_printdd("dma_transfer: addr=0x%x, buf=0x%lx, count=0x%x\n",
-		    addr, buf_addr, count);
-=======
 	dev_dbg(gus->card->dev,
 		"dma_transfer: addr=0x%x, buf=0x%lx, count=0x%x\n",
 		addr, buf_addr, count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (gus->gf1.dma1 > 3) {
 		if (gus->gf1.enh_mode) {
 			address = addr >> 1;
 		} else {
 			if (addr & 0x1f) {
-<<<<<<< HEAD
-				snd_printd("snd_gf1_dma_transfer: unaligned address (0x%x)?\n", addr);
-=======
 				dev_dbg(gus->card->dev,
 					"%s: unaligned address (0x%x)?\n",
 					__func__, addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return;
 			}
 			address = (addr & 0x000c0000) | ((addr & 0x0003ffff) >> 1);
@@ -75,14 +66,9 @@ static void snd_gf1_dma_program(struct snd_gus_card * gus,
 	snd_gf1_dma_ack(gus);
 	snd_dma_program(gus->gf1.dma1, buf_addr, count, dma_cmd & SNDRV_GF1_DMA_READ ? DMA_MODE_READ : DMA_MODE_WRITE);
 #if 0
-<<<<<<< HEAD
-	snd_printk(KERN_DEBUG "address = 0x%x, count = 0x%x, dma_cmd = 0x%x\n",
-		   address << 1, count, dma_cmd);
-=======
 	dev_dbg(gus->card->dev,
 		"address = 0x%x, count = 0x%x, dma_cmd = 0x%x\n",
 		address << 1, count, dma_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	spin_lock_irqsave(&gus->reg_lock, flags);
 	if (gus->gf1.enh_mode) {
@@ -149,15 +135,9 @@ static void snd_gf1_dma_interrupt(struct snd_gus_card * gus)
 	snd_gf1_dma_program(gus, block->addr, block->buf_addr, block->count, (unsigned short) block->cmd);
 	kfree(block);
 #if 0
-<<<<<<< HEAD
-	snd_printd(KERN_DEBUG "program dma (IRQ) - "
-		   "addr = 0x%x, buffer = 0x%lx, count = 0x%x, cmd = 0x%x\n",
-		   block->addr, block->buf_addr, block->count, block->cmd);
-=======
 	dev_dbg(gus->card->dev,
 		"program dma (IRQ) - addr = 0x%x, buffer = 0x%lx, count = 0x%x, cmd = 0x%x\n",
 		block->addr, block->buf_addr, block->count, block->cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 
@@ -218,16 +198,6 @@ int snd_gf1_dma_transfer_block(struct snd_gus_card * gus,
 	*block = *__block;
 	block->next = NULL;
 
-<<<<<<< HEAD
-	snd_printdd("addr = 0x%x, buffer = 0x%lx, count = 0x%x, cmd = 0x%x\n",
-		    block->addr, (long) block->buffer, block->count,
-		    block->cmd);
-
-	snd_printdd("gus->gf1.dma_data_pcm_last = 0x%lx\n",
-		    (long)gus->gf1.dma_data_pcm_last);
-	snd_printdd("gus->gf1.dma_data_pcm = 0x%lx\n",
-		    (long)gus->gf1.dma_data_pcm);
-=======
 	dev_dbg(gus->card->dev,
 		"addr = 0x%x, buffer = 0x%lx, count = 0x%x, cmd = 0x%x\n",
 		block->addr, (long) block->buffer, block->count,
@@ -239,7 +209,6 @@ int snd_gf1_dma_transfer_block(struct snd_gus_card * gus,
 	dev_dbg(gus->card->dev,
 		"gus->gf1.dma_data_pcm = 0x%lx\n",
 		(long)gus->gf1.dma_data_pcm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irqsave(&gus->dma_lock, flags);
 	if (synth) {

@@ -58,10 +58,7 @@ enum {
 	ETHTOOL_MSG_MM_GET,
 	ETHTOOL_MSG_MM_SET,
 	ETHTOOL_MSG_MODULE_FW_FLASH_ACT,
-<<<<<<< HEAD
-=======
 	ETHTOOL_MSG_PHY_GET,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* add new constants above here */
 	__ETHTOOL_MSG_USER_CNT,
@@ -115,11 +112,8 @@ enum {
 	ETHTOOL_MSG_MM_GET_REPLY,
 	ETHTOOL_MSG_MM_NTF,
 	ETHTOOL_MSG_MODULE_FW_FLASH_NTF,
-<<<<<<< HEAD
-=======
 	ETHTOOL_MSG_PHY_GET_REPLY,
 	ETHTOOL_MSG_PHY_NTF,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* add new constants above here */
 	__ETHTOOL_MSG_KERNEL_CNT,
@@ -143,10 +137,7 @@ enum {
 	ETHTOOL_A_HEADER_DEV_INDEX,		/* u32 */
 	ETHTOOL_A_HEADER_DEV_NAME,		/* string */
 	ETHTOOL_A_HEADER_FLAGS,			/* u32 - ETHTOOL_FLAG_* */
-<<<<<<< HEAD
-=======
 	ETHTOOL_A_HEADER_PHY_INDEX,		/* u32 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* add new constants above here */
 	__ETHTOOL_A_HEADER_CNT,
@@ -569,13 +560,10 @@ enum {
 	 * a regular 100 Ohm cable and a part with the abnormal impedance value
 	 */
 	ETHTOOL_A_CABLE_RESULT_CODE_IMPEDANCE_MISMATCH,
-<<<<<<< HEAD
-=======
 	/* TDR not possible due to high noise level */
 	ETHTOOL_A_CABLE_RESULT_CODE_NOISE,
 	/* TDR resolution not possible / out of distance */
 	ETHTOOL_A_CABLE_RESULT_CODE_RESOLUTION_NOT_POSSIBLE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum {
@@ -585,8 +573,6 @@ enum {
 	ETHTOOL_A_CABLE_PAIR_D,
 };
 
-<<<<<<< HEAD
-=======
 /* Information source for specific results. */
 enum {
 	ETHTOOL_A_CABLE_INF_SRC_UNSPEC,
@@ -596,15 +582,11 @@ enum {
 	ETHTOOL_A_CABLE_INF_SRC_ALCD,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	ETHTOOL_A_CABLE_RESULT_UNSPEC,
 	ETHTOOL_A_CABLE_RESULT_PAIR,		/* u8 ETHTOOL_A_CABLE_PAIR_ */
 	ETHTOOL_A_CABLE_RESULT_CODE,		/* u8 ETHTOOL_A_CABLE_RESULT_CODE_ */
-<<<<<<< HEAD
-=======
 	ETHTOOL_A_CABLE_RESULT_SRC,		/* u32 ETHTOOL_A_CABLE_INF_SRC_ */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	__ETHTOOL_A_CABLE_RESULT_CNT,
 	ETHTOOL_A_CABLE_RESULT_MAX = (__ETHTOOL_A_CABLE_RESULT_CNT - 1)
@@ -614,10 +596,7 @@ enum {
 	ETHTOOL_A_CABLE_FAULT_LENGTH_UNSPEC,
 	ETHTOOL_A_CABLE_FAULT_LENGTH_PAIR,	/* u8 ETHTOOL_A_CABLE_PAIR_ */
 	ETHTOOL_A_CABLE_FAULT_LENGTH_CM,	/* u32 */
-<<<<<<< HEAD
-=======
 	ETHTOOL_A_CABLE_FAULT_LENGTH_SRC,	/* u32 ETHTOOL_A_CABLE_INF_SRC_ */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	__ETHTOOL_A_CABLE_FAULT_LENGTH_CNT,
 	ETHTOOL_A_CABLE_FAULT_LENGTH_MAX = (__ETHTOOL_A_CABLE_FAULT_LENGTH_CNT - 1)
@@ -1005,10 +984,7 @@ enum {
 	ETHTOOL_A_RSS_INDIR,		/* binary */
 	ETHTOOL_A_RSS_HKEY,		/* binary */
 	ETHTOOL_A_RSS_INPUT_XFRM,	/* u32 */
-<<<<<<< HEAD
-=======
 	ETHTOOL_A_RSS_START_CONTEXT,	/* u32 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	__ETHTOOL_A_RSS_CNT,
 	ETHTOOL_A_RSS_MAX = (__ETHTOOL_A_RSS_CNT - 1),
@@ -1093,8 +1069,6 @@ enum {
 	ETHTOOL_A_MODULE_FW_FLASH_MAX = (__ETHTOOL_A_MODULE_FW_FLASH_CNT - 1)
 };
 
-<<<<<<< HEAD
-=======
 enum {
 	ETHTOOL_A_PHY_UNSPEC,
 	ETHTOOL_A_PHY_HEADER,			/* nest - _A_HEADER_* */
@@ -1111,7 +1085,6 @@ enum {
 	ETHTOOL_A_PHY_MAX = (__ETHTOOL_A_PHY_CNT - 1)
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* generic netlink info */
 #define ETHTOOL_GENL_NAME "ethtool"
 #define ETHTOOL_GENL_VERSION 1

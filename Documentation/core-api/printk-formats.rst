@@ -576,20 +576,12 @@ The field width is passed by value, the bitmap is passed by reference.
 Helper macros cpumask_pr_args() and nodemask_pr_args() are available to ease
 printing cpumask and nodemask.
 
-<<<<<<< HEAD
-Flags bitfields such as page flags, page_type, gfp_flags
-=======
 Flags bitfields such as page flags and gfp_flags
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 --------------------------------------------------------
 
 ::
 
 	%pGp	0x17ffffc0002036(referenced|uptodate|lru|active|private|node=0|zone=2|lastcpupid=0x1fffff)
-<<<<<<< HEAD
-	%pGt	0xffffff7f(buddy)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	%pGg	GFP_USER|GFP_DMA32|GFP_NOWARN
 	%pGv	read|exec|mayread|maywrite|mayexec|denywrite
 
@@ -598,10 +590,6 @@ would construct the value. The type of flags is given by the third
 character. Currently supported are:
 
         - p - [p]age flags, expects value of type (``unsigned long *``)
-<<<<<<< HEAD
-        - t - page [t]ype, expects value of type (``unsigned int *``)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         - v - [v]ma_flags, expects value of type (``unsigned long *``)
         - g - [g]fp_flags, expects value of type (``gfp_t *``)
 

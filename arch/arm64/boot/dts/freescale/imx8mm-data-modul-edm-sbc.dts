@@ -168,11 +168,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_fec1>;
 	phy-mode = "rgmii-id";
-<<<<<<< HEAD
-	phy-handle = <&fec1_phy>;
-=======
 	phy-handle = <&fec1_phy_bcm>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phy-supply = <&buck4_reg>;
 	fsl,magic-packet;
 	status = "okay";
@@ -182,11 +178,7 @@
 		#size-cells = <0>;
 
 		/* Atheros AR8031 PHY */
-<<<<<<< HEAD
-		fec1_phy: ethernet-phy@0 {
-=======
 		fec1_phy_ath: ethernet-phy@0 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "ethernet-phy-ieee802.3-c22";
 			reg = <0>;
 			/*
@@ -199,10 +191,7 @@
 			reset-deassert-us = <10000>;
 			qca,keep-pll-enabled;
 			vddio-supply = <&vddio>;
-<<<<<<< HEAD
-=======
 			status = "disabled";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			vddio: vddio-regulator {
 				regulator-name = "VDDIO";
@@ -214,8 +203,6 @@
 				regulator-name = "VDDH";
 			};
 		};
-<<<<<<< HEAD
-=======
 
 		/* Broadcom BCM54213PE PHY */
 		fec1_phy_bcm: ethernet-phy@1 {
@@ -230,7 +217,6 @@
 			reset-assert-us = <10000>;
 			reset-deassert-us = <10000>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

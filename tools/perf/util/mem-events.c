@@ -29,11 +29,8 @@ struct perf_mem_event perf_mem_events[PERF_MEM_EVENTS__MAX] = {
 };
 #undef E
 
-<<<<<<< HEAD
-=======
 bool perf_mem_record[PERF_MEM_EVENTS__MAX] = { 0 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static char mem_loads_name[100];
 static char mem_stores_name[100];
 
@@ -168,11 +165,7 @@ int perf_pmu__mem_events_parse(struct perf_pmu *pmu, const char *str)
 				continue;
 
 			if (strstr(e->tag, tok))
-<<<<<<< HEAD
-				e->record = found = true;
-=======
 				perf_mem_record[j] = found = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		tok = strtok_r(NULL, ",", &saveptr);
@@ -201,11 +194,7 @@ static bool perf_pmu__mem_events_supported(const char *mnt, struct perf_pmu *pmu
 	return !stat(path, &st);
 }
 
-<<<<<<< HEAD
-int perf_pmu__mem_events_init(struct perf_pmu *pmu)
-=======
 static int __perf_pmu__mem_events_init(struct perf_pmu *pmu)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const char *mnt = sysfs__mount();
 	bool found = false;
@@ -232,8 +221,6 @@ static int __perf_pmu__mem_events_init(struct perf_pmu *pmu)
 	return found ? 0 : -ENOENT;
 }
 
-<<<<<<< HEAD
-=======
 int perf_pmu__mem_events_init(void)
 {
 	struct perf_pmu *pmu = NULL;
@@ -246,7 +233,6 @@ int perf_pmu__mem_events_init(void)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void perf_pmu__mem_events_list(struct perf_pmu *pmu)
 {
 	int j;
@@ -277,11 +263,7 @@ int perf_mem_events__record_args(const char **rec_argv, int *argv_nr)
 		for (int j = 0; j < PERF_MEM_EVENTS__MAX; j++) {
 			e = perf_pmu__mem_events_ptr(pmu, j);
 
-<<<<<<< HEAD
-			if (!e->record)
-=======
 			if (!perf_mem_record[j])
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 
 			if (!e->supported) {

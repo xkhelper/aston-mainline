@@ -987,11 +987,7 @@ void intel_modeset_setup_hw_state(struct drm_i915_private *i915,
 		}
 	}
 
-<<<<<<< HEAD
-	intel_fbc_sanitize(i915);
-=======
 	intel_fbc_sanitize(&i915->display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intel_sanitize_plane_mapping(i915);
 

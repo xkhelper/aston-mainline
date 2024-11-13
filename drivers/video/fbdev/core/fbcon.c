@@ -64,11 +64,8 @@
 #include <linux/console.h>
 #include <linux/string.h>
 #include <linux/kd.h>
-<<<<<<< HEAD
-=======
 #include <linux/panic.h>
 #include <linux/printk.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/slab.h>
 #include <linux/fb.h>
 #include <linux/fbcon.h>
@@ -275,8 +272,6 @@ static int fbcon_get_rotate(struct fb_info *info)
 	return (ops) ? ops->rotate : 0;
 }
 
-<<<<<<< HEAD
-=======
 static bool fbcon_skip_panic(struct fb_info *info)
 {
 /* panic_cpu is not exported, and can't be used if built as module. Use
@@ -289,17 +284,12 @@ static bool fbcon_skip_panic(struct fb_info *info)
 #endif
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int fbcon_is_inactive(struct vc_data *vc, struct fb_info *info)
 {
 	struct fbcon_ops *ops = info->fbcon_par;
 
 	return (info->state != FBINFO_STATE_RUNNING ||
-<<<<<<< HEAD
-		vc->vc_mode != KD_TEXT || ops->graphics);
-=======
 		vc->vc_mode != KD_TEXT || ops->graphics || fbcon_skip_panic(info));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int get_color(struct vc_data *vc, struct fb_info *info,
@@ -522,15 +512,10 @@ static int search_fb_in_map(int idx)
 	int i, retval = 0;
 
 	for (i = first_fb_vc; i <= last_fb_vc; i++) {
-<<<<<<< HEAD
-		if (con2fb_map[i] == idx)
-			retval = 1;
-=======
 		if (con2fb_map[i] == idx) {
 			retval = 1;
 			break;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return retval;
 }
@@ -540,15 +525,10 @@ static int search_for_mapped_con(void)
 	int i, retval = 0;
 
 	for (i = first_fb_vc; i <= last_fb_vc; i++) {
-<<<<<<< HEAD
-		if (con2fb_map[i] != -1)
-			retval = 1;
-=======
 		if (con2fb_map[i] != -1) {
 			retval = 1;
 			break;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return retval;
 }
@@ -885,11 +865,8 @@ static int set_con2fb_map(int unit, int newidx, int user)
 			return err;
 
 		fbcon_add_cursor_work(info);
-<<<<<<< HEAD
-=======
 	} else if (vc) {
 		set_blitting_type(vc, info);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	con2fb_map[unit] = newidx;
@@ -1782,15 +1759,7 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
 
 	if (fbcon_is_inactive(vc, info))
 		return true;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	mdelay(1000);
-=======
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	mdelay(1000);
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	fbcon_cursor(vc, false);
 
 	/*

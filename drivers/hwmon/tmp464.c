@@ -147,19 +147,11 @@ static int tmp464_temp_read(struct device *dev, u32 attr, int channel, long *val
 {
 	struct tmp464_data *data = dev_get_drvdata(dev);
 	struct regmap *regmap = data->regmap;
-<<<<<<< HEAD
-	unsigned int regval, regval2;
-	int err = 0;
-
-	mutex_lock(&data->update_lock);
-
-=======
 	unsigned int regs[2];
 	unsigned int regval;
 	u16 regvals[2];
 	int err = 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (attr) {
 	case hwmon_temp_max_alarm:
 		err = regmap_read(regmap, TMP464_THERM_STATUS_REG, &regval);
@@ -180,36 +172,17 @@ static int tmp464_temp_read(struct device *dev, u32 attr, int channel, long *val
 		 * complete. That means we have to cache the value internally
 		 * for one measurement cycle and report the cached value.
 		 */
-<<<<<<< HEAD
-=======
 		mutex_lock(&data->update_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!data->valid || time_after(jiffies, data->last_updated +
 					       msecs_to_jiffies(data->update_interval))) {
 			err = regmap_read(regmap, TMP464_REMOTE_OPEN_REG, &regval);
 			if (err < 0)
-<<<<<<< HEAD
-				break;
-=======
 				goto unlock;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			data->open_reg = regval;
 			data->last_updated = jiffies;
 			data->valid = true;
 		}
 		*val = !!(data->open_reg & BIT(channel + 7));
-<<<<<<< HEAD
-		break;
-	case hwmon_temp_max_hyst:
-		err = regmap_read(regmap, TMP464_THERM_LIMIT[channel], &regval);
-		if (err < 0)
-			break;
-		err = regmap_read(regmap, TMP464_TEMP_HYST_REG, &regval2);
-		if (err < 0)
-			break;
-		regval -= regval2;
-		*val = temp_from_reg(regval);
-=======
 unlock:
 		mutex_unlock(&data->update_lock);
 		break;
@@ -220,7 +193,6 @@ unlock:
 		if (err < 0)
 			break;
 		*val = temp_from_reg(regvals[0] - regvals[1]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case hwmon_temp_max:
 		err = regmap_read(regmap, TMP464_THERM_LIMIT[channel], &regval);
@@ -229,23 +201,12 @@ unlock:
 		*val = temp_from_reg(regval);
 		break;
 	case hwmon_temp_crit_hyst:
-<<<<<<< HEAD
-		err = regmap_read(regmap, TMP464_THERM2_LIMIT[channel], &regval);
-		if (err < 0)
-			break;
-		err = regmap_read(regmap, TMP464_TEMP_HYST_REG, &regval2);
-		if (err < 0)
-			break;
-		regval -= regval2;
-		*val = temp_from_reg(regval);
-=======
 		regs[0] = TMP464_THERM2_LIMIT[channel];
 		regs[1] = TMP464_TEMP_HYST_REG;
 		err = regmap_multi_reg_read(regmap, regs, regvals, 2);
 		if (err < 0)
 			break;
 		*val = temp_from_reg(regvals[0] - regvals[1]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case hwmon_temp_crit:
 		err = regmap_read(regmap, TMP464_THERM2_LIMIT[channel], &regval);
@@ -277,11 +238,6 @@ unlock:
 		break;
 	}
 
-<<<<<<< HEAD
-	mutex_unlock(&data->update_lock);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -606,29 +562,15 @@ static int tmp464_probe_child_from_dt(struct device *dev,
 static int tmp464_probe_from_dt(struct device *dev, struct tmp464_data *data)
 {
 	const struct device_node *np = dev->of_node;
-<<<<<<< HEAD
-	struct device_node *child;
-	int err;
-
-	for_each_child_of_node(np, child) {
-=======
 	int err;
 
 	for_each_child_of_node_scoped(np, child) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (strcmp(child->name, "channel"))
 			continue;
 
 		err = tmp464_probe_child_from_dt(dev, child, data);
-<<<<<<< HEAD
-		if (err) {
-			of_node_put(child);
-			return err;
-		}
-=======
 		if (err)
 			return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

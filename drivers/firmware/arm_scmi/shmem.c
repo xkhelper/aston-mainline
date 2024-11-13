@@ -2,20 +2,13 @@
 /*
  * For transport using shared mem structure.
  *
-<<<<<<< HEAD
- * Copyright (C) 2019 ARM Ltd.
-=======
  * Copyright (C) 2019-2024 ARM Ltd.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/ktime.h>
 #include <linux/io.h>
-<<<<<<< HEAD
-=======
 #include <linux/of.h>
 #include <linux/of_address.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/processor.h>
 #include <linux/types.h>
 
@@ -41,14 +34,9 @@ struct scmi_shared_mem {
 	u8 msg_payload[];
 };
 
-<<<<<<< HEAD
-void shmem_tx_prepare(struct scmi_shared_mem __iomem *shmem,
-		      struct scmi_xfer *xfer, struct scmi_chan_info *cinfo)
-=======
 static void shmem_tx_prepare(struct scmi_shared_mem __iomem *shmem,
 			     struct scmi_xfer *xfer,
 			     struct scmi_chan_info *cinfo)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	ktime_t stop;
 
@@ -88,22 +76,13 @@ static void shmem_tx_prepare(struct scmi_shared_mem __iomem *shmem,
 		memcpy_toio(shmem->msg_payload, xfer->tx.buf, xfer->tx.len);
 }
 
-<<<<<<< HEAD
-u32 shmem_read_header(struct scmi_shared_mem __iomem *shmem)
-=======
 static u32 shmem_read_header(struct scmi_shared_mem __iomem *shmem)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return ioread32(&shmem->msg_header);
 }
 
-<<<<<<< HEAD
-void shmem_fetch_response(struct scmi_shared_mem __iomem *shmem,
-			  struct scmi_xfer *xfer)
-=======
 static void shmem_fetch_response(struct scmi_shared_mem __iomem *shmem,
 				 struct scmi_xfer *xfer)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	size_t len = ioread32(&shmem->length);
 
@@ -115,13 +94,8 @@ static void shmem_fetch_response(struct scmi_shared_mem __iomem *shmem,
 	memcpy_fromio(xfer->rx.buf, shmem->msg_payload + 4, xfer->rx.len);
 }
 
-<<<<<<< HEAD
-void shmem_fetch_notification(struct scmi_shared_mem __iomem *shmem,
-			      size_t max_len, struct scmi_xfer *xfer)
-=======
 static void shmem_fetch_notification(struct scmi_shared_mem __iomem *shmem,
 				     size_t max_len, struct scmi_xfer *xfer)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	size_t len = ioread32(&shmem->length);
 
@@ -132,22 +106,13 @@ static void shmem_fetch_notification(struct scmi_shared_mem __iomem *shmem,
 	memcpy_fromio(xfer->rx.buf, shmem->msg_payload, xfer->rx.len);
 }
 
-<<<<<<< HEAD
-void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem)
-=======
 static void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	iowrite32(SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE, &shmem->channel_status);
 }
 
-<<<<<<< HEAD
-bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
-		     struct scmi_xfer *xfer)
-=======
 static bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
 			    struct scmi_xfer *xfer)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u16 xfer_id;
 
@@ -161,22 +126,12 @@ static bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
 		 SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
 }
 
-<<<<<<< HEAD
-bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem)
-=======
 static bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return (ioread32(&shmem->channel_status) &
 			SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
 }
 
-<<<<<<< HEAD
-bool shmem_channel_intr_enabled(struct scmi_shared_mem __iomem *shmem)
-{
-	return ioread32(&shmem->flags) & SCMI_SHMEM_FLAG_INTR_ENABLED;
-}
-=======
 static bool shmem_channel_intr_enabled(struct scmi_shared_mem __iomem *shmem)
 {
 	return ioread32(&shmem->flags) & SCMI_SHMEM_FLAG_INTR_ENABLED;
@@ -237,4 +192,3 @@ const struct scmi_shared_mem_operations *scmi_shared_mem_operations_get(void)
 {
 	return &scmi_shmem_ops;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

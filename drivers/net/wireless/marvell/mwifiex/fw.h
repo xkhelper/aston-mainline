@@ -210,12 +210,9 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
 #define TLV_TYPE_RANDOM_MAC         (PROPRIETARY_TLV_BASE_ID + 236)
 #define TLV_TYPE_CHAN_ATTR_CFG      (PROPRIETARY_TLV_BASE_ID + 237)
 #define TLV_TYPE_MAX_CONN           (PROPRIETARY_TLV_BASE_ID + 279)
-<<<<<<< HEAD
-=======
 #define TLV_TYPE_HOST_MLME          (PROPRIETARY_TLV_BASE_ID + 307)
 #define TLV_TYPE_UAP_STA_FLAGS      (PROPRIETARY_TLV_BASE_ID + 313)
 #define TLV_TYPE_SAE_PWE_MODE       (PROPRIETARY_TLV_BASE_ID + 339)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MWIFIEX_TX_DATA_BUF_SIZE_2K        2048
 
@@ -411,10 +408,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
 #define HostCmd_CMD_STA_CONFIGURE		      0x023f
 #define HostCmd_CMD_CHAN_REGION_CFG		      0x0242
 #define HostCmd_CMD_PACKET_AGGR_CTRL		      0x0251
-<<<<<<< HEAD
-=======
 #define HostCmd_CMD_ADD_NEW_STATION		      0x025f
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define PROTOCOL_NO_SECURITY        0x01
 #define PROTOCOL_STATIC_WEP         0x02
@@ -425,11 +419,8 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
 #define KEY_MGMT_NONE               0x04
 #define KEY_MGMT_PSK                0x02
 #define KEY_MGMT_EAP                0x01
-<<<<<<< HEAD
-=======
 #define KEY_MGMT_PSK_SHA256         0x100
 #define KEY_MGMT_SAE                0x400
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CIPHER_TKIP                 0x04
 #define CIPHER_AES_CCMP             0x08
 #define VALID_CIPHER_BITMAP         0x0c
@@ -515,12 +506,9 @@ enum mwifiex_channel_flags {
 #define HostCmd_ACT_GET_TX              0x0008
 #define HostCmd_ACT_GET_BOTH            0x000c
 
-<<<<<<< HEAD
-=======
 #define HostCmd_ACT_REMOVE_STA          0x0
 #define HostCmd_ACT_ADD_STA             0x1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RF_ANTENNA_AUTO                 0xFFFF
 
 #define HostCmd_SET_SEQ_NO_BSS_INFO(seq, num, type) \
@@ -765,8 +753,6 @@ struct uap_rxpd {
 	u8 flags;
 } __packed;
 
-<<<<<<< HEAD
-=======
 struct mwifiex_auth {
 	__le16 auth_alg;
 	__le16 auth_transaction;
@@ -786,7 +772,6 @@ struct mwifiex_ieee80211_mgmt {
 	struct mwifiex_auth auth;
 } __packed;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mwifiex_fw_chan_stats {
 	u8 chan_num;
 	u8 bandcfg;
@@ -846,14 +831,11 @@ struct mwifiex_ie_types_ssid_param_set {
 	u8 ssid[];
 } __packed;
 
-<<<<<<< HEAD
-=======
 struct mwifiex_ie_types_host_mlme {
 	struct mwifiex_ie_types_header header;
 	u8 host_mlme;
 } __packed;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mwifiex_ie_types_num_probes {
 	struct mwifiex_ie_types_header header;
 	__le16 num_probes;
@@ -957,8 +939,6 @@ struct mwifiex_ie_types_tdls_idle_timeout {
 	__le16 value;
 } __packed;
 
-<<<<<<< HEAD
-=======
 #define MWIFIEX_AUTHTYPE_SAE 6
 
 struct mwifiex_ie_types_sae_pwe_mode {
@@ -966,7 +946,6 @@ struct mwifiex_ie_types_sae_pwe_mode {
 	u8 pwe[];
 } __packed;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mwifiex_ie_types_rsn_param_set {
 	struct mwifiex_ie_types_header header;
 	u8 rsn_ie[];
@@ -1648,11 +1627,7 @@ struct host_cmd_ds_802_11_scan_rsp {
 
 struct host_cmd_ds_802_11_scan_ext {
 	u32   reserved;
-<<<<<<< HEAD
-	u8    tlv_buffer[1];
-=======
 	u8    tlv_buffer[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } __packed;
 
 struct mwifiex_ie_types_bss_mode {
@@ -2363,8 +2338,6 @@ struct host_cmd_ds_sta_configure {
 	u8 tlv_buffer[];
 } __packed;
 
-<<<<<<< HEAD
-=======
 struct mwifiex_ie_types_sta_flag {
 	struct mwifiex_ie_types_header header;
 	__le32 sta_flags;
@@ -2379,7 +2352,6 @@ struct host_cmd_ds_add_station {
 	u8 tlv[];
 } __packed;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct host_cmd_ds_command {
 	__le16 command;
 	__le16 size;
@@ -2458,10 +2430,7 @@ struct host_cmd_ds_command {
 		struct host_cmd_ds_chan_region_cfg reg_cfg;
 		struct host_cmd_ds_pkt_aggr_ctrl pkt_aggr_ctrl;
 		struct host_cmd_ds_sta_configure sta_cfg;
-<<<<<<< HEAD
-=======
 		struct host_cmd_ds_add_station sta_info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} params;
 } __packed;
 

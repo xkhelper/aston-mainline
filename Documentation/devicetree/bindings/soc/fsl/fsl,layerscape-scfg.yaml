@@ -23,12 +23,9 @@ properties:
           - fsl,ls1028a-scfg
           - fsl,ls1043a-scfg
           - fsl,ls1046a-scfg
-<<<<<<< HEAD
-=======
           - fsl,ls1088a-isc
           - fsl,ls2080a-isc
           - fsl,lx2160a-isc
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - const: syscon
 
   reg:

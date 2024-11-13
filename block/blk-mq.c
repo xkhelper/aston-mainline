@@ -376,13 +376,7 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 	rq->io_start_time_ns = 0;
 	rq->stats_sectors = 0;
 	rq->nr_phys_segments = 0;
-<<<<<<< HEAD
-#if defined(CONFIG_BLK_DEV_INTEGRITY)
 	rq->nr_integrity_segments = 0;
-#endif
-=======
-	rq->nr_integrity_segments = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rq->end_io = NULL;
 	rq->end_io_data = NULL;
 
@@ -1132,11 +1126,7 @@ static void blk_complete_reqs(struct llist_head *list)
 		rq->q->mq_ops->complete(rq);
 }
 
-<<<<<<< HEAD
-static __latent_entropy void blk_done_softirq(struct softirq_action *h)
-=======
 static __latent_entropy void blk_done_softirq(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	blk_complete_reqs(this_cpu_ptr(&blk_cpu_done));
 }
@@ -2554,12 +2544,9 @@ static void blk_mq_bio_to_request(struct request *rq, struct bio *bio,
 	rq->__sector = bio->bi_iter.bi_sector;
 	rq->write_hint = bio->bi_write_hint;
 	blk_rq_bio_prep(rq, bio, nr_segs);
-<<<<<<< HEAD
-=======
 	if (bio_integrity(bio))
 		rq->nr_integrity_segments = blk_rq_count_integrity_sg(rq->q,
 								      bio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* This can't fail, since GFP_NOIO includes __GFP_DIRECT_RECLAIM. */
 	err = blk_crypto_rq_bio_prep(rq, bio, GFP_NOIO);
@@ -2767,10 +2754,7 @@ static void blk_mq_dispatch_plug_list(struct blk_plug *plug, bool from_sched)
 void blk_mq_flush_plug_list(struct blk_plug *plug, bool from_schedule)
 {
 	struct request *rq;
-<<<<<<< HEAD
-=======
 	unsigned int depth;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * We may have been called recursively midway through handling
@@ -2781,10 +2765,7 @@ void blk_mq_flush_plug_list(struct blk_plug *plug, bool from_schedule)
 	 */
 	if (plug->rq_count == 0)
 		return;
-<<<<<<< HEAD
-=======
 	depth = plug->rq_count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	plug->rq_count = 0;
 
 	if (!plug->multiple_queues && !plug->has_elevator && !from_schedule) {
@@ -2792,10 +2773,7 @@ void blk_mq_flush_plug_list(struct blk_plug *plug, bool from_schedule)
 
 		rq = rq_list_peek(&plug->mq_list);
 		q = rq->q;
-<<<<<<< HEAD
-=======
 		trace_block_unplug(q, depth, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Peek first request and see if we have a ->queue_rqs() hook.
@@ -2965,11 +2943,7 @@ void blk_mq_submit_bio(struct bio *bio)
 	struct blk_plug *plug = current->plug;
 	const int is_sync = op_is_sync(bio->bi_opf);
 	struct blk_mq_hw_ctx *hctx;
-<<<<<<< HEAD
-	unsigned int nr_segs = 1;
-=======
 	unsigned int nr_segs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct request *rq;
 	blk_status_t ret;
 
@@ -3011,18 +2985,10 @@ void blk_mq_submit_bio(struct bio *bio)
 		goto queue_exit;
 	}
 
-<<<<<<< HEAD
-	if (unlikely(bio_may_exceed_limits(bio, &q->limits))) {
-		bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
-		if (!bio)
-			goto queue_exit;
-	}
-=======
 	bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
 	if (!bio)
 		goto queue_exit;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!bio_integrity_prep(bio))
 		goto queue_exit;
 
@@ -4344,15 +4310,12 @@ int blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
 	/* mark the queue as mq asap */
 	q->mq_ops = set->ops;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * ->tag_set has to be setup before initialize hctx, which cpuphp
 	 * handler needs it for checking queue mapping
 	 */
 	q->tag_set = set;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (blk_mq_alloc_ctxs(q))
 		goto err_exit;
 
@@ -4371,11 +4334,6 @@ int blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
 	INIT_WORK(&q->timeout_work, blk_mq_timeout_work);
 	blk_queue_rq_timeout(q, set->timeout ? set->timeout : 30 * HZ);
 
-<<<<<<< HEAD
-	q->tag_set = set;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	q->queue_flags |= QUEUE_FLAG_MQ_DEFAULT;
 
 	INIT_DELAYED_WORK(&q->requeue_work, blk_mq_requeue_work);

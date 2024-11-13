@@ -328,8 +328,6 @@
 	type DPSTREAMCLK1_GATE_DISABLE;\
 	type DPSTREAMCLK2_GATE_DISABLE;\
 	type DPSTREAMCLK3_GATE_DISABLE;\
-<<<<<<< HEAD
-=======
 	type SYMCLKA_FE_GATE_DISABLE;\
 	type SYMCLKB_FE_GATE_DISABLE;\
 	type SYMCLKC_FE_GATE_DISABLE;\
@@ -341,7 +339,6 @@
 	type SYMCLKD_GATE_DISABLE;\
 	type SYMCLKE_GATE_DISABLE;\
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DCCG401_REG_FIELD_LIST(type) \
 	type OTG0_TMDS_PIXEL_RATE_DIV;\
@@ -360,15 +357,7 @@
 	type SYMCLK32_LE3_SRC_SEL;\
 	type SYMCLK32_LE2_EN;\
 	type SYMCLK32_LE3_EN;\
-<<<<<<< HEAD
-	type DP_DTO_ENABLE[MAX_PIPES];\
-	type DSCCLK0_DTO_DB_EN;\
-	type DSCCLK1_DTO_DB_EN;\
-	type DSCCLK2_DTO_DB_EN;\
-	type DSCCLK3_DTO_DB_EN;
-=======
 	type DP_DTO_ENABLE[MAX_PIPES];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct dccg_shift {
 	DCCG_REG_FIELD_LIST(uint8_t)

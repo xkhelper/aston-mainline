@@ -6,11 +6,7 @@
 #include <kunit/test.h>
 #include <kunit/visibility.h>
 
-<<<<<<< HEAD
-#include "tests/xe_bo_test.h"
-=======
 #include "tests/xe_kunit_helpers.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "tests/xe_pci_test.h"
 #include "tests/xe_test.h"
 
@@ -40,12 +36,8 @@ static int ccs_test_migrate(struct xe_tile *tile, struct xe_bo *bo,
 
 	/* Optionally clear bo *and* CCS data in VRAM. */
 	if (clear) {
-<<<<<<< HEAD
-		fence = xe_migrate_clear(tile->migrate, bo, bo->ttm.resource);
-=======
 		fence = xe_migrate_clear(tile->migrate, bo, bo->ttm.resource,
 					 XE_MIGRATE_CLEAR_FLAG_FULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(fence)) {
 			KUNIT_FAIL(test, "Failed to submit bo clear.\n");
 			return PTR_ERR(fence);
@@ -133,11 +125,7 @@ static void ccs_test_run_tile(struct xe_device *xe, struct xe_tile *tile,
 		kunit_info(test, "Testing system memory\n");
 
 	bo = xe_bo_create_user(xe, NULL, NULL, SZ_1M, DRM_XE_GEM_CPU_CACHING_WC,
-<<<<<<< HEAD
-			       ttm_bo_type_device, bo_flags);
-=======
 			       bo_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(bo)) {
 		KUNIT_FAIL(test, "Failed to create bo.\n");
 		return;
@@ -167,18 +155,11 @@ out_unlock:
 
 static int ccs_test_run_device(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_tile *tile;
 	int id;
 
 	if (!xe_device_has_flat_ccs(xe)) {
-<<<<<<< HEAD
-		kunit_info(test, "Skipping non-flat-ccs device.\n");
-=======
 		kunit_skip(test, "non-flat-ccs device\n");
 		return 0;
 	}
@@ -186,7 +167,6 @@ static int ccs_test_run_device(struct xe_device *xe)
 	/* For xe2+ dgfx, we don't handle ccs metadata */
 	if (GRAPHICS_VER(xe) >= 20 && IS_DGFX(xe)) {
 		kunit_skip(test, "xe2+ dgfx device\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -204,20 +184,12 @@ static int ccs_test_run_device(struct xe_device *xe)
 	return 0;
 }
 
-<<<<<<< HEAD
-void xe_ccs_migrate_kunit(struct kunit *test)
-{
-	xe_call_for_each_device(ccs_test_run_device);
-}
-EXPORT_SYMBOL_IF_KUNIT(xe_ccs_migrate_kunit);
-=======
 static void xe_ccs_migrate_kunit(struct kunit *test)
 {
 	struct xe_device *xe = test->priv;
 
 	ccs_test_run_device(xe);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int evict_test_run_tile(struct xe_device *xe, struct xe_tile *tile, struct kunit *test)
 {
@@ -234,10 +206,6 @@ static int evict_test_run_tile(struct xe_device *xe, struct xe_tile *tile, struc
 		xe_vm_lock(vm, false);
 		bo = xe_bo_create_user(xe, NULL, vm, 0x10000,
 				       DRM_XE_GEM_CPU_CACHING_WC,
-<<<<<<< HEAD
-				       ttm_bo_type_device,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       bo_flags);
 		xe_vm_unlock(vm);
 		if (IS_ERR(bo)) {
@@ -247,11 +215,7 @@ static int evict_test_run_tile(struct xe_device *xe, struct xe_tile *tile, struc
 
 		external = xe_bo_create_user(xe, NULL, NULL, 0x10000,
 					     DRM_XE_GEM_CPU_CACHING_WC,
-<<<<<<< HEAD
-					     ttm_bo_type_device, bo_flags);
-=======
 					     bo_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(external)) {
 			KUNIT_FAIL(test, "external bo create err=%pe\n", external);
 			goto cleanup_bo;
@@ -368,21 +332,12 @@ cleanup_bo:
 
 static int evict_test_run_device(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_tile *tile;
 	int id;
 
 	if (!IS_DGFX(xe)) {
-<<<<<<< HEAD
-		kunit_info(test, "Skipping non-discrete device %s.\n",
-			   dev_name(xe->drm.dev));
-=======
 		kunit_skip(test, "non-discrete device\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -396,13 +351,6 @@ static int evict_test_run_device(struct xe_device *xe)
 	return 0;
 }
 
-<<<<<<< HEAD
-void xe_bo_evict_kunit(struct kunit *test)
-{
-	xe_call_for_each_device(evict_test_run_device);
-}
-EXPORT_SYMBOL_IF_KUNIT(xe_bo_evict_kunit);
-=======
 static void xe_bo_evict_kunit(struct kunit *test)
 {
 	struct xe_device *xe = test->priv;
@@ -423,4 +371,3 @@ struct kunit_suite xe_bo_test_suite = {
 	.init = xe_kunit_helper_xe_device_live_test_init,
 };
 EXPORT_SYMBOL_IF_KUNIT(xe_bo_test_suite);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

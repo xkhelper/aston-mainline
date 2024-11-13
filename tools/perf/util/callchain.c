@@ -1797,8 +1797,6 @@ s64 callchain_avg_cycles(struct callchain_node *cnode)
 
 	return cycles;
 }
-<<<<<<< HEAD
-=======
 
 int sample__for_each_callchain_node(struct thread *thread, struct evsel *evsel,
 				    struct perf_sample *sample, int max_stack,
@@ -1834,4 +1832,3 @@ int sample__for_each_callchain_node(struct thread *thread, struct evsel *evsel,
 	}
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

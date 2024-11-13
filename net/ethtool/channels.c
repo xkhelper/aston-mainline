@@ -114,12 +114,7 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
 	struct net_device *dev = req_info->dev;
 	struct ethtool_channels channels = {};
 	struct nlattr **tb = info->attrs;
-<<<<<<< HEAD
-	u32 err_attr, max_rxfh_in_use;
-	u64 max_rxnfc_in_use;
-=======
 	u32 err_attr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	dev->ethtool_ops->get_channels(dev, &channels);
@@ -170,26 +165,9 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	/* ensure the new Rx count fits within the configured Rx flow
-	 * indirection table/rxnfc settings
-	 */
-	if (ethtool_get_max_rxnfc_channel(dev, &max_rxnfc_in_use))
-		max_rxnfc_in_use = 0;
-	max_rxfh_in_use = ethtool_get_max_rxfh_channel(dev);
-	if (channels.combined_count + channels.rx_count <= max_rxfh_in_use) {
-		GENL_SET_ERR_MSG_FMT(info, "requested channel counts are too low for existing indirection table (%d)", max_rxfh_in_use);
-		return -EINVAL;
-	}
-	if (channels.combined_count + channels.rx_count <= max_rxnfc_in_use) {
-		GENL_SET_ERR_MSG(info, "requested channel counts are too low for existing ntuple filter settings");
-		return -EINVAL;
-	}
-=======
 	ret = ethtool_check_max_channel(dev, channels, info);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Disabling channels, query zero-copy AF_XDP sockets */
 	from_channel = channels.combined_count +

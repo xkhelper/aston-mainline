@@ -14,10 +14,7 @@ properties:
   compatible:
     enum:
       - qcom,hdmi-phy-8996
-<<<<<<< HEAD
-=======
       - qcom,hdmi-phy-8998
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 6

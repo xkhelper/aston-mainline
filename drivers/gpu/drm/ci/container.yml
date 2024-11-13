@@ -28,8 +28,6 @@ debian/x86_64_test-vk:
   rules:
     - when: never
 
-<<<<<<< HEAD
-=======
 debian/arm64_test-vk:
   rules:
     - when: never
@@ -38,7 +36,6 @@ debian/arm64_test-gl:
   rules:
     - when: never
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 fedora/x86_64_build:
   rules:
     - when: never

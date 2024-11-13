@@ -155,8 +155,6 @@ int tee_device_register(struct tee_device *teedev);
 void tee_device_unregister(struct tee_device *teedev);
 
 /**
-<<<<<<< HEAD
-=======
  * tee_device_set_dev_groups() - Set device attribute groups
  * @teedev:	Device to register
  * @dev_groups: Attribute groups
@@ -169,7 +167,6 @@ void tee_device_set_dev_groups(struct tee_device *teedev,
 			       const struct attribute_group **dev_groups);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * tee_session_calc_client_uuid() - Calculates client UUID for session
  * @uuid:		Resulting UUID
  * @connection_method:	Connection method for session (TEE_IOCTL_LOGIN_*)

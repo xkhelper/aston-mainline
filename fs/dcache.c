@@ -1913,10 +1913,6 @@ void d_instantiate_new(struct dentry *entry, struct inode *inode)
 	__d_instantiate(entry, inode);
 	WARN_ON(!(inode->i_state & I_NEW));
 	inode->i_state &= ~I_NEW & ~I_CREATING;
-<<<<<<< HEAD
-	smp_mb();
-	wake_up_bit(&inode->i_state, __I_NEW);
-=======
 	/*
 	 * Pairs with the barrier in prepare_to_wait_event() to make sure
 	 * ___wait_var_event() either sees the bit cleared or
@@ -1924,7 +1920,6 @@ void d_instantiate_new(struct dentry *entry, struct inode *inode)
 	 */
 	smp_mb();
 	inode_wake_up_bit(inode, __I_NEW);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(&inode->i_lock);
 }
 EXPORT_SYMBOL(d_instantiate_new);
@@ -2178,12 +2173,6 @@ seqretry:
  * without taking d_lock and checking d_seq sequence count against @seq
  * returned here.
  *
-<<<<<<< HEAD
- * A refcount may be taken on the found dentry with the d_rcu_to_refcount
- * function.
- *
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Alternatively, __d_lookup_rcu may be called again to look up the child of
  * the returned dentry, so long as its parent's seqlock is checked after the
  * child is looked up. Thus, an interlocking stepping of sequence lock checks

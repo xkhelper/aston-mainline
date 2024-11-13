@@ -736,15 +736,11 @@ int caam_qi_init(struct platform_device *caam_pdev)
 	struct device *ctrldev = &caam_pdev->dev, *qidev;
 	struct caam_drv_private *ctrlpriv;
 	const cpumask_t *cpus = qman_affine_cpus();
-<<<<<<< HEAD
-	cpumask_t clean_mask;
-=======
 	cpumask_var_t clean_mask;
 
 	err = -ENOMEM;
 	if (!zalloc_cpumask_var(&clean_mask, GFP_KERNEL))
 		goto fail_cpumask;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ctrlpriv = dev_get_drvdata(ctrldev);
 	qidev = ctrldev;
@@ -753,29 +749,16 @@ int caam_qi_init(struct platform_device *caam_pdev)
 	err = init_cgr(qidev);
 	if (err) {
 		dev_err(qidev, "CGR initialization failed: %d\n", err);
-<<<<<<< HEAD
-		return err;
-=======
 		goto fail_cgr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Initialise response FQs */
 	err = alloc_rsp_fqs(qidev);
 	if (err) {
 		dev_err(qidev, "Can't allocate CAAM response FQs: %d\n", err);
-<<<<<<< HEAD
-		free_rsp_fqs();
-		return err;
-	}
-
-	cpumask_clear(&clean_mask);
-
-=======
 		goto fail_fqs;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Enable the NAPI contexts on each of the core which has an affine
 	 * portal.
@@ -791,11 +774,7 @@ int caam_qi_init(struct platform_device *caam_pdev)
 			err = -ENOMEM;
 			goto fail;
 		}
-<<<<<<< HEAD
-		cpumask_set_cpu(i, &clean_mask);
-=======
 		cpumask_set_cpu(i, clean_mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		priv->net_dev = net_dev;
 		net_dev->dev = *qidev;
 
@@ -810,11 +789,7 @@ int caam_qi_init(struct platform_device *caam_pdev)
 	if (!qi_cache) {
 		dev_err(qidev, "Can't allocate CAAM cache\n");
 		err = -ENOMEM;
-<<<<<<< HEAD
-		goto fail2;
-=======
 		goto fail;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	caam_debugfs_qi_init(ctrlpriv);
@@ -824,14 +799,6 @@ int caam_qi_init(struct platform_device *caam_pdev)
 		goto fail2;
 
 	dev_info(qidev, "Linux CAAM Queue I/F driver initialised\n");
-<<<<<<< HEAD
-	return 0;
-
-fail2:
-	free_rsp_fqs();
-fail:
-	free_caam_qi_pcpu_netdev(&clean_mask);
-=======
 	goto free_cpumask;
 
 fail2:
@@ -846,6 +813,5 @@ fail_cgr:
 free_cpumask:
 	free_cpumask_var(clean_mask);
 fail_cpumask:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }

@@ -6,10 +6,7 @@
 #include "target.h"
 
 struct evlist;
-<<<<<<< HEAD
-=======
 struct hashamp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct perf_ftrace {
 	struct evlist		*evlist;
@@ -19,10 +16,7 @@ struct perf_ftrace {
 	struct list_head	notrace;
 	struct list_head	graph_funcs;
 	struct list_head	nograph_funcs;
-<<<<<<< HEAD
-=======
 	struct hashmap		*profile_hash;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		percpu_buffer_size;
 	bool			inherit;
 	bool			use_nsec;
@@ -33,10 +27,7 @@ struct perf_ftrace {
 	int			graph_noirqs;
 	int			graph_verbose;
 	int			graph_thresh;
-<<<<<<< HEAD
-=======
 	int			graph_tail;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct filter_entry {

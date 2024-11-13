@@ -163,20 +163,12 @@ static struct quota_module_name module_names[] = INIT_QUOTA_MODULE_NAMES;
 /* SLAB cache for dquot structures */
 static struct kmem_cache *dquot_cachep;
 
-<<<<<<< HEAD
-int register_quota_format(struct quota_format_type *fmt)
-=======
 void register_quota_format(struct quota_format_type *fmt)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	spin_lock(&dq_list_lock);
 	fmt->qf_next = quota_formats;
 	quota_formats = fmt;
 	spin_unlock(&dq_list_lock);
-<<<<<<< HEAD
-	return 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(register_quota_format);
 
@@ -1838,10 +1830,6 @@ void dquot_claim_space_nodirty(struct inode *inode, qsize_t number)
 	spin_unlock(&inode->i_lock);
 	mark_all_dquot_dirty(dquots);
 	srcu_read_unlock(&dquot_srcu, index);
-<<<<<<< HEAD
-	return;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(dquot_claim_space_nodirty);
 
@@ -1883,10 +1871,6 @@ void dquot_reclaim_space_nodirty(struct inode *inode, qsize_t number)
 	spin_unlock(&inode->i_lock);
 	mark_all_dquot_dirty(dquots);
 	srcu_read_unlock(&dquot_srcu, index);
-<<<<<<< HEAD
-	return;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(dquot_reclaim_space_nodirty);
 
@@ -2419,11 +2403,7 @@ static int vfs_setup_quota_inode(struct inode *inode, int type)
 int dquot_load_quota_sb(struct super_block *sb, int type, int format_id,
 	unsigned int flags)
 {
-<<<<<<< HEAD
-	struct quota_format_type *fmt = find_quota_format(format_id);
-=======
 	struct quota_format_type *fmt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct quota_info *dqopt = sb_dqopt(sb);
 	int error;
 
@@ -2433,10 +2413,7 @@ int dquot_load_quota_sb(struct super_block *sb, int type, int format_id,
 	if (WARN_ON_ONCE(flags & DQUOT_SUSPENDED))
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
 	fmt = find_quota_format(format_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!fmt)
 		return -ESRCH;
 	if (!sb->dq_op || !sb->s_qcop ||
@@ -2617,12 +2594,8 @@ static int dquot_quota_enable(struct super_block *sb, unsigned int flags)
 			goto out_err;
 		}
 		if (sb_has_quota_limits_enabled(sb, type)) {
-<<<<<<< HEAD
-			ret = -EBUSY;
-=======
 			/* compatible with XFS */
 			ret = -EEXIST;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out_err;
 		}
 		spin_lock(&dq_state_lock);
@@ -2636,12 +2609,6 @@ out_err:
 		if (flags & qtype_enforce_flag(type))
 			dquot_disable(sb, type, DQUOT_LIMITS_ENABLED);
 	}
-<<<<<<< HEAD
-	/* Error code translation for better compatibility with XFS */
-	if (ret == -EBUSY)
-		ret = -EEXIST;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

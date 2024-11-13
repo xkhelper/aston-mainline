@@ -2277,10 +2277,7 @@
 			max-frequency = <200000000>;
 			power-domains = <&sysc R8A774A1_PD_ALWAYS_ON>;
 			resets = <&cpg 314>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_ds1 32>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -2294,10 +2291,7 @@
 			max-frequency = <200000000>;
 			power-domains = <&sysc R8A774A1_PD_ALWAYS_ON>;
 			resets = <&cpg 313>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_ds1 33>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -2311,10 +2305,7 @@
 			max-frequency = <200000000>;
 			power-domains = <&sysc R8A774A1_PD_ALWAYS_ON>;
 			resets = <&cpg 312>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_ds1 34>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -2328,10 +2319,7 @@
 			max-frequency = <200000000>;
 			power-domains = <&sysc R8A774A1_PD_ALWAYS_ON>;
 			resets = <&cpg 311>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_ds1 35>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -2480,10 +2468,7 @@
 			clocks = <&cpg CPG_MOD 615>;
 			power-domains = <&sysc R8A774A1_PD_A3VC>;
 			resets = <&cpg 615>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vc0 16>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvb0: fcp@fe96f000 {
@@ -2492,10 +2477,7 @@
 			clocks = <&cpg CPG_MOD 607>;
 			power-domains = <&sysc R8A774A1_PD_A3VC>;
 			resets = <&cpg 607>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vi0 5>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvd0: fcp@fea27000 {

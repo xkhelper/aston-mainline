@@ -317,11 +317,7 @@ int kvm_smccc_call_handler(struct kvm_vcpu *vcpu)
 				 * to the guest, and hide SSBS so that the
 				 * guest stays protected.
 				 */
-<<<<<<< HEAD
-				if (cpus_have_final_cap(ARM64_SSBS))
-=======
 				if (kvm_has_feat(vcpu->kvm, ID_AA64PFR1_EL1, SSBS, IMP))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					break;
 				fallthrough;
 			case SPECTRE_UNAFFECTED:
@@ -432,11 +428,7 @@ int kvm_arm_copy_fw_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
  * Convert the workaround level into an easy-to-compare number, where higher
  * values mean better protection.
  */
-<<<<<<< HEAD
-static int get_kernel_wa_level(u64 regid)
-=======
 static int get_kernel_wa_level(struct kvm_vcpu *vcpu, u64 regid)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (regid) {
 	case KVM_REG_ARM_SMCCC_ARCH_WORKAROUND_1:
@@ -457,11 +449,7 @@ static int get_kernel_wa_level(struct kvm_vcpu *vcpu, u64 regid)
 			 * don't have any FW mitigation if SSBS is there at
 			 * all times.
 			 */
-<<<<<<< HEAD
-			if (cpus_have_final_cap(ARM64_SSBS))
-=======
 			if (kvm_has_feat(vcpu->kvm, ID_AA64PFR1_EL1, SSBS, IMP))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return KVM_REG_ARM_SMCCC_ARCH_WORKAROUND_2_NOT_AVAIL;
 			fallthrough;
 		case SPECTRE_UNAFFECTED:
@@ -498,11 +486,7 @@ int kvm_arm_get_fw_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
 	case KVM_REG_ARM_SMCCC_ARCH_WORKAROUND_1:
 	case KVM_REG_ARM_SMCCC_ARCH_WORKAROUND_2:
 	case KVM_REG_ARM_SMCCC_ARCH_WORKAROUND_3:
-<<<<<<< HEAD
-		val = get_kernel_wa_level(reg->id) & KVM_REG_FEATURE_LEVEL_MASK;
-=======
 		val = get_kernel_wa_level(vcpu, reg->id) & KVM_REG_FEATURE_LEVEL_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case KVM_REG_ARM_STD_BMAP:
 		val = READ_ONCE(smccc_feat->std_bmap);
@@ -604,11 +588,7 @@ int kvm_arm_set_fw_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
 		if (val & ~KVM_REG_FEATURE_LEVEL_MASK)
 			return -EINVAL;
 
-<<<<<<< HEAD
-		if (get_kernel_wa_level(reg->id) < val)
-=======
 		if (get_kernel_wa_level(vcpu, reg->id) < val)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 
 		return 0;
@@ -644,11 +624,7 @@ int kvm_arm_set_fw_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
 		 * We can deal with NOT_AVAIL on NOT_REQUIRED, but not the
 		 * other way around.
 		 */
-<<<<<<< HEAD
-		if (get_kernel_wa_level(reg->id) < wa_level)
-=======
 		if (get_kernel_wa_level(vcpu, reg->id) < wa_level)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL;
 
 		return 0;

@@ -157,14 +157,7 @@ struct msm_dsi_host {
 
 	struct drm_display_mode *mode;
 	struct drm_dsc_config *dsc;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	unsigned int dsc_slice_per_pkt;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	unsigned int dsc_slice_per_pkt;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 	/* connected device info */
 	unsigned int channel;
@@ -550,11 +543,7 @@ static unsigned long dsi_adjust_pclk_for_compression(const struct drm_display_mo
 
 	int new_htotal = mode->htotal - mode->hdisplay + new_hdisplay;
 
-<<<<<<< HEAD
-	return new_htotal * mode->vtotal * drm_mode_vrefresh(mode);
-=======
 	return mult_frac(mode->clock * 1000u, new_htotal, mode->htotal);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static unsigned long dsi_get_pclk_rate(const struct drm_display_mode *mode,
@@ -562,11 +551,7 @@ static unsigned long dsi_get_pclk_rate(const struct drm_display_mode *mode,
 {
 	unsigned long pclk_rate;
 
-<<<<<<< HEAD
-	pclk_rate = mode->clock * 1000;
-=======
 	pclk_rate = mode->clock * 1000u;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (dsc)
 		pclk_rate = dsi_adjust_pclk_for_compression(mode, dsc);
@@ -862,15 +847,7 @@ static void dsi_ctrl_enable(struct msm_dsi_host *msm_host,
 		dsi_write(msm_host, REG_DSI_CPHY_MODE_CTRL, BIT(0));
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mode)
-=======
-static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mode, u32 hdisplay)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mode)
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 {
 	struct drm_dsc_config *dsc = msm_host->dsc;
 	u32 reg, reg_ctrl, reg_ctrl2;
@@ -882,8 +859,6 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
 	/* first calculate dsc parameters and then program
 	 * compress mode registers
 	 */
-<<<<<<< HEAD
-<<<<<<< HEAD
 	slice_per_intf = dsc->slice_count;
 
 	total_bytes_per_intf = dsc->slice_chunk_size * slice_per_intf;
@@ -891,29 +866,6 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
 
 	eol_byte_num = total_bytes_per_intf % 3;
 	pkt_per_line = slice_per_intf / msm_host->dsc_slice_per_pkt;
-=======
-	slice_per_intf = msm_dsc_get_slices_per_intf(dsc, hdisplay);
-=======
-	slice_per_intf = dsc->slice_count;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
-
-	total_bytes_per_intf = dsc->slice_chunk_size * slice_per_intf;
-	bytes_per_pkt = dsc->slice_chunk_size * msm_host->dsc_slice_per_pkt;
-
-	eol_byte_num = total_bytes_per_intf % 3;
-<<<<<<< HEAD
-
-	/*
-	 * Typically, pkt_per_line = slice_per_intf * slice_per_pkt.
-	 *
-	 * Since the current driver only supports slice_per_pkt = 1,
-	 * pkt_per_line will be equal to slice per intf for now.
-	 */
-	pkt_per_line = slice_per_intf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	pkt_per_line = slice_per_intf / msm_host->dsc_slice_per_pkt;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 	if (is_cmd_mode) /* packet data type */
 		reg = DSI_COMMAND_COMPRESSION_MODE_CTRL_STREAM0_DATATYPE(MIPI_DSI_DCS_LONG_WRITE);
@@ -1033,15 +985,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
 
 	if (msm_host->mode_flags & MIPI_DSI_MODE_VIDEO) {
 		if (msm_host->dsc)
-<<<<<<< HEAD
-<<<<<<< HEAD
 			dsi_update_dsc_timing(msm_host, false);
-=======
-			dsi_update_dsc_timing(msm_host, false, mode->hdisplay);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-			dsi_update_dsc_timing(msm_host, false);
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 		dsi_write(msm_host, REG_DSI_ACTIVE_H,
 			DSI_ACTIVE_H_START(ha_start) |
@@ -1062,15 +1006,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
 			DSI_ACTIVE_VSYNC_VPOS_END(vs_end));
 	} else {		/* command mode */
 		if (msm_host->dsc)
-<<<<<<< HEAD
-<<<<<<< HEAD
 			dsi_update_dsc_timing(msm_host, true);
-=======
-			dsi_update_dsc_timing(msm_host, true, mode->hdisplay);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-			dsi_update_dsc_timing(msm_host, true);
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 		/* image data and 1 byte write_memory_start cmd */
 		if (!msm_host->dsc)
@@ -1078,22 +1014,8 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
 		else
 			/*
 			 * When DSC is enabled, WC = slice_chunk_size * slice_per_pkt + 1.
-<<<<<<< HEAD
-<<<<<<< HEAD
 			 */
 			wc = msm_host->dsc->slice_chunk_size * msm_host->dsc_slice_per_pkt + 1;
-=======
-			 * Currently, the driver only supports default value of slice_per_pkt = 1
-			 *
-			 * TODO: Expand mipi_dsi_device struct to hold slice_per_pkt info
-			 *       and adjust DSC math to account for slice_per_pkt.
-			 */
-			wc = msm_host->dsc->slice_chunk_size + 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-			 */
-			wc = msm_host->dsc->slice_chunk_size * msm_host->dsc_slice_per_pkt + 1;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 		dsi_write(msm_host, REG_DSI_CMD_MDP_STREAM0_CTRL,
 			DSI_CMD_MDP_STREAM0_CTRL_WORD_COUNT(wc) |
@@ -1698,8 +1620,6 @@ static int dsi_host_attach(struct mipi_dsi_host *host,
 	msm_host->lanes = dsi->lanes;
 	msm_host->format = dsi->format;
 	msm_host->mode_flags = dsi->mode_flags;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if (dsi->dsc) {
 		msm_host->dsc = dsi->dsc;
 		msm_host->dsc_slice_per_pkt = dsi->dsc_slice_per_pkt;
@@ -1707,19 +1627,6 @@ static int dsi_host_attach(struct mipi_dsi_host *host,
 		if (!msm_host->dsc_slice_per_pkt)
 			msm_host->dsc_slice_per_pkt = 1;
 	}
-=======
-	if (dsi->dsc)
-		msm_host->dsc = dsi->dsc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	if (dsi->dsc) {
-		msm_host->dsc = dsi->dsc;
-		msm_host->dsc_slice_per_pkt = dsi->dsc_slice_per_pkt;
-		/* for backwards compatibility, assume 1 if not set */
-		if (!msm_host->dsc_slice_per_pkt)
-			msm_host->dsc_slice_per_pkt = 1;
-	}
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 	ret = dsi_dev_attach(msm_host->pdev);
 	if (ret)
@@ -1855,17 +1762,6 @@ static int dsi_populate_dsc_params(struct msm_dsi_host *msm_host, struct drm_dsc
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	if (dsc->bits_per_component != 8) {
-		DRM_DEV_ERROR(&msm_host->pdev->dev, "DSI does not support bits_per_component != 8 yet\n");
-		return -EOPNOTSUPP;
-	}
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	dsc->simple_422 = 0;
 	dsc->convert_rgb = 1;
 	dsc->vbr_enable = 0;
@@ -1873,13 +1769,6 @@ static int dsi_populate_dsc_params(struct msm_dsi_host *msm_host, struct drm_dsc
 	drm_dsc_set_const_params(dsc);
 	drm_dsc_set_rc_buf_thresh(dsc);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	/* handle only bpp = bpc = 8, pre-SCR panels */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	ret = drm_dsc_setup_rc_params(dsc, DRM_DSC_1_1_PRE_SCR);
 	if (ret) {
 		DRM_DEV_ERROR(&msm_host->pdev->dev, "could not find DSC RC parameters\n");

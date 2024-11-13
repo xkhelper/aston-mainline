@@ -74,13 +74,10 @@ struct kfd_node_properties {
 	uint32_t num_sdma_xgmi_engines;
 	uint32_t num_sdma_queues_per_engine;
 	uint32_t num_cp_queues;
-<<<<<<< HEAD
-=======
 	uint32_t cwsr_size;
 	uint32_t ctl_stack_size;
 	uint32_t eop_buffer_size;
 	uint32_t debug_memory_size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char name[KFD_TOPOLOGY_PUBLIC_NAME_SIZE];
 };
 
@@ -128,10 +125,7 @@ struct kfd_iolink_properties {
 	uint32_t		min_bandwidth;
 	uint32_t		max_bandwidth;
 	uint32_t		rec_transfer_size;
-<<<<<<< HEAD
-=======
 	uint32_t		rec_sdma_eng_id_mask;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint32_t		flags;
 	struct kfd_node		*gpu;
 	struct kobject		*kobj;

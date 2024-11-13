@@ -19,10 +19,7 @@
 #ifdef HAVE_LIBBPF_SUPPORT
 #include <bpf/bpf.h>
 #include <bpf/libbpf.h>
-<<<<<<< HEAD
-=======
 #include <bpf/btf.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef HAVE_BPF_SKEL
 #include "bpf_skel/augmented_raw_syscalls.skel.h"
 #endif
@@ -68,10 +65,7 @@
 #include "syscalltbl.h"
 #include "rb_resort.h"
 #include "../perf.h"
-<<<<<<< HEAD
-=======
 #include "trace_augment.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <errno.h>
 #include <inttypes.h>
@@ -109,15 +103,12 @@
 
 /*
  * strtoul: Go from a string to a value, i.e. for msr: MSR_FS_BASE to 0xc0000100
-<<<<<<< HEAD
-=======
  *
  * We have to explicitely mark the direction of the flow of data, if from the
  * kernel to user space or the other way around, since the BPF collector we
  * have so far copies only from user to kernel space, mark the arguments that
  * go that direction, so that we don´t end up collecting the previous contents
  * for syscall args that goes from kernel to user space.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct syscall_arg_fmt {
 	size_t	   (*scnprintf)(char *bf, size_t size, struct syscall_arg *arg);
@@ -126,16 +117,12 @@ struct syscall_arg_fmt {
 	void	   *parm;
 	const char *name;
 	u16	   nr_entries; // for arrays
-<<<<<<< HEAD
-	bool	   show_zero;
-=======
 	bool	   from_user;
 	bool	   show_zero;
 #ifdef HAVE_LIBBPF_SUPPORT
 	const struct btf_type *type;
 	int	   type_id; /* used in btf_dump */
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct syscall_fmt {
@@ -166,12 +153,9 @@ struct trace {
 #ifdef HAVE_BPF_SKEL
 	struct augmented_raw_syscalls_bpf *skel;
 #endif
-<<<<<<< HEAD
-=======
 #ifdef HAVE_LIBBPF_SUPPORT
 	struct btf		*btf;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct record_opts	opts;
 	struct evlist	*evlist;
 	struct machine		*host;
@@ -228,10 +212,7 @@ struct trace {
 	bool			show_string_prefix;
 	bool			force;
 	bool			vfs_getname;
-<<<<<<< HEAD
-=======
 	bool			force_btf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			trace_pgfaults;
 	char			*perfconfig_events;
 	struct {
@@ -240,8 +221,6 @@ struct trace {
 	} oe;
 };
 
-<<<<<<< HEAD
-=======
 static void trace__load_vmlinux_btf(struct trace *trace __maybe_unused)
 {
 #ifdef HAVE_LIBBPF_SUPPORT
@@ -256,7 +235,6 @@ static void trace__load_vmlinux_btf(struct trace *trace __maybe_unused)
 #endif
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct tp_field {
 	int offset;
 	union {
@@ -883,8 +861,6 @@ static size_t syscall_arg__scnprintf_filename(char *bf, size_t size,
 
 #define SCA_FILENAME syscall_arg__scnprintf_filename
 
-<<<<<<< HEAD
-=======
 // 'argname' is just documentational at this point, to remove the previous comment with that info
 #define SCA_FILENAME_FROM_USER(argname) \
 	  { .scnprintf	= SCA_FILENAME, \
@@ -894,7 +870,6 @@ static size_t syscall_arg__scnprintf_buf(char *bf, size_t size, struct syscall_a
 
 #define SCA_BUF syscall_arg__scnprintf_buf
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static size_t syscall_arg__scnprintf_pipe_flags(char *bf, size_t size,
 						struct syscall_arg *arg)
 {
@@ -952,8 +927,6 @@ static size_t syscall_arg__scnprintf_getrandom_flags(char *bf, size_t size,
 
 #define SCA_GETRANDOM_FLAGS syscall_arg__scnprintf_getrandom_flags
 
-<<<<<<< HEAD
-=======
 #ifdef HAVE_LIBBPF_SUPPORT
 static void syscall_arg_fmt__cache_btf_enum(struct syscall_arg_fmt *arg_fmt, struct btf *btf, char *type)
 {
@@ -1125,7 +1098,6 @@ static bool syscall_arg__strtoul_btf_type(char *bf __maybe_unused, size_t size _
 
 #define STUL_BTF_TYPE syscall_arg__strtoul_btf_type
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define STRARRAY(name, array) \
 	  { .scnprintf	= SCA_STRARRAY, \
 	    .strtoul	= STUL_STRARRAY, \
@@ -1160,28 +1132,17 @@ static const struct syscall_fmt syscall_fmts[] = {
 		   [1] = { .scnprintf = SCA_PTR, /* arg2 */ }, }, },
 	{ .name	    = "bind",
 	  .arg = { [0] = { .scnprintf = SCA_INT, /* fd */ },
-<<<<<<< HEAD
-		   [1] = { .scnprintf = SCA_SOCKADDR, /* umyaddr */ },
-		   [2] = { .scnprintf = SCA_INT, /* addrlen */ }, }, },
-	{ .name	    = "bpf",
-	  .arg = { [0] = STRARRAY(cmd, bpf_cmd), }, },
-=======
 		   [1] = SCA_SOCKADDR_FROM_USER(umyaddr),
 		   [2] = { .scnprintf = SCA_INT, /* addrlen */ }, }, },
 	{ .name	    = "bpf",
 	  .arg = { [0] = STRARRAY(cmd, bpf_cmd),
 		   [1] = { .from_user = true /* attr */, }, } },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .name	    = "brk",	    .hexret = true,
 	  .arg = { [0] = { .scnprintf = SCA_PTR, /* brk */ }, }, },
 	{ .name     = "clock_gettime",
 	  .arg = { [0] = STRARRAY(clk_id, clockid), }, },
 	{ .name	    = "clock_nanosleep",
-<<<<<<< HEAD
-	  .arg = { [2] = { .scnprintf = SCA_TIMESPEC,  /* rqtp */ }, }, },
-=======
 	  .arg = { [2] = SCA_TIMESPEC_FROM_USER(req), }, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .name	    = "clone",	    .errpid = true, .nr_args = 5,
 	  .arg = { [0] = { .name = "flags",	    .scnprintf = SCA_CLONE_FLAGS, },
 		   [1] = { .name = "child_stack",   .scnprintf = SCA_HEX, },
@@ -1192,11 +1153,7 @@ static const struct syscall_fmt syscall_fmts[] = {
 	  .arg = { [0] = { .scnprintf = SCA_CLOSE_FD, /* fd */ }, }, },
 	{ .name	    = "connect",
 	  .arg = { [0] = { .scnprintf = SCA_INT, /* fd */ },
-<<<<<<< HEAD
-		   [1] = { .scnprintf = SCA_SOCKADDR, /* servaddr */ },
-=======
 		   [1] = SCA_SOCKADDR_FROM_USER(servaddr),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   [2] = { .scnprintf = SCA_INT, /* addrlen */ }, }, },
 	{ .name	    = "epoll_ctl",
 	  .arg = { [1] = STRARRAY(op, epoll_ctl_ops), }, },
@@ -1204,19 +1161,11 @@ static const struct syscall_fmt syscall_fmts[] = {
 	  .arg = { [1] = { .scnprintf = SCA_EFD_FLAGS, /* flags */ }, }, },
 	{ .name     = "faccessat",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT,	  /* dirfd */ },
-<<<<<<< HEAD
-		   [1] = { .scnprintf = SCA_FILENAME,	  /* pathname */ },
-		   [2] = { .scnprintf = SCA_ACCMODE,	  /* mode */ }, }, },
-	{ .name     = "faccessat2",
-	  .arg = { [0] = { .scnprintf = SCA_FDAT,	  /* dirfd */ },
-		   [1] = { .scnprintf = SCA_FILENAME,	  /* pathname */ },
-=======
 		   [1] = SCA_FILENAME_FROM_USER(pathname),
 		   [2] = { .scnprintf = SCA_ACCMODE,	  /* mode */ }, }, },
 	{ .name     = "faccessat2",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT,	  /* dirfd */ },
 		   [1] = SCA_FILENAME_FROM_USER(pathname),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   [2] = { .scnprintf = SCA_ACCMODE,	  /* mode */ },
 		   [3] = { .scnprintf = SCA_FACCESSAT2_FLAGS, /* flags */ }, }, },
 	{ .name	    = "fchmodat",
@@ -1238,11 +1187,7 @@ static const struct syscall_fmt syscall_fmts[] = {
 		   [2] = { .scnprintf = SCA_FSMOUNT_ATTR_FLAGS, /* attr_flags */ }, }, },
 	{ .name     = "fspick",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT,	  /* dfd */ },
-<<<<<<< HEAD
-		   [1] = { .scnprintf = SCA_FILENAME,	  /* path */ },
-=======
 		   [1] = SCA_FILENAME_FROM_USER(path),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   [2] = { .scnprintf = SCA_FSPICK_FLAGS, /* flags */ }, }, },
 	{ .name	    = "fstat", .alias = "newfstat", },
 	{ .name	    = "futex",
@@ -1306,50 +1251,29 @@ static const struct syscall_fmt syscall_fmts[] = {
 			   .parm      = &strarray__mmap_flags, },
 		   [5] = { .scnprintf = SCA_HEX,	/* offset */ }, }, },
 	{ .name	    = "mount",
-<<<<<<< HEAD
-	  .arg = { [0] = { .scnprintf = SCA_FILENAME, /* dev_name */ },
-=======
 	  .arg = { [0] = SCA_FILENAME_FROM_USER(devname),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   [3] = { .scnprintf = SCA_MOUNT_FLAGS, /* flags */
 			   .mask_val  = SCAMV_MOUNT_FLAGS, /* flags */ }, }, },
 	{ .name	    = "move_mount",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT,	/* from_dfd */ },
-<<<<<<< HEAD
-		   [1] = { .scnprintf = SCA_FILENAME, /* from_pathname */ },
-		   [2] = { .scnprintf = SCA_FDAT,	/* to_dfd */ },
-		   [3] = { .scnprintf = SCA_FILENAME, /* to_pathname */ },
-=======
 		   [1] = SCA_FILENAME_FROM_USER(pathname),
 		   [2] = { .scnprintf = SCA_FDAT,	/* to_dfd */ },
 		   [3] = SCA_FILENAME_FROM_USER(pathname),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   [4] = { .scnprintf = SCA_MOVE_MOUNT_FLAGS, /* flags */ }, }, },
 	{ .name	    = "mprotect",
 	  .arg = { [0] = { .scnprintf = SCA_HEX,	/* start */ },
 		   [2] = { .scnprintf = SCA_MMAP_PROT, .show_zero = true, /* prot */ }, }, },
 	{ .name	    = "mq_unlink",
-<<<<<<< HEAD
-	  .arg = { [0] = { .scnprintf = SCA_FILENAME, /* u_name */ }, }, },
-=======
 	  .arg = { [0] = SCA_FILENAME_FROM_USER(u_name), }, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .name	    = "mremap",	    .hexret = true,
 	  .arg = { [3] = { .scnprintf = SCA_MREMAP_FLAGS, /* flags */ }, }, },
 	{ .name	    = "name_to_handle_at",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT, /* dfd */ }, }, },
 	{ .name	    = "nanosleep",
-<<<<<<< HEAD
-	  .arg = { [0] = { .scnprintf = SCA_TIMESPEC,  /* req */ }, }, },
-	{ .name	    = "newfstatat", .alias = "fstatat",
-	  .arg = { [0] = { .scnprintf = SCA_FDAT,	  /* dirfd */ },
-		   [1] = { .scnprintf = SCA_FILENAME,	  /* pathname */ },
-=======
 	  .arg = { [0] = SCA_TIMESPEC_FROM_USER(req), }, },
 	{ .name	    = "newfstatat", .alias = "fstatat",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT,	  /* dirfd */ },
 		   [1] = SCA_FILENAME_FROM_USER(pathname),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   [3] = { .scnprintf = SCA_FS_AT_FLAGS, /* flags */ }, }, },
 	{ .name	    = "open",
 	  .arg = { [1] = { .scnprintf = SCA_OPEN_FLAGS, /* flags */ }, }, },
@@ -1360,11 +1284,7 @@ static const struct syscall_fmt syscall_fmts[] = {
 	  .arg = { [0] = { .scnprintf = SCA_FDAT,	/* dfd */ },
 		   [2] = { .scnprintf = SCA_OPEN_FLAGS, /* flags */ }, }, },
 	{ .name	    = "perf_event_open",
-<<<<<<< HEAD
-	  .arg = { [0] = { .scnprintf = SCA_PERF_ATTR,  /* attr */ },
-=======
 	  .arg = { [0] = SCA_PERF_ATTR_FROM_USER(attr),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   [2] = { .scnprintf = SCA_INT,	/* cpu */ },
 		   [3] = { .scnprintf = SCA_FD,		/* group_fd */ },
 		   [4] = { .scnprintf = SCA_PERF_FLAGS, /* flags */ }, }, },
@@ -1389,12 +1309,8 @@ static const struct syscall_fmt syscall_fmts[] = {
 	{ .name	    = "pread", .alias = "pread64", },
 	{ .name	    = "preadv", .alias = "pread", },
 	{ .name	    = "prlimit64",
-<<<<<<< HEAD
-	  .arg = { [1] = STRARRAY(resource, rlimit_resources), }, },
-=======
 	  .arg = { [1] = STRARRAY(resource, rlimit_resources),
 		   [2] = { .from_user = true /* new_rlim */, }, }, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .name	    = "pwrite", .alias = "pwrite64", },
 	{ .name	    = "readlinkat",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT, /* dfd */ }, }, },
@@ -1411,11 +1327,8 @@ static const struct syscall_fmt syscall_fmts[] = {
 	  .arg = { [0] = { .scnprintf = SCA_FDAT, /* olddirfd */ },
 		   [2] = { .scnprintf = SCA_FDAT, /* newdirfd */ },
 		   [4] = { .scnprintf = SCA_RENAMEAT2_FLAGS, /* flags */ }, }, },
-<<<<<<< HEAD
-=======
 	{ .name	    = "rseq",	    .errpid = true,
 	  .arg = { [0] = { .from_user = true /* rseq */, }, }, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .name	    = "rt_sigaction",
 	  .arg = { [0] = { .scnprintf = SCA_SIGNUM, /* sig */ }, }, },
 	{ .name	    = "rt_sigprocmask",
@@ -1437,23 +1350,15 @@ static const struct syscall_fmt syscall_fmts[] = {
 	  .arg = { [2] = { .scnprintf = SCA_MSG_FLAGS, /* flags */ }, }, },
 	{ .name	    = "sendto",
 	  .arg = { [3] = { .scnprintf = SCA_MSG_FLAGS, /* flags */ },
-<<<<<<< HEAD
-		   [4] = { .scnprintf = SCA_SOCKADDR, /* addr */ }, }, },
-=======
 		   [4] = SCA_SOCKADDR_FROM_USER(addr), }, },
 	{ .name	    = "set_robust_list",	    .errpid = true,
 	  .arg = { [0] = { .from_user = true /* head */, }, }, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .name	    = "set_tid_address", .errpid = true, },
 	{ .name	    = "setitimer",
 	  .arg = { [0] = STRARRAY(which, itimers), }, },
 	{ .name	    = "setrlimit",
-<<<<<<< HEAD
-	  .arg = { [0] = STRARRAY(resource, rlimit_resources), }, },
-=======
 	  .arg = { [0] = STRARRAY(resource, rlimit_resources),
 		   [1] = { .from_user = true /* rlim */, }, }, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .name	    = "setsockopt",
 	  .arg = { [1] = STRARRAY(level, socket_level), }, },
 	{ .name	    = "socket",
@@ -1470,15 +1375,9 @@ static const struct syscall_fmt syscall_fmts[] = {
 		   [2] = { .scnprintf = SCA_FS_AT_FLAGS, /* flags */ } ,
 		   [3] = { .scnprintf = SCA_STATX_MASK,	 /* mask */ }, }, },
 	{ .name	    = "swapoff",
-<<<<<<< HEAD
-	  .arg = { [0] = { .scnprintf = SCA_FILENAME, /* specialfile */ }, }, },
-	{ .name	    = "swapon",
-	  .arg = { [0] = { .scnprintf = SCA_FILENAME, /* specialfile */ }, }, },
-=======
 	  .arg = { [0] = SCA_FILENAME_FROM_USER(specialfile), }, },
 	{ .name	    = "swapon",
 	  .arg = { [0] = SCA_FILENAME_FROM_USER(specialfile), }, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .name	    = "symlinkat",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT, /* dfd */ }, }, },
 	{ .name	    = "sync_file_range",
@@ -1488,19 +1387,11 @@ static const struct syscall_fmt syscall_fmts[] = {
 	{ .name	    = "tkill",
 	  .arg = { [1] = { .scnprintf = SCA_SIGNUM, /* sig */ }, }, },
 	{ .name     = "umount2", .alias = "umount",
-<<<<<<< HEAD
-	  .arg = { [0] = { .scnprintf = SCA_FILENAME, /* name */ }, }, },
-	{ .name	    = "uname", .alias = "newuname", },
-	{ .name	    = "unlinkat",
-	  .arg = { [0] = { .scnprintf = SCA_FDAT,	  /* dfd */ },
-		   [1] = { .scnprintf = SCA_FILENAME,	  /* pathname */ },
-=======
 	  .arg = { [0] = SCA_FILENAME_FROM_USER(name), }, },
 	{ .name	    = "uname", .alias = "newuname", },
 	{ .name	    = "unlinkat",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT,	  /* dfd */ },
 		   [1] = SCA_FILENAME_FROM_USER(pathname),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   [2] = { .scnprintf = SCA_FS_AT_FLAGS,  /* flags */ }, }, },
 	{ .name	    = "utimensat",
 	  .arg = { [0] = { .scnprintf = SCA_FDAT, /* dirfd */ }, }, },
@@ -1508,11 +1399,8 @@ static const struct syscall_fmt syscall_fmts[] = {
 	  .arg = { [2] = { .scnprintf = SCA_WAITID_OPTIONS, /* options */ }, }, },
 	{ .name	    = "waitid",	    .errpid = true,
 	  .arg = { [3] = { .scnprintf = SCA_WAITID_OPTIONS, /* options */ }, }, },
-<<<<<<< HEAD
-=======
 	{ .name	    = "write",
 	  .arg = { [1] = { .scnprintf = SCA_BUF /* buf */, .from_user = true, }, }, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int syscall_fmt__cmp(const void *name, const void *fmtp)
@@ -1570,10 +1458,7 @@ struct syscall {
 	bool		    is_exit;
 	bool		    is_open;
 	bool		    nonexistent;
-<<<<<<< HEAD
-=======
 	bool		    use_btf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct tep_format_field *args;
 	const char	    *name;
 	const struct syscall_fmt  *fmt;
@@ -1887,8 +1772,6 @@ static size_t syscall_arg__scnprintf_filename(char *bf, size_t size,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 #define MAX_CONTROL_CHAR 31
 #define MAX_ASCII 127
 
@@ -1915,7 +1798,6 @@ static size_t syscall_arg__scnprintf_buf(char *bf, size_t size, struct syscall_a
 	return printed;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool trace__filter_duration(struct trace *trace, double t)
 {
 	return t < (trace->duration_filter * NSEC_PER_MSEC);
@@ -2002,11 +1884,7 @@ static int trace__process_event(struct trace *trace, struct machine *machine,
 	return ret;
 }
 
-<<<<<<< HEAD
-static int trace__tool_process(struct perf_tool *tool,
-=======
 static int trace__tool_process(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       union perf_event *event,
 			       struct perf_sample *sample,
 			       struct machine *machine)
@@ -2113,12 +1991,8 @@ static const struct syscall_arg_fmt *syscall_arg_fmt__find_by_name(const char *n
 }
 
 static struct tep_format_field *
-<<<<<<< HEAD
-syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field *field)
-=======
 syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field *field,
 			    bool *use_btf)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct tep_format_field *last_field = NULL;
 	int len;
@@ -2131,13 +2005,6 @@ syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field
 
 		len = strlen(field->name);
 
-<<<<<<< HEAD
-		if (strcmp(field->type, "const char *") == 0 &&
-		    ((len >= 4 && strcmp(field->name + len - 4, "name") == 0) ||
-		     strstr(field->name, "path") != NULL))
-			arg->scnprintf = SCA_FILENAME;
-		else if ((field->flags & TEP_FIELD_IS_POINTER) || strstr(field->name, "addr"))
-=======
 		// As far as heuristics (or intention) goes this seems to hold true, and makes sense!
 		if ((field->flags & TEP_FIELD_IS_POINTER) && strstarts(field->type, "const "))
 			arg->from_user = true;
@@ -2147,7 +2014,6 @@ syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field
 		     strstr(field->name, "path") != NULL)) {
 			arg->scnprintf = SCA_FILENAME;
 		} else if ((field->flags & TEP_FIELD_IS_POINTER) || strstr(field->name, "addr"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			arg->scnprintf = SCA_PTR;
 		else if (strcmp(field->type, "pid_t") == 0)
 			arg->scnprintf = SCA_PID;
@@ -2168,12 +2034,9 @@ syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field
 			 * 7 unsigned long
 			 */
 			arg->scnprintf = SCA_FD;
-<<<<<<< HEAD
-=======
 		} else if (strstr(field->type, "enum") && use_btf != NULL) {
 			*use_btf = true;
 			arg->strtoul = STUL_BTF_TYPE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			const struct syscall_arg_fmt *fmt =
 				syscall_arg_fmt__find_by_name(field->name);
@@ -2190,12 +2053,8 @@ syscall_arg_fmt__init_array(struct syscall_arg_fmt *arg, struct tep_format_field
 
 static int syscall__set_arg_fmts(struct syscall *sc)
 {
-<<<<<<< HEAD
-	struct tep_format_field *last_field = syscall_arg_fmt__init_array(sc->arg_fmt, sc->args);
-=======
 	struct tep_format_field *last_field = syscall_arg_fmt__init_array(sc->arg_fmt, sc->args,
 									  &sc->use_btf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (last_field)
 		sc->args_size = last_field->offset + last_field->size;
@@ -2208,10 +2067,7 @@ static int trace__read_syscall_info(struct trace *trace, int id)
 	char tp_name[128];
 	struct syscall *sc;
 	const char *name = syscalltbl__name(trace->sctbl, id);
-<<<<<<< HEAD
-=======
 	int err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef HAVE_SYSCALL_TABLE_SUPPORT
 	if (trace->syscalls.table == NULL) {
@@ -2284,12 +2140,6 @@ static int trace__read_syscall_info(struct trace *trace, int id)
 	sc->is_exit = !strcmp(name, "exit_group") || !strcmp(name, "exit");
 	sc->is_open = !strcmp(name, "open") || !strcmp(name, "openat");
 
-<<<<<<< HEAD
-	return syscall__set_arg_fmts(sc);
-}
-
-static int evsel__init_tp_arg_scnprintf(struct evsel *evsel)
-=======
 	err = syscall__set_arg_fmts(sc);
 
 	/* after calling syscall__set_arg_fmts() we'll know whether use_btf is true */
@@ -2300,16 +2150,11 @@ static int evsel__init_tp_arg_scnprintf(struct evsel *evsel)
 }
 
 static int evsel__init_tp_arg_scnprintf(struct evsel *evsel, bool *use_btf)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct syscall_arg_fmt *fmt = evsel__syscall_arg_fmt(evsel);
 
 	if (fmt != NULL) {
-<<<<<<< HEAD
-		syscall_arg_fmt__init_array(fmt, evsel->tp_format->format.fields);
-=======
 		syscall_arg_fmt__init_array(fmt, evsel->tp_format->format.fields, use_btf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -2468,11 +2313,7 @@ static size_t syscall__scnprintf_args(struct syscall *sc, char *bf, size_t size,
 				      unsigned char *args, void *augmented_args, int augmented_args_size,
 				      struct trace *trace, struct thread *thread)
 {
-<<<<<<< HEAD
-	size_t printed = 0;
-=======
 	size_t printed = 0, btf_printed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long val;
 	u8 bit = 1;
 	struct syscall_arg arg = {
@@ -2488,10 +2329,7 @@ static size_t syscall__scnprintf_args(struct syscall *sc, char *bf, size_t size,
 		.show_string_prefix = trace->show_string_prefix,
 	};
 	struct thread_trace *ttrace = thread__priv(thread);
-<<<<<<< HEAD
-=======
 	void *default_scnprintf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Things like fcntl will set this in its 'cmd' formatter to pick the
@@ -2519,11 +2357,6 @@ static size_t syscall__scnprintf_args(struct syscall *sc, char *bf, size_t size,
 			/*
 			 * Suppress this argument if its value is zero and show_zero
 			 * property isn't set.
-<<<<<<< HEAD
-			 */
-			if (val == 0 && !trace->show_zeros &&
-			    !(sc->arg_fmt && sc->arg_fmt[arg.idx].show_zero))
-=======
 			 *
 			 * If it has a BTF type, then override the zero suppression knob
 			 * as the common case is for zero in an enum to have an associated entry.
@@ -2531,7 +2364,6 @@ static size_t syscall__scnprintf_args(struct syscall *sc, char *bf, size_t size,
 			if (val == 0 && !trace->show_zeros &&
 			    !(sc->arg_fmt && sc->arg_fmt[arg.idx].show_zero) &&
 			    !(sc->arg_fmt && sc->arg_fmt[arg.idx].strtoul == STUL_BTF_TYPE))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 
 			printed += scnprintf(bf + printed, size - printed, "%s", printed ? ", " : "");
@@ -2539,8 +2371,6 @@ static size_t syscall__scnprintf_args(struct syscall *sc, char *bf, size_t size,
 			if (trace->show_arg_names)
 				printed += scnprintf(bf + printed, size - printed, "%s: ", field->name);
 
-<<<<<<< HEAD
-=======
 			default_scnprintf = sc->arg_fmt[arg.idx].scnprintf;
 
 			if (trace->force_btf || default_scnprintf == NULL || default_scnprintf == SCA_PTR) {
@@ -2552,7 +2382,6 @@ static size_t syscall__scnprintf_args(struct syscall *sc, char *bf, size_t size,
 				}
 			}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			printed += syscall_arg_fmt__scnprintf_val(&sc->arg_fmt[arg.idx],
 								  bf + printed, size - printed, &arg, val);
 		}
@@ -3199,11 +3028,7 @@ static size_t trace__fprintf_tp_fields(struct trace *trace, struct evsel *evsel,
 	size_t size = sizeof(bf);
 	struct tep_format_field *field = evsel->tp_format->format.fields;
 	struct syscall_arg_fmt *arg = __evsel__syscall_arg_fmt(evsel);
-<<<<<<< HEAD
-	size_t printed = 0;
-=======
 	size_t printed = 0, btf_printed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long val;
 	u8 bit = 1;
 	struct syscall_arg syscall_arg = {
@@ -3245,11 +3070,7 @@ static size_t trace__fprintf_tp_fields(struct trace *trace, struct evsel *evsel,
 		val = syscall_arg_fmt__mask_val(arg, &syscall_arg, val);
 
 		/* Suppress this argument if its value is zero and show_zero property isn't set. */
-<<<<<<< HEAD
-		if (val == 0 && !trace->show_zeros && !arg->show_zero)
-=======
 		if (val == 0 && !trace->show_zeros && !arg->show_zero && arg->strtoul != STUL_BTF_TYPE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		printed += scnprintf(bf + printed, size - printed, "%s", printed ? ", " : "");
@@ -3257,15 +3078,12 @@ static size_t trace__fprintf_tp_fields(struct trace *trace, struct evsel *evsel,
 		if (trace->show_arg_names)
 			printed += scnprintf(bf + printed, size - printed, "%s: ", field->name);
 
-<<<<<<< HEAD
-=======
 		btf_printed = trace__btf_scnprintf(trace, &syscall_arg, bf + printed, size - printed, val, field->type);
 		if (btf_printed) {
 			printed += btf_printed;
 			continue;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		printed += syscall_arg_fmt__scnprintf_val(arg, bf + printed, size - printed, &syscall_arg, val);
 	}
 
@@ -3476,11 +3294,7 @@ static void trace__set_base_time(struct trace *trace,
 		trace->base_time = sample->time;
 }
 
-<<<<<<< HEAD
-static int trace__process_sample(struct perf_tool *tool,
-=======
 static int trace__process_sample(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 union perf_event *event,
 				 struct perf_sample *sample,
 				 struct evsel *evsel,
@@ -3747,8 +3561,6 @@ out_enomem:
 }
 
 #ifdef HAVE_BPF_SKEL
-<<<<<<< HEAD
-=======
 static int syscall_arg_fmt__cache_btf_struct(struct syscall_arg_fmt *arg_fmt, struct btf *btf, char *type)
 {
        int id;
@@ -3766,7 +3578,6 @@ static int syscall_arg_fmt__cache_btf_struct(struct syscall_arg_fmt *arg_fmt, st
        return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct bpf_program *trace__find_bpf_program_by_title(struct trace *trace, const char *name)
 {
 	struct bpf_program *pos, *prog = NULL;
@@ -3842,8 +3653,6 @@ static int trace__bpf_prog_sys_exit_fd(struct trace *trace, int id)
 	return sc ? bpf_program__fd(sc->bpf_prog.sys_exit) : bpf_program__fd(trace->skel->progs.syscall_unaugmented);
 }
 
-<<<<<<< HEAD
-=======
 static int trace__bpf_sys_enter_beauty_map(struct trace *trace, int key, unsigned int *beauty_array)
 {
 	struct tep_format_field *field;
@@ -3929,7 +3738,6 @@ static int trace__bpf_sys_enter_beauty_map(struct trace *trace, int key, unsigne
 	return -1;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct bpf_program *trace__find_usable_bpf_prog_entry(struct trace *trace, struct syscall *sc)
 {
 	struct tep_format_field *field, *candidate_field;
@@ -4034,13 +3842,9 @@ static int trace__init_syscalls_bpf_prog_array_maps(struct trace *trace)
 {
 	int map_enter_fd = bpf_map__fd(trace->skel->maps.syscalls_sys_enter);
 	int map_exit_fd  = bpf_map__fd(trace->skel->maps.syscalls_sys_exit);
-<<<<<<< HEAD
-	int err = 0;
-=======
 	int beauty_map_fd = bpf_map__fd(trace->skel->maps.beauty_map_enter);
 	int err = 0;
 	unsigned int beauty_array[6];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (int i = 0; i < trace->sctbl->syscalls.nr_entries; ++i) {
 		int prog_fd, key = syscalltbl__id_at_idx(trace->sctbl, i);
@@ -4059,8 +3863,6 @@ static int trace__init_syscalls_bpf_prog_array_maps(struct trace *trace)
 		err = bpf_map_update_elem(map_exit_fd, &key, &prog_fd, BPF_ANY);
 		if (err)
 			break;
-<<<<<<< HEAD
-=======
 
 		/* use beauty_map to tell BPF how many bytes to collect, set beauty_map's value here */
 		memset(beauty_array, 0, sizeof(beauty_array));
@@ -4070,7 +3872,6 @@ static int trace__init_syscalls_bpf_prog_array_maps(struct trace *trace)
 		err = bpf_map_update_elem(beauty_map_fd, &key, beauty_array, BPF_ANY);
 		if (err)
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -4277,12 +4078,8 @@ static int ordered_events__deliver_event(struct ordered_events *oe,
 	return __trace__deliver_event(trace, event->event);
 }
 
-<<<<<<< HEAD
-static struct syscall_arg_fmt *evsel__find_syscall_arg_fmt_by_name(struct evsel *evsel, char *arg)
-=======
 static struct syscall_arg_fmt *evsel__find_syscall_arg_fmt_by_name(struct evsel *evsel, char *arg,
 								   char **type)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct tep_format_field *field;
 	struct syscall_arg_fmt *fmt = __evsel__syscall_arg_fmt(evsel);
@@ -4291,24 +4088,15 @@ static struct syscall_arg_fmt *evsel__find_syscall_arg_fmt_by_name(struct evsel 
 		return NULL;
 
 	for (field = evsel->tp_format->format.fields; field; field = field->next, ++fmt)
-<<<<<<< HEAD
-		if (strcmp(field->name, arg) == 0)
-			return fmt;
-=======
 		if (strcmp(field->name, arg) == 0) {
 			*type = field->type;
 			return fmt;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return NULL;
 }
 
-<<<<<<< HEAD
-static int trace__expand_filter(struct trace *trace __maybe_unused, struct evsel *evsel)
-=======
 static int trace__expand_filter(struct trace *trace, struct evsel *evsel)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	char *tok, *left = evsel->filter, *new_filter = evsel->filter;
 
@@ -4341,22 +4129,14 @@ static int trace__expand_filter(struct trace *trace, struct evsel *evsel)
 			struct syscall_arg_fmt *fmt;
 			int left_size = tok - left,
 			    right_size = right_end - right;
-<<<<<<< HEAD
-			char arg[128];
-=======
 			char arg[128], *type;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			while (isspace(left[left_size - 1]))
 				--left_size;
 
 			scnprintf(arg, sizeof(arg), "%.*s", left_size, left);
 
-<<<<<<< HEAD
-			fmt = evsel__find_syscall_arg_fmt_by_name(evsel, arg);
-=======
 			fmt = evsel__find_syscall_arg_fmt_by_name(evsel, arg, &type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (fmt == NULL) {
 				pr_err("\"%s\" not found in \"%s\", can't set filter \"%s\"\n",
 				       arg, evsel->name, evsel->filter);
@@ -4369,12 +4149,9 @@ static int trace__expand_filter(struct trace *trace, struct evsel *evsel)
 			if (fmt->strtoul) {
 				u64 val;
 				struct syscall_arg syscall_arg = {
-<<<<<<< HEAD
-=======
 					.trace = trace,
 					.fmt   = fmt,
 					.type_name = type,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					.parm = fmt->parm,
 				};
 
@@ -4586,11 +4363,7 @@ static int trace__run(struct trace *trace, int argc, const char **argv)
 	err = trace__expand_filters(trace, &evsel);
 	if (err)
 		goto out_delete_evlist;
-<<<<<<< HEAD
-	err = evlist__apply_filters(evlist, &evsel);
-=======
 	err = evlist__apply_filters(evlist, &evsel, &trace->opts.target);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0)
 		goto out_error_apply_filters;
 
@@ -5082,11 +4855,7 @@ static void evsel__set_syscall_arg_fmt(struct evsel *evsel, const char *name)
 	}
 }
 
-<<<<<<< HEAD
-static int evlist__set_syscall_tp_fields(struct evlist *evlist)
-=======
 static int evlist__set_syscall_tp_fields(struct evlist *evlist, bool *use_btf)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct evsel *evsel;
 
@@ -5095,11 +4864,7 @@ static int evlist__set_syscall_tp_fields(struct evlist *evlist, bool *use_btf)
 			continue;
 
 		if (strcmp(evsel->tp_format->system, "syscalls")) {
-<<<<<<< HEAD
-			evsel__init_tp_arg_scnprintf(evsel);
-=======
 			evsel__init_tp_arg_scnprintf(evsel, use_btf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		}
 
@@ -5420,11 +5185,8 @@ int cmd_trace(int argc, const char **argv)
 	OPT_INTEGER('D', "delay", &trace.opts.target.initial_delay,
 		     "ms to wait before starting measurement after program "
 		     "start"),
-<<<<<<< HEAD
-=======
 	OPT_BOOLEAN(0, "force-btf", &trace.force_btf, "Prefer btf_dump general pretty printer"
 		       "to customized ones"),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	OPTS_EVSWITCH(&trace.evswitch),
 	OPT_END()
 	};
@@ -5582,13 +5344,6 @@ skip_augmentation:
 	}
 
 	if (trace.evlist->core.nr_entries > 0) {
-<<<<<<< HEAD
-		evlist__set_default_evsel_handler(trace.evlist, trace__event_handler);
-		if (evlist__set_syscall_tp_fields(trace.evlist)) {
-			perror("failed to set syscalls:* tracepoint fields");
-			goto out;
-		}
-=======
 		bool use_btf = false;
 
 		evlist__set_default_evsel_handler(trace.evlist, trace__event_handler);
@@ -5599,7 +5354,6 @@ skip_augmentation:
 
 		if (use_btf)
 			trace__load_vmlinux_btf(&trace);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (trace.sort_events) {

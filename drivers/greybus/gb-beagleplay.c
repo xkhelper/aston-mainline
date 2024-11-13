@@ -6,23 +6,6 @@
  * Copyright (c) 2023 BeagleBoard.org Foundation
  */
 
-<<<<<<< HEAD
-#include <linux/gfp.h>
-#include <linux/greybus.h>
-#include <linux/module.h>
-#include <linux/of.h>
-#include <linux/printk.h>
-#include <linux/serdev.h>
-#include <linux/tty.h>
-#include <linux/tty_driver.h>
-#include <linux/greybus/hd.h>
-#include <linux/init.h>
-#include <linux/device.h>
-#include <linux/crc-ccitt.h>
-#include <linux/circ_buf.h>
-#include <linux/types.h>
-#include <linux/workqueue.h>
-=======
 #include <linux/unaligned.h>
 #include <linux/crc32.h>
 #include <linux/gpio/consumer.h>
@@ -36,7 +19,6 @@
 #define CC1352_BOOTLOADER_TIMEOUT 2000
 #define CC1352_BOOTLOADER_ACK 0xcc
 #define CC1352_BOOTLOADER_NACK 0x33
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define RX_HDLC_PAYLOAD 256
 #define CRC_LEN 2
@@ -73,8 +55,6 @@
  * @rx_buffer_len: length of receive buffer filled.
  * @rx_buffer: hdlc frame receive buffer
  * @rx_in_esc: hdlc rx flag to indicate ESC frame
-<<<<<<< HEAD
-=======
  *
  * @fwl: underlying firmware upload device
  * @bootloader_backdoor_gpio: cc1352p7 boot gpio
@@ -86,7 +66,6 @@
  * @fwl_cmd_response: bootloader command response data
  * @fwl_crc32: crc32 of firmware to flash
  * @fwl_reset_addr: flag to indicate if we need to send COMMAND_DOWNLOAD again
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct gb_beagleplay {
 	struct serdev_device *sd;
@@ -102,8 +81,6 @@ struct gb_beagleplay {
 	u16 rx_buffer_len;
 	bool rx_in_esc;
 	u8 rx_buffer[MAX_RX_HDLC];
-<<<<<<< HEAD
-=======
 
 	struct fw_upload *fwl;
 	struct gpio_desc *bootloader_backdoor_gpio;
@@ -115,7 +92,6 @@ struct gb_beagleplay {
 	u32 fwl_cmd_response;
 	u32 fwl_crc32;
 	bool fwl_reset_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -144,8 +120,6 @@ struct hdlc_greybus_frame {
 	u8 payload[];
 } __packed;
 
-<<<<<<< HEAD
-=======
 /**
  * enum cc1352_bootloader_cmd: CC1352 Bootloader Commands
  *
@@ -227,7 +201,6 @@ struct cc1352_bootloader_crc32_cmd_data {
 	__be32 read_repeat;
 } __packed;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void hdlc_rx_greybus_frame(struct gb_beagleplay *bg, u8 *buf, u16 len)
 {
 	struct hdlc_greybus_frame *gb_frame = (struct hdlc_greybus_frame *)buf;
@@ -459,8 +432,6 @@ static void hdlc_deinit(struct gb_beagleplay *bg)
 	flush_work(&bg->tx_work);
 }
 
-<<<<<<< HEAD
-=======
 /**
  * csum8: Calculate 8-bit checksum on data
  *
@@ -582,18 +553,14 @@ static size_t cc1352_bootloader_rx(struct gb_beagleplay *bg, const u8 *data,
 	return count;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static size_t gb_tty_receive(struct serdev_device *sd, const u8 *data,
 			     size_t count)
 {
 	struct gb_beagleplay *bg = serdev_device_get_drvdata(sd);
 
-<<<<<<< HEAD
-=======
 	if (READ_ONCE(bg->flashing_mode))
 		return cc1352_bootloader_rx(bg, data, count);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return hdlc_rx(bg, data, count);
 }
 
@@ -601,12 +568,8 @@ static void gb_tty_wakeup(struct serdev_device *serdev)
 {
 	struct gb_beagleplay *bg = serdev_device_get_drvdata(serdev);
 
-<<<<<<< HEAD
-	schedule_work(&bg->tx_work);
-=======
 	if (!READ_ONCE(bg->flashing_mode))
 		schedule_work(&bg->tx_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct serdev_device_ops gb_beagleplay_ops = {
@@ -675,8 +638,6 @@ static void gb_beagleplay_stop_svc(struct gb_beagleplay *bg)
 	hdlc_tx_frames(bg, ADDRESS_CONTROL, 0x03, &payload, 1);
 }
 
-<<<<<<< HEAD
-=======
 static int cc1352_bootloader_wait_for_ack(struct gb_beagleplay *bg)
 {
 	int ret;
@@ -866,7 +827,6 @@ static int cc1352_bootloader_send_data(struct gb_beagleplay *bg, const u8 *data,
 	return rem;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void gb_greybus_deinit(struct gb_beagleplay *bg)
 {
 	gb_hd_del(bg->gb_hd);
@@ -897,8 +857,6 @@ free_gb_hd:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static enum fw_upload_err cc1352_prepare(struct fw_upload *fw_upload,
 					 const u8 *data, u32 size)
 {
@@ -1050,7 +1008,6 @@ static void cc1352_cancel(struct fw_upload *fw_upload)
 	cc1352_bootloader_reset(bg);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void gb_serdev_deinit(struct gb_beagleplay *bg)
 {
 	serdev_device_close(bg->sd);
@@ -1072,8 +1029,6 @@ static int gb_serdev_init(struct gb_beagleplay *bg)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static const struct fw_upload_ops cc1352_bootloader_ops = {
 	.prepare = cc1352_prepare,
 	.write = cc1352_write,
@@ -1133,7 +1088,6 @@ static void gb_fw_deinit(struct gb_beagleplay *bg)
 	firmware_upload_unregister(bg->fwl);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int gb_beagleplay_probe(struct serdev_device *serdev)
 {
 	int ret = 0;
@@ -1152,12 +1106,6 @@ static int gb_beagleplay_probe(struct serdev_device *serdev)
 	if (ret)
 		goto free_serdev;
 
-<<<<<<< HEAD
-	ret = gb_greybus_init(bg);
-	if (ret)
-		goto free_hdlc;
-
-=======
 	ret = gb_fw_init(bg);
 	if (ret)
 		goto free_hdlc;
@@ -1166,16 +1114,12 @@ static int gb_beagleplay_probe(struct serdev_device *serdev)
 	if (ret)
 		goto free_fw;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gb_beagleplay_start_svc(bg);
 
 	return 0;
 
-<<<<<<< HEAD
-=======
 free_fw:
 	gb_fw_deinit(bg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 free_hdlc:
 	hdlc_deinit(bg);
 free_serdev:
@@ -1187,10 +1131,7 @@ static void gb_beagleplay_remove(struct serdev_device *serdev)
 {
 	struct gb_beagleplay *bg = serdev_device_get_drvdata(serdev);
 
-<<<<<<< HEAD
-=======
 	gb_fw_deinit(bg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gb_greybus_deinit(bg);
 	gb_beagleplay_stop_svc(bg);
 	hdlc_deinit(bg);

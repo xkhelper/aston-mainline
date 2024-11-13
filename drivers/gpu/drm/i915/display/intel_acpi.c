@@ -183,15 +183,9 @@ void intel_unregister_dsm_handler(void)
 {
 }
 
-<<<<<<< HEAD
-void intel_dsm_get_bios_data_funcs_supported(struct drm_i915_private *i915)
-{
-	struct pci_dev *pdev = to_pci_dev(i915->drm.dev);
-=======
 void intel_dsm_get_bios_data_funcs_supported(struct intel_display *display)
 {
 	struct pci_dev *pdev = to_pci_dev(display->drm->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acpi_handle dhandle;
 	union acpi_object *obj;
 
@@ -269,24 +263,14 @@ static u32 acpi_display_type(struct intel_connector *connector)
 	return display_type;
 }
 
-<<<<<<< HEAD
-void intel_acpi_device_id_update(struct drm_i915_private *dev_priv)
-{
-	struct drm_device *drm_dev = &dev_priv->drm;
-=======
 void intel_acpi_device_id_update(struct intel_display *display)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_connector *connector;
 	struct drm_connector_list_iter conn_iter;
 	u8 display_index[16] = {};
 
 	/* Populate the ACPI IDs for all connectors for a given drm_device */
-<<<<<<< HEAD
-	drm_connector_list_iter_begin(drm_dev, &conn_iter);
-=======
 	drm_connector_list_iter_begin(display->drm, &conn_iter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_intel_connector_iter(connector, &conn_iter) {
 		u32 device_id, type;
 
@@ -303,17 +287,10 @@ void intel_acpi_device_id_update(struct intel_display *display)
 }
 
 /* NOTE: The connector order must be final before this is called. */
-<<<<<<< HEAD
-void intel_acpi_assign_connector_fwnodes(struct drm_i915_private *i915)
-{
-	struct drm_connector_list_iter conn_iter;
-	struct drm_device *drm_dev = &i915->drm;
-=======
 void intel_acpi_assign_connector_fwnodes(struct intel_display *display)
 {
 	struct drm_device *drm_dev = display->drm;
 	struct drm_connector_list_iter conn_iter;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct fwnode_handle *fwnode = NULL;
 	struct drm_connector *connector;
 	struct acpi_device *adev;
@@ -355,11 +332,7 @@ void intel_acpi_assign_connector_fwnodes(struct intel_display *display)
 	fwnode_handle_put(fwnode);
 }
 
-<<<<<<< HEAD
-void intel_acpi_video_register(struct drm_i915_private *i915)
-=======
 void intel_acpi_video_register(struct intel_display *display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct drm_connector_list_iter conn_iter;
 	struct drm_connector *connector;
@@ -373,11 +346,7 @@ void intel_acpi_video_register(struct intel_display *display)
 	 * a native backlight later and acpi_video_register_backlight() should
 	 * only be called after any native backlights have been registered.
 	 */
-<<<<<<< HEAD
-	drm_connector_list_iter_begin(&i915->drm, &conn_iter);
-=======
 	drm_connector_list_iter_begin(display->drm, &conn_iter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_for_each_connector_iter(connector, &conn_iter) {
 		struct intel_panel *panel = &to_intel_connector(connector)->panel;
 

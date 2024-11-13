@@ -9,19 +9,12 @@
 
 #include <drm/drm_device.h>
 #include <drm/drm_file.h>
-<<<<<<< HEAD
-#include <drm/xe_drm.h>
-=======
 #include <uapi/drm/xe_drm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xe_device.h"
 #include "xe_gt.h"
 #include "xe_hw_engine_class_sysfs.h"
-<<<<<<< HEAD
-=======
 #include "xe_hw_engine_group.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_hw_fence.h"
 #include "xe_lrc.h"
 #include "xe_macros.h"
@@ -81,10 +74,7 @@ static struct xe_exec_queue *__xe_exec_queue_alloc(struct xe_device *xe,
 	q->ops = gt->exec_queue_ops;
 	INIT_LIST_HEAD(&q->lr.link);
 	INIT_LIST_HEAD(&q->multi_gt_link);
-<<<<<<< HEAD
-=======
 	INIT_LIST_HEAD(&q->hw_engine_group_link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	q->sched_props.timeslice_us = hwe->eclass->sched_props.timeslice_us;
 	q->sched_props.preempt_timeout_us =
@@ -178,12 +168,8 @@ err_post_alloc:
 
 struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe_gt *gt,
 						 struct xe_vm *vm,
-<<<<<<< HEAD
-						 enum xe_engine_class class, u32 flags)
-=======
 						 enum xe_engine_class class,
 						 u32 flags, u64 extensions)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct xe_hw_engine *hwe, *hwe0 = NULL;
 	enum xe_hw_engine_id id;
@@ -203,9 +189,6 @@ struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe
 	if (!logical_mask)
 		return ERR_PTR(-ENODEV);
 
-<<<<<<< HEAD
-	return xe_exec_queue_create(xe, vm, logical_mask, 1, hwe0, flags, 0);
-=======
 	return xe_exec_queue_create(xe, vm, logical_mask, 1, hwe0, flags, extensions);
 }
 
@@ -256,7 +239,6 @@ struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
 	xe_vm_put(migrate_vm);
 
 	return q;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void xe_exec_queue_destroy(struct kref *ref)
@@ -278,10 +260,6 @@ void xe_exec_queue_fini(struct xe_exec_queue *q)
 {
 	int i;
 
-<<<<<<< HEAD
-	for (i = 0; i < q->width; ++i)
-		xe_lrc_put(q->lrc[i]);
-=======
 	/*
 	 * Before releasing our ref to lrc and xef, accumulate our run ticks
 	 */
@@ -290,7 +268,6 @@ void xe_exec_queue_fini(struct xe_exec_queue *q)
 	for (i = 0; i < q->width; ++i)
 		xe_lrc_put(q->lrc[i]);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__xe_exec_queue_free(q);
 }
 
@@ -499,66 +476,6 @@ static int exec_queue_user_extensions(struct xe_device *xe, struct xe_exec_queue
 	return 0;
 }
 
-<<<<<<< HEAD
-static const enum xe_engine_class user_to_xe_engine_class[] = {
-	[DRM_XE_ENGINE_CLASS_RENDER] = XE_ENGINE_CLASS_RENDER,
-	[DRM_XE_ENGINE_CLASS_COPY] = XE_ENGINE_CLASS_COPY,
-	[DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = XE_ENGINE_CLASS_VIDEO_DECODE,
-	[DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = XE_ENGINE_CLASS_VIDEO_ENHANCE,
-	[DRM_XE_ENGINE_CLASS_COMPUTE] = XE_ENGINE_CLASS_COMPUTE,
-};
-
-static struct xe_hw_engine *
-find_hw_engine(struct xe_device *xe,
-	       struct drm_xe_engine_class_instance eci)
-{
-	u32 idx;
-
-	if (eci.engine_class >= ARRAY_SIZE(user_to_xe_engine_class))
-		return NULL;
-
-	if (eci.gt_id >= xe->info.gt_count)
-		return NULL;
-
-	idx = array_index_nospec(eci.engine_class,
-				 ARRAY_SIZE(user_to_xe_engine_class));
-
-	return xe_gt_hw_engine(xe_device_get_gt(xe, eci.gt_id),
-			       user_to_xe_engine_class[idx],
-			       eci.engine_instance, true);
-}
-
-static u32 bind_exec_queue_logical_mask(struct xe_device *xe, struct xe_gt *gt,
-					struct drm_xe_engine_class_instance *eci,
-					u16 width, u16 num_placements)
-{
-	struct xe_hw_engine *hwe;
-	enum xe_hw_engine_id id;
-	u32 logical_mask = 0;
-
-	if (XE_IOCTL_DBG(xe, width != 1))
-		return 0;
-	if (XE_IOCTL_DBG(xe, num_placements != 1))
-		return 0;
-	if (XE_IOCTL_DBG(xe, eci[0].engine_instance != 0))
-		return 0;
-
-	eci[0].engine_class = DRM_XE_ENGINE_CLASS_COPY;
-
-	for_each_hw_engine(hwe, gt, id) {
-		if (xe_hw_engine_is_reserved(hwe))
-			continue;
-
-		if (hwe->class ==
-		    user_to_xe_engine_class[DRM_XE_ENGINE_CLASS_COPY])
-			logical_mask |= BIT(hwe->logical_instance);
-	}
-
-	return logical_mask;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static u32 calc_validate_logical_mask(struct xe_device *xe, struct xe_gt *gt,
 				      struct drm_xe_engine_class_instance *eci,
 				      u16 width, u16 num_placements)
@@ -581,11 +498,7 @@ static u32 calc_validate_logical_mask(struct xe_device *xe, struct xe_gt *gt,
 
 			n = j * width + i;
 
-<<<<<<< HEAD
-			hwe = find_hw_engine(xe, eci[n]);
-=======
 			hwe = xe_hw_engine_lookup(xe, eci[n]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (XE_IOCTL_DBG(xe, !hwe))
 				return 0;
 
@@ -624,14 +537,9 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 	struct drm_xe_engine_class_instance __user *user_eci =
 		u64_to_user_ptr(args->instances);
 	struct xe_hw_engine *hwe;
-<<<<<<< HEAD
-	struct xe_vm *vm, *migrate_vm;
-	struct xe_gt *gt;
-=======
 	struct xe_vm *vm;
 	struct xe_gt *gt;
 	struct xe_tile *tile;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xe_exec_queue *q = NULL;
 	u32 logical_mask;
 	u32 id;
@@ -656,39 +564,6 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 		return -EINVAL;
 
 	if (eci[0].engine_class == DRM_XE_ENGINE_CLASS_VM_BIND) {
-<<<<<<< HEAD
-		for_each_gt(gt, xe, id) {
-			struct xe_exec_queue *new;
-			u32 flags;
-
-			if (xe_gt_is_media_type(gt))
-				continue;
-
-			eci[0].gt_id = gt->info.id;
-			logical_mask = bind_exec_queue_logical_mask(xe, gt, eci,
-								    args->width,
-								    args->num_placements);
-			if (XE_IOCTL_DBG(xe, !logical_mask))
-				return -EINVAL;
-
-			hwe = find_hw_engine(xe, eci[0]);
-			if (XE_IOCTL_DBG(xe, !hwe))
-				return -EINVAL;
-
-			/* The migration vm doesn't hold rpm ref */
-			xe_pm_runtime_get_noresume(xe);
-
-			flags = EXEC_QUEUE_FLAG_VM | (id ? EXEC_QUEUE_FLAG_BIND_ENGINE_CHILD : 0);
-
-			migrate_vm = xe_migrate_get_vm(gt_to_tile(gt)->migrate);
-			new = xe_exec_queue_create(xe, migrate_vm, logical_mask,
-						   args->width, hwe, flags,
-						   args->extensions);
-
-			xe_pm_runtime_put(xe); /* now held by engine */
-
-			xe_vm_put(migrate_vm);
-=======
 		if (XE_IOCTL_DBG(xe, args->width != 1) ||
 		    XE_IOCTL_DBG(xe, args->num_placements != 1) ||
 		    XE_IOCTL_DBG(xe, eci[0].engine_instance != 0))
@@ -703,7 +578,6 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 
 			new = xe_exec_queue_create_bind(xe, tile, flags,
 							args->extensions);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (IS_ERR(new)) {
 				err = PTR_ERR(new);
 				if (q)
@@ -724,11 +598,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 		if (XE_IOCTL_DBG(xe, !logical_mask))
 			return -EINVAL;
 
-<<<<<<< HEAD
-		hwe = find_hw_engine(xe, eci[0]);
-=======
 		hwe = xe_hw_engine_lookup(xe, eci[0]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (XE_IOCTL_DBG(xe, !hwe))
 			return -EINVAL;
 
@@ -763,13 +633,6 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 			if (XE_IOCTL_DBG(xe, err))
 				goto put_exec_queue;
 		}
-<<<<<<< HEAD
-	}
-
-	mutex_lock(&xef->exec_queue.lock);
-	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
-	mutex_unlock(&xef->exec_queue.lock);
-=======
 
 		if (q->vm && q->hwe->hw_engine_group) {
 			err = xe_hw_engine_group_add_exec_queue(q->hwe->hw_engine_group, q);
@@ -782,15 +645,10 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
 
 	/* user id alloc must always be last in ioctl to prevent UAF */
 	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto kill_exec_queue;
 
 	args->exec_queue_id = id;
-<<<<<<< HEAD
-	q->xef = xe_file_get(xef);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -931,8 +789,6 @@ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q)
 	xef->run_ticks[q->class] += (new_ts - old_ts) * q->width;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * xe_exec_queue_kill - permanently stop all execution from an exec queue
  * @q: The exec queue
@@ -942,7 +798,6 @@ void xe_exec_queue_update_run_ticks(struct xe_exec_queue *q)
  * pending jobs are discarded and all future submissions are rejected.
  * This function is safe to call multiple times.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void xe_exec_queue_kill(struct xe_exec_queue *q)
 {
 	struct xe_exec_queue *eq = q, *next;
@@ -975,12 +830,9 @@ int xe_exec_queue_destroy_ioctl(struct drm_device *dev, void *data,
 	if (XE_IOCTL_DBG(xe, !q))
 		return -ENOENT;
 
-<<<<<<< HEAD
-=======
 	if (q->vm && q->hwe->hw_engine_group)
 		xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_exec_queue_kill(q);
 
 	trace_xe_exec_queue_close(q);
@@ -992,19 +844,12 @@ int xe_exec_queue_destroy_ioctl(struct drm_device *dev, void *data,
 static void xe_exec_queue_last_fence_lockdep_assert(struct xe_exec_queue *q,
 						    struct xe_vm *vm)
 {
-<<<<<<< HEAD
-	if (q->flags & EXEC_QUEUE_FLAG_VM)
-		lockdep_assert_held(&vm->lock);
-	else
-		xe_vm_assert_held(vm);
-=======
 	if (q->flags & EXEC_QUEUE_FLAG_VM) {
 		lockdep_assert_held(&vm->lock);
 	} else {
 		xe_vm_assert_held(vm);
 		lockdep_assert_held(&q->hwe->hw_engine_group->mode_sem);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1016,14 +861,7 @@ void xe_exec_queue_last_fence_put(struct xe_exec_queue *q, struct xe_vm *vm)
 {
 	xe_exec_queue_last_fence_lockdep_assert(q, vm);
 
-<<<<<<< HEAD
-	if (q->last_fence) {
-		dma_fence_put(q->last_fence);
-		q->last_fence = NULL;
-	}
-=======
 	xe_exec_queue_last_fence_put_unlocked(q);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1066,8 +904,6 @@ struct dma_fence *xe_exec_queue_last_fence_get(struct xe_exec_queue *q,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * xe_exec_queue_last_fence_get_for_resume() - Get last fence
  * @q: The exec queue
  * @vm: The VM the engine does a bind or exec for
@@ -1095,7 +931,6 @@ struct dma_fence *xe_exec_queue_last_fence_get_for_resume(struct xe_exec_queue *
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * xe_exec_queue_last_fence_set() - Set last fence
  * @q: The exec queue
  * @vm: The VM the engine does a bind or exec for
@@ -1112,8 +947,6 @@ void xe_exec_queue_last_fence_set(struct xe_exec_queue *q, struct xe_vm *vm,
 	xe_exec_queue_last_fence_put(q, vm);
 	q->last_fence = dma_fence_get(fence);
 }
-<<<<<<< HEAD
-=======
 
 /**
  * xe_exec_queue_last_fence_test_dep - Test last fence dependency of queue
@@ -1137,4 +970,3 @@ int xe_exec_queue_last_fence_test_dep(struct xe_exec_queue *q, struct xe_vm *vm)
 
 	return err;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

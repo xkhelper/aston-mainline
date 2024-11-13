@@ -1,10 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef _PERF_DWARF_REGS_H_
 #define _PERF_DWARF_REGS_H_
-<<<<<<< HEAD
-=======
 #include "annotate.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DWARF_REG_PC  0xd3af9c /* random number */
 #define DWARF_REG_FB  0xd3affb /* random number */
@@ -35,8 +32,6 @@ static inline int get_dwarf_regnum(const char *name __maybe_unused,
 }
 #endif
 
-<<<<<<< HEAD
-=======
 #if !defined(__powerpc__) || !defined(HAVE_DWARF_SUPPORT)
 static inline void get_powerpc_regs(u32 raw_insn __maybe_unused, int is_source __maybe_unused,
 		struct annotated_op_loc *op_loc __maybe_unused)
@@ -47,7 +42,6 @@ static inline void get_powerpc_regs(u32 raw_insn __maybe_unused, int is_source _
 void get_powerpc_regs(u32 raw_insn, int is_source, struct annotated_op_loc *op_loc);
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef HAVE_ARCH_REGS_QUERY_REGISTER_OFFSET
 /*
  * Arch should support fetching the offset of a register in pt_regs

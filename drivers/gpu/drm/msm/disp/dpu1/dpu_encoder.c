@@ -611,44 +611,20 @@ static struct msm_display_topology dpu_encoder_get_topology(
 
 	if (dsc) {
 		/*
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		 * Use 2 DSC encoders, 2 layer mixers, and 1 or 2 interfaces
 		 * when Display Stream Compression (DSC) is enabled.
 		 * This is power-optimal and can drive up to (including) 4k
 		 * screens.
-<<<<<<< HEAD
 		 */
 		topology.num_dsc = 2;
 		topology.num_lm = 2;
 		WARN(topology.num_intf > 2,
 		     "DSC topology cannot support more than 2 interfaces\n");
-=======
-		 * In case of Display Stream Compression (DSC), we would use
-		 * 2 DSC encoders, 2 layer mixers and 1 interface
-		 * this is power optimal and can drive up to (including) 4k
-		 * screens
-		 */
-		topology.num_dsc = 2;
-		topology.num_lm = 2;
-		topology.num_intf = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		 */
-		topology.num_dsc = 2;
-		topology.num_lm = 2;
-		WARN(topology.num_intf > 2,
-		     "DSC topology cannot support more than 2 interfaces\n");
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	}
 
 	return topology;
 }
 
-<<<<<<< HEAD
-=======
 static void dpu_encoder_assign_crtc_resources(struct dpu_kms *dpu_kms,
 					      struct drm_encoder *drm_enc,
 					      struct dpu_global_state *global_state,
@@ -683,7 +659,6 @@ static void dpu_encoder_assign_crtc_resources(struct dpu_kms *dpu_kms,
 	cstate->num_mixers = num_lm;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int dpu_encoder_virt_atomic_check(
 		struct drm_encoder *drm_enc,
 		struct drm_crtc_state *crtc_state,
@@ -752,12 +727,9 @@ static int dpu_encoder_virt_atomic_check(
 		if (!crtc_state->active_changed || crtc_state->enable)
 			ret = dpu_rm_reserve(&dpu_kms->rm, global_state,
 					drm_enc, crtc_state, topology);
-<<<<<<< HEAD
-=======
 		if (!ret)
 			dpu_encoder_assign_crtc_resources(dpu_kms, drm_enc,
 							  global_state, crtc_state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	trace_dpu_enc_atomic_check_flags(DRMID(drm_enc), adj_mode->flags);
@@ -1159,22 +1131,11 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
 	struct dpu_encoder_virt *dpu_enc;
 	struct msm_drm_private *priv;
 	struct dpu_kms *dpu_kms;
-<<<<<<< HEAD
-	struct dpu_crtc_state *cstate;
-	struct dpu_global_state *global_state;
-	struct dpu_hw_blk *hw_pp[MAX_CHANNELS_PER_ENC];
-	struct dpu_hw_blk *hw_ctl[MAX_CHANNELS_PER_ENC];
-	struct dpu_hw_blk *hw_lm[MAX_CHANNELS_PER_ENC];
-	struct dpu_hw_blk *hw_dspp[MAX_CHANNELS_PER_ENC] = { NULL };
-	struct dpu_hw_blk *hw_dsc[MAX_CHANNELS_PER_ENC];
-	int num_lm, num_ctl, num_pp, num_dsc;
-=======
 	struct dpu_global_state *global_state;
 	struct dpu_hw_blk *hw_pp[MAX_CHANNELS_PER_ENC];
 	struct dpu_hw_blk *hw_ctl[MAX_CHANNELS_PER_ENC];
 	struct dpu_hw_blk *hw_dsc[MAX_CHANNELS_PER_ENC];
 	int num_ctl, num_pp, num_dsc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int dsc_mask = 0;
 	int i;
 
@@ -1203,14 +1164,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
 		ARRAY_SIZE(hw_pp));
 	num_ctl = dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
 		drm_enc->base.id, DPU_HW_BLK_CTL, hw_ctl, ARRAY_SIZE(hw_ctl));
-<<<<<<< HEAD
-	num_lm = dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
-		drm_enc->base.id, DPU_HW_BLK_LM, hw_lm, ARRAY_SIZE(hw_lm));
-	dpu_rm_get_assigned_resources(&dpu_kms->rm, global_state,
-		drm_enc->base.id, DPU_HW_BLK_DSPP, hw_dspp,
-		ARRAY_SIZE(hw_dspp));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < MAX_CHANNELS_PER_ENC; i++)
 		dpu_enc->hw_pp[i] = i < num_pp ? to_dpu_hw_pingpong(hw_pp[i])
@@ -1236,55 +1189,23 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
 		dpu_enc->cur_master->hw_cdm = hw_cdm ? to_dpu_hw_cdm(hw_cdm) : NULL;
 	}
 
-<<<<<<< HEAD
-	cstate = to_dpu_crtc_state(crtc_state);
-
-	for (i = 0; i < num_lm; i++) {
-		int ctl_idx = (i < num_ctl) ? i : (num_ctl-1);
-
-		cstate->mixers[i].hw_lm = to_dpu_hw_mixer(hw_lm[i]);
-		cstate->mixers[i].lm_ctl = to_dpu_hw_ctl(hw_ctl[ctl_idx]);
-		cstate->mixers[i].hw_dspp = to_dpu_hw_dspp(hw_dspp[i]);
-	}
-
-	cstate->num_mixers = num_lm;
-
-	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
-		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
-
-		if (!dpu_enc->hw_pp[i]) {
-=======
 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
 
 		phys->hw_pp = dpu_enc->hw_pp[i];
 		if (!phys->hw_pp) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			DPU_ERROR_ENC(dpu_enc,
 				"no pp block assigned at idx: %d\n", i);
 			return;
 		}
 
-<<<<<<< HEAD
-		/* Use first (and only) CTL if active CTLs are supported */
-		if (dpu_kms->catalog->caps->has_active_ctls)
-			phys->hw_ctl = to_dpu_hw_ctl(hw_ctl[0]);
-		else
-			phys->hw_ctl = to_dpu_hw_ctl(hw_ctl[i]);
-=======
 		phys->hw_ctl = i < num_ctl ? to_dpu_hw_ctl(hw_ctl[i]) : NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!phys->hw_ctl) {
 			DPU_ERROR_ENC(dpu_enc,
 				"no ctl block assigned at idx: %d\n", i);
 			return;
 		}
 
-<<<<<<< HEAD
-		phys->hw_pp = dpu_enc->hw_pp[i];
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		phys->cached_mode = crtc_state->adjusted_mode;
 		if (phys->ops.atomic_mode_set)
 			phys->ops.atomic_mode_set(phys, crtc_state, conn_state);

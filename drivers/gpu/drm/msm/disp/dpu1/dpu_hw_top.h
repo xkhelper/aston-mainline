@@ -67,8 +67,6 @@ struct dpu_vsync_source_cfg {
 	enum dpu_vsync_source vsync_source;
 };
 
-<<<<<<< HEAD
-=======
 enum dpu_dp_phy_sel {
 	DPU_DP_PHY_NONE,
 	DPU_DP_PHY_0,
@@ -76,7 +74,6 @@ enum dpu_dp_phy_sel {
 	DPU_DP_PHY_2,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct dpu_hw_mdp_ops - interface to the MDP TOP Hw driver functions
  * Assumption is these functions will be called after clocks are enabled.
@@ -136,8 +133,6 @@ struct dpu_hw_mdp_ops {
 			struct dpu_danger_safe_status *status);
 
 	/**
-<<<<<<< HEAD
-=======
 	 * dp_phy_intf_sel - configure intf to phy mapping
 	 * @mdp: mdp top context driver
 	 * @phys: list of phys the DP interfaces should be connected to. 0 disables the INTF.
@@ -145,7 +140,6 @@ struct dpu_hw_mdp_ops {
 	void (*dp_phy_intf_sel)(struct dpu_hw_mdp *mdp, enum dpu_dp_phy_sel phys[2]);
 
 	/**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * intf_audio_select - select the external interface for audio
 	 * @mdp: mdp top context driver
 	 */
@@ -168,20 +162,12 @@ struct dpu_hw_mdp {
  * @dev:  Corresponding device for devres management
  * @cfg:  MDP TOP configuration from catalog
  * @addr: Mapped register io address of MDP
-<<<<<<< HEAD
- * @m:    Pointer to mdss catalog data
-=======
  * @mdss_rev: dpu core's major and minor versions
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct dpu_hw_mdp *dpu_hw_mdptop_init(struct drm_device *dev,
 				      const struct dpu_mdp_cfg *cfg,
 				      void __iomem *addr,
-<<<<<<< HEAD
-				      const struct dpu_mdss_cfg *m);
-=======
 				      const struct dpu_mdss_version *mdss_rev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void dpu_hw_mdp_destroy(struct dpu_hw_mdp *mdp);
 

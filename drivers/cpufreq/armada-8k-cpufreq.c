@@ -132,11 +132,7 @@ static int __init armada_8k_cpufreq_init(void)
 	int ret = 0, opps_index = 0, cpu, nb_cpus;
 	struct freq_table *freq_tables;
 	struct device_node *node;
-<<<<<<< HEAD
-	struct cpumask cpus;
-=======
 	static struct cpumask cpus;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	node = of_find_matching_node_and_match(NULL, armada_8k_cpufreq_of_match,
 					       NULL);

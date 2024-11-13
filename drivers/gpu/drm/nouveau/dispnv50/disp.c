@@ -93,16 +93,11 @@ nv50_chan_create(struct nvif_device *device, struct nvif_object *disp,
 				ret = nvif_object_ctor(disp, "kmsChan", 0,
 						       oclass[0], data, size,
 						       &chan->user);
-<<<<<<< HEAD
-				if (ret == 0)
-					nvif_object_map(&chan->user, NULL, 0);
-=======
 				if (ret == 0) {
 					ret = nvif_object_map(&chan->user, NULL, 0);
 					if (ret)
 						nvif_object_dtor(&chan->user);
 				}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvif_object_sclass_put(&sclass);
 				return ret;
 			}
@@ -132,34 +127,20 @@ nv50_dmac_destroy(struct nv50_dmac *dmac)
 
 	nv50_chan_destroy(&dmac->base);
 
-<<<<<<< HEAD
-	nvif_mem_dtor(&dmac->_push.mem);
-=======
 	nvif_mem_dtor(&dmac->push.mem);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void
 nv50_dmac_kick(struct nvif_push *push)
 {
-<<<<<<< HEAD
-	struct nv50_dmac *dmac = container_of(push, typeof(*dmac), _push);
-
-	dmac->cur = push->cur - (u32 __iomem *)dmac->_push.mem.object.map.ptr;
-=======
 	struct nv50_dmac *dmac = container_of(push, typeof(*dmac), push);
 
 	dmac->cur = push->cur - (u32 __iomem *)dmac->push.mem.object.map.ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dmac->put != dmac->cur) {
 		/* Push buffer fetches are not coherent with BAR1, we need to ensure
 		 * writes have been flushed right through to VRAM before writing PUT.
 		 */
-<<<<<<< HEAD
-		if (dmac->push->mem.type & NVIF_MEM_VRAM) {
-=======
 		if (dmac->push.mem.type & NVIF_MEM_VRAM) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct nvif_device *device = dmac->base.device;
 			nvif_wr32(&device->object, 0x070000, 0x00000001);
 			nvif_msec(device, 2000,
@@ -194,11 +175,7 @@ nv50_dmac_wind(struct nv50_dmac *dmac)
 	if (get == 0) {
 		/* Corner-case, HW idle, but non-committed work pending. */
 		if (dmac->put == 0)
-<<<<<<< HEAD
-			nv50_dmac_kick(dmac->push);
-=======
 			nv50_dmac_kick(&dmac->push);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (nvif_msec(dmac->base.device, 2000,
 			if (NVIF_TV32(&dmac->base.user, NV507C, GET, PTR, >, 0))
@@ -207,11 +184,7 @@ nv50_dmac_wind(struct nv50_dmac *dmac)
 			return -ETIMEDOUT;
 	}
 
-<<<<<<< HEAD
-	PUSH_RSVD(dmac->push, PUSH_JUMP(dmac->push, 0));
-=======
 	PUSH_RSVD(&dmac->push, PUSH_JUMP(&dmac->push, 0));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dmac->cur = 0;
 	return 0;
 }
@@ -219,31 +192,19 @@ nv50_dmac_wind(struct nv50_dmac *dmac)
 static int
 nv50_dmac_wait(struct nvif_push *push, u32 size)
 {
-<<<<<<< HEAD
-	struct nv50_dmac *dmac = container_of(push, typeof(*dmac), _push);
-=======
 	struct nv50_dmac *dmac = container_of(push, typeof(*dmac), push);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int free;
 
 	if (WARN_ON(size > dmac->max))
 		return -EINVAL;
 
-<<<<<<< HEAD
-	dmac->cur = push->cur - (u32 __iomem *)dmac->_push.mem.object.map.ptr;
-=======
 	dmac->cur = push->cur - (u32 __iomem *)dmac->push.mem.object.map.ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dmac->cur + size >= dmac->max) {
 		int ret = nv50_dmac_wind(dmac);
 		if (ret)
 			return ret;
 
-<<<<<<< HEAD
-		push->cur = dmac->_push.mem.object.map.ptr;
-=======
 		push->cur = dmac->push.mem.object.map.ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		push->cur = push->cur + dmac->cur;
 		nv50_dmac_kick(push);
 	}
@@ -256,11 +217,7 @@ nv50_dmac_wait(struct nvif_push *push, u32 size)
 		return -ETIMEDOUT;
 	}
 
-<<<<<<< HEAD
-	push->bgn = dmac->_push.mem.object.map.ptr;
-=======
 	push->bgn = dmac->push.mem.object.map.ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	push->bgn = push->bgn + dmac->cur;
 	push->cur = push->bgn;
 	push->end = push->cur + free;
@@ -272,29 +229,16 @@ static int nv50_dmac_vram_pushbuf = -1;
 module_param_named(kms_vram_pushbuf, nv50_dmac_vram_pushbuf, int, 0400);
 
 int
-<<<<<<< HEAD
-nv50_dmac_create(struct nvif_device *device, struct nvif_object *disp,
-		 const s32 *oclass, u8 head, void *data, u32 size, s64 syncbuf,
-		 struct nv50_dmac *dmac)
-{
-	struct nouveau_cli *cli = (void *)device->object.client;
-=======
 nv50_dmac_create(struct nouveau_drm *drm,
 		 const s32 *oclass, u8 head, void *data, u32 size, s64 syncbuf,
 		 struct nv50_dmac *dmac)
 {
 	struct nvif_device *device = &drm->device;
 	struct nvif_object *disp = &drm->display->disp.object;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nvif_disp_chan_v0 *args = data;
 	u8 type = NVIF_MEM_COHERENT;
 	int ret;
 
-<<<<<<< HEAD
-	mutex_init(&dmac->lock);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Pascal added support for 47-bit physical addresses, but some
 	 * parts of EVO still only accept 40-bit PAs.
 	 *
@@ -308,20 +252,6 @@ nv50_dmac_create(struct nouveau_drm *drm,
 	    (nv50_dmac_vram_pushbuf < 0 && device->info.family == NV_DEVICE_INFO_V0_PASCAL))
 		type |= NVIF_MEM_VRAM;
 
-<<<<<<< HEAD
-	ret = nvif_mem_ctor_map(&cli->mmu, "kmsChanPush", type, 0x1000,
-				&dmac->_push.mem);
-	if (ret)
-		return ret;
-
-	dmac->ptr = dmac->_push.mem.object.map.ptr;
-	dmac->_push.wait = nv50_dmac_wait;
-	dmac->_push.kick = nv50_dmac_kick;
-	dmac->push = &dmac->_push;
-	dmac->push->bgn = dmac->_push.mem.object.map.ptr;
-	dmac->push->cur = dmac->push->bgn;
-	dmac->push->end = dmac->push->bgn;
-=======
 	ret = nvif_mem_ctor_map(&drm->mmu, "kmsChanPush", type, 0x1000, &dmac->push.mem);
 	if (ret)
 		return ret;
@@ -331,7 +261,6 @@ nv50_dmac_create(struct nouveau_drm *drm,
 	dmac->push.bgn = dmac->push.mem.object.map.ptr;
 	dmac->push.cur = dmac->push.bgn;
 	dmac->push.end = dmac->push.bgn;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dmac->max = 0x1000/4 - 1;
 
 	/* EVO channels are affected by a HW bug where the last 12 DWORDs
@@ -340,11 +269,7 @@ nv50_dmac_create(struct nouveau_drm *drm,
 	if (disp->oclass < GV100_DISP)
 		dmac->max -= 12;
 
-<<<<<<< HEAD
-	args->pushbuf = nvif_handle(&dmac->_push.mem.object);
-=======
 	args->pushbuf = nvif_handle(&dmac->push.mem.object);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = nv50_chan_create(device, disp, oclass, head, data, size,
 			       &dmac->base);
@@ -632,11 +557,7 @@ nv50_dac_create(struct nouveau_encoder *nv_encoder)
 {
 	struct drm_connector *connector = &nv_encoder->conn->base;
 	struct nouveau_drm *drm = nouveau_drm(connector->dev);
-<<<<<<< HEAD
-	struct nvkm_i2c *i2c = nvxx_i2c(&drm->client.device);
-=======
 	struct nvkm_i2c *i2c = nvxx_i2c(drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nvkm_i2c_bus *bus;
 	struct drm_encoder *encoder;
 	struct dcb_output *dcbe = nv_encoder->dcb;
@@ -671,12 +592,7 @@ static int
 nv50_audio_component_get_eld(struct device *kdev, int port, int dev_id,
 			     bool *enabled, unsigned char *buf, int max_bytes)
 {
-<<<<<<< HEAD
-	struct drm_device *drm_dev = dev_get_drvdata(kdev);
-	struct nouveau_drm *drm = nouveau_drm(drm_dev);
-=======
 	struct nouveau_drm *drm = dev_get_drvdata(kdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_encoder *encoder;
 	struct nouveau_encoder *nv_encoder;
 	struct nouveau_crtc *nv_crtc;
@@ -721,30 +637,17 @@ static int
 nv50_audio_component_bind(struct device *kdev, struct device *hda_kdev,
 			  void *data)
 {
-<<<<<<< HEAD
-	struct drm_device *drm_dev = dev_get_drvdata(kdev);
-	struct nouveau_drm *drm = nouveau_drm(drm_dev);
-=======
 	struct nouveau_drm *drm = dev_get_drvdata(kdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_audio_component *acomp = data;
 
 	if (WARN_ON(!device_link_add(hda_kdev, kdev, DL_FLAG_STATELESS)))
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	drm_modeset_lock_all(drm_dev);
-	acomp->ops = &nv50_audio_component_ops;
-	acomp->dev = kdev;
-	drm->audio.component = acomp;
-	drm_modeset_unlock_all(drm_dev);
-=======
 	drm_modeset_lock_all(drm->dev);
 	acomp->ops = &nv50_audio_component_ops;
 	acomp->dev = kdev;
 	drm->audio.component = acomp;
 	drm_modeset_unlock_all(drm->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -752,17 +655,6 @@ static void
 nv50_audio_component_unbind(struct device *kdev, struct device *hda_kdev,
 			    void *data)
 {
-<<<<<<< HEAD
-	struct drm_device *drm_dev = dev_get_drvdata(kdev);
-	struct nouveau_drm *drm = nouveau_drm(drm_dev);
-	struct drm_audio_component *acomp = data;
-
-	drm_modeset_lock_all(drm_dev);
-	drm->audio.component = NULL;
-	acomp->ops = NULL;
-	acomp->dev = NULL;
-	drm_modeset_unlock_all(drm_dev);
-=======
 	struct nouveau_drm *drm = dev_get_drvdata(kdev);
 	struct drm_audio_component *acomp = data;
 
@@ -771,7 +663,6 @@ nv50_audio_component_unbind(struct device *kdev, struct device *hda_kdev,
 	acomp->ops = NULL;
 	acomp->dev = NULL;
 	drm_modeset_unlock_all(drm->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct component_ops nv50_audio_component_bind_ops = {
@@ -1989,11 +1880,7 @@ nv50_sor_create(struct nouveau_encoder *nv_encoder)
 	struct drm_connector *connector = &nv_encoder->conn->base;
 	struct nouveau_connector *nv_connector = nouveau_connector(connector);
 	struct nouveau_drm *drm = nouveau_drm(connector->dev);
-<<<<<<< HEAD
-	struct nvkm_i2c *i2c = nvxx_i2c(&drm->client.device);
-=======
 	struct nvkm_i2c *i2c = nvxx_i2c(drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_encoder *encoder;
 	struct dcb_output *dcbe = nv_encoder->dcb;
 	struct nv50_disp *disp = nv50_disp(connector->dev);
@@ -2160,11 +2047,7 @@ nv50_pior_create(struct nouveau_encoder *nv_encoder)
 	struct drm_device *dev = connector->dev;
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	struct nv50_disp *disp = nv50_disp(dev);
-<<<<<<< HEAD
-	struct nvkm_i2c *i2c = nvxx_i2c(&drm->client.device);
-=======
 	struct nvkm_i2c *i2c = nvxx_i2c(drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nvkm_i2c_bus *bus = NULL;
 	struct nvkm_i2c_aux *aux = NULL;
 	struct i2c_adapter *ddc;
@@ -2765,10 +2648,6 @@ nv50_disp_atomic_state_alloc(struct drm_device *dev)
 static const struct drm_mode_config_funcs
 nv50_disp_func = {
 	.fb_create = nouveau_user_framebuffer_create,
-<<<<<<< HEAD
-	.output_poll_changed = drm_fb_helper_output_poll_changed,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.atomic_check = nv50_disp_atomic_check,
 	.atomic_commit = nv50_disp_atomic_commit,
 	.atomic_state_alloc = nv50_disp_atomic_state_alloc,
@@ -2935,11 +2814,7 @@ nv50_display_destroy(struct drm_device *dev)
 	nouveau_bo_unmap(disp->sync);
 	if (disp->sync)
 		nouveau_bo_unpin(disp->sync);
-<<<<<<< HEAD
-	nouveau_bo_ref(NULL, &disp->sync);
-=======
 	nouveau_bo_fini(disp->sync);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	nouveau_display(dev)->priv = NULL;
 	kfree(disp);
@@ -2982,11 +2857,7 @@ nv50_display_create(struct drm_device *dev)
 				nouveau_bo_unpin(disp->sync);
 		}
 		if (ret)
-<<<<<<< HEAD
-			nouveau_bo_ref(NULL, &disp->sync);
-=======
 			nouveau_bo_fini(disp->sync);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (ret)

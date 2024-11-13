@@ -20,32 +20,19 @@ description: |
   Densitron DMT028VGHMCMI-1A is 480x640, 2-lane MIPI DSI LCD panel
   which has built-in ST7701 chip.
 
-<<<<<<< HEAD
-allOf:
-  - $ref: panel-common.yaml#
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 properties:
   compatible:
     items:
       - enum:
           - anbernic,rg-arc-panel
-<<<<<<< HEAD
-=======
           - anbernic,rg28xx-panel
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - densitron,dmt028vghmcmi-1a
           - elida,kd50t048a
           - techstar,ts8550b
       - const: sitronix,st7701
 
   reg:
-<<<<<<< HEAD
-    description: DSI virtual channel used by that screen
-=======
     description: DSI / SPI channel used by that screen
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     maxItems: 1
 
   VCC-supply:
@@ -54,8 +41,6 @@ properties:
   IOVCC-supply:
     description: I/O system regulator
 
-<<<<<<< HEAD
-=======
   dc-gpios:
     maxItems: 1
     description:
@@ -63,7 +48,6 @@ properties:
       If not set, the controller is in 3-line SPI mode.
       Disallowed for DSI.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   port: true
   reset-gpios: true
   rotation: true
@@ -78,9 +62,6 @@ required:
   - port
   - reset-gpios
 
-<<<<<<< HEAD
-additionalProperties: false
-=======
 allOf:
   - $ref: panel-common.yaml#
   - if:
@@ -113,7 +94,6 @@ allOf:
         dc-gpios: false
 
 unevaluatedProperties: false
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 examples:
   - |
@@ -138,8 +118,6 @@ examples:
             };
         };
     };
-<<<<<<< HEAD
-=======
   - |
     #include <dt-bindings/gpio/gpio.h>
 
@@ -163,4 +141,3 @@ examples:
             };
         };
     };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

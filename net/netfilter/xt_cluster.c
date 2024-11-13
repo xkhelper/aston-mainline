@@ -146,16 +146,6 @@ static void xt_cluster_mt_destroy(const struct xt_mtdtor_param *par)
 	nf_ct_netns_put(par->net, par->family);
 }
 
-<<<<<<< HEAD
-static struct xt_match xt_cluster_match __read_mostly = {
-	.name		= "cluster",
-	.family		= NFPROTO_UNSPEC,
-	.match		= xt_cluster_mt,
-	.checkentry	= xt_cluster_mt_checkentry,
-	.matchsize	= sizeof(struct xt_cluster_match_info),
-	.destroy	= xt_cluster_mt_destroy,
-	.me		= THIS_MODULE,
-=======
 static struct xt_match xt_cluster_match[] __read_mostly = {
 	{
 		.name		= "cluster",
@@ -177,25 +167,16 @@ static struct xt_match xt_cluster_match[] __read_mostly = {
 		.me		= THIS_MODULE,
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init xt_cluster_mt_init(void)
 {
-<<<<<<< HEAD
-	return xt_register_match(&xt_cluster_match);
-=======
 	return xt_register_matches(xt_cluster_match, ARRAY_SIZE(xt_cluster_match));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __exit xt_cluster_mt_fini(void)
 {
-<<<<<<< HEAD
-	xt_unregister_match(&xt_cluster_match);
-=======
 	xt_unregister_matches(xt_cluster_match, ARRAY_SIZE(xt_cluster_match));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 MODULE_AUTHOR("Pablo Neira Ayuso <pablo@netfilter.org>");

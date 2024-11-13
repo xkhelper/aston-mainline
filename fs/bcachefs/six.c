@@ -169,13 +169,6 @@ static int __do_six_trylock(struct six_lock *lock, enum six_lock_type type,
 				ret = -1 - SIX_LOCK_write;
 		}
 	} else if (type == SIX_LOCK_write && lock->readers) {
-<<<<<<< HEAD
-		if (try) {
-			atomic_add(SIX_LOCK_HELD_write, &lock->state);
-			smp_mb__after_atomic();
-		}
-
-=======
 		if (try)
 			atomic_add(SIX_LOCK_HELD_write, &lock->state);
 
@@ -187,7 +180,6 @@ static int __do_six_trylock(struct six_lock *lock, enum six_lock_type type,
 		 * and the one before atomic_read in read unlock path.
 		 */
 		smp_mb();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = !pcpu_read_count(lock);
 
 		if (try && !ret) {
@@ -349,11 +341,7 @@ static inline bool six_owner_running(struct six_lock *lock)
 	 */
 	rcu_read_lock();
 	struct task_struct *owner = READ_ONCE(lock->owner);
-<<<<<<< HEAD
-	bool ret = owner ? owner_on_cpu(owner) : !rt_task(current);
-=======
 	bool ret = owner ? owner_on_cpu(owner) : !rt_or_dl_task(current);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_read_unlock();
 
 	return ret;

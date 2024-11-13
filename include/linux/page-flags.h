@@ -66,11 +66,6 @@
  * PG_referenced, PG_reclaim are used for page reclaim for anonymous and
  * file-backed pagecache (see mm/vmscan.c).
  *
-<<<<<<< HEAD
- * PG_error is set to indicate that an I/O error occurred on this page.
- *
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * PG_arch_1 is an architecture specific page state bit.  The generic code
  * guarantees that this bit is cleared for a page when it first is entered into
  * the page cache.
@@ -106,33 +101,18 @@ enum pageflags {
 	PG_waiters,		/* Page has waiters, check its waitqueue. Must be bit #7 and in the same byte as "PG_locked" */
 	PG_active,
 	PG_workingset,
-<<<<<<< HEAD
-	PG_error,
-	PG_owner_priv_1,	/* Owner use. If pagecache, fs may use*/
-=======
 	PG_owner_priv_1,	/* Owner use. If pagecache, fs may use */
 	PG_owner_2,		/* Owner use. If pagecache, fs may use */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PG_arch_1,
 	PG_reserved,
 	PG_private,		/* If pagecache, has fs-private data */
 	PG_private_2,		/* If pagecache, has fs aux data */
-<<<<<<< HEAD
-	PG_mappedtodisk,	/* Has blocks allocated on-disk */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PG_reclaim,		/* To be reclaimed asap */
 	PG_swapbacked,		/* Page is backed by RAM/swap */
 	PG_unevictable,		/* Page is "unevictable"  */
 #ifdef CONFIG_MMU
 	PG_mlocked,		/* Page is vma mlocked */
 #endif
-<<<<<<< HEAD
-#ifdef CONFIG_ARCH_USES_PG_UNCACHED
-	PG_uncached,		/* Page has been mapped as uncached */
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_MEMORY_FAILURE
 	PG_hwpoison,		/* hardware poisoned page. Don't touch */
 #endif
@@ -140,29 +120,21 @@ enum pageflags {
 	PG_young,
 	PG_idle,
 #endif
-<<<<<<< HEAD
-#ifdef CONFIG_ARCH_USES_PG_ARCH_X
-	PG_arch_2,
-=======
 #ifdef CONFIG_ARCH_USES_PG_ARCH_2
 	PG_arch_2,
 #endif
 #ifdef CONFIG_ARCH_USES_PG_ARCH_3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	PG_arch_3,
 #endif
 	__NR_PAGEFLAGS,
 
 	PG_readahead = PG_reclaim,
 
-<<<<<<< HEAD
-=======
 	/* Anonymous memory (and shmem) */
 	PG_swapcache = PG_owner_priv_1, /* Swap page: swp_entry_t in private */
 	/* Some filesystems */
 	PG_checked = PG_owner_priv_1,
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Depending on the way an anonymous folio can be mapped into a page
 	 * table (e.g., single PMD/PUD/CONT of the head page vs. PTE-mapped
@@ -170,15 +142,6 @@ enum pageflags {
 	 * tail pages of an anonymous folio. For now, we only expect it to be
 	 * set on tail pages for PTE-mapped THP.
 	 */
-<<<<<<< HEAD
-	PG_anon_exclusive = PG_mappedtodisk,
-
-	/* Filesystems */
-	PG_checked = PG_owner_priv_1,
-
-	/* SwapBacked */
-	PG_swapcache = PG_owner_priv_1,	/* Swap page: swp_entry_t in private */
-=======
 	PG_anon_exclusive = PG_owner_2,
 
 	/*
@@ -186,7 +149,6 @@ enum pageflags {
 	 * Filesystems which do not use BHs can use it for their own purpose.
 	 */
 	PG_mappedtodisk = PG_owner_2,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Two page bits are conscripted by FS-Cache to maintain local caching
 	 * state.  These bits are set on pages belonging to the netfs's inodes
@@ -222,14 +184,9 @@ enum pageflags {
 	 */
 
 	/* At least one page in this folio has the hwpoison flag set */
-<<<<<<< HEAD
-	PG_has_hwpoisoned = PG_error,
-	PG_large_rmappable = PG_workingset, /* anon or file-backed */
-=======
 	PG_has_hwpoisoned = PG_active,
 	PG_large_rmappable = PG_workingset, /* anon or file-backed */
 	PG_partially_mapped = PG_reclaim, /* was identified to be partially mapped */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define PAGEFLAGS_MASK		((1UL << NR_PAGEFLAGS) - 1)
@@ -280,11 +237,7 @@ static __always_inline int page_is_fake_head(const struct page *page)
 	return page_fixed_fake_head(page) != page;
 }
 
-<<<<<<< HEAD
-static inline unsigned long _compound_head(const struct page *page)
-=======
 static __always_inline unsigned long _compound_head(const struct page *page)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long head = READ_ONCE(page->compound_head);
 
@@ -555,10 +508,6 @@ static inline int TestClearPage##uname(struct page *page) { return 0; }
 
 __PAGEFLAG(Locked, locked, PF_NO_TAIL)
 FOLIO_FLAG(waiters, FOLIO_HEAD_PAGE)
-<<<<<<< HEAD
-PAGEFLAG(Error, error, PF_NO_TAIL) TESTCLEARFLAG(Error, error, PF_NO_TAIL)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 FOLIO_FLAG(referenced, FOLIO_HEAD_PAGE)
 	FOLIO_TEST_CLEAR_FLAG(referenced, FOLIO_HEAD_PAGE)
 	__FOLIO_SET_FLAG(referenced, FOLIO_HEAD_PAGE)
@@ -566,14 +515,9 @@ PAGEFLAG(Dirty, dirty, PF_HEAD) TESTSCFLAG(Dirty, dirty, PF_HEAD)
 	__CLEARPAGEFLAG(Dirty, dirty, PF_HEAD)
 PAGEFLAG(LRU, lru, PF_HEAD) __CLEARPAGEFLAG(LRU, lru, PF_HEAD)
 	TESTCLEARFLAG(LRU, lru, PF_HEAD)
-<<<<<<< HEAD
-PAGEFLAG(Active, active, PF_HEAD) __CLEARPAGEFLAG(Active, active, PF_HEAD)
-	TESTCLEARFLAG(Active, active, PF_HEAD)
-=======
 FOLIO_FLAG(active, FOLIO_HEAD_PAGE)
 	__FOLIO_CLEAR_FLAG(active, FOLIO_HEAD_PAGE)
 	FOLIO_TEST_CLEAR_FLAG(active, FOLIO_HEAD_PAGE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 PAGEFLAG(Workingset, workingset, PF_HEAD)
 	TESTCLEARFLAG(Workingset, workingset, PF_HEAD)
 PAGEFLAG(Checked, checked, PF_NO_COMPOUND)	   /* Used by some filesystems */
@@ -589,15 +533,9 @@ PAGEFLAG(XenRemapped, xen_remapped, PF_NO_COMPOUND)
 PAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)
 	__CLEARPAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)
 	__SETPAGEFLAG(Reserved, reserved, PF_NO_COMPOUND)
-<<<<<<< HEAD
-PAGEFLAG(SwapBacked, swapbacked, PF_NO_TAIL)
-	__CLEARPAGEFLAG(SwapBacked, swapbacked, PF_NO_TAIL)
-	__SETPAGEFLAG(SwapBacked, swapbacked, PF_NO_TAIL)
-=======
 FOLIO_FLAG(swapbacked, FOLIO_HEAD_PAGE)
 	__FOLIO_CLEAR_FLAG(swapbacked, FOLIO_HEAD_PAGE)
 	__FOLIO_SET_FLAG(swapbacked, FOLIO_HEAD_PAGE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Private page markings that may be used by the filesystem that owns the page
@@ -606,14 +544,9 @@ FOLIO_FLAG(swapbacked, FOLIO_HEAD_PAGE)
  */
 PAGEFLAG(Private, private, PF_ANY)
 PAGEFLAG(Private2, private_2, PF_ANY) TESTSCFLAG(Private2, private_2, PF_ANY)
-<<<<<<< HEAD
-PAGEFLAG(OwnerPriv1, owner_priv_1, PF_ANY)
-	TESTCLEARFLAG(OwnerPriv1, owner_priv_1, PF_ANY)
-=======
 
 /* owner_2 can be set on tail pages for anon memory */
 FOLIO_FLAG(owner_2, FOLIO_HEAD_PAGE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Only test-and-set exist for PG_writeback.  The unconditional operators are
@@ -626,13 +559,8 @@ PAGEFLAG(MappedToDisk, mappedtodisk, PF_NO_TAIL)
 /* PG_readahead is only used for reads; PG_reclaim is only for writes */
 PAGEFLAG(Reclaim, reclaim, PF_NO_TAIL)
 	TESTCLEARFLAG(Reclaim, reclaim, PF_NO_TAIL)
-<<<<<<< HEAD
-PAGEFLAG(Readahead, readahead, PF_NO_COMPOUND)
-	TESTCLEARFLAG(Readahead, readahead, PF_NO_COMPOUND)
-=======
 FOLIO_FLAG(readahead, FOLIO_HEAD_PAGE)
 	FOLIO_TEST_CLEAR_FLAG(readahead, FOLIO_HEAD_PAGE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_HIGHMEM
 /*
@@ -652,36 +580,6 @@ static __always_inline bool folio_test_swapcache(const struct folio *folio)
 			test_bit(PG_swapcache, const_folio_flags(folio, 0));
 }
 
-<<<<<<< HEAD
-static __always_inline bool PageSwapCache(const struct page *page)
-{
-	return folio_test_swapcache(page_folio(page));
-}
-
-SETPAGEFLAG(SwapCache, swapcache, PF_NO_TAIL)
-CLEARPAGEFLAG(SwapCache, swapcache, PF_NO_TAIL)
-#else
-PAGEFLAG_FALSE(SwapCache, swapcache)
-#endif
-
-PAGEFLAG(Unevictable, unevictable, PF_HEAD)
-	__CLEARPAGEFLAG(Unevictable, unevictable, PF_HEAD)
-	TESTCLEARFLAG(Unevictable, unevictable, PF_HEAD)
-
-#ifdef CONFIG_MMU
-PAGEFLAG(Mlocked, mlocked, PF_NO_TAIL)
-	__CLEARPAGEFLAG(Mlocked, mlocked, PF_NO_TAIL)
-	TESTSCFLAG(Mlocked, mlocked, PF_NO_TAIL)
-#else
-PAGEFLAG_FALSE(Mlocked, mlocked) __CLEARPAGEFLAG_NOOP(Mlocked, mlocked)
-	TESTSCFLAG_FALSE(Mlocked, mlocked)
-#endif
-
-#ifdef CONFIG_ARCH_USES_PG_UNCACHED
-PAGEFLAG(Uncached, uncached, PF_NO_COMPOUND)
-#else
-PAGEFLAG_FALSE(Uncached, uncached)
-=======
 FOLIO_SET_FLAG(swapcache, FOLIO_HEAD_PAGE)
 FOLIO_CLEAR_FLAG(swapcache, FOLIO_HEAD_PAGE)
 #else
@@ -702,7 +600,6 @@ FOLIO_FLAG_FALSE(mlocked)
 	__FOLIO_CLEAR_FLAG_NOOP(mlocked)
 	FOLIO_TEST_CLEAR_FLAG_FALSE(mlocked)
 	FOLIO_TEST_SET_FLAG_FALSE(mlocked)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #ifdef CONFIG_MEMORY_FAILURE
@@ -963,10 +860,6 @@ static inline void ClearPageCompound(struct page *page)
 	ClearPageHead(page);
 }
 FOLIO_FLAG(large_rmappable, FOLIO_SECOND_PAGE)
-<<<<<<< HEAD
-#else
-FOLIO_FLAG_FALSE(large_rmappable)
-=======
 FOLIO_TEST_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
 /*
  * PG_partially_mapped is protected by deferred_split split_queue_lock,
@@ -979,7 +872,6 @@ FOLIO_FLAG_FALSE(large_rmappable)
 FOLIO_TEST_FLAG_FALSE(partially_mapped)
 __FOLIO_SET_FLAG_NOOP(partially_mapped)
 __FOLIO_CLEAR_FLAG_NOOP(partially_mapped)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #define PG_head_mask ((1UL << PG_head))
@@ -1040,64 +932,6 @@ PAGEFLAG_FALSE(HasHWPoisoned, has_hwpoisoned)
 #endif
 
 /*
-<<<<<<< HEAD
- * For pages that are never mapped to userspace,
- * page_type may be used.  Because it is initialised to -1, we invert the
- * sense of the bit, so __SetPageFoo *clears* the bit used for PageFoo, and
- * __ClearPageFoo *sets* the bit used for PageFoo.  We reserve a few high and
- * low bits so that an underflow or overflow of _mapcount won't be
- * mistaken for a page type value.
- */
-
-enum pagetype {
-	PG_buddy	= 0x40000000,
-	PG_offline	= 0x20000000,
-	PG_table	= 0x10000000,
-	PG_guard	= 0x08000000,
-	PG_hugetlb	= 0x04000000,
-	PG_slab		= 0x02000000,
-	PG_zsmalloc	= 0x01000000,
-
-	PAGE_TYPE_BASE	= 0x80000000,
-
-	/*
-	 * Reserve 0xffff0000 - 0xfffffffe to catch _mapcount underflows and
-	 * allow owners that set a type to reuse the lower 16 bit for their own
-	 * purposes.
-	 */
-	PAGE_MAPCOUNT_RESERVE	= ~0x0000ffff,
-};
-
-#define PageType(page, flag)						\
-	((READ_ONCE(page->page_type) & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
-#define folio_test_type(folio, flag)					\
-	((READ_ONCE(folio->page.page_type) & (PAGE_TYPE_BASE | flag))  == PAGE_TYPE_BASE)
-
-static inline int page_type_has_type(unsigned int page_type)
-{
-	return (int)page_type < PAGE_MAPCOUNT_RESERVE;
-}
-
-static inline int page_has_type(const struct page *page)
-{
-	return page_type_has_type(READ_ONCE(page->page_type));
-}
-
-#define FOLIO_TYPE_OPS(lname, fname)					\
-static __always_inline bool folio_test_##fname(const struct folio *folio)\
-{									\
-	return folio_test_type(folio, PG_##lname);			\
-}									\
-static __always_inline void __folio_set_##fname(struct folio *folio)	\
-{									\
-	VM_BUG_ON_FOLIO(!folio_test_type(folio, 0), folio);		\
-	folio->page.page_type &= ~PG_##lname;				\
-}									\
-static __always_inline void __folio_clear_##fname(struct folio *folio)	\
-{									\
-	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
-	folio->page.page_type |= PG_##lname;				\
-=======
  * For pages that do not use mapcount, page_type may be used.
  * The low 24 bits of pagetype may be used for your own purposes, as long
  * as you are careful to not affect the top 8 bits.  The low bits of
@@ -1153,26 +987,12 @@ static __always_inline void __folio_clear_##fname(struct folio *folio)	\
 		return;							\
 	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
 	folio->page.page_type = UINT_MAX;				\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define PAGE_TYPE_OPS(uname, lname, fname)				\
 FOLIO_TYPE_OPS(lname, fname)						\
 static __always_inline int Page##uname(const struct page *page)		\
 {									\
-<<<<<<< HEAD
-	return PageType(page, PG_##lname);				\
-}									\
-static __always_inline void __SetPage##uname(struct page *page)		\
-{									\
-	VM_BUG_ON_PAGE(!PageType(page, 0), page);			\
-	page->page_type &= ~PG_##lname;					\
-}									\
-static __always_inline void __ClearPage##uname(struct page *page)	\
-{									\
-	VM_BUG_ON_PAGE(!Page##uname(page), page);			\
-	page->page_type |= PG_##lname;					\
-=======
 	return data_race(page->page_type >> 24) == PGTY_##lname;	\
 }									\
 static __always_inline void __SetPage##uname(struct page *page)		\
@@ -1188,7 +1008,6 @@ static __always_inline void __ClearPage##uname(struct page *page)	\
 		return;							\
 	VM_BUG_ON_PAGE(!Page##uname(page), page);			\
 	page->page_type = UINT_MAX;					\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1265,8 +1084,6 @@ FOLIO_TEST_FLAG_FALSE(hugetlb)
 
 PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
 
-<<<<<<< HEAD
-=======
 /*
  * Mark pages that has to be accepted before touched for the first time.
  *
@@ -1274,7 +1091,6 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
  */
 PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * PageHuge - Determine if the page belongs to hugetlbfs
  * @page: The page to test.
@@ -1374,31 +1190,11 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
  */
 #define PAGE_FLAGS_SECOND						\
 	(0xffUL /* order */		| 1UL << PG_has_hwpoisoned |	\
-<<<<<<< HEAD
-	 1UL << PG_large_rmappable)
-=======
 	 1UL << PG_large_rmappable	| 1UL << PG_partially_mapped)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define PAGE_FLAGS_PRIVATE				\
 	(1UL << PG_private | 1UL << PG_private_2)
 /**
-<<<<<<< HEAD
- * page_has_private - Determine if page has private stuff
- * @page: The page to be checked
- *
- * Determine if a page has private stuff, indicating that release routines
- * should be invoked upon it.
- */
-static inline int page_has_private(const struct page *page)
-{
-	return !!(page->flags & PAGE_FLAGS_PRIVATE);
-}
-
-static inline bool folio_has_private(const struct folio *folio)
-{
-	return page_has_private(&folio->page);
-=======
  * folio_has_private - Determine if folio has private stuff
  * @folio: The folio to be checked
  *
@@ -1408,7 +1204,6 @@ static inline bool folio_has_private(const struct folio *folio)
 static inline int folio_has_private(const struct folio *folio)
 {
 	return !!(folio->flags & PAGE_FLAGS_PRIVATE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #undef PF_ANY

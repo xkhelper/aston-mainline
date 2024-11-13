@@ -3613,11 +3613,8 @@ static const struct sfp_upstream_ops m88e1510_sfp_ops = {
 	.module_remove = m88e1510_sfp_remove,
 	.attach = phy_sfp_attach,
 	.detach = phy_sfp_detach,
-<<<<<<< HEAD
-=======
 	.connect_phy = phy_sfp_connect_phy,
 	.disconnect_phy = phy_sfp_disconnect_phy,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int m88e1510_probe(struct phy_device *phydev)

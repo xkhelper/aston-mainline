@@ -13,11 +13,7 @@
  * All policy is validated before it is used.
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <kunit/visibility.h>
 #include <linux/ctype.h>
 #include <linux/errno.h>

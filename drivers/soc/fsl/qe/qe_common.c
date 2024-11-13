@@ -13,10 +13,7 @@
  * 2006 (c) MontaVista Software, Inc.
  * Vitaly Bordug <vbordug@ru.mvista.com>
  */
-<<<<<<< HEAD
-=======
 #include <linux/device.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/genalloc.h>
 #include <linux/init.h>
 #include <linux/list.h>
@@ -191,8 +188,6 @@ void cpm_muram_free(s32 offset)
 }
 EXPORT_SYMBOL(cpm_muram_free);
 
-<<<<<<< HEAD
-=======
 static void devm_cpm_muram_release(struct device *dev, void *res)
 {
 	s32 *info = res;
@@ -236,7 +231,6 @@ s32 devm_cpm_muram_alloc(struct device *dev, unsigned long size,
 }
 EXPORT_SYMBOL(devm_cpm_muram_alloc);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * cpm_muram_alloc_fixed - reserve a specific region of multi-user ram
  * @offset: offset of allocation start address
@@ -262,8 +256,6 @@ s32 cpm_muram_alloc_fixed(unsigned long offset, unsigned long size)
 EXPORT_SYMBOL(cpm_muram_alloc_fixed);
 
 /**
-<<<<<<< HEAD
-=======
  * devm_cpm_muram_alloc_fixed - Resource-managed cpm_muram_alloc_fixed
  * @dev: Device to allocate memory for
  * @offset: offset of allocation start address
@@ -300,7 +292,6 @@ s32 devm_cpm_muram_alloc_fixed(struct device *dev, unsigned long offset,
 EXPORT_SYMBOL(devm_cpm_muram_alloc_fixed);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * cpm_muram_addr - turn a muram offset into a virtual address
  * @offset: muram offset to convert
  */

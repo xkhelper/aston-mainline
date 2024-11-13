@@ -4,10 +4,7 @@
 #include <bpf/btf.h>
 #include "bpf/libbpf_internal.h"
 #include "cgroup_helpers.h"
-<<<<<<< HEAD
-=======
 #include "bpf_util.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const char *module_name = "bpf_testmod";
 static const char *symbol_name = "bpf_fentry_shadow_test";
@@ -104,11 +101,7 @@ void test_module_fentry_shadow(void)
 		load_opts.attach_btf_obj_fd = btf_fd[i];
 		prog_fd[i] = bpf_prog_load(BPF_PROG_TYPE_TRACING, NULL, "GPL",
 					   trace_program,
-<<<<<<< HEAD
-					   sizeof(trace_program) / sizeof(struct bpf_insn),
-=======
 					   ARRAY_SIZE(trace_program),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   &load_opts);
 		if (!ASSERT_GE(prog_fd[i], 0, "bpf_prog_load"))
 			goto out;

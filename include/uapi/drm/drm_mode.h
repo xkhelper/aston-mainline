@@ -859,11 +859,8 @@ struct drm_color_lut {
 
 /**
  * struct drm_plane_size_hint - Plane size hints
-<<<<<<< HEAD
-=======
  * @width: The width of the plane in pixel
  * @height: The height of the plane in pixel
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * The plane SIZE_HINTS property blob contains an
  * array of struct drm_plane_size_hint.

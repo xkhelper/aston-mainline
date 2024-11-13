@@ -447,12 +447,8 @@ struct drm_gem_object {
 	.poll		= drm_poll,\
 	.read		= drm_read,\
 	.llseek		= noop_llseek,\
-<<<<<<< HEAD
-	.mmap		= drm_gem_mmap
-=======
 	.mmap		= drm_gem_mmap, \
 	.fop_flags	= FOP_UNSIGNED_OFFSET
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * DEFINE_DRM_GEM_FOPS() - macro to generate file operations for GEM drivers

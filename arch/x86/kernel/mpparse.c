@@ -68,11 +68,7 @@ static void __init mpc_oem_bus_info(struct mpc_bus *m, char *str)
 {
 	memcpy(str, m->bustype, 6);
 	str[6] = 0;
-<<<<<<< HEAD
-	apic_printk(APIC_VERBOSE, "Bus #%d is %s\n", m->busid, str);
-=======
 	apic_pr_verbose("Bus #%d is %s\n", m->busid, str);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __init MP_bus_info(struct mpc_bus *m)
@@ -421,11 +417,7 @@ static unsigned long __init get_mpc_size(unsigned long physptr)
 	mpc = early_memremap(physptr, PAGE_SIZE);
 	size = mpc->length;
 	early_memunmap(mpc, PAGE_SIZE);
-<<<<<<< HEAD
-	apic_printk(APIC_VERBOSE, "  mpc: %lx-%lx\n", physptr, physptr + size);
-=======
 	apic_pr_verbose("  mpc: %lx-%lx\n", physptr, physptr + size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return size;
 }
@@ -568,12 +560,7 @@ static int __init smp_scan_config(unsigned long base, unsigned long length)
 	struct mpf_intel *mpf;
 	int ret = 0;
 
-<<<<<<< HEAD
-	apic_printk(APIC_VERBOSE, "Scan for SMP in [mem %#010lx-%#010lx]\n",
-		    base, base + length - 1);
-=======
 	apic_pr_verbose("Scan for SMP in [mem %#010lx-%#010lx]\n", base, base + length - 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BUILD_BUG_ON(sizeof(*mpf) != 16);
 
 	while (length > 0) {
@@ -695,21 +682,13 @@ static void __init check_irq_src(struct mpc_intsrc *m, int *nr_m_spare)
 {
 	int i;
 
-<<<<<<< HEAD
-	apic_printk(APIC_VERBOSE, "OLD ");
-=======
 	apic_pr_verbose("OLD ");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	print_mp_irq_info(m);
 
 	i = get_MP_intsrc_index(m);
 	if (i > 0) {
 		memcpy(m, &mp_irqs[i], sizeof(*m));
-<<<<<<< HEAD
-		apic_printk(APIC_VERBOSE, "NEW ");
-=======
 		apic_pr_verbose("NEW ");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		print_mp_irq_info(&mp_irqs[i]);
 		return;
 	}
@@ -792,11 +771,7 @@ static int  __init replace_intsrc_all(struct mpc_table *mpc,
 			continue;
 
 		if (nr_m_spare > 0) {
-<<<<<<< HEAD
-			apic_printk(APIC_VERBOSE, "*NEW* found\n");
-=======
 			apic_pr_verbose("*NEW* found\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			nr_m_spare--;
 			memcpy(m_spare[nr_m_spare], &mp_irqs[i], sizeof(mp_irqs[i]));
 			m_spare[nr_m_spare] = NULL;

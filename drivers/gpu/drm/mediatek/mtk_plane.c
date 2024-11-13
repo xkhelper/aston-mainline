@@ -320,13 +320,8 @@ static const struct drm_plane_helper_funcs mtk_plane_helper_funcs = {
 
 int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
 		   unsigned long possible_crtcs, enum drm_plane_type type,
-<<<<<<< HEAD
-		   unsigned int supported_rotations, const u32 *formats,
-		   size_t num_formats)
-=======
 		   unsigned int supported_rotations, const u32 blend_modes,
 		   const u32 *formats, size_t num_formats, unsigned int plane_idx)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 
@@ -343,8 +338,6 @@ int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
 		return err;
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * The hardware does not support repositioning planes by muxing: their
 	 * Z-position is infact fixed and the only way to change the actual
@@ -361,7 +354,6 @@ int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
 		return err;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (supported_rotations) {
 		err = drm_plane_create_rotation_property(plane,
 							 DRM_MODE_ROTATE_0,
@@ -370,8 +362,6 @@ int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
 			DRM_INFO("Create rotation property failed\n");
 	}
 
-<<<<<<< HEAD
-=======
 	err = drm_plane_create_alpha_property(plane);
 	if (err)
 		DRM_ERROR("failed to create property: alpha\n");
@@ -382,7 +372,6 @@ int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
 			DRM_ERROR("failed to create property: blend_mode\n");
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_plane_helper_add(plane, &mtk_plane_helper_funcs);
 
 	return 0;

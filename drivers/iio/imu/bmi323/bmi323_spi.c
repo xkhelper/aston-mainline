@@ -36,11 +36,7 @@ static int bmi323_regmap_spi_write(void *context, const void *data,
 	return spi_write(spi, data_buff + 1, count - 1);
 }
 
-<<<<<<< HEAD
-static struct regmap_bus bmi323_regmap_bus = {
-=======
 static const struct regmap_bus bmi323_regmap_bus = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read = bmi323_regmap_spi_read,
 	.write = bmi323_regmap_spi_write,
 };
@@ -83,10 +79,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_spi_match);
 static struct spi_driver bmi323_spi_driver = {
 	.driver = {
 		.name = "bmi323",
-<<<<<<< HEAD
-=======
 		.pm = pm_ptr(&bmi323_core_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = bmi323_of_spi_match,
 	},
 	.probe = bmi323_spi_probe,

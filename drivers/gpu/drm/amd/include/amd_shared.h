@@ -61,11 +61,7 @@ enum amd_apu_flags {
 * acquires the list of IP blocks for the GPU in use on initialization.
 * It can then operate on this list to perform standard driver operations
 * such as: init, fini, suspend, resume, etc.
-<<<<<<< HEAD
-* 
-=======
 *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 *
 * IP block implementations are named using the following convention:
 * <functionality>_v<version> (E.g.: gfx_v6_0).
@@ -89,11 +85,7 @@ enum amd_apu_flags {
 * @AMD_IP_BLOCK_TYPE_MES: Micro-Engine Scheduler
 * @AMD_IP_BLOCK_TYPE_JPEG: JPEG Engine
 * @AMD_IP_BLOCK_TYPE_VPE: Video Processing Engine
-<<<<<<< HEAD
-* @AMD_IP_BLOCK_TYPE_UMSCH_MM: User Mode Schduler for Multimedia
-=======
 * @AMD_IP_BLOCK_TYPE_UMSCH_MM: User Mode Scheduler for Multimedia
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 * @AMD_IP_BLOCK_TYPE_ISP: Image Signal Processor
 * @AMD_IP_BLOCK_TYPE_NUM: Total number of IP block types
 */
@@ -259,21 +251,6 @@ enum DC_FEATURE_MASK {
 	DC_REPLAY_MASK = (1 << 9), //0x200, disabled by default for dcn < 3.1.4
 };
 
-<<<<<<< HEAD
-enum DC_DEBUG_MASK {
-	DC_DISABLE_PIPE_SPLIT = 0x1,
-	DC_DISABLE_STUTTER = 0x2,
-	DC_DISABLE_DSC = 0x4,
-	DC_DISABLE_CLOCK_GATING = 0x8,
-	DC_DISABLE_PSR = 0x10,
-	DC_FORCE_SUBVP_MCLK_SWITCH = 0x20,
-	DC_DISABLE_MPO = 0x40,
-	DC_ENABLE_DPIA_TRACE = 0x80,
-	DC_ENABLE_DML2 = 0x100,
-	DC_DISABLE_PSR_SU = 0x200,
-	DC_DISABLE_REPLAY = 0x400,
-	DC_DISABLE_IPS = 0x800,
-=======
 /**
  * enum DC_DEBUG_MASK - Bits that are useful for debugging the Display Core IP
  */
@@ -360,7 +337,6 @@ enum DC_DEBUG_MASK {
 	 * @DC_FORCE_IPS_ENABLE: If set, force enable all IPS, all the time.
 	 */
 	DC_FORCE_IPS_ENABLE = 0x4000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum amd_dpm_forced_level;

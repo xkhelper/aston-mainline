@@ -27,10 +27,7 @@ static const struct dpu_mdp_cfg sm6125_mdp = {
 		[DPU_CLK_CTRL_VIG0] = { .reg_off = 0x2ac, .bit_off = 0 },
 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
-<<<<<<< HEAD
-=======
 		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 
@@ -143,8 +140,6 @@ static const struct dpu_pingpong_cfg sm6125_pp[] = {
 	},
 };
 
-<<<<<<< HEAD
-=======
 static const struct dpu_wb_cfg sm6125_wb[] = {
 	{
 		.name = "wb_2", .id = WB_2,
@@ -160,7 +155,6 @@ static const struct dpu_wb_cfg sm6125_wb[] = {
 	},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct dpu_intf_cfg sm6125_intf[] = {
 	{
 		.name = "intf_0", .id = INTF_0,
@@ -232,11 +226,8 @@ const struct dpu_mdss_cfg dpu_sm6125_cfg = {
 	.dspp = sm6125_dspp,
 	.pingpong_count = ARRAY_SIZE(sm6125_pp),
 	.pingpong = sm6125_pp,
-<<<<<<< HEAD
-=======
 	.wb_count = ARRAY_SIZE(sm6125_wb),
 	.wb = sm6125_wb,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.intf_count = ARRAY_SIZE(sm6125_intf),
 	.intf = sm6125_intf,
 	.vbif_count = ARRAY_SIZE(sdm845_vbif),

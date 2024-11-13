@@ -697,7 +697,4 @@ module_exit(test_ww_mutex_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Intel Corporation");
-<<<<<<< HEAD
-=======
 MODULE_DESCRIPTION("API test facility for ww_mutexes");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

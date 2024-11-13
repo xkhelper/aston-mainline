@@ -369,8 +369,6 @@ TRACE_EVENT(xe_reg_rw,
 		  (u32)(__entry->val >> 32))
 );
 
-<<<<<<< HEAD
-=======
 DECLARE_EVENT_CLASS(xe_pm_runtime,
 		    TP_PROTO(struct xe_device *xe, void *caller),
 		    TP_ARGS(xe, caller),
@@ -423,7 +421,6 @@ DEFINE_EVENT(xe_pm_runtime, xe_pm_runtime_get_ioctl,
 	     TP_ARGS(xe, caller)
 );
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 /* This part must be outside protection */

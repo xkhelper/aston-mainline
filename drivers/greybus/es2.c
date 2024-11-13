@@ -12,11 +12,7 @@
 #include <linux/debugfs.h>
 #include <linux/list.h>
 #include <linux/greybus.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "arpc.h"
 #include "greybus_trace.h"

@@ -175,15 +175,6 @@ static __always_inline void * __must_check kasan_init_slab_obj(
 	return (void *)object;
 }
 
-<<<<<<< HEAD
-bool __kasan_slab_free(struct kmem_cache *s, void *object,
-			unsigned long ip, bool init);
-static __always_inline bool kasan_slab_free(struct kmem_cache *s,
-						void *object, bool init)
-{
-	if (kasan_enabled())
-		return __kasan_slab_free(s, object, _RET_IP_, init);
-=======
 bool __kasan_slab_pre_free(struct kmem_cache *s, void *object,
 			unsigned long ip);
 /**
@@ -237,7 +228,6 @@ static __always_inline bool kasan_slab_free(struct kmem_cache *s,
 {
 	if (kasan_enabled())
 		return __kasan_slab_free(s, object, init, still_accessible);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return false;
 }
 
@@ -427,9 +417,6 @@ static inline void *kasan_init_slab_obj(struct kmem_cache *cache,
 {
 	return (void *)object;
 }
-<<<<<<< HEAD
-static inline bool kasan_slab_free(struct kmem_cache *s, void *object, bool init)
-=======
 
 static inline bool kasan_slab_pre_free(struct kmem_cache *s, void *object)
 {
@@ -438,7 +425,6 @@ static inline bool kasan_slab_pre_free(struct kmem_cache *s, void *object)
 
 static inline bool kasan_slab_free(struct kmem_cache *s, void *object,
 				   bool init, bool still_accessible)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return false;
 }

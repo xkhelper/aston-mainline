@@ -738,8 +738,6 @@ static const char * const paicrypt_ctrnames[] = {
 	[154] = "PCKMO_ENCRYPT_ECC_ED448_KEY",
 	[155] = "IBM_RESERVED_155",
 	[156] = "IBM_RESERVED_156",
-<<<<<<< HEAD
-=======
 	[157] = "KM_FULL_XTS_AES_128",
 	[158] = "KM_FULL_XTS_AES_256",
 	[159] = "KM_FULL_XTS_ENCRYPTED_AES_128",
@@ -756,7 +754,6 @@ static const char * const paicrypt_ctrnames[] = {
 	[170] = "PCKMO_ENCRYPT_HMAC_1024_KEY",
 	[171] = "PCKMO_ENCRYPT_AES_XTS_128",
 	[172] = "PCKMO_ENCRYPT_AES_XTS_256",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void __init attr_event_free(struct attribute **attrs, int num)

@@ -10,10 +10,7 @@
 #include "xe_gt_idle_types.h"
 #include "xe_gt_sriov_pf_types.h"
 #include "xe_gt_sriov_vf_types.h"
-<<<<<<< HEAD
-=======
 #include "xe_gt_stats.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_hw_engine_types.h"
 #include "xe_hw_fence_types.h"
 #include "xe_oa.h"
@@ -31,14 +28,11 @@ enum xe_gt_type {
 	XE_GT_TYPE_MEDIA,
 };
 
-<<<<<<< HEAD
-=======
 enum xe_gt_eu_type {
 	XE_GT_EU_TYPE_SIMD8,
 	XE_GT_EU_TYPE_SIMD16,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define XE_MAX_DSS_FUSE_REGS		3
 #define XE_MAX_DSS_FUSE_BITS		(32 * XE_MAX_DSS_FUSE_REGS)
 #define XE_MAX_EU_FUSE_REGS		1
@@ -140,8 +134,6 @@ struct xe_gt {
 		u8 has_indirect_ring_state:1;
 	} info;
 
-<<<<<<< HEAD
-=======
 #if IS_ENABLED(CONFIG_DEBUG_FS)
 	/** @stats: GT stats */
 	struct {
@@ -150,7 +142,6 @@ struct xe_gt {
 	} stats;
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/**
 	 * @mmio: mmio info for GT.  All GTs within a tile share the same
 	 * register space, but have their own copy of GSI registers at a
@@ -256,11 +247,6 @@ struct xe_gt {
 		struct pf_queue {
 			/** @usm.pf_queue.gt: back pointer to GT */
 			struct xe_gt *gt;
-<<<<<<< HEAD
-#define PF_QUEUE_NUM_DW	128
-			/** @usm.pf_queue.data: data in the page fault queue */
-			u32 data[PF_QUEUE_NUM_DW];
-=======
 			/** @usm.pf_queue.data: data in the page fault queue */
 			u32 *data;
 			/**
@@ -269,7 +255,6 @@ struct xe_gt {
 			 * of compute resources available.
 			 */
 			u32 num_dw;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/**
 			 * @usm.pf_queue.tail: tail pointer in DWs for page fault queue,
 			 * moved by worker which processes faults (consumer).
@@ -371,15 +356,12 @@ struct xe_gt {
 
 		/** @fuse_topo.l3_bank_mask: L3 bank mask */
 		xe_l3_bank_mask_t l3_bank_mask;
-<<<<<<< HEAD
-=======
 
 		/**
 		 * @fuse_topo.eu_type: type/width of EU stored in
 		 * fuse_topo.eu_mask_per_dss
 		 */
 		enum xe_gt_eu_type eu_type;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} fuse_topo;
 
 	/** @steering: register steering for individual HW units */
@@ -394,15 +376,12 @@ struct xe_gt {
 	} steering[NUM_STEERING_TYPES];
 
 	/**
-<<<<<<< HEAD
-=======
 	 * @steering_dss_per_grp: number of DSS per steering group (gslice,
 	 *    cslice, etc.).
 	 */
 	unsigned int steering_dss_per_grp;
 
 	/**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * @mcr_lock: protects the MCR_SELECTOR register for the duration
 	 *    of a steered operation
 	 */
@@ -422,10 +401,6 @@ struct xe_gt {
 		unsigned long *engine;
 		/** @wa_active.lrc: bitmap with active LRC workarounds */
 		unsigned long *lrc;
-<<<<<<< HEAD
-		/** @wa_active.oob: bitmap with active OOB workaroudns */
-		unsigned long *oob;
-=======
 		/** @wa_active.oob: bitmap with active OOB workarounds */
 		unsigned long *oob;
 		/**
@@ -434,7 +409,6 @@ struct xe_gt {
 		 * initialization after OOB WAs have being processed
 		 */
 		bool oob_initialized;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} wa_active;
 
 	/** @user_engines: engines present in GT and available to userspace */

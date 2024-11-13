@@ -167,13 +167,10 @@ attribute-sets:
           "re-attached", they are just waiting to disappear.
           Attribute is absent if Page Pool has not been detached, and
           can still be used to allocate new memory.
-<<<<<<< HEAD
-=======
       -
         name: dmabuf
         doc: ID of the dmabuf this page-pool is attached to.
         type: u32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   -
     name: page-pool-info
     subset-of: page-pool
@@ -275,13 +272,10 @@ attribute-sets:
         name: napi-id
         doc: ID of the NAPI instance which services this queue.
         type: u32
-<<<<<<< HEAD
-=======
       -
         name: dmabuf
         doc: ID of the dmabuf attached to this queue, if any.
         type: u32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   -
     name: qstats
@@ -471,8 +465,6 @@ attribute-sets:
           Number of times driver re-started accepting send
           requests to this queue from the stack.
         type: uint
-<<<<<<< HEAD
-=======
   -
     name: queue-id
     subset-of: queue
@@ -506,7 +498,6 @@ attribute-sets:
         type: u32
         checks:
           min: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 operations:
   list:
@@ -560,10 +551,7 @@ operations:
             - inflight
             - inflight-mem
             - detach-time
-<<<<<<< HEAD
-=======
             - dmabuf
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       dump:
         reply: *pp-reply
       config-cond: page-pool
@@ -628,10 +616,7 @@ operations:
             - type
             - napi-id
             - ifindex
-<<<<<<< HEAD
-=======
             - dmabuf
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       dump:
         request:
           attributes:
@@ -677,8 +662,6 @@ operations:
             - rx-bytes
             - tx-packets
             - tx-bytes
-<<<<<<< HEAD
-=======
     -
       name: bind-rx
       doc: Bind dmabuf to netdev
@@ -697,7 +680,6 @@ operations:
 kernel-family:
   headers: [ "linux/list.h"]
   sock-priv: struct list_head
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 mcast-groups:
   list:

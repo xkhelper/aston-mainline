@@ -390,33 +390,18 @@ ipu6_isys_init(struct pci_dev *pdev, struct device *parent,
 	isys_adev = ipu6_bus_initialize_device(pdev, parent, pdata, ctrl,
 					       IPU6_ISYS_NAME);
 	if (IS_ERR(isys_adev)) {
-<<<<<<< HEAD
-		dev_err_probe(dev, PTR_ERR(isys_adev),
-			      "ipu6_bus_initialize_device isys failed\n");
-		kfree(pdata);
-		return ERR_CAST(isys_adev);
-=======
 		kfree(pdata);
 		return dev_err_cast_probe(dev, isys_adev,
 				"ipu6_bus_initialize_device isys failed\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	isys_adev->mmu = ipu6_mmu_init(dev, base, ISYS_MMID,
 				       &ipdata->hw_variant);
 	if (IS_ERR(isys_adev->mmu)) {
-<<<<<<< HEAD
-		dev_err_probe(dev, PTR_ERR(isys_adev->mmu),
-			      "ipu6_mmu_init(isys_adev->mmu) failed\n");
-		put_device(&isys_adev->auxdev.dev);
-		kfree(pdata);
-		return ERR_CAST(isys_adev->mmu);
-=======
 		put_device(&isys_adev->auxdev.dev);
 		kfree(pdata);
 		return dev_err_cast_probe(dev, isys_adev->mmu,
 				"ipu6_mmu_init(isys_adev->mmu) failed\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	isys_adev->mmu->dev = &isys_adev->auxdev.dev;
@@ -449,33 +434,18 @@ ipu6_psys_init(struct pci_dev *pdev, struct device *parent,
 	psys_adev = ipu6_bus_initialize_device(pdev, parent, pdata, ctrl,
 					       IPU6_PSYS_NAME);
 	if (IS_ERR(psys_adev)) {
-<<<<<<< HEAD
-		dev_err_probe(&pdev->dev, PTR_ERR(psys_adev),
-			      "ipu6_bus_initialize_device psys failed\n");
-		kfree(pdata);
-		return ERR_CAST(psys_adev);
-=======
 		kfree(pdata);
 		return dev_err_cast_probe(&pdev->dev, psys_adev,
 				"ipu6_bus_initialize_device psys failed\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	psys_adev->mmu = ipu6_mmu_init(&pdev->dev, base, PSYS_MMID,
 				       &ipdata->hw_variant);
 	if (IS_ERR(psys_adev->mmu)) {
-<<<<<<< HEAD
-		dev_err_probe(&pdev->dev, PTR_ERR(psys_adev->mmu),
-			      "ipu6_mmu_init(psys_adev->mmu) failed\n");
-		put_device(&psys_adev->auxdev.dev);
-		kfree(pdata);
-		return ERR_CAST(psys_adev->mmu);
-=======
 		put_device(&psys_adev->auxdev.dev);
 		kfree(pdata);
 		return dev_err_cast_probe(&pdev->dev, psys_adev->mmu,
 				"ipu6_mmu_init(psys_adev->mmu) failed\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	psys_adev->mmu->dev = &psys_adev->auxdev.dev;
@@ -602,13 +572,7 @@ static int ipu6_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	if (ret)
 		return dev_err_probe(dev, ret, "Failed to set DMA mask\n");
 
-<<<<<<< HEAD
-	ret = dma_set_max_seg_size(dev, UINT_MAX);
-	if (ret)
-		return dev_err_probe(dev, ret, "Failed to set max_seg_size\n");
-=======
 	dma_set_max_seg_size(dev, UINT_MAX);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ipu6_pci_config_setup(pdev, isp->hw_ver);
 	if (ret)

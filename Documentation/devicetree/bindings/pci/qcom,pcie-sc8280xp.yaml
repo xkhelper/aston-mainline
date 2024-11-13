@@ -58,12 +58,6 @@ properties:
     items:
       - const: pci
 
-<<<<<<< HEAD
-  vddpe-3v3-supply:
-    description: A phandle to the PCIe endpoint power supply
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - interconnects
   - interconnect-names

@@ -328,11 +328,7 @@ get_slot_mapping(struct pci_bus *bus, u8 bus_num, u8 dev_num, u8 *slot)
 		} else {
 			/* Did not get a match on the target PCI device. Check
 			 * if the current IRQ table entry is a PCI-to-PCI
-<<<<<<< HEAD
-			 * bridge device.  If so, and it's secondary bus
-=======
 			 * bridge device.  If so, and its secondary bus
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 * matches the bus number for the target device, I need
 			 * to save the bridge's slot number.  If I can not find
 			 * an entry for the target device, I will have to

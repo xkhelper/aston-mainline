@@ -157,11 +157,7 @@ static struct xt_target secmark_tg_reg[] __read_mostly = {
 	{
 		.name		= "SECMARK",
 		.revision	= 0,
-<<<<<<< HEAD
-		.family		= NFPROTO_UNSPEC,
-=======
 		.family		= NFPROTO_IPV4,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.checkentry	= secmark_tg_check_v0,
 		.destroy	= secmark_tg_destroy,
 		.target		= secmark_tg_v0,
@@ -171,11 +167,7 @@ static struct xt_target secmark_tg_reg[] __read_mostly = {
 	{
 		.name		= "SECMARK",
 		.revision	= 1,
-<<<<<<< HEAD
-		.family		= NFPROTO_UNSPEC,
-=======
 		.family		= NFPROTO_IPV4,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.checkentry	= secmark_tg_check_v1,
 		.destroy	= secmark_tg_destroy,
 		.target		= secmark_tg_v1,
@@ -183,8 +175,6 @@ static struct xt_target secmark_tg_reg[] __read_mostly = {
 		.usersize	= offsetof(struct xt_secmark_target_info_v1, secid),
 		.me		= THIS_MODULE,
 	},
-<<<<<<< HEAD
-=======
 #if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
 	{
 		.name		= "SECMARK",
@@ -208,7 +198,6 @@ static struct xt_target secmark_tg_reg[] __read_mostly = {
 		.me		= THIS_MODULE,
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init secmark_tg_init(void)

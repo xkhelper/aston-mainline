@@ -277,12 +277,7 @@ static void __vxlan_fdb_notify(struct vxlan_dev *vxlan, struct vxlan_fdb *fdb,
 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
 	return;
 errout:
-<<<<<<< HEAD
-	if (err < 0)
-		rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
-=======
 	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void vxlan_fdb_switchdev_notifier_info(const struct vxlan_dev *vxlan,
@@ -2694,18 +2689,11 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
 	struct vxlan_dev *vxlan = netdev_priv(dev);
 	struct vxlan_rdst *rdst, *fdst = NULL;
 	const struct ip_tunnel_info *info;
-<<<<<<< HEAD
-	bool did_rsc = false;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct vxlan_fdb *f;
 	struct ethhdr *eth;
 	__be32 vni = 0;
 	u32 nhid = 0;
-<<<<<<< HEAD
-=======
 	bool did_rsc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info = skb_tunnel_info(skb);
 
@@ -3333,10 +3321,6 @@ static void vxlan_setup(struct net_device *dev)
 	dev->needs_free_netdev = true;
 	SET_NETDEV_DEVTYPE(dev, &vxlan_type);
 
-<<<<<<< HEAD
-	dev->features	|= NETIF_F_LLTX;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->features	|= NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_FRAGLIST;
 	dev->features   |= NETIF_F_RXCSUM;
 	dev->features   |= NETIF_F_GSO_SOFTWARE;
@@ -3346,13 +3330,9 @@ static void vxlan_setup(struct net_device *dev)
 	dev->hw_features |= NETIF_F_RXCSUM;
 	dev->hw_features |= NETIF_F_GSO_SOFTWARE;
 	netif_keep_dst(dev);
-<<<<<<< HEAD
-	dev->priv_flags |= IFF_NO_QUEUE | IFF_CHANGE_PROTO_DOWN;
-=======
 	dev->priv_flags |= IFF_NO_QUEUE;
 	dev->change_proto_down = true;
 	dev->lltx = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* MTU range: 68 - 65535 */
 	dev->min_mtu = ETH_MIN_MTU;
@@ -4933,11 +4913,6 @@ static int __init vxlan_init_module(void)
 	if (rc)
 		goto out4;
 
-<<<<<<< HEAD
-	vxlan_vnifilter_init();
-
-	return 0;
-=======
 	rc = vxlan_vnifilter_init();
 	if (rc)
 		goto out5;
@@ -4945,7 +4920,6 @@ static int __init vxlan_init_module(void)
 	return 0;
 out5:
 	rtnl_link_unregister(&vxlan_link_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out4:
 	unregister_switchdev_notifier(&vxlan_switchdev_notifier_block);
 out3:

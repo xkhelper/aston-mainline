@@ -298,8 +298,6 @@ config SND_SOC_MT8195_MT6359
 	  boards with the MT6359 and other I2S audio codecs.
 	  Select Y if you have such device.
 	  If unsure select "N".
-<<<<<<< HEAD
-=======
 
 config SND_SOC_MT8365
 	tristate "ASoC support for MediaTek MT8365 chip"
@@ -320,4 +318,3 @@ config SND_SOC_MT8365_MT6357
 	  boards with the MT6357 PMIC codec.
 	  Select Y if you have such device.
 	  If unsure select "N".
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

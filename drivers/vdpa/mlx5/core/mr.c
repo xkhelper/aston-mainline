@@ -49,19 +49,6 @@ static void populate_mtts(struct mlx5_vdpa_direct_mr *mr, __be64 *mtt)
 	}
 }
 
-<<<<<<< HEAD
-static int create_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr *mr)
-{
-	int inlen;
-	void *mkc;
-	void *in;
-	int err;
-
-	inlen = MLX5_ST_SZ_BYTES(create_mkey_in) + roundup(MLX5_ST_SZ_BYTES(mtt) * mr->nsg, 16);
-	in = kvzalloc(inlen, GFP_KERNEL);
-	if (!in)
-		return -ENOMEM;
-=======
 struct mlx5_create_mkey_mem {
 	u8 out[MLX5_ST_SZ_BYTES(create_mkey_out)];
 	u8 in[MLX5_ST_SZ_BYTES(create_mkey_in)];
@@ -79,7 +66,6 @@ static void fill_create_direct_mr(struct mlx5_vdpa_dev *mvdev,
 {
 	void *in = &mem->in;
 	void *mkc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	MLX5_SET(create_mkey_in, in, uid, mvdev->res.uid);
 	mkc = MLX5_ADDR_OF(create_mkey_in, in, memory_key_mkey_entry);
@@ -96,16 +82,6 @@ static void fill_create_direct_mr(struct mlx5_vdpa_dev *mvdev,
 	MLX5_SET(create_mkey_in, in, translations_octword_actual_size,
 		 get_octo_len(mr->end - mr->start, mr->log_size));
 	populate_mtts(mr, MLX5_ADDR_OF(create_mkey_in, in, klm_pas_mtt));
-<<<<<<< HEAD
-	err = mlx5_vdpa_create_mkey(mvdev, &mr->mr, in, inlen);
-	kvfree(in);
-	if (err) {
-		mlx5_vdpa_warn(mvdev, "Failed to create direct MR\n");
-		return err;
-	}
-
-	return 0;
-=======
 
 	MLX5_SET(create_mkey_in, in, opcode, MLX5_CMD_OP_CREATE_MKEY);
 	MLX5_SET(create_mkey_in, in, uid, mvdev->res.uid);
@@ -129,17 +105,13 @@ static void fill_destroy_direct_mr(struct mlx5_vdpa_dev *mvdev,
 	MLX5_SET(destroy_mkey_in, in, uid, mvdev->res.uid);
 	MLX5_SET(destroy_mkey_in, in, opcode, MLX5_CMD_OP_DESTROY_MKEY);
 	MLX5_SET(destroy_mkey_in, in, mkey_index, mlx5_mkey_to_idx(mr->mr));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void destroy_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr *mr)
 {
-<<<<<<< HEAD
-=======
 	if (!mr->mr)
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5_vdpa_destroy_mkey(mvdev, mr->mr);
 }
 
@@ -231,8 +203,6 @@ static int klm_byte_size(int nklms)
 	return 16 * ALIGN(nklms, 4);
 }
 
-<<<<<<< HEAD
-=======
 #define MLX5_VDPA_MTT_ALIGN 16
 
 static int create_direct_keys(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr *mr)
@@ -350,7 +320,6 @@ static int destroy_direct_keys(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr 
 	return err;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int create_indirect_key(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr *mr)
 {
 	int inlen;
@@ -451,19 +420,8 @@ done:
 		goto err_map;
 	}
 
-<<<<<<< HEAD
-	err = create_direct_mr(mvdev, mr);
-	if (err)
-		goto err_direct;
-
 	return 0;
 
-err_direct:
-	dma_unmap_sg_attrs(dma, mr->sg_head.sgl, mr->nsg, DMA_BIDIRECTIONAL, 0);
-=======
-	return 0;
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_map:
 	sg_free_table(&mr->sg_head);
 	return err;
@@ -578,13 +536,10 @@ static int create_user_mr(struct mlx5_vdpa_dev *mvdev,
 	if (err)
 		goto err_chain;
 
-<<<<<<< HEAD
-=======
 	err = create_direct_keys(mvdev, mr);
 	if (err)
 		goto err_chain;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Create the memory key that defines the guests's address space. This
 	 * memory key refers to the direct keys that contain the MTT
 	 * translations
@@ -673,10 +628,7 @@ static void destroy_user_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr *mr
 	struct mlx5_vdpa_direct_mr *n;
 
 	destroy_indirect_key(mvdev, mr);
-<<<<<<< HEAD
-=======
 	destroy_direct_keys(mvdev, mr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe_reverse(dmr, n, &mr->head, list) {
 		list_del_init(&dmr->list);
 		unmap_direct_mr(mvdev, dmr);
@@ -701,16 +653,6 @@ static void _mlx5_vdpa_destroy_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_
 	kfree(mr);
 }
 
-<<<<<<< HEAD
-static void _mlx5_vdpa_put_mr(struct mlx5_vdpa_dev *mvdev,
-			      struct mlx5_vdpa_mr *mr)
-{
-	if (!mr)
-		return;
-
-	if (refcount_dec_and_test(&mr->refcount))
-		_mlx5_vdpa_destroy_mr(mvdev, mr);
-=======
 /* There can be multiple .set_map() operations in quick succession.
  * This large delay is a simple way to prevent the MR cleanup from blocking
  * .set_map() MR creation in this scenario.
@@ -755,21 +697,14 @@ static void _mlx5_vdpa_put_mr(struct mlx5_vdpa_dev *mvdev,
 		queue_delayed_work(mres->wq_gc, &mres->gc_dwork_ent,
 				   msecs_to_jiffies(MLX5_VDPA_MR_GC_TRIGGER_MS));
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void mlx5_vdpa_put_mr(struct mlx5_vdpa_dev *mvdev,
 		      struct mlx5_vdpa_mr *mr)
 {
-<<<<<<< HEAD
-	mutex_lock(&mvdev->mr_mtx);
-	_mlx5_vdpa_put_mr(mvdev, mr);
-	mutex_unlock(&mvdev->mr_mtx);
-=======
 	mutex_lock(&mvdev->mres.lock);
 	_mlx5_vdpa_put_mr(mvdev, mr);
 	mutex_unlock(&mvdev->mres.lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void _mlx5_vdpa_get_mr(struct mlx5_vdpa_dev *mvdev,
@@ -784,31 +719,15 @@ static void _mlx5_vdpa_get_mr(struct mlx5_vdpa_dev *mvdev,
 void mlx5_vdpa_get_mr(struct mlx5_vdpa_dev *mvdev,
 		      struct mlx5_vdpa_mr *mr)
 {
-<<<<<<< HEAD
-	mutex_lock(&mvdev->mr_mtx);
-	_mlx5_vdpa_get_mr(mvdev, mr);
-	mutex_unlock(&mvdev->mr_mtx);
-=======
 	mutex_lock(&mvdev->mres.lock);
 	_mlx5_vdpa_get_mr(mvdev, mr);
 	mutex_unlock(&mvdev->mres.lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void mlx5_vdpa_update_mr(struct mlx5_vdpa_dev *mvdev,
 			 struct mlx5_vdpa_mr *new_mr,
 			 unsigned int asid)
 {
-<<<<<<< HEAD
-	struct mlx5_vdpa_mr *old_mr = mvdev->mr[asid];
-
-	mutex_lock(&mvdev->mr_mtx);
-
-	_mlx5_vdpa_put_mr(mvdev, old_mr);
-	mvdev->mr[asid] = new_mr;
-
-	mutex_unlock(&mvdev->mr_mtx);
-=======
 	struct mlx5_vdpa_mr *old_mr = mvdev->mres.mr[asid];
 
 	mutex_lock(&mvdev->mres.lock);
@@ -817,36 +736,21 @@ void mlx5_vdpa_update_mr(struct mlx5_vdpa_dev *mvdev,
 	mvdev->mres.mr[asid] = new_mr;
 
 	mutex_unlock(&mvdev->mres.lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void mlx5_vdpa_show_mr_leaks(struct mlx5_vdpa_dev *mvdev)
 {
 	struct mlx5_vdpa_mr *mr;
 
-<<<<<<< HEAD
-	mutex_lock(&mvdev->mr_mtx);
-
-	list_for_each_entry(mr, &mvdev->mr_list_head, mr_list) {
-=======
 	mutex_lock(&mvdev->mres.lock);
 
 	list_for_each_entry(mr, &mvdev->mres.mr_list_head, mr_list) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		mlx5_vdpa_warn(mvdev, "mkey still alive after resource delete: "
 				      "mr: %p, mkey: 0x%x, refcount: %u\n",
 				       mr, mr->mkey, refcount_read(&mr->refcount));
 	}
 
-<<<<<<< HEAD
-	mutex_unlock(&mvdev->mr_mtx);
-
-}
-
-void mlx5_vdpa_destroy_mr_resources(struct mlx5_vdpa_dev *mvdev)
-{
-=======
 	mutex_unlock(&mvdev->mres.lock);
 
 }
@@ -856,7 +760,6 @@ void mlx5_vdpa_clean_mrs(struct mlx5_vdpa_dev *mvdev)
 	if (!mvdev->res.valid)
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (int i = 0; i < MLX5_VDPA_NUM_AS; i++)
 		mlx5_vdpa_update_mr(mvdev, NULL, i);
 
@@ -889,11 +792,7 @@ static int _mlx5_vdpa_create_mr(struct mlx5_vdpa_dev *mvdev,
 	if (err)
 		goto err_iotlb;
 
-<<<<<<< HEAD
-	list_add_tail(&mr->mr_list, &mvdev->mr_list_head);
-=======
 	list_add_tail(&mr->mr_list, &mvdev->mres.mr_list_head);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -919,15 +818,9 @@ struct mlx5_vdpa_mr *mlx5_vdpa_create_mr(struct mlx5_vdpa_dev *mvdev,
 	if (!mr)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
-	mutex_lock(&mvdev->mr_mtx);
-	err = _mlx5_vdpa_create_mr(mvdev, mr, iotlb);
-	mutex_unlock(&mvdev->mr_mtx);
-=======
 	mutex_lock(&mvdev->mres.lock);
 	err = _mlx5_vdpa_create_mr(mvdev, mr, iotlb);
 	mutex_unlock(&mvdev->mres.lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (err)
 		goto out_err;
@@ -947,11 +840,7 @@ int mlx5_vdpa_update_cvq_iotlb(struct mlx5_vdpa_dev *mvdev,
 {
 	int err;
 
-<<<<<<< HEAD
-	if (mvdev->group2asid[MLX5_VDPA_CVQ_GROUP] != asid)
-=======
 	if (mvdev->mres.group2asid[MLX5_VDPA_CVQ_GROUP] != asid)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	spin_lock(&mvdev->cvq.iommu_lock);
@@ -993,8 +882,6 @@ int mlx5_vdpa_reset_mr(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
 
 int mlx5_vdpa_init_mr_resources(struct mlx5_vdpa_dev *mvdev)
 {
@@ -1025,4 +912,3 @@ void mlx5_vdpa_destroy_mr_resources(struct mlx5_vdpa_dev *mvdev)
 	mres->wq_gc = NULL;
 	mutex_destroy(&mres->lock);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

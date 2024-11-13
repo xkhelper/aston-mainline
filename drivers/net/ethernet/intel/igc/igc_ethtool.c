@@ -1540,13 +1540,10 @@ static int igc_ethtool_set_channels(struct net_device *netdev,
 	if (ch->other_count != NON_Q_VECTORS)
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
 	/* Do not allow channel reconfiguration when mqprio is enabled */
 	if (adapter->strict_priority_enable)
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Verify the number of channels doesn't exceed hw limits */
 	max_combined = igc_get_max_rss_queues(adapter);
 	if (count > max_combined)
@@ -1572,21 +1569,11 @@ static int igc_ethtool_get_ts_info(struct net_device *dev,
 
 	if (adapter->ptp_clock)
 		info->phc_index = ptp_clock_index(adapter->ptp_clock);
-<<<<<<< HEAD
-	else
-		info->phc_index = -1;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (adapter->hw.mac.type) {
 	case igc_i225:
 		info->so_timestamping =
 			SOF_TIMESTAMPING_TX_SOFTWARE |
-<<<<<<< HEAD
-			SOF_TIMESTAMPING_RX_SOFTWARE |
-			SOF_TIMESTAMPING_SOFTWARE |
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			SOF_TIMESTAMPING_TX_HARDWARE |
 			SOF_TIMESTAMPING_RX_HARDWARE |
 			SOF_TIMESTAMPING_RAW_HARDWARE;
@@ -1640,16 +1627,11 @@ static int igc_ethtool_get_eee(struct net_device *netdev,
 {
 	struct igc_adapter *adapter = netdev_priv(netdev);
 	struct igc_hw *hw = &adapter->hw;
-<<<<<<< HEAD
-	u32 eeer;
-
-=======
 	struct igc_phy_info *phy = &hw->phy;
 	u16 eee_advert, eee_lp_advert;
 	u32 eeer, ret_val;
 
 	/* EEE supported */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
 			 edata->supported);
 	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
@@ -1657,8 +1639,6 @@ static int igc_ethtool_get_eee(struct net_device *netdev,
 	linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT,
 			 edata->supported);
 
-<<<<<<< HEAD
-=======
 	/* EEE Advertisement 1 - reg 7.60 */
 	ret_val = phy->ops.read_reg(hw, (STANDARD_AN_REG_MASK <<
 				    MMD_DEVADDR_SHIFT) |
@@ -1727,7 +1707,6 @@ static int igc_ethtool_get_eee(struct net_device *netdev,
 		linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
 				 edata->lp_advertised);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	eeer = rd32(IGC_EEER);
 
 	/* EEE status on negotiated link */

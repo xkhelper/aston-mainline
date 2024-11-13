@@ -523,10 +523,7 @@ struct _vcs_dpi_display_pipe_dest_params_st {
 	unsigned int vupdate_offset;
 	unsigned int vupdate_width;
 	unsigned int vready_offset;
-<<<<<<< HEAD
-=======
 	unsigned int pstate_keepout;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned char interlaced;
 	double pixel_rate_mhz;
 	unsigned char synchronized_vblank_all_planes;

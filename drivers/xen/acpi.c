@@ -30,10 +30,7 @@
  * IN THE SOFTWARE.
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/pci.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <xen/acpi.h>
 #include <xen/interface/platform.h>
 #include <asm/xen/hypercall.h>
@@ -79,8 +76,6 @@ int xen_acpi_notify_hypervisor_extended_sleep(u8 sleep_state,
 	return xen_acpi_notify_hypervisor_state(sleep_state, val_a,
 						val_b, true);
 }
-<<<<<<< HEAD
-=======
 
 struct acpi_prt_entry {
 	struct acpi_pci_id      id;
@@ -154,4 +149,3 @@ int xen_acpi_get_gsi_from_sbdf(u32 sbdf)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(xen_acpi_get_gsi_from_sbdf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -117,15 +117,12 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	pcie_clk: clk-9fgv0841-pci {
 		compatible = "fixed-clock";
 		clock-frequency = <100000000>;
 		#clock-cells = <0>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reg_1p2v: regulator-1p2v {
 		compatible = "regulator-fixed";
 		regulator-name = "fixed-1.2V";
@@ -297,8 +294,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &pcie0_clkref {
 	compatible = "gpio-gate-clock";
 	clocks = <&pcie_clk>;
@@ -311,7 +306,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pfc {
 	pinctrl-0 = <&scif_clk_pins>;
 	pinctrl-names = "default";

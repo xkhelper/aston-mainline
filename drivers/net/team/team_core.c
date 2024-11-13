@@ -2189,21 +2189,12 @@ static void team_setup(struct net_device *dev)
 	 * Let this up to underlay drivers.
 	 */
 	dev->priv_flags |= IFF_UNICAST_FLT | IFF_LIVE_ADDR_CHANGE;
-<<<<<<< HEAD
-
-	dev->features |= NETIF_F_LLTX;
-	dev->features |= NETIF_F_GRO;
-
-	/* Don't allow team devices to change network namespaces. */
-	dev->features |= NETIF_F_NETNS_LOCAL;
-=======
 	dev->lltx = true;
 
 	/* Don't allow team devices to change network namespaces. */
 	dev->netns_local = true;
 
 	dev->features |= NETIF_F_GRO;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev->hw_features = TEAM_VLAN_FEATURES |
 			   NETIF_F_HW_VLAN_CTAG_RX |

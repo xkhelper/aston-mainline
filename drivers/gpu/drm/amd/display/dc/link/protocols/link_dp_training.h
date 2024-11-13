@@ -55,11 +55,7 @@ void dp_set_hw_test_pattern(
 		uint8_t *custom_pattern,
 		uint32_t custom_pattern_size);
 
-<<<<<<< HEAD
-void dpcd_set_training_pattern(
-=======
 enum dc_status dpcd_set_training_pattern(
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dc_link *link,
 	enum dc_dp_training_pattern training_pattern);
 
@@ -186,8 +182,6 @@ uint32_t dp_translate_training_aux_read_interval(
 
 uint8_t dp_get_nibble_at_index(const uint8_t *buf,
 	uint32_t index);
-<<<<<<< HEAD
-=======
 
 bool dp_check_interlane_aligned(union lane_align_status_updated align_status,
 		struct dc_link *link,
@@ -202,5 +196,4 @@ uint32_t dp_get_eq_aux_rd_interval(
 bool dp_check_dpcd_reqeust_status(const struct dc_link *link,
 		enum dc_status status);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __DC_LINK_DP_TRAINING_H__ */

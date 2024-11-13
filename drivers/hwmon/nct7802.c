@@ -229,19 +229,6 @@ abort:
 
 static int nct7802_read_fan(struct nct7802_data *data, u8 reg_fan)
 {
-<<<<<<< HEAD
-	unsigned int f1, f2;
-	int ret;
-
-	mutex_lock(&data->access_lock);
-	ret = regmap_read(data->regmap, reg_fan, &f1);
-	if (ret < 0)
-		goto abort;
-	ret = regmap_read(data->regmap, REG_FANCOUNT_LOW, &f2);
-	if (ret < 0)
-		goto abort;
-	ret = (f1 << 5) | (f2 >> 3);
-=======
 	unsigned int regs[2] = {reg_fan, REG_FANCOUNT_LOW};
 	u8 f[2];
 	int ret;
@@ -250,36 +237,17 @@ static int nct7802_read_fan(struct nct7802_data *data, u8 reg_fan)
 	if (ret)
 		return ret;
 	ret = (f[0] << 5) | (f[1] >> 3);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* convert fan count to rpm */
 	if (ret == 0x1fff)	/* maximum value, assume fan is stopped */
 		ret = 0;
 	else if (ret)
 		ret = DIV_ROUND_CLOSEST(1350000U, ret);
-<<<<<<< HEAD
-abort:
-	mutex_unlock(&data->access_lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
 static int nct7802_read_fan_min(struct nct7802_data *data, u8 reg_fan_low,
 				u8 reg_fan_high)
 {
-<<<<<<< HEAD
-	unsigned int f1, f2;
-	int ret;
-
-	mutex_lock(&data->access_lock);
-	ret = regmap_read(data->regmap, reg_fan_low, &f1);
-	if (ret < 0)
-		goto abort;
-	ret = regmap_read(data->regmap, reg_fan_high, &f2);
-	if (ret < 0)
-		goto abort;
-	ret = f1 | ((f2 & 0xf8) << 5);
-=======
 	unsigned int regs[2] = {reg_fan_low, reg_fan_high};
 	u8 f[2];
 	int ret;
@@ -289,7 +257,6 @@ static int nct7802_read_fan_min(struct nct7802_data *data, u8 reg_fan_low,
 		return ret;
 
 	ret = f[0] | ((f[1] & 0xf8) << 5);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* convert fan count to rpm */
 	if (ret == 0x1fff)	/* maximum value, assume no limit */
 		ret = 0;
@@ -297,11 +264,6 @@ static int nct7802_read_fan_min(struct nct7802_data *data, u8 reg_fan_low,
 		ret = DIV_ROUND_CLOSEST(1350000U, ret);
 	else
 		ret = 1350000U;
-<<<<<<< HEAD
-abort:
-	mutex_unlock(&data->access_lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -331,35 +293,6 @@ static u8 nct7802_vmul[] = { 4, 2, 2, 2, 2 };
 
 static int nct7802_read_voltage(struct nct7802_data *data, int nr, int index)
 {
-<<<<<<< HEAD
-	unsigned int v1, v2;
-	int ret;
-
-	mutex_lock(&data->access_lock);
-	if (index == 0) {	/* voltage */
-		ret = regmap_read(data->regmap, REG_VOLTAGE[nr], &v1);
-		if (ret < 0)
-			goto abort;
-		ret = regmap_read(data->regmap, REG_VOLTAGE_LOW, &v2);
-		if (ret < 0)
-			goto abort;
-		ret = ((v1 << 2) | (v2 >> 6)) * nct7802_vmul[nr];
-	}  else {	/* limit */
-		int shift = 8 - REG_VOLTAGE_LIMIT_MSB_SHIFT[index - 1][nr];
-
-		ret = regmap_read(data->regmap,
-				  REG_VOLTAGE_LIMIT_LSB[index - 1][nr], &v1);
-		if (ret < 0)
-			goto abort;
-		ret = regmap_read(data->regmap, REG_VOLTAGE_LIMIT_MSB[nr],
-				  &v2);
-		if (ret < 0)
-			goto abort;
-		ret = (v1 | ((v2 << shift) & 0x300)) * nct7802_vmul[nr];
-	}
-abort:
-	mutex_unlock(&data->access_lock);
-=======
 	u8 v[2];
 	int ret;
 
@@ -380,7 +313,6 @@ abort:
 			return ret;
 		ret = (v[0] | ((v[1] << shift) & 0x300)) * nct7802_vmul[nr];
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1197,19 +1129,6 @@ static int nct7802_configure_channels(struct device *dev,
 {
 	/* Enable local temperature sensor by default */
 	u8 mode_mask = MODE_LTD_EN, mode_val = MODE_LTD_EN;
-<<<<<<< HEAD
-	struct device_node *node;
-	int err;
-
-	if (dev->of_node) {
-		for_each_child_of_node(dev->of_node, node) {
-			err = nct7802_get_channel_config(dev, node, &mode_mask,
-							 &mode_val);
-			if (err) {
-				of_node_put(node);
-				return err;
-			}
-=======
 	int err;
 
 	if (dev->of_node) {
@@ -1218,7 +1137,6 @@ static int nct7802_configure_channels(struct device *dev,
 							 &mode_val);
 			if (err)
 				return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

@@ -25,10 +25,7 @@ struct mgb4_vin_regs {
 	u32 signal;
 	u32 signal2;
 	u32 padding;
-<<<<<<< HEAD
-=======
 	u32 timer;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct mgb4_vin_config {
@@ -63,11 +60,7 @@ struct mgb4_vin_dev {
 #ifdef CONFIG_DEBUG_FS
 	struct dentry *debugfs;
 	struct debugfs_regset32 regset;
-<<<<<<< HEAD
-	struct debugfs_reg32 regs[9];
-=======
 	struct debugfs_reg32 regs[sizeof(struct mgb4_vin_regs) / 4];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 };
 

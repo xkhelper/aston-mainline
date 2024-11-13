@@ -22,14 +22,11 @@ modules.builtin.modinfo
 This file contains modinfo from all modules that are built into the kernel.
 Unlike modinfo of a separate module, all fields are prefixed with module name.
 
-<<<<<<< HEAD
-=======
 modules.builtin.ranges
 ----------------------
 This file contains address offset ranges (per ELF section) for all modules
 that are built into the kernel. Together with System.map, it can be used
 to associate module names with symbols.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Environment variables
 =====================
@@ -137,14 +134,11 @@ KBUILD_OUTPUT
 -------------
 Specify the output directory when building the kernel.
 
-<<<<<<< HEAD
-=======
 This variable can also be used to point to the kernel output directory when
 building external modules against a pre-built kernel in a separate build
 directory. Please note that this does NOT specify the output directory for the
 external modules themselves.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 The output directory can also be specified using "O=...".
 
 Setting "O=..." takes precedence over KBUILD_OUTPUT.

@@ -97,16 +97,6 @@ static int parse(FILE *input, FILE *csource, FILE *cheader)
 
 		if (name) {
 			fprintf(cheader, "\tXE_WA_OOB_%s = %u,\n", name, idx);
-<<<<<<< HEAD
-			fprintf(csource, "{ XE_RTP_NAME(\"%s\"), XE_RTP_RULES(%s) },\n",
-				name, rules);
-		} else {
-			fprintf(csource, "{ XE_RTP_NAME(NULL), XE_RTP_RULES(%s) },\n",
-				rules);
-		}
-
-		idx++;
-=======
 
 			/* Close previous entry before starting a new one */
 			if (idx)
@@ -119,19 +109,15 @@ static int parse(FILE *input, FILE *csource, FILE *cheader)
 			fprintf(csource, ", OR,\n\t%s", rules);
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		lineno++;
 		if (!is_continuation)
 			prev_name = name;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Close last entry */
 	if (idx)
 		fprintf(csource, ") },\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fprintf(cheader, "\t_XE_WA_OOB_COUNT = %u\n", idx);
 
 	return 0;

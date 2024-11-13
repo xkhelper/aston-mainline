@@ -137,11 +137,7 @@ struct signal_struct {
 
 	/* POSIX.1b Interval Timers */
 	unsigned int		next_posix_timer_id;
-<<<<<<< HEAD
-	struct list_head	posix_timers;
-=======
 	struct hlist_head	posix_timers;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* ITIMER_REAL timer for the process */
 	struct hrtimer real_timer;
@@ -280,12 +276,7 @@ static inline void signal_set_stop_flags(struct signal_struct *sig,
 extern void flush_signals(struct task_struct *);
 extern void ignore_signals(struct task_struct *);
 extern void flush_signal_handlers(struct task_struct *, int force_default);
-<<<<<<< HEAD
-extern int dequeue_signal(struct task_struct *task, sigset_t *mask,
-			  kernel_siginfo_t *info, enum pid_type *type);
-=======
 extern int dequeue_signal(sigset_t *mask, kernel_siginfo_t *info, enum pid_type *type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline int kernel_dequeue_signal(void)
 {
@@ -295,11 +286,7 @@ static inline int kernel_dequeue_signal(void)
 	int ret;
 
 	spin_lock_irq(&task->sighand->siglock);
-<<<<<<< HEAD
-	ret = dequeue_signal(task, &task->blocked, &__info, &__type);
-=======
 	ret = dequeue_signal(&task->blocked, &__info, &__type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irq(&task->sighand->siglock);
 
 	return ret;

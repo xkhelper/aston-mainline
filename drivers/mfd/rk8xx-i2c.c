@@ -21,8 +21,6 @@ struct rk8xx_i2c_platform_data {
 	int variant;
 };
 
-<<<<<<< HEAD
-=======
 static bool rk806_is_volatile_reg(struct device *dev, unsigned int reg)
 {
 	switch (reg) {
@@ -34,7 +32,6 @@ static bool rk806_is_volatile_reg(struct device *dev, unsigned int reg)
 	return false;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool rk808_is_volatile_reg(struct device *dev, unsigned int reg)
 {
 	/*
@@ -135,8 +132,6 @@ static const struct regmap_config rk805_regmap_config = {
 	.volatile_reg = rk808_is_volatile_reg,
 };
 
-<<<<<<< HEAD
-=======
 static const struct regmap_config rk806_regmap_config = {
 	.reg_bits = 8,
 	.val_bits = 8,
@@ -145,7 +140,6 @@ static const struct regmap_config rk806_regmap_config = {
 	.volatile_reg = rk806_is_volatile_reg,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct regmap_config rk808_regmap_config = {
 	.reg_bits = 8,
 	.val_bits = 8,
@@ -175,14 +169,11 @@ static const struct rk8xx_i2c_platform_data rk805_data = {
 	.variant = RK805_ID,
 };
 
-<<<<<<< HEAD
-=======
 static const struct rk8xx_i2c_platform_data rk806_data = {
 	.regmap_cfg = &rk806_regmap_config,
 	.variant = RK806_ID,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct rk8xx_i2c_platform_data rk808_data = {
 	.regmap_cfg = &rk808_regmap_config,
 	.variant = RK808_ID,
@@ -234,10 +225,7 @@ static SIMPLE_DEV_PM_OPS(rk8xx_i2c_pm_ops, rk8xx_suspend, rk8xx_resume);
 
 static const struct of_device_id rk8xx_i2c_of_match[] = {
 	{ .compatible = "rockchip,rk805", .data = &rk805_data },
-<<<<<<< HEAD
-=======
 	{ .compatible = "rockchip,rk806", .data = &rk806_data },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "rockchip,rk808", .data = &rk808_data },
 	{ .compatible = "rockchip,rk809", .data = &rk809_data },
 	{ .compatible = "rockchip,rk816", .data = &rk816_data },

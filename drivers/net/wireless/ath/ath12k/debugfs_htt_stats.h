@@ -128,10 +128,7 @@ enum ath12k_dbg_htt_ext_stats_type {
 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX_SCHED	= 4,
 	ATH12K_DBG_HTT_EXT_STATS_PDEV_ERROR	= 5,
 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TQM	= 6,
-<<<<<<< HEAD
-=======
 	ATH12K_DBG_HTT_EXT_STATS_TX_DE_INFO	= 8,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* keep this last */
 	ATH12K_DBG_HTT_NUM_EXT_STATS,
@@ -147,8 +144,6 @@ enum ath12k_dbg_htt_tlv_tag {
 	HTT_STATS_TX_TQM_LIST_MPDU_CNT_TAG		= 13,
 	HTT_STATS_TX_TQM_CMN_TAG			= 14,
 	HTT_STATS_TX_TQM_PDEV_TAG			= 15,
-<<<<<<< HEAD
-=======
 	HTT_STATS_TX_DE_EAPOL_PACKETS_TAG		= 17,
 	HTT_STATS_TX_DE_CLASSIFY_FAILED_TAG		= 18,
 	HTT_STATS_TX_DE_CLASSIFY_STATS_TAG		= 19,
@@ -156,7 +151,6 @@ enum ath12k_dbg_htt_tlv_tag {
 	HTT_STATS_TX_DE_ENQUEUE_PACKETS_TAG		= 21,
 	HTT_STATS_TX_DE_ENQUEUE_DISCARD_TAG		= 22,
 	HTT_STATS_TX_DE_CMN_TAG				= 23,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	HTT_STATS_TX_PDEV_SCHEDULER_TXQ_STATS_TAG	= 36,
 	HTT_STATS_TX_SCHED_CMN_TAG			= 37,
 	HTT_STATS_SCHED_TXQ_CMD_POSTED_TAG		= 39,
@@ -164,10 +158,7 @@ enum ath12k_dbg_htt_tlv_tag {
 	HTT_STATS_SCHED_TXQ_CMD_REAPED_TAG		= 44,
 	HTT_STATS_HW_INTR_MISC_TAG			= 54,
 	HTT_STATS_HW_PDEV_ERRS_TAG			= 56,
-<<<<<<< HEAD
-=======
 	HTT_STATS_TX_DE_COMPL_STATS_TAG			= 65,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	HTT_STATS_WHAL_TX_TAG				= 66,
 	HTT_STATS_TX_PDEV_SIFS_HIST_TAG			= 67,
 	HTT_STATS_SCHED_TXQ_SCHED_ORDER_SU_TAG		= 86,
@@ -582,8 +573,6 @@ struct ath12k_htt_tx_tqm_pdev_stats_tlv {
 	__le32 sched_nonudp_notify2;
 } __packed;
 
-<<<<<<< HEAD
-=======
 struct ath12k_htt_tx_de_cmn_stats_tlv {
 	__le32 mac_id__word;
 	__le32 tcl2fw_entry_count;
@@ -701,5 +690,4 @@ struct ath12k_htt_tx_de_compl_stats_tlv {
 	__le32 tqm_bypass_frame;
 } __packed;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

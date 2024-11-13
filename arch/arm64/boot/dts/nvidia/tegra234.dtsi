@@ -2763,11 +2763,8 @@
 			interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&bpmp TEGRA234_CLK_UARTA>;
 			resets = <&bpmp TEGRA234_RESET_UARTA>;
-<<<<<<< HEAD
-=======
 			dmas = <&gpcdma 8>, <&gpcdma 8>;
 			dma-names = "rx", "tx";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 		};
 
@@ -4845,8 +4842,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		pcie-ep@14160000 {
 			compatible = "nvidia,tegra234-pcie-ep";
 			power-domains = <&bpmp TEGRA234_POWER_DOMAIN_PCIEX4BB>;
@@ -4878,7 +4873,6 @@
 			status = "disabled";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pcie@14180000 {
 			compatible = "nvidia,tegra234-pcie";
 			power-domains = <&bpmp TEGRA234_POWER_DOMAIN_PCIEX4BA>;

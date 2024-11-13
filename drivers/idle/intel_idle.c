@@ -121,15 +121,12 @@ static unsigned int mwait_substates __initdata;
 #define CPUIDLE_FLAG_INIT_XSTATE	BIT(17)
 
 /*
-<<<<<<< HEAD
-=======
  * Ignore the sub-state when matching mwait hints between the ACPI _CST and
  * custom tables.
  */
 #define CPUIDLE_FLAG_PARTIAL_HINT_MATCH	BIT(18)
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * MWAIT takes an 8-bit "hint" in EAX "suggesting"
  * the C-state (top nibble) and sub-state (bottom nibble)
  * 0x00 means "MWAIT(C1)", 0x10 means "MWAIT(C2)" etc.
@@ -1031,8 +1028,6 @@ static struct cpuidle_state spr_cstates[] __initdata = {
 		.enter = NULL }
 };
 
-<<<<<<< HEAD
-=======
 static struct cpuidle_state gnr_cstates[] __initdata = {
 	{
 		.name = "C1",
@@ -1074,7 +1069,6 @@ static struct cpuidle_state gnr_cstates[] __initdata = {
 		.enter = NULL }
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct cpuidle_state atom_cstates[] __initdata = {
 	{
 		.name = "C1E",
@@ -1368,12 +1362,8 @@ static struct cpuidle_state srf_cstates[] __initdata = {
 	{
 		.name = "C6S",
 		.desc = "MWAIT 0x22",
-<<<<<<< HEAD
-		.flags = MWAIT2flg(0x22) | CPUIDLE_FLAG_TLB_FLUSHED,
-=======
 		.flags = MWAIT2flg(0x22) | CPUIDLE_FLAG_TLB_FLUSHED |
 					   CPUIDLE_FLAG_PARTIAL_HINT_MATCH,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.exit_latency = 270,
 		.target_residency = 700,
 		.enter = &intel_idle,
@@ -1381,12 +1371,8 @@ static struct cpuidle_state srf_cstates[] __initdata = {
 	{
 		.name = "C6SP",
 		.desc = "MWAIT 0x23",
-<<<<<<< HEAD
-		.flags = MWAIT2flg(0x23) | CPUIDLE_FLAG_TLB_FLUSHED,
-=======
 		.flags = MWAIT2flg(0x23) | CPUIDLE_FLAG_TLB_FLUSHED |
 					   CPUIDLE_FLAG_PARTIAL_HINT_MATCH,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.exit_latency = 310,
 		.target_residency = 900,
 		.enter = &intel_idle,
@@ -1516,15 +1502,12 @@ static const struct idle_cpu idle_cpu_spr __initconst = {
 	.use_acpi = true,
 };
 
-<<<<<<< HEAD
-=======
 static const struct idle_cpu idle_cpu_gnr __initconst = {
 	.state_table = gnr_cstates,
 	.disable_promotion_to_c1e = true,
 	.use_acpi = true,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct idle_cpu idle_cpu_avn __initconst = {
 	.state_table = avn_cstates,
 	.disable_promotion_to_c1e = true,
@@ -1547,13 +1530,10 @@ static const struct idle_cpu idle_cpu_dnv __initconst = {
 	.use_acpi = true,
 };
 
-<<<<<<< HEAD
-=======
 static const struct idle_cpu idle_cpu_tmt __initconst = {
 	.disable_promotion_to_c1e = true,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct idle_cpu idle_cpu_snr __initconst = {
 	.state_table = snr_cstates,
 	.disable_promotion_to_c1e = true,
@@ -1612,20 +1592,14 @@ static const struct x86_cpu_id intel_idle_ids[] __initconst = {
 	X86_MATCH_VFM(INTEL_ATOM_GRACEMONT,	&idle_cpu_gmt),
 	X86_MATCH_VFM(INTEL_SAPPHIRERAPIDS_X,	&idle_cpu_spr),
 	X86_MATCH_VFM(INTEL_EMERALDRAPIDS_X,	&idle_cpu_spr),
-<<<<<<< HEAD
-=======
 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X,	&idle_cpu_gnr),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	X86_MATCH_VFM(INTEL_XEON_PHI_KNL,	&idle_cpu_knl),
 	X86_MATCH_VFM(INTEL_XEON_PHI_KNM,	&idle_cpu_knl),
 	X86_MATCH_VFM(INTEL_ATOM_GOLDMONT,	&idle_cpu_bxt),
 	X86_MATCH_VFM(INTEL_ATOM_GOLDMONT_PLUS,	&idle_cpu_bxt),
 	X86_MATCH_VFM(INTEL_ATOM_GOLDMONT_D,	&idle_cpu_dnv),
-<<<<<<< HEAD
-=======
 	X86_MATCH_VFM(INTEL_ATOM_TREMONT,       &idle_cpu_tmt),
 	X86_MATCH_VFM(INTEL_ATOM_TREMONT_L,     &idle_cpu_tmt),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	X86_MATCH_VFM(INTEL_ATOM_TREMONT_D,	&idle_cpu_snr),
 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT,	&idle_cpu_grr),
 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X,	&idle_cpu_srf),
@@ -1780,11 +1754,7 @@ static void __init intel_idle_init_cstates_acpi(struct cpuidle_driver *drv)
 	}
 }
 
-<<<<<<< HEAD
-static bool __init intel_idle_off_by_default(u32 mwait_hint)
-=======
 static bool __init intel_idle_off_by_default(unsigned int flags, u32 mwait_hint)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int cstate, limit;
 
@@ -1801,9 +1771,6 @@ static bool __init intel_idle_off_by_default(unsigned int flags, u32 mwait_hint)
 	 * the interesting states are ACPI_CSTATE_FFH.
 	 */
 	for (cstate = 1; cstate < limit; cstate++) {
-<<<<<<< HEAD
-		if (acpi_state_table.states[cstate].address == mwait_hint)
-=======
 		u32 acpi_hint = acpi_state_table.states[cstate].address;
 		u32 table_hint = mwait_hint;
 
@@ -1813,7 +1780,6 @@ static bool __init intel_idle_off_by_default(unsigned int flags, u32 mwait_hint)
 		}
 
 		if (acpi_hint == table_hint)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return false;
 	}
 	return true;
@@ -1823,14 +1789,10 @@ static bool __init intel_idle_off_by_default(unsigned int flags, u32 mwait_hint)
 
 static inline bool intel_idle_acpi_cst_extract(void) { return false; }
 static inline void intel_idle_init_cstates_acpi(struct cpuidle_driver *drv) { }
-<<<<<<< HEAD
-static inline bool intel_idle_off_by_default(u32 mwait_hint) { return false; }
-=======
 static inline bool intel_idle_off_by_default(unsigned int flags, u32 mwait_hint)
 {
 	return false;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* !CONFIG_ACPI_PROCESSOR_CSTATE */
 
 /**
@@ -2157,11 +2119,7 @@ static void __init intel_idle_init_cstates_icpu(struct cpuidle_driver *drv)
 
 		if ((disabled_states_mask & BIT(drv->state_count)) ||
 		    ((icpu->use_acpi || force_use_acpi) &&
-<<<<<<< HEAD
-		     intel_idle_off_by_default(mwait_hint) &&
-=======
 		     intel_idle_off_by_default(state->flags, mwait_hint) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		     !(state->flags & CPUIDLE_FLAG_ALWAYS_ENABLE)))
 			state->flags |= CPUIDLE_FLAG_OFF;
 
@@ -2190,11 +2148,7 @@ static void __init intel_idle_cpuidle_driver_init(struct cpuidle_driver *drv)
 
 	drv->state_count = 1;
 
-<<<<<<< HEAD
-	if (icpu)
-=======
 	if (icpu && icpu->state_table)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_idle_init_cstates_icpu(drv);
 	else
 		intel_idle_init_cstates_acpi(drv);
@@ -2328,15 +2282,11 @@ static int __init intel_idle_init(void)
 
 	icpu = (const struct idle_cpu *)id->driver_data;
 	if (icpu) {
-<<<<<<< HEAD
-		cpuidle_state_table = icpu->state_table;
-=======
 		if (icpu->state_table)
 			cpuidle_state_table = icpu->state_table;
 		else if (!intel_idle_acpi_cst_extract())
 			return -ENODEV;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		auto_demotion_disable_flags = icpu->auto_demotion_disable_flags;
 		if (icpu->disable_promotion_to_c1e)
 			c1e_promotion = C1E_PROMOTION_DISABLE;

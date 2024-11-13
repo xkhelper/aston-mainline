@@ -187,8 +187,6 @@ static int pl172_parse_cs_config(struct amba_device *adev,
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
-=======
 static void pl172_amba_release_regions(void *data)
 {
 	struct amba_device *adev = data;
@@ -196,7 +194,6 @@ static void pl172_amba_release_regions(void *data)
 	amba_release_regions(adev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char * const pl172_revisions[] = {"r1", "r2", "r2p3", "r2p4"};
 static const char * const pl175_revisions[] = {"r1"};
 static const char * const pl176_revisions[] = {"r0"};
@@ -226,26 +223,6 @@ static int pl172_probe(struct amba_device *adev, const struct amba_id *id)
 	if (!pl172)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	pl172->clk = devm_clk_get(dev, "mpmcclk");
-	if (IS_ERR(pl172->clk)) {
-		dev_err(dev, "no mpmcclk provided clock\n");
-		return PTR_ERR(pl172->clk);
-	}
-
-	ret = clk_prepare_enable(pl172->clk);
-	if (ret) {
-		dev_err(dev, "unable to mpmcclk enable clock\n");
-		return ret;
-	}
-
-	pl172->rate = clk_get_rate(pl172->clk) / MSEC_PER_SEC;
-	if (!pl172->rate) {
-		dev_err(dev, "unable to get mpmcclk clock rate\n");
-		ret = -EINVAL;
-		goto err_clk_enable;
-	}
-=======
 	pl172->clk = devm_clk_get_enabled(dev, "mpmcclk");
 	if (IS_ERR(pl172->clk))
 		return dev_err_probe(dev, PTR_ERR(pl172->clk),
@@ -255,23 +232,10 @@ static int pl172_probe(struct amba_device *adev, const struct amba_id *id)
 	if (!pl172->rate)
 		return dev_err_probe(dev, -EINVAL,
 				     "unable to get mpmcclk clock rate\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = amba_request_regions(adev, NULL);
 	if (ret) {
 		dev_err(dev, "unable to request AMBA regions\n");
-<<<<<<< HEAD
-		goto err_clk_enable;
-	}
-
-	pl172->base = devm_ioremap(dev, adev->res.start,
-				   resource_size(&adev->res));
-	if (!pl172->base) {
-		dev_err(dev, "ioremap failed\n");
-		ret = -ENOMEM;
-		goto err_no_ioremap;
-	}
-=======
 		return ret;
 	}
 
@@ -283,7 +247,6 @@ static int pl172_probe(struct amba_device *adev, const struct amba_id *id)
 				   resource_size(&adev->res));
 	if (!pl172->base)
 		return dev_err_probe(dev, -ENOMEM, "ioremap failed\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	amba_set_drvdata(adev, pl172);
 
@@ -301,23 +264,6 @@ static int pl172_probe(struct amba_device *adev, const struct amba_id *id)
 	}
 
 	return 0;
-<<<<<<< HEAD
-
-err_no_ioremap:
-	amba_release_regions(adev);
-err_clk_enable:
-	clk_disable_unprepare(pl172->clk);
-	return ret;
-}
-
-static void pl172_remove(struct amba_device *adev)
-{
-	struct pl172_data *pl172 = amba_get_drvdata(adev);
-
-	clk_disable_unprepare(pl172->clk);
-	amba_release_regions(adev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct amba_id pl172_ids[] = {
@@ -345,10 +291,6 @@ static struct amba_driver pl172_driver = {
 		.name	= "memory-pl172",
 	},
 	.probe		= pl172_probe,
-<<<<<<< HEAD
-	.remove		= pl172_remove,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.id_table	= pl172_ids,
 };
 module_amba_driver(pl172_driver);

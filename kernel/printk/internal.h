@@ -2,20 +2,12 @@
 /*
  * internal.h - printk internal definitions
  */
-<<<<<<< HEAD
-#include <linux/percpu.h>
-#include <linux/console.h>
-#include "printk_ringbuffer.h"
-
-#if defined(CONFIG_PRINTK) && defined(CONFIG_SYSCTL)
-=======
 #include <linux/console.h>
 #include <linux/percpu.h>
 #include <linux/types.h>
 
 #if defined(CONFIG_PRINTK) && defined(CONFIG_SYSCTL)
 struct ctl_table;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __init printk_sysctl_init(void);
 int devkmsg_sysctl_set_loglvl(const struct ctl_table *table, int write,
 			      void *buffer, size_t *lenp, loff_t *ppos);
@@ -29,8 +21,6 @@ int devkmsg_sysctl_set_loglvl(const struct ctl_table *table, int write,
 		(con->flags & CON_BOOT) ? "boot" : "",		\
 		con->name, con->index, ##__VA_ARGS__)
 
-<<<<<<< HEAD
-=======
 /*
  * Identify if legacy printing is forced in a dedicated kthread. If
  * true, all printing via console lock occurs within a dedicated
@@ -44,7 +34,6 @@ int devkmsg_sysctl_set_loglvl(const struct ctl_table *table, int write,
 # define force_legacy_kthread()	(false)
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PRINTK
 
 #ifdef CONFIG_PRINTK_CALLER
@@ -68,15 +57,11 @@ enum printk_info_flags {
 	LOG_CONT	= 8,	/* text is a fragment of a continuation line */
 };
 
-<<<<<<< HEAD
-extern struct printk_ringbuffer *prb;
-=======
 struct printk_ringbuffer;
 struct dev_printk_info;
 
 extern struct printk_ringbuffer *prb;
 extern bool printk_kthreads_running;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 __printf(4, 0)
 int vprintk_store(int facility, int level,
@@ -86,12 +71,9 @@ int vprintk_store(int facility, int level,
 __printf(1, 0) int vprintk_default(const char *fmt, va_list args);
 __printf(1, 0) int vprintk_deferred(const char *fmt, va_list args);
 
-<<<<<<< HEAD
-=======
 void __printk_safe_enter(void);
 void __printk_safe_exit(void);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool printk_percpu_data_ready(void);
 
 #define printk_safe_enter_irqsave(flags)	\
@@ -107,26 +89,16 @@ bool printk_percpu_data_ready(void);
 	} while (0)
 
 void defer_console_output(void);
-<<<<<<< HEAD
-
-u16 printk_parse_prefix(const char *text, int *level,
-			enum printk_info_flags *flags);
-=======
 bool is_printk_legacy_deferred(void);
 
 u16 printk_parse_prefix(const char *text, int *level,
 			enum printk_info_flags *flags);
 void console_lock_spinning_enable(void);
 int console_lock_spinning_disable_and_check(int cookie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 u64 nbcon_seq_read(struct console *con);
 void nbcon_seq_force(struct console *con, u64 seq);
 bool nbcon_alloc(struct console *con);
-<<<<<<< HEAD
-void nbcon_init(struct console *con);
-void nbcon_free(struct console *con);
-=======
 void nbcon_free(struct console *con);
 enum nbcon_prio nbcon_get_default_prio(void);
 void nbcon_atomic_flush_pending(void);
@@ -196,7 +168,6 @@ static inline void nbcon_kthread_wake(struct console *con)
 	 */
 	rcuwait_wake_up(&con->rcuwait); /* LMM(nbcon_kthread_wake:A) */
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else
 
@@ -204,11 +175,8 @@ static inline void nbcon_kthread_wake(struct console *con)
 #define PRINTK_MESSAGE_MAX	0
 #define PRINTKRB_RECORD_MAX	0
 
-<<<<<<< HEAD
-=======
 #define printk_kthreads_running (false)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * In !PRINTK builds we still export console_sem
  * semaphore and some of console functions (console_unlock()/etc.), so
@@ -218,16 +186,6 @@ static inline void nbcon_kthread_wake(struct console *con)
 #define printk_safe_exit_irqrestore(flags) local_irq_restore(flags)
 
 static inline bool printk_percpu_data_ready(void) { return false; }
-<<<<<<< HEAD
-static inline u64 nbcon_seq_read(struct console *con) { return 0; }
-static inline void nbcon_seq_force(struct console *con, u64 seq) { }
-static inline bool nbcon_alloc(struct console *con) { return false; }
-static inline void nbcon_init(struct console *con) { }
-static inline void nbcon_free(struct console *con) { }
-
-#endif /* CONFIG_PRINTK */
-
-=======
 static inline void defer_console_output(void) { }
 static inline bool is_printk_legacy_deferred(void) { return false; }
 static inline u64 nbcon_seq_read(struct console *con) { return 0; }
@@ -341,7 +299,6 @@ static inline void printk_get_console_flush_type(struct console_flush_type *ft)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern struct printk_buffers printk_shared_pbufs;
 
 /**
@@ -376,8 +333,5 @@ bool printk_get_next_message(struct printk_message *pmsg, u64 seq,
 
 #ifdef CONFIG_PRINTK
 void console_prepend_dropped(struct printk_message *pmsg, unsigned long dropped);
-<<<<<<< HEAD
-=======
 void console_prepend_replay(struct printk_message *pmsg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

@@ -7,46 +7,15 @@
 #include <linux/of_platform.h>
 #include <linux/regmap.h>
 #include <linux/mfd/syscon.h>
-<<<<<<< HEAD
-#include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/mach/arch.h>
 
 #include "common.h"
 #include "cpuidle.h"
 
-<<<<<<< HEAD
-static void __init imx6sx_enet_clk_sel(void)
-{
-	struct regmap *gpr;
-
-	gpr = syscon_regmap_lookup_by_compatible("fsl,imx6sx-iomuxc-gpr");
-	if (!IS_ERR(gpr)) {
-		regmap_update_bits(gpr, IOMUXC_GPR1,
-				   IMX6SX_GPR1_FEC_CLOCK_MUX_SEL_MASK, 0);
-		regmap_update_bits(gpr, IOMUXC_GPR1,
-				   IMX6SX_GPR1_FEC_CLOCK_PAD_DIR_MASK, 0);
-	} else {
-		pr_err("failed to find fsl,imx6sx-iomux-gpr regmap\n");
-	}
-}
-
-static inline void imx6sx_enet_init(void)
-{
-	imx6sx_enet_clk_sel();
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __init imx6sx_init_machine(void)
 {
 	of_platform_default_populate(NULL, NULL, NULL);
 
-<<<<<<< HEAD
-	imx6sx_enet_init();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	imx_anatop_init();
 	imx6sx_pm_init();
 }

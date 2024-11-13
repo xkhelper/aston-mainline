@@ -67,13 +67,8 @@
  */
 u32 i915_get_vblank_counter(struct drm_crtc *crtc)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = to_i915(crtc->dev);
-	struct drm_vblank_crtc *vblank = &dev_priv->drm.vblank[drm_crtc_index(crtc)];
-=======
 	struct intel_display *display = to_intel_display(crtc->dev);
 	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct drm_display_mode *mode = &vblank->hwmode;
 	enum pipe pipe = to_intel_crtc(crtc)->pipe;
 	u32 pixel, vbl_start, hsync_start, htotal;
@@ -108,13 +103,8 @@ u32 i915_get_vblank_counter(struct drm_crtc *crtc)
 	 * we get a low value that's stable across two reads of the high
 	 * register.
 	 */
-<<<<<<< HEAD
-	frame = intel_de_read64_2x32(dev_priv, PIPEFRAMEPIXEL(dev_priv, pipe),
-				     PIPEFRAME(dev_priv, pipe));
-=======
 	frame = intel_de_read64_2x32(display, PIPEFRAMEPIXEL(display, pipe),
 				     PIPEFRAME(display, pipe));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pixel = frame & PIPE_PIXEL_MASK;
 	frame = (frame >> PIPE_FRAME_LOW_SHIFT) & 0xffffff;
@@ -129,32 +119,19 @@ u32 i915_get_vblank_counter(struct drm_crtc *crtc)
 
 u32 g4x_get_vblank_counter(struct drm_crtc *crtc)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = to_i915(crtc->dev);
-	struct drm_vblank_crtc *vblank = &dev_priv->drm.vblank[drm_crtc_index(crtc)];
-=======
 	struct intel_display *display = to_intel_display(crtc->dev);
 	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum pipe pipe = to_intel_crtc(crtc)->pipe;
 
 	if (!vblank->max_vblank_count)
 		return 0;
 
-<<<<<<< HEAD
-	return intel_de_read(dev_priv, PIPE_FRMCOUNT_G4X(dev_priv, pipe));
-=======
 	return intel_de_read(display, PIPE_FRMCOUNT_G4X(display, pipe));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u32 intel_crtc_scanlines_since_frame_timestamp(struct intel_crtc *crtc)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
-=======
 	struct intel_display *display = to_intel_display(crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(&crtc->base);
 	const struct drm_display_mode *mode = &vblank->hwmode;
 	u32 htotal = mode->crtc_htotal;
@@ -173,26 +150,16 @@ static u32 intel_crtc_scanlines_since_frame_timestamp(struct intel_crtc *crtc)
 		 * pipe frame time stamp. The time stamp value
 		 * is sampled at every start of vertical blank.
 		 */
-<<<<<<< HEAD
-		scan_prev_time = intel_de_read_fw(dev_priv,
-=======
 		scan_prev_time = intel_de_read_fw(display,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						  PIPE_FRMTMSTMP(crtc->pipe));
 
 		/*
 		 * The TIMESTAMP_CTR register has the current
 		 * time stamp value.
 		 */
-<<<<<<< HEAD
-		scan_curr_time = intel_de_read_fw(dev_priv, IVB_TIMESTAMP_CTR);
-
-		scan_post_time = intel_de_read_fw(dev_priv,
-=======
 		scan_curr_time = intel_de_read_fw(display, IVB_TIMESTAMP_CTR);
 
 		scan_post_time = intel_de_read_fw(display,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						  PIPE_FRMTMSTMP(crtc->pipe));
 	} while (scan_post_time != scan_prev_time);
 
@@ -223,14 +190,9 @@ static u32 __intel_get_crtc_scanline_from_timestamp(struct intel_crtc *crtc)
 	return scanline;
 }
 
-<<<<<<< HEAD
-static int intel_crtc_scanline_offset(const struct intel_crtc_state *crtc_state)
-{
-=======
 int intel_crtc_scanline_offset(const struct intel_crtc_state *crtc_state)
 {
 	struct intel_display *display = to_intel_display(crtc_state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_i915_private *i915 = to_i915(crtc_state->uapi.crtc->dev);
 
 	/*
@@ -259,11 +221,7 @@ int intel_crtc_scanline_offset(const struct intel_crtc_state *crtc_state)
 	 * However if queried just before the start of vblank we'll get an
 	 * answer that's slightly in the future.
 	 */
-<<<<<<< HEAD
-	if (DISPLAY_VER(i915) == 2)
-=======
 	if (DISPLAY_VER(display) == 2)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -1;
 	else if (HAS_DDI(i915) && intel_crtc_has_type(crtc_state, INTEL_OUTPUT_HDMI))
 		return 2;
@@ -277,12 +235,7 @@ int intel_crtc_scanline_offset(const struct intel_crtc_state *crtc_state)
  */
 static int __intel_get_crtc_scanline(struct intel_crtc *crtc)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = crtc->base.dev;
-	struct drm_i915_private *dev_priv = to_i915(dev);
-=======
 	struct intel_display *display = to_intel_display(crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(&crtc->base);
 	const struct drm_display_mode *mode = &vblank->hwmode;
 	enum pipe pipe = crtc->pipe;
@@ -296,11 +249,7 @@ static int __intel_get_crtc_scanline(struct intel_crtc *crtc)
 
 	vtotal = intel_mode_vtotal(mode);
 
-<<<<<<< HEAD
-	position = intel_de_read_fw(dev_priv, PIPEDSL(dev_priv, pipe)) & PIPEDSL_LINE_MASK;
-=======
 	position = intel_de_read_fw(display, PIPEDSL(display, pipe)) & PIPEDSL_LINE_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * On HSW, the DSL reg (0x70000) appears to return 0 if we
@@ -314,22 +263,13 @@ static int __intel_get_crtc_scanline(struct intel_crtc *crtc)
 	 * problem.  We may need to extend this to include other platforms,
 	 * but so far testing only shows the problem on HSW.
 	 */
-<<<<<<< HEAD
-	if (HAS_DDI(dev_priv) && !position) {
-=======
 	if (HAS_DDI(display) && !position) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int i, temp;
 
 		for (i = 0; i < 100; i++) {
 			udelay(1);
-<<<<<<< HEAD
-			temp = intel_de_read_fw(dev_priv,
-						PIPEDSL(dev_priv, pipe)) & PIPEDSL_LINE_MASK;
-=======
 			temp = intel_de_read_fw(display,
 						PIPEDSL(display, pipe)) & PIPEDSL_LINE_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (temp != position) {
 				position = temp;
 				break;
@@ -344,18 +284,6 @@ static int __intel_get_crtc_scanline(struct intel_crtc *crtc)
 	return (position + vtotal + crtc->scanline_offset) % vtotal;
 }
 
-<<<<<<< HEAD
-int intel_crtc_scanline_to_hw(struct intel_crtc *crtc, int scanline)
-{
-	const struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(&crtc->base);
-	const struct drm_display_mode *mode = &vblank->hwmode;
-	int vtotal = intel_mode_vtotal(mode);
-
-	return (scanline + vtotal - crtc->scanline_offset) % vtotal;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The uncore version of the spin lock functions is used to decide
  * whether we need to lock the uncore lock or not.  This is only
@@ -366,23 +294,6 @@ int intel_crtc_scanline_to_hw(struct intel_crtc *crtc, int scanline)
  * all register accesses to the same cacheline to be serialized,
  * otherwise they may hang.
  */
-<<<<<<< HEAD
-static void intel_vblank_section_enter(struct drm_i915_private *i915)
-	__acquires(i915->uncore.lock)
-{
-#ifdef I915
-	spin_lock(&i915->uncore.lock);
-#endif
-}
-
-static void intel_vblank_section_exit(struct drm_i915_private *i915)
-	__releases(i915->uncore.lock)
-{
-#ifdef I915
-	spin_unlock(&i915->uncore.lock);
-#endif
-}
-=======
 #ifdef I915
 static void intel_vblank_section_enter(struct intel_display *display)
 	__acquires(i915->uncore.lock)
@@ -406,7 +317,6 @@ static void intel_vblank_section_exit(struct intel_display *display)
 {
 }
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static bool i915_get_crtc_scanoutpos(struct drm_crtc *_crtc,
 				     bool in_vblank_irq,
@@ -414,33 +324,19 @@ static bool i915_get_crtc_scanoutpos(struct drm_crtc *_crtc,
 				     ktime_t *stime, ktime_t *etime,
 				     const struct drm_display_mode *mode)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = _crtc->dev;
-	struct drm_i915_private *dev_priv = to_i915(dev);
-=======
 	struct intel_display *display = to_intel_display(_crtc->dev);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_crtc *crtc = to_intel_crtc(_crtc);
 	enum pipe pipe = crtc->pipe;
 	int position;
 	int vbl_start, vbl_end, hsync_start, htotal, vtotal;
 	unsigned long irqflags;
-<<<<<<< HEAD
-	bool use_scanline_counter = DISPLAY_VER(dev_priv) >= 5 ||
-		IS_G4X(dev_priv) || DISPLAY_VER(dev_priv) == 2 ||
-		crtc->mode_flags & I915_MODE_FLAG_USE_SCANLINE_COUNTER;
-
-	if (drm_WARN_ON(&dev_priv->drm, !mode->crtc_clock)) {
-		drm_dbg(&dev_priv->drm,
-=======
 	bool use_scanline_counter = DISPLAY_VER(display) >= 5 ||
 		IS_G4X(dev_priv) || DISPLAY_VER(display) == 2 ||
 		crtc->mode_flags & I915_MODE_FLAG_USE_SCANLINE_COUNTER;
 
 	if (drm_WARN_ON(display->drm, !mode->crtc_clock)) {
 		drm_dbg(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"trying to get scanoutpos for disabled pipe %c\n",
 			pipe_name(pipe));
 		return false;
@@ -458,11 +354,7 @@ static bool i915_get_crtc_scanoutpos(struct drm_crtc *_crtc,
 	 * preemption disabled, so the following code must not block.
 	 */
 	local_irq_save(irqflags);
-<<<<<<< HEAD
-	intel_vblank_section_enter(dev_priv);
-=======
 	intel_vblank_section_enter(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* preempt_disable_rt() should go right here in PREEMPT_RT patchset. */
 
@@ -494,11 +386,7 @@ static bool i915_get_crtc_scanoutpos(struct drm_crtc *_crtc,
 		 * We can split this into vertical and horizontal
 		 * scanout position.
 		 */
-<<<<<<< HEAD
-		position = (intel_de_read_fw(dev_priv, PIPEFRAMEPIXEL(dev_priv, pipe)) & PIPE_PIXEL_MASK) >> PIPE_PIXEL_SHIFT;
-=======
 		position = (intel_de_read_fw(display, PIPEFRAMEPIXEL(display, pipe)) & PIPE_PIXEL_MASK) >> PIPE_PIXEL_SHIFT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* convert to pixel counts */
 		vbl_start *= htotal;
@@ -534,11 +422,7 @@ static bool i915_get_crtc_scanoutpos(struct drm_crtc *_crtc,
 
 	/* preempt_enable_rt() should go right here in PREEMPT_RT patchset. */
 
-<<<<<<< HEAD
-	intel_vblank_section_exit(dev_priv);
-=======
 	intel_vblank_section_exit(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local_irq_restore(irqflags);
 
 	/*
@@ -573,44 +457,21 @@ bool intel_crtc_get_vblank_timestamp(struct drm_crtc *crtc, int *max_error,
 
 int intel_get_crtc_scanline(struct intel_crtc *crtc)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
-=======
 	struct intel_display *display = to_intel_display(crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long irqflags;
 	int position;
 
 	local_irq_save(irqflags);
-<<<<<<< HEAD
-	intel_vblank_section_enter(dev_priv);
-
-	position = __intel_get_crtc_scanline(crtc);
-
-	intel_vblank_section_exit(dev_priv);
-=======
 	intel_vblank_section_enter(display);
 
 	position = __intel_get_crtc_scanline(crtc);
 
 	intel_vblank_section_exit(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local_irq_restore(irqflags);
 
 	return position;
 }
 
-<<<<<<< HEAD
-static bool pipe_scanline_is_moving(struct drm_i915_private *dev_priv,
-				    enum pipe pipe)
-{
-	i915_reg_t reg = PIPEDSL(dev_priv, pipe);
-	u32 line1, line2;
-
-	line1 = intel_de_read(dev_priv, reg) & PIPEDSL_LINE_MASK;
-	msleep(5);
-	line2 = intel_de_read(dev_priv, reg) & PIPEDSL_LINE_MASK;
-=======
 static bool pipe_scanline_is_moving(struct intel_display *display,
 				    enum pipe pipe)
 {
@@ -620,28 +481,18 @@ static bool pipe_scanline_is_moving(struct intel_display *display,
 	line1 = intel_de_read(display, reg) & PIPEDSL_LINE_MASK;
 	msleep(5);
 	line2 = intel_de_read(display, reg) & PIPEDSL_LINE_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return line1 != line2;
 }
 
 static void wait_for_pipe_scanline_moving(struct intel_crtc *crtc, bool state)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
-	enum pipe pipe = crtc->pipe;
-
-	/* Wait for the display line to settle/start moving */
-	if (wait_for(pipe_scanline_is_moving(dev_priv, pipe) == state, 100))
-		drm_err(&dev_priv->drm,
-=======
 	struct intel_display *display = to_intel_display(crtc);
 	enum pipe pipe = crtc->pipe;
 
 	/* Wait for the display line to settle/start moving */
 	if (wait_for(pipe_scanline_is_moving(display, pipe) == state, 100))
 		drm_err(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"pipe %c scanline %s wait timed out\n",
 			pipe_name(pipe), str_on_off(state));
 }
@@ -659,13 +510,8 @@ void intel_wait_for_pipe_scanline_moving(struct intel_crtc *crtc)
 void intel_crtc_update_active_timings(const struct intel_crtc_state *crtc_state,
 				      bool vrr_enable)
 {
-<<<<<<< HEAD
-	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
-	struct drm_i915_private *i915 = to_i915(crtc->base.dev);
-=======
 	struct intel_display *display = to_intel_display(crtc_state);
 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 mode_flags = crtc_state->mode_flags;
 	struct drm_display_mode adjusted_mode;
 	int vmax_vblank_start = 0;
@@ -674,12 +520,8 @@ void intel_crtc_update_active_timings(const struct intel_crtc_state *crtc_state,
 	drm_mode_init(&adjusted_mode, &crtc_state->hw.adjusted_mode);
 
 	if (vrr_enable) {
-<<<<<<< HEAD
-		drm_WARN_ON(&i915->drm, (mode_flags & I915_MODE_FLAG_VRR) == 0);
-=======
 		drm_WARN_ON(display->drm,
 			    (mode_flags & I915_MODE_FLAG_VRR) == 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		adjusted_mode.crtc_vtotal = crtc_state->vrr.vmax;
 		adjusted_mode.crtc_vblank_end = crtc_state->vrr.vmax;
@@ -701,13 +543,8 @@ void intel_crtc_update_active_timings(const struct intel_crtc_state *crtc_state,
 	 * __intel_get_crtc_scanline()) with vblank_time_lock?
 	 * Need to audit everything to make sure it's safe.
 	 */
-<<<<<<< HEAD
-	spin_lock_irqsave(&i915->drm.vblank_time_lock, irqflags);
-	intel_vblank_section_enter(i915);
-=======
 	spin_lock_irqsave(&display->drm->vblank_time_lock, irqflags);
 	intel_vblank_section_enter(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	drm_calc_timestamping_constants(&crtc->base, &adjusted_mode);
 
@@ -716,13 +553,8 @@ void intel_crtc_update_active_timings(const struct intel_crtc_state *crtc_state,
 	crtc->mode_flags = mode_flags;
 
 	crtc->scanline_offset = intel_crtc_scanline_offset(crtc_state);
-<<<<<<< HEAD
-	intel_vblank_section_exit(i915);
-	spin_unlock_irqrestore(&i915->drm.vblank_time_lock, irqflags);
-=======
 	intel_vblank_section_exit(display);
 	spin_unlock_irqrestore(&display->drm->vblank_time_lock, irqflags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int intel_mode_vdisplay(const struct drm_display_mode *mode)
@@ -820,23 +652,15 @@ void intel_vblank_evade_init(const struct intel_crtc_state *old_crtc_state,
 	 */
 	if (intel_color_uses_dsb(new_crtc_state) ||
 	    new_crtc_state->update_m_n || new_crtc_state->update_lrr)
-<<<<<<< HEAD
-		evade->min -= adjusted_mode->crtc_vblank_start - adjusted_mode->crtc_vdisplay;
-=======
 		evade->min -= intel_mode_vblank_start(adjusted_mode) -
 			intel_mode_vdisplay(adjusted_mode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* must be called with vblank interrupt already enabled! */
 int intel_vblank_evade(struct intel_vblank_evade_ctx *evade)
 {
 	struct intel_crtc *crtc = evade->crtc;
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = to_i915(crtc->base.dev);
-=======
 	struct intel_display *display = to_intel_display(crtc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	long timeout = msecs_to_jiffies_timeout(1);
 	wait_queue_head_t *wq = drm_crtc_vblank_waitqueue(&crtc->base);
 	DEFINE_WAIT(wait);
@@ -858,11 +682,7 @@ int intel_vblank_evade(struct intel_vblank_evade_ctx *evade)
 			break;
 
 		if (!timeout) {
-<<<<<<< HEAD
-			drm_err(&i915->drm,
-=======
 			drm_err(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				"Potential atomic update failure on pipe %c\n",
 				pipe_name(crtc->pipe));
 			break;

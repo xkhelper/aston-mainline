@@ -191,17 +191,6 @@ static int sama5d2_piobu_probe(struct platform_device *pdev)
 
 	piobu->chip.label = pdev->name;
 	piobu->chip.parent = &pdev->dev;
-<<<<<<< HEAD
-	piobu->chip.owner = THIS_MODULE,
-	piobu->chip.get_direction = sama5d2_piobu_get_direction,
-	piobu->chip.direction_input = sama5d2_piobu_direction_input,
-	piobu->chip.direction_output = sama5d2_piobu_direction_output,
-	piobu->chip.get = sama5d2_piobu_get,
-	piobu->chip.set = sama5d2_piobu_set,
-	piobu->chip.base = -1,
-	piobu->chip.ngpio = PIOBU_NUM,
-	piobu->chip.can_sleep = 0,
-=======
 	piobu->chip.owner = THIS_MODULE;
 	piobu->chip.get_direction = sama5d2_piobu_get_direction;
 	piobu->chip.direction_input = sama5d2_piobu_direction_input;
@@ -211,7 +200,6 @@ static int sama5d2_piobu_probe(struct platform_device *pdev)
 	piobu->chip.base = -1;
 	piobu->chip.ngpio = PIOBU_NUM;
 	piobu->chip.can_sleep = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	piobu->regmap = syscon_node_to_regmap(pdev->dev.of_node);
 	if (IS_ERR(piobu->regmap)) {

@@ -328,11 +328,6 @@ static void pata_icside_postreset(struct ata_link *link, unsigned int *classes)
 
 static struct ata_port_operations pata_icside_port_ops = {
 	.inherits		= &ata_bmdma_port_ops,
-<<<<<<< HEAD
-	/* no need to build any PRD tables for DMA */
-	.qc_prep		= ata_noop_qc_prep,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sff_data_xfer		= ata_sff_data_xfer32,
 	.bmdma_setup		= pata_icside_bmdma_setup,
 	.bmdma_start		= pata_icside_bmdma_start,

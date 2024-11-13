@@ -83,13 +83,6 @@ static int smi_get_irq(struct platform_device *pdev, struct acpi_device *adev,
 
 static void smi_devs_unregister(struct smi *smi)
 {
-<<<<<<< HEAD
-	while (smi->i2c_num--)
-		i2c_unregister_device(smi->i2c_devs[smi->i2c_num]);
-
-	while (smi->spi_num--)
-		spi_unregister_device(smi->spi_devs[smi->spi_num]);
-=======
 #if IS_REACHABLE(CONFIG_I2C)
 	while (smi->i2c_num--)
 		i2c_unregister_device(smi->i2c_devs[smi->i2c_num]);
@@ -99,7 +92,6 @@ static void smi_devs_unregister(struct smi *smi)
 		while (smi->spi_num--)
 			spi_unregister_device(smi->spi_devs[smi->spi_num]);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -270,11 +262,6 @@ static int smi_probe(struct platform_device *pdev)
 
 	switch (node->bus_type) {
 	case SMI_I2C:
-<<<<<<< HEAD
-		return smi_i2c_probe(pdev, smi, node->instances);
-	case SMI_SPI:
-		return smi_spi_probe(pdev, smi, node->instances);
-=======
 		if (IS_REACHABLE(CONFIG_I2C))
 			return smi_i2c_probe(pdev, smi, node->instances);
 
@@ -284,7 +271,6 @@ static int smi_probe(struct platform_device *pdev)
 			return smi_spi_probe(pdev, smi, node->instances);
 
 		return -ENODEV;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case SMI_AUTO_DETECT:
 		/*
 		 * For backwards-compatibility with the existing nodes I2C
@@ -294,12 +280,6 @@ static int smi_probe(struct platform_device *pdev)
 		 * SpiSerialBus nodes that were previously ignored, and this
 		 * preserves that behavior.
 		 */
-<<<<<<< HEAD
-		ret = smi_i2c_probe(pdev, smi, node->instances);
-		if (ret != -ENOENT)
-			return ret;
-		return smi_spi_probe(pdev, smi, node->instances);
-=======
 		if (IS_REACHABLE(CONFIG_I2C)) {
 			ret = smi_i2c_probe(pdev, smi, node->instances);
 			if (ret != -ENOENT)
@@ -310,7 +290,6 @@ static int smi_probe(struct platform_device *pdev)
 			return smi_spi_probe(pdev, smi, node->instances);
 
 		return -ENODEV;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -EINVAL;
 	}

@@ -366,11 +366,7 @@ static void rtw89_tas_state_update(struct rtw89_dev *rtwdev)
 	if (src == RTW89_SAR_SOURCE_NONE)
 		return;
 
-<<<<<<< HEAD
-	chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-=======
 	chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = sar_hdl->query_sar_config(rtwdev, chan->freq, &cfg);
 	if (ret)
 		return;

@@ -2,11 +2,7 @@
 /*
  * Microchip switch driver main logic
  *
-<<<<<<< HEAD
- * Copyright (C) 2017-2019 Microchip Technology Inc.
-=======
  * Copyright (C) 2017-2024 Microchip Technology Inc.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/delay.h>
@@ -250,28 +246,16 @@ static const struct ksz_drive_strength ksz9477_drive_strengths[] = {
 	{ SW_DRIVE_STRENGTH_28MA, 28000 },
 };
 
-<<<<<<< HEAD
-/* ksz8830_drive_strengths - Drive strength mapping for KSZ8830, KSZ8873, ..
- *			     variants.
- * This values are documented in KSZ8873 and KSZ8863 datasheets.
- */
-static const struct ksz_drive_strength ksz8830_drive_strengths[] = {
-=======
 /* ksz88x3_drive_strengths - Drive strength mapping for KSZ8863, KSZ8873, ..
  *			     variants.
  * This values are documented in KSZ8873 and KSZ8863 datasheets.
  */
 static const struct ksz_drive_strength ksz88x3_drive_strengths[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ 0,  8000 },
 	{ KSZ8873_DRIVE_STRENGTH_16MA, 16000 },
 };
 
-<<<<<<< HEAD
-static void ksz8830_phylink_mac_config(struct phylink_config *config,
-=======
 static void ksz88x3_phylink_mac_config(struct phylink_config *config,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       unsigned int mode,
 				       const struct phylink_link_state *state);
 static void ksz_phylink_mac_config(struct phylink_config *config,
@@ -281,13 +265,8 @@ static void ksz_phylink_mac_link_down(struct phylink_config *config,
 				      unsigned int mode,
 				      phy_interface_t interface);
 
-<<<<<<< HEAD
-static const struct phylink_mac_ops ksz8830_phylink_mac_ops = {
-	.mac_config	= ksz8830_phylink_mac_config,
-=======
 static const struct phylink_mac_ops ksz88x3_phylink_mac_ops = {
 	.mac_config	= ksz88x3_phylink_mac_config,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.mac_link_down	= ksz_phylink_mac_link_down,
 	.mac_link_up	= ksz8_phylink_mac_link_up,
 };
@@ -298,11 +277,7 @@ static const struct phylink_mac_ops ksz8_phylink_mac_ops = {
 	.mac_link_up	= ksz8_phylink_mac_link_up,
 };
 
-<<<<<<< HEAD
-static const struct ksz_dev_ops ksz8_dev_ops = {
-=======
 static const struct ksz_dev_ops ksz88xx_dev_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.setup = ksz8_setup,
 	.get_port_addr = ksz8_get_port_addr,
 	.cfg_port_member = ksz8_cfg_port_member,
@@ -332,8 +307,6 @@ static const struct ksz_dev_ops ksz88xx_dev_ops = {
 	.init = ksz8_switch_init,
 	.exit = ksz8_switch_exit,
 	.change_mtu = ksz8_change_mtu,
-<<<<<<< HEAD
-=======
 	.pme_write8 = ksz8_pme_write8,
 	.pme_pread8 = ksz8_pme_pread8,
 	.pme_pwrite8 = ksz8_pme_pwrite8,
@@ -372,7 +345,6 @@ static const struct ksz_dev_ops ksz87xx_dev_ops = {
 	.pme_write8 = ksz8_pme_write8,
 	.pme_pread8 = ksz8_pme_pread8,
 	.pme_pwrite8 = ksz8_pme_pwrite8,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void ksz9477_phylink_mac_link_up(struct phylink_config *config,
@@ -414,15 +386,9 @@ static const struct ksz_dev_ops ksz9477_dev_ops = {
 	.mdb_add = ksz9477_mdb_add,
 	.mdb_del = ksz9477_mdb_del,
 	.change_mtu = ksz9477_change_mtu,
-<<<<<<< HEAD
-	.get_wol = ksz9477_get_wol,
-	.set_wol = ksz9477_set_wol,
-	.wol_pre_shutdown = ksz9477_wol_pre_shutdown,
-=======
 	.pme_write8 = ksz_write8,
 	.pme_pread8 = ksz_pread8,
 	.pme_pwrite8 = ksz_pwrite8,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config_cpu_port = ksz9477_config_cpu_port,
 	.tc_cbs_set_cinc = ksz9477_tc_cbs_set_cinc,
 	.enable_stp_addr = ksz9477_enable_stp_addr,
@@ -495,12 +461,9 @@ static const u16 ksz8795_regs[] = {
 	[S_MULTICAST_CTRL]		= 0x04,
 	[P_XMII_CTRL_0]			= 0x06,
 	[P_XMII_CTRL_1]			= 0x06,
-<<<<<<< HEAD
-=======
 	[REG_SW_PME_CTRL]		= 0x8003,
 	[REG_PORT_PME_STATUS]		= 0x8003,
 	[REG_PORT_PME_CTRL]		= 0x8007,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const u32 ksz8795_masks[] = {
@@ -609,8 +572,6 @@ static u8 ksz8863_shifts[] = {
 	[DYNAMIC_MAC_SRC_PORT]		= 20,
 };
 
-<<<<<<< HEAD
-=======
 static const u16 ksz8895_regs[] = {
 	[REG_SW_MAC_ADDR]		= 0x68,
 	[REG_IND_CTRL_0]		= 0x6E,
@@ -666,7 +627,6 @@ static const u8 ksz8895_shifts[] = {
 	[DYNAMIC_MAC_SRC_PORT]		= 24,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const u16 ksz9477_regs[] = {
 	[REG_SW_MAC_ADDR]		= 0x0302,
 	[P_STP_CTRL]			= 0x0B04,
@@ -675,12 +635,9 @@ static const u16 ksz9477_regs[] = {
 	[S_MULTICAST_CTRL]		= 0x0331,
 	[P_XMII_CTRL_0]			= 0x0300,
 	[P_XMII_CTRL_1]			= 0x0301,
-<<<<<<< HEAD
-=======
 	[REG_SW_PME_CTRL]		= 0x0006,
 	[REG_PORT_PME_STATUS]		= 0x0013,
 	[REG_PORT_PME_CTRL]		= 0x0017,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const u32 ksz9477_masks[] = {
@@ -1395,20 +1352,12 @@ const struct ksz_chip_data ksz_switch_chips[] = {
 		.dev_name = "KSZ8795",
 		.num_vlans = 4096,
 		.num_alus = 0,
-<<<<<<< HEAD
-		.num_statics = 8,
-=======
 		.num_statics = 32,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.cpu_ports = 0x10,	/* can be configured as cpu port */
 		.port_cnt = 5,		/* total cpu and user ports */
 		.num_tx_queues = 4,
 		.num_ipms = 4,
-<<<<<<< HEAD
-		.ops = &ksz8_dev_ops,
-=======
 		.ops = &ksz87xx_dev_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.phylink_mac_ops = &ksz8_phylink_mac_ops,
 		.ksz87xx_eee_link_erratum = true,
 		.mib_names = ksz9477_mib_names,
@@ -1444,20 +1393,12 @@ const struct ksz_chip_data ksz_switch_chips[] = {
 		.dev_name = "KSZ8794",
 		.num_vlans = 4096,
 		.num_alus = 0,
-<<<<<<< HEAD
-		.num_statics = 8,
-=======
 		.num_statics = 32,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.cpu_ports = 0x10,	/* can be configured as cpu port */
 		.port_cnt = 5,		/* total cpu and user ports */
 		.num_tx_queues = 4,
 		.num_ipms = 4,
-<<<<<<< HEAD
-		.ops = &ksz8_dev_ops,
-=======
 		.ops = &ksz87xx_dev_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.phylink_mac_ops = &ksz8_phylink_mac_ops,
 		.ksz87xx_eee_link_erratum = true,
 		.mib_names = ksz9477_mib_names,
@@ -1479,20 +1420,12 @@ const struct ksz_chip_data ksz_switch_chips[] = {
 		.dev_name = "KSZ8765",
 		.num_vlans = 4096,
 		.num_alus = 0,
-<<<<<<< HEAD
-		.num_statics = 8,
-=======
 		.num_statics = 32,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.cpu_ports = 0x10,	/* can be configured as cpu port */
 		.port_cnt = 5,		/* total cpu and user ports */
 		.num_tx_queues = 4,
 		.num_ipms = 4,
-<<<<<<< HEAD
-		.ops = &ksz8_dev_ops,
-=======
 		.ops = &ksz87xx_dev_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.phylink_mac_ops = &ksz8_phylink_mac_ops,
 		.ksz87xx_eee_link_erratum = true,
 		.mib_names = ksz9477_mib_names,
@@ -1509,13 +1442,8 @@ const struct ksz_chip_data ksz_switch_chips[] = {
 		.internal_phy = {true, true, true, true, false},
 	},
 
-<<<<<<< HEAD
-	[KSZ8830] = {
-		.chip_id = KSZ8830_CHIP_ID,
-=======
 	[KSZ88X3] = {
 		.chip_id = KSZ88X3_CHIP_ID,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.dev_name = "KSZ8863/KSZ8873",
 		.num_vlans = 16,
 		.num_alus = 0,
@@ -1524,13 +1452,8 @@ const struct ksz_chip_data ksz_switch_chips[] = {
 		.port_cnt = 3,
 		.num_tx_queues = 4,
 		.num_ipms = 4,
-<<<<<<< HEAD
-		.ops = &ksz8_dev_ops,
-		.phylink_mac_ops = &ksz8830_phylink_mac_ops,
-=======
 		.ops = &ksz88xx_dev_ops,
 		.phylink_mac_ops = &ksz88x3_phylink_mac_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.mib_names = ksz88xx_mib_names,
 		.mib_cnt = ARRAY_SIZE(ksz88xx_mib_names),
 		.reg_mib_cnt = MIB_COUNTER_NUM,
@@ -1544,8 +1467,6 @@ const struct ksz_chip_data ksz_switch_chips[] = {
 		.rd_table = &ksz8873_register_set,
 	},
 
-<<<<<<< HEAD
-=======
 	[KSZ8864] = {
 		/* WARNING
 		 * =======
@@ -1601,7 +1522,6 @@ const struct ksz_chip_data ksz_switch_chips[] = {
 		.internal_phy = {true, true, true, true, false},
 	},
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[KSZ9477] = {
 		.chip_id = KSZ9477_CHIP_ID,
 		.dev_name = "KSZ9477",
@@ -2804,11 +2724,7 @@ static u32 ksz_get_phy_flags(struct dsa_switch *ds, int port)
 	struct ksz_device *dev = ds->priv;
 
 	switch (dev->chip_id) {
-<<<<<<< HEAD
-	case KSZ8830_CHIP_ID:
-=======
 	case KSZ88X3_CHIP_ID:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Silicon Errata Sheet (DS80000830A):
 		 * Port 1 does not work with LinkMD Cable-Testing.
 		 * Port 1 does not respond to received PAUSE control frames.
@@ -2817,16 +2733,6 @@ static u32 ksz_get_phy_flags(struct dsa_switch *ds, int port)
 			return MICREL_KSZ8_P1_ERRATA;
 		break;
 	case KSZ8567_CHIP_ID:
-<<<<<<< HEAD
-	case KSZ9477_CHIP_ID:
-	case KSZ9567_CHIP_ID:
-	case KSZ9896_CHIP_ID:
-	case KSZ9897_CHIP_ID:
-		/* KSZ9477 Errata DS80000754C
-		 *
-		 * Module 4: Energy Efficient Ethernet (EEE) feature select must
-		 * be manually disabled
-=======
 		/* KSZ8567R Errata DS80000752C Module 4 */
 	case KSZ8765_CHIP_ID:
 	case KSZ8794_CHIP_ID:
@@ -2841,23 +2747,13 @@ static u32 ksz_get_phy_flags(struct dsa_switch *ds, int port)
 	case KSZ9897_CHIP_ID:
 		/* KSZ9897R Errata DS80000758C Module 4 */
 		/* Energy Efficient Ethernet (EEE) feature select must be manually disabled
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 *   The EEE feature is enabled by default, but it is not fully
 		 *   operational. It must be manually disabled through register
 		 *   controls. If not disabled, the PHY ports can auto-negotiate
 		 *   to enable EEE, and this feature can cause link drops when
 		 *   linked to another device supporting EEE.
 		 *
-<<<<<<< HEAD
-		 * The same item appears in the errata for the KSZ9567, KSZ9896,
-		 * and KSZ9897.
-		 *
-		 * A similar item appears in the errata for the KSZ8567, but
-		 * provides an alternative workaround. For now, use the simple
-		 * workaround of disabling the EEE feature for this device too.
-=======
 		 * The same item appears in the errata for all switches above.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		return MICREL_NO_EEE;
 	}
@@ -3152,19 +3048,10 @@ static enum dsa_tag_protocol ksz_get_tag_protocol(struct dsa_switch *ds,
 	struct ksz_device *dev = ds->priv;
 	enum dsa_tag_protocol proto = DSA_TAG_PROTO_NONE;
 
-<<<<<<< HEAD
-	if (dev->chip_id == KSZ8795_CHIP_ID ||
-	    dev->chip_id == KSZ8794_CHIP_ID ||
-	    dev->chip_id == KSZ8765_CHIP_ID)
-		proto = DSA_TAG_PROTO_KSZ8795;
-
-	if (dev->chip_id == KSZ8830_CHIP_ID ||
-=======
 	if (ksz_is_ksz87xx(dev) || ksz_is_8895_family(dev))
 		proto = DSA_TAG_PROTO_KSZ8795;
 
 	if (dev->chip_id == KSZ88X3_CHIP_ID ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    dev->chip_id == KSZ8563_CHIP_ID ||
 	    dev->chip_id == KSZ9893_CHIP_ID ||
 	    dev->chip_id == KSZ9563_CHIP_ID)
@@ -3276,13 +3163,9 @@ static int ksz_max_mtu(struct dsa_switch *ds, int port)
 	case KSZ8794_CHIP_ID:
 	case KSZ8765_CHIP_ID:
 		return KSZ8795_HUGE_PACKET_SIZE - VLAN_ETH_HLEN - ETH_FCS_LEN;
-<<<<<<< HEAD
-	case KSZ8830_CHIP_ID:
-=======
 	case KSZ88X3_CHIP_ID:
 	case KSZ8864_CHIP_ID:
 	case KSZ8895_CHIP_ID:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return KSZ8863_HUGE_PACKET_SIZE - VLAN_ETH_HLEN - ETH_FCS_LEN;
 	case KSZ8563_CHIP_ID:
 	case KSZ8567_CHIP_ID:
@@ -3452,11 +3335,7 @@ phy_interface_t ksz_get_xmii(struct ksz_device *dev, int port, bool gbit)
 	return interface;
 }
 
-<<<<<<< HEAD
-static void ksz8830_phylink_mac_config(struct phylink_config *config,
-=======
 static void ksz88x3_phylink_mac_config(struct phylink_config *config,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       unsigned int mode,
 				       const struct phylink_link_state *state)
 {
@@ -3640,12 +3519,6 @@ static int ksz_switch_detect(struct ksz_device *dev)
 		break;
 	case KSZ88_FAMILY_ID:
 		if (id2 == KSZ88_CHIP_ID_63)
-<<<<<<< HEAD
-			dev->chip_id = KSZ8830_CHIP_ID;
-		else
-			return -ENODEV;
-		break;
-=======
 			dev->chip_id = KSZ88X3_CHIP_ID;
 		else
 			return -ENODEV;
@@ -3662,7 +3535,6 @@ static int ksz_switch_detect(struct ksz_device *dev)
 		if (id4 & SW_KSZ8864)
 			dev->chip_id = KSZ8864_CHIP_ID;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		ret = ksz_read32(dev, REG_CHIP_ID0, &id32);
 		if (ret)
@@ -4037,8 +3909,6 @@ static int ksz_setup_tc(struct dsa_switch *ds, int port,
 	}
 }
 
-<<<<<<< HEAD
-=======
 /**
  * ksz_handle_wake_reason - Handle wake reason on a specified port.
  * @dev: The device structure.
@@ -4086,27 +3956,10 @@ int ksz_handle_wake_reason(struct ksz_device *dev, int port)
  * If enabled and supported, it sets the supported and active WoL
  * flags.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ksz_get_wol(struct dsa_switch *ds, int port,
 			struct ethtool_wolinfo *wol)
 {
 	struct ksz_device *dev = ds->priv;
-<<<<<<< HEAD
-
-	if (dev->dev_ops->get_wol)
-		dev->dev_ops->get_wol(dev, port, wol);
-}
-
-static int ksz_set_wol(struct dsa_switch *ds, int port,
-		       struct ethtool_wolinfo *wol)
-{
-	struct ksz_device *dev = ds->priv;
-
-	if (dev->dev_ops->set_wol)
-		return dev->dev_ops->set_wol(dev, port, wol);
-
-	return -EOPNOTSUPP;
-=======
 	const u16 *regs = dev->info->regs;
 	u8 pme_ctrl;
 	int ret;
@@ -4264,7 +4117,6 @@ static void ksz_wol_pre_shutdown(struct ksz_device *dev, bool *wol_enabled)
 		if (ksz_is_ksz87xx(dev))
 			ksz_write8(dev, KSZ87XX_REG_INT_EN, KSZ87XX_INT_PME_MASK);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ksz_port_set_mac_address(struct dsa_switch *ds, int port,
@@ -4577,12 +4429,7 @@ void ksz_switch_shutdown(struct ksz_device *dev)
 {
 	bool wol_enabled = false;
 
-<<<<<<< HEAD
-	if (dev->dev_ops->wol_pre_shutdown)
-		dev->dev_ops->wol_pre_shutdown(dev, &wol_enabled);
-=======
 	ksz_wol_pre_shutdown(dev, &wol_enabled);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (dev->dev_ops->reset && !wol_enabled)
 		dev->dev_ops->reset(dev);
@@ -4746,41 +4593,24 @@ static int ksz9477_drive_strength_write(struct ksz_device *dev,
 }
 
 /**
-<<<<<<< HEAD
- * ksz8830_drive_strength_write() - Set the drive strength configuration for
- *				    KSZ8830 compatible chip variants.
-=======
  * ksz88x3_drive_strength_write() - Set the drive strength configuration for
  *				    KSZ8863 compatible chip variants.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @dev:       ksz device
  * @props:     Array of drive strength properties to be set
  * @num_props: Number of properties in the array
  *
-<<<<<<< HEAD
- * This function applies the specified drive strength settings to KSZ8830 chip
-=======
  * This function applies the specified drive strength settings to KSZ88X3 chip
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * variants (KSZ8873, KSZ8863).
  * It ensures the configurations align with what the chip variant supports and
  * warns or errors out on unsupported settings.
  *
  * Return: 0 on success, error code otherwise
  */
-<<<<<<< HEAD
-static int ksz8830_drive_strength_write(struct ksz_device *dev,
-					struct ksz_driver_strength_prop *props,
-					int num_props)
-{
-	size_t array_size = ARRAY_SIZE(ksz8830_drive_strengths);
-=======
 static int ksz88x3_drive_strength_write(struct ksz_device *dev,
 					struct ksz_driver_strength_prop *props,
 					int num_props)
 {
 	size_t array_size = ARRAY_SIZE(ksz88x3_drive_strengths);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int microamp;
 	int i, ret;
 
@@ -4793,17 +4623,10 @@ static int ksz88x3_drive_strength_write(struct ksz_device *dev,
 	}
 
 	microamp = props[KSZ_DRIVER_STRENGTH_IO].value;
-<<<<<<< HEAD
-	ret = ksz_drive_strength_to_reg(ksz8830_drive_strengths, array_size,
-					microamp);
-	if (ret < 0) {
-		ksz_drive_strength_error(dev, ksz8830_drive_strengths,
-=======
 	ret = ksz_drive_strength_to_reg(ksz88x3_drive_strengths, array_size,
 					microamp);
 	if (ret < 0) {
 		ksz_drive_strength_error(dev, ksz88x3_drive_strengths,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 array_size, microamp);
 		return ret;
 	}
@@ -4863,13 +4686,8 @@ static int ksz_parse_drive_strength(struct ksz_device *dev)
 		return 0;
 
 	switch (dev->chip_id) {
-<<<<<<< HEAD
-	case KSZ8830_CHIP_ID:
-		return ksz8830_drive_strength_write(dev, of_props,
-=======
 	case KSZ88X3_CHIP_ID:
 		return ksz88x3_drive_strength_write(dev, of_props,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						    ARRAY_SIZE(of_props));
 	case KSZ8795_CHIP_ID:
 	case KSZ8794_CHIP_ID:
@@ -4900,11 +4718,7 @@ static int ksz_parse_drive_strength(struct ksz_device *dev)
 int ksz_switch_register(struct ksz_device *dev)
 {
 	const struct ksz_chip_data *info;
-<<<<<<< HEAD
-	struct device_node *port, *ports;
-=======
 	struct device_node *ports;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phy_interface_t interface;
 	unsigned int port_num;
 	int ret;
@@ -4990,19 +4804,11 @@ int ksz_switch_register(struct ksz_device *dev)
 		if (!ports)
 			ports = of_get_child_by_name(dev->dev->of_node, "ports");
 		if (ports) {
-<<<<<<< HEAD
-			for_each_available_child_of_node(ports, port) {
-=======
 			for_each_available_child_of_node_scoped(ports, port) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (of_property_read_u32(port, "reg",
 							 &port_num))
 					continue;
 				if (!(dev->port_mask & BIT(port_num))) {
-<<<<<<< HEAD
-					of_node_put(port);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					of_node_put(ports);
 					return -EINVAL;
 				}
@@ -5024,11 +4830,8 @@ int ksz_switch_register(struct ksz_device *dev)
 
 		dev->wakeup_source = of_property_read_bool(dev->dev->of_node,
 							   "wakeup-source");
-<<<<<<< HEAD
-=======
 		dev->pme_active_high = of_property_read_bool(dev->dev->of_node,
 							     "microchip,pme-active-high");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = dsa_register_switch(dev->ds);

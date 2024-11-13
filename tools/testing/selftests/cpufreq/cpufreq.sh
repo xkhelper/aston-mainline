@@ -231,8 +231,6 @@ do_suspend()
 
 		for i in `seq 1 $2`; do
 			printf "Starting $1\n"
-<<<<<<< HEAD
-=======
 
 			if [ "$3" = "rtc" ]; then
 				if ! command -v rtcwake &> /dev/null; then
@@ -248,7 +246,6 @@ do_suspend()
 				fi
 			fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			echo $filename > $SYSFS/power/state
 			printf "Came out of $1\n"
 

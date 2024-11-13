@@ -41,16 +41,6 @@ static int init_display(struct fbtft_par *par)
 {
 	gpiod_set_value(par->gpio.dc, 1);
 
-<<<<<<< HEAD
-	fbtft_par_dbg(DEBUG_INIT_DISPLAY, par,
-		      "%s()\n", __func__);
-	fbtft_par_dbg(DEBUG_INIT_DISPLAY, par,
-		      "display size %dx%d\n",
-		par->info->var.xres,
-		par->info->var.yres);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	par->fbtftops.reset(par);
 
 	if ((par->info->var.xres == 320) && (par->info->var.yres == 240)) {

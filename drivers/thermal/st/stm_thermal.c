@@ -440,10 +440,6 @@ thermal_unprepare:
 	return ret;
 }
 
-<<<<<<< HEAD
-#ifdef CONFIG_PM_SLEEP
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int stm_thermal_suspend(struct device *dev)
 {
 	struct stm_thermal_sensor *sensor = dev_get_drvdata(dev);
@@ -469,16 +465,9 @@ static int stm_thermal_resume(struct device *dev)
 
 	return 0;
 }
-<<<<<<< HEAD
-#endif /* CONFIG_PM_SLEEP */
-
-static SIMPLE_DEV_PM_OPS(stm_thermal_pm_ops,
-			 stm_thermal_suspend, stm_thermal_resume);
-=======
 
 static DEFINE_SIMPLE_DEV_PM_OPS(stm_thermal_pm_ops,
 				stm_thermal_suspend, stm_thermal_resume);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct thermal_zone_device_ops stm_tz_ops = {
 	.get_temp	= stm_thermal_get_temp,
@@ -589,11 +578,7 @@ static void stm_thermal_remove(struct platform_device *pdev)
 static struct platform_driver stm_thermal_driver = {
 	.driver = {
 		.name	= "stm_thermal",
-<<<<<<< HEAD
-		.pm     = &stm_thermal_pm_ops,
-=======
 		.pm     = pm_sleep_ptr(&stm_thermal_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = stm_thermal_of_match,
 	},
 	.probe		= stm_thermal_probe,

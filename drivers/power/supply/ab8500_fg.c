@@ -2531,11 +2531,7 @@ static struct attribute *ab8500_fg_attrs[] = {
 };
 ATTRIBUTE_GROUPS(ab8500_fg);
 
-<<<<<<< HEAD
-static struct kobj_type ab8500_fg_ktype = {
-=======
 static const struct kobj_type ab8500_fg_ktype = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sysfs_ops = &ab8500_fg_sysfs_ops,
 	.default_groups = ab8500_fg_groups,
 };

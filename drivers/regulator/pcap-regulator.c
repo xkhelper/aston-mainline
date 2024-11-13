@@ -105,11 +105,7 @@ struct pcap_regulator {
 		.lowpwr		= _lowpwr,				\
 	}
 
-<<<<<<< HEAD
-static struct pcap_regulator vreg_table[] = {
-=======
 static const struct pcap_regulator vreg_table[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	VREG_INFO(V1,    PCAP_REG_VREG1,   1,  2,  18, 0),
 	VREG_INFO(V2,    PCAP_REG_VREG1,   5,  6,  19, 22),
 	VREG_INFO(V3,    PCAP_REG_VREG1,   7,  8,  20, 23),
@@ -145,11 +141,7 @@ static const struct pcap_regulator vreg_table[] = {
 static int pcap_regulator_set_voltage_sel(struct regulator_dev *rdev,
 					  unsigned selector)
 {
-<<<<<<< HEAD
-	struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
-=======
 	const struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *pcap = rdev_get_drvdata(rdev);
 
 	/* the regulator doesn't support voltage switching */
@@ -163,11 +155,7 @@ static int pcap_regulator_set_voltage_sel(struct regulator_dev *rdev,
 
 static int pcap_regulator_get_voltage_sel(struct regulator_dev *rdev)
 {
-<<<<<<< HEAD
-	struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
-=======
 	const struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *pcap = rdev_get_drvdata(rdev);
 	u32 tmp;
 
@@ -181,11 +169,7 @@ static int pcap_regulator_get_voltage_sel(struct regulator_dev *rdev)
 
 static int pcap_regulator_enable(struct regulator_dev *rdev)
 {
-<<<<<<< HEAD
-	struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
-=======
 	const struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *pcap = rdev_get_drvdata(rdev);
 
 	if (vreg->en == NA)
@@ -196,11 +180,7 @@ static int pcap_regulator_enable(struct regulator_dev *rdev)
 
 static int pcap_regulator_disable(struct regulator_dev *rdev)
 {
-<<<<<<< HEAD
-	struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
-=======
 	const struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *pcap = rdev_get_drvdata(rdev);
 
 	if (vreg->en == NA)
@@ -211,11 +191,7 @@ static int pcap_regulator_disable(struct regulator_dev *rdev)
 
 static int pcap_regulator_is_enabled(struct regulator_dev *rdev)
 {
-<<<<<<< HEAD
-	struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
-=======
 	const struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *pcap = rdev_get_drvdata(rdev);
 	u32 tmp;
 

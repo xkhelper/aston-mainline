@@ -336,59 +336,32 @@ static const u32 isc_sama7g5_gamma_table[][GAMMA_ENTRIES] = {
 static int xisc_parse_dt(struct device *dev, struct isc_device *isc)
 {
 	struct device_node *np = dev->of_node;
-<<<<<<< HEAD
-	struct device_node *epn = NULL;
-	struct isc_subdev_entity *subdev_entity;
-	unsigned int flags;
-	int ret;
-=======
 	struct device_node *epn;
 	struct isc_subdev_entity *subdev_entity;
 	unsigned int flags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool mipi_mode;
 
 	INIT_LIST_HEAD(&isc->subdev_entities);
 
 	mipi_mode = of_property_read_bool(np, "microchip,mipi-mode");
 
-<<<<<<< HEAD
-	while (1) {
-		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
-
-		epn = of_graph_get_next_endpoint(np, epn);
-		if (!epn)
-			return 0;
-=======
 	for_each_endpoint_of_node(np, epn) {
 		struct v4l2_fwnode_endpoint v4l2_epn = { .bus_type = 0 };
 		int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(epn),
 						 &v4l2_epn);
 		if (ret) {
-<<<<<<< HEAD
-			ret = -EINVAL;
-			dev_err(dev, "Could not parse the endpoint\n");
-			break;
-=======
 			of_node_put(epn);
 			dev_err(dev, "Could not parse the endpoint\n");
 			return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		subdev_entity = devm_kzalloc(dev, sizeof(*subdev_entity),
 					     GFP_KERNEL);
 		if (!subdev_entity) {
-<<<<<<< HEAD
-			ret = -ENOMEM;
-			break;
-=======
 			of_node_put(epn);
 			return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		subdev_entity->epn = epn;
 
@@ -412,14 +385,8 @@ static int xisc_parse_dt(struct device *dev, struct isc_device *isc)
 
 		list_add_tail(&subdev_entity->list, &isc->subdev_entities);
 	}
-<<<<<<< HEAD
-	of_node_put(epn);
-
-	return ret;
-=======
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int microchip_xisc_probe(struct platform_device *pdev)

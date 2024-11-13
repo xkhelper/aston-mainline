@@ -624,29 +624,17 @@ int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
 #endif
 
 	/*
-<<<<<<< HEAD
-	 * Give leave_smm() a chance to make ISA-specific changes to the vCPU
-	 * state (e.g. enter guest mode) before loading state from the SMM
-	 * state-save area.
-=======
 	 * FIXME: When resuming L2 (a.k.a. guest mode), the transition to guest
 	 * mode should happen _after_ loading state from SMRAM.  However, KVM
 	 * piggybacks the nested VM-Enter flows (which is wrong for many other
 	 * reasons), and so nSVM/nVMX would clobber state that is loaded from
 	 * SMRAM and from the VMCS/VMCB.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if (kvm_x86_call(leave_smm)(vcpu, &smram))
 		return X86EMUL_UNHANDLEABLE;
 
 #ifdef CONFIG_X86_64
 	if (guest_cpuid_has(vcpu, X86_FEATURE_LM))
-<<<<<<< HEAD
-		return rsm_load_state_64(ctxt, &smram.smram64);
-	else
-#endif
-		return rsm_load_state_32(ctxt, &smram.smram32);
-=======
 		ret = rsm_load_state_64(ctxt, &smram.smram64);
 	else
 #endif
@@ -663,5 +651,4 @@ int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
 	if (ret != X86EMUL_CONTINUE && is_guest_mode(vcpu))
 		kvm_leave_nested(vcpu);
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

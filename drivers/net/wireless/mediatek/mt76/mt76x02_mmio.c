@@ -22,11 +22,7 @@ static void mt76x02_pre_tbtt_tasklet(struct tasklet_struct *t)
 	struct sk_buff *skb;
 	int i;
 
-<<<<<<< HEAD
-	if (mt76_hw(dev)->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-=======
 	if (dev->mphy.offchannel)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	__skb_queue_head_init(&data.q);

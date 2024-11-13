@@ -92,11 +92,7 @@ static int nft_jhash_init(const struct nft_ctx *ctx,
 
 	priv->len = len;
 
-<<<<<<< HEAD
-	err = nft_parse_register_load(tb[NFTA_HASH_SREG], &priv->sreg, len);
-=======
 	err = nft_parse_register_load(ctx, tb[NFTA_HASH_SREG], &priv->sreg, len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0)
 		return err;
 

@@ -13,13 +13,10 @@ config SND_SOC_AMD_ACP_COMMON
 	  This option enables common modules for Audio-Coprocessor i.e. ACP
 	  IP block on AMD platforms.
 
-<<<<<<< HEAD
-=======
 config SND_SOC_ACPI_AMD_MATCH
 	tristate
 	select SND_SOC_ACPI if ACPI
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 if SND_SOC_AMD_ACP_COMMON
 
 config SND_SOC_AMD_ACP_PDM
@@ -122,8 +119,6 @@ config SND_SOC_AMD_SOF_MACH
 	help
 	  This option enables SOF sound card support for ACP audio.
 
-<<<<<<< HEAD
-=======
 config SND_SOC_AMD_SOF_SDW_MACH
 	tristate "AMD SOF Soundwire Machine Driver Support"
 	depends on X86 && PCI && ACPI
@@ -142,7 +137,6 @@ config SND_SOC_AMD_SOF_SDW_MACH
 	  on AMD platform.
 	  If unsure select "N".
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif # SND_SOC_AMD_ACP_COMMON
 
 config SND_AMD_SOUNDWIRE_ACPI

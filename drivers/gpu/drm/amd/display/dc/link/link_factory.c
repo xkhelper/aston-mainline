@@ -385,11 +385,7 @@ static void link_destruct(struct dc_link *link)
 	if (link->panel_cntl)
 		link->panel_cntl->funcs->destroy(&link->panel_cntl);
 
-<<<<<<< HEAD
-	if (link->link_enc) {
-=======
 	if (link->link_enc && !link->is_dig_mapping_flexible) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Update link encoder resource tracking variables. These are used for
 		 * the dynamic assignment of link encoders to streams. Virtual links
 		 * are not assigned encoder resources on creation.
@@ -528,10 +524,7 @@ static bool construct_phy(struct dc_link *link,
 		link->connector_signal = SIGNAL_TYPE_DVI_DUAL_LINK;
 		break;
 	case CONNECTOR_ID_DISPLAY_PORT:
-<<<<<<< HEAD
-=======
 	case CONNECTOR_ID_MXM:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case CONNECTOR_ID_USBC:
 		link->connector_signal = SIGNAL_TYPE_DISPLAY_PORT;
 

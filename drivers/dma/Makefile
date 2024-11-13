@@ -49,13 +49,9 @@ obj-$(CONFIG_INTEL_IDMA64) += idma64.o
 obj-$(CONFIG_INTEL_IOATDMA) += ioat/
 obj-y += idxd/
 obj-$(CONFIG_K3_DMA) += k3dma.o
-<<<<<<< HEAD
-obj-$(CONFIG_LPC18XX_DMAMUX) += lpc18xx-dmamux.o
-=======
 obj-$(CONFIG_LOONGSON1_APB_DMA) += loongson1-apb-dma.o
 obj-$(CONFIG_LPC18XX_DMAMUX) += lpc18xx-dmamux.o
 obj-$(CONFIG_LPC32XX_DMAMUX) += lpc32xx-dmamux.o
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_LS2X_APB_DMA) += ls2x-apb-dma.o
 obj-$(CONFIG_MILBEAUT_HDMAC) += milbeaut-hdmac.o
 obj-$(CONFIG_MILBEAUT_XDMAC) += milbeaut-xdmac.o
@@ -89,10 +85,7 @@ obj-$(CONFIG_ST_FDMA) += st_fdma.o
 obj-$(CONFIG_FSL_DPAA2_QDMA) += fsl-dpaa2-qdma/
 obj-$(CONFIG_INTEL_LDMA) += lgm/
 
-<<<<<<< HEAD
-=======
 obj-y += amd/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-y += mediatek/
 obj-y += qcom/
 obj-y += stm32/

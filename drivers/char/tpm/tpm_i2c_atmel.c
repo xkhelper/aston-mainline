@@ -186,11 +186,7 @@ static void i2c_atmel_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id i2c_atmel_id[] = {
-<<<<<<< HEAD
-	{I2C_DRIVER_NAME, 0},
-=======
 	{ I2C_DRIVER_NAME },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, i2c_atmel_id);

@@ -107,11 +107,7 @@ config DRM_KMS_HELPER
 
 config DRM_PANIC
 	bool "Display a user-friendly message when a kernel panic occurs"
-<<<<<<< HEAD
-	depends on DRM && !(FRAMEBUFFER_CONSOLE && VT_CONSOLE)
-=======
 	depends on DRM
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select FONT_SUPPORT
 	help
 	  Enable a drm panic handler, which will display a user-friendly message
@@ -153,8 +149,6 @@ config DRM_PANIC_SCREEN
 	  or by writing to /sys/module/drm/parameters/panic_screen sysfs entry
 	  Default is "user"
 
-<<<<<<< HEAD
-=======
 config DRM_PANIC_SCREEN_QR_CODE
 	bool "Add a panic screen with a QR code"
 	depends on DRM_PANIC && RUST
@@ -186,7 +180,6 @@ config DRM_PANIC_SCREEN_QR_VERSION
 	  Smaller QR code are easier to read, but will contain less debugging
 	  data. Default is 40.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config DRM_DEBUG_DP_MST_TOPOLOGY_REFS
         bool "Enable refcount backtrace history in the DP MST helpers"
 	depends on STACKTRACE_SUPPORT

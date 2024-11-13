@@ -667,10 +667,6 @@ static ssize_t __iio_format_value(char *buf, size_t offset, unsigned int type,
 					     vals[1]);
 	case IIO_VAL_FRACTIONAL:
 		tmp2 = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
-<<<<<<< HEAD
-		tmp1 = vals[1];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tmp0 = (int)div_s64_rem(tmp2, 1000000000, &tmp1);
 		if ((tmp2 < 0) && (tmp0 == 0))
 			return sysfs_emit_at(buf, offset, "-0.%09u", abs(tmp1));
@@ -1915,11 +1911,7 @@ static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
 	int i;
 
 	av_masks = indio_dev->available_scan_masks;
-<<<<<<< HEAD
-	masklength = indio_dev->masklength;
-=======
 	masklength = iio_get_masklength(indio_dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	longs_per_mask = BITS_TO_LONGS(masklength);
 
 	/*
@@ -1972,8 +1964,6 @@ static void iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
 	}
 }
 
-<<<<<<< HEAD
-=======
 /**
  * iio_active_scan_mask_index - Get index of the active scan mask inside the
  * available scan masks array
@@ -2017,7 +2007,6 @@ int iio_active_scan_mask_index(struct iio_dev *indio_dev)
 }
 EXPORT_SYMBOL_GPL(iio_active_scan_mask_index);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
 {
 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);

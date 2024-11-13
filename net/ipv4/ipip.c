@@ -378,11 +378,7 @@ static void ipip_tunnel_setup(struct net_device *dev)
 	dev->type		= ARPHRD_TUNNEL;
 	dev->flags		= IFF_NOARP;
 	dev->addr_len		= 4;
-<<<<<<< HEAD
-	dev->features		|= NETIF_F_LLTX;
-=======
 	dev->lltx		= true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	netif_keep_dst(dev);
 
 	dev->features		|= IPIP_FEATURES;

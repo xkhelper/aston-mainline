@@ -154,11 +154,7 @@ acpi_status acpi_ut_init_globals(void)
 
 	/* Global Lock support */
 
-<<<<<<< HEAD
-	acpi_gbl_global_lock_semaphore = NULL;
-=======
 	acpi_gbl_global_lock_semaphore = ACPI_SEMAPHORE_NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acpi_gbl_global_lock_mutex = NULL;
 	acpi_gbl_global_lock_acquired = FALSE;
 	acpi_gbl_global_lock_handle = 0;

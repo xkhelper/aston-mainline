@@ -202,11 +202,7 @@ one_bridge_two_pvids()
 	ip link set $swp2 master br0
 
 	bridge vlan add dev $swp1 vid 1 pvid untagged
-<<<<<<< HEAD
-	bridge vlan add dev $swp1 vid 2 pvid untagged
-=======
 	bridge vlan add dev $swp2 vid 2 pvid untagged
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	run_test "Switch ports in VLAN-aware bridge with different PVIDs"
 

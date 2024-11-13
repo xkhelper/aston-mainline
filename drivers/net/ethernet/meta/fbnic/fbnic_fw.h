@@ -53,17 +53,10 @@ int fbnic_fw_xmit_ownership_msg(struct fbnic_dev *fbd, bool take_ownership);
 int fbnic_fw_init_heartbeat(struct fbnic_dev *fbd, bool poll);
 void fbnic_fw_check_heartbeat(struct fbnic_dev *fbd);
 
-<<<<<<< HEAD
-#define fbnic_mk_full_fw_ver_str(_rev_id, _delim, _commit, _str)	\
-do {									\
-	const u32 __rev_id = _rev_id;					\
-	snprintf(_str, sizeof(_str), "%02lu.%02lu.%02lu-%03lu%s%s",	\
-=======
 #define fbnic_mk_full_fw_ver_str(_rev_id, _delim, _commit, _str, _str_sz) \
 do {									\
 	const u32 __rev_id = _rev_id;					\
 	snprintf(_str, _str_sz, "%02lu.%02lu.%02lu-%03lu%s%s",	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 FIELD_GET(FBNIC_FW_CAP_RESP_VERSION_MAJOR, __rev_id),	\
 		 FIELD_GET(FBNIC_FW_CAP_RESP_VERSION_MINOR, __rev_id),	\
 		 FIELD_GET(FBNIC_FW_CAP_RESP_VERSION_PATCH, __rev_id),	\
@@ -72,11 +65,7 @@ do {									\
 } while (0)
 
 #define fbnic_mk_fw_ver_str(_rev_id, _str) \
-<<<<<<< HEAD
-	fbnic_mk_full_fw_ver_str(_rev_id, "", "", _str)
-=======
 	fbnic_mk_full_fw_ver_str(_rev_id, "", "", _str, sizeof(_str))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define FW_HEARTBEAT_PERIOD		(10 * HZ)
 

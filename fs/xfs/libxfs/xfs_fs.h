@@ -8,10 +8,7 @@
 
 /*
  * SGI's XFS filesystem's major stuff (constants, structures)
-<<<<<<< HEAD
-=======
  * NOTE: This file must be compile-able with C++ compilers.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 /*
@@ -830,8 +827,6 @@ struct xfs_exchange_range {
 };
 
 /*
-<<<<<<< HEAD
-=======
  * Using the same definition of file2 as struct xfs_exchange_range, commit the
  * contents of file1 into file2 if file2 has the same inode number, mtime, and
  * ctime as the arguments provided to the call.  The old contents of file2 will
@@ -856,7 +851,6 @@ struct xfs_commit_range {
 };
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Exchange file data all the way to the ends of both files, and then exchange
  * the file sizes.  This flag can be used to replace a file's contents with a
  * different amount of data.  length will be ignored.
@@ -937,21 +931,13 @@ static inline struct xfs_getparents_rec *
 xfs_getparents_next_rec(struct xfs_getparents *gp,
 			struct xfs_getparents_rec *gpr)
 {
-<<<<<<< HEAD
-	void *next = ((void *)gpr + gpr->gpr_reclen);
-=======
 	void *next = ((char *)gpr + gpr->gpr_reclen);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *end = (void *)(uintptr_t)(gp->gp_buffer + gp->gp_bufsize);
 
 	if (next >= end)
 		return NULL;
 
-<<<<<<< HEAD
-	return next;
-=======
 	return (struct xfs_getparents_rec *)next;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Iterate through this file handle's directory parent pointers. */
@@ -1036,11 +1022,8 @@ struct xfs_getparents_by_handle {
 #define XFS_IOC_BULKSTAT	     _IOR ('X', 127, struct xfs_bulkstat_req)
 #define XFS_IOC_INUMBERS	     _IOR ('X', 128, struct xfs_inumbers_req)
 #define XFS_IOC_EXCHANGE_RANGE	     _IOW ('X', 129, struct xfs_exchange_range)
-<<<<<<< HEAD
-=======
 #define XFS_IOC_START_COMMIT	     _IOR ('X', 130, struct xfs_commit_range)
 #define XFS_IOC_COMMIT_RANGE	     _IOW ('X', 131, struct xfs_commit_range)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*	XFS_IOC_GETFSUUID ---------- deprecated 140	 */
 
 

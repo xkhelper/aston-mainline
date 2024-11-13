@@ -1320,17 +1320,6 @@ struct xdp_umem_reg_v1 {
 	__u32 headroom;
 };
 
-<<<<<<< HEAD
-struct xdp_umem_reg_v2 {
-	__u64 addr; /* Start of packet data area */
-	__u64 len; /* Length of packet data area */
-	__u32 chunk_size;
-	__u32 headroom;
-	__u32 flags;
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int xsk_setsockopt(struct socket *sock, int level, int optname,
 			  sockptr_t optval, unsigned int optlen)
 {
@@ -1374,12 +1363,6 @@ static int xsk_setsockopt(struct socket *sock, int level, int optname,
 
 		if (optlen < sizeof(struct xdp_umem_reg_v1))
 			return -EINVAL;
-<<<<<<< HEAD
-		else if (optlen < sizeof(struct xdp_umem_reg_v2))
-			mr_size = sizeof(struct xdp_umem_reg_v1);
-		else if (optlen < sizeof(mr))
-			mr_size = sizeof(struct xdp_umem_reg_v2);
-=======
 		else if (optlen < sizeof(mr))
 			mr_size = sizeof(struct xdp_umem_reg_v1);
 
@@ -1393,7 +1376,6 @@ static int xsk_setsockopt(struct socket *sock, int level, int optname,
 		BUILD_BUG_ON(offsetof(struct xdp_umem_reg, tx_metadata_len) +
 			     sizeof_field(struct xdp_umem_reg, tx_metadata_len) !=
 			     sizeof(struct xdp_umem_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (copy_from_sockptr(&mr, optval, mr_size))
 			return -EFAULT;

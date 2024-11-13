@@ -26,12 +26,6 @@ static const struct nf_link_test nf_hook_link_tests[] = {
 
 	{ .pf = NFPROTO_INET, .priority = 1, .name = "invalid-inet-not-supported", },
 
-<<<<<<< HEAD
-	{ .pf = NFPROTO_IPV4, .priority = -10000, .expect_success = true, .name = "attach ipv4", },
-	{ .pf = NFPROTO_IPV6, .priority =  10001, .expect_success = true, .name = "attach ipv6", },
-};
-
-=======
 	{
 		.pf = NFPROTO_IPV4,
 		.hooknum = NF_INET_POST_ROUTING,
@@ -69,7 +63,6 @@ static void verify_netfilter_link_info(struct bpf_link *link, const struct nf_li
 	ASSERT_EQ(info.netfilter.flags, nf_expected.flags, "info nf flags");
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_netfilter_link_attach(void)
 {
 	struct test_netfilter_link_attach *skel;
@@ -104,11 +97,8 @@ void test_netfilter_link_attach(void)
 			if (!ASSERT_OK_PTR(link, "program attach successful"))
 				continue;
 
-<<<<<<< HEAD
-=======
 			verify_netfilter_link_info(link, nf_hook_link_tests[i]);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			link2 = bpf_program__attach_netfilter(prog, &opts);
 			ASSERT_ERR_PTR(link2, "attach program with same pf/hook/priority");
 
@@ -118,12 +108,9 @@ void test_netfilter_link_attach(void)
 			link2 = bpf_program__attach_netfilter(prog, &opts);
 			if (!ASSERT_OK_PTR(link2, "program reattach successful"))
 				continue;
-<<<<<<< HEAD
-=======
 
 			verify_netfilter_link_info(link2, nf_hook_link_tests[i]);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!ASSERT_OK(bpf_link__destroy(link2), "link destroy"))
 				break;
 		} else {

@@ -181,8 +181,6 @@ static void nbd_requeue_cmd(struct nbd_cmd *cmd)
 {
 	struct request *req = blk_mq_rq_from_pdu(cmd);
 
-<<<<<<< HEAD
-=======
 	lockdep_assert_held(&cmd->lock);
 
 	/*
@@ -194,7 +192,6 @@ static void nbd_requeue_cmd(struct nbd_cmd *cmd)
 	 */
 	__clear_bit(NBD_CMD_INFLIGHT, &cmd->flags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!test_and_set_bit(NBD_CMD_REQUEUED, &cmd->flags))
 		blk_mq_requeue_request(req, true);
 }
@@ -353,11 +350,7 @@ static int __nbd_set_size(struct nbd_device *nbd, loff_t bytesize,
 
 	lim = queue_limits_start_update(nbd->disk->queue);
 	if (nbd->config->flags & NBD_FLAG_SEND_TRIM)
-<<<<<<< HEAD
-		lim.max_hw_discard_sectors = UINT_MAX;
-=======
 		lim.max_hw_discard_sectors = UINT_MAX >> SECTOR_SHIFT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		lim.max_hw_discard_sectors = 0;
 	if (!(nbd->config->flags & NBD_FLAG_SEND_FLUSH)) {
@@ -368,14 +361,11 @@ static int __nbd_set_size(struct nbd_device *nbd, loff_t bytesize,
 		lim.features |= BLK_FEAT_WRITE_CACHE;
 		lim.features &= ~BLK_FEAT_FUA;
 	}
-<<<<<<< HEAD
-=======
 	if (nbd->config->flags & NBD_FLAG_ROTATIONAL)
 		lim.features |= BLK_FEAT_ROTATIONAL;
 	if (nbd->config->flags & NBD_FLAG_SEND_WRITE_ZEROES)
 		lim.max_write_zeroes_sectors = UINT_MAX >> SECTOR_SHIFT;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lim.logical_block_size = blksize;
 	lim.physical_block_size = blksize;
 	error = queue_limits_commit_update(nbd->disk->queue, &lim);
@@ -444,11 +434,8 @@ static u32 req_to_nbd_cmd_type(struct request *req)
 		return NBD_CMD_WRITE;
 	case REQ_OP_READ:
 		return NBD_CMD_READ;
-<<<<<<< HEAD
-=======
 	case REQ_OP_WRITE_ZEROES:
 		return NBD_CMD_WRITE_ZEROES;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return U32_MAX;
 	}
@@ -519,13 +506,8 @@ static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req)
 					nbd_mark_nsock_dead(nbd, nsock, 1);
 				mutex_unlock(&nsock->tx_lock);
 			}
-<<<<<<< HEAD
-			mutex_unlock(&cmd->lock);
-			nbd_requeue_cmd(cmd);
-=======
 			nbd_requeue_cmd(cmd);
 			mutex_unlock(&cmd->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			nbd_config_put(nbd);
 			return BLK_EH_DONE;
 		}
@@ -670,11 +652,8 @@ static blk_status_t nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd,
 
 	if (req->cmd_flags & REQ_FUA)
 		nbd_cmd_flags |= NBD_CMD_FLAG_FUA;
-<<<<<<< HEAD
-=======
 	if ((req->cmd_flags & REQ_NOUNMAP) && (type == NBD_CMD_WRITE_ZEROES))
 		nbd_cmd_flags |= NBD_CMD_FLAG_NO_HOLE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* We did a partial send previously, and we at least sent the whole
 	 * request struct, so just go and send the rest of the pages in the
@@ -1744,13 +1723,10 @@ static int nbd_dbg_flags_show(struct seq_file *s, void *unused)
 		seq_puts(s, "NBD_FLAG_SEND_FUA\n");
 	if (flags & NBD_FLAG_SEND_TRIM)
 		seq_puts(s, "NBD_FLAG_SEND_TRIM\n");
-<<<<<<< HEAD
-=======
 	if (flags & NBD_FLAG_SEND_WRITE_ZEROES)
 		seq_puts(s, "NBD_FLAG_SEND_WRITE_ZEROES\n");
 	if (flags & NBD_FLAG_ROTATIONAL)
 		seq_puts(s, "NBD_FLAG_ROTATIONAL\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

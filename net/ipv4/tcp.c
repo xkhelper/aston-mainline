@@ -285,11 +285,8 @@
 #include <trace/events/tcp.h>
 #include <net/rps.h>
 
-<<<<<<< HEAD
-=======
 #include "../core/devmem.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Track pending CMSGs. */
 enum {
 	TCP_CMSG_INQ = 1,
@@ -476,10 +473,7 @@ void tcp_init_sock(struct sock *sk)
 
 	set_bit(SOCK_SUPPORT_ZC, &sk->sk_socket->flags);
 	sk_sockets_allocated_inc(sk);
-<<<<<<< HEAD
-=======
 	xa_init_flags(&sk->sk_user_frags, XA_FLAGS_ALLOC1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(tcp_init_sock);
 
@@ -2169,12 +2163,9 @@ static int tcp_zerocopy_receive(struct sock *sk,
 				skb = tcp_recv_skb(sk, seq, &offset);
 			}
 
-<<<<<<< HEAD
-=======
 			if (!skb_frags_readable(skb))
 				break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (TCP_SKB_CB(skb)->has_rxtstamp) {
 				tcp_update_recv_tstamps(skb, tss);
 				zc->msg_flags |= TCP_CMSG_TS;
@@ -2192,12 +2183,9 @@ static int tcp_zerocopy_receive(struct sock *sk,
 			break;
 		}
 		page = skb_frag_page(frags);
-<<<<<<< HEAD
-=======
 		if (WARN_ON_ONCE(!page))
 			break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		prefetchw(page);
 		pages[pages_to_map++] = page;
 		length += PAGE_SIZE;
@@ -2256,10 +2244,7 @@ void tcp_recv_timestamp(struct msghdr *msg, const struct sock *sk,
 			struct scm_timestamping_internal *tss)
 {
 	int new_tstamp = sock_flag(sk, SOCK_TSTAMP_NEW);
-<<<<<<< HEAD
-=======
 	u32 tsflags = READ_ONCE(sk->sk_tsflags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool has_timestamping = false;
 
 	if (tss->ts[0].tv_sec || tss->ts[0].tv_nsec) {
@@ -2299,26 +2284,18 @@ void tcp_recv_timestamp(struct msghdr *msg, const struct sock *sk,
 			}
 		}
 
-<<<<<<< HEAD
-		if (READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_SOFTWARE)
-=======
 		if (tsflags & SOF_TIMESTAMPING_SOFTWARE &&
 		    (tsflags & SOF_TIMESTAMPING_RX_SOFTWARE ||
 		     !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			has_timestamping = true;
 		else
 			tss->ts[0] = (struct timespec64) {0};
 	}
 
 	if (tss->ts[2].tv_sec || tss->ts[2].tv_nsec) {
-<<<<<<< HEAD
-		if (READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_RAW_HARDWARE)
-=======
 		if (tsflags & SOF_TIMESTAMPING_RAW_HARDWARE &&
 		    (tsflags & SOF_TIMESTAMPING_RX_HARDWARE ||
 		     !(tsflags & SOF_TIMESTAMPING_OPT_RX_FILTER)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			has_timestamping = true;
 		else
 			tss->ts[2] = (struct timespec64) {0};
@@ -2354,8 +2331,6 @@ static int tcp_inq_hint(struct sock *sk)
 	return inq;
 }
 
-<<<<<<< HEAD
-=======
 /* batch __xa_alloc() calls and reduce xa_lock()/xa_unlock() overhead. */
 struct tcp_xa_pool {
 	u8		max; /* max <= MAX_SKB_FRAGS */
@@ -2570,7 +2545,6 @@ out:
 	return sent;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  *	This routine copies from a sock struct into the user buffer.
  *
@@ -2584,10 +2558,7 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
 			      int *cmsg_flags)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
-<<<<<<< HEAD
-=======
 	int last_copied_dmabuf = -1; /* uninitialized */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int copied = 0;
 	u32 peek_seq;
 	u32 *seq;
@@ -2767,17 +2738,6 @@ found_ok_skb:
 		}
 
 		if (!(flags & MSG_TRUNC)) {
-<<<<<<< HEAD
-			err = skb_copy_datagram_msg(skb, offset, msg, used);
-			if (err) {
-				/* Exception. Bailout! */
-				if (!copied)
-					copied = -EFAULT;
-				break;
-			}
-		}
-
-=======
 			if (last_copied_dmabuf != -1 &&
 			    last_copied_dmabuf != !skb_frags_readable(skb))
 				break;
@@ -2816,7 +2776,6 @@ found_ok_skb:
 
 		last_copied_dmabuf = !skb_frags_readable(skb);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WRITE_ONCE(*seq, *seq + used);
 		copied += used;
 		len -= used;
@@ -3132,11 +3091,7 @@ void __tcp_close(struct sock *sk, long timeout)
 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPABORTONCLOSE);
 		tcp_set_state(sk, TCP_CLOSE);
 		tcp_send_active_reset(sk, sk->sk_allocation,
-<<<<<<< HEAD
-				      SK_RST_REASON_NOT_SPECIFIED);
-=======
 				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime) {
 		/* Check zero linger _after_ checking for unread data. */
 		sk->sk_prot->disconnect(sk, 0);
@@ -3211,11 +3166,7 @@ adjudge_to_death:
 		if (READ_ONCE(tp->linger2) < 0) {
 			tcp_set_state(sk, TCP_CLOSE);
 			tcp_send_active_reset(sk, GFP_ATOMIC,
-<<<<<<< HEAD
-					      SK_RST_REASON_NOT_SPECIFIED);
-=======
 					      SK_RST_REASON_TCP_ABORT_ON_LINGER);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			__NET_INC_STATS(sock_net(sk),
 					LINUX_MIB_TCPABORTONLINGER);
 		} else {
@@ -3234,11 +3185,7 @@ adjudge_to_death:
 		if (tcp_check_oom(sk, 0)) {
 			tcp_set_state(sk, TCP_CLOSE);
 			tcp_send_active_reset(sk, GFP_ATOMIC,
-<<<<<<< HEAD
-					      SK_RST_REASON_NOT_SPECIFIED);
-=======
 					      SK_RST_REASON_TCP_ABORT_ON_MEMORY);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			__NET_INC_STATS(sock_net(sk),
 					LINUX_MIB_TCPABORTONMEMORY);
 		} else if (!check_net(sock_net(sk))) {
@@ -3336,15 +3283,6 @@ int tcp_disconnect(struct sock *sk, int flags)
 		inet_csk_listen_stop(sk);
 	} else if (unlikely(tp->repair)) {
 		WRITE_ONCE(sk->sk_err, ECONNABORTED);
-<<<<<<< HEAD
-	} else if (tcp_need_reset(old_state) ||
-		   (tp->snd_nxt != tp->write_seq &&
-		    (1 << old_state) & (TCPF_CLOSING | TCPF_LAST_ACK))) {
-		/* The last check adjusts for discrepancy of Linux wrt. RFC
-		 * states
-		 */
-		tcp_send_active_reset(sk, gfp_any(), SK_RST_REASON_NOT_SPECIFIED);
-=======
 	} else if (tcp_need_reset(old_state)) {
 		tcp_send_active_reset(sk, gfp_any(), SK_RST_REASON_TCP_STATE);
 		WRITE_ONCE(sk->sk_err, ECONNRESET);
@@ -3355,7 +3293,6 @@ int tcp_disconnect(struct sock *sk, int flags)
 		 */
 		tcp_send_active_reset(sk, gfp_any(),
 				      SK_RST_REASON_TCP_DISCONNECT_WITH_DATA);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WRITE_ONCE(sk->sk_err, ECONNRESET);
 	} else if (old_state == TCP_SYN_SENT)
 		WRITE_ONCE(sk->sk_err, ECONNRESET);
@@ -4979,11 +4916,7 @@ int tcp_abort(struct sock *sk, int err)
 
 	if (tcp_need_reset(sk->sk_state))
 		tcp_send_active_reset(sk, GFP_ATOMIC,
-<<<<<<< HEAD
-				      SK_RST_REASON_NOT_SPECIFIED);
-=======
 				      SK_RST_REASON_TCP_STATE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tcp_done_with_error(sk, err);
 
 	bh_unlock_sock(sk);

@@ -12,10 +12,6 @@
 #include <linux/utsname.h>
 #include <asm/current.h>
 #include <asm/ptrace.h>
-<<<<<<< HEAD
-#include <asm/sysrq.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void show_regs(struct pt_regs *regs)
 {

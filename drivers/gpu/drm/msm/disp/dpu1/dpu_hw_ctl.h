@@ -36,14 +36,7 @@ struct dpu_hw_stage_cfg {
 /**
  * struct dpu_hw_intf_cfg :Describes how the DPU writes data to output interface
  * @intf :                 Interface id
-<<<<<<< HEAD
-<<<<<<< HEAD
  * @intf_master:           Master interface id in the dual pipe topology
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
- * @intf_master:           Master interface id in the dual pipe topology
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
  * @mode_3d:               3d mux configuration
  * @merge_3d:              3d merge block used
  * @intf_mode_sel:         Interface mode, cmd / vid
@@ -53,14 +46,7 @@ struct dpu_hw_stage_cfg {
  */
 struct dpu_hw_intf_cfg {
 	enum dpu_intf intf;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	enum dpu_intf intf_master;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	enum dpu_intf intf_master;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	enum dpu_wb wb;
 	enum dpu_3d_blend_mode mode_3d;
 	enum dpu_merge_3d merge_3d;

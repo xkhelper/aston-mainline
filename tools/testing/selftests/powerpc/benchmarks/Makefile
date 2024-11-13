@@ -18,8 +18,4 @@ $(OUTPUT)/context_switch: LDLIBS += -lpthread
 
 $(OUTPUT)/fork: LDLIBS += -lpthread
 
-<<<<<<< HEAD
-$(OUTPUT)/exec_target: CFLAGS += -static -nostartfiles
-=======
 $(OUTPUT)/exec_target: CFLAGS += -nostartfiles
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

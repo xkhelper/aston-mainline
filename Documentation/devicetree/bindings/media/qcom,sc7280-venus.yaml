@@ -43,10 +43,7 @@ properties:
       - const: vcodec_bus
 
   iommus:
-<<<<<<< HEAD
-=======
     minItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     maxItems: 2
 
   interconnects:

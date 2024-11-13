@@ -131,11 +131,7 @@ static inline void skb_mark_napi_id(struct sk_buff *skb,
 #endif
 }
 
-<<<<<<< HEAD
-/* used in the protocol hanlder to propagate the napi_id to the socket */
-=======
 /* used in the protocol handler to propagate the napi_id to the socket */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void sk_mark_napi_id(struct sock *sk, const struct sk_buff *skb)
 {
 #ifdef CONFIG_NET_RX_BUSY_POLL

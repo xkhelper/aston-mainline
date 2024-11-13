@@ -450,10 +450,6 @@ static int load_one_timing(struct tegra_mc *mc,
 
 static int load_timings(struct tegra_mc *mc, struct device_node *node)
 {
-<<<<<<< HEAD
-	struct device_node *child;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct tegra_mc_timing *timing;
 	int child_count = of_get_child_count(node);
 	int i = 0, err;
@@ -465,23 +461,12 @@ static int load_timings(struct tegra_mc *mc, struct device_node *node)
 
 	mc->num_timings = child_count;
 
-<<<<<<< HEAD
-	for_each_child_of_node(node, child) {
-		timing = &mc->timings[i++];
-
-		err = load_one_timing(mc, timing, child);
-		if (err) {
-			of_node_put(child);
-			return err;
-		}
-=======
 	for_each_child_of_node_scoped(node, child) {
 		timing = &mc->timings[i++];
 
 		err = load_one_timing(mc, timing, child);
 		if (err)
 			return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -489,10 +474,6 @@ static int load_timings(struct tegra_mc *mc, struct device_node *node)
 
 static int tegra_mc_setup_timings(struct tegra_mc *mc)
 {
-<<<<<<< HEAD
-	struct device_node *node;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 ram_code, node_ram_code;
 	int err;
 
@@ -500,21 +481,13 @@ static int tegra_mc_setup_timings(struct tegra_mc *mc)
 
 	mc->num_timings = 0;
 
-<<<<<<< HEAD
-	for_each_child_of_node(mc->dev->of_node, node) {
-=======
 	for_each_child_of_node_scoped(mc->dev->of_node, node) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = of_property_read_u32(node, "nvidia,ram-code",
 					   &node_ram_code);
 		if (err || (node_ram_code != ram_code))
 			continue;
 
 		err = load_timings(mc, node);
-<<<<<<< HEAD
-		of_node_put(node);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 		break;

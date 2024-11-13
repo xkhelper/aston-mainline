@@ -468,11 +468,7 @@ static struct platform_driver img_spdif_out_driver = {
 		.pm = &img_spdif_out_pm_ops
 	},
 	.probe = img_spdif_out_probe,
-<<<<<<< HEAD
-	.remove_new = img_spdif_out_dev_remove
-=======
 	.remove = img_spdif_out_dev_remove
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(img_spdif_out_driver);
 

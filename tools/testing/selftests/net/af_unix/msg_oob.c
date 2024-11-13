@@ -525,8 +525,6 @@ TEST_F(msg_oob, ex_oob_drop_2)
 	}
 }
 
-<<<<<<< HEAD
-=======
 TEST_F(msg_oob, ex_oob_oob)
 {
 	sendpair("x", 1, MSG_OOB);
@@ -550,7 +548,6 @@ TEST_F(msg_oob, ex_oob_oob)
 	siocatmarkpair(false);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_F(msg_oob, ex_oob_ahead_break)
 {
 	sendpair("hello", 5, MSG_OOB);

@@ -28,11 +28,8 @@
 	model = "PHYTEC phyBOARD-Electra-AM64x RDK";
 
 	aliases {
-<<<<<<< HEAD
-=======
 		ethernet1 = &icssg0_emac0;
 		ethernet2 = &icssg0_emac1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mmc1 = &sdhci1;
 		serial2 = &main_uart0;
 		serial3 = &main_uart1;
@@ -60,8 +57,6 @@
 		standby-gpios = <&main_gpio0 35 GPIO_ACTIVE_HIGH>;
 	};
 
-<<<<<<< HEAD
-=======
 	/* Dual Ethernet application node on PRU-ICSSG0 */
 	ethernet {
 		compatible = "ti,am642-icssg-prueth";
@@ -129,7 +124,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	keys {
 		compatible = "gpio-keys";
 		autorepeat;
@@ -193,15 +187,12 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	clkout0_pins_default: clkout0-default-pins {
 		pinctrl-single,pins = <
 			AM64X_IOPAD(0x0274, PIN_OUTPUT, 5)	/* (A19) EXT_REFCLK1.CLKOUT0 */
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gpio_keys_pins_default: gpio-keys-default-pins {
 		pinctrl-single,pins = <
 			AM64X_IOPAD(0x0044, PIN_INPUT, 7)	/* (T18) GPMC0_AD2.GPIO0_17 */
@@ -209,8 +200,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	icssg0_mdio_pins_default: icssg0-mdio-default-pins {
 		pinctrl-single,pins = <
 			AM64X_IOPAD(0x0200, PIN_INPUT, 0)	/* (P2) PRG0_MDIO0_MDIO */
@@ -254,7 +243,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	main_i2c1_pins_default: main-i2c1-default-pins {
 		pinctrl-single,pins = <
 			AM64X_IOPAD(0x0268, PIN_INPUT, 0)	/* (C18) I2C1_SCL */
@@ -328,8 +316,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &icssg0_mdio {
 	pinctrl-names = "default";
 	pinctrl-0 = <&icssg0_mdio_pins_default &clkout0_pins_default>;
@@ -358,7 +344,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &main_i2c1 {
 	status = "okay";
 	pinctrl-names = "default";

@@ -26,12 +26,9 @@
 #define HDR_SZ \
 	sizeof(struct _aarch64_ctx)
 
-<<<<<<< HEAD
-=======
 #define GET_UC_RESV_HEAD(uc) \
 	(struct _aarch64_ctx *)(&(uc->uc_mcontext.__reserved))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define GET_SF_RESV_HEAD(sf) \
 	(struct _aarch64_ctx *)(&(sf).uc.uc_mcontext.__reserved)
 
@@ -94,10 +91,6 @@ struct fake_sigframe {
 
 bool validate_reserved(ucontext_t *uc, size_t resv_sz, char **err);
 
-<<<<<<< HEAD
-struct _aarch64_ctx *get_header(struct _aarch64_ctx *head, uint32_t magic,
-				size_t resv_sz, size_t *offset);
-=======
 static inline struct _aarch64_ctx *get_header(struct _aarch64_ctx *head, uint32_t magic,
 				size_t resv_sz, size_t *offset)
 {
@@ -121,7 +114,6 @@ static inline struct _aarch64_ctx *get_header(struct _aarch64_ctx *head, uint32_
 	return found;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline struct _aarch64_ctx *get_terminator(struct _aarch64_ctx *head,
 						  size_t resv_sz,

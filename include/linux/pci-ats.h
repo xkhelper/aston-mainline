@@ -8,10 +8,7 @@
 /* Address Translation Service */
 bool pci_ats_supported(struct pci_dev *dev);
 int pci_enable_ats(struct pci_dev *dev, int ps);
-<<<<<<< HEAD
-=======
 int pci_prepare_ats(struct pci_dev *dev, int ps);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void pci_disable_ats(struct pci_dev *dev);
 int pci_ats_queue_depth(struct pci_dev *dev);
 int pci_ats_page_aligned(struct pci_dev *dev);
@@ -20,11 +17,8 @@ static inline bool pci_ats_supported(struct pci_dev *d)
 { return false; }
 static inline int pci_enable_ats(struct pci_dev *d, int ps)
 { return -ENODEV; }
-<<<<<<< HEAD
-=======
 static inline int pci_prepare_ats(struct pci_dev *dev, int ps)
 { return -ENODEV; }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void pci_disable_ats(struct pci_dev *d) { }
 static inline int pci_ats_queue_depth(struct pci_dev *d)
 { return -ENODEV; }

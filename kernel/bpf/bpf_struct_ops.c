@@ -837,11 +837,7 @@ static void bpf_struct_ops_map_seq_show_elem(struct bpf_map *map, void *key,
 		btf_type_seq_show(st_map->btf,
 				  map->btf_vmlinux_value_type_id,
 				  value, m);
-<<<<<<< HEAD
-		seq_puts(m, "\n");
-=======
 		seq_putc(m, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	kfree(value);
@@ -1044,8 +1040,6 @@ void bpf_struct_ops_put(const void *kdata)
 	bpf_map_put(&st_map->map);
 }
 
-<<<<<<< HEAD
-=======
 int bpf_struct_ops_supported(const struct bpf_struct_ops *st_ops, u32 moff)
 {
 	void *func_ptr = *(void **)(st_ops->cfi_stubs + moff);
@@ -1053,7 +1047,6 @@ int bpf_struct_ops_supported(const struct bpf_struct_ops *st_ops, u32 moff)
 	return func_ptr ? 0 : -ENOTSUPP;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool bpf_struct_ops_valid_to_reg(struct bpf_map *map)
 {
 	struct bpf_struct_ops_map *st_map = (struct bpf_struct_ops_map *)map;

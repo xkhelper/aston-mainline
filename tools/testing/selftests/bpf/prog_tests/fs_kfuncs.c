@@ -16,10 +16,7 @@ static void test_xattr(void)
 {
 	struct test_get_xattr *skel = NULL;
 	int fd = -1, err;
-<<<<<<< HEAD
-=======
 	int v[32];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fd = open(testfile, O_CREAT | O_RDONLY, 0644);
 	if (!ASSERT_GE(fd, 0, "create_file"))
@@ -54,9 +51,6 @@ static void test_xattr(void)
 	if (!ASSERT_GE(fd, 0, "open_file"))
 		goto out;
 
-<<<<<<< HEAD
-	ASSERT_EQ(skel->bss->found_xattr, 1, "found_xattr");
-=======
 	ASSERT_EQ(skel->bss->found_xattr_from_file, 1, "found_xattr_from_file");
 
 	/* Trigger security_inode_getxattr */
@@ -64,7 +58,6 @@ static void test_xattr(void)
 	ASSERT_EQ(err, -1, "getxattr_return");
 	ASSERT_EQ(errno, EINVAL, "getxattr_errno");
 	ASSERT_EQ(skel->bss->found_xattr_from_dentry, 1, "found_xattr_from_dentry");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out:
 	close(fd);

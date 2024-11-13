@@ -104,13 +104,6 @@ kms_cursor_crc@cursor-rapid-movement-256x85
 # CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
 # CR2: 0000000000000078 CR3: 0000000109b38000 CR4: 0000000000350ef0
 
-<<<<<<< HEAD
-# Skip driver specific tests
-^amdgpu.*
-msm_.*
-nouveau_.*
-panfrost_.*
-=======
 kms_cursor_crc@cursor-onscreen-256x256
 # Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
 # CPU: 1 PID: 1913 Comm: kworker/u8:6 Not tainted 6.10.0-rc5-g8a28e73ebead #1
@@ -217,7 +210,6 @@ kms_cursor_edge_walk@128x128-right-edge
 ^msm.*
 nouveau_.*
 ^panfrost.*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ^v3d.*
 ^vc4.*
 ^vmwgfx*
@@ -226,7 +218,4 @@ nouveau_.*
 gem_.*
 i915_.*
 xe_.*
-<<<<<<< HEAD
-=======
 tools_test.*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -433,10 +433,6 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
 {
 	struct spi_controller *host;
 	struct bcmbca_hsspi *bs;
-<<<<<<< HEAD
-	struct resource *res_mem;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem *spim_ctrl;
 	void __iomem *regs;
 	struct device *dev = &pdev->dev;
@@ -448,25 +444,11 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
 	if (irq < 0)
 		return irq;
 
-<<<<<<< HEAD
-	res_mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "hsspi");
-	if (!res_mem)
-		return -EINVAL;
-	regs = devm_ioremap_resource(dev, res_mem);
-	if (IS_ERR(regs))
-		return PTR_ERR(regs);
-
-	res_mem = platform_get_resource_byname(pdev, IORESOURCE_MEM, "spim-ctrl");
-	if (!res_mem)
-		return -EINVAL;
-	spim_ctrl = devm_ioremap_resource(dev, res_mem);
-=======
 	regs = devm_platform_ioremap_resource_byname(pdev, "hsspi");
 	if (IS_ERR(regs))
 		return PTR_ERR(regs);
 
 	spim_ctrl = devm_platform_ioremap_resource_byname(pdev, "spim-ctrl");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(spim_ctrl))
 		return PTR_ERR(spim_ctrl);
 
@@ -498,11 +480,7 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
 		}
 	}
 
-<<<<<<< HEAD
-	host = spi_alloc_host(&pdev->dev, sizeof(*bs));
-=======
 	host = devm_spi_alloc_host(&pdev->dev, sizeof(*bs));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!host) {
 		ret = -ENOMEM;
 		goto out_disable_pll_clk;
@@ -558,28 +536,17 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
 		ret = devm_request_irq(dev, irq, bcmbca_hsspi_interrupt, IRQF_SHARED,
 			       pdev->name, bs);
 		if (ret)
-<<<<<<< HEAD
-			goto out_put_host;
-	}
-
-	pm_runtime_enable(&pdev->dev);
-=======
 			goto out_disable_pll_clk;
 	}
 
 	ret = devm_pm_runtime_enable(&pdev->dev);
 	if (ret)
 		goto out_disable_pll_clk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = sysfs_create_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
 	if (ret) {
 		dev_err(&pdev->dev, "couldn't register sysfs group\n");
-<<<<<<< HEAD
-		goto out_pm_disable;
-=======
 		goto out_disable_pll_clk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* register and we are done */
@@ -593,13 +560,6 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
 
 out_sysgroup_disable:
 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
-<<<<<<< HEAD
-out_pm_disable:
-	pm_runtime_disable(&pdev->dev);
-out_put_host:
-	spi_controller_put(host);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_disable_pll_clk:
 	clk_disable_unprepare(pll_clk);
 out_disable_clk:

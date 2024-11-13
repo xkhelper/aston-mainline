@@ -24,19 +24,13 @@ properties:
     items:
       - description: input top pll
       - description: input mclk pll
-<<<<<<< HEAD
-=======
       - description: input fix pll
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   clock-names:
     items:
       - const: top
       - const: mclk
-<<<<<<< HEAD
-=======
       - const: fix
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   "#clock-cells":
     const: 1
@@ -60,14 +54,9 @@ examples:
             compatible = "amlogic,c3-pll-clkc";
             reg = <0x0 0x8000 0x0 0x1a4>;
             clocks = <&scmi_clk 2>,
-<<<<<<< HEAD
-                     <&scmi_clk 5>;
-            clock-names = "top", "mclk";
-=======
                      <&scmi_clk 5>,
                      <&scmi_clk 12>;
             clock-names = "top", "mclk", "fix";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             #clock-cells = <1>;
         };
     };

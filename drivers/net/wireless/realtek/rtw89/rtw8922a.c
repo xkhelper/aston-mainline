@@ -13,17 +13,10 @@
 #include "rtw8922a_rfk.h"
 #include "util.h"
 
-<<<<<<< HEAD
-#define RTW8922A_FW_FORMAT_MAX 0
-#define RTW8922A_FW_BASENAME "rtw89/rtw8922a_fw"
-#define RTW8922A_MODULE_FIRMWARE \
-	RTW8922A_FW_BASENAME ".bin"
-=======
 #define RTW8922A_FW_FORMAT_MAX 1
 #define RTW8922A_FW_BASENAME "rtw89/rtw8922a_fw"
 #define RTW8922A_MODULE_FIRMWARE \
 	RTW8922A_FW_BASENAME "-" __stringify(RTW8922A_FW_FORMAT_MAX) ".bin"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define HE_N_USER_MAX_8922A 4
 
@@ -172,8 +165,6 @@ static const struct rtw89_rrsr_cfgs rtw8922a_rrsr_cfgs = {
 	.rsc = {R_BE_PTCL_RRSR1, B_BE_RSC_MASK, 2},
 };
 
-<<<<<<< HEAD
-=======
 static const struct rtw89_rfkill_regs rtw8922a_rfkill_regs = {
 	.pinmux = {R_BE_GPIO8_15_FUNC_SEL,
 		   B_BE_PINMUX_GPIO9_FUNC_SEL_MASK,
@@ -183,7 +174,6 @@ static const struct rtw89_rfkill_regs rtw8922a_rfkill_regs = {
 		 0x0},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct rtw89_dig_regs rtw8922a_dig_regs = {
 	.seg0_pd_reg = R_SEG0R_PD_V2,
 	.pd_lower_bound_mask = B_SEG0R_PD_LOWER_BOUND_MSK,
@@ -1699,11 +1689,6 @@ static int rtw8922a_ctrl_rx_path_tmac(struct rtw89_dev *rtwdev,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int rtw8922a_ctrl_mlo(struct rtw89_dev *rtwdev, enum rtw89_mlo_dbcc_mode mode)
-{
-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-=======
 #define DIGITAL_PWR_COMP_REG_NUM 22
 static const u32 rtw8922a_digital_pwr_comp_val[][DIGITAL_PWR_COMP_REG_NUM] = {
 	{0x012C0096, 0x044C02BC, 0x00322710, 0x015E0096, 0x03C8028A,
@@ -1761,7 +1746,6 @@ static void rtw8922a_digital_pwr_comp(struct rtw89_dev *rtwdev,
 static int rtw8922a_ctrl_mlo(struct rtw89_dev *rtwdev, enum rtw89_mlo_dbcc_mode mode)
 {
 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mode == MLO_1_PLUS_1_1RF || mode == DBCC_LEGACY) {
 		rtw89_phy_write32_mask(rtwdev, R_DBCC, B_DBCC_EN, 0x1);
@@ -1880,20 +1864,13 @@ static void rtw8922a_pre_set_channel_bb(struct rtw89_dev *rtwdev,
 }
 
 static void rtw8922a_post_set_channel_bb(struct rtw89_dev *rtwdev,
-<<<<<<< HEAD
-					 enum rtw89_mlo_dbcc_mode mode)
-=======
 					 enum rtw89_mlo_dbcc_mode mode,
 					 enum rtw89_phy_idx phy_idx)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!rtwdev->dbcc_en)
 		return;
 
-<<<<<<< HEAD
-=======
 	rtw8922a_digital_pwr_comp(rtwdev, phy_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtw8922a_ctrl_mlo(rtwdev, mode);
 }
 
@@ -2000,11 +1977,7 @@ static void rtw8922a_set_channel_help(struct rtw89_dev *rtwdev, bool enter,
 	rtw8922a_hal_reset(rtwdev, phy_idx, mac_idx, chan->band_type, &p->tx_en, enter);
 
 	if (!enter) {
-<<<<<<< HEAD
-		rtw8922a_post_set_channel_bb(rtwdev, rtwdev->mlo_dbcc_mode);
-=======
 		rtw8922a_post_set_channel_bb(rtwdev, rtwdev->mlo_dbcc_mode, phy_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rtw8922a_post_set_channel_rf(rtwdev, phy_idx);
 	}
 }
@@ -2020,19 +1993,12 @@ static void rtw8922a_rfk_init(struct rtw89_dev *rtwdev)
 
 static void rtw8922a_rfk_init_late(struct rtw89_dev *rtwdev)
 {
-<<<<<<< HEAD
-	rtw89_phy_rfk_pre_ntfy_and_wait(rtwdev, RTW89_PHY_0, 5);
-
-	rtw89_phy_rfk_dack_and_wait(rtwdev, RTW89_PHY_0, 58);
-	rtw89_phy_rfk_rxdck_and_wait(rtwdev, RTW89_PHY_0, 32);
-=======
 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
 
 	rtw89_phy_rfk_pre_ntfy_and_wait(rtwdev, RTW89_PHY_0, 5);
 
 	rtw89_phy_rfk_dack_and_wait(rtwdev, RTW89_PHY_0, chan, 58);
 	rtw89_phy_rfk_rxdck_and_wait(rtwdev, RTW89_PHY_0, chan, 32);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void _wait_rx_mode(struct rtw89_dev *rtwdev, u8 kpath)
@@ -2054,19 +2020,12 @@ static void _wait_rx_mode(struct rtw89_dev *rtwdev, u8 kpath)
 	}
 }
 
-<<<<<<< HEAD
-static void rtw8922a_rfk_channel(struct rtw89_dev *rtwdev)
-{
-	enum rtw89_phy_idx phy_idx = RTW89_PHY_0;
-	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB);
-=======
 static void rtw8922a_rfk_channel(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
 {
 	enum rtw89_chanctx_idx chanctx_idx = rtwvif->chanctx_idx;
 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, chanctx_idx);
 	enum rtw89_phy_idx phy_idx = rtwvif->phy_idx;
 	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB, chanctx_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 tx_en;
 
 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_CHLK, BTC_WRFK_START);
@@ -2074,33 +2033,17 @@ static void rtw8922a_rfk_channel(struct rtw89_dev *rtwdev, struct rtw89_vif *rtw
 	_wait_rx_mode(rtwdev, RF_AB);
 
 	rtw89_phy_rfk_pre_ntfy_and_wait(rtwdev, phy_idx, 5);
-<<<<<<< HEAD
-	rtw89_phy_rfk_txgapk_and_wait(rtwdev, phy_idx, 54);
-	rtw89_phy_rfk_iqk_and_wait(rtwdev, phy_idx, 84);
-	rtw89_phy_rfk_tssi_and_wait(rtwdev, phy_idx, RTW89_TSSI_NORMAL, 6);
-	rtw89_phy_rfk_dpk_and_wait(rtwdev, phy_idx, 34);
-	rtw89_phy_rfk_rxdck_and_wait(rtwdev, RTW89_PHY_0, 32);
-=======
 	rtw89_phy_rfk_txgapk_and_wait(rtwdev, phy_idx, chan, 54);
 	rtw89_phy_rfk_iqk_and_wait(rtwdev, phy_idx, chan, 84);
 	rtw89_phy_rfk_tssi_and_wait(rtwdev, phy_idx, chan, RTW89_TSSI_NORMAL, 6);
 	rtw89_phy_rfk_dpk_and_wait(rtwdev, phy_idx, chan, 34);
 	rtw89_phy_rfk_rxdck_and_wait(rtwdev, RTW89_PHY_0, chan, 32);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rtw89_chip_resume_sch_tx(rtwdev, phy_idx, tx_en);
 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_CHLK, BTC_WRFK_STOP);
 }
 
 static void rtw8922a_rfk_band_changed(struct rtw89_dev *rtwdev,
-<<<<<<< HEAD
-				      enum rtw89_phy_idx phy_idx)
-{
-	rtw89_phy_rfk_tssi_and_wait(rtwdev, phy_idx, RTW89_TSSI_SCAN, 6);
-}
-
-static void rtw8922a_rfk_scan(struct rtw89_dev *rtwdev, bool start)
-=======
 				      enum rtw89_phy_idx phy_idx,
 				      const struct rtw89_chan *chan)
 {
@@ -2109,7 +2052,6 @@ static void rtw8922a_rfk_scan(struct rtw89_dev *rtwdev, bool start)
 
 static void rtw8922a_rfk_scan(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
 			      bool start)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 
@@ -2238,11 +2180,7 @@ static void rtw8922a_ctrl_nbtg_bt_tx(struct rtw89_dev *rtwdev, bool en,
 
 static void rtw8922a_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
 {
-<<<<<<< HEAD
-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-=======
 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum rtw89_band band = chan->band_type;
 	struct rtw89_hal *hal = &rtwdev->hal;
 	u8 ntx_path = RF_PATH_AB;
@@ -2559,8 +2497,6 @@ static void rtw8922a_query_ppdu(struct rtw89_dev *rtwdev,
 		rtw8922a_fill_freq_with_ppdu(rtwdev, phy_ppdu, status);
 }
 
-<<<<<<< HEAD
-=======
 static void rtw8922a_convert_rpl_to_rssi(struct rtw89_dev *rtwdev,
 					 struct rtw89_rx_phy_ppdu *phy_ppdu)
 {
@@ -2593,7 +2529,6 @@ static void rtw8922a_convert_rpl_to_rssi(struct rtw89_dev *rtwdev,
 	phy_ppdu->rssi_avg = phy_ppdu->rpl_avg;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rtw8922a_mac_enable_bb_rf(struct rtw89_dev *rtwdev)
 {
 	rtw89_write8_set(rtwdev, R_BE_FEN_RST_ENABLE,
@@ -2613,19 +2548,12 @@ static int rtw8922a_mac_disable_bb_rf(struct rtw89_dev *rtwdev)
 
 #ifdef CONFIG_PM
 static const struct wiphy_wowlan_support rtw_wowlan_stub_8922a = {
-<<<<<<< HEAD
-	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT,
-	.n_patterns = RTW89_MAX_PATTERN_NUM,
-	.pattern_max_len = RTW89_MAX_PATTERN_SIZE,
-	.pattern_min_len = 1,
-=======
 	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT |
 		 WIPHY_WOWLAN_NET_DETECT,
 	.n_patterns = RTW89_MAX_PATTERN_NUM,
 	.pattern_max_len = RTW89_MAX_PATTERN_SIZE,
 	.pattern_min_len = 1,
 	.max_nd_match_sets = RTW89_SCANOFLD_MAX_SSID,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 #endif
 
@@ -2658,17 +2586,11 @@ static const struct rtw89_chip_ops rtw8922a_chip_ops = {
 	.get_thermal		= rtw8922a_get_thermal,
 	.ctrl_btg_bt_rx		= rtw8922a_ctrl_btg_bt_rx,
 	.query_ppdu		= rtw8922a_query_ppdu,
-<<<<<<< HEAD
-	.ctrl_nbtg_bt_tx	= rtw8922a_ctrl_nbtg_bt_tx,
-	.cfg_txrx_path		= rtw8922a_bb_cfg_txrx_path,
-	.set_txpwr_ul_tb_offset	= NULL,
-=======
 	.convert_rpl_to_rssi	= rtw8922a_convert_rpl_to_rssi,
 	.ctrl_nbtg_bt_tx	= rtw8922a_ctrl_nbtg_bt_tx,
 	.cfg_txrx_path		= rtw8922a_bb_cfg_txrx_path,
 	.set_txpwr_ul_tb_offset	= NULL,
 	.digital_pwr_comp	= rtw8922a_digital_pwr_comp,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.pwr_on_func		= rtw8922a_pwr_on_func,
 	.pwr_off_func		= rtw8922a_pwr_off_func,
 	.query_rxdesc		= rtw89_core_query_rxdesc_v2,
@@ -2734,10 +2656,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
 	.dig_regs		= &rtw8922a_dig_regs,
 	.tssi_dbw_table		= NULL,
 	.support_macid_num	= 32,
-<<<<<<< HEAD
-=======
 	.support_link_num	= 2,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.support_chanctx_num	= 2,
 	.support_rnr		= true,
 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
@@ -2751,10 +2670,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
 	.ul_tb_waveform_ctrl	= false,
 	.ul_tb_pwr_diff		= false,
 	.hw_sec_hdr		= true,
-<<<<<<< HEAD
-=======
 	.hw_mgmt_tx_encrypt	= true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.rf_path_num		= 2,
 	.tx_nss			= 2,
 	.rx_nss			= 2,
@@ -2817,11 +2733,8 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
 	.rrsr_cfgs		= &rtw8922a_rrsr_cfgs,
 	.bss_clr_vld		= {R_BSS_CLR_VLD_V2, B_BSS_CLR_VLD0_V2},
 	.bss_clr_map_reg	= R_BSS_CLR_MAP_V2,
-<<<<<<< HEAD
-=======
 	.rfkill_init		= &rtw8922a_rfkill_regs,
 	.rfkill_get		= {R_BE_GPIO_EXT_CTRL, B_BE_GPIO_IN_9},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.dma_ch_mask		= 0,
 	.edcca_regs		= &rtw8922a_edcca_regs,
 #ifdef CONFIG_PM

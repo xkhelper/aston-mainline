@@ -198,11 +198,7 @@
 		};
 	};
 
-<<<<<<< HEAD
-	pwm_vibrator: pwm-vibrator {
-=======
 	pwm_vibrator: pwm {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		compatible = "clk-pwm";
 		#pwm-cells = <2>;
 

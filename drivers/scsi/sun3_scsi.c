@@ -304,11 +304,7 @@ static int sun3scsi_dma_setup(struct NCR5380_hostdata *hostdata,
 	sun3_udc_write(UDC_INT_ENABLE, UDC_CSR);
 #endif
 	
-<<<<<<< HEAD
-       	return count;
-=======
 	return count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 }
 

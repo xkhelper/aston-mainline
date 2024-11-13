@@ -582,8 +582,6 @@ void vdpa_set_status(struct vdpa_device *vdev, u8 status);
  *	     @dev: vdpa device to remove
  *	     Driver need to remove the specified device by calling
  *	     _vdpa_unregister_device().
-<<<<<<< HEAD
-=======
  * @dev_set_attr: change a vdpa device's attr after it was create
  *	     @mdev: parent device to use for device
  *	     @dev: vdpa device structure
@@ -591,17 +589,13 @@ void vdpa_set_status(struct vdpa_device *vdev, u8 status);
  *	     The driver needs to check the mask of the structure and then set
  *	     the related information to the vdpa device. The driver must return 0
  *	     if set successfully.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct vdpa_mgmtdev_ops {
 	int (*dev_add)(struct vdpa_mgmt_dev *mdev, const char *name,
 		       const struct vdpa_dev_set_config *config);
 	void (*dev_del)(struct vdpa_mgmt_dev *mdev, struct vdpa_device *dev);
-<<<<<<< HEAD
-=======
 	int (*dev_set_attr)(struct vdpa_mgmt_dev *mdev, struct vdpa_device *dev,
 			    const struct vdpa_dev_set_config *config);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

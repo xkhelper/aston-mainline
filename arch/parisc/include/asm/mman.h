@@ -2,10 +2,7 @@
 #ifndef __ASM_MMAN_H__
 #define __ASM_MMAN_H__
 
-<<<<<<< HEAD
-=======
 #include <linux/fs.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <uapi/asm/mman.h>
 
 /* PARISC cannot allow mdwe as it needs writable stacks */
@@ -15,8 +12,6 @@ static inline bool arch_memory_deny_write_exec_supported(void)
 }
 #define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
 
-<<<<<<< HEAD
-=======
 static inline unsigned long arch_calc_vm_flag_bits(struct file *file, unsigned long flags)
 {
 	/*
@@ -31,5 +26,4 @@ static inline unsigned long arch_calc_vm_flag_bits(struct file *file, unsigned l
 }
 #define arch_calc_vm_flag_bits(file, flags) arch_calc_vm_flag_bits(file, flags)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __ASM_MMAN_H__ */

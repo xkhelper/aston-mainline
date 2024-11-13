@@ -71,10 +71,6 @@ MODULE_DEVICE_TABLE(usb, ir_id_table);
 
 static struct usb_serial_driver ir_device = {
 	.driver	= {
-<<<<<<< HEAD
-		.owner	= THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name	= "ir-usb",
 	},
 	.description		= "IR Dongle",

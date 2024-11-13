@@ -100,8 +100,6 @@ config CLK_RK3568
 	help
 	  Build the driver for RK3568 Clock Driver.
 
-<<<<<<< HEAD
-=======
 config CLK_RK3576
 	bool "Rockchip RK3576 clock controller support"
 	depends on ARM64 || COMPILE_TEST
@@ -109,7 +107,6 @@ config CLK_RK3576
 	help
 	  Build the driver for RK3576 Clock Driver.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config CLK_RK3588
 	bool "Rockchip RK3588 clock controller support"
 	depends on ARM64 || COMPILE_TEST

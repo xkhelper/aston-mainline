@@ -14,11 +14,7 @@
 #include "notify.h"
 
 /* Updated only after ALL the mandatory features for that version are merged */
-<<<<<<< HEAD
-#define SCMI_PROTOCOL_SUPPORTED_VERSION		0x30000
-=======
 #define SCMI_PROTOCOL_SUPPORTED_VERSION		0x30001
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum scmi_power_protocol_cmd {
 	POWER_DOMAIN_ATTRIBUTES = 0x3,

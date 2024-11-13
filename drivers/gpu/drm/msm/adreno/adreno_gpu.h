@@ -191,14 +191,6 @@ struct adreno_gpu {
 	const struct firmware *fw[ADRENO_FW_MAX];
 
 	struct {
-<<<<<<< HEAD
-		u32 rgb565_predicator;
-		u32 uavflagprd_inv;
-		u32 min_acc_len;
-		u32 ubwc_mode;
-		u32 highest_bank_bit;
-		u32 amsbc;
-=======
 		/**
 		 * @rgb565_predicator: Unknown, introduced with A650 family,
 		 * related to UBWC mode/ver 4
@@ -235,7 +227,6 @@ struct adreno_gpu {
 		 * 4-channel and 1 is 8-channel.
 		 */
 		u32 macrotile_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} ubwc_config;
 
 	/*
@@ -333,15 +324,12 @@ static inline bool adreno_is_a306(const struct adreno_gpu *gpu)
 	return adreno_is_revn(gpu, 307);
 }
 
-<<<<<<< HEAD
-=======
 static inline bool adreno_is_a306a(const struct adreno_gpu *gpu)
 {
 	/* a306a (marketing name is a308) */
 	return adreno_is_revn(gpu, 308);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool adreno_is_a320(const struct adreno_gpu *gpu)
 {
 	return adreno_is_revn(gpu, 320);
@@ -432,14 +420,11 @@ static inline int adreno_is_a619_holi(const struct adreno_gpu *gpu)
 	return adreno_is_a619(gpu) && adreno_has_gmu_wrapper(gpu);
 }
 
-<<<<<<< HEAD
-=======
 static inline int adreno_is_a621(const struct adreno_gpu *gpu)
 {
 	return gpu->info->chip_ids[0] == 0x06020100;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int adreno_is_a630(const struct adreno_gpu *gpu)
 {
 	return adreno_is_revn(gpu, 630);
@@ -489,9 +474,6 @@ static inline int adreno_is_a610_family(const struct adreno_gpu *gpu)
 	return adreno_is_a610(gpu) || adreno_is_a702(gpu);
 }
 
-<<<<<<< HEAD
-/* check for a615, a616, a618, a619 or any a630 derivatives */
-=======
 /* TODO: 615/616 */
 static inline int adreno_is_a615_family(const struct adreno_gpu *gpu)
 {
@@ -499,7 +481,6 @@ static inline int adreno_is_a615_family(const struct adreno_gpu *gpu)
 	       adreno_is_a619(gpu);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int adreno_is_a630_family(const struct adreno_gpu *gpu)
 {
 	if (WARN_ON_ONCE(!gpu->info))

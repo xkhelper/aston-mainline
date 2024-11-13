@@ -220,11 +220,7 @@
 		#gpio-cells = <2>;
 		gpio-controller;
 
-<<<<<<< HEAD
-		admin_led_lower {
-=======
 		admin-led-lower-hog {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			gpio-hog;
 			gpios = <13 GPIO_ACTIVE_HIGH>;
 			output-low;
@@ -327,15 +323,9 @@
 				reg = <0x580000 0x40000>;
 			};
 
-<<<<<<< HEAD
-			partition@5C0000 {
-				label = "dpc";
-				reg = <0x5C0000 0x40000>;
-=======
 			partition@5c0000 {
 				label = "dpc";
 				reg = <0x5c0000 0x40000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			};
 
 			partition@600000 {

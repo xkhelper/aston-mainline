@@ -97,11 +97,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8195_vpp1_id_table);
 
 static struct platform_driver clk_mt8195_vpp1_drv = {
 	.probe = mtk_clk_pdev_probe,
-<<<<<<< HEAD
-	.remove_new = mtk_clk_pdev_remove,
-=======
 	.remove = mtk_clk_pdev_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "clk-mt8195-vpp1",
 	},

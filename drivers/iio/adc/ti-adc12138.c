@@ -344,12 +344,7 @@ static irqreturn_t adc12138_trigger_handler(int irq, void *p)
 
 	mutex_lock(&adc->lock);
 
-<<<<<<< HEAD
-	for_each_set_bit(scan_index, indio_dev->active_scan_mask,
-			 indio_dev->masklength) {
-=======
 	iio_for_each_active_channel(indio_dev, scan_index) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		const struct iio_chan_spec *scan_chan =
 				&indio_dev->channels[scan_index];
 
@@ -524,11 +519,7 @@ static const struct of_device_id adc12138_dt_ids[] = {
 	{ .compatible = "ti,adc12130", },
 	{ .compatible = "ti,adc12132", },
 	{ .compatible = "ti,adc12138", },
-<<<<<<< HEAD
-	{}
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, adc12138_dt_ids);
 
@@ -536,11 +527,7 @@ static const struct spi_device_id adc12138_id[] = {
 	{ "adc12130", adc12130 },
 	{ "adc12132", adc12132 },
 	{ "adc12138", adc12138 },
-<<<<<<< HEAD
-	{}
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(spi, adc12138_id);
 

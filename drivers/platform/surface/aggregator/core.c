@@ -17,18 +17,12 @@
 #include <linux/kernel.h>
 #include <linux/kref.h>
 #include <linux/module.h>
-<<<<<<< HEAD
-#include <linux/pm.h>
-#include <linux/serdev.h>
-#include <linux/sysfs.h>
-=======
 #include <linux/of.h>
 #include <linux/platform_device.h>
 #include <linux/pm.h>
 #include <linux/serdev.h>
 #include <linux/sysfs.h>
 #include <linux/units.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/surface_aggregator/controller.h>
 #include <linux/surface_aggregator/device.h>
@@ -308,11 +302,7 @@ static const struct attribute_group ssam_sam_group = {
 };
 
 
-<<<<<<< HEAD
-/* -- ACPI based device setup. ---------------------------------------------- */
-=======
 /* -- Serial device setup. -------------------------------------------------- */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static acpi_status ssam_serdev_setup_via_acpi_crs(struct acpi_resource *rsc,
 						  void *ctx)
@@ -365,15 +355,6 @@ static acpi_status ssam_serdev_setup_via_acpi_crs(struct acpi_resource *rsc,
 	return AE_CTRL_TERMINATE;
 }
 
-<<<<<<< HEAD
-static acpi_status ssam_serdev_setup_via_acpi(acpi_handle handle,
-					      struct serdev_device *serdev)
-{
-	return acpi_walk_resources(handle, METHOD_NAME__CRS,
-				   ssam_serdev_setup_via_acpi_crs, serdev);
-}
-
-=======
 static int ssam_serdev_setup_via_acpi(struct serdev_device *serdev, acpi_handle handle)
 {
 	acpi_status status;
@@ -396,7 +377,6 @@ static int ssam_serdev_setup(struct acpi_device *ssh, struct serdev_device *serd
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* -- Power management. ----------------------------------------------------- */
 
@@ -659,18 +639,6 @@ static int ssam_serial_hub_probe(struct serdev_device *serdev)
 	struct device *dev = &serdev->dev;
 	struct acpi_device *ssh = ACPI_COMPANION(dev);
 	struct ssam_controller *ctrl;
-<<<<<<< HEAD
-	acpi_status astatus;
-	int status;
-
-	status = gpiod_count(dev, NULL);
-	if (status < 0)
-		return dev_err_probe(dev, status, "no GPIO found\n");
-
-	status = devm_acpi_dev_add_driver_gpios(dev, ssam_acpi_gpios);
-	if (status)
-		return status;
-=======
 	int status;
 
 	if (ssh) {
@@ -682,7 +650,6 @@ static int ssam_serial_hub_probe(struct serdev_device *serdev)
 		if (status)
 			return status;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Allocate controller. */
 	ctrl = kzalloc(sizeof(*ctrl), GFP_KERNEL);
@@ -707,15 +674,9 @@ static int ssam_serial_hub_probe(struct serdev_device *serdev)
 		goto err_devopen;
 	}
 
-<<<<<<< HEAD
-	astatus = ssam_serdev_setup_via_acpi(ssh->handle, serdev);
-	if (ACPI_FAILURE(astatus)) {
-		status = dev_err_probe(dev, -ENXIO, "failed to setup serdev\n");
-=======
 	status = ssam_serdev_setup(ssh, serdev);
 	if (status) {
 		status = dev_err_probe(dev, status, "failed to setup serdev\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_devinit;
 	}
 
@@ -775,9 +736,6 @@ static int ssam_serial_hub_probe(struct serdev_device *serdev)
 	 *       For now let's thus default power/wakeup to false.
 	 */
 	device_set_wakeup_capable(dev, true);
-<<<<<<< HEAD
-	acpi_dev_clear_dependencies(ssh);
-=======
 
 	/*
 	 * When using DT, we have to register the platform hub driver manually,
@@ -795,7 +753,6 @@ static int ssam_serial_hub_probe(struct serdev_device *serdev)
 
 	if (ssh)
 		acpi_dev_clear_dependencies(ssh);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -860,13 +817,6 @@ static void ssam_serial_hub_remove(struct serdev_device *serdev)
 	device_set_wakeup_capable(&serdev->dev, false);
 }
 
-<<<<<<< HEAD
-static const struct acpi_device_id ssam_serial_hub_match[] = {
-	{ "MSHW0084", 0 },
-	{ },
-};
-MODULE_DEVICE_TABLE(acpi, ssam_serial_hub_match);
-=======
 static const struct acpi_device_id ssam_serial_hub_acpi_match[] = {
 	{ "MSHW0084", 0 },
 	{ },
@@ -880,19 +830,14 @@ static const struct of_device_id ssam_serial_hub_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, ssam_serial_hub_of_match);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct serdev_device_driver ssam_serial_hub = {
 	.probe = ssam_serial_hub_probe,
 	.remove = ssam_serial_hub_remove,
 	.driver = {
 		.name = "surface_serial_hub",
-<<<<<<< HEAD
-		.acpi_match_table = ssam_serial_hub_match,
-=======
 		.acpi_match_table = ACPI_PTR(ssam_serial_hub_acpi_match),
 		.of_match_table = of_match_ptr(ssam_serial_hub_of_match),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.pm = &ssam_serial_hub_pm_ops,
 		.shutdown = ssam_serial_hub_shutdown,
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,

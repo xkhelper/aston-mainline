@@ -87,8 +87,6 @@ PCH-LPC/PCH-MSI，然后被EIOINTC统一收集，再直接到达CPUINTC::
     | Devices |
     +---------+
 
-<<<<<<< HEAD
-=======
 高级扩展IRQ模型
 ===============
 
@@ -121,7 +119,6 @@ CPU串口（UARTs）中断发送到LIOINTC，PCH-MSI中断发送到AVECINTC，�
              | Devices |
              +---------+
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ACPI相关的定义
 ==============
 

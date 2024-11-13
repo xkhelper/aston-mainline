@@ -336,13 +336,6 @@ struct ti_bandgap_data {
 	struct ti_temp_sensor		sensors[];
 };
 
-<<<<<<< HEAD
-int ti_bandgap_read_thot(struct ti_bandgap *bgp, int id, int *thot);
-int ti_bandgap_write_thot(struct ti_bandgap *bgp, int id, int val);
-int ti_bandgap_read_tcold(struct ti_bandgap *bgp, int id, int *tcold);
-int ti_bandgap_write_tcold(struct ti_bandgap *bgp, int id, int val);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ti_bandgap_read_update_interval(struct ti_bandgap *bgp, int id,
 				    int *interval);
 int ti_bandgap_write_update_interval(struct ti_bandgap *bgp, int id,

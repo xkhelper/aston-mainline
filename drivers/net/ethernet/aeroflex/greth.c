@@ -484,11 +484,7 @@ greth_start_xmit_gbit(struct sk_buff *skb, struct net_device *dev)
 
 	if (unlikely(skb->len > MAX_FRAME_SIZE)) {
 		dev->stats.tx_errors++;
-<<<<<<< HEAD
-		goto out;
-=======
 		goto len_error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Save skb pointer. */
@@ -579,10 +575,7 @@ frag_map_error:
 map_error:
 	if (net_ratelimit())
 		dev_warn(greth->dev, "Could not create TX DMA mapping\n");
-<<<<<<< HEAD
-=======
 len_error:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_kfree_skb(skb);
 out:
 	return err;

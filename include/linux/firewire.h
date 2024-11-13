@@ -134,11 +134,8 @@ struct fw_card {
 	__be32 topology_map[(CSR_TOPOLOGY_MAP_END - CSR_TOPOLOGY_MAP) / 4];
 
 	__be32 maint_utility_register;
-<<<<<<< HEAD
-=======
 
 	struct workqueue_struct *isoc_wq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline struct fw_card *fw_card_get(struct fw_card *card)
@@ -514,10 +511,7 @@ union fw_iso_callback {
 
 struct fw_iso_context {
 	struct fw_card *card;
-<<<<<<< HEAD
-=======
 	struct work_struct work;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int type;
 	int channel;
 	int speed;
@@ -537,8 +531,6 @@ int fw_iso_context_queue(struct fw_iso_context *ctx,
 			 unsigned long payload);
 void fw_iso_context_queue_flush(struct fw_iso_context *ctx);
 int fw_iso_context_flush_completions(struct fw_iso_context *ctx);
-<<<<<<< HEAD
-=======
 
 /**
  * fw_iso_context_schedule_flush_completions() - schedule work item to process isochronous context.
@@ -558,7 +550,6 @@ static inline void fw_iso_context_schedule_flush_completions(struct fw_iso_conte
 	queue_work(ctx->card->isoc_wq, &ctx->work);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int fw_iso_context_start(struct fw_iso_context *ctx,
 			 int cycle, int sync, int tags);
 int fw_iso_context_stop(struct fw_iso_context *ctx);

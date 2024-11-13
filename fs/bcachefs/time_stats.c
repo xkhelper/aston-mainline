@@ -151,8 +151,6 @@ void __bch2_time_stats_update(struct bch2_time_stats *stats, u64 start, u64 end)
 	}
 }
 
-<<<<<<< HEAD
-=======
 void bch2_time_stats_reset(struct bch2_time_stats *stats)
 {
 	spin_lock_irq(&stats->lock);
@@ -167,7 +165,6 @@ void bch2_time_stats_reset(struct bch2_time_stats *stats)
 	spin_unlock_irq(&stats->lock);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_time_stats_exit(struct bch2_time_stats *stats)
 {
 	free_percpu(stats->buffer);

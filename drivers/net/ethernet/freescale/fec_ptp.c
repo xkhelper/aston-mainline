@@ -91,8 +91,6 @@
 #define FEC_PTP_MAX_NSEC_COUNTER	0x80000000ULL
 
 /**
-<<<<<<< HEAD
-=======
  * fec_ptp_read - read raw cycle counter (to be used by time counter)
  * @cc: the cyclecounter structure
  *
@@ -117,7 +115,6 @@ static u64 fec_ptp_read(const struct cyclecounter *cc)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * fec_ptp_enable_pps
  * @fep: the fec_enet_private structure handle
  * @enable: enable the channel pps output
@@ -163,11 +160,7 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
 		 * NSEC_PER_SEC - ts.tv_nsec. Add the remaining nanoseconds
 		 * to current timer would be next second.
 		 */
-<<<<<<< HEAD
-		tempval = fep->cc.read(&fep->cc);
-=======
 		tempval = fec_ptp_read(&fep->cc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Convert the ptp local counter to 1588 timestamp */
 		ns = timecounter_cyc2time(&fep->tc, tempval);
 		ts = ns_to_timespec64(ns);
@@ -242,17 +235,7 @@ static int fec_ptp_pps_perout(struct fec_enet_private *fep)
 	timecounter_read(&fep->tc);
 
 	/* Get the current ptp hardware time counter */
-<<<<<<< HEAD
-	temp_val = readl(fep->hwp + FEC_ATIME_CTRL);
-	temp_val |= FEC_T_CTRL_CAPTURE;
-	writel(temp_val, fep->hwp + FEC_ATIME_CTRL);
-	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
-		udelay(1);
-
-	ptp_hc = readl(fep->hwp + FEC_ATIME);
-=======
 	ptp_hc = fec_ptp_read(&fep->cc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Convert the ptp local counter to 1588 timestamp */
 	curr_time = timecounter_cyc2time(&fep->tc, ptp_hc);
@@ -307,33 +290,6 @@ static enum hrtimer_restart fec_ptp_pps_perout_handler(struct hrtimer *timer)
 }
 
 /**
-<<<<<<< HEAD
- * fec_ptp_read - read raw cycle counter (to be used by time counter)
- * @cc: the cyclecounter structure
- *
- * this function reads the cyclecounter registers and is called by the
- * cyclecounter structure used to construct a ns counter from the
- * arbitrary fixed point registers
- */
-static u64 fec_ptp_read(const struct cyclecounter *cc)
-{
-	struct fec_enet_private *fep =
-		container_of(cc, struct fec_enet_private, cc);
-	u32 tempval;
-
-	tempval = readl(fep->hwp + FEC_ATIME_CTRL);
-	tempval |= FEC_T_CTRL_CAPTURE;
-	writel(tempval, fep->hwp + FEC_ATIME_CTRL);
-
-	if (fep->quirks & FEC_QUIRK_BUG_CAPTURE)
-		udelay(1);
-
-	return readl(fep->hwp + FEC_ATIME);
-}
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * fec_ptp_start_cyclecounter - create the cycle counter from hw
  * @ndev: network device
  *
@@ -808,8 +764,6 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
 	schedule_delayed_work(&fep->time_keep, HZ);
 }
 
-<<<<<<< HEAD
-=======
 void fec_ptp_save_state(struct fec_enet_private *fep)
 {
 	unsigned long flags;
@@ -860,7 +814,6 @@ void fec_ptp_restore_state(struct fec_enet_private *fep)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void fec_ptp_stop(struct platform_device *pdev)
 {
 	struct net_device *ndev = platform_get_drvdata(pdev);

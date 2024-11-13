@@ -73,15 +73,6 @@ enum max1027_id {
 };
 
 static const struct spi_device_id max1027_id[] = {
-<<<<<<< HEAD
-	{"max1027", max1027},
-	{"max1029", max1029},
-	{"max1031", max1031},
-	{"max1227", max1227},
-	{"max1229", max1229},
-	{"max1231", max1231},
-	{}
-=======
 	{ "max1027", max1027 },
 	{ "max1029", max1029 },
 	{ "max1031", max1031 },
@@ -89,7 +80,6 @@ static const struct spi_device_id max1027_id[] = {
 	{ "max1229", max1229 },
 	{ "max1231", max1231 },
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(spi, max1027_id);
 
@@ -100,11 +90,7 @@ static const struct of_device_id max1027_adc_dt_ids[] = {
 	{ .compatible = "maxim,max1227" },
 	{ .compatible = "maxim,max1229" },
 	{ .compatible = "maxim,max1231" },
-<<<<<<< HEAD
-	{},
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, max1027_adc_dt_ids);
 

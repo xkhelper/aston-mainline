@@ -1246,17 +1246,6 @@ nfsd4_decode_putfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
 }
 
 static __be32
-<<<<<<< HEAD
-nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *p)
-{
-	if (argp->minorversion == 0)
-		return nfs_ok;
-	return nfserr_notsupp;
-}
-
-static __be32
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 nfsd4_decode_read(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
 {
 	struct nfsd4_read *read = &u->read;
@@ -2377,11 +2366,7 @@ static const nfsd4_dec nfsd4_dec_ops[] = {
 	[OP_OPEN_CONFIRM]	= nfsd4_decode_open_confirm,
 	[OP_OPEN_DOWNGRADE]	= nfsd4_decode_open_downgrade,
 	[OP_PUTFH]		= nfsd4_decode_putfh,
-<<<<<<< HEAD
-	[OP_PUTPUBFH]		= nfsd4_decode_putpubfh,
-=======
 	[OP_PUTPUBFH]		= nfsd4_decode_noop,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[OP_PUTROOTFH]		= nfsd4_decode_noop,
 	[OP_READ]		= nfsd4_decode_read,
 	[OP_READDIR]		= nfsd4_decode_readdir,
@@ -5738,8 +5723,6 @@ __be32 nfsd4_check_resp_size(struct nfsd4_compoundres *resp, u32 respsize)
 	return nfserr_rep_too_big;
 }
 
-<<<<<<< HEAD
-=======
 static __be32 nfsd4_map_status(__be32 status, u32 minor)
 {
 	switch (status) {
@@ -5757,7 +5740,6 @@ static __be32 nfsd4_map_status(__be32 status, u32 minor)
 	return status;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void
 nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
 {
@@ -5825,11 +5807,8 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
 						so->so_replay.rp_buf, len);
 	}
 status:
-<<<<<<< HEAD
-=======
 	op->status = nfsd4_map_status(op->status,
 				      resp->cstate.minorversion);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*p = op->status;
 release:
 	if (opdesc && opdesc->op_release)

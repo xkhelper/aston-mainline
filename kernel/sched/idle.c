@@ -450,40 +450,15 @@ static void wakeup_preempt_idle(struct rq *rq, struct task_struct *p, int flags)
 	resched_curr(rq);
 }
 
-<<<<<<< HEAD
-static void put_prev_task_idle(struct rq *rq, struct task_struct *prev)
-{
-=======
 static void put_prev_task_idle(struct rq *rq, struct task_struct *prev, struct task_struct *next)
 {
 	dl_server_update_idle_time(rq, prev);
 	scx_update_idle(rq, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void set_next_task_idle(struct rq *rq, struct task_struct *next, bool first)
 {
 	update_idle_core(rq);
-<<<<<<< HEAD
-	schedstat_inc(rq->sched_goidle);
-}
-
-#ifdef CONFIG_SMP
-static struct task_struct *pick_task_idle(struct rq *rq)
-{
-	return rq->idle;
-}
-#endif
-
-struct task_struct *pick_next_task_idle(struct rq *rq)
-{
-	struct task_struct *next = rq->idle;
-
-	set_next_task_idle(rq, next, true);
-
-	return next;
-}
-=======
 	scx_update_idle(rq, true);
 	schedstat_inc(rq->sched_goidle);
 	next->se.exec_start = rq_clock_task(rq);
@@ -493,27 +468,19 @@ struct task_struct *pick_task_idle(struct rq *rq)
 {
 	return rq->idle;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * It is not legal to sleep in the idle task - print a warning
  * message if some code attempts to do it:
  */
-<<<<<<< HEAD
-static void
-=======
 static bool
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 dequeue_task_idle(struct rq *rq, struct task_struct *p, int flags)
 {
 	raw_spin_rq_unlock_irq(rq);
 	printk(KERN_ERR "bad: scheduling from the idle thread!\n");
 	dump_stack();
 	raw_spin_rq_lock_irq(rq);
-<<<<<<< HEAD
-=======
 	return true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -555,20 +522,12 @@ DEFINE_SCHED_CLASS(idle) = {
 
 	.wakeup_preempt		= wakeup_preempt_idle,
 
-<<<<<<< HEAD
-	.pick_next_task		= pick_next_task_idle,
-=======
 	.pick_task		= pick_task_idle,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.put_prev_task		= put_prev_task_idle,
 	.set_next_task          = set_next_task_idle,
 
 #ifdef CONFIG_SMP
 	.balance		= balance_idle,
-<<<<<<< HEAD
-	.pick_task		= pick_task_idle,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.select_task_rq		= select_task_rq_idle,
 	.set_cpus_allowed	= set_cpus_allowed_common,
 #endif

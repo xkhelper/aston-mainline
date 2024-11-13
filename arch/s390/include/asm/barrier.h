@@ -8,22 +8,15 @@
 #ifndef __ASM_BARRIER_H
 #define __ASM_BARRIER_H
 
-<<<<<<< HEAD
-=======
 #include <asm/march.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Force strict CPU ordering.
  * And yes, this is required on UP too when we're talking
  * to devices.
  */
 
-<<<<<<< HEAD
-#ifdef CONFIG_HAVE_MARCH_Z196_FEATURES
-=======
 #ifdef MARCH_HAS_Z196_FEATURES
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Fast-BCR without checkpoint synchronization */
 #define __ASM_BCR_SERIALIZE "bcr 14,0\n"
 #else

@@ -23,10 +23,7 @@ tmpfile=""
 cout=""
 err=""
 capout=""
-<<<<<<< HEAD
-=======
 cappid=""
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ns1=""
 ns2=""
 iptables="iptables"
@@ -65,8 +62,6 @@ unset sflags
 unset fastclose
 unset fullmesh
 unset speed
-<<<<<<< HEAD
-=======
 unset join_csum_ns1
 unset join_csum_ns2
 unset join_fail_nr
@@ -77,7 +72,6 @@ unset join_syn_tx
 unset join_create_err
 unset join_bind_err
 unset join_connect_err
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # generated using "nfbpf_compile '(ip && (ip[54] & 0xf0) == 0x30) ||
 #				  (ip6 && (ip6[74] & 0xf0) == 0x30)'"
@@ -213,8 +207,6 @@ print_skip()
 	mptcp_lib_pr_skip "${@}"
 }
 
-<<<<<<< HEAD
-=======
 # $1: check name; $2: rc
 print_results()
 {
@@ -231,7 +223,6 @@ print_results()
 	fi
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # [ $1: fail msg ]
 mark_as_skipped()
 {
@@ -373,11 +364,7 @@ reset_with_checksum()
 	local ns1_enable=$1
 	local ns2_enable=$2
 
-<<<<<<< HEAD
-	reset "checksum test ${1} ${2}" || return 1
-=======
 	reset "checksum test ${ns1_enable} ${ns2_enable}" || return 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ip netns exec $ns1 sysctl -q net.mptcp.checksum_enabled=$ns1_enable
 	ip netns exec $ns2 sysctl -q net.mptcp.checksum_enabled=$ns2_enable
@@ -879,11 +866,7 @@ chk_cestab_nr()
 	local cestab=$2
 	local count
 
-<<<<<<< HEAD
-	print_check "cestab $cestab"
-=======
 	print_check "currently established: $cestab"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns} "MPTcpExtMPCurrEstab")
 	if [ -z "$count" ]; then
 		print_skip
@@ -905,8 +888,6 @@ check_cestab()
 	fi
 }
 
-<<<<<<< HEAD
-=======
 cond_start_capture()
 {
 	local ns="$1"
@@ -945,7 +926,6 @@ get_port()
 	echo "$((10000 + MPTCP_LIB_TEST_COUNTER - 1))"
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 do_transfer()
 {
 	local listener_ns="$1"
@@ -953,35 +933,6 @@ do_transfer()
 	local cl_proto="$3"
 	local srv_proto="$4"
 	local connect_addr="$5"
-<<<<<<< HEAD
-
-	local port=$((10000 + MPTCP_LIB_TEST_COUNTER - 1))
-	local cappid
-	local FAILING_LINKS=${FAILING_LINKS:-""}
-	local fastclose=${fastclose:-""}
-	local speed=${speed:-"fast"}
-
-	:> "$cout"
-	:> "$sout"
-	:> "$capout"
-
-	if $capture; then
-		local capuser
-		if [ -z $SUDO_USER ] ; then
-			capuser=""
-		else
-			capuser="-Z $SUDO_USER"
-		fi
-
-		capfile=$(printf "mp_join-%02u-%s.pcap" "$MPTCP_LIB_TEST_COUNTER" "${listener_ns}")
-
-		echo "Capturing traffic for test $MPTCP_LIB_TEST_COUNTER into $capfile"
-		ip netns exec ${listener_ns} tcpdump -i any -s 65535 -B 32768 $capuser -w $capfile > "$capout" 2>&1 &
-		cappid=$!
-
-		sleep 1
-	fi
-=======
 	local port
 
 	local FAILING_LINKS=${FAILING_LINKS:-""}
@@ -993,7 +944,6 @@ do_transfer()
 	:> "$sout"
 
 	cond_start_capture ${listener_ns}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	NSTAT_HISTORY=/tmp/${listener_ns}.nstat ip netns exec ${listener_ns} \
 		nstat -n
@@ -1080,14 +1030,7 @@ do_transfer()
 	wait $spid
 	local rets=$?
 
-<<<<<<< HEAD
-	if $capture; then
-	    sleep 1
-	    kill $cappid
-	fi
-=======
 	cond_stop_capture
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	NSTAT_HISTORY=/tmp/${listener_ns}.nstat ip netns exec ${listener_ns} \
 		nstat | grep Tcp > /tmp/${listener_ns}.out
@@ -1103,10 +1046,6 @@ do_transfer()
 		ip netns exec ${connector_ns} ss -Menita 1>&2 -o "dport = :$port"
 		cat /tmp/${connector_ns}.out
 
-<<<<<<< HEAD
-		cat "$capout"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1
 	fi
 
@@ -1123,17 +1062,7 @@ do_transfer()
 	fi
 	rets=$?
 
-<<<<<<< HEAD
-	if [ $retc -eq 0 ] && [ $rets -eq 0 ];then
-		cat "$capout"
-		return 0
-	fi
-
-	cat "$capout"
-	return 1
-=======
 	[ $retc -eq 0 ] && [ $rets -eq 0 ]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 make_file()
@@ -1225,11 +1154,7 @@ chk_csum_nr()
 		csum_ns2=${csum_ns2:1}
 	fi
 
-<<<<<<< HEAD
-	print_check "sum"
-=======
 	print_check "checksum server"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtDataCsumErr")
 	if [ -n "$count" ] && [ "$count" != "$csum_ns1" ]; then
 		extra_msg+=" ns1=$count"
@@ -1242,12 +1167,8 @@ chk_csum_nr()
 	else
 		print_ok
 	fi
-<<<<<<< HEAD
-	print_check "csum"
-=======
 
 	print_check "checksum client"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtDataCsumErr")
 	if [ -n "$count" ] && [ "$count" != "$csum_ns2" ]; then
 		extra_msg+=" ns2=$count"
@@ -1272,11 +1193,8 @@ chk_fail_nr()
 	local count
 	local ns_tx=$ns1
 	local ns_rx=$ns2
-<<<<<<< HEAD
-=======
 	local tx="server"
 	local rx="client"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local extra_msg=""
 	local allow_tx_lost=0
 	local allow_rx_lost=0
@@ -1284,12 +1202,8 @@ chk_fail_nr()
 	if [[ $ns_invert = "invert" ]]; then
 		ns_tx=$ns2
 		ns_rx=$ns1
-<<<<<<< HEAD
-		extra_msg="invert"
-=======
 		tx="client"
 		rx="server"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	if [[ "${fail_tx}" = "-"* ]]; then
@@ -1301,17 +1215,10 @@ chk_fail_nr()
 		fail_rx=${fail_rx:1}
 	fi
 
-<<<<<<< HEAD
-	print_check "ftx"
-	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPFailTx")
-	if [ -n "$count" ] && [ "$count" != "$fail_tx" ]; then
-		extra_msg+=",tx=$count"
-=======
 	print_check "fail tx ${tx}"
 	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPFailTx")
 	if [ -n "$count" ] && [ "$count" != "$fail_tx" ]; then
 		extra_msg+=" tx=$count"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 	if [ -z "$count" ]; then
 		print_skip
@@ -1322,17 +1229,10 @@ chk_fail_nr()
 		print_ok
 	fi
 
-<<<<<<< HEAD
-	print_check "failrx"
-	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPFailRx")
-	if [ -n "$count" ] && [ "$count" != "$fail_rx" ]; then
-		extra_msg+=",rx=$count"
-=======
 	print_check "fail rx ${rx}"
 	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPFailRx")
 	if [ -n "$count" ] && [ "$count" != "$fail_rx" ]; then
 		extra_msg+=" rx=$count"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 	if [ -z "$count" ]; then
 		print_skip
@@ -1354,63 +1254,35 @@ chk_fclose_nr()
 	local count
 	local ns_tx=$ns2
 	local ns_rx=$ns1
-<<<<<<< HEAD
-	local extra_msg=""
-=======
 	local tx="client"
 	local rx="server"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if [[ $ns_invert = "invert" ]]; then
 		ns_tx=$ns1
 		ns_rx=$ns2
-<<<<<<< HEAD
-		extra_msg="invert"
-	fi
-
-	print_check "ctx"
-=======
 		tx="server"
 		rx="client"
 	fi
 
 	print_check "fast close tx ${tx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPFastcloseTx")
 	if [ -z "$count" ]; then
 		print_skip
 	elif [ "$count" != "$fclose_tx" ]; then
-<<<<<<< HEAD
-		extra_msg+=",tx=$count"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fail_test "got $count MP_FASTCLOSE[s] TX expected $fclose_tx"
 	else
 		print_ok
 	fi
 
-<<<<<<< HEAD
-	print_check "fclzrx"
-=======
 	print_check "fast close rx ${rx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPFastcloseRx")
 	if [ -z "$count" ]; then
 		print_skip
 	elif [ "$count" != "$fclose_rx" ]; then
-<<<<<<< HEAD
-		extra_msg+=",rx=$count"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fail_test "got $count MP_FASTCLOSE[s] RX expected $fclose_rx"
 	else
 		print_ok
 	fi
-<<<<<<< HEAD
-
-	print_info "$extra_msg"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 chk_rst_nr()
@@ -1421,28 +1293,17 @@ chk_rst_nr()
 	local count
 	local ns_tx=$ns1
 	local ns_rx=$ns2
-<<<<<<< HEAD
-	local extra_msg=""
-=======
 	local tx="server"
 	local rx="client"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if [[ $ns_invert = "invert" ]]; then
 		ns_tx=$ns2
 		ns_rx=$ns1
-<<<<<<< HEAD
-		extra_msg="invert"
-	fi
-
-	print_check "rtx"
-=======
 		tx="client"
 		rx="server"
 	fi
 
 	print_check "reset tx ${tx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPRstTx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1454,11 +1315,7 @@ chk_rst_nr()
 		print_ok
 	fi
 
-<<<<<<< HEAD
-	print_check "rstrx"
-=======
 	print_check "reset rx ${rx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPRstRx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1469,11 +1326,6 @@ chk_rst_nr()
 	else
 		print_ok
 	fi
-<<<<<<< HEAD
-
-	print_info "$extra_msg"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 chk_infi_nr()
@@ -1482,11 +1334,7 @@ chk_infi_nr()
 	local infi_rx=$2
 	local count
 
-<<<<<<< HEAD
-	print_check "itx"
-=======
 	print_check "infi tx client"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtInfiniteMapTx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1496,11 +1344,7 @@ chk_infi_nr()
 		print_ok
 	fi
 
-<<<<<<< HEAD
-	print_check "infirx"
-=======
 	print_check "infi rx server"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtInfiniteMapRx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1511,8 +1355,6 @@ chk_infi_nr()
 	fi
 }
 
-<<<<<<< HEAD
-=======
 chk_join_tx_nr()
 {
 	local syn_tx=${join_syn_tx:-0}
@@ -1561,20 +1403,11 @@ chk_join_tx_nr()
 	print_results "join Tx" ${rc}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 chk_join_nr()
 {
 	local syn_nr=$1
 	local syn_ack_nr=$2
 	local ack_nr=$3
-<<<<<<< HEAD
-	local csum_ns1=${4:-0}
-	local csum_ns2=${5:-0}
-	local fail_nr=${6:-0}
-	local rst_nr=${7:-0}
-	local infi_nr=${8:-0}
-	local corrupted_pkts=${9:-0}
-=======
 	local csum_ns1=${join_csum_ns1:-0}
 	local csum_ns2=${join_csum_ns2:-0}
 	local fail_nr=${join_fail_nr:-0}
@@ -1582,7 +1415,6 @@ chk_join_nr()
 	local infi_nr=${join_infi_nr:-0}
 	local corrupted_pkts=${join_corrupted_pkts:-0}
 	local rc=${KSFT_PASS}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local count
 	local with_cookie
 
@@ -1590,23 +1422,6 @@ chk_join_nr()
 		print_info "${corrupted_pkts} corrupted pkts"
 	fi
 
-<<<<<<< HEAD
-	print_check "syn"
-	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinSynRx")
-	if [ -z "$count" ]; then
-		print_skip
-	elif [ "$count" != "$syn_nr" ]; then
-		fail_test "got $count JOIN[s] syn expected $syn_nr"
-	else
-		print_ok
-	fi
-
-	print_check "synack"
-	with_cookie=$(ip netns exec $ns2 sysctl -n net.ipv4.tcp_syncookies)
-	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtMPJoinSynAckRx")
-	if [ -z "$count" ]; then
-		print_skip
-=======
 	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinSynRx")
 	if [ -z "$count" ]; then
 		rc=${KSFT_SKIP}
@@ -1620,31 +1435,10 @@ chk_join_nr()
 	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtMPJoinSynAckRx")
 	if [ -z "$count" ]; then
 		rc=${KSFT_SKIP}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	elif [ "$count" != "$syn_ack_nr" ]; then
 		# simult connections exceeding the limit with cookie enabled could go up to
 		# synack validation as the conn limit can be enforced reliably only after
 		# the subflow creation
-<<<<<<< HEAD
-		if [ "$with_cookie" = 2 ] && [ "$count" -gt "$syn_ack_nr" ] && [ "$count" -le "$syn_nr" ]; then
-			print_ok
-		else
-			fail_test "got $count JOIN[s] synack expected $syn_ack_nr"
-		fi
-	else
-		print_ok
-	fi
-
-	print_check "ack"
-	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinAckRx")
-	if [ -z "$count" ]; then
-		print_skip
-	elif [ "$count" != "$ack_nr" ]; then
-		fail_test "got $count JOIN[s] ack expected $ack_nr"
-	else
-		print_ok
-	fi
-=======
 		if [ "$with_cookie" != 2 ] || [ "$count" -le "$syn_ack_nr" ] || [ "$count" -gt "$syn_nr" ]; then
 			rc=${KSFT_FAIL}
 			print_check "synack rx"
@@ -1666,7 +1460,6 @@ chk_join_nr()
 	join_syn_tx="${join_syn_tx:-${syn_nr}}" \
 		chk_join_tx_nr
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if $validate_checksum; then
 		chk_csum_nr $csum_ns1 $csum_ns2
 		chk_fail_nr $fail_nr $fail_nr
@@ -1727,33 +1520,21 @@ chk_add_nr()
 	local mis_ack_nr=0
 	local ns_tx=$ns1
 	local ns_rx=$ns2
-<<<<<<< HEAD
-	local extra_msg=""
-=======
 	local tx=""
 	local rx=""
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local count
 	local timeout
 
 	if [[ $ns_invert = "invert" ]]; then
 		ns_tx=$ns2
 		ns_rx=$ns1
-<<<<<<< HEAD
-		extra_msg="invert"
-=======
 		tx=" client"
 		rx=" server"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	timeout=$(ip netns exec ${ns_tx} sysctl -n net.mptcp.add_addr_timeout)
 
-<<<<<<< HEAD
-	print_check "add"
-=======
 	print_check "add addr rx${rx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtAddAddr")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1765,11 +1546,7 @@ chk_add_nr()
 		print_ok
 	fi
 
-<<<<<<< HEAD
-	print_check "echo"
-=======
 	print_check "add addr echo rx${tx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtEchoAdd")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1780,11 +1557,7 @@ chk_add_nr()
 	fi
 
 	if [ $port_nr -gt 0 ]; then
-<<<<<<< HEAD
-		print_check "pt"
-=======
 		print_check "add addr rx with port${rx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtPortAdd")
 		if [ -z "$count" ]; then
 			print_skip
@@ -1794,11 +1567,7 @@ chk_add_nr()
 			print_ok
 		fi
 
-<<<<<<< HEAD
-		print_check "syn"
-=======
 		print_check "syn rx port${tx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPJoinPortSynRx")
 		if [ -z "$count" ]; then
 			print_skip
@@ -1809,11 +1578,7 @@ chk_add_nr()
 			print_ok
 		fi
 
-<<<<<<< HEAD
-		print_check "synack"
-=======
 		print_check "synack rx port${rx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPJoinPortSynAckRx")
 		if [ -z "$count" ]; then
 			print_skip
@@ -1824,11 +1589,7 @@ chk_add_nr()
 			print_ok
 		fi
 
-<<<<<<< HEAD
-		print_check "ack"
-=======
 		print_check "ack rx port${tx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPJoinPortAckRx")
 		if [ -z "$count" ]; then
 			print_skip
@@ -1839,11 +1600,7 @@ chk_add_nr()
 			print_ok
 		fi
 
-<<<<<<< HEAD
-		print_check "syn"
-=======
 		print_check "syn rx port mismatch${tx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMismatchPortSynRx")
 		if [ -z "$count" ]; then
 			print_skip
@@ -1854,11 +1611,7 @@ chk_add_nr()
 			print_ok
 		fi
 
-<<<<<<< HEAD
-		print_check "ack"
-=======
 		print_check "ack rx port mismatch${tx}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMismatchPortAckRx")
 		if [ -z "$count" ]; then
 			print_skip
@@ -1869,11 +1622,6 @@ chk_add_nr()
 			print_ok
 		fi
 	fi
-<<<<<<< HEAD
-
-	print_info "$extra_msg"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 chk_add_tx_nr()
@@ -1885,11 +1633,7 @@ chk_add_tx_nr()
 
 	timeout=$(ip netns exec $ns1 sysctl -n net.mptcp.add_addr_timeout)
 
-<<<<<<< HEAD
-	print_check "add TX"
-=======
 	print_check "add addr tx"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtAddAddrTx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1901,11 +1645,7 @@ chk_add_tx_nr()
 		print_ok
 	fi
 
-<<<<<<< HEAD
-	print_check "echo TX"
-=======
 	print_check "add addr echo tx"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtEchoAddTx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1925,11 +1665,8 @@ chk_rm_nr()
 	local count
 	local addr_ns=$ns1
 	local subflow_ns=$ns2
-<<<<<<< HEAD
-=======
 	local addr="server"
 	local subflow="client"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local extra_msg=""
 
 	shift 2
@@ -1939,18 +1676,6 @@ chk_rm_nr()
 		shift
 	done
 
-<<<<<<< HEAD
-	if [ -z $invert ]; then
-		addr_ns=$ns1
-		subflow_ns=$ns2
-	elif [ $invert = "true" ]; then
-		addr_ns=$ns2
-		subflow_ns=$ns1
-		extra_msg="invert"
-	fi
-
-	print_check "rm"
-=======
 	if [ "$invert" = "true" ]; then
 		addr_ns=$ns2
 		subflow_ns=$ns1
@@ -1959,7 +1684,6 @@ chk_rm_nr()
 	fi
 
 	print_check "rm addr rx ${addr}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${addr_ns} "MPTcpExtRmAddr")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1969,11 +1693,7 @@ chk_rm_nr()
 		print_ok
 	fi
 
-<<<<<<< HEAD
-	print_check "rmsf"
-=======
 	print_check "rm subflow ${subflow}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${subflow_ns} "MPTcpExtRmSubflow")
 	if [ -z "$count" ]; then
 		print_skip
@@ -1987,11 +1707,7 @@ chk_rm_nr()
 		count=$((count + cnt))
 		if [ "$count" != "$rm_subflow_nr" ]; then
 			suffix="$count in [$rm_subflow_nr:$((rm_subflow_nr*2))]"
-<<<<<<< HEAD
-			extra_msg+=" simult"
-=======
 			extra_msg="simult"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fi
 		if [ $count -ge "$rm_subflow_nr" ] && \
 		   [ "$count" -le "$((rm_subflow_nr *2 ))" ]; then
@@ -2012,11 +1728,7 @@ chk_rm_tx_nr()
 {
 	local rm_addr_tx_nr=$1
 
-<<<<<<< HEAD
-	print_check "rm TX"
-=======
 	print_check "rm addr tx client"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtRmAddrTx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -2035,11 +1747,7 @@ chk_prio_nr()
 	local mpj_syn_ack=$4
 	local count
 
-<<<<<<< HEAD
-	print_check "ptx"
-=======
 	print_check "mp_prio tx server"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPPrioTx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -2049,11 +1757,7 @@ chk_prio_nr()
 		print_ok
 	fi
 
-<<<<<<< HEAD
-	print_check "prx"
-=======
 	print_check "mp_prio rx client"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPPrioRx")
 	if [ -z "$count" ]; then
 		print_skip
@@ -2296,17 +2000,11 @@ subflows_error_tests()
 		pm_nl_set_limits $ns1 0 1
 		pm_nl_set_limits $ns2 0 1
 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow
-<<<<<<< HEAD
-		speed=slow \
-			run_tests $ns1 $ns2 10.0.1.1
-		chk_join_nr 0 0 0
-=======
 		pm_nl_add_endpoint $ns2 10.0.12.2 flags subflow
 		speed=slow \
 			run_tests $ns1 $ns2 10.0.1.1
 		join_bind_err=1 \
 			chk_join_nr 0 0 0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	# multiple subflows, with subflow creation error
@@ -2318,12 +2016,8 @@ subflows_error_tests()
 		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
 		speed=slow \
 			run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 1 1 1
-=======
 		join_syn_tx=2 \
 			chk_join_nr 1 1 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	# multiple subflows, with subflow timeout on MPJ
@@ -2335,12 +2029,8 @@ subflows_error_tests()
 		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
 		speed=slow \
 			run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 1 1 1
-=======
 		join_syn_tx=2 \
 			chk_join_nr 1 1 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	# multiple subflows, check that the endpoint corresponding to
@@ -2361,12 +2051,8 @@ subflows_error_tests()
 
 		# additional subflow could be created only if the PM select
 		# the later endpoint, skipping the already used one
-<<<<<<< HEAD
-		chk_join_nr 1 1 1
-=======
 		join_syn_tx=2 \
 			chk_join_nr 1 1 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 }
 
@@ -2452,12 +2138,8 @@ signal_address_tests()
 		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
 		pm_nl_set_limits $ns2 3 3
 		run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 1 1 1
-=======
 		join_syn_tx=3 \
 			chk_join_nr 1 1 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_add_nr 3 3
 	fi
 
@@ -2625,12 +2307,8 @@ add_addr_timeout_tests()
 		pm_nl_set_limits $ns2 2 2
 		speed=10 \
 			run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 1 1 1
-=======
 		join_syn_tx=2 \
 			chk_join_nr 1 1 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_add_nr 8 0
 	fi
 }
@@ -2730,12 +2408,8 @@ remove_tests()
 		pm_nl_set_limits $ns2 2 2
 		addr_nr_ns1=-3 speed=10 \
 			run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 1 1 1
-=======
 		join_syn_tx=2 join_connect_err=1 \
 			chk_join_nr 1 1 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_add_nr 3 3
 		chk_rm_nr 3 1 invert
 		chk_rst_nr 0 0
@@ -2800,12 +2474,8 @@ remove_tests()
 		pm_nl_set_limits $ns2 3 3
 		addr_nr_ns1=-8 speed=slow \
 			run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 1 1 1
-=======
 		join_syn_tx=3 \
 			chk_join_nr 1 1 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_add_nr 3 3
 		chk_rm_nr 3 1 invert
 		chk_rst_nr 0 0
@@ -3216,8 +2886,6 @@ verify_listener_events()
 	fail_test
 }
 
-<<<<<<< HEAD
-=======
 chk_mpc_endp_attempt()
 {
 	local retl=$1
@@ -3244,7 +2912,6 @@ chk_mpc_endp_attempt()
 	fi
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 add_addr_ports_tests()
 {
 	# signal address with port
@@ -3335,8 +3002,6 @@ add_addr_ports_tests()
 		chk_join_nr 2 2 2
 		chk_add_nr 2 2 2
 	fi
-<<<<<<< HEAD
-=======
 
 	if reset "port-based signal endpoint must not accept mpc"; then
 		local port retl count
@@ -3353,7 +3018,6 @@ add_addr_ports_tests()
 
 		chk_mpc_endp_attempt ${retl} 1
 	fi
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 syncookies_tests()
@@ -3423,39 +3087,6 @@ syncookies_tests()
 
 checksum_tests()
 {
-<<<<<<< HEAD
-	# checksum test 0 0
-	if reset_with_checksum 0 0; then
-		pm_nl_set_limits $ns1 0 1
-		pm_nl_set_limits $ns2 0 1
-		run_tests $ns1 $ns2 10.0.1.1
-		chk_join_nr 0 0 0
-	fi
-
-	# checksum test 1 1
-	if reset_with_checksum 1 1; then
-		pm_nl_set_limits $ns1 0 1
-		pm_nl_set_limits $ns2 0 1
-		run_tests $ns1 $ns2 10.0.1.1
-		chk_join_nr 0 0 0
-	fi
-
-	# checksum test 0 1
-	if reset_with_checksum 0 1; then
-		pm_nl_set_limits $ns1 0 1
-		pm_nl_set_limits $ns2 0 1
-		run_tests $ns1 $ns2 10.0.1.1
-		chk_join_nr 0 0 0
-	fi
-
-	# checksum test 1 0
-	if reset_with_checksum 1 0; then
-		pm_nl_set_limits $ns1 0 1
-		pm_nl_set_limits $ns2 0 1
-		run_tests $ns1 $ns2 10.0.1.1
-		chk_join_nr 0 0 0
-	fi
-=======
 	local checksum_enable
 	for checksum_enable in "0 0" "1 1" "0 1" "1 0"; do
 		# checksum test 0 0, 1 1, 0 1, 1 0
@@ -3466,7 +3097,6 @@ checksum_tests()
 			chk_join_nr 0 0 0
 		fi
 	done
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 deny_join_id0_tests()
@@ -3657,12 +3287,8 @@ fastclose_tests()
 		MPTCP_LIB_SUBTEST_FLAKY=1
 		test_linkfail=1024 fastclose=server \
 			run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 0 0 0 0 0 0 1
-=======
 		join_rst_nr=1 \
 			chk_join_nr 0 0 0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_fclose_nr 1 1 invert
 		chk_rst_nr 1 1
 	fi
@@ -3681,14 +3307,10 @@ fail_tests()
 		MPTCP_LIB_SUBTEST_FLAKY=1
 		test_linkfail=128 \
 			run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 0 0 0 +1 +0 1 0 1 "$(pedit_action_pkts)"
-=======
 		join_csum_ns1=+1 join_csum_ns2=+0 \
 			join_fail_nr=1 join_rst_nr=0 join_infi_nr=1 \
 			join_corrupted_pkts="$(pedit_action_pkts)" \
 			chk_join_nr 0 0 0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_fail_nr 1 -1 invert
 	fi
 
@@ -3701,14 +3323,10 @@ fail_tests()
 		pm_nl_add_endpoint $ns2 10.0.2.2 dev ns2eth2 flags subflow
 		test_linkfail=1024 \
 			run_tests $ns1 $ns2 10.0.1.1
-<<<<<<< HEAD
-		chk_join_nr 1 1 1 1 0 1 1 0 "$(pedit_action_pkts)"
-=======
 		join_csum_ns1=1 join_csum_ns2=0 \
 			join_fail_nr=1 join_rst_nr=1 join_infi_nr=0 \
 			join_corrupted_pkts="$(pedit_action_pkts)" \
 			chk_join_nr 1 1 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 }
 
@@ -3960,13 +3578,8 @@ userspace_tests()
 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
 		set_userspace_pm $ns1
 		pm_nl_set_limits $ns2 2 2
-<<<<<<< HEAD
-		speed=5 \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ speed=5 \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 		wait_mpj $ns1
 		userspace_pm_add_addr $ns1 10.0.2.1 10
@@ -3998,13 +3611,8 @@ userspace_tests()
 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
 		set_userspace_pm $ns2
 		pm_nl_set_limits $ns1 0 1
-<<<<<<< HEAD
-		speed=5 \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ speed=5 \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 		wait_mpj $ns2
 		userspace_pm_add_sf $ns2 10.0.3.2 20
@@ -4031,13 +3639,8 @@ userspace_tests()
 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
 		set_userspace_pm $ns2
 		pm_nl_set_limits $ns1 0 1
-<<<<<<< HEAD
-		speed=5 \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ speed=5 \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 		wait_mpj $ns2
 		chk_mptcp_info subflows 0 subflows 0
@@ -4057,13 +3660,8 @@ userspace_tests()
 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
 		set_userspace_pm $ns2
 		pm_nl_set_limits $ns1 0 1
-<<<<<<< HEAD
-		speed=5 \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ speed=5 \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 		wait_mpj $ns2
 		userspace_pm_add_sf $ns2 10.0.3.2 20
@@ -4086,13 +3684,8 @@ userspace_tests()
 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
 		set_userspace_pm $ns1
 		pm_nl_set_limits $ns2 1 1
-<<<<<<< HEAD
-		speed=5 \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ speed=5 \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 		wait_mpj $ns1
 		userspace_pm_add_addr $ns1 10.0.2.1 10
@@ -4122,13 +3715,8 @@ endpoint_tests()
 		pm_nl_set_limits $ns1 2 2
 		pm_nl_set_limits $ns2 2 2
 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-<<<<<<< HEAD
-		speed=slow \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ speed=slow \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 
 		wait_mpj $ns1
@@ -4154,13 +3742,8 @@ endpoint_tests()
 		pm_nl_set_limits $ns2 0 3
 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
-<<<<<<< HEAD
-		test_linkfail=4 speed=5 \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ test_linkfail=4 speed=5 \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 
 		wait_mpj $ns2
@@ -4222,12 +3805,8 @@ endpoint_tests()
 		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_ESTABLISHED 6
 		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 5 # one has been closed before estab
 
-<<<<<<< HEAD
-		chk_join_nr 6 6 6
-=======
 		join_syn_tx=7 \
 			chk_join_nr 6 6 6
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_rm_nr 4 4
 	fi
 
@@ -4240,13 +3819,8 @@ endpoint_tests()
 		# broadcast IP: no packet for this address will be received on ns1
 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
-<<<<<<< HEAD
-		test_linkfail=4 speed=5 \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ test_linkfail=4 speed=5 \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 
 		wait_mpj $ns2
@@ -4304,12 +3878,8 @@ endpoint_tests()
 		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_ESTABLISHED 5
 		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 3
 
-<<<<<<< HEAD
-		chk_join_nr 5 5 5
-=======
 		join_connect_err=1 \
 			chk_join_nr 5 5 5
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_add_nr 6 6
 		chk_rm_nr 4 3 invert
 	fi
@@ -4322,13 +3892,8 @@ endpoint_tests()
 		# broadcast IP: no packet for this address will be received on ns1
 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-<<<<<<< HEAD
-		test_linkfail=4 speed=20 \
-			run_tests $ns1 $ns2 10.0.1.1 &
-=======
 		{ test_linkfail=4 speed=20 \
 			run_tests $ns1 $ns2 10.0.1.1 & } 2>/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		local tests_pid=$!
 
 		wait_attempt_fail $ns2
@@ -4345,12 +3910,8 @@ endpoint_tests()
 		wait_mpj $ns2
 		mptcp_lib_kill_wait $tests_pid
 
-<<<<<<< HEAD
-		chk_join_nr 2 2 2
-=======
 		join_syn_tx=3 join_connect_err=1 \
 			chk_join_nr 2 2 2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chk_add_nr 2 2
 		chk_rm_nr 1 0 invert
 	fi
@@ -4455,17 +4016,11 @@ if [ ${#tests[@]} -eq 0 ]; then
 	tests=("${all_tests_names[@]}")
 fi
 
-<<<<<<< HEAD
-for subtests in "${tests[@]}"; do
-	"${subtests}"
-done
-=======
 mptcp_lib_subtests_last_ts_reset
 for subtests in "${tests[@]}"; do
 	"${subtests}"
 done
 append_prev_results
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 if [ ${ret} -ne 0 ]; then
 	echo
@@ -4476,10 +4031,6 @@ if [ ${ret} -ne 0 ]; then
 	echo
 fi
 
-<<<<<<< HEAD
-append_prev_results
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 mptcp_lib_result_print_all_tap
 
 exit $ret

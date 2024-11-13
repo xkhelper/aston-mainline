@@ -36,12 +36,8 @@ struct etr_buf_hw {
  * etr_perf_buffer - Perf buffer used for ETR
  * @drvdata		- The ETR drvdaga this buffer has been allocated for.
  * @etr_buf		- Actual buffer used by the ETR
-<<<<<<< HEAD
- * @pid			- The PID this etr_perf_buffer belongs to.
-=======
  * @pid			- The PID of the session owner that etr_perf_buffer
  *			  belongs to.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @snaphost		- Perf session mode
  * @nr_pages		- Number of pages in the ring buffer.
  * @pages		- Array of Pages in the ring buffer.
@@ -266,10 +262,7 @@ void tmc_free_sg_table(struct tmc_sg_table *sg_table)
 {
 	tmc_free_table_pages(sg_table);
 	tmc_free_data_pages(sg_table);
-<<<<<<< HEAD
-=======
 	kfree(sg_table);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(tmc_free_sg_table);
 
@@ -351,10 +344,6 @@ struct tmc_sg_table *tmc_alloc_sg_table(struct device *dev,
 		rc = tmc_alloc_table_pages(sg_table);
 	if (rc) {
 		tmc_free_sg_table(sg_table);
-<<<<<<< HEAD
-		kfree(sg_table);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ERR_PTR(rc);
 	}
 
@@ -1674,11 +1663,7 @@ static int tmc_enable_etr_sink_perf(struct coresight_device *csdev, void *data)
 		goto unlock_out;
 	}
 
-<<<<<<< HEAD
-	/* Get a handle on the pid of the process to monitor */
-=======
 	/* Get a handle on the pid of the session owner */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pid = etr_perf->pid;
 
 	/* Do not proceed if this device is associated with another session */

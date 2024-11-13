@@ -660,26 +660,6 @@ static struct rsnd_dai *rsnd_dai_to_rdai(struct snd_soc_dai *dai)
 	return rsnd_rdai_get(priv, dai->id);
 }
 
-<<<<<<< HEAD
-/*
- *	rsnd_soc_dai functions
- */
-void rsnd_dai_period_elapsed(struct rsnd_dai_stream *io)
-{
-	struct snd_pcm_substream *substream = io->substream;
-
-	/*
-	 * this function should be called...
-	 *
-	 * - if rsnd_dai_pointer_update() returns true
-	 * - without spin lock
-	 */
-
-	snd_pcm_period_elapsed(substream);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void rsnd_dai_stream_init(struct rsnd_dai_stream *io,
 				struct snd_pcm_substream *substream)
 {
@@ -1301,13 +1281,9 @@ audio_graph:
 		if (!of_node_name_eq(ports, "ports") &&
 		    !of_node_name_eq(ports, "port"))
 			continue;
-<<<<<<< HEAD
-		priv->component_dais[i] = of_graph_get_endpoint_count(ports);
-=======
 		priv->component_dais[i] =
 			of_graph_get_endpoint_count(of_node_name_eq(ports, "ports") ?
 						    ports : np);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nr += priv->component_dais[i];
 		i++;
 		if (i >= RSND_MAX_COMPONENT) {
@@ -1519,12 +1495,8 @@ static int rsnd_dai_probe(struct rsnd_priv *priv)
 			if (!of_node_name_eq(ports, "ports") &&
 			    !of_node_name_eq(ports, "port"))
 				continue;
-<<<<<<< HEAD
-			for_each_endpoint_of_node(ports, dai_np) {
-=======
 			for_each_endpoint_of_node(of_node_name_eq(ports, "ports") ?
 						  ports : np, dai_np) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				__rsnd_dai_probe(priv, dai_np, dai_np, 0, dai_i);
 				if (!rsnd_is_gen1(priv) && !rsnd_is_gen2(priv)) {
 					rdai = rsnd_rdai_get(priv, dai_i);
@@ -2118,11 +2090,7 @@ static struct platform_driver rsnd_driver = {
 		.of_match_table = rsnd_of_match,
 	},
 	.probe		= rsnd_probe,
-<<<<<<< HEAD
-	.remove_new	= rsnd_remove,
-=======
 	.remove		= rsnd_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(rsnd_driver);
 

@@ -21,16 +21,6 @@
 #include <openssl/bio.h>
 #include <openssl/pem.h>
 #include <openssl/err.h>
-<<<<<<< HEAD
-#include <openssl/engine.h>
-
-/*
- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
- *
- * Remove this if/when that API is no longer used
- */
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-=======
 #if OPENSSL_VERSION_MAJOR >= 3
 # define USE_PKCS11_PROVIDER
 # include <openssl/provider.h>
@@ -42,7 +32,6 @@
 # endif
 #endif
 #include "ssl-common.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define PKEY_ID_PKCS7 2
 
@@ -54,44 +43,6 @@ void format(void)
 	exit(2);
 }
 
-<<<<<<< HEAD
-static void display_openssl_errors(int l)
-{
-	const char *file;
-	char buf[120];
-	int e, line;
-
-	if (ERR_peek_error() == 0)
-		return;
-	fprintf(stderr, "At main.c:%d:\n", l);
-
-	while ((e = ERR_get_error_line(&file, &line))) {
-		ERR_error_string(e, buf);
-		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
-	}
-}
-
-static void drain_openssl_errors(void)
-{
-	const char *file;
-	int line;
-
-	if (ERR_peek_error() == 0)
-		return;
-	while (ERR_get_error_line(&file, &line)) {}
-}
-
-#define ERR(cond, fmt, ...)				\
-	do {						\
-		bool __cond = (cond);			\
-		display_openssl_errors(__LINE__);	\
-		if (__cond) {				\
-			err(1, fmt, ## __VA_ARGS__);	\
-		}					\
-	} while(0)
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char *key_pass;
 static BIO *wb;
 static char *cert_dst;
@@ -111,8 +62,6 @@ static void write_cert(X509 *x509)
 		fprintf(stderr, "Extracted cert: %s\n", buf);
 }
 
-<<<<<<< HEAD
-=======
 static X509 *load_cert_pkcs11(const char *cert_src)
 {
 	X509 *cert = NULL;
@@ -173,7 +122,6 @@ static X509 *load_cert_pkcs11(const char *cert_src)
 	return cert;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int main(int argc, char **argv)
 {
 	char *cert_src;
@@ -202,35 +150,10 @@ int main(int argc, char **argv)
 		fclose(f);
 		exit(0);
 	} else if (!strncmp(cert_src, "pkcs11:", 7)) {
-<<<<<<< HEAD
-		ENGINE *e;
-		struct {
-			const char *cert_id;
-			X509 *cert;
-		} parms;
-
-		parms.cert_id = cert_src;
-		parms.cert = NULL;
-
-		ENGINE_load_builtin_engines();
-		drain_openssl_errors();
-		e = ENGINE_by_id("pkcs11");
-		ERR(!e, "Load PKCS#11 ENGINE");
-		if (ENGINE_init(e))
-			drain_openssl_errors();
-		else
-			ERR(1, "ENGINE_init");
-		if (key_pass)
-			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
-		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
-		ERR(!parms.cert, "Get X.509 from PKCS#11");
-		write_cert(parms.cert);
-=======
 		X509 *cert = load_cert_pkcs11(cert_src);
 
 		ERR(!cert, "load_cert_pkcs11 failed");
 		write_cert(cert);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		BIO *b;
 		X509 *x509;

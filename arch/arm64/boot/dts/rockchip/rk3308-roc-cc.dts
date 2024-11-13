@@ -36,22 +36,14 @@
 
 		power_led: led-0 {
 			label = "firefly:red:power";
-<<<<<<< HEAD
-			linux,default-trigger = "ir-power-click";
-=======
 			linux,default-trigger = "default-on";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			default-state = "on";
 			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
 		};
 
 		user_led: led-1 {
 			label = "firefly:blue:user";
-<<<<<<< HEAD
-			linux,default-trigger = "ir-user-click";
-=======
 			linux,default-trigger = "rc-feedback";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			default-state = "off";
 			gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_HIGH>;
 		};

@@ -34,32 +34,6 @@
 };
 
 &tlmm {
-<<<<<<< HEAD
-	serial_pins: serial_pinmux {
-		mux {
-			pins = "gpio60", "gpio61";
-			function = "blsp_uart0";
-			bias-disable;
-		};
-	};
-
-	spi_0_pins: spi_0_pinmux {
-		pinmux {
-			function = "blsp_spi0";
-			pins = "gpio55", "gpio56", "gpio57";
-		};
-		pinmux_cs {
-			function = "gpio";
-			pins = "gpio54";
-		};
-		pinconf {
-			pins = "gpio55", "gpio56", "gpio57";
-			drive-strength = <12>;
-			bias-disable;
-		};
-		pinconf_cs {
-			pins = "gpio54";
-=======
 	serial_pins: serial-state {
 		pins = "gpio60", "gpio61";
 		function = "blsp_uart0";
@@ -76,7 +50,6 @@
 		spi0-cs-pins {
 			pins = "gpio54";
 			function = "gpio";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			drive-strength = <2>;
 			bias-disable;
 			output-high;

@@ -2296,16 +2296,6 @@ static int br_vlan_rtm_process(struct sk_buff *skb, struct nlmsghdr *nlh,
 	return err;
 }
 
-<<<<<<< HEAD
-void br_vlan_rtnl_init(void)
-{
-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_GETVLAN, NULL,
-			     br_vlan_rtm_dump, 0);
-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_NEWVLAN,
-			     br_vlan_rtm_process, NULL, 0);
-	rtnl_register_module(THIS_MODULE, PF_BRIDGE, RTM_DELVLAN,
-			     br_vlan_rtm_process, NULL, 0);
-=======
 static const struct rtnl_msg_handler br_vlan_rtnl_msg_handlers[] = {
 	{THIS_MODULE, PF_BRIDGE, RTM_NEWVLAN, br_vlan_rtm_process, NULL, 0},
 	{THIS_MODULE, PF_BRIDGE, RTM_DELVLAN, br_vlan_rtm_process, NULL, 0},
@@ -2315,16 +2305,9 @@ static const struct rtnl_msg_handler br_vlan_rtnl_msg_handlers[] = {
 int br_vlan_rtnl_init(void)
 {
 	return rtnl_register_many(br_vlan_rtnl_msg_handlers);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void br_vlan_rtnl_uninit(void)
 {
-<<<<<<< HEAD
-	rtnl_unregister(PF_BRIDGE, RTM_GETVLAN);
-	rtnl_unregister(PF_BRIDGE, RTM_NEWVLAN);
-	rtnl_unregister(PF_BRIDGE, RTM_DELVLAN);
-=======
 	rtnl_unregister_many(br_vlan_rtnl_msg_handlers);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

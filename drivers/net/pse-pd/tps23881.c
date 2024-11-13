@@ -8,10 +8,7 @@
 #include <linux/bitfield.h>
 #include <linux/delay.h>
 #include <linux/firmware.h>
-<<<<<<< HEAD
-=======
 #include <linux/gpio/consumer.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/i2c.h>
 #include <linux/module.h>
 #include <linux/of.h>
@@ -741,10 +738,7 @@ static int tps23881_i2c_probe(struct i2c_client *client)
 {
 	struct device *dev = &client->dev;
 	struct tps23881_priv *priv;
-<<<<<<< HEAD
-=======
 	struct gpio_desc *reset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 	u8 val;
 
@@ -757,8 +751,6 @@ static int tps23881_i2c_probe(struct i2c_client *client)
 	if (!priv)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
 	reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
 	if (IS_ERR(reset))
 		return dev_err_probe(&client->dev, PTR_ERR(reset), "Failed to get reset GPIO\n");
@@ -778,7 +770,6 @@ static int tps23881_i2c_probe(struct i2c_client *client)
 		msleep(50);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = i2c_smbus_read_byte_data(client, TPS23881_REG_DEVID);
 	if (ret < 0)
 		return ret;

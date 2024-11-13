@@ -91,8 +91,6 @@ static const struct reg_sequence rt1320_blind_write[] = {
 	{ 0xd486, 0xc3 },
 };
 
-<<<<<<< HEAD
-=======
 static const struct reg_sequence rt1320_vc_blind_write[] = {
 	{ 0xc003, 0xe0 },
 	{ 0xe80a, 0x01 },
@@ -2114,7 +2112,6 @@ static const struct reg_sequence rt1320_vc_patch_code_write[] = {
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23, RT1320_SDCA_CTL_REQ_POWER_STATE, 0), 0x03 },
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The 'patch code' is written to the patch code area.
  * The patch code area is used for SDCA register expansion flexibility.
@@ -3442,21 +3439,13 @@ static const struct reg_sequence rt1320_patch_code_write[] = {
 static const struct reg_default rt1320_reg_defaults[] = {
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_FU21, RT1320_SDCA_CTL_FU_MUTE, CH_01), 0x01 },
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_FU21, RT1320_SDCA_CTL_FU_MUTE, CH_02), 0x01 },
-<<<<<<< HEAD
-=======
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE27, RT1320_SDCA_CTL_REQ_POWER_STATE, 0), 0x03 },
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23, RT1320_SDCA_CTL_REQ_POWER_STATE, 0), 0x03 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PPU21, RT1320_SDCA_CTL_POSTURE_NUMBER, 0), 0x00 },
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_CS113, RT1320_SDCA_CTL_SAMPLE_FREQ_INDEX, 0), 0x09 },
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_CS14, RT1320_SDCA_CTL_SAMPLE_FREQ_INDEX, 0), 0x0b },
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_CS21, RT1320_SDCA_CTL_SAMPLE_FREQ_INDEX, 0), 0x09 },
-<<<<<<< HEAD
-	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE27, RT1320_SDCA_CTL_REQ_POWER_STATE, 0), 0x03 },
-	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23, RT1320_SDCA_CTL_REQ_POWER_STATE, 0), 0x03 },
-=======
 	{ SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23, RT1320_SDCA_CTL_ACTUAL_POWER_STATE, 0), 0x03 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct reg_default rt1320_mbq_defaults[] = {
@@ -3517,23 +3506,6 @@ static bool rt1320_readable_register(struct device *dev, unsigned int reg)
 	case 0xde00 ... 0xde09:
 	case 0xdf00 ... 0xdf1b:
 	case 0xe000 ... 0xe847:
-<<<<<<< HEAD
-	case 0xf717 ... 0xf719:
-	case 0xf720 ... 0xf723:
-	case 0x1000f008:
-	case 0x3fe2e000 ... 0x3fe2e003:
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT0, RT1320_SDCA_CTL_FUNC_STATUS, 0):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_FU21, RT1320_SDCA_CTL_FU_MUTE, CH_01):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_FU21, RT1320_SDCA_CTL_FU_MUTE, CH_02):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PPU21, RT1320_SDCA_CTL_POSTURE_NUMBER, 0):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23, RT1320_SDCA_CTL_REQ_POWER_STATE, 0):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE27, RT1320_SDCA_CTL_REQ_POWER_STATE, 0):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_CS113, RT1320_SDCA_CTL_SAMPLE_FREQ_INDEX, 0):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_CS14, RT1320_SDCA_CTL_SAMPLE_FREQ_INDEX, 0):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_CS21, RT1320_SDCA_CTL_SAMPLE_FREQ_INDEX, 0):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_SAPU, RT1320_SDCA_CTL_SAPU_PROTECTION_MODE, 0):
-	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_SAPU, RT1320_SDCA_CTL_SAPU_PROTECTION_STATUS, 0):
-=======
 	case 0xf01e:
 	case 0xf717 ... 0xf719:
 	case 0xf720 ... 0xf723:
@@ -3564,7 +3536,6 @@ static bool rt1320_readable_register(struct device *dev, unsigned int reg)
 	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_SAPU, RT1320_SDCA_CTL_SAPU_PROTECTION_STATUS, 0):
 	/* 0x41081980 */
 	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23, RT1320_SDCA_CTL_ACTUAL_POWER_STATE, 0):
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	default:
 		return false;
@@ -3574,12 +3545,9 @@ static bool rt1320_readable_register(struct device *dev, unsigned int reg)
 static bool rt1320_volatile_register(struct device *dev, unsigned int reg)
 {
 	switch (reg) {
-<<<<<<< HEAD
-=======
 	case 0xc000:
 	case 0xc003:
 	case 0xc081:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case 0xc402 ... 0xc406:
 	case 0xc48c ... 0xc48f:
 	case 0xc560:
@@ -3617,31 +3585,21 @@ static bool rt1320_volatile_register(struct device *dev, unsigned int reg)
 	case 0xde02:
 	case 0xdf14 ... 0xdf1b:
 	case 0xe83c ... 0xe847:
-<<<<<<< HEAD
-=======
 	case 0xf01e:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case 0xf717 ... 0xf719:
 	case 0xf720 ... 0xf723:
 	case 0x10000000 ... 0x10007fff:
 	case 0x1000c000 ... 0x1000dfff:
 	case 0x1000f008:
-<<<<<<< HEAD
-	case 0x3fc2bfc4 ... 0x3fc2bfc7:
-=======
 	case 0x1000f021:
 	case 0x3fc2ab80 ... 0x3fc2abd4:
 	case 0x3fc2bf80 ... 0x3fc2bf83:
 	case 0x3fc2bfc0 ... 0x3fc2bfc7:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case 0x3fe2e000 ... 0x3fe2e003:
 	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT0, RT1320_SDCA_CTL_FUNC_STATUS, 0):
 	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_SAPU, RT1320_SDCA_CTL_SAPU_PROTECTION_MODE, 0):
 	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_SAPU, RT1320_SDCA_CTL_SAPU_PROTECTION_STATUS, 0):
-<<<<<<< HEAD
-=======
 	case SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23, RT1320_SDCA_CTL_ACTUAL_POWER_STATE, 0):
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	default:
 		return false;
@@ -3664,11 +3622,7 @@ static const struct regmap_config rt1320_sdw_regmap = {
 	.val_bits = 8,
 	.readable_reg = rt1320_readable_register,
 	.volatile_reg = rt1320_volatile_register,
-<<<<<<< HEAD
-	.max_register = 0x41081488,
-=======
 	.max_register = 0x41081980,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_defaults = rt1320_reg_defaults,
 	.num_reg_defaults = ARRAY_SIZE(rt1320_reg_defaults),
 	.cache_type = REGCACHE_MAPLE,
@@ -3754,8 +3708,6 @@ static int rt1320_read_prop(struct sdw_slave *slave)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int rt1320_pde_transition_delay(struct rt1320_sdw_priv *rt1320, unsigned char ps)
 {
 	unsigned int delay = 1000, val;
@@ -3813,7 +3765,6 @@ static void rt1320_vc_preset(struct rt1320_sdw_priv *rt1320)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rt1320_io_init(struct device *dev, struct sdw_slave *slave)
 {
 	struct rt1320_sdw_priv *rt1320 = dev_get_drvdata(dev);
@@ -3847,12 +3798,6 @@ static int rt1320_io_init(struct device *dev, struct sdw_slave *slave)
 	dev_dbg(dev, "%s amp func_status=0x%x\n", __func__, amp_func_status);
 
 	/* initialization write */
-<<<<<<< HEAD
-	if ((amp_func_status & FUNCTION_NEEDS_INITIALIZATION) || (!rt1320->first_hw_init)) {
-		regmap_multi_reg_write(rt1320->regmap, rt1320_blind_write, ARRAY_SIZE(rt1320_blind_write));
-		regmap_multi_reg_write(rt1320->regmap, rt1320_patch_code_write,
-			ARRAY_SIZE(rt1320_patch_code_write));
-=======
 	if ((amp_func_status & FUNCTION_NEEDS_INITIALIZATION)) {
 		if (rt1320->version_id < RT1320_VC) {
 			regmap_multi_reg_write(rt1320->regmap, rt1320_blind_write, ARRAY_SIZE(rt1320_blind_write));
@@ -3861,17 +3806,12 @@ static int rt1320_io_init(struct device *dev, struct sdw_slave *slave)
 		} else if (rt1320->version_id == RT1320_VC) {
 			rt1320_vc_preset(rt1320);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		regmap_write(rt1320->regmap,
 			SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT0, RT1320_SDCA_CTL_FUNC_STATUS, 0),
 			FUNCTION_NEEDS_INITIALIZATION);
 	}
-<<<<<<< HEAD
-	if (!rt1320->first_hw_init) {
-=======
 	if (!rt1320->first_hw_init && rt1320->version_id == RT1320_VA) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		regmap_write(rt1320->regmap, SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23,
 			RT1320_SDCA_CTL_REQ_POWER_STATE, 0), 0);
 		regmap_read(rt1320->regmap, RT1320_HIFI_VER_0, &val);
@@ -3942,24 +3882,14 @@ static int rt1320_pde23_event(struct snd_soc_dapm_widget *w,
 	case SND_SOC_DAPM_POST_PMU:
 		regmap_write(rt1320->regmap,
 			SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23,
-<<<<<<< HEAD
-				RT1320_SDCA_CTL_REQ_POWER_STATE, 0),
-				ps0);
-=======
 				RT1320_SDCA_CTL_REQ_POWER_STATE, 0), ps0);
 		rt1320_pde_transition_delay(rt1320, ps0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case SND_SOC_DAPM_PRE_PMD:
 		regmap_write(rt1320->regmap,
 			SDW_SDCA_CTL(FUNC_NUM_AMP, RT1320_SDCA_ENT_PDE23,
-<<<<<<< HEAD
-				RT1320_SDCA_CTL_REQ_POWER_STATE, 0),
-				ps3);
-=======
 				RT1320_SDCA_CTL_REQ_POWER_STATE, 0), ps3);
 		rt1320_pde_transition_delay(rt1320, ps3);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		break;
@@ -3975,11 +3905,7 @@ static int rt1320_set_gain_put(struct snd_kcontrol *kcontrol,
 	struct soc_mixer_control *mc =
 		(struct soc_mixer_control *)kcontrol->private_value;
 	struct rt1320_sdw_priv *rt1320 = snd_soc_component_get_drvdata(component);
-<<<<<<< HEAD
-	unsigned int read_l, read_r, gain_l_val, gain_r_val;
-=======
 	unsigned int gain_l_val, gain_r_val;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int lvalue, rvalue;
 	const unsigned int interval_offset = 0xc0;
 
@@ -4008,16 +3934,7 @@ static int rt1320_set_gain_put(struct snd_kcontrol *kcontrol,
 	/* Rch */
 	regmap_write(rt1320->mbq_regmap, mc->rreg, gain_r_val);
 
-<<<<<<< HEAD
-	regmap_read(rt1320->mbq_regmap, mc->reg, &read_l);
-	regmap_read(rt1320->mbq_regmap, mc->rreg, &read_r);
-	if (read_r == gain_r_val && read_l == gain_l_val)
-		return 1;
-
-	return -EIO;
-=======
 	return 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rt1320_set_gain_get(struct snd_kcontrol *kcontrol,

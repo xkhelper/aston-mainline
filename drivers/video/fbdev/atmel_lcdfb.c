@@ -1299,11 +1299,7 @@ static int atmel_lcdfb_resume(struct platform_device *pdev)
 
 static struct platform_driver atmel_lcdfb_driver = {
 	.probe		= atmel_lcdfb_probe,
-<<<<<<< HEAD
-	.remove_new	= atmel_lcdfb_remove,
-=======
 	.remove		= atmel_lcdfb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.suspend	= atmel_lcdfb_suspend,
 	.resume		= atmel_lcdfb_resume,
 	.driver		= {

@@ -63,12 +63,8 @@ extern asmlinkage void schedule_tail(struct task_struct *prev);
 extern void init_idle(struct task_struct *idle, int cpu);
 
 extern int sched_fork(unsigned long clone_flags, struct task_struct *p);
-<<<<<<< HEAD
-extern void sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs);
-=======
 extern int sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs);
 extern void sched_cancel_fork(struct task_struct *p);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void sched_post_fork(struct task_struct *p);
 extern void sched_dead(struct task_struct *p);
 
@@ -124,14 +120,11 @@ static inline struct task_struct *get_task_struct(struct task_struct *t)
 	return t;
 }
 
-<<<<<<< HEAD
-=======
 static inline struct task_struct *tryget_task_struct(struct task_struct *t)
 {
 	return refcount_inc_not_zero(&t->usage) ? t : NULL;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void __put_task_struct(struct task_struct *t);
 extern void __put_task_struct_rcu_cb(struct rcu_head *rhp);
 

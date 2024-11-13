@@ -417,16 +417,10 @@ xfs_refcountbt_block_maxrecs(
 /*
  * Calculate the number of records in a refcount btree block.
  */
-<<<<<<< HEAD
-int
-xfs_refcountbt_maxrecs(
-	int			blocklen,
-=======
 unsigned int
 xfs_refcountbt_maxrecs(
 	struct xfs_mount	*mp,
 	unsigned int		blocklen,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool			leaf)
 {
 	blocklen -= XFS_REFCOUNT_BLOCK_LEN;

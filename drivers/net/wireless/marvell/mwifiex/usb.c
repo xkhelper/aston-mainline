@@ -745,11 +745,6 @@ static void mwifiex_usb_port_resync(struct mwifiex_adapter *adapter)
 	if (adapter->usb_mc_status) {
 		for (i = 0; i < adapter->priv_num; i++) {
 			priv = adapter->priv[i];
-<<<<<<< HEAD
-			if (!priv)
-				continue;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if ((priv->bss_role == MWIFIEX_BSS_ROLE_UAP &&
 			     !priv->bss_started) ||
 			    (priv->bss_role == MWIFIEX_BSS_ROLE_STA &&
@@ -761,11 +756,6 @@ static void mwifiex_usb_port_resync(struct mwifiex_adapter *adapter)
 	} else {
 		for (i = 0; i < adapter->priv_num; i++) {
 			priv = adapter->priv[i];
-<<<<<<< HEAD
-			if (!priv)
-				continue;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if ((priv->bss_role == MWIFIEX_BSS_ROLE_UAP &&
 			     priv->bss_started) ||
 			    (priv->bss_role == MWIFIEX_BSS_ROLE_STA &&
@@ -776,12 +766,7 @@ static void mwifiex_usb_port_resync(struct mwifiex_adapter *adapter)
 		}
 		for (i = 0; i < adapter->priv_num; i++) {
 			priv = adapter->priv[i];
-<<<<<<< HEAD
-			if (priv)
-				priv->usb_port = active_port;
-=======
 			priv->usb_port = active_port;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		for (i = 0; i < MWIFIEX_TX_DATA_PORT; i++) {
 			if (active_port == card->port[i].tx_data_ep)

@@ -56,11 +56,7 @@ static struct nft_elem_priv *nft_dynset_new(struct nft_set *set,
 	if (!atomic_add_unless(&set->nelems, 1, set->size))
 		return NULL;
 
-<<<<<<< HEAD
-	timeout = priv->timeout ? : set->timeout;
-=======
 	timeout = priv->timeout ? : READ_ONCE(set->timeout);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	elem_priv = nft_set_elem_init(set, &priv->tmpl,
 				      &regs->data[priv->sreg_key], NULL,
 				      &regs->data[priv->sreg_data],
@@ -98,16 +94,10 @@ void nft_dynset_eval(const struct nft_expr *expr,
 	if (set->ops->update(set, &regs->data[priv->sreg_key], nft_dynset_new,
 			     expr, regs, &ext)) {
 		if (priv->op == NFT_DYNSET_OP_UPDATE &&
-<<<<<<< HEAD
-		    nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION)) {
-			timeout = priv->timeout ? : set->timeout;
-			*nft_set_ext_expiration(ext) = get_jiffies_64() + timeout;
-=======
 		    nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT) &&
 		    READ_ONCE(nft_set_ext_timeout(ext)->timeout) != 0) {
 			timeout = priv->timeout ? : READ_ONCE(set->timeout);
 			WRITE_ONCE(nft_set_ext_timeout(ext)->expiration, get_jiffies_64() + timeout);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		nft_set_elem_update_expr(ext, regs, pkt);
@@ -226,11 +216,7 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
 			return err;
 	}
 
-<<<<<<< HEAD
-	err = nft_parse_register_load(tb[NFTA_DYNSET_SREG_KEY], &priv->sreg_key,
-=======
 	err = nft_parse_register_load(ctx, tb[NFTA_DYNSET_SREG_KEY], &priv->sreg_key,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      set->klen);
 	if (err < 0)
 		return err;
@@ -241,11 +227,7 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
 		if (set->dtype == NFT_DATA_VERDICT)
 			return -EOPNOTSUPP;
 
-<<<<<<< HEAD
-		err = nft_parse_register_load(tb[NFTA_DYNSET_SREG_DATA],
-=======
 		err = nft_parse_register_load(ctx, tb[NFTA_DYNSET_SREG_DATA],
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					      &priv->sreg_data, set->dlen);
 		if (err < 0)
 			return err;
@@ -331,18 +313,9 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
 	if (priv->num_exprs)
 		nft_dynset_ext_add_expr(priv);
 
-<<<<<<< HEAD
-	if (set->flags & NFT_SET_TIMEOUT) {
-		if (timeout || set->timeout) {
-			nft_set_ext_add(&priv->tmpl, NFT_SET_EXT_TIMEOUT);
-			nft_set_ext_add(&priv->tmpl, NFT_SET_EXT_EXPIRATION);
-		}
-	}
-=======
 	if (set->flags & NFT_SET_TIMEOUT &&
 	    (timeout || READ_ONCE(set->timeout)))
 		nft_set_ext_add(&priv->tmpl, NFT_SET_EXT_TIMEOUT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	priv->timeout = timeout;
 

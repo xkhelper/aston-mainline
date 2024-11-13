@@ -34,10 +34,7 @@
 #include <linux/security.h>
 #include <linux/memblock.h>
 #include <linux/syscalls.h>
-<<<<<<< HEAD
-=======
 #include <linux/syscore_ops.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/vmcore_info.h>
 #include <linux/ratelimit.h>
 #include <linux/kmsg_dump.h>
@@ -286,10 +283,7 @@ EXPORT_SYMBOL(console_list_unlock);
  * Return: A cookie to pass to console_srcu_read_unlock().
  */
 int console_srcu_read_lock(void)
-<<<<<<< HEAD
-=======
 	__acquires(&console_srcu)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return srcu_read_lock_nmisafe(&console_srcu);
 }
@@ -303,10 +297,7 @@ EXPORT_SYMBOL(console_srcu_read_lock);
  * Counterpart to console_srcu_read_lock()
  */
 void console_srcu_read_unlock(int cookie)
-<<<<<<< HEAD
-=======
 	__releases(&console_srcu)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	srcu_read_unlock_nmisafe(&console_srcu, cookie);
 }
@@ -473,10 +464,6 @@ static int console_msg_format = MSG_FORMAT_DEFAULT;
 /* syslog_lock protects syslog_* variables and write access to clear_seq. */
 static DEFINE_MUTEX(syslog_lock);
 
-<<<<<<< HEAD
-#ifdef CONFIG_PRINTK
-DECLARE_WAIT_QUEUE_HEAD(log_wait);
-=======
 /*
  * Specifies if a legacy console is registered. If legacy consoles are
  * present, it is necessary to perform the console lock/unlock dance
@@ -505,19 +492,15 @@ bool legacy_allow_panic_sync;
 #ifdef CONFIG_PRINTK
 DECLARE_WAIT_QUEUE_HEAD(log_wait);
 static DECLARE_WAIT_QUEUE_HEAD(legacy_wait);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* All 3 protected by @syslog_lock. */
 /* the next printk record to read by syslog(READ) or /proc/kmsg */
 static u64 syslog_seq;
 static size_t syslog_partial;
 static bool syslog_time;
 
-<<<<<<< HEAD
-=======
 /* True when _all_ printer threads are available for printing. */
 bool printk_kthreads_running;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct latched_seq {
 	seqcount_latch_t	latch;
 	u64			val[2];
@@ -1899,11 +1882,7 @@ static bool console_waiter;
  * there may be a waiter spinning (like a spinlock). Also it must be
  * ready to hand over the lock at the end of the section.
  */
-<<<<<<< HEAD
-static void console_lock_spinning_enable(void)
-=======
 void console_lock_spinning_enable(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * Do not use spinning in panic(). The panic CPU wants to keep the lock.
@@ -1942,11 +1921,7 @@ lockdep:
  *
  * Return: 1 if the lock rights were passed, 0 otherwise.
  */
-<<<<<<< HEAD
-static int console_lock_spinning_disable_and_check(int cookie)
-=======
 int console_lock_spinning_disable_and_check(int cookie)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int waiter;
 
@@ -2357,8 +2332,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * This acts as a one-way switch to allow legacy consoles to print from
  * the printk() caller context on a panic CPU. It also attempts to flush
@@ -2377,18 +2350,12 @@ void printk_legacy_allow_panic_sync(void)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 asmlinkage int vprintk_emit(int facility, int level,
 			    const struct dev_printk_info *dev_info,
 			    const char *fmt, va_list args)
 {
-<<<<<<< HEAD
-	int printed_len;
-	bool in_sched = false;
-=======
 	struct console_flush_type ft;
 	int printed_len;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Suppress unimportant messages after panic happens */
 	if (unlikely(suppress_printk))
@@ -2402,11 +2369,6 @@ asmlinkage int vprintk_emit(int facility, int level,
 	if (other_cpu_in_panic() && !panic_triggering_all_cpu_backtrace)
 		return 0;
 
-<<<<<<< HEAD
-	if (level == LOGLEVEL_SCHED) {
-		level = LOGLEVEL_DEFAULT;
-		in_sched = true;
-=======
 	printk_get_console_flush_type(&ft);
 
 	/* If called from the scheduler, we can not call up(). */
@@ -2414,17 +2376,12 @@ asmlinkage int vprintk_emit(int facility, int level,
 		level = LOGLEVEL_DEFAULT;
 		ft.legacy_offload |= ft.legacy_direct;
 		ft.legacy_direct = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	printk_delay(level);
 
 	printed_len = vprintk_store(facility, level, dev_info, fmt, args);
 
-<<<<<<< HEAD
-	/* If called from the scheduler, we can not call up(). */
-	if (!in_sched) {
-=======
 	if (ft.nbcon_atomic)
 		nbcon_atomic_flush_pending();
 
@@ -2432,7 +2389,6 @@ asmlinkage int vprintk_emit(int facility, int level,
 		nbcon_kthreads_wake();
 
 	if (ft.legacy_direct) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * The caller may be holding system-critical or
 		 * timing-sensitive locks. Disable preemption during
@@ -2452,11 +2408,7 @@ asmlinkage int vprintk_emit(int facility, int level,
 		preempt_enable();
 	}
 
-<<<<<<< HEAD
-	if (in_sched)
-=======
 	if (ft.legacy_offload)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		defer_console_output();
 	else
 		wake_up_klogd();
@@ -2785,10 +2737,7 @@ void suspend_console(void)
 
 void resume_console(void)
 {
-<<<<<<< HEAD
-=======
 	struct console_flush_type ft;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct console *con;
 
 	if (!console_suspend_enabled)
@@ -2806,15 +2755,12 @@ void resume_console(void)
 	 */
 	synchronize_srcu(&console_srcu);
 
-<<<<<<< HEAD
-=======
 	printk_get_console_flush_type(&ft);
 	if (ft.nbcon_offload)
 		nbcon_kthreads_wake();
 	if (ft.legacy_offload)
 		defer_console_output();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_flush(1000, true);
 }
 
@@ -2829,12 +2775,6 @@ void resume_console(void)
  */
 static int console_cpu_notify(unsigned int cpu)
 {
-<<<<<<< HEAD
-	if (!cpuhp_tasks_frozen) {
-		/* If trylock fails, someone else is doing the printing */
-		if (console_trylock())
-			console_unlock();
-=======
 	struct console_flush_type ft;
 
 	if (!cpuhp_tasks_frozen) {
@@ -2845,7 +2785,6 @@ static int console_cpu_notify(unsigned int cpu)
 			if (console_trylock())
 				console_unlock();
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }
@@ -2899,39 +2838,6 @@ int is_console_locked(void)
 }
 EXPORT_SYMBOL(is_console_locked);
 
-<<<<<<< HEAD
-/*
- * Check if the given console is currently capable and allowed to print
- * records.
- *
- * Requires the console_srcu_read_lock.
- */
-static inline bool console_is_usable(struct console *con)
-{
-	short flags = console_srcu_read_flags(con);
-
-	if (!(flags & CON_ENABLED))
-		return false;
-
-	if ((flags & CON_SUSPENDED))
-		return false;
-
-	if (!con->write)
-		return false;
-
-	/*
-	 * Console drivers may assume that per-cpu resources have been
-	 * allocated. So unless they're explicitly marked as being able to
-	 * cope (CON_ANYTIME) don't call them until this CPU is officially up.
-	 */
-	if (!cpu_online(raw_smp_processor_id()) && !(flags & CON_ANYTIME))
-		return false;
-
-	return true;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __console_unlock(void)
 {
 	console_locked = 0;
@@ -2941,22 +2847,6 @@ static void __console_unlock(void)
 #ifdef CONFIG_PRINTK
 
 /*
-<<<<<<< HEAD
- * Prepend the message in @pmsg->pbufs->outbuf with a "dropped message". This
- * is achieved by shifting the existing message over and inserting the dropped
- * message.
- *
- * @pmsg is the printk message to prepend.
- *
- * @dropped is the dropped count to report in the dropped message.
- *
- * If the message text in @pmsg->pbufs->outbuf does not have enough space for
- * the dropped message, the message text will be sufficiently truncated.
- *
- * If @pmsg->pbufs->outbuf is modified, @pmsg->outbuf_len is updated.
- */
-void console_prepend_dropped(struct printk_message *pmsg, unsigned long dropped)
-=======
  * Prepend the message in @pmsg->pbufs->outbuf. This is achieved by shifting
  * the existing message over and inserting the scratchbuf message.
  *
@@ -2970,26 +2860,18 @@ void console_prepend_dropped(struct printk_message *pmsg, unsigned long dropped)
  */
 __printf(2, 3)
 static void console_prepend_message(struct printk_message *pmsg, const char *fmt, ...)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct printk_buffers *pbufs = pmsg->pbufs;
 	const size_t scratchbuf_sz = sizeof(pbufs->scratchbuf);
 	const size_t outbuf_sz = sizeof(pbufs->outbuf);
 	char *scratchbuf = &pbufs->scratchbuf[0];
 	char *outbuf = &pbufs->outbuf[0];
-<<<<<<< HEAD
-	size_t len;
-
-	len = scnprintf(scratchbuf, scratchbuf_sz,
-		       "** %lu printk messages dropped **\n", dropped);
-=======
 	va_list args;
 	size_t len;
 
 	va_start(args, fmt);
 	len = vscnprintf(scratchbuf, scratchbuf_sz, fmt, args);
 	va_end(args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Make sure outbuf is sufficiently large before prepending.
@@ -3012,8 +2894,6 @@ static void console_prepend_message(struct printk_message *pmsg, const char *fmt
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Prepend the message in @pmsg->pbufs->outbuf with a "dropped message".
  * @pmsg->outbuf_len is updated appropriately.
  *
@@ -3038,7 +2918,6 @@ void console_prepend_replay(struct printk_message *pmsg)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Read and format the specified record (or a later record if the specified
  * record is not available).
  *
@@ -3104,8 +2983,6 @@ out:
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Legacy console printing from printk() caller context does not respect
  * raw_spinlock/spinlock nesting. For !PREEMPT_RT the lockdep warning is a
  * false positive. For PREEMPT_RT the false positive condition does not
@@ -3134,7 +3011,6 @@ static inline void printk_legacy_allow_spinlock_exit(void)
 #endif /* CONFIG_PREEMPT_RT */
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Used as the printk buffers for non-panic, serialized console printing.
  * This is for legacy (!CON_NBCON) as well as all boot (CON_BOOT) consoles.
  * Its usage requires the console_lock held.
@@ -3183,33 +3059,6 @@ static bool console_emit_next_record(struct console *con, bool *handover, int co
 		con->dropped = 0;
 	}
 
-<<<<<<< HEAD
-	/*
-	 * While actively printing out messages, if another printk()
-	 * were to occur on another CPU, it may wait for this one to
-	 * finish. This task can not be preempted if there is a
-	 * waiter waiting to take over.
-	 *
-	 * Interrupts are disabled because the hand over to a waiter
-	 * must not be interrupted until the hand over is completed
-	 * (@console_waiter is cleared).
-	 */
-	printk_safe_enter_irqsave(flags);
-	console_lock_spinning_enable();
-
-	/* Do not trace print latency. */
-	stop_critical_timings();
-
-	/* Write everything out to the hardware. */
-	con->write(con, outbuf, pmsg.outbuf_len);
-
-	start_critical_timings();
-
-	con->seq = pmsg.seq + 1;
-
-	*handover = console_lock_spinning_disable_and_check(cookie);
-	printk_safe_exit_irqrestore(flags);
-=======
 	/* Write everything out to the hardware. */
 
 	if (force_legacy_kthread() && !panic_in_progress()) {
@@ -3250,7 +3099,6 @@ static bool console_emit_next_record(struct console *con, bool *handover, int co
 		*handover = console_lock_spinning_disable_and_check(cookie);
 		printk_safe_exit_irqrestore(flags);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 skip:
 	return true;
 }
@@ -3263,11 +3111,8 @@ static bool console_emit_next_record(struct console *con, bool *handover, int co
 	return false;
 }
 
-<<<<<<< HEAD
-=======
 static inline void printk_kthreads_check_locked(void) { }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_PRINTK */
 
 /*
@@ -3295,10 +3140,7 @@ static inline void printk_kthreads_check_locked(void) { }
  */
 static bool console_flush_all(bool do_cond_resched, u64 *next_seq, bool *handover)
 {
-<<<<<<< HEAD
-=======
 	struct console_flush_type ft;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool any_usable = false;
 	struct console *con;
 	bool any_progress;
@@ -3310,17 +3152,6 @@ static bool console_flush_all(bool do_cond_resched, u64 *next_seq, bool *handove
 	do {
 		any_progress = false;
 
-<<<<<<< HEAD
-		cookie = console_srcu_read_lock();
-		for_each_console_srcu(con) {
-			bool progress;
-
-			if (!console_is_usable(con))
-				continue;
-			any_usable = true;
-
-			progress = console_emit_next_record(con, handover, cookie);
-=======
 		printk_get_console_flush_type(&ft);
 
 		cookie = console_srcu_read_lock();
@@ -3349,7 +3180,6 @@ static bool console_flush_all(bool do_cond_resched, u64 *next_seq, bool *handove
 				progress = console_emit_next_record(con, handover, cookie);
 				printk_seq = con->seq;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			/*
 			 * If a handover has occurred, the SRCU read lock
@@ -3359,13 +3189,8 @@ static bool console_flush_all(bool do_cond_resched, u64 *next_seq, bool *handove
 				return false;
 
 			/* Track the next of the highest seq flushed. */
-<<<<<<< HEAD
-			if (con->seq > *next_seq)
-				*next_seq = con->seq;
-=======
 			if (printk_seq > *next_seq)
 				*next_seq = printk_seq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (!progress)
 				continue;
@@ -3388,23 +3213,7 @@ abandon:
 	return false;
 }
 
-<<<<<<< HEAD
-/**
- * console_unlock - unblock the console subsystem from printing
- *
- * Releases the console_lock which the caller holds to block printing of
- * the console subsystem.
- *
- * While the console_lock was held, console output may have been buffered
- * by printk().  If this is the case, console_unlock(); emits
- * the output prior to releasing the lock.
- *
- * console_unlock(); may be called from any context.
- */
-void console_unlock(void)
-=======
 static void __console_flush_and_unlock(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bool do_cond_resched;
 	bool handover;
@@ -3448,8 +3257,6 @@ static void __console_flush_and_unlock(void)
 		 */
 	} while (prb_read_valid(prb, next_seq, NULL) && console_trylock());
 }
-<<<<<<< HEAD
-=======
 
 /**
  * console_unlock - unblock the legacy console subsystem from printing
@@ -3473,7 +3280,6 @@ void console_unlock(void)
 	else
 		__console_unlock();
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL(console_unlock);
 
 /**
@@ -3596,10 +3402,7 @@ static void __console_rewind_all(void)
  */
 void console_flush_on_panic(enum con_flush_mode mode)
 {
-<<<<<<< HEAD
-=======
 	struct console_flush_type ft;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool handover;
 	u64 next_seq;
 
@@ -3623,9 +3426,6 @@ void console_flush_on_panic(enum con_flush_mode mode)
 	if (mode == CONSOLE_REPLAY_ALL)
 		__console_rewind_all();
 
-<<<<<<< HEAD
-	console_flush_all(false, &next_seq, &handover);
-=======
 	printk_get_console_flush_type(&ft);
 	if (ft.nbcon_atomic)
 		nbcon_atomic_flush_pending();
@@ -3633,7 +3433,6 @@ void console_flush_on_panic(enum con_flush_mode mode)
 	/* Flush legacy consoles once allowed, even when dangerous. */
 	if (legacy_allow_panic_sync)
 		console_flush_all(false, &next_seq, &handover);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -3690,11 +3489,6 @@ EXPORT_SYMBOL(console_stop);
 
 void console_start(struct console *console)
 {
-<<<<<<< HEAD
-	console_list_lock();
-	console_srcu_write_flags(console, console->flags | CON_ENABLED);
-	console_list_unlock();
-=======
 	struct console_flush_type ft;
 	bool is_nbcon;
 
@@ -3716,13 +3510,10 @@ void console_start(struct console *console)
 	else if (ft.legacy_offload)
 		defer_console_output();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__pr_flush(console, 1000, true);
 }
 EXPORT_SYMBOL(console_start);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_PRINTK
 static int unregister_console_locked(struct console *console);
 
@@ -3928,7 +3719,6 @@ static int __init printk_set_kthreads_ready(void)
 early_initcall(printk_set_kthreads_ready);
 #endif /* CONFIG_PRINTK */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __read_mostly keep_bootcon;
 
 static int __init keep_bootcon_setup(char *str)
@@ -4030,36 +3820,21 @@ static void try_enable_default_console(struct console *newcon)
 		newcon->flags |= CON_CONSDEV;
 }
 
-<<<<<<< HEAD
-static void console_init_seq(struct console *newcon, bool bootcon_registered)
-{
-	struct console *con;
-	bool handover;
-=======
 /* Return the starting sequence number for a newly registered console. */
 static u64 get_init_console_seq(struct console *newcon, bool bootcon_registered)
 {
 	struct console *con;
 	bool handover;
 	u64 init_seq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (newcon->flags & (CON_PRINTBUFFER | CON_BOOT)) {
 		/* Get a consistent copy of @syslog_seq. */
 		mutex_lock(&syslog_lock);
-<<<<<<< HEAD
-		newcon->seq = syslog_seq;
-		mutex_unlock(&syslog_lock);
-	} else {
-		/* Begin with next message added to ringbuffer. */
-		newcon->seq = prb_next_seq(prb);
-=======
 		init_seq = syslog_seq;
 		mutex_unlock(&syslog_lock);
 	} else {
 		/* Begin with next message added to ringbuffer. */
 		init_seq = prb_next_seq(prb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * If any enabled boot consoles are due to be unregistered
@@ -4080,11 +3855,7 @@ static u64 get_init_console_seq(struct console *newcon, bool bootcon_registered)
 			 * Flush all consoles and set the console to start at
 			 * the next unprinted sequence number.
 			 */
-<<<<<<< HEAD
-			if (!console_flush_all(true, &newcon->seq, &handover)) {
-=======
 			if (!console_flush_all(true, &init_seq, &handover)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				/*
 				 * Flushing failed. Just choose the lowest
 				 * sequence of the enabled boot consoles.
@@ -4097,15 +3868,6 @@ static u64 get_init_console_seq(struct console *newcon, bool bootcon_registered)
 				if (handover)
 					console_lock();
 
-<<<<<<< HEAD
-				newcon->seq = prb_next_seq(prb);
-				for_each_console(con) {
-					if ((con->flags & CON_BOOT) &&
-					    (con->flags & CON_ENABLED) &&
-					    con->seq < newcon->seq) {
-						newcon->seq = con->seq;
-					}
-=======
 				init_seq = prb_next_seq(prb);
 				for_each_console(con) {
 					u64 seq;
@@ -4122,18 +3884,14 @@ static u64 get_init_console_seq(struct console *newcon, bool bootcon_registered)
 
 					if (seq < init_seq)
 						init_seq = seq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			}
 
 			console_unlock();
 		}
 	}
-<<<<<<< HEAD
-=======
 
 	return init_seq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define console_first()				\
@@ -4162,18 +3920,12 @@ static int unregister_console_locked(struct console *console);
  */
 void register_console(struct console *newcon)
 {
-<<<<<<< HEAD
-	struct console *con;
-	bool bootcon_registered = false;
-	bool realcon_registered = false;
-=======
 	bool use_device_lock = (newcon->flags & CON_NBCON) && newcon->write_atomic;
 	bool bootcon_registered = false;
 	bool realcon_registered = false;
 	struct console *con;
 	unsigned long flags;
 	u64 init_seq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	console_list_lock();
@@ -4251,12 +4003,6 @@ void register_console(struct console *newcon)
 	}
 
 	newcon->dropped = 0;
-<<<<<<< HEAD
-	console_init_seq(newcon, bootcon_registered);
-
-	if (newcon->flags & CON_NBCON)
-		nbcon_init(newcon);
-=======
 	init_seq = get_init_console_seq(newcon, bootcon_registered);
 
 	if (newcon->flags & CON_NBCON) {
@@ -4282,7 +4028,6 @@ void register_console(struct console *newcon)
 	 */
 	if (use_device_lock)
 		newcon->device_lock(newcon, &flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Put this console in the list - keep the
@@ -4308,13 +4053,10 @@ void register_console(struct console *newcon)
 	 * register_console() completes.
 	 */
 
-<<<<<<< HEAD
-=======
 	/* This new console is now registered. */
 	if (use_device_lock)
 		newcon->device_unlock(newcon, flags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	console_sysfs_notify();
 
 	/*
@@ -4335,12 +4077,9 @@ void register_console(struct console *newcon)
 				unregister_console_locked(con);
 		}
 	}
-<<<<<<< HEAD
-=======
 
 	/* Changed console list, may require printer threads to start/stop. */
 	printk_kthreads_check_locked();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unlock:
 	console_list_unlock();
 }
@@ -4349,15 +4088,12 @@ EXPORT_SYMBOL(register_console);
 /* Must be called under console_list_lock(). */
 static int unregister_console_locked(struct console *console)
 {
-<<<<<<< HEAD
-=======
 	bool use_device_lock = (console->flags & CON_NBCON) && console->write_atomic;
 	bool found_legacy_con = false;
 	bool found_nbcon_con = false;
 	bool found_boot_con = false;
 	unsigned long flags;
 	struct console *c;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int res;
 
 	lockdep_assert_console_list_lock_held();
@@ -4370,16 +4106,6 @@ static int unregister_console_locked(struct console *console)
 	if (res > 0)
 		return 0;
 
-<<<<<<< HEAD
-	/* Disable it unconditionally */
-	console_srcu_write_flags(console, console->flags & ~CON_ENABLED);
-
-	if (!console_is_registered_locked(console))
-		return -ENODEV;
-
-	hlist_del_init_rcu(&console->node);
-
-=======
 	if (!console_is_registered_locked(console))
 		res = -ENODEV;
 	else if (console_is_usable(console, console->flags, true))
@@ -4403,7 +4129,6 @@ static int unregister_console_locked(struct console *console)
 	if (use_device_lock)
 		console->device_unlock(console, flags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * <HISTORICAL>
 	 * If this isn't the last console and it has CON_CONSDEV set, we
@@ -4431,8 +4156,6 @@ static int unregister_console_locked(struct console *console)
 	if (console->exit)
 		res = console->exit(console);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * With this console gone, the global flags tracking registered
 	 * console types may have changed. Update them.
@@ -4456,7 +4179,6 @@ static int unregister_console_locked(struct console *console)
 	/* Changed console list, may require printer threads to start/stop. */
 	printk_kthreads_check_locked();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return res;
 }
 
@@ -4603,10 +4325,7 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
 {
 	unsigned long timeout_jiffies = msecs_to_jiffies(timeout_ms);
 	unsigned long remaining_jiffies = timeout_jiffies;
-<<<<<<< HEAD
-=======
 	struct console_flush_type ft;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct console *c;
 	u64 last_diff = 0;
 	u64 printk_seq;
@@ -4615,22 +4334,15 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
 	u64 diff;
 	u64 seq;
 
-<<<<<<< HEAD
-=======
 	/* Sorry, pr_flush() will not work this early. */
 	if (system_state < SYSTEM_SCHEDULING)
 		return false;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	might_sleep();
 
 	seq = prb_next_reserve_seq(prb);
 
 	/* Flush the consoles so that records up to @seq are printed. */
-<<<<<<< HEAD
-	console_lock();
-	console_unlock();
-=======
 	printk_get_console_flush_type(&ft);
 	if (ft.nbcon_atomic)
 		nbcon_atomic_flush_pending();
@@ -4638,7 +4350,6 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
 		console_lock();
 		console_unlock();
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (;;) {
 		unsigned long begin_jiffies;
@@ -4651,15 +4362,12 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
 		 * console->seq. Releasing console_lock flushes more
 		 * records in case @seq is still not printed on all
 		 * usable consoles.
-<<<<<<< HEAD
-=======
 		 *
 		 * Holding the console_lock is not necessary if there
 		 * are no legacy or boot consoles. However, such a
 		 * console could register at any time. Always hold the
 		 * console_lock as a precaution rather than
 		 * synchronizing against register_console().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 */
 		console_lock();
 
@@ -4675,15 +4383,10 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
 			 * that they make forward progress, so only increment
 			 * @diff for usable consoles.
 			 */
-<<<<<<< HEAD
-			if (!console_is_usable(c))
-				continue;
-=======
 			if (!console_is_usable(c, flags, true) &&
 			    !console_is_usable(c, flags, false)) {
 				continue;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (flags & CON_NBCON) {
 				printk_seq = nbcon_seq_read(c);
@@ -4751,11 +4454,6 @@ static void wake_up_klogd_work_func(struct irq_work *irq_work)
 	int pending = this_cpu_xchg(printk_pending, 0);
 
 	if (pending & PRINTK_PENDING_OUTPUT) {
-<<<<<<< HEAD
-		/* If trylock fails, someone else is doing the printing */
-		if (console_trylock())
-			console_unlock();
-=======
 		if (force_legacy_kthread()) {
 			if (printk_legacy_kthread)
 				wake_up_interruptible(&legacy_wait);
@@ -4763,7 +4461,6 @@ static void wake_up_klogd_work_func(struct irq_work *irq_work)
 			if (console_trylock())
 				console_unlock();
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (pending & PRINTK_PENDING_WAKEUP)
@@ -4971,32 +4668,21 @@ const char *kmsg_dump_reason_str(enum kmsg_dump_reason reason)
 EXPORT_SYMBOL_GPL(kmsg_dump_reason_str);
 
 /**
-<<<<<<< HEAD
- * kmsg_dump - dump kernel log to kernel message dumpers.
- * @reason: the reason (oops, panic etc) for dumping
-=======
  * kmsg_dump_desc - dump kernel log to kernel message dumpers.
  * @reason: the reason (oops, panic etc) for dumping
  * @desc: a short string to describe what caused the panic or oops. Can be NULL
  * if no additional description is available.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Call each of the registered dumper's dump() callback, which can
  * retrieve the kmsg records with kmsg_dump_get_line() or
  * kmsg_dump_get_buffer().
  */
-<<<<<<< HEAD
-void kmsg_dump(enum kmsg_dump_reason reason)
-{
-	struct kmsg_dumper *dumper;
-=======
 void kmsg_dump_desc(enum kmsg_dump_reason reason, const char *desc)
 {
 	struct kmsg_dumper *dumper;
 	struct kmsg_dump_detail detail = {
 		.reason = reason,
 		.description = desc};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rcu_read_lock();
 	list_for_each_entry_rcu(dumper, &dump_list, list) {
@@ -5014,11 +4700,7 @@ void kmsg_dump_desc(enum kmsg_dump_reason reason, const char *desc)
 			continue;
 
 		/* invoke dumper which will iterate over records */
-<<<<<<< HEAD
-		dumper->dump(dumper, reason);
-=======
 		dumper->dump(dumper, &detail);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	rcu_read_unlock();
 }
@@ -5189,10 +4871,6 @@ EXPORT_SYMBOL_GPL(kmsg_dump_rewind);
  */
 void console_try_replay_all(void)
 {
-<<<<<<< HEAD
-	if (console_trylock()) {
-		__console_rewind_all();
-=======
 	struct console_flush_type ft;
 
 	printk_get_console_flush_type(&ft);
@@ -5204,7 +4882,6 @@ void console_try_replay_all(void)
 			nbcon_kthreads_wake();
 		if (ft.legacy_offload)
 			defer_console_output();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Consoles are flushed as part of console_unlock(). */
 		console_unlock();
 	}

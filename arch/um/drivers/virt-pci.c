@@ -14,11 +14,7 @@
 #include <linux/virtio-uml.h>
 #include <linux/delay.h>
 #include <linux/msi.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <irq_kern.h>
 
 #define MAX_DEVICES 8

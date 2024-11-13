@@ -96,11 +96,7 @@ config MAC80211_DEBUGFS
 
 config MAC80211_MESSAGE_TRACING
 	bool "Trace all mac80211 debug messages"
-<<<<<<< HEAD
-	depends on MAC80211
-=======
 	depends on MAC80211 && TRACING
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Select this option to have mac80211 register the
 	  mac80211_msg trace subsystem with tracepoints to

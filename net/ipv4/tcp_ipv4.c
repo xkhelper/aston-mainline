@@ -79,10 +79,7 @@
 #include <linux/seq_file.h>
 #include <linux/inetdevice.h>
 #include <linux/btf_ids.h>
-<<<<<<< HEAD
-=======
 #include <linux/skbuff_ref.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <crypto/hash.h>
 #include <linux/scatterlist.h>
@@ -124,12 +121,9 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
 	struct tcp_sock *tp = tcp_sk(sk);
 	int ts_recent_stamp;
 
-<<<<<<< HEAD
-=======
 	if (READ_ONCE(tw->tw_substate) == TCP_FIN_WAIT2)
 		reuse = 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (reuse == 2) {
 		/* Still does not detect *everything* that goes through
 		 * lo, since we require a loopback src or dst address
@@ -1080,11 +1074,7 @@ static void tcp_v4_timewait_ack(struct sock *sk, struct sk_buff *skb)
 	}
 
 	tcp_v4_send_ack(sk, skb,
-<<<<<<< HEAD
-			tcptw->tw_snd_nxt, tcptw->tw_rcv_nxt,
-=======
 			tcptw->tw_snd_nxt, READ_ONCE(tcptw->tw_rcv_nxt),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			tcptw->tw_rcv_wnd >> tw->tw_rcv_wscale,
 			tcp_tw_tsval(tcptw),
 			READ_ONCE(tcptw->tw_ts_recent),
@@ -2523,8 +2513,6 @@ static void tcp_md5sig_info_free_rcu(struct rcu_head *head)
 }
 #endif
 
-<<<<<<< HEAD
-=======
 static void tcp_release_user_frags(struct sock *sk)
 {
 #ifdef CONFIG_PAGE_POOL
@@ -2536,18 +2524,14 @@ static void tcp_release_user_frags(struct sock *sk)
 #endif
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void tcp_v4_destroy_sock(struct sock *sk)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
 
-<<<<<<< HEAD
-=======
 	tcp_release_user_frags(sk);
 
 	xa_destroy(&sk->sk_user_frags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_tcp_destroy_sock(sk);
 
 	tcp_clear_xmit_timers(sk);
@@ -2980,11 +2964,7 @@ static void get_timewait4_sock(const struct inet_timewait_sock *tw,
 
 	seq_printf(f, "%4d: %08X:%04X %08X:%04X"
 		" %02X %08X:%08X %02X:%08lX %08X %5d %8d %d %d %pK",
-<<<<<<< HEAD
-		i, src, srcp, dest, destp, tw->tw_substate, 0, 0,
-=======
 		i, src, srcp, dest, destp, READ_ONCE(tw->tw_substate), 0, 0,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		3, jiffies_delta_to_clock_t(delta), 0, 0, 0, 0,
 		refcount_read(&tw->tw_refcnt), tw);
 }

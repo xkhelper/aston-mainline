@@ -3,18 +3,6 @@
 #include <linux/netdevice.h>
 #include <linux/notifier.h>
 #include <linux/rtnetlink.h>
-<<<<<<< HEAD
-#include <net/net_namespace.h>
-#include <net/sock.h>
-#include <net/xdp.h>
-#include <net/xdp_sock.h>
-#include <net/netdev_rx_queue.h>
-#include <net/netdev_queues.h>
-#include <net/busy_poll.h>
-
-#include "netdev-genl-gen.h"
-#include "dev.h"
-=======
 #include <net/busy_poll.h>
 #include <net/net_namespace.h>
 #include <net/netdev_queues.h>
@@ -26,7 +14,6 @@
 #include "dev.h"
 #include "devmem.h"
 #include "netdev-genl-gen.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct netdev_nl_dump_ctx {
 	unsigned long	ifindex;
@@ -230,19 +217,12 @@ int netdev_nl_napi_get_doit(struct sk_buff *skb, struct genl_info *info)
 	rtnl_lock();
 
 	napi = napi_by_id(napi_id);
-<<<<<<< HEAD
-	if (napi)
-		err = netdev_nl_napi_fill_one(rsp, napi, info);
-	else
-		err = -EINVAL;
-=======
 	if (napi) {
 		err = netdev_nl_napi_fill_one(rsp, napi, info);
 	} else {
 		NL_SET_BAD_ATTR(info->extack, info->attrs[NETDEV_A_NAPI_ID]);
 		err = -ENOENT;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rtnl_unlock();
 
@@ -315,10 +295,7 @@ static int
 netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
 			 u32 q_idx, u32 q_type, const struct genl_info *info)
 {
-<<<<<<< HEAD
-=======
 	struct net_devmem_dmabuf_binding *binding;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct netdev_rx_queue *rxq;
 	struct netdev_queue *txq;
 	void *hdr;
@@ -338,15 +315,12 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
 		if (rxq->napi && nla_put_u32(rsp, NETDEV_A_QUEUE_NAPI_ID,
 					     rxq->napi->napi_id))
 			goto nla_put_failure;
-<<<<<<< HEAD
-=======
 
 		binding = rxq->mp_params.mp_priv;
 		if (binding &&
 		    nla_put_u32(rsp, NETDEV_A_QUEUE_DMABUF, binding->id))
 			goto nla_put_failure;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case NETDEV_QUEUE_TYPE_TX:
 		txq = netdev_get_tx_queue(netdev, q_idx);
@@ -757,8 +731,6 @@ int netdev_nl_qstats_get_dumpit(struct sk_buff *skb,
 	return err;
 }
 
-<<<<<<< HEAD
-=======
 int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
 {
 	struct nlattr *tb[ARRAY_SIZE(netdev_queue_id_nl_policy)];
@@ -882,7 +854,6 @@ void netdev_nl_sock_priv_destroy(struct list_head *priv)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int netdev_genl_netdevice_event(struct notifier_block *nb,
 				       unsigned long event, void *ptr)
 {

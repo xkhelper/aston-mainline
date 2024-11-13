@@ -39,8 +39,6 @@ static void genmask_ull_test(struct kunit *test)
 #endif
 }
 
-<<<<<<< HEAD
-=======
 static void genmask_u128_test(struct kunit *test)
 {
 #ifdef CONFIG_ARCH_SUPPORTS_INT128
@@ -71,7 +69,6 @@ static void genmask_u128_test(struct kunit *test)
 #endif /* CONFIG_ARCH_SUPPORTS_INT128 */
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void genmask_input_check_test(struct kunit *test)
 {
 	unsigned int x, y;
@@ -89,22 +86,16 @@ static void genmask_input_check_test(struct kunit *test)
 	/* Valid input */
 	KUNIT_EXPECT_EQ(test, 0, GENMASK_INPUT_CHECK(1, 1));
 	KUNIT_EXPECT_EQ(test, 0, GENMASK_INPUT_CHECK(39, 21));
-<<<<<<< HEAD
-=======
 	KUNIT_EXPECT_EQ(test, 0, GENMASK_INPUT_CHECK(100, 80));
 	KUNIT_EXPECT_EQ(test, 0, GENMASK_INPUT_CHECK(110, 65));
 	KUNIT_EXPECT_EQ(test, 0, GENMASK_INPUT_CHECK(127, 0));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 
 static struct kunit_case bits_test_cases[] = {
 	KUNIT_CASE(genmask_test),
 	KUNIT_CASE(genmask_ull_test),
-<<<<<<< HEAD
-=======
 	KUNIT_CASE(genmask_u128_test),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_CASE(genmask_input_check_test),
 	{}
 };

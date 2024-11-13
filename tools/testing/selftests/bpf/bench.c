@@ -10,10 +10,7 @@
 #include <sys/sysinfo.h>
 #include <signal.h>
 #include "bench.h"
-<<<<<<< HEAD
-=======
 #include "bpf_util.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "testing_helpers.h"
 
 struct env env = {
@@ -523,15 +520,12 @@ extern const struct bench bench_trig_uprobe_push;
 extern const struct bench bench_trig_uretprobe_push;
 extern const struct bench bench_trig_uprobe_ret;
 extern const struct bench bench_trig_uretprobe_ret;
-<<<<<<< HEAD
-=======
 extern const struct bench bench_trig_uprobe_multi_nop;
 extern const struct bench bench_trig_uretprobe_multi_nop;
 extern const struct bench bench_trig_uprobe_multi_push;
 extern const struct bench bench_trig_uretprobe_multi_push;
 extern const struct bench bench_trig_uprobe_multi_ret;
 extern const struct bench bench_trig_uretprobe_multi_ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern const struct bench bench_rb_libbpf;
 extern const struct bench bench_rb_custom;
@@ -586,15 +580,12 @@ static const struct bench *benchs[] = {
 	&bench_trig_uretprobe_push,
 	&bench_trig_uprobe_ret,
 	&bench_trig_uretprobe_ret,
-<<<<<<< HEAD
-=======
 	&bench_trig_uprobe_multi_nop,
 	&bench_trig_uretprobe_multi_nop,
 	&bench_trig_uprobe_multi_push,
 	&bench_trig_uretprobe_multi_push,
 	&bench_trig_uprobe_multi_ret,
 	&bench_trig_uretprobe_multi_ret,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* ringbuf/perfbuf benchmarks */
 	&bench_rb_libbpf,
 	&bench_rb_custom,

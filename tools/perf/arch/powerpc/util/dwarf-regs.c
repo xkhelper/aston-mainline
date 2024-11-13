@@ -98,8 +98,6 @@ int regs_query_register_offset(const char *name)
 			return roff->ptregs_offset;
 	return -EINVAL;
 }
-<<<<<<< HEAD
-=======
 
 #define PPC_OP(op)	(((op) >> 26) & 0x3F)
 #define PPC_RA(a)	(((a) >> 16) & 0x1f)
@@ -153,4 +151,3 @@ void get_powerpc_regs(u32 raw_insn, int is_source,
 	if ((op_loc->mem_ref) && (PPC_OP(raw_insn) != 31))
 		op_loc->offset = get_offset_opcode(raw_insn);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

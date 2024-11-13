@@ -4,11 +4,7 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/xxhash.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define XXHASH64_BLOCK_SIZE	32
 #define XXHASH64_DIGEST_SIZE	8

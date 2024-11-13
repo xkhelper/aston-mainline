@@ -17,15 +17,12 @@
 	FN(TCP_ABORT_ON_DATA)		\
 	FN(TCP_TIMEWAIT_SOCKET)		\
 	FN(INVALID_SYN)			\
-<<<<<<< HEAD
-=======
 	FN(TCP_ABORT_ON_CLOSE)		\
 	FN(TCP_ABORT_ON_LINGER)		\
 	FN(TCP_ABORT_ON_MEMORY)		\
 	FN(TCP_STATE)			\
 	FN(TCP_KEEPALIVE_TIMEOUT)	\
 	FN(TCP_DISCONNECT_WITH_DATA)	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	FN(MPTCP_RST_EUNSPEC)		\
 	FN(MPTCP_RST_EMPTCP)		\
 	FN(MPTCP_RST_ERESOURCE)		\
@@ -93,8 +90,6 @@ enum sk_rst_reason {
 	 * an error, send a reset"
 	 */
 	SK_RST_REASON_INVALID_SYN,
-<<<<<<< HEAD
-=======
 	/**
 	 * @SK_RST_REASON_TCP_ABORT_ON_CLOSE: abort on close
 	 * corresponding to LINUX_MIB_TCPABORTONCLOSE
@@ -128,7 +123,6 @@ enum sk_rst_reason {
 	 * disconnecting, so we have to send an RST.
 	 */
 	SK_RST_REASON_TCP_DISCONNECT_WITH_DATA,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Copy from include/uapi/linux/mptcp.h.
 	 * These reset fields will not be changed since they adhere to

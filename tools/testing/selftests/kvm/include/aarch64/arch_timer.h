@@ -79,11 +79,7 @@ static inline uint64_t timer_get_cval(enum arch_timer timer)
 	return 0;
 }
 
-<<<<<<< HEAD
-static inline void timer_set_tval(enum arch_timer timer, uint32_t tval)
-=======
 static inline void timer_set_tval(enum arch_timer timer, int32_t tval)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (timer) {
 	case VIRTUAL:
@@ -99,8 +95,6 @@ static inline void timer_set_tval(enum arch_timer timer, int32_t tval)
 	isb();
 }
 
-<<<<<<< HEAD
-=======
 static inline int32_t timer_get_tval(enum arch_timer timer)
 {
 	isb();
@@ -117,7 +111,6 @@ static inline int32_t timer_get_tval(enum arch_timer timer)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void timer_set_ctl(enum arch_timer timer, uint32_t ctl)
 {
 	switch (timer) {

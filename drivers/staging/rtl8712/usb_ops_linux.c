@@ -221,11 +221,7 @@ static void r8712_usb_read_port_complete(struct urb *purb)
 			fallthrough;
 		case -EPROTO:
 			r8712_read_port(padapter, precvpriv->ff_hwaddr, 0,
-<<<<<<< HEAD
-				  (unsigned char *)precvbuf);
-=======
 					(unsigned char *)precvbuf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case -EINPROGRESS:
 			netdev_err(padapter->pnetdev, "ERROR: URB IS IN PROGRESS!\n");

@@ -126,10 +126,7 @@ static inline void free_tgts(struct cache_entry *ce)
 
 static inline void flush_cache_ent(struct cache_entry *ce)
 {
-<<<<<<< HEAD
-=======
 	cifs_dbg(FYI, "%s: %s\n", __func__, ce->path);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hlist_del_init(&ce->hlist);
 	kfree(ce->path);
 	free_tgts(ce);
@@ -445,36 +442,6 @@ static struct cache_entry *alloc_cache_entry(struct dfs_info3_param *refs, int n
 	return ce;
 }
 
-<<<<<<< HEAD
-static void remove_oldest_entry_locked(void)
-{
-	int i;
-	struct cache_entry *ce;
-	struct cache_entry *to_del = NULL;
-
-	WARN_ON(!rwsem_is_locked(&htable_rw_lock));
-
-	for (i = 0; i < CACHE_HTABLE_SIZE; i++) {
-		struct hlist_head *l = &cache_htable[i];
-
-		hlist_for_each_entry(ce, l, hlist) {
-			if (hlist_unhashed(&ce->hlist))
-				continue;
-			if (!to_del || timespec64_compare(&ce->etime,
-							  &to_del->etime) < 0)
-				to_del = ce;
-		}
-	}
-
-	if (!to_del) {
-		cifs_dbg(FYI, "%s: no entry to remove\n", __func__);
-		return;
-	}
-
-	cifs_dbg(FYI, "%s: removing entry\n", __func__);
-	dump_ce(to_del);
-	flush_cache_ent(to_del);
-=======
 /* Remove all referrals that have a single target or oldest entry */
 static void purge_cache(void)
 {
@@ -500,7 +467,6 @@ static void purge_cache(void)
 
 	if (atomic_read(&cache_count) >= CACHE_MAX_ENTRIES && oldest)
 		flush_cache_ent(oldest);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Add a new DFS cache entry */
@@ -516,11 +482,7 @@ static struct cache_entry *add_cache_entry_locked(struct dfs_info3_param *refs,
 
 	if (atomic_read(&cache_count) >= CACHE_MAX_ENTRIES) {
 		cifs_dbg(FYI, "%s: reached max cache size (%d)\n", __func__, CACHE_MAX_ENTRIES);
-<<<<<<< HEAD
-		remove_oldest_entry_locked();
-=======
 		purge_cache();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	rc = cache_entry_hash(refs[0].path_name, strlen(refs[0].path_name), &hash);
@@ -1131,18 +1093,6 @@ int dfs_cache_get_tgt_share(char *path, const struct dfs_cache_tgt_iterator *it,
 	return 0;
 }
 
-<<<<<<< HEAD
-static bool target_share_equal(struct TCP_Server_Info *server, const char *s1, const char *s2)
-{
-	char unc[sizeof("\\\\") + SERVER_NAME_LENGTH] = {0};
-	const char *host;
-	size_t hostlen;
-	struct sockaddr_storage ss;
-	bool match;
-	int rc;
-
-	if (strcasecmp(s1, s2))
-=======
 static bool target_share_equal(struct cifs_tcon *tcon, const char *s1)
 {
 	struct TCP_Server_Info *server = tcon->ses->server;
@@ -1155,7 +1105,6 @@ static bool target_share_equal(struct cifs_tcon *tcon, const char *s1)
 	int rc;
 
 	if (strcasecmp(s2, s1))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 
 	/*
@@ -1179,37 +1128,6 @@ static bool target_share_equal(struct cifs_tcon *tcon, const char *s1)
 	return match;
 }
 
-<<<<<<< HEAD
-/*
- * Mark dfs tcon for reconnecting when the currently connected tcon does not match any of the new
- * target shares in @refs.
- */
-static void mark_for_reconnect_if_needed(struct TCP_Server_Info *server,
-					 const char *path,
-					 struct dfs_cache_tgt_list *old_tl,
-					 struct dfs_cache_tgt_list *new_tl)
-{
-	struct dfs_cache_tgt_iterator *oit, *nit;
-
-	for (oit = dfs_cache_get_tgt_iterator(old_tl); oit;
-	     oit = dfs_cache_get_next_tgt(old_tl, oit)) {
-		for (nit = dfs_cache_get_tgt_iterator(new_tl); nit;
-		     nit = dfs_cache_get_next_tgt(new_tl, nit)) {
-			if (target_share_equal(server,
-					       dfs_cache_get_tgt_name(oit),
-					       dfs_cache_get_tgt_name(nit))) {
-				dfs_cache_noreq_update_tgthint(path, nit);
-				return;
-			}
-		}
-	}
-
-	cifs_dbg(FYI, "%s: no cached or matched targets. mark dfs share for reconnect.\n", __func__);
-	cifs_signal_cifsd_for_reconnect(server, true);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool is_ses_good(struct cifs_ses *ses)
 {
 	struct TCP_Server_Info *server = ses->server;
@@ -1226,50 +1144,15 @@ static bool is_ses_good(struct cifs_ses *ses)
 	return ret;
 }
 
-<<<<<<< HEAD
-/* Refresh dfs referral of @ses and mark it for reconnect if needed */
-static void __refresh_ses_referral(struct cifs_ses *ses, bool force_refresh)
-{
-	struct TCP_Server_Info *server = ses->server;
-	DFS_CACHE_TGT_LIST(old_tl);
-	DFS_CACHE_TGT_LIST(new_tl);
-	bool needs_refresh = false;
-	struct cache_entry *ce;
-	unsigned int xid;
-	char *path = NULL;
-	int rc = 0;
-
-	xid = get_xid();
-=======
 static char *get_ses_refpath(struct cifs_ses *ses)
 {
 	struct TCP_Server_Info *server = ses->server;
 	char *path = ERR_PTR(-ENOENT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&server->refpath_lock);
 	if (server->leaf_fullpath) {
 		path = kstrdup(server->leaf_fullpath + 1, GFP_ATOMIC);
 		if (!path)
-<<<<<<< HEAD
-			rc = -ENOMEM;
-	}
-	mutex_unlock(&server->refpath_lock);
-	if (!path)
-		goto out;
-
-	down_read(&htable_rw_lock);
-	ce = lookup_cache_entry(path);
-	needs_refresh = force_refresh || IS_ERR(ce) || cache_entry_expired(ce);
-	if (!IS_ERR(ce)) {
-		rc = get_targets(ce, &old_tl);
-		cifs_dbg(FYI, "%s: get_targets: %d\n", __func__, rc);
-	}
-	up_read(&htable_rw_lock);
-
-	if (!needs_refresh) {
-		rc = 0;
-=======
 			path = ERR_PTR(-ENOMEM);
 	}
 	mutex_unlock(&server->refpath_lock);
@@ -1290,7 +1173,6 @@ static void refresh_ses_referral(struct cifs_ses *ses)
 	if (IS_ERR(path)) {
 		rc = PTR_ERR(path);
 		path = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 
@@ -1301,14 +1183,6 @@ static void refresh_ses_referral(struct cifs_ses *ses)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	ce = cache_refresh_path(xid, ses, path, true);
-	if (!IS_ERR(ce)) {
-		rc = get_targets(ce, &new_tl);
-		up_read(&htable_rw_lock);
-		cifs_dbg(FYI, "%s: get_targets: %d\n", __func__, rc);
-		mark_for_reconnect_if_needed(server, path, &old_tl, &new_tl);
-=======
 	ce = cache_refresh_path(xid, ses, path, false);
 	if (!IS_ERR(ce))
 		up_read(&htable_rw_lock);
@@ -1403,29 +1277,12 @@ static void refresh_tcon_referral(struct cifs_tcon *tcon, bool force_refresh)
 	if (!rc) {
 		rc = __refresh_tcon_referral(tcon, path, refs,
 					     numrefs, force_refresh);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 out:
 	free_xid(xid);
-<<<<<<< HEAD
-	dfs_cache_free_tgts(&old_tl);
-	dfs_cache_free_tgts(&new_tl);
-	kfree(path);
-}
-
-static inline void refresh_ses_referral(struct cifs_ses *ses)
-{
-	__refresh_ses_referral(ses, false);
-}
-
-static inline void force_refresh_ses_referral(struct cifs_ses *ses)
-{
-	__refresh_ses_referral(ses, true);
-=======
 	kfree(path);
 	free_dfs_info_array(refs, numrefs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1466,11 +1323,7 @@ int dfs_cache_remount_fs(struct cifs_sb_info *cifs_sb)
 	 */
 	cifs_sb->mnt_cifs_flags |= CIFS_MOUNT_USE_PREFIX_PATH;
 
-<<<<<<< HEAD
-	force_refresh_ses_referral(tcon->ses);
-=======
 	refresh_tcon_referral(tcon, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1482,14 +1335,9 @@ void dfs_cache_refresh(struct work_struct *work)
 
 	tcon = container_of(work, struct cifs_tcon, dfs_cache_work.work);
 
-<<<<<<< HEAD
-	for (ses = tcon->ses; ses; ses = ses->dfs_root_ses)
-		refresh_ses_referral(ses);
-=======
 	list_for_each_entry(ses, &tcon->dfs_ses_list, dlist)
 		refresh_ses_referral(ses);
 	refresh_tcon_referral(tcon, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	queue_delayed_work(dfscache_wq, &tcon->dfs_cache_work,
 			   atomic_read(&dfs_cache_ttl) * HZ);

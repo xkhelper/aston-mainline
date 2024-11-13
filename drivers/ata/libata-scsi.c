@@ -30,11 +30,7 @@
 #include <linux/hdreg.h>
 #include <linux/uaccess.h>
 #include <linux/suspend.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/ioprio.h>
 #include <linux/of.h>
 
@@ -1695,12 +1691,6 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
 			set_status_byte(qc->scsicmd, SAM_STAT_CHECK_CONDITION);
 	} else if (is_error && !have_sense) {
 		ata_gen_ata_sense(qc);
-<<<<<<< HEAD
-	} else {
-		/* Keep the SCSI ML and status byte, clear host byte. */
-		cmd->result &= 0x0000ffff;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ata_qc_done(qc);
@@ -2101,11 +2091,7 @@ static unsigned int ata_scsiop_inq_b0(struct ata_scsi_args *args, u8 *rbuf)
 	if (ata_id_has_trim(args->id)) {
 		u64 max_blocks = 65535 * ATA_MAX_TRIM_RNUM;
 
-<<<<<<< HEAD
-		if (dev->horkage & ATA_HORKAGE_MAX_TRIM_128M)
-=======
 		if (dev->quirks & ATA_QUIRK_MAX_TRIM_128M)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			max_blocks = 128 << (20 - SECTOR_SHIFT);
 
 		put_unaligned_be64(max_blocks, &rbuf[36]);
@@ -2270,12 +2256,6 @@ static inline u16 ata_xlat_cdl_limit(u8 *buf)
 static unsigned int ata_msense_control_spgt2(struct ata_device *dev, u8 *buf,
 					     u8 spg)
 {
-<<<<<<< HEAD
-	u8 *b, *cdl = dev->cdl, *desc;
-	u32 policy;
-	int i;
-
-=======
 	u8 *b, *cdl, *desc;
 	u32 policy;
 	int i;
@@ -2285,7 +2265,6 @@ static unsigned int ata_msense_control_spgt2(struct ata_device *dev, u8 *buf,
 
 	cdl = dev->cdl->desc_log_buf;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Fill the subpage. The first four bytes of the T2A/T2B mode pages
 	 * are a header. The PAGE LENGTH field is the size of the page
@@ -2382,11 +2361,7 @@ static unsigned int ata_msense_control(struct ata_device *dev, u8 *buf,
 	case ALL_SUB_MPAGES:
 		n = ata_msense_control_spg0(dev, buf, changeable);
 		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2A_SUB_MPAGE);
-<<<<<<< HEAD
-		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2A_SUB_MPAGE);
-=======
 		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2B_SUB_MPAGE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		n += ata_msense_control_ata_feature(dev, buf + n);
 		return n;
 	default:
@@ -2599,19 +2574,11 @@ static unsigned int ata_scsiop_read_cap(struct ata_scsi_args *args, u8 *rbuf)
 		rbuf[15] = lowest_aligned;
 
 		if (ata_id_has_trim(args->id) &&
-<<<<<<< HEAD
-		    !(dev->horkage & ATA_HORKAGE_NOTRIM)) {
-			rbuf[14] |= 0x80; /* LBPME */
-
-			if (ata_id_has_zero_after_trim(args->id) &&
-			    dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM) {
-=======
 		    !(dev->quirks & ATA_QUIRK_NOTRIM)) {
 			rbuf[14] |= 0x80; /* LBPME */
 
 			if (ata_id_has_zero_after_trim(args->id) &&
 			    dev->quirks & ATA_QUIRK_ZERO_AFTER_TRIM) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ata_dev_info(dev, "Enabling discard_zeroes_data\n");
 				rbuf[14] |= 0x40; /* LBPRZ */
 			}
@@ -3275,12 +3242,7 @@ static unsigned int ata_scsi_write_same_xlat(struct ata_queued_cmd *qc)
 	}
 	scsi_16_lba_len(cdb, &block, &n_block);
 
-<<<<<<< HEAD
-	if (!unmap ||
-	    (dev->horkage & ATA_HORKAGE_NOTRIM) ||
-=======
 	if (!unmap || (dev->quirks & ATA_QUIRK_NOTRIM) ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !ata_id_has_trim(dev->id)) {
 		fp = 1;
 		bp = 3;
@@ -4656,18 +4618,6 @@ static void ata_scsi_handle_link_detach(struct ata_link *link)
 	ata_for_each_dev(dev, link, ALL) {
 		unsigned long flags;
 
-<<<<<<< HEAD
-		if (!(dev->flags & ATA_DFLAG_DETACHED))
-			continue;
-
-		spin_lock_irqsave(ap->lock, flags);
-		dev->flags &= ~ATA_DFLAG_DETACHED;
-		spin_unlock_irqrestore(ap->lock, flags);
-
-		if (zpodd_dev_enabled(dev))
-			zpodd_exit(dev);
-
-=======
 		spin_lock_irqsave(ap->lock, flags);
 		if (!(dev->flags & ATA_DFLAG_DETACHED)) {
 			spin_unlock_irqrestore(ap->lock, flags);
@@ -4677,7 +4627,6 @@ static void ata_scsi_handle_link_detach(struct ata_link *link)
 		dev->flags &= ~ATA_DFLAG_DETACHED;
 		spin_unlock_irqrestore(ap->lock, flags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ata_scsi_remove_dev(dev);
 	}
 }

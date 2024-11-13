@@ -3,10 +3,7 @@
 // Copyright (c) 2011 Samsung Electronics Co., Ltd
 //              http://www.samsung.com
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/err.h>
 #include <linux/of_gpio.h>
 #include <linux/gpio/consumer.h>
@@ -525,11 +522,7 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 					struct sec_platform_data *pdata)
 {
 	struct sec_pmic_dev *iodev = dev_get_drvdata(pdev->dev.parent);
-<<<<<<< HEAD
-	struct device_node *pmic_np, *regulators_np, *reg_np;
-=======
 	struct device_node *pmic_np, *reg_np;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct sec_regulator_data *rdata;
 	struct sec_opmode_data *rmode;
 	unsigned int i, dvs_voltage_nr = 8, ret;
@@ -540,12 +533,8 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-	regulators_np = of_get_child_by_name(pmic_np, "regulators");
-=======
 	struct device_node *regulators_np __free(device_node) = of_get_child_by_name(pmic_np,
 										     "regulators");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!regulators_np) {
 		dev_err(iodev->dev, "could not find regulators sub-node\n");
 		return -EINVAL;
@@ -557,28 +546,14 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 	rdata = devm_kcalloc(&pdev->dev,
 			     pdata->num_regulators, sizeof(*rdata),
 			     GFP_KERNEL);
-<<<<<<< HEAD
-	if (!rdata) {
-		of_node_put(regulators_np);
-		return -ENOMEM;
-	}
-=======
 	if (!rdata)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rmode = devm_kcalloc(&pdev->dev,
 			     pdata->num_regulators, sizeof(*rmode),
 			     GFP_KERNEL);
-<<<<<<< HEAD
-	if (!rmode) {
-		of_node_put(regulators_np);
-		return -ENOMEM;
-	}
-=======
 	if (!rmode)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pdata->regulators = rdata;
 	pdata->opmode = rmode;
@@ -604,10 +579,6 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 			rdata->ext_control_gpiod = NULL;
 		} else if (IS_ERR(rdata->ext_control_gpiod)) {
 			of_node_put(reg_np);
-<<<<<<< HEAD
-			of_node_put(regulators_np);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return PTR_ERR(rdata->ext_control_gpiod);
 		}
 
@@ -629,11 +600,6 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 		rmode++;
 	}
 
-<<<<<<< HEAD
-	of_node_put(regulators_np);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (of_property_read_bool(pmic_np, "s5m8767,pmic-buck2-uses-gpio-dvs")) {
 		pdata->buck2_gpiodvs = true;
 

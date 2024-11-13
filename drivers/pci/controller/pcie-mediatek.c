@@ -211,10 +211,6 @@ struct mtk_pcie_port {
  * @base: IO mapped register base
  * @cfg: IO mapped register map for PCIe config
  * @free_ck: free-run reference clock
-<<<<<<< HEAD
- * @mem: non-prefetchable memory resource
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @ports: pointer to PCIe port information
  * @soc: pointer to SoC-dependent operations
  */
@@ -410,15 +406,6 @@ static void mtk_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
 		(int)data->hwirq, msg->address_hi, msg->address_lo);
 }
 
-<<<<<<< HEAD
-static int mtk_msi_set_affinity(struct irq_data *irq_data,
-				const struct cpumask *mask, bool force)
-{
-	 return -EINVAL;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mtk_msi_ack_irq(struct irq_data *data)
 {
 	struct mtk_pcie_port *port = irq_data_get_irq_chip_data(data);
@@ -430,10 +417,6 @@ static void mtk_msi_ack_irq(struct irq_data *data)
 static struct irq_chip mtk_msi_bottom_irq_chip = {
 	.name			= "MTK MSI",
 	.irq_compose_msi_msg	= mtk_compose_msi_msg,
-<<<<<<< HEAD
-	.irq_set_affinity	= mtk_msi_set_affinity,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.irq_ack		= mtk_msi_ack_irq,
 };
 
@@ -495,13 +478,8 @@ static struct irq_chip mtk_msi_irq_chip = {
 };
 
 static struct msi_domain_info mtk_msi_domain_info = {
-<<<<<<< HEAD
-	.flags	= (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
-		   MSI_FLAG_PCI_MSIX),
-=======
 	.flags	= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
 		  MSI_FLAG_NO_AFFINITY | MSI_FLAG_PCI_MSIX,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.chip	= &mtk_msi_irq_chip,
 };
 

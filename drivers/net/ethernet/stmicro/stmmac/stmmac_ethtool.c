@@ -19,10 +19,7 @@
 #include "stmmac.h"
 #include "dwmac_dma.h"
 #include "dwxgmac2.h"
-<<<<<<< HEAD
-=======
 #include "dwmac5.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define REG_SPACE_SIZE	0x1060
 #define GMAC4_REG_SPACE_SIZE	0x116C
@@ -442,16 +439,6 @@ static void stmmac_ethtool_setmsglevel(struct net_device *dev, u32 level)
 
 }
 
-<<<<<<< HEAD
-static int stmmac_check_if_running(struct net_device *dev)
-{
-	if (!netif_running(dev))
-		return -EBUSY;
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int stmmac_ethtool_get_regs_len(struct net_device *dev)
 {
 	struct stmmac_priv *priv = netdev_priv(dev);
@@ -1214,22 +1201,13 @@ static int stmmac_get_ts_info(struct net_device *dev,
 
 		info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
 					SOF_TIMESTAMPING_TX_HARDWARE |
-<<<<<<< HEAD
-					SOF_TIMESTAMPING_RX_SOFTWARE |
 					SOF_TIMESTAMPING_RX_HARDWARE |
-					SOF_TIMESTAMPING_SOFTWARE |
-=======
-					SOF_TIMESTAMPING_RX_HARDWARE |
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					SOF_TIMESTAMPING_RAW_HARDWARE;
 
 		if (priv->ptp_clock)
 			info->phc_index = ptp_clock_index(priv->ptp_clock);
-<<<<<<< HEAD
-=======
 		else
 			info->phc_index = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
 
@@ -1286,12 +1264,6 @@ static int stmmac_set_tunable(struct net_device *dev,
 	return ret;
 }
 
-<<<<<<< HEAD
-static const struct ethtool_ops stmmac_ethtool_ops = {
-	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
-				     ETHTOOL_COALESCE_MAX_FRAMES,
-	.begin = stmmac_check_if_running,
-=======
 static int stmmac_get_mm(struct net_device *ndev,
 			 struct ethtool_mm_state *state)
 {
@@ -1387,7 +1359,6 @@ static void stmmac_get_mm_stats(struct net_device *ndev,
 static const struct ethtool_ops stmmac_ethtool_ops = {
 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
 				     ETHTOOL_COALESCE_MAX_FRAMES,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_drvinfo = stmmac_ethtool_getdrvinfo,
 	.get_msglevel = stmmac_ethtool_getmsglevel,
 	.set_msglevel = stmmac_ethtool_setmsglevel,
@@ -1423,12 +1394,9 @@ static const struct ethtool_ops stmmac_ethtool_ops = {
 	.set_tunable = stmmac_set_tunable,
 	.get_link_ksettings = stmmac_ethtool_get_link_ksettings,
 	.set_link_ksettings = stmmac_ethtool_set_link_ksettings,
-<<<<<<< HEAD
-=======
 	.get_mm = stmmac_get_mm,
 	.set_mm = stmmac_set_mm,
 	.get_mm_stats = stmmac_get_mm_stats,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void stmmac_set_ethtool_ops(struct net_device *netdev)

@@ -391,12 +391,6 @@ static int adp5589_gpio_get_value(struct gpio_chip *chip, unsigned off)
 	struct adp5589_kpad *kpad = gpiochip_get_data(chip);
 	unsigned int bank = kpad->var->bank(kpad->gpiomap[off]);
 	unsigned int bit = kpad->var->bit(kpad->gpiomap[off]);
-<<<<<<< HEAD
-
-	return !!(adp5589_read(kpad->client,
-			       kpad->var->reg(ADP5589_GPI_STATUS_A) + bank) &
-			       bit);
-=======
 	int val;
 
 	mutex_lock(&kpad->gpio_lock);
@@ -408,7 +402,6 @@ static int adp5589_gpio_get_value(struct gpio_chip *chip, unsigned off)
 	mutex_unlock(&kpad->gpio_lock);
 
 	return !!(val & bit);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void adp5589_gpio_set_value(struct gpio_chip *chip,
@@ -950,16 +943,9 @@ static int adp5589_keypad_add(struct adp5589_kpad *kpad, unsigned int revid)
 
 static void adp5589_clear_config(void *data)
 {
-<<<<<<< HEAD
-	struct i2c_client *client = data;
-	struct adp5589_kpad *kpad = i2c_get_clientdata(client);
-
-	adp5589_write(client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
-=======
 	struct adp5589_kpad *kpad = data;
 
 	adp5589_write(kpad->client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int adp5589_probe(struct i2c_client *client)
@@ -1003,11 +989,7 @@ static int adp5589_probe(struct i2c_client *client)
 	}
 
 	error = devm_add_action_or_reset(&client->dev, adp5589_clear_config,
-<<<<<<< HEAD
-					 client);
-=======
 					 kpad);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		return error;
 
@@ -1034,11 +1016,6 @@ static int adp5589_probe(struct i2c_client *client)
 	if (error)
 		return error;
 
-<<<<<<< HEAD
-	i2c_set_clientdata(client, kpad);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_info(&client->dev, "Rev.%d keypad, irq %d\n", revid, client->irq);
 	return 0;
 }

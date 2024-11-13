@@ -63,8 +63,6 @@ definitions:
       - sdifname
       - bri-broute
   -
-<<<<<<< HEAD
-=======
     name: bitwise-ops
     type: enum
     entries:
@@ -72,7 +70,6 @@ definitions:
       - lshift
       - rshift
   -
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     name: cmp-ops
     type: enum
     entries:
@@ -135,8 +132,6 @@ definitions:
       - object
       - concat
       - expr
-<<<<<<< HEAD
-=======
   -
     name: lookup-flags
     type: flags
@@ -230,7 +225,6 @@ definitions:
       - icmp-unreach
       - tcp-rst
       - icmpx-unreach
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 attribute-sets:
   -
@@ -717,16 +711,10 @@ attribute-sets:
         type: u64
         byte-order: big-endian
       -
-<<<<<<< HEAD
-        name: flags # TODO
-        type: u32
-        byte-order: big-endian
-=======
         name: flags
         type: u32
         byte-order: big-endian
         enum: quota-flags
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       -
         name: pad
         type: pad
@@ -778,8 +766,6 @@ attribute-sets:
         type: nest
         nested-attributes: hook-dev-attrs
   -
-<<<<<<< HEAD
-=======
     name: expr-bitwise-attrs
     attributes:
       -
@@ -812,7 +798,6 @@ attribute-sets:
         type: nest
         nested-attributes: data-attrs
   -
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     name: expr-cmp-attrs
     attributes:
       -
@@ -846,10 +831,7 @@ attribute-sets:
         name: code
         type: u32
         byte-order: big-endian
-<<<<<<< HEAD
-=======
         enum: verdict-code
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       -
         name: chain
         type: string
@@ -871,8 +853,6 @@ attribute-sets:
         name: pad
         type: pad
   -
-<<<<<<< HEAD
-=======
     name: expr-fib-attrs
     attributes:
       -
@@ -910,7 +890,6 @@ attribute-sets:
         type: u32
         byte-order: big-endian
   -
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     name: expr-flow-offload-attrs
     attributes:
       -
@@ -929,8 +908,6 @@ attribute-sets:
         type: nest
         nested-attributes: data-attrs
   -
-<<<<<<< HEAD
-=======
     name: expr-lookup-attrs
     attributes:
       -
@@ -956,7 +933,6 @@ attribute-sets:
         byte-order: big-endian
         enum: lookup-flags
   -
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     name: expr-meta-attrs
     attributes:
       -
@@ -1041,8 +1017,6 @@ attribute-sets:
         type: u32
         byte-order: big-endian
   -
-<<<<<<< HEAD
-=======
     name: expr-reject-attrs
     attributes:
       -
@@ -1067,7 +1041,6 @@ attribute-sets:
         name: info
         type: binary
   -
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     name: expr-tproxy-attrs
     attributes:
       -
@@ -1082,8 +1055,6 @@ attribute-sets:
         name: reg-port
         type: u32
         byte-order: big-endian
-<<<<<<< HEAD
-=======
   -
     name: expr-objref-attrs
     attributes:
@@ -1108,19 +1079,14 @@ attribute-sets:
         type: u32
         byte-order: big-endian
         doc: id of object map
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 sub-messages:
   -
     name: expr-ops
     formats:
       -
-<<<<<<< HEAD
-        value: bitwise # TODO
-=======
         value: bitwise
         attribute-set: expr-bitwise-attrs
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       -
         value: cmp
         attribute-set: expr-cmp-attrs
@@ -1128,15 +1094,11 @@ sub-messages:
         value: counter
         attribute-set: expr-counter-attrs
       -
-<<<<<<< HEAD
-        value: ct # TODO
-=======
         value: ct
         attribute-set: expr-ct-attrs
       -
         value: fib
         attribute-set: expr-fib-attrs
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       -
         value: flow_offload
         attribute-set: expr-flow-offload-attrs
@@ -1144,12 +1106,8 @@ sub-messages:
         value: immediate
         attribute-set: expr-immediate-attrs
       -
-<<<<<<< HEAD
-        value: lookup # TODO
-=======
         value: lookup
         attribute-set: expr-lookup-attrs
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       -
         value: meta
         attribute-set: expr-meta-attrs
@@ -1157,11 +1115,6 @@ sub-messages:
         value: nat
         attribute-set: expr-nat-attrs
       -
-<<<<<<< HEAD
-        value: payload
-        attribute-set: expr-payload-attrs
-      -
-=======
         value: objref
         attribute-set: expr-objref-attrs
       -
@@ -1177,7 +1130,6 @@ sub-messages:
         value: target
         attribute-set: expr-target-attrs
       -
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         value: tproxy
         attribute-set: expr-tproxy-attrs
   -

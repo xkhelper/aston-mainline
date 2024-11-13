@@ -26,13 +26,10 @@
 #define F_DUPFD_QUERY (F_LINUX_SPECIFIC_BASE + 3)
 #endif
 
-<<<<<<< HEAD
-=======
 #ifndef F_CREATED_QUERY
 #define F_CREATED_QUERY (F_LINUX_SPECIFIC_BASE + 4)
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int sys_close_range(unsigned int fd, unsigned int max_fd,
 				  unsigned int flags)
 {
@@ -631,8 +628,6 @@ TEST(close_range_bitmap_corruption)
 	EXPECT_EQ(0, WEXITSTATUS(status));
 }
 
-<<<<<<< HEAD
-=======
 TEST(fcntl_created)
 {
 	for (int i = 0; i < 101; i++) {
@@ -668,5 +663,4 @@ TEST(fcntl_created)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TEST_HARNESS_MAIN

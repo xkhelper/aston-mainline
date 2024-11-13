@@ -703,8 +703,6 @@ extern "C" {
 #define I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC fourcc_mod_code(INTEL, 15)
 
 /*
-<<<<<<< HEAD
-=======
  * Intel Color Control Surfaces (CCS) for graphics ver. 20 unified compression
  * on integrated graphics
  *
@@ -730,7 +728,6 @@ extern "C" {
 #define I915_FORMAT_MOD_4_TILED_BMG_CCS fourcc_mod_code(INTEL, 17)
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Tiled, NV12MT, grouped in 64 (pixels) x 32 (lines) -sized macroblocks
  *
  * Macroblocks are laid in a Z-shape, and each pixel data is following the

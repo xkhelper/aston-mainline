@@ -366,11 +366,6 @@ int dvb_vb2_querybuf(struct dvb_vb2_ctx *ctx, struct dmx_buffer *b)
 int dvb_vb2_expbuf(struct dvb_vb2_ctx *ctx, struct dmx_exportbuffer *exp)
 {
 	struct vb2_queue *q = &ctx->vb_q;
-<<<<<<< HEAD
-	int ret;
-
-	ret = vb2_core_expbuf(&ctx->vb_q, &exp->fd, q->type, q->bufs[exp->index],
-=======
 	struct vb2_buffer *vb2 = vb2_get_buffer(q, exp->index);
 	int ret;
 
@@ -380,7 +375,6 @@ int dvb_vb2_expbuf(struct dvb_vb2_ctx *ctx, struct dmx_exportbuffer *exp)
 	}
 
 	ret = vb2_core_expbuf(&ctx->vb_q, &exp->fd, q->type, vb2,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      0, exp->flags);
 	if (ret) {
 		dprintk(1, "[%s] index=%d errno=%d\n", ctx->name,

@@ -240,11 +240,7 @@ static struct vfsmount *cifs_do_automount(struct path *path)
 		ctx->source = NULL;
 		goto out;
 	}
-<<<<<<< HEAD
-	ctx->dfs_automount = is_dfs_mount(mntpt);
-=======
 	ctx->dfs_automount = ctx->dfs_conn = is_dfs_mount(mntpt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cifs_dbg(FYI, "%s: ctx: source=%s UNC=%s prepath=%s dfs_automount=%d\n",
 		 __func__, ctx->source, ctx->UNC, ctx->prepath, ctx->dfs_automount);
 

@@ -26,28 +26,6 @@ struct decomp_data {
 	struct zstd_data *zstd_decomp;
 };
 
-<<<<<<< HEAD
-struct perf_session {
-	struct perf_header	header;
-	struct machines		machines;
-	struct evlist	*evlist;
-	struct auxtrace		*auxtrace;
-	struct itrace_synth_opts *itrace_synth_opts;
-	struct list_head	auxtrace_index;
-#ifdef HAVE_LIBTRACEEVENT
-	struct trace_event	tevent;
-#endif
-	struct perf_record_time_conv	time_conv;
-	bool			repipe;
-	bool			one_mmap;
-	void			*one_mmap_addr;
-	u64			one_mmap_offset;
-	struct ordered_events	ordered_events;
-	struct perf_data	*data;
-	struct perf_tool	*tool;
-	u64			bytes_transferred;
-	u64			bytes_compressed;
-=======
 /**
  * struct perf_session- A Perf session holds the main state when the program is
  * working with live perf events or reading data from an input file.
@@ -110,7 +88,6 @@ struct perf_session {
 	 */
 	u64			bytes_compressed;
 	/** @zstd_data: Owner of global compression state, buffers, etc. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct zstd_data	zstd_data;
 	struct decomp_data	decomp_data;
 	struct decomp_data	*active_decomp;
@@ -129,22 +106,13 @@ struct decomp {
 struct perf_tool;
 
 struct perf_session *__perf_session__new(struct perf_data *data,
-<<<<<<< HEAD
-					 bool repipe, int repipe_fd,
-					 struct perf_tool *tool);
-=======
 					 struct perf_tool *tool,
 					 bool trace_event_repipe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline struct perf_session *perf_session__new(struct perf_data *data,
 						     struct perf_tool *tool)
 {
-<<<<<<< HEAD
-	return __perf_session__new(data, false, -1, tool);
-=======
 	return __perf_session__new(data, tool, /*trace_event_repipe=*/false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void perf_session__delete(struct perf_session *session);
@@ -166,11 +134,6 @@ int perf_session__process_events(struct perf_session *session);
 int perf_session__queue_event(struct perf_session *s, union perf_event *event,
 			      u64 timestamp, u64 file_offset, const char *file_path);
 
-<<<<<<< HEAD
-void perf_tool__fill_defaults(struct perf_tool *tool);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int perf_session__resolve_callchain(struct perf_session *session,
 				    struct evsel *evsel,
 				    struct thread *thread,
@@ -231,23 +194,16 @@ extern volatile int session_done;
 int perf_session__deliver_synth_event(struct perf_session *session,
 				      union perf_event *event,
 				      struct perf_sample *sample);
-<<<<<<< HEAD
-=======
 int perf_session__deliver_synth_attr_event(struct perf_session *session,
 					   const struct perf_event_attr *attr,
 					   u64 id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int perf_session__dsos_hit_all(struct perf_session *session);
 
 int perf_event__process_id_index(struct perf_session *session,
 				 union perf_event *event);
 
-<<<<<<< HEAD
-int perf_event__process_finished_round(struct perf_tool *tool,
-=======
 int perf_event__process_finished_round(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       union perf_event *event,
 				       struct ordered_events *oe);
 

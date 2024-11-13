@@ -288,8 +288,6 @@ static void tb_increase_tmu_accuracy(struct tb_tunnel *tunnel)
 	device_for_each_child(&sw->dev, NULL, tb_increase_switch_tmu_accuracy);
 }
 
-<<<<<<< HEAD
-=======
 static int tb_switch_tmu_hifi_uni_required(struct device *dev, void *not_used)
 {
 	struct tb_switch *sw = tb_to_switch(dev);
@@ -308,7 +306,6 @@ static bool tb_tmu_hifi_uni_required(struct tb *tb)
 				     tb_switch_tmu_hifi_uni_required) == 1;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int tb_enable_tmu(struct tb_switch *sw)
 {
 	int ret;
@@ -323,14 +320,6 @@ static int tb_enable_tmu(struct tb_switch *sw)
 	ret = tb_switch_tmu_configure(sw,
 			TB_SWITCH_TMU_MODE_MEDRES_ENHANCED_UNI);
 	if (ret == -EOPNOTSUPP) {
-<<<<<<< HEAD
-		if (tb_switch_clx_is_enabled(sw, TB_CL1))
-			ret = tb_switch_tmu_configure(sw,
-					TB_SWITCH_TMU_MODE_LOWRES);
-		else
-			ret = tb_switch_tmu_configure(sw,
-					TB_SWITCH_TMU_MODE_HIFI_BI);
-=======
 		if (tb_switch_clx_is_enabled(sw, TB_CL1)) {
 			/*
 			 * Figure out uni-directional HiFi TMU requirements
@@ -355,7 +344,6 @@ static int tb_enable_tmu(struct tb_switch *sw)
 		/* If not supported, fallback to bi-directional HiFi */
 		if (ret == -EOPNOTSUPP)
 			ret = tb_switch_tmu_configure(sw, TB_SWITCH_TMU_MODE_HIFI_BI);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (ret)
 		return ret;

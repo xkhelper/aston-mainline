@@ -57,8 +57,6 @@ struct mem_bank_data {
 };
 
 /**
-<<<<<<< HEAD
-=======
  * struct zynqmp_sram_bank - sram bank description
  *
  * @sram_res: sram address region information
@@ -70,7 +68,6 @@ struct zynqmp_sram_bank {
 };
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * struct mbox_info
  *
  * @rx_mc_buf: to copy data from mailbox rx channel
@@ -134,11 +131,8 @@ static const struct mem_bank_data zynqmp_tcm_banks_lockstep[] = {
  * struct zynqmp_r5_core
  *
  * @rsc_tbl_va: resource table virtual address
-<<<<<<< HEAD
-=======
  * @sram: Array of sram memories assigned to this core
  * @num_sram: number of sram for this core
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @dev: device of RPU instance
  * @np: device node of RPU instance
  * @tcm_bank_count: number TCM banks accessible to this RPU
@@ -150,11 +144,8 @@ static const struct mem_bank_data zynqmp_tcm_banks_lockstep[] = {
  */
 struct zynqmp_r5_core {
 	void __iomem *rsc_tbl_va;
-<<<<<<< HEAD
-=======
 	struct zynqmp_sram_bank *sram;
 	int num_sram;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device *dev;
 	struct device_node *np;
 	int tcm_bank_count;
@@ -518,8 +509,6 @@ static int add_mem_regions_carveout(struct rproc *rproc)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int add_sram_carveouts(struct rproc *rproc)
 {
 	struct zynqmp_r5_core *r5_core = rproc->priv;
@@ -559,7 +548,6 @@ static int add_sram_carveouts(struct rproc *rproc)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * tcm_mem_unmap()
  * @rproc: single R5 core's corresponding rproc instance
@@ -735,15 +723,12 @@ static int zynqmp_r5_rproc_prepare(struct rproc *rproc)
 		return ret;
 	}
 
-<<<<<<< HEAD
-=======
 	ret = add_sram_carveouts(rproc);
 	if (ret) {
 		dev_err(&rproc->dev, "failed to get sram carveout %d\n", ret);
 		return ret;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -956,8 +941,6 @@ free_rproc:
 	return ERR_PTR(ret);
 }
 
-<<<<<<< HEAD
-=======
 static int zynqmp_r5_get_sram_banks(struct zynqmp_r5_core *r5_core)
 {
 	struct device_node *np = r5_core->np;
@@ -1029,7 +1012,6 @@ fail_sram_get:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int zynqmp_r5_get_tcm_node_from_dt(struct zynqmp_r5_cluster *cluster)
 {
 	int i, j, tcm_bank_count, ret, tcm_pd_idx, pd_count;
@@ -1208,11 +1190,7 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
 	r5_core = cluster->r5_cores[0];
 
 	/* Maintain backward compatibility for zynqmp by using hardcode TCM address. */
-<<<<<<< HEAD
-	if (of_find_property(r5_core->np, "reg", NULL))
-=======
 	if (of_property_present(r5_core->np, "reg"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = zynqmp_r5_get_tcm_node_from_dt(cluster);
 	else if (device_is_compatible(dev, "xlnx,zynqmp-r5fss"))
 		ret = zynqmp_r5_get_tcm_node(cluster);
@@ -1239,11 +1217,7 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
 			return ret;
 		}
 
-<<<<<<< HEAD
-		if (of_find_property(dev_of_node(dev), "xlnx,tcm-mode", NULL) ||
-=======
 		if (of_property_present(dev_of_node(dev), "xlnx,tcm-mode") ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    device_is_compatible(dev, "xlnx,zynqmp-r5fss")) {
 			ret = zynqmp_pm_set_tcm_config(r5_core->pm_domain_id,
 						       tcm_mode);
@@ -1252,13 +1226,10 @@ static int zynqmp_r5_core_init(struct zynqmp_r5_cluster *cluster,
 				return ret;
 			}
 		}
-<<<<<<< HEAD
-=======
 
 		ret = zynqmp_r5_get_sram_banks(r5_core);
 		if (ret)
 			return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -1311,11 +1282,7 @@ static int zynqmp_r5_cluster_init(struct zynqmp_r5_cluster *cluster)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	if (of_find_property(dev_node, "xlnx,tcm-mode", NULL)) {
-=======
 	if (of_property_present(dev_node, "xlnx,tcm-mode")) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = of_property_read_u32(dev_node, "xlnx,tcm-mode", (u32 *)&tcm_mode);
 		if (ret)
 			return ret;

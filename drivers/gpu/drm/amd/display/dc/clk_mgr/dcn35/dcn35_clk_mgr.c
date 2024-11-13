@@ -120,30 +120,12 @@ static int dcn35_get_active_display_cnt_wa(
 
 	return display_count;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void dcn35_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context,
 		bool safe_to_lower, bool disable)
 {
 	struct dc *dc = clk_mgr_base->ctx->dc;
 	int i;
 
-<<<<<<< HEAD
-	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
-		struct pipe_ctx *pipe = safe_to_lower
-			? &context->res_ctx.pipe_ctx[i]
-			: &dc->current_state->res_ctx.pipe_ctx[i];
-
-		if (pipe->top_pipe || pipe->prev_odm_pipe)
-			continue;
-		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal) ||
-				     !pipe->stream->link_enc)) {
-			if (disable) {
-				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->disable_crtc)
-					pipe->stream_res.tg->funcs->disable_crtc(pipe->stream_res.tg);
-=======
 	if (dc->ctx->dce_environment == DCE_ENV_DIAG)
 		return;
 
@@ -172,7 +154,6 @@ static void dcn35_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *
 			if (disable) {
 				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
 					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				reset_sync_context_for_pipe(dc, context, i);
 			} else {
@@ -401,12 +382,9 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
 	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
 
-<<<<<<< HEAD
-=======
 		if (dc->debug.min_disp_clk_khz > 0 && new_clocks->dispclk_khz < dc->debug.min_disp_clk_khz)
 			new_clocks->dispclk_khz = dc->debug.min_disp_clk_khz;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
 		dcn35_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
@@ -1122,11 +1100,7 @@ void dcn35_clk_mgr_construct(
 
 	clk_mgr->smu_wm_set.wm_set = (struct dcn35_watermarks *)dm_helpers_allocate_gpu_mem(
 				clk_mgr->base.base.ctx,
-<<<<<<< HEAD
-				DC_MEM_ALLOC_TYPE_FRAME_BUFFER,
-=======
 				DC_MEM_ALLOC_TYPE_GART,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				sizeof(struct dcn35_watermarks),
 				&clk_mgr->smu_wm_set.mc_address.quad_part);
 
@@ -1138,11 +1112,7 @@ void dcn35_clk_mgr_construct(
 
 	smu_dpm_clks.dpm_clks = (DpmClocks_t_dcn35 *)dm_helpers_allocate_gpu_mem(
 				clk_mgr->base.base.ctx,
-<<<<<<< HEAD
-				DC_MEM_ALLOC_TYPE_FRAME_BUFFER,
-=======
 				DC_MEM_ALLOC_TYPE_GART,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				sizeof(DpmClocks_t_dcn35),
 				&smu_dpm_clks.mc_address.quad_part);
 
@@ -1239,11 +1209,7 @@ void dcn35_clk_mgr_construct(
 	}
 
 	if (smu_dpm_clks.dpm_clks && smu_dpm_clks.mc_address.quad_part != 0)
-<<<<<<< HEAD
-		dm_helpers_free_gpu_mem(clk_mgr->base.base.ctx, DC_MEM_ALLOC_TYPE_FRAME_BUFFER,
-=======
 		dm_helpers_free_gpu_mem(clk_mgr->base.base.ctx, DC_MEM_ALLOC_TYPE_GART,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				smu_dpm_clks.dpm_clks);
 
 	if (ctx->dc->config.disable_ips != DMUB_IPS_DISABLE_ALL) {
@@ -1256,15 +1222,12 @@ void dcn35_clk_mgr_construct(
 			ctx->dc->debug.disable_dpp_power_gate = false;
 			ctx->dc->debug.disable_hubp_power_gate = false;
 			ctx->dc->debug.disable_dsc_power_gate = false;
-<<<<<<< HEAD
-=======
 
 			/* Disable dynamic IPS2 in older PMFW (93.12) for Z8 interop. */
 			if (ctx->dc->config.disable_ips == DMUB_IPS_ENABLE &&
 			    ctx->dce_version == DCN_VERSION_3_5 &&
 			    ((clk_mgr->base.smu_ver & 0x00FFFFFF) <= 0x005d0c00))
 				ctx->dc->config.disable_ips = DMUB_IPS_RCG_IN_ACTIVE_IPS2_IN_OFF;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			/*let's reset the config control flag*/
 			ctx->dc->config.disable_ips = DMUB_IPS_DISABLE_ALL; /*pmfw not support it, disable it all*/

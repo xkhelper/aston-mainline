@@ -182,8 +182,5 @@ More detailed explanation for tainting
      produce extremely unusual kernel structure layouts (even performance
      pathological ones), which is important to know when debugging. Set at
      build time.
-<<<<<<< HEAD
-=======
 
  18) ``N`` if an in-kernel test, such as a KUnit test, has been run.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -6,11 +6,7 @@
 #include <kunit/test.h>
 #include <kunit/visibility.h>
 
-<<<<<<< HEAD
-#include "tests/xe_mocs_test.h"
-=======
 #include "tests/xe_kunit_helpers.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "tests/xe_pci_test.h"
 #include "tests/xe_test.h"
 
@@ -27,11 +23,7 @@ struct live_mocs {
 static int live_mocs_init(struct live_mocs *arg, struct xe_gt *gt)
 {
 	unsigned int flags;
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memset(arg, 0, sizeof(*arg));
 
@@ -49,11 +41,7 @@ static int live_mocs_init(struct live_mocs *arg, struct xe_gt *gt)
 static void read_l3cc_table(struct xe_gt *gt,
 			    const struct xe_mocs_info *info)
 {
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 l3cc, l3cc_expected;
 	unsigned int i;
 	u32 reg_val;
@@ -90,11 +78,7 @@ static void read_l3cc_table(struct xe_gt *gt,
 static void read_mocs_table(struct xe_gt *gt,
 			    const struct xe_mocs_info *info)
 {
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 mocs, mocs_expected;
 	unsigned int i;
 	u32 reg_val;
@@ -150,13 +134,6 @@ static int mocs_kernel_test_run_device(struct xe_device *xe)
 	return 0;
 }
 
-<<<<<<< HEAD
-void xe_live_mocs_kernel_kunit(struct kunit *test)
-{
-	xe_call_for_each_device(mocs_kernel_test_run_device);
-}
-EXPORT_SYMBOL_IF_KUNIT(xe_live_mocs_kernel_kunit);
-=======
 static void xe_live_mocs_kernel_kunit(struct kunit *test)
 {
 	struct xe_device *xe = test->priv;
@@ -166,7 +143,6 @@ static void xe_live_mocs_kernel_kunit(struct kunit *test)
 
 	mocs_kernel_test_run_device(xe);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int mocs_reset_test_run_device(struct xe_device *xe)
 {
@@ -176,11 +152,7 @@ static int mocs_reset_test_run_device(struct xe_device *xe)
 	struct xe_gt *gt;
 	unsigned int flags;
 	int id;
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xe_pm_runtime_get(xe);
 
@@ -207,13 +179,6 @@ static int mocs_reset_test_run_device(struct xe_device *xe)
 	return 0;
 }
 
-<<<<<<< HEAD
-void xe_live_mocs_reset_kunit(struct kunit *test)
-{
-	xe_call_for_each_device(mocs_reset_test_run_device);
-}
-EXPORT_SYMBOL_IF_KUNIT(xe_live_mocs_reset_kunit);
-=======
 static void xe_live_mocs_reset_kunit(struct kunit *test)
 {
 	struct xe_device *xe = test->priv;
@@ -237,4 +202,3 @@ struct kunit_suite xe_mocs_test_suite = {
 	.init = xe_kunit_helper_xe_device_live_test_init,
 };
 EXPORT_SYMBOL_IF_KUNIT(xe_mocs_test_suite);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -213,13 +213,8 @@ static int acpi_ac_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	ac->device = adev;
-<<<<<<< HEAD
-	strcpy(acpi_device_name(adev), ACPI_AC_DEVICE_NAME);
-	strcpy(acpi_device_class(adev), ACPI_AC_CLASS);
-=======
 	strscpy(acpi_device_name(adev), ACPI_AC_DEVICE_NAME);
 	strscpy(acpi_device_class(adev), ACPI_AC_CLASS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	platform_set_drvdata(pdev, ac);
 

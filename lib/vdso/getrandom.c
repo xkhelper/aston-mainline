@@ -3,17 +3,6 @@
  * Copyright (C) 2022-2024 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
  */
 
-<<<<<<< HEAD
-#include <linux/cache.h>
-#include <linux/kernel.h>
-#include <linux/time64.h>
-#include <vdso/datapage.h>
-#include <vdso/getrandom.h>
-#include <asm/vdso/getrandom.h>
-#include <asm/vdso/vsyscall.h>
-#include <asm/unaligned.h>
-#include <uapi/linux/mman.h>
-=======
 #include <linux/array_size.h>
 #include <linux/minmax.h>
 #include <vdso/datapage.h>
@@ -27,7 +16,6 @@
 #undef PAGE_MASK
 #define PAGE_SIZE (1UL << CONFIG_PAGE_SHIFT)
 #define PAGE_MASK (~(PAGE_SIZE - 1))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MEMCPY_AND_ZERO_SRC(type, dst, src, len) do {				\
 	while (len >= sizeof(type)) {						\
@@ -84,18 +72,6 @@ __cvdso_getrandom_data(const struct vdso_rng_data *rng_info, void *buffer, size_
 	struct vgetrandom_state *state = opaque_state;
 	size_t batch_len, nblocks, orig_len = len;
 	bool in_use, have_retried = false;
-<<<<<<< HEAD
-	unsigned long current_generation;
-	void *orig_buffer = buffer;
-	u32 counter[2] = { 0 };
-
-	if (unlikely(opaque_len == ~0UL && !buffer && !len && !flags)) {
-		*(struct vgetrandom_opaque_params *)opaque_state = (struct vgetrandom_opaque_params) {
-			.size_of_opaque_state = sizeof(*state),
-			.mmap_prot = PROT_READ | PROT_WRITE,
-			.mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS
-		};
-=======
 	void *orig_buffer = buffer;
 	u64 current_generation;
 	u32 counter[2] = { 0 };
@@ -107,7 +83,6 @@ __cvdso_getrandom_data(const struct vdso_rng_data *rng_info, void *buffer, size_
 		params->mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS;
 		for (size_t i = 0; i < ARRAY_SIZE(params->reserved); ++i)
 			params->reserved[i] = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 

@@ -398,19 +398,10 @@ generic_pm_domain *scpsys_add_one_domain(struct scpsys *scpsys, struct device_no
 		scpsys->dev->of_node = node;
 		pd->supply = devm_regulator_get(scpsys->dev, "domain");
 		scpsys->dev->of_node = root_node;
-<<<<<<< HEAD
-		if (IS_ERR(pd->supply)) {
-			dev_err_probe(scpsys->dev, PTR_ERR(pd->supply),
-				      "%pOF: failed to get power supply.\n",
-				      node);
-			return ERR_CAST(pd->supply);
-		}
-=======
 		if (IS_ERR(pd->supply))
 			return dev_err_cast_probe(scpsys->dev, pd->supply,
 				      "%pOF: failed to get power supply.\n",
 				      node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pd->infracfg = syscon_regmap_lookup_by_phandle_optional(node, "mediatek,infracfg");

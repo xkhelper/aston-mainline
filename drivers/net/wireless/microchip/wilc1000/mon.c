@@ -7,20 +7,12 @@
 #include "cfg80211.h"
 
 struct wilc_wfi_radiotap_hdr {
-<<<<<<< HEAD
-	struct ieee80211_radiotap_header hdr;
-=======
 	struct ieee80211_radiotap_header_fixed hdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 rate;
 } __packed;
 
 struct wilc_wfi_radiotap_cb_hdr {
-<<<<<<< HEAD
-	struct ieee80211_radiotap_header hdr;
-=======
 	struct ieee80211_radiotap_header_fixed hdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 rate;
 	u8 dump;
 	u16 tx_flags;

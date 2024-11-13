@@ -183,12 +183,8 @@ static int rzg2l_du_encoders_init(struct rzg2l_du_device *rcdu)
 
 		/* Find the output route corresponding to the port number. */
 		for (i = 0; i < RZG2L_DU_OUTPUT_MAX; ++i) {
-<<<<<<< HEAD
-			if (rcdu->info->routes[i].port == ep.port) {
-=======
 			if (rcdu->info->routes[i].possible_outputs &&
 			    rcdu->info->routes[i].port == ep.port) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				output = i;
 				break;
 			}

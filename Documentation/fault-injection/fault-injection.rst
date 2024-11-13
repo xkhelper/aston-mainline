@@ -141,8 +141,6 @@ configuration of fault-injection capabilities.
 	default is 'Y', setting it to 'N' will also inject failures into
 	highmem/user allocations (__GFP_HIGHMEM allocations).
 
-<<<<<<< HEAD
-=======
 - /sys/kernel/debug/failslab/cache-filter
 	Format: { 'Y' | 'N' }
 
@@ -151,7 +149,6 @@ configuration of fault-injection capabilities.
 
         Select the cache by writing '1' to /sys/kernel/slab/<cache>/failslab:
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 - /sys/kernel/debug/failslab/ignore-gfp-wait:
 - /sys/kernel/debug/fail_page_alloc/ignore-gfp-wait:
 
@@ -294,11 +291,7 @@ kernel may crash because it may not be able to handle the error.
 There are 4 types of errors defined in include/asm-generic/error-injection.h
 
 EI_ETYPE_NULL
-<<<<<<< HEAD
-  This function will return `NULL` if it fails. e.g. return an allocateed
-=======
   This function will return `NULL` if it fails. e.g. return an allocated
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   object address.
 
 EI_ETYPE_ERRNO
@@ -474,8 +467,6 @@ Application Examples
     losetup -d $DEVICE
     rm testfile.img
 
-<<<<<<< HEAD
-=======
 ------------------------------------------------------------------------------
 
 - Inject only skbuff allocation failures ::
@@ -488,7 +479,6 @@ Application Examples
     echo 1 > /sys/kernel/debug/failslab/times
     echo 1 > /sys/kernel/debug/failslab/probability
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Tool to run command with failslab or fail_page_alloc
 ----------------------------------------------------

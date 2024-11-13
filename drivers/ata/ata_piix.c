@@ -1446,10 +1446,6 @@ static int piix_init_sidpr(struct ata_host *host)
 		if (hpriv->map[i] == IDE)
 			return 0;
 
-<<<<<<< HEAD
-	/* is it blacklisted? */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (piix_no_sidpr(host))
 		return 0;
 

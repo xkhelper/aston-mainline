@@ -2346,12 +2346,9 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
 			stats->hds_nodata_packets++;
 			stats->hds_nodata_bytes += head_size;
 		}
-<<<<<<< HEAD
-=======
 	} else {
 		stats->hds_nosplit_packets++;
 		stats->hds_nosplit_bytes += data_bcnt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mlx5e_shampo_complete_rx_cqe(rq, cqe, cqe_bcnt, *skb);

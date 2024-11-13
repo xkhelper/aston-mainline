@@ -18,18 +18,7 @@
  */
 #define IO_REPARSE_TAG_INTERNAL ((__u32)~0U)
 
-<<<<<<< HEAD
-static inline dev_t reparse_nfs_mkdev(struct reparse_posix_data *buf)
-{
-	u64 v = le64_to_cpu(*(__le64 *)buf->DataBuffer);
-
-	return MKDEV(v >> 32, v & 0xffffffff);
-}
-
-static inline dev_t wsl_mkdev(void *ptr)
-=======
 static inline dev_t reparse_mkdev(void *ptr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 v = le64_to_cpu(*(__le64 *)ptr);
 

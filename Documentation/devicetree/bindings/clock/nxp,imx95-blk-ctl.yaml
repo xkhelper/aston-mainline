@@ -16,10 +16,7 @@ properties:
           - nxp,imx95-lvds-csr
           - nxp,imx95-display-csr
           - nxp,imx95-camera-csr
-<<<<<<< HEAD
-=======
           - nxp,imx95-netcmix-blk-ctrl
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - nxp,imx95-vpu-csr
       - const: syscon
 

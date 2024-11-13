@@ -542,11 +542,7 @@ int expect_strzr(const char *expr, int llen)
 {
 	int ret = 0;
 
-<<<<<<< HEAD
-	llen += printf(" = <%s> ", expr);
-=======
 	llen += printf(" = <%s> ", expr ? expr : "(null)");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (expr) {
 		ret = 1;
 		result(llen, FAIL);
@@ -565,11 +561,7 @@ int expect_strnz(const char *expr, int llen)
 {
 	int ret = 0;
 
-<<<<<<< HEAD
-	llen += printf(" = <%s> ", expr);
-=======
 	llen += printf(" = <%s> ", expr ? expr : "(null)");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!expr) {
 		ret = 1;
 		result(llen, FAIL);
@@ -694,16 +686,10 @@ static void constructor1(void)
 }
 
 __attribute__((constructor))
-<<<<<<< HEAD
-static void constructor2(void)
-{
-	constructor_test_value *= 2;
-=======
 static void constructor2(int argc, char **argv, char **envp)
 {
 	if (argc && argv && envp)
 		constructor_test_value *= 2;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int run_startup(int min, int max)

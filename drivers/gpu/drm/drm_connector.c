@@ -426,11 +426,8 @@ static void drm_connector_cleanup_action(struct drm_device *dev,
  *
  * The connector structure should be allocated with drmm_kzalloc().
  *
-<<<<<<< HEAD
-=======
  * The @drm_connector_funcs.destroy hook must be NULL.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Returns:
  * Zero on success, error code on failure.
  */
@@ -479,11 +476,8 @@ EXPORT_SYMBOL(drmm_connector_init);
  *
  * The connector structure should be allocated with drmm_kzalloc().
  *
-<<<<<<< HEAD
-=======
  * The @drm_connector_funcs.destroy hook must be NULL.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Returns:
  * Zero on success, error code on failure.
  */
@@ -2325,26 +2319,6 @@ EXPORT_SYMBOL(drm_mode_create_aspect_ratio_property);
  * DOC: standard connector properties
  *
  * Colorspace:
-<<<<<<< HEAD
- *     This property helps select a suitable colorspace based on the sink
- *     capability. Modern sink devices support wider gamut like BT2020.
- *     This helps switch to BT2020 mode if the BT2020 encoded video stream
- *     is being played by the user, same for any other colorspace. Thereby
- *     giving a good visual experience to users.
- *
- *     The expectation from userspace is that it should parse the EDID
- *     and get supported colorspaces. Use this property and switch to the
- *     one supported. Sink supported colorspaces should be retrieved by
- *     userspace from EDID and driver will not explicitly expose them.
- *
- *     Basically the expectation from userspace is:
- *      - Set up CRTC DEGAMMA/CTM/GAMMA to convert to some sink
- *        colorspace
- *      - Set this new property to let the sink know what it
- *        converted the CRTC output to.
- *      - This property is just to inform sink what colorspace
- *        source is trying to drive.
-=======
  *	This property is used to inform the driver about the color encoding
  *	user space configured the pixel operation properties to produce.
  *	The variants set the colorimetry, transfer characteristics, and which
@@ -2410,7 +2384,6 @@ EXPORT_SYMBOL(drm_mode_create_aspect_ratio_property);
  *
  *	BT601_YCC:
  *		The behavior is undefined.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Because between HDMI and DP have different colorspaces,
  * drm_mode_create_hdmi_colorspace_property() is used for HDMI connector and

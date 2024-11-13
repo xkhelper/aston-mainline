@@ -90,11 +90,7 @@ examples:
         qcom,rpm-msg-ram = <&rpm_msg_ram>;
 
         rpm-requests {
-<<<<<<< HEAD
-            compatible = "qcom,rpm-msm8996";
-=======
             compatible = "qcom,rpm-msm8996", "qcom,glink-smd-rpm";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             qcom,glink-channels = "rpm_requests";
 
             /* ... */

@@ -995,11 +995,7 @@ imsttfb_fillrect(struct fb_info *info, const struct fb_fillrect *rect)
 	bgc |= (bgc << 8);
 	bgc |= (bgc << 16);
 
-<<<<<<< HEAD
-	Bpp = info->var.bits_per_pixel >> 3,
-=======
 	Bpp = info->var.bits_per_pixel >> 3;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	line_pitch = info->fix.line_length;
 
 	dy = rect->dy * line_pitch;
@@ -1040,11 +1036,7 @@ imsttfb_copyarea(struct fb_info *info, const struct fb_copyarea *area)
 	__u32 Bpp, line_pitch, fb_offset_old, fb_offset_new, sp, dp_octl;
  	__u32 cnt, bltctl, sx, sy, dx, dy, height, width;
 
-<<<<<<< HEAD
-	Bpp = info->var.bits_per_pixel >> 3,
-=======
 	Bpp = info->var.bits_per_pixel >> 3;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sx = area->sx * Bpp;
 	sy = area->sy;

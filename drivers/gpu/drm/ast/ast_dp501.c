@@ -4,14 +4,11 @@
 #include <linux/firmware.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
-=======
 #include <drm/drm_atomic_state_helper.h>
 #include <drm/drm_edid.h>
 #include <drm/drm_modeset_helper_vtables.h>
 #include <drm/drm_probe_helper.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ast_drv.h"
 
 MODULE_FIRMWARE("ast_dp501_fw.bin");
@@ -178,11 +175,7 @@ static void clear_cmd(struct ast_device *ast)
 }
 #endif
 
-<<<<<<< HEAD
-void ast_set_dp501_video_output(struct drm_device *dev, u8 mode)
-=======
 static void ast_set_dp501_video_output(struct drm_device *dev, u8 mode)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	ast_write_cmd(dev, 0x40);
 	ast_write_data(dev, mode);
@@ -284,11 +277,7 @@ static bool ast_launch_m68k(struct drm_device *dev)
 	return true;
 }
 
-<<<<<<< HEAD
-bool ast_dp501_is_connected(struct ast_device *ast)
-=======
 static bool ast_dp501_is_connected(struct ast_device *ast)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 boot_address, offset, data;
 
@@ -329,16 +318,6 @@ static bool ast_dp501_is_connected(struct ast_device *ast)
 	return true;
 }
 
-<<<<<<< HEAD
-bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
-{
-	struct ast_device *ast = to_ast_device(dev);
-	u32 i, boot_address, offset, data;
-	u32 *pEDIDidx;
-
-	if (!ast_dp501_is_connected(ast))
-		return false;
-=======
 static int ast_dp512_read_edid_block(void *data, u8 *buf, unsigned int block, size_t len)
 {
 	struct ast_device *ast = data;
@@ -349,27 +328,10 @@ static int ast_dp512_read_edid_block(void *data, u8 *buf, unsigned int block, si
 		return -EIO;
 
 	offset = AST_DP501_EDID_DATA + block * EDID_LENGTH;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ast->config_mode == ast_use_p2a) {
 		boot_address = get_fw_base(ast);
 
-<<<<<<< HEAD
-		/* Read EDID */
-		offset = AST_DP501_EDID_DATA;
-		for (i = 0; i < 128; i += 4) {
-			data = ast_mindwm(ast, boot_address + offset + i);
-			pEDIDidx = (u32 *)(ediddata + i);
-			*pEDIDidx = data;
-		}
-	} else {
-		/* Read EDID */
-		offset = AST_DP501_EDID_DATA;
-		for (i = 0; i < 128; i += 4) {
-			data = readl(ast->dp501_fw_buf + offset + i);
-			pEDIDidx = (u32 *)(ediddata + i);
-			*pEDIDidx = data;
-=======
 		for (i = 0; i < rdlen; i += 4) {
 			ediddata = ast_mindwm(ast, boot_address + offset + i);
 			memcpy(buf, &ediddata, min((len - i), 4));
@@ -380,7 +342,6 @@ static int ast_dp512_read_edid_block(void *data, u8 *buf, unsigned int block, si
 			ediddata = readl(ast->dp501_fw_buf + offset + i);
 			memcpy(buf, &ediddata, min((len - i), 4));
 			buf += 4;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -512,8 +473,6 @@ void ast_init_3rdtx(struct drm_device *dev)
 		}
 	}
 }
-<<<<<<< HEAD
-=======
 
 /*
  * Encoder
@@ -655,4 +614,3 @@ int ast_dp501_output_init(struct ast_device *ast)
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

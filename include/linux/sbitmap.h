@@ -40,11 +40,7 @@ struct sbitmap_word {
 	/**
 	 * @swap_lock: serializes simultaneous updates of ->word and ->cleared
 	 */
-<<<<<<< HEAD
-	spinlock_t swap_lock;
-=======
 	raw_spinlock_t swap_lock;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } ____cacheline_aligned_in_smp;
 
 /**

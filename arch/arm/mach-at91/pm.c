@@ -233,8 +233,6 @@ static const struct of_device_id sama7g5_ws_ids[] = {
 	{ /* sentinel */ }
 };
 
-<<<<<<< HEAD
-=======
 static const struct of_device_id sam9x7_ws_ids[] = {
 	{ .compatible = "microchip,sam9x7-rtc",		.data = &ws_info[1] },
 	{ .compatible = "microchip,sam9x7-rtt",		.data = &ws_info[4] },
@@ -242,7 +240,6 @@ static const struct of_device_id sam9x7_ws_ids[] = {
 	{ /* sentinel */ }
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int at91_pm_config_ws(unsigned int pm_mode, bool set)
 {
 	const struct wakeup_source_info *wsi;
@@ -1371,10 +1368,7 @@ static const struct of_device_id atmel_pmc_ids[] __initconst = {
 	{ .compatible = "atmel,sama5d4-pmc", .data = &pmc_infos[1] },
 	{ .compatible = "atmel,sama5d2-pmc", .data = &pmc_infos[1] },
 	{ .compatible = "microchip,sam9x60-pmc", .data = &pmc_infos[4] },
-<<<<<<< HEAD
-=======
 	{ .compatible = "microchip,sam9x7-pmc", .data = &pmc_infos[4] },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "microchip,sama7g5-pmc", .data = &pmc_infos[5] },
 	{ /* sentinel */ },
 };
@@ -1513,8 +1507,6 @@ void __init sam9x60_pm_init(void)
 	soc_pm.config_pmc_ws = at91_sam9x60_config_pmc_ws;
 }
 
-<<<<<<< HEAD
-=======
 void __init sam9x7_pm_init(void)
 {
 	static const int modes[] __initconst = {
@@ -1536,7 +1528,6 @@ void __init sam9x7_pm_init(void)
 	soc_pm.config_pmc_ws = at91_sam9x60_config_pmc_ws;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __init at91sam9_pm_init(void)
 {
 	int ret;

@@ -10,10 +10,7 @@
 #include <dt-bindings/clock/amlogic,s4-pll-clkc.h>
 #include <dt-bindings/clock/amlogic,s4-peripherals-clkc.h>
 #include <dt-bindings/power/meson-s4-power.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/reset/amlogic,meson-s4-reset.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	cpus {
@@ -470,8 +467,6 @@
 					};
 				};
 
-<<<<<<< HEAD
-=======
 				sdcard_pins: sdcard-pins {
 					mux {
 						groups = "sdcard_d0_c",
@@ -559,7 +554,6 @@
 					};
 				};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				spicc0_pins_x: spicc0-pins_x {
 					mux {
 						groups = "spi_a_mosi_x",
@@ -769,8 +763,6 @@
 				#reset-cells = <1>;
 			};
 
-<<<<<<< HEAD
-=======
 			sec_ao: ao-secure@10220 {
 				compatible = "amlogic,s4-ao-secure",
 					     "amlogic,meson-gx-ao-secure",
@@ -779,7 +771,6 @@
 				amlogic,has-chip-id;
 			};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ir: ir@84040 {
 				compatible = "amlogic,meson-s4-ir";
 				reg = <0x0 0x84040 0x0 0x30>;
@@ -817,8 +808,6 @@
 				compatible = "snps,dwmac-mdio";
 			};
 		};
-<<<<<<< HEAD
-=======
 
 		sdio: mmc@fe088000 {
 			compatible = "amlogic,meson-axg-mmc";
@@ -859,6 +848,5 @@
 			no-sd;
 			status = "disabled";
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };

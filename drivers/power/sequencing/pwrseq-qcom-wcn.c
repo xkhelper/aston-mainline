@@ -198,8 +198,6 @@ static const struct pwrseq_qcom_wcn_pdata pwrseq_qca6390_of_data = {
 	.gpio_enable_delay_ms = 100,
 };
 
-<<<<<<< HEAD
-=======
 static const struct pwrseq_qcom_wcn_pdata pwrseq_wcn6855_of_data = {
 	.vregs = pwrseq_qca6390_vregs,
 	.num_vregs = ARRAY_SIZE(pwrseq_qca6390_vregs),
@@ -207,7 +205,6 @@ static const struct pwrseq_qcom_wcn_pdata pwrseq_wcn6855_of_data = {
 	.gpio_enable_delay_ms = 5,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char *const pwrseq_wcn7850_vregs[] = {
 	"vdd",
 	"vddio",
@@ -332,13 +329,10 @@ static const struct of_device_id pwrseq_qcom_wcn_of_match[] = {
 		.data = &pwrseq_qca6390_of_data,
 	},
 	{
-<<<<<<< HEAD
-=======
 		.compatible = "qcom,wcn6855-pmu",
 		.data = &pwrseq_wcn6855_of_data,
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "qcom,wcn7850-pmu",
 		.data = &pwrseq_wcn7850_of_data,
 	},

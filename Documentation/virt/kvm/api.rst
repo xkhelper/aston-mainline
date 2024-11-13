@@ -4214,13 +4214,9 @@ whether or not KVM_CAP_X86_USER_SPACE_MSR's KVM_MSR_EXIT_REASON_FILTER is
 enabled.  If KVM_MSR_EXIT_REASON_FILTER is enabled, KVM will exit to userspace
 on denied accesses, i.e. userspace effectively intercepts the MSR access.  If
 KVM_MSR_EXIT_REASON_FILTER is not enabled, KVM will inject a #GP into the guest
-<<<<<<< HEAD
-on denied accesses.
-=======
 on denied accesses.  Note, if an MSR access is denied during emulation of MSR
 load/stores during VMX transitions, KVM ignores KVM_MSR_EXIT_REASON_FILTER.
 See the below warning for full details.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 If an MSR access is allowed by userspace, KVM will emulate and/or virtualize
 the access in accordance with the vCPU model.  Note, KVM may still ultimately
@@ -4235,11 +4231,6 @@ filtering. In that mode, ``KVM_MSR_FILTER_DEFAULT_DENY`` is invalid and causes
 an error.
 
 .. warning::
-<<<<<<< HEAD
-   MSR accesses as part of nested VM-Enter/VM-Exit are not filtered.
-   This includes both writes to individual VMCS fields and reads/writes
-   through the MSR lists pointed to by the VMCS.
-=======
    MSR accesses that are side effects of instruction execution (emulated or
    native) are not filtered as hardware does not honor MSR bitmaps outside of
    RDMSR and WRMSR, and KVM mimics that behavior when emulating instructions
@@ -4256,7 +4247,6 @@ an error.
    extends Intel's architectural list of MSRs that cannot be loaded/saved via
    the VM-Enter/VM-Exit MSR list.  It is platform owner's responsibility to
    to communicate any such restrictions to their end users.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
    x2APIC MSR accesses cannot be filtered (KVM silently ignores filters that
    cover any x2APIC MSRs).
@@ -8107,8 +8097,6 @@ KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS By default, KVM emulates MONITOR/MWAIT (if
                                     guest CPUID on writes to MISC_ENABLE if
                                     KVM_X86_QUIRK_MISC_ENABLE_NO_MWAIT is
                                     disabled.
-<<<<<<< HEAD
-=======
 
 KVM_X86_QUIRK_SLOT_ZAP_ALL          By default, for KVM_X86_DEFAULT_VM VMs, KVM
                                     invalidates all SPTEs in all memslots and
@@ -8119,7 +8107,6 @@ KVM_X86_QUIRK_SLOT_ZAP_ALL          By default, for KVM_X86_DEFAULT_VM VMs, KVM
                                     or moved memslot isn't reachable, i.e KVM
                                     _may_ invalidate only SPTEs related to the
                                     memslot.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 =================================== ============================================
 
 7.32 KVM_CAP_MAX_VCPU_ID

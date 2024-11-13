@@ -349,11 +349,7 @@ int nilfs_bmap_propagate(struct nilfs_bmap *bmap, struct buffer_head *bh)
 }
 
 /**
-<<<<<<< HEAD
- * nilfs_bmap_lookup_dirty_buffers -
-=======
  * nilfs_bmap_lookup_dirty_buffers - collect dirty block buffers
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @bmap: bmap
  * @listp: pointer to buffer head list
  */

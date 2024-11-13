@@ -8,10 +8,7 @@
  * Author: Dong Aisheng <dong.aisheng@linaro.org>
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/hwspinlock.h>
@@ -49,10 +46,6 @@ static const struct regmap_config syscon_regmap_config = {
 static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
 {
 	struct clk *clk;
-<<<<<<< HEAD
-	struct syscon *syscon;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct regmap *regmap;
 	void __iomem *base;
 	u32 reg_io_width;
@@ -61,22 +54,6 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
 	struct resource res;
 	struct reset_control *reset;
 
-<<<<<<< HEAD
-	syscon = kzalloc(sizeof(*syscon), GFP_KERNEL);
-	if (!syscon)
-		return ERR_PTR(-ENOMEM);
-
-	if (of_address_to_resource(np, 0, &res)) {
-		ret = -ENOMEM;
-		goto err_map;
-	}
-
-	base = of_iomap(np, 0);
-	if (!base) {
-		ret = -ENOMEM;
-		goto err_map;
-	}
-=======
 	struct syscon *syscon __free(kfree) = kzalloc(sizeof(*syscon), GFP_KERNEL);
 	if (!syscon)
 		return ERR_PTR(-ENOMEM);
@@ -87,7 +64,6 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
 	base = of_iomap(np, 0);
 	if (!base)
 		return ERR_PTR(-ENOMEM);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Parse the device's DT node for an endianness specification */
 	if (of_property_read_bool(np, "big-endian"))
@@ -172,11 +148,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
 	list_add_tail(&syscon->list, &syscon_list);
 	spin_unlock(&syscon_list_slock);
 
-<<<<<<< HEAD
-	return syscon;
-=======
 	return_ptr(syscon);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 err_reset:
 	reset_control_put(reset);
@@ -187,11 +159,6 @@ err_clk:
 	regmap_exit(regmap);
 err_regmap:
 	iounmap(base);
-<<<<<<< HEAD
-err_map:
-	kfree(syscon);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ERR_PTR(ret);
 }
 

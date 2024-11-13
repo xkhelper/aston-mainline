@@ -58,11 +58,7 @@ $(OUTPUT)iio_generic_buffer: $(IIO_GENERIC_BUFFER_IN)
 clean:
 	rm -f $(ALL_PROGRAMS)
 	rm -rf $(OUTPUT)include/linux/iio
-<<<<<<< HEAD
-	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
-=======
 	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 install: $(ALL_PROGRAMS)
 	install -d -m 755 $(DESTDIR)$(bindir);		\

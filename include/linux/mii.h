@@ -140,11 +140,7 @@ static inline u32 ethtool_adv_to_mii_adv_t(u32 ethadv)
  * settings to phy autonegotiation advertisements for the
  * MII_ADVERTISE register.
  */
-<<<<<<< HEAD
-static inline u32 linkmode_adv_to_mii_adv_t(unsigned long *advertising)
-=======
 static inline u32 linkmode_adv_to_mii_adv_t(const unsigned long *advertising)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 result = 0;
 
@@ -219,12 +215,8 @@ static inline u32 ethtool_adv_to_mii_ctrl1000_t(u32 ethadv)
  * settings to phy autonegotiation advertisements for the
  * MII_CTRL1000 register when in 1000T mode.
  */
-<<<<<<< HEAD
-static inline u32 linkmode_adv_to_mii_ctrl1000_t(unsigned long *advertising)
-=======
 static inline u32
 linkmode_adv_to_mii_ctrl1000_t(const unsigned long *advertising)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 result = 0;
 
@@ -462,11 +454,7 @@ static inline void mii_ctrl1000_mod_linkmode_adv_t(unsigned long *advertising,
  * A small helper function that translates linkmode advertising to LVL
  * pause capabilities.
  */
-<<<<<<< HEAD
-static inline u32 linkmode_adv_to_lcl_adv_t(unsigned long *advertising)
-=======
 static inline u32 linkmode_adv_to_lcl_adv_t(const unsigned long *advertising)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 lcl_adv = 0;
 

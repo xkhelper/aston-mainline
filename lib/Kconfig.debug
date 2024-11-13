@@ -97,11 +97,7 @@ config BOOT_PRINTK_DELAY
 	  using "boot_delay=N".
 
 	  It is likely that you would also need to use "lpj=M" to preset
-<<<<<<< HEAD
-	  the "loops per jiffie" value.
-=======
 	  the "loops per jiffy" value.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	  See a previous boot log for the "lpj" value to use for your
 	  system, and then set "lpj=M" before setting "boot_delay=N".
 	  NOTE:  Using this option may adversely affect SMP systems.
@@ -383,24 +379,15 @@ config DEBUG_INFO_BTF
 	depends on !DEBUG_INFO_SPLIT && !DEBUG_INFO_REDUCED
 	depends on !GCC_PLUGIN_RANDSTRUCT || COMPILE_TEST
 	depends on BPF_SYSCALL
-<<<<<<< HEAD
-	depends on !DEBUG_INFO_DWARF5 || PAHOLE_VERSION >= 121
-=======
 	depends on PAHOLE_VERSION >= 116
 	depends on DEBUG_INFO_DWARF4 || PAHOLE_VERSION >= 121
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	# pahole uses elfutils, which does not have support for Hexagon relocations
 	depends on !HEXAGON
 	help
 	  Generate deduplicated BTF type information from DWARF debug info.
-<<<<<<< HEAD
-	  Turning this on expects presence of pahole tool, which will convert
-	  DWARF type info into equivalent deduplicated BTF type info.
-=======
 	  Turning this on requires pahole v1.16 or later (v1.21 or later to
 	  support DWARF 5), which will convert DWARF type info into equivalent
 	  deduplicated BTF type info.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config PAHOLE_HAS_SPLIT_BTF
 	def_bool PAHOLE_VERSION >= 119
@@ -586,8 +573,6 @@ config VMLINUX_MAP
 	  pieces of code get eliminated with
 	  CONFIG_LD_DEAD_CODE_DATA_ELIMINATION.
 
-<<<<<<< HEAD
-=======
 config BUILTIN_MODULE_RANGES
 	bool "Generate address range information for builtin modules"
 	depends on !LTO
@@ -603,7 +588,6 @@ config BUILTIN_MODULE_RANGES
 	 It also records an anchor symbol to determine the load address of the
 	 section.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config DEBUG_FORCE_WEAK_PER_CPU
 	bool "Force weak per-cpu definitions"
 	depends on DEBUG_KERNEL
@@ -1548,11 +1532,7 @@ config LOCKDEP_BITS
 config LOCKDEP_CHAINS_BITS
 	int "Bitsize for MAX_LOCKDEP_CHAINS"
 	depends on LOCKDEP && !LOCKDEP_SMALL
-<<<<<<< HEAD
-	range 10 30
-=======
 	range 10 21
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default 16
 	help
 	  Try increasing this value if you hit "BUG: MAX_LOCKDEP_CHAINS too low!" message.
@@ -1651,10 +1631,7 @@ config SCF_TORTURE_TEST
 config CSD_LOCK_WAIT_DEBUG
 	bool "Debugging for csd_lock_wait(), called from smp_call_function*()"
 	depends on DEBUG_KERNEL
-<<<<<<< HEAD
-=======
 	depends on SMP
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	depends on 64BIT
 	default n
 	help
@@ -2214,8 +2191,6 @@ config KCOV_IRQ_AREA_SIZE
 	  soft interrupts. This specifies the size of those areas in the
 	  number of unsigned long words.
 
-<<<<<<< HEAD
-=======
 config KCOV_SELFTEST
 	bool "Perform short selftests on boot"
 	depends on KCOV
@@ -2224,7 +2199,6 @@ config KCOV_SELFTEST
 	  On test failure, causes the kernel to panic. Recommended to be
 	  enabled, ensuring critical functionality works as intended.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 menuconfig RUNTIME_TESTING_MENU
 	bool "Runtime Testing"
 	default y
@@ -2332,8 +2306,6 @@ config TEST_DIV64
 
 	  If unsure, say N.
 
-<<<<<<< HEAD
-=======
 config TEST_MULDIV64
 	tristate "mul_u64_u64_div_u64() test"
 	depends on DEBUG_KERNEL || m
@@ -2344,7 +2316,6 @@ config TEST_MULDIV64
 
 	  If unsure, say N.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config TEST_IOV_ITER
 	tristate "Test iov_iter operation" if !KUNIT_ALL_TESTS
 	depends on KUNIT
@@ -2681,10 +2652,7 @@ config RESOURCE_KUNIT_TEST
 	tristate "KUnit test for resource API" if !KUNIT_ALL_TESTS
 	depends on KUNIT
 	default KUNIT_ALL_TESTS
-<<<<<<< HEAD
-=======
 	select GET_FREE_REGION
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This builds the resource API unit test.
 	  Tests the logic of API provided by resource.c and ioport.h.
@@ -3092,11 +3060,7 @@ config RUST_BUILD_ASSERT_ALLOW
 	bool "Allow unoptimized build-time assertions"
 	depends on RUST
 	help
-<<<<<<< HEAD
-	  Controls how are `build_error!` and `build_assert!` handled during build.
-=======
 	  Controls how `build_error!` and `build_assert!` are handled during the build.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	  If calls to them exist in the binary, it may indicate a violated invariant
 	  or that the optimizer failed to verify the invariant during compilation.
@@ -3124,8 +3088,6 @@ config RUST_KERNEL_DOCTESTS
 endmenu # "Rust"
 
 endmenu # Kernel hacking
-<<<<<<< HEAD
-=======
 
 config INT_POW_TEST
 	tristate "Integer exponentiation (int_pow) test" if !KUNIT_ALL_TESTS
@@ -3142,4 +3104,3 @@ config INT_POW_TEST
 	  function.
 
 	  If unsure, say N
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

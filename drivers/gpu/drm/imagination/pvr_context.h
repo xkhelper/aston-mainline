@@ -85,12 +85,9 @@ struct pvr_context {
 		/** @compute: Transfer queue. */
 		struct pvr_queue *transfer;
 	} queues;
-<<<<<<< HEAD
-=======
 
 	/** @file_link: pvr_file PVR context list link. */
 	struct list_head file_link;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static __always_inline struct pvr_queue *
@@ -130,8 +127,6 @@ pvr_context_get(struct pvr_context *ctx)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * pvr_context_get_if_referenced() - Take an additional reference on a still
  * referenced context.
  * @ctx: Context pointer.
@@ -150,7 +145,6 @@ pvr_context_get_if_referenced(struct pvr_context *ctx)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * pvr_context_lookup() - Lookup context pointer from handle and file.
  * @pvr_file: Pointer to pvr_file structure.
  * @handle: Context handle.

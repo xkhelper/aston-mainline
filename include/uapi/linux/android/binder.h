@@ -236,15 +236,12 @@ struct binder_frozen_status_info {
 	__u32            async_recv;
 };
 
-<<<<<<< HEAD
-=======
 struct binder_frozen_state_info {
 	binder_uintptr_t cookie;
 	__u32            is_frozen;
 	__u32            reserved;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* struct binder_extened_error - extended error information
  * @id:		identifier for the failed operation
  * @command:	command as defined by binder_driver_return_protocol
@@ -476,8 +473,6 @@ enum binder_driver_return_protocol {
 	/*
 	 * The target of the last async transaction is frozen.  No parameters.
 	 */
-<<<<<<< HEAD
-=======
 
 	BR_FROZEN_BINDER = _IOR('r', 21, struct binder_frozen_state_info),
 	/*
@@ -489,7 +484,6 @@ enum binder_driver_return_protocol {
 	/*
 	 * void *: cookie
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum binder_driver_command_protocol {
@@ -573,8 +567,6 @@ enum binder_driver_command_protocol {
 	/*
 	 * binder_transaction_data_sg: the sent command.
 	 */
-<<<<<<< HEAD
-=======
 
 	BC_REQUEST_FREEZE_NOTIFICATION =
 			_IOW('c', 19, struct binder_handle_cookie),
@@ -594,7 +586,6 @@ enum binder_driver_command_protocol {
 	/*
 	 * void *: cookie
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #endif /* _UAPI_LINUX_BINDER_H */

@@ -4,10 +4,7 @@
  * Copyright (c) 2019, Linaro Limited
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/err.h>
 #include <linux/debugfs.h>
@@ -751,15 +748,9 @@ static int cpr_set_performance_state(struct generic_pm_domain *domain,
 	struct cpr_drv *drv = container_of(domain, struct cpr_drv, pd);
 	struct corner *corner, *end;
 	enum voltage_change_dir dir;
-<<<<<<< HEAD
-	int ret = 0, new_uV;
-
-	mutex_lock(&drv->lock);
-=======
 	int ret, new_uV;
 
 	guard(mutex)(&drv->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_dbg(drv->dev, "%s: setting perf state: %u (prev state: %u)\n",
 		__func__, state, cpr_get_cur_perf_state(drv));
@@ -770,15 +761,8 @@ static int cpr_set_performance_state(struct generic_pm_domain *domain,
 	 */
 	corner = drv->corners + state - 1;
 	end = &drv->corners[drv->num_corners - 1];
-<<<<<<< HEAD
-	if (corner > end || corner < drv->corners) {
-		ret = -EINVAL;
-		goto unlock;
-	}
-=======
 	if (corner > end || corner < drv->corners)
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Determine direction */
 	if (drv->corner > corner)
@@ -798,11 +782,7 @@ static int cpr_set_performance_state(struct generic_pm_domain *domain,
 
 	ret = cpr_scale_voltage(drv, corner, new_uV, dir);
 	if (ret)
-<<<<<<< HEAD
-		goto unlock;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cpr_is_allowed(drv)) {
 		cpr_irq_clr(drv);
@@ -813,14 +793,7 @@ static int cpr_set_performance_state(struct generic_pm_domain *domain,
 
 	drv->corner = corner;
 
-<<<<<<< HEAD
-unlock:
-	mutex_unlock(&drv->lock);
-
-	return ret;
-=======
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -1063,45 +1036,15 @@ static unsigned int cpr_get_fuse_corner(struct dev_pm_opp *opp)
 static unsigned long cpr_get_opp_hz_for_req(struct dev_pm_opp *ref,
 					    struct device *cpu_dev)
 {
-<<<<<<< HEAD
-	u64 rate = 0;
-	struct device_node *ref_np;
-	struct device_node *desc_np;
-	struct device_node *child_np = NULL;
-	struct device_node *child_req_np = NULL;
-
-	desc_np = dev_pm_opp_of_get_opp_desc_node(cpu_dev);
-=======
 	struct device_node *ref_np __free(device_node) = NULL;
 	struct device_node *desc_np __free(device_node) =
 		dev_pm_opp_of_get_opp_desc_node(cpu_dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!desc_np)
 		return 0;
 
 	ref_np = dev_pm_opp_get_of_node(ref);
 	if (!ref_np)
-<<<<<<< HEAD
-		goto out_ref;
-
-	do {
-		of_node_put(child_req_np);
-		child_np = of_get_next_available_child(desc_np, child_np);
-		child_req_np = of_parse_phandle(child_np, "required-opps", 0);
-	} while (child_np && child_req_np != ref_np);
-
-	if (child_np && child_req_np == ref_np)
-		of_property_read_u64(child_np, "opp-hz", &rate);
-
-	of_node_put(child_req_np);
-	of_node_put(child_np);
-	of_node_put(ref_np);
-out_ref:
-	of_node_put(desc_np);
-
-	return (unsigned long) rate;
-=======
 		return 0;
 
 	for_each_available_child_of_node_scoped(desc_np, child_np) {
@@ -1117,7 +1060,6 @@ out_ref:
 	}
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int cpr_corner_init(struct cpr_drv *drv)
@@ -1491,15 +1433,9 @@ static int cpr_pd_attach_dev(struct generic_pm_domain *domain,
 {
 	struct cpr_drv *drv = container_of(domain, struct cpr_drv, pd);
 	const struct acc_desc *acc_desc = drv->acc_desc;
-<<<<<<< HEAD
-	int ret = 0;
-
-	mutex_lock(&drv->lock);
-=======
 	int ret;
 
 	guard(mutex)(&drv->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_dbg(drv->dev, "attach callback for: %s\n", dev_name(dev));
 
@@ -1511,11 +1447,7 @@ static int cpr_pd_attach_dev(struct generic_pm_domain *domain,
 	 * additional initialization when further CPUs get attached.
 	 */
 	if (drv->attached_cpu_dev)
-<<<<<<< HEAD
-		goto unlock;
-=======
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * cpr_scale_voltage() requires the direction (if we are changing
@@ -1527,19 +1459,10 @@ static int cpr_pd_attach_dev(struct generic_pm_domain *domain,
 	 * the first time cpr_set_performance_state() is called.
 	 */
 	drv->cpu_clk = devm_clk_get(dev, NULL);
-<<<<<<< HEAD
-	if (IS_ERR(drv->cpu_clk)) {
-		ret = PTR_ERR(drv->cpu_clk);
-		if (ret != -EPROBE_DEFER)
-			dev_err(drv->dev, "could not get cpu clk: %d\n", ret);
-		goto unlock;
-	}
-=======
 	if (IS_ERR(drv->cpu_clk))
 		return dev_err_probe(drv->dev, PTR_ERR(drv->cpu_clk),
 				     "could not get cpu clk\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drv->attached_cpu_dev = dev;
 
 	dev_dbg(drv->dev, "using cpu clk from: %s\n",
@@ -1556,71 +1479,39 @@ static int cpr_pd_attach_dev(struct generic_pm_domain *domain,
 	ret = dev_pm_opp_get_opp_count(&drv->pd.dev);
 	if (ret < 0) {
 		dev_err(drv->dev, "could not get OPP count\n");
-<<<<<<< HEAD
-		goto unlock;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	drv->num_corners = ret;
 
 	if (drv->num_corners < 2) {
 		dev_err(drv->dev, "need at least 2 OPPs to use CPR\n");
-<<<<<<< HEAD
-		ret = -EINVAL;
-		goto unlock;
-=======
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	drv->corners = devm_kcalloc(drv->dev, drv->num_corners,
 				    sizeof(*drv->corners),
 				    GFP_KERNEL);
-<<<<<<< HEAD
-	if (!drv->corners) {
-		ret = -ENOMEM;
-		goto unlock;
-	}
-
-	ret = cpr_corner_init(drv);
-	if (ret)
-		goto unlock;
-=======
 	if (!drv->corners)
 		return -ENOMEM;
 
 	ret = cpr_corner_init(drv);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cpr_set_loop_allowed(drv);
 
 	ret = cpr_init_parameters(drv);
 	if (ret)
-<<<<<<< HEAD
-		goto unlock;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Configure CPR HW but keep it disabled */
 	ret = cpr_config(drv);
 	if (ret)
-<<<<<<< HEAD
-		goto unlock;
-
-	ret = cpr_find_initial_corner(drv);
-	if (ret)
-		goto unlock;
-=======
 		return ret;
 
 	ret = cpr_find_initial_corner(drv);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (acc_desc->config)
 		regmap_multi_reg_write(drv->tcsr, acc_desc->config,
@@ -1635,14 +1526,7 @@ static int cpr_pd_attach_dev(struct generic_pm_domain *domain,
 	dev_info(drv->dev, "driver initialized with %u OPPs\n",
 		 drv->num_corners);
 
-<<<<<<< HEAD
-unlock:
-	mutex_unlock(&drv->lock);
-
-	return ret;
-=======
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int cpr_debug_info_show(struct seq_file *s, void *unused)

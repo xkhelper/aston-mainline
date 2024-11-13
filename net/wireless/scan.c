@@ -1910,10 +1910,7 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
 	known->pub.bssid_index = new->pub.bssid_index;
 	known->pub.use_for &= new->pub.use_for;
 	known->pub.cannot_use_reasons = new->pub.cannot_use_reasons;
-<<<<<<< HEAD
-=======
 	known->bss_source = new->bss_source;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return true;
 }
@@ -2012,17 +2009,10 @@ __cfg80211_bss_update(struct cfg80211_registered_device *rdev,
 	return found;
 
 free_ies:
-<<<<<<< HEAD
-	ies = (void *)rcu_dereference(tmp->pub.beacon_ies);
-	if (ies)
-		kfree_rcu(ies, rcu_head);
-	ies = (void *)rcu_dereference(tmp->pub.proberesp_ies);
-=======
 	ies = (void *)rcu_access_pointer(tmp->pub.beacon_ies);
 	if (ies)
 		kfree_rcu(ies, rcu_head);
 	ies = (void *)rcu_access_pointer(tmp->pub.proberesp_ies);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ies)
 		kfree_rcu(ies, rcu_head);
 
@@ -2160,15 +2150,7 @@ struct cfg80211_inform_single_bss_data {
 	const u8 *ie;
 	size_t ielen;
 
-<<<<<<< HEAD
-	enum {
-		BSS_SOURCE_DIRECT = 0,
-		BSS_SOURCE_MBSSID,
-		BSS_SOURCE_STA_PROFILE,
-	} bss_source;
-=======
 	enum bss_source_type bss_source;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Set if reporting bss_source != BSS_SOURCE_DIRECT */
 	struct cfg80211_bss *source_bss;
 	u8 max_bssid_indicator;
@@ -2283,10 +2265,7 @@ cfg80211_inform_single_bss_data(struct wiphy *wiphy,
 	       IEEE80211_MAX_CHAINS);
 	tmp.pub.use_for = data->use_for;
 	tmp.pub.cannot_use_reasons = data->cannot_use_reasons;
-<<<<<<< HEAD
-=======
 	tmp.bss_source = data->bss_source;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (data->bss_source) {
 	case BSS_SOURCE_MBSSID:
@@ -2926,12 +2905,9 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
 	struct element *reporter_rnr = NULL;
 	struct ieee80211_multi_link_elem *ml_elem;
 	struct cfg80211_mle *mle;
-<<<<<<< HEAD
-=======
 	const struct element *ssid_elem;
 	const u8 *ssid = NULL;
 	size_t ssid_len = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 control;
 	u8 ml_common_len;
 	u8 *new_ie = NULL;
@@ -2986,8 +2962,6 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
 						 bss_change_count,
 						 gfp);
 
-<<<<<<< HEAD
-=======
 	ssid_elem = cfg80211_find_elem(WLAN_EID_SSID, tx_data->ie,
 				       tx_data->ielen);
 	if (ssid_elem) {
@@ -2995,7 +2969,6 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
 		ssid_len = ssid_elem->datalen;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < ARRAY_SIZE(mle->sta_prof) && mle->sta_prof[i]; i++) {
 		const struct ieee80211_neighbor_ap_info *ap_info;
 		enum nl80211_band band;
@@ -3077,8 +3050,6 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
 		freq = ieee80211_channel_to_freq_khz(ap_info->channel, band);
 		data.channel = ieee80211_get_channel_khz(wiphy, freq);
 
-<<<<<<< HEAD
-=======
 		/* Skip if RNR element specifies an unsupported channel */
 		if (!data.channel)
 			continue;
@@ -3100,7 +3071,6 @@ cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
 			cfg80211_put_bss(wiphy, bss);
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (use_for == NL80211_BSS_USE_FOR_MLD_LINK &&
 		    !(wiphy->flags & WIPHY_FLAG_SUPPORTS_NSTR_NONPRIMARY)) {
 			use_for = 0;
@@ -3526,13 +3496,8 @@ int cfg80211_wext_siwscan(struct net_device *dev,
 		n_channels = ieee80211_get_num_supported_channels(wiphy);
 	}
 
-<<<<<<< HEAD
-	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
-		       n_channels * sizeof(void *),
-=======
 	creq = kzalloc(struct_size(creq, channels, n_channels) +
 		       sizeof(struct cfg80211_ssid),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		       GFP_ATOMIC);
 	if (!creq)
 		return -ENOMEM;
@@ -3540,11 +3505,7 @@ int cfg80211_wext_siwscan(struct net_device *dev,
 	creq->wiphy = wiphy;
 	creq->wdev = dev->ieee80211_ptr;
 	/* SSIDs come after channels */
-<<<<<<< HEAD
-	creq->ssids = (void *)&creq->channels[n_channels];
-=======
 	creq->ssids = (void *)creq + struct_size(creq, channels, n_channels);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	creq->n_channels = n_channels;
 	creq->n_ssids = 1;
 	creq->scan_start = jiffies;

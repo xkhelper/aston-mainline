@@ -588,9 +588,5 @@ void reboot_skas(void)
 
 void __switch_mm(struct mm_id *mm_idp)
 {
-<<<<<<< HEAD
-	userspace_pid[0] = mm_idp->u.pid;
-=======
 	userspace_pid[0] = mm_idp->pid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

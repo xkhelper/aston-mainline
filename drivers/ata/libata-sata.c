@@ -13,11 +13,7 @@
 #include <scsi/scsi_device.h>
 #include <scsi/scsi_eh.h>
 #include <linux/libata.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "libata.h"
 #include "libata-transport.h"
@@ -522,8 +518,6 @@ int sata_set_spd(struct ata_link *link)
 EXPORT_SYMBOL_GPL(sata_set_spd);
 
 /**
-<<<<<<< HEAD
-=======
  *	sata_down_spd_limit - adjust SATA spd limit downward
  *	@link: Link to adjust SATA spd limit for
  *	@spd_limit: Additional limit
@@ -604,7 +598,6 @@ int sata_down_spd_limit(struct ata_link *link, u32 spd_limit)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	sata_link_hardreset - reset link via SATA phy reset
  *	@link: link to reset
  *	@timing: timing parameters { interval, duration, timeout } in msec
@@ -714,8 +707,6 @@ int sata_link_hardreset(struct ata_link *link, const unsigned int *timing,
 EXPORT_SYMBOL_GPL(sata_link_hardreset);
 
 /**
-<<<<<<< HEAD
-=======
  *	sata_std_hardreset - COMRESET w/o waiting or classification
  *	@link: link to reset
  *	@class: resulting class of attached device
@@ -744,7 +735,6 @@ int sata_std_hardreset(struct ata_link *link, unsigned int *class,
 EXPORT_SYMBOL_GPL(sata_std_hardreset);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	ata_qc_complete_multiple - Complete multiple qcs successfully
  *	@ap: port in question
  *	@qc_active: new qc_active mask
@@ -936,11 +926,7 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
 
 	ata_for_each_link(link, ap, EDGE) {
 		ata_for_each_dev(dev, &ap->link, ENABLED) {
-<<<<<<< HEAD
-			if (dev->horkage & ATA_HORKAGE_NOLPM) {
-=======
 			if (dev->quirks & ATA_QUIRK_NOLPM) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				count = -EOPNOTSUPP;
 				goto out_unlock;
 			}
@@ -1462,11 +1448,7 @@ EXPORT_SYMBOL_GPL(sata_async_notification);
 static int ata_eh_read_log_10h(struct ata_device *dev,
 			       int *tag, struct ata_taskfile *tf)
 {
-<<<<<<< HEAD
-	u8 *buf = dev->link->ap->sector_buf;
-=======
 	u8 *buf = dev->sector_buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int err_mask;
 	u8 csum;
 	int i;
@@ -1505,13 +1487,8 @@ static int ata_eh_read_log_10h(struct ata_device *dev,
 }
 
 /**
-<<<<<<< HEAD
- *	ata_eh_read_sense_success_ncq_log - Read the sense data for successful
- *					    NCQ commands log
-=======
  *	ata_eh_get_ncq_success_sense - Read and process the sense data for
  *				       successful NCQ commands log page
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	@link: ATA link to get sense data for
  *
  *	Read the sense data for successful NCQ commands log page to obtain
@@ -1524,19 +1501,11 @@ static int ata_eh_read_log_10h(struct ata_device *dev,
  *	RETURNS:
  *	0 on success, -errno otherwise.
  */
-<<<<<<< HEAD
-int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
-{
-	struct ata_device *dev = link->device;
-	struct ata_port *ap = dev->link->ap;
-	u8 *buf = ap->ncq_sense_buf;
-=======
 int ata_eh_get_ncq_success_sense(struct ata_link *link)
 {
 	struct ata_device *dev = link->device;
 	struct ata_port *ap = dev->link->ap;
 	u8 *buf = dev->cdl->ncq_sense_log_buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ata_queued_cmd *qc;
 	unsigned int err_mask, tag;
 	u8 *sense, sk = 0, asc = 0, ascq = 0;
@@ -1594,27 +1563,14 @@ int ata_eh_get_ncq_success_sense(struct ata_link *link)
 		qc->flags |= ATA_QCFLAG_SENSE_VALID;
 
 		/*
-<<<<<<< HEAD
-		 * If we have sense data, call scsi_check_sense() in order to
-		 * set the correct SCSI ML byte (if any). No point in checking
-		 * the return value, since the command has already completed
-		 * successfully.
-		 */
-		scsi_check_sense(qc->scsicmd);
-=======
 		 * No point in checking the return value, since the command has
 		 * already completed successfully.
 		 */
 		ata_eh_decide_disposition(qc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(ata_eh_read_sense_success_ncq_log);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  *	ata_eh_analyze_ncq_error - analyze NCQ error
@@ -1725,8 +1681,6 @@ void ata_eh_analyze_ncq_error(struct ata_link *link)
 	ehc->i.err_mask &= ~AC_ERR_DEV;
 }
 EXPORT_SYMBOL_GPL(ata_eh_analyze_ncq_error);
-<<<<<<< HEAD
-=======
 
 const struct ata_port_operations sata_port_ops = {
 	.inherits		= &ata_base_port_ops,
@@ -1735,4 +1689,3 @@ const struct ata_port_operations sata_port_ops = {
 	.hardreset		= sata_std_hardreset,
 };
 EXPORT_SYMBOL_GPL(sata_port_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

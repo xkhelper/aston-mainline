@@ -2029,8 +2029,6 @@ Sysreg	FAR_EL1	3	0	6	0	0
 Field	63:0	ADDR
 EndSysreg
 
-<<<<<<< HEAD
-=======
 Sysreg	PMICNTR_EL0	3	3	9	4	0
 Field	63:0	ICNT
 EndSysreg
@@ -2056,7 +2054,6 @@ Res0	19:16
 Field	15:0	evtCount
 EndSysreg
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Sysreg	PMSCR_EL1	3	0	9	9	0
 Res0	63:8
 Field	7:6	PCT
@@ -2181,14 +2178,11 @@ Field	4	P
 Field	3:0	ALIGN
 EndSysreg
 
-<<<<<<< HEAD
-=======
 Sysreg	PMSELR_EL0	3	3	9	12	5
 Res0	63:5
 Field	4:0	SEL
 EndSysreg
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SysregFields	CONTEXTIDR_ELx
 Res0	63:32
 Field	31:0	PROCID

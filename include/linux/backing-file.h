@@ -16,11 +16,7 @@ struct backing_file_ctx {
 	const struct cred *cred;
 	struct file *user_file;
 	void (*accessed)(struct file *);
-<<<<<<< HEAD
-	void (*end_write)(struct file *);
-=======
 	void (*end_write)(struct file *, loff_t, ssize_t);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct file *backing_file_open(const struct path *user_path, int flags,

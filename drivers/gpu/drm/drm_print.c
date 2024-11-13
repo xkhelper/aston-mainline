@@ -100,14 +100,9 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
 			copy = iterator->remain;
 
 		/* Copy out the bit of the string that we need */
-<<<<<<< HEAD
-		memcpy(iterator->data,
-			str + (iterator->start - iterator->offset), copy);
-=======
 		if (iterator->data)
 			memcpy(iterator->data,
 			       str + (iterator->start - iterator->offset), copy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		iterator->offset = iterator->start + copy;
 		iterator->remain -= copy;
@@ -116,12 +111,8 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
 
 		len = min_t(ssize_t, strlen(str), iterator->remain);
 
-<<<<<<< HEAD
-		memcpy(iterator->data + pos, str, len);
-=======
 		if (iterator->data)
 			memcpy(iterator->data + pos, str, len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		iterator->offset += len;
 		iterator->remain -= len;
@@ -151,14 +142,9 @@ void __drm_printfn_coredump(struct drm_printer *p, struct va_format *vaf)
 	if ((iterator->offset >= iterator->start) && (len < iterator->remain)) {
 		ssize_t pos = iterator->offset - iterator->start;
 
-<<<<<<< HEAD
-		snprintf(((char *) iterator->data) + pos,
-			iterator->remain, "%pV", vaf);
-=======
 		if (iterator->data)
 			snprintf(((char *) iterator->data) + pos,
 				 iterator->remain, "%pV", vaf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		iterator->offset += len;
 		iterator->remain -= len;

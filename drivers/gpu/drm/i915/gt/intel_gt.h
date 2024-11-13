@@ -174,10 +174,6 @@ static inline bool intel_gt_is_wedged(const struct intel_gt *gt)
 
 int intel_gt_probe_all(struct drm_i915_private *i915);
 int intel_gt_tiles_init(struct drm_i915_private *i915);
-<<<<<<< HEAD
-void intel_gt_release_all(struct drm_i915_private *i915);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define for_each_gt(gt__, i915__, id__) \
 	for ((id__) = 0; \
@@ -211,13 +207,10 @@ enum i915_map_type intel_gt_coherent_map_type(struct intel_gt *gt,
 void intel_gt_bind_context_set_ready(struct intel_gt *gt);
 void intel_gt_bind_context_set_unready(struct intel_gt *gt);
 bool intel_gt_is_bind_context_ready(struct intel_gt *gt);
-<<<<<<< HEAD
-=======
 
 static inline void intel_gt_set_wedged_async(struct intel_gt *gt)
 {
 	queue_work(system_highpri_wq, &gt->wedge);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __INTEL_GT_H__ */

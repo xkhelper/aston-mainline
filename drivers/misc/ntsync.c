@@ -126,10 +126,6 @@ static const struct file_operations ntsync_obj_fops = {
 	.release	= ntsync_obj_release,
 	.unlocked_ioctl	= ntsync_obj_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct ntsync_obj *ntsync_alloc_obj(struct ntsync_device *dev,
@@ -236,10 +232,6 @@ static const struct file_operations ntsync_fops = {
 	.release	= ntsync_char_release,
 	.unlocked_ioctl	= ntsync_char_ioctl,
 	.compat_ioctl	= compat_ptr_ioctl,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice ntsync_misc = {

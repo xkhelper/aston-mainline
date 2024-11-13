@@ -73,12 +73,9 @@ int array_map_alloc_check(union bpf_attr *attr)
 	/* avoid overflow on round_up(map->value_size) */
 	if (attr->value_size > INT_MAX)
 		return -E2BIG;
-<<<<<<< HEAD
-=======
 	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
 	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
 		return -E2BIG;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -500,11 +497,7 @@ static void array_map_seq_show_elem(struct bpf_map *map, void *key,
 	if (map->btf_key_type_id)
 		seq_printf(m, "%u: ", *(u32 *)key);
 	btf_type_seq_show(map->btf, map->btf_value_type_id, value, m);
-<<<<<<< HEAD
-	seq_puts(m, "\n");
-=======
 	seq_putc(m, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rcu_read_unlock();
 }
@@ -525,11 +518,7 @@ static void percpu_array_map_seq_show_elem(struct bpf_map *map, void *key,
 		seq_printf(m, "\tcpu%d: ", cpu);
 		btf_type_seq_show(map->btf, map->btf_value_type_id,
 				  per_cpu_ptr(pptr, cpu), m);
-<<<<<<< HEAD
-		seq_puts(m, "\n");
-=======
 		seq_putc(m, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	seq_puts(m, "}\n");
 
@@ -614,11 +603,7 @@ static void *bpf_array_map_seq_start(struct seq_file *seq, loff_t *pos)
 	array = container_of(map, struct bpf_array, map);
 	index = info->index & array->index_mask;
 	if (info->percpu_value_buf)
-<<<<<<< HEAD
-	       return array->pptrs[index];
-=======
 		return (void *)(uintptr_t)array->pptrs[index];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return array_map_elem_ptr(array, index);
 }
 
@@ -637,11 +622,7 @@ static void *bpf_array_map_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 	array = container_of(map, struct bpf_array, map);
 	index = info->index & array->index_mask;
 	if (info->percpu_value_buf)
-<<<<<<< HEAD
-	       return array->pptrs[index];
-=======
 		return (void *)(uintptr_t)array->pptrs[index];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return array_map_elem_ptr(array, index);
 }
 
@@ -654,11 +635,7 @@ static int __bpf_array_map_seq_show(struct seq_file *seq, void *v)
 	struct bpf_iter_meta meta;
 	struct bpf_prog *prog;
 	int off = 0, cpu = 0;
-<<<<<<< HEAD
-	void __percpu **pptr;
-=======
 	void __percpu *pptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 size;
 
 	meta.seq = seq;
@@ -674,11 +651,7 @@ static int __bpf_array_map_seq_show(struct seq_file *seq, void *v)
 		if (!info->percpu_value_buf) {
 			ctx.value = v;
 		} else {
-<<<<<<< HEAD
-			pptr = v;
-=======
 			pptr = (void __percpu *)(uintptr_t)v;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			size = array->elem_size;
 			for_each_possible_cpu(cpu) {
 				copy_map_value_long(map, info->percpu_value_buf + off,
@@ -1023,11 +996,7 @@ static void prog_array_map_seq_show_elem(struct bpf_map *map, void *key,
 			prog_id = prog_fd_array_sys_lookup_elem(ptr);
 			btf_type_seq_show(map->btf, map->btf_value_type_id,
 					  &prog_id, m);
-<<<<<<< HEAD
-			seq_puts(m, "\n");
-=======
 			seq_putc(m, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

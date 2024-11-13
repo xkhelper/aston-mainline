@@ -35,25 +35,17 @@
 
 #include <linux/cacheflush.h>
 #include <linux/container_of.h>
-<<<<<<< HEAD
-#include <linux/dev_printk.h>
-#include <linux/dma-mapping.h>
-=======
 #include <linux/crc32.h>
 #include <linux/dev_printk.h>
 #include <linux/dma-mapping.h>
 #include <linux/dmi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/errno.h>
 #include <linux/firmware.h>
 #include <linux/gfp_types.h>
 #include <linux/math.h>
 #include <linux/module.h>
 #include <linux/pfn.h>
-<<<<<<< HEAD
-=======
 #include <linux/sprintf.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/string.h>
 #include <linux/types.h>
 #include <linux/wait.h>
@@ -203,8 +195,6 @@ static int prepare_dma_bufs(struct ishtp_device *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 #define ISH_FW_FILE_VENDOR_NAME_SKU_FMT "intel/ish/ish_%s_%08x_%08x_%08x.bin"
 #define ISH_FW_FILE_VENDOR_SKU_FMT "intel/ish/ish_%s_%08x_%08x.bin"
 #define ISH_FW_FILE_VENDOR_NAME_FMT "intel/ish/ish_%s_%08x_%08x.bin"
@@ -318,7 +308,6 @@ static int request_ish_firmware(const struct firmware **firmware_p,
 	return _request_ish_firmware(firmware_p, filename, dev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ishtp_loader_work() - Load the ISHTP firmware
  * @work: The work structure
@@ -347,10 +336,6 @@ void ishtp_loader_work(struct work_struct *work)
 	struct loader_xfer_query query = { .header = cpu_to_le32(query_hdr.val32), };
 	struct loader_start start = { .header = cpu_to_le32(start_hdr.val32), };
 	union loader_recv_message recv_msg;
-<<<<<<< HEAD
-	char *filename = dev->driver_data->fw_filename;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct firmware *ish_fw;
 	void *dma_bufs[FRAGMENT_MAX_NUM] = {};
 	u32 fragment_size;
@@ -358,15 +343,9 @@ void ishtp_loader_work(struct work_struct *work)
 	int retry = ISHTP_LOADER_RETRY_TIMES;
 	int rv;
 
-<<<<<<< HEAD
-	rv = request_firmware(&ish_fw, filename, dev->devc);
-	if (rv < 0) {
-		dev_err(dev->devc, "request firmware %s failed:%d\n", filename, rv);
-=======
 	rv = request_ish_firmware(&ish_fw, dev->devc);
 	if (rv < 0) {
 		dev_err(dev->devc, "request ISH firmware failed:%d\n", rv);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 

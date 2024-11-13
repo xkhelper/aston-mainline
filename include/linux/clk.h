@@ -641,8 +641,6 @@ struct clk *devm_clk_get_optional_prepared(struct device *dev, const char *id);
 struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id);
 
 /**
-<<<<<<< HEAD
-=======
  * devm_clk_get_optional_enabled_with_rate - devm_clk_get_optional() +
  *                                           clk_set_rate() +
  *                                           clk_prepare_enable()
@@ -669,7 +667,6 @@ struct clk *devm_clk_get_optional_enabled_with_rate(struct device *dev,
 						    unsigned long rate);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * devm_get_clk_from_child - lookup and obtain a managed reference to a
  *			     clock producer from child node.
  * @dev: device for clock "consumer"
@@ -1011,8 +1008,6 @@ static inline struct clk *devm_clk_get_optional_enabled(struct device *dev,
 	return NULL;
 }
 
-<<<<<<< HEAD
-=======
 static inline struct clk *
 devm_clk_get_optional_enabled_with_rate(struct device *dev, const char *id,
 					unsigned long rate)
@@ -1020,7 +1015,6 @@ devm_clk_get_optional_enabled_with_rate(struct device *dev, const char *id,
 	return NULL;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int __must_check devm_clk_bulk_get(struct device *dev, int num_clks,
 						 struct clk_bulk_data *clks)
 {

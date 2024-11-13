@@ -19,11 +19,7 @@
 #include <linux/regulator/consumer.h>
 #include <linux/units.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/iio/buffer.h>
 #include <linux/iio/events.h>
@@ -122,8 +118,6 @@ static const struct bmi323_hw bmi323_hw[2] = {
 	},
 };
 
-<<<<<<< HEAD
-=======
 static const unsigned int bmi323_reg_savestate[] = {
 	BMI323_INT_MAP1_REG,
 	BMI323_INT_MAP2_REG,
@@ -156,7 +150,6 @@ struct bmi323_regs_runtime_pm {
 	unsigned int ext_reg_settings[ARRAY_SIZE(bmi323_ext_reg_savestate)];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct bmi323_data {
 	struct device *dev;
 	struct regmap *regmap;
@@ -169,10 +162,7 @@ struct bmi323_data {
 	u32 odrns[BMI323_SENSORS_CNT];
 	u32 odrhz[BMI323_SENSORS_CNT];
 	unsigned int feature_events;
-<<<<<<< HEAD
-=======
 	struct bmi323_regs_runtime_pm runtime_pm_status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Lock to protect the members of device's private data from concurrent
@@ -2015,14 +2005,11 @@ static void bmi323_disable(void *data_ptr)
 
 	bmi323_set_mode(data, BMI323_ACCEL, ACC_GYRO_MODE_DISABLE);
 	bmi323_set_mode(data, BMI323_GYRO, ACC_GYRO_MODE_DISABLE);
-<<<<<<< HEAD
-=======
 
 	/*
 	 * Place the peripheral in its lowest power consuming state.
 	 */
 	regmap_write(data->regmap, BMI323_CMD_REG, BMI323_RST_VAL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int bmi323_set_bw(struct bmi323_data *data,
@@ -2081,8 +2068,6 @@ static int bmi323_init(struct bmi323_data *data)
 		return dev_err_probe(data->dev, -EINVAL,
 				     "Sensor power error = 0x%x\n", val);
 
-<<<<<<< HEAD
-=======
 	return 0;
 }
 
@@ -2090,7 +2075,6 @@ static int bmi323_init_reset(struct bmi323_data *data)
 {
 	int ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Set the Bandwidth coefficient which defines the 3 dB cutoff
 	 * frequency in relation to the ODR.
@@ -2139,24 +2123,18 @@ int bmi323_core_probe(struct device *dev)
 	data = iio_priv(indio_dev);
 	data->dev = dev;
 	data->regmap = regmap;
-<<<<<<< HEAD
-=======
 	data->irq_pin = BMI323_IRQ_DISABLED;
 	data->state = BMI323_IDLE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_init(&data->mutex);
 
 	ret = bmi323_init(data);
 	if (ret)
 		return -EINVAL;
 
-<<<<<<< HEAD
-=======
 	ret = bmi323_init_reset(data);
 	if (ret)
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!iio_read_acpi_mount_matrix(dev, &data->orientation, "ROTM")) {
 		ret = iio_read_mount_matrix(dev, &data->orientation);
 		if (ret)
@@ -2190,12 +2168,6 @@ int bmi323_core_probe(struct device *dev)
 		return dev_err_probe(data->dev, ret,
 				     "Unable to register iio device\n");
 
-<<<<<<< HEAD
-	return 0;
-}
-EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
-
-=======
 	return bmi323_fifo_disable(data);
 }
 EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
@@ -2328,7 +2300,6 @@ const struct dev_pm_ops bmi323_core_pm_ops = {
 };
 EXPORT_SYMBOL_NS_GPL(bmi323_core_pm_ops, IIO_BMI323);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_DESCRIPTION("Bosch BMI323 IMU driver");
 MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
 MODULE_LICENSE("GPL");

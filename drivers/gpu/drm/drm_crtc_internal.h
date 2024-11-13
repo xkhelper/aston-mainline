@@ -315,8 +315,6 @@ drm_edid_load_firmware(struct drm_connector *connector)
 }
 #endif
 
-<<<<<<< HEAD
-=======
 /* drm_panic.c */
 #ifdef CONFIG_DRM_PANIC
 bool drm_panic_is_enabled(struct drm_device *dev);
@@ -332,5 +330,4 @@ static inline void drm_panic_init(void) {}
 static inline void drm_panic_exit(void) {}
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __DRM_CRTC_INTERNAL_H__ */

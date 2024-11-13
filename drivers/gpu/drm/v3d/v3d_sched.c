@@ -94,15 +94,10 @@ v3d_performance_query_info_free(struct v3d_performance_query_info *query_info,
 	if (query_info->queries) {
 		unsigned int i;
 
-<<<<<<< HEAD
-		for (i = 0; i < count; i++)
-			drm_syncobj_put(query_info->queries[i].syncobj);
-=======
 		for (i = 0; i < count; i++) {
 			drm_syncobj_put(query_info->queries[i].syncobj);
 			kvfree(query_info->queries[i].kperfmon_ids);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		kvfree(query_info->queries);
 	}
@@ -372,12 +367,7 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
 	struct v3d_bo *bo = to_v3d_bo(job->base.bo[0]);
 	struct v3d_bo *indirect = to_v3d_bo(indirect_csd->indirect);
 	struct drm_v3d_submit_csd *args = &indirect_csd->job->args;
-<<<<<<< HEAD
-	struct v3d_dev *v3d = job->base.v3d;
-	u32 num_batches, *wg_counts;
-=======
 	u32 *wg_counts;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	v3d_get_bo_vaddr(bo);
 	v3d_get_bo_vaddr(indirect);
@@ -390,22 +380,8 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
 	args->cfg[2] = wg_counts[2] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
-<<<<<<< HEAD
-
-	num_batches = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
-		      (wg_counts[0] * wg_counts[1] * wg_counts[2]);
-
-	/* V3D 7.1.6 and later don't subtract 1 from the number of batches */
-	if (v3d->ver < 71 || (v3d->ver == 71 && v3d->rev < 6))
-		args->cfg[4] = num_batches - 1;
-	else
-		args->cfg[4] = num_batches;
-
-	WARN_ON(args->cfg[4] == ~0);
-=======
 	args->cfg[4] = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
 		       (wg_counts[0] * wg_counts[1] * wg_counts[2]) - 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (int i = 0; i < 3; i++) {
 		/* 0xffffffff indicates that the uniform rewrite is not needed */
@@ -459,20 +435,6 @@ v3d_reset_timestamp_queries(struct v3d_cpu_job *job)
 	v3d_put_bo_vaddr(bo);
 }
 
-<<<<<<< HEAD
-static void
-write_to_buffer(void *dst, u32 idx, bool do_64bit, u64 value)
-{
-	if (do_64bit) {
-		u64 *dst64 = (u64 *)dst;
-
-		dst64[idx] = value;
-	} else {
-		u32 *dst32 = (u32 *)dst;
-
-		dst32[idx] = (u32)value;
-	}
-=======
 static void write_to_buffer_32(u32 *dst, unsigned int idx, u32 value)
 {
 	dst[idx] = value;
@@ -490,7 +452,6 @@ write_to_buffer(void *dst, unsigned int idx, bool do_64bit, u64 value)
 		write_to_buffer_64(dst, idx, value);
 	else
 		write_to_buffer_32(dst, idx, value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void
@@ -563,20 +524,6 @@ v3d_reset_performance_queries(struct v3d_cpu_job *job)
 }
 
 static void
-<<<<<<< HEAD
-v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data, u32 query)
-{
-	struct v3d_performance_query_info *performance_query = &job->performance_query;
-	struct v3d_copy_query_results_info *copy = &job->copy;
-	struct v3d_file_priv *v3d_priv = job->base.file->driver_priv;
-	struct v3d_dev *v3d = job->base.v3d;
-	struct v3d_perfmon *perfmon;
-	u64 counter_values[V3D_MAX_COUNTERS];
-
-	for (int i = 0; i < performance_query->nperfmons; i++) {
-		perfmon = v3d_perfmon_find(v3d_priv,
-					   performance_query->queries[query].kperfmon_ids[i]);
-=======
 v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data,
 				   unsigned int query)
 {
@@ -595,7 +542,6 @@ v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data,
 
 		perfmon = v3d_perfmon_find(v3d_priv,
 					   perf_query->kperfmon_ids[i]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!perfmon) {
 			DRM_DEBUG("Failed to find perfmon.");
 			continue;
@@ -603,16 +549,6 @@ v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data,
 
 		v3d_perfmon_stop(v3d, perfmon, true);
 
-<<<<<<< HEAD
-		memcpy(&counter_values[i * DRM_V3D_MAX_PERF_COUNTERS], perfmon->values,
-		       perfmon->ncounters * sizeof(u64));
-
-		v3d_perfmon_put(perfmon);
-	}
-
-	for (int i = 0; i < performance_query->ncounters; i++)
-		write_to_buffer(data, i, copy->do_64bit, counter_values[i]);
-=======
 		if (job->copy.do_64bit) {
 			for (j = 0; j < perfmon->ncounters; j++)
 				write_to_buffer_64(data, offset + j,
@@ -625,7 +561,6 @@ v3d_write_performance_query_result(struct v3d_cpu_job *job, void *data,
 
 		v3d_perfmon_put(perfmon);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void
@@ -732,11 +667,7 @@ v3d_gpu_reset_for_timeout(struct v3d_dev *v3d, struct drm_sched_job *sched_job)
 
 	/* Unblock schedulers and restart their jobs. */
 	for (q = 0; q < V3D_MAX_QUEUES; q++) {
-<<<<<<< HEAD
-		drm_sched_start(&v3d->queue[q].sched, true);
-=======
 		drm_sched_start(&v3d->queue[q].sched);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mutex_unlock(&v3d->reset_lock);

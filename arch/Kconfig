@@ -17,8 +17,6 @@ config CPU_MITIGATIONS
 	def_bool y
 endif
 
-<<<<<<< HEAD
-=======
 #
 # Selected by architectures that need custom DMA operations for e.g. legacy
 # IOMMUs not handled by dma-iommu.  Drivers must never select this symbol.
@@ -28,7 +26,6 @@ config ARCH_HAS_DMA_OPS
 	select DMA_OPS_HELPERS
 	bool
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 menu "General architecture-dependent options"
 
 config ARCH_HAS_SUBPAGE_FAULTS
@@ -838,8 +835,6 @@ config CFI_CLANG
 
 	    https://clang.llvm.org/docs/ControlFlowIntegrity.html
 
-<<<<<<< HEAD
-=======
 config CFI_ICALL_NORMALIZE_INTEGERS
 	bool "Normalize CFI tags for integers"
 	depends on CFI_CLANG
@@ -870,7 +865,6 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
 	depends on (RUSTC_LLVM_VERSION >= 190103 && RUSTC_VERSION >= 108200) || \
 		(!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config CFI_PERMISSIVE
 	bool "Use CFI in permissive mode"
 	depends on CFI_CLANG
@@ -907,11 +901,7 @@ config HAVE_CONTEXT_TRACKING_USER_OFFSTACK
 	  Architecture neither relies on exception_enter()/exception_exit()
 	  nor on schedule_user(). Also preempt_schedule_notrace() and
 	  preempt_schedule_irq() can't be called in a preemptible section
-<<<<<<< HEAD
-	  while context tracking is CONTEXT_USER. This feature reflects a sane
-=======
 	  while context tracking is CT_STATE_USER. This feature reflects a sane
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	  entry implementation where the following requirements are met on
 	  critical entry code, ie: before user_exit() or after user_enter():
 

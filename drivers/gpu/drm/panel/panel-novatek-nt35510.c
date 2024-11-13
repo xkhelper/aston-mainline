@@ -1166,11 +1166,7 @@ static int nt35510_probe(struct mipi_dsi_device *dsi)
 			bl->props.brightness = nt->conf->wrdisbv;
 		else
 			bl->props.brightness = 255;
-<<<<<<< HEAD
-		bl->props.power = FB_BLANK_POWERDOWN;
-=======
 		bl->props.power = BACKLIGHT_POWER_OFF;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nt->panel.backlight = bl;
 	}
 

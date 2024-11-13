@@ -331,8 +331,6 @@ config USB_ONBOARD_DEV
 	  this config will enable the driver and it will automatically
 	  match the state of the USB subsystem. If this driver is a
 	  module it will be called onboard_usb_dev.
-<<<<<<< HEAD
-=======
 
 config USB_ONBOARD_DEV_USB5744
 	bool "Onboard USB Microchip usb5744 hub with SMBus support"
@@ -345,4 +343,3 @@ config USB_ONBOARD_DEV_USB5744
 	  during hub start-up configuration stage. It is must to enable this
 	  option on AMD Kria KR260 Robotics Starter Kit as this hub is
 	  connected to USB-SD converter which mounts the root filesystem.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

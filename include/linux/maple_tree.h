@@ -52,15 +52,9 @@
  * bit in the node type.  This is possible by using bit 1 to indicate if bit 2
  * is part of the type or the slot.
  *
-<<<<<<< HEAD
- * Once the type is decided, the decision of an allocation range type or a range
- * type is done by examining the immutable tree flag for the MAPLE_ALLOC_RANGE
- * flag.
-=======
  * Once the type is decided, the decision of an allocation range type or a
  * range type is done by examining the immutable tree flag for the
  * MT_FLAGS_ALLOC_RANGE flag.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  *  Node types:
  *   0x??1 = Root
@@ -154,8 +148,6 @@ enum maple_type {
 	maple_arange_64,
 };
 
-<<<<<<< HEAD
-=======
 enum store_type {
 	wr_invalid,
 	wr_new_root,
@@ -168,7 +160,6 @@ enum store_type {
 	wr_node_store,
 	wr_slot_store,
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * DOC: Maple tree flags
@@ -457,10 +448,7 @@ struct ma_state {
 	unsigned char offset;
 	unsigned char mas_flags;
 	unsigned char end;		/* The end of the node */
-<<<<<<< HEAD
-=======
 	enum store_type store_type;	/* The type of store needed for this operation */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct ma_wr_state {
@@ -502,10 +490,7 @@ struct ma_wr_state {
 		.max = ULONG_MAX,					\
 		.alloc = NULL,						\
 		.mas_flags = 0,						\
-<<<<<<< HEAD
-=======
 		.store_type = wr_invalid,				\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 #define MA_WR_STATE(name, ma_state, wr_entry)				\

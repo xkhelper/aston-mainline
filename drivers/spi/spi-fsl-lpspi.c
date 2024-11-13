@@ -986,10 +986,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
 
 	fsl_lpspi_dma_exit(controller);
 
-<<<<<<< HEAD
-=======
 	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_disable(fsl_lpspi->dev);
 }
 

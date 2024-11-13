@@ -5,21 +5,14 @@ netfs-y := \
 	buffered_write.o \
 	direct_read.o \
 	direct_write.o \
-<<<<<<< HEAD
-	io.o \
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iterator.o \
 	locking.o \
 	main.o \
 	misc.o \
 	objects.o \
-<<<<<<< HEAD
-=======
 	read_collect.o \
 	read_pgpriv2.o \
 	read_retry.o \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	write_collect.o \
 	write_issue.o
 

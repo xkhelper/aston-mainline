@@ -196,11 +196,7 @@ static void radeon_audio_enable(struct radeon_device *rdev,
 		return;
 
 	if (rdev->mode_info.mode_config_initialized) {
-<<<<<<< HEAD
-		list_for_each_entry(encoder, &rdev->ddev->mode_config.encoder_list, head) {
-=======
 		list_for_each_entry(encoder, &rdev_to_drm(rdev)->mode_config.encoder_list, head) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (radeon_encoder_is_digital(encoder)) {
 				radeon_encoder = to_radeon_encoder(encoder);
 				dig = radeon_encoder->enc_priv;
@@ -764,11 +760,7 @@ static int radeon_audio_component_get_eld(struct device *kdev, int port,
 	if (!rdev->audio.enabled || !rdev->mode_info.mode_config_initialized)
 		return 0;
 
-<<<<<<< HEAD
-	list_for_each_entry(encoder, &rdev->ddev->mode_config.encoder_list, head) {
-=======
 	list_for_each_entry(encoder, &rdev_to_drm(rdev)->mode_config.encoder_list, head) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!radeon_encoder_is_digital(encoder))
 			continue;
 		radeon_encoder = to_radeon_encoder(encoder);

@@ -32,10 +32,7 @@
 	compatible = "renesas,rzg3s-smarcm", "renesas,r9a08g045s33", "renesas,r9a08g045";
 
 	aliases {
-<<<<<<< HEAD
-=======
 		i2c1 = &i2c1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mmc0 = &sdhi0;
 #if SW_CONFIG3 == SW_OFF
 		mmc2 = &sdhi2;
@@ -154,13 +151,10 @@
 	clock-frequency = <24000000>;
 };
 
-<<<<<<< HEAD
-=======
 &i2c1 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if SW_CONFIG2 == SW_ON
 /* SD0 slot */
 &sdhi0 {

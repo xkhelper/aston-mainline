@@ -12,23 +12,18 @@ thermal_zones: thermal-zones {
 		thermal-sensors = <&wkup_vtm0 0>;
 
 		trips {
-<<<<<<< HEAD
-=======
 			main0_alert: main0-alert {
 				temperature = <95000>;
 				hysteresis = <2000>;
 				type = "passive";
 			};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			main0_crit: main0-crit {
 				temperature = <105000>;	/* milliCelsius */
 				hysteresis = <2000>;	/* milliCelsius */
 				type = "critical";
 			};
 		};
-<<<<<<< HEAD
-=======
 
 		cooling-maps {
 			map0 {
@@ -40,7 +35,6 @@ thermal_zones: thermal-zones {
 					<&cpu3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 			};
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	main1_thermal: main1-thermal {
@@ -49,23 +43,18 @@ thermal_zones: thermal-zones {
 		thermal-sensors = <&wkup_vtm0 1>;
 
 		trips {
-<<<<<<< HEAD
-=======
 			main1_alert: main1-alert {
 				temperature = <95000>;
 				hysteresis = <2000>;
 				type = "passive";
 			};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			main1_crit: main1-crit {
 				temperature = <105000>;	/* milliCelsius */
 				hysteresis = <2000>;	/* milliCelsius */
 				type = "critical";
 			};
 		};
-<<<<<<< HEAD
-=======
 
 		cooling-maps {
 			map0 {
@@ -77,6 +66,5 @@ thermal_zones: thermal-zones {
 					<&cpu3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 			};
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };

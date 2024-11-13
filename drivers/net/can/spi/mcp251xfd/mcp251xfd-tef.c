@@ -16,15 +16,9 @@
 
 #include "mcp251xfd.h"
 
-<<<<<<< HEAD
-static inline bool mcp251xfd_tx_fifo_sta_full(u32 fifo_sta)
-{
-	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
-=======
 static inline bool mcp251xfd_tx_fifo_sta_empty(u32 fifo_sta)
 {
 	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int
@@ -128,15 +122,11 @@ mcp251xfd_get_tef_len(struct mcp251xfd_priv *priv, u8 *len_p)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
-	if (mcp251xfd_tx_fifo_sta_full(fifo_sta)) {
-=======
 	/* If the chip says the TX-FIFO is empty, but there are no TX
 	 * buffers free in the ring, we assume all have been sent.
 	 */
 	if (mcp251xfd_tx_fifo_sta_empty(fifo_sta) &&
 	    mcp251xfd_get_tx_free(tx_ring) == 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*len_p = tx_ring->obj_num;
 		return 0;
 	}

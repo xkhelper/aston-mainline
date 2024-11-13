@@ -39,15 +39,6 @@ mark_mt(const struct sk_buff *skb, struct xt_action_param *par)
 	return ((skb->mark & info->mask) == info->mark) ^ info->invert;
 }
 
-<<<<<<< HEAD
-static struct xt_target mark_tg_reg __read_mostly = {
-	.name           = "MARK",
-	.revision       = 2,
-	.family         = NFPROTO_UNSPEC,
-	.target         = mark_tg,
-	.targetsize     = sizeof(struct xt_mark_tginfo2),
-	.me             = THIS_MODULE,
-=======
 static struct xt_target mark_tg_reg[] __read_mostly = {
 	{
 		.name           = "MARK",
@@ -77,7 +68,6 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
 		.me             = THIS_MODULE,
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct xt_match mark_mt_reg __read_mostly = {
@@ -93,20 +83,12 @@ static int __init mark_mt_init(void)
 {
 	int ret;
 
-<<<<<<< HEAD
-	ret = xt_register_target(&mark_tg_reg);
-=======
 	ret = xt_register_targets(mark_tg_reg, ARRAY_SIZE(mark_tg_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		return ret;
 	ret = xt_register_match(&mark_mt_reg);
 	if (ret < 0) {
-<<<<<<< HEAD
-		xt_unregister_target(&mark_tg_reg);
-=======
 		xt_unregister_targets(mark_tg_reg, ARRAY_SIZE(mark_tg_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 	return 0;
@@ -115,11 +97,7 @@ static int __init mark_mt_init(void)
 static void __exit mark_mt_exit(void)
 {
 	xt_unregister_match(&mark_mt_reg);
-<<<<<<< HEAD
-	xt_unregister_target(&mark_tg_reg);
-=======
 	xt_unregister_targets(mark_tg_reg, ARRAY_SIZE(mark_tg_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 module_init(mark_mt_init);

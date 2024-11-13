@@ -62,8 +62,6 @@
 
 	};
 
-<<<<<<< HEAD
-=======
 	reg_vdd_12v: regulator-vdd-12v {
 		compatible = "regulator-fixed";
 		regulator-name = "VDD_12V";
@@ -73,7 +71,6 @@
 		enable-active-high;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reg_vref_1v8: regulator-adc-vref {
 		compatible = "regulator-fixed";
 		regulator-name = "vref_1v8";
@@ -92,8 +89,6 @@
 		off-on-delay-us = <12000>;
 		enable-active-high;
 	};
-<<<<<<< HEAD
-=======
 
 	backlight_lvds: backlight-lvds {
 		compatible = "pwm-backlight";
@@ -156,7 +151,6 @@
 			};
 		};
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &adc1 {
@@ -222,11 +216,6 @@
 	};
 };
 
-<<<<<<< HEAD
-&lpi2c2 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-=======
 &lpi2c1 {
 	clock-frequency = <400000>;
 	pinctrl-names = "default";
@@ -240,7 +229,6 @@
 };
 
 &lpi2c2 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clock-frequency = <400000>;
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_lpi2c2>;
@@ -334,13 +322,6 @@
 			};
 		};
 	};
-<<<<<<< HEAD
-};
-
-&lpi2c3 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-=======
 
 	adp5585: io-expander@34 {
 		compatible = "adi,adp5585-00", "adi,adp5585";
@@ -354,7 +335,6 @@
 };
 
 &lpi2c3 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clock-frequency = <400000>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpi2c3>;
@@ -446,8 +426,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &micfil {
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_pdm>;
@@ -458,7 +436,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &mu1 {
 	status = "okay";
 };
@@ -467,8 +444,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &sai1 {
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_sai1>;
@@ -480,7 +455,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &usbotg1 {
 	dr_mode = "otg";
 	hnp-disable;
@@ -544,8 +518,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &xcvr {
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&pinctrl_spdif>;
@@ -558,7 +530,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &iomuxc {
 	pinctrl_eqos: eqosgrp {
 		fsl,pins = <
@@ -659,8 +630,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_lpi2c1: lpi2c1grp {
 		fsl,pins = <
 			MX93_PAD_I2C1_SCL__LPI2C1_SCL			0x40000b9e
@@ -668,7 +637,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_lpi2c2: lpi2c2grp {
 		fsl,pins = <
 			MX93_PAD_I2C2_SCL__LPI2C2_SCL			0x40000b9e
@@ -689,8 +657,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_pdm: pdmgrp {
 		fsl,pins = <
 			MX93_PAD_PDM_CLK__PDM_CLK			0x31e
@@ -725,7 +691,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* need to config the SION for data and cmd pad, refer to ERR052021 */
 	pinctrl_usdhc1: usdhc1grp {
 		fsl,pins = <
@@ -783,8 +748,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_spdif: spdifgrp {
 		fsl,pins = <
 			MX93_PAD_GPIO_IO22__SPDIF_IN		0x31e
@@ -799,7 +762,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
 		fsl,pins = <
 			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e

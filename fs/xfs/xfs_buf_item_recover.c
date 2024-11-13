@@ -22,12 +22,9 @@
 #include "xfs_inode.h"
 #include "xfs_dir2.h"
 #include "xfs_quota.h"
-<<<<<<< HEAD
-=======
 #include "xfs_alloc.h"
 #include "xfs_ag.h"
 #include "xfs_sb.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * This is the number of entries in the l_buf_cancel_table used during
@@ -691,8 +688,6 @@ xlog_recover_do_inode_buffer(
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Update the in-memory superblock and perag structures from the primary SB
  * buffer.
  *
@@ -754,7 +749,6 @@ xlog_recover_do_primary_sb_buffer(
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * V5 filesystems know the age of the buffer on disk being recovered. We can
  * have newer objects on disk than we are replaying, and so for these cases we
  * don't want to replay the current change as that will make the buffer contents
@@ -1037,15 +1031,12 @@ xlog_recover_buf_commit_pass2(
 		dirty = xlog_recover_do_dquot_buffer(mp, log, item, bp, buf_f);
 		if (!dirty)
 			goto out_release;
-<<<<<<< HEAD
-=======
 	} else if ((xfs_blft_from_flags(buf_f) & XFS_BLFT_SB_BUF) &&
 			xfs_buf_daddr(bp) == 0) {
 		error = xlog_recover_do_primary_sb_buffer(mp, item, bp, buf_f,
 				current_lsn);
 		if (error)
 			goto out_release;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		xlog_recover_do_reg_buffer(mp, item, bp, buf_f, current_lsn);
 	}

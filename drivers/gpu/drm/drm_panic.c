@@ -18,11 +18,8 @@
 #include <linux/overflow.h>
 #include <linux/printk.h>
 #include <linux/types.h>
-<<<<<<< HEAD
-=======
 #include <linux/utsname.h>
 #include <linux/zlib.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/drm_drv.h>
 #include <drm/drm_fourcc.h>
@@ -31,12 +28,9 @@
 #include <drm/drm_panic.h>
 #include <drm/drm_plane.h>
 #include <drm/drm_print.h>
-<<<<<<< HEAD
-=======
 #include <drm/drm_rect.h>
 
 #include "drm_crtc_internal.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MODULE_AUTHOR("Jocelyn Falempe");
 MODULE_DESCRIPTION("DRM panic handler");
@@ -87,13 +81,6 @@ struct drm_panic_line {
 #define PANIC_LINE(s) {.len = sizeof(s) - 1, .txt = s}
 
 static struct drm_panic_line panic_msg[] = {
-<<<<<<< HEAD
-	PANIC_LINE("KERNEL PANIC !"),
-	PANIC_LINE(""),
-	PANIC_LINE("Please reboot your computer."),
-};
-
-=======
 	PANIC_LINE("KERNEL PANIC!"),
 	PANIC_LINE(""),
 	PANIC_LINE("Please reboot your computer."),
@@ -103,7 +90,6 @@ static struct drm_panic_line panic_msg[] = {
 
 static const size_t panic_msg_lines = ARRAY_SIZE(panic_msg);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct drm_panic_line logo_ascii[] = {
 	PANIC_LINE("     .--.        _"),
 	PANIC_LINE("    |o_o |      | |"),
@@ -114,11 +100,8 @@ static const struct drm_panic_line logo_ascii[] = {
 	PANIC_LINE(" \\___)=(___/"),
 };
 
-<<<<<<< HEAD
-=======
 static const size_t logo_ascii_lines = ARRAY_SIZE(logo_ascii);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if defined(CONFIG_LOGO) && !defined(MODULE)
 static const struct linux_logo *logo_mono;
 
@@ -277,32 +260,20 @@ static bool drm_panic_is_pixel_fg(const u8 *sbuf8, unsigned int spitch, int x, i
 static void drm_panic_blit16(struct iosys_map *dmap, unsigned int dpitch,
 			     const u8 *sbuf8, unsigned int spitch,
 			     unsigned int height, unsigned int width,
-<<<<<<< HEAD
-			     u16 fg16)
-=======
 			     unsigned int scale, u16 fg16)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int y, x;
 
 	for (y = 0; y < height; y++)
 		for (x = 0; x < width; x++)
-<<<<<<< HEAD
-			if (drm_panic_is_pixel_fg(sbuf8, spitch, x, y))
-=======
 			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				iosys_map_wr(dmap, y * dpitch + x * sizeof(u16), u16, fg16);
 }
 
 static void drm_panic_blit24(struct iosys_map *dmap, unsigned int dpitch,
 			     const u8 *sbuf8, unsigned int spitch,
 			     unsigned int height, unsigned int width,
-<<<<<<< HEAD
-			     u32 fg32)
-=======
 			     unsigned int scale, u32 fg32)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int y, x;
 
@@ -310,11 +281,7 @@ static void drm_panic_blit24(struct iosys_map *dmap, unsigned int dpitch,
 		for (x = 0; x < width; x++) {
 			u32 off = y * dpitch + x * 3;
 
-<<<<<<< HEAD
-			if (drm_panic_is_pixel_fg(sbuf8, spitch, x, y)) {
-=======
 			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				/* write blue-green-red to output in little endianness */
 				iosys_map_wr(dmap, off, u8, (fg32 & 0x000000FF) >> 0);
 				iosys_map_wr(dmap, off + 1, u8, (fg32 & 0x0000FF00) >> 8);
@@ -327,41 +294,25 @@ static void drm_panic_blit24(struct iosys_map *dmap, unsigned int dpitch,
 static void drm_panic_blit32(struct iosys_map *dmap, unsigned int dpitch,
 			     const u8 *sbuf8, unsigned int spitch,
 			     unsigned int height, unsigned int width,
-<<<<<<< HEAD
-			     u32 fg32)
-=======
 			     unsigned int scale, u32 fg32)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int y, x;
 
 	for (y = 0; y < height; y++)
 		for (x = 0; x < width; x++)
-<<<<<<< HEAD
-			if (drm_panic_is_pixel_fg(sbuf8, spitch, x, y))
-=======
 			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				iosys_map_wr(dmap, y * dpitch + x * sizeof(u32), u32, fg32);
 }
 
 static void drm_panic_blit_pixel(struct drm_scanout_buffer *sb, struct drm_rect *clip,
-<<<<<<< HEAD
-				 const u8 *sbuf8, unsigned int spitch, u32 fg_color)
-=======
 				 const u8 *sbuf8, unsigned int spitch, unsigned int scale,
 				 u32 fg_color)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int y, x;
 
 	for (y = 0; y < drm_rect_height(clip); y++)
 		for (x = 0; x < drm_rect_width(clip); x++)
-<<<<<<< HEAD
-			if (drm_panic_is_pixel_fg(sbuf8, spitch, x, y))
-=======
 			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				sb->set_pixel(sb, clip->x1 + x, clip->y1 + y, fg_color);
 }
 
@@ -371,33 +322,22 @@ static void drm_panic_blit_pixel(struct drm_scanout_buffer *sb, struct drm_rect 
  * @clip: destination rectangle
  * @sbuf8: source buffer, in monochrome format, 8 pixels per byte.
  * @spitch: source pitch in bytes
-<<<<<<< HEAD
-=======
  * @scale: integer scale, source buffer is scale time smaller than destination
  *         rectangle
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @fg_color: foreground color, in destination format
  *
  * This can be used to draw a font character, which is a monochrome image, to a
  * framebuffer in other supported format.
  */
 static void drm_panic_blit(struct drm_scanout_buffer *sb, struct drm_rect *clip,
-<<<<<<< HEAD
-			   const u8 *sbuf8, unsigned int spitch, u32 fg_color)
-=======
 			   const u8 *sbuf8, unsigned int spitch,
 			   unsigned int scale, u32 fg_color)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct iosys_map map;
 
 	if (sb->set_pixel)
-<<<<<<< HEAD
-		return drm_panic_blit_pixel(sb, clip, sbuf8, spitch, fg_color);
-=======
 		return drm_panic_blit_pixel(sb, clip, sbuf8, spitch, scale, fg_color);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	map = sb->map[0];
 	iosys_map_incr(&map, clip->y1 * sb->pitch[0] + clip->x1 * sb->format->cpp[0]);
@@ -405,17 +345,6 @@ static void drm_panic_blit(struct drm_scanout_buffer *sb, struct drm_rect *clip,
 	switch (sb->format->cpp[0]) {
 	case 2:
 		drm_panic_blit16(&map, sb->pitch[0], sbuf8, spitch,
-<<<<<<< HEAD
-				 drm_rect_height(clip), drm_rect_width(clip), fg_color);
-	break;
-	case 3:
-		drm_panic_blit24(&map, sb->pitch[0], sbuf8, spitch,
-				 drm_rect_height(clip), drm_rect_width(clip), fg_color);
-	break;
-	case 4:
-		drm_panic_blit32(&map, sb->pitch[0], sbuf8, spitch,
-				 drm_rect_height(clip), drm_rect_width(clip), fg_color);
-=======
 				 drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
 	break;
 	case 3:
@@ -425,7 +354,6 @@ static void drm_panic_blit(struct drm_scanout_buffer *sb, struct drm_rect *clip,
 	case 4:
 		drm_panic_blit32(&map, sb->pitch[0], sbuf8, spitch,
 				 drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	break;
 	default:
 		WARN_ONCE(1, "Can't blit with pixel width %d\n", sb->format->cpp[0]);
@@ -565,22 +493,12 @@ static void draw_txt_rectangle(struct drm_scanout_buffer *sb,
 		for (j = 0; j < line_len; j++) {
 			src = get_char_bitmap(font, msg[i].txt[j], font_pitch);
 			rec.x2 = rec.x1 + font->width;
-<<<<<<< HEAD
-			drm_panic_blit(sb, &rec, src, font_pitch, color);
-=======
 			drm_panic_blit(sb, &rec, src, font_pitch, 1, color);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rec.x1 += font->width;
 		}
 	}
 }
 
-<<<<<<< HEAD
-static void draw_panic_static_user(struct drm_scanout_buffer *sb)
-{
-	size_t msg_lines = ARRAY_SIZE(panic_msg);
-	size_t logo_ascii_lines = ARRAY_SIZE(logo_ascii);
-=======
 static void drm_panic_logo_rect(struct drm_rect *rect, const struct font_desc *font)
 {
 	if (logo_mono) {
@@ -605,42 +523,21 @@ static void drm_panic_logo_draw(struct drm_scanout_buffer *sb, struct drm_rect *
 
 static void draw_panic_static_user(struct drm_scanout_buffer *sb)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 fg_color = convert_from_xrgb8888(CONFIG_DRM_PANIC_FOREGROUND_COLOR, sb->format->format);
 	u32 bg_color = convert_from_xrgb8888(CONFIG_DRM_PANIC_BACKGROUND_COLOR, sb->format->format);
 	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
 	struct drm_rect r_screen, r_logo, r_msg;
-<<<<<<< HEAD
-	unsigned int logo_width, logo_height;
-=======
 	unsigned int msg_width, msg_height;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!font)
 		return;
 
 	r_screen = DRM_RECT_INIT(0, 0, sb->width, sb->height);
-<<<<<<< HEAD
-
-	if (logo_mono) {
-		logo_width = logo_mono->width;
-		logo_height = logo_mono->height;
-	} else {
-		logo_width = get_max_line_len(logo_ascii, logo_ascii_lines) * font->width;
-		logo_height = logo_ascii_lines * font->height;
-	}
-
-	r_logo = DRM_RECT_INIT(0, 0, logo_width, logo_height);
-	r_msg = DRM_RECT_INIT(0, 0,
-			      min(get_max_line_len(panic_msg, msg_lines) * font->width, sb->width),
-			      min(msg_lines * font->height, sb->height));
-=======
 	drm_panic_logo_rect(&r_logo, font);
 
 	msg_width = min(get_max_line_len(panic_msg, panic_msg_lines) * font->width, sb->width);
 	msg_height = min(panic_msg_lines * font->height, sb->height);
 	r_msg = DRM_RECT_INIT(0, 0, msg_width, msg_height);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Center the panic message */
 	drm_rect_translate(&r_msg, (sb->width - r_msg.x2) / 2, (sb->height - r_msg.y2) / 2);
@@ -648,23 +545,10 @@ static void draw_panic_static_user(struct drm_scanout_buffer *sb)
 	/* Fill with the background color, and draw text on top */
 	drm_panic_fill(sb, &r_screen, bg_color);
 
-<<<<<<< HEAD
-	if ((r_msg.x1 >= logo_width || r_msg.y1 >= logo_height) &&
-	    logo_width <= sb->width && logo_height <= sb->height) {
-		if (logo_mono)
-			drm_panic_blit(sb, &r_logo, logo_mono->data, DIV_ROUND_UP(logo_width, 8),
-				       fg_color);
-		else
-			draw_txt_rectangle(sb, font, logo_ascii, logo_ascii_lines, false, &r_logo,
-					   fg_color);
-	}
-	draw_txt_rectangle(sb, font, panic_msg, msg_lines, true, &r_msg, fg_color);
-=======
 	if (!drm_rect_overlap(&r_logo, &r_msg))
 		drm_panic_logo_draw(sb, &r_logo, font, fg_color);
 
 	draw_txt_rectangle(sb, font, panic_msg, panic_msg_lines, true, &r_msg, fg_color);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -746,8 +630,6 @@ static void draw_panic_static_kmsg(struct drm_scanout_buffer *sb)
 	}
 }
 
-<<<<<<< HEAD
-=======
 #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
 /*
  * It is unwise to allocate memory in the panic callback, so the buffers are
@@ -975,7 +857,6 @@ static void drm_panic_qr_init(void) {};
 static void drm_panic_qr_exit(void) {};
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * drm_panic_is_format_supported()
  * @format: a fourcc color code
@@ -994,19 +875,13 @@ static void draw_panic_dispatch(struct drm_scanout_buffer *sb)
 {
 	if (!strcmp(drm_panic_screen, "kmsg")) {
 		draw_panic_static_kmsg(sb);
-<<<<<<< HEAD
-=======
 	} else if (!strcmp(drm_panic_screen, "qr_code")) {
 		draw_panic_static_qr_code(sb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		draw_panic_static_user(sb);
 	}
 }
 
-<<<<<<< HEAD
-static void draw_panic_plane(struct drm_plane *plane)
-=======
 static void drm_panic_set_description(const char *description)
 {
 	u32 len;
@@ -1032,7 +907,6 @@ static void drm_panic_clear_description(void)
 }
 
 static void draw_panic_plane(struct drm_plane *plane, const char *description)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct drm_scanout_buffer sb = { };
 	int ret;
@@ -1041,11 +915,8 @@ static void draw_panic_plane(struct drm_plane *plane, const char *description)
 	if (!drm_panic_trylock(plane->dev, flags))
 		return;
 
-<<<<<<< HEAD
-=======
 	drm_panic_set_description(description);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = plane->helper_private->get_scanout_buffer(plane, &sb);
 
 	if (!ret && drm_panic_is_format_supported(sb.format)) {
@@ -1053,10 +924,7 @@ static void draw_panic_plane(struct drm_plane *plane, const char *description)
 		if (plane->helper_private->panic_flush)
 			plane->helper_private->panic_flush(plane);
 	}
-<<<<<<< HEAD
-=======
 	drm_panic_clear_description();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_panic_unlock(plane->dev, flags);
 }
 
@@ -1065,21 +933,12 @@ static struct drm_plane *to_drm_plane(struct kmsg_dumper *kd)
 	return container_of(kd, struct drm_plane, kmsg_panic);
 }
 
-<<<<<<< HEAD
-static void drm_panic(struct kmsg_dumper *dumper, enum kmsg_dump_reason reason)
-{
-	struct drm_plane *plane = to_drm_plane(dumper);
-
-	if (reason == KMSG_DUMP_PANIC)
-		draw_panic_plane(plane);
-=======
 static void drm_panic(struct kmsg_dumper *dumper, struct kmsg_dump_detail *detail)
 {
 	struct drm_plane *plane = to_drm_plane(dumper);
 
 	if (detail->reason == KMSG_DUMP_PANIC)
 		draw_panic_plane(plane, detail->description);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 
@@ -1099,11 +958,7 @@ static ssize_t debugfs_trigger_write(struct file *file, const char __user *user_
 	if (kstrtobool_from_user(user_buf, count, &run) == 0 && run) {
 		struct drm_plane *plane = file->private_data;
 
-<<<<<<< HEAD
-		draw_panic_plane(plane);
-=======
 		draw_panic_plane(plane, "Test from debugfs");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return count;
 }
@@ -1127,8 +982,6 @@ static void debugfs_register_plane(struct drm_plane *plane, int index) {}
 #endif /* CONFIG_DRM_PANIC_DEBUG */
 
 /**
-<<<<<<< HEAD
-=======
  * drm_panic_is_enabled
  * @dev: the drm device that may supports drm_panic
  *
@@ -1149,7 +1002,6 @@ bool drm_panic_is_enabled(struct drm_device *dev)
 EXPORT_SYMBOL(drm_panic_is_enabled);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * drm_panic_register() - Initialize DRM panic for a device
  * @dev: the drm device on which the panic screen will be displayed.
  */
@@ -1176,10 +1028,6 @@ void drm_panic_register(struct drm_device *dev)
 	if (registered_plane)
 		drm_info(dev, "Registered %d planes with drm panic\n", registered_plane);
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL(drm_panic_register);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * drm_panic_unregister()
@@ -1198,9 +1046,6 @@ void drm_panic_unregister(struct drm_device *dev)
 		kmsg_dump_unregister(&plane->kmsg_panic);
 	}
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL(drm_panic_unregister);
-=======
 
 /**
  * drm_panic_init() - initialize DRM panic.
@@ -1217,4 +1062,3 @@ void drm_panic_exit(void)
 {
 	drm_panic_qr_exit();
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

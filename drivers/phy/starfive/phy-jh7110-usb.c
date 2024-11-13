@@ -10,28 +10,17 @@
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/io.h>
-<<<<<<< HEAD
-#include <linux/module.h>
-#include <linux/phy/phy.h>
-#include <linux/platform_device.h>
-=======
 #include <linux/mfd/syscon.h>
 #include <linux/module.h>
 #include <linux/phy/phy.h>
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/usb/of.h>
 
 #define USB_125M_CLK_RATE		125000000
 #define USB_LS_KEEPALIVE_OFF		0x4
 #define USB_LS_KEEPALIVE_ENABLE		BIT(4)
 
-<<<<<<< HEAD
-struct jh7110_usb2_phy {
-	struct phy *phy;
-	void __iomem *regs;
-=======
 #define USB_PDRSTN_SPLIT		BIT(17)
 #define SYSCON_USB_SPLIT_OFFSET		0x18
 
@@ -39,7 +28,6 @@ struct jh7110_usb2_phy {
 	struct phy *phy;
 	void __iomem *regs;
 	struct regmap *sys_syscon;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct clk *usb_125m_clk;
 	struct clk *app_125m;
 	enum phy_mode mode;
@@ -79,13 +67,10 @@ static int usb2_phy_set_mode(struct phy *_phy,
 		usb2_set_ls_keepalive(phy, (mode != PHY_MODE_USB_DEVICE));
 	}
 
-<<<<<<< HEAD
-=======
 	/* Connect usb 2.0 phy mode */
 	regmap_update_bits(phy->sys_syscon, SYSCON_USB_SPLIT_OFFSET,
 			   USB_PDRSTN_SPLIT, USB_PDRSTN_SPLIT);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -154,15 +139,12 @@ static int jh7110_usb_phy_probe(struct platform_device *pdev)
 	phy_set_drvdata(phy->phy, phy);
 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
 
-<<<<<<< HEAD
-=======
 	phy->sys_syscon =
 		syscon_regmap_lookup_by_compatible("starfive,jh7110-sys-syscon");
 	if (IS_ERR(phy->sys_syscon))
 		return dev_err_probe(dev, PTR_ERR(phy->sys_syscon),
 				     "Failed to get sys-syscon\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return PTR_ERR_OR_ZERO(phy_provider);
 }
 

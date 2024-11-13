@@ -197,35 +197,18 @@ static int mac_probe(struct platform_device *_of_dev)
 		err = -EINVAL;
 		goto _return_of_node_put;
 	}
-<<<<<<< HEAD
-=======
 	mac_dev->fman_dev = &of_dev->dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Get the FMan cell-index */
 	err = of_property_read_u32(dev_node, "cell-index", &val);
 	if (err) {
 		dev_err(dev, "failed to read cell-index for %pOF\n", dev_node);
 		err = -EINVAL;
-<<<<<<< HEAD
-		goto _return_of_node_put;
-=======
 		goto _return_dev_put;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/* cell-index 0 => FMan id 1 */
 	fman_id = (u8)(val + 1);
 
-<<<<<<< HEAD
-	priv->fman = fman_bind(&of_dev->dev);
-	if (!priv->fman) {
-		dev_err(dev, "fman_bind(%pOF) failed\n", dev_node);
-		err = -ENODEV;
-		goto _return_of_node_put;
-	}
-
-	of_node_put(dev_node);
-=======
 	priv->fman = fman_bind(mac_dev->fman_dev);
 	if (!priv->fman) {
 		dev_err(dev, "fman_bind(%pOF) failed\n", dev_node);
@@ -240,42 +223,26 @@ static int mac_probe(struct platform_device *_of_dev)
 	put_device(mac_dev->fman_dev);
 	of_node_put(dev_node);
 	dev_node = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Get the address of the memory mapped registers */
 	mac_dev->res = platform_get_mem_or_io(_of_dev, 0);
 	if (!mac_dev->res) {
 		dev_err(dev, "could not get registers\n");
-<<<<<<< HEAD
-		return -EINVAL;
-=======
 		err = -EINVAL;
 		goto _return_dev_put;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	err = devm_request_resource(dev, fman_get_mem_region(priv->fman),
 				    mac_dev->res);
 	if (err) {
 		dev_err_probe(dev, err, "could not request resource\n");
-<<<<<<< HEAD
-		return err;
-=======
 		goto _return_dev_put;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mac_dev->vaddr = devm_ioremap(dev, mac_dev->res->start,
 				      resource_size(mac_dev->res));
 	if (!mac_dev->vaddr) {
 		dev_err(dev, "devm_ioremap() failed\n");
-<<<<<<< HEAD
-		return -EIO;
-	}
-
-	if (!of_device_is_available(mac_node))
-		return -ENODEV;
-=======
 		err = -EIO;
 		goto _return_dev_put;
 	}
@@ -284,18 +251,13 @@ static int mac_probe(struct platform_device *_of_dev)
 		err = -ENODEV;
 		goto _return_dev_put;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Get the cell-index */
 	err = of_property_read_u32(mac_node, "cell-index", &val);
 	if (err) {
 		dev_err(dev, "failed to read cell-index for %pOF\n", mac_node);
-<<<<<<< HEAD
-		return -EINVAL;
-=======
 		err = -EINVAL;
 		goto _return_dev_put;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	priv->cell_index = (u8)val;
 
@@ -309,41 +271,26 @@ static int mac_probe(struct platform_device *_of_dev)
 	if (unlikely(nph < 0)) {
 		dev_err(dev, "of_count_phandle_with_args(%pOF, fsl,fman-ports) failed\n",
 			mac_node);
-<<<<<<< HEAD
-		return nph;
-=======
 		err = nph;
 		goto _return_dev_put;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (nph != ARRAY_SIZE(mac_dev->port)) {
 		dev_err(dev, "Not supported number of fman-ports handles of mac node %pOF from device tree\n",
 			mac_node);
-<<<<<<< HEAD
-		return -EINVAL;
-	}
-
-	for (i = 0; i < ARRAY_SIZE(mac_dev->port); i++) {
-=======
 		err = -EINVAL;
 		goto _return_dev_put;
 	}
 
 	/* PORT_NUM determines the size of the port array */
 	for (i = 0; i < PORT_NUM; i++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Find the port node */
 		dev_node = of_parse_phandle(mac_node, "fsl,fman-ports", i);
 		if (!dev_node) {
 			dev_err(dev, "of_parse_phandle(%pOF, fsl,fman-ports) failed\n",
 				mac_node);
-<<<<<<< HEAD
-			return -EINVAL;
-=======
 			err = -EINVAL;
 			goto _return_dev_arr_put;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		of_dev = of_find_device_by_node(dev_node);
@@ -351,27 +298,15 @@ static int mac_probe(struct platform_device *_of_dev)
 			dev_err(dev, "of_find_device_by_node(%pOF) failed\n",
 				dev_node);
 			err = -EINVAL;
-<<<<<<< HEAD
-			goto _return_of_node_put;
-		}
-
-		mac_dev->port[i] = fman_port_bind(&of_dev->dev);
-=======
 			goto _return_dev_arr_put;
 		}
 		mac_dev->fman_port_devs[i] = &of_dev->dev;
 
 		mac_dev->port[i] = fman_port_bind(mac_dev->fman_port_devs[i]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!mac_dev->port[i]) {
 			dev_err(dev, "dev_get_drvdata(%pOF) failed\n",
 				dev_node);
 			err = -EINVAL;
-<<<<<<< HEAD
-			goto _return_of_node_put;
-		}
-		of_node_put(dev_node);
-=======
 			goto _return_dev_arr_put;
 		}
 		/* Two references have been taken in of_find_device_by_node()
@@ -381,7 +316,6 @@ static int mac_probe(struct platform_device *_of_dev)
 		put_device(mac_dev->fman_port_devs[i]);
 		of_node_put(dev_node);
 		dev_node = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Get the PHY connection type */
@@ -401,11 +335,7 @@ static int mac_probe(struct platform_device *_of_dev)
 
 	err = init(mac_dev, mac_node, &params);
 	if (err < 0)
-<<<<<<< HEAD
-		return err;
-=======
 		goto _return_dev_arr_put;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!is_zero_ether_addr(mac_dev->addr))
 		dev_info(dev, "FMan MAC address: %pM\n", mac_dev->addr);
@@ -420,15 +350,12 @@ static int mac_probe(struct platform_device *_of_dev)
 
 	return err;
 
-<<<<<<< HEAD
-=======
 _return_dev_arr_put:
 	/* mac_dev is kzalloc'ed */
 	for (i = 0; i < PORT_NUM; i++)
 		put_device(mac_dev->fman_port_devs[i]);
 _return_dev_put:
 	put_device(mac_dev->fman_dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 _return_of_node_put:
 	of_node_put(dev_node);
 	return err;
@@ -437,14 +364,11 @@ _return_of_node_put:
 static void mac_remove(struct platform_device *pdev)
 {
 	struct mac_device *mac_dev = platform_get_drvdata(pdev);
-<<<<<<< HEAD
-=======
 	int		   i;
 
 	for (i = 0; i < PORT_NUM; i++)
 		put_device(mac_dev->fman_port_devs[i]);
 	put_device(mac_dev->fman_dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	platform_device_unregister(mac_dev->priv->eth_dev);
 }

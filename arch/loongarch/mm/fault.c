@@ -31,8 +31,6 @@
 
 int show_unhandled_signals = 1;
 
-<<<<<<< HEAD
-=======
 static int __kprobes spurious_fault(unsigned long write, unsigned long address)
 {
 	pgd_t *pgd;
@@ -71,18 +69,14 @@ static int __kprobes spurious_fault(unsigned long write, unsigned long address)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __kprobes no_context(struct pt_regs *regs,
 			unsigned long write, unsigned long address)
 {
 	const int field = sizeof(unsigned long) * 2;
 
-<<<<<<< HEAD
-=======
 	if (spurious_fault(write, address))
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Are we prepared to handle this kernel fault?	 */
 	if (fixup_exception(regs))
 		return;

@@ -254,10 +254,6 @@ struct pn533_acr122_ccid_hdr {
 	 * byte for reposnse msg
 	 */
 	u8 params[3];
-<<<<<<< HEAD
-	u8 data[]; /* payload */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } __packed;
 
 struct pn533_acr122_apdu_hdr {

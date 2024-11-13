@@ -386,11 +386,7 @@ static struct platform_driver rockchip_pwm_driver = {
 		.of_match_table = rockchip_pwm_dt_ids,
 	},
 	.probe = rockchip_pwm_probe,
-<<<<<<< HEAD
-	.remove_new = rockchip_pwm_remove,
-=======
 	.remove = rockchip_pwm_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(rockchip_pwm_driver);
 

@@ -26,10 +26,7 @@ select:
           - rockchip,rk3368-pmu
           - rockchip,rk3399-pmu
           - rockchip,rk3568-pmu
-<<<<<<< HEAD
-=======
           - rockchip,rk3576-pmu
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - rockchip,rk3588-pmu
           - rockchip,rv1126-pmu
 
@@ -47,10 +44,7 @@ properties:
           - rockchip,rk3368-pmu
           - rockchip,rk3399-pmu
           - rockchip,rk3568-pmu
-<<<<<<< HEAD
-=======
           - rockchip,rk3576-pmu
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - rockchip,rk3588-pmu
           - rockchip,rv1126-pmu
       - const: syscon

@@ -17,10 +17,7 @@
 
 #include "exports_core_generated.h"
 #include "exports_alloc_generated.h"
-<<<<<<< HEAD
-=======
 #include "exports_helpers_generated.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "exports_bindings_generated.h"
 #include "exports_kernel_generated.h"
 

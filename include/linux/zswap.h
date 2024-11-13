@@ -13,19 +13,6 @@ extern atomic_t zswap_stored_pages;
 
 struct zswap_lruvec_state {
 	/*
-<<<<<<< HEAD
-	 * Number of pages in zswap that should be protected from the shrinker.
-	 * This number is an estimate of the following counts:
-	 *
-	 * a) Recent page faults.
-	 * b) Recent insertion to the zswap LRU. This includes new zswap stores,
-	 *    as well as recent zswap LRU rotations.
-	 *
-	 * These pages are likely to be warm, and might incur IO if the are written
-	 * to swap.
-	 */
-	atomic_long_t nr_zswap_protected;
-=======
 	 * Number of swapped in pages from disk, i.e not found in the zswap pool.
 	 *
 	 * This is consumed and subtracted from the lru size in
@@ -35,7 +22,6 @@ struct zswap_lruvec_state {
 	 * swapped them in.
 	 */
 	atomic_long_t nr_disk_swapins;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 unsigned long zswap_total_pages(void);

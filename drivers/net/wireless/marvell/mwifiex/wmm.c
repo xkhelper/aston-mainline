@@ -454,11 +454,6 @@ int mwifiex_bypass_txlist_empty(struct mwifiex_adapter *adapter)
 
 	for (i = 0; i < adapter->priv_num; i++) {
 		priv = adapter->priv[i];
-<<<<<<< HEAD
-		if (!priv)
-			continue;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (adapter->if_ops.is_port_ready &&
 		    !adapter->if_ops.is_port_ready(priv))
 			continue;
@@ -480,11 +475,6 @@ mwifiex_wmm_lists_empty(struct mwifiex_adapter *adapter)
 
 	for (i = 0; i < adapter->priv_num; ++i) {
 		priv = adapter->priv[i];
-<<<<<<< HEAD
-		if (!priv)
-			continue;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!priv->port_open &&
 		    (priv->bss_mode != NL80211_IFTYPE_ADHOC))
 			continue;
@@ -1497,12 +1487,6 @@ void mwifiex_process_bypass_tx(struct mwifiex_adapter *adapter)
 	for (i = 0; i < adapter->priv_num; ++i) {
 		priv = adapter->priv[i];
 
-<<<<<<< HEAD
-		if (!priv)
-			continue;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (adapter->if_ops.is_port_ready &&
 		    !adapter->if_ops.is_port_ready(priv))
 			continue;

@@ -932,11 +932,7 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
 	}
 	if (rc >= 0) {
 		old_cat = skp->smk_netlabel.attr.mls.cat;
-<<<<<<< HEAD
-		skp->smk_netlabel.attr.mls.cat = ncats.attr.mls.cat;
-=======
 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
 		synchronize_rcu();
 		netlbl_catmap_free(old_cat);

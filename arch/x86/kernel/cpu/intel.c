@@ -311,18 +311,6 @@ static void early_init_intel(struct cpuinfo_x86 *c)
 	}
 
 	/*
-<<<<<<< HEAD
-	 * There is a known erratum on Pentium III and Core Solo
-	 * and Core Duo CPUs.
-	 * " Page with PAT set to WC while associated MTRR is UC
-	 *   may consolidate to UC "
-	 * Because of this erratum, it is better to stick with
-	 * setting WC in MTRR rather than using PAT on these CPUs.
-	 *
-	 * Enable PAT WC only on P4, Core 2 or later CPUs.
-	 */
-	if (c->x86 == 6 && c->x86_model < 15)
-=======
 	 * PAT is broken on early family 6 CPUs, the last of which
 	 * is "Yonah" where the erratum is named "AN7":
 	 *
@@ -335,7 +323,6 @@ static void early_init_intel(struct cpuinfo_x86 *c)
 	 */
 	if (c->x86_vfm >= INTEL_PENTIUM_PRO &&
 	    c->x86_vfm <= INTEL_CORE_YONAH)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		clear_cpu_cap(c, X86_FEATURE_PAT);
 
 	/*

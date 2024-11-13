@@ -16,19 +16,11 @@
 
 #include "hid-uclogic-rdesc.h"
 #include <linux/slab.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-#include <kunit/visibility.h>
-
-/* Fixed WP4030U report descriptor */
-__u8 uclogic_rdesc_wp4030u_fixed_arr[] = {
-=======
 #include <linux/unaligned.h>
 #include <kunit/visibility.h>
 
 /* Fixed WP4030U report descriptor */
 const __u8 uclogic_rdesc_wp4030u_fixed_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x0D,         /*  Usage Page (Digitizer),             */
 	0x09, 0x01,         /*  Usage (Digitizer),                  */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -73,11 +65,7 @@ const size_t uclogic_rdesc_wp4030u_fixed_size =
 			sizeof(uclogic_rdesc_wp4030u_fixed_arr);
 
 /* Fixed WP5540U report descriptor */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_wp5540u_fixed_arr[] = {
-=======
 const __u8 uclogic_rdesc_wp5540u_fixed_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x0D,         /*  Usage Page (Digitizer),             */
 	0x09, 0x01,         /*  Usage (Digitizer),                  */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -154,11 +142,7 @@ const size_t uclogic_rdesc_wp5540u_fixed_size =
 			sizeof(uclogic_rdesc_wp5540u_fixed_arr);
 
 /* Fixed WP8060U report descriptor */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_wp8060u_fixed_arr[] = {
-=======
 const __u8 uclogic_rdesc_wp8060u_fixed_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x0D,         /*  Usage Page (Digitizer),             */
 	0x09, 0x01,         /*  Usage (Digitizer),                  */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -235,11 +219,7 @@ const size_t uclogic_rdesc_wp8060u_fixed_size =
 			sizeof(uclogic_rdesc_wp8060u_fixed_arr);
 
 /* Fixed WP1062 report descriptor */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_wp1062_fixed_arr[] = {
-=======
 const __u8 uclogic_rdesc_wp1062_fixed_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x0D,         /*  Usage Page (Digitizer),             */
 	0x09, 0x01,         /*  Usage (Digitizer),                  */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -287,11 +267,7 @@ const size_t uclogic_rdesc_wp1062_fixed_size =
 			sizeof(uclogic_rdesc_wp1062_fixed_arr);
 
 /* Fixed PF1209 report descriptor */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_pf1209_fixed_arr[] = {
-=======
 const __u8 uclogic_rdesc_pf1209_fixed_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x0D,         /*  Usage Page (Digitizer),             */
 	0x09, 0x01,         /*  Usage (Digitizer),                  */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -368,11 +344,7 @@ const size_t uclogic_rdesc_pf1209_fixed_size =
 			sizeof(uclogic_rdesc_pf1209_fixed_arr);
 
 /* Fixed PID 0522 tablet report descriptor, interface 0 (stylus) */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_twhl850_fixed0_arr[] = {
-=======
 const __u8 uclogic_rdesc_twhl850_fixed0_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x0D,         /*  Usage Page (Digitizer),             */
 	0x09, 0x01,         /*  Usage (Digitizer),                  */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -418,11 +390,7 @@ const size_t uclogic_rdesc_twhl850_fixed0_size =
 			sizeof(uclogic_rdesc_twhl850_fixed0_arr);
 
 /* Fixed PID 0522 tablet report descriptor, interface 1 (mouse) */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_twhl850_fixed1_arr[] = {
-=======
 const __u8 uclogic_rdesc_twhl850_fixed1_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x01,         /*  Usage Page (Desktop),               */
 	0x09, 0x02,         /*  Usage (Mouse),                      */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -462,11 +430,7 @@ const size_t uclogic_rdesc_twhl850_fixed1_size =
 			sizeof(uclogic_rdesc_twhl850_fixed1_arr);
 
 /* Fixed PID 0522 tablet report descriptor, interface 2 (frame buttons) */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_twhl850_fixed2_arr[] = {
-=======
 const __u8 uclogic_rdesc_twhl850_fixed2_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x01,         /*  Usage Page (Desktop),               */
 	0x09, 0x06,         /*  Usage (Keyboard),                   */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -492,11 +456,7 @@ const size_t uclogic_rdesc_twhl850_fixed2_size =
 			sizeof(uclogic_rdesc_twhl850_fixed2_arr);
 
 /* Fixed TWHA60 report descriptor, interface 0 (stylus) */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_twha60_fixed0_arr[] = {
-=======
 const __u8 uclogic_rdesc_twha60_fixed0_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x0D,         /*  Usage Page (Digitizer),             */
 	0x09, 0x01,         /*  Usage (Digitizer),                  */
 	0xA1, 0x01,         /*  Collection (Application),           */
@@ -545,11 +505,7 @@ const size_t uclogic_rdesc_twha60_fixed0_size =
 			sizeof(uclogic_rdesc_twha60_fixed0_arr);
 
 /* Fixed TWHA60 report descriptor, interface 1 (frame buttons) */
-<<<<<<< HEAD
-__u8 uclogic_rdesc_twha60_fixed1_arr[] = {
-=======
 const __u8 uclogic_rdesc_twha60_fixed1_arr[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	0x05, 0x01, /*  Usage Page (Desktop),       */
 	0x09, 0x06, /*  Usage (Keyboard),           */
 	0xA1, 0x01, /*  Collection (Application),   */

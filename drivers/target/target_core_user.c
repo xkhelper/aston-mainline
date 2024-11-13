@@ -2130,11 +2130,7 @@ static int tcmu_netlink_event_send(struct tcmu_dev *udev,
 	}
 
 	ret = genlmsg_multicast_allns(&tcmu_genl_family, skb, 0,
-<<<<<<< HEAD
-				      TCMU_MCGRP_CONFIG, GFP_KERNEL);
-=======
 				      TCMU_MCGRP_CONFIG);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Wait during an add as the listener may not be up yet */
 	if (ret == 0 ||

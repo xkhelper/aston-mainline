@@ -246,10 +246,7 @@
 		 * 1 - Stream
 		 * 2 - Bypass
 		 */
-<<<<<<< HEAD
-=======
 #define		EOP_EXEC				(1 << 28) /* For Trailing Fence */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define		DATA_SEL(x)                             ((x) << 29)
 		/* 0 - discard
 		 * 1 - send low 32bit data

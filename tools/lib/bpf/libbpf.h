@@ -152,11 +152,7 @@ struct bpf_object_open_opts {
 	 * log_buf and log_level settings.
 	 *
 	 * If specified, this log buffer will be passed for:
-<<<<<<< HEAD
-	 *   - each BPF progral load (BPF_PROG_LOAD) attempt, unless overriden
-=======
 	 *   - each BPF progral load (BPF_PROG_LOAD) attempt, unless overridden
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 *     with bpf_program__set_log() on per-program level, to get
 	 *     BPF verifier log output.
 	 *   - during BPF object's BTF load into kernel (BPF_BTF_LOAD) to get
@@ -298,8 +294,6 @@ LIBBPF_API const char *bpf_object__name(const struct bpf_object *obj);
 LIBBPF_API unsigned int bpf_object__kversion(const struct bpf_object *obj);
 LIBBPF_API int bpf_object__set_kversion(struct bpf_object *obj, __u32 kern_version);
 
-<<<<<<< HEAD
-=======
 /**
  * @brief **bpf_object__token_fd** is an accessor for BPF token FD associated
  * with BPF object.
@@ -308,7 +302,6 @@ LIBBPF_API int bpf_object__set_kversion(struct bpf_object *obj, __u32 kern_versi
  */
 LIBBPF_API int bpf_object__token_fd(const struct bpf_object *obj);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct btf;
 LIBBPF_API struct btf *bpf_object__btf(const struct bpf_object *obj);
 LIBBPF_API int bpf_object__btf_fd(const struct bpf_object *obj);
@@ -470,11 +463,7 @@ LIBBPF_API int bpf_link__destroy(struct bpf_link *link);
 /**
  * @brief **bpf_program__attach()** is a generic function for attaching
  * a BPF program based on auto-detection of program type, attach type,
-<<<<<<< HEAD
- * and extra paremeters, where applicable.
-=======
  * and extra parameters, where applicable.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * @param prog BPF program to attach
  * @return Reference to the newly created BPF link; or NULL is returned on error,
@@ -698,11 +687,7 @@ struct bpf_uprobe_opts {
 /**
  * @brief **bpf_program__attach_uprobe()** attaches a BPF program
  * to the userspace function which is found by binary path and
-<<<<<<< HEAD
- * offset. You can optionally specify a particular proccess to attach
-=======
  * offset. You can optionally specify a particular process to attach
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * to. You can also optionally attach the program to the function
  * exit instead of entry.
  *
@@ -1616,19 +1601,11 @@ LIBBPF_API int perf_buffer__buffer_fd(const struct perf_buffer *pb, size_t buf_i
  * memory region of the ring buffer.
  * This ring buffer can be used to implement a custom events consumer.
  * The ring buffer starts with the *struct perf_event_mmap_page*, which
-<<<<<<< HEAD
- * holds the ring buffer managment fields, when accessing the header
- * structure it's important to be SMP aware.
- * You can refer to *perf_event_read_simple* for a simple example.
- * @param pb the perf buffer structure
- * @param buf_idx the buffer index to retreive
-=======
  * holds the ring buffer management fields, when accessing the header
  * structure it's important to be SMP aware.
  * You can refer to *perf_event_read_simple* for a simple example.
  * @param pb the perf buffer structure
  * @param buf_idx the buffer index to retrieve
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @param buf (out) gets the base pointer of the mmap()'ed memory
  * @param buf_size (out) gets the size of the mmap()'ed region
  * @return 0 on success, negative error code for failure

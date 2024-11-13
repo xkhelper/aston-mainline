@@ -29,11 +29,7 @@ NET COMMANDS
 | **bpftool** **net help**
 |
 | *PROG* := { **id** *PROG_ID* | **pinned** *FILE* | **tag** *PROG_TAG* | **name** *PROG_NAME* }
-<<<<<<< HEAD
-| *ATTACH_TYPE* := { **xdp** | **xdpgeneric** | **xdpdrv** | **xdpoffload** }
-=======
 | *ATTACH_TYPE* := { **xdp** | **xdpgeneric** | **xdpdrv** | **xdpoffload** | **tcx_ingress** | **tcx_egress** }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 DESCRIPTION
 ===========
@@ -73,11 +69,8 @@ bpftool net attach *ATTACH_TYPE* *PROG* dev *NAME* [ overwrite ]
     **xdpgeneric** - Generic XDP. runs at generic XDP hook when packet already enters receive path as skb;
     **xdpdrv** - Native XDP. runs earliest point in driver's receive path;
     **xdpoffload** - Offload XDP. runs directly on NIC on each packet reception;
-<<<<<<< HEAD
-=======
     **tcx_ingress** - Ingress TCX. runs on ingress net traffic;
     **tcx_egress** - Egress TCX. runs on egress net traffic;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 bpftool net detach *ATTACH_TYPE* dev *NAME*
     Detach bpf program attached to network interface *NAME* with type specified
@@ -187,8 +180,6 @@ EXAMPLES
 ::
 
       xdp:
-<<<<<<< HEAD
-=======
 
 |
 | **# bpftool net attach tcx_ingress name tc_prog dev lo**
@@ -209,4 +200,3 @@ EXAMPLES
 ::
 
       tc:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -11,10 +11,7 @@
 #include <linux/err.h>
 #include <linux/gpio/consumer.h>
 #include <linux/init.h>
-<<<<<<< HEAD
-=======
 #include <linux/i2c.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/kernel.h>
 #include <linux/list.h>
 #include <linux/module.h>
@@ -33,8 +30,6 @@
 
 #include "onboard_usb_dev.h"
 
-<<<<<<< HEAD
-=======
 /* USB5744 register offset and mask */
 #define USB5744_CMD_ATTACH			0xAA
 #define USB5744_CMD_ATTACH_LSB			0x56
@@ -46,7 +41,6 @@
 #define USB5744_CREG_RUNTIMEFLAGS2_LSB		0x1D
 #define USB5744_CREG_BYPASS_UDC_SUSPEND		BIT(3)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void onboard_dev_attach_usb_driver(struct work_struct *work);
 
 static struct usb_device_driver onboard_dev_usbdev_driver;
@@ -116,10 +110,7 @@ static int onboard_dev_power_on(struct onboard_dev *onboard_dev)
 
 	fsleep(onboard_dev->pdata->reset_us);
 	gpiod_set_value_cansleep(onboard_dev->reset_gpio, 0);
-<<<<<<< HEAD
-=======
 	fsleep(onboard_dev->pdata->power_on_delay_us);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	onboard_dev->is_powered_on = true;
 
@@ -318,8 +309,6 @@ static void onboard_dev_attach_usb_driver(struct work_struct *work)
 		pr_err("Failed to attach USB driver: %pe\n", ERR_PTR(err));
 }
 
-<<<<<<< HEAD
-=======
 static int onboard_dev_5744_i2c_init(struct i2c_client *client)
 {
 #if IS_ENABLED(CONFIG_USB_ONBOARD_DEV_USB5744)
@@ -359,15 +348,11 @@ static int onboard_dev_5744_i2c_init(struct i2c_client *client)
 #endif
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int onboard_dev_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct onboard_dev *onboard_dev;
-<<<<<<< HEAD
-=======
 	struct device_node *i2c_node;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	onboard_dev = devm_kzalloc(dev, sizeof(*onboard_dev), GFP_KERNEL);
@@ -407,8 +392,6 @@ static int onboard_dev_probe(struct platform_device *pdev)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
-=======
 	i2c_node = of_parse_phandle(pdev->dev.of_node, "i2c-bus", 0);
 	if (i2c_node) {
 		struct i2c_client *client = NULL;
@@ -432,7 +415,6 @@ static int onboard_dev_probe(struct platform_device *pdev)
 			goto err_power_off;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The USB driver might have been detached from the USB devices by
 	 * onboard_dev_remove() (e.g. through an 'unbind' by userspace),
@@ -444,13 +426,10 @@ static int onboard_dev_probe(struct platform_device *pdev)
 	schedule_work(&attach_usb_driver_work);
 
 	return 0;
-<<<<<<< HEAD
-=======
 
 err_power_off:
 	onboard_dev_power_off(onboard_dev);
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void onboard_dev_remove(struct platform_device *pdev)

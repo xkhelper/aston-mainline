@@ -13,11 +13,6 @@ The device accepts RGB and HSB color values through separate commands.
 Also you can store blinking sequences as "scripts" in
 the controller and run them. Also fading is an option.
 
-<<<<<<< HEAD
-The interface this driver provides is 2-fold:
-
-a) LED class interface for use with triggers
-=======
 The interface this driver provides is 3-fold:
 
 a) LED multicolor class interface for use with triggers
@@ -43,7 +38,6 @@ The overall lightness be changed by writing a value between 0 and 255 to the
 brightness file.
 
 b) LED class interface for use with triggers
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ############################################
 
 The registration follows the scheme::
@@ -107,13 +101,7 @@ E.g.::
 
 
 
-<<<<<<< HEAD
-as of 6/2012
-
-dl9pf <at> gmx <dot> de
-=======
 as of 07/2024
 
 dl9pf <at> gmx <dot> de
 jstrauss <at> mailbox <dot> org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -819,8 +819,6 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
 		rule_info.sw_act.flag |= ICE_FLTR_TX;
 		rule_info.sw_act.src = vsi->idx;
 		rule_info.flags_info.act = ICE_SINGLE_ACT_LAN_ENABLE;
-<<<<<<< HEAD
-=======
 		/* This is a specific case. The destination VSI index is
 		 * overwritten by the source VSI index. This type of filter
 		 * should allow the packet to go to the LAN, not to the
@@ -832,7 +830,6 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
 		 * turned off.
 		 */
 		rule_info.sw_act.vsi_handle = vsi->idx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		/* VF to VF */
 		rule_info.sw_act.flag |= ICE_FLTR_TX;

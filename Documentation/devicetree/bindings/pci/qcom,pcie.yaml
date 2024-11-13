@@ -91,12 +91,9 @@ properties:
   vdda_refclk-supply:
     description: A phandle to the core analog power supply for IC which generates reference clock
 
-<<<<<<< HEAD
-=======
   vddpe-3v3-supply:
     description: A phandle to the PCIe endpoint power supply
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   phys:
     maxItems: 1
 

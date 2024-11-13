@@ -287,10 +287,7 @@
 	EM(rxrpc_call_see_input,		"SEE input   ") \
 	EM(rxrpc_call_see_release,		"SEE release ") \
 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
-<<<<<<< HEAD
-=======
 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	E_(rxrpc_call_see_zap,			"SEE zap     ")
 
 #define rxrpc_txqueue_traces \

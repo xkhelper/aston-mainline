@@ -6,10 +6,7 @@
 #include <linux/kvm_host.h>
 #include <linux/entry-kvm.h>
 #include <asm/fpu.h>
-<<<<<<< HEAD
-=======
 #include <asm/lbt.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/loongarch.h>
 #include <asm/setup.h>
 #include <asm/time.h>
@@ -35,8 +32,6 @@ const struct kvm_stats_header kvm_vcpu_stats_header = {
 		       sizeof(kvm_vcpu_stats_desc),
 };
 
-<<<<<<< HEAD
-=======
 static inline void kvm_save_host_pmu(struct kvm_vcpu *vcpu)
 {
 	struct kvm_context *context;
@@ -157,7 +152,6 @@ static void kvm_check_pmu(struct kvm_vcpu *vcpu)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
 {
 	u32 version;
@@ -285,10 +279,7 @@ static int kvm_pre_enter_guest(struct kvm_vcpu *vcpu)
 		/* Make sure the vcpu mode has been written */
 		smp_store_mb(vcpu->mode, IN_GUEST_MODE);
 		kvm_check_vpid(vcpu);
-<<<<<<< HEAD
-=======
 		kvm_check_pmu(vcpu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Called after function kvm_check_vpid()
@@ -326,11 +317,8 @@ static int kvm_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
 	/* Set a default exit reason */
 	run->exit_reason = KVM_EXIT_UNKNOWN;
 
-<<<<<<< HEAD
-=======
 	kvm_lose_pmu(vcpu);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	guest_timing_exit_irqoff();
 	guest_state_exit_irqoff();
 	local_irq_enable();
@@ -604,8 +592,6 @@ static int _kvm_setcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 val)
 
 	kvm_write_sw_gcsr(csr, id, val);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * After modifying the PMU CSR register value of the vcpu.
 	 * If the PMU CSRs are used, we need to set KVM_REQ_PMU.
@@ -622,7 +608,6 @@ static int _kvm_setcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 val)
 			kvm_make_request(KVM_REQ_PMU, vcpu);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -652,15 +637,12 @@ static int _kvm_get_cpucfg_mask(int id, u64 *v)
 			*v |= CPUCFG2_LSX;
 		if (cpu_has_lasx)
 			*v |= CPUCFG2_LASX;
-<<<<<<< HEAD
-=======
 		if (cpu_has_lbt_x86)
 			*v |= CPUCFG2_X86BT;
 		if (cpu_has_lbt_arm)
 			*v |= CPUCFG2_ARMBT;
 		if (cpu_has_lbt_mips)
 			*v |= CPUCFG2_MIPSBT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return 0;
 	case LOONGARCH_CPUCFG3:
@@ -670,15 +652,12 @@ static int _kvm_get_cpucfg_mask(int id, u64 *v)
 	case LOONGARCH_CPUCFG5:
 		*v = GENMASK(31, 0);
 		return 0;
-<<<<<<< HEAD
-=======
 	case LOONGARCH_CPUCFG6:
 		if (cpu_has_pmp)
 			*v = GENMASK(14, 0);
 		else
 			*v = 0;
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case LOONGARCH_CPUCFG16:
 		*v = GENMASK(16, 0);
 		return 0;
@@ -723,8 +702,6 @@ static int kvm_check_cpucfg(int id, u64 val)
 			/* LASX architecturally implies LSX and FP but val does not satisfy that */
 			return -EINVAL;
 		return 0;
-<<<<<<< HEAD
-=======
 	case LOONGARCH_CPUCFG6:
 		if (val & CPUCFG6_PMP) {
 			u32 host = read_cpucfg(LOONGARCH_CPUCFG6);
@@ -736,7 +713,6 @@ static int kvm_check_cpucfg(int id, u64 val)
 				return -EINVAL;
 		}
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		/*
 		 * Values for the other CPUCFG IDs are not being further validated
@@ -764,8 +740,6 @@ static int kvm_get_one_reg(struct kvm_vcpu *vcpu,
 		else
 			ret = -EINVAL;
 		break;
-<<<<<<< HEAD
-=======
 	case KVM_REG_LOONGARCH_LBT:
 		if (!kvm_guest_has_lbt(&vcpu->arch))
 			return -ENXIO;
@@ -794,7 +768,6 @@ static int kvm_get_one_reg(struct kvm_vcpu *vcpu,
 			break;
 		}
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case KVM_REG_LOONGARCH_KVM:
 		switch (reg->id) {
 		case KVM_REG_LOONGARCH_COUNTER:
@@ -853,8 +826,6 @@ static int kvm_set_one_reg(struct kvm_vcpu *vcpu,
 		if (ret)
 			break;
 		vcpu->arch.cpucfg[id] = (u32)v;
-<<<<<<< HEAD
-=======
 		if (id == LOONGARCH_CPUCFG6)
 			vcpu->arch.max_pmu_csrid =
 				LOONGARCH_CSR_PERFCTRL0 + 2 * kvm_get_pmu_num(&vcpu->arch) + 1;
@@ -886,7 +857,6 @@ static int kvm_set_one_reg(struct kvm_vcpu *vcpu,
 			ret = -EINVAL;
 			break;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case KVM_REG_LOONGARCH_KVM:
 		switch (reg->id) {
@@ -980,14 +950,10 @@ static int kvm_loongarch_cpucfg_has_attr(struct kvm_vcpu *vcpu,
 					 struct kvm_device_attr *attr)
 {
 	switch (attr->attr) {
-<<<<<<< HEAD
-	case 2:
-=======
 	case LOONGARCH_CPUCFG2:
 	case LOONGARCH_CPUCFG6:
 		return 0;
 	case CPUCFG_KVM_FEATURE:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	default:
 		return -ENXIO;
@@ -999,13 +965,8 @@ static int kvm_loongarch_cpucfg_has_attr(struct kvm_vcpu *vcpu,
 static int kvm_loongarch_pvtime_has_attr(struct kvm_vcpu *vcpu,
 					 struct kvm_device_attr *attr)
 {
-<<<<<<< HEAD
-	if (!kvm_pvtime_supported() ||
-			attr->attr != KVM_LOONGARCH_VCPU_PVTIME_GPA)
-=======
 	if (!kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_STEAL_TIME)
 			|| attr->attr != KVM_LOONGARCH_VCPU_PVTIME_GPA)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENXIO;
 
 	return 0;
@@ -1037,11 +998,6 @@ static int kvm_loongarch_cpucfg_get_attr(struct kvm_vcpu *vcpu,
 	uint64_t val;
 	uint64_t __user *uaddr = (uint64_t __user *)attr->addr;
 
-<<<<<<< HEAD
-	ret = _kvm_get_cpucfg_mask(attr->attr, &val);
-	if (ret)
-		return ret;
-=======
 	switch (attr->attr) {
 	case 0 ... (KVM_MAX_CPUCFG_REGS - 1):
 		ret = _kvm_get_cpucfg_mask(attr->attr, &val);
@@ -1054,7 +1010,6 @@ static int kvm_loongarch_cpucfg_get_attr(struct kvm_vcpu *vcpu,
 	default:
 		return -ENXIO;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	put_user(val, uaddr);
 
@@ -1067,13 +1022,8 @@ static int kvm_loongarch_pvtime_get_attr(struct kvm_vcpu *vcpu,
 	u64 gpa;
 	u64 __user *user = (u64 __user *)attr->addr;
 
-<<<<<<< HEAD
-	if (!kvm_pvtime_supported() ||
-			attr->attr != KVM_LOONGARCH_VCPU_PVTIME_GPA)
-=======
 	if (!kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_STEAL_TIME)
 			|| attr->attr != KVM_LOONGARCH_VCPU_PVTIME_GPA)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENXIO;
 
 	gpa = vcpu->arch.st.guest_addr;
@@ -1105,9 +1055,6 @@ static int kvm_loongarch_vcpu_get_attr(struct kvm_vcpu *vcpu,
 static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
 					 struct kvm_device_attr *attr)
 {
-<<<<<<< HEAD
-	return -ENXIO;
-=======
 	u64 val, valid;
 	u64 __user *user = (u64 __user *)attr->addr;
 	struct kvm *kvm = vcpu->kvm;
@@ -1130,7 +1077,6 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
 	default:
 		return -ENXIO;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int kvm_loongarch_pvtime_set_attr(struct kvm_vcpu *vcpu,
@@ -1140,13 +1086,8 @@ static int kvm_loongarch_pvtime_set_attr(struct kvm_vcpu *vcpu,
 	u64 gpa, __user *user = (u64 __user *)attr->addr;
 	struct kvm *kvm = vcpu->kvm;
 
-<<<<<<< HEAD
-	if (!kvm_pvtime_supported() ||
-			attr->attr != KVM_LOONGARCH_VCPU_PVTIME_GPA)
-=======
 	if (!kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_STEAL_TIME)
 			|| attr->attr != KVM_LOONGARCH_VCPU_PVTIME_GPA)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENXIO;
 
 	if (get_user(gpa, user))
@@ -1291,8 +1232,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CPU_HAS_LBT
 int kvm_own_lbt(struct kvm_vcpu *vcpu)
 {
@@ -1343,21 +1282,16 @@ static inline void kvm_check_fcsr(struct kvm_vcpu *vcpu, unsigned long fcsr) { }
 static inline void kvm_check_fcsr_alive(struct kvm_vcpu *vcpu) { }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Enable FPU and restore context */
 void kvm_own_fpu(struct kvm_vcpu *vcpu)
 {
 	preempt_disable();
 
-<<<<<<< HEAD
-	/* Enable FPU */
-=======
 	/*
 	 * Enable FPU for guest
 	 * Set FR and FRE according to guest context
 	 */
 	kvm_check_fcsr(vcpu, vcpu->arch.fpu.fcsr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	set_csr_euen(CSR_EUEN_FPEN);
 
 	kvm_restore_fpu(&vcpu->arch.fpu);
@@ -1377,10 +1311,7 @@ int kvm_own_lsx(struct kvm_vcpu *vcpu)
 	preempt_disable();
 
 	/* Enable LSX for guest */
-<<<<<<< HEAD
-=======
 	kvm_check_fcsr(vcpu, vcpu->arch.fpu.fcsr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	set_csr_euen(CSR_EUEN_LSXEN | CSR_EUEN_FPEN);
 	switch (vcpu->arch.aux_inuse & KVM_LARCH_FPU) {
 	case KVM_LARCH_FPU:
@@ -1415,10 +1346,7 @@ int kvm_own_lasx(struct kvm_vcpu *vcpu)
 
 	preempt_disable();
 
-<<<<<<< HEAD
-=======
 	kvm_check_fcsr(vcpu, vcpu->arch.fpu.fcsr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	set_csr_euen(CSR_EUEN_FPEN | CSR_EUEN_LSXEN | CSR_EUEN_LASXEN);
 	switch (vcpu->arch.aux_inuse & (KVM_LARCH_FPU | KVM_LARCH_LSX)) {
 	case KVM_LARCH_LSX:
@@ -1450,10 +1378,7 @@ void kvm_lose_fpu(struct kvm_vcpu *vcpu)
 {
 	preempt_disable();
 
-<<<<<<< HEAD
-=======
 	kvm_check_fcsr_alive(vcpu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (vcpu->arch.aux_inuse & KVM_LARCH_LASX) {
 		kvm_save_lasx(&vcpu->arch.fpu);
 		vcpu->arch.aux_inuse &= ~(KVM_LARCH_LSX | KVM_LARCH_FPU | KVM_LARCH_LASX);
@@ -1476,10 +1401,7 @@ void kvm_lose_fpu(struct kvm_vcpu *vcpu)
 		/* Disable FPU */
 		clear_csr_euen(CSR_EUEN_FPEN);
 	}
-<<<<<<< HEAD
-=======
 	kvm_lose_lbt(vcpu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	preempt_enable();
 }
@@ -1535,11 +1457,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
 	vcpu->arch.vpid = 0;
 	vcpu->arch.flush_gpa = INVALID_GPA;
 
-<<<<<<< HEAD
-	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED);
-=======
 	hrtimer_init(&vcpu->arch.swtimer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vcpu->arch.swtimer.function = kvm_swtimer_wakeup;
 
 	vcpu->arch.handle_exit = kvm_handle_exit;
@@ -1630,12 +1548,9 @@ static int _kvm_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
 	change_csr_gcfg(CSR_GCFG_MATC_MASK, CSR_GCFG_MATC_ROOT);
 	kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
 
-<<<<<<< HEAD
-=======
 	/* Restore hardware PMU CSRs */
 	kvm_restore_pmu(vcpu);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Don't bother restoring registers multiple times unless necessary */
 	if (vcpu->arch.aux_inuse & KVM_LARCH_HWCSR_USABLE)
 		return 0;

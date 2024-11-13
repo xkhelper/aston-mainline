@@ -38,10 +38,7 @@ struct ib_umem_dmabuf {
 	unsigned long last_sg_trim;
 	void *private;
 	u8 pinned : 1;
-<<<<<<< HEAD
-=======
 	u8 revoked : 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline struct ib_umem_dmabuf *to_ib_umem_dmabuf(struct ib_umem *umem)
@@ -154,11 +151,6 @@ struct ib_umem_dmabuf *ib_umem_dmabuf_get_pinned(struct ib_device *device,
 						 unsigned long offset,
 						 size_t size, int fd,
 						 int access);
-<<<<<<< HEAD
-int ib_umem_dmabuf_map_pages(struct ib_umem_dmabuf *umem_dmabuf);
-void ib_umem_dmabuf_unmap_pages(struct ib_umem_dmabuf *umem_dmabuf);
-void ib_umem_dmabuf_release(struct ib_umem_dmabuf *umem_dmabuf);
-=======
 struct ib_umem_dmabuf *
 ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
 					  struct device *dma_device,
@@ -168,7 +160,6 @@ int ib_umem_dmabuf_map_pages(struct ib_umem_dmabuf *umem_dmabuf);
 void ib_umem_dmabuf_unmap_pages(struct ib_umem_dmabuf *umem_dmabuf);
 void ib_umem_dmabuf_release(struct ib_umem_dmabuf *umem_dmabuf);
 void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else /* CONFIG_INFINIBAND_USER_MEM */
 
@@ -212,8 +203,6 @@ ib_umem_dmabuf_get_pinned(struct ib_device *device, unsigned long offset,
 {
 	return ERR_PTR(-EOPNOTSUPP);
 }
-<<<<<<< HEAD
-=======
 
 static inline struct ib_umem_dmabuf *
 ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
@@ -224,17 +213,13 @@ ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
 	return ERR_PTR(-EOPNOTSUPP);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int ib_umem_dmabuf_map_pages(struct ib_umem_dmabuf *umem_dmabuf)
 {
 	return -EOPNOTSUPP;
 }
 static inline void ib_umem_dmabuf_unmap_pages(struct ib_umem_dmabuf *umem_dmabuf) { }
 static inline void ib_umem_dmabuf_release(struct ib_umem_dmabuf *umem_dmabuf) { }
-<<<<<<< HEAD
-=======
 static inline void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf) {}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* CONFIG_INFINIBAND_USER_MEM */
 #endif /* IB_UMEM_H */

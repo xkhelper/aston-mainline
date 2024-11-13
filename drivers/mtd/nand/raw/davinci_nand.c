@@ -20,10 +20,6 @@
 #include <linux/slab.h>
 #include <linux/of.h>
 
-<<<<<<< HEAD
-#include <linux/platform_data/mtd-davinci.h>
-#include <linux/platform_data/mtd-davinci-aemif.h>
-=======
 #define NRCSR_OFFSET		0x00
 #define NANDFCR_OFFSET		0x60
 #define NANDFSR_OFFSET		0x64
@@ -89,7 +85,6 @@ struct davinci_nand_pdata {
 	struct nand_bbt_descr	*bbt_td;
 	struct nand_bbt_descr	*bbt_md;
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * This is a device driver for the NAND flash controller found on the
@@ -122,11 +117,6 @@ struct davinci_nand_info {
 	uint32_t		mask_cle;
 
 	uint32_t		core_chipsel;
-<<<<<<< HEAD
-
-	struct davinci_aemif_timing	*timing;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static DEFINE_SPINLOCK(davinci_nand_lock);
@@ -846,10 +836,6 @@ static int nand_davinci_probe(struct platform_device *pdev)
 	info->chip.options	= pdata->options;
 	info->chip.bbt_td	= pdata->bbt_td;
 	info->chip.bbt_md	= pdata->bbt_md;
-<<<<<<< HEAD
-	info->timing		= pdata->timing;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	info->current_cs	= info->vaddr;
 	info->core_chipsel	= pdata->core_chipsel;

@@ -37,13 +37,7 @@ static int sk_fds[REUSEPORT_ARRAY_SIZE];
 static int reuseport_array = -1, outer_map = -1;
 static enum bpf_map_type inner_map_type;
 static int select_by_skb_data_prog;
-<<<<<<< HEAD
-static int saved_tcp_syncookie = -1;
 static struct bpf_object *obj;
-static int saved_tcp_fo = -1;
-=======
-static struct bpf_object *obj;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __u32 index_zero;
 static int epfd;
 
@@ -197,17 +191,6 @@ static int write_int_sysctl(const char *sysctl, int v)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void restore_sysctls(void)
-{
-	if (saved_tcp_fo != -1)
-		write_int_sysctl(TCP_FO_SYSCTL, saved_tcp_fo);
-	if (saved_tcp_syncookie != -1)
-		write_int_sysctl(TCP_SYNCOOKIE_SYSCTL, saved_tcp_syncookie);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int enable_fastopen(void)
 {
 	int fo;
@@ -800,10 +783,7 @@ static void test_config(int sotype, sa_family_t family, bool inany)
 		TEST_INIT(test_pass_on_err),
 		TEST_INIT(test_detach_bpf),
 	};
-<<<<<<< HEAD
-=======
 	struct netns_obj *netns;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char s[MAX_TEST_NAME];
 	const struct test *t;
 
@@ -819,11 +799,6 @@ static void test_config(int sotype, sa_family_t family, bool inany)
 		if (!test__start_subtest(s))
 			continue;
 
-<<<<<<< HEAD
-		setup_per_test(sotype, family, inany, t->no_inner_map);
-		t->fn(sotype, family);
-		cleanup_per_test(t->no_inner_map);
-=======
 		netns = netns_new("select_reuseport", true);
 		if (!ASSERT_OK_PTR(netns, "netns_new"))
 			continue;
@@ -839,7 +814,6 @@ static void test_config(int sotype, sa_family_t family, bool inany)
 
 out:
 		netns_free(netns);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -879,27 +853,7 @@ out:
 
 void serial_test_select_reuseport(void)
 {
-<<<<<<< HEAD
-	saved_tcp_fo = read_int_sysctl(TCP_FO_SYSCTL);
-	if (saved_tcp_fo < 0)
-		goto out;
-	saved_tcp_syncookie = read_int_sysctl(TCP_SYNCOOKIE_SYSCTL);
-	if (saved_tcp_syncookie < 0)
-		goto out;
-
-	if (enable_fastopen())
-		goto out;
-	if (disable_syncookie())
-		goto out;
-
 	test_map_type(BPF_MAP_TYPE_REUSEPORT_SOCKARRAY);
 	test_map_type(BPF_MAP_TYPE_SOCKMAP);
 	test_map_type(BPF_MAP_TYPE_SOCKHASH);
-out:
-	restore_sysctls();
-=======
-	test_map_type(BPF_MAP_TYPE_REUSEPORT_SOCKARRAY);
-	test_map_type(BPF_MAP_TYPE_SOCKMAP);
-	test_map_type(BPF_MAP_TYPE_SOCKHASH);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

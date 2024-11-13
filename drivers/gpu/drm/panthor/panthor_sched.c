@@ -589,18 +589,11 @@ struct panthor_group {
 	 * @timedout: True when a timeout occurred on any of the queues owned by
 	 * this group.
 	 *
-<<<<<<< HEAD
-	 * Timeouts can be reported by drm_sched or by the FW. In any case, any
-	 * timeout situation is unrecoverable, and the group becomes useless.
-	 * We simply wait for all references to be dropped so we can release the
-	 * group object.
-=======
 	 * Timeouts can be reported by drm_sched or by the FW. If a reset is required,
 	 * and the group can't be suspended, this also leads to a timeout. In any case,
 	 * any timeout situation is unrecoverable, and the group becomes useless. We
 	 * simply wait for all references to be dropped so we can release the group
 	 * object.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	bool timedout;
 
@@ -1111,9 +1104,6 @@ cs_slot_sync_queue_state_locked(struct panthor_device *ptdev, u32 csg_id, u32 cs
 			list_move_tail(&group->wait_node,
 				       &group->ptdev->scheduler->groups.waiting);
 		}
-<<<<<<< HEAD
-		group->blocked_queues |= BIT(cs_id);
-=======
 
 		/* The queue is only blocked if there's no deferred operation
 		 * pending, which can be checked through the scoreboard status.
@@ -1121,7 +1111,6 @@ cs_slot_sync_queue_state_locked(struct panthor_device *ptdev, u32 csg_id, u32 cs
 		if (!cs_iface->output->status_scoreboards)
 			group->blocked_queues |= BIT(cs_id);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		queue->syncwait.gpu_va = cs_iface->output->status_wait_sync_ptr;
 		queue->syncwait.ref = cs_iface->output->status_wait_sync_value;
 		status_wait_cond = cs_iface->output->status_wait & CS_STATUS_WAIT_SYNC_COND_MASK;
@@ -2064,10 +2053,7 @@ static void
 tick_ctx_cleanup(struct panthor_scheduler *sched,
 		 struct panthor_sched_tick_ctx *ctx)
 {
-<<<<<<< HEAD
-=======
 	struct panthor_device *ptdev = sched->ptdev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct panthor_group *group, *tmp;
 	u32 i;
 
@@ -2076,11 +2062,7 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
 			/* If everything went fine, we should only have groups
 			 * to be terminated in the old_groups lists.
 			 */
-<<<<<<< HEAD
-			drm_WARN_ON(&group->ptdev->base, !ctx->csg_upd_failed_mask &&
-=======
 			drm_WARN_ON(&ptdev->base, !ctx->csg_upd_failed_mask &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    group_can_run(group));
 
 			if (!group_can_run(group)) {
@@ -2103,11 +2085,7 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
 		/* If everything went fine, the groups to schedule lists should
 		 * be empty.
 		 */
-<<<<<<< HEAD
-		drm_WARN_ON(&group->ptdev->base,
-=======
 		drm_WARN_ON(&ptdev->base,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    !ctx->csg_upd_failed_mask && !list_empty(&ctx->groups[i]));
 
 		list_for_each_entry_safe(group, tmp, &ctx->groups[i], run_node) {
@@ -2568,11 +2546,7 @@ static void queue_start(struct panthor_queue *queue)
 	list_for_each_entry(job, &queue->scheduler.pending_list, base.list)
 		job->base.s_fence->parent = dma_fence_get(job->done_fence);
 
-<<<<<<< HEAD
-	drm_sched_start(&queue->scheduler, true);
-=======
 	drm_sched_start(&queue->scheduler);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void panthor_group_stop(struct panthor_group *group)
@@ -2667,15 +2641,12 @@ void panthor_sched_suspend(struct panthor_device *ptdev)
 		csgs_upd_ctx_init(&upd_ctx);
 		while (slot_mask) {
 			u32 csg_id = ffs(slot_mask) - 1;
-<<<<<<< HEAD
-=======
 			struct panthor_csg_slot *csg_slot = &sched->csg_slots[csg_id];
 
 			/* We consider group suspension failures as fatal and flag the
 			 * group as unusable by setting timedout=true.
 			 */
 			csg_slot->group->timedout = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			csgs_upd_ctx_queue_reqs(ptdev, &upd_ctx, csg_id,
 						CSG_STATE_TERMINATE,
@@ -3285,8 +3256,6 @@ int panthor_group_destroy(struct panthor_file *pfile, u32 group_handle)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static struct panthor_group *group_from_handle(struct panthor_group_pool *pool,
 					       u32 group_handle)
 {
@@ -3299,7 +3268,6 @@ static struct panthor_group *group_from_handle(struct panthor_group_pool *pool,
 	return group;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int panthor_group_get_state(struct panthor_file *pfile,
 			    struct drm_panthor_group_get_state *get_state)
 {
@@ -3311,11 +3279,7 @@ int panthor_group_get_state(struct panthor_file *pfile,
 	if (get_state->pad)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	group = group_get(xa_load(&gpool->xa, get_state->group_handle));
-=======
 	group = group_from_handle(gpool, get_state->group_handle);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!group)
 		return -EINVAL;
 
@@ -3446,24 +3410,17 @@ panthor_job_create(struct panthor_file *pfile,
 	job->call_info.latest_flush = qsubmit->latest_flush;
 	INIT_LIST_HEAD(&job->node);
 
-<<<<<<< HEAD
-	job->group = group_get(xa_load(&gpool->xa, group_handle));
-=======
 	job->group = group_from_handle(gpool, group_handle);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!job->group) {
 		ret = -EINVAL;
 		goto err_put_job;
 	}
 
-<<<<<<< HEAD
-=======
 	if (!group_can_run(job->group)) {
 		ret = -EINVAL;
 		goto err_put_job;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (job->queue_idx >= job->group->queue_count ||
 	    !job->group->queues[job->queue_idx]) {
 		ret = -EINVAL;
@@ -3498,18 +3455,8 @@ void panthor_job_update_resvs(struct drm_exec *exec, struct drm_sched_job *sched
 {
 	struct panthor_job *job = container_of(sched_job, struct panthor_job, base);
 
-<<<<<<< HEAD
-	/* Still not sure why we want USAGE_WRITE for external objects, since I
-	 * was assuming this would be handled through explicit syncs being imported
-	 * to external BOs with DMA_BUF_IOCTL_IMPORT_SYNC_FILE, but other drivers
-	 * seem to pass DMA_RESV_USAGE_WRITE, so there must be a good reason.
-	 */
-	panthor_vm_update_resvs(job->group->vm, exec, &sched_job->s_fence->finished,
-				DMA_RESV_USAGE_BOOKKEEP, DMA_RESV_USAGE_WRITE);
-=======
 	panthor_vm_update_resvs(job->group->vm, exec, &sched_job->s_fence->finished,
 				DMA_RESV_USAGE_BOOKKEEP, DMA_RESV_USAGE_BOOKKEEP);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void panthor_sched_unplug(struct panthor_device *ptdev)

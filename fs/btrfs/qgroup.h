@@ -121,19 +121,12 @@ struct btrfs_inode;
 #define BTRFS_QGROUP_RUNTIME_FLAG_CANCEL_RESCAN		(1ULL << 63)
 #define BTRFS_QGROUP_RUNTIME_FLAG_NO_ACCOUNTING		(1ULL << 62)
 
-<<<<<<< HEAD
-=======
 #define BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT		(3)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Record a dirty extent, and info qgroup to update quota on it
  */
 struct btrfs_qgroup_extent_record {
-<<<<<<< HEAD
-	struct rb_node node;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 bytenr;
 	u64 num_bytes;
 

@@ -189,11 +189,7 @@ static struct bucket_table *bucket_table_alloc(struct rhashtable *ht,
 
 	size = nbuckets;
 
-<<<<<<< HEAD
-	if (tbl == NULL && (gfp & ~__GFP_NOFAIL) != GFP_KERNEL) {
-=======
 	if (tbl == NULL && !gfpflags_allow_blocking(gfp)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tbl = nested_bucket_table_alloc(ht, nbuckets, gfp);
 		nbuckets = 0;
 	}

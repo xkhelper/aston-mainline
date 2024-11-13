@@ -163,14 +163,11 @@ static int validate_member(struct printbuf *err,
 		return -BCH_ERR_invalid_sb_members;
 	}
 
-<<<<<<< HEAD
-=======
 	if (m.btree_bitmap_shift >= 64) {
 		prt_printf(err, "device %u: invalid btree_bitmap_shift %u", i, m.btree_bitmap_shift);
 		return -BCH_ERR_invalid_sb_members;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -255,14 +252,10 @@ static void member_to_text(struct printbuf *out,
 	prt_newline(out);
 
 	prt_printf(out, "Btree allocated bitmap blocksize:\t");
-<<<<<<< HEAD
-	prt_units_u64(out, 1ULL << m.btree_bitmap_shift);
-=======
 	if (m.btree_bitmap_shift < 64)
 		prt_units_u64(out, 1ULL << m.btree_bitmap_shift);
 	else
 		prt_printf(out, "(invalid shift %u)", m.btree_bitmap_shift);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	prt_newline(out);
 
 	prt_printf(out, "Btree allocated bitmap:\t");
@@ -480,8 +473,6 @@ void bch2_dev_btree_bitmap_mark(struct bch_fs *c, struct bkey_s_c k)
 		__bch2_dev_btree_bitmap_mark(mi, ptr->dev, ptr->offset, btree_sectors(c));
 	}
 }
-<<<<<<< HEAD
-=======
 
 unsigned bch2_sb_nr_devices(const struct bch_sb *sb)
 {
@@ -539,4 +530,3 @@ have_slot:
 	c->disk_sb.sb->nr_devices = nr_devices;
 	return dev_idx;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

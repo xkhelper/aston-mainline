@@ -184,11 +184,7 @@ static int psc_i2s_of_probe(struct platform_device *op)
 
 	/* Check for the codec handle.  If it is not present then we
 	 * are done */
-<<<<<<< HEAD
-	if (!of_get_property(op->dev.of_node, "codec-handle", NULL))
-=======
 	if (!of_property_present(op->dev.of_node, "codec-handle"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	/* Due to errata in the dma mode; need to line up enabling
@@ -229,11 +225,7 @@ MODULE_DEVICE_TABLE(of, psc_i2s_match);
 
 static struct platform_driver psc_i2s_driver = {
 	.probe = psc_i2s_of_probe,
-<<<<<<< HEAD
-	.remove_new = psc_i2s_of_remove,
-=======
 	.remove = psc_i2s_of_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "mpc5200-psc-i2s",
 		.of_match_table = psc_i2s_match,

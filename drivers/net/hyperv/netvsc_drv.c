@@ -987,12 +987,8 @@ struct netvsc_device_info *netvsc_devinfo_get(struct netvsc_device *nvdev)
 			dev_info->bprog = prog;
 		}
 	} else {
-<<<<<<< HEAD
-		dev_info->num_chn = VRSS_CHANNEL_DEFAULT;
-=======
 		dev_info->num_chn = max(VRSS_CHANNEL_DEFAULT,
 					netif_get_num_default_rss_queues());
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_info->send_sections = NETVSC_DEFAULT_TX;
 		dev_info->send_section_size = NETVSC_SEND_SECTION_SIZE;
 		dev_info->recv_sections = NETVSC_DEFAULT_RX;
@@ -2802,8 +2798,6 @@ static struct  hv_driver netvsc_drv = {
 	},
 };
 
-<<<<<<< HEAD
-=======
 /* Set VF's namespace same as the synthetic NIC */
 static void netvsc_event_set_vf_ns(struct net_device *ndev)
 {
@@ -2829,7 +2823,6 @@ static void netvsc_event_set_vf_ns(struct net_device *ndev)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * On Hyper-V, every VF interface is matched with a corresponding
  * synthetic interface. The synthetic interface is presented first
@@ -2842,14 +2835,11 @@ static int netvsc_netdev_event(struct notifier_block *this,
 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
 	int ret = 0;
 
-<<<<<<< HEAD
-=======
 	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
 		netvsc_event_set_vf_ns(event_dev);
 		return NOTIFY_DONE;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = check_dev_is_matching_vf(event_dev);
 	if (ret != 0)
 		return NOTIFY_DONE;

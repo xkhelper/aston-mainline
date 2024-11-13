@@ -24,10 +24,7 @@
 
 #include "reg_helper.h"
 #include "core_types.h"
-<<<<<<< HEAD
-=======
 #include "resource.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dcn35_dccg.h"
 
 #define TO_DCN_DCCG(dccg)\
@@ -45,8 +42,6 @@
 #define DC_LOGGER \
 	dccg->ctx->logger
 
-<<<<<<< HEAD
-=======
 enum symclk_fe_source {
 	SYMCLK_FE_SYMCLK_A = 0,	// Select functional clock from backend symclk A
 	SYMCLK_FE_SYMCLK_B,
@@ -1102,19 +1097,14 @@ static void dccg35_enable_dpstreamclk_new(struct dccg *dccg,
 	dccg35_set_dpstreamclk_src_new(dccg, src, inst);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void dccg35_trigger_dio_fifo_resync(struct dccg *dccg)
 {
 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
 	uint32_t dispclk_rdivider_value = 0;
 
 	REG_GET(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_RDIVIDER, &dispclk_rdivider_value);
-<<<<<<< HEAD
-	REG_UPDATE(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_WDIVIDER, dispclk_rdivider_value);
-=======
 	if (dispclk_rdivider_value != 0)
 		REG_UPDATE(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_WDIVIDER, dispclk_rdivider_value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void dcn35_set_dppclk_enable(struct dccg *dccg,
@@ -1724,15 +1714,12 @@ static void dccg35_disable_symclk32_se(
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void dccg35_init_cb(struct dccg *dccg)
 {
 	(void)dccg;
 	/* Any RCG should be done when driver enter low power mode*/
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void dccg35_init(struct dccg *dccg)
 {
 	int otg_inst;
@@ -1761,13 +1748,6 @@ void dccg35_init(struct dccg *dccg)
 			dccg35_set_dpstreamclk_root_clock_gating(dccg, otg_inst, false);
 		}
 
-<<<<<<< HEAD
-	if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
-		for (otg_inst = 0; otg_inst < 4; otg_inst++)
-			dccg35_set_dppclk_root_clock_gating(dccg, otg_inst, 0);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
 	dccg35_enable_global_fgcg_rep(
 		dccg, dccg->ctx->dc->debug.enable_fine_grain_clock_gating.bits
@@ -1948,49 +1928,6 @@ static void dccg35_enable_symclk_se(struct dccg *dccg, uint32_t stream_enc_inst,
 }
 
 /*get other front end connected to this backend*/
-<<<<<<< HEAD
-static uint8_t dccg35_get_other_enabled_symclk_fe(struct dccg *dccg, uint32_t stream_enc_inst, uint32_t link_enc_inst)
-{
-	uint8_t num_enabled_symclk_fe = 0;
-	uint32_t be_clk_en = 0, fe_clk_en[5] = {0}, be_clk_sel[5] = {0};
-	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
-
-	switch (link_enc_inst) {
-	case 0:
-		REG_GET_3(SYMCLKA_CLOCK_ENABLE, SYMCLKA_CLOCK_ENABLE, &be_clk_en,
-				SYMCLKA_FE_EN, &fe_clk_en[0],
-				SYMCLKA_FE_SRC_SEL, &be_clk_sel[0]);
-				break;
-	case 1:
-		REG_GET_3(SYMCLKB_CLOCK_ENABLE, SYMCLKB_CLOCK_ENABLE, &be_clk_en,
-				SYMCLKB_FE_EN, &fe_clk_en[1],
-				SYMCLKB_FE_SRC_SEL, &be_clk_sel[1]);
-				break;
-	case 2:
-			REG_GET_3(SYMCLKC_CLOCK_ENABLE, SYMCLKC_CLOCK_ENABLE, &be_clk_en,
-				SYMCLKC_FE_EN, &fe_clk_en[2],
-				SYMCLKC_FE_SRC_SEL, &be_clk_sel[2]);
-				break;
-	case 3:
-			REG_GET_3(SYMCLKD_CLOCK_ENABLE, SYMCLKD_CLOCK_ENABLE, &be_clk_en,
-				SYMCLKD_FE_EN, &fe_clk_en[3],
-				SYMCLKD_FE_SRC_SEL, &be_clk_sel[3]);
-				break;
-	case 4:
-			REG_GET_3(SYMCLKE_CLOCK_ENABLE, SYMCLKE_CLOCK_ENABLE, &be_clk_en,
-				SYMCLKE_FE_EN, &fe_clk_en[4],
-				SYMCLKE_FE_SRC_SEL, &be_clk_sel[4]);
-				break;
-	}
-	if (be_clk_en) {
-	/* for DPMST, this backend could be used by multiple front end.
-	only disable the backend if this stream_enc_ins is the last active stream enc connected to this back_end*/
-		uint8_t i;
-		for (i = 0; i != link_enc_inst && i < ARRAY_SIZE(fe_clk_en); i++) {
-			if (fe_clk_en[i] && be_clk_sel[i] == link_enc_inst)
-				num_enabled_symclk_fe++;
-		}
-=======
 static uint8_t dccg35_get_number_enabled_symclk_fe_connected_to_be(struct dccg *dccg, uint32_t link_enc_inst)
 {
 	uint8_t num_enabled_symclk_fe = 0;
@@ -2017,7 +1954,6 @@ static uint8_t dccg35_get_number_enabled_symclk_fe_connected_to_be(struct dccg *
 	for (i = 0; i < ARRAY_SIZE(fe_clk_en); i++) {
 		if (fe_clk_en[i] && be_clk_sel[i] == link_enc_inst)
 			num_enabled_symclk_fe++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return num_enabled_symclk_fe;
 }
@@ -2065,15 +2001,9 @@ static void dccg35_disable_symclk_se(struct dccg *dccg, uint32_t stream_enc_inst
 		break;
 	}
 
-<<<<<<< HEAD
-	/*check other enabled symclk fe */
-	num_enabled_symclk_fe = dccg35_get_other_enabled_symclk_fe(dccg, stream_enc_inst, link_enc_inst);
-	/*only turn off backend clk if other front end attachecd to this backend are all off,
-=======
 	/*check other enabled symclk fe connected to this be */
 	num_enabled_symclk_fe = dccg35_get_number_enabled_symclk_fe_connected_to_be(dccg, link_enc_inst);
 	/*only turn off backend clk if other front end attached to this backend are all off,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 for mst, only turn off the backend if this is the last front end*/
 	if (num_enabled_symclk_fe == 0) {
 		switch (link_enc_inst) {
@@ -2111,8 +2041,6 @@ static void dccg35_disable_symclk_se(struct dccg *dccg, uint32_t stream_enc_inst
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void dccg35_set_dpstreamclk_cb(
 		struct dccg *dccg,
 		enum streamclk_source src,
@@ -2443,7 +2371,6 @@ static const struct dccg_funcs dccg35_funcs_new = {
 	.set_dtbclk_p_src = dccg35_set_dtbclk_p_src_cb,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct dccg_funcs dccg35_funcs = {
 	.update_dpp_dto = dccg35_update_dpp_dto,
 	.dpp_root_clock_control = dccg35_dpp_root_clock_control,
@@ -2473,10 +2400,7 @@ static const struct dccg_funcs dccg35_funcs = {
 	.enable_symclk_se = dccg35_enable_symclk_se,
 	.disable_symclk_se = dccg35_disable_symclk_se,
 	.set_dtbclk_p_src = dccg35_set_dtbclk_p_src,
-<<<<<<< HEAD
-=======
 	.dccg_root_gate_disable_control = dccg35_root_gate_disable_control,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct dccg *dccg35_create(
@@ -2492,13 +2416,10 @@ struct dccg *dccg35_create(
 		BREAK_TO_DEBUGGER();
 		return NULL;
 	}
-<<<<<<< HEAD
-=======
 	(void)&dccg35_disable_symclk_be_new;
 	(void)&dccg35_set_symclk32_le_root_clock_gating;
 	(void)&dccg35_set_smclk32_se_rcg;
 	(void)&dccg35_funcs_new;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	base = &dccg_dcn->base;
 	base->ctx = ctx;

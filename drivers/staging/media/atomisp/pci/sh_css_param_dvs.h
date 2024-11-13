@@ -18,10 +18,6 @@
 
 #include <math_support.h>
 #include <ia_css_types.h>
-<<<<<<< HEAD
-#include <sh_css_dvs_info.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "gdc_global.h" /* gdc_warp_param_mem_t */
 
 #define DVS_ENV_MIN_X (12)

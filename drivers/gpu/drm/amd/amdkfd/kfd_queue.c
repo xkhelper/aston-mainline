@@ -24,11 +24,8 @@
 
 #include <linux/slab.h>
 #include "kfd_priv.h"
-<<<<<<< HEAD
-=======
 #include "kfd_topology.h"
 #include "kfd_svm.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void print_queue_properties(struct queue_properties *q)
 {
@@ -87,8 +84,6 @@ void uninit_queue(struct queue *q)
 {
 	kfree(q);
 }
-<<<<<<< HEAD
-=======
 
 #if IS_ENABLED(CONFIG_HSA_AMD_SVM)
 
@@ -460,4 +455,3 @@ void kfd_queue_ctx_save_restore_size(struct kfd_topology_device *dev)
 	else if (gfxv >= 80000)
 		props->eop_buffer_size = 4096;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -439,8 +439,6 @@ static void mt7925_roc_iter(void *priv, u8 *mac,
 	mt7925_mcu_abort_roc(phy, &mvif->bss_conf, phy->roc_token_id);
 }
 
-<<<<<<< HEAD
-=======
 void mt7925_roc_abort_sync(struct mt792x_dev *dev)
 {
 	struct mt792x_phy *phy = &dev->phy;
@@ -454,7 +452,6 @@ void mt7925_roc_abort_sync(struct mt792x_dev *dev)
 }
 EXPORT_SYMBOL_GPL(mt7925_roc_abort_sync);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mt7925_roc_work(struct work_struct *work)
 {
 	struct mt792x_phy *phy;
@@ -1094,25 +1091,6 @@ static void mt7925_mac_link_sta_assoc(struct mt76_dev *mdev,
 	mt792x_mutex_release(dev);
 }
 
-<<<<<<< HEAD
-void mt7925_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
-			  struct ieee80211_sta *sta)
-{
-	if (ieee80211_vif_is_mld(vif)) {
-		struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
-		struct ieee80211_link_sta *link_sta;
-
-		link_sta = mt792x_sta_to_link_sta(vif, sta, msta->deflink_id);
-
-		mt7925_mac_set_links(mdev, vif);
-
-		mt7925_mac_link_sta_assoc(mdev, vif, link_sta);
-	} else {
-		mt7925_mac_link_sta_assoc(mdev, vif, &sta->deflink);
-	}
-}
-EXPORT_SYMBOL_GPL(mt7925_mac_sta_assoc);
-=======
 int mt7925_mac_sta_event(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 			 struct ieee80211_sta *sta, enum mt76_sta_event ev)
 {
@@ -1133,7 +1111,6 @@ int mt7925_mac_sta_event(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 	return 0;
 }
 EXPORT_SYMBOL_GPL(mt7925_mac_sta_event);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
 				       struct ieee80211_vif *vif,
@@ -1148,11 +1125,8 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
 	mlink = mt792x_sta_to_link(msta, link_id);
 
-<<<<<<< HEAD
-=======
 	mt7925_roc_abort_sync(dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mt76_connac_free_pending_tx_skbs(&dev->pm, &mlink->wcid);
 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
 

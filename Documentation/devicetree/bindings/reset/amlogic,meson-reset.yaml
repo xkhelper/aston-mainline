@@ -19,10 +19,7 @@ properties:
       - amlogic,meson-a1-reset # Reset Controller on A1 and compatible SoCs
       - amlogic,meson-s4-reset # Reset Controller on S4 and compatible SoCs
       - amlogic,c3-reset # Reset Controller on C3 and compatible SoCs
-<<<<<<< HEAD
-=======
       - amlogic,t7-reset
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1

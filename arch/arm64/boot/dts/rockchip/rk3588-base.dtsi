@@ -337,17 +337,6 @@
 			cache-unified;
 			next-level-cache = <&l3_cache>;
 		};
-<<<<<<< HEAD
-
-		l3_cache: l3-cache {
-			compatible = "cache";
-			cache-size = <3145728>;
-			cache-line-size = <64>;
-			cache-sets = <4096>;
-			cache-level = <3>;
-			cache-unified;
-		};
-=======
 	};
 
 	/*
@@ -361,7 +350,6 @@
 		cache-sets = <4096>;
 		cache-level = <3>;
 		cache-unified;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	display_subsystem: display-subsystem {
@@ -1138,8 +1126,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	vpu121: video-codec@fdb50000 {
 		compatible = "rockchip,rk3588-vpu121", "rockchip,rk3568-vpu";
 		reg = <0x0 0xfdb50000 0x0 0x800>;
@@ -1252,7 +1238,6 @@
 		#iommu-cells = <0>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	av1d: video-codec@fdc70000 {
 		compatible = "rockchip,rk3588-av1-vpu";
 		reg = <0x0 0xfdc70000 0x0 0x800>;

@@ -12,45 +12,15 @@ subdir-ccflags-$(CONFIG_DRM_XE_WERROR) += -Werror
 subdir-ccflags-y += -I$(obj) -I$(src)
 
 # generated sources
-<<<<<<< HEAD
-hostprogs := xe_gen_wa_oob
-
-generated_oob := $(obj)/generated/xe_wa_oob.c $(obj)/generated/xe_wa_oob.h
-
-quiet_cmd_wa_oob = GEN     $(notdir $(generated_oob))
-      cmd_wa_oob = mkdir -p $(@D); $^ $(generated_oob)
-
-=======
 
 hostprogs := xe_gen_wa_oob
 generated_oob := $(obj)/generated/xe_wa_oob.c $(obj)/generated/xe_wa_oob.h
 quiet_cmd_wa_oob = GEN     $(notdir $(generated_oob))
       cmd_wa_oob = mkdir -p $(@D); $^ $(generated_oob)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 $(obj)/generated/%_wa_oob.c $(obj)/generated/%_wa_oob.h: $(obj)/xe_gen_wa_oob \
 		 $(src)/xe_wa_oob.rules
 	$(call cmd,wa_oob)
 
-<<<<<<< HEAD
-uses_generated_oob := \
-	$(obj)/xe_ggtt.o \
-	$(obj)/xe_device.o \
-	$(obj)/xe_gsc.o \
-	$(obj)/xe_gt.o \
-	$(obj)/xe_guc.o \
-	$(obj)/xe_guc_ads.o \
-	$(obj)/xe_guc_pc.o \
-	$(obj)/xe_migrate.o \
-	$(obj)/xe_pat.o \
-	$(obj)/xe_ring_ops.o \
-	$(obj)/xe_vm.o \
-	$(obj)/xe_wa.o \
-	$(obj)/xe_ttm_stolen_mgr.o
-
-$(uses_generated_oob): $(generated_oob)
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Please keep these build lists sorted!
 
 # core driver code
@@ -58,10 +28,6 @@ $(uses_generated_oob): $(generated_oob)
 xe-y += xe_bb.o \
 	xe_bo.o \
 	xe_bo_evict.o \
-<<<<<<< HEAD
-	xe_debugfs.o \
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_devcoredump.o \
 	xe_device.o \
 	xe_device_sysfs.o \
@@ -74,19 +40,12 @@ xe-y += xe_bb.o \
 	xe_ggtt.o \
 	xe_gpu_scheduler.o \
 	xe_gsc.o \
-<<<<<<< HEAD
-=======
 	xe_gsc_debugfs.o \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_gsc_proxy.o \
 	xe_gsc_submit.o \
 	xe_gt.o \
 	xe_gt_ccs_mode.o \
 	xe_gt_clock.o \
-<<<<<<< HEAD
-	xe_gt_debugfs.o \
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_gt_freq.o \
 	xe_gt_idle.o \
 	xe_gt_mcr.o \
@@ -99,10 +58,6 @@ xe-y += xe_bb.o \
 	xe_guc_ads.o \
 	xe_guc_ct.o \
 	xe_guc_db_mgr.o \
-<<<<<<< HEAD
-	xe_guc_debugfs.o \
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_guc_hwconfig.o \
 	xe_guc_id_mgr.o \
 	xe_guc_klv_helpers.o \
@@ -112,15 +67,9 @@ xe-y += xe_bb.o \
 	xe_heci_gsc.o \
 	xe_hw_engine.o \
 	xe_hw_engine_class_sysfs.o \
-<<<<<<< HEAD
-	xe_hw_fence.o \
-	xe_huc.o \
-	xe_huc_debugfs.o \
-=======
 	xe_hw_engine_group.o \
 	xe_hw_fence.o \
 	xe_huc.o \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_irq.o \
 	xe_lrc.o \
 	xe_migrate.o \
@@ -156,10 +105,6 @@ xe-y += xe_bb.o \
 	xe_ttm_vram_mgr.o \
 	xe_tuning.o \
 	xe_uc.o \
-<<<<<<< HEAD
-	xe_uc_debugfs.o \
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_uc_fw.o \
 	xe_vm.o \
 	xe_vram.o \
@@ -176,10 +121,6 @@ xe-$(CONFIG_HWMON) += xe_hwmon.o
 # graphics virtualization (SR-IOV) support
 xe-y += \
 	xe_gt_sriov_vf.o \
-<<<<<<< HEAD
-	xe_gt_sriov_vf_debugfs.o \
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_guc_relay.o \
 	xe_memirq.o \
 	xe_sriov.o
@@ -188,10 +129,6 @@ xe-$(CONFIG_PCI_IOV) += \
 	xe_gt_sriov_pf.o \
 	xe_gt_sriov_pf_config.o \
 	xe_gt_sriov_pf_control.o \
-<<<<<<< HEAD
-	xe_gt_sriov_pf_debugfs.o \
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_gt_sriov_pf_monitor.o \
 	xe_gt_sriov_pf_policy.o \
 	xe_gt_sriov_pf_service.o \
@@ -233,10 +170,7 @@ xe-$(CONFIG_DRM_XE_DISPLAY) += \
 	display/xe_display.o \
 	display/xe_display_misc.o \
 	display/xe_display_rps.o \
-<<<<<<< HEAD
-=======
 	display/xe_display_wa.o \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	display/xe_dsb_buffer.o \
 	display/xe_fb_pin.o \
 	display/xe_hdcp_gsc.o \
@@ -342,8 +276,6 @@ ifeq ($(CONFIG_DRM_FBDEV_EMULATION),y)
 endif
 
 ifeq ($(CONFIG_DEBUG_FS),y)
-<<<<<<< HEAD
-=======
 	xe-y += xe_debugfs.o \
 		xe_gt_debugfs.o \
 		xe_gt_sriov_vf_debugfs.o \
@@ -354,7 +286,6 @@ ifeq ($(CONFIG_DEBUG_FS),y)
 
 	xe-$(CONFIG_PCI_IOV) += xe_gt_sriov_pf_debugfs.o
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe-$(CONFIG_DRM_XE_DISPLAY) += \
 		i915-display/intel_display_debugfs.o \
 		i915-display/intel_display_debugfs_params.o \
@@ -378,9 +309,6 @@ quiet_cmd_hdrtest = HDRTEST $(patsubst %.hdrtest,%.h,$@)
 
 $(obj)/%.hdrtest: $(src)/%.h FORCE
 	$(call if_changed_dep,hdrtest)
-<<<<<<< HEAD
-=======
 
 uses_generated_oob := $(addprefix $(obj)/, $(xe-y))
 $(uses_generated_oob): $(obj)/generated/xe_wa_oob.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

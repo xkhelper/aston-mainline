@@ -124,10 +124,7 @@ Subsystem-specific APIs
    pps
    ptp
    pwm
-<<<<<<< HEAD
-=======
    pwrseq
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    regulator
    reset
    rfkill

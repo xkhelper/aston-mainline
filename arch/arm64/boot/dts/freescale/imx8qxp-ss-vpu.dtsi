@@ -5,8 +5,6 @@
  * Author: Alexander Stein
  */
 
-<<<<<<< HEAD
-=======
 &mu_m0 {
 	interrupts = <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
 };
@@ -15,7 +13,6 @@
 	interrupts = <GIC_SPI 470 IRQ_TYPE_LEVEL_HIGH>;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &vpu_core0 {
 	reg = <0x2d040000 0x10000>;
 };

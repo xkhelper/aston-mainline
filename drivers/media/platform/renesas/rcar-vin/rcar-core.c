@@ -1274,20 +1274,7 @@ static const struct rvin_info rcar_info_r8a77995 = {
 	.scaler = rvin_scaler_gen3,
 };
 
-<<<<<<< HEAD
-static const struct rvin_info rcar_info_r8a779a0 = {
-	.model = RCAR_GEN3,
-	.use_mc = true,
-	.use_isp = true,
-	.nv12 = true,
-	.max_width = 4096,
-	.max_height = 4096,
-};
-
-static const struct rvin_info rcar_info_r8a779g0 = {
-=======
 static const struct rvin_info rcar_info_gen4 = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.model = RCAR_GEN3,
 	.use_mc = true,
 	.use_isp = true,
@@ -1358,14 +1345,6 @@ static const struct of_device_id rvin_of_id_table[] = {
 		.data = &rcar_info_r8a77995,
 	},
 	{
-<<<<<<< HEAD
-		.compatible = "renesas,vin-r8a779a0",
-		.data = &rcar_info_r8a779a0,
-	},
-	{
-		.compatible = "renesas,vin-r8a779g0",
-		.data = &rcar_info_r8a779g0,
-=======
 		/* Keep to be compatible with old DTS files. */
 		.compatible = "renesas,vin-r8a779a0",
 		.data = &rcar_info_gen4,
@@ -1378,7 +1357,6 @@ static const struct of_device_id rvin_of_id_table[] = {
 	{
 		.compatible = "renesas,rcar-gen4-vin",
 		.data = &rcar_info_gen4,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{ /* Sentinel */ },
 };

@@ -448,11 +448,7 @@ static struct platform_driver tegra20_ac97_driver = {
 		.of_match_table = tegra20_ac97_of_match,
 	},
 	.probe = tegra20_ac97_platform_probe,
-<<<<<<< HEAD
-	.remove_new = tegra20_ac97_platform_remove,
-=======
 	.remove = tegra20_ac97_platform_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(tegra20_ac97_driver);
 

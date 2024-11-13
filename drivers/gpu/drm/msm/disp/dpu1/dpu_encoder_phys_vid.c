@@ -298,25 +298,13 @@ static void dpu_encoder_phys_vid_setup_timing_engine(
 	if (phys_enc->hw_cdm)
 		intf_cfg.cdm = phys_enc->hw_cdm->idx;
 	intf_cfg.intf = phys_enc->hw_intf->idx;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if (phys_enc->split_role == ENC_ROLE_MASTER)
 		intf_cfg.intf_master = phys_enc->hw_intf->idx;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	if (phys_enc->split_role == ENC_ROLE_MASTER)
-		intf_cfg.intf_master = phys_enc->hw_intf->idx;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	intf_cfg.intf_mode_sel = DPU_CTL_MODE_SEL_VID;
 	intf_cfg.stream_sel = 0; /* Don't care value for video mode */
 	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
 	intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
-<<<<<<< HEAD
-	if (phys_enc->hw_pp->merge_3d)
-=======
 	if (intf_cfg.mode_3d && phys_enc->hw_pp->merge_3d)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intf_cfg.merge_3d = phys_enc->hw_pp->merge_3d->idx;
 
 	spin_lock_irqsave(phys_enc->enc_spinlock, lock_flags);
@@ -386,17 +374,8 @@ static void dpu_encoder_phys_vid_underrun_irq(void *arg)
 static bool dpu_encoder_phys_vid_needs_single_flush(
 		struct dpu_encoder_phys *phys_enc)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	return !(phys_enc->hw_ctl->caps->features & BIT(DPU_CTL_ACTIVE_CFG)) &&
 		phys_enc->split_role != ENC_ROLE_SOLO;
-=======
-	return phys_enc->split_role != ENC_ROLE_SOLO;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	return !(phys_enc->hw_ctl->caps->features & BIT(DPU_CTL_ACTIVE_CFG)) &&
-		phys_enc->split_role != ENC_ROLE_SOLO;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 }
 
 static void dpu_encoder_phys_vid_atomic_mode_set(
@@ -464,18 +443,12 @@ static void dpu_encoder_phys_vid_enable(struct dpu_encoder_phys *phys_enc)
 	struct dpu_hw_ctl *ctl;
 	const struct msm_format *fmt;
 	u32 fmt_fourcc;
-<<<<<<< HEAD
-=======
 	u32 mode_3d;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ctl = phys_enc->hw_ctl;
 	fmt_fourcc = dpu_encoder_get_drm_fmt(phys_enc);
 	fmt = mdp_get_format(&phys_enc->dpu_kms->base, fmt_fourcc, 0);
-<<<<<<< HEAD
-=======
 	mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	DPU_DEBUG_VIDENC(phys_enc, "\n");
 
@@ -498,12 +471,8 @@ static void dpu_encoder_phys_vid_enable(struct dpu_encoder_phys *phys_enc)
 		goto skip_flush;
 
 	ctl->ops.update_pending_flush_intf(ctl, phys_enc->hw_intf->idx);
-<<<<<<< HEAD
-	if (ctl->ops.update_pending_flush_merge_3d && phys_enc->hw_pp->merge_3d)
-=======
 	if (mode_3d && ctl->ops.update_pending_flush_merge_3d &&
 	    phys_enc->hw_pp->merge_3d)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ctl->ops.update_pending_flush_merge_3d(ctl, phys_enc->hw_pp->merge_3d->idx);
 
 	if (ctl->ops.update_pending_flush_cdm && phys_enc->hw_cdm)

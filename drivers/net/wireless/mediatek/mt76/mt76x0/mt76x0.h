@@ -49,10 +49,7 @@ void mt76x0_chip_onoff(struct mt76x02_dev *dev, bool enable, bool reset);
 void mt76x0_mac_stop(struct mt76x02_dev *dev);
 
 int mt76x0_config(struct ieee80211_hw *hw, u32 changed);
-<<<<<<< HEAD
-=======
 int mt76x0_set_channel(struct mt76_phy *mphy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int mt76x0_set_sar_specs(struct ieee80211_hw *hw,
 			 const struct cfg80211_sar_specs *sar);
 

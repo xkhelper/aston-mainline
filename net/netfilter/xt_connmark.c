@@ -151,11 +151,7 @@ static struct xt_target connmark_tg_reg[] __read_mostly = {
 	{
 		.name           = "CONNMARK",
 		.revision       = 1,
-<<<<<<< HEAD
-		.family         = NFPROTO_UNSPEC,
-=======
 		.family         = NFPROTO_IPV4,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.checkentry     = connmark_tg_check,
 		.target         = connmark_tg,
 		.targetsize     = sizeof(struct xt_connmark_tginfo1),
@@ -165,19 +161,12 @@ static struct xt_target connmark_tg_reg[] __read_mostly = {
 	{
 		.name           = "CONNMARK",
 		.revision       = 2,
-<<<<<<< HEAD
-		.family         = NFPROTO_UNSPEC,
-=======
 		.family         = NFPROTO_IPV4,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.checkentry     = connmark_tg_check,
 		.target         = connmark_tg_v2,
 		.targetsize     = sizeof(struct xt_connmark_tginfo2),
 		.destroy        = connmark_tg_destroy,
 		.me             = THIS_MODULE,
-<<<<<<< HEAD
-	}
-=======
 	},
 #if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
 	{
@@ -201,7 +190,6 @@ static struct xt_target connmark_tg_reg[] __read_mostly = {
 		.me             = THIS_MODULE,
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct xt_match connmark_mt_reg __read_mostly = {

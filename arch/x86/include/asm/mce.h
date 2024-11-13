@@ -221,11 +221,7 @@ static inline int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info,
 					     u64 lapic_id) { return -EINVAL; }
 #endif
 
-<<<<<<< HEAD
-void mce_setup(struct mce *m);
-=======
 void mce_prep_record(struct mce *m);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mce_log(struct mce *m);
 DECLARE_PER_CPU(struct device *, mce_device);
 

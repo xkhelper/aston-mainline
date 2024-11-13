@@ -185,15 +185,7 @@ struct rcu_cblist {
  *  ----------------------------------------------------------------------------
  */
 #define SEGCBLIST_ENABLED	BIT(0)
-<<<<<<< HEAD
-#define SEGCBLIST_RCU_CORE	BIT(1)
-#define SEGCBLIST_LOCKING	BIT(2)
-#define SEGCBLIST_KTHREAD_CB	BIT(3)
-#define SEGCBLIST_KTHREAD_GP	BIT(4)
-#define SEGCBLIST_OFFLOADED	BIT(5)
-=======
 #define SEGCBLIST_OFFLOADED	BIT(1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct rcu_segcblist {
 	struct rcu_head *head;

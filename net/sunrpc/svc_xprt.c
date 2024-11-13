@@ -268,11 +268,7 @@ static int _svc_xprt_create(struct svc_serv *serv, const char *xprt_name,
 		spin_unlock(&svc_xprt_class_lock);
 		newxprt = xcl->xcl_ops->xpo_create(serv, net, sap, len, flags);
 		if (IS_ERR(newxprt)) {
-<<<<<<< HEAD
-			trace_svc_xprt_create_err(serv->sv_program->pg_name,
-=======
 			trace_svc_xprt_create_err(serv->sv_programs->pg_name,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						  xcl->xcl_name, sap, len,
 						  newxprt);
 			module_put(xcl->xcl_owner);
@@ -909,18 +905,6 @@ void svc_recv(struct svc_rqst *rqstp)
 }
 EXPORT_SYMBOL_GPL(svc_recv);
 
-<<<<<<< HEAD
-/*
- * Drop request
- */
-void svc_drop(struct svc_rqst *rqstp)
-{
-	trace_svc_drop(rqstp);
-}
-EXPORT_SYMBOL_GPL(svc_drop);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * svc_send - Return reply to client
  * @rqstp: RPC transaction context

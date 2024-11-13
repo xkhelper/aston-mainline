@@ -38,8 +38,6 @@ struct mod_arch_specific {
 #endif /* CONFIG_FUNCTION_TRACER */
 };
 
-<<<<<<< HEAD
-=======
 static inline const Elf_Shdr *find_section(const Elf_Ehdr *hdr,
 					   const Elf_Shdr *sechdrs,
 					   const char *name)
@@ -54,5 +52,4 @@ static inline const Elf_Shdr *find_section(const Elf_Ehdr *hdr,
 	return NULL;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _ASM_S390_MODULE_H */

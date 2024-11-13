@@ -66,11 +66,8 @@ struct cec_data {
 	struct list_head xfer_list;
 	struct cec_adapter *adap;
 	struct cec_msg msg;
-<<<<<<< HEAD
-=======
 	u8 match_len;
 	u8 match_reply[5];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cec_fh *fh;
 	struct delayed_work work;
 	struct completion c;
@@ -301,8 +298,6 @@ struct cec_adapter {
 	char input_phys[40];
 };
 
-<<<<<<< HEAD
-=======
 static inline int cec_get_device(struct cec_adapter *adap)
 {
 	struct cec_devnode *devnode = &adap->devnode;
@@ -334,7 +329,6 @@ static inline void cec_put_device(struct cec_adapter *adap)
 	put_device(&adap->devnode.dev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void *cec_get_drvdata(const struct cec_adapter *adap)
 {
 	return adap->priv;

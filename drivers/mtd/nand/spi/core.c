@@ -34,11 +34,7 @@ static int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int spinand_write_reg_op(struct spinand_device *spinand, u8 reg, u8 val)
-=======
 int spinand_write_reg_op(struct spinand_device *spinand, u8 reg, u8 val)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct spi_mem_op op = SPINAND_SET_FEATURE_OP(reg,
 						      spinand->scratchbuf);
@@ -204,15 +200,12 @@ static int spinand_ecc_enable(struct spinand_device *spinand,
 			       enable ? CFG_ECC_ENABLE : 0);
 }
 
-<<<<<<< HEAD
-=======
 static int spinand_cont_read_enable(struct spinand_device *spinand,
 				    bool enable)
 {
 	return spinand->set_cont_read(spinand, enable);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int spinand_check_ecc_status(struct spinand_device *spinand, u8 status)
 {
 	struct nand_device *nand = spinand_to_nand(spinand);
@@ -324,12 +317,6 @@ static int spinand_ondie_ecc_finish_io_req(struct nand_device *nand,
 
 	/* Finish a page read: check the status, report errors/bitflips */
 	ret = spinand_check_ecc_status(spinand, engine_conf->status);
-<<<<<<< HEAD
-	if (ret == -EBADMSG)
-		mtd->ecc_stats.failed++;
-	else if (ret > 0)
-		mtd->ecc_stats.corrected += ret;
-=======
 	if (ret == -EBADMSG) {
 		mtd->ecc_stats.failed++;
 	} else if (ret > 0) {
@@ -346,7 +333,6 @@ static int spinand_ondie_ecc_finish_io_req(struct nand_device *nand,
 
 		mtd->ecc_stats.corrected += ret * pages;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -401,15 +387,11 @@ static int spinand_read_from_cache_op(struct spinand_device *spinand,
 
 	if (req->datalen) {
 		buf = spinand->databuf;
-<<<<<<< HEAD
-		nbytes = nanddev_page_size(nand);
-=======
 		if (!req->continuous)
 			nbytes = nanddev_page_size(nand);
 		else
 			nbytes = round_up(req->dataoffs + req->datalen,
 					  nanddev_page_size(nand));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		column = 0;
 	}
 
@@ -426,12 +408,9 @@ static int spinand_read_from_cache_op(struct spinand_device *spinand,
 	else
 		rdesc = spinand->dirmaps[req->pos.plane].rdesc_ecc;
 
-<<<<<<< HEAD
-=======
 	if (spinand->flags & SPINAND_HAS_READ_PLANE_SELECT_BIT)
 		column |= req->pos.plane << fls(nanddev_page_size(nand));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (nbytes) {
 		ret = spi_mem_dirmap_read(rdesc, column, nbytes, buf);
 		if (ret < 0)
@@ -443,8 +422,6 @@ static int spinand_read_from_cache_op(struct spinand_device *spinand,
 		nbytes -= ret;
 		column += ret;
 		buf += ret;
-<<<<<<< HEAD
-=======
 
 		/*
 		 * Dirmap accesses are allowed to toggle the CS.
@@ -452,7 +429,6 @@ static int spinand_read_from_cache_op(struct spinand_device *spinand,
 		 */
 		if (nbytes && req->continuous)
 			return -EIO;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (req->datalen)
@@ -516,12 +492,9 @@ static int spinand_write_to_cache_op(struct spinand_device *spinand,
 	else
 		wdesc = spinand->dirmaps[req->pos.plane].wdesc_ecc;
 
-<<<<<<< HEAD
-=======
 	if (spinand->flags & SPINAND_HAS_PROG_PLANE_SELECT_BIT)
 		column |= req->pos.plane << fls(nanddev_page_size(nand));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (nbytes) {
 		ret = spi_mem_dirmap_write(wdesc, column, nbytes, buf);
 		if (ret < 0)
@@ -692,27 +665,6 @@ static int spinand_write_page(struct spinand_device *spinand,
 	return nand_ecc_finish_io_req(nand, (struct nand_page_io_req *)req);
 }
 
-<<<<<<< HEAD
-static int spinand_mtd_read(struct mtd_info *mtd, loff_t from,
-			    struct mtd_oob_ops *ops)
-{
-	struct spinand_device *spinand = mtd_to_spinand(mtd);
-	struct nand_device *nand = mtd_to_nanddev(mtd);
-	struct mtd_ecc_stats old_stats;
-	unsigned int max_bitflips = 0;
-	struct nand_io_iter iter;
-	bool disable_ecc = false;
-	bool ecc_failed = false;
-	int ret = 0;
-
-	if (ops->mode == MTD_OPS_RAW || !spinand->eccinfo.ooblayout)
-		disable_ecc = true;
-
-	mutex_lock(&spinand->lock);
-
-	old_stats = mtd->ecc_stats;
-
-=======
 static int spinand_mtd_regular_page_read(struct mtd_info *mtd, loff_t from,
 					 struct mtd_oob_ops *ops,
 					 unsigned int *max_bitflips)
@@ -727,7 +679,6 @@ static int spinand_mtd_regular_page_read(struct mtd_info *mtd, loff_t from,
 	if (ops->mode == MTD_OPS_RAW || !mtd->ooblayout)
 		disable_ecc = true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nanddev_io_for_each_page(nand, NAND_PAGE_READ, from, ops, &iter) {
 		if (disable_ecc)
 			iter.req.mode = MTD_OPS_RAW;
@@ -743,19 +694,13 @@ static int spinand_mtd_regular_page_read(struct mtd_info *mtd, loff_t from,
 		if (ret == -EBADMSG)
 			ecc_failed = true;
 		else
-<<<<<<< HEAD
-			max_bitflips = max_t(unsigned int, max_bitflips, ret);
-=======
 			*max_bitflips = max_t(unsigned int, *max_bitflips, ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = 0;
 		ops->retlen += iter.req.datalen;
 		ops->oobretlen += iter.req.ooblen;
 	}
 
-<<<<<<< HEAD
-=======
 	if (ecc_failed && !ret)
 		ret = -EBADMSG;
 
@@ -898,7 +843,6 @@ static int spinand_mtd_read(struct mtd_info *mtd, loff_t from,
 	else
 		ret = spinand_mtd_regular_page_read(mtd, from, ops, &max_bitflips);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ops->stats) {
 		ops->stats->uncorrectable_errors +=
 			mtd->ecc_stats.failed - old_stats.failed;
@@ -908,12 +852,6 @@ static int spinand_mtd_read(struct mtd_info *mtd, loff_t from,
 
 	mutex_unlock(&spinand->lock);
 
-<<<<<<< HEAD
-	if (ecc_failed && !ret)
-		ret = -EBADMSG;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret ? ret : max_bitflips;
 }
 
@@ -1093,12 +1031,9 @@ static int spinand_create_dirmap(struct spinand_device *spinand,
 	};
 	struct spi_mem_dirmap_desc *desc;
 
-<<<<<<< HEAD
-=======
 	if (spinand->cont_read_possible)
 		info.length = nanddev_eraseblock_size(nand);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* The plane number is passed in MSB just above the column address */
 	info.offset = plane << fls(nand->memorg.pagesize);
 
@@ -1332,10 +1267,7 @@ int spinand_match_and_init(struct spinand_device *spinand,
 		spinand->flags = table[i].flags;
 		spinand->id.len = 1 + table[i].devid.len;
 		spinand->select_target = table[i].select_target;
-<<<<<<< HEAD
-=======
 		spinand->set_cont_read = table[i].set_cont_read;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		op = spinand_select_op_variant(spinand,
 					       info->op_variants.read_cache);
@@ -1477,14 +1409,8 @@ static int spinand_init(struct spinand_device *spinand)
 	 * may use this buffer for DMA access.
 	 * Memory allocated by devm_ does not guarantee DMA-safe alignment.
 	 */
-<<<<<<< HEAD
-	spinand->databuf = kzalloc(nanddev_page_size(nand) +
-			       nanddev_per_page_oobsize(nand),
-			       GFP_KERNEL);
-=======
 	spinand->databuf = kzalloc(nanddev_eraseblock_size(nand),
 				   GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!spinand->databuf) {
 		ret = -ENOMEM;
 		goto err_free_bufs;
@@ -1513,15 +1439,12 @@ static int spinand_init(struct spinand_device *spinand)
 	if (ret)
 		goto err_cleanup_nanddev;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Continuous read can only be enabled with an on-die ECC engine, so the
 	 * ECC initialization must have happened previously.
 	 */
 	spinand_cont_read_init(spinand);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mtd->_read_oob = spinand_mtd_read;
 	mtd->_write_oob = spinand_mtd_write;
 	mtd->_block_isbad = spinand_mtd_block_isbad;
@@ -1542,10 +1465,7 @@ static int spinand_init(struct spinand_device *spinand)
 	/* Propagate ECC information to mtd_info */
 	mtd->ecc_strength = nanddev_get_ecc_conf(nand)->strength;
 	mtd->ecc_step_size = nanddev_get_ecc_conf(nand)->step_size;
-<<<<<<< HEAD
-=======
 	mtd->bitflip_threshold = DIV_ROUND_UP(mtd->ecc_strength * 3, 4);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = spinand_create_dirmaps(spinand);
 	if (ret) {

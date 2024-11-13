@@ -588,12 +588,9 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
 	if (len > MCTP_I2C_MAXMTU)
 		return -EMSGSIZE;
 
-<<<<<<< HEAD
-=======
 	if (!daddr || !saddr)
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lldst = *((u8 *)daddr);
 	llsrc = *((u8 *)saddr);
 

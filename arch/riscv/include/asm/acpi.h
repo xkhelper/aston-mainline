@@ -91,15 +91,8 @@ static inline void acpi_get_cbo_block_size(struct acpi_table_header *table,
 #endif /* CONFIG_ACPI */
 
 #ifdef CONFIG_ACPI_NUMA
-<<<<<<< HEAD
-int acpi_numa_get_nid(unsigned int cpu);
 void acpi_map_cpus_to_nodes(void);
 #else
-static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
-=======
-void acpi_map_cpus_to_nodes(void);
-#else
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void acpi_map_cpus_to_nodes(void) { }
 #endif /* CONFIG_ACPI_NUMA */
 

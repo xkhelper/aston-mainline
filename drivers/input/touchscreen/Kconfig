@@ -254,39 +254,6 @@ config TOUCHSCREEN_CYTTSP_SPI
 	  To compile this driver as a module, choose M here: the
 	  module will be called cyttsp_spi.
 
-<<<<<<< HEAD
-config TOUCHSCREEN_CYTTSP4_CORE
-	tristate "Cypress TrueTouch Gen4 Touchscreen Driver"
-	help
-	  Core driver for Cypress TrueTouch(tm) Standard Product
-	  Generation4 touchscreen controllers.
-
-	  Say Y here if you have a Cypress Gen4 touchscreen.
-
-	  If unsure, say N.
-
-	  To compile this driver as a module, choose M here.
-
-config TOUCHSCREEN_CYTTSP4_I2C
-	tristate "support I2C bus connection"
-	depends on TOUCHSCREEN_CYTTSP4_CORE && I2C
-	help
-	  Say Y here if the touchscreen is connected via I2C bus.
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called cyttsp4_i2c.
-
-config TOUCHSCREEN_CYTTSP4_SPI
-	tristate "support SPI bus connection"
-	depends on TOUCHSCREEN_CYTTSP4_CORE && SPI_MASTER
-	help
-	  Say Y here if the touchscreen is connected via SPI bus.
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called cyttsp4_spi.
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config TOUCHSCREEN_CYTTSP5
 	tristate "Cypress TrueTouch Gen5 Touchscreen Driver"
 	depends on I2C
@@ -629,21 +596,6 @@ config TOUCHSCREEN_MAX11801
 	  To compile this driver as a module, choose M here: the
 	  module will be called max11801_ts.
 
-<<<<<<< HEAD
-config TOUCHSCREEN_MCS5000
-	tristate "MELFAS MCS-5000 touchscreen"
-	depends on I2C
-	help
-	  Say Y here if you have the MELFAS MCS-5000 touchscreen controller
-	  chip in your system.
-
-	  If unsure, say N.
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called mcs5000_ts.
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config TOUCHSCREEN_MMS114
 	tristate "MELFAS MMS114 touchscreen"
 	depends on I2C
@@ -1436,17 +1388,8 @@ config TOUCHSCREEN_HIMAX_HX83112B
 	  To compile this driver as a module, choose M here: the
 	  module will be called himax_hx83112b.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 source "drivers/input/touchscreen/synaptics_hbp/Kconfig"
 source "drivers/input/touchscreen/kernelFwUpdate/Kconfig"
 source "drivers/input/touchscreen/touchpanel_notify/Kconfig"
 
-<<<<<<< HEAD
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 endif

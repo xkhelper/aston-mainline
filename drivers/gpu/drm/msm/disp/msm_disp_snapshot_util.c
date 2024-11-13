@@ -26,11 +26,7 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
 	end_addr = base_addr + aligned_len;
 
 	if (!(*reg))
-<<<<<<< HEAD
-		*reg = kzalloc(len_padded, GFP_KERNEL);
-=======
 		*reg = kvzalloc(len_padded, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (*reg)
 		dump_addr = *reg;
@@ -52,22 +48,6 @@ static void msm_disp_state_dump_regs(u32 **reg, u32 aligned_len, void __iomem *b
 	}
 }
 
-<<<<<<< HEAD
-static void msm_disp_state_print_regs(u32 **reg, u32 len, void __iomem *base_addr,
-		struct drm_printer *p)
-{
-	int i;
-	u32 *dump_addr = NULL;
-	void __iomem *addr;
-	u32 num_rows;
-
-	addr = base_addr;
-	num_rows = len / REG_DUMP_ALIGN;
-
-	if (*reg)
-		dump_addr = *reg;
-
-=======
 static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
 		void __iomem *base_addr, struct drm_printer *p)
 {
@@ -83,7 +63,6 @@ static void msm_disp_state_print_regs(const u32 *dump_addr, u32 len,
 	addr = base_addr;
 	num_rows = len / REG_DUMP_ALIGN;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < num_rows; i++) {
 		drm_printf(p, "0x%lx : %08x %08x %08x %08x\n",
 				(unsigned long)(addr - base_addr),
@@ -111,11 +90,7 @@ void msm_disp_state_print(struct msm_disp_state *state, struct drm_printer *p)
 
 	list_for_each_entry_safe(block, tmp, &state->blocks, node) {
 		drm_printf(p, "====================%s================\n", block->name);
-<<<<<<< HEAD
-		msm_disp_state_print_regs(&block->state, block->size, block->base_addr, p);
-=======
 		msm_disp_state_print_regs(block->state, block->size, block->base_addr, p);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	drm_printf(p, "===================dpu drm state================\n");
@@ -187,11 +162,7 @@ void msm_disp_state_free(void *data)
 
 	list_for_each_entry_safe(block, tmp, &disp_state->blocks, node) {
 		list_del(&block->node);
-<<<<<<< HEAD
-		kfree(block->state);
-=======
 		kvfree(block->state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(block);
 	}
 

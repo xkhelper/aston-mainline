@@ -15,10 +15,7 @@
 #define BIT_WLOCK_1C_B6		BIT(5)
 #define REG_SYS_PW_CTRL		0x0004
 #define BIT_PFM_WOWL		BIT(3)
-<<<<<<< HEAD
-=======
 #define BIT_APFM_OFFMAC		BIT(9)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define REG_SYS_CLK_CTRL	0x0008
 #define BIT_CPU_CLK_EN		BIT(14)
 
@@ -137,8 +134,6 @@
 #define REG_PMC_DBG_CTRL1	0xa8
 #define BITS_PMC_BT_IQK_STS	GENMASK(22, 21)
 
-<<<<<<< HEAD
-=======
 #define REG_PAD_CTRL2		0x00C4
 #define BIT_RSM_EN_V1		BIT(16)
 #define BIT_NO_PDN_CHIPOFF_V1	BIT(17)
@@ -147,7 +142,6 @@
 #define BIT_USB_MODE_U2		1
 #define BIT_USB_MODE_U3		2
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define REG_EFUSE_ACCESS	0x00CF
 #define EFUSE_ACCESS_ON		0x69
 #define EFUSE_ACCESS_OFF	0x00
@@ -328,15 +322,12 @@
 #define REG_RXDMA_DPR		0x028C
 #define REG_RXDMA_MODE		0x0290
 #define BIT_DMA_MODE		BIT(1)
-<<<<<<< HEAD
-=======
 #define BIT_DMA_BURST_CNT	GENMASK(3, 2)
 #define BIT_DMA_BURST_SIZE	GENMASK(5, 4)
 #define BIT_DMA_BURST_SIZE_64	2
 #define BIT_DMA_BURST_SIZE_512	1
 #define BIT_DMA_BURST_SIZE_1024	0
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define REG_RXPKTNUM		0x02B0
 
 #define REG_INT_MIG		0x0304
@@ -592,11 +583,8 @@
 #define BIT_WL_SECURITY_CLK	BIT(15)
 #define BIT_DDMA_EN		BIT(8)
 
-<<<<<<< HEAD
-=======
 #define REG_SW_MDIO		0x10C0
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define REG_H2C_PKT_READADDR	0x10D0
 #define REG_H2C_PKT_WRITEADDR	0x10D4
 #define REG_FW_DBG6		0x10F8

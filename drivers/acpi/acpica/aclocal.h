@@ -1090,11 +1090,8 @@ struct acpi_port_info {
 #define ACPI_ADDRESS_TYPE_IO_RANGE              1
 #define ACPI_ADDRESS_TYPE_BUS_NUMBER_RANGE      2
 
-<<<<<<< HEAD
-=======
 #define ACPI_ADDRESS_TYPE_PCC_NUMBER            0xA
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Resource descriptor types and masks */
 
 #define ACPI_RESOURCE_NAME_LARGE                0x80

@@ -25,10 +25,7 @@
 #include "srcline.h"
 #include "units.h"
 #include "debug.h"
-<<<<<<< HEAD
-=======
 #include "debuginfo.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "annotate.h"
 #include "annotate-data.h"
 #include "evsel.h"
@@ -44,10 +41,7 @@
 #include "namespaces.h"
 #include "thread.h"
 #include "hashmap.h"
-<<<<<<< HEAD
-=======
 #include "strbuf.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <regex.h>
 #include <linux/bitops.h>
 #include <linux/kernel.h>
@@ -55,10 +49,7 @@
 #include <linux/zalloc.h>
 #include <subcmd/parse-options.h>
 #include <subcmd/run-command.h>
-<<<<<<< HEAD
-=======
 #include <math.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* FIXME: For the HE_COLORSET */
 #include "ui/browser.h"
@@ -277,33 +268,18 @@ struct annotated_branch *annotation__get_branch(struct annotation *notes)
 	return notes->branch;
 }
 
-<<<<<<< HEAD
-static struct cyc_hist *symbol__cycles_hist(struct symbol *sym)
-{
-	struct annotation *notes = symbol__annotation(sym);
-	struct annotated_branch *branch;
-=======
 static struct annotated_branch *symbol__find_branch_hist(struct symbol *sym,
 							 unsigned int br_cntr_nr)
 {
 	struct annotation *notes = symbol__annotation(sym);
 	struct annotated_branch *branch;
 	const size_t size = symbol__size(sym);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	branch = annotation__get_branch(notes);
 	if (branch == NULL)
 		return NULL;
 
 	if (branch->cycles_hist == NULL) {
-<<<<<<< HEAD
-		const size_t size = symbol__size(sym);
-
-		branch->cycles_hist = calloc(size, sizeof(struct cyc_hist));
-	}
-
-	return branch->cycles_hist;
-=======
 		branch->cycles_hist = calloc(size, sizeof(struct cyc_hist));
 		if (!branch->cycles_hist)
 			return NULL;
@@ -316,7 +292,6 @@ static struct annotated_branch *symbol__find_branch_hist(struct symbol *sym,
 	}
 
 	return branch;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct annotated_source *symbol__hists(struct symbol *sym, int nr_hists)
@@ -351,18 +326,6 @@ static int symbol__inc_addr_samples(struct map_symbol *ms,
 	return src ? __symbol__inc_addr_samples(ms, src, evsel->core.idx, addr, sample) : 0;
 }
 
-<<<<<<< HEAD
-static int symbol__account_cycles(u64 addr, u64 start,
-				  struct symbol *sym, unsigned cycles)
-{
-	struct cyc_hist *cycles_hist;
-	unsigned offset;
-
-	if (sym == NULL)
-		return 0;
-	cycles_hist = symbol__cycles_hist(sym);
-	if (cycles_hist == NULL)
-=======
 static int symbol__account_br_cntr(struct annotated_branch *branch,
 				   struct evsel *evsel,
 				   unsigned offset,
@@ -402,7 +365,6 @@ static int symbol__account_cycles(u64 addr, u64 start, struct symbol *sym,
 		return 0;
 	branch = symbol__find_branch_hist(sym, evsel->evlist->nr_br_cntr);
 	if (!branch)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 	if (addr < sym->start || addr >= sym->end)
 		return -ERANGE;
@@ -414,12 +376,6 @@ static int symbol__account_cycles(u64 addr, u64 start, struct symbol *sym,
 			start = 0;
 	}
 	offset = addr - sym->start;
-<<<<<<< HEAD
-	return __symbol__account_cycles(cycles_hist,
-					start ? start - sym->start : 0,
-					offset, cycles,
-					!!start);
-=======
 	ret = __symbol__account_cycles(branch->cycles_hist,
 					start ? start - sym->start : 0,
 					offset, cycles,
@@ -429,18 +385,13 @@ static int symbol__account_cycles(u64 addr, u64 start, struct symbol *sym,
 		return ret;
 
 	return symbol__account_br_cntr(branch, evsel, offset, br_cntr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int addr_map_symbol__account_cycles(struct addr_map_symbol *ams,
 				    struct addr_map_symbol *start,
-<<<<<<< HEAD
-				    unsigned cycles)
-=======
 				    unsigned cycles,
 				    struct evsel *evsel,
 				    u64 br_cntr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 saddr = 0;
 	int err;
@@ -466,11 +417,7 @@ int addr_map_symbol__account_cycles(struct addr_map_symbol *ams,
 			start ? start->addr : 0,
 			ams->ms.sym ? ams->ms.sym->start + map__start(ams->ms.map) : 0,
 			saddr);
-<<<<<<< HEAD
-	err = symbol__account_cycles(ams->al_addr, saddr, ams->ms.sym, cycles);
-=======
 	err = symbol__account_cycles(ams->al_addr, saddr, ams->ms.sym, cycles, evsel, br_cntr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		pr_debug2("account_cycles failed %d\n", err);
 	return err;
@@ -511,10 +458,7 @@ static void annotated_branch__delete(struct annotated_branch *branch)
 {
 	if (branch) {
 		zfree(&branch->cycles_hist);
-<<<<<<< HEAD
-=======
 		free(branch->br_cntr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		free(branch);
 	}
 }
@@ -558,15 +502,10 @@ static void annotation__count_and_fill(struct annotation *notes, u64 start, u64 
 	}
 }
 
-<<<<<<< HEAD
-static int annotation__compute_ipc(struct annotation *notes, size_t size)
-{
-=======
 static int annotation__compute_ipc(struct annotation *notes, size_t size,
 				   struct evsel *evsel)
 {
 	unsigned int br_cntr_nr = evsel->evlist->nr_br_cntr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err = 0;
 	s64 offset;
 
@@ -601,8 +540,6 @@ static int annotation__compute_ipc(struct annotation *notes, size_t size,
 				al->cycles->max = ch->cycles_max;
 				al->cycles->min = ch->cycles_min;
 			}
-<<<<<<< HEAD
-=======
 			if (al && notes->branch->br_cntr) {
 				if (!al->br_cntr) {
 					al->br_cntr = calloc(br_cntr_nr, sizeof(u64));
@@ -617,7 +554,6 @@ static int annotation__compute_ipc(struct annotation *notes, size_t size,
 				memcpy(al->br_cntr, &notes->branch->br_cntr[offset * br_cntr_nr],
 				       br_cntr_nr * sizeof(u64));
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -629,15 +565,10 @@ static int annotation__compute_ipc(struct annotation *notes, size_t size,
 				struct annotation_line *al;
 
 				al = annotated_source__get_line(notes->src, offset);
-<<<<<<< HEAD
-				if (al)
-					zfree(&al->cycles);
-=======
 				if (al) {
 					zfree(&al->cycles);
 					zfree(&al->br_cntr);
 				}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	}
@@ -834,20 +765,13 @@ annotation_line__print(struct annotation_line *al, struct symbol *sym, u64 start
 		       int percent_type)
 {
 	struct disasm_line *dl = container_of(al, struct disasm_line, al);
-<<<<<<< HEAD
-=======
 	struct annotation *notes = symbol__annotation(sym);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	static const char *prev_line;
 
 	if (al->offset != -1) {
 		double max_percent = 0.0;
 		int i, nr_percent = 1;
 		const char *color;
-<<<<<<< HEAD
-		struct annotation *notes = symbol__annotation(sym);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		for (i = 0; i < al->data_nr; i++) {
 			double percent;
@@ -917,21 +841,11 @@ annotation_line__print(struct annotation_line *al, struct symbol *sym, u64 start
 	} else if (max_lines && printed >= max_lines)
 		return 1;
 	else {
-<<<<<<< HEAD
-		int width = symbol_conf.show_total_period ? 12 : 8;
-=======
 		int width = annotation__pcnt_width(notes);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (queue)
 			return -1;
 
-<<<<<<< HEAD
-		if (evsel__is_group_event(evsel))
-			width *= evsel->core.nr_members;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!*al->line)
 			printf(" %*s:\n", width, " ");
 		else
@@ -1000,13 +914,10 @@ static void annotation__calc_percent(struct annotation *notes,
 
 			BUG_ON(i >= al->data_nr);
 
-<<<<<<< HEAD
-=======
 			if (symbol_conf.skip_empty &&
 			    evsel__hists(evsel)->stats.nr_samples == 0)
 				continue;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			data = &al->data[i++];
 
 			calc_percent(notes, evsel, data, al->offset, end);
@@ -1060,11 +971,7 @@ int symbol__annotate(struct map_symbol *ms, struct evsel *evsel,
 		.options	= &annotate_opts,
 	};
 	struct arch *arch = NULL;
-<<<<<<< HEAD
-	int err;
-=======
 	int err, nr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = evsel__get_arch(evsel, &arch);
 	if (err < 0)
@@ -1085,8 +992,6 @@ int symbol__annotate(struct map_symbol *ms, struct evsel *evsel,
 			return -1;
 	}
 
-<<<<<<< HEAD
-=======
 	nr = 0;
 	if (evsel__is_group_event(evsel)) {
 		struct evsel *pos;
@@ -1100,7 +1005,6 @@ int symbol__annotate(struct map_symbol *ms, struct evsel *evsel,
 	}
 	notes->src->nr_events = nr ? nr : 1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (annotate_opts.full_addr)
 		notes->src->start = map__objdump_2mem(ms->map, ms->sym->start);
 	else
@@ -1282,11 +1186,7 @@ int symbol__annotate_printf(struct map_symbol *ms, struct evsel *evsel)
 	int more = 0;
 	bool context = opts->context;
 	u64 len;
-<<<<<<< HEAD
-	int width = symbol_conf.show_total_period ? 12 : 8;
-=======
 	int width = annotation__pcnt_width(notes);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int graph_dotted_len;
 	char buf[512];
 
@@ -1302,10 +1202,6 @@ int symbol__annotate_printf(struct map_symbol *ms, struct evsel *evsel)
 	len = symbol__size(sym);
 
 	if (evsel__is_group_event(evsel)) {
-<<<<<<< HEAD
-		width *= evsel->core.nr_members;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		evsel__group_desc(evsel, buf, sizeof(buf));
 		evsel_name = buf;
 	}
@@ -1777,20 +1673,12 @@ bool ui__has_annotation(void)
 
 
 static double annotation_line__max_percent(struct annotation_line *al,
-<<<<<<< HEAD
-					   struct annotation *notes,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					   unsigned int percent_type)
 {
 	double percent_max = 0.0;
 	int i;
 
-<<<<<<< HEAD
-	for (i = 0; i < notes->src->nr_events; i++) {
-=======
 	for (i = 0; i < al->data_nr; i++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		double percent;
 
 		percent = annotation_data__percent(&al->data[i],
@@ -1852,8 +1740,6 @@ static void ipc_coverage_string(char *bf, int size, struct annotation *notes)
 		  ipc, coverage);
 }
 
-<<<<<<< HEAD
-=======
 int annotation_br_cntr_abbr_list(char **str, struct evsel *evsel, bool header)
 {
 	struct evsel *pos;
@@ -1997,7 +1883,6 @@ err:
 	return -ENOMEM;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __annotation_line__write(struct annotation_line *al, struct annotation *notes,
 				     bool first_line, bool current_entry, bool change_color, int width,
 				     void *obj, unsigned int percent_type,
@@ -2008,11 +1893,7 @@ static void __annotation_line__write(struct annotation_line *al, struct annotati
 				     void (*obj__write_graph)(void *obj, int graph))
 
 {
-<<<<<<< HEAD
-	double percent_max = annotation_line__max_percent(al, notes, percent_type);
-=======
 	double percent_max = annotation_line__max_percent(al, percent_type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int pcnt_width = annotation__pcnt_width(notes),
 	    cycles_width = annotation__cycles_width(notes);
 	bool show_title = false;
@@ -2030,11 +1911,7 @@ static void __annotation_line__write(struct annotation_line *al, struct annotati
 	if (al->offset != -1 && percent_max != 0.0) {
 		int i;
 
-<<<<<<< HEAD
-		for (i = 0; i < notes->src->nr_events; i++) {
-=======
 		for (i = 0; i < al->data_nr; i++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			double percent;
 
 			percent = annotation_data__percent(&al->data[i], percent_type);
@@ -2043,17 +1920,10 @@ static void __annotation_line__write(struct annotation_line *al, struct annotati
 			if (symbol_conf.show_total_period) {
 				obj__printf(obj, "%11" PRIu64 " ", al->data[i].he.period);
 			} else if (symbol_conf.show_nr_samples) {
-<<<<<<< HEAD
-				obj__printf(obj, "%6" PRIu64 " ",
-						   al->data[i].he.nr_samples);
-			} else {
-				obj__printf(obj, "%6.2f ", percent);
-=======
 				obj__printf(obj, "%7" PRIu64 " ",
 						   al->data[i].he.nr_samples);
 			} else {
 				obj__printf(obj, "%7.2f ", percent);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	} else {
@@ -2109,8 +1979,6 @@ static void __annotation_line__write(struct annotation_line *al, struct annotati
 					    "Cycle(min/max)");
 		}
 
-<<<<<<< HEAD
-=======
 		if (annotate_opts.show_br_cntr) {
 			if (show_title) {
 				obj__printf(obj, "%*s ",
@@ -2127,7 +1995,6 @@ static void __annotation_line__write(struct annotation_line *al, struct annotati
 			}
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (show_title && !*al->line) {
 			ipc_coverage_string(bf, sizeof(bf), notes);
 			obj__printf(obj, "%*s", ANNOTATION__AVG_IPC_WIDTH, bf);
@@ -2213,14 +2080,7 @@ int symbol__annotate2(struct map_symbol *ms, struct evsel *evsel,
 	struct symbol *sym = ms->sym;
 	struct annotation *notes = symbol__annotation(sym);
 	size_t size = symbol__size(sym);
-<<<<<<< HEAD
-	int nr_pcnt = 1, err;
-
-	if (evsel__is_group_event(evsel))
-		nr_pcnt = evsel->core.nr_members;
-=======
 	int err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = symbol__annotate(ms, evsel, parch);
 	if (err)
@@ -2231,20 +2091,11 @@ int symbol__annotate2(struct map_symbol *ms, struct evsel *evsel,
 	annotation__set_index(notes);
 	annotation__mark_jump_targets(notes, sym);
 
-<<<<<<< HEAD
-	err = annotation__compute_ipc(notes, size);
-=======
 	err = annotation__compute_ipc(notes, size, evsel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
 	annotation__init_column_widths(notes, sym);
-<<<<<<< HEAD
-	notes->src->nr_events = nr_pcnt;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	annotation__update_column_widths(notes);
 	sym->annotate2 = 1;
 
@@ -2504,30 +2355,18 @@ int annotate_get_insn_location(struct arch *arch, struct disasm_line *dl,
 	for_each_insn_op_loc(loc, i, op_loc) {
 		const char *insn_str = ops->source.raw;
 		bool multi_regs = ops->source.multi_regs;
-<<<<<<< HEAD
-=======
 		bool mem_ref = ops->source.mem_ref;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (i == INSN_OP_TARGET) {
 			insn_str = ops->target.raw;
 			multi_regs = ops->target.multi_regs;
-<<<<<<< HEAD
-=======
 			mem_ref = ops->target.mem_ref;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		/* Invalidate the register by default */
 		op_loc->reg1 = -1;
 		op_loc->reg2 = -1;
 
-<<<<<<< HEAD
-		if (insn_str == NULL)
-			continue;
-
-		if (strchr(insn_str, arch->objdump.memory_ref_char)) {
-=======
 		if (insn_str == NULL) {
 			if (!arch__is(arch, "powerpc"))
 				continue;
@@ -2543,7 +2382,6 @@ int annotate_get_insn_location(struct arch *arch, struct disasm_line *dl,
 			op_loc->multi_regs = multi_regs;
 			get_powerpc_regs(dl->raw.raw_insn, !i, op_loc);
 		} else if (strchr(insn_str, arch->objdump.memory_ref_char)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			op_loc->mem_ref = true;
 			op_loc->multi_regs = multi_regs;
 			extract_reg_offset(arch, insn_str, op_loc);
@@ -2623,11 +2461,7 @@ static struct annotated_item_stat *annotate_data_stat(struct list_head *head,
 		return NULL;
 
 	istat->name = strdup(name);
-<<<<<<< HEAD
-	if (istat->name == NULL) {
-=======
 	if ((istat->name == NULL) || (!strlen(istat->name))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		free(istat);
 		return NULL;
 	}
@@ -2641,10 +2475,7 @@ static bool is_stack_operation(struct arch *arch, struct disasm_line *dl)
 	if (arch__is(arch, "x86")) {
 		if (!strncmp(dl->ins.name, "push", 4) ||
 		    !strncmp(dl->ins.name, "pop", 3) ||
-<<<<<<< HEAD
-=======
 		    !strncmp(dl->ins.name, "call", 4) ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    !strncmp(dl->ins.name, "ret", 3))
 			return true;
 	}
@@ -2728,8 +2559,6 @@ u64 annotate_calc_pcrel(struct map_symbol *ms, u64 ip, int offset,
 	return map__rip_2objdump(ms->map, addr);
 }
 
-<<<<<<< HEAD
-=======
 static struct debuginfo_cache {
 	struct dso *dso;
 	struct debuginfo *dbg;
@@ -2744,7 +2573,6 @@ void debuginfo_cache__delete(void)
 	di_cache.dbg = NULL;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * hist_entry__get_data_type - find data type for given hist entry
  * @he: hist entry
@@ -2779,8 +2607,6 @@ struct annotated_data_type *hist_entry__get_data_type(struct hist_entry *he)
 		return NULL;
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * di_cache holds a pair of values, but code below assumes
 	 * di_cache.dso can be compared/updated and di_cache.dbg can be
@@ -2802,7 +2628,6 @@ struct annotated_data_type *hist_entry__get_data_type(struct hist_entry *he)
 		return NULL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Make sure it has the disasm of the function */
 	if (symbol__annotate(ms, evsel, &arch) < 0) {
 		ann_data_stat.no_insn++;
@@ -2847,10 +2672,7 @@ retry:
 			.ip = ms->sym->start + dl->al.offset,
 			.cpumode = he->cpumode,
 			.op = op_loc,
-<<<<<<< HEAD
-=======
 			.di = di_cache.dbg,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		if (!op_loc->mem_ref && op_loc->segment == INSN_SEG_NONE)

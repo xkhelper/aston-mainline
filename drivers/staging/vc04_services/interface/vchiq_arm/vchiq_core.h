@@ -471,11 +471,6 @@ extern void
 remote_event_pollall(struct vchiq_state *state);
 
 extern int
-<<<<<<< HEAD
-vchiq_bulk_transfer(struct vchiq_instance *instance, unsigned int handle, void *offset,
-		    void __user *uoffset, int size, void *userdata, enum vchiq_bulk_mode mode,
-		    enum vchiq_bulk_dir dir);
-=======
 vchiq_bulk_xfer_waiting_interruptible(struct vchiq_instance *instance,
 				      unsigned int handle, struct bulk_waiter *userdata);
 
@@ -489,7 +484,6 @@ vchiq_bulk_xfer_callback_interruptible(struct vchiq_instance *instance, unsigned
 				       void *offset, void __user *uoffset, int size,
 				       enum vchiq_bulk_mode mode, void *userdata,
 				       enum vchiq_bulk_dir dir);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern void
 vchiq_dump_state(struct seq_file *f, struct vchiq_state *state);

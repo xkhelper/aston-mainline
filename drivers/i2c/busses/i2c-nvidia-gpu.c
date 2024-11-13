@@ -16,11 +16,7 @@
 #include <linux/pm_runtime.h>
 #include <linux/power_supply.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "i2c-ccgx-ucsi.h"
 

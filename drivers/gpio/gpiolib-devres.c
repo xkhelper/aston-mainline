@@ -6,17 +6,6 @@
  * Copyright (c) 2011 John Crispin <john@phrozen.org>
  */
 
-<<<<<<< HEAD
-#include <linux/module.h>
-#include <linux/err.h>
-#include <linux/gpio.h>
-#include <linux/gpio/consumer.h>
-#include <linux/device.h>
-#include <linux/gfp.h>
-
-#include "gpiolib.h"
-
-=======
 #include <linux/device.h>
 #include <linux/err.h>
 #include <linux/export.h>
@@ -30,7 +19,6 @@
 struct fwnode_handle;
 struct lock_class_key;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void devm_gpiod_release(struct device *dev, void *res)
 {
 	struct gpio_desc **desc = res;
@@ -68,14 +56,11 @@ static int devm_gpiod_match_array(struct device *dev, void *res, void *data)
  * Managed gpiod_get(). GPIO descriptors returned from this function are
  * automatically disposed on driver detach. See gpiod_get() for detailed
  * information about behavior and return values.
-<<<<<<< HEAD
-=======
  *
  * Returns:
  * The GPIO descriptor corresponding to the function @con_id of device
  * dev, %-ENOENT if no GPIO has been assigned to the requested function, or
  * another IS_ERR() code if an error occurred while trying to acquire the GPIO.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct gpio_desc *__must_check devm_gpiod_get(struct device *dev,
 					      const char *con_id,
@@ -94,14 +79,11 @@ EXPORT_SYMBOL_GPL(devm_gpiod_get);
  * Managed gpiod_get_optional(). GPIO descriptors returned from this function
  * are automatically disposed on driver detach. See gpiod_get_optional() for
  * detailed information about behavior and return values.
-<<<<<<< HEAD
-=======
  *
  * Returns:
  * The GPIO descriptor corresponding to the function @con_id of device
  * dev, NULL if no GPIO has been assigned to the requested function, or
  * another IS_ERR() code if an error occurred while trying to acquire the GPIO.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct gpio_desc *__must_check devm_gpiod_get_optional(struct device *dev,
 						       const char *con_id,
@@ -121,14 +103,11 @@ EXPORT_SYMBOL_GPL(devm_gpiod_get_optional);
  * Managed gpiod_get_index(). GPIO descriptors returned from this function are
  * automatically disposed on driver detach. See gpiod_get_index() for detailed
  * information about behavior and return values.
-<<<<<<< HEAD
-=======
  *
  * Returns:
  * The GPIO descriptor corresponding to the function @con_id of device
  * dev, %-ENOENT if no GPIO has been assigned to the requested function, or
  * another IS_ERR() code if an error occurred while trying to acquire the GPIO.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct gpio_desc *__must_check devm_gpiod_get_index(struct device *dev,
 						    const char *con_id,
@@ -181,15 +160,10 @@ EXPORT_SYMBOL_GPL(devm_gpiod_get_index);
  * GPIO descriptors returned from this function are automatically disposed on
  * driver detach.
  *
-<<<<<<< HEAD
- * On successful request the GPIO pin is configured in accordance with
- * provided @flags.
-=======
  * Returns:
  * The GPIO descriptor corresponding to the function @con_id of device
  * dev, %-ENOENT if no GPIO has been assigned to the requested function, or
  * another IS_ERR() code if an error occurred while trying to acquire the GPIO.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct gpio_desc *devm_fwnode_gpiod_get_index(struct device *dev,
 					      struct fwnode_handle *fwnode,
@@ -229,14 +203,11 @@ EXPORT_SYMBOL_GPL(devm_fwnode_gpiod_get_index);
  * function are automatically disposed on driver detach. See
  * gpiod_get_index_optional() for detailed information about behavior and
  * return values.
-<<<<<<< HEAD
-=======
  *
  * Returns:
  * The GPIO descriptor corresponding to the function @con_id of device
  * dev, %NULL if no GPIO has been assigned to the requested function, or
  * another IS_ERR() code if an error occurred while trying to acquire the GPIO.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct gpio_desc *__must_check devm_gpiod_get_index_optional(struct device *dev,
 							     const char *con_id,
@@ -262,15 +233,12 @@ EXPORT_SYMBOL_GPL(devm_gpiod_get_index_optional);
  * Managed gpiod_get_array(). GPIO descriptors returned from this function are
  * automatically disposed on driver detach. See gpiod_get_array() for detailed
  * information about behavior and return values.
-<<<<<<< HEAD
-=======
  *
  * Returns:
  * The GPIO descriptors corresponding to the function @con_id of device
  * dev, %-ENOENT if no GPIO has been assigned to the requested function,
  * or another IS_ERR() code if an error occurred while trying to acquire
  * the GPIOs.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct gpio_descs *__must_check devm_gpiod_get_array(struct device *dev,
 						     const char *con_id,
@@ -307,15 +275,12 @@ EXPORT_SYMBOL_GPL(devm_gpiod_get_array);
  * function are automatically disposed on driver detach.
  * See gpiod_get_array_optional() for detailed information about behavior and
  * return values.
-<<<<<<< HEAD
-=======
  *
  * Returns:
  * The GPIO descriptors corresponding to the function @con_id of device
  * dev, %NULL if no GPIO has been assigned to the requested function,
  * or another IS_ERR() code if an error occurred while trying to acquire
  * the GPIOs.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct gpio_descs *__must_check
 devm_gpiod_get_array_optional(struct device *dev, const char *con_id,
@@ -393,79 +358,6 @@ void devm_gpiod_put_array(struct device *dev, struct gpio_descs *descs)
 }
 EXPORT_SYMBOL_GPL(devm_gpiod_put_array);
 
-<<<<<<< HEAD
-static void devm_gpio_release(struct device *dev, void *res)
-{
-	unsigned *gpio = res;
-
-	gpio_free(*gpio);
-}
-
-/**
- *      devm_gpio_request - request a GPIO for a managed device
- *      @dev: device to request the GPIO for
- *      @gpio: GPIO to allocate
- *      @label: the name of the requested GPIO
- *
- *      Except for the extra @dev argument, this function takes the
- *      same arguments and performs the same function as
- *      gpio_request().  GPIOs requested with this function will be
- *      automatically freed on driver detach.
- */
-int devm_gpio_request(struct device *dev, unsigned gpio, const char *label)
-{
-	unsigned *dr;
-	int rc;
-
-	dr = devres_alloc(devm_gpio_release, sizeof(unsigned), GFP_KERNEL);
-	if (!dr)
-		return -ENOMEM;
-
-	rc = gpio_request(gpio, label);
-	if (rc) {
-		devres_free(dr);
-		return rc;
-	}
-
-	*dr = gpio;
-	devres_add(dev, dr);
-
-	return 0;
-}
-EXPORT_SYMBOL_GPL(devm_gpio_request);
-
-/**
- *	devm_gpio_request_one - request a single GPIO with initial setup
- *	@dev:   device to request for
- *	@gpio:	the GPIO number
- *	@flags:	GPIO configuration as specified by GPIOF_*
- *	@label:	a literal description string of this GPIO
- */
-int devm_gpio_request_one(struct device *dev, unsigned gpio,
-			  unsigned long flags, const char *label)
-{
-	unsigned *dr;
-	int rc;
-
-	dr = devres_alloc(devm_gpio_release, sizeof(unsigned), GFP_KERNEL);
-	if (!dr)
-		return -ENOMEM;
-
-	rc = gpio_request_one(gpio, flags, label);
-	if (rc) {
-		devres_free(dr);
-		return rc;
-	}
-
-	*dr = gpio;
-	devres_add(dev, dr);
-
-	return 0;
-}
-EXPORT_SYMBOL_GPL(devm_gpio_request_one);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void devm_gpio_chip_release(void *data)
 {
 	struct gpio_chip *gc = data;

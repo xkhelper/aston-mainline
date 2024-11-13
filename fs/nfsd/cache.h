@@ -10,11 +10,7 @@
 #define NFSCACHE_H
 
 #include <linux/sunrpc/svc.h>
-<<<<<<< HEAD
-#include "netns.h"
-=======
 #include "nfsd.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Representation of a reply cache entry.

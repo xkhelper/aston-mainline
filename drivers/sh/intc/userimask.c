@@ -32,16 +32,11 @@ store_intc_userimask(struct device *dev,
 		     const char *buf, size_t count)
 {
 	unsigned long level;
-<<<<<<< HEAD
-
-	level = simple_strtoul(buf, NULL, 10);
-=======
 	int ret;
 
 	ret = kstrtoul(buf, 10, &level);
 	if (ret != 0)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Minimal acceptable IRQ levels are in the 2 - 16 range, but

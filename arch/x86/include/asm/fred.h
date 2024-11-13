@@ -36,10 +36,7 @@
 
 #ifdef CONFIG_X86_FRED
 #include <linux/kernel.h>
-<<<<<<< HEAD
-=======
 #include <linux/sched/task_stack.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/ptrace.h>
 
@@ -88,15 +85,6 @@ static __always_inline void fred_entry_from_kvm(unsigned int type, unsigned int 
 }
 
 void cpu_init_fred_exceptions(void);
-<<<<<<< HEAD
-void fred_complete_exception_setup(void);
-
-#else /* CONFIG_X86_FRED */
-static __always_inline unsigned long fred_event_data(struct pt_regs *regs) { return 0; }
-static inline void cpu_init_fred_exceptions(void) { }
-static inline void fred_complete_exception_setup(void) { }
-static __always_inline void fred_entry_from_kvm(unsigned int type, unsigned int vector) { }
-=======
 void cpu_init_fred_rsps(void);
 void fred_complete_exception_setup(void);
 
@@ -124,7 +112,6 @@ static inline void fred_complete_exception_setup(void) { }
 static inline void fred_entry_from_kvm(unsigned int type, unsigned int vector) { }
 static inline void fred_sync_rsp0(unsigned long rsp0) { }
 static inline void fred_update_rsp0(void) { }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_X86_FRED */
 #endif /* !__ASSEMBLY__ */
 

@@ -31,17 +31,10 @@ static u64 sparx5_mirror_port_get(struct sparx5 *sparx5, u32 idx)
 /* Add port to mirror (only front ports) */
 static void sparx5_mirror_port_add(struct sparx5 *sparx5, u32 idx, u32 portno)
 {
-<<<<<<< HEAD
-	u32 val, reg = portno;
-
-	reg = portno / BITS_PER_BYTE;
-	val = BIT(portno % BITS_PER_BYTE);
-=======
 	u64 reg = portno;
 	u32 val;
 
 	val = BIT(do_div(reg, 32));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (reg == 0)
 		return spx5_rmw(val, val, sparx5, ANA_AC_PROBE_PORT_CFG(idx));
@@ -52,17 +45,10 @@ static void sparx5_mirror_port_add(struct sparx5 *sparx5, u32 idx, u32 portno)
 /* Delete port from mirror (only front ports) */
 static void sparx5_mirror_port_del(struct sparx5 *sparx5, u32 idx, u32 portno)
 {
-<<<<<<< HEAD
-	u32 val, reg = portno;
-
-	reg = portno / BITS_PER_BYTE;
-	val = BIT(portno % BITS_PER_BYTE);
-=======
 	u64 reg = portno;
 	u32 val;
 
 	val = BIT(do_div(reg, 32));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (reg == 0)
 		return spx5_rmw(0, val, sparx5, ANA_AC_PROBE_PORT_CFG(idx));

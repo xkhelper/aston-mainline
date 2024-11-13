@@ -527,12 +527,9 @@ static int rtl8211f_led_hw_control_get(struct phy_device *phydev, u8 index,
 {
 	int val;
 
-<<<<<<< HEAD
-=======
 	if (index >= RTL8211F_LED_COUNT)
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	val = phy_read_paged(phydev, 0xd04, RTL8211F_LEDCR);
 	if (val < 0)
 		return val;
@@ -1084,8 +1081,6 @@ static int rtl8221b_vn_cg_c45_match_phy_device(struct phy_device *phydev)
 	return rtlgen_is_c45_match(phydev, RTL_8221B_VN_CG, true);
 }
 
-<<<<<<< HEAD
-=======
 static int rtl8251b_c22_match_phy_device(struct phy_device *phydev)
 {
 	return rtlgen_is_c45_match(phydev, RTL_8251B, false);
@@ -1096,7 +1091,6 @@ static int rtl8251b_c45_match_phy_device(struct phy_device *phydev)
 	return rtlgen_is_c45_match(phydev, RTL_8251B, true);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rtlgen_resume(struct phy_device *phydev)
 {
 	int ret = genphy_resume(phydev);
@@ -1434,11 +1428,7 @@ static struct phy_driver realtek_drvs[] = {
 		.suspend        = genphy_c45_pma_suspend,
 		.resume         = rtlgen_c45_resume,
 	}, {
-<<<<<<< HEAD
-		PHY_ID_MATCH_EXACT(0x001cc862),
-=======
 		.match_phy_device = rtl8251b_c45_match_phy_device,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name           = "RTL8251B 5Gbps PHY",
 		.get_features   = rtl822x_get_features,
 		.config_aneg    = rtl822x_config_aneg,
@@ -1448,8 +1438,6 @@ static struct phy_driver realtek_drvs[] = {
 		.read_page      = rtl821x_read_page,
 		.write_page     = rtl821x_write_page,
 	}, {
-<<<<<<< HEAD
-=======
 		.match_phy_device = rtl8251b_c22_match_phy_device,
 		.name           = "RTL8126A-internal 5Gbps PHY",
 		.get_features   = rtl822x_get_features,
@@ -1462,7 +1450,6 @@ static struct phy_driver realtek_drvs[] = {
 		.read_mmd	= rtl822x_read_mmd,
 		.write_mmd	= rtl822x_write_mmd,
 	}, {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		PHY_ID_MATCH_EXACT(0x001ccad0),
 		.name		= "RTL8224 2.5Gbps PHY",
 		.get_features   = rtl822x_c45_get_features,

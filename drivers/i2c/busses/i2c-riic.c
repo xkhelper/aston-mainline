@@ -63,11 +63,8 @@
 #define ICMR3_ACKWP	0x10
 #define ICMR3_ACKBT	0x08
 
-<<<<<<< HEAD
-=======
 #define ICFER_FMPE	0x80
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ICIER_TIE	0x80
 #define ICIER_TEIE	0x40
 #define ICIER_RIE	0x20
@@ -85,10 +82,7 @@ enum riic_reg_list {
 	RIIC_ICCR2,
 	RIIC_ICMR1,
 	RIIC_ICMR3,
-<<<<<<< HEAD
-=======
 	RIIC_ICFER,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	RIIC_ICSER,
 	RIIC_ICIER,
 	RIIC_ICSR2,
@@ -100,12 +94,8 @@ enum riic_reg_list {
 };
 
 struct riic_of_data {
-<<<<<<< HEAD
-	u8 regs[RIIC_REG_END];
-=======
 	const u8 *regs;
 	bool fast_mode_plus;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct riic_dev {
@@ -119,11 +109,8 @@ struct riic_dev {
 	struct completion msg_done;
 	struct i2c_adapter adapter;
 	struct clk *clk;
-<<<<<<< HEAD
-=======
 	struct reset_control *rstc;
 	struct i2c_timings i2c_t;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct riic_irq_desc {
@@ -150,13 +137,6 @@ static inline void riic_clear_set_bit(struct riic_dev *riic, u8 clear, u8 set, u
 static int riic_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 {
 	struct riic_dev *riic = i2c_get_adapdata(adap);
-<<<<<<< HEAD
-	unsigned long time_left;
-	int i;
-	u8 start_bit;
-
-	pm_runtime_get_sync(adap->dev.parent);
-=======
 	struct device *dev = adap->dev.parent;
 	unsigned long time_left;
 	int i, ret;
@@ -165,7 +145,6 @@ static int riic_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 	ret = pm_runtime_resume_and_get(dev);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (riic_readb(riic, RIIC_ICCR2) & ICCR2_BBSY) {
 		riic->err = -EBUSY;
@@ -198,12 +177,8 @@ static int riic_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 	}
 
  out:
-<<<<<<< HEAD
-	pm_runtime_put(adap->dev.parent);
-=======
 	pm_runtime_mark_last_busy(dev);
 	pm_runtime_put_autosuspend(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return riic->err ?: num;
 }
@@ -333,23 +308,6 @@ static const struct i2c_algorithm riic_algo = {
 	.functionality = riic_func,
 };
 
-<<<<<<< HEAD
-static int riic_init_hw(struct riic_dev *riic, struct i2c_timings *t)
-{
-	int ret = 0;
-	unsigned long rate;
-	int total_ticks, cks, brl, brh;
-
-	pm_runtime_get_sync(riic->adapter.dev.parent);
-
-	if (t->bus_freq_hz > I2C_MAX_FAST_MODE_FREQ) {
-		dev_err(&riic->adapter.dev,
-			"unsupported bus speed (%dHz). %d max\n",
-			t->bus_freq_hz, I2C_MAX_FAST_MODE_FREQ);
-		ret = -EINVAL;
-		goto out;
-	}
-=======
 static int riic_init_hw(struct riic_dev *riic)
 {
 	int ret;
@@ -365,7 +323,6 @@ static int riic_init_hw(struct riic_dev *riic)
 		return dev_err_probe(&riic->adapter.dev, -EINVAL,
 				     "unsupported bus speed %uHz (%u max)\n",
 				     t->bus_freq_hz, max_freq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rate = clk_get_rate(riic->clk);
 
@@ -402,12 +359,7 @@ static int riic_init_hw(struct riic_dev *riic)
 	if (brl > (0x1F + 3)) {
 		dev_err(&riic->adapter.dev, "invalid speed (%lu). Too slow.\n",
 			(unsigned long)t->bus_freq_hz);
-<<<<<<< HEAD
-		ret = -EINVAL;
-		goto out;
-=======
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	brh = total_ticks - brl;
@@ -439,13 +391,10 @@ static int riic_init_hw(struct riic_dev *riic)
 		 t->scl_fall_ns / (1000000000 / rate),
 		 t->scl_rise_ns / (1000000000 / rate), cks, brl, brh);
 
-<<<<<<< HEAD
-=======
 	ret = pm_runtime_resume_and_get(dev);
 	if (ret)
 		return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Changing the order of accessing IICRST and ICE may break things! */
 	riic_writeb(riic, ICCR1_IICRST | ICCR1_SOWP, RIIC_ICCR1);
 	riic_clear_set_bit(riic, 0, ICCR1_ICE, RIIC_ICCR1);
@@ -457,13 +406,6 @@ static int riic_init_hw(struct riic_dev *riic)
 	riic_writeb(riic, 0, RIIC_ICSER);
 	riic_writeb(riic, ICMR3_ACKWP | ICMR3_RDRFS, RIIC_ICMR3);
 
-<<<<<<< HEAD
-	riic_clear_set_bit(riic, ICCR1_IICRST, 0, RIIC_ICCR1);
-
-out:
-	pm_runtime_put(riic->adapter.dev.parent);
-	return ret;
-=======
 	if (fast_mode_plus && t->bus_freq_hz > I2C_MAX_FAST_MODE_FREQ)
 		riic_clear_set_bit(riic, 0, ICFER_FMPE, RIIC_ICFER);
 
@@ -472,7 +414,6 @@ out:
 	pm_runtime_mark_last_busy(dev);
 	pm_runtime_put_autosuspend(dev);
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct riic_irq_desc riic_irqs[] = {
@@ -490,22 +431,12 @@ static void riic_reset_control_assert(void *data)
 
 static int riic_i2c_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
-	struct riic_dev *riic;
-	struct i2c_adapter *adap;
-	struct i2c_timings i2c_t;
-	struct reset_control *rstc;
-	int i, ret;
-
-	riic = devm_kzalloc(&pdev->dev, sizeof(*riic), GFP_KERNEL);
-=======
 	struct device *dev = &pdev->dev;
 	struct riic_dev *riic;
 	struct i2c_adapter *adap;
 	int i, ret;
 
 	riic = devm_kzalloc(dev, sizeof(*riic), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!riic)
 		return -ENOMEM;
 
@@ -513,24 +444,6 @@ static int riic_i2c_probe(struct platform_device *pdev)
 	if (IS_ERR(riic->base))
 		return PTR_ERR(riic->base);
 
-<<<<<<< HEAD
-	riic->clk = devm_clk_get(&pdev->dev, NULL);
-	if (IS_ERR(riic->clk)) {
-		dev_err(&pdev->dev, "missing controller clock");
-		return PTR_ERR(riic->clk);
-	}
-
-	rstc = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
-	if (IS_ERR(rstc))
-		return dev_err_probe(&pdev->dev, PTR_ERR(rstc),
-				     "Error: missing reset ctrl\n");
-
-	ret = reset_control_deassert(rstc);
-	if (ret)
-		return ret;
-
-	ret = devm_add_action_or_reset(&pdev->dev, riic_reset_control_assert, rstc);
-=======
 	riic->clk = devm_clk_get(dev, NULL);
 	if (IS_ERR(riic->clk)) {
 		dev_err(dev, "missing controller clock");
@@ -547,7 +460,6 @@ static int riic_i2c_probe(struct platform_device *pdev)
 		return ret;
 
 	ret = devm_add_action_or_reset(dev, riic_reset_control_assert, riic->rstc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -556,44 +468,21 @@ static int riic_i2c_probe(struct platform_device *pdev)
 		if (ret < 0)
 			return ret;
 
-<<<<<<< HEAD
-		ret = devm_request_irq(&pdev->dev, ret, riic_irqs[i].isr,
-				       0, riic_irqs[i].name, riic);
-		if (ret) {
-			dev_err(&pdev->dev, "failed to request irq %s\n", riic_irqs[i].name);
-=======
 		ret = devm_request_irq(dev, ret, riic_irqs[i].isr,
 				       0, riic_irqs[i].name, riic);
 		if (ret) {
 			dev_err(dev, "failed to request irq %s\n", riic_irqs[i].name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 	}
 
-<<<<<<< HEAD
-	riic->info = of_device_get_match_data(&pdev->dev);
-=======
 	riic->info = of_device_get_match_data(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	adap = &riic->adapter;
 	i2c_set_adapdata(adap, riic);
 	strscpy(adap->name, "Renesas RIIC adapter", sizeof(adap->name));
 	adap->owner = THIS_MODULE;
 	adap->algo = &riic_algo;
-<<<<<<< HEAD
-	adap->dev.parent = &pdev->dev;
-	adap->dev.of_node = pdev->dev.of_node;
-
-	init_completion(&riic->msg_done);
-
-	i2c_parse_fw_timings(&pdev->dev, &i2c_t, true);
-
-	pm_runtime_enable(&pdev->dev);
-
-	ret = riic_init_hw(riic, &i2c_t);
-=======
 	adap->dev.parent = dev;
 	adap->dev.of_node = dev->of_node;
 
@@ -607,7 +496,6 @@ static int riic_i2c_probe(struct platform_device *pdev)
 	pm_runtime_enable(dev);
 
 	ret = riic_init_hw(riic);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto out;
 
@@ -617,67 +505,18 @@ static int riic_i2c_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, riic);
 
-<<<<<<< HEAD
-	dev_info(&pdev->dev, "registered with %dHz bus speed\n",
-		 i2c_t.bus_freq_hz);
-	return 0;
-
-out:
-	pm_runtime_disable(&pdev->dev);
-=======
 	dev_info(dev, "registered with %dHz bus speed\n", riic->i2c_t.bus_freq_hz);
 	return 0;
 
 out:
 	pm_runtime_disable(dev);
 	pm_runtime_dont_use_autosuspend(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
 static void riic_i2c_remove(struct platform_device *pdev)
 {
 	struct riic_dev *riic = platform_get_drvdata(pdev);
-<<<<<<< HEAD
-
-	pm_runtime_get_sync(&pdev->dev);
-	riic_writeb(riic, 0, RIIC_ICIER);
-	pm_runtime_put(&pdev->dev);
-	i2c_del_adapter(&riic->adapter);
-	pm_runtime_disable(&pdev->dev);
-}
-
-static const struct riic_of_data riic_rz_a_info = {
-	.regs = {
-		[RIIC_ICCR1] = 0x00,
-		[RIIC_ICCR2] = 0x04,
-		[RIIC_ICMR1] = 0x08,
-		[RIIC_ICMR3] = 0x10,
-		[RIIC_ICSER] = 0x18,
-		[RIIC_ICIER] = 0x1c,
-		[RIIC_ICSR2] = 0x24,
-		[RIIC_ICBRL] = 0x34,
-		[RIIC_ICBRH] = 0x38,
-		[RIIC_ICDRT] = 0x3c,
-		[RIIC_ICDRR] = 0x40,
-	},
-};
-
-static const struct riic_of_data riic_rz_v2h_info = {
-	.regs = {
-		[RIIC_ICCR1] = 0x00,
-		[RIIC_ICCR2] = 0x01,
-		[RIIC_ICMR1] = 0x02,
-		[RIIC_ICMR3] = 0x04,
-		[RIIC_ICSER] = 0x06,
-		[RIIC_ICIER] = 0x07,
-		[RIIC_ICSR2] = 0x09,
-		[RIIC_ICBRL] = 0x10,
-		[RIIC_ICBRH] = 0x11,
-		[RIIC_ICDRT] = 0x12,
-		[RIIC_ICDRR] = 0x13,
-	},
-=======
 	struct device *dev = &pdev->dev;
 	int ret;
 
@@ -782,15 +621,11 @@ static int riic_i2c_resume(struct device *dev)
 
 static const struct dev_pm_ops riic_i2c_pm_ops = {
 	SYSTEM_SLEEP_PM_OPS(riic_i2c_suspend, riic_i2c_resume)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct of_device_id riic_i2c_dt_ids[] = {
 	{ .compatible = "renesas,riic-rz", .data = &riic_rz_a_info },
-<<<<<<< HEAD
-=======
 	{ .compatible = "renesas,riic-r7s72100", .data =  &riic_rz_a1h_info, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "renesas,riic-r9a09g057", .data = &riic_rz_v2h_info },
 	{ /* Sentinel */ },
 };
@@ -801,10 +636,7 @@ static struct platform_driver riic_i2c_driver = {
 	.driver		= {
 		.name	= "i2c-riic",
 		.of_match_table = riic_i2c_dt_ids,
-<<<<<<< HEAD
-=======
 		.pm	= pm_ptr(&riic_i2c_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

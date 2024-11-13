@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2015, 2018, The Linux Foundation. All rights reserved.
-<<<<<<< HEAD
- * Copyright (c) 2021, 2023, Qualcomm Innovation Center, Inc. All rights reserved.
-=======
  * Copyright (c) 2021, 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/kernel.h>
@@ -44,11 +40,7 @@
 
 #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
 # define PLL_POST_DIV_SHIFT	8
-<<<<<<< HEAD
-# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
-=======
 # define PLL_POST_DIV_MASK(p)	GENMASK((p)->width ? (p)->width - 1 : 3, 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # define PLL_ALPHA_MSB		BIT(15)
 # define PLL_ALPHA_EN		BIT(24)
 # define PLL_ALPHA_MODE		BIT(25)
@@ -1721,11 +1713,7 @@ static int __alpha_pll_trion_set_rate(struct clk_hw *hw, unsigned long rate,
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
-=======
 	regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
 
 	/* Latch the PLL input */
@@ -1844,8 +1832,6 @@ const struct clk_ops clk_alpha_pll_agera_ops = {
 };
 EXPORT_SYMBOL_GPL(clk_alpha_pll_agera_ops);
 
-<<<<<<< HEAD
-=======
 /**
  * clk_lucid_5lpe_pll_configure - configure the lucid 5lpe pll
  *
@@ -1898,7 +1884,6 @@ void clk_lucid_5lpe_pll_configure(struct clk_alpha_pll *pll, struct regmap *regm
 }
 EXPORT_SYMBOL_GPL(clk_lucid_5lpe_pll_configure);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int alpha_pll_lucid_5lpe_enable(struct clk_hw *hw)
 {
 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
@@ -2741,8 +2726,6 @@ const struct clk_ops clk_alpha_pll_stromer_plus_ops = {
 	.set_rate = clk_alpha_pll_stromer_plus_set_rate,
 };
 EXPORT_SYMBOL_GPL(clk_alpha_pll_stromer_plus_ops);
-<<<<<<< HEAD
-=======
 
 void clk_regera_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
 			     const struct alpha_pll_config *config)
@@ -2773,4 +2756,3 @@ const struct clk_ops clk_alpha_pll_regera_ops = {
 	.set_rate = clk_zonda_pll_set_rate,
 };
 EXPORT_SYMBOL_GPL(clk_alpha_pll_regera_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

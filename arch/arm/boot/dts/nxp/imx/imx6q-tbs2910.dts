@@ -90,13 +90,6 @@
 		ssi-controller = <&ssi1>;
 	};
 
-<<<<<<< HEAD
-	sound-spdif {
-		compatible = "fsl,imx-audio-spdif";
-		model = "On-board SPDIF";
-		spdif-controller = <&spdif>;
-		spdif-out;
-=======
 	spdif_out: spdif-out {
 		compatible = "linux,spdif-dit";
 		#sound-dai-cells = <0>;
@@ -107,7 +100,6 @@
 		model = "On-board SPDIF";
 		audio-cpu = <&spdif>;
 		audio-codec = <&spdif_out>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

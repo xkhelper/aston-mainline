@@ -2518,11 +2518,7 @@ static void isr_rx_monitor(struct ipw2100_priv *priv, int i,
 	 * to build this manually element by element, we can write it much
 	 * more efficiently than we can parse it. ORDER MATTERS HERE */
 	struct ipw_rt_hdr {
-<<<<<<< HEAD
-		struct ieee80211_radiotap_header rt_hdr;
-=======
 		struct ieee80211_radiotap_header_fixed rt_hdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		s8 rt_dbmsignal; /* signal in dbM, kluged to signed */
 	} *ipw_rt;
 

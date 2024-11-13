@@ -39,12 +39,8 @@
 #include "ibmveth.h"
 
 static irqreturn_t ibmveth_interrupt(int irq, void *dev_instance);
-<<<<<<< HEAD
-static void ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter);
-=======
 static void ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
 				       bool reuse);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev);
 
 static struct kobj_type ktype_veth_pool;
@@ -231,8 +227,6 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
 	for (i = 0; i < count; ++i) {
 		union ibmveth_buf_desc desc;
 
-<<<<<<< HEAD
-=======
 		free_index = pool->consumer_index;
 		index = pool->free_map[free_index];
 		skb = NULL;
@@ -243,7 +237,6 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
 		if (pool->skbuff[index])
 			goto reuse;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		skb = netdev_alloc_skb(adapter->netdev, pool->buff_size);
 
 		if (!skb) {
@@ -253,42 +246,12 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
 			break;
 		}
 
-<<<<<<< HEAD
-		free_index = pool->consumer_index;
-		pool->consumer_index++;
-		if (pool->consumer_index >= pool->size)
-			pool->consumer_index = 0;
-		index = pool->free_map[free_index];
-
-		BUG_ON(index == IBM_VETH_INVALID_MAP);
-		BUG_ON(pool->skbuff[index] != NULL);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dma_addr = dma_map_single(&adapter->vdev->dev, skb->data,
 				pool->buff_size, DMA_FROM_DEVICE);
 
 		if (dma_mapping_error(&adapter->vdev->dev, dma_addr))
 			goto failure;
 
-<<<<<<< HEAD
-		pool->free_map[free_index] = IBM_VETH_INVALID_MAP;
-		pool->dma_addr[index] = dma_addr;
-		pool->skbuff[index] = skb;
-
-		correlator = ((u64)pool->index << 32) | index;
-		*(u64 *)skb->data = correlator;
-
-		desc.fields.flags_len = IBMVETH_BUF_VALID | pool->buff_size;
-		desc.fields.address = dma_addr;
-
-		if (rx_flush) {
-			unsigned int len = min(pool->buff_size,
-						adapter->netdev->mtu +
-						IBMVETH_BUFF_OH);
-			ibmveth_flush_buffer(skb->data, len);
-		}
-=======
 		pool->dma_addr[index] = dma_addr;
 		pool->skbuff[index] = skb;
 
@@ -306,18 +269,10 @@ reuse:
 		correlator = ((u64)pool->index << 32) | index;
 		*(u64 *)pool->skbuff[index]->data = correlator;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		lpar_rc = h_add_logical_lan_buffer(adapter->vdev->unit_address,
 						   desc.desc);
 
 		if (lpar_rc != H_SUCCESS) {
-<<<<<<< HEAD
-			goto failure;
-		} else {
-			buffers_added++;
-			adapter->replenish_add_buff_success++;
-		}
-=======
 			netdev_warn(adapter->netdev,
 				    "%sadd_logical_lan failed %lu\n",
 				    skb ? "" : "When recycling: ", lpar_rc);
@@ -331,7 +286,6 @@ reuse:
 
 		buffers_added++;
 		adapter->replenish_add_buff_success++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mb();
@@ -339,19 +293,6 @@ reuse:
 	return;
 
 failure:
-<<<<<<< HEAD
-	pool->free_map[free_index] = index;
-	pool->skbuff[index] = NULL;
-	if (pool->consumer_index == 0)
-		pool->consumer_index = pool->size - 1;
-	else
-		pool->consumer_index--;
-	if (!dma_mapping_error(&adapter->vdev->dev, dma_addr))
-		dma_unmap_single(&adapter->vdev->dev,
-		                 pool->dma_addr[index], pool->buff_size,
-		                 DMA_FROM_DEVICE);
-	dev_kfree_skb_any(skb);
-=======
 
 	if (dma_addr && !dma_mapping_error(&adapter->vdev->dev, dma_addr))
 		dma_unmap_single(&adapter->vdev->dev,
@@ -359,7 +300,6 @@ failure:
 		                 DMA_FROM_DEVICE);
 	dev_kfree_skb_any(pool->skbuff[index]);
 	pool->skbuff[index] = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	adapter->replenish_add_buff_failure++;
 
 	mb();
@@ -432,11 +372,7 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
 
 /* remove a buffer from a pool */
 static void ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
-<<<<<<< HEAD
-					    u64 correlator)
-=======
 					    u64 correlator, bool reuse)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int pool  = correlator >> 32;
 	unsigned int index = correlator & 0xffffffffUL;
@@ -447,17 +383,6 @@ static void ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
 	BUG_ON(index >= adapter->rx_buff_pool[pool].size);
 
 	skb = adapter->rx_buff_pool[pool].skbuff[index];
-<<<<<<< HEAD
-
-	BUG_ON(skb == NULL);
-
-	adapter->rx_buff_pool[pool].skbuff[index] = NULL;
-
-	dma_unmap_single(&adapter->vdev->dev,
-			 adapter->rx_buff_pool[pool].dma_addr[index],
-			 adapter->rx_buff_pool[pool].buff_size,
-			 DMA_FROM_DEVICE);
-=======
 	BUG_ON(skb == NULL);
 
 	/* if we are going to reuse the buffer then keep the pointers around
@@ -475,7 +400,6 @@ static void ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
 				 adapter->rx_buff_pool[pool].buff_size,
 				 DMA_FROM_DEVICE);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	free_index = adapter->rx_buff_pool[pool].producer_index;
 	adapter->rx_buff_pool[pool].producer_index++;
@@ -502,53 +426,6 @@ static inline struct sk_buff *ibmveth_rxq_get_buffer(struct ibmveth_adapter *ada
 	return adapter->rx_buff_pool[pool].skbuff[index];
 }
 
-<<<<<<< HEAD
-/* recycle the current buffer on the rx queue */
-static int ibmveth_rxq_recycle_buffer(struct ibmveth_adapter *adapter)
-{
-	u32 q_index = adapter->rx_queue.index;
-	u64 correlator = adapter->rx_queue.queue_addr[q_index].correlator;
-	unsigned int pool = correlator >> 32;
-	unsigned int index = correlator & 0xffffffffUL;
-	union ibmveth_buf_desc desc;
-	unsigned long lpar_rc;
-	int ret = 1;
-
-	BUG_ON(pool >= IBMVETH_NUM_BUFF_POOLS);
-	BUG_ON(index >= adapter->rx_buff_pool[pool].size);
-
-	if (!adapter->rx_buff_pool[pool].active) {
-		ibmveth_rxq_harvest_buffer(adapter);
-		ibmveth_free_buffer_pool(adapter, &adapter->rx_buff_pool[pool]);
-		goto out;
-	}
-
-	desc.fields.flags_len = IBMVETH_BUF_VALID |
-		adapter->rx_buff_pool[pool].buff_size;
-	desc.fields.address = adapter->rx_buff_pool[pool].dma_addr[index];
-
-	lpar_rc = h_add_logical_lan_buffer(adapter->vdev->unit_address, desc.desc);
-
-	if (lpar_rc != H_SUCCESS) {
-		netdev_dbg(adapter->netdev, "h_add_logical_lan_buffer failed "
-			   "during recycle rc=%ld", lpar_rc);
-		ibmveth_remove_buffer_from_pool(adapter, adapter->rx_queue.queue_addr[adapter->rx_queue.index].correlator);
-		ret = 0;
-	}
-
-	if (++adapter->rx_queue.index == adapter->rx_queue.num_slots) {
-		adapter->rx_queue.index = 0;
-		adapter->rx_queue.toggle = !adapter->rx_queue.toggle;
-	}
-
-out:
-	return ret;
-}
-
-static void ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter)
-{
-	ibmveth_remove_buffer_from_pool(adapter, adapter->rx_queue.queue_addr[adapter->rx_queue.index].correlator);
-=======
 static void ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
 				       bool reuse)
 {
@@ -556,7 +433,6 @@ static void ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
 
 	cor = adapter->rx_queue.queue_addr[adapter->rx_queue.index].correlator;
 	ibmveth_remove_buffer_from_pool(adapter, cor, reuse);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (++adapter->rx_queue.index == adapter->rx_queue.num_slots) {
 		adapter->rx_queue.index = 0;
@@ -1438,10 +1314,7 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
 	unsigned long lpar_rc;
 	u16 mss = 0;
 
-<<<<<<< HEAD
-=======
 restart_poll:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (frames_processed < budget) {
 		if (!ibmveth_rxq_pending_buffer(adapter))
 			break;
@@ -1451,11 +1324,7 @@ restart_poll:
 			wmb(); /* suggested by larson1 */
 			adapter->rx_invalid_buffer++;
 			netdev_dbg(netdev, "recycling invalid buffer\n");
-<<<<<<< HEAD
-			ibmveth_rxq_recycle_buffer(adapter);
-=======
 			ibmveth_rxq_harvest_buffer(adapter, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			struct sk_buff *skb, *new_skb;
 			int length = ibmveth_rxq_frame_length(adapter);
@@ -1488,18 +1357,10 @@ restart_poll:
 				if (rx_flush)
 					ibmveth_flush_buffer(skb->data,
 						length + offset);
-<<<<<<< HEAD
-				if (!ibmveth_rxq_recycle_buffer(adapter))
-					kfree_skb(skb);
-				skb = new_skb;
-			} else {
-				ibmveth_rxq_harvest_buffer(adapter);
-=======
 				ibmveth_rxq_harvest_buffer(adapter, true);
 				skb = new_skb;
 			} else {
 				ibmveth_rxq_harvest_buffer(adapter, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				skb_reserve(skb, offset);
 			}
 
@@ -1536,26 +1397,6 @@ restart_poll:
 
 	ibmveth_replenish_task(adapter);
 
-<<<<<<< HEAD
-	if (frames_processed < budget) {
-		napi_complete_done(napi, frames_processed);
-
-		/* We think we are done - reenable interrupts,
-		 * then check once more to make sure we are done.
-		 */
-		lpar_rc = h_vio_signal(adapter->vdev->unit_address,
-				       VIO_IRQ_ENABLE);
-
-		BUG_ON(lpar_rc != H_SUCCESS);
-
-		if (ibmveth_rxq_pending_buffer(adapter) &&
-		    napi_schedule(napi)) {
-			lpar_rc = h_vio_signal(adapter->vdev->unit_address,
-					       VIO_IRQ_DISABLE);
-		}
-	}
-
-=======
 	if (frames_processed == budget)
 		goto out;
 
@@ -1575,7 +1416,6 @@ restart_poll:
 	}
 
 out:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return frames_processed;
 }
 

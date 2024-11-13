@@ -24,13 +24,6 @@ RETPOLINE_CFLAGS	+= $(call cc-option,-mindirect-branch-cs-prefix)
 
 ifdef CONFIG_MITIGATION_RETHUNK
 RETHUNK_CFLAGS		:= -mfunction-return=thunk-extern
-<<<<<<< HEAD
-RETPOLINE_CFLAGS	+= $(RETHUNK_CFLAGS)
-endif
-
-export RETHUNK_CFLAGS
-export RETPOLINE_CFLAGS
-=======
 RETHUNK_RUSTFLAGS	:= -Zfunction-return=thunk-extern
 RETPOLINE_CFLAGS	+= $(RETHUNK_CFLAGS)
 RETPOLINE_RUSTFLAGS	+= $(RETHUNK_RUSTFLAGS)
@@ -40,7 +33,6 @@ export RETHUNK_CFLAGS
 export RETHUNK_RUSTFLAGS
 export RETPOLINE_CFLAGS
 export RETPOLINE_RUSTFLAGS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 export RETPOLINE_VDSO_CFLAGS
 
 # For gcc stack alignment is specified with -mpreferred-stack-boundary,
@@ -230,16 +222,10 @@ KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
 # Avoid indirect branches in kernel to deal with Spectre
 ifdef CONFIG_MITIGATION_RETPOLINE
   KBUILD_CFLAGS += $(RETPOLINE_CFLAGS)
-<<<<<<< HEAD
-  # Additionally, avoid generating expensive indirect jumps which
-  # are subject to retpolines for small number of switch cases.
-  # clang turns off jump table generation by default when under
-=======
   KBUILD_RUSTFLAGS += $(RETPOLINE_RUSTFLAGS)
   # Additionally, avoid generating expensive indirect jumps which
   # are subject to retpolines for small number of switch cases.
   # LLVM turns off jump table generation by default when under
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   # retpoline builds, however, gcc does not for x86. This has
   # only been fixed starting from gcc stable version 8.4.0 and
   # onwards, but not for older ones. See gcc bug #86952.
@@ -256,13 +242,10 @@ ifdef CONFIG_CALL_PADDING
 PADDING_CFLAGS := -fpatchable-function-entry=$(CONFIG_FUNCTION_PADDING_BYTES),$(CONFIG_FUNCTION_PADDING_BYTES)
 KBUILD_CFLAGS += $(PADDING_CFLAGS)
 export PADDING_CFLAGS
-<<<<<<< HEAD
-=======
 
 PADDING_RUSTFLAGS := -Zpatchable-function-entry=$(CONFIG_FUNCTION_PADDING_BYTES),$(CONFIG_FUNCTION_PADDING_BYTES)
 KBUILD_RUSTFLAGS += $(PADDING_RUSTFLAGS)
 export PADDING_RUSTFLAGS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 KBUILD_LDFLAGS += -m elf_$(UTS_MACHINE)

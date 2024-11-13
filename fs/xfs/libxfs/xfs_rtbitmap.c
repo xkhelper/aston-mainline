@@ -13,11 +13,8 @@
 #include "xfs_mount.h"
 #include "xfs_inode.h"
 #include "xfs_bmap.h"
-<<<<<<< HEAD
-=======
 #include "xfs_bmap_btree.h"
 #include "xfs_trans_space.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xfs_trans.h"
 #include "xfs_rtalloc.h"
 #include "xfs_error.h"
@@ -74,11 +71,7 @@ xfs_rtbuf_cache_relse(
  * Get a buffer for the bitmap or summary file block specified.
  * The buffer is returned read and locked.
  */
-<<<<<<< HEAD
-int
-=======
 static int
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 xfs_rtbuf_get(
 	struct xfs_rtalloc_args	*args,
 	xfs_fileoff_t		block,	/* block number in bitmap or summary */
@@ -147,11 +140,6 @@ xfs_rtbuf_get(
 	return 0;
 }
 
-<<<<<<< HEAD
-/*
- * Searching backward from start to limit, find the first block whose
- * allocated/free state is different from start's.
-=======
 int
 xfs_rtbitmap_read_buf(
 	struct xfs_rtalloc_args		*args,
@@ -184,16 +172,11 @@ xfs_rtsummary_read_buf(
 /*
  * Searching backward from start find the first block whose allocated/free state
  * is different from start's.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int
 xfs_rtfind_back(
 	struct xfs_rtalloc_args	*args,
 	xfs_rtxnum_t		start,	/* starting rtext to look at */
-<<<<<<< HEAD
-	xfs_rtxnum_t		limit,	/* last rtext to look at */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_rtxnum_t		*rtx)	/* out: start rtext found */
 {
 	struct xfs_mount	*mp = args->mp;
@@ -222,11 +205,7 @@ xfs_rtfind_back(
 	 */
 	word = xfs_rtx_to_rbmword(mp, start);
 	bit = (int)(start & (XFS_NBWORD - 1));
-<<<<<<< HEAD
-	len = start - limit + 1;
-=======
 	len = start + 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Compute match value, based on the bit at start: if 1 (free)
 	 * then all-ones, else all-zeroes.
@@ -367,11 +346,8 @@ xfs_rtfind_forw(
 	xfs_rtword_t		incore;
 	unsigned int		word;	/* word number in the buffer */
 
-<<<<<<< HEAD
-=======
 	ASSERT(start <= limit);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Compute and read in starting bitmap block for starting block.
 	 */
@@ -754,11 +730,7 @@ xfs_rtfree_range(
 	 * We need to find the beginning and end of the extent so we can
 	 * properly update the summary.
 	 */
-<<<<<<< HEAD
-	error = xfs_rtfind_back(args, start, 0, &preblock);
-=======
 	error = xfs_rtfind_back(args, start, &preblock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error) {
 		return error;
 	}
@@ -1050,41 +1022,24 @@ xfs_rtfree_blocks(
 	xfs_filblks_t		rtlen)
 {
 	struct xfs_mount	*mp = tp->t_mountp;
-<<<<<<< HEAD
-	xfs_rtxnum_t		start;
-	xfs_filblks_t		len;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_extlen_t		mod;
 
 	ASSERT(rtlen <= XFS_MAX_BMBT_EXTLEN);
 
-<<<<<<< HEAD
-	len = xfs_rtb_to_rtxrem(mp, rtlen, &mod);
-=======
 	mod = xfs_rtb_to_rtxoff(mp, rtlen);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (mod) {
 		ASSERT(mod == 0);
 		return -EIO;
 	}
 
-<<<<<<< HEAD
-	start = xfs_rtb_to_rtxrem(mp, rtbno, &mod);
-=======
 	mod = xfs_rtb_to_rtxoff(mp, rtbno);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (mod) {
 		ASSERT(mod == 0);
 		return -EIO;
 	}
 
-<<<<<<< HEAD
-	return xfs_rtfree_extent(tp, start, len);
-=======
 	return xfs_rtfree_extent(tp, xfs_rtb_to_rtx(mp, rtbno),
 			xfs_rtb_to_rtx(mp, rtlen));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Find all the free records within a given range. */
@@ -1092,13 +1047,8 @@ int
 xfs_rtalloc_query_range(
 	struct xfs_mount		*mp,
 	struct xfs_trans		*tp,
-<<<<<<< HEAD
-	const struct xfs_rtalloc_rec	*low_rec,
-	const struct xfs_rtalloc_rec	*high_rec,
-=======
 	xfs_rtxnum_t			start,
 	xfs_rtxnum_t			end,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_rtalloc_query_range_fn	fn,
 	void				*priv)
 {
@@ -1106,28 +1056,6 @@ xfs_rtalloc_query_range(
 		.mp			= mp,
 		.tp			= tp,
 	};
-<<<<<<< HEAD
-	struct xfs_rtalloc_rec		rec;
-	xfs_rtxnum_t			rtstart;
-	xfs_rtxnum_t			rtend;
-	xfs_rtxnum_t			high_key;
-	int				is_free;
-	int				error = 0;
-
-	if (low_rec->ar_startext > high_rec->ar_startext)
-		return -EINVAL;
-	if (low_rec->ar_startext >= mp->m_sb.sb_rextents ||
-	    low_rec->ar_startext == high_rec->ar_startext)
-		return 0;
-
-	high_key = min(high_rec->ar_startext, mp->m_sb.sb_rextents - 1);
-
-	/* Iterate the bitmap, looking for discrepancies. */
-	rtstart = low_rec->ar_startext;
-	while (rtstart <= high_key) {
-		/* Is the first block free? */
-		error = xfs_rtcheck_range(&args, rtstart, 1, 1, &rtend,
-=======
 	int				error = 0;
 
 	if (start > end)
@@ -1145,39 +1073,25 @@ xfs_rtalloc_query_range(
 
 		/* Is the first block free? */
 		error = xfs_rtcheck_range(&args, start, 1, 1, &rtend,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				&is_free);
 		if (error)
 			break;
 
 		/* How long does the extent go for? */
-<<<<<<< HEAD
-		error = xfs_rtfind_forw(&args, rtstart, high_key, &rtend);
-=======
 		error = xfs_rtfind_forw(&args, start, end, &rtend);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (error)
 			break;
 
 		if (is_free) {
-<<<<<<< HEAD
-			rec.ar_startext = rtstart;
-			rec.ar_extcount = rtend - rtstart + 1;
-=======
 			rec.ar_startext = start;
 			rec.ar_extcount = rtend - start + 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			error = fn(mp, tp, &rec, priv);
 			if (error)
 				break;
 		}
 
-<<<<<<< HEAD
-		rtstart = rtend + 1;
-=======
 		start = rtend + 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	xfs_rtbuf_cache_relse(&args);
@@ -1192,18 +1106,8 @@ xfs_rtalloc_query_all(
 	xfs_rtalloc_query_range_fn	fn,
 	void				*priv)
 {
-<<<<<<< HEAD
-	struct xfs_rtalloc_rec		keys[2];
-
-	keys[0].ar_startext = 0;
-	keys[1].ar_startext = mp->m_sb.sb_rextents - 1;
-	keys[0].ar_extcount = keys[1].ar_extcount = 0;
-
-	return xfs_rtalloc_query_range(mp, tp, &keys[0], &keys[1], fn, priv);
-=======
 	return xfs_rtalloc_query_range(mp, tp, 0, mp->m_sb.sb_rextents - 1, fn,
 			priv);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Is the given extent all free? */
@@ -1244,24 +1148,6 @@ xfs_rtbitmap_blockcount(
 	return howmany_64(rtextents, NBBY * mp->m_sb.sb_blocksize);
 }
 
-<<<<<<< HEAD
-/*
- * Compute the number of rtbitmap words needed to populate every block of a
- * bitmap that is large enough to track the given number of rt extents.
- */
-unsigned long long
-xfs_rtbitmap_wordcount(
-	struct xfs_mount	*mp,
-	xfs_rtbxlen_t		rtextents)
-{
-	xfs_filblks_t		blocks;
-
-	blocks = xfs_rtbitmap_blockcount(mp, rtextents);
-	return XFS_FSB_TO_B(mp, blocks) >> XFS_WORDLOG;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Compute the number of rtsummary blocks needed to track the given rt space. */
 xfs_filblks_t
 xfs_rtsummary_blockcount(
@@ -1275,41 +1161,6 @@ xfs_rtsummary_blockcount(
 	return XFS_B_TO_FSB(mp, rsumwords << XFS_WORDLOG);
 }
 
-<<<<<<< HEAD
-/*
- * Compute the number of rtsummary info words needed to populate every block of
- * a summary file that is large enough to track the given rt space.
- */
-unsigned long long
-xfs_rtsummary_wordcount(
-	struct xfs_mount	*mp,
-	unsigned int		rsumlevels,
-	xfs_extlen_t		rbmblocks)
-{
-	xfs_filblks_t		blocks;
-
-	blocks = xfs_rtsummary_blockcount(mp, rsumlevels, rbmblocks);
-	return XFS_FSB_TO_B(mp, blocks) >> XFS_WORDLOG;
-}
-
-/*
- * Lock both realtime free space metadata inodes for a freespace update.  If a
- * transaction is given, the inodes will be joined to the transaction and the
- * ILOCKs will be released on transaction commit.
- */
-void
-xfs_rtbitmap_lock(
-	struct xfs_trans	*tp,
-	struct xfs_mount	*mp)
-{
-	xfs_ilock(mp->m_rbmip, XFS_ILOCK_EXCL | XFS_ILOCK_RTBITMAP);
-	if (tp)
-		xfs_trans_ijoin(tp, mp->m_rbmip, XFS_ILOCK_EXCL);
-
-	xfs_ilock(mp->m_rsumip, XFS_ILOCK_EXCL | XFS_ILOCK_RTSUM);
-	if (tp)
-		xfs_trans_ijoin(tp, mp->m_rsumip, XFS_ILOCK_EXCL);
-=======
 /* Lock both realtime free space metadata inodes for a freespace update. */
 void
 xfs_rtbitmap_lock(
@@ -1329,7 +1180,6 @@ xfs_rtbitmap_trans_join(
 {
 	xfs_trans_ijoin(tp, tp->t_mountp->m_rbmip, XFS_ILOCK_EXCL);
 	xfs_trans_ijoin(tp, tp->t_mountp->m_rsumip, XFS_ILOCK_EXCL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Unlock both realtime free space metadata inodes after a freespace update. */
@@ -1369,8 +1219,6 @@ xfs_rtbitmap_unlock_shared(
 	if (rbmlock_flags & XFS_RBMLOCK_BITMAP)
 		xfs_iunlock(mp->m_rbmip, XFS_ILOCK_SHARED | XFS_ILOCK_RTBITMAP);
 }
-<<<<<<< HEAD
-=======
 
 static int
 xfs_rtfile_alloc_blocks(
@@ -1495,4 +1343,3 @@ xfs_rtfile_initialize_blocks(
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

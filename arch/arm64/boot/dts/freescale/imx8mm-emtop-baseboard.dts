@@ -11,9 +11,6 @@
 	model = "Emtop Embedded Solutions i.MX8M Mini Baseboard V1";
 	compatible = "ees,imx8mm-emtop-baseboard", "ees,imx8mm-emtop-som",
 		"fsl,imx8mm";
-<<<<<<< HEAD
-
-=======
 };
 
 &fec1 {
@@ -63,5 +60,4 @@
 			MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22                0x19
 		>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

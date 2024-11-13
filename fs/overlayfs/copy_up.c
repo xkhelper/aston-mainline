@@ -115,21 +115,12 @@ int ovl_copy_xattr(struct super_block *sb, const struct path *oldpath, struct de
 			continue;
 
 		error = security_inode_copy_up_xattr(old, name);
-<<<<<<< HEAD
-		if (error < 0 && error != -EOPNOTSUPP)
-			break;
-		if (error == 1) {
-			error = 0;
-			continue; /* Discard */
-		}
-=======
 		if (error == -ECANCELED) {
 			error = 0;
 			continue; /* Discard */
 		}
 		if (error < 0 && error != -EOPNOTSUPP)
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (is_posix_acl_xattr(name)) {
 			error = ovl_copy_acl(OVL_FS(sb), oldpath, new, name);
@@ -252,10 +243,6 @@ static int ovl_verify_area(loff_t pos, loff_t pos2, loff_t len, loff_t totlen)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
-			    struct file *new_file, loff_t len)
-=======
 static int ovl_sync_file(struct path *path)
 {
 	struct file *new_file;
@@ -274,7 +261,6 @@ static int ovl_sync_file(struct path *path)
 static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
 			    struct file *new_file, loff_t len,
 			    bool datasync)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct path datapath;
 	struct file *old_file;
@@ -372,12 +358,8 @@ static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
 
 		len -= bytes;
 	}
-<<<<<<< HEAD
-	if (!error && ovl_should_sync(ofs))
-=======
 	/* call fsync once, either now or later along with metadata */
 	if (!error && ovl_should_sync(ofs) && datasync)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = vfs_fsync(new_file, 0);
 out_fput:
 	fput(old_file);
@@ -609,10 +591,7 @@ struct ovl_copy_up_ctx {
 	bool indexed;
 	bool metacopy;
 	bool metacopy_digest;
-<<<<<<< HEAD
-=======
 	bool metadata_fsync;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int ovl_link_up(struct ovl_copy_up_ctx *c)
@@ -673,12 +652,8 @@ static int ovl_copy_up_data(struct ovl_copy_up_ctx *c, const struct path *temp)
 	if (IS_ERR(new_file))
 		return PTR_ERR(new_file);
 
-<<<<<<< HEAD
-	err = ovl_copy_up_file(ofs, c->dentry, new_file, c->stat.size);
-=======
 	err = ovl_copy_up_file(ofs, c->dentry, new_file, c->stat.size,
 			       !c->metadata_fsync);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fput(new_file);
 
 	return err;
@@ -745,13 +720,10 @@ static int ovl_copy_up_metadata(struct ovl_copy_up_ctx *c, struct dentry *temp)
 		err = ovl_set_attr(ofs, temp, &c->stat);
 	inode_unlock(temp->d_inode);
 
-<<<<<<< HEAD
-=======
 	/* fsync metadata before moving it into upper dir */
 	if (!err && ovl_should_sync(ofs) && c->metadata_fsync)
 		err = ovl_sync_file(&upperpath);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 
@@ -911,12 +883,8 @@ static int ovl_copy_up_tmpfile(struct ovl_copy_up_ctx *c)
 
 	temp = tmpfile->f_path.dentry;
 	if (!c->metacopy && c->stat.size) {
-<<<<<<< HEAD
-		err = ovl_copy_up_file(ofs, c->dentry, tmpfile, c->stat.size);
-=======
 		err = ovl_copy_up_file(ofs, c->dentry, tmpfile, c->stat.size,
 				       !c->metadata_fsync);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			goto out_fput;
 	}
@@ -1191,8 +1159,6 @@ static int ovl_copy_up_one(struct dentry *parent, struct dentry *dentry,
 	    !kgid_has_mapping(current_user_ns(), ctx.stat.gid))
 		return -EOVERFLOW;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * With metacopy disabled, we fsync after final metadata copyup, for
 	 * both regular files and directories to get atomic copyup semantics
@@ -1204,7 +1170,6 @@ static int ovl_copy_up_one(struct dentry *parent, struct dentry *dentry,
 	 */
 	ctx.metadata_fsync = !OVL_FS(dentry->d_sb)->config.metacopy &&
 			     (S_ISREG(ctx.stat.mode) || S_ISDIR(ctx.stat.mode));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ctx.metacopy = ovl_need_meta_copy_up(dentry, ctx.stat.mode, flags);
 
 	if (parent) {

@@ -310,11 +310,7 @@ struct qedf_ioreq *qedf_alloc_cmd(struct qedf_rport *fcport, u8 cmd_type)
 
 	if (!free_sqes) {
 		QEDF_INFO(&(qedf->dbg_ctx), QEDF_LOG_IO,
-<<<<<<< HEAD
-		    "Returning NULL, free_sqes=%d.\n ",
-=======
 		    "Returning NULL, free_sqes=%d.\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    free_sqes);
 		goto out_failed;
 	}

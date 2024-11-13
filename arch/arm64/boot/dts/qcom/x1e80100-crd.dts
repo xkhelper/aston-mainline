@@ -6,11 +6,8 @@
 /dts-v1/;
 
 #include <dt-bindings/gpio/gpio.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/input/gpio-keys.h>
 #include <dt-bindings/input/input.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
 
 #include "x1e80100.dtsi"
@@ -54,8 +51,6 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-<<<<<<< HEAD
-=======
 	gpio-keys {
 		compatible = "gpio-keys";
 
@@ -71,7 +66,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pmic-glink {
 		compatible = "qcom,x1e80100-pmic-glink",
 			     "qcom,sm8550-pmic-glink",
@@ -183,15 +177,9 @@
 		compatible = "qcom,x1e80100-sndcard";
 		model = "X1E80100-CRD";
 		audio-routing = "WooferLeft IN", "WSA WSA_SPK1 OUT",
-<<<<<<< HEAD
-				"TwitterLeft IN", "WSA WSA_SPK2 OUT",
-				"WooferRight IN", "WSA2 WSA_SPK2 OUT",
-				"TwitterRight IN", "WSA2 WSA_SPK2 OUT",
-=======
 				"TweeterLeft IN", "WSA WSA_SPK2 OUT",
 				"WooferRight IN", "WSA2 WSA_SPK2 OUT",
 				"TweeterRight IN", "WSA2 WSA_SPK2 OUT",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				"IN1_HPHL", "HPHL_OUT",
 				"IN2_HPHR", "HPHR_OUT",
 				"AMIC2", "MIC BIAS2",
@@ -312,8 +300,6 @@
 
 		pinctrl-names = "default";
 		pinctrl-0 = <&nvme_reg_en>;
-<<<<<<< HEAD
-=======
 
 		regulator-boot-on;
 	};
@@ -332,7 +318,6 @@
 		pinctrl-names = "default";
 
 		regulator-boot-on;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -833,8 +818,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &pcie5 {
 	perst-gpios = <&tlmm 149 GPIO_ACTIVE_LOW>;
 	wake-gpios = <&tlmm 151 GPIO_ACTIVE_LOW>;
@@ -854,7 +837,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &pcie6a {
 	perst-gpios = <&tlmm 152 GPIO_ACTIVE_LOW>;
 	wake-gpios = <&tlmm 154 GPIO_ACTIVE_LOW>;
@@ -920,13 +902,10 @@
 	vdd3-supply = <&vreg_l14b_3p0>;
 };
 
-<<<<<<< HEAD
-=======
 &smb2360_2 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &smb2360_2_eusb2_repeater {
 	vdd18-supply = <&vreg_l3d_1p8>;
 	vdd3-supply = <&vreg_l8b_3p0>;
@@ -947,10 +926,7 @@
 		sound-name-prefix = "WooferLeft";
 		vdd-1p8-supply = <&vreg_l15b_1p8>;
 		vdd-io-supply = <&vreg_l12b_1p2>;
-<<<<<<< HEAD
-=======
 		qcom,port-mapping = <1 2 3 7 10 13>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	/* WSA8845, Left Tweeter */
@@ -959,16 +935,10 @@
 		reg = <0 1>;
 		reset-gpios = <&lpass_tlmm 12 GPIO_ACTIVE_LOW>;
 		#sound-dai-cells = <0>;
-<<<<<<< HEAD
-		sound-name-prefix = "TwitterLeft";
-		vdd-1p8-supply = <&vreg_l15b_1p8>;
-		vdd-io-supply = <&vreg_l12b_1p2>;
-=======
 		sound-name-prefix = "TweeterLeft";
 		vdd-1p8-supply = <&vreg_l15b_1p8>;
 		vdd-io-supply = <&vreg_l12b_1p2>;
 		qcom,port-mapping = <4 5 6 7 11 13>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -1009,10 +979,7 @@
 		sound-name-prefix = "WooferRight";
 		vdd-1p8-supply = <&vreg_l15b_1p8>;
 		vdd-io-supply = <&vreg_l12b_1p2>;
-<<<<<<< HEAD
-=======
 		qcom,port-mapping = <1 2 3 7 10 13>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	/* WSA8845, Right Tweeter */
@@ -1021,16 +988,10 @@
 		reg = <0 1>;
 		reset-gpios = <&lpass_tlmm 13 GPIO_ACTIVE_LOW>;
 		#sound-dai-cells = <0>;
-<<<<<<< HEAD
-		sound-name-prefix = "TwitterRight";
-		vdd-1p8-supply = <&vreg_l15b_1p8>;
-		vdd-io-supply = <&vreg_l12b_1p2>;
-=======
 		sound-name-prefix = "TweeterRight";
 		vdd-1p8-supply = <&vreg_l15b_1p8>;
 		vdd-io-supply = <&vreg_l12b_1p2>;
 		qcom,port-mapping = <4 5 6 7 11 13>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -1046,15 +1007,12 @@
 		bias-disable;
 	};
 
-<<<<<<< HEAD
-=======
 	hall_int_n_default: hall-int-n-state {
 		pins = "gpio92";
 		function = "gpio";
 		bias-disable;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kybd_default: kybd-default-state {
 		pins = "gpio67";
 		function = "gpio";
@@ -1091,8 +1049,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	pcie5_default: pcie5-default-state {
 		clkreq-n-pins {
 			pins = "gpio150";
@@ -1116,7 +1072,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pcie6a_default: pcie6a-default-state {
 		clkreq-n-pins {
 			pins = "gpio153";
@@ -1168,8 +1123,6 @@
 		bias-disable;
 		output-low;
 	};
-<<<<<<< HEAD
-=======
 
 	wwan_sw_en: wwan-sw-en-state {
 		pins = "gpio221";
@@ -1177,7 +1130,6 @@
 		drive-strength = <4>;
 		bias-disable;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &uart21 {

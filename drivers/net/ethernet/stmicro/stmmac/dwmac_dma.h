@@ -22,8 +22,6 @@
 #define DMA_INTR_ENA		0x0000101c	/* Interrupt Enable */
 #define DMA_MISSED_FRAME_CTR	0x00001020	/* Missed Frame Counter */
 
-<<<<<<< HEAD
-=======
 /* Following DMA defines are channels oriented */
 #define DMA_CHAN_BASE_OFFSET			0x100
 
@@ -49,7 +47,6 @@ static inline u32 dma_chan_base_addr(u32 base, u32 chan)
 #define DMA_CHAN_RX_WATCHDOG(chan)	\
 				dma_chan_base_addr(DMA_RX_WATCHDOG, chan)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* SW Reset */
 #define DMA_BUS_MODE_SFT_RESET	0x00000001	/* Software Reset */
 
@@ -180,11 +177,7 @@ static inline u32 dma_chan_base_addr(u32 base, u32 chan)
 #define NUM_DWMAC1000_DMA_REGS	23
 #define NUM_DWMAC4_DMA_REGS	27
 
-<<<<<<< HEAD
-void dwmac_enable_dma_transmission(void __iomem *ioaddr);
-=======
 void dwmac_enable_dma_transmission(void __iomem *ioaddr, u32 chan);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void dwmac_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
 			  u32 chan, bool rx, bool tx);
 void dwmac_disable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,

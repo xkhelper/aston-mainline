@@ -2599,10 +2599,7 @@ const struct rtw89_mac_gen_def rtw89_mac_gen_be = {
 	.is_txq_empty = mac_is_txq_empty_be,
 
 	.add_chan_list = rtw89_hw_scan_add_chan_list_be,
-<<<<<<< HEAD
-=======
 	.add_chan_list_pno = rtw89_pno_scan_add_chan_list_be,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scan_offload = rtw89_fw_h2c_scan_offload_be,
 
 	.wow_config_mac = rtw89_wow_config_mac_be,

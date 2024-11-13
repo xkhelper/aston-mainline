@@ -12,10 +12,7 @@ obj-$(CONFIG_EXTCON_GPIO)	+= extcon-gpio.o
 obj-$(CONFIG_EXTCON_INTEL_INT3496) += extcon-intel-int3496.o
 obj-$(CONFIG_EXTCON_INTEL_CHT_WC) += extcon-intel-cht-wc.o
 obj-$(CONFIG_EXTCON_INTEL_MRFLD) += extcon-intel-mrfld.o
-<<<<<<< HEAD
-=======
 obj-$(CONFIG_EXTCON_LC824206XA)	+= extcon-lc824206xa.o
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_EXTCON_MAX14577)	+= extcon-max14577.o
 obj-$(CONFIG_EXTCON_MAX3355)	+= extcon-max3355.o
 obj-$(CONFIG_EXTCON_MAX77693)	+= extcon-max77693.o

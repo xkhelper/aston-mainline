@@ -128,8 +128,6 @@ static inline void list_del(struct list_head *entry)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * list_replace - replace old entry by new one
  * @old : the element to be replaced
  * @new : the new element to insert
@@ -160,7 +158,6 @@ static inline void list_replace_init(struct list_head *old,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * list_move - delete from one list and add as another's head
  * @list: the entry to move
  * @head: the head that will precede our entry
@@ -184,8 +181,6 @@ static inline void list_move_tail(struct list_head *list,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * list_is_first -- tests whether @list is the first entry in list @head
  * @list: the entry to test
  * @head: the head of the list
@@ -206,7 +201,6 @@ static inline int list_is_last(const struct list_head *list, const struct list_h
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * list_is_head - tests whether @list is the list @head
  * @list: the entry to test
  * @head: the head of the list
@@ -324,8 +318,6 @@ static inline int list_empty(const struct list_head *head)
  */
 
 #define HLIST_HEAD_INIT { .first = NULL }
-<<<<<<< HEAD
-=======
 #define INIT_HLIST_HEAD(ptr) ((ptr)->first = NULL)
 static inline void INIT_HLIST_NODE(struct hlist_node *h)
 {
@@ -383,7 +375,6 @@ static inline void hlist_del_init(struct hlist_node *n)
 		INIT_HLIST_NODE(n);
 	}
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * hlist_add_head - add a new entry at the beginning of the hlist
@@ -422,8 +413,6 @@ static inline void hlist_add_head(struct hlist_node *n, struct hlist_head *h)
 	     pos;							\
 	     pos = hlist_entry_safe((pos)->member.next, typeof(*(pos)), member))
 
-<<<<<<< HEAD
-=======
 /**
  * hlist_for_each_entry_safe - iterate over list of given type safe against removal of list entry
  * @pos:	the type * to use as a loop cursor.
@@ -436,5 +425,4 @@ static inline void hlist_add_head(struct hlist_node *n, struct hlist_head *h)
 	     pos && ({ n = pos->member.next; 1; });			\
 	     pos = hlist_entry_safe(n, typeof(*pos), member))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* LIST_H */

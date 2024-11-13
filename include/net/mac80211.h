@@ -22,11 +22,7 @@
 #include <net/cfg80211.h>
 #include <net/codel.h>
 #include <net/ieee80211_radiotap.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * DOC: Introduction
@@ -998,14 +994,9 @@ enum mac80211_tx_info_flags {
  *	of their QoS TID or other priority field values.
  * @IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX: first MLO TX, used mostly internally
  *	for sequence number assignment
-<<<<<<< HEAD
- * @IEEE80211_TX_CTRL_SCAN_TX: Indicates that this frame is transmitted
- *	due to scanning, not in normal operation on the interface.
-=======
  * @IEEE80211_TX_CTRL_DONT_USE_RATE_MASK: Don't use rate mask for this frame
  *	which is transmitted due to scanning or offchannel TX, not in normal
  *	operation on the interface.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @IEEE80211_TX_CTRL_MLO_LINK: If not @IEEE80211_LINK_UNSPECIFIED, this
  *	frame should be transmitted on the specific link. This really is
  *	only relevant for frames that do not have data present, and is
@@ -1026,11 +1017,7 @@ enum mac80211_tx_control_flags {
 	IEEE80211_TX_CTRL_NO_SEQNO		= BIT(7),
 	IEEE80211_TX_CTRL_DONT_REORDER		= BIT(8),
 	IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX	= BIT(9),
-<<<<<<< HEAD
-	IEEE80211_TX_CTRL_SCAN_TX		= BIT(10),
-=======
 	IEEE80211_TX_CTRL_DONT_USE_RATE_MASK	= BIT(10),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	IEEE80211_TX_CTRL_MLO_LINK		= 0xf0000000,
 };
 
@@ -2501,11 +2488,7 @@ struct ieee80211_link_sta {
  * @spp_amsdu: indicates whether the STA uses SPP A-MSDU or not.
  */
 struct ieee80211_sta {
-<<<<<<< HEAD
-	u8 addr[ETH_ALEN];
-=======
 	u8 addr[ETH_ALEN] __aligned(2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 aid;
 	u16 max_rx_aggregation_subframes;
 	bool wme;
@@ -3199,8 +3182,6 @@ ieee80211_get_alt_retry_rate(const struct ieee80211_hw *hw,
 void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
 
 /**
-<<<<<<< HEAD
-=======
  * ieee80211_purge_tx_queue - purge TX skb queue
  * @hw: the hardware
  * @skbs: the skbs
@@ -3214,7 +3195,6 @@ void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
 			      struct sk_buff_head *skbs);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * DOC: Hardware crypto acceleration
  *
  * mac80211 is capable of taking advantage of many hardware
@@ -6276,8 +6256,6 @@ void ieee80211_iterate_stations_atomic(struct ieee80211_hw *hw,
 				       void (*iterator)(void *data,
 						struct ieee80211_sta *sta),
 				       void *data);
-<<<<<<< HEAD
-=======
 
 /**
  * ieee80211_iterate_stations_mtx - iterate stations
@@ -6296,7 +6274,6 @@ void ieee80211_iterate_stations_mtx(struct ieee80211_hw *hw,
 						     struct ieee80211_sta *sta),
 				    void *data);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ieee80211_queue_work - add work onto the mac80211 workqueue
  *
@@ -6771,16 +6748,11 @@ void ieee80211_cqm_beacon_loss_notify(struct ieee80211_vif *vif, gfp_t gfp);
  * ieee80211_radar_detected - inform that a radar was detected
  *
  * @hw: pointer as obtained from ieee80211_alloc_hw()
-<<<<<<< HEAD
- */
-void ieee80211_radar_detected(struct ieee80211_hw *hw);
-=======
  * @chanctx_conf: Channel context on which radar is detected. Mandatory to
  *	pass a valid pointer during MLO. For non-MLO %NULL can be passed
  */
 void ieee80211_radar_detected(struct ieee80211_hw *hw,
 			      struct ieee80211_chanctx_conf *chanctx_conf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * ieee80211_chswitch_done - Complete channel switch process

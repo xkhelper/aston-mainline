@@ -14,11 +14,7 @@
 #include "notify.h"
 
 /* Updated only after ALL the mandatory features for that version are merged */
-<<<<<<< HEAD
-#define SCMI_PROTOCOL_SUPPORTED_VERSION		0x20000
-=======
 #define SCMI_PROTOCOL_SUPPORTED_VERSION		0x20001
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SCMI_BASE_NUM_SOURCES		1
 #define SCMI_BASE_MAX_CMD_ERR_COUNT	1024
@@ -46,10 +42,6 @@ struct scmi_msg_resp_base_discover_agent {
 	u8 name[SCMI_SHORT_NAME_MAX_SIZE];
 };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct scmi_msg_base_error_notify {
 	__le32 event_control;
 #define BASE_TP_NOTIFY_ALL	BIT(0)
@@ -112,10 +104,6 @@ scmi_base_vendor_id_get(const struct scmi_protocol_handle *ph, bool sub_vendor)
 	struct scmi_xfer *t;
 	struct scmi_revision_info *rev = ph->get_priv(ph);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sub_vendor) {
 		cmd = BASE_DISCOVER_SUB_VENDOR;
 		vendor_id = rev->sub_vendor_id;
@@ -396,11 +384,7 @@ static int scmi_base_protocol_init(const struct scmi_protocol_handle *ph)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	rev->major_ver = PROTOCOL_REV_MAJOR(version),
-=======
 	rev->major_ver = PROTOCOL_REV_MAJOR(version);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rev->minor_ver = PROTOCOL_REV_MINOR(version);
 	ph->set_priv(ph, rev, version);
 

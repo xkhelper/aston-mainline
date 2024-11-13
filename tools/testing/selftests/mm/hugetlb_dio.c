@@ -44,16 +44,6 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
 	if (fd < 0)
 		ksft_exit_fail_perror("Error opening file\n");
 
-<<<<<<< HEAD
-	/* Get the free huge pages before allocation */
-	free_hpage_b = get_free_hugepages();
-	if (free_hpage_b == 0) {
-		close(fd);
-		ksft_exit_skip("No free hugepage, exiting!\n");
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Allocate a hugetlb page */
 	orig_buffer = mmap(NULL, h_pagesize, mmap_prot, mmap_flags, -1, 0);
 	if (orig_buffer == MAP_FAILED) {
@@ -97,10 +87,6 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
 int main(void)
 {
 	size_t pagesize = 0;
-<<<<<<< HEAD
-
-	ksft_print_header();
-=======
 	int fd;
 
 	ksft_print_header();
@@ -115,7 +101,6 @@ int main(void)
 	if (!get_free_hugepages())
 		ksft_exit_skip("No free hugepage, exiting\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ksft_set_plan(4);
 
 	/* Get base page size */

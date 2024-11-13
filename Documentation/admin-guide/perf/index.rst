@@ -16,10 +16,7 @@ Performance monitor support
    starfive_starlink_pmu
    arm-ccn
    arm-cmn
-<<<<<<< HEAD
-=======
    arm-ni
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    xgene-pmu
    arm_dsu_pmu
    thunderx2-pmu

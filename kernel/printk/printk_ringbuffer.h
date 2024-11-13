@@ -4,14 +4,10 @@
 #define _KERNEL_PRINTK_RINGBUFFER_H
 
 #include <linux/atomic.h>
-<<<<<<< HEAD
-#include <linux/dev_printk.h>
-=======
 #include <linux/bits.h>
 #include <linux/dev_printk.h>
 #include <linux/stddef.h>
 #include <linux/types.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Meta information about each stored message.
@@ -127,11 +123,7 @@ enum desc_state {
 
 #define _DATA_SIZE(sz_bits)	(1UL << (sz_bits))
 #define _DESCS_COUNT(ct_bits)	(1U << (ct_bits))
-<<<<<<< HEAD
-#define DESC_SV_BITS		(sizeof(unsigned long) * 8)
-=======
 #define DESC_SV_BITS		BITS_PER_LONG
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DESC_FLAGS_SHIFT	(DESC_SV_BITS - 2)
 #define DESC_FLAGS_MASK		(3UL << DESC_FLAGS_SHIFT)
 #define DESC_STATE(sv)		(3UL & (sv >> DESC_FLAGS_SHIFT))
@@ -412,18 +404,12 @@ u64 prb_next_reserve_seq(struct printk_ringbuffer *rb);
 
 #define __u64seq_to_ulseq(u64seq) (u64seq)
 #define __ulseq_to_u64seq(rb, ulseq) (ulseq)
-<<<<<<< HEAD
-=======
 #define ULSEQ_MAX(rb) (-1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #else /* CONFIG_64BIT */
 
 #define __u64seq_to_ulseq(u64seq) ((u32)u64seq)
-<<<<<<< HEAD
-=======
 #define ULSEQ_MAX(rb) __u64seq_to_ulseq(prb_first_seq(rb) + 0x80000000UL)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline u64 __ulseq_to_u64seq(struct printk_ringbuffer *rb, u32 ulseq)
 {

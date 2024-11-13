@@ -130,11 +130,8 @@ void smu_cmn_init_soft_gpu_metrics(void *table, uint8_t frev, uint8_t crev);
 int smu_cmn_set_mp1_state(struct smu_context *smu,
 			  enum pp_mp1_state mp1_state);
 
-<<<<<<< HEAD
-=======
 void smu_cmn_assign_power_profile(struct smu_context *smu);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Helper function to make sysfs_emit_at() happy. Align buf to
  * the current page boundary and record the offset.

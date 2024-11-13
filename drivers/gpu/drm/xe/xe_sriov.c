@@ -5,11 +5,7 @@
 
 #include <drm/drm_managed.h>
 
-<<<<<<< HEAD
-#include "regs/xe_sriov_regs.h"
-=======
 #include "regs/xe_regs.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xe_assert.h"
 #include "xe_device.h"

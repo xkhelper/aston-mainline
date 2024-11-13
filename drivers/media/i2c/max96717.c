@@ -16,10 +16,7 @@
 #include <linux/regmap.h>
 
 #include <media/v4l2-cci.h>
-<<<<<<< HEAD
-=======
 #include <media/v4l2-ctrls.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <media/v4l2-fwnode.h>
 #include <media/v4l2-subdev.h>
 
@@ -28,10 +25,7 @@
 #define MAX96717_PORTS      2
 #define MAX96717_PAD_SINK   0
 #define MAX96717_PAD_SOURCE 1
-<<<<<<< HEAD
-=======
 #define MAX96717_CSI_NLANES 4
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MAX96717_DEFAULT_CLKOUT_RATE	24000000UL
 
@@ -46,11 +40,6 @@
 #define MAX96717_DEV_REV_MASK GENMASK(3, 0)
 
 /* VID_TX Z */
-<<<<<<< HEAD
-#define MAX96717_VIDEO_TX2 CCI_REG8(0x112)
-#define MAX96717_VIDEO_PCLKDET BIT(7)
-
-=======
 #define MAX96717_VIDEO_TX0 CCI_REG8(0x110)
 #define MAX96717_VIDEO_AUTO_BPP BIT(3)
 #define MAX96717_VIDEO_TX2 CCI_REG8(0x112)
@@ -80,7 +69,6 @@
 #define MAX96717_VTX_CHKB_RPT_CNT_B    CCI_REG8(0x274)
 #define MAX96717_VTX_CHKB_ALT          CCI_REG8(0x275)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* GPIO */
 #define MAX96717_NUM_GPIO         11
 #define MAX96717_GPIO_REG_A(gpio) CCI_REG8(0x2be + (gpio) * 3)
@@ -122,15 +110,12 @@
 /* MISC */
 #define PIO_SLEW_1 CCI_REG8(0x570)
 
-<<<<<<< HEAD
-=======
 enum max96717_vpg_mode {
 	MAX96717_VPG_DISABLED = 0,
 	MAX96717_VPG_CHECKERBOARD = 1,
 	MAX96717_VPG_GRADIENT = 2,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct max96717_priv {
 	struct i2c_client		  *client;
 	struct regmap			  *regmap;
@@ -138,10 +123,7 @@ struct max96717_priv {
 	struct v4l2_mbus_config_mipi_csi2 mipi_csi2;
 	struct v4l2_subdev                sd;
 	struct media_pad                  pads[MAX96717_PORTS];
-<<<<<<< HEAD
-=======
 	struct v4l2_ctrl_handler          ctrl_handler;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct v4l2_async_notifier        notifier;
 	struct v4l2_subdev                *source_sd;
 	u16                               source_sd_pad;
@@ -149,10 +131,7 @@ struct max96717_priv {
 	u8                                pll_predef_index;
 	struct clk_hw                     clk_hw;
 	struct gpio_chip                  gpio_chip;
-<<<<<<< HEAD
-=======
 	enum max96717_vpg_mode            pattern;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline struct max96717_priv *sd_to_max96717(struct v4l2_subdev *sd)
@@ -188,8 +167,6 @@ static inline int max96717_start_csi(struct max96717_priv *priv, bool start)
 			       start ? MAX96717_START_PORT_B : 0, NULL);
 }
 
-<<<<<<< HEAD
-=======
 static int max96717_apply_patgen_timing(struct max96717_priv *priv,
 					struct v4l2_subdev_state *state)
 {
@@ -302,7 +279,6 @@ static const struct v4l2_ctrl_ops max96717_ctrl_ops = {
 	.s_ctrl = max96717_s_ctrl,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int max96717_gpiochip_get(struct gpio_chip *gpiochip,
 				 unsigned int offset)
 {
@@ -520,26 +496,6 @@ static int max96717_enable_streams(struct v4l2_subdev *sd,
 				   u64 streams_mask)
 {
 	struct max96717_priv *priv = sd_to_max96717(sd);
-<<<<<<< HEAD
-	struct device *dev = &priv->client->dev;
-	u64 sink_streams;
-	int ret;
-
-	sink_streams = v4l2_subdev_state_xlate_streams(state,
-						       MAX96717_PAD_SOURCE,
-						       MAX96717_PAD_SINK,
-						       &streams_mask);
-
-	if (!priv->enabled_source_streams)
-		max96717_start_csi(priv, true);
-
-	ret = v4l2_subdev_enable_streams(priv->source_sd, priv->source_sd_pad,
-					 sink_streams);
-	if (ret) {
-		dev_err(dev, "Fail to start streams:%llu on remote subdev\n",
-			sink_streams);
-		goto stop_csi;
-=======
 	u64 sink_streams;
 	int ret;
 
@@ -562,7 +518,6 @@ static int max96717_enable_streams(struct v4l2_subdev *sd,
 						 sink_streams);
 		if (ret)
 			goto stop_csi;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	priv->enabled_source_streams |= streams_mask;
@@ -572,10 +527,7 @@ static int max96717_enable_streams(struct v4l2_subdev *sd,
 stop_csi:
 	if (!priv->enabled_source_streams)
 		max96717_start_csi(priv, false);
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -595,15 +547,6 @@ static int max96717_disable_streams(struct v4l2_subdev *sd,
 	if (!priv->enabled_source_streams)
 		max96717_start_csi(priv, false);
 
-<<<<<<< HEAD
-	sink_streams = v4l2_subdev_state_xlate_streams(state,
-						       MAX96717_PAD_SOURCE,
-						       MAX96717_PAD_SINK,
-						       &streams_mask);
-
-	return v4l2_subdev_disable_streams(priv->source_sd, priv->source_sd_pad,
-					   sink_streams);
-=======
 	if (!priv->pattern) {
 		int ret;
 
@@ -621,7 +564,6 @@ static int max96717_disable_streams(struct v4l2_subdev *sd,
 	}
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct v4l2_subdev_pad_ops max96717_pad_ops = {
@@ -734,8 +676,6 @@ static int max96717_subdev_init(struct max96717_priv *priv)
 	v4l2_i2c_subdev_init(&priv->sd, priv->client, &max96717_subdev_ops);
 	priv->sd.internal_ops = &max96717_internal_ops;
 
-<<<<<<< HEAD
-=======
 	v4l2_ctrl_handler_init(&priv->ctrl_handler, 1);
 	priv->sd.ctrl_handler = &priv->ctrl_handler;
 
@@ -749,7 +689,6 @@ static int max96717_subdev_init(struct max96717_priv *priv)
 		goto err_free_ctrl;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	priv->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_STREAMS;
 	priv->sd.entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
 	priv->sd.entity.ops = &max96717_entity_ops;
@@ -789,11 +728,8 @@ err_free_state:
 	v4l2_subdev_cleanup(&priv->sd);
 err_entity_cleanup:
 	media_entity_cleanup(&priv->sd.entity);
-<<<<<<< HEAD
-=======
 err_free_ctrl:
 	v4l2_ctrl_handler_free(&priv->ctrl_handler);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -805,10 +741,7 @@ static void max96717_subdev_uninit(struct max96717_priv *priv)
 	v4l2_async_nf_cleanup(&priv->notifier);
 	v4l2_subdev_cleanup(&priv->sd);
 	media_entity_cleanup(&priv->sd.entity);
-<<<<<<< HEAD
-=======
 	v4l2_ctrl_handler_free(&priv->ctrl_handler);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct max96717_pll_predef_freq {
@@ -834,16 +767,8 @@ max96717_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
 static unsigned int max96717_clk_find_best_index(struct max96717_priv *priv,
 						 unsigned long rate)
 {
-<<<<<<< HEAD
-	unsigned int i, idx;
-	unsigned long diff_new, diff_old;
-
-	diff_old = U32_MAX;
-	idx = 0;
-=======
 	unsigned int i, idx = 0;
 	unsigned long diff_new, diff_old = U32_MAX;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < ARRAY_SIZE(max96717_predef_freqs); i++) {
 		diff_new = abs(rate - max96717_predef_freqs[i].freq);
@@ -930,12 +855,7 @@ static int max96717_register_clkout(struct max96717_priv *priv)
 	struct clk_init_data init = { .ops = &max96717_clk_ops };
 	int ret;
 
-<<<<<<< HEAD
-	init.name = kasprintf(GFP_KERNEL, "max96717.%s.clk_out",
-			      dev_name(dev));
-=======
 	init.name = kasprintf(GFP_KERNEL, "max96717.%s.clk_out", dev_name(dev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!init.name)
 		return -ENOMEM;
 
@@ -1018,14 +938,9 @@ static int max96717_init_csi_lanes(struct max96717_priv *priv)
 	 * Unused lanes need to be mapped as well to not have
 	 * the same lanes mapped twice.
 	 */
-<<<<<<< HEAD
-	for (; lane < 4; lane++) {
-		unsigned int idx = find_first_zero_bit(&lanes_used, 4);
-=======
 	for (; lane < MAX96717_CSI_NLANES; lane++) {
 		unsigned int idx = find_first_zero_bit(&lanes_used,
 						       MAX96717_CSI_NLANES);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		val |= idx << (lane * 2);
 		lanes_used |= BIT(idx);
@@ -1079,13 +994,7 @@ static int max96717_hw_init(struct max96717_priv *priv)
 static int max96717_parse_dt(struct max96717_priv *priv)
 {
 	struct device *dev = &priv->client->dev;
-<<<<<<< HEAD
-	struct v4l2_fwnode_endpoint vep = {
-		.bus_type = V4L2_MBUS_CSI2_DPHY
-	};
-=======
 	struct v4l2_fwnode_endpoint vep = { .bus_type = V4L2_MBUS_CSI2_DPHY };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct fwnode_handle *ep_fwnode;
 	unsigned char num_data_lanes;
 	int ret;
@@ -1103,19 +1012,11 @@ static int max96717_parse_dt(struct max96717_priv *priv)
 		return dev_err_probe(dev, ret, "Failed to parse sink endpoint");
 
 	num_data_lanes = vep.bus.mipi_csi2.num_data_lanes;
-<<<<<<< HEAD
-	if (num_data_lanes < 1 || num_data_lanes > 4)
-		return dev_err_probe(dev, -EINVAL,
-				     "Invalid data lanes must be 1 to 4\n");
-
-	memcpy(&priv->mipi_csi2, &vep.bus.mipi_csi2, sizeof(priv->mipi_csi2));
-=======
 	if (num_data_lanes < 1 || num_data_lanes > MAX96717_CSI_NLANES)
 		return dev_err_probe(dev, -EINVAL,
 				     "Invalid data lanes must be 1 to 4\n");
 
 	priv->mipi_csi2 = vep.bus.mipi_csi2;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

@@ -102,17 +102,11 @@ patternProperties:
         items:
           minimum: 0
           maximum: 7
-<<<<<<< HEAD
-
-      st,adc-channel-names:
-        description: List of single-ended channel names.
-=======
         deprecated: true
 
       st,adc-channel-names:
         description: List of single-ended channel names.
         deprecated: true
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       st,filter-order:
         description: |
@@ -126,15 +120,12 @@ patternProperties:
       "#io-channel-cells":
         const: 1
 
-<<<<<<< HEAD
-=======
       '#address-cells':
         const: 1
 
       '#size-cells':
         const: 0
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       st,adc-channel-types:
         description: |
           Single-ended channel input type.
@@ -145,10 +136,7 @@ patternProperties:
         items:
           enum: [ SPI_R, SPI_F, MANCH_R, MANCH_F ]
         $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-<<<<<<< HEAD
-=======
         deprecated: true
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       st,adc-channel-clk-src:
         description: |
@@ -160,10 +148,7 @@ patternProperties:
         items:
           enum: [ CLKIN, CLKOUT, CLKOUT_F, CLKOUT_R ]
         $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-<<<<<<< HEAD
-=======
         deprecated: true
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       st,adc-alt-channel:
         description:
@@ -172,10 +157,7 @@ patternProperties:
           If not set, channel n is connected to SPI input n.
           If set, channel n is connected to SPI input n + 1.
         type: boolean
-<<<<<<< HEAD
-=======
         deprecated: true
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       st,filter0-sync:
         description:
@@ -194,13 +176,6 @@ patternProperties:
       - compatible
       - reg
       - interrupts
-<<<<<<< HEAD
-      - st,adc-channels
-      - st,adc-channel-names
-      - st,filter-order
-      - "#io-channel-cells"
-
-=======
       - st,filter-order
       - "#io-channel-cells"
 
@@ -255,7 +230,6 @@ patternProperties:
         required:
           - reg
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     allOf:
       - if:
           properties:
@@ -285,11 +259,6 @@ patternProperties:
               description:
                 From common IIO binding. Used to pipe external sigma delta
                 modulator or internal ADC output to DFSDM channel.
-<<<<<<< HEAD
-
-          required:
-            - io-channels
-=======
               deprecated: true
 
           if:
@@ -303,7 +272,6 @@ patternProperties:
             "^channel@[0-7]$":
               required:
                 - io-backends
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       - if:
           properties:
@@ -400,10 +368,7 @@ examples:
       #address-cells = <1>;
       #size-cells = <0>;
 
-<<<<<<< HEAD
-=======
       // Example 1: Audio use case with generic binding
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       dfsdm0: filter@0 {
         compatible = "st,stm32-dfsdm-dmic";
         reg = <0>;
@@ -411,14 +376,6 @@ examples:
         dmas = <&dmamux1 101 0x400 0x01>;
         dma-names = "rx";
         #io-channel-cells = <1>;
-<<<<<<< HEAD
-        st,adc-channels = <1>;
-        st,adc-channel-names = "dmic0";
-        st,adc-channel-types = "SPI_R";
-        st,adc-channel-clk-src = "CLKOUT";
-        st,filter-order = <5>;
-
-=======
         #address-cells = <1>;
         #size-cells = <0>;
         st,filter-order = <5>;
@@ -431,7 +388,6 @@ examples:
           st,adc-alt-channel;
         };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         asoc_pdm0: dfsdm-dai {
           compatible = "st,stm32h7-dfsdm-dai";
           #sound-dai-cells = <0>;
@@ -439,26 +395,13 @@ examples:
         };
       };
 
-<<<<<<< HEAD
-      dfsdm_pdm1: filter@1 {
-=======
       // Example 2: Analog use case with generic binding
       dfsdm1: filter@1 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         compatible = "st,stm32-dfsdm-adc";
         reg = <1>;
         interrupts = <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>;
         dmas = <&dmamux1 102 0x400 0x01>;
         dma-names = "rx";
-<<<<<<< HEAD
-        #io-channel-cells = <1>;
-        st,adc-channels = <2 3>;
-        st,adc-channel-names = "in2", "in3";
-        st,adc-channel-types = "SPI_R", "SPI_R";
-        st,adc-channel-clk-src = "CLKOUT_F", "CLKOUT_F";
-        io-channels = <&sd_adc2 &sd_adc3>;
-        st,filter-order = <1>;
-=======
         st,filter-order = <1>;
         #io-channel-cells = <1>;
         #address-cells = <1>;
@@ -480,7 +423,6 @@ examples:
           st,adc-channel-clk-src = "CLKOUT";
           io-backends = <&sd_adc3>;
         };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       };
     };
 

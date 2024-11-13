@@ -83,11 +83,7 @@
 #define ADF_WQM_CSR_RPRESETSTS(bank)	(ADF_WQM_CSR_RPRESETCTL(bank) + 4)
 
 /* Ring interrupt */
-<<<<<<< HEAD
-#define ADF_RP_INT_SRC_SEL_F_RISE_MASK	BIT(2)
-=======
 #define ADF_RP_INT_SRC_SEL_F_RISE_MASK	GENMASK(1, 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ADF_RP_INT_SRC_SEL_F_FALL_MASK	GENMASK(2, 0)
 #define ADF_RP_INT_SRC_SEL_RANGE_WIDTH	4
 #define ADF_COALESCED_POLL_TIMEOUT_US	(1 * USEC_PER_SEC)

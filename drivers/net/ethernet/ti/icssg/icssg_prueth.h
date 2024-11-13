@@ -50,26 +50,18 @@
 
 #define ICSSG_MAX_RFLOWS	8	/* per slice */
 
-<<<<<<< HEAD
-/* Number of ICSSG related stats */
-#define ICSSG_NUM_STATS 60
-=======
 #define ICSSG_NUM_PA_STATS	4
 #define ICSSG_NUM_MIIG_STATS	60
 /* Number of ICSSG related stats */
 #define ICSSG_NUM_STATS (ICSSG_NUM_MIIG_STATS + ICSSG_NUM_PA_STATS)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ICSSG_NUM_STANDARD_STATS 31
 #define ICSSG_NUM_ETHTOOL_STATS (ICSSG_NUM_STATS - ICSSG_NUM_STANDARD_STATS)
 
 #define IEP_DEFAULT_CYCLE_TIME_NS	1000000	/* 1 ms */
 
-<<<<<<< HEAD
-=======
 #define PRUETH_UNDIRECTED_PKT_DST_TAG	0
 #define PRUETH_UNDIRECTED_PKT_TAG_INS	BIT(30)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Firmware status codes */
 #define ICSS_HS_FW_READY 0x55555555
 #define ICSS_HS_FW_DEAD 0xDEAD0000	/* lower 16 bits contain error code */
@@ -203,12 +195,8 @@ struct prueth_emac {
 	int port_vlan;
 
 	struct delayed_work stats_work;
-<<<<<<< HEAD
-	u64 stats[ICSSG_NUM_STATS];
-=======
 	u64 stats[ICSSG_NUM_MIIG_STATS];
 	u64 pa_stats[ICSSG_NUM_PA_STATS];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* RX IRQ Coalescing Related */
 	struct hrtimer rx_hrtimer;
@@ -248,10 +236,7 @@ struct icssg_firmwares {
  * @registered_netdevs: list of registered netdevs
  * @miig_rt: regmap to mii_g_rt block
  * @mii_rt: regmap to mii_rt block
-<<<<<<< HEAD
-=======
  * @pa_stats: regmap to pa_stats block
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @pru_id: ID for each of the PRUs
  * @pdev: pointer to ICSSG platform device
  * @pdata: pointer to platform data for ICSSG driver
@@ -261,21 +246,14 @@ struct icssg_firmwares {
  * @iep1: pointer to IEP1 device
  * @vlan_tbl: VLAN-FID table pointer
  * @hw_bridge_dev: pointer to HW bridge net device
-<<<<<<< HEAD
- * @br_members: bitmask of bridge member ports
-=======
  * @hsr_dev: pointer to the HSR net device
  * @br_members: bitmask of bridge member ports
  * @hsr_members: bitmask of hsr member ports
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @prueth_netdevice_nb: netdevice notifier block
  * @prueth_switchdev_nb: switchdev notifier block
  * @prueth_switchdev_bl_nb: switchdev blocking notifier block
  * @is_switch_mode: flag to indicate if device is in Switch mode
-<<<<<<< HEAD
-=======
  * @is_hsr_offload_mode: flag to indicate if device is in hsr offload mode
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @is_switchmode_supported: indicates platform support for switch mode
  * @switch_id: ID for mapping switch ports to bridge
  * @default_vlan: Default VLAN for host
@@ -295,10 +273,7 @@ struct prueth {
 	struct net_device *registered_netdevs[PRUETH_NUM_MACS];
 	struct regmap *miig_rt;
 	struct regmap *mii_rt;
-<<<<<<< HEAD
-=======
 	struct regmap *pa_stats;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	enum pruss_pru_id pru_id[PRUSS_NUM_PRUS];
 	struct platform_device *pdev;
@@ -310,29 +285,19 @@ struct prueth {
 	struct prueth_vlan_tbl *vlan_tbl;
 
 	struct net_device *hw_bridge_dev;
-<<<<<<< HEAD
-	u8 br_members;
-=======
 	struct net_device *hsr_dev;
 	u8 br_members;
 	u8 hsr_members;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct notifier_block prueth_netdevice_nb;
 	struct notifier_block prueth_switchdev_nb;
 	struct notifier_block prueth_switchdev_bl_nb;
 	bool is_switch_mode;
-<<<<<<< HEAD
-	bool is_switchmode_supported;
-	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
-	int default_vlan;
-=======
 	bool is_hsr_offload_mode;
 	bool is_switchmode_supported;
 	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
 	int default_vlan;
 	/** @vtbl_lock: Lock for vtbl in shared memory */
 	spinlock_t vtbl_lock;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct emac_tx_ts_response {

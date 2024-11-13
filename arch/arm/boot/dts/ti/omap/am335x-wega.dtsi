@@ -14,11 +14,7 @@
 		simple-audio-card,format = "i2s";
 		simple-audio-card,bitclock-master = <&sound_iface_main>;
 		simple-audio-card,frame-master = <&sound_iface_main>;
-<<<<<<< HEAD
-		simple-audio-card,mclk-fs = <32>;
-=======
 		simple-audio-card,mclk-fs = <512>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		simple-audio-card,widgets =
 					"Line", "Line In",
 					"Line", "Line Out",
@@ -31,22 +27,12 @@
 					"LINE1L", "Line In",
 					"LINE1R", "Line In";
 
-<<<<<<< HEAD
-		simple-audio-card,cpu {
-			sound-dai = <&mcasp0>;
-		};
-
-		sound_iface_main: simple-audio-card,codec {
-			sound-dai = <&tlv320aic3007>;
-			clocks = <&mcasp0_fck>;
-=======
 		sound_iface_main: simple-audio-card,cpu {
 			sound-dai = <&mcasp0>;
 		};
 
 		simple-audio-card,codec {
 			sound-dai = <&tlv320aic3007>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 	};

@@ -30,25 +30,17 @@ properties:
     minItems: 1
     maxItems: 2
 
-<<<<<<< HEAD
-  clock-names: true
-=======
   clock-names:
     minItems: 1
     maxItems: 6
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   resets:
     minItems: 2
     maxItems: 6
 
-<<<<<<< HEAD
-  reset-names: true
-=======
   reset-names:
     minItems: 2
     maxItems: 6
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 allOf:
   - if:

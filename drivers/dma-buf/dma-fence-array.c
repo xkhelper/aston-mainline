@@ -144,9 +144,6 @@ const struct dma_fence_ops dma_fence_array_ops = {
 EXPORT_SYMBOL(dma_fence_array_ops);
 
 /**
-<<<<<<< HEAD
- * dma_fence_array_create - Create a custom fence array
-=======
  * dma_fence_array_alloc - Allocate a custom fence array
  * @num_fences:		[in]	number of fences to add in the array
  *
@@ -163,39 +160,12 @@ EXPORT_SYMBOL(dma_fence_array_alloc);
 /**
  * dma_fence_array_init - Init a custom fence array
  * @array:		[in]	dma fence array to arm
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @num_fences:		[in]	number of fences to add in the array
  * @fences:		[in]	array containing the fences
  * @context:		[in]	fence context to use
  * @seqno:		[in]	sequence number to use
  * @signal_on_any:	[in]	signal on any fence in the array
  *
-<<<<<<< HEAD
- * Allocate a dma_fence_array object and initialize the base fence with
- * dma_fence_init().
- * In case of error it returns NULL.
- *
- * The caller should allocate the fences array with num_fences size
- * and fill it with the fences it wants to add to the object. Ownership of this
- * array is taken and dma_fence_put() is used on each fence on release.
- *
- * If @signal_on_any is true the fence array signals if any fence in the array
- * signals, otherwise it signals when all fences in the array signal.
- */
-struct dma_fence_array *dma_fence_array_create(int num_fences,
-					       struct dma_fence **fences,
-					       u64 context, unsigned seqno,
-					       bool signal_on_any)
-{
-	struct dma_fence_array *array;
-
-	WARN_ON(!num_fences || !fences);
-
-	array = kzalloc(struct_size(array, callbacks, num_fences), GFP_KERNEL);
-	if (!array)
-		return NULL;
-
-=======
  * Implementation of @dma_fence_array_create without allocation. Useful to init
  * a preallocated dma fence array in the path of reclaim or dma fence signaling.
  */
@@ -206,7 +176,6 @@ void dma_fence_array_init(struct dma_fence_array *array,
 {
 	WARN_ON(!num_fences || !fences);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	array->num_fences = num_fences;
 
 	spin_lock_init(&array->lock);
@@ -232,8 +201,6 @@ void dma_fence_array_init(struct dma_fence_array *array,
 	 */
 	while (num_fences--)
 		WARN_ON(dma_fence_is_container(fences[num_fences]));
-<<<<<<< HEAD
-=======
 }
 EXPORT_SYMBOL(dma_fence_array_init);
 
@@ -269,7 +236,6 @@ struct dma_fence_array *dma_fence_array_create(int num_fences,
 
 	dma_fence_array_init(array, num_fences, fences,
 			     context, seqno, signal_on_any);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return array;
 }

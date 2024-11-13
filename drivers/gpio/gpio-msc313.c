@@ -3,21 +3,14 @@
 
 #include <linux/bitops.h>
 #include <linux/kernel.h>
-<<<<<<< HEAD
-#include <linux/types.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/io.h>
 #include <linux/of.h>
 #include <linux/of_irq.h>
 #include <linux/gpio/driver.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
-<<<<<<< HEAD
-=======
 #include <linux/property.h>
 #include <linux/types.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <dt-bindings/gpio/msc313-gpio.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
@@ -670,11 +663,7 @@ static int msc313_gpio_probe(struct platform_device *pdev)
 
 	gpioirqchip = &gpiochip->irq;
 	gpio_irq_chip_set_chip(gpioirqchip, &msc313_gpio_irqchip);
-<<<<<<< HEAD
-	gpioirqchip->fwnode = of_node_to_fwnode(dev->of_node);
-=======
 	gpioirqchip->fwnode = dev_fwnode(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gpioirqchip->parent_domain = parent_domain;
 	gpioirqchip->child_to_parent_hwirq = msc313e_gpio_child_to_parent_hwirq;
 	gpioirqchip->populate_parent_alloc_arg = msc313_gpio_populate_parent_fwspec;

@@ -635,11 +635,7 @@ static int ov5645_set_register_array(struct ov5645 *ov5645,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int ov5645_set_power_off(struct device *dev)
-=======
 static void __ov5645_set_power_off(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct ov5645 *ov5645 = to_ov5645(sd);
@@ -647,10 +643,6 @@ static void __ov5645_set_power_off(struct device *dev)
 	ov5645_write_reg(ov5645, OV5645_IO_MIPI_CTRL00, 0x58);
 	gpiod_set_value_cansleep(ov5645->rst_gpio, 1);
 	gpiod_set_value_cansleep(ov5645->enable_gpio, 0);
-<<<<<<< HEAD
-	clk_disable_unprepare(ov5645->xclk);
-	regulator_bulk_disable(OV5645_NUM_SUPPLIES, ov5645->supplies);
-=======
 	regulator_bulk_disable(OV5645_NUM_SUPPLIES, ov5645->supplies);
 }
 
@@ -661,7 +653,6 @@ static int ov5645_set_power_off(struct device *dev)
 
 	__ov5645_set_power_off(dev);
 	clk_disable_unprepare(ov5645->xclk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -703,12 +694,8 @@ static int ov5645_set_power_on(struct device *dev)
 	return 0;
 
 exit:
-<<<<<<< HEAD
-	ov5645_set_power_off(dev);
-=======
 	__ov5645_set_power_off(dev);
 	clk_disable_unprepare(ov5645->xclk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1294,11 +1281,7 @@ static void ov5645_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ov5645_id[] = {
-<<<<<<< HEAD
-	{ "ov5645", 0 },
-=======
 	{ "ov5645" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, ov5645_id);

@@ -64,17 +64,6 @@ static void nflog_tg_destroy(const struct xt_tgdtor_param *par)
 	nf_logger_put(par->family, NF_LOG_TYPE_ULOG);
 }
 
-<<<<<<< HEAD
-static struct xt_target nflog_tg_reg __read_mostly = {
-	.name       = "NFLOG",
-	.revision   = 0,
-	.family     = NFPROTO_UNSPEC,
-	.checkentry = nflog_tg_check,
-	.destroy    = nflog_tg_destroy,
-	.target     = nflog_tg,
-	.targetsize = sizeof(struct xt_nflog_info),
-	.me         = THIS_MODULE,
-=======
 static struct xt_target nflog_tg_reg[] __read_mostly = {
 	{
 		.name       = "NFLOG",
@@ -98,25 +87,16 @@ static struct xt_target nflog_tg_reg[] __read_mostly = {
 		.me         = THIS_MODULE,
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init nflog_tg_init(void)
 {
-<<<<<<< HEAD
-	return xt_register_target(&nflog_tg_reg);
-=======
 	return xt_register_targets(nflog_tg_reg, ARRAY_SIZE(nflog_tg_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __exit nflog_tg_exit(void)
 {
-<<<<<<< HEAD
-	xt_unregister_target(&nflog_tg_reg);
-=======
 	xt_unregister_targets(nflog_tg_reg, ARRAY_SIZE(nflog_tg_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 module_init(nflog_tg_init);

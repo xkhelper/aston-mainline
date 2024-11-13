@@ -3,14 +3,9 @@
  * Copyright (C) STRATO AG 2013.  All rights reserved.
  */
 
-<<<<<<< HEAD
-#include <linux/uuid.h>
-#include <asm/unaligned.h>
-=======
 #include <linux/kthread.h>
 #include <linux/uuid.h>
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "messages.h"
 #include "ctree.h"
 #include "transaction.h"
@@ -18,10 +13,7 @@
 #include "fs.h"
 #include "accessors.h"
 #include "uuid-tree.h"
-<<<<<<< HEAD
-=======
 #include "ioctl.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void btrfs_uuid_to_key(const u8 *uuid, u8 type, struct btrfs_key *key)
 {
@@ -400,8 +392,6 @@ out:
 	btrfs_free_path(path);
 	return ret;
 }
-<<<<<<< HEAD
-=======
 
 int btrfs_uuid_scan_kthread(void *data)
 {
@@ -579,4 +569,3 @@ int btrfs_create_uuid_tree(struct btrfs_fs_info *fs_info)
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

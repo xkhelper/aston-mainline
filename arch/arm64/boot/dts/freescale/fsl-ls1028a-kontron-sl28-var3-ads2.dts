@@ -26,8 +26,6 @@
 		cooling-levels = <1 128 192 255>;
 	};
 
-<<<<<<< HEAD
-=======
 	reg_3p3v: regulator-3p3v {
 		compatible = "regulator-fixed";
 		regulator-name = "3P3V";
@@ -35,7 +33,6 @@
 		regulator-max-microvolt = <3300000>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sound {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -117,14 +114,11 @@
 		clock-names = "mclk";
 		assigned-clocks = <&mclk>;
 		assigned-clock-rates = <1250000>;
-<<<<<<< HEAD
-=======
 		AVDD-supply = <&reg_3p3v>;
 		CPVDD-supply = <&reg_3p3v>;
 		DBVDD-supply = <&reg_3p3v>;
 		DCVDD-supply = <&reg_3p3v>;
 		MICVDD-supply = <&reg_3p3v>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

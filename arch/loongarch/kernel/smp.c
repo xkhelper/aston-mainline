@@ -72,10 +72,7 @@ static const char *ipi_types[NR_IPI] __tracepoint_string = {
 	[IPI_RESCHEDULE] = "Rescheduling interrupts",
 	[IPI_CALL_FUNCTION] = "Function call interrupts",
 	[IPI_IRQ_WORK] = "IRQ work interrupts",
-<<<<<<< HEAD
-=======
 	[IPI_CLEAR_VECTOR] = "Clear vector interrupts",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void show_ipi_list(struct seq_file *p, int prec)
@@ -252,14 +249,11 @@ static irqreturn_t loongson_ipi_interrupt(int irq, void *dev)
 		per_cpu(irq_stat, cpu).ipi_irqs[IPI_IRQ_WORK]++;
 	}
 
-<<<<<<< HEAD
-=======
 	if (action & SMP_CLEAR_VECTOR) {
 		complete_irq_moving();
 		per_cpu(irq_stat, cpu).ipi_irqs[IPI_CLEAR_VECTOR]++;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return IRQ_HANDLED;
 }
 
@@ -488,11 +482,7 @@ core_initcall(ipi_pm_init);
 #endif
 
 /* Preload SMP state for boot cpu */
-<<<<<<< HEAD
-void smp_prepare_boot_cpu(void)
-=======
 void __init smp_prepare_boot_cpu(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int cpu, node, rr_node;
 
@@ -525,11 +515,8 @@ void __init smp_prepare_boot_cpu(void)
 			rr_node = next_node_in(rr_node, node_online_map);
 		}
 	}
-<<<<<<< HEAD
-=======
 
 	pv_spinlock_init();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* called from main before smp_init() */

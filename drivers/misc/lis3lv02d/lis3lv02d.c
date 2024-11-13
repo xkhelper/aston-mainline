@@ -669,10 +669,6 @@ static int lis3lv02d_misc_fasync(int fd, struct file *file, int on)
 
 static const struct file_operations lis3lv02d_misc_fops = {
 	.owner   = THIS_MODULE,
-<<<<<<< HEAD
-	.llseek  = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read    = lis3lv02d_misc_read,
 	.open    = lis3lv02d_misc_open,
 	.release = lis3lv02d_misc_release,
@@ -1041,11 +1037,7 @@ int lis3lv02d_init_dt(struct lis3lv02d *lis3)
 		pdata->wakeup_flags |= LIS3_WAKEUP_Z_LO;
 	if (of_property_read_bool(np, "st,wakeup-z-hi"))
 		pdata->wakeup_flags |= LIS3_WAKEUP_Z_HI;
-<<<<<<< HEAD
-	if (of_get_property(np, "st,wakeup-threshold", &val))
-=======
 	if (!of_property_read_u32(np, "st,wakeup-threshold", &val))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pdata->wakeup_thresh = val;
 
 	if (of_property_read_bool(np, "st,wakeup2-x-lo"))
@@ -1060,11 +1052,7 @@ int lis3lv02d_init_dt(struct lis3lv02d *lis3)
 		pdata->wakeup_flags2 |= LIS3_WAKEUP_Z_LO;
 	if (of_property_read_bool(np, "st,wakeup2-z-hi"))
 		pdata->wakeup_flags2 |= LIS3_WAKEUP_Z_HI;
-<<<<<<< HEAD
-	if (of_get_property(np, "st,wakeup2-threshold", &val))
-=======
 	if (!of_property_read_u32(np, "st,wakeup2-threshold", &val))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pdata->wakeup_thresh2 = val;
 
 	if (!of_property_read_u32(np, "st,highpass-cutoff-hz", &val)) {

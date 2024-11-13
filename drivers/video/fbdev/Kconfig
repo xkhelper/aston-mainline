@@ -445,21 +445,12 @@ config FB_EFI
 	  your platform is EFI 1.10 or UEFI 2.0, select Y to add support for
 	  using the EFI framebuffer as your console.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config FB_EARLY
 	bool "Framebuffer earlycon"
 	depends on SERIAL_EARLYCON
 	select FONT_SUPPORT
 	select ARCH_USE_MEMREMAP_PROT
 
-<<<<<<< HEAD
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config FB_N411
 	tristate "N411 Apollo/Hecuba devkit support"
 	depends on FB && X86 && MMU
@@ -1251,10 +1242,6 @@ config FB_3DFX_I2C
 config FB_VOODOO1
 	tristate "3Dfx Voodoo Graphics (sst1) support"
 	depends on FB && PCI
-<<<<<<< HEAD
-	depends on FB_DEVICE
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select FB_IOMEM_HELPERS
 	help
 	  Say Y here if you have a 3Dfx Voodoo Graphics (Voodoo1/sst1) or
@@ -1392,10 +1379,7 @@ config FB_VT8500
 config FB_WM8505
 	bool "Wondermedia WM8xxx-series frame buffer support"
 	depends on (FB = y) && HAS_IOMEM && (ARCH_VT8500 || COMPILE_TEST)
-<<<<<<< HEAD
-=======
 	select FB_IOMEM_FOPS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select FB_SYS_FILLRECT if (!FB_WMT_GE_ROPS)
 	select FB_SYS_COPYAREA if (!FB_WMT_GE_ROPS)
 	select FB_SYS_IMAGEBLIT
@@ -1682,22 +1666,6 @@ config FB_SH7760
 	  and 8, 15 or 16 bpp color; 90 degrees clockwise display rotation for
 	  panels <= 320 pixel horizontal resolution.
 
-<<<<<<< HEAD
-config FB_DA8XX
-	tristate "DA8xx/OMAP-L1xx/AM335x Framebuffer support"
-	depends on FB && HAVE_CLK && HAS_IOMEM
-	depends on ARCH_DAVINCI_DA8XX || SOC_AM33XX || COMPILE_TEST
-	select FB_CFB_REV_PIXELS_IN_BYTE
-	select FB_IOMEM_HELPERS
-	select FB_MODE_HELPERS
-	select VIDEOMODE_HELPERS
-	help
-	  This is the frame buffer device driver for the TI LCD controller
-	  found on DA8xx/OMAP-L1xx/AM335x SoCs.
-	  If unsure, say N.
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config FB_VIRTUAL
 	tristate "Virtual Frame Buffer support (ONLY FOR TESTING!)"
 	depends on FB

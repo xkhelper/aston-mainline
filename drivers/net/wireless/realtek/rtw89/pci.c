@@ -3026,32 +3026,15 @@ static void rtw89_pci_declaim_device(struct rtw89_dev *rtwdev,
 	pci_disable_device(pdev);
 }
 
-<<<<<<< HEAD
-static void rtw89_pci_cfg_dac(struct rtw89_dev *rtwdev)
-{
-	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-	const struct rtw89_chip_info *chip = rtwdev->chip;
-
-	if (!rtwpci->enable_dac)
-		return;
-
-=======
 static bool rtw89_pci_chip_is_manual_dac(struct rtw89_dev *rtwdev)
 {
 	const struct rtw89_chip_info *chip = rtwdev->chip;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (chip->chip_id) {
 	case RTL8852A:
 	case RTL8852B:
 	case RTL8851B:
 	case RTL8852BT:
-<<<<<<< HEAD
-		break;
-	default:
-		return;
-	}
-=======
 		return true;
 	default:
 		return false;
@@ -3090,7 +3073,6 @@ static void rtw89_pci_cfg_dac(struct rtw89_dev *rtwdev)
 
 	if (!rtw89_pci_chip_is_manual_dac(rtwdev))
 		return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rtw89_pci_config_byte_set(rtwdev, RTW89_PCIE_L1_CTRL, RTW89_PCIE_BIT_EN_64BITS);
 }
@@ -3109,12 +3091,9 @@ static int rtw89_pci_setup_mapping(struct rtw89_dev *rtwdev,
 		goto err;
 	}
 
-<<<<<<< HEAD
-=======
 	if (!rtw89_pci_is_dac_compatible_bridge(rtwdev))
 		goto no_dac;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(36));
 	if (!ret) {
 		rtwpci->enable_dac = true;
@@ -3127,10 +3106,7 @@ static int rtw89_pci_setup_mapping(struct rtw89_dev *rtwdev,
 			goto err_release_regions;
 		}
 	}
-<<<<<<< HEAD
-=======
 no_dac:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	resource_len = pci_resource_len(pdev, bar_id);
 	rtwpci->mmap = pci_iomap(pdev, bar_id, resource_len);

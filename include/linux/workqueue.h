@@ -507,8 +507,6 @@ void workqueue_softirq_dead(unsigned int cpu);
 __printf(1, 4) struct workqueue_struct *
 alloc_workqueue(const char *fmt, unsigned int flags, int max_active, ...);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_LOCKDEP
 /**
  * alloc_workqueue_lockdep_map - allocate a workqueue with user-defined lockdep_map
@@ -550,7 +548,6 @@ alloc_workqueue_lockdep_map(const char *fmt, unsigned int flags, int max_active,
 				    1, lockdep_map, ##args)
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * alloc_ordered_workqueue - allocate an ordered workqueue
  * @fmt: printf format for the name of the workqueue

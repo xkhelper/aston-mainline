@@ -2384,11 +2384,7 @@ static int generate_dummy_prog(void)
 		BPF_MOV64_IMM(BPF_REG_0, 0),
 		BPF_EXIT_INSN(),
 	};
-<<<<<<< HEAD
-	const size_t prog_insn_cnt = sizeof(prog_insns) / sizeof(struct bpf_insn);
-=======
 	const size_t prog_insn_cnt = ARRAY_SIZE(prog_insns);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LIBBPF_OPTS(bpf_prog_load_opts, opts);
 	const size_t log_buf_sz = 256;
 	char log_buf[log_buf_sz];

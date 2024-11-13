@@ -795,14 +795,7 @@ int acpi_device_add(struct acpi_device *device)
 		goto err;
 	}
 
-<<<<<<< HEAD
-	result = acpi_device_setup_files(device);
-	if (result)
-		pr_err("Error creating sysfs interface for device %s\n",
-		       dev_name(&device->dev));
-=======
 	acpi_device_setup_files(device);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -865,12 +858,9 @@ static const char * const acpi_honor_dep_ids[] = {
 	"INTC1095", /* IVSC (ADL) driver must be loaded to allow i2c access to camera sensors */
 	"INTC100A", /* IVSC (RPL) driver must be loaded to allow i2c access to camera sensors */
 	"INTC10CF", /* IVSC (MTL) driver must be loaded to allow i2c access to camera sensors */
-<<<<<<< HEAD
-=======
 	"RSCV0001", /* RISC-V PLIC */
 	"RSCV0002", /* RISC-V APLIC */
 	"PNP0C0F",  /* PCI Link Device */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL
 };
 
@@ -1832,10 +1822,7 @@ void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
 	device->dev.parent = parent ? &parent->dev : NULL;
 	device->dev.release = release;
 	device->dev.bus = &acpi_bus_type;
-<<<<<<< HEAD
-=======
 	device->dev.groups = acpi_groups;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fwnode_init(&device->fwnode, &acpi_device_fwnode_ops);
 	acpi_set_device_status(device, ACPI_STA_DEFAULT);
 	acpi_device_get_busid(device);
@@ -2027,8 +2014,6 @@ void acpi_scan_hotplug_enabled(struct acpi_hotplug_profile *hotplug, bool val)
 	mutex_unlock(&acpi_scan_lock);
 }
 
-<<<<<<< HEAD
-=======
 int acpi_scan_add_dep(acpi_handle handle, struct acpi_handle_list *dep_devices)
 {
 	u32 count;
@@ -2072,7 +2057,6 @@ int acpi_scan_add_dep(acpi_handle handle, struct acpi_handle_list *dep_devices)
 	return count;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void acpi_scan_init_hotplug(struct acpi_device *adev)
 {
 	struct acpi_hardware_id *hwid;
@@ -2092,13 +2076,6 @@ static void acpi_scan_init_hotplug(struct acpi_device *adev)
 	}
 }
 
-<<<<<<< HEAD
-static u32 acpi_scan_check_dep(acpi_handle handle)
-{
-	struct acpi_handle_list dep_devices;
-	u32 count;
-	int i;
-=======
 u32 __weak arch_acpi_add_auto_dep(acpi_handle handle) { return 0; }
 
 static u32 acpi_scan_check_dep(acpi_handle handle)
@@ -2114,7 +2091,6 @@ static u32 acpi_scan_check_dep(acpi_handle handle)
 	 * dependency and add automatically.
 	 */
 	count += arch_acpi_add_auto_dep(handle);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Check for _HID here to avoid deferring the enumeration of:
@@ -2123,50 +2099,6 @@ static u32 acpi_scan_check_dep(acpi_handle handle)
 	 * Still, checking for _HID catches more then just these cases ...
 	 */
 	if (!acpi_has_method(handle, "_DEP") || !acpi_has_method(handle, "_HID"))
-<<<<<<< HEAD
-		return 0;
-
-	if (!acpi_evaluate_reference(handle, "_DEP", NULL, &dep_devices)) {
-		acpi_handle_debug(handle, "Failed to evaluate _DEP.\n");
-		return 0;
-	}
-
-	for (count = 0, i = 0; i < dep_devices.count; i++) {
-		struct acpi_device_info *info;
-		struct acpi_dep_data *dep;
-		bool skip, honor_dep;
-		acpi_status status;
-
-		status = acpi_get_object_info(dep_devices.handles[i], &info);
-		if (ACPI_FAILURE(status)) {
-			acpi_handle_debug(handle, "Error reading _DEP device info\n");
-			continue;
-		}
-
-		skip = acpi_info_matches_ids(info, acpi_ignore_dep_ids);
-		honor_dep = acpi_info_matches_ids(info, acpi_honor_dep_ids);
-		kfree(info);
-
-		if (skip)
-			continue;
-
-		dep = kzalloc(sizeof(*dep), GFP_KERNEL);
-		if (!dep)
-			continue;
-
-		count++;
-
-		dep->supplier = dep_devices.handles[i];
-		dep->consumer = handle;
-		dep->honor_dep = honor_dep;
-
-		mutex_lock(&acpi_dep_list_lock);
-		list_add_tail(&dep->node , &acpi_dep_list);
-		mutex_unlock(&acpi_dep_list_lock);
-	}
-
-	acpi_handle_list_free(&dep_devices);
-=======
 		return count;
 
 	if (!acpi_evaluate_reference(handle, "_DEP", NULL, &dep_devices)) {
@@ -2175,7 +2107,6 @@ static u32 acpi_scan_check_dep(acpi_handle handle)
 	}
 
 	count += acpi_scan_add_dep(handle, &dep_devices);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return count;
 }
 
@@ -2846,11 +2777,8 @@ static int __init acpi_match_madt(union acpi_subtable_headers *header,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 void __weak arch_sort_irqchip_probe(struct acpi_probe_entry *ap_head, int nr) { }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int __init __acpi_probe_device_table(struct acpi_probe_entry *ap_head, int nr)
 {
 	int count = 0;
@@ -2859,10 +2787,7 @@ int __init __acpi_probe_device_table(struct acpi_probe_entry *ap_head, int nr)
 		return 0;
 
 	mutex_lock(&acpi_probe_mutex);
-<<<<<<< HEAD
-=======
 	arch_sort_irqchip_probe(ap_head, nr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (ape = ap_head; nr; ape++, nr--) {
 		if (ACPI_COMPARE_NAMESEG(ACPI_SIG_MADT, ape->id)) {
 			acpi_probe_count = 0;

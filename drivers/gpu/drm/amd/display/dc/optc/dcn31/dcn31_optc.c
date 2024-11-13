@@ -149,13 +149,9 @@ static bool optc31_disable_crtc(struct timing_generator *optc)
 
 	return true;
 }
-<<<<<<< HEAD
-
-=======
 /*
  * Immediate_Disable_Crtc - this is to temp disable Timing generator without reset ODM.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool optc31_immediate_disable_crtc(struct timing_generator *optc)
 {
 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
@@ -168,19 +164,12 @@ bool optc31_immediate_disable_crtc(struct timing_generator *optc)
 			VTG0_ENABLE, 0);
 
 	/* CRTC disabled, so disable  clock. */
-<<<<<<< HEAD
-	REG_WAIT(OTG_CLOCK_CONTROL,
-			OTG_BUSY, 0,
-			1, 100000);
-
-=======
 	if (optc->ctx->dce_environment != DCE_ENV_DIAG)
 		REG_WAIT(OTG_CLOCK_CONTROL,
 			OTG_BUSY, 0,
 			1, 100000);
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* clear the false state */
 	optc1_clear_optc_underflow(optc);
 

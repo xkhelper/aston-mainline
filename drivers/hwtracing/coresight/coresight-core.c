@@ -487,25 +487,6 @@ struct coresight_device *coresight_get_sink(struct list_head *path)
 	return csdev;
 }
 
-<<<<<<< HEAD
-static int coresight_sink_by_id(struct device *dev, const void *data)
-{
-	struct coresight_device *csdev = to_coresight_device(dev);
-	unsigned long hash;
-
-	if (csdev->type == CORESIGHT_DEV_TYPE_SINK ||
-	     csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) {
-
-		if (!csdev->ea)
-			return 0;
-		/*
-		 * See function etm_perf_add_symlink_sink() to know where
-		 * this comes from.
-		 */
-		hash = (unsigned long)csdev->ea->var;
-
-		if ((u32)hash == *(u32 *)data)
-=======
 u32 coresight_get_sink_id(struct coresight_device *csdev)
 {
 	if (!csdev->ea)
@@ -525,7 +506,6 @@ static int coresight_sink_by_id(struct device *dev, const void *data)
 	if (csdev->type == CORESIGHT_DEV_TYPE_SINK ||
 	    csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) {
 		if (coresight_get_sink_id(csdev) == *(u32 *)data)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return 1;
 	}
 
@@ -924,10 +904,7 @@ static void coresight_device_release(struct device *dev)
 	struct coresight_device *csdev = to_coresight_device(dev);
 
 	fwnode_handle_put(csdev->dev.fwnode);
-<<<<<<< HEAD
-=======
 	free_percpu(csdev->perf_sink_id_map.cpu_map);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(csdev);
 }
 
@@ -1185,8 +1162,6 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
 	csdev->dev.fwnode = fwnode_handle_get(dev_fwnode(desc->dev));
 	dev_set_name(&csdev->dev, "%s", desc->name);
 
-<<<<<<< HEAD
-=======
 	if (csdev->type == CORESIGHT_DEV_TYPE_SINK ||
 	    csdev->type == CORESIGHT_DEV_TYPE_LINKSINK) {
 		spin_lock_init(&csdev->perf_sink_id_map.lock);
@@ -1197,7 +1172,6 @@ struct coresight_device *coresight_register(struct coresight_desc *desc)
 			goto err_out;
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Make sure the device registration and the connection fixup
 	 * are synchronised, so that we don't see uninitialised devices

@@ -1,8 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-only
-<<<<<<< HEAD
-=======
 generated/autoconf.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 generated/bit-length.h
 generated/map-shift.h
 idr.c

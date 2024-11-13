@@ -19,13 +19,8 @@ struct ratelimit_state {
 	int		burst;
 	int		printed;
 	int		missed;
-<<<<<<< HEAD
-	unsigned long	begin;
-	unsigned long	flags;
-=======
 	unsigned int	flags;
 	unsigned long	begin;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define RATELIMIT_STATE_INIT_FLAGS(name, interval_init, burst_init, flags_init) { \

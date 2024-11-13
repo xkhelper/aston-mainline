@@ -3,18 +3,11 @@
 #define FS_ENET_H
 
 #include <linux/clk.h>
-<<<<<<< HEAD
-#include <linux/mii.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/netdevice.h>
 #include <linux/types.h>
 #include <linux/list.h>
 #include <linux/phy.h>
-<<<<<<< HEAD
-=======
 #include <linux/phylink.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/dma-mapping.h>
 
 #ifdef CONFIG_CPM1
@@ -84,13 +77,8 @@ struct fs_ops {
 	void (*free_bd)(struct net_device *dev);
 	void (*cleanup_data)(struct net_device *dev);
 	void (*set_multicast_list)(struct net_device *dev);
-<<<<<<< HEAD
-	void (*adjust_link)(struct net_device *dev);
-	void (*restart)(struct net_device *dev);
-=======
 	void (*restart)(struct net_device *dev, phy_interface_t interface,
 			int speed, int duplex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*stop)(struct net_device *dev);
 	void (*napi_clear_event)(struct net_device *dev);
 	void (*napi_enable)(struct net_device *dev);
@@ -105,17 +93,6 @@ struct fs_ops {
 	void (*tx_restart)(struct net_device *dev);
 };
 
-<<<<<<< HEAD
-struct phy_info {
-	unsigned int id;
-	const char *name;
-	void (*startup) (struct net_device * dev);
-	void (*shutdown) (struct net_device * dev);
-	void (*ack_int) (struct net_device * dev);
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* The FEC stores dest/src/type, data, and checksum for receive packets.
  */
 #define MAX_MTU 1508		/* Allow fullsized pppoe packets over VLAN */
@@ -137,21 +114,9 @@ struct fs_platform_info {
 
 	u32 dpram_offset;
 
-<<<<<<< HEAD
-	struct device_node *phy_node;
-
 	int rx_ring, tx_ring;	/* number of buffers on rx	*/
 	int rx_copybreak;	/* limit we copy small frames	*/
 	int napi_weight;	/* NAPI weight			*/
-
-	int use_rmii;		/* use RMII mode		*/
-
-	struct clk *clk_per;	/* 'per' clock for register access */
-=======
-	int rx_ring, tx_ring;	/* number of buffers on rx	*/
-	int rx_copybreak;	/* limit we copy small frames	*/
-	int napi_weight;	/* NAPI weight			*/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct fs_enet_private {
@@ -175,22 +140,11 @@ struct fs_enet_private {
 	cbd_t __iomem *cur_rx;
 	cbd_t __iomem *cur_tx;
 	int tx_free;
-<<<<<<< HEAD
-	const struct phy_info *phy;
-	u32 msg_enable;
-	struct mii_if_info mii_if;
-	unsigned int last_mii_status;
-	int interrupt;
-
-	int oldduplex, oldspeed, oldlink;	/* current settings */
-
-=======
 	u32 msg_enable;
 	struct phylink *phylink;
 	struct phylink_config phylink_config;
 	int interrupt;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* event masks */
 	u32 ev_napi;		/* mask of NAPI events */
 	u32 ev;			/* event mask          */

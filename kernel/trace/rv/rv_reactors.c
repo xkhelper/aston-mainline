@@ -426,10 +426,6 @@ static ssize_t reacting_on_write_data(struct file *filp, const char __user *user
 
 static const struct file_operations reacting_on_fops = {
 	.open   = simple_open,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write  = reacting_on_write_data,
 	.read   = reacting_on_read_data,
 };

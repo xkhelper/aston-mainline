@@ -808,29 +808,6 @@ static int cs35l41_get_clk_config(int freq)
 	return -EINVAL;
 }
 
-<<<<<<< HEAD
-static const unsigned int cs35l41_src_rates[] = {
-	8000, 12000, 11025, 16000, 22050, 24000, 32000,
-	44100, 48000, 88200, 96000, 176400, 192000
-};
-
-static const struct snd_pcm_hw_constraint_list cs35l41_constraints = {
-	.count = ARRAY_SIZE(cs35l41_src_rates),
-	.list = cs35l41_src_rates,
-};
-
-static int cs35l41_pcm_startup(struct snd_pcm_substream *substream,
-			       struct snd_soc_dai *dai)
-{
-	if (substream->runtime)
-		return snd_pcm_hw_constraint_list(substream->runtime, 0,
-						  SNDRV_PCM_HW_PARAM_RATE,
-						  &cs35l41_constraints);
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cs35l41_component_set_sysclk(struct snd_soc_component *component,
 					int clk_id, int source,
 					unsigned int freq, int dir)
@@ -977,18 +954,12 @@ static void cs35l41_component_remove(struct snd_soc_component *component)
 }
 
 static const struct snd_soc_dai_ops cs35l41_ops = {
-<<<<<<< HEAD
-	.startup = cs35l41_pcm_startup,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_fmt = cs35l41_set_dai_fmt,
 	.hw_params = cs35l41_pcm_hw_params,
 	.set_sysclk = cs35l41_dai_set_sysclk,
 	.set_channel_map = cs35l41_set_channel_map,
 };
 
-<<<<<<< HEAD
-=======
 #define CS35L41_RATES (		    \
 	SNDRV_PCM_RATE_8000_48000 | \
 	SNDRV_PCM_RATE_12000 |	    \
@@ -998,7 +969,6 @@ static const struct snd_soc_dai_ops cs35l41_ops = {
 	SNDRV_PCM_RATE_176400 |	    \
 	SNDRV_PCM_RATE_192000)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct snd_soc_dai_driver cs35l41_dai[] = {
 	{
 		.name = "cs35l41-pcm",
@@ -1007,22 +977,14 @@ static struct snd_soc_dai_driver cs35l41_dai[] = {
 			.stream_name = "AMP Playback",
 			.channels_min = 1,
 			.channels_max = 2,
-<<<<<<< HEAD
-			.rates = SNDRV_PCM_RATE_KNOT,
-=======
 			.rates = CS35L41_RATES,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.formats = CS35L41_RX_FORMATS,
 		},
 		.capture = {
 			.stream_name = "AMP Capture",
 			.channels_min = 1,
 			.channels_max = 4,
-<<<<<<< HEAD
-			.rates = SNDRV_PCM_RATE_KNOT,
-=======
 			.rates = CS35L41_RATES,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.formats = CS35L41_TX_FORMATS,
 		},
 		.ops = &cs35l41_ops,

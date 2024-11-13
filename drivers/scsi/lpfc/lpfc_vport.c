@@ -626,10 +626,7 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
 	struct Scsi_Host *shost = lpfc_shost_from_vport(vport);
 	struct lpfc_hba  *phba = vport->phba;
 	int rc;
-<<<<<<< HEAD
-=======
 	DECLARE_WAIT_QUEUE_HEAD_ONSTACK(waitq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (vport->port_type == LPFC_PHYSICAL_PORT) {
 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
@@ -683,27 +680,11 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
 	if (!ndlp)
 		goto skip_logo;
 
-<<<<<<< HEAD
-=======
 	/* Send the DA_ID and Fabric LOGO to cleanup the NPIV fabric entries. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ndlp && ndlp->nlp_state == NLP_STE_UNMAPPED_NODE &&
 	    phba->link_state >= LPFC_LINK_UP &&
 	    phba->fc_topology != LPFC_TOPOLOGY_LOOP) {
 		if (vport->cfg_enable_da_id) {
-<<<<<<< HEAD
-			/* Send DA_ID and wait for a completion. */
-			rc = lpfc_ns_cmd(vport, SLI_CTNS_DA_ID, 0, 0);
-			if (rc) {
-				lpfc_printf_log(vport->phba, KERN_WARNING,
-						LOG_VPORT,
-						"1829 CT command failed to "
-						"delete objects on fabric, "
-						"rc %d\n", rc);
-			}
-		}
-
-=======
 			/* Send DA_ID and wait for a completion.  This is best
 			 * effort.  If the DA_ID fails, likely the fabric will
 			 * "leak" NportIDs but at least the driver issued the
@@ -742,7 +723,6 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
 		}
 
 issue_logo:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * If the vpi is not registered, then a valid FDISC doesn't
 		 * exist and there is no need for a ELS LOGO.  Just cleanup

@@ -3185,15 +3185,6 @@ static int udma_configure_statictr(struct udma_chan *uc, struct udma_desc *d,
 
 	d->static_tr.elcnt = elcnt;
 
-<<<<<<< HEAD
-	/*
-	 * PDMA must to close the packet when the channel is in packet mode.
-	 * For TR mode when the channel is not cyclic we also need PDMA to close
-	 * the packet otherwise the transfer will stall because PDMA holds on
-	 * the data it has received from the peripheral.
-	 */
-	if (uc->config.pkt_mode || !uc->cyclic) {
-=======
 	if (uc->config.pkt_mode || !uc->cyclic) {
 		/*
 		 * PDMA must close the packet when the channel is in packet mode.
@@ -3201,19 +3192,12 @@ static int udma_configure_statictr(struct udma_chan *uc, struct udma_desc *d,
 		 * to close the packet otherwise the transfer will stall because
 		 * PDMA holds on the data it has received from the peripheral.
 		 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int div = dev_width * elcnt;
 
 		if (uc->cyclic)
 			d->static_tr.bstcnt = d->residue / d->sglen / div;
 		else
 			d->static_tr.bstcnt = d->residue / div;
-<<<<<<< HEAD
-
-		if (uc->config.dir == DMA_DEV_TO_MEM &&
-		    d->static_tr.bstcnt > uc->ud->match_data->statictr_z_mask)
-			return -EINVAL;
-=======
 	} else if (uc->ud->match_data->type == DMA_TYPE_BCDMA &&
 		   uc->config.dir == DMA_DEV_TO_MEM &&
 		   uc->cyclic) {
@@ -3227,18 +3211,14 @@ static int udma_configure_statictr(struct udma_chan *uc, struct udma_desc *d,
 
 		d->static_tr.bstcnt =
 			(tr_req->icnt0 * tr_req->icnt1) / dev_width;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		d->static_tr.bstcnt = 0;
 	}
 
-<<<<<<< HEAD
-=======
 	if (uc->config.dir == DMA_DEV_TO_MEM &&
 	    d->static_tr.bstcnt > uc->ud->match_data->statictr_z_mask)
 		return -EINVAL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -3483,14 +3463,9 @@ udma_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
 	/* static TR for remote PDMA */
 	if (udma_configure_statictr(uc, d, dev_width, burst)) {
 		dev_err(uc->ud->dev,
-<<<<<<< HEAD
-			"%s: StaticTR Z is limited to maximum 4095 (%u)\n",
-			__func__, d->static_tr.bstcnt);
-=======
 			"%s: StaticTR Z is limited to maximum %u (%u)\n",
 			__func__, uc->ud->match_data->statictr_z_mask,
 			d->static_tr.bstcnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		udma_free_hwdesc(uc, d);
 		kfree(d);
@@ -3515,10 +3490,7 @@ udma_prep_dma_cyclic_tr(struct udma_chan *uc, dma_addr_t buf_addr,
 	u16 tr0_cnt0, tr0_cnt1, tr1_cnt0;
 	unsigned int i;
 	int num_tr;
-<<<<<<< HEAD
-=======
 	u32 period_csf = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	num_tr = udma_get_tr_counters(period_len, __ffs(buf_addr), &tr0_cnt0,
 				      &tr0_cnt1, &tr1_cnt0);
@@ -3541,8 +3513,6 @@ udma_prep_dma_cyclic_tr(struct udma_chan *uc, dma_addr_t buf_addr,
 		period_addr = buf_addr |
 			((u64)uc->config.asel << K3_ADDRESS_ASEL_SHIFT);
 
-<<<<<<< HEAD
-=======
 	/*
 	 * For BCDMA <-> PDMA transfers, the EOP flag needs to be set on the
 	 * last TR of a descriptor, to mark the packet as complete.
@@ -3557,7 +3527,6 @@ udma_prep_dma_cyclic_tr(struct udma_chan *uc, dma_addr_t buf_addr,
 		period_csf = CPPI5_TR_CSF_EOP;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < periods; i++) {
 		int tr_idx = i * num_tr;
 
@@ -3585,15 +3554,10 @@ udma_prep_dma_cyclic_tr(struct udma_chan *uc, dma_addr_t buf_addr,
 		}
 
 		if (!(flags & DMA_PREP_INTERRUPT))
-<<<<<<< HEAD
-			cppi5_tr_csf_set(&tr_req[tr_idx].flags,
-					 CPPI5_TR_CSF_SUPR_EVT);
-=======
 			period_csf |= CPPI5_TR_CSF_SUPR_EVT;
 
 		if (period_csf)
 			cppi5_tr_csf_set(&tr_req[tr_idx].flags, period_csf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		period_addr += period_len;
 	}
@@ -3722,14 +3686,9 @@ udma_prep_dma_cyclic(struct dma_chan *chan, dma_addr_t buf_addr, size_t buf_len,
 	/* static TR for remote PDMA */
 	if (udma_configure_statictr(uc, d, dev_width, burst)) {
 		dev_err(uc->ud->dev,
-<<<<<<< HEAD
-			"%s: StaticTR Z is limited to maximum 4095 (%u)\n",
-			__func__, d->static_tr.bstcnt);
-=======
 			"%s: StaticTR Z is limited to maximum %u (%u)\n",
 			__func__, uc->ud->match_data->statictr_z_mask,
 			d->static_tr.bstcnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		udma_free_hwdesc(uc, d);
 		kfree(d);

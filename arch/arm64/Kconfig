@@ -24,10 +24,7 @@ config ARM64
 	select ARCH_HAS_CURRENT_STACK_POINTER
 	select ARCH_HAS_DEBUG_VIRTUAL
 	select ARCH_HAS_DEBUG_VM_PGTABLE
-<<<<<<< HEAD
-=======
 	select ARCH_HAS_DMA_OPS if XEN
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select ARCH_HAS_DMA_PREP_COHERENT
 	select ARCH_HAS_ACPI_TABLE_UPGRADE if ACPI
 	select ARCH_HAS_FAST_MULTIPLIER
@@ -38,10 +35,7 @@ config ARM64
 	select ARCH_HAS_KERNEL_FPU_SUPPORT if KERNEL_MODE_NEON
 	select ARCH_HAS_KEEPINITRD
 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
-<<<<<<< HEAD
-=======
 	select ARCH_HAS_MEM_ENCRYPT
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
 	select ARCH_HAS_PTE_DEVMAP
@@ -107,11 +101,8 @@ config ARM64
 	select ARCH_SUPPORTS_NUMA_BALANCING
 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
 	select ARCH_SUPPORTS_PER_VMA_LOCK
-<<<<<<< HEAD
-=======
 	select ARCH_SUPPORTS_HUGE_PFNMAP if TRANSPARENT_HUGEPAGE
 	select ARCH_SUPPORTS_RT
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
 	select ARCH_WANT_DEFAULT_BPF_JIT
@@ -209,12 +200,8 @@ config ARM64
 	select HAVE_DMA_CONTIGUOUS
 	select HAVE_DYNAMIC_FTRACE
 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS \
-<<<<<<< HEAD
-		if $(cc-option,-fpatchable-function-entry=2)
-=======
 		if (GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS || \
 		    CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS \
 		if DYNAMIC_FTRACE_WITH_ARGS && DYNAMIC_FTRACE_WITH_CALL_OPS
 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS \
@@ -249,11 +236,7 @@ config ARM64
 	select HAVE_FUNCTION_ARG_ACCESS_API
 	select MMU_GATHER_RCU_TABLE_FREE
 	select HAVE_RSEQ
-<<<<<<< HEAD
-	select HAVE_RUST if CPU_LITTLE_ENDIAN
-=======
 	select HAVE_RUST if RUSTC_SUPPORTS_ARM64
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select HAVE_STACKPROTECTOR
 	select HAVE_SYSCALL_TRACEPOINTS
 	select HAVE_KPROBES
@@ -284,11 +267,6 @@ config ARM64
 	select TRACE_IRQFLAGS_NMI_SUPPORT
 	select HAVE_SOFTIRQ_ON_OWN_STACK
 	select USER_STACKTRACE_SUPPORT
-<<<<<<< HEAD
-	help
-	  ARM 64-bit (AArch64) Linux support.
-
-=======
 	select VDSO_GETRANDOM
 	help
 	  ARM 64-bit (AArch64) Linux support.
@@ -305,23 +283,14 @@ config RUSTC_SUPPORTS_ARM64
 	# -Zsanitizer=shadow-call-stack flag.
 	depends on !SHADOW_CALL_STACK || RUSTC_VERSION >= 108200 || RUSTC_VERSION >= 108000 && UNWIND_PATCH_PAC_INTO_SCS
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
 	def_bool CC_IS_CLANG
 	# https://github.com/ClangBuiltLinux/linux/issues/1507
 	depends on AS_IS_GNU || (AS_IS_LLVM && (LD_IS_LLD || LD_VERSION >= 23600))
-<<<<<<< HEAD
-	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
 	def_bool CC_IS_GCC
 	depends on $(cc-option,-fpatchable-function-entry=2)
-<<<<<<< HEAD
-	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config 64BIT
 	def_bool y
@@ -470,11 +439,7 @@ config AMPERE_ERRATUM_AC03_CPU_38
 	default y
 	help
 	  This option adds an alternative code sequence to work around Ampere
-<<<<<<< HEAD
-	  erratum AC03_CPU_38 on AmpereOne.
-=======
 	  errata AC03_CPU_38 and AC04_CPU_10 on AmpereOne.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	  The affected design reports FEAT_HAFDBS as not implemented in
 	  ID_AA64MMFR1_EL1.HAFDBS, but (V)TCR_ELx.{HA,HD} are not RES0
@@ -1131,10 +1096,7 @@ config ARM64_ERRATUM_3194386
 	  * ARM Cortex-A78C erratum 3324346
 	  * ARM Cortex-A78C erratum 3324347
 	  * ARM Cortex-A710 erratam 3324338
-<<<<<<< HEAD
-=======
 	  * ARM Cortex-A715 errartum 3456084
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	  * ARM Cortex-A720 erratum 3456091
 	  * ARM Cortex-A725 erratum 3456106
 	  * ARM Cortex-X1 erratum 3324344
@@ -1145,10 +1107,7 @@ config ARM64_ERRATUM_3194386
 	  * ARM Cortex-X925 erratum 3324334
 	  * ARM Neoverse-N1 erratum 3324349
 	  * ARM Neoverse N2 erratum 3324339
-<<<<<<< HEAD
-=======
 	  * ARM Neoverse-N3 erratum 3456111
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	  * ARM Neoverse-V1 erratum 3324341
 	  * ARM Neoverse V2 erratum 3324336
 	  * ARM Neoverse-V3 erratum 3312417
@@ -2159,12 +2118,8 @@ config ARM64_MTE
 	depends on ARM64_PAN
 	select ARCH_HAS_SUBPAGE_FAULTS
 	select ARCH_USES_HIGH_VMA_FLAGS
-<<<<<<< HEAD
-	select ARCH_USES_PG_ARCH_X
-=======
 	select ARCH_USES_PG_ARCH_2
 	select ARCH_USES_PG_ARCH_3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Memory Tagging (part of the ARMv8.5 Extensions) provides
 	  architectural support for run-time, always-on detection of
@@ -2201,8 +2156,6 @@ config ARM64_EPAN
 	  if the cpu does not implement the feature.
 endmenu # "ARMv8.7 architectural features"
 
-<<<<<<< HEAD
-=======
 menu "ARMv8.9 architectural features"
 
 config ARM64_POE
@@ -2226,7 +2179,6 @@ config ARCH_PKEY_BITS
 
 endmenu # "ARMv8.9 architectural features"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config ARM64_SVE
 	bool "ARM Scalable Vector Extension support"
 	default y
@@ -2262,10 +2214,7 @@ config ARM64_SME
 	bool "ARM Scalable Matrix Extension support"
 	default y
 	depends on ARM64_SVE
-<<<<<<< HEAD
-=======
 	depends on BROKEN
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  The Scalable Matrix Extension (SME) is an extension to the AArch64
 	  execution state which utilises a substantial subset of the SVE
@@ -2375,10 +2324,6 @@ endmenu # "Kernel Features"
 
 menu "Boot options"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config ARM64_APPENDED_DTB
 	bool "Use appended device tree blob to Image"
 	depends on OF
@@ -2390,11 +2335,6 @@ config ARM64_APPENDED_DTB
 	  With this option, the size of Image will be extended to be 2MB aligned.
 	  The 2MB memory followed by Image is used for FDT blob.
 
-<<<<<<< HEAD
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config ARM64_ACPI_PARKING_PROTOCOL
 	bool "Enable support for the ARM64 ACPI parking protocol"
 	depends on ACPI

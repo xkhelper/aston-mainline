@@ -754,11 +754,8 @@ static const char *cmd_status_str(u8 status)
 		return "bad resource";
 	case MLX5_CMD_STAT_RES_BUSY:
 		return "resource busy";
-<<<<<<< HEAD
-=======
 	case MLX5_CMD_STAT_NOT_READY:
 		return "FW not ready";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case MLX5_CMD_STAT_LIM_ERR:
 		return "limits exceeded";
 	case MLX5_CMD_STAT_BAD_RES_STATE_ERR:
@@ -792,10 +789,7 @@ static int cmd_status_to_err(u8 status)
 	case MLX5_CMD_STAT_BAD_SYS_STATE_ERR:		return -EIO;
 	case MLX5_CMD_STAT_BAD_RES_ERR:			return -EINVAL;
 	case MLX5_CMD_STAT_RES_BUSY:			return -EBUSY;
-<<<<<<< HEAD
-=======
 	case MLX5_CMD_STAT_NOT_READY:			return -EAGAIN;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case MLX5_CMD_STAT_LIM_ERR:			return -ENOMEM;
 	case MLX5_CMD_STAT_BAD_RES_STATE_ERR:		return -EINVAL;
 	case MLX5_CMD_STAT_IX_ERR:			return -EINVAL;
@@ -824,25 +818,16 @@ EXPORT_SYMBOL(mlx5_cmd_out_err);
 static void cmd_status_print(struct mlx5_core_dev *dev, void *in, void *out)
 {
 	u16 opcode, op_mod;
-<<<<<<< HEAD
-=======
 	u8 status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 uid;
 
 	opcode = in_to_opcode(in);
 	op_mod = MLX5_GET(mbox_in, in, op_mod);
 	uid    = MLX5_GET(mbox_in, in, uid);
-<<<<<<< HEAD
-
-	if (!uid && opcode != MLX5_CMD_OP_DESTROY_MKEY &&
-	    opcode != MLX5_CMD_OP_CREATE_UCTX)
-=======
 	status = MLX5_GET(mbox_out, out, status);
 
 	if (!uid && opcode != MLX5_CMD_OP_DESTROY_MKEY &&
 	    opcode != MLX5_CMD_OP_CREATE_UCTX && status != MLX5_CMD_STAT_NOT_READY)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mlx5_cmd_out_err(dev, opcode, op_mod, out);
 }
 
@@ -1780,13 +1765,10 @@ static void mlx5_cmd_comp_handler(struct mlx5_core_dev *dev, u64 vec, bool force
 	}
 }
 
-<<<<<<< HEAD
-=======
 #define MLX5_MAX_MANAGE_PAGES_CMD_ENT 1
 #define MLX5_CMD_MASK ((1UL << (cmd->vars.max_reg_cmds + \
 			   MLX5_MAX_MANAGE_PAGES_CMD_ENT)) - 1)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mlx5_cmd_trigger_completions(struct mlx5_core_dev *dev)
 {
 	struct mlx5_cmd *cmd = &dev->cmd;
@@ -1798,11 +1780,7 @@ static void mlx5_cmd_trigger_completions(struct mlx5_core_dev *dev)
 	/* wait for pending handlers to complete */
 	mlx5_eq_synchronize_cmd_irq(dev);
 	spin_lock_irqsave(&dev->cmd.alloc_lock, flags);
-<<<<<<< HEAD
-	vector = ~dev->cmd.vars.bitmask & ((1ul << (1 << dev->cmd.vars.log_sz)) - 1);
-=======
 	vector = ~dev->cmd.vars.bitmask & MLX5_CMD_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!vector)
 		goto no_trig;
 
@@ -1913,19 +1891,12 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
 
 	throttle_op = mlx5_cmd_is_throttle_opcode(opcode);
 	if (throttle_op) {
-<<<<<<< HEAD
-		/* atomic context may not sleep */
-		if (callback)
-			return -EINVAL;
-		down(&dev->cmd.vars.throttle_sem);
-=======
 		if (callback) {
 			if (down_trylock(&dev->cmd.vars.throttle_sem))
 				return -EBUSY;
 		} else {
 			down(&dev->cmd.vars.throttle_sem);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pages_queue = is_manage_pages(in);
@@ -2131,12 +2102,6 @@ static void mlx5_cmd_exec_cb_handler(int status, void *_work)
 {
 	struct mlx5_async_work *work = _work;
 	struct mlx5_async_ctx *ctx;
-<<<<<<< HEAD
-
-	ctx = work->ctx;
-	status = cmd_status_err(ctx->dev, status, work->opcode, work->op_mod, work->out);
-	work->user_callback(status, work);
-=======
 	struct mlx5_core_dev *dev;
 	u16 opcode;
 
@@ -2150,7 +2115,6 @@ static void mlx5_cmd_exec_cb_handler(int status, void *_work)
 	 */
 	if (mlx5_cmd_is_throttle_opcode(opcode))
 		up(&dev->cmd.vars.throttle_sem);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (atomic_dec_and_test(&ctx->num_inflight))
 		complete(&ctx->inflight_done);
 }
@@ -2401,11 +2365,7 @@ int mlx5_cmd_enable(struct mlx5_core_dev *dev)
 
 	cmd->state = MLX5_CMDIF_STATE_DOWN;
 	cmd->vars.max_reg_cmds = (1 << cmd->vars.log_sz) - 1;
-<<<<<<< HEAD
-	cmd->vars.bitmask = (1UL << cmd->vars.max_reg_cmds) - 1;
-=======
 	cmd->vars.bitmask = MLX5_CMD_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	sema_init(&cmd->vars.sem, cmd->vars.max_reg_cmds);
 	sema_init(&cmd->vars.pages_sem, 1);

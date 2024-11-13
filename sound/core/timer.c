@@ -13,11 +13,8 @@
 #include <linux/module.h>
 #include <linux/string.h>
 #include <linux/sched/signal.h>
-<<<<<<< HEAD
-=======
 #include <linux/anon_inodes.h>
 #include <linux/idr.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <sound/core.h>
 #include <sound/timer.h>
 #include <sound/control.h>
@@ -114,8 +111,6 @@ struct snd_timer_status64 {
 	unsigned char reserved[64];	/* reserved */
 };
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_SND_UTIMER
 #define SNDRV_UTIMERS_MAX_COUNT 128
 /* Internal data structure for keeping the state of the userspace-driven timer */
@@ -126,7 +121,6 @@ struct snd_utimer {
 };
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SNDRV_TIMER_IOCTL_STATUS64	_IOR('T', 0x14, struct snd_timer_status64)
 
 /* list of timers */
@@ -1180,11 +1174,7 @@ static int snd_timer_s_close(struct snd_timer *timer)
 static const struct snd_timer_hardware snd_timer_system =
 {
 	.flags =	SNDRV_TIMER_HW_FIRST | SNDRV_TIMER_HW_WORK,
-<<<<<<< HEAD
-	.resolution =	1000000000L / HZ,
-=======
 	.resolution =	NSEC_PER_SEC / HZ,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.ticks =	10000000L,
 	.close =	snd_timer_s_close,
 	.start =	snd_timer_s_start,
@@ -1625,11 +1615,7 @@ static int snd_timer_user_ginfo(struct file *file,
 
 	ginfo = memdup_user(_ginfo, sizeof(*ginfo));
 	if (IS_ERR(ginfo))
-<<<<<<< HEAD
-		return PTR_ERR(no_free_ptr(ginfo));
-=======
 		return PTR_ERR(ginfo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tid = ginfo->tid;
 	memset(ginfo, 0, sizeof(*ginfo));
@@ -2035,8 +2021,6 @@ enum {
 	SNDRV_TIMER_IOCTL_PAUSE_OLD = _IO('T', 0x23),
 };
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_SND_UTIMER
 /*
  * Since userspace-driven timers are passed to userspace, we need to have an identifier
@@ -2248,7 +2232,6 @@ static int snd_utimer_ioctl_create(struct file *file,
 
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static long __snd_timer_user_ioctl(struct file *file, unsigned int cmd,
 				 unsigned long arg, bool compat)
 {
@@ -2293,11 +2276,8 @@ static long __snd_timer_user_ioctl(struct file *file, unsigned int cmd,
 	case SNDRV_TIMER_IOCTL_PAUSE:
 	case SNDRV_TIMER_IOCTL_PAUSE_OLD:
 		return snd_timer_user_pause(file);
-<<<<<<< HEAD
-=======
 	case SNDRV_TIMER_IOCTL_CREATE:
 		return snd_utimer_ioctl_create(file, argp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return -ENOTTY;
 }
@@ -2456,10 +2436,6 @@ static const struct file_operations snd_timer_f_ops =
 	.read =		snd_timer_user_read,
 	.open =		snd_timer_user_open,
 	.release =	snd_timer_user_release,
-<<<<<<< HEAD
-	.llseek =	no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.poll =		snd_timer_user_poll,
 	.unlocked_ioctl =	snd_timer_user_ioctl,
 	.compat_ioctl =	snd_timer_user_ioctl_compat,

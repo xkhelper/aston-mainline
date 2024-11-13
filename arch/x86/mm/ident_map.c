@@ -99,24 +99,12 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
 	for (; addr < end; addr = next) {
 		pud_t *pud = pud_page + pud_index(addr);
 		pmd_t *pmd;
-<<<<<<< HEAD
-=======
 		bool use_gbpage;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		next = (addr & PUD_MASK) + PUD_SIZE;
 		if (next > end)
 			next = end;
 
-<<<<<<< HEAD
-		if (info->direct_gbpages) {
-			pud_t pudval;
-
-			if (pud_present(*pud))
-				continue;
-
-			addr &= PUD_MASK;
-=======
 		/* if this is already a gbpage, this portion is already mapped */
 		if (pud_leaf(*pud))
 			continue;
@@ -136,7 +124,6 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
 		if (use_gbpage) {
 			pud_t pudval;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pudval = __pud((addr - info->offset) | info->page_flag);
 			set_pud(pud, pudval);
 			continue;

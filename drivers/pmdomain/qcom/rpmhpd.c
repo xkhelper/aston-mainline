@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright (c) 2018, The Linux Foundation. All rights reserved.*/
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/err.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
@@ -779,15 +776,9 @@ static int rpmhpd_set_performance_state(struct generic_pm_domain *domain,
 					unsigned int level)
 {
 	struct rpmhpd *pd = domain_to_rpmhpd(domain);
-<<<<<<< HEAD
-	int ret = 0, i;
-
-	mutex_lock(&rpmhpd_lock);
-=======
 	int ret, i;
 
 	guard(mutex)(&rpmhpd_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < pd->level_count; i++)
 		if (level <= pd->level[i])
@@ -807,23 +798,12 @@ static int rpmhpd_set_performance_state(struct generic_pm_domain *domain,
 
 		ret = rpmhpd_aggregate_corner(pd, i);
 		if (ret)
-<<<<<<< HEAD
-			goto out;
-	}
-
-	pd->corner = i;
-out:
-	mutex_unlock(&rpmhpd_lock);
-
-	return ret;
-=======
 			return ret;
 	}
 
 	pd->corner = i;
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rpmhpd_update_level_mapping(struct rpmhpd *rpmhpd)

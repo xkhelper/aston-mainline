@@ -10,11 +10,7 @@
 
 #include <drm/drm_drv.h>
 #include <drm/drm_managed.h>
-<<<<<<< HEAD
-#include <drm/xe_drm.h>
-=======
 #include <uapi/drm/xe_drm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "soc/intel_dram.h"
 #include "i915_drv.h"		/* FIXME: HAS_DISPLAY() depends on this */
@@ -50,11 +46,7 @@ static bool has_display(struct xe_device *xe)
  */
 bool xe_display_driver_probe_defer(struct pci_dev *pdev)
 {
-<<<<<<< HEAD
-	if (!xe_modparam.enable_display)
-=======
 	if (!xe_modparam.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	return intel_display_driver_probe_defer(pdev);
@@ -70,11 +62,7 @@ bool xe_display_driver_probe_defer(struct pci_dev *pdev)
  */
 void xe_display_driver_set_hooks(struct drm_driver *driver)
 {
-<<<<<<< HEAD
-	if (!xe_modparam.enable_display)
-=======
 	if (!xe_modparam.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	driver->driver_features |= DRIVER_MODESET | DRIVER_ATOMIC;
@@ -116,11 +104,7 @@ static void xe_display_fini_nommio(struct drm_device *dev, void *dummy)
 {
 	struct xe_device *xe = to_xe_device(dev);
 
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_power_domains_cleanup(xe);
@@ -128,11 +112,7 @@ static void xe_display_fini_nommio(struct drm_device *dev, void *dummy)
 
 int xe_display_init_nommio(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	/* Fake uncore lock */
@@ -147,14 +127,6 @@ int xe_display_init_nommio(struct xe_device *xe)
 static void xe_display_fini_noirq(void *arg)
 {
 	struct xe_device *xe = arg;
-<<<<<<< HEAD
-
-	if (!xe->info.enable_display)
-		return;
-
-	intel_display_driver_remove_noirq(xe);
-	intel_opregion_cleanup(xe);
-=======
 	struct intel_display *display = &xe->display;
 
 	if (!xe->info.probe_display)
@@ -162,31 +134,20 @@ static void xe_display_fini_noirq(void *arg)
 
 	intel_display_driver_remove_noirq(xe);
 	intel_opregion_cleanup(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int xe_display_init_noirq(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	int err;
-
-	if (!xe->info.enable_display)
-=======
 	struct intel_display *display = &xe->display;
 	int err;
 
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	intel_display_driver_early_probe(xe);
 
 	/* Early display init.. */
-<<<<<<< HEAD
-	intel_opregion_setup(xe);
-=======
 	intel_opregion_setup(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Fill the dram structure to get the system dram info. This will be
@@ -200,11 +161,7 @@ int xe_display_init_noirq(struct xe_device *xe)
 
 	err = intel_display_driver_probe_noirq(xe);
 	if (err) {
-<<<<<<< HEAD
-		intel_opregion_cleanup(xe);
-=======
 		intel_opregion_cleanup(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 
@@ -215,11 +172,7 @@ static void xe_display_fini_noaccel(void *arg)
 {
 	struct xe_device *xe = arg;
 
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_display_driver_remove_nogem(xe);
@@ -229,11 +182,7 @@ int xe_display_init_noaccel(struct xe_device *xe)
 {
 	int err;
 
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	err = intel_display_driver_probe_nogem(xe);
@@ -245,11 +194,7 @@ int xe_display_init_noaccel(struct xe_device *xe)
 
 int xe_display_init(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	return intel_display_driver_probe(xe);
@@ -257,11 +202,7 @@ int xe_display_init(struct xe_device *xe)
 
 void xe_display_fini(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_hpd_poll_fini(xe);
@@ -272,11 +213,7 @@ void xe_display_fini(struct xe_device *xe)
 
 void xe_display_register(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_display_driver_register(xe);
@@ -286,11 +223,7 @@ void xe_display_register(struct xe_device *xe)
 
 void xe_display_unregister(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_unregister_dsm_handler();
@@ -300,11 +233,7 @@ void xe_display_unregister(struct xe_device *xe)
 
 void xe_display_driver_remove(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_display_driver_remove(xe);
@@ -314,11 +243,7 @@ void xe_display_driver_remove(struct xe_device *xe)
 
 void xe_display_irq_handler(struct xe_device *xe, u32 master_ctl)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	if (master_ctl & DISPLAY_IRQ)
@@ -327,13 +252,6 @@ void xe_display_irq_handler(struct xe_device *xe, u32 master_ctl)
 
 void xe_display_irq_enable(struct xe_device *xe, u32 gu_misc_iir)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-		return;
-
-	if (gu_misc_iir & GU_MISC_GSE)
-		intel_opregion_asle_intr(xe);
-=======
 	struct intel_display *display = &xe->display;
 
 	if (!xe->info.probe_display)
@@ -341,16 +259,11 @@ void xe_display_irq_enable(struct xe_device *xe, u32 gu_misc_iir)
 
 	if (gu_misc_iir & GU_MISC_GSE)
 		intel_opregion_asle_intr(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void xe_display_irq_reset(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	gen11_display_irq_reset(xe);
@@ -358,11 +271,7 @@ void xe_display_irq_reset(struct xe_device *xe)
 
 void xe_display_irq_postinstall(struct xe_device *xe, struct xe_gt *gt)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	if (gt->info.id == XE_GT0)
@@ -399,19 +308,12 @@ static void xe_display_flush_cleanup_work(struct xe_device *xe)
 	}
 }
 
-<<<<<<< HEAD
-void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
-{
-	bool s2idle = suspend_to_idle();
-	if (!xe->info.enable_display)
-=======
 /* TODO: System and runtime suspend/resume sequences will be sanitized as a follow-up. */
 static void __xe_display_pm_suspend(struct xe_device *xe, bool runtime)
 {
 	struct intel_display *display = &xe->display;
 	bool s2idle = suspend_to_idle();
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	/*
@@ -420,22 +322,11 @@ static void __xe_display_pm_suspend(struct xe_device *xe, bool runtime)
 	 */
 	intel_power_domains_disable(xe);
 	intel_fbdev_set_suspend(&xe->drm, FBINFO_STATE_SUSPENDED, true);
-<<<<<<< HEAD
-	if (has_display(xe)) {
-		drm_kms_helper_poll_disable(&xe->drm);
-		if (!runtime)
-			intel_display_driver_disable_user_access(xe);
-	}
-
-	if (!runtime)
-		intel_display_driver_suspend(xe);
-=======
 	if (!runtime && has_display(xe)) {
 		drm_kms_helper_poll_disable(&xe->drm);
 		intel_display_driver_disable_user_access(xe);
 		intel_display_driver_suspend(xe);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	xe_display_flush_cleanup_work(xe);
 
@@ -448,11 +339,6 @@ static void __xe_display_pm_suspend(struct xe_device *xe, bool runtime)
 		intel_encoder_suspend_all(&xe->display);
 	}
 
-<<<<<<< HEAD
-	intel_opregion_suspend(xe, s2idle ? PCI_D1 : PCI_D3cold);
-
-	intel_dmc_suspend(xe);
-=======
 	intel_opregion_suspend(display, s2idle ? PCI_D1 : PCI_D3cold);
 
 	intel_dmc_suspend(xe);
@@ -477,17 +363,12 @@ void xe_display_pm_runtime_suspend(struct xe_device *xe)
 	}
 
 	intel_hpd_poll_enable(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void xe_display_pm_suspend_late(struct xe_device *xe)
 {
 	bool s2idle = suspend_to_idle();
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_power_domains_suspend(xe, s2idle);
@@ -497,11 +378,7 @@ void xe_display_pm_suspend_late(struct xe_device *xe)
 
 void xe_display_pm_resume_early(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_display_power_resume_early(xe);
@@ -509,17 +386,11 @@ void xe_display_pm_resume_early(struct xe_device *xe)
 	intel_power_domains_resume(xe);
 }
 
-<<<<<<< HEAD
-void xe_display_pm_resume(struct xe_device *xe, bool runtime)
-{
-	if (!xe->info.enable_display)
-=======
 static void __xe_display_pm_resume(struct xe_device *xe, bool runtime)
 {
 	struct intel_display *display = &xe->display;
 
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_dmc_resume(xe);
@@ -535,19 +406,6 @@ static void __xe_display_pm_resume(struct xe_device *xe, bool runtime)
 
 	/* MST sideband requires HPD interrupts enabled */
 	intel_dp_mst_resume(xe);
-<<<<<<< HEAD
-	if (!runtime)
-		intel_display_driver_resume(xe);
-
-	if (has_display(xe)) {
-		drm_kms_helper_poll_enable(&xe->drm);
-		if (!runtime)
-			intel_display_driver_enable_user_access(xe);
-	}
-	intel_hpd_poll_disable(xe);
-
-	intel_opregion_resume(xe);
-=======
 	if (!runtime && has_display(xe)) {
 		intel_display_driver_resume(xe);
 		drm_kms_helper_poll_enable(&xe->drm);
@@ -558,15 +416,12 @@ static void __xe_display_pm_resume(struct xe_device *xe, bool runtime)
 		intel_hpd_poll_disable(xe);
 
 	intel_opregion_resume(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intel_fbdev_set_suspend(&xe->drm, FBINFO_STATE_RUNNING, false);
 
 	intel_power_domains_enable(xe);
 }
 
-<<<<<<< HEAD
-=======
 void xe_display_pm_resume(struct xe_device *xe)
 {
 	__xe_display_pm_resume(xe, false);
@@ -587,7 +442,6 @@ void xe_display_pm_runtime_resume(struct xe_device *xe)
 }
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void display_device_remove(struct drm_device *dev, void *arg)
 {
 	struct xe_device *xe = arg;
@@ -599,11 +453,7 @@ int xe_display_probe(struct xe_device *xe)
 {
 	int err;
 
-<<<<<<< HEAD
-	if (!xe->info.enable_display)
-=======
 	if (!xe->info.probe_display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto no_display;
 
 	intel_display_device_probe(xe);
@@ -616,11 +466,7 @@ int xe_display_probe(struct xe_device *xe)
 		return 0;
 
 no_display:
-<<<<<<< HEAD
-	xe->info.enable_display = false;
-=======
 	xe->info.probe_display = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unset_display_features(xe);
 	return 0;
 }

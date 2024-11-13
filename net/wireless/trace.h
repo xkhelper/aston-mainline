@@ -805,11 +805,6 @@ DEFINE_EVENT(wiphy_netdev_evt, rdev_flush_pmksa,
 	TP_ARGS(wiphy, netdev)
 );
 
-<<<<<<< HEAD
-DEFINE_EVENT(wiphy_netdev_evt, rdev_end_cac,
-	     TP_PROTO(struct wiphy *wiphy, struct net_device *netdev),
-	     TP_ARGS(wiphy, netdev)
-=======
 TRACE_EVENT(rdev_end_cac,
 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
 		 unsigned int link_id),
@@ -826,7 +821,6 @@ TRACE_EVENT(rdev_end_cac,
 	),
 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", link_id: %d",
 		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->link_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 );
 
 DECLARE_EVENT_CLASS(station_add_change,
@@ -2671,42 +2665,26 @@ TRACE_EVENT(rdev_external_auth,
 TRACE_EVENT(rdev_start_radar_detection,
 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
 		 struct cfg80211_chan_def *chandef,
-<<<<<<< HEAD
-		 u32 cac_time_ms),
-	TP_ARGS(wiphy, netdev, chandef, cac_time_ms),
-=======
 		 u32 cac_time_ms, int link_id),
 	TP_ARGS(wiphy, netdev, chandef, cac_time_ms, link_id),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TP_STRUCT__entry(
 		WIPHY_ENTRY
 		NETDEV_ENTRY
 		CHAN_DEF_ENTRY
 		__field(u32, cac_time_ms)
-<<<<<<< HEAD
-=======
 		__field(int, link_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	),
 	TP_fast_assign(
 		WIPHY_ASSIGN;
 		NETDEV_ASSIGN;
 		CHAN_DEF_ASSIGN(chandef);
 		__entry->cac_time_ms = cac_time_ms;
-<<<<<<< HEAD
-	),
-	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", " CHAN_DEF_PR_FMT
-		  ", cac_time_ms=%u",
-		  WIPHY_PR_ARG, NETDEV_PR_ARG, CHAN_DEF_PR_ARG,
-		  __entry->cac_time_ms)
-=======
 		__entry->link_id = link_id;
 	),
 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", " CHAN_DEF_PR_FMT
 		  ", cac_time_ms=%u, link_id=%d",
 		  WIPHY_PR_ARG, NETDEV_PR_ARG, CHAN_DEF_PR_ARG,
 		  __entry->cac_time_ms, __entry->link_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 );
 
 TRACE_EVENT(rdev_set_mcast_rate,
@@ -3520,13 +3498,6 @@ TRACE_EVENT(cfg80211_radar_event,
 );
 
 TRACE_EVENT(cfg80211_cac_event,
-<<<<<<< HEAD
-	TP_PROTO(struct net_device *netdev, enum nl80211_radar_event evt),
-	TP_ARGS(netdev, evt),
-	TP_STRUCT__entry(
-		NETDEV_ENTRY
-		__field(enum nl80211_radar_event, evt)
-=======
 	TP_PROTO(struct net_device *netdev, enum nl80211_radar_event evt,
 		 unsigned int link_id),
 	TP_ARGS(netdev, evt, link_id),
@@ -3534,21 +3505,14 @@ TRACE_EVENT(cfg80211_cac_event,
 		NETDEV_ENTRY
 		__field(enum nl80211_radar_event, evt)
 		__field(unsigned int, link_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	),
 	TP_fast_assign(
 		NETDEV_ASSIGN;
 		__entry->evt = evt;
-<<<<<<< HEAD
-	),
-	TP_printk(NETDEV_PR_FMT ",  event: %d",
-		  NETDEV_PR_ARG, __entry->evt)
-=======
 		__entry->link_id = link_id;
 	),
 	TP_printk(NETDEV_PR_FMT ",  event: %d, link_id=%u",
 		  NETDEV_PR_ARG, __entry->evt, __entry->link_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 );
 
 DECLARE_EVENT_CLASS(cfg80211_rx_evt,

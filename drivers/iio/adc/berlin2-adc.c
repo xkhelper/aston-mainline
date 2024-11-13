@@ -351,11 +351,7 @@ static int berlin2_adc_probe(struct platform_device *pdev)
 
 static const struct of_device_id berlin2_adc_match[] = {
 	{ .compatible = "marvell,berlin2-adc", },
-<<<<<<< HEAD
-	{ },
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, berlin2_adc_match);
 

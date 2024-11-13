@@ -112,11 +112,7 @@ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq)
 	struct pdsc_cq *cq = &qcq->cq;
 
 	qcq_dentry = debugfs_create_dir(q->name, pdsc->dentry);
-<<<<<<< HEAD
-	if (IS_ERR_OR_NULL(qcq_dentry))
-=======
 	if (IS_ERR(qcq_dentry))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	qcq->dentry = qcq_dentry;
 
@@ -127,11 +123,7 @@ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq)
 	debugfs_create_x32("accum_work", 0400, qcq_dentry, &qcq->accum_work);
 
 	q_dentry = debugfs_create_dir("q", qcq->dentry);
-<<<<<<< HEAD
-	if (IS_ERR_OR_NULL(q_dentry))
-=======
 	if (IS_ERR(q_dentry))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	debugfs_create_u32("index", 0400, q_dentry, &q->index);
@@ -143,11 +135,7 @@ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq)
 	debugfs_create_u16("head", 0400, q_dentry, &q->head_idx);
 
 	cq_dentry = debugfs_create_dir("cq", qcq->dentry);
-<<<<<<< HEAD
-	if (IS_ERR_OR_NULL(cq_dentry))
-=======
 	if (IS_ERR(cq_dentry))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	debugfs_create_x64("base_pa", 0400, cq_dentry, &cq->base_pa);
@@ -160,11 +148,7 @@ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq)
 		struct pdsc_intr_info *intr = &pdsc->intr_info[qcq->intx];
 
 		intr_dentry = debugfs_create_dir("intr", qcq->dentry);
-<<<<<<< HEAD
-		if (IS_ERR_OR_NULL(intr_dentry))
-=======
 		if (IS_ERR(intr_dentry))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return;
 
 		debugfs_create_u32("index", 0400, intr_dentry, &intr->index);

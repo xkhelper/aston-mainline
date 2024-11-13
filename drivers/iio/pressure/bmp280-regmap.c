@@ -41,11 +41,7 @@ const struct regmap_config bmp180_regmap_config = {
 };
 EXPORT_SYMBOL_NS(bmp180_regmap_config, IIO_BMP280);
 
-<<<<<<< HEAD
-static bool bmp280_is_writeable_reg(struct device *dev, unsigned int reg)
-=======
 static bool bme280_is_writeable_reg(struct device *dev, unsigned int reg)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (reg) {
 	case BMP280_REG_CONFIG:
@@ -58,11 +54,6 @@ static bool bme280_is_writeable_reg(struct device *dev, unsigned int reg)
 	}
 }
 
-<<<<<<< HEAD
-static bool bmp280_is_volatile_reg(struct device *dev, unsigned int reg)
-{
-	switch (reg) {
-=======
 static bool bmp280_is_writeable_reg(struct device *dev, unsigned int reg)
 {
 	switch (reg) {
@@ -94,7 +85,6 @@ static bool bmp280_is_volatile_reg(struct device *dev, unsigned int reg)
 static bool bme280_is_volatile_reg(struct device *dev, unsigned int reg)
 {
 	switch (reg) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case BME280_REG_HUMIDITY_LSB:
 	case BME280_REG_HUMIDITY_MSB:
 	case BMP280_REG_TEMP_XLSB:
@@ -109,10 +99,6 @@ static bool bme280_is_volatile_reg(struct device *dev, unsigned int reg)
 		return false;
 	}
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool bmp380_is_writeable_reg(struct device *dev, unsigned int reg)
 {
 	switch (reg) {
@@ -208,11 +194,7 @@ const struct regmap_config bmp280_regmap_config = {
 	.reg_bits = 8,
 	.val_bits = 8,
 
-<<<<<<< HEAD
-	.max_register = BME280_REG_HUMIDITY_LSB,
-=======
 	.max_register = BMP280_REG_TEMP_XLSB,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.cache_type = REGCACHE_RBTREE,
 
 	.writeable_reg = bmp280_is_writeable_reg,
@@ -220,8 +202,6 @@ const struct regmap_config bmp280_regmap_config = {
 };
 EXPORT_SYMBOL_NS(bmp280_regmap_config, IIO_BMP280);
 
-<<<<<<< HEAD
-=======
 const struct regmap_config bme280_regmap_config = {
 	.reg_bits = 8,
 	.val_bits = 8,
@@ -234,7 +214,6 @@ const struct regmap_config bme280_regmap_config = {
 };
 EXPORT_SYMBOL_NS(bme280_regmap_config, IIO_BMP280);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct regmap_config bmp380_regmap_config = {
 	.reg_bits = 8,
 	.val_bits = 8,

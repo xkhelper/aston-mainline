@@ -8,10 +8,7 @@
 #include <linux/ioport.h>
 #include <linux/export.h>
 #include <linux/pci.h>
-<<<<<<< HEAD
-=======
 #include <linux/acpi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/acpi.h>
 #include <asm/bios_ebda.h>

@@ -684,12 +684,6 @@ void dpp1_set_degamma(
 		BREAK_TO_DEBUGGER();
 		break;
 	}
-<<<<<<< HEAD
-
-	REG_SEQ_SUBMIT();
-	REG_SEQ_WAIT_DONE();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void dpp1_degamma_ram_select(

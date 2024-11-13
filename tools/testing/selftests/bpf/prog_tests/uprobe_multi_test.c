@@ -6,11 +6,8 @@
 #include "uprobe_multi.skel.h"
 #include "uprobe_multi_bench.skel.h"
 #include "uprobe_multi_usdt.skel.h"
-<<<<<<< HEAD
-=======
 #include "uprobe_multi_consumers.skel.h"
 #include "uprobe_multi_pid_filter.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "bpf/libbpf_internal.h"
 #include "testing_helpers.h"
 #include "../sdt.h"
@@ -43,10 +40,7 @@ struct child {
 	int pid;
 	int tid;
 	pthread_t thread;
-<<<<<<< HEAD
-=======
 	char stack[65536];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void release_child(struct child *child)
@@ -76,43 +70,6 @@ static void kick_child(struct child *child)
 	fflush(NULL);
 }
 
-<<<<<<< HEAD
-static struct child *spawn_child(void)
-{
-	static struct child child;
-	int err;
-	int c;
-
-	/* pipe to notify child to execute the trigger functions */
-	if (pipe(child.go))
-		return NULL;
-
-	child.pid = child.tid = fork();
-	if (child.pid < 0) {
-		release_child(&child);
-		errno = EINVAL;
-		return NULL;
-	}
-
-	/* child */
-	if (child.pid == 0) {
-		close(child.go[1]);
-
-		/* wait for parent's kick */
-		err = read(child.go[0], &c, 1);
-		if (err != 1)
-			exit(err);
-
-		uprobe_multi_func_1();
-		uprobe_multi_func_2();
-		uprobe_multi_func_3();
-		usdt_trigger();
-
-		exit(errno);
-	}
-
-	return &child;
-=======
 static int child_func(void *arg)
 {
 	struct child *child = arg;
@@ -161,7 +118,6 @@ static int spawn_child_flag(struct child *child, bool clone_vm)
 static int spawn_child(struct child *child)
 {
 	return spawn_child_flag(child, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void *child_thread(void *ctx)
@@ -190,41 +146,6 @@ static void *child_thread(void *ctx)
 	pthread_exit(&err);
 }
 
-<<<<<<< HEAD
-static struct child *spawn_thread(void)
-{
-	static struct child child;
-	int c, err;
-
-	/* pipe to notify child to execute the trigger functions */
-	if (pipe(child.go))
-		return NULL;
-	/* pipe to notify parent that child thread is ready */
-	if (pipe(child.c2p)) {
-		close(child.go[0]);
-		close(child.go[1]);
-		return NULL;
-	}
-
-	child.pid = getpid();
-
-	err = pthread_create(&child.thread, NULL, child_thread, &child);
-	if (err) {
-		err = -errno;
-		close(child.go[0]);
-		close(child.go[1]);
-		close(child.c2p[0]);
-		close(child.c2p[1]);
-		errno = -err;
-		return NULL;
-	}
-
-	err = read(child.c2p[0], &c, 1);
-	if (!ASSERT_EQ(err, 1, "child_thread_ready"))
-		return NULL;
-
-	return &child;
-=======
 static int spawn_thread(struct child *child)
 {
 	int c, err;
@@ -257,7 +178,6 @@ static int spawn_thread(struct child *child)
 		return -1;
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void uprobe_multi_test_run(struct uprobe_multi *skel, struct child *child)
@@ -293,11 +213,7 @@ static void uprobe_multi_test_run(struct uprobe_multi *skel, struct child *child
 
 	/*
 	 * There are 2 entry and 2 exit probe called for each uprobe_multi_func_[123]
-<<<<<<< HEAD
-	 * function and each slepable probe (6) increments uprobe_multi_sleep_result.
-=======
 	 * function and each sleepable probe (6) increments uprobe_multi_sleep_result.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	ASSERT_EQ(skel->bss->uprobe_multi_func_1_result, 2, "uprobe_multi_func_1_result");
 	ASSERT_EQ(skel->bss->uprobe_multi_func_2_result, 2, "uprobe_multi_func_2_result");
@@ -402,30 +318,12 @@ cleanup:
 static void
 test_attach_api(const char *binary, const char *pattern, struct bpf_uprobe_multi_opts *opts)
 {
-<<<<<<< HEAD
-	struct child *child;
-=======
 	static struct child child;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* no pid filter */
 	__test_attach_api(binary, pattern, opts, NULL);
 
 	/* pid filter */
-<<<<<<< HEAD
-	child = spawn_child();
-	if (!ASSERT_OK_PTR(child, "spawn_child"))
-		return;
-
-	__test_attach_api(binary, pattern, opts, child);
-
-	/* pid filter (thread) */
-	child = spawn_thread();
-	if (!ASSERT_OK_PTR(child, "spawn_thread"))
-		return;
-
-	__test_attach_api(binary, pattern, opts, child);
-=======
 	if (!ASSERT_OK(spawn_child(&child), "spawn_child"))
 		return;
 
@@ -436,7 +334,6 @@ test_attach_api(const char *binary, const char *pattern, struct bpf_uprobe_multi
 		return;
 
 	__test_attach_api(binary, pattern, opts, &child);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void test_attach_api_pattern(void)
@@ -632,8 +529,6 @@ cleanup:
 	uprobe_multi__destroy(skel);
 }
 
-<<<<<<< HEAD
-=======
 #ifdef __x86_64__
 noinline void uprobe_multi_error_func(void)
 {
@@ -750,7 +645,6 @@ static void test_attach_uprobe_fails(void)
 	uprobe_multi__destroy(skel);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __test_link_api(struct child *child)
 {
 	int prog_fd, link1_fd = -1, link2_fd = -1, link3_fd = -1, link4_fd = -1;
@@ -830,30 +724,12 @@ cleanup:
 
 static void test_link_api(void)
 {
-<<<<<<< HEAD
-	struct child *child;
-=======
 	static struct child child;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* no pid filter */
 	__test_link_api(NULL);
 
 	/* pid filter */
-<<<<<<< HEAD
-	child = spawn_child();
-	if (!ASSERT_OK_PTR(child, "spawn_child"))
-		return;
-
-	__test_link_api(child);
-
-	/* pid filter (thread) */
-	child = spawn_thread();
-	if (!ASSERT_OK_PTR(child, "spawn_thread"))
-		return;
-
-	__test_link_api(child);
-=======
 	if (!ASSERT_OK(spawn_child(&child), "spawn_child"))
 		return;
 
@@ -1138,7 +1014,6 @@ static void test_pid_filter_process(bool clone_vm)
 	run_pid_filter(skel, clone_vm, true);
 
 	uprobe_multi_pid_filter__destroy(skel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void test_bench_attach_uprobe(void)
@@ -1229,8 +1104,6 @@ void test_uprobe_multi_test(void)
 		test_bench_attach_usdt();
 	if (test__start_subtest("attach_api_fails"))
 		test_attach_api_fails();
-<<<<<<< HEAD
-=======
 	if (test__start_subtest("attach_uprobe_fails"))
 		test_attach_uprobe_fails();
 	if (test__start_subtest("consumers"))
@@ -1239,5 +1112,4 @@ void test_uprobe_multi_test(void)
 		test_pid_filter_process(false);
 	if (test__start_subtest("filter_clone_vm"))
 		test_pid_filter_process(true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

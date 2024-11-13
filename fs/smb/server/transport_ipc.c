@@ -120,15 +120,12 @@ static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX + 1] = {
 	},
 	[KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE] = {
 	},
-<<<<<<< HEAD
-=======
 	[KSMBD_EVENT_LOGIN_REQUEST_EXT] = {
 		.len = sizeof(struct ksmbd_login_request),
 	},
 	[KSMBD_EVENT_LOGIN_RESPONSE_EXT] = {
 		.len = sizeof(struct ksmbd_login_response_ext),
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct genl_ops ksmbd_genl_ops[] = {
@@ -196,8 +193,6 @@ static struct genl_ops ksmbd_genl_ops[] = {
 		.cmd	= KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE,
 		.doit	= handle_generic_event,
 	},
-<<<<<<< HEAD
-=======
 	{
 		.cmd	= KSMBD_EVENT_LOGIN_REQUEST_EXT,
 		.doit	= handle_unsupported_event,
@@ -206,7 +201,6 @@ static struct genl_ops ksmbd_genl_ops[] = {
 		.cmd	= KSMBD_EVENT_LOGIN_RESPONSE_EXT,
 		.doit	= handle_generic_event,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct genl_family ksmbd_genl_family = {
@@ -218,11 +212,7 @@ static struct genl_family ksmbd_genl_family = {
 	.module		= THIS_MODULE,
 	.ops		= ksmbd_genl_ops,
 	.n_ops		= ARRAY_SIZE(ksmbd_genl_ops),
-<<<<<<< HEAD
-	.resv_start_op	= KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE + 1,
-=======
 	.resv_start_op	= KSMBD_EVENT_LOGIN_RESPONSE_EXT + 1,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void ksmbd_nl_init_fixup(void)
@@ -483,13 +473,6 @@ static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
 {
 	unsigned int msg_sz = entry->msg_sz;
 
-<<<<<<< HEAD
-	if (entry->type == KSMBD_EVENT_RPC_REQUEST) {
-		struct ksmbd_rpc_command *resp = entry->response;
-
-		msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
-	} else if (entry->type == KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST) {
-=======
 	switch (entry->type) {
 	case KSMBD_EVENT_RPC_REQUEST:
 	{
@@ -500,19 +483,14 @@ static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
 	}
 	case KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST:
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct ksmbd_spnego_authen_response *resp = entry->response;
 
 		msg_sz = sizeof(struct ksmbd_spnego_authen_response) +
 				resp->session_key_len + resp->spnego_blob_len;
-<<<<<<< HEAD
-	} else if (entry->type == KSMBD_EVENT_SHARE_CONFIG_REQUEST) {
-=======
 		break;
 	}
 	case KSMBD_EVENT_SHARE_CONFIG_REQUEST:
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct ksmbd_share_config_response *resp = entry->response;
 
 		if (resp->payload_sz) {
@@ -522,8 +500,6 @@ static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
 			msg_sz = sizeof(struct ksmbd_share_config_response) +
 					resp->payload_sz;
 		}
-<<<<<<< HEAD
-=======
 		break;
 	}
 	case KSMBD_EVENT_LOGIN_REQUEST_EXT:
@@ -535,7 +511,6 @@ static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
 					resp->ngroups * sizeof(gid_t);
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return entry->msg_sz != msg_sz ? -EINVAL : 0;
@@ -618,8 +593,6 @@ struct ksmbd_login_response *ksmbd_ipc_login_request(const char *account)
 	return resp;
 }
 
-<<<<<<< HEAD
-=======
 struct ksmbd_login_response_ext *ksmbd_ipc_login_request_ext(const char *account)
 {
 	struct ksmbd_ipc_msg *msg;
@@ -643,7 +616,6 @@ struct ksmbd_login_response_ext *ksmbd_ipc_login_request_ext(const char *account
 	return resp;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ksmbd_spnego_authen_response *
 ksmbd_ipc_spnego_authen_request(const char *spnego_blob, int blob_len)
 {

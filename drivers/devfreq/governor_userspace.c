@@ -153,8 +153,5 @@ static void __exit devfreq_userspace_exit(void)
 	return;
 }
 module_exit(devfreq_userspace_exit);
-<<<<<<< HEAD
-=======
 MODULE_DESCRIPTION("DEVFREQ Userspace governor");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL");

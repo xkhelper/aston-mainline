@@ -26,8 +26,6 @@
  */
 #define ASSIGNED_ADDR_VETH1 0xac1001c8
 
-<<<<<<< HEAD
-=======
 struct bpf_fou_encap___local {
 	__be16 sport;
 	__be16 dport;
@@ -40,7 +38,6 @@ enum bpf_fou_encap_type___local {
 
 struct bpf_fou_encap;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bpf_skb_set_fou_encap(struct __sk_buff *skb_ctx,
 			  struct bpf_fou_encap *encap, int type) __ksym;
 int bpf_skb_get_fou_encap(struct __sk_buff *skb_ctx,
@@ -760,11 +757,7 @@ SEC("tc")
 int ipip_gue_set_tunnel(struct __sk_buff *skb)
 {
 	struct bpf_tunnel_key key = {};
-<<<<<<< HEAD
-	struct bpf_fou_encap encap = {};
-=======
 	struct bpf_fou_encap___local encap = {};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *data = (void *)(long)skb->data;
 	struct iphdr *iph = data;
 	void *data_end = (void *)(long)skb->data_end;
@@ -788,13 +781,9 @@ int ipip_gue_set_tunnel(struct __sk_buff *skb)
 	encap.sport = 0;
 	encap.dport = bpf_htons(5555);
 
-<<<<<<< HEAD
-	ret = bpf_skb_set_fou_encap(skb, &encap, FOU_BPF_ENCAP_GUE);
-=======
 	ret = bpf_skb_set_fou_encap(skb, (struct bpf_fou_encap *)&encap,
 				    bpf_core_enum_value(enum bpf_fou_encap_type___local,
 							FOU_BPF_ENCAP_GUE___local));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		log_err(ret);
 		return TC_ACT_SHOT;
@@ -807,11 +796,7 @@ SEC("tc")
 int ipip_fou_set_tunnel(struct __sk_buff *skb)
 {
 	struct bpf_tunnel_key key = {};
-<<<<<<< HEAD
-	struct bpf_fou_encap encap = {};
-=======
 	struct bpf_fou_encap___local encap = {};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *data = (void *)(long)skb->data;
 	struct iphdr *iph = data;
 	void *data_end = (void *)(long)skb->data_end;
@@ -835,12 +820,8 @@ int ipip_fou_set_tunnel(struct __sk_buff *skb)
 	encap.sport = 0;
 	encap.dport = bpf_htons(5555);
 
-<<<<<<< HEAD
-	ret = bpf_skb_set_fou_encap(skb, &encap, FOU_BPF_ENCAP_FOU);
-=======
 	ret = bpf_skb_set_fou_encap(skb, (struct bpf_fou_encap *)&encap,
 				    FOU_BPF_ENCAP_FOU___local);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		log_err(ret);
 		return TC_ACT_SHOT;
@@ -854,11 +835,7 @@ int ipip_encap_get_tunnel(struct __sk_buff *skb)
 {
 	int ret;
 	struct bpf_tunnel_key key = {};
-<<<<<<< HEAD
-	struct bpf_fou_encap encap = {};
-=======
 	struct bpf_fou_encap___local encap = {};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = bpf_skb_get_tunnel_key(skb, &key, sizeof(key), 0);
 	if (ret < 0) {
@@ -866,11 +843,7 @@ int ipip_encap_get_tunnel(struct __sk_buff *skb)
 		return TC_ACT_SHOT;
 	}
 
-<<<<<<< HEAD
-	ret = bpf_skb_get_fou_encap(skb, &encap);
-=======
 	ret = bpf_skb_get_fou_encap(skb, (struct bpf_fou_encap *)&encap);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0) {
 		log_err(ret);
 		return TC_ACT_SHOT;

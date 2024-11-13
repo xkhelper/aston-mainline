@@ -30,10 +30,7 @@
 
 #define	UNCORE_MAJOR_VERSION		0
 #define	UNCORE_MINOR_VERSION		2
-<<<<<<< HEAD
-=======
 #define UNCORE_ELC_SUPPORTED_VERSION	2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define UNCORE_HEADER_INDEX		0
 #define UNCORE_FABRIC_CLUSTER_OFFSET	8
 
@@ -50,10 +47,7 @@ struct tpmi_uncore_struct;
 /* Information for each cluster */
 struct tpmi_uncore_cluster_info {
 	bool root_domain;
-<<<<<<< HEAD
-=======
 	bool elc_supported;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 __iomem *cluster_base;
 	struct uncore_data uncore_data;
 	struct tpmi_uncore_struct *uncore_root;
@@ -83,13 +77,10 @@ struct tpmi_uncore_struct {
 /* Bit definitions for CONTROL register */
 #define UNCORE_MAX_RATIO_MASK				GENMASK_ULL(14, 8)
 #define UNCORE_MIN_RATIO_MASK				GENMASK_ULL(21, 15)
-<<<<<<< HEAD
-=======
 #define UNCORE_EFF_LAT_CTRL_RATIO_MASK			GENMASK_ULL(28, 22)
 #define UNCORE_EFF_LAT_CTRL_LOW_THRESHOLD_MASK		GENMASK_ULL(38, 32)
 #define UNCORE_EFF_LAT_CTRL_HIGH_THRESHOLD_ENABLE	BIT(39)
 #define UNCORE_EFF_LAT_CTRL_HIGH_THRESHOLD_MASK		GENMASK_ULL(46, 40)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Helper function to read MMIO offset for max/min control frequency */
 static void read_control_freq(struct tpmi_uncore_cluster_info *cluster_info,
@@ -104,8 +95,6 @@ static void read_control_freq(struct tpmi_uncore_cluster_info *cluster_info,
 		*value = FIELD_GET(UNCORE_MIN_RATIO_MASK, control) * UNCORE_FREQ_KHZ_MULTIPLIER;
 }
 
-<<<<<<< HEAD
-=======
 /* Helper function to read efficiency latency control values over MMIO */
 static int read_eff_lat_ctrl(struct uncore_data *data, unsigned int *val, enum uncore_index index)
 {
@@ -148,7 +137,6 @@ static int read_eff_lat_ctrl(struct uncore_data *data, unsigned int *val, enum u
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define UNCORE_MAX_RATIO	FIELD_MAX(UNCORE_MAX_RATIO_MASK)
 
 /* Helper for sysfs read for max/min frequencies. Called under mutex locks */
@@ -197,8 +185,6 @@ static int uncore_read_control_freq(struct uncore_data *data, unsigned int *valu
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /* Helper function for writing efficiency latency control values over MMIO */
 static int write_eff_lat_ctrl(struct uncore_data *data, unsigned int val, enum uncore_index index)
 {
@@ -275,7 +261,6 @@ static int write_eff_lat_ctrl(struct uncore_data *data, unsigned int val, enum u
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Helper function to write MMIO offset for max/min control frequency */
 static void write_control_freq(struct tpmi_uncore_cluster_info *cluster_info, unsigned int input,
 			      unsigned int index)
@@ -295,11 +280,7 @@ static void write_control_freq(struct tpmi_uncore_cluster_info *cluster_info, un
 	writeq(control, (cluster_info->cluster_base + UNCORE_CONTROL_INDEX));
 }
 
-<<<<<<< HEAD
-/* Callback for sysfs write for max/min frequencies. Called under mutex locks */
-=======
 /* Helper for sysfs write for max/min frequencies. Called under mutex locks */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int uncore_write_control_freq(struct uncore_data *data, unsigned int input,
 				     enum uncore_index index)
 {
@@ -377,8 +358,6 @@ static int uncore_read(struct uncore_data *data, unsigned int *value, enum uncor
 	case UNCORE_INDEX_CURRENT_FREQ:
 		return uncore_read_freq(data, value);
 
-<<<<<<< HEAD
-=======
 	case UNCORE_INDEX_EFF_LAT_CTRL_LOW_THRESHOLD:
 	case UNCORE_INDEX_EFF_LAT_CTRL_HIGH_THRESHOLD:
 	case UNCORE_INDEX_EFF_LAT_CTRL_HIGH_THRESHOLD_ENABLE:
@@ -406,7 +385,6 @@ static int uncore_write(struct uncore_data *data, unsigned int value, enum uncor
 	case UNCORE_INDEX_MAX_FREQ:
 		return uncore_write_control_freq(data, value, index);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		break;
 	}
@@ -464,11 +442,7 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
 		return -EINVAL;
 
 	/* Register callbacks to uncore core */
-<<<<<<< HEAD
-	ret = uncore_freq_common_init(uncore_read, uncore_write_control_freq);
-=======
 	ret = uncore_freq_common_init(uncore_read, uncore_write);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -586,12 +560,9 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
 
 			cluster_info->uncore_root = tpmi_uncore;
 
-<<<<<<< HEAD
-=======
 			if (TPMI_MINOR_VERSION(pd_info->ufs_header_ver) >= UNCORE_ELC_SUPPORTED_VERSION)
 				cluster_info->elc_supported = true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = uncore_freq_add_entry(&cluster_info->uncore_data, 0);
 			if (ret) {
 				cluster_info->cluster_base = NULL;
@@ -610,12 +581,9 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
 
 	auxiliary_set_drvdata(auxdev, tpmi_uncore);
 
-<<<<<<< HEAD
-=======
 	if (topology_max_dies_per_package() > 1)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tpmi_uncore->root_cluster.root_domain = true;
 	tpmi_uncore->root_cluster.uncore_root = tpmi_uncore;
 
@@ -639,13 +607,9 @@ static void uncore_remove(struct auxiliary_device *auxdev)
 {
 	struct tpmi_uncore_struct *tpmi_uncore = auxiliary_get_drvdata(auxdev);
 
-<<<<<<< HEAD
-	uncore_freq_remove_die_entry(&tpmi_uncore->root_cluster.uncore_data);
-=======
 	if (tpmi_uncore->root_cluster.root_domain)
 		uncore_freq_remove_die_entry(&tpmi_uncore->root_cluster.uncore_data);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	remove_cluster_entries(tpmi_uncore);
 
 	uncore_freq_common_exit();

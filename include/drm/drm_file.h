@@ -45,11 +45,8 @@ struct drm_printer;
 struct device;
 struct file;
 
-<<<<<<< HEAD
-=======
 extern struct xarray drm_minors_xa;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * FIXME: Not sure we want to have drm_minor here in the end, but to avoid
  * header include loops we need it here for now.
@@ -439,12 +436,9 @@ static inline bool drm_is_accel_client(const struct drm_file *file_priv)
 
 void drm_file_update_pid(struct drm_file *);
 
-<<<<<<< HEAD
-=======
 struct drm_minor *drm_minor_acquire(struct xarray *minors_xa, unsigned int minor_id);
 void drm_minor_release(struct drm_minor *minor);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int drm_open(struct inode *inode, struct file *filp);
 int drm_open_helper(struct file *filp, struct drm_minor *minor);
 ssize_t drm_read(struct file *filp, char __user *buffer,

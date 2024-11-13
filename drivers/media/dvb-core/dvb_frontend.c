@@ -443,13 +443,8 @@ static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wra
 
 		default:
 			fepriv->auto_step++;
-<<<<<<< HEAD
-			fepriv->auto_sub_step = -1; /* it'll be incremented to 0 in a moment */
-			break;
-=======
 			fepriv->auto_sub_step = 0;
 			continue;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (!ready) fepriv->auto_sub_step++;

@@ -51,11 +51,7 @@
 
 #include <asm/page.h>		/* for PAGE_SIZE */
 #include <asm/byteorder.h>	/* cpu_to_le16 */
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/string_helpers.h>
 #include "kstrtox.h"
@@ -2058,28 +2054,6 @@ char *format_page_flags(char *buf, char *end, unsigned long flags)
 	return buf;
 }
 
-<<<<<<< HEAD
-static
-char *format_page_type(char *buf, char *end, unsigned int page_type)
-{
-	buf = number(buf, end, page_type, default_flag_spec);
-
-	if (buf < end)
-		*buf = '(';
-	buf++;
-
-	if (page_type_has_type(page_type))
-		buf = format_flags(buf, end, ~page_type, pagetype_names);
-
-	if (buf < end)
-		*buf = ')';
-	buf++;
-
-	return buf;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static noinline_for_stack
 char *flags_string(char *buf, char *end, void *flags_ptr,
 		   struct printf_spec spec, const char *fmt)
@@ -2093,11 +2067,6 @@ char *flags_string(char *buf, char *end, void *flags_ptr,
 	switch (fmt[1]) {
 	case 'p':
 		return format_page_flags(buf, end, *(unsigned long *)flags_ptr);
-<<<<<<< HEAD
-	case 't':
-		return format_page_type(buf, end, *(unsigned int *)flags_ptr);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case 'v':
 		flags = *(unsigned long *)flags_ptr;
 		names = vmaflag_names;

@@ -20,11 +20,8 @@
 #include <linux/debugfs.h>
 #include <net/flow_offload.h>
 
-<<<<<<< HEAD
-=======
 #include <fdma_api.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "sparx5_main_regs.h"
 
 /* Target chip type */
@@ -105,26 +102,6 @@ enum sparx5_vlan_port_type {
 
 struct sparx5;
 
-<<<<<<< HEAD
-struct sparx5_db_hw {
-	u64 dataptr;
-	u64 status;
-};
-
-struct sparx5_rx_dcb_hw {
-	u64 nextptr;
-	u64 info;
-	struct sparx5_db_hw db[FDMA_RX_DCB_MAX_DBS];
-};
-
-struct sparx5_tx_dcb_hw {
-	u64 nextptr;
-	u64 info;
-	struct sparx5_db_hw db[FDMA_TX_DCB_MAX_DBS];
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Frame DMA receive state:
  * For each DB, there is a SKB, and the skb data pointer is mapped in
  * the DB. Once a frame is received the skb is given to the upper layers
@@ -132,21 +109,10 @@ struct sparx5_tx_dcb_hw {
  * When the db_index reached FDMA_RX_DCB_MAX_DBS the DB is reused.
  */
 struct sparx5_rx {
-<<<<<<< HEAD
-	struct sparx5_rx_dcb_hw *dcb_entries;
-	struct sparx5_rx_dcb_hw *last_entry;
-	struct sk_buff *skb[FDMA_DCB_MAX][FDMA_RX_DCB_MAX_DBS];
-	int db_index;
-	int dcb_index;
-	dma_addr_t dma;
-	struct napi_struct napi;
-	u32 channel_id;
-=======
 	struct fdma fdma;
 	struct sk_buff *skb[FDMA_DCB_MAX][FDMA_RX_DCB_MAX_DBS];
 	dma_addr_t dma;
 	struct napi_struct napi;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct net_device *ndev;
 	u64 packets;
 };
@@ -155,15 +121,7 @@ struct sparx5_rx {
  * DCBs are chained using the DCBs nextptr field.
  */
 struct sparx5_tx {
-<<<<<<< HEAD
-	struct sparx5_tx_dcb_hw *curr_entry;
-	struct sparx5_tx_dcb_hw *first_entry;
-	struct list_head db_list;
-	dma_addr_t dma;
-	u32 channel_id;
-=======
 	struct fdma fdma;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 packets;
 	u64 dropped;
 };

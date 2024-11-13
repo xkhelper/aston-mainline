@@ -1684,22 +1684,14 @@ static int efa_register_mr(struct ib_pd *ibpd, struct efa_mr *mr, u64 start,
 struct ib_mr *efa_reg_user_mr_dmabuf(struct ib_pd *ibpd, u64 start,
 				     u64 length, u64 virt_addr,
 				     int fd, int access_flags,
-<<<<<<< HEAD
-				     struct ib_udata *udata)
-=======
 				     struct uverbs_attr_bundle *attrs)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct efa_dev *dev = to_edev(ibpd->device);
 	struct ib_umem_dmabuf *umem_dmabuf;
 	struct efa_mr *mr;
 	int err;
 
-<<<<<<< HEAD
-	mr = efa_alloc_mr(ibpd, access_flags, udata);
-=======
 	mr = efa_alloc_mr(ibpd, access_flags, &attrs->driver_udata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(mr)) {
 		err = PTR_ERR(mr);
 		goto err_out;

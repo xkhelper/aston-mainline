@@ -161,11 +161,8 @@ unsigned short swap_cgroup_record(swp_entry_t ent, unsigned short id,
  */
 unsigned short lookup_swap_cgroup_id(swp_entry_t ent)
 {
-<<<<<<< HEAD
-=======
 	if (mem_cgroup_disabled())
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return lookup_swap_cgroup(ent, NULL)->id;
 }
 

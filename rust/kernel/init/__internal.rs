@@ -228,8 +228,6 @@ impl OnlyCallFromDrop {
         Self(())
     }
 }
-<<<<<<< HEAD
-=======
 
 /// Initializer that always fails.
 ///
@@ -259,4 +257,3 @@ unsafe impl<T: ?Sized> PinInit<T, ()> for AlwaysFail<T> {
         Err(())
     }
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

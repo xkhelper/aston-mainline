@@ -13,10 +13,7 @@
 
 #include <linux/bitfield.h>
 #include <linux/bitops.h>
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/device.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -25,11 +22,7 @@
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/iio/iio.h>
 #include <linux/iio/buffer.h>
@@ -803,35 +796,19 @@ static int bma400_enable_steps(struct bma400_data *data, int val)
 
 static int bma400_get_steps_reg(struct bma400_data *data, int *val)
 {
-<<<<<<< HEAD
-	u8 *steps_raw;
-	int ret;
-
-	steps_raw = kmalloc(BMA400_STEP_RAW_LEN, GFP_KERNEL);
-=======
 	int ret;
 
 	u8 *steps_raw __free(kfree) = kmalloc(BMA400_STEP_RAW_LEN, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!steps_raw)
 		return -ENOMEM;
 
 	ret = regmap_bulk_read(data->regmap, BMA400_STEP_CNT0_REG,
 			       steps_raw, BMA400_STEP_RAW_LEN);
-<<<<<<< HEAD
-	if (ret) {
-		kfree(steps_raw);
-		return ret;
-	}
-	*val = get_unaligned_le24(steps_raw);
-	kfree(steps_raw);
-=======
 	if (ret)
 		return ret;
 
 	*val = get_unaligned_le24(steps_raw);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return IIO_VAL_INT;
 }
 
@@ -1241,12 +1218,8 @@ static int bma400_activity_event_en(struct bma400_data *data,
 static int bma400_tap_event_en(struct bma400_data *data,
 			       enum iio_event_direction dir, int state)
 {
-<<<<<<< HEAD
-	unsigned int mask, field_value;
-=======
 	unsigned int mask;
 	unsigned int field_value = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	/*

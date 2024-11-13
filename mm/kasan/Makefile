@@ -44,12 +44,8 @@ ifndef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
 CFLAGS_KASAN_TEST += -fno-builtin
 endif
 
-<<<<<<< HEAD
-CFLAGS_kasan_test.o := $(CFLAGS_KASAN_TEST)
-=======
 CFLAGS_kasan_test_c.o := $(CFLAGS_KASAN_TEST)
 RUSTFLAGS_kasan_test_rust.o := $(RUSTFLAGS_KASAN)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 CFLAGS_kasan_test_module.o := $(CFLAGS_KASAN_TEST)
 
 obj-y := common.o report.o
@@ -57,13 +53,10 @@ obj-$(CONFIG_KASAN_GENERIC) += init.o generic.o report_generic.o shadow.o quaran
 obj-$(CONFIG_KASAN_HW_TAGS) += hw_tags.o report_hw_tags.o tags.o report_tags.o
 obj-$(CONFIG_KASAN_SW_TAGS) += init.o report_sw_tags.o shadow.o sw_tags.o tags.o report_tags.o
 
-<<<<<<< HEAD
-=======
 kasan_test-objs := kasan_test_c.o
 ifdef CONFIG_RUST
 	kasan_test-objs += kasan_test_rust.o
 endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_KASAN_KUNIT_TEST) += kasan_test.o
 obj-$(CONFIG_KASAN_MODULE_TEST) += kasan_test_module.o

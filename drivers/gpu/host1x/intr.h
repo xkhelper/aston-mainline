@@ -11,14 +11,11 @@
 struct host1x;
 struct host1x_syncpt_fence;
 
-<<<<<<< HEAD
-=======
 struct host1x_intr_irq_data {
 	struct host1x *host;
 	u32 offset;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Initialize host1x sync point interrupt */
 int host1x_intr_init(struct host1x *host);
 

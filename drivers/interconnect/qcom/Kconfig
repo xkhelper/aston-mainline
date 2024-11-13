@@ -26,8 +26,6 @@ config INTERCONNECT_QCOM_MSM8916
 	  This is a driver for the Qualcomm Network-on-Chip on msm8916-based
 	  platforms.
 
-<<<<<<< HEAD
-=======
 config INTERCONNECT_QCOM_MSM8937
 	tristate "Qualcomm MSM8937 interconnect driver"
 	depends on INTERCONNECT_QCOM
@@ -37,7 +35,6 @@ config INTERCONNECT_QCOM_MSM8937
 	  This is a driver for the Qualcomm Network-on-Chip on msm8937-based
 	  platforms.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config INTERCONNECT_QCOM_MSM8939
 	tristate "Qualcomm MSM8939 interconnect driver"
 	depends on INTERCONNECT_QCOM
@@ -65,8 +62,6 @@ config INTERCONNECT_QCOM_MSM8974
 	 This is a driver for the Qualcomm Network-on-Chip on msm8974-based
 	 platforms.
 
-<<<<<<< HEAD
-=======
 config INTERCONNECT_QCOM_MSM8976
 	tristate "Qualcomm MSM8976 interconnect driver"
 	depends on INTERCONNECT_QCOM
@@ -76,7 +71,6 @@ config INTERCONNECT_QCOM_MSM8976
 	  This is a driver for the Qualcomm Network-on-Chip on msm8976-based
 	  platforms.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config INTERCONNECT_QCOM_MSM8996
 	tristate "Qualcomm MSM8996 interconnect driver"
 	depends on INTERCONNECT_QCOM

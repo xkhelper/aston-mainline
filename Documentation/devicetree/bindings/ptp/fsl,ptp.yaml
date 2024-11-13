@@ -11,13 +11,6 @@ maintainers:
 
 properties:
   compatible:
-<<<<<<< HEAD
-    enum:
-      - fsl,etsec-ptp
-      - fsl,fman-ptp-timer
-      - fsl,dpaa2-ptp
-      - fsl,enetc-ptp
-=======
     oneOf:
       - enum:
           - fsl,etsec-ptp
@@ -26,7 +19,6 @@ properties:
       - items:
           - const: pci1957,ee02
           - const: fsl,enetc-ptp
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1
@@ -134,8 +126,6 @@ required:
   - compatible
   - reg
 
-<<<<<<< HEAD
-=======
 allOf:
   - if:
       properties:
@@ -145,7 +135,6 @@ allOf:
     then:
       $ref: /schemas/pci/pci-device.yaml
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:

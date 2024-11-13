@@ -8,17 +8,11 @@
  * Datasheets of supported parts:
  * ad7380/1 : https://www.analog.com/media/en/technical-documentation/data-sheets/AD7380-7381.pdf
  * ad7383/4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7383-7384.pdf
-<<<<<<< HEAD
- * ad7380-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7380-4.pdf
- * ad7381-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7381-4.pdf
- * ad7383/4-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7383-4-ad7384-4.pdf
-=======
  * ad7386/7/8 : https://www.analog.com/media/en/technical-documentation/data-sheets/AD7386-7387-7388.pdf
  * ad7380-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7380-4.pdf
  * ad7381-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7381-4.pdf
  * ad7383/4-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7383-4-ad7384-4.pdf
  * ad7386/7/8-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7386-4-7387-4-7388-4.pdf
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/align.h>
@@ -39,11 +33,7 @@
 #include <linux/iio/trigger_consumer.h>
 #include <linux/iio/triggered_buffer.h>
 
-<<<<<<< HEAD
-#define MAX_NUM_CHANNELS		4
-=======
 #define MAX_NUM_CHANNELS		8
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* 2.5V internal reference voltage */
 #define AD7380_INTERNAL_REF_MV		2500
 
@@ -61,11 +51,8 @@
 #define AD7380_REG_ADDR_ALERT_LOW_TH	0x4
 #define AD7380_REG_ADDR_ALERT_HIGH_TH	0x5
 
-<<<<<<< HEAD
-=======
 #define AD7380_CONFIG1_CH		BIT(11)
 #define AD7380_CONFIG1_SEQ		BIT(10)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define AD7380_CONFIG1_OS_MODE		BIT(9)
 #define AD7380_CONFIG1_OSR		GENMASK(8, 6)
 #define AD7380_CONFIG1_CRC_W		BIT(5)
@@ -88,10 +75,7 @@
 #define T_CONVERT_NS 190		/* conversion time */
 #define T_CONVERT_0_NS 10		/* 1st conversion start time (oversampling) */
 #define T_CONVERT_X_NS 500		/* xth conversion start time (oversampling) */
-<<<<<<< HEAD
-=======
 #define T_POWERUP_US 5000		/* Power up */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct ad7380_timing_specs {
 	const unsigned int t_csh_ns;	/* CS minimum high time */
@@ -101,14 +85,11 @@ struct ad7380_chip_info {
 	const char *name;
 	const struct iio_chan_spec *channels;
 	unsigned int num_channels;
-<<<<<<< HEAD
-=======
 	unsigned int num_simult_channels;
 	bool has_mux;
 	const char * const *supplies;
 	unsigned int num_supplies;
 	bool external_ref_only;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const char * const *vcm_supplies;
 	unsigned int num_vcm_supplies;
 	const unsigned long *available_scan_masks;
@@ -120,10 +101,6 @@ enum {
 	AD7380_SCAN_TYPE_RESOLUTION_BOOST,
 };
 
-<<<<<<< HEAD
-/* Extended scan types for 14-bit chips. */
-static const struct iio_scan_type ad7380_scan_type_14[] = {
-=======
 /* Extended scan types for 12-bit unsigned chips. */
 static const struct iio_scan_type ad7380_scan_type_12_u[] = {
 	[AD7380_SCAN_TYPE_NORMAL] = {
@@ -142,29 +119,16 @@ static const struct iio_scan_type ad7380_scan_type_12_u[] = {
 
 /* Extended scan types for 14-bit signed chips. */
 static const struct iio_scan_type ad7380_scan_type_14_s[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[AD7380_SCAN_TYPE_NORMAL] = {
 		.sign = 's',
 		.realbits = 14,
 		.storagebits = 16,
-<<<<<<< HEAD
-		.endianness = IIO_CPU
-=======
 		.endianness = IIO_CPU,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	[AD7380_SCAN_TYPE_RESOLUTION_BOOST] = {
 		.sign = 's',
 		.realbits = 16,
 		.storagebits = 16,
-<<<<<<< HEAD
-		.endianness = IIO_CPU
-	},
-};
-
-/* Extended scan types for 16-bit chips. */
-static const struct iio_scan_type ad7380_scan_type_16[] = {
-=======
 		.endianness = IIO_CPU,
 	},
 };
@@ -187,71 +151,16 @@ static const struct iio_scan_type ad7380_scan_type_14_u[] = {
 
 /* Extended scan types for 16-bit signed_chips. */
 static const struct iio_scan_type ad7380_scan_type_16_s[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[AD7380_SCAN_TYPE_NORMAL] = {
 		.sign = 's',
 		.realbits = 16,
 		.storagebits = 16,
-<<<<<<< HEAD
-		.endianness = IIO_CPU
-=======
 		.endianness = IIO_CPU,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	[AD7380_SCAN_TYPE_RESOLUTION_BOOST] = {
 		.sign = 's',
 		.realbits = 18,
 		.storagebits = 32,
-<<<<<<< HEAD
-		.endianness = IIO_CPU
-	},
-};
-
-#define AD7380_CHANNEL(index, bits, diff) {			\
-	.type = IIO_VOLTAGE,					\
-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
-		((diff) ? 0 : BIT(IIO_CHAN_INFO_OFFSET)),	\
-	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
-	.info_mask_shared_by_type_available =			\
-		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
-	.indexed = 1,						\
-	.differential = (diff),					\
-	.channel = (diff) ? (2 * (index)) : (index),		\
-	.channel2 = (diff) ? (2 * (index) + 1) : 0,		\
-	.scan_index = (index),					\
-	.has_ext_scan_type = 1,					\
-	.ext_scan_type = ad7380_scan_type_##bits,		\
-	.num_ext_scan_type = ARRAY_SIZE(ad7380_scan_type_##bits),\
-}
-
-#define DEFINE_AD7380_2_CHANNEL(name, bits, diff)	\
-static const struct iio_chan_spec name[] = {		\
-	AD7380_CHANNEL(0, bits, diff),			\
-	AD7380_CHANNEL(1, bits, diff),			\
-	IIO_CHAN_SOFT_TIMESTAMP(2),			\
-}
-
-#define DEFINE_AD7380_4_CHANNEL(name, bits, diff)	\
-static const struct iio_chan_spec name[] = {		\
-	AD7380_CHANNEL(0, bits, diff),			\
-	AD7380_CHANNEL(1, bits, diff),			\
-	AD7380_CHANNEL(2, bits, diff),			\
-	AD7380_CHANNEL(3, bits, diff),			\
-	IIO_CHAN_SOFT_TIMESTAMP(4),			\
-}
-
-/* fully differential */
-DEFINE_AD7380_2_CHANNEL(ad7380_channels, 16, 1);
-DEFINE_AD7380_2_CHANNEL(ad7381_channels, 14, 1);
-DEFINE_AD7380_4_CHANNEL(ad7380_4_channels, 16, 1);
-DEFINE_AD7380_4_CHANNEL(ad7381_4_channels, 14, 1);
-/* pseudo differential */
-DEFINE_AD7380_2_CHANNEL(ad7383_channels, 16, 0);
-DEFINE_AD7380_2_CHANNEL(ad7384_channels, 14, 0);
-DEFINE_AD7380_4_CHANNEL(ad7383_4_channels, 16, 0);
-DEFINE_AD7380_4_CHANNEL(ad7384_4_channels, 14, 0);
-=======
 		.endianness = IIO_CPU,
 	},
 };
@@ -341,7 +250,6 @@ DEFINE_AD7380_8_CHANNEL(ad7388_4_channels, 12, 0, u);
 static const char * const ad7380_supplies[] = {
 	"vcc", "vlogic",
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const char * const ad7380_2_channel_vcm_supplies[] = {
 	"aina", "ainb",
@@ -362,8 +270,6 @@ static const unsigned long ad7380_4_channel_scan_masks[] = {
 	0
 };
 
-<<<<<<< HEAD
-=======
 /*
  * Single ended parts have a 2:1 multiplexer in front of each ADC.
  *
@@ -418,7 +324,6 @@ static const unsigned long ad7380_2x4_channel_scan_masks[] = {
 	0
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct ad7380_timing_specs ad7380_timing = {
 	.t_csh_ns = 10,
 };
@@ -440,12 +345,9 @@ static const struct ad7380_chip_info ad7380_chip_info = {
 	.name = "ad7380",
 	.channels = ad7380_channels,
 	.num_channels = ARRAY_SIZE(ad7380_channels),
-<<<<<<< HEAD
-=======
 	.num_simult_channels = 2,
 	.supplies = ad7380_supplies,
 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.available_scan_masks = ad7380_2_channel_scan_masks,
 	.timing_specs = &ad7380_timing,
 };
@@ -454,12 +356,9 @@ static const struct ad7380_chip_info ad7381_chip_info = {
 	.name = "ad7381",
 	.channels = ad7381_channels,
 	.num_channels = ARRAY_SIZE(ad7381_channels),
-<<<<<<< HEAD
-=======
 	.num_simult_channels = 2,
 	.supplies = ad7380_supplies,
 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.available_scan_masks = ad7380_2_channel_scan_masks,
 	.timing_specs = &ad7380_timing,
 };
@@ -468,12 +367,9 @@ static const struct ad7380_chip_info ad7383_chip_info = {
 	.name = "ad7383",
 	.channels = ad7383_channels,
 	.num_channels = ARRAY_SIZE(ad7383_channels),
-<<<<<<< HEAD
-=======
 	.num_simult_channels = 2,
 	.supplies = ad7380_supplies,
 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.vcm_supplies = ad7380_2_channel_vcm_supplies,
 	.num_vcm_supplies = ARRAY_SIZE(ad7380_2_channel_vcm_supplies),
 	.available_scan_masks = ad7380_2_channel_scan_masks,
@@ -484,20 +380,15 @@ static const struct ad7380_chip_info ad7384_chip_info = {
 	.name = "ad7384",
 	.channels = ad7384_channels,
 	.num_channels = ARRAY_SIZE(ad7384_channels),
-<<<<<<< HEAD
-=======
 	.num_simult_channels = 2,
 	.supplies = ad7380_supplies,
 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.vcm_supplies = ad7380_2_channel_vcm_supplies,
 	.num_vcm_supplies = ARRAY_SIZE(ad7380_2_channel_vcm_supplies),
 	.available_scan_masks = ad7380_2_channel_scan_masks,
 	.timing_specs = &ad7380_timing,
 };
 
-<<<<<<< HEAD
-=======
 static const struct ad7380_chip_info ad7386_chip_info = {
 	.name = "ad7386",
 	.channels = ad7386_channels,
@@ -534,18 +425,14 @@ static const struct ad7380_chip_info ad7388_chip_info = {
 	.timing_specs = &ad7380_timing,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct ad7380_chip_info ad7380_4_chip_info = {
 	.name = "ad7380-4",
 	.channels = ad7380_4_channels,
 	.num_channels = ARRAY_SIZE(ad7380_4_channels),
-<<<<<<< HEAD
-=======
 	.num_simult_channels = 4,
 	.supplies = ad7380_supplies,
 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
 	.external_ref_only = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.available_scan_masks = ad7380_4_channel_scan_masks,
 	.timing_specs = &ad7380_4_timing,
 };
@@ -554,12 +441,9 @@ static const struct ad7380_chip_info ad7381_4_chip_info = {
 	.name = "ad7381-4",
 	.channels = ad7381_4_channels,
 	.num_channels = ARRAY_SIZE(ad7381_4_channels),
-<<<<<<< HEAD
-=======
 	.num_simult_channels = 4,
 	.supplies = ad7380_supplies,
 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.available_scan_masks = ad7380_4_channel_scan_masks,
 	.timing_specs = &ad7380_4_timing,
 };
@@ -568,12 +452,9 @@ static const struct ad7380_chip_info ad7383_4_chip_info = {
 	.name = "ad7383-4",
 	.channels = ad7383_4_channels,
 	.num_channels = ARRAY_SIZE(ad7383_4_channels),
-<<<<<<< HEAD
-=======
 	.num_simult_channels = 4,
 	.supplies = ad7380_supplies,
 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.vcm_supplies = ad7380_4_channel_vcm_supplies,
 	.num_vcm_supplies = ARRAY_SIZE(ad7380_4_channel_vcm_supplies),
 	.available_scan_masks = ad7380_4_channel_scan_masks,
@@ -584,20 +465,15 @@ static const struct ad7380_chip_info ad7384_4_chip_info = {
 	.name = "ad7384-4",
 	.channels = ad7384_4_channels,
 	.num_channels = ARRAY_SIZE(ad7384_4_channels),
-<<<<<<< HEAD
-=======
 	.num_simult_channels = 4,
 	.supplies = ad7380_supplies,
 	.num_supplies = ARRAY_SIZE(ad7380_supplies),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.vcm_supplies = ad7380_4_channel_vcm_supplies,
 	.num_vcm_supplies = ARRAY_SIZE(ad7380_4_channel_vcm_supplies),
 	.available_scan_masks = ad7380_4_channel_scan_masks,
 	.timing_specs = &ad7380_4_timing,
 };
 
-<<<<<<< HEAD
-=======
 static const struct ad7380_chip_info ad7386_4_chip_info = {
 	.name = "ad7386-4",
 	.channels = ad7386_4_channels,
@@ -634,20 +510,12 @@ static const struct ad7380_chip_info ad7388_4_chip_info = {
 	.timing_specs = &ad7380_4_timing,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ad7380_state {
 	const struct ad7380_chip_info *chip_info;
 	struct spi_device *spi;
 	struct regmap *regmap;
 	unsigned int oversampling_ratio;
 	bool resolution_boost_enabled;
-<<<<<<< HEAD
-	unsigned int vref_mv;
-	unsigned int vcm_mv[MAX_NUM_CHANNELS];
-	/* xfers, message an buffer for reading sample data */
-	struct spi_transfer xfer[2];
-	struct spi_message msg;
-=======
 	unsigned int ch;
 	bool seq;
 	unsigned int vref_mv;
@@ -657,7 +525,6 @@ struct ad7380_state {
 	struct spi_message normal_msg;
 	struct spi_transfer seq_xfer[4];
 	struct spi_message seq_msg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * DMA (thus cache coherency maintenance) requires the transfer buffers
 	 * to live in their own cache lines.
@@ -750,8 +617,6 @@ static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
 	unreachable();
 }
 
-<<<<<<< HEAD
-=======
 /*
  * When switching channel, the ADC require an additional settling time.
  * According to the datasheet, data is value on the third CS low. We already
@@ -789,7 +654,6 @@ static int ad7380_set_ch(struct ad7380_state *st, unsigned int ch)
 	return spi_sync_transfer(st->spi, &xfer, 1);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ad7380_update_xfers - update the SPI transfers base on the current scan type
  * @st:		device instance specific state
@@ -798,29 +662,6 @@ static int ad7380_set_ch(struct ad7380_state *st, unsigned int ch)
 static void ad7380_update_xfers(struct ad7380_state *st,
 				const struct iio_scan_type *scan_type)
 {
-<<<<<<< HEAD
-	/*
-	 * First xfer only triggers conversion and has to be long enough for
-	 * all conversions to complete, which can be multiple conversion in the
-	 * case of oversampling. Technically T_CONVERT_X_NS is lower for some
-	 * chips, but we use the maximum value for simplicity for now.
-	 */
-	if (st->oversampling_ratio > 1)
-		st->xfer[0].delay.value = T_CONVERT_0_NS + T_CONVERT_X_NS *
-						(st->oversampling_ratio - 1);
-	else
-		st->xfer[0].delay.value = T_CONVERT_NS;
-
-	st->xfer[0].delay.unit = SPI_DELAY_UNIT_NSECS;
-
-	/*
-	 * Second xfer reads all channels. Data size depends on if resolution
-	 * boost is enabled or not.
-	 */
-	st->xfer[1].bits_per_word = scan_type->realbits;
-	st->xfer[1].len = BITS_TO_BYTES(scan_type->storagebits) *
-			  (st->chip_info->num_channels - 1);
-=======
 	struct spi_transfer *xfer = st->seq ? st->seq_xfer : st->normal_xfer;
 	unsigned int t_convert = T_CONVERT_NS;
 
@@ -855,17 +696,13 @@ static void ad7380_update_xfers(struct ad7380_state *st,
 		xfer[1].len = BITS_TO_BYTES(scan_type->storagebits) *
 			st->chip_info->num_simult_channels;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ad7380_triggered_buffer_preenable(struct iio_dev *indio_dev)
 {
 	struct ad7380_state *st = iio_priv(indio_dev);
 	const struct iio_scan_type *scan_type;
-<<<<<<< HEAD
-=======
 	struct spi_message *msg = &st->normal_msg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Currently, we always read all channels at the same time. The scan_type
@@ -875,11 +712,6 @@ static int ad7380_triggered_buffer_preenable(struct iio_dev *indio_dev)
 	if (IS_ERR(scan_type))
 		return PTR_ERR(scan_type);
 
-<<<<<<< HEAD
-	ad7380_update_xfers(st, scan_type);
-
-	return spi_optimize_message(st->spi, &st->msg);
-=======
 	if (st->chip_info->has_mux) {
 		unsigned int index;
 		int ret;
@@ -916,16 +748,11 @@ static int ad7380_triggered_buffer_preenable(struct iio_dev *indio_dev)
 	ad7380_update_xfers(st, scan_type);
 
 	return spi_optimize_message(st->spi, msg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ad7380_triggered_buffer_postdisable(struct iio_dev *indio_dev)
 {
 	struct ad7380_state *st = iio_priv(indio_dev);
-<<<<<<< HEAD
-
-	spi_unoptimize_message(&st->msg);
-=======
 	struct spi_message *msg = &st->normal_msg;
 	int ret;
 
@@ -942,7 +769,6 @@ static int ad7380_triggered_buffer_postdisable(struct iio_dev *indio_dev)
 	}
 
 	spi_unoptimize_message(msg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -957,16 +783,10 @@ static irqreturn_t ad7380_trigger_handler(int irq, void *p)
 	struct iio_poll_func *pf = p;
 	struct iio_dev *indio_dev = pf->indio_dev;
 	struct ad7380_state *st = iio_priv(indio_dev);
-<<<<<<< HEAD
-	int ret;
-
-	ret = spi_sync(st->spi, &st->msg);
-=======
 	struct spi_message *msg = st->seq ? &st->seq_msg : &st->normal_msg;
 	int ret;
 
 	ret = spi_sync(st->spi, msg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto out;
 
@@ -982,22 +802,6 @@ out:
 static int ad7380_read_direct(struct ad7380_state *st, unsigned int scan_index,
 			      const struct iio_scan_type *scan_type, int *val)
 {
-<<<<<<< HEAD
-	int ret;
-
-	ad7380_update_xfers(st, scan_type);
-
-	ret = spi_sync(st->spi, &st->msg);
-	if (ret < 0)
-		return ret;
-
-	if (scan_type->storagebits > 16)
-		*val = sign_extend32(*(u32 *)(st->scan_data + 4 * scan_index),
-				     scan_type->realbits - 1);
-	else
-		*val = sign_extend32(*(u16 *)(st->scan_data + 2 * scan_index),
-				     scan_type->realbits - 1);
-=======
 	unsigned int index = scan_index;
 	int ret;
 
@@ -1035,7 +839,6 @@ static int ad7380_read_direct(struct ad7380_state *st, unsigned int scan_index,
 			*val = *(u16 *)(st->scan_data + 2 * index) &
 				GENMASK(scan_type->realbits - 1, 0);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return IIO_VAL_INT;
 }
@@ -1190,11 +993,7 @@ static const struct iio_info ad7380_info = {
 	.debugfs_reg_access = &ad7380_debugfs_reg_access,
 };
 
-<<<<<<< HEAD
-static int ad7380_init(struct ad7380_state *st, struct regulator *vref)
-=======
 static int ad7380_init(struct ad7380_state *st, bool external_ref_en)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret;
 
@@ -1206,18 +1005,6 @@ static int ad7380_init(struct ad7380_state *st, bool external_ref_en)
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	/* select internal or external reference voltage */
-	ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
-				 AD7380_CONFIG1_REFSEL,
-				 FIELD_PREP(AD7380_CONFIG1_REFSEL,
-					    vref ? 1 : 0));
-	if (ret < 0)
-		return ret;
-
-	/* This is the default value after reset. */
-	st->oversampling_ratio = 1;
-=======
 	if (external_ref_en) {
 		/* select external reference voltage */
 		ret = regmap_set_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
@@ -1230,7 +1017,6 @@ static int ad7380_init(struct ad7380_state *st, bool external_ref_en)
 	st->oversampling_ratio = 1;
 	st->ch = 0;
 	st->seq = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* SPI 1-wire mode */
 	return regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
@@ -1238,23 +1024,11 @@ static int ad7380_init(struct ad7380_state *st, bool external_ref_en)
 				  FIELD_PREP(AD7380_CONFIG2_SDO, 1));
 }
 
-<<<<<<< HEAD
-static void ad7380_regulator_disable(void *p)
-{
-	regulator_disable(p);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ad7380_probe(struct spi_device *spi)
 {
 	struct iio_dev *indio_dev;
 	struct ad7380_state *st;
-<<<<<<< HEAD
-	struct regulator *vref;
-=======
 	bool external_ref_en;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret, i;
 
 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
@@ -1267,38 +1041,6 @@ static int ad7380_probe(struct spi_device *spi)
 	if (!st->chip_info)
 		return dev_err_probe(&spi->dev, -EINVAL, "missing match data\n");
 
-<<<<<<< HEAD
-	vref = devm_regulator_get_optional(&spi->dev, "refio");
-	if (IS_ERR(vref)) {
-		if (PTR_ERR(vref) != -ENODEV)
-			return dev_err_probe(&spi->dev, PTR_ERR(vref),
-					     "Failed to get refio regulator\n");
-
-		vref = NULL;
-	}
-
-	/*
-	 * If there is no REFIO supply, then it means that we are using
-	 * the internal 2.5V reference, otherwise REFIO is reference voltage.
-	 */
-	if (vref) {
-		ret = regulator_enable(vref);
-		if (ret)
-			return ret;
-
-		ret = devm_add_action_or_reset(&spi->dev,
-					       ad7380_regulator_disable, vref);
-		if (ret)
-			return ret;
-
-		ret = regulator_get_voltage(vref);
-		if (ret < 0)
-			return ret;
-
-		st->vref_mv = ret / 1000;
-	} else {
-		st->vref_mv = AD7380_INTERNAL_REF_MV;
-=======
 	ret = devm_regulator_bulk_get_enable(&spi->dev, st->chip_info->num_supplies,
 					     st->chip_info->supplies);
 
@@ -1331,7 +1073,6 @@ static int ad7380_probe(struct spi_device *spi)
 
 		external_ref_en = ret != -ENODEV;
 		st->vref_mv = external_ref_en ? ret / 1000 : AD7380_INTERNAL_REF_MV;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (st->chip_info->num_vcm_supplies > ARRAY_SIZE(st->vcm_mv))
@@ -1343,29 +1084,6 @@ static int ad7380_probe(struct spi_device *spi)
 	 * input pin.
 	 */
 	for (i = 0; i < st->chip_info->num_vcm_supplies; i++) {
-<<<<<<< HEAD
-		struct regulator *vcm;
-
-		vcm = devm_regulator_get(&spi->dev,
-					 st->chip_info->vcm_supplies[i]);
-		if (IS_ERR(vcm))
-			return dev_err_probe(&spi->dev, PTR_ERR(vcm),
-					     "Failed to get %s regulator\n",
-					     st->chip_info->vcm_supplies[i]);
-
-		ret = regulator_enable(vcm);
-		if (ret)
-			return ret;
-
-		ret = devm_add_action_or_reset(&spi->dev,
-					       ad7380_regulator_disable, vcm);
-		if (ret)
-			return ret;
-
-		ret = regulator_get_voltage(vcm);
-		if (ret < 0)
-			return ret;
-=======
 		const char *vcm = st->chip_info->vcm_supplies[i];
 
 		ret = devm_regulator_get_enable_read_voltage(&spi->dev, vcm);
@@ -1373,7 +1091,6 @@ static int ad7380_probe(struct spi_device *spi)
 			return dev_err_probe(&spi->dev, ret,
 					     "Failed to get %s regulator\n",
 					     vcm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		st->vcm_mv[i] = ret / 1000;
 	}
@@ -1384,23 +1101,6 @@ static int ad7380_probe(struct spi_device *spi)
 				     "failed to allocate register map\n");
 
 	/*
-<<<<<<< HEAD
-	 * Setting up a low latency read for getting sample data. Used for both
-	 * direct read an triggered buffer. Additional fields will be set up in
-	 * ad7380_update_xfers() based on the current state of the driver at the
-	 * time of the read.
-	 */
-
-	/* toggle CS (no data xfer) to trigger a conversion */
-	st->xfer[0].cs_change = 1;
-	st->xfer[0].cs_change_delay.value = st->chip_info->timing_specs->t_csh_ns;
-	st->xfer[0].cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
-
-	/* then do a second xfer to read the data */
-	st->xfer[1].rx_buf = st->scan_data;
-
-	spi_message_init_with_transfers(&st->msg, st->xfer, ARRAY_SIZE(st->xfer));
-=======
 	 * Setting up xfer structures for both normal and sequence mode. These
 	 * struct are used for both direct read and triggered buffer. Additional
 	 * fields will be set up in ad7380_update_xfers() based on the current
@@ -1440,7 +1140,6 @@ static int ad7380_probe(struct spi_device *spi)
 
 	spi_message_init_with_transfers(&st->seq_msg, st->seq_xfer,
 					ARRAY_SIZE(st->seq_xfer));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	indio_dev->channels = st->chip_info->channels;
 	indio_dev->num_channels = st->chip_info->num_channels;
@@ -1456,11 +1155,7 @@ static int ad7380_probe(struct spi_device *spi)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	ret = ad7380_init(st, vref);
-=======
 	ret = ad7380_init(st, external_ref_en);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1472,22 +1167,16 @@ static const struct of_device_id ad7380_of_match_table[] = {
 	{ .compatible = "adi,ad7381", .data = &ad7381_chip_info },
 	{ .compatible = "adi,ad7383", .data = &ad7383_chip_info },
 	{ .compatible = "adi,ad7384", .data = &ad7384_chip_info },
-<<<<<<< HEAD
-=======
 	{ .compatible = "adi,ad7386", .data = &ad7386_chip_info },
 	{ .compatible = "adi,ad7387", .data = &ad7387_chip_info },
 	{ .compatible = "adi,ad7388", .data = &ad7388_chip_info },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "adi,ad7380-4", .data = &ad7380_4_chip_info },
 	{ .compatible = "adi,ad7381-4", .data = &ad7381_4_chip_info },
 	{ .compatible = "adi,ad7383-4", .data = &ad7383_4_chip_info },
 	{ .compatible = "adi,ad7384-4", .data = &ad7384_4_chip_info },
-<<<<<<< HEAD
-=======
 	{ .compatible = "adi,ad7386-4", .data = &ad7386_4_chip_info },
 	{ .compatible = "adi,ad7387-4", .data = &ad7387_4_chip_info },
 	{ .compatible = "adi,ad7388-4", .data = &ad7388_4_chip_info },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 
@@ -1496,22 +1185,16 @@ static const struct spi_device_id ad7380_id_table[] = {
 	{ "ad7381", (kernel_ulong_t)&ad7381_chip_info },
 	{ "ad7383", (kernel_ulong_t)&ad7383_chip_info },
 	{ "ad7384", (kernel_ulong_t)&ad7384_chip_info },
-<<<<<<< HEAD
-=======
 	{ "ad7386", (kernel_ulong_t)&ad7386_chip_info },
 	{ "ad7387", (kernel_ulong_t)&ad7387_chip_info },
 	{ "ad7388", (kernel_ulong_t)&ad7388_chip_info },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ "ad7380-4", (kernel_ulong_t)&ad7380_4_chip_info },
 	{ "ad7381-4", (kernel_ulong_t)&ad7381_4_chip_info },
 	{ "ad7383-4", (kernel_ulong_t)&ad7383_4_chip_info },
 	{ "ad7384-4", (kernel_ulong_t)&ad7384_4_chip_info },
-<<<<<<< HEAD
-=======
 	{ "ad7386-4", (kernel_ulong_t)&ad7386_4_chip_info },
 	{ "ad7387-4", (kernel_ulong_t)&ad7387_4_chip_info },
 	{ "ad7388-4", (kernel_ulong_t)&ad7388_4_chip_info },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(spi, ad7380_id_table);

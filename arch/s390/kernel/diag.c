@@ -52,10 +52,7 @@ static const struct diag_desc diag_map[NR_DIAG_STAT] = {
 	[DIAG_STAT_X308] = { .code = 0x308, .name = "List-Directed IPL" },
 	[DIAG_STAT_X318] = { .code = 0x318, .name = "CP Name and Version Codes" },
 	[DIAG_STAT_X320] = { .code = 0x320, .name = "Certificate Store" },
-<<<<<<< HEAD
-=======
 	[DIAG_STAT_X49C] = { .code = 0x49c, .name = "Warning-Track Interruption" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[DIAG_STAT_X500] = { .code = 0x500, .name = "Virtio Service" },
 };
 
@@ -307,8 +304,6 @@ int diag26c(void *req, void *resp, enum diag26c_sc subcode)
 	return diag_amode31_ops.diag26c(virt_to_phys(req), virt_to_phys(resp), subcode);
 }
 EXPORT_SYMBOL(diag26c);
-<<<<<<< HEAD
-=======
 
 int diag49c(unsigned long subcode)
 {
@@ -325,4 +320,3 @@ int diag49c(unsigned long subcode)
 	return rc;
 }
 EXPORT_SYMBOL(diag49c);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -84,10 +84,6 @@ static const struct of_device_id pmic_spmi_id_table[] = {
 static struct spmi_device *qcom_pmic_get_base_usid(struct spmi_device *sdev, struct qcom_spmi_dev *ctx)
 {
 	struct device_node *spmi_bus;
-<<<<<<< HEAD
-	struct device_node *child;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int function_parent_usid, ret;
 	u32 pmic_addr;
 
@@ -111,16 +107,9 @@ static struct spmi_device *qcom_pmic_get_base_usid(struct spmi_device *sdev, str
 	 */
 	spmi_bus = of_get_parent(sdev->dev.of_node);
 	sdev = ERR_PTR(-ENODATA);
-<<<<<<< HEAD
-	for_each_child_of_node(spmi_bus, child) {
-		ret = of_property_read_u32_index(child, "reg", 0, &pmic_addr);
-		if (ret) {
-			of_node_put(child);
-=======
 	for_each_child_of_node_scoped(spmi_bus, child) {
 		ret = of_property_read_u32_index(child, "reg", 0, &pmic_addr);
 		if (ret) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			sdev = ERR_PTR(ret);
 			break;
 		}
@@ -134,10 +123,6 @@ static struct spmi_device *qcom_pmic_get_base_usid(struct spmi_device *sdev, str
 				 */
 				sdev = ERR_PTR(-EPROBE_DEFER);
 			}
-<<<<<<< HEAD
-			of_node_put(child);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 	}

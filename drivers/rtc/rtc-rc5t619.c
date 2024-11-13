@@ -429,8 +429,6 @@ static int rc5t619_rtc_probe(struct platform_device *pdev)
 	return devm_rtc_register_device(rtc->rtc);
 }
 
-<<<<<<< HEAD
-=======
 static const struct platform_device_id rc5t619_rtc_id[] = {
 	{
 		.name = "rc5t619-rtc",
@@ -440,22 +438,14 @@ static const struct platform_device_id rc5t619_rtc_id[] = {
 };
 MODULE_DEVICE_TABLE(platform, rc5t619_rtc_id);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct platform_driver rc5t619_rtc_driver = {
 	.driver	= {
 		.name	= "rc5t619-rtc",
 	},
 	.probe	= rc5t619_rtc_probe,
-<<<<<<< HEAD
-};
-
-module_platform_driver(rc5t619_rtc_driver);
-MODULE_ALIAS("platform:rc5t619-rtc");
-=======
 	.id_table = rc5t619_rtc_id,
 };
 module_platform_driver(rc5t619_rtc_driver);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_DESCRIPTION("RICOH RC5T619 RTC driver");
 MODULE_LICENSE("GPL");

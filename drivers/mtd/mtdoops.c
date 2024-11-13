@@ -298,22 +298,14 @@ static void find_next_position(struct mtdoops_context *cxt)
 }
 
 static void mtdoops_do_dump(struct kmsg_dumper *dumper,
-<<<<<<< HEAD
-			    enum kmsg_dump_reason reason)
-=======
 			    struct kmsg_dump_detail *detail)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mtdoops_context *cxt = container_of(dumper,
 			struct mtdoops_context, dump);
 	struct kmsg_dump_iter iter;
 
 	/* Only dump oopses if dump_oops is set */
-<<<<<<< HEAD
-	if (reason == KMSG_DUMP_OOPS && !dump_oops)
-=======
 	if (detail->reason == KMSG_DUMP_OOPS && !dump_oops)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	kmsg_dump_rewind(&iter);
@@ -325,11 +317,7 @@ static void mtdoops_do_dump(struct kmsg_dumper *dumper,
 			     record_size - sizeof(struct mtdoops_hdr), NULL);
 	clear_bit(0, &cxt->oops_buf_busy);
 
-<<<<<<< HEAD
-	if (reason != KMSG_DUMP_OOPS) {
-=======
 	if (detail->reason != KMSG_DUMP_OOPS) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Panics must be written immediately */
 		mtdoops_write(cxt, 1);
 	} else {

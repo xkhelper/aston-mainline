@@ -262,10 +262,6 @@ MODULE_DEVICE_TABLE(usb, id_table_combined);
 
 static struct usb_serial_driver digi_acceleport_2_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner =		THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =			"digi_2",
 	},
 	.description =			"Digi 2 port USB adapter",
@@ -296,10 +292,6 @@ static struct usb_serial_driver digi_acceleport_2_device = {
 
 static struct usb_serial_driver digi_acceleport_4_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner =		THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =			"digi_4",
 	},
 	.description =			"Digi 4 port USB adapter",

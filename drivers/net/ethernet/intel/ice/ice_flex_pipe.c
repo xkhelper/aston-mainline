@@ -2981,8 +2981,6 @@ ice_add_prof_attrib(struct ice_prof_map *prof, u8 ptg, u16 ptype,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ice_disable_fd_swap - set register appropriately to disable FD SWAP
  * @hw: pointer to the HW struct
  * @prof_id: profile ID
@@ -3027,7 +3025,6 @@ ice_disable_fd_swap(struct ice_hw *hw, u8 prof_id)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_add_prof - add profile
  * @hw: pointer to the HW struct
  * @blk: hardware block
@@ -3038,10 +3035,7 @@ ice_disable_fd_swap(struct ice_hw *hw, u8 prof_id)
  * @es: extraction sequence (length of array is determined by the block)
  * @masks: mask for extraction sequence
  * @symm: symmetric setting for RSS profiles
-<<<<<<< HEAD
-=======
  * @fd_swap: enable/disable FDIR paired src/dst fields swap option
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This function registers a profile, which matches a set of PTYPES with a
  * particular extraction sequence. While the hardware profile is allocated
@@ -3051,11 +3045,7 @@ ice_disable_fd_swap(struct ice_hw *hw, u8 prof_id)
 int
 ice_add_prof(struct ice_hw *hw, enum ice_block blk, u64 id, u8 ptypes[],
 	     const struct ice_ptype_attributes *attr, u16 attr_cnt,
-<<<<<<< HEAD
-	     struct ice_fv_word *es, u16 *masks, bool symm)
-=======
 	     struct ice_fv_word *es, u16 *masks, bool symm, bool fd_swap)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 bytes = DIV_ROUND_UP(ICE_FLOW_PTYPE_MAX, BITS_PER_BYTE);
 	DECLARE_BITMAP(ptgs_used, ICE_XLT1_CNT);
@@ -3075,11 +3065,7 @@ ice_add_prof(struct ice_hw *hw, enum ice_block blk, u64 id, u8 ptypes[],
 		status = ice_alloc_prof_id(hw, blk, &prof_id);
 		if (status)
 			goto err_ice_add_prof;
-<<<<<<< HEAD
-		if (blk == ICE_BLK_FD) {
-=======
 		if (blk == ICE_BLK_FD && fd_swap) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* For Flow Director block, the extraction sequence may
 			 * need to be altered in the case where there are paired
 			 * fields that have no match. This is necessary because
@@ -3090,11 +3076,8 @@ ice_add_prof(struct ice_hw *hw, enum ice_block blk, u64 id, u8 ptypes[],
 			status = ice_update_fd_swap(hw, prof_id, es);
 			if (status)
 				goto err_ice_add_prof;
-<<<<<<< HEAD
-=======
 		} else if (blk == ICE_BLK_FD) {
 			ice_disable_fd_swap(hw, prof_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		status = ice_update_prof_masking(hw, blk, prof_id, masks);
 		if (status)
@@ -4163,8 +4146,6 @@ err_ice_add_prof_id_flow:
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ice_flow_assoc_fdir_prof - add an FDIR profile for main/ctrl VSI
  * @hw: pointer to the HW struct
  * @blk: HW block
@@ -4213,7 +4194,6 @@ err:
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_rem_prof_from_list - remove a profile from list
  * @hw: pointer to the HW struct
  * @lst: list to remove the profile from

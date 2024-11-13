@@ -316,17 +316,10 @@ int venus_firmware_init(struct venus_core *core)
 
 	core->fw.dev = &pdev->dev;
 
-<<<<<<< HEAD
-	iommu_dom = iommu_domain_alloc(&platform_bus_type);
-	if (!iommu_dom) {
-		dev_err(core->fw.dev, "Failed to allocate iommu domain\n");
-		ret = -ENOMEM;
-=======
 	iommu_dom = iommu_paging_domain_alloc(core->fw.dev);
 	if (IS_ERR(iommu_dom)) {
 		dev_err(core->fw.dev, "Failed to allocate iommu domain\n");
 		ret = PTR_ERR(iommu_dom);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_unregister;
 	}
 

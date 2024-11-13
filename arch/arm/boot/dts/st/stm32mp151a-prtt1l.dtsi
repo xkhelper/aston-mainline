@@ -69,32 +69,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-&ethernet0_rmii_pins_a {
-	pins1 {
-		pinmux = <STM32_PINMUX('B', 12, AF11)>, /* ETH1_RMII_TXD0 */
-			 <STM32_PINMUX('B', 13, AF11)>, /* ETH1_RMII_TXD1 */
-			 <STM32_PINMUX('B', 11, AF11)>; /* ETH1_RMII_TX_EN */
-	};
-	pins2 {
-		pinmux = <STM32_PINMUX('C', 4, AF11)>,  /* ETH1_RMII_RXD0 */
-			 <STM32_PINMUX('C', 5, AF11)>,  /* ETH1_RMII_RXD1 */
-			 <STM32_PINMUX('A', 1, AF11)>,  /* ETH1_RMII_REF_CLK input */
-			 <STM32_PINMUX('A', 7, AF11)>;  /* ETH1_RMII_CRS_DV */
-	};
-};
-
-&ethernet0_rmii_sleep_pins_a {
-	pins1 {
-		pinmux = <STM32_PINMUX('B', 12, ANALOG)>, /* ETH1_RMII_TXD0 */
-			 <STM32_PINMUX('B', 13, ANALOG)>, /* ETH1_RMII_TXD1 */
-			 <STM32_PINMUX('B', 11, ANALOG)>, /* ETH1_RMII_TX_EN */
-			 <STM32_PINMUX('C', 4, ANALOG)>,  /* ETH1_RMII_RXD0 */
-			 <STM32_PINMUX('C', 5, ANALOG)>,  /* ETH1_RMII_RXD1 */
-			 <STM32_PINMUX('A', 1, ANALOG)>,  /* ETH1_RMII_REF_CLK */
-			 <STM32_PINMUX('A', 7, ANALOG)>;  /* ETH1_RMII_CRS_DV */
-	};
-=======
 &{ethernet0_rmii_pins_a/pins1} {
 	pinmux = <STM32_PINMUX('B', 12, AF11)>, /* ETH1_RMII_TXD0 */
 		 <STM32_PINMUX('B', 13, AF11)>, /* ETH1_RMII_TXD1 */
@@ -116,7 +90,6 @@
 		 <STM32_PINMUX('C', 5, ANALOG)>,  /* ETH1_RMII_RXD1 */
 		 <STM32_PINMUX('A', 1, ANALOG)>,  /* ETH1_RMII_REF_CLK */
 		 <STM32_PINMUX('A', 7, ANALOG)>;  /* ETH1_RMII_CRS_DV */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &iwdg2 {
@@ -146,20 +119,11 @@
 	};
 };
 
-<<<<<<< HEAD
-&qspi_bk1_pins_a {
-	pins1 {
-		bias-pull-up;
-		drive-push-pull;
-		slew-rate = <1>;
-	};
-=======
 &{qspi_bk1_pins_a/pins} {
 	/delete-property/ bias-disable;
 	bias-pull-up;
 	drive-push-pull;
 	slew-rate = <1>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &rng1 {
@@ -179,24 +143,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-&sdmmc1_b4_od_pins_a {
-	pins1 {
-		bias-pull-up;
-	};
-	pins2 {
-		bias-pull-up;
-	};
-};
-
-&sdmmc1_b4_pins_a {
-	pins1 {
-		bias-pull-up;
-	};
-	pins2 {
-		bias-pull-up;
-	};
-=======
 &{sdmmc1_b4_od_pins_a/pins1} {
 	/delete-property/ bias-disable;
 	bias-pull-up;
@@ -215,7 +161,6 @@
 &{sdmmc1_b4_pins_a/pins2} {
 	/delete-property/ bias-disable;
 	bias-pull-up;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &uart4 {
@@ -228,36 +173,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-&uart4_idle_pins_a {
-	pins1 {
-		pinmux = <STM32_PINMUX('B', 9, ANALOG)>; /* UART4_TX */
-	};
-	pins2 {
-		pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
-		bias-pull-up;
-	};
-};
-
-&uart4_pins_a {
-	pins1 {
-		pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
-		bias-disable;
-		drive-push-pull;
-		slew-rate = <0>;
-	};
-	pins2 {
-		pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
-		bias-pull-up;
-	};
-};
-
-&uart4_sleep_pins_a {
-	pins {
-		pinmux = <STM32_PINMUX('B', 9, ANALOG)>, /* UART4_TX */
-			<STM32_PINMUX('B', 2, ANALOG)>; /* UART4_RX */
-	};
-=======
 &{uart4_idle_pins_a/pins1} {
 	pinmux = <STM32_PINMUX('B', 9, ANALOG)>; /* UART4_TX */
 };
@@ -282,7 +197,6 @@
 &{uart4_sleep_pins_a/pins} {
 	pinmux = <STM32_PINMUX('B', 9, ANALOG)>, /* UART4_TX */
 		<STM32_PINMUX('B', 2, ANALOG)>; /* UART4_RX */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &usbh_ehci {

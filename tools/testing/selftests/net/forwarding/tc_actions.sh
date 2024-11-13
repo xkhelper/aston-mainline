@@ -4,12 +4,8 @@
 ALL_TESTS="gact_drop_and_ok_test mirred_egress_redirect_test \
 	mirred_egress_mirror_test matchall_mirred_egress_mirror_test \
 	gact_trap_test mirred_egress_to_ingress_test \
-<<<<<<< HEAD
-	mirred_egress_to_ingress_tcp_test"
-=======
 	mirred_egress_to_ingress_tcp_test \
 	ingress_2nd_vlan_push egress_2nd_vlan_push"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 NUM_NETIFS=4
 source tc_common.sh
 source lib.sh
@@ -249,8 +245,6 @@ mirred_egress_to_ingress_tcp_test()
 	log_test "mirred_egress_to_ingress_tcp ($tcflags)"
 }
 
-<<<<<<< HEAD
-=======
 ingress_2nd_vlan_push()
 {
 	tc filter add dev $swp1 ingress pref 20 chain 0 handle 20 flower \
@@ -294,7 +288,6 @@ egress_2nd_vlan_push()
 	log_test "egress_2nd_vlan_push ($tcflags)"
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 setup_prepare()
 {
 	h1=${NETIFS[p1]}

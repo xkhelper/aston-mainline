@@ -11,18 +11,11 @@
 enum fb_op_origin;
 struct drm_connector;
 struct drm_connector_state;
-<<<<<<< HEAD
-struct drm_i915_private;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_atomic_state;
 struct intel_connector;
 struct intel_crtc;
 struct intel_crtc_state;
-<<<<<<< HEAD
-=======
 struct intel_display;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct intel_dp;
 struct intel_encoder;
 struct intel_plane;
@@ -32,11 +25,8 @@ struct intel_plane_state;
 				    (intel_dp)->psr.source_panel_replay_support)
 
 bool intel_encoder_can_psr(struct intel_encoder *encoder);
-<<<<<<< HEAD
-=======
 bool intel_psr_needs_aux_io_power(struct intel_encoder *encoder,
 				  const struct intel_crtc_state *crtc_state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void intel_psr_init_dpcd(struct intel_dp *intel_dp);
 void intel_psr_enable_sink(struct intel_dp *intel_dp,
 			   const struct intel_crtc_state *crtc_state);
@@ -47,17 +37,10 @@ void intel_psr_post_plane_update(struct intel_atomic_state *state,
 void intel_psr_disable(struct intel_dp *intel_dp,
 		       const struct intel_crtc_state *old_crtc_state);
 int intel_psr_debug_set(struct intel_dp *intel_dp, u64 value);
-<<<<<<< HEAD
-void intel_psr_invalidate(struct drm_i915_private *dev_priv,
-			  unsigned frontbuffer_bits,
-			  enum fb_op_origin origin);
-void intel_psr_flush(struct drm_i915_private *dev_priv,
-=======
 void intel_psr_invalidate(struct intel_display *display,
 			  unsigned frontbuffer_bits,
 			  enum fb_op_origin origin);
 void intel_psr_flush(struct intel_display *display,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		     unsigned frontbuffer_bits,
 		     enum fb_op_origin origin);
 void intel_psr_init(struct intel_dp *intel_dp);
@@ -79,10 +62,6 @@ void intel_psr_resume(struct intel_dp *intel_dp);
 void intel_psr_lock(const struct intel_crtc_state *crtc_state);
 void intel_psr_unlock(const struct intel_crtc_state *crtc_state);
 void intel_psr_connector_debugfs_add(struct intel_connector *connector);
-<<<<<<< HEAD
-void intel_psr_debugfs_register(struct drm_i915_private *i915);
-=======
 void intel_psr_debugfs_register(struct intel_display *display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* __INTEL_PSR_H__ */

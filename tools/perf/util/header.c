@@ -3676,40 +3676,15 @@ int perf_header__write_pipe(int fd)
 static int perf_session__do_write_header(struct perf_session *session,
 					 struct evlist *evlist,
 					 int fd, bool at_exit,
-<<<<<<< HEAD
-					 struct feat_copier *fc)
-{
-	struct perf_file_header f_header;
-	struct perf_file_attr   f_attr;
-=======
 					 struct feat_copier *fc,
 					 bool write_attrs_after_data)
 {
 	struct perf_file_header f_header;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_header *header = &session->header;
 	struct evsel *evsel;
 	struct feat_fd ff = {
 		.fd = fd,
 	};
-<<<<<<< HEAD
-	u64 attr_offset;
-	int err;
-
-	lseek(fd, sizeof(f_header), SEEK_SET);
-
-	evlist__for_each_entry(session->evlist, evsel) {
-		evsel->id_offset = lseek(fd, 0, SEEK_CUR);
-		err = do_write(&ff, evsel->core.id, evsel->core.ids * sizeof(u64));
-		if (err < 0) {
-			pr_debug("failed to write perf header\n");
-			free(ff.buf);
-			return err;
-		}
-	}
-
-	attr_offset = lseek(ff.fd, 0, SEEK_CUR);
-=======
 	u64 attr_offset = sizeof(f_header), attr_size = 0;
 	int err;
 
@@ -3744,7 +3719,6 @@ static int perf_session__do_write_header(struct perf_session *session,
 		}
 		attr_offset += evsel->core.ids * sizeof(u64);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	evlist__for_each_entry(evlist, evsel) {
 		if (evsel->core.attr.size < sizeof(evsel->core.attr)) {
@@ -3755,33 +3729,6 @@ static int perf_session__do_write_header(struct perf_session *session,
 			 */
 			evsel->core.attr.size = sizeof(evsel->core.attr);
 		}
-<<<<<<< HEAD
-		f_attr = (struct perf_file_attr){
-			.attr = evsel->core.attr,
-			.ids  = {
-				.offset = evsel->id_offset,
-				.size   = evsel->core.ids * sizeof(u64),
-			}
-		};
-		err = do_write(&ff, &f_attr, sizeof(f_attr));
-		if (err < 0) {
-			pr_debug("failed to write perf header attribute\n");
-			free(ff.buf);
-			return err;
-		}
-	}
-
-	if (!header->data_offset)
-		header->data_offset = lseek(fd, 0, SEEK_CUR);
-	header->feat_offset = header->data_offset + header->data_size;
-
-	if (at_exit) {
-		err = perf_header__adds_write(header, evlist, fd, fc);
-		if (err < 0) {
-			free(ff.buf);
-			return err;
-		}
-=======
 		/* Avoid writing at the end of the file until the session is exiting. */
 		if (!write_attrs_after_data || at_exit) {
 			struct perf_file_attr f_attr = {
@@ -3813,23 +3760,15 @@ static int perf_session__do_write_header(struct perf_session *session,
 		err = perf_header__adds_write(header, evlist, fd, fc);
 		if (err < 0)
 			goto err_out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	f_header = (struct perf_file_header){
 		.magic	   = PERF_MAGIC,
 		.size	   = sizeof(f_header),
-<<<<<<< HEAD
-		.attr_size = sizeof(f_attr),
-		.attrs = {
-			.offset = attr_offset,
-			.size   = evlist->core.nr_entries * sizeof(f_attr),
-=======
 		.attr_size = sizeof(struct perf_file_attr),
 		.attrs = {
 			.offset = attr_offset,
 			.size   = attr_size,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.data = {
 			.offset = header->data_offset,
@@ -3842,16 +3781,6 @@ static int perf_session__do_write_header(struct perf_session *session,
 
 	lseek(fd, 0, SEEK_SET);
 	err = do_write(&ff, &f_header, sizeof(f_header));
-<<<<<<< HEAD
-	free(ff.buf);
-	if (err < 0) {
-		pr_debug("failed to write perf header\n");
-		return err;
-	}
-	lseek(fd, header->data_offset + header->data_size, SEEK_SET);
-
-	return 0;
-=======
 	if (err < 0) {
 		pr_debug("failed to write perf header\n");
 		goto err_out;
@@ -3862,19 +3791,14 @@ static int perf_session__do_write_header(struct perf_session *session,
 err_out:
 	free(ff.buf);
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int perf_session__write_header(struct perf_session *session,
 			       struct evlist *evlist,
 			       int fd, bool at_exit)
 {
-<<<<<<< HEAD
-	return perf_session__do_write_header(session, evlist, fd, at_exit, NULL);
-=======
 	return perf_session__do_write_header(session, evlist, fd, at_exit, /*fc=*/NULL,
 					     /*write_attrs_after_data=*/false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 size_t perf_session__data_offset(const struct evlist *evlist)
@@ -3894,17 +3818,11 @@ size_t perf_session__data_offset(const struct evlist *evlist)
 int perf_session__inject_header(struct perf_session *session,
 				struct evlist *evlist,
 				int fd,
-<<<<<<< HEAD
-				struct feat_copier *fc)
-{
-	return perf_session__do_write_header(session, evlist, fd, true, fc);
-=======
 				struct feat_copier *fc,
 				bool write_attrs_after_data)
 {
 	return perf_session__do_write_header(session, evlist, fd, true, fc,
 					     write_attrs_after_data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int perf_header__getbuffer64(struct perf_header *header,
@@ -4097,8 +4015,6 @@ int perf_file_header__read(struct perf_file_header *header,
 			     adds_features));
 	}
 
-<<<<<<< HEAD
-=======
 	if (header->size > header->attrs.offset) {
 		pr_err("Perf file header corrupt: header overlaps attrs\n");
 		return -1;
@@ -4117,7 +4033,6 @@ int perf_file_header__read(struct perf_file_header *header,
 		return -1;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (header->size != sizeof(*header)) {
 		/* Support the previous format */
 		if (header->size == offsetof(typeof(*header), adds_features))
@@ -4198,18 +4113,8 @@ static int perf_file_section__process(struct perf_file_section *section,
 
 static int perf_file_header__read_pipe(struct perf_pipe_file_header *header,
 				       struct perf_header *ph,
-<<<<<<< HEAD
-				       struct perf_data* data,
-				       bool repipe, int repipe_fd)
-{
-	struct feat_fd ff = {
-		.fd = repipe_fd,
-		.ph = ph,
-	};
-=======
 				       struct perf_data *data)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ssize_t ret;
 
 	ret = perf_data__read(data, header, sizeof(*header));
@@ -4224,30 +4129,15 @@ static int perf_file_header__read_pipe(struct perf_pipe_file_header *header,
 	if (ph->needs_swap)
 		header->size = bswap_64(header->size);
 
-<<<<<<< HEAD
-	if (repipe && do_write(&ff, header, sizeof(*header)) < 0)
-		return -1;
-
-	return 0;
-}
-
-static int perf_header__read_pipe(struct perf_session *session, int repipe_fd)
-=======
 	return 0;
 }
 
 static int perf_header__read_pipe(struct perf_session *session)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct perf_header *header = &session->header;
 	struct perf_pipe_file_header f_header;
 
-<<<<<<< HEAD
-	if (perf_file_header__read_pipe(&f_header, header, session->data,
-					session->repipe, repipe_fd) < 0) {
-=======
 	if (perf_file_header__read_pipe(&f_header, header, session->data) < 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_debug("incompatible file format\n");
 		return -EINVAL;
 	}
@@ -4347,11 +4237,7 @@ static int evlist__prepare_tracepoint_events(struct evlist *evlist, struct tep_h
 }
 #endif
 
-<<<<<<< HEAD
-int perf_session__read_header(struct perf_session *session, int repipe_fd)
-=======
 int perf_session__read_header(struct perf_session *session)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct perf_data *data = session->data;
 	struct perf_header *header = &session->header;
@@ -4372,11 +4258,7 @@ int perf_session__read_header(struct perf_session *session)
 	 * We can read 'pipe' data event from regular file,
 	 * check for the pipe header regardless of source.
 	 */
-<<<<<<< HEAD
-	err = perf_header__read_pipe(session, repipe_fd);
-=======
 	err = perf_header__read_pipe(session);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!err || perf_data__is_pipe(data)) {
 		data->is_pipe = true;
 		return err;
@@ -4482,11 +4364,7 @@ out_delete_evlist:
 int perf_event__process_feature(struct perf_session *session,
 				union perf_event *event)
 {
-<<<<<<< HEAD
-	struct perf_tool *tool = session->tool;
-=======
 	const struct perf_tool *tool = session->tool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct feat_fd ff = { .fd = 0 };
 	struct perf_record_header_feature *fe = (struct perf_record_header_feature *)event;
 	int type = fe->header.type;
@@ -4565,11 +4443,7 @@ size_t perf_event__fprintf_event_update(union perf_event *event, FILE *fp)
 	return ret;
 }
 
-<<<<<<< HEAD
-int perf_event__process_attr(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_attr(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct evlist **pevlist)
 {
@@ -4608,11 +4482,7 @@ int perf_event__process_attr(const struct perf_tool *tool __maybe_unused,
 	return 0;
 }
 
-<<<<<<< HEAD
-int perf_event__process_event_update(struct perf_tool *tool __maybe_unused,
-=======
 int perf_event__process_event_update(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     union perf_event *event,
 				     struct evlist **pevlist)
 {
@@ -4682,23 +4552,14 @@ int perf_event__process_tracing_data(struct perf_session *session,
 		      SEEK_SET);
 	}
 
-<<<<<<< HEAD
-	size_read = trace_report(fd, &session->tevent,
-				 session->repipe);
-=======
 	size_read = trace_report(fd, &session->tevent, session->trace_event_repipe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	padding = PERF_ALIGN(size_read, sizeof(u64)) - size_read;
 
 	if (readn(fd, buf, padding) < 0) {
 		pr_err("%s: reading input file", __func__);
 		return -1;
 	}
-<<<<<<< HEAD
-	if (session->repipe) {
-=======
 	if (session->trace_event_repipe) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int retw = write(STDOUT_FILENO, buf, padding);
 		if (retw <= 0 || retw != padding) {
 			pr_err("%s: repiping tracing data padding", __func__);

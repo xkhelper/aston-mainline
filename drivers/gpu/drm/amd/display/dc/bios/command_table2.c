@@ -227,11 +227,7 @@ static void init_transmitter_control(struct bios_parser *bp)
 	uint8_t frev;
 	uint8_t crev = 0;
 
-<<<<<<< HEAD
-	if (!BIOS_CMD_TABLE_REVISION(dig1transmittercontrol, frev, crev))
-=======
 	if (!BIOS_CMD_TABLE_REVISION(dig1transmittercontrol, frev, crev) && (bp->base.ctx->dc->ctx->dce_version <= DCN_VERSION_2_0))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		BREAK_TO_DEBUGGER();
 
 	switch (crev) {

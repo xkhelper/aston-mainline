@@ -86,11 +86,7 @@ types of working mode:
 -   Single display mode
     Two pipelines work together to drive only one display output.
 
-<<<<<<< HEAD
-    On this mode, pipeline_B doesn't work indenpendently, but outputs its
-=======
     On this mode, pipeline_B doesn't work independently, but outputs its
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     composition result into pipeline_A, and its pixel timing also derived from
     pipeline_A.timing_ctrlr. The pipeline_B works just like a "slave" of
     pipeline_A(master)

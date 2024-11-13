@@ -511,11 +511,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
 
 	if (init_unaccepted_memory()) {
 		debug_putstr("Accepting memory... ");
-<<<<<<< HEAD
-		accept_memory(__pa(output), __pa(output) + needed_size);
-=======
 		accept_memory(__pa(output), needed_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	entry_offset = decompress_kernel(output, virt_addr, error);

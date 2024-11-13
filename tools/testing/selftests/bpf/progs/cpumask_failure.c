@@ -10,8 +10,6 @@
 
 char _license[] SEC("license") = "GPL";
 
-<<<<<<< HEAD
-=======
 struct kptr_nested_array_2 {
 	struct bpf_cpumask __kptr * mask;
 };
@@ -27,7 +25,6 @@ struct kptr_nested_array {
 
 private(MASK_NESTED) static struct kptr_nested_array global_mask_nested_arr;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Prototype for all of the program trace events below:
  *
  * TRACE_EVENT(task_newtask,
@@ -205,8 +202,6 @@ int BPF_PROG(test_global_mask_rcu_no_null_check, struct task_struct *task, u64 c
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
 
 SEC("tp_btf/task_newtask")
 __failure __msg("has no valid kptr")
@@ -227,4 +222,3 @@ int BPF_PROG(test_invalid_nested_array, struct task_struct *task, u64 clone_flag
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

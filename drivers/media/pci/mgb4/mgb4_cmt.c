@@ -227,11 +227,8 @@ void mgb4_cmt_set_vin_freq_range(struct mgb4_vin_dev *vindev,
 	u32 config;
 	size_t i;
 
-<<<<<<< HEAD
-=======
 	freq_range = array_index_nospec(freq_range, ARRAY_SIZE(cmt_vals_in));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	addr = cmt_addrs_in[vindev->config->id];
 	reg_set = cmt_vals_in[freq_range];
 

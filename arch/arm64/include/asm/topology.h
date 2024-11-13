@@ -5,10 +5,7 @@
 #include <linux/cpumask.h>
 
 #ifdef CONFIG_NUMA
-<<<<<<< HEAD
-=======
 #include <asm/numa.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct pci_bus;
 int pcibus_to_node(struct pci_bus *bus);
@@ -29,13 +26,6 @@ void update_freq_counters_refs(void);
 #define arch_scale_freq_invariant topology_scale_freq_invariant
 #define arch_scale_freq_ref topology_get_freq_ref
 
-<<<<<<< HEAD
-#ifdef CONFIG_ACPI_CPPC_LIB
-#define arch_init_invariance_cppc topology_init_cpu_capacity_cppc
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Replace task scheduler's default cpu-invariant accounting */
 #define arch_scale_cpu_capacity topology_get_cpu_scale
 

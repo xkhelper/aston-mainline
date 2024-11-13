@@ -177,11 +177,7 @@ static int cs35l45_activate_ctl(struct snd_soc_component *component,
 	struct snd_kcontrol_volatile *vd;
 	unsigned int index_offset;
 
-<<<<<<< HEAD
-	kcontrol = snd_soc_component_get_kcontrol_locked(component, ctl_name);
-=======
 	kcontrol = snd_soc_component_get_kcontrol(component, ctl_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!kcontrol) {
 		dev_err(component->dev, "Can't find kcontrol %s\n", ctl_name);
 		return -EINVAL;

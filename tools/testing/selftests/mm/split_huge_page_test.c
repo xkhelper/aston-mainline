@@ -84,8 +84,6 @@ static void write_debugfs(const char *fmt, ...)
 	write_file(SPLIT_DEBUGFS, input, ret + 1);
 }
 
-<<<<<<< HEAD
-=======
 static char *allocate_zero_filled_hugepage(size_t len)
 {
 	char *result;
@@ -156,7 +154,6 @@ void split_pmd_zero_pages(void)
 	free(one_page);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void split_pmd_thp(void)
 {
 	char *one_page;
@@ -504,10 +501,7 @@ int main(int argc, char **argv)
 
 	fd_size = 2 * pmd_pagesize;
 
-<<<<<<< HEAD
-=======
 	split_pmd_zero_pages();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	split_pmd_thp();
 	split_pte_mapped_thp();
 	split_file_backed_thp();

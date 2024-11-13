@@ -472,8 +472,6 @@ static const struct imx283_mode supported_modes_12bit[] = {
 			.height = 3648,
 		},
 	},
-<<<<<<< HEAD
-=======
 	{
 		/*
 		 * Readout mode 3 : 3/3 binned mode (1824x1216)
@@ -507,7 +505,6 @@ static const struct imx283_mode supported_modes_12bit[] = {
 			.height = 3648,
 		},
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct imx283_mode supported_modes_10bit[] = {

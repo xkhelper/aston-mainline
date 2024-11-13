@@ -1626,10 +1626,6 @@ nvkm_device_pci_func = {
 
 int
 nvkm_device_pci_new(struct pci_dev *pci_dev, const char *cfg, const char *dbg,
-<<<<<<< HEAD
-		    bool detect, bool mmio, u64 subdev_mask,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    struct nvkm_device **pdevice)
 {
 	const struct nvkm_device_quirk *quirk = NULL;
@@ -1683,12 +1679,7 @@ nvkm_device_pci_new(struct pci_dev *pci_dev, const char *cfg, const char *dbg,
 				    pci_dev->bus->number << 16 |
 				    PCI_SLOT(pci_dev->devfn) << 8 |
 				    PCI_FUNC(pci_dev->devfn), name,
-<<<<<<< HEAD
-			       cfg, dbg, detect, mmio, subdev_mask,
-			       &pdev->device);
-=======
 			       cfg, dbg, &pdev->device);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ret)
 		return ret;

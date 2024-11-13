@@ -76,10 +76,6 @@ static long dbfs_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 
 static const struct file_operations dbfs_ops = {
 	.read		= dbfs_read,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.unlocked_ioctl = dbfs_ioctl,
 };
 

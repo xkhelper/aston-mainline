@@ -12,8 +12,6 @@ config DRM_RZG2L_DU
 	help
 	  Choose this option if you have an RZ/G2L alike chipset.
 	  If M is selected the module will be called rzg2l-du-drm.
-<<<<<<< HEAD
-=======
 
 config DRM_RZG2L_MIPI_DSI
 	tristate "RZ/G2L MIPI DSI Encoder Support"
@@ -22,4 +20,3 @@ config DRM_RZG2L_MIPI_DSI
 	select DRM_MIPI_DSI
 	help
 	  Enable support for the RZ/G2L Display Unit embedded MIPI DSI encoders.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

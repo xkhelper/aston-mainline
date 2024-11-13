@@ -42,10 +42,7 @@
 #include <linux/hardirq.h>
 #include <linux/atomic.h>
 #include <linux/iommu.h>
-<<<<<<< HEAD
-=======
 #include <linux/ubsan.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/stacktrace.h>
 #include <asm/processor.h>
@@ -95,8 +92,6 @@ __always_inline int is_valid_bugaddr(unsigned long addr)
 	return *(unsigned short *)addr == INSN_UD2;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Check for UD1 or UD2, accounting for Address Size Override Prefixes.
  * If it's a UD1, get the ModRM byte to pass along to UBSan.
@@ -138,7 +133,6 @@ __always_inline int decode_bug(unsigned long addr, u32 *imm)
 }
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static nokprobe_inline int
 do_trap_no_signal(struct task_struct *tsk, int trapnr, const char *str,
 		  struct pt_regs *regs,	long error_code)
@@ -264,22 +258,11 @@ static inline void handle_invalid_op(struct pt_regs *regs)
 static noinstr bool handle_bug(struct pt_regs *regs)
 {
 	bool handled = false;
-<<<<<<< HEAD
-
-	/*
-	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
-	 * is a rare case that uses @regs without passing them to
-	 * irqentry_enter().
-	 */
-	kmsan_unpoison_entry_regs(regs);
-	if (!is_valid_bugaddr(regs->ip))
-=======
 	int ud_type;
 	u32 imm;
 
 	ud_type = decode_bug(regs->ip, &imm);
 	if (ud_type == BUG_NONE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return handled;
 
 	/*
@@ -287,26 +270,17 @@ static noinstr bool handle_bug(struct pt_regs *regs)
 	 */
 	instrumentation_begin();
 	/*
-<<<<<<< HEAD
-=======
 	 * Normally @regs are unpoisoned by irqentry_enter(), but handle_bug()
 	 * is a rare case that uses @regs without passing them to
 	 * irqentry_enter().
 	 */
 	kmsan_unpoison_entry_regs(regs);
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Since we're emulating a CALL with exceptions, restore the interrupt
 	 * state to what it was at the exception site.
 	 */
 	if (regs->flags & X86_EFLAGS_IF)
 		raw_local_irq_enable();
-<<<<<<< HEAD
-	if (report_bug(regs->ip, regs) == BUG_TRAP_TYPE_WARN ||
-	    handle_cfi_failure(regs) == BUG_TRAP_TYPE_WARN) {
-		regs->ip += LEN_UD2;
-		handled = true;
-=======
 	if (ud_type == BUG_UD2) {
 		if (report_bug(regs->ip, regs) == BUG_TRAP_TYPE_WARN ||
 		    handle_cfi_failure(regs) == BUG_TRAP_TYPE_WARN) {
@@ -315,7 +289,6 @@ static noinstr bool handle_bug(struct pt_regs *regs)
 		}
 	} else if (IS_ENABLED(CONFIG_UBSAN_TRAP)) {
 		pr_crit("%s at %pS\n", report_ubsan_failure(regs, imm), (void *)regs->ip);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (regs->flags & X86_EFLAGS_IF)
 		raw_local_irq_disable();
@@ -1478,39 +1451,8 @@ DEFINE_IDTENTRY_SW(iret_error)
 }
 #endif
 
-<<<<<<< HEAD
-/* Do not enable FRED by default yet. */
-static bool enable_fred __ro_after_init = false;
-
-#ifdef CONFIG_X86_FRED
-static int __init fred_setup(char *str)
-{
-	if (!str)
-		return -EINVAL;
-
-	if (!cpu_feature_enabled(X86_FEATURE_FRED))
-		return 0;
-
-	if (!strcmp(str, "on"))
-		enable_fred = true;
-	else if (!strcmp(str, "off"))
-		enable_fred = false;
-	else
-		pr_warn("invalid FRED option: 'fred=%s'\n", str);
-	return 0;
-}
-early_param("fred", fred_setup);
-#endif
-
 void __init trap_init(void)
 {
-	if (cpu_feature_enabled(X86_FEATURE_FRED) && !enable_fred)
-		setup_clear_cpu_cap(X86_FEATURE_FRED);
-
-=======
-void __init trap_init(void)
-{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Init cpu_entry_area before IST entries are set up */
 	setup_cpu_entry_areas();
 
@@ -1518,11 +1460,7 @@ void __init trap_init(void)
 	sev_es_init_vc_handling();
 
 	/* Initialize TSS before setting up traps so ISTs work */
-<<<<<<< HEAD
-	cpu_init_exception_handling();
-=======
 	cpu_init_exception_handling(true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Setup traps as cpu_init() might #GP */
 	if (!cpu_feature_enabled(X86_FEATURE_FRED))

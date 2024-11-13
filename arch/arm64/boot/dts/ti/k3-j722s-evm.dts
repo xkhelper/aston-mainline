@@ -20,10 +20,7 @@
 	aliases {
 		serial0 = &wkup_uart0;
 		serial2 = &main_uart0;
-<<<<<<< HEAD
-=======
 		serial3 = &main_uart5;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mmc0 = &sdhci0;
 		mmc1 = &sdhci1;
 	};
@@ -55,23 +52,18 @@
 			no-map;
 		};
 
-<<<<<<< HEAD
-=======
 		wkup_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
 			compatible = "shared-dma-pool";
 			reg = <0x00 0xa0000000 0x00 0x100000>;
 			no-map;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wkup_r5fss0_core0_memory_region: r5f-memory@a0100000 {
 			compatible = "shared-dma-pool";
 			reg = <0x00 0xa0100000 0x00 0xf00000>;
 			no-map;
 		};
 
-<<<<<<< HEAD
-=======
 		mcu_r5fss0_core0_dma_memory_region: mcu-r5fss-dma-memory-region@a1000000 {
 			compatible = "shared-dma-pool";
 			reg = <0x00 0xa1000000 0x00 0x100000>;
@@ -125,7 +117,6 @@
 			alignment = <0x1000>;
 			no-map;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	vmain_pd: regulator-0 {
@@ -231,8 +222,6 @@
 			clocks = <&audio_refclk1>;
 		};
 	};
-<<<<<<< HEAD
-=======
 
 	transceiver0: can-phy0 {
 		compatible = "ti,tcan1042";
@@ -255,13 +244,10 @@
 		max-bitrate = <5000000>;
 		standby-gpios = <&exp1 17 GPIO_ACTIVE_HIGH>;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &main_pmx0 {
 
-<<<<<<< HEAD
-=======
 	main_mcan0_pins_default: main-mcan0-default-pins {
 		pinctrl-single,pins = <
 			J722S_IOPAD(0x1dc, PIN_INPUT, 0) /* (C22) MCAN0_RX */
@@ -269,7 +255,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	main_i2c0_pins_default: main-i2c0-default-pins {
 		pinctrl-single,pins = <
 			J722S_IOPAD(0x01e0, PIN_INPUT_PULLUP, 0) /* (D23) I2C0_SCL */
@@ -286,8 +271,6 @@
 		bootph-all;
 	};
 
-<<<<<<< HEAD
-=======
 	main_uart5_pins_default: main-uart5-default-pins {
 		pinctrl-single,pins = <
 			J722S_IOPAD(0x0108, PIN_INPUT, 3)       /* (J27) UART5_RXD */
@@ -295,7 +278,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
 		pinctrl-single,pins = <
 			J722S_IOPAD(0x0120, PIN_INPUT, 7) /* (F27) MMC2_CMD.GPIO0_70 */
@@ -415,10 +397,6 @@
 	bootph-all;
 };
 
-<<<<<<< HEAD
-&mcu_pmx0 {
-
-=======
 &main_uart5 {
 	/* MAIN UART 5 is used by System firmware */
 	pinctrl-names = "default";
@@ -448,7 +426,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wkup_uart0_pins_default: wkup-uart0-default-pins {
 		pinctrl-single,pins = <
 			J722S_MCU_IOPAD(0x02c, PIN_INPUT, 0)	/* (C7) WKUP_UART0_CTSn */
@@ -640,8 +617,6 @@
 	bootph-all;
 };
 
-<<<<<<< HEAD
-=======
 &mailbox0_cluster0 {
 	status = "okay";
 
@@ -740,7 +715,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &serdes_ln_ctrl {
 	idle-states = <J722S_SERDES0_LANE0_USB>,
 		      <J722S_SERDES1_LANE0_PCIE0_LANE0>;
@@ -813,8 +787,6 @@
 	       0 0 0 0
 	>;
 };
-<<<<<<< HEAD
-=======
 
 &mcu_mcan0 {
 	pinctrl-names = "default";
@@ -840,4 +812,3 @@
 &mcu_gpio0 {
 	status = "okay";
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

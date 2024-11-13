@@ -754,11 +754,7 @@ static struct urb *usbtmc_create_urb(void)
 	if (!urb)
 		return NULL;
 
-<<<<<<< HEAD
-	dmabuf = kmalloc(bufsize, GFP_KERNEL);
-=======
 	dmabuf = kzalloc(bufsize, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!dmabuf) {
 		usb_free_urb(urb);
 		return NULL;

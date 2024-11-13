@@ -550,17 +550,6 @@ SYSCALL_DEFINE2(setns, int, fd, int, flags)
 	struct nsset nsset = {};
 	int err = 0;
 
-<<<<<<< HEAD
-	if (!f.file)
-		return -EBADF;
-
-	if (proc_ns_file(f.file)) {
-		ns = get_proc_ns(file_inode(f.file));
-		if (flags && (ns->ops->type != flags))
-			err = -EINVAL;
-		flags = ns->ops->type;
-	} else if (!IS_ERR(pidfd_pid(f.file))) {
-=======
 	if (!fd_file(f))
 		return -EBADF;
 
@@ -570,7 +559,6 @@ SYSCALL_DEFINE2(setns, int, fd, int, flags)
 			err = -EINVAL;
 		flags = ns->ops->type;
 	} else if (!IS_ERR(pidfd_pid(fd_file(f)))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = check_setns_flags(flags);
 	} else {
 		err = -EINVAL;
@@ -582,17 +570,10 @@ SYSCALL_DEFINE2(setns, int, fd, int, flags)
 	if (err)
 		goto out;
 
-<<<<<<< HEAD
-	if (proc_ns_file(f.file))
-		err = validate_ns(&nsset, ns);
-	else
-		err = validate_nsset(&nsset, pidfd_pid(f.file));
-=======
 	if (proc_ns_file(fd_file(f)))
 		err = validate_ns(&nsset, ns);
 	else
 		err = validate_nsset(&nsset, pidfd_pid(fd_file(f)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!err) {
 		commit_nsset(&nsset);
 		perf_event_namespaces(current);

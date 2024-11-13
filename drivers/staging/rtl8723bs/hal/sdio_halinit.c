@@ -5,10 +5,6 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
-<<<<<<< HEAD
-#include <rtw_debug.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <rtl8723b_hal.h>
 
 #include "hal_com_h2c.h"
@@ -383,13 +379,8 @@ static void _InitWMACSetting(struct adapter *padapter)
 	rtw_write32(padapter, REG_RCR, pHalData->ReceiveConfig);
 
 	/*  Accept all multicast address */
-<<<<<<< HEAD
-	rtw_write32(padapter, REG_MAR, 0xFFFFFFFF);
-	rtw_write32(padapter, REG_MAR + 4, 0xFFFFFFFF);
-=======
 	rtw_write32(padapter, REG_MAR, 0xFFFFFFFF);	/* Offset 0x0620-0x0623 */
 	rtw_write32(padapter, REG_MAR + 4, 0xFFFFFFFF);	/* Offset 0x0624-0x0627 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*  Accept all data frames */
 	value16 = 0xFFFF;

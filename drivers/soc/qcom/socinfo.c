@@ -17,11 +17,7 @@
 #include <linux/sys_soc.h>
 #include <linux/types.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <dt-bindings/arm/qcom,ids.h>
 
@@ -405,19 +401,13 @@ static const struct soc_id soc_id[] = {
 	{ qcom_board_id(SA8540P) },
 	{ qcom_board_id(QCM4290) },
 	{ qcom_board_id(QCS4290) },
-<<<<<<< HEAD
-=======
 	{ qcom_board_id(SM7325) },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ qcom_board_id_named(SM8450_2, "SM8450") },
 	{ qcom_board_id_named(SM8450_3, "SM8450") },
 	{ qcom_board_id(SC7280) },
 	{ qcom_board_id(SC7180P) },
 	{ qcom_board_id(QCM6490) },
-<<<<<<< HEAD
-=======
 	{ qcom_board_id(SM7325P) },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ qcom_board_id(IPQ5000) },
 	{ qcom_board_id(IPQ0509) },
 	{ qcom_board_id(IPQ0518) },
@@ -453,11 +443,8 @@ static const struct soc_id soc_id[] = {
 	{ qcom_board_id(QCM8550) },
 	{ qcom_board_id(IPQ5300) },
 	{ qcom_board_id(IPQ5321) },
-<<<<<<< HEAD
-=======
 	{ qcom_board_id(QCS8300) },
 	{ qcom_board_id(QCS8275) },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const char *socinfo_machine(struct device *dev, unsigned int id)
@@ -799,12 +786,6 @@ static int qcom_socinfo_probe(struct platform_device *pdev)
 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
-<<<<<<< HEAD
-	if (offsetof(struct socinfo, serial_num) <= item_size)
-		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
-							"%u",
-							le32_to_cpu(info->serial_num));
-=======
 	if (!qs->attr.soc_id || !qs->attr.revision)
 		return -ENOMEM;
 
@@ -815,7 +796,6 @@ static int qcom_socinfo_probe(struct platform_device *pdev)
 		if (!qs->attr.serial_number)
 			return -ENOMEM;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	qs->soc_dev = soc_device_register(&qs->attr);
 	if (IS_ERR(qs->soc_dev))

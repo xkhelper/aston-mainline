@@ -50,13 +50,6 @@ struct ftrace_insn {
 	s32 disp;
 } __packed;
 
-<<<<<<< HEAD
-#ifdef CONFIG_MODULES
-static char *ftrace_plt;
-#endif /* CONFIG_MODULES */
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const char *ftrace_shared_hotpatch_trampoline(const char **end)
 {
 	const char *tstart, *tend;
@@ -76,31 +69,20 @@ static const char *ftrace_shared_hotpatch_trampoline(const char **end)
 
 bool ftrace_need_init_nop(void)
 {
-<<<<<<< HEAD
-	return true;
-=======
 	return !MACHINE_HAS_SEQ_INSN;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
 {
 	static struct ftrace_hotpatch_trampoline *next_vmlinux_trampoline =
 		__ftrace_hotpatch_trampolines_start;
-<<<<<<< HEAD
-	static const char orig[6] = { 0xc0, 0x04, 0x00, 0x00, 0x00, 0x00 };
-=======
 	static const struct ftrace_insn orig = { .opc = 0xc004, .disp = 0 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	static struct ftrace_hotpatch_trampoline *trampoline;
 	struct ftrace_hotpatch_trampoline **next_trampoline;
 	struct ftrace_hotpatch_trampoline *trampolines_end;
 	struct ftrace_hotpatch_trampoline tmp;
 	struct ftrace_insn *insn;
-<<<<<<< HEAD
-=======
 	struct ftrace_insn old;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const char *shared;
 	s32 disp;
 
@@ -114,10 +96,6 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
 	if (mod) {
 		next_trampoline = &mod->arch.next_trampoline;
 		trampolines_end = mod->arch.trampolines_end;
-<<<<<<< HEAD
-		shared = ftrace_plt;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 #endif
 
@@ -125,15 +103,10 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
 		return -ENOMEM;
 	trampoline = (*next_trampoline)++;
 
-<<<<<<< HEAD
-	/* Check for the compiler-generated fentry nop (brcl 0, .). */
-	if (WARN_ON_ONCE(memcmp((const void *)rec->ip, &orig, sizeof(orig))))
-=======
 	if (copy_from_kernel_nofault(&old, (void *)rec->ip, sizeof(old)))
 		return -EFAULT;
 	/* Check for the compiler-generated fentry nop (brcl 0, .). */
 	if (WARN_ON_ONCE(memcmp(&orig, &old, sizeof(old))))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	/* Generate the trampoline. */
@@ -169,10 +142,6 @@ static struct ftrace_hotpatch_trampoline *ftrace_get_trampoline(struct dyn_ftrac
 	return trampoline;
 }
 
-<<<<<<< HEAD
-int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
-		       unsigned long addr)
-=======
 static inline struct ftrace_insn
 ftrace_generate_branch_insn(unsigned long ip, unsigned long target)
 {
@@ -202,7 +171,6 @@ static int ftrace_patch_branch_insn(unsigned long ip, unsigned long old_target,
 static int ftrace_modify_trampoline_call(struct dyn_ftrace *rec,
 					 unsigned long old_addr,
 					 unsigned long addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ftrace_hotpatch_trampoline *trampoline;
 	u64 old;
@@ -218,8 +186,6 @@ static int ftrace_modify_trampoline_call(struct dyn_ftrace *rec,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
 		       unsigned long addr)
 {
@@ -229,7 +195,6 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
 		return ftrace_modify_trampoline_call(rec, old_addr, addr);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ftrace_patch_branch_mask(void *addr, u16 expected, bool enable)
 {
 	u16 old;
@@ -248,13 +213,6 @@ static int ftrace_patch_branch_mask(void *addr, u16 expected, bool enable)
 int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec,
 		    unsigned long addr)
 {
-<<<<<<< HEAD
-	/* Expect brcl 0xf,... */
-	return ftrace_patch_branch_mask((void *)rec->ip, 0xc0f4, false);
-}
-
-int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
-=======
 	/* Expect brcl 0xf,... for the !MACHINE_HAS_SEQ_INSN case */
 	if (MACHINE_HAS_SEQ_INSN)
 		return ftrace_patch_branch_insn(rec->ip, addr, 0);
@@ -263,7 +221,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 }
 
 static int ftrace_make_trampoline_call(struct dyn_ftrace *rec, unsigned long addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ftrace_hotpatch_trampoline *trampoline;
 
@@ -275,8 +232,6 @@ static int ftrace_make_trampoline_call(struct dyn_ftrace *rec, unsigned long add
 	return ftrace_patch_branch_mask((void *)rec->ip, 0xc004, true);
 }
 
-<<<<<<< HEAD
-=======
 int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 {
 	if (MACHINE_HAS_SEQ_INSN)
@@ -285,7 +240,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 		return ftrace_make_trampoline_call(rec, addr);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ftrace_update_ftrace_func(ftrace_func_t func)
 {
 	ftrace_func = func;
@@ -306,28 +260,6 @@ void ftrace_arch_code_modify_post_process(void)
 	text_poke_sync_lock();
 }
 
-<<<<<<< HEAD
-#ifdef CONFIG_MODULES
-
-static int __init ftrace_plt_init(void)
-{
-	const char *start, *end;
-
-	ftrace_plt = execmem_alloc(EXECMEM_FTRACE, PAGE_SIZE);
-	if (!ftrace_plt)
-		panic("cannot allocate ftrace plt\n");
-
-	start = ftrace_shared_hotpatch_trampoline(&end);
-	memcpy(ftrace_plt, start, end - start);
-	set_memory_rox((unsigned long)ftrace_plt, 1);
-	return 0;
-}
-device_initcall(ftrace_plt_init);
-
-#endif /* CONFIG_MODULES */
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 /*
  * Hook the return address and push it in the stack of return addresses
@@ -358,36 +290,14 @@ NOKPROBE_SYMBOL(prepare_ftrace_return);
  */
 int ftrace_enable_ftrace_graph_caller(void)
 {
-<<<<<<< HEAD
-	int rc;
-
-	/* Expect brc 0xf,... */
-	rc = ftrace_patch_branch_mask(ftrace_graph_caller, 0xa7f4, false);
-	if (rc)
-		return rc;
-	text_poke_sync_lock();
-	return 0;
-=======
 	/* Expect brc 0xf,... */
 	return ftrace_patch_branch_mask(ftrace_graph_caller, 0xa7f4, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int ftrace_disable_ftrace_graph_caller(void)
 {
-<<<<<<< HEAD
-	int rc;
-
-	/* Expect brc 0x0,... */
-	rc = ftrace_patch_branch_mask(ftrace_graph_caller, 0xa704, true);
-	if (rc)
-		return rc;
-	text_poke_sync_lock();
-	return 0;
-=======
 	/* Expect brc 0x0,... */
 	return ftrace_patch_branch_mask(ftrace_graph_caller, 0xa704, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif /* CONFIG_FUNCTION_GRAPH_TRACER */

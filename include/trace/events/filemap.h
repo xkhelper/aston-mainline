@@ -56,8 +56,6 @@ DEFINE_EVENT(mm_filemap_op_page_cache, mm_filemap_add_to_page_cache,
 	TP_ARGS(folio)
 	);
 
-<<<<<<< HEAD
-=======
 DECLARE_EVENT_CLASS(mm_filemap_op_page_cache_range,
 
 	TP_PROTO(
@@ -142,7 +140,6 @@ TRACE_EVENT(mm_filemap_fault,
 	)
 );
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TRACE_EVENT(filemap_set_wb_err,
 		TP_PROTO(struct address_space *mapping, errseq_t eseq),
 

@@ -197,8 +197,6 @@ static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
 	} else {
 		__fpsimd_save_state(*host_data_ptr(fpsimd_state));
 	}
-<<<<<<< HEAD
-=======
 
 	if (kvm_has_fpmr(kern_hyp_va(vcpu->kvm))) {
 		u64 val = read_sysreg_s(SYS_FPMR);
@@ -208,7 +206,6 @@ static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
 		else
 			**host_data_ptr(fpmr_ptr) = val;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const exit_handler_fn hyp_exit_handlers[] = {

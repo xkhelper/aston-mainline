@@ -51,17 +51,7 @@ static inline void xfwrite(const void *str, size_t len, size_t count, FILE *out)
 }
 
 /* util.c */
-<<<<<<< HEAD
-unsigned int strhash(const char *s);
 const char *file_lookup(const char *name);
-void *xmalloc(size_t size);
-void *xcalloc(size_t nmemb, size_t size);
-void *xrealloc(void *p, size_t size);
-char *xstrdup(const char *s);
-char *xstrndup(const char *s, size_t n);
-=======
-const char *file_lookup(const char *name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* lexer.l */
 int yylex(void);

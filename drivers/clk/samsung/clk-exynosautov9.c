@@ -20,10 +20,7 @@
 #define CLKS_NR_TOP			(GOUT_CLKCMU_PERIS_BUS + 1)
 #define CLKS_NR_BUSMC			(CLK_GOUT_BUSMC_SPDMA_PCLK + 1)
 #define CLKS_NR_CORE			(CLK_GOUT_CORE_CMU_CORE_PCLK + 1)
-<<<<<<< HEAD
-=======
 #define CLKS_NR_DPUM			(CLK_GOUT_DPUM_SYSMMU_D3_CLK + 1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define CLKS_NR_FSYS0			(CLK_GOUT_FSYS0_PCIE_GEN3B_4L_CLK + 1)
 #define CLKS_NR_FSYS1			(CLK_GOUT_FSYS1_USB30_1_ACLK + 1)
 #define CLKS_NR_FSYS2			(CLK_GOUT_FSYS2_UFS_EMBD1_UNIPRO + 1)
@@ -1080,8 +1077,6 @@ static const struct samsung_cmu_info core_cmu_info __initconst = {
 	.clk_name		= "dout_clkcmu_core_bus",
 };
 
-<<<<<<< HEAD
-=======
 /* ---- CMU_DPUM ---------------------------------------------------------- */
 
 /* Register Offset definitions for CMU_DPUM (0x18c00000) */
@@ -1161,7 +1156,6 @@ static const struct samsung_cmu_info dpum_cmu_info __initconst = {
 	.clk_name		= "bus",
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* ---- CMU_FSYS0 ---------------------------------------------------------- */
 
 /* Register Offset definitions for CMU_FSYS2 (0x17700000) */
@@ -2172,12 +2166,9 @@ static const struct of_device_id exynosautov9_cmu_of_match[] = {
 		.compatible = "samsung,exynosautov9-cmu-core",
 		.data = &core_cmu_info,
 	}, {
-<<<<<<< HEAD
-=======
 		.compatible = "samsung,exynosautov9-cmu-dpum",
 		.data = &dpum_cmu_info,
 	}, {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "samsung,exynosautov9-cmu-fsys0",
 		.data = &fsys0_cmu_info,
 	}, {

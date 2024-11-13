@@ -23,11 +23,7 @@
 #include "cifsproto.h"
 #include "smb2proto.h"
 #include "cifs_debug.h"
-<<<<<<< HEAD
-#include "smb2status.h"
-=======
 #include "../common/smb2status.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "smb2glob.h"
 
 static int
@@ -246,11 +242,7 @@ smb2_calc_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server,
 
 	ses = smb2_find_smb_ses(server, le64_to_cpu(shdr->SessionId));
 	if (unlikely(!ses)) {
-<<<<<<< HEAD
-		cifs_server_dbg(VFS, "%s: Could not find session\n", __func__);
-=======
 		cifs_server_dbg(FYI, "%s: Could not find session\n", __func__);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOENT;
 	}
 
@@ -704,11 +696,7 @@ smb2_verify_signature(struct smb_rqst *rqst, struct TCP_Server_Info *server)
 			 shdr->Command);
 
 	/*
-<<<<<<< HEAD
-	 * Save off the origiginal signature so we can modify the smb and check
-=======
 	 * Save off the original signature so we can modify the smb and check
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * our calculated signature against what the server sent.
 	 */
 	memcpy(server_response_sig, shdr->Signature, SMB2_SIGNATURE_SIZE);

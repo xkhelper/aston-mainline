@@ -6,11 +6,7 @@
 //! C version of this driver: [`drivers/net/phy/ax88796b.c`](./ax88796b.c)
 use kernel::{
     c_str,
-<<<<<<< HEAD
-    net::phy::{self, DeviceId, Driver},
-=======
     net::phy::{self, reg::C22, DeviceId, Driver},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     prelude::*,
     uapi,
 };
@@ -28,10 +24,6 @@ kernel::module_phy_driver! {
     license: "GPL",
 }
 
-<<<<<<< HEAD
-const MII_BMCR: u16 = uapi::MII_BMCR as u16;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
 const BMCR_FULLDPLX: u16 = uapi::BMCR_FULLDPLX as u16;
 
@@ -40,11 +32,7 @@ const BMCR_FULLDPLX: u16 = uapi::BMCR_FULLDPLX as u16;
 // Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY implementation
 // such as used on the Individual Computers' X-Surf 100 Zorro card.
 fn asix_soft_reset(dev: &mut phy::Device) -> Result {
-<<<<<<< HEAD
-    dev.write(uapi::MII_BMCR as u16, 0)?;
-=======
     dev.write(C22::BMCR, 0)?;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     dev.genphy_soft_reset()
 }
 
@@ -66,11 +54,7 @@ impl Driver for PhyAX88772A {
         }
         // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to resolve
         // linkmode so use MII_BMCR as default values.
-<<<<<<< HEAD
-        let ret = dev.read(MII_BMCR)?;
-=======
         let ret = dev.read(C22::BMCR)?;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
         if ret & BMCR_SPEED100 != 0 {
             dev.set_speed(uapi::SPEED_100);

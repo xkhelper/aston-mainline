@@ -14,11 +14,7 @@
 #include <linux/delay.h>
 #include <linux/pci.h>
 #include <scsi/scsi_device.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "smartpqi.h"
 #include "smartpqi_sis.h"
 
@@ -33,10 +29,7 @@
 #define SIS_ENABLE_INTX				0x80
 #define SIS_SOFT_RESET				0x100
 #define SIS_CMD_READY				0x200
-<<<<<<< HEAD
-=======
 #define SIS_NOTIFY_KDUMP			0x400
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SIS_TRIGGER_SHUTDOWN			0x800000
 #define SIS_PQI_RESET_QUIESCE			0x1000000
 
@@ -60,11 +53,8 @@
 #define SIS_BASE_STRUCT_ALIGNMENT		16
 
 #define SIS_CTRL_KERNEL_FW_TRIAGE		0x3
-<<<<<<< HEAD
-=======
 #define SIS_CTRL_KERNEL_CTRL_LOGGING		0x4
 #define SIS_CTRL_KERNEL_CTRL_LOGGING_STATUS	0x18
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SIS_CTRL_KERNEL_UP			0x80
 #define SIS_CTRL_KERNEL_PANIC			0x100
 #define SIS_CTRL_READY_TIMEOUT_SECS		180
@@ -78,8 +68,6 @@ enum sis_fw_triage_status {
 	FW_TRIAGE_COMPLETED
 };
 
-<<<<<<< HEAD
-=======
 enum sis_ctrl_logging_status {
 	CTRL_LOGGING_NOT_STARTED = 0,
 	CTRL_LOGGING_STARTED,
@@ -87,7 +75,6 @@ enum sis_ctrl_logging_status {
 	CTRL_LOGGING_COMPLETED
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #pragma pack(1)
 
 /* for use with SIS_CMD_INIT_BASE_STRUCT_ADDRESS command */
@@ -465,8 +452,6 @@ static inline enum sis_fw_triage_status
 		SIS_CTRL_KERNEL_FW_TRIAGE));
 }
 
-<<<<<<< HEAD
-=======
 bool sis_is_ctrl_logging_supported(struct pqi_ctrl_info *ctrl_info)
 {
 	return readl(&ctrl_info->registers->sis_firmware_status) & SIS_CTRL_KERNEL_CTRL_LOGGING;
@@ -482,7 +467,6 @@ static inline enum sis_ctrl_logging_status sis_read_ctrl_logging_status(struct p
 	return ((enum sis_ctrl_logging_status)((readl(&ctrl_info->registers->sis_firmware_status) & SIS_CTRL_KERNEL_CTRL_LOGGING_STATUS) >> 3));
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void sis_soft_reset(struct pqi_ctrl_info *ctrl_info)
 {
 	writel(SIS_SOFT_RESET,
@@ -525,8 +509,6 @@ int sis_wait_for_fw_triage_completion(struct pqi_ctrl_info *ctrl_info)
 	return rc;
 }
 
-<<<<<<< HEAD
-=======
 #define SIS_CTRL_LOGGING_STATUS_TIMEOUT_SECS		180
 #define SIS_CTRL_LOGGING_STATUS_POLL_INTERVAL_SECS	1
 
@@ -562,7 +544,6 @@ int sis_wait_for_ctrl_logging_completion(struct pqi_ctrl_info *ctrl_info)
 	return rc;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void sis_verify_structures(void)
 {
 	BUILD_BUG_ON(offsetof(struct sis_base_struct,

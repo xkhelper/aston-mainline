@@ -935,13 +935,8 @@ static int snd_amd7930_create(struct snd_card *card,
 	amd->regs = of_ioremap(&op->resource[0], 0,
 			       resource_size(&op->resource[0]), "amd7930");
 	if (!amd->regs) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR
-			   "amd7930-%d: Unable to map chip registers.\n", dev);
-=======
 		dev_err(card->dev,
 			"amd7930-%d: Unable to map chip registers.\n", dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(amd);
 		return -EIO;
 	}
@@ -950,13 +945,8 @@ static int snd_amd7930_create(struct snd_card *card,
 
 	if (request_irq(irq, snd_amd7930_interrupt,
 			IRQF_SHARED, "amd7930", amd)) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "amd7930-%d: Unable to grab IRQ %d\n",
-			   dev, irq);
-=======
 		dev_err(card->dev, "amd7930-%d: Unable to grab IRQ %d\n",
 			dev, irq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		snd_amd7930_free(amd);
 		return -EBUSY;
 	}

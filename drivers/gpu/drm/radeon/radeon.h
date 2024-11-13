@@ -2297,11 +2297,7 @@ typedef void (*radeon_wreg_t)(struct radeon_device*, uint32_t, uint32_t);
 
 struct radeon_device {
 	struct device			*dev;
-<<<<<<< HEAD
-	struct drm_device		*ddev;
-=======
 	struct drm_device		ddev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pci_dev			*pdev;
 #ifdef __alpha__
 	struct pci_controller		*hose;
@@ -2480,14 +2476,11 @@ void r100_io_wreg(struct radeon_device *rdev, u32 reg, u32 v);
 u32 cik_mm_rdoorbell(struct radeon_device *rdev, u32 index);
 void cik_mm_wdoorbell(struct radeon_device *rdev, u32 index, u32 v);
 
-<<<<<<< HEAD
-=======
 static inline struct drm_device *rdev_to_drm(struct radeon_device *rdev)
 {
 	return &rdev->ddev;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Cast helper
  */

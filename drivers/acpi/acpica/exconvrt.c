@@ -17,12 +17,8 @@ ACPI_MODULE_NAME("exconvrt")
 
 /* Local prototypes */
 static u32
-<<<<<<< HEAD
-acpi_ex_convert_to_ascii(u64 integer, u16 base, u8 *string, u8 max_length);
-=======
 acpi_ex_convert_to_ascii(u64 integer,
 			 u16 base, u8 *string, u8 max_length, u8 leading_zeros);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*******************************************************************************
  *
@@ -254,10 +250,7 @@ acpi_ex_convert_to_buffer(union acpi_operand_object *obj_desc,
  *              base            - ACPI_STRING_DECIMAL or ACPI_STRING_HEX
  *              string          - Where the string is returned
  *              data_width      - Size of data item to be converted, in bytes
-<<<<<<< HEAD
-=======
  *              leading_zeros   - Allow leading zeros
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * RETURN:      Actual string length
  *
@@ -266,12 +259,8 @@ acpi_ex_convert_to_buffer(union acpi_operand_object *obj_desc,
  ******************************************************************************/
 
 static u32
-<<<<<<< HEAD
-acpi_ex_convert_to_ascii(u64 integer, u16 base, u8 *string, u8 data_width)
-=======
 acpi_ex_convert_to_ascii(u64 integer,
 			 u16 base, u8 *string, u8 data_width, u8 leading_zeros)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 digit;
 	u32 i;
@@ -280,12 +269,8 @@ acpi_ex_convert_to_ascii(u64 integer,
 	u32 hex_length;
 	u32 decimal_length;
 	u32 remainder;
-<<<<<<< HEAD
-	u8 supress_zeros;
-=======
 	u8 supress_zeros = !leading_zeros;
 	u8 hex_char;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ACPI_FUNCTION_ENTRY();
 
@@ -312,10 +297,6 @@ acpi_ex_convert_to_ascii(u64 integer,
 			break;
 		}
 
-<<<<<<< HEAD
-		supress_zeros = TRUE;	/* No leading zeros */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		remainder = 0;
 
 		for (i = decimal_length; i > 0; i--) {
@@ -350,10 +331,6 @@ acpi_ex_convert_to_ascii(u64 integer,
 
 			/* Get one hex digit, most significant digits first */
 
-<<<<<<< HEAD
-			string[k] = (u8)
-			    acpi_ut_hex_to_ascii_char(integer, ACPI_MUL_4(j));
-=======
 			hex_char = (u8)
 			    acpi_ut_hex_to_ascii_char(integer, ACPI_MUL_4(j));
 
@@ -365,7 +342,6 @@ acpi_ex_convert_to_ascii(u64 integer,
 
 			supress_zeros = FALSE;
 			string[k] = hex_char;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			k++;
 		}
 		break;
@@ -415,10 +391,7 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 	u32 string_length = 0;
 	u16 base = 16;
 	u8 separator = ',';
-<<<<<<< HEAD
-=======
 	u8 leading_zeros;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ACPI_FUNCTION_TRACE_PTR(ex_convert_to_string, obj_desc);
 
@@ -440,11 +413,6 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 			 * Make room for the maximum decimal number size
 			 */
 			string_length = ACPI_MAX_DECIMAL_DIGITS;
-<<<<<<< HEAD
-			base = 10;
-			break;
-
-=======
 			leading_zeros = FALSE;
 			base = 10;
 			break;
@@ -459,16 +427,12 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 			    ACPI_MUL_2(acpi_gbl_integer_byte_width) + 2;
 			leading_zeros = FALSE;
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		default:
 
 			/* Two hex string characters for each integer byte */
 
 			string_length = ACPI_MUL_2(acpi_gbl_integer_byte_width);
-<<<<<<< HEAD
-=======
 			leading_zeros = TRUE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 
@@ -483,8 +447,6 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 		}
 
 		new_buf = return_desc->buffer.pointer;
-<<<<<<< HEAD
-=======
 		if (type == ACPI_EXPLICIT_CONVERT_HEX) {
 
 			/* Append "0x" prefix for explicit hex conversion */
@@ -492,25 +454,18 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 			*new_buf++ = '0';
 			*new_buf++ = 'x';
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Convert integer to string */
 
 		string_length =
 		    acpi_ex_convert_to_ascii(obj_desc->integer.value, base,
 					     new_buf,
-<<<<<<< HEAD
-					     acpi_gbl_integer_byte_width);
-=======
 					     acpi_gbl_integer_byte_width,
 					     leading_zeros);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Null terminate at the correct place */
 
 		return_desc->string.length = string_length;
-<<<<<<< HEAD
-=======
 		if (type == ACPI_EXPLICIT_CONVERT_HEX) {
 
 			/* Take "0x" prefix into account */
@@ -518,7 +473,6 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 			return_desc->string.length += 2;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		new_buf[string_length] = 0;
 		break;
 
@@ -534,10 +488,7 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 			 * From ACPI: "If the input is a buffer, it is converted to a
 			 * a string of decimal values separated by commas."
 			 */
-<<<<<<< HEAD
-=======
 			leading_zeros = FALSE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			base = 10;
 
 			/*
@@ -565,10 +516,7 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 			 *
 			 * Each hex number is prefixed with 0x (11/2018)
 			 */
-<<<<<<< HEAD
-=======
 			leading_zeros = TRUE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			separator = ' ';
 			string_length = (obj_desc->buffer.length * 5);
 			break;
@@ -582,10 +530,7 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 			 *
 			 * Each hex number is prefixed with 0x (11/2018)
 			 */
-<<<<<<< HEAD
-=======
 			leading_zeros = TRUE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			separator = ',';
 			string_length = (obj_desc->buffer.length * 5);
 			break;
@@ -626,12 +571,8 @@ acpi_ex_convert_to_string(union acpi_operand_object * obj_desc,
 
 			new_buf += acpi_ex_convert_to_ascii((u64) obj_desc->
 							    buffer.pointer[i],
-<<<<<<< HEAD
-							    base, new_buf, 1);
-=======
 							    base, new_buf, 1,
 							    leading_zeros);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			/* Each digit is separated by either a comma or space */
 

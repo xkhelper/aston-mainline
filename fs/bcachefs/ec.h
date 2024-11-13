@@ -188,12 +188,6 @@ struct ec_stripe_head {
 	struct list_head	list;
 	struct mutex		lock;
 
-<<<<<<< HEAD
-	unsigned		target;
-	unsigned		algo;
-	unsigned		redundancy;
-	enum bch_watermark	watermark;
-=======
 	unsigned		disk_label;
 	unsigned		algo;
 	unsigned		redundancy;
@@ -203,7 +197,6 @@ struct ec_stripe_head {
 	unsigned long		rw_devs_change_count;
 
 	u64			nr_created;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct bch_devs_mask	devs;
 	unsigned		nr_active_devs;
@@ -216,11 +209,7 @@ struct ec_stripe_head {
 	struct ec_stripe_new	*s;
 };
 
-<<<<<<< HEAD
-int bch2_ec_read_extent(struct btree_trans *, struct bch_read_bio *);
-=======
 int bch2_ec_read_extent(struct btree_trans *, struct bch_read_bio *, struct bkey_s_c);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void *bch2_writepoint_ec_buf(struct bch_fs *, struct write_point *);
 
@@ -265,11 +254,8 @@ static inline void ec_stripe_new_put(struct bch_fs *c, struct ec_stripe_new *s,
 		}
 }
 
-<<<<<<< HEAD
-=======
 int bch2_dev_remove_stripes(struct bch_fs *, unsigned);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_ec_stop_dev(struct bch_fs *, struct bch_dev *);
 void bch2_fs_ec_stop(struct bch_fs *);
 void bch2_fs_ec_flush(struct bch_fs *);

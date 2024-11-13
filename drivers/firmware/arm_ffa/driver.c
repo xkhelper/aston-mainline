@@ -26,10 +26,7 @@
 #include <linux/arm_ffa.h>
 #include <linux/bitfield.h>
 #include <linux/cpuhotplug.h>
-<<<<<<< HEAD
-=======
 #include <linux/delay.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/device.h>
 #include <linux/hashtable.h>
 #include <linux/interrupt.h>
@@ -57,16 +54,8 @@
 #define PACK_TARGET_INFO(s, r)		\
 	(FIELD_PREP(SENDER_ID_MASK, (s)) | FIELD_PREP(RECEIVER_ID_MASK, (r)))
 
-<<<<<<< HEAD
-/*
- * Keeping RX TX buffer size as 4K for now
- * 64K may be preferred to keep it min a page in 64K PAGE_SIZE config
- */
-#define RXTX_BUFFER_SIZE	SZ_4K
-=======
 #define RXTX_MAP_MIN_BUFSZ_MASK	GENMASK(1, 0)
 #define RXTX_MAP_MIN_BUFSZ(x)	((x) & RXTX_MAP_MIN_BUFSZ_MASK)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define FFA_MAX_NOTIFICATIONS		64
 
@@ -84,10 +73,7 @@ static const int ffa_linux_errmap[] = {
 	-EAGAIN,	/* FFA_RET_RETRY */
 	-ECANCELED,	/* FFA_RET_ABORTED */
 	-ENODATA,	/* FFA_RET_NO_DATA */
-<<<<<<< HEAD
-=======
 	-EAGAIN,	/* FFA_RET_NOT_READY */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline int ffa_to_linux_errno(int errno)
@@ -110,13 +96,9 @@ struct ffa_drv_info {
 	struct mutex tx_lock; /* lock to protect Tx buffer */
 	void *rx_buffer;
 	void *tx_buffer;
-<<<<<<< HEAD
-	bool mem_ops_native;
-=======
 	size_t rxtx_bufsz;
 	bool mem_ops_native;
 	bool msg_direct_req2_supp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool bitmap_created;
 	bool notif_enabled;
 	unsigned int sched_recv_irq;
@@ -230,8 +212,6 @@ static int ffa_rxtx_unmap(u16 vm_id)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int ffa_features(u32 func_feat_id, u32 input_props,
 			u32 *if_props_1, u32 *if_props_2)
 {
@@ -258,7 +238,6 @@ static int ffa_features(u32 func_feat_id, u32 input_props,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PARTITION_INFO_GET_RETURN_COUNT_ONLY	BIT(0)
 
 /* buffer must be sizeof(struct ffa_partition_info) * num_partitions */
@@ -308,8 +287,6 @@ __ffa_partition_info_get(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
 	return count;
 }
 
-<<<<<<< HEAD
-=======
 #define LAST_INDEX_MASK		GENMASK(15, 0)
 #define CURRENT_INDEX_MASK	GENMASK(31, 16)
 #define UUID_INFO_TAG_MASK	GENMASK(47, 32)
@@ -358,20 +335,12 @@ __ffa_partition_info_get_regs(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
 	return count;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* buffer is allocated and caller must free the same if returned count > 0 */
 static int
 ffa_partition_probe(const uuid_t *uuid, struct ffa_partition_info **buffer)
 {
 	int count;
 	u32 uuid0_4[4];
-<<<<<<< HEAD
-	struct ffa_partition_info *pbuf;
-
-	export_uuid((u8 *)uuid0_4, uuid);
-	count = __ffa_partition_info_get(uuid0_4[0], uuid0_4[1], uuid0_4[2],
-					 uuid0_4[3], NULL, 0);
-=======
 	bool reg_mode = false;
 	struct ffa_partition_info *pbuf;
 
@@ -387,7 +356,6 @@ ffa_partition_probe(const uuid_t *uuid, struct ffa_partition_info **buffer)
 		count = __ffa_partition_info_get(uuid0_4[0], uuid0_4[1],
 						 uuid0_4[2], uuid0_4[3],
 						 NULL, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (count <= 0)
 		return count;
 
@@ -395,10 +363,6 @@ ffa_partition_probe(const uuid_t *uuid, struct ffa_partition_info **buffer)
 	if (!pbuf)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	count = __ffa_partition_info_get(uuid0_4[0], uuid0_4[1], uuid0_4[2],
-					 uuid0_4[3], pbuf, count);
-=======
 	if (reg_mode)
 		count = __ffa_partition_info_get_regs(uuid0_4[0], uuid0_4[1],
 						      uuid0_4[2], uuid0_4[3],
@@ -407,7 +371,6 @@ ffa_partition_probe(const uuid_t *uuid, struct ffa_partition_info **buffer)
 		count = __ffa_partition_info_get(uuid0_4[0], uuid0_4[1],
 						 uuid0_4[2], uuid0_4[3],
 						 pbuf, count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (count <= 0)
 		kfree(pbuf);
 	else
@@ -433,8 +396,6 @@ static int ffa_id_get(u16 *vm_id)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static inline void ffa_msg_send_wait_for_completion(ffa_value_t *ret)
 {
 	while (ret->a0 == FFA_INTERRUPT || ret->a0 == FFA_YIELD) {
@@ -447,7 +408,6 @@ static inline void ffa_msg_send_wait_for_completion(ffa_value_t *ret)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ffa_msg_send_direct_req(u16 src_id, u16 dst_id, bool mode_32bit,
 				   struct ffa_send_direct_data *data)
 {
@@ -468,14 +428,7 @@ static int ffa_msg_send_direct_req(u16 src_id, u16 dst_id, bool mode_32bit,
 		      .a6 = data->data3, .a7 = data->data4,
 		      }, &ret);
 
-<<<<<<< HEAD
-	while (ret.a0 == FFA_INTERRUPT)
-		invoke_ffa_fn((ffa_value_t){
-			      .a0 = FFA_RUN, .a1 = ret.a1,
-			      }, &ret);
-=======
 	ffa_msg_send_wait_for_completion(&ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ret.a0 == FFA_ERROR)
 		return ffa_to_linux_errno((int)ret.a2);
@@ -499,11 +452,7 @@ static int ffa_msg_send2(u16 src_id, u16 dst_id, void *buf, size_t sz)
 	ffa_value_t ret;
 	int retval = 0;
 
-<<<<<<< HEAD
-	if (sz > (RXTX_BUFFER_SIZE - sizeof(*msg)))
-=======
 	if (sz > (drv_info->rxtx_bufsz - sizeof(*msg)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ERANGE;
 
 	mutex_lock(&drv_info->tx_lock);
@@ -528,8 +477,6 @@ static int ffa_msg_send2(u16 src_id, u16 dst_id, void *buf, size_t sz)
 	return retval;
 }
 
-<<<<<<< HEAD
-=======
 static int ffa_msg_send_direct_req2(u16 src_id, u16 dst_id, const uuid_t *uuid,
 				    struct ffa_send_direct_data2 *data)
 {
@@ -561,7 +508,6 @@ static int ffa_msg_send_direct_req2(u16 src_id, u16 dst_id, const uuid_t *uuid,
 	return -EINVAL;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ffa_mem_first_frag(u32 func_id, phys_addr_t buf, u32 buf_sz,
 			      u32 frag_len, u32 len, u64 *handle)
 {
@@ -746,16 +692,10 @@ static int ffa_memory_ops(u32 func_id, struct ffa_mem_ops_args *args)
 {
 	int ret;
 	void *buffer;
-<<<<<<< HEAD
-
-	if (!args->use_txbuf) {
-		buffer = alloc_pages_exact(RXTX_BUFFER_SIZE, GFP_KERNEL);
-=======
 	size_t rxtx_bufsz = drv_info->rxtx_bufsz;
 
 	if (!args->use_txbuf) {
 		buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!buffer)
 			return -ENOMEM;
 	} else {
@@ -763,20 +703,12 @@ static int ffa_memory_ops(u32 func_id, struct ffa_mem_ops_args *args)
 		mutex_lock(&drv_info->tx_lock);
 	}
 
-<<<<<<< HEAD
-	ret = ffa_setup_and_transmit(func_id, buffer, RXTX_BUFFER_SIZE, args);
-=======
 	ret = ffa_setup_and_transmit(func_id, buffer, rxtx_bufsz, args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (args->use_txbuf)
 		mutex_unlock(&drv_info->tx_lock);
 	else
-<<<<<<< HEAD
-		free_pages_exact(buffer, RXTX_BUFFER_SIZE);
-=======
 		free_pages_exact(buffer, rxtx_bufsz);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret < 0 ? ret : 0;
 }
@@ -797,35 +729,6 @@ static int ffa_memory_reclaim(u64 g_handle, u32 flags)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int ffa_features(u32 func_feat_id, u32 input_props,
-			u32 *if_props_1, u32 *if_props_2)
-{
-	ffa_value_t id;
-
-	if (!ARM_SMCCC_IS_FAST_CALL(func_feat_id) && input_props) {
-		pr_err("%s: Invalid Parameters: %x, %x", __func__,
-		       func_feat_id, input_props);
-		return ffa_to_linux_errno(FFA_RET_INVALID_PARAMETERS);
-	}
-
-	invoke_ffa_fn((ffa_value_t){
-		.a0 = FFA_FEATURES, .a1 = func_feat_id, .a2 = input_props,
-		}, &id);
-
-	if (id.a0 == FFA_ERROR)
-		return ffa_to_linux_errno((int)id.a2);
-
-	if (if_props_1)
-		*if_props_1 = id.a2;
-	if (if_props_2)
-		*if_props_2 = id.a3;
-
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ffa_notification_bitmap_create(void)
 {
 	ffa_value_t ret;
@@ -1061,22 +964,15 @@ static int ffa_run(struct ffa_device *dev, u16 vcpu)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void ffa_set_up_mem_ops_native_flag(void)
-=======
 static void ffa_drvinfo_flags_init(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!ffa_features(FFA_FN_NATIVE(MEM_LEND), 0, NULL, NULL) ||
 	    !ffa_features(FFA_FN_NATIVE(MEM_SHARE), 0, NULL, NULL))
 		drv_info->mem_ops_native = true;
-<<<<<<< HEAD
-=======
 
 	if (!ffa_features(FFA_MSG_SEND_DIRECT_REQ2, 0, NULL, NULL) ||
 	    !ffa_features(FFA_MSG_SEND_DIRECT_RESP2, 0, NULL, NULL))
 		drv_info->msg_direct_req2_supp = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static u32 ffa_api_version_get(void)
@@ -1122,8 +1018,6 @@ static int ffa_indirect_msg_send(struct ffa_device *dev, void *buf, size_t sz)
 	return ffa_msg_send2(drv_info->vm_id, dev->vm_id, buf, sz);
 }
 
-<<<<<<< HEAD
-=======
 static int ffa_sync_send_receive2(struct ffa_device *dev, const uuid_t *uuid,
 				  struct ffa_send_direct_data2 *data)
 {
@@ -1134,7 +1028,6 @@ static int ffa_sync_send_receive2(struct ffa_device *dev, const uuid_t *uuid,
 					uuid, data);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ffa_memory_share(struct ffa_mem_ops_args *args)
 {
 	if (drv_info->mem_ops_native)
@@ -1418,10 +1311,7 @@ static const struct ffa_msg_ops ffa_drv_msg_ops = {
 	.mode_32bit_set = ffa_mode_32bit_set,
 	.sync_send_receive = ffa_sync_send_receive,
 	.indirect_send = ffa_indirect_msg_send,
-<<<<<<< HEAD
-=======
 	.sync_send_receive2 = ffa_sync_send_receive2,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct ffa_mem_ops ffa_drv_mem_ops = {
@@ -1473,11 +1363,7 @@ ffa_bus_notifier(struct notifier_block *nb, unsigned long action, void *data)
 
 	if (action == BUS_NOTIFY_BIND_DRIVER) {
 		struct ffa_driver *ffa_drv = to_ffa_driver(dev->driver);
-<<<<<<< HEAD
-		const struct ffa_device_id *id_table= ffa_drv->id_table;
-=======
 		const struct ffa_device_id *id_table = ffa_drv->id_table;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * FF-A v1.1 provides UUID for each partition as part of the
@@ -1562,11 +1448,6 @@ static int ffa_setup_partitions(void)
 	/* Allocate for the host */
 	info = kzalloc(sizeof(*info), GFP_KERNEL);
 	if (!info) {
-<<<<<<< HEAD
-		pr_err("%s: failed to alloc Host partition ID 0x%x. Abort.\n",
-		       __func__, drv_info->vm_id);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Already registered devices are freed on bus_exit */
 		ffa_partitions_cleanup();
 		return -ENOMEM;
@@ -1841,25 +1722,16 @@ cleanup:
 static int __init ffa_init(void)
 {
 	int ret;
-<<<<<<< HEAD
-=======
 	u32 buf_sz;
 	size_t rxtx_bufsz = SZ_4K;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ffa_transport_init(&invoke_ffa_fn);
 	if (ret)
 		return ret;
 
 	drv_info = kzalloc(sizeof(*drv_info), GFP_KERNEL);
-<<<<<<< HEAD
-	if (!drv_info) {
-		return -ENOMEM;
-	}
-=======
 	if (!drv_info)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ffa_version_check(&drv_info->version);
 	if (ret)
@@ -1871,9 +1743,6 @@ static int __init ffa_init(void)
 		goto free_drv_info;
 	}
 
-<<<<<<< HEAD
-	drv_info->rx_buffer = alloc_pages_exact(RXTX_BUFFER_SIZE, GFP_KERNEL);
-=======
 	ret = ffa_features(FFA_FN_NATIVE(RXTX_MAP), 0, &buf_sz, NULL);
 	if (!ret) {
 		if (RXTX_MAP_MIN_BUFSZ(buf_sz) == 1)
@@ -1886,17 +1755,12 @@ static int __init ffa_init(void)
 
 	drv_info->rxtx_bufsz = rxtx_bufsz;
 	drv_info->rx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!drv_info->rx_buffer) {
 		ret = -ENOMEM;
 		goto free_pages;
 	}
 
-<<<<<<< HEAD
-	drv_info->tx_buffer = alloc_pages_exact(RXTX_BUFFER_SIZE, GFP_KERNEL);
-=======
 	drv_info->tx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!drv_info->tx_buffer) {
 		ret = -ENOMEM;
 		goto free_pages;
@@ -1904,11 +1768,7 @@ static int __init ffa_init(void)
 
 	ret = ffa_rxtx_map(virt_to_phys(drv_info->tx_buffer),
 			   virt_to_phys(drv_info->rx_buffer),
-<<<<<<< HEAD
-			   RXTX_BUFFER_SIZE / FFA_PAGE_SIZE);
-=======
 			   rxtx_bufsz / FFA_PAGE_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		pr_err("failed to register FFA RxTx buffers\n");
 		goto free_pages;
@@ -1917,11 +1777,7 @@ static int __init ffa_init(void)
 	mutex_init(&drv_info->rx_lock);
 	mutex_init(&drv_info->tx_lock);
 
-<<<<<<< HEAD
-	ffa_set_up_mem_ops_native_flag();
-=======
 	ffa_drvinfo_flags_init();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ffa_notifications_setup();
 
@@ -1942,13 +1798,8 @@ cleanup_notifs:
 	ffa_notifications_cleanup();
 free_pages:
 	if (drv_info->tx_buffer)
-<<<<<<< HEAD
-		free_pages_exact(drv_info->tx_buffer, RXTX_BUFFER_SIZE);
-	free_pages_exact(drv_info->rx_buffer, RXTX_BUFFER_SIZE);
-=======
 		free_pages_exact(drv_info->tx_buffer, rxtx_bufsz);
 	free_pages_exact(drv_info->rx_buffer, rxtx_bufsz);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 free_drv_info:
 	kfree(drv_info);
 	return ret;
@@ -1960,13 +1811,8 @@ static void __exit ffa_exit(void)
 	ffa_notifications_cleanup();
 	ffa_partitions_cleanup();
 	ffa_rxtx_unmap(drv_info->vm_id);
-<<<<<<< HEAD
-	free_pages_exact(drv_info->tx_buffer, RXTX_BUFFER_SIZE);
-	free_pages_exact(drv_info->rx_buffer, RXTX_BUFFER_SIZE);
-=======
 	free_pages_exact(drv_info->tx_buffer, drv_info->rxtx_bufsz);
 	free_pages_exact(drv_info->rx_buffer, drv_info->rxtx_bufsz);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(drv_info);
 }
 module_exit(ffa_exit);

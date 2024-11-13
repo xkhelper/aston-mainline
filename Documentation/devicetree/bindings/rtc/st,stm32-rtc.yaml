@@ -53,8 +53,6 @@ properties:
       override default rtc_ck parent clock phandle of the new parent clock of rtc_ck
     maxItems: 1
 
-<<<<<<< HEAD
-=======
 patternProperties:
   "^rtc-[a-z]+-[0-9]+$":
     type: object
@@ -77,7 +75,6 @@ patternProperties:
           - out2
           - out2_rmp
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 allOf:
   - if:
       properties:
@@ -93,12 +90,9 @@ allOf:
 
         clock-names: false
 
-<<<<<<< HEAD
-=======
       patternProperties:
         "^rtc-[a-z]+-[0-9]+$": false
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       required:
         - st,syscfg
 
@@ -114,12 +108,9 @@ allOf:
           minItems: 2
           maxItems: 2
 
-<<<<<<< HEAD
-=======
       patternProperties:
         "^rtc-[a-z]+-[0-9]+$": false
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       required:
         - clock-names
         - st,syscfg

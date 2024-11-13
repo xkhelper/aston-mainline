@@ -393,12 +393,9 @@ void intel_tc_port_set_fia_lane_count(struct intel_digital_port *dig_port,
 	bool lane_reversal = dig_port->saved_port_bits & DDI_BUF_PORT_REVERSAL;
 	u32 val;
 
-<<<<<<< HEAD
-=======
 	if (DISPLAY_VER(i915) >= 14)
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_WARN_ON(&i915->drm,
 		    lane_reversal && tc->mode != TC_PORT_LEGACY);
 

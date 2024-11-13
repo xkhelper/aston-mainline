@@ -26,10 +26,7 @@
 #include "amdgpu.h"
 #include "soc15_common.h"
 #include "soc21.h"
-<<<<<<< HEAD
-=======
 #include "gfx_v11_0.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "gc/gc_11_0_0_offset.h"
 #include "gc/gc_11_0_0_sh_mask.h"
 #include "gc/gc_11_0_0_default.h"
@@ -164,11 +161,7 @@ static int mes_v11_0_submit_pkt_and_poll_completion(struct amdgpu_mes *mes,
 						    int api_status_off)
 {
 	union MESAPI__QUERY_MES_STATUS mes_status_pkt;
-<<<<<<< HEAD
-	signed long timeout = 3000000; /* 3000 ms */
-=======
 	signed long timeout = 2100000; /* 2100 ms */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct amdgpu_device *adev = mes->adev;
 	struct amdgpu_ring *ring = &mes->ring[0];
 	struct MES_API_STATUS *api_status;
@@ -368,8 +361,6 @@ static int mes_v11_0_remove_hw_queue(struct amdgpu_mes *mes,
 			offsetof(union MESAPI__REMOVE_QUEUE, api_status));
 }
 
-<<<<<<< HEAD
-=======
 static int mes_v11_0_reset_queue_mmio(struct amdgpu_mes *mes, uint32_t queue_type,
 				      uint32_t me_id, uint32_t pipe_id,
 				      uint32_t queue_id, uint32_t vmid)
@@ -464,7 +455,6 @@ static int mes_v11_0_reset_hw_queue(struct amdgpu_mes *mes,
 			offsetof(union MESAPI__REMOVE_QUEUE, api_status));
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mes_v11_0_map_legacy_queue(struct amdgpu_mes *mes,
 				      struct mes_map_legacy_queue_input *input)
 {
@@ -526,9 +516,6 @@ static int mes_v11_0_unmap_legacy_queue(struct amdgpu_mes *mes,
 static int mes_v11_0_suspend_gang(struct amdgpu_mes *mes,
 				  struct mes_suspend_gang_input *input)
 {
-<<<<<<< HEAD
-	return 0;
-=======
 	union MESAPI__SUSPEND mes_suspend_gang_pkt;
 
 	memset(&mes_suspend_gang_pkt, 0, sizeof(mes_suspend_gang_pkt));
@@ -545,15 +532,11 @@ static int mes_v11_0_suspend_gang(struct amdgpu_mes *mes,
 	return mes_v11_0_submit_pkt_and_poll_completion(mes,
 			&mes_suspend_gang_pkt, sizeof(mes_suspend_gang_pkt),
 			offsetof(union MESAPI__SUSPEND, api_status));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int mes_v11_0_resume_gang(struct amdgpu_mes *mes,
 				 struct mes_resume_gang_input *input)
 {
-<<<<<<< HEAD
-	return 0;
-=======
 	union MESAPI__RESUME mes_resume_gang_pkt;
 
 	memset(&mes_resume_gang_pkt, 0, sizeof(mes_resume_gang_pkt));
@@ -568,7 +551,6 @@ static int mes_v11_0_resume_gang(struct amdgpu_mes *mes,
 	return mes_v11_0_submit_pkt_and_poll_completion(mes,
 			&mes_resume_gang_pkt, sizeof(mes_resume_gang_pkt),
 			offsetof(union MESAPI__RESUME, api_status));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int mes_v11_0_query_sched_status(struct amdgpu_mes *mes)
@@ -736,8 +718,6 @@ static int mes_v11_0_set_hw_resources_1(struct amdgpu_mes *mes)
 			offsetof(union MESAPI_SET_HW_RESOURCES_1, api_status));
 }
 
-<<<<<<< HEAD
-=======
 static int mes_v11_0_reset_legacy_queue(struct amdgpu_mes *mes,
 					struct mes_reset_legacy_queue_input *input)
 {
@@ -775,7 +755,6 @@ static int mes_v11_0_reset_legacy_queue(struct amdgpu_mes *mes,
 			offsetof(union MESAPI__RESET, api_status));
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct amdgpu_mes_funcs mes_v11_0_funcs = {
 	.add_hw_queue = mes_v11_0_add_hw_queue,
 	.remove_hw_queue = mes_v11_0_remove_hw_queue,
@@ -784,11 +763,8 @@ static const struct amdgpu_mes_funcs mes_v11_0_funcs = {
 	.suspend_gang = mes_v11_0_suspend_gang,
 	.resume_gang = mes_v11_0_resume_gang,
 	.misc_op = mes_v11_0_misc_op,
-<<<<<<< HEAD
-=======
 	.reset_legacy_queue = mes_v11_0_reset_legacy_queue,
 	.reset_hw_queue = mes_v11_0_reset_hw_queue,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int mes_v11_0_allocate_ucode_buffer(struct amdgpu_device *adev,

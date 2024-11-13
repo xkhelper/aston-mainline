@@ -1104,16 +1104,6 @@ int ssam_controller_caps_load_from_acpi(acpi_handle handle,
 	u64 funcs;
 	int status;
 
-<<<<<<< HEAD
-	/* Set defaults. */
-	caps->ssh_power_profile = U32_MAX;
-	caps->screen_on_sleep_idle_timeout = U32_MAX;
-	caps->screen_off_sleep_idle_timeout = U32_MAX;
-	caps->d3_closes_handle = false;
-	caps->ssh_buffer_size = U32_MAX;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Pre-load supported DSM functions. */
 	status = ssam_dsm_get_functions(handle, &funcs);
 	if (status)
@@ -1153,8 +1143,6 @@ int ssam_controller_caps_load_from_acpi(acpi_handle handle,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ssam_controller_caps_load_from_of() - Load controller capabilities from OF/DT.
  * @dev:  A pointer to the controller device
  * @caps: Where to store the capabilities in.
@@ -1201,7 +1189,6 @@ static int ssam_controller_caps_load(struct device *dev, struct ssam_controller_
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ssam_controller_init() - Initialize SSAM controller.
  * @ctrl:   The controller to initialize.
  * @serdev: The serial device representing the underlying data transport.
@@ -1217,20 +1204,12 @@ static int ssam_controller_caps_load(struct device *dev, struct ssam_controller_
 int ssam_controller_init(struct ssam_controller *ctrl,
 			 struct serdev_device *serdev)
 {
-<<<<<<< HEAD
-	acpi_handle handle = ACPI_HANDLE(&serdev->dev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int status;
 
 	init_rwsem(&ctrl->lock);
 	kref_init(&ctrl->kref);
 
-<<<<<<< HEAD
-	status = ssam_controller_caps_load_from_acpi(handle, &ctrl->caps);
-=======
 	status = ssam_controller_caps_load(&serdev->dev, &ctrl->caps);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (status)
 		return status;
 
@@ -2775,20 +2754,12 @@ int ssam_irq_setup(struct ssam_controller *ctrl)
 	const int irqf = IRQF_ONESHOT | IRQF_TRIGGER_RISING | IRQF_NO_AUTOEN;
 
 	gpiod = gpiod_get(dev, "ssam_wakeup-int", GPIOD_ASIS);
-<<<<<<< HEAD
-	if (IS_ERR(gpiod))
-		return PTR_ERR(gpiod);
-
-	irq = gpiod_to_irq(gpiod);
-	gpiod_put(gpiod);
-=======
 	if (IS_ERR(gpiod)) {
 		irq = fwnode_irq_get(dev_fwnode(dev), 0);
 	} else {
 		irq = gpiod_to_irq(gpiod);
 		gpiod_put(gpiod);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (irq < 0)
 		return irq;

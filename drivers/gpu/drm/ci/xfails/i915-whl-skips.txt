@@ -3,15 +3,9 @@ kms_plane_scaling@invalid-parameters
 
 # Skip driver specific tests
 ^amdgpu.*
-<<<<<<< HEAD
-msm_.*
-nouveau_.*
-panfrost_.*
-=======
 ^msm.*
 nouveau_.*
 ^panfrost.*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ^v3d.*
 ^vc4.*
 ^vmwgfx*
@@ -23,10 +17,7 @@ gem_.*
 i915_pm_rc6_residency.*
 i915_suspend.*
 kms_flip.*
-<<<<<<< HEAD
-=======
 i915_pm_rpm.*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # Kernel panic
 drm_fdinfo.*

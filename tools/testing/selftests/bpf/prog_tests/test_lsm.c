@@ -12,10 +12,7 @@
 #include <stdlib.h>
 
 #include "lsm.skel.h"
-<<<<<<< HEAD
-=======
 #include "lsm_tailcall.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 char *CMD_ARGS[] = {"true", NULL};
 
@@ -99,11 +96,7 @@ static int test_lsm(struct lsm *skel)
 	return 0;
 }
 
-<<<<<<< HEAD
-void test_test_lsm(void)
-=======
 static void test_lsm_basic(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct lsm *skel = NULL;
 	int err;
@@ -122,8 +115,6 @@ static void test_lsm_basic(void)
 close_prog:
 	lsm__destroy(skel);
 }
-<<<<<<< HEAD
-=======
 
 static void test_lsm_tailcall(void)
 {
@@ -167,4 +158,3 @@ void test_test_lsm(void)
 	if (test__start_subtest("lsm_tailcall"))
 		test_lsm_tailcall();
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

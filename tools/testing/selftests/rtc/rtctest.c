@@ -410,22 +410,10 @@ TEST_F_TIMEOUT(rtc, alarm_wkalm_set_minute, 65) {
 	ASSERT_EQ(new, secs);
 }
 
-<<<<<<< HEAD
-static void __attribute__((constructor))
-__constructor_order_last(void)
-{
-	if (!__constructor_order)
-		__constructor_order = _CONSTRUCTOR_ORDER_BACKWARD;
-}
-
-int main(int argc, char **argv)
-{
-=======
 int main(int argc, char **argv)
 {
 	int ret = -1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (argc) {
 	case 2:
 		rtc_file = argv[1];
@@ -437,9 +425,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-<<<<<<< HEAD
-	return test_harness_run(argc, argv);
-=======
 	/* Run the test if rtc_file is accessible */
 	if (access(rtc_file, R_OK) == 0)
 		ret = test_harness_run(argc, argv);
@@ -448,5 +433,4 @@ int main(int argc, char **argv)
 						rtc_file);
 
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

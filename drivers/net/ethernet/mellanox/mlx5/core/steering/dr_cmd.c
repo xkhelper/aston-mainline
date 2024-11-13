@@ -251,15 +251,9 @@ int mlx5dr_cmd_query_flow_table(struct mlx5_core_dev *dev,
 	output->level = MLX5_GET(query_flow_table_out, out, flow_table_context.level);
 
 	output->sw_owner_icm_root_1 = MLX5_GET64(query_flow_table_out, out,
-<<<<<<< HEAD
-						 flow_table_context.sw_owner_icm_root_1);
-	output->sw_owner_icm_root_0 = MLX5_GET64(query_flow_table_out, out,
-						 flow_table_context.sw_owner_icm_root_0);
-=======
 						 flow_table_context.sws.sw_owner_icm_root_1);
 	output->sw_owner_icm_root_0 = MLX5_GET64(query_flow_table_out, out,
 						 flow_table_context.sws.sw_owner_icm_root_0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -486,17 +480,6 @@ int mlx5dr_cmd_create_flow_table(struct mlx5_core_dev *mdev,
 		 */
 		if (attr->table_type == MLX5_FLOW_TABLE_TYPE_NIC_RX) {
 			MLX5_SET64(flow_table_context, ft_mdev,
-<<<<<<< HEAD
-				   sw_owner_icm_root_0, attr->icm_addr_rx);
-		} else if (attr->table_type == MLX5_FLOW_TABLE_TYPE_NIC_TX) {
-			MLX5_SET64(flow_table_context, ft_mdev,
-				   sw_owner_icm_root_0, attr->icm_addr_tx);
-		} else if (attr->table_type == MLX5_FLOW_TABLE_TYPE_FDB) {
-			MLX5_SET64(flow_table_context, ft_mdev,
-				   sw_owner_icm_root_0, attr->icm_addr_rx);
-			MLX5_SET64(flow_table_context, ft_mdev,
-				   sw_owner_icm_root_1, attr->icm_addr_tx);
-=======
 				   sws.sw_owner_icm_root_0, attr->icm_addr_rx);
 		} else if (attr->table_type == MLX5_FLOW_TABLE_TYPE_NIC_TX) {
 			MLX5_SET64(flow_table_context, ft_mdev,
@@ -506,7 +489,6 @@ int mlx5dr_cmd_create_flow_table(struct mlx5_core_dev *mdev,
 				   sws.sw_owner_icm_root_0, attr->icm_addr_rx);
 			MLX5_SET64(flow_table_context, ft_mdev,
 				   sws.sw_owner_icm_root_1, attr->icm_addr_tx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

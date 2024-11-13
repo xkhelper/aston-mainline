@@ -20,10 +20,7 @@
 #include "xe_guc.h"
 #include "xe_irq.h"
 #include "xe_pcode.h"
-<<<<<<< HEAD
-=======
 #include "xe_trace.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_wa.h"
 
 /**
@@ -73,23 +70,16 @@
  */
 
 #ifdef CONFIG_LOCKDEP
-<<<<<<< HEAD
-static struct lockdep_map xe_pm_runtime_lockdep_map = {
-	.name = "xe_pm_runtime_lockdep_map"
-=======
 static struct lockdep_map xe_pm_runtime_d3cold_map = {
 	.name = "xe_rpm_d3cold_map"
 };
 
 static struct lockdep_map xe_pm_runtime_nod3cold_map = {
 	.name = "xe_rpm_nod3cold_map"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 #endif
 
 /**
-<<<<<<< HEAD
-=======
  * xe_rpm_reclaim_safe() - Whether runtime resume can be done from reclaim context
  * @xe: The xe device.
  *
@@ -116,7 +106,6 @@ static void xe_rpm_lockmap_release(const struct xe_device *xe)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * xe_pm_suspend - Helper for System suspend, i.e. S0->S3 / S0->S2idle
  * @xe: xe device instance
  *
@@ -129,19 +118,12 @@ int xe_pm_suspend(struct xe_device *xe)
 	int err;
 
 	drm_dbg(&xe->drm, "Suspending device\n");
-<<<<<<< HEAD
-=======
 	trace_xe_pm_suspend(xe, __builtin_return_address(0));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for_each_gt(gt, xe, id)
 		xe_gt_suspend_prepare(gt);
 
-<<<<<<< HEAD
-	xe_display_pm_suspend(xe, false);
-=======
 	xe_display_pm_suspend(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* FIXME: Super racey... */
 	err = xe_bo_evict_all(xe);
@@ -151,11 +133,7 @@ int xe_pm_suspend(struct xe_device *xe)
 	for_each_gt(gt, xe, id) {
 		err = xe_gt_suspend(gt);
 		if (err) {
-<<<<<<< HEAD
-			xe_display_pm_resume(xe, false);
-=======
 			xe_display_pm_resume(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err;
 		}
 	}
@@ -185,10 +163,7 @@ int xe_pm_resume(struct xe_device *xe)
 	int err;
 
 	drm_dbg(&xe->drm, "Resuming device\n");
-<<<<<<< HEAD
-=======
 	trace_xe_pm_resume(xe, __builtin_return_address(0));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for_each_tile(tile, xe, id)
 		xe_wa_apply_tile_workarounds(tile);
@@ -212,11 +187,7 @@ int xe_pm_resume(struct xe_device *xe)
 	for_each_gt(gt, xe, id)
 		xe_gt_resume(gt);
 
-<<<<<<< HEAD
-	xe_display_pm_resume(xe, false);
-=======
 	xe_display_pm_resume(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = xe_bo_restore_user(xe);
 	if (err)
@@ -388,10 +359,7 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
 	u8 id;
 	int err = 0;
 
-<<<<<<< HEAD
-=======
 	trace_xe_pm_runtime_suspend(xe, __builtin_return_address(0));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Disable access_ongoing asserts and prevent recursive pm calls */
 	xe_pm_write_callback_task(xe, current);
 
@@ -416,11 +384,7 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
 	 * annotation here and in xe_pm_runtime_get() lockdep will see
 	 * the potential lock inversion and give us a nice splat.
 	 */
-<<<<<<< HEAD
-	lock_map_acquire(&xe_pm_runtime_lockdep_map);
-=======
 	xe_rpm_lockmap_acquire(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Applying lock for entire list op as xe_ttm_bo_destroy and xe_bo_move_notify
@@ -432,15 +396,9 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
 		xe_bo_runtime_pm_release_mmap_offset(bo);
 	mutex_unlock(&xe->mem_access.vram_userfault.lock);
 
-<<<<<<< HEAD
-	if (xe->d3cold.allowed) {
-		xe_display_pm_suspend(xe, true);
-
-=======
 	xe_display_pm_runtime_suspend(xe);
 
 	if (xe->d3cold.allowed) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = xe_bo_evict_all(xe);
 		if (err)
 			goto out;
@@ -458,13 +416,8 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
 		xe_display_pm_suspend_late(xe);
 out:
 	if (err)
-<<<<<<< HEAD
-		xe_display_pm_resume(xe, true);
-	lock_map_release(&xe_pm_runtime_lockdep_map);
-=======
 		xe_display_pm_runtime_resume(xe);
 	xe_rpm_lockmap_release(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_pm_write_callback_task(xe, NULL);
 	return err;
 }
@@ -481,18 +434,11 @@ int xe_pm_runtime_resume(struct xe_device *xe)
 	u8 id;
 	int err = 0;
 
-<<<<<<< HEAD
-	/* Disable access_ongoing asserts and prevent recursive pm calls */
-	xe_pm_write_callback_task(xe, current);
-
-	lock_map_acquire(&xe_pm_runtime_lockdep_map);
-=======
 	trace_xe_pm_runtime_resume(xe, __builtin_return_address(0));
 	/* Disable access_ongoing asserts and prevent recursive pm calls */
 	xe_pm_write_callback_task(xe, current);
 
 	xe_rpm_lockmap_acquire(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (xe->d3cold.allowed) {
 		err = xe_pcode_ready(xe, true);
@@ -515,26 +461,16 @@ int xe_pm_runtime_resume(struct xe_device *xe)
 	for_each_gt(gt, xe, id)
 		xe_gt_resume(gt);
 
-<<<<<<< HEAD
-	if (xe->d3cold.allowed) {
-		xe_display_pm_resume(xe, true);
-=======
 	xe_display_pm_runtime_resume(xe);
 
 	if (xe->d3cold.allowed) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = xe_bo_restore_user(xe);
 		if (err)
 			goto out;
 	}
-<<<<<<< HEAD
-out:
-	lock_map_release(&xe_pm_runtime_lockdep_map);
-=======
 
 out:
 	xe_rpm_lockmap_release(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xe_pm_write_callback_task(xe, NULL);
 	return err;
 }
@@ -548,17 +484,6 @@ out:
  * stuff that can happen inside the runtime_resume callback by acquiring
  * a dummy lock (it doesn't protect anything and gets compiled out on
  * non-debug builds).  Lockdep then only needs to see the
-<<<<<<< HEAD
- * xe_pm_runtime_lockdep_map -> runtime_resume callback once, and then can
- * hopefully validate all the (callers_locks) -> xe_pm_runtime_lockdep_map.
- * For example if the (callers_locks) are ever grabbed in the
- * runtime_resume callback, lockdep should give us a nice splat.
- */
-static void pm_runtime_lockdep_prime(void)
-{
-	lock_map_acquire(&xe_pm_runtime_lockdep_map);
-	lock_map_release(&xe_pm_runtime_lockdep_map);
-=======
  * xe_pm_runtime_xxx_map -> runtime_resume callback once, and then can
  * hopefully validate all the (callers_locks) -> xe_pm_runtime_xxx_map.
  * For example if the (callers_locks) are ever grabbed in the
@@ -590,7 +515,6 @@ static void xe_pm_runtime_lockdep_prime(void)
 	lock_map_acquire(&xe_pm_runtime_nod3cold_map);
 	lock_map_release(&xe_pm_runtime_nod3cold_map);
 	fs_reclaim_release(GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -599,20 +523,13 @@ static void xe_pm_runtime_lockdep_prime(void)
  */
 void xe_pm_runtime_get(struct xe_device *xe)
 {
-<<<<<<< HEAD
-=======
 	trace_xe_pm_runtime_get(xe, __builtin_return_address(0));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_get_noresume(xe->drm.dev);
 
 	if (xe_pm_read_callback_task(xe) == current)
 		return;
 
-<<<<<<< HEAD
-	pm_runtime_lockdep_prime();
-=======
 	xe_rpm_might_enter_cb(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_resume(xe->drm.dev);
 }
 
@@ -622,10 +539,7 @@ void xe_pm_runtime_get(struct xe_device *xe)
  */
 void xe_pm_runtime_put(struct xe_device *xe)
 {
-<<<<<<< HEAD
-=======
 	trace_xe_pm_runtime_put(xe, __builtin_return_address(0));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (xe_pm_read_callback_task(xe) == current) {
 		pm_runtime_put_noidle(xe->drm.dev);
 	} else {
@@ -643,18 +557,11 @@ void xe_pm_runtime_put(struct xe_device *xe)
  */
 int xe_pm_runtime_get_ioctl(struct xe_device *xe)
 {
-<<<<<<< HEAD
-	if (WARN_ON(xe_pm_read_callback_task(xe) == current))
-		return -ELOOP;
-
-	pm_runtime_lockdep_prime();
-=======
 	trace_xe_pm_runtime_get_ioctl(xe, __builtin_return_address(0));
 	if (WARN_ON(xe_pm_read_callback_task(xe) == current))
 		return -ELOOP;
 
 	xe_rpm_might_enter_cb(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return pm_runtime_get_sync(xe->drm.dev);
 }
 
@@ -688,8 +595,6 @@ bool xe_pm_runtime_get_if_in_use(struct xe_device *xe)
 	return pm_runtime_get_if_in_use(xe->drm.dev) > 0;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Very unreliable! Should only be used to suppress the false positive case
  * in the missing outer rpm protection warning.
@@ -706,7 +611,6 @@ static bool xe_pm_suspending_or_resuming(struct xe_device *xe)
 #endif
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * xe_pm_runtime_get_noresume - Bump runtime PM usage counter without resuming
  * @xe: xe device instance
@@ -723,16 +627,11 @@ void xe_pm_runtime_get_noresume(struct xe_device *xe)
 
 	ref = xe_pm_runtime_get_if_in_use(xe);
 
-<<<<<<< HEAD
-	if (drm_WARN(&xe->drm, !ref, "Missing outer runtime PM protection\n"))
-		pm_runtime_get_noresume(xe->drm.dev);
-=======
 	if (!ref) {
 		pm_runtime_get_noresume(xe->drm.dev);
 		drm_WARN(&xe->drm, !xe_pm_suspending_or_resuming(xe),
 			 "Missing outer runtime PM protection\n");
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -749,11 +648,7 @@ bool xe_pm_runtime_resume_and_get(struct xe_device *xe)
 		return true;
 	}
 
-<<<<<<< HEAD
-	pm_runtime_lockdep_prime();
-=======
 	xe_rpm_might_enter_cb(xe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return pm_runtime_resume_and_get(xe->drm.dev) >= 0;
 }
 
@@ -845,8 +740,6 @@ void xe_pm_d3cold_allowed_toggle(struct xe_device *xe)
 	drm_dbg(&xe->drm,
 		"d3cold: allowed=%s\n", str_yes_no(xe->d3cold.allowed));
 }
-<<<<<<< HEAD
-=======
 
 /**
  * xe_pm_module_init() - Perform xe_pm specific module initialization.
@@ -858,4 +751,3 @@ int __init xe_pm_module_init(void)
 	xe_pm_runtime_lockdep_prime();
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

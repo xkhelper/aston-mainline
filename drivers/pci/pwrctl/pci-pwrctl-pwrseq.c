@@ -6,15 +6,9 @@
 #include <linux/device.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
-<<<<<<< HEAD
-#include <linux/of.h>
-#include <linux/pci-pwrctl.h>
-#include <linux/platform_device.h>
-=======
 #include <linux/pci-pwrctl.h>
 #include <linux/platform_device.h>
 #include <linux/property.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pwrseq/consumer.h>
 #include <linux/slab.h>
 #include <linux/types.h>
@@ -24,8 +18,6 @@ struct pci_pwrctl_pwrseq_data {
 	struct pwrseq_desc *pwrseq;
 };
 
-<<<<<<< HEAD
-=======
 struct pci_pwrctl_pwrseq_pdata {
 	const char *target;
 	/*
@@ -60,7 +52,6 @@ static const struct pci_pwrctl_pwrseq_pdata pci_pwrctl_pwrseq_qcom_wcn_pdata = {
 	.validate_device = pci_pwrctl_pwrseq_qcm_wcn_validate_device,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void devm_pci_pwrctl_pwrseq_power_off(void *data)
 {
 	struct pwrseq_desc *pwrseq = data;
@@ -70,16 +61,11 @@ static void devm_pci_pwrctl_pwrseq_power_off(void *data)
 
 static int pci_pwrctl_pwrseq_probe(struct platform_device *pdev)
 {
-<<<<<<< HEAD
-=======
 	const struct pci_pwrctl_pwrseq_pdata *pdata;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pci_pwrctl_pwrseq_data *data;
 	struct device *dev = &pdev->dev;
 	int ret;
 
-<<<<<<< HEAD
-=======
 	pdata = device_get_match_data(dev);
 	if (!pdata || !pdata->target)
 		return -EINVAL;
@@ -90,16 +76,11 @@ static int pci_pwrctl_pwrseq_probe(struct platform_device *pdev)
 			return ret;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
 	if (!data)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	data->pwrseq = devm_pwrseq_get(dev, of_device_get_match_data(dev));
-=======
 	data->pwrseq = devm_pwrseq_get(dev, pdata->target);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(data->pwrseq))
 		return dev_err_probe(dev, PTR_ERR(data->pwrseq),
 				     "Failed to get the power sequencer\n");
@@ -128,25 +109,17 @@ static const struct of_device_id pci_pwrctl_pwrseq_of_match[] = {
 	{
 		/* ATH11K in QCA6390 package. */
 		.compatible = "pci17cb,1101",
-<<<<<<< HEAD
-		.data = "wlan",
-=======
 		.data = &pci_pwrctl_pwrseq_qcom_wcn_pdata,
 	},
 	{
 		/* ATH11K in WCN6855 package. */
 		.compatible = "pci17cb,1103",
 		.data = &pci_pwrctl_pwrseq_qcom_wcn_pdata,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		/* ATH12K in WCN7850 package. */
 		.compatible = "pci17cb,1107",
-<<<<<<< HEAD
-		.data = "wlan",
-=======
 		.data = &pci_pwrctl_pwrseq_qcom_wcn_pdata,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{ }
 };

@@ -339,8 +339,6 @@ static const struct hx8394_panel_desc powkiddy_x55_desc = {
 	.init_sequence = powkiddy_x55_init_sequence,
 };
 
-<<<<<<< HEAD
-=======
 static int mchp_ac40t08a_init_sequence(struct hx8394 *ctx)
 {
 	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
@@ -491,7 +489,6 @@ static const struct hx8394_panel_desc mchp_ac40t08a_desc = {
 	.init_sequence = mchp_ac40t08a_init_sequence,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int hx8394_enable(struct drm_panel *panel)
 {
 	struct hx8394 *ctx = panel_to_hx8394(panel);
@@ -639,11 +636,7 @@ static int hx8394_probe(struct mipi_dsi_device *dsi)
 	if (!ctx)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-=======
 	ctx->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(ctx->reset_gpio))
 		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
 				     "Failed to get reset gpio\n");
@@ -712,10 +705,7 @@ static void hx8394_remove(struct mipi_dsi_device *dsi)
 static const struct of_device_id hx8394_of_match[] = {
 	{ .compatible = "hannstar,hsd060bhw4", .data = &hsd060bhw4_desc },
 	{ .compatible = "powkiddy,x55-panel", .data = &powkiddy_x55_desc },
-<<<<<<< HEAD
-=======
 	{ .compatible = "microchip,ac40t08a-mipi-panel", .data = &mchp_ac40t08a_desc },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, hx8394_of_match);

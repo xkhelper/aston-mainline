@@ -133,15 +133,8 @@ static inline int tuner_i2c_xfer_send_recv(struct tuner_i2c_props *props,
 	}								\
 	if (0 == __ret) {						\
 		state = kzalloc(sizeof(type), GFP_KERNEL);		\
-<<<<<<< HEAD
-		if (!state) {						\
-			__ret = -ENOMEM;				\
-			goto __fail;					\
-		}							\
-=======
 		if (NULL == state)					\
 			goto __fail;					\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		state->i2c_props.addr = i2caddr;			\
 		state->i2c_props.adap = i2cadap;			\
 		state->i2c_props.name = devname;			\

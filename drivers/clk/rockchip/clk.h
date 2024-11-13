@@ -235,8 +235,6 @@ struct clk;
 #define RK3568_PMU_CLKGATE_CON(x)	((x) * 0x4 + 0x180)
 #define RK3568_PMU_SOFTRST_CON(x)	((x) * 0x4 + 0x200)
 
-<<<<<<< HEAD
-=======
 #define RK3576_PHP_CRU_BASE		0x8000
 #define RK3576_SECURE_NS_CRU_BASE	0x10000
 #define RK3576_PMU_CRU_BASE		0x20000
@@ -289,7 +287,6 @@ struct clk;
 #define RK3576_LITCORE_SOFTRST_CON(x)	((x) * 0x4 + RK3576_LITCORE_CRU_BASE + 0xa00)
 #define RK3576_NON_SECURE_GATING_CON00	0xc48
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RK3588_PHP_CRU_BASE		0x8000
 #define RK3588_PMU_CRU_BASE		0x30000
 #define RK3588_BIGCORE0_CRU_BASE	0x50000
@@ -342,10 +339,7 @@ enum rockchip_pll_type {
 	pll_rk3399,
 	pll_rk3588,
 	pll_rk3588_core,
-<<<<<<< HEAD
-=======
 	pll_rk3588_ddr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define RK3036_PLL_RATE(_rate, _refdiv, _fbdiv, _postdiv1,	\
@@ -1084,10 +1078,7 @@ static inline void rockchip_register_softrst(struct device_node *np,
 	return rockchip_register_softrst_lut(np, NULL, num_regs, base, flags);
 }
 
-<<<<<<< HEAD
-=======
 void rk3576_rst_init(struct device_node *np, void __iomem *reg_base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void rk3588_rst_init(struct device_node *np, void __iomem *reg_base);
 
 #endif

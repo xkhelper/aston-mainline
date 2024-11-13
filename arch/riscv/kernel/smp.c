@@ -13,10 +13,7 @@
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/kexec.h>
-<<<<<<< HEAD
-=======
 #include <linux/kgdb.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/percpu.h>
 #include <linux/profile.h>
 #include <linux/smp.h>
@@ -25,10 +22,7 @@
 #include <linux/delay.h>
 #include <linux/irq.h>
 #include <linux/irq_work.h>
-<<<<<<< HEAD
-=======
 #include <linux/nmi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/tlbflush.h>
 #include <asm/cacheflush.h>
@@ -41,11 +35,8 @@ enum ipi_message_type {
 	IPI_CPU_CRASH_STOP,
 	IPI_IRQ_WORK,
 	IPI_TIMER,
-<<<<<<< HEAD
-=======
 	IPI_CPU_BACKTRACE,
 	IPI_KGDB_ROUNDUP,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	IPI_MAX
 };
 
@@ -126,10 +117,7 @@ void arch_irq_work_raise(void)
 
 static irqreturn_t handle_IPI(int irq, void *data)
 {
-<<<<<<< HEAD
-=======
 	unsigned int cpu = smp_processor_id();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ipi = irq - ipi_virq_base;
 
 	switch (ipi) {
@@ -143,11 +131,7 @@ static irqreturn_t handle_IPI(int irq, void *data)
 		ipi_stop();
 		break;
 	case IPI_CPU_CRASH_STOP:
-<<<<<<< HEAD
-		ipi_cpu_crash_stop(smp_processor_id(), get_irq_regs());
-=======
 		ipi_cpu_crash_stop(cpu, get_irq_regs());
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case IPI_IRQ_WORK:
 		irq_work_run();
@@ -157,10 +141,6 @@ static irqreturn_t handle_IPI(int irq, void *data)
 		tick_receive_broadcast();
 		break;
 #endif
-<<<<<<< HEAD
-	default:
-		pr_warn("CPU%d: unhandled IPI%d\n", smp_processor_id(), ipi);
-=======
 	case IPI_CPU_BACKTRACE:
 		nmi_cpu_backtrace(get_irq_regs());
 		break;
@@ -169,7 +149,6 @@ static irqreturn_t handle_IPI(int irq, void *data)
 		break;
 	default:
 		pr_warn("CPU%d: unhandled IPI%d\n", cpu, ipi);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 
@@ -235,11 +214,8 @@ static const char * const ipi_names[] = {
 	[IPI_CPU_CRASH_STOP]	= "CPU stop (for crash dump) interrupts",
 	[IPI_IRQ_WORK]		= "IRQ work interrupts",
 	[IPI_TIMER]		= "Timer broadcast interrupts",
-<<<<<<< HEAD
-=======
 	[IPI_CPU_BACKTRACE]     = "CPU backtrace interrupts",
 	[IPI_KGDB_ROUNDUP]	= "KGDB roundup interrupts",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void show_ipi_stats(struct seq_file *p, int prec)
@@ -360,8 +336,6 @@ void arch_smp_send_reschedule(int cpu)
 	send_ipi_single(cpu, IPI_RESCHEDULE);
 }
 EXPORT_SYMBOL_GPL(arch_smp_send_reschedule);
-<<<<<<< HEAD
-=======
 
 static void riscv_backtrace_ipi(cpumask_t *mask)
 {
@@ -388,4 +362,3 @@ void kgdb_roundup_cpus(void)
 	}
 }
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -1740,8 +1740,6 @@ has_encap_dests(struct mlx5_flow_attr *attr)
 }
 
 static int
-<<<<<<< HEAD
-=======
 extra_split_attr_dests_needed(struct mlx5e_tc_flow *flow, struct mlx5_flow_attr *attr)
 {
 	bool int_dest = false, ext_dest = false;
@@ -1849,15 +1847,11 @@ err_free:
 }
 
 static int
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 post_process_attr(struct mlx5e_tc_flow *flow,
 		  struct mlx5_flow_attr *attr,
 		  struct netlink_ext_ack *extack)
 {
-<<<<<<< HEAD
-=======
 	int extra_split;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool vf_tun;
 	int err = 0;
 
@@ -1871,8 +1865,6 @@ post_process_attr(struct mlx5e_tc_flow *flow,
 			goto err_out;
 	}
 
-<<<<<<< HEAD
-=======
 	extra_split = extra_split_attr_dests_needed(flow, attr);
 	if (extra_split > 0) {
 		err = extra_split_attr_dests(flow, attr, extra_split);
@@ -1880,7 +1872,6 @@ post_process_attr(struct mlx5e_tc_flow *flow,
 			goto err_out;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (attr->action & MLX5_FLOW_CONTEXT_ACTION_MOD_HDR) {
 		err = mlx5e_tc_attach_mod_hdr(flow->priv, flow, attr);
 		if (err)
@@ -2095,14 +2086,11 @@ static void mlx5e_tc_del_fdb_flow(struct mlx5e_priv *priv,
 	mlx5e_tc_act_stats_del_flow(get_act_stats_handle(priv), flow);
 
 	free_flow_post_acts(flow);
-<<<<<<< HEAD
-=======
 	if (flow->extra_split_attr) {
 		mlx5_free_flow_attr_actions(flow, flow->extra_split_attr);
 		kvfree(flow->extra_split_attr->parse_attr);
 		kfree(flow->extra_split_attr);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5_free_flow_attr_actions(flow, attr);
 
 	kvfree(attr->esw_attr->rx_tun_attr);

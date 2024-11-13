@@ -26,8 +26,6 @@ MODULE_LICENSE("GPL v2");
 struct ap_matrix_dev *matrix_dev;
 debug_info_t *vfio_ap_dbf_info;
 
-<<<<<<< HEAD
-=======
 static ssize_t features_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
 	return sysfs_emit(buf, "guest_matrix hotplug ap_config\n");
@@ -40,7 +38,6 @@ static struct attribute *matrix_dev_attrs[] = {
 };
 ATTRIBUTE_GROUPS(matrix_dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Only type 10 adapters (CEX4 and later) are supported
  * by the AP matrix device driver
  */
@@ -83,10 +80,7 @@ static struct device_driver matrix_driver = {
 	.name = "vfio_ap",
 	.bus = &matrix_bus,
 	.suppress_bind_attrs = true,
-<<<<<<< HEAD
-=======
 	.dev_groups = matrix_dev_groups,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int vfio_ap_matrix_dev_create(void)

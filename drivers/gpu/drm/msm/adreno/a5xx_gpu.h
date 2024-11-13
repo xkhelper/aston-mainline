@@ -34,15 +34,10 @@ struct a5xx_gpu {
 	struct drm_gem_object *preempt_counters_bo[MSM_GPU_MAX_RINGS];
 	struct a5xx_preempt_record *preempt[MSM_GPU_MAX_RINGS];
 	uint64_t preempt_iova[MSM_GPU_MAX_RINGS];
-<<<<<<< HEAD
-
-	atomic_t preempt_state;
-=======
 	uint32_t last_seqno[MSM_GPU_MAX_RINGS];
 
 	atomic_t preempt_state;
 	spinlock_t preempt_start_lock;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct timer_list preempt_timer;
 
 	struct drm_gem_object *shadow_bo;

@@ -8,11 +8,7 @@
  */
 #include <linux/fs.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "glob.h"
 #include "unicode.h"
 #include "smb_common.h"

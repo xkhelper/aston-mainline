@@ -428,10 +428,6 @@
 				regulator-boot-on;
 				regulator-min-microvolt = <550000>;
 				regulator-max-microvolt = <950000>;
-<<<<<<< HEAD
-				regulator-init-microvolt = <750000>;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				regulator-ramp-delay = <12500>;
 
 				regulator-state-mem {

@@ -173,11 +173,7 @@ static void default_print_event(void *ps, const char *pmu_name, const char *topi
 		if (pmu_name && strcmp(pmu_name, "default_core")) {
 			desc_len = strlen(desc);
 			desc_len = asprintf(&desc_with_unit,
-<<<<<<< HEAD
-					    desc[desc_len - 1] != '.'
-=======
 					    desc_len > 0 && desc[desc_len - 1] != '.'
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					      ? "%s. Unit: %s" : "%s Unit: %s",
 					    desc, pmu_name);
 		}

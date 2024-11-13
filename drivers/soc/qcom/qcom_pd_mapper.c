@@ -517,9 +517,6 @@ static const struct qcom_pdm_domain_data *sm8550_domains[] = {
 	NULL,
 };
 
-<<<<<<< HEAD
-static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
-=======
 static const struct qcom_pdm_domain_data *x1e80100_domains[] = {
 	&adsp_audio_pd,
 	&adsp_root_pd,
@@ -531,18 +528,14 @@ static const struct qcom_pdm_domain_data *x1e80100_domains[] = {
 
 static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
 	{ .compatible = "qcom,apq8016", .data = NULL, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "qcom,apq8064", .data = NULL, },
 	{ .compatible = "qcom,apq8074", .data = NULL, },
 	{ .compatible = "qcom,apq8084", .data = NULL, },
 	{ .compatible = "qcom,apq8096", .data = msm8996_domains, },
 	{ .compatible = "qcom,msm8226", .data = NULL, },
-<<<<<<< HEAD
-=======
 	{ .compatible = "qcom,msm8909", .data = NULL, },
 	{ .compatible = "qcom,msm8916", .data = NULL, },
 	{ .compatible = "qcom,msm8939", .data = NULL, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "qcom,msm8974", .data = NULL, },
 	{ .compatible = "qcom,msm8996", .data = msm8996_domains, },
 	{ .compatible = "qcom,msm8998", .data = msm8998_domains, },
@@ -559,20 +552,14 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
 	{ .compatible = "qcom,sm4250", .data = sm6115_domains, },
 	{ .compatible = "qcom,sm6115", .data = sm6115_domains, },
 	{ .compatible = "qcom,sm6350", .data = sm6350_domains, },
-<<<<<<< HEAD
-=======
 	{ .compatible = "qcom,sm7325", .data = sc7280_domains, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "qcom,sm8150", .data = sm8150_domains, },
 	{ .compatible = "qcom,sm8250", .data = sm8250_domains, },
 	{ .compatible = "qcom,sm8350", .data = sm8350_domains, },
 	{ .compatible = "qcom,sm8450", .data = sm8350_domains, },
 	{ .compatible = "qcom,sm8550", .data = sm8550_domains, },
 	{ .compatible = "qcom,sm8650", .data = sm8550_domains, },
-<<<<<<< HEAD
-=======
 	{ .compatible = "qcom,x1e80100", .data = x1e80100_domains, },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 

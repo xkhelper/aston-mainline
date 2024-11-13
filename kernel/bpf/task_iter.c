@@ -99,11 +99,7 @@ static struct task_struct *task_seq_get_next(struct bpf_iter_seq_task_common *co
 		rcu_read_lock();
 		pid = find_pid_ns(common->pid, common->ns);
 		if (pid) {
-<<<<<<< HEAD
-			task = get_pid_task(pid, PIDTYPE_TGID);
-=======
 			task = get_pid_task(pid, PIDTYPE_PID);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			*tid = common->pid;
 		}
 		rcu_read_unlock();

@@ -31,11 +31,7 @@
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
 #include <linux/sizes.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "goodix_berlin.h"
 
@@ -676,8 +672,6 @@ static void goodix_berlin_power_off_act(void *data)
 	goodix_berlin_power_off(cd);
 }
 
-<<<<<<< HEAD
-=======
 static ssize_t registers_read(struct file *filp, struct kobject *kobj,
 			      struct bin_attribute *bin_attr,
 			      char *buf, loff_t off, size_t count)
@@ -721,7 +715,6 @@ const struct attribute_group *goodix_berlin_groups[] = {
 };
 EXPORT_SYMBOL_GPL(goodix_berlin_groups);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int goodix_berlin_probe(struct device *dev, int irq, const struct input_id *id,
 			struct regmap *regmap)
 {

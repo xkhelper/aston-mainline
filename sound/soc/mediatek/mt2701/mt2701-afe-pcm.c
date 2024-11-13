@@ -1473,11 +1473,7 @@ static struct platform_driver mt2701_afe_pcm_driver = {
 		   .pm = &mt2701_afe_pm_ops,
 	},
 	.probe = mt2701_afe_pcm_dev_probe,
-<<<<<<< HEAD
-	.remove_new = mt2701_afe_pcm_dev_remove,
-=======
 	.remove = mt2701_afe_pcm_dev_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(mt2701_afe_pcm_driver);

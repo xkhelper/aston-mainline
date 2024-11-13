@@ -17,10 +17,7 @@ properties:
           - enum:
               - fsl,imx8m-irqsteer
               - fsl,imx8mp-irqsteer
-<<<<<<< HEAD
-=======
               - fsl,imx8qm-irqsteer
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - fsl,imx8qxp-irqsteer
           - const: fsl,imx-irqsteer
 
@@ -87,10 +84,7 @@ allOf:
           contains:
             enum:
               - fsl,imx8mp-irqsteer
-<<<<<<< HEAD
-=======
               - fsl,imx8qm-irqsteer
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - fsl,imx8qxp-irqsteer
     then:
       required:

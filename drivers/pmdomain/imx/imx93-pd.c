@@ -28,10 +28,6 @@ struct imx93_power_domain {
 	void __iomem *addr;
 	struct clk_bulk_data *clks;
 	int num_clks;
-<<<<<<< HEAD
-	bool init_off;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define to_imx93_pd(_genpd) container_of(_genpd, struct imx93_power_domain, genpd)
@@ -93,12 +89,6 @@ static void imx93_pd_remove(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
 
-<<<<<<< HEAD
-	if (!domain->init_off)
-		clk_bulk_disable_unprepare(domain->num_clks, domain->clks);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	of_genpd_del_provider(np);
 	pm_genpd_remove(&domain->genpd);
 }
@@ -108,10 +98,7 @@ static int imx93_pd_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
 	struct imx93_power_domain *domain;
-<<<<<<< HEAD
-=======
 	bool init_off;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	domain = devm_kzalloc(dev, sizeof(*domain), GFP_KERNEL);
@@ -131,20 +118,6 @@ static int imx93_pd_probe(struct platform_device *pdev)
 	domain->genpd.power_on = imx93_pd_on;
 	domain->dev = dev;
 
-<<<<<<< HEAD
-	domain->init_off = readl(domain->addr + MIX_FUNC_STAT_OFF) & FUNC_STAT_ISO_STAT_MASK;
-	/* Just to sync the status of hardware */
-	if (!domain->init_off) {
-		ret = clk_bulk_prepare_enable(domain->num_clks, domain->clks);
-		if (ret) {
-			dev_err(domain->dev, "failed to enable clocks for domain: %s\n",
-				domain->genpd.name);
-			return ret;
-		}
-	}
-
-	ret = pm_genpd_init(&domain->genpd, NULL, domain->init_off);
-=======
 	init_off = readl(domain->addr + MIX_FUNC_STAT_OFF) & FUNC_STAT_ISO_STAT_MASK;
 	/* Just to sync the status of hardware */
 	if (!init_off) {
@@ -156,7 +129,6 @@ static int imx93_pd_probe(struct platform_device *pdev)
 	}
 
 	ret = pm_genpd_init(&domain->genpd, NULL, init_off);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto err_clk_unprepare;
 
@@ -172,11 +144,7 @@ err_genpd_remove:
 	pm_genpd_remove(&domain->genpd);
 
 err_clk_unprepare:
-<<<<<<< HEAD
-	if (!domain->init_off)
-=======
 	if (!init_off)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		clk_bulk_disable_unprepare(domain->num_clks, domain->clks);
 
 	return ret;

@@ -144,11 +144,7 @@ struct z3fold_pool {
 	const char *name;
 	spinlock_t lock;
 	spinlock_t stale_lock;
-<<<<<<< HEAD
-	struct list_head *unbuddied;
-=======
 	struct list_head __percpu *unbuddied;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct list_head stale;
 	atomic64_t pages_nr;
 	struct kmem_cache *c_handle;

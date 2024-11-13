@@ -11,33 +11,24 @@
 #include <arpa/inet.h>
 #include <sys/mount.h>
 #include <sys/stat.h>
-<<<<<<< HEAD
-#include <sys/un.h>
-=======
 #include <sys/types.h>
 #include <sys/un.h>
 #include <sys/eventfd.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/err.h>
 #include <linux/in.h>
 #include <linux/in6.h>
 #include <linux/limits.h>
 
-<<<<<<< HEAD
-=======
 #include <linux/ip.h>
 #include <linux/udp.h>
 #include <netinet/tcp.h>
 #include <net/if.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "bpf_util.h"
 #include "network_helpers.h"
 #include "test_progs.h"
 
-<<<<<<< HEAD
-=======
 #ifdef TRAFFIC_MONITOR
 /* Prevent pcap.h from including pcap/bpf.h and causing conflicts */
 #define PCAP_DONT_INCLUDE_PCAP_BPF_H 1
@@ -45,7 +36,6 @@
 #include <pcap/dlt.h>
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef IPPROTO_MPTCP
 #define IPPROTO_MPTCP 262
 #endif
@@ -104,14 +94,6 @@ int settimeo(int fd, int timeout_ms)
 
 #define save_errno_close(fd) ({ int __save = errno; close(fd); errno = __save; })
 
-<<<<<<< HEAD
-static int __start_server(int type, const struct sockaddr *addr, socklen_t addrlen,
-			  const struct network_helper_opts *opts)
-{
-	int fd;
-
-	fd = socket(addr->sa_family, type, opts->proto);
-=======
 int start_server_addr(int type, const struct sockaddr_storage *addr, socklen_t addrlen,
 		      const struct network_helper_opts *opts)
 {
@@ -121,7 +103,6 @@ int start_server_addr(int type, const struct sockaddr_storage *addr, socklen_t a
 		opts = &default_opts;
 
 	fd = socket(addr->ss_family, type, opts->proto);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (fd < 0) {
 		log_err("Failed to create server socket");
 		return -1;
@@ -136,11 +117,7 @@ int start_server_addr(int type, const struct sockaddr_storage *addr, socklen_t a
 		goto error_close;
 	}
 
-<<<<<<< HEAD
-	if (bind(fd, addr, addrlen) < 0) {
-=======
 	if (bind(fd, (struct sockaddr *)addr, addrlen) < 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		log_err("Failed to bind socket");
 		goto error_close;
 	}
@@ -171,11 +148,7 @@ int start_server_str(int family, int type, const char *addr_str, __u16 port,
 	if (make_sockaddr(family, addr_str, port, &addr, &addrlen))
 		return -1;
 
-<<<<<<< HEAD
-	return __start_server(type, (struct sockaddr *)&addr, addrlen, opts);
-=======
 	return start_server_addr(type, &addr, addrlen, opts);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int start_server(int family, int type, const char *addr_str, __u16 port,
@@ -217,11 +190,7 @@ int *start_reuseport_server(int family, int type, const char *addr_str,
 	if (!fds)
 		return NULL;
 
-<<<<<<< HEAD
-	fds[0] = __start_server(type, (struct sockaddr *)&addr, addrlen, &opts);
-=======
 	fds[0] = start_server_addr(type, &addr, addrlen, &opts);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (fds[0] == -1)
 		goto close_fds;
 	nr_fds = 1;
@@ -230,11 +199,7 @@ int *start_reuseport_server(int family, int type, const char *addr_str,
 		goto close_fds;
 
 	for (; nr_fds < nr_listens; nr_fds++) {
-<<<<<<< HEAD
-		fds[nr_fds] = __start_server(type, (struct sockaddr *)&addr, addrlen, &opts);
-=======
 		fds[nr_fds] = start_server_addr(type, &addr, addrlen, &opts);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (fds[nr_fds] == -1)
 			goto close_fds;
 	}
@@ -246,18 +211,6 @@ close_fds:
 	return NULL;
 }
 
-<<<<<<< HEAD
-int start_server_addr(int type, const struct sockaddr_storage *addr, socklen_t len,
-		      const struct network_helper_opts *opts)
-{
-	if (!opts)
-		opts = &default_opts;
-
-	return __start_server(type, (struct sockaddr *)addr, len, opts);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void free_fds(int *fds, unsigned int nr_close_fds)
 {
 	if (fds) {
@@ -332,36 +285,6 @@ error_close:
 	return -1;
 }
 
-<<<<<<< HEAD
-static int connect_fd_to_addr(int fd,
-			      const struct sockaddr_storage *addr,
-			      socklen_t addrlen, const bool must_fail)
-{
-	int ret;
-
-	errno = 0;
-	ret = connect(fd, (const struct sockaddr *)addr, addrlen);
-	if (must_fail) {
-		if (!ret) {
-			log_err("Unexpected success to connect to server");
-			return -1;
-		}
-		if (errno != EPERM) {
-			log_err("Unexpected error from connect to server");
-			return -1;
-		}
-	} else {
-		if (ret) {
-			log_err("Failed to connect to server");
-			return -1;
-		}
-	}
-
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int connect_to_addr(int type, const struct sockaddr_storage *addr, socklen_t addrlen,
 		    const struct network_helper_opts *opts)
 {
@@ -376,19 +299,6 @@ int connect_to_addr(int type, const struct sockaddr_storage *addr, socklen_t add
 		return -1;
 	}
 
-<<<<<<< HEAD
-	if (connect_fd_to_addr(fd, addr, addrlen, opts->must_fail))
-		goto error_close;
-
-	return fd;
-
-error_close:
-	save_errno_close(fd);
-	return -1;
-}
-
-int connect_to_fd_opts(int server_fd, int type, const struct network_helper_opts *opts)
-=======
 	if (connect(fd, (const struct sockaddr *)addr, addrlen)) {
 		log_err("Failed to connect to server");
 		save_errno_close(fd);
@@ -400,7 +310,6 @@ int connect_to_fd_opts(int server_fd, int type, const struct network_helper_opts
 
 int connect_to_addr_str(int family, int type, const char *addr_str, __u16 port,
 			const struct network_helper_opts *opts)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct sockaddr_storage addr;
 	socklen_t addrlen;
@@ -408,8 +317,6 @@ int connect_to_addr_str(int family, int type, const char *addr_str, __u16 port,
 	if (!opts)
 		opts = &default_opts;
 
-<<<<<<< HEAD
-=======
 	if (make_sockaddr(family, addr_str, port, &addr, &addrlen))
 		return -1;
 
@@ -431,7 +338,6 @@ int connect_to_fd_opts(int server_fd, const struct network_helper_opts *opts)
 		return -1;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	addrlen = sizeof(addr);
 	if (getsockname(server_fd, (struct sockaddr *)&addr, &addrlen)) {
 		log_err("Failed to get server addr");
@@ -446,19 +352,8 @@ int connect_to_fd(int server_fd, int timeout_ms)
 	struct network_helper_opts opts = {
 		.timeout_ms = timeout_ms,
 	};
-<<<<<<< HEAD
-	int type, protocol;
-	socklen_t optlen;
-
-	optlen = sizeof(type);
-	if (getsockopt(server_fd, SOL_SOCKET, SO_TYPE, &type, &optlen)) {
-		log_err("getsockopt(SOL_TYPE)");
-		return -1;
-	}
-=======
 	socklen_t optlen;
 	int protocol;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	optlen = sizeof(protocol);
 	if (getsockopt(server_fd, SOL_SOCKET, SO_PROTOCOL, &protocol, &optlen)) {
@@ -467,11 +362,7 @@ int connect_to_fd(int server_fd, int timeout_ms)
 	}
 	opts.proto = protocol;
 
-<<<<<<< HEAD
-	return connect_to_fd_opts(server_fd, type, &opts);
-=======
 	return connect_to_fd_opts(server_fd, &opts);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int connect_fd_to_fd(int client_fd, int server_fd, int timeout_ms)
@@ -487,15 +378,10 @@ int connect_fd_to_fd(int client_fd, int server_fd, int timeout_ms)
 		return -1;
 	}
 
-<<<<<<< HEAD
-	if (connect_fd_to_addr(client_fd, &addr, len, false))
-		return -1;
-=======
 	if (connect(client_fd, (const struct sockaddr *)&addr, len)) {
 		log_err("Failed to connect to server");
 		return -1;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -560,8 +446,6 @@ char *ping_command(int family)
 	return "ping";
 }
 
-<<<<<<< HEAD
-=======
 int remove_netns(const char *name)
 {
 	char *cmd;
@@ -608,7 +492,6 @@ int make_netns(const char *name)
 	return r;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct nstoken {
 	int orig_netns_fd;
 };
@@ -837,8 +720,6 @@ int send_recv_data(int lfd, int fd, uint32_t total_bytes)
 
 	return err;
 }
-<<<<<<< HEAD
-=======
 
 #ifdef TRAFFIC_MONITOR
 struct tmonitor_ctx {
@@ -1279,4 +1160,3 @@ void traffic_monitor_stop(struct tmonitor_ctx *ctx)
 	traffic_monitor_release(ctx);
 }
 #endif /* TRAFFIC_MONITOR */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

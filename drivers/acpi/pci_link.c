@@ -748,11 +748,8 @@ static int acpi_pci_link_add(struct acpi_device *device,
 	if (result)
 		kfree(link);
 
-<<<<<<< HEAD
-=======
 	acpi_dev_clear_dependencies(device);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return result < 0 ? result : 1;
 }
 

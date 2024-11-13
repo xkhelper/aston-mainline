@@ -3804,18 +3804,12 @@ static int trigger_hpd_mst_set(void *data, u64 val)
 			if (aconnector->dc_link->type == dc_connection_mst_branch &&
 			    aconnector->mst_mgr.aux) {
 				mutex_lock(&adev->dm.dc_lock);
-<<<<<<< HEAD
-				dc_link_detect(aconnector->dc_link, DETECT_REASON_HPD);
-				mutex_unlock(&adev->dm.dc_lock);
-
-=======
 				ret = dc_link_detect(aconnector->dc_link, DETECT_REASON_HPD);
 				mutex_unlock(&adev->dm.dc_lock);
 
 				if (!ret)
 					DRM_ERROR("DM_MST: Failed to detect dc link!");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ret = drm_dp_mst_topology_mgr_set_mst(&aconnector->mst_mgr, true);
 				if (ret < 0)
 					DRM_ERROR("DM_MST: Failed to set the device into MST mode!");

@@ -3,10 +3,7 @@
 #include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_drv.h>
-<<<<<<< HEAD
-=======
 #include <drm/drm_edid.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <drm/drm_fourcc.h>
 #include <drm/drm_kunit_helpers.h>
 #include <drm/drm_managed.h>
@@ -315,8 +312,6 @@ drm_kunit_helper_create_crtc(struct kunit *test,
 }
 EXPORT_SYMBOL_GPL(drm_kunit_helper_create_crtc);
 
-<<<<<<< HEAD
-=======
 static void kunit_action_drm_mode_destroy(void *ptr)
 {
 	struct drm_display_mode *mode = ptr;
@@ -358,7 +353,6 @@ drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
 }
 EXPORT_SYMBOL_GPL(drm_kunit_display_mode_from_cea_vic);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_AUTHOR("Maxime Ripard <maxime@cerno.tech>");
 MODULE_DESCRIPTION("KUnit test suite helper functions");
 MODULE_LICENSE("GPL");

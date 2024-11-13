@@ -955,11 +955,7 @@ static bool perf_kmem__skip_sample(struct perf_sample *sample)
 typedef int (*tracepoint_handler)(struct evsel *evsel,
 				  struct perf_sample *sample);
 
-<<<<<<< HEAD
-static int process_sample_event(struct perf_tool *tool __maybe_unused,
-=======
 static int process_sample_event(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct evsel *evsel,
@@ -990,18 +986,6 @@ static int process_sample_event(const struct perf_tool *tool __maybe_unused,
 	return err;
 }
 
-<<<<<<< HEAD
-static struct perf_tool perf_kmem = {
-	.sample		 = process_sample_event,
-	.comm		 = perf_event__process_comm,
-	.mmap		 = perf_event__process_mmap,
-	.mmap2		 = perf_event__process_mmap2,
-	.namespaces	 = perf_event__process_namespaces,
-	.ordered_events	 = true,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static double fragmentation(unsigned long n_req, unsigned long n_alloc)
 {
 	if (n_alloc == 0)
@@ -1978,10 +1962,7 @@ int cmd_kmem(int argc, const char **argv)
 		NULL
 	};
 	struct perf_session *session;
-<<<<<<< HEAD
-=======
 	struct perf_tool perf_kmem;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	static const char errmsg[] = "No %s allocation events found.  Have you run 'perf kmem record --%s'?\n";
 	int ret = perf_config(kmem_config, NULL);
 
@@ -2009,8 +1990,6 @@ int cmd_kmem(int argc, const char **argv)
 
 	data.path = input_name;
 
-<<<<<<< HEAD
-=======
 	perf_tool__init(&perf_kmem, /*ordered_events=*/true);
 	perf_kmem.sample	= process_sample_event;
 	perf_kmem.comm		= perf_event__process_comm;
@@ -2018,7 +1997,6 @@ int cmd_kmem(int argc, const char **argv)
 	perf_kmem.mmap2		= perf_event__process_mmap2;
 	perf_kmem.namespaces	= perf_event__process_namespaces;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kmem_session = session = perf_session__new(&data, &perf_kmem);
 	if (IS_ERR(session))
 		return PTR_ERR(session);
@@ -2079,15 +2057,8 @@ int cmd_kmem(int argc, const char **argv)
 
 out_delete:
 	perf_session__delete(session);
-<<<<<<< HEAD
-
-	return ret;
-}
-
-=======
 	/* free usage string allocated by parse_options_subcommand */
 	free((void *)kmem_usage[0]);
 
 	return ret;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

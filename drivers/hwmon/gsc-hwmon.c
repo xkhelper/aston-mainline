@@ -400,10 +400,7 @@ static const struct of_device_id gsc_hwmon_of_match[] = {
 	{ .compatible = "gw,gsc-adc", },
 	{}
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(of, gsc_hwmon_of_match);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver gsc_hwmon_driver = {
 	.driver = {

@@ -248,12 +248,7 @@ static void nft_synproxy_eval(const struct nft_expr *expr,
 }
 
 static int nft_synproxy_validate(const struct nft_ctx *ctx,
-<<<<<<< HEAD
-				 const struct nft_expr *expr,
-				 const struct nft_data **data)
-=======
 				 const struct nft_expr *expr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (ctx->family != NFPROTO_IPV4 &&
 	    ctx->family != NFPROTO_IPV6 &&

@@ -4,11 +4,7 @@
 #
 config SOC_INTEGRATOR_CM
 	bool "SoC bus device for the ARM Integrator platform core modules"
-<<<<<<< HEAD
-	depends on ARCH_INTEGRATOR
-=======
 	depends on ARCH_INTEGRATOR || COMPILE_TEST
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select SOC_BUS
 	help
 	  Include support for the SoC bus on the ARM Integrator platform
@@ -17,11 +13,7 @@ config SOC_INTEGRATOR_CM
 
 config SOC_REALVIEW
 	bool "SoC bus device for the ARM RealView platforms"
-<<<<<<< HEAD
-	depends on ARCH_REALVIEW
-=======
 	depends on ARCH_REALVIEW || COMPILE_TEST
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select SOC_BUS
 	help
 	  Include support for the SoC bus on the ARM RealView platforms

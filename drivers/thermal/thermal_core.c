@@ -323,18 +323,10 @@ static void thermal_zone_broken_disable(struct thermal_zone_device *tz)
 static void thermal_zone_device_set_polling(struct thermal_zone_device *tz,
 					    unsigned long delay)
 {
-<<<<<<< HEAD
-	if (delay)
-		mod_delayed_work(system_freezable_power_efficient_wq,
-				 &tz->poll_queue, delay);
-	else
-		cancel_delayed_work(&tz->poll_queue);
-=======
 	if (delay > HZ)
 		delay = round_jiffies_relative(delay);
 
 	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, delay);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void thermal_zone_recheck(struct thermal_zone_device *tz, int error)
@@ -367,13 +359,7 @@ static void thermal_zone_recheck(struct thermal_zone_device *tz, int error)
 
 static void monitor_thermal_zone(struct thermal_zone_device *tz)
 {
-<<<<<<< HEAD
-	if (tz->mode != THERMAL_DEVICE_ENABLED)
-		thermal_zone_device_set_polling(tz, 0);
-	else if (tz->passive > 0)
-=======
 	if (tz->passive > 0 && tz->passive_delay_jiffies)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		thermal_zone_device_set_polling(tz, tz->passive_delay_jiffies);
 	else if (tz->polling_delay_jiffies)
 		thermal_zone_device_set_polling(tz, tz->polling_delay_jiffies);
@@ -558,19 +544,10 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
 	struct thermal_trip_desc *td;
 	LIST_HEAD(way_down_list);
 	LIST_HEAD(way_up_list);
-<<<<<<< HEAD
-	int temp, ret;
-
-	if (tz->suspended)
-		return;
-
-	if (!thermal_zone_device_is_enabled(tz))
-=======
 	int low = -INT_MAX, high = INT_MAX;
 	int temp, ret;
 
 	if (tz->suspended || tz->mode != THERMAL_DEVICE_ENABLED)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	ret = __thermal_zone_get_temp(tz, &temp);
@@ -598,12 +575,6 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
 
 	tz->notify_event = event;
 
-<<<<<<< HEAD
-	for_each_trip_desc(tz, td)
-		handle_thermal_trip(tz, td, &way_up_list, &way_down_list);
-
-	thermal_zone_set_trips(tz);
-=======
 	for_each_trip_desc(tz, td) {
 		handle_thermal_trip(tz, td, &way_up_list, &way_down_list);
 
@@ -615,7 +586,6 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
 	}
 
 	thermal_zone_set_trips(tz, low, high);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_sort(NULL, &way_up_list, thermal_trip_notify_cmp);
 	list_for_each_entry(td, &way_up_list, notify_list_node)
@@ -679,16 +649,6 @@ int thermal_zone_device_disable(struct thermal_zone_device *tz)
 }
 EXPORT_SYMBOL_GPL(thermal_zone_device_disable);
 
-<<<<<<< HEAD
-int thermal_zone_device_is_enabled(struct thermal_zone_device *tz)
-{
-	lockdep_assert_held(&tz->lock);
-
-	return tz->mode == THERMAL_DEVICE_ENABLED;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool thermal_zone_is_present(struct thermal_zone_device *tz)
 {
 	return !list_empty(&tz->node);
@@ -768,10 +728,7 @@ struct thermal_zone_device *thermal_zone_get_by_id(int id)
 	mutex_lock(&thermal_list_lock);
 	list_for_each_entry(tz, &thermal_tz_list, node) {
 		if (tz->id == id) {
-<<<<<<< HEAD
-=======
 			get_device(&tz->device);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			match = tz;
 			break;
 		}
@@ -796,19 +753,7 @@ struct thermal_zone_device *thermal_zone_get_by_id(int id)
  * @tz:		pointer to struct thermal_zone_device
  * @trip:	trip point the cooling devices is associated with in this zone.
  * @cdev:	pointer to struct thermal_cooling_device
-<<<<<<< HEAD
- * @upper:	the Maximum cooling state for this trip point.
- *		THERMAL_NO_LIMIT means no upper limit,
- *		and the cooling device can be in max_state.
- * @lower:	the Minimum cooling state can be used for this trip point.
- *		THERMAL_NO_LIMIT means no lower limit,
- *		and the cooling device can be in cooling state 0.
- * @weight:	The weight of the cooling device to be bound to the
- *		thermal zone. Use THERMAL_WEIGHT_DEFAULT for the
- *		default value
-=======
  * @cool_spec:	cooling specification for @trip and @cdev
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This interface function bind a thermal cooling device to the certain trip
  * point of a thermal zone device.
@@ -816,38 +761,6 @@ struct thermal_zone_device *thermal_zone_get_by_id(int id)
  *
  * Return: 0 on success, the proper error value otherwise.
  */
-<<<<<<< HEAD
-int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
-				     const struct thermal_trip *trip,
-				     struct thermal_cooling_device *cdev,
-				     unsigned long upper, unsigned long lower,
-				     unsigned int weight)
-{
-	struct thermal_instance *dev;
-	struct thermal_instance *pos;
-	struct thermal_zone_device *pos1;
-	struct thermal_cooling_device *pos2;
-	bool upper_no_limit;
-	int result;
-
-	list_for_each_entry(pos1, &thermal_tz_list, node) {
-		if (pos1 == tz)
-			break;
-	}
-	list_for_each_entry(pos2, &thermal_cdev_list, node) {
-		if (pos2 == cdev)
-			break;
-	}
-
-	if (tz != pos1 || cdev != pos2)
-		return -EINVAL;
-
-	/* lower default 0, upper default max_state */
-	lower = lower == THERMAL_NO_LIMIT ? 0 : lower;
-
-	if (upper == THERMAL_NO_LIMIT) {
-		upper = cdev->max_state;
-=======
 static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
 				     const struct thermal_trip *trip,
 				     struct thermal_cooling_device *cdev,
@@ -864,32 +777,17 @@ static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
 
 	if (cool_spec->upper == THERMAL_NO_LIMIT) {
 		cool_spec->upper = cdev->max_state;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		upper_no_limit = true;
 	} else {
 		upper_no_limit = false;
 	}
 
-<<<<<<< HEAD
-	if (lower > upper || upper > cdev->max_state)
-=======
 	if (cool_spec->lower > cool_spec->upper || cool_spec->upper > cdev->max_state)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
 	if (!dev)
 		return -ENOMEM;
-<<<<<<< HEAD
-	dev->tz = tz;
-	dev->cdev = cdev;
-	dev->trip = trip;
-	dev->upper = upper;
-	dev->upper_no_limit = upper_no_limit;
-	dev->lower = lower;
-	dev->target = THERMAL_NO_TARGET;
-	dev->weight = weight;
-=======
 
 	dev->cdev = cdev;
 	dev->trip = trip;
@@ -898,7 +796,6 @@ static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
 	dev->lower = cool_spec->lower;
 	dev->target = THERMAL_NO_TARGET;
 	dev->weight = cool_spec->weight;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	result = ida_alloc(&tz->ida, GFP_KERNEL);
 	if (result < 0)
@@ -932,16 +829,9 @@ static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
 	if (result)
 		goto remove_trip_file;
 
-<<<<<<< HEAD
-	mutex_lock(&tz->lock);
-	mutex_lock(&cdev->lock);
-	list_for_each_entry(pos, &tz->thermal_instances, tz_node)
-		if (pos->tz == tz && pos->trip == trip && pos->cdev == cdev) {
-=======
 	mutex_lock(&cdev->lock);
 	list_for_each_entry(pos, &tz->thermal_instances, tz_node)
 		if (pos->trip == trip && pos->cdev == cdev) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			result = -EEXIST;
 			break;
 		}
@@ -953,10 +843,6 @@ static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
 		thermal_governor_update_tz(tz, THERMAL_TZ_BIND_CDEV);
 	}
 	mutex_unlock(&cdev->lock);
-<<<<<<< HEAD
-	mutex_unlock(&tz->lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!result)
 		return 0;
@@ -972,24 +858,6 @@ free_mem:
 	kfree(dev);
 	return result;
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(thermal_bind_cdev_to_trip);
-
-int thermal_zone_bind_cooling_device(struct thermal_zone_device *tz,
-				     int trip_index,
-				     struct thermal_cooling_device *cdev,
-				     unsigned long upper, unsigned long lower,
-				     unsigned int weight)
-{
-	if (trip_index < 0 || trip_index >= tz->num_trips)
-		return -EINVAL;
-
-	return thermal_bind_cdev_to_trip(tz, &tz->trips[trip_index].trip, cdev,
-					 upper, lower, weight);
-}
-EXPORT_SYMBOL_GPL(thermal_zone_bind_cooling_device);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * thermal_unbind_cdev_from_trip - unbind a cooling device from a thermal zone.
@@ -1000,21 +868,6 @@ EXPORT_SYMBOL_GPL(thermal_zone_bind_cooling_device);
  * This interface function unbind a thermal cooling device from the certain
  * trip point of a thermal zone device.
  * This function is usually called in the thermal zone device .unbind callback.
-<<<<<<< HEAD
- *
- * Return: 0 on success, the proper error value otherwise.
- */
-int thermal_unbind_cdev_from_trip(struct thermal_zone_device *tz,
-				  const struct thermal_trip *trip,
-				  struct thermal_cooling_device *cdev)
-{
-	struct thermal_instance *pos, *next;
-
-	mutex_lock(&tz->lock);
-	mutex_lock(&cdev->lock);
-	list_for_each_entry_safe(pos, next, &tz->thermal_instances, tz_node) {
-		if (pos->tz == tz && pos->trip == trip && pos->cdev == cdev) {
-=======
  */
 static void thermal_unbind_cdev_from_trip(struct thermal_zone_device *tz,
 					  const struct thermal_trip *trip,
@@ -1025,29 +878,18 @@ static void thermal_unbind_cdev_from_trip(struct thermal_zone_device *tz,
 	mutex_lock(&cdev->lock);
 	list_for_each_entry_safe(pos, next, &tz->thermal_instances, tz_node) {
 		if (pos->trip == trip && pos->cdev == cdev) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			list_del(&pos->tz_node);
 			list_del(&pos->cdev_node);
 
 			thermal_governor_update_tz(tz, THERMAL_TZ_UNBIND_CDEV);
 
 			mutex_unlock(&cdev->lock);
-<<<<<<< HEAD
-			mutex_unlock(&tz->lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto unbind;
 		}
 	}
 	mutex_unlock(&cdev->lock);
-<<<<<<< HEAD
-	mutex_unlock(&tz->lock);
-
-	return -ENODEV;
-=======
 
 	return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 unbind:
 	device_remove_file(&tz->device, &pos->weight_attr);
@@ -1055,24 +897,7 @@ unbind:
 	sysfs_remove_link(&tz->device.kobj, pos->name);
 	ida_free(&tz->ida, pos->id);
 	kfree(pos);
-<<<<<<< HEAD
-	return 0;
 }
-EXPORT_SYMBOL_GPL(thermal_unbind_cdev_from_trip);
-
-int thermal_zone_unbind_cooling_device(struct thermal_zone_device *tz,
-				       int trip_index,
-				       struct thermal_cooling_device *cdev)
-{
-	if (trip_index < 0 || trip_index >= tz->num_trips)
-		return -EINVAL;
-
-	return thermal_unbind_cdev_from_trip(tz, &tz->trips[trip_index].trip, cdev);
-}
-EXPORT_SYMBOL_GPL(thermal_zone_unbind_cooling_device);
-=======
-}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void thermal_release(struct device *dev)
 {
@@ -1099,26 +924,6 @@ static struct class *thermal_class;
 
 static inline
 void print_bind_err_msg(struct thermal_zone_device *tz,
-<<<<<<< HEAD
-			struct thermal_cooling_device *cdev, int ret)
-{
-	dev_err(&tz->device, "binding zone %s with cdev %s failed:%d\n",
-		tz->type, cdev->type, ret);
-}
-
-static void bind_cdev(struct thermal_cooling_device *cdev)
-{
-	int ret;
-	struct thermal_zone_device *pos = NULL;
-
-	list_for_each_entry(pos, &thermal_tz_list, node) {
-		if (pos->ops.bind) {
-			ret = pos->ops.bind(pos, cdev);
-			if (ret)
-				print_bind_err_msg(pos, cdev, ret);
-		}
-	}
-=======
 			const struct thermal_trip *trip,
 			struct thermal_cooling_device *cdev, int ret)
 {
@@ -1154,7 +959,6 @@ static void thermal_zone_cdev_bind(struct thermal_zone_device *tz,
 	}
 
 	mutex_unlock(&tz->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1252,12 +1056,8 @@ __thermal_cooling_device_register(struct device_node *np,
 	list_add(&cdev->node, &thermal_cdev_list);
 
 	/* Update binding information for 'this' new cdev */
-<<<<<<< HEAD
-	bind_cdev(cdev);
-=======
 	list_for_each_entry(pos, &thermal_tz_list, node)
 		thermal_zone_cdev_bind(pos, cdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_for_each_entry(pos, &thermal_tz_list, node)
 		if (atomic_cmpxchg(&pos->need_update, 1, 0))
@@ -1458,8 +1258,6 @@ unlock_list:
 }
 EXPORT_SYMBOL_GPL(thermal_cooling_device_update);
 
-<<<<<<< HEAD
-=======
 static void thermal_zone_cdev_unbind(struct thermal_zone_device *tz,
 				     struct thermal_cooling_device *cdev)
 {
@@ -1473,7 +1271,6 @@ static void thermal_zone_cdev_unbind(struct thermal_zone_device *tz,
 	mutex_unlock(&tz->lock);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * thermal_cooling_device_unregister - removes a thermal cooling device
  * @cdev:	the thermal cooling device to remove.
@@ -1500,15 +1297,8 @@ void thermal_cooling_device_unregister(struct thermal_cooling_device *cdev)
 	list_del(&cdev->node);
 
 	/* Unbind all thermal zones associated with 'this' cdev */
-<<<<<<< HEAD
-	list_for_each_entry(tz, &thermal_tz_list, node) {
-		if (tz->ops.unbind)
-			tz->ops.unbind(tz, cdev);
-	}
-=======
 	list_for_each_entry(tz, &thermal_tz_list, node)
 		thermal_zone_cdev_unbind(tz, cdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&thermal_list_lock);
 
@@ -1516,35 +1306,6 @@ void thermal_cooling_device_unregister(struct thermal_cooling_device *cdev)
 }
 EXPORT_SYMBOL_GPL(thermal_cooling_device_unregister);
 
-<<<<<<< HEAD
-static void bind_tz(struct thermal_zone_device *tz)
-{
-	int ret;
-	struct thermal_cooling_device *pos = NULL;
-
-	if (!tz->ops.bind)
-		return;
-
-	mutex_lock(&thermal_list_lock);
-
-	list_for_each_entry(pos, &thermal_cdev_list, node) {
-		ret = tz->ops.bind(tz, pos);
-		if (ret)
-			print_bind_err_msg(tz, pos, ret);
-	}
-
-	mutex_unlock(&thermal_list_lock);
-}
-
-static void thermal_set_delay_jiffies(unsigned long *delay_jiffies, int delay_ms)
-{
-	*delay_jiffies = msecs_to_jiffies(delay_ms);
-	if (delay_ms > 1000)
-		*delay_jiffies = round_jiffies(*delay_jiffies);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int thermal_zone_get_crit_temp(struct thermal_zone_device *tz, int *temp)
 {
 	const struct thermal_trip_desc *td;
@@ -1605,10 +1366,7 @@ thermal_zone_device_register_with_trips(const char *type,
 					unsigned int polling_delay)
 {
 	const struct thermal_trip *trip = trips;
-<<<<<<< HEAD
-=======
 	struct thermal_cooling_device *cdev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct thermal_zone_device *tz;
 	struct thermal_trip_desc *td;
 	int id;
@@ -1632,29 +1390,15 @@ thermal_zone_device_register_with_trips(const char *type,
 	}
 
 	if (!ops || !ops->get_temp) {
-<<<<<<< HEAD
-		pr_err("Thermal zone device ops not defined\n");
-=======
 		pr_err("Thermal zone device ops not defined or invalid\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ERR_PTR(-EINVAL);
 	}
 
 	if (num_trips > 0 && !trips)
 		return ERR_PTR(-EINVAL);
 
-<<<<<<< HEAD
-	if (polling_delay) {
-		if (passive_delay > polling_delay)
-			return ERR_PTR(-EINVAL);
-
-		if (!passive_delay)
-			passive_delay = polling_delay;
-	}
-=======
 	if (polling_delay && passive_delay > polling_delay)
 		return ERR_PTR(-EINVAL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!thermal_class)
 		return ERR_PTR(-ENODEV);
@@ -1703,13 +1447,8 @@ thermal_zone_device_register_with_trips(const char *type,
 		td->threshold = INT_MAX;
 	}
 
-<<<<<<< HEAD
-	thermal_set_delay_jiffies(&tz->passive_delay_jiffies, passive_delay);
-	thermal_set_delay_jiffies(&tz->polling_delay_jiffies, polling_delay);
-=======
 	tz->polling_delay_jiffies = msecs_to_jiffies(polling_delay);
 	tz->passive_delay_jiffies = msecs_to_jiffies(passive_delay);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tz->recheck_delay_jiffies = THERMAL_RECHECK_DELAY;
 
 	/* sys I/F */
@@ -1753,15 +1492,6 @@ thermal_zone_device_register_with_trips(const char *type,
 	}
 
 	mutex_lock(&thermal_list_lock);
-<<<<<<< HEAD
-	mutex_lock(&tz->lock);
-	list_add_tail(&tz->node, &thermal_tz_list);
-	mutex_unlock(&tz->lock);
-	mutex_unlock(&thermal_list_lock);
-
-	/* Bind cooling devices for this zone */
-	bind_tz(tz);
-=======
 
 	mutex_lock(&tz->lock);
 	list_add_tail(&tz->node, &thermal_tz_list);
@@ -1772,7 +1502,6 @@ thermal_zone_device_register_with_trips(const char *type,
 		thermal_zone_cdev_bind(tz, cdev);
 
 	mutex_unlock(&thermal_list_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	thermal_zone_device_init(tz);
 	/* Update the new thermal zone and mark it as already updated. */
@@ -1864,12 +1593,7 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
 
 	/* Unbind all cdevs associated with 'this' thermal zone */
 	list_for_each_entry(cdev, &thermal_cdev_list, node)
-<<<<<<< HEAD
-		if (tz->ops.unbind)
-			tz->ops.unbind(tz, cdev);
-=======
 		thermal_zone_cdev_unbind(tz, cdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&thermal_list_lock);
 
@@ -1882,21 +1606,12 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
 	ida_destroy(&tz->ida);
 
 	device_del(&tz->device);
-<<<<<<< HEAD
-
-	kfree(tz->tzp);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	put_device(&tz->device);
 
 	thermal_notify_tz_delete(tz);
 
 	wait_for_completion(&tz->removal);
-<<<<<<< HEAD
-=======
 	kfree(tz->tzp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(tz);
 }
 EXPORT_SYMBOL_GPL(thermal_zone_device_unregister);

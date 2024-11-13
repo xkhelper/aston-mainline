@@ -466,15 +466,6 @@ static struct workqueue_struct *flushwq;
  *******************************************************************/
 
 /*
-<<<<<<< HEAD
- * freeptr_t represents a SLUB freelist pointer, which might be encoded
- * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
- */
-typedef struct { unsigned long v; } freeptr_t;
-
-/*
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Returns freelist pointer (ptr). With hardening, this is obfuscated
  * with an XOR of the address where the pointer is held and a per-cache
  * random number.
@@ -759,8 +750,6 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
 	return false;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * kmalloc caches has fixed sizes (mostly power of 2), and kmalloc() API
  * family will round up the real request size to these fixed ones, so
@@ -805,7 +794,6 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
 	return *(unsigned int *)p;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SLUB_DEBUG
 static unsigned long object_map[BITS_TO_LONGS(MAX_OBJS_PER_PAGE)];
 static DEFINE_SPINLOCK(object_map_lock);
@@ -839,11 +827,7 @@ static bool slab_add_kunit_errors(void)
 	return true;
 }
 
-<<<<<<< HEAD
-static bool slab_in_kunit_test(void)
-=======
 bool slab_in_kunit_test(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct kunit_resource *resource;
 
@@ -859,10 +843,6 @@ bool slab_in_kunit_test(void)
 }
 #else
 static inline bool slab_add_kunit_errors(void) { return false; }
-<<<<<<< HEAD
-static inline bool slab_in_kunit_test(void) { return false; }
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 static inline unsigned int size_from_object(struct kmem_cache *s)
@@ -1042,53 +1022,6 @@ static void print_slab_info(const struct slab *slab)
 	       &slab->__page_flags);
 }
 
-<<<<<<< HEAD
-/*
- * kmalloc caches has fixed sizes (mostly power of 2), and kmalloc() API
- * family will round up the real request size to these fixed ones, so
- * there could be an extra area than what is requested. Save the original
- * request size in the meta data area, for better debug and sanity check.
- */
-static inline void set_orig_size(struct kmem_cache *s,
-				void *object, unsigned int orig_size)
-{
-	void *p = kasan_reset_tag(object);
-	unsigned int kasan_meta_size;
-
-	if (!slub_debug_orig_size(s))
-		return;
-
-	/*
-	 * KASAN can save its free meta data inside of the object at offset 0.
-	 * If this meta data size is larger than 'orig_size', it will overlap
-	 * the data redzone in [orig_size+1, object_size]. Thus, we adjust
-	 * 'orig_size' to be as at least as big as KASAN's meta data.
-	 */
-	kasan_meta_size = kasan_metadata_size(s, true);
-	if (kasan_meta_size > orig_size)
-		orig_size = kasan_meta_size;
-
-	p += get_info_end(s);
-	p += sizeof(struct track) * 2;
-
-	*(unsigned int *)p = orig_size;
-}
-
-static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
-{
-	void *p = kasan_reset_tag(object);
-
-	if (!slub_debug_orig_size(s))
-		return s->object_size;
-
-	p += get_info_end(s);
-	p += sizeof(struct track) * 2;
-
-	return *(unsigned int *)p;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void skip_orig_size_check(struct kmem_cache *s, const void *object)
 {
 	set_orig_size(s, (void *)object, s->object_size);
@@ -1954,10 +1887,6 @@ static inline void inc_slabs_node(struct kmem_cache *s, int node,
 							int objects) {}
 static inline void dec_slabs_node(struct kmem_cache *s, int node,
 							int objects) {}
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef CONFIG_SLUB_TINY
 static bool freelist_corrupted(struct kmem_cache *s, struct slab *slab,
 			       void **freelist, void *nextfree)
@@ -2252,8 +2181,6 @@ void memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
 
 	__memcg_slab_free_hook(s, slab, p, objects, obj_exts);
 }
-<<<<<<< HEAD
-=======
 
 static __fastpath_inline
 bool memcg_slab_post_charge(void *p, gfp_t flags)
@@ -2293,7 +2220,6 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
 	return __memcg_slab_post_alloc_hook(s, NULL, flags, 1, &p);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else /* CONFIG_MEMCG */
 static inline bool memcg_slab_post_alloc_hook(struct kmem_cache *s,
 					      struct list_lru *lru,
@@ -2307,10 +2233,6 @@ static inline void memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
 					void **p, int objects)
 {
 }
-<<<<<<< HEAD
-#endif /* CONFIG_MEMCG */
-
-=======
 
 static inline bool memcg_slab_post_charge(void *p, gfp_t flags)
 {
@@ -2327,19 +2249,11 @@ struct rcu_delayed_free {
 };
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Hooks for other subsystems that check memory allocations. In a typical
  * production configuration these hooks all should produce no code at all.
  *
  * Returns true if freeing of the object can proceed, false if its reuse
-<<<<<<< HEAD
- * was delayed by KASAN quarantine, or it was returned to KFENCE.
- */
-static __always_inline
-bool slab_free_hook(struct kmem_cache *s, void *x, bool init)
-{
-=======
  * was delayed by CONFIG_SLUB_RCU_DEBUG or KASAN quarantine, or it was returned
  * to KFENCE.
  */
@@ -2350,7 +2264,6 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
 	/* Are the object contents still accessible? */
 	bool still_accessible = (s->flags & SLAB_TYPESAFE_BY_RCU) && !after_rcu_delay;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kmemleak_free_recursive(x, s->flags);
 	kmsan_slab_free(s, x);
 
@@ -2360,11 +2273,7 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
 		debug_check_no_obj_freed(x, s->object_size);
 
 	/* Use KCSAN to help debug racy use-after-free. */
-<<<<<<< HEAD
-	if (!(s->flags & SLAB_TYPESAFE_BY_RCU))
-=======
 	if (!still_accessible)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__kcsan_check_access(x, s->object_size,
 				     KCSAN_ACCESS_WRITE | KCSAN_ACCESS_ASSERT);
 
@@ -2372,8 +2281,6 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
 		return false;
 
 	/*
-<<<<<<< HEAD
-=======
 	 * Give KASAN a chance to notice an invalid free operation before we
 	 * modify the object.
 	 */
@@ -2403,7 +2310,6 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
 #endif /* CONFIG_SLUB_RCU_DEBUG */
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * As memory initialization might be integrated into KASAN,
 	 * kasan_slab_free and initialization memset's must be
 	 * kept together to avoid discrepancies in behavior.
@@ -2416,19 +2322,6 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
 	 */
 	if (unlikely(init)) {
 		int rsize;
-<<<<<<< HEAD
-		unsigned int inuse;
-
-		inuse = get_info_end(s);
-		if (!kasan_has_integrated_init())
-			memset(kasan_reset_tag(x), 0, s->object_size);
-		rsize = (s->flags & SLAB_RED_ZONE) ? s->red_left_pad : 0;
-		memset((char *)kasan_reset_tag(x) + inuse, 0,
-		       s->size - inuse - rsize);
-	}
-	/* KASAN might put x into memory quarantine, delaying its reuse. */
-	return !kasan_slab_free(s, x, init);
-=======
 		unsigned int inuse, orig_size;
 
 		inuse = get_info_end(s);
@@ -2447,7 +2340,6 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
 	}
 	/* KASAN might put x into memory quarantine, delaying its reuse. */
 	return !kasan_slab_free(s, x, init, still_accessible);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static __fastpath_inline
@@ -2461,11 +2353,7 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
 	bool init;
 
 	if (is_kfence_address(next)) {
-<<<<<<< HEAD
-		slab_free_hook(s, next, false);
-=======
 		slab_free_hook(s, next, false, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 	}
 
@@ -2480,11 +2368,7 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
 		next = get_freepointer(s, object);
 
 		/* If object's reuse doesn't have to be delayed */
-<<<<<<< HEAD
-		if (likely(slab_free_hook(s, object, init))) {
-=======
 		if (likely(slab_free_hook(s, object, init, false))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* Move object to the new freelist */
 			set_freepointer(s, object, *head);
 			*head = object;
@@ -2524,15 +2408,11 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
 	struct slab *slab;
 	unsigned int order = oo_order(oo);
 
-<<<<<<< HEAD
-	folio = (struct folio *)alloc_pages_node(node, flags, order);
-=======
 	if (node == NUMA_NO_NODE)
 		folio = (struct folio *)alloc_pages(flags, order);
 	else
 		folio = (struct folio *)__alloc_pages_node(node, flags, order);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!folio)
 		return NULL;
 
@@ -3630,23 +3510,15 @@ slab_out_of_memory(struct kmem_cache *s, gfp_t gfpflags, int nid)
 {
 	static DEFINE_RATELIMIT_STATE(slub_oom_rs, DEFAULT_RATELIMIT_INTERVAL,
 				      DEFAULT_RATELIMIT_BURST);
-<<<<<<< HEAD
-=======
 	int cpu = raw_smp_processor_id();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int node;
 	struct kmem_cache_node *n;
 
 	if ((gfpflags & __GFP_NOWARN) || !__ratelimit(&slub_oom_rs))
 		return;
 
-<<<<<<< HEAD
-	pr_warn("SLUB: Unable to allocate memory on node %d, gfp=%#x(%pGg)\n",
-		nid, gfpflags, &gfpflags);
-=======
 	pr_warn("SLUB: Unable to allocate memory on CPU %u (of node %d) on node %d, gfp=%#x(%pGg)\n",
 		cpu, cpu_to_node(cpu), nid, gfpflags, &gfpflags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_warn("  cache: %s, object size: %u, buffer size: %u, default order: %u, min order: %u\n",
 		s->name, s->object_size, s->size, oo_order(s->oo),
 		oo_order(s->min));
@@ -4144,11 +4016,8 @@ static void *__slab_alloc_node(struct kmem_cache *s,
 /*
  * If the object has been wiped upon free, make sure it's fully initialized by
  * zeroing out freelist pointer.
-<<<<<<< HEAD
-=======
  *
  * Note that we also wipe custom freelist pointers.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static __always_inline void maybe_wipe_obj_freeptr(struct kmem_cache *s,
 						   void *obj)
@@ -4290,8 +4159,6 @@ void *kmem_cache_alloc_lru_noprof(struct kmem_cache *s, struct list_lru *lru,
 }
 EXPORT_SYMBOL(kmem_cache_alloc_lru_noprof);
 
-<<<<<<< HEAD
-=======
 bool kmem_cache_charge(void *objp, gfp_t gfpflags)
 {
 	if (!memcg_kmem_online())
@@ -4301,7 +4168,6 @@ bool kmem_cache_charge(void *objp, gfp_t gfpflags)
 }
 EXPORT_SYMBOL(kmem_cache_charge);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * kmem_cache_alloc_node - Allocate an object on the specified node
  * @s: The cache to allocate from.
@@ -4710,11 +4576,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
 	memcg_slab_free_hook(s, slab, &object, 1);
 	alloc_tagging_slab_free_hook(s, slab, &object, 1);
 
-<<<<<<< HEAD
-	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s))))
-=======
 	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		do_slab_free(s, slab, object, object, 1, addr);
 }
 
@@ -4723,11 +4585,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
 static noinline
 void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
 {
-<<<<<<< HEAD
-	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s))))
-=======
 	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
 }
 #endif
@@ -4746,8 +4604,6 @@ void slab_free_bulk(struct kmem_cache *s, struct slab *slab, void *head,
 		do_slab_free(s, slab, head, tail, cnt, addr);
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_SLUB_RCU_DEBUG
 static void slab_free_after_rcu_debug(struct rcu_head *rcu_head)
 {
@@ -4775,7 +4631,6 @@ static void slab_free_after_rcu_debug(struct rcu_head *rcu_head)
 }
 #endif /* CONFIG_SLUB_RCU_DEBUG */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_KASAN_GENERIC
 void ___cache_free(struct kmem_cache *cache, void *x, unsigned long addr)
 {
@@ -5426,11 +5281,7 @@ static void set_cpu_partial(struct kmem_cache *s)
  * calculate_sizes() determines the order and the distribution of data within
  * a slab object.
  */
-<<<<<<< HEAD
-static int calculate_sizes(struct kmem_cache *s)
-=======
 static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	slab_flags_t flags = s->flags;
 	unsigned int size = s->object_size;
@@ -5471,12 +5322,8 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
 	 */
 	s->inuse = size;
 
-<<<<<<< HEAD
-	if ((flags & (SLAB_TYPESAFE_BY_RCU | SLAB_POISON)) || s->ctor ||
-=======
 	if (((flags & SLAB_TYPESAFE_BY_RCU) && !args->use_freeptr_offset) ||
 	    (flags & SLAB_POISON) || s->ctor ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    ((flags & SLAB_RED_ZONE) &&
 	     (s->object_size < sizeof(void *) || slub_debug_orig_size(s)))) {
 		/*
@@ -5497,11 +5344,8 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
 		 */
 		s->offset = size;
 		size += sizeof(void *);
-<<<<<<< HEAD
-=======
 	} else if ((flags & SLAB_TYPESAFE_BY_RCU) && args->use_freeptr_offset) {
 		s->offset = args->freeptr_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		/*
 		 * Store freelist pointer near middle of object to keep
@@ -5576,68 +5420,6 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
 	return !!oo_objects(s->oo);
 }
 
-<<<<<<< HEAD
-static int kmem_cache_open(struct kmem_cache *s, slab_flags_t flags)
-{
-	s->flags = kmem_cache_flags(flags, s->name);
-#ifdef CONFIG_SLAB_FREELIST_HARDENED
-	s->random = get_random_long();
-#endif
-
-	if (!calculate_sizes(s))
-		goto error;
-	if (disable_higher_order_debug) {
-		/*
-		 * Disable debugging flags that store metadata if the min slab
-		 * order increased.
-		 */
-		if (get_order(s->size) > get_order(s->object_size)) {
-			s->flags &= ~DEBUG_METADATA_FLAGS;
-			s->offset = 0;
-			if (!calculate_sizes(s))
-				goto error;
-		}
-	}
-
-#ifdef system_has_freelist_aba
-	if (system_has_freelist_aba() && !(s->flags & SLAB_NO_CMPXCHG)) {
-		/* Enable fast mode */
-		s->flags |= __CMPXCHG_DOUBLE;
-	}
-#endif
-
-	/*
-	 * The larger the object size is, the more slabs we want on the partial
-	 * list to avoid pounding the page allocator excessively.
-	 */
-	s->min_partial = min_t(unsigned long, MAX_PARTIAL, ilog2(s->size) / 2);
-	s->min_partial = max_t(unsigned long, MIN_PARTIAL, s->min_partial);
-
-	set_cpu_partial(s);
-
-#ifdef CONFIG_NUMA
-	s->remote_node_defrag_ratio = 1000;
-#endif
-
-	/* Initialize the pre-computed randomized freelist if slab is up */
-	if (slab_state >= UP) {
-		if (init_cache_random_seq(s))
-			goto error;
-	}
-
-	if (!init_kmem_cache_nodes(s))
-		goto error;
-
-	if (alloc_kmem_cache_cpus(s))
-		return 0;
-
-error:
-	__kmem_cache_release(s);
-	return -EINVAL;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void list_slab_objects(struct kmem_cache *s, struct slab *slab,
 			      const char *text)
 {
@@ -5653,11 +5435,8 @@ static void list_slab_objects(struct kmem_cache *s, struct slab *slab,
 	for_each_object(p, s, addr, slab->objects) {
 
 		if (!test_bit(__obj_to_index(s, addr, p), object_map)) {
-<<<<<<< HEAD
-=======
 			if (slab_add_kunit_errors())
 				continue;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pr_err("Object 0x%p @offset=%tu\n", p, p - addr);
 			print_tracking(s, p);
 		}
@@ -6196,25 +5975,6 @@ __kmem_cache_alias(const char *name, unsigned int size, unsigned int align,
 	return s;
 }
 
-<<<<<<< HEAD
-int __kmem_cache_create(struct kmem_cache *s, slab_flags_t flags)
-{
-	int err;
-
-	err = kmem_cache_open(s, flags);
-	if (err)
-		return err;
-
-	/* Mutex is not taken during early boot */
-	if (slab_state <= UP)
-		return 0;
-
-	err = sysfs_slab_add(s);
-	if (err) {
-		__kmem_cache_release(s);
-		return err;
-	}
-=======
 int do_kmem_cache_create(struct kmem_cache *s, const char *name,
 			 unsigned int size, struct kmem_cache_args *args,
 			 slab_flags_t flags)
@@ -6291,19 +6051,14 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
 	err = sysfs_slab_add(s);
 	if (err)
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (s->flags & SLAB_STORE_USER)
 		debugfs_slab_add(s);
 
-<<<<<<< HEAD
-	return 0;
-=======
 out:
 	if (err)
 		__kmem_cache_release(s);
 	return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef SLAB_SUPPORTS_SYSFS

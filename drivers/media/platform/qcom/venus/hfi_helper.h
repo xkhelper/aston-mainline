@@ -761,11 +761,7 @@ struct hfi_multi_stream_3x {
 
 struct hfi_multi_view_format {
 	u32 views;
-<<<<<<< HEAD
-	u32 view_order[1];
-=======
 	u32 view_order[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define HFI_MULTI_SLICE_OFF			0x1
@@ -1009,21 +1005,13 @@ struct hfi_uncompressed_plane_constraints {
 struct hfi_uncompressed_plane_info {
 	u32 format;
 	u32 num_planes;
-<<<<<<< HEAD
-	struct hfi_uncompressed_plane_constraints plane_constraints[1];
-=======
 	struct hfi_uncompressed_plane_constraints plane_constraints;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_uncompressed_format_supported {
 	u32 buffer_type;
 	u32 format_entries;
-<<<<<<< HEAD
-	struct hfi_uncompressed_plane_info plane_info[1];
-=======
 	struct hfi_uncompressed_plane_info plane_info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_uncompressed_plane_actual {
@@ -1050,11 +1038,7 @@ struct hfi_codec_supported {
 
 struct hfi_properties_supported {
 	u32 num_properties;
-<<<<<<< HEAD
-	u32 properties[1];
-=======
 	u32 properties[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_max_sessions_supported {
@@ -1101,20 +1085,12 @@ struct hfi_resource_ocmem_requirement {
 
 struct hfi_resource_ocmem_requirement_info {
 	u32 num_entries;
-<<<<<<< HEAD
-	struct hfi_resource_ocmem_requirement requirements[1];
-=======
 	struct hfi_resource_ocmem_requirement requirements[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_property_sys_image_version_info_type {
 	u32 string_size;
-<<<<<<< HEAD
-	u8  str_image_version[1];
-=======
 	u8  str_image_version[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_codec_mask_supported {
@@ -1165,11 +1141,7 @@ struct hfi_extradata_header {
 	u32 port_index;
 	u32 type;
 	u32 data_size;
-<<<<<<< HEAD
-	u8 data[1];
-=======
 	u8 data[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_batch_info {
@@ -1264,11 +1236,7 @@ static inline void hfi_bufreq_set_count_min_host(struct hfi_buffer_requirements 
 
 struct hfi_data_payload {
 	u32 size;
-<<<<<<< HEAD
-	u8 data[1];
-=======
 	u8 data[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_enable_picture {
@@ -1296,20 +1264,12 @@ struct hfi_interlace_format_supported {
 struct hfi_buffer_alloc_mode_supported {
 	u32 buffer_type;
 	u32 num_entries;
-<<<<<<< HEAD
-	u32 data[1];
-=======
 	u32 data[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_mb_error_map {
 	u32 error_map_size;
-<<<<<<< HEAD
-	u8 error_map[1];
-=======
 	u8 error_map[];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct hfi_metadata_pass_through {

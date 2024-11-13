@@ -64,33 +64,15 @@ xfs_filestream_pick_ag(
 	struct xfs_perag	*pag;
 	struct xfs_perag	*max_pag = NULL;
 	xfs_extlen_t		minlen = *longest;
-<<<<<<< HEAD
-	xfs_extlen_t		free = 0, minfree, maxfree = 0;
-	xfs_agnumber_t		agno;
-	bool			first_pass = true;
-	int			err;
-=======
 	xfs_extlen_t		minfree, maxfree = 0;
 	xfs_agnumber_t		agno;
 	bool			first_pass = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* 2% of an AG's blocks must be free for it to be chosen. */
 	minfree = mp->m_sb.sb_agblocks / 50;
 
 restart:
 	for_each_perag_wrap(mp, start_agno, agno, pag) {
-<<<<<<< HEAD
-		trace_xfs_filestream_scan(pag, pino);
-		*longest = 0;
-		err = xfs_bmap_longest_free_extent(pag, NULL, longest);
-		if (err) {
-			if (err != -EAGAIN)
-				break;
-			/* Couldn't lock the AGF, skip this AG. */
-			err = 0;
-			continue;
-=======
 		int		err;
 
 		trace_xfs_filestream_scan(pag, pino);
@@ -107,7 +89,6 @@ restart:
 			if (max_pag)
 				xfs_perag_rele(max_pag);
 			return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		/* Keep track of the AG with the most free blocks. */
@@ -132,14 +113,9 @@ restart:
 			     !(flags & XFS_PICK_USERDATA) ||
 			     (flags & XFS_PICK_LOWSPACE))) {
 				/* Break out, retaining the reference on the AG. */
-<<<<<<< HEAD
-				free = pag->pagf_freeblks;
-				break;
-=======
 				if (max_pag)
 					xfs_perag_rele(max_pag);
 				goto done;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 
@@ -147,59 +123,6 @@ restart:
 		atomic_dec(&pag->pagf_fstrms);
 	}
 
-<<<<<<< HEAD
-	if (err) {
-		xfs_perag_rele(pag);
-		if (max_pag)
-			xfs_perag_rele(max_pag);
-		return err;
-	}
-
-	if (!pag) {
-		/*
-		 * Allow a second pass to give xfs_bmap_longest_free_extent()
-		 * another attempt at locking AGFs that it might have skipped
-		 * over before we fail.
-		 */
-		if (first_pass) {
-			first_pass = false;
-			goto restart;
-		}
-
-		/*
-		 * We must be low on data space, so run a final lowspace
-		 * optimised selection pass if we haven't already.
-		 */
-		if (!(flags & XFS_PICK_LOWSPACE)) {
-			flags |= XFS_PICK_LOWSPACE;
-			goto restart;
-		}
-
-		/*
-		 * No unassociated AGs are available, so select the AG with the
-		 * most free space, regardless of whether it's already in use by
-		 * another filestream. It none suit, just use whatever AG we can
-		 * grab.
-		 */
-		if (!max_pag) {
-			for_each_perag_wrap(args->mp, 0, start_agno, args->pag)
-				break;
-			atomic_inc(&args->pag->pagf_fstrms);
-			*longest = 0;
-		} else {
-			pag = max_pag;
-			free = maxfree;
-			atomic_inc(&pag->pagf_fstrms);
-		}
-	} else if (max_pag) {
-		xfs_perag_rele(max_pag);
-	}
-
-	trace_xfs_filestream_pick(pag, pino, free);
-	args->pag = pag;
-	return 0;
-
-=======
 	/*
 	 * Allow a second pass to give xfs_bmap_longest_free_extent() another
 	 * attempt at locking AGFs that it might have skipped over before we
@@ -241,7 +164,6 @@ done:
 	trace_xfs_filestream_pick(pag, pino);
 	args->pag = pag;
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct xfs_inode *

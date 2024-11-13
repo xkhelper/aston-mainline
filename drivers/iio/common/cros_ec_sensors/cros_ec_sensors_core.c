@@ -198,13 +198,7 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
 		return 0;
 
 	out = (s16 *)st->samples;
-<<<<<<< HEAD
-	for_each_set_bit(i,
-			 indio_dev->active_scan_mask,
-			 indio_dev->masklength) {
-=======
 	iio_for_each_active_channel(indio_dev, i) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*out = data[i];
 		out++;
 	}
@@ -591,11 +585,7 @@ static int cros_ec_sensors_read_data_unsafe(struct iio_dev *indio_dev,
 	int ret;
 
 	/* Read all sensors enabled in scan_mask. Each value is 2 bytes. */
-<<<<<<< HEAD
-	for_each_set_bit(i, &scan_mask, indio_dev->masklength) {
-=======
 	for_each_set_bit(i, &scan_mask, iio_get_masklength(indio_dev)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = cros_ec_sensors_cmd_read_u16(ec,
 					     cros_ec_sensors_idx_to_reg(st, i),
 					     data);
@@ -691,11 +681,7 @@ int cros_ec_sensors_read_cmd(struct iio_dev *indio_dev,
 		return ret;
 	}
 
-<<<<<<< HEAD
-	for_each_set_bit(i, &scan_mask, indio_dev->masklength) {
-=======
 	for_each_set_bit(i, &scan_mask, iio_get_masklength(indio_dev)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*data = st->resp->data.data[i];
 		data++;
 	}

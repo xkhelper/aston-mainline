@@ -34,10 +34,7 @@
 #include <linux/pseudo_fs.h>
 #include <linux/slab.h>
 #include <linux/srcu.h>
-<<<<<<< HEAD
-=======
 #include <linux/xarray.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/drm_accel.h>
 #include <drm/drm_cache.h>
@@ -58,12 +55,7 @@ MODULE_AUTHOR("Gareth Hughes, Leif Delgass, José Fonseca, Jon Smirl");
 MODULE_DESCRIPTION("DRM shared core routines");
 MODULE_LICENSE("GPL and additional rights");
 
-<<<<<<< HEAD
-static DEFINE_SPINLOCK(drm_minor_lock);
-static struct idr drm_minors_idr;
-=======
 DEFINE_XARRAY_ALLOC(drm_minors_xa);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * If the drm core fails to init for whatever reason,
@@ -91,8 +83,6 @@ DEFINE_STATIC_SRCU(drm_unplug_srcu);
  * registered and unregistered dynamically according to device-state.
  */
 
-<<<<<<< HEAD
-=======
 static struct xarray *drm_minor_get_xa(enum drm_minor_type type)
 {
 	if (type == DRM_MINOR_PRIMARY || type == DRM_MINOR_RENDER)
@@ -105,7 +95,6 @@ static struct xarray *drm_minor_get_xa(enum drm_minor_type type)
 		return ERR_PTR(-EOPNOTSUPP);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct drm_minor **drm_minor_get_slot(struct drm_device *dev,
 					     enum drm_minor_type type)
 {
@@ -124,30 +113,11 @@ static struct drm_minor **drm_minor_get_slot(struct drm_device *dev,
 static void drm_minor_alloc_release(struct drm_device *dev, void *data)
 {
 	struct drm_minor *minor = data;
-<<<<<<< HEAD
-	unsigned long flags;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	WARN_ON(dev != minor->dev);
 
 	put_device(minor->kdev);
 
-<<<<<<< HEAD
-	if (minor->type == DRM_MINOR_ACCEL) {
-		accel_minor_remove(minor->index);
-	} else {
-		spin_lock_irqsave(&drm_minor_lock, flags);
-		idr_remove(&drm_minors_idr, minor->index);
-		spin_unlock_irqrestore(&drm_minor_lock, flags);
-	}
-}
-
-static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
-{
-	struct drm_minor *minor;
-	unsigned long flags;
-=======
 	xa_erase(drm_minor_get_xa(minor->type), minor->index);
 }
 
@@ -168,7 +138,6 @@ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
 static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
 {
 	struct drm_minor *minor;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int r;
 
 	minor = drmm_kzalloc(dev, sizeof(*minor), GFP_KERNEL);
@@ -178,27 +147,6 @@ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
 	minor->type = type;
 	minor->dev = dev;
 
-<<<<<<< HEAD
-	idr_preload(GFP_KERNEL);
-	if (type == DRM_MINOR_ACCEL) {
-		r = accel_minor_alloc();
-	} else {
-		spin_lock_irqsave(&drm_minor_lock, flags);
-		r = idr_alloc(&drm_minors_idr,
-			NULL,
-			64 * type,
-			64 * (type + 1),
-			GFP_NOWAIT);
-		spin_unlock_irqrestore(&drm_minor_lock, flags);
-	}
-	idr_preload_end();
-
-	if (r < 0)
-		return r;
-
-	minor->index = r;
-
-=======
 	r = xa_alloc(drm_minor_get_xa(type), &minor->index,
 		     NULL, DRM_MINOR_LIMIT(type), GFP_KERNEL);
 	if (r == -EBUSY && (type == DRM_MINOR_PRIMARY || type == DRM_MINOR_RENDER))
@@ -207,7 +155,6 @@ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
 	if (r < 0)
 		return r;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	r = drmm_add_action_or_reset(dev, drm_minor_alloc_release, minor);
 	if (r)
 		return r;
@@ -223,11 +170,7 @@ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
 static int drm_minor_register(struct drm_device *dev, enum drm_minor_type type)
 {
 	struct drm_minor *minor;
-<<<<<<< HEAD
-	unsigned long flags;
-=======
 	void *entry;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	DRM_DEBUG("\n");
@@ -250,22 +193,12 @@ static int drm_minor_register(struct drm_device *dev, enum drm_minor_type type)
 		goto err_debugfs;
 
 	/* replace NULL with @minor so lookups will succeed from now on */
-<<<<<<< HEAD
-	if (minor->type == DRM_MINOR_ACCEL) {
-		accel_minor_replace(minor, minor->index);
-	} else {
-		spin_lock_irqsave(&drm_minor_lock, flags);
-		idr_replace(&drm_minors_idr, minor, minor->index);
-		spin_unlock_irqrestore(&drm_minor_lock, flags);
-	}
-=======
 	entry = xa_store(drm_minor_get_xa(type), minor->index, minor, GFP_KERNEL);
 	if (xa_is_err(entry)) {
 		ret = xa_err(entry);
 		goto err_debugfs;
 	}
 	WARN_ON(entry);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	DRM_DEBUG("new minor registered %d\n", minor->index);
 	return 0;
@@ -278,27 +211,13 @@ err_debugfs:
 static void drm_minor_unregister(struct drm_device *dev, enum drm_minor_type type)
 {
 	struct drm_minor *minor;
-<<<<<<< HEAD
-	unsigned long flags;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	minor = *drm_minor_get_slot(dev, type);
 	if (!minor || !device_is_registered(minor->kdev))
 		return;
 
 	/* replace @minor with NULL so lookups will fail from now on */
-<<<<<<< HEAD
-	if (minor->type == DRM_MINOR_ACCEL) {
-		accel_minor_replace(NULL, minor->index);
-	} else {
-		spin_lock_irqsave(&drm_minor_lock, flags);
-		idr_replace(&drm_minors_idr, NULL, minor->index);
-		spin_unlock_irqrestore(&drm_minor_lock, flags);
-	}
-=======
 	xa_store(drm_minor_get_xa(type), minor->index, NULL, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	device_del(minor->kdev);
 	dev_set_drvdata(minor->kdev, NULL); /* safety belt */
@@ -314,18 +233,6 @@ static void drm_minor_unregister(struct drm_device *dev, enum drm_minor_type typ
  * minor->dev pointer will stay valid! However, the device may get unplugged and
  * unregistered while you hold the minor.
  */
-<<<<<<< HEAD
-struct drm_minor *drm_minor_acquire(unsigned int minor_id)
-{
-	struct drm_minor *minor;
-	unsigned long flags;
-
-	spin_lock_irqsave(&drm_minor_lock, flags);
-	minor = idr_find(&drm_minors_idr, minor_id);
-	if (minor)
-		drm_dev_get(minor->dev);
-	spin_unlock_irqrestore(&drm_minor_lock, flags);
-=======
 struct drm_minor *drm_minor_acquire(struct xarray *minor_xa, unsigned int minor_id)
 {
 	struct drm_minor *minor;
@@ -335,7 +242,6 @@ struct drm_minor *drm_minor_acquire(struct xarray *minor_xa, unsigned int minor_
 	if (minor)
 		drm_dev_get(minor->dev);
 	xa_unlock(minor_xa);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!minor) {
 		return ERR_PTR(-ENODEV);
@@ -1128,11 +1034,7 @@ static int drm_stub_open(struct inode *inode, struct file *filp)
 
 	DRM_DEBUG("\n");
 
-<<<<<<< HEAD
-	minor = drm_minor_acquire(iminor(inode));
-=======
 	minor = drm_minor_acquire(&drm_minors_xa, iminor(inode));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(minor))
 		return PTR_ERR(minor);
 
@@ -1163,19 +1065,12 @@ static const struct file_operations drm_stub_fops = {
 static void drm_core_exit(void)
 {
 	drm_privacy_screen_lookup_exit();
-<<<<<<< HEAD
-=======
 	drm_panic_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	accel_core_exit();
 	unregister_chrdev(DRM_MAJOR, "drm");
 	debugfs_remove(drm_debugfs_root);
 	drm_sysfs_destroy();
-<<<<<<< HEAD
-	idr_destroy(&drm_minors_idr);
-=======
 	WARN_ON(!xa_empty(&drm_minors_xa));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_connector_ida_destroy();
 }
 
@@ -1184,10 +1079,6 @@ static int __init drm_core_init(void)
 	int ret;
 
 	drm_connector_ida_init();
-<<<<<<< HEAD
-	idr_init(&drm_minors_idr);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_memcpy_init_early();
 
 	ret = drm_sysfs_init();
@@ -1206,11 +1097,8 @@ static int __init drm_core_init(void)
 	if (ret < 0)
 		goto error;
 
-<<<<<<< HEAD
-=======
 	drm_panic_init();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_privacy_screen_lookup_init();
 
 	drm_core_init_complete = true;

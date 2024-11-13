@@ -60,11 +60,8 @@ static inline void acp_set_i2s_clk(struct acp_dev_data *adata, int dai_id)
 
 	switch (chip->acp_rev) {
 	case ACP63_DEV:
-<<<<<<< HEAD
-=======
 	case ACP70_DEV:
 	case ACP71_DEV:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		val |= FIELD_PREP(ACP63_LRCLK_DIV_FIELD, adata->lrclk_div);
 		val |= FIELD_PREP(ACP63_BCLK_DIV_FIELD, adata->bclk_div);
 		break;
@@ -100,17 +97,11 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
 {
 	struct device *dev = dai->component->dev;
 	struct acp_dev_data *adata = snd_soc_dai_get_drvdata(dai);
-<<<<<<< HEAD
-	struct acp_stream *stream;
-	int slot_len, no_of_slots;
-
-=======
 	struct acp_chip_info *chip;
 	struct acp_stream *stream;
 	int slot_len, no_of_slots;
 
 	chip = dev_get_platdata(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (slot_width) {
 	case SLOT_WIDTH_8:
 		slot_len = 8;
@@ -129,17 +120,6 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	switch (slots) {
-	case 1 ... 7:
-		no_of_slots = slots;
-		break;
-	case 8:
-		no_of_slots = 0;
-		break;
-	default:
-		dev_err(dev, "Unsupported slots %d\n", slots);
-=======
 	switch (chip->acp_rev) {
 	case ACP3X_DEV:
 	case ACP6X_DEV:
@@ -172,7 +152,6 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
 		break;
 	default:
 		dev_err(dev, "Unknown chip revision %d\n", chip->acp_rev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -180,14 +159,6 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
 
 	spin_lock_irq(&adata->acp_lock);
 	list_for_each_entry(stream, &adata->stream_list, list) {
-<<<<<<< HEAD
-		if (tx_mask && stream->dir == SNDRV_PCM_STREAM_PLAYBACK)
-			adata->tdm_tx_fmt[stream->dai_id - 1] =
-					FRM_LEN | (slots << 15) | (slot_len << 18);
-		else if (rx_mask && stream->dir == SNDRV_PCM_STREAM_CAPTURE)
-			adata->tdm_rx_fmt[stream->dai_id - 1] =
-					FRM_LEN | (slots << 15) | (slot_len << 18);
-=======
 		switch (chip->acp_rev) {
 		case ACP3X_DEV:
 		case ACP6X_DEV:
@@ -212,7 +183,6 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
 			dev_err(dev, "Unknown chip revision %d\n", chip->acp_rev);
 			return -EINVAL;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	spin_unlock_irq(&adata->acp_lock);
 	return 0;
@@ -371,8 +341,6 @@ static int acp_i2s_hwparams(struct snd_pcm_substream *substream, struct snd_pcm_
 		default:
 			return -EINVAL;
 		}
-<<<<<<< HEAD
-=======
 
 		switch (params_rate(params)) {
 		case 8000:
@@ -408,7 +376,6 @@ static int acp_i2s_hwparams(struct snd_pcm_substream *substream, struct snd_pcm_
 		default:
 			break;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		adata->lrclk_div = lrclk_div_val;
 		adata->bclk_div = bclk_div_val;
 	}
@@ -434,18 +401,6 @@ static int acp_i2s_trigger(struct snd_pcm_substream *substream, int cmd, struct 
 		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 			switch (dai->driver->id) {
 			case I2S_BT_INSTANCE:
-<<<<<<< HEAD
-				water_val = ACP_BT_TX_INTR_WATERMARK_SIZE;
-				reg_val = ACP_BTTDM_ITER;
-				ier_val = ACP_BTTDM_IER;
-				buf_reg = ACP_BT_TX_RINGBUFSIZE;
-				break;
-			case I2S_SP_INSTANCE:
-				water_val = ACP_I2S_TX_INTR_WATERMARK_SIZE;
-				reg_val = ACP_I2STDM_ITER;
-				ier_val = ACP_I2STDM_IER;
-				buf_reg = ACP_I2S_TX_RINGBUFSIZE;
-=======
 				water_val = ACP_BT_TX_INTR_WATERMARK_SIZE(adata);
 				reg_val = ACP_BTTDM_ITER;
 				ier_val = ACP_BTTDM_IER;
@@ -456,7 +411,6 @@ static int acp_i2s_trigger(struct snd_pcm_substream *substream, int cmd, struct 
 				reg_val = ACP_I2STDM_ITER;
 				ier_val = ACP_I2STDM_IER;
 				buf_reg = ACP_I2S_TX_RINGBUFSIZE(adata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 			case I2S_HS_INSTANCE:
 				water_val = ACP_HS_TX_INTR_WATERMARK_SIZE;
@@ -471,18 +425,6 @@ static int acp_i2s_trigger(struct snd_pcm_substream *substream, int cmd, struct 
 		} else {
 			switch (dai->driver->id) {
 			case I2S_BT_INSTANCE:
-<<<<<<< HEAD
-				water_val = ACP_BT_RX_INTR_WATERMARK_SIZE;
-				reg_val = ACP_BTTDM_IRER;
-				ier_val = ACP_BTTDM_IER;
-				buf_reg = ACP_BT_RX_RINGBUFSIZE;
-				break;
-			case I2S_SP_INSTANCE:
-				water_val = ACP_I2S_RX_INTR_WATERMARK_SIZE;
-				reg_val = ACP_I2STDM_IRER;
-				ier_val = ACP_I2STDM_IER;
-				buf_reg = ACP_I2S_RX_RINGBUFSIZE;
-=======
 				water_val = ACP_BT_RX_INTR_WATERMARK_SIZE(adata);
 				reg_val = ACP_BTTDM_IRER;
 				ier_val = ACP_BTTDM_IER;
@@ -493,7 +435,6 @@ static int acp_i2s_trigger(struct snd_pcm_substream *substream, int cmd, struct 
 				reg_val = ACP_I2STDM_IRER;
 				ier_val = ACP_I2STDM_IER;
 				buf_reg = ACP_I2S_RX_RINGBUFSIZE(adata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 			case I2S_HS_INSTANCE:
 				water_val = ACP_HS_RX_INTR_WATERMARK_SIZE;
@@ -506,10 +447,7 @@ static int acp_i2s_trigger(struct snd_pcm_substream *substream, int cmd, struct 
 				return -EINVAL;
 			}
 		}
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		writel(period_bytes, adata->acp_base + water_val);
 		writel(buf_size, adata->acp_base + buf_reg);
 		if (rsrc->soc_mclk)
@@ -579,37 +517,13 @@ static int acp_i2s_prepare(struct snd_pcm_substream *substream, struct snd_soc_d
 {
 	struct device *dev = dai->component->dev;
 	struct acp_dev_data *adata = dev_get_drvdata(dev);
-<<<<<<< HEAD
-=======
 	struct acp_chip_info *chip;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct acp_resource *rsrc = adata->rsrc;
 	struct acp_stream *stream = substream->runtime->private_data;
 	u32 reg_dma_size = 0, reg_fifo_size = 0, reg_fifo_addr = 0;
 	u32 phy_addr = 0, acp_fifo_addr = 0, ext_int_ctrl;
 	unsigned int dir = substream->stream;
 
-<<<<<<< HEAD
-	switch (dai->driver->id) {
-	case I2S_SP_INSTANCE:
-		if (dir == SNDRV_PCM_STREAM_PLAYBACK) {
-			reg_dma_size = ACP_I2S_TX_DMA_SIZE;
-			acp_fifo_addr = rsrc->sram_pte_offset +
-						SP_PB_FIFO_ADDR_OFFSET;
-			reg_fifo_addr =	ACP_I2S_TX_FIFOADDR;
-			reg_fifo_size = ACP_I2S_TX_FIFOSIZE;
-
-			phy_addr = I2S_SP_TX_MEM_WINDOW_START + stream->reg_offset;
-			writel(phy_addr, adata->acp_base + ACP_I2S_TX_RINGBUFADDR);
-		} else {
-			reg_dma_size = ACP_I2S_RX_DMA_SIZE;
-			acp_fifo_addr = rsrc->sram_pte_offset +
-						SP_CAPT_FIFO_ADDR_OFFSET;
-			reg_fifo_addr = ACP_I2S_RX_FIFOADDR;
-			reg_fifo_size = ACP_I2S_RX_FIFOSIZE;
-			phy_addr = I2S_SP_RX_MEM_WINDOW_START + stream->reg_offset;
-			writel(phy_addr, adata->acp_base + ACP_I2S_RX_RINGBUFADDR);
-=======
 	chip = dev_get_platdata(dev);
 	switch (dai->driver->id) {
 	case I2S_SP_INSTANCE:
@@ -637,30 +551,10 @@ static int acp_i2s_prepare(struct snd_pcm_substream *substream, struct snd_soc_d
 			else
 				phy_addr = I2S_SP_RX_MEM_WINDOW_START + stream->reg_offset;
 			writel(phy_addr, adata->acp_base + ACP_I2S_RX_RINGBUFADDR(adata));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 	case I2S_BT_INSTANCE:
 		if (dir == SNDRV_PCM_STREAM_PLAYBACK) {
-<<<<<<< HEAD
-			reg_dma_size = ACP_BT_TX_DMA_SIZE;
-			acp_fifo_addr = rsrc->sram_pte_offset +
-						BT_PB_FIFO_ADDR_OFFSET;
-			reg_fifo_addr = ACP_BT_TX_FIFOADDR;
-			reg_fifo_size = ACP_BT_TX_FIFOSIZE;
-
-			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
-			writel(phy_addr, adata->acp_base + ACP_BT_TX_RINGBUFADDR);
-		} else {
-			reg_dma_size = ACP_BT_RX_DMA_SIZE;
-			acp_fifo_addr = rsrc->sram_pte_offset +
-						BT_CAPT_FIFO_ADDR_OFFSET;
-			reg_fifo_addr = ACP_BT_RX_FIFOADDR;
-			reg_fifo_size = ACP_BT_RX_FIFOSIZE;
-
-			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
-			writel(phy_addr, adata->acp_base + ACP_BT_RX_RINGBUFADDR);
-=======
 			reg_dma_size = ACP_BT_TX_DMA_SIZE(adata);
 			acp_fifo_addr = rsrc->sram_pte_offset +
 						BT_PB_FIFO_ADDR_OFFSET;
@@ -684,7 +578,6 @@ static int acp_i2s_prepare(struct snd_pcm_substream *substream, struct snd_soc_d
 			else
 				phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
 			writel(phy_addr, adata->acp_base + ACP_BT_RX_RINGBUFADDR(adata));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 	case I2S_HS_INSTANCE:
@@ -695,14 +588,10 @@ static int acp_i2s_prepare(struct snd_pcm_substream *substream, struct snd_soc_d
 			reg_fifo_addr = ACP_HS_TX_FIFOADDR;
 			reg_fifo_size = ACP_HS_TX_FIFOSIZE;
 
-<<<<<<< HEAD
-			phy_addr = I2S_HS_TX_MEM_WINDOW_START + stream->reg_offset;
-=======
 			if (chip->acp_rev >= ACP70_DEV)
 				phy_addr = ACP7x_I2S_HS_TX_MEM_WINDOW_START;
 			else
 				phy_addr = I2S_HS_TX_MEM_WINDOW_START + stream->reg_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			writel(phy_addr, adata->acp_base + ACP_HS_TX_RINGBUFADDR);
 		} else {
 			reg_dma_size = ACP_HS_RX_DMA_SIZE;
@@ -711,14 +600,10 @@ static int acp_i2s_prepare(struct snd_pcm_substream *substream, struct snd_soc_d
 			reg_fifo_addr = ACP_HS_RX_FIFOADDR;
 			reg_fifo_size = ACP_HS_RX_FIFOSIZE;
 
-<<<<<<< HEAD
-			phy_addr = I2S_HS_RX_MEM_WINDOW_START + stream->reg_offset;
-=======
 			if (chip->acp_rev >= ACP70_DEV)
 				phy_addr = ACP7x_I2S_HS_RX_MEM_WINDOW_START;
 			else
 				phy_addr = I2S_HS_RX_MEM_WINDOW_START + stream->reg_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			writel(phy_addr, adata->acp_base + ACP_HS_RX_RINGBUFADDR);
 		}
 		break;

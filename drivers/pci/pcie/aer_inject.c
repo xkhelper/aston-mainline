@@ -430,11 +430,7 @@ static int aer_inject(struct aer_error_inj *einj)
 		else
 			rperr->root_status |= PCI_ERR_ROOT_COR_RCV;
 		rperr->source_id &= 0xffff0000;
-<<<<<<< HEAD
-		rperr->source_id |= (einj->bus << 8) | devfn;
-=======
 		rperr->source_id |= PCI_DEVID(einj->bus, devfn);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (einj->uncor_status) {
 		if (rperr->root_status & PCI_ERR_ROOT_UNCOR_RCV)
@@ -447,11 +443,7 @@ static int aer_inject(struct aer_error_inj *einj)
 			rperr->root_status |= PCI_ERR_ROOT_NONFATAL_RCV;
 		rperr->root_status |= PCI_ERR_ROOT_UNCOR_RCV;
 		rperr->source_id &= 0x0000ffff;
-<<<<<<< HEAD
-		rperr->source_id |= ((einj->bus << 8) | devfn) << 16;
-=======
 		rperr->source_id |= PCI_DEVID(einj->bus, devfn) << 16;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	spin_unlock_irqrestore(&inject_lock, flags);
 

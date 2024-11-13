@@ -23,11 +23,7 @@
 #include <linux/delay.h>
 #include <linux/mii.h>
 #include <linux/crc32.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/uaccess.h>
 
 #ifdef CONFIG_SPARC

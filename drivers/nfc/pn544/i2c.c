@@ -17,11 +17,7 @@
 #include <linux/firmware.h>
 #include <linux/gpio/consumer.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/nfc/hci.h>
 #include <net/nfc/llc.h>

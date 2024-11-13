@@ -10,10 +10,7 @@
 #include <linux/device.h>
 #include <linux/of.h>
 #include <linux/printk.h>
-<<<<<<< HEAD
-=======
 #include <linux/slab.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int __set_clk_parents(struct device_node *node, bool clk_supplier)
 {
@@ -85,13 +82,6 @@ err:
 static int __set_clk_rates(struct device_node *node, bool clk_supplier)
 {
 	struct of_phandle_args clkspec;
-<<<<<<< HEAD
-	int rc, index = 0;
-	struct clk *clk;
-	u32 rate;
-
-	of_property_for_each_u32(node, "assigned-clock-rates", rate) {
-=======
 	int rc, count, count_64, index;
 	struct clk *clk;
 	u64 *rates_64 __free(kfree) = NULL;
@@ -130,7 +120,6 @@ static int __set_clk_rates(struct device_node *node, bool clk_supplier)
 		else
 			rate = rates[index];
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rate) {
 			rc = of_parse_phandle_with_args(node, "assigned-clocks",
 					"#clock-cells",	index, &clkspec);
@@ -157,19 +146,11 @@ static int __set_clk_rates(struct device_node *node, bool clk_supplier)
 
 			rc = clk_set_rate(clk, rate);
 			if (rc < 0)
-<<<<<<< HEAD
-				pr_err("clk: couldn't set %s clk rate to %u (%d), current rate: %lu\n",
-=======
 				pr_err("clk: couldn't set %s clk rate to %lu (%d), current rate: %lu\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       __clk_get_name(clk), rate, rc,
 				       clk_get_rate(clk));
 			clk_put(clk);
 		}
-<<<<<<< HEAD
-		index++;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }

@@ -551,24 +551,14 @@
 			#size-cells = <2>;
 			ranges;
 
-<<<<<<< HEAD
-			sdio0: sdio@20300000 {
-=======
 			sdio0: mmc@20300000 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				compatible = "sprd,sdhci-r11";
 				reg = <0 0x20300000 0 0x1000>;
 				interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
 
-<<<<<<< HEAD
-				clock-names = "sdio", "enable";
-				clocks = <&aon_clk CLK_SDIO0_2X>,
-					 <&apahb_gate CLK_SDIO0_EB>;
-=======
 				clocks = <&aon_clk CLK_SDIO0_2X>,
 					 <&apahb_gate CLK_SDIO0_EB>;
 				clock-names = "sdio", "enable";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				assigned-clocks = <&aon_clk CLK_SDIO0_2X>;
 				assigned-clock-parents = <&rpll CLK_RPLL_390M>;
 
@@ -577,24 +567,14 @@
 				no-mmc;
 			};
 
-<<<<<<< HEAD
-			sdio3: sdio@20600000 {
-=======
 			sdio3: mmc@20600000 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				compatible = "sprd,sdhci-r11";
 				reg = <0 0x20600000 0 0x1000>;
 				interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
 
-<<<<<<< HEAD
-				clock-names = "sdio", "enable";
-				clocks = <&aon_clk CLK_EMMC_2X>,
-					 <&apahb_gate CLK_EMMC_EB>;
-=======
 				clocks = <&aon_clk CLK_EMMC_2X>,
 					 <&apahb_gate CLK_EMMC_EB>;
 				clock-names = "sdio", "enable";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				assigned-clocks = <&aon_clk CLK_EMMC_2X>;
 				assigned-clock-parents = <&rpll CLK_RPLL_390M>;
 

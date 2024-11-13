@@ -4072,11 +4072,7 @@ static const struct of_device_id dispc_of_match[] = {
 
 static struct platform_driver omap_dispchw_driver = {
 	.probe		= dispc_probe,
-<<<<<<< HEAD
-	.remove_new     = dispc_remove,
-=======
 	.remove         = dispc_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver         = {
 		.name   = "omapdss_dispc",
 		.pm	= &dispc_pm_ops,

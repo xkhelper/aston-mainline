@@ -249,11 +249,7 @@ Note that not all devices support these two calls, and some only
 support the GETBOOTSTATUS call.
 
 Some drivers can measure the temperature using the GETTEMP ioctl.  The
-<<<<<<< HEAD
-returned value is the temperature in degrees fahrenheit::
-=======
 returned value is the temperature in degrees Fahrenheit::
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
     int temperature;
     ioctl(fd, WDIOC_GETTEMP, &temperature);

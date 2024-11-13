@@ -10,10 +10,7 @@
 #include <linux/of.h>
 #include <linux/irqchip.h>
 #include <asm/mips-cps.h>
-<<<<<<< HEAD
-=======
 #include <asm/time.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int get_c0_perfcount_int(void)
 {

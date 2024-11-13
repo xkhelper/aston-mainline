@@ -220,10 +220,7 @@
 };
 
 &rv3028 {
-<<<<<<< HEAD
-=======
 	aux-voltage-chargeable = <1>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trickle-resistor-ohms = <3000>;
 };
 

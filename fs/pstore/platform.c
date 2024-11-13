@@ -275,11 +275,7 @@ void pstore_record_init(struct pstore_record *record,
  * end of the buffer.
  */
 static void pstore_dump(struct kmsg_dumper *dumper,
-<<<<<<< HEAD
-			enum kmsg_dump_reason reason)
-=======
 			struct kmsg_dump_detail *detail)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct kmsg_dump_iter iter;
 	unsigned long	total = 0;
@@ -289,27 +285,16 @@ static void pstore_dump(struct kmsg_dumper *dumper,
 	int		saved_ret = 0;
 	int		ret;
 
-<<<<<<< HEAD
-	why = kmsg_dump_reason_str(reason);
-
-	if (pstore_cannot_block_path(reason)) {
-		if (!spin_trylock_irqsave(&psinfo->buf_lock, flags)) {
-=======
 	why = kmsg_dump_reason_str(detail->reason);
 
 	if (pstore_cannot_block_path(detail->reason)) {
 		if (!raw_spin_trylock_irqsave(&psinfo->buf_lock, flags)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pr_err("dump skipped in %s path because of concurrent dump\n",
 					in_nmi() ? "NMI" : why);
 			return;
 		}
 	} else {
-<<<<<<< HEAD
-		spin_lock_irqsave(&psinfo->buf_lock, flags);
-=======
 		raw_spin_lock_irqsave(&psinfo->buf_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	kmsg_dump_rewind(&iter);
@@ -326,11 +311,7 @@ static void pstore_dump(struct kmsg_dumper *dumper,
 		pstore_record_init(&record, psinfo);
 		record.type = PSTORE_TYPE_DMESG;
 		record.count = oopscount;
-<<<<<<< HEAD
-		record.reason = reason;
-=======
 		record.reason = detail->reason;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		record.part = part;
 		record.buf = psinfo->buf;
 
@@ -371,11 +352,7 @@ static void pstore_dump(struct kmsg_dumper *dumper,
 		}
 
 		ret = psinfo->write(&record);
-<<<<<<< HEAD
-		if (ret == 0 && reason == KMSG_DUMP_OOPS) {
-=======
 		if (ret == 0 && detail->reason == KMSG_DUMP_OOPS) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pstore_new_entry = 1;
 			pstore_timer_kick();
 		} else {
@@ -387,11 +364,7 @@ static void pstore_dump(struct kmsg_dumper *dumper,
 		total += record.size;
 		part++;
 	}
-<<<<<<< HEAD
-	spin_unlock_irqrestore(&psinfo->buf_lock, flags);
-=======
 	raw_spin_unlock_irqrestore(&psinfo->buf_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (saved_ret) {
 		pr_err_once("backend (%s) writing error (%d)\n", psinfo->name,
@@ -530,11 +503,7 @@ int pstore_register(struct pstore_info *psi)
 		psi->write_user = pstore_write_user_compat;
 	psinfo = psi;
 	mutex_init(&psinfo->read_mutex);
-<<<<<<< HEAD
-	spin_lock_init(&psinfo->buf_lock);
-=======
 	raw_spin_lock_init(&psinfo->buf_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (psi->flags & PSTORE_FLAGS_DMESG)
 		allocate_buf_for_compression();

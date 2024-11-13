@@ -2,16 +2,11 @@
 /* Copyright (C) 2023 Intel Corporation */
 
 #include <net/libeth/rx.h>
-<<<<<<< HEAD
-=======
 #include <net/libeth/tx.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "idpf.h"
 #include "idpf_virtchnl.h"
 
-<<<<<<< HEAD
-=======
 struct idpf_tx_stash {
 	struct hlist_node hlist;
 	struct libeth_sqe buf;
@@ -20,7 +15,6 @@ struct idpf_tx_stash {
 #define idpf_tx_buf_compl_tag(buf)	(*(u32 *)&(buf)->priv)
 LIBETH_SQE_CHECK_PRIV(u32);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool idpf_chk_linearize(struct sk_buff *skb, unsigned int max_bufs,
 			       unsigned int count);
 
@@ -76,46 +70,11 @@ void idpf_tx_timeout(struct net_device *netdev, unsigned int txqueue)
 }
 
 /**
-<<<<<<< HEAD
- * idpf_tx_buf_rel - Release a Tx buffer
- * @tx_q: the queue that owns the buffer
- * @tx_buf: the buffer to free
- */
-static void idpf_tx_buf_rel(struct idpf_tx_queue *tx_q,
-			    struct idpf_tx_buf *tx_buf)
-{
-	if (tx_buf->skb) {
-		if (dma_unmap_len(tx_buf, len))
-			dma_unmap_single(tx_q->dev,
-					 dma_unmap_addr(tx_buf, dma),
-					 dma_unmap_len(tx_buf, len),
-					 DMA_TO_DEVICE);
-		dev_kfree_skb_any(tx_buf->skb);
-	} else if (dma_unmap_len(tx_buf, len)) {
-		dma_unmap_page(tx_q->dev,
-			       dma_unmap_addr(tx_buf, dma),
-			       dma_unmap_len(tx_buf, len),
-			       DMA_TO_DEVICE);
-	}
-
-	tx_buf->next_to_watch = NULL;
-	tx_buf->skb = NULL;
-	tx_buf->compl_tag = IDPF_SPLITQ_TX_INVAL_COMPL_TAG;
-	dma_unmap_len_set(tx_buf, len, 0);
-}
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * idpf_tx_buf_rel_all - Free any empty Tx buffers
  * @txq: queue to be cleaned
  */
 static void idpf_tx_buf_rel_all(struct idpf_tx_queue *txq)
 {
-<<<<<<< HEAD
-	struct idpf_buf_lifo *buf_stack;
-	u16 i;
-=======
 	struct libeth_sq_napi_stats ss = { };
 	struct idpf_buf_lifo *buf_stack;
 	struct idpf_tx_stash *stash;
@@ -125,7 +84,6 @@ static void idpf_tx_buf_rel_all(struct idpf_tx_queue *txq)
 	};
 	struct hlist_node *tmp;
 	u32 i, tag;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Buffers already cleared, nothing to do */
 	if (!txq->tx_buf)
@@ -133,11 +91,7 @@ static void idpf_tx_buf_rel_all(struct idpf_tx_queue *txq)
 
 	/* Free all the Tx buffer sk_buffs */
 	for (i = 0; i < txq->desc_count; i++)
-<<<<<<< HEAD
-		idpf_tx_buf_rel(txq, &txq->tx_buf[i]);
-=======
 		libeth_tx_complete(&txq->tx_buf[i], &cp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	kfree(txq->tx_buf);
 	txq->tx_buf = NULL;
@@ -149,8 +103,6 @@ static void idpf_tx_buf_rel_all(struct idpf_tx_queue *txq)
 	if (!buf_stack->bufs)
 		return;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * If a Tx timeout occurred, there are potentially still bufs in the
 	 * hash table, free them here.
@@ -165,7 +117,6 @@ static void idpf_tx_buf_rel_all(struct idpf_tx_queue *txq)
 		idpf_buf_lifo_push(buf_stack, stash);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < buf_stack->size; i++)
 		kfree(buf_stack->bufs[i]);
 
@@ -182,10 +133,7 @@ static void idpf_tx_buf_rel_all(struct idpf_tx_queue *txq)
 static void idpf_tx_desc_rel(struct idpf_tx_queue *txq)
 {
 	idpf_tx_buf_rel_all(txq);
-<<<<<<< HEAD
-=======
 	netdev_tx_reset_subqueue(txq->netdev, txq->idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!txq->desc_ring)
 		return;
@@ -258,13 +206,6 @@ static int idpf_tx_buf_alloc_all(struct idpf_tx_queue *tx_q)
 	if (!tx_q->tx_buf)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	/* Initialize tx_bufs with invalid completion tags */
-	for (i = 0; i < tx_q->desc_count; i++)
-		tx_q->tx_buf[i].compl_tag = IDPF_SPLITQ_TX_INVAL_COMPL_TAG;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!idpf_queue_has(FLOW_SCH_EN, tx_q))
 		return 0;
 
@@ -1714,40 +1655,6 @@ static void idpf_tx_handle_sw_marker(struct idpf_tx_queue *tx_q)
 }
 
 /**
-<<<<<<< HEAD
- * idpf_tx_splitq_clean_hdr - Clean TX buffer resources for header portion of
- * packet
- * @tx_q: tx queue to clean buffer from
- * @tx_buf: buffer to be cleaned
- * @cleaned: pointer to stats struct to track cleaned packets/bytes
- * @napi_budget: Used to determine if we are in netpoll
- */
-static void idpf_tx_splitq_clean_hdr(struct idpf_tx_queue *tx_q,
-				     struct idpf_tx_buf *tx_buf,
-				     struct idpf_cleaned_stats *cleaned,
-				     int napi_budget)
-{
-	napi_consume_skb(tx_buf->skb, napi_budget);
-
-	if (dma_unmap_len(tx_buf, len)) {
-		dma_unmap_single(tx_q->dev,
-				 dma_unmap_addr(tx_buf, dma),
-				 dma_unmap_len(tx_buf, len),
-				 DMA_TO_DEVICE);
-
-		dma_unmap_len_set(tx_buf, len, 0);
-	}
-
-	/* clear tx_buf data */
-	tx_buf->skb = NULL;
-
-	cleaned->bytes += tx_buf->bytecount;
-	cleaned->packets += tx_buf->gso_segs;
-}
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * idpf_tx_clean_stashed_bufs - clean bufs that were stored for
  * out of order completions
  * @txq: queue to clean
@@ -1757,47 +1664,20 @@ static void idpf_tx_splitq_clean_hdr(struct idpf_tx_queue *tx_q,
  */
 static void idpf_tx_clean_stashed_bufs(struct idpf_tx_queue *txq,
 				       u16 compl_tag,
-<<<<<<< HEAD
-				       struct idpf_cleaned_stats *cleaned,
-=======
 				       struct libeth_sq_napi_stats *cleaned,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       int budget)
 {
 	struct idpf_tx_stash *stash;
 	struct hlist_node *tmp_buf;
-<<<<<<< HEAD
-=======
 	struct libeth_cq_pp cp = {
 		.dev	= txq->dev,
 		.ss	= cleaned,
 		.napi	= budget,
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Buffer completion */
 	hash_for_each_possible_safe(txq->stash->sched_buf_hash, stash, tmp_buf,
 				    hlist, compl_tag) {
-<<<<<<< HEAD
-		if (unlikely(stash->buf.compl_tag != (int)compl_tag))
-			continue;
-
-		if (stash->buf.skb) {
-			idpf_tx_splitq_clean_hdr(txq, &stash->buf, cleaned,
-						 budget);
-		} else if (dma_unmap_len(&stash->buf, len)) {
-			dma_unmap_page(txq->dev,
-				       dma_unmap_addr(&stash->buf, dma),
-				       dma_unmap_len(&stash->buf, len),
-				       DMA_TO_DEVICE);
-			dma_unmap_len_set(&stash->buf, len, 0);
-		}
-
-		/* Push shadow buf back onto stack */
-		idpf_buf_lifo_push(&txq->stash->buf_stack, stash);
-
-		hash_del(&stash->hlist);
-=======
 		if (unlikely(idpf_tx_buf_compl_tag(&stash->buf) != compl_tag))
 			continue;
 
@@ -1806,7 +1686,6 @@ static void idpf_tx_clean_stashed_bufs(struct idpf_tx_queue *txq,
 
 		/* Push shadow buf back onto stack */
 		idpf_buf_lifo_push(&txq->stash->buf_stack, stash);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -1821,12 +1700,7 @@ static int idpf_stash_flow_sch_buffers(struct idpf_tx_queue *txq,
 {
 	struct idpf_tx_stash *stash;
 
-<<<<<<< HEAD
-	if (unlikely(!dma_unmap_addr(tx_buf, dma) &&
-		     !dma_unmap_len(tx_buf, len)))
-=======
 	if (unlikely(tx_buf->type <= LIBETH_SQE_CTX))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	stash = idpf_buf_lifo_pop(&txq->stash->buf_stack);
@@ -1839,22 +1713,6 @@ static int idpf_stash_flow_sch_buffers(struct idpf_tx_queue *txq,
 
 	/* Store buffer params in shadow buffer */
 	stash->buf.skb = tx_buf->skb;
-<<<<<<< HEAD
-	stash->buf.bytecount = tx_buf->bytecount;
-	stash->buf.gso_segs = tx_buf->gso_segs;
-	dma_unmap_addr_set(&stash->buf, dma, dma_unmap_addr(tx_buf, dma));
-	dma_unmap_len_set(&stash->buf, len, dma_unmap_len(tx_buf, len));
-	stash->buf.compl_tag = tx_buf->compl_tag;
-
-	/* Add buffer to buf_hash table to be freed later */
-	hash_add(txq->stash->sched_buf_hash, &stash->hlist,
-		 stash->buf.compl_tag);
-
-	memset(tx_buf, 0, sizeof(struct idpf_tx_buf));
-
-	/* Reinitialize buf_id portion of tag */
-	tx_buf->compl_tag = IDPF_SPLITQ_TX_INVAL_COMPL_TAG;
-=======
 	stash->buf.bytes = tx_buf->bytes;
 	stash->buf.packets = tx_buf->packets;
 	stash->buf.type = tx_buf->type;
@@ -1868,21 +1726,14 @@ static int idpf_stash_flow_sch_buffers(struct idpf_tx_queue *txq,
 		 idpf_tx_buf_compl_tag(&stash->buf));
 
 	tx_buf->type = LIBETH_SQE_EMPTY;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
 #define idpf_tx_splitq_clean_bump_ntc(txq, ntc, desc, buf)	\
 do {								\
-<<<<<<< HEAD
-	(ntc)++;						\
-	if (unlikely(!(ntc))) {					\
-		ntc -= (txq)->desc_count;			\
-=======
 	if (unlikely(++(ntc) == (txq)->desc_count)) {		\
 		ntc = 0;					\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		buf = (txq)->tx_buf;				\
 		desc = &(txq)->flex_tx[0];			\
 	} else {						\
@@ -1906,12 +1757,6 @@ do {								\
  * Separate packet completion events will be reported on the completion queue,
  * and the buffers will be cleaned separately. The stats are not updated from
  * this function when using flow-based scheduling.
-<<<<<<< HEAD
- */
-static void idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
-				 int napi_budget,
-				 struct idpf_cleaned_stats *cleaned,
-=======
  *
  * Furthermore, in flow scheduling mode, check to make sure there are enough
  * reserve buffers to stash the packet. If there are not, return early, which
@@ -1922,15 +1767,10 @@ static void idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
 static bool idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
 				 int napi_budget,
 				 struct libeth_sq_napi_stats *cleaned,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 bool descs_only)
 {
 	union idpf_tx_flex_desc *next_pending_desc = NULL;
 	union idpf_tx_flex_desc *tx_desc;
-<<<<<<< HEAD
-	s16 ntc = tx_q->next_to_clean;
-	struct idpf_tx_buf *tx_buf;
-=======
 	u32 ntc = tx_q->next_to_clean;
 	struct libeth_cq_pp cp = {
 		.dev	= tx_q->dev,
@@ -1939,51 +1779,10 @@ static bool idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
 	};
 	struct idpf_tx_buf *tx_buf;
 	bool clean_complete = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tx_desc = &tx_q->flex_tx[ntc];
 	next_pending_desc = &tx_q->flex_tx[end];
 	tx_buf = &tx_q->tx_buf[ntc];
-<<<<<<< HEAD
-	ntc -= tx_q->desc_count;
-
-	while (tx_desc != next_pending_desc) {
-		union idpf_tx_flex_desc *eop_desc;
-
-		/* If this entry in the ring was used as a context descriptor,
-		 * it's corresponding entry in the buffer ring will have an
-		 * invalid completion tag since no buffer was used.  We can
-		 * skip this descriptor since there is no buffer to clean.
-		 */
-		if (unlikely(tx_buf->compl_tag == IDPF_SPLITQ_TX_INVAL_COMPL_TAG))
-			goto fetch_next_txq_desc;
-
-		eop_desc = (union idpf_tx_flex_desc *)tx_buf->next_to_watch;
-
-		/* clear next_to_watch to prevent false hangs */
-		tx_buf->next_to_watch = NULL;
-
-		if (descs_only) {
-			if (idpf_stash_flow_sch_buffers(tx_q, tx_buf))
-				goto tx_splitq_clean_out;
-
-			while (tx_desc != eop_desc) {
-				idpf_tx_splitq_clean_bump_ntc(tx_q, ntc,
-							      tx_desc, tx_buf);
-
-				if (dma_unmap_len(tx_buf, len)) {
-					if (idpf_stash_flow_sch_buffers(tx_q,
-									tx_buf))
-						goto tx_splitq_clean_out;
-				}
-			}
-		} else {
-			idpf_tx_splitq_clean_hdr(tx_q, tx_buf, cleaned,
-						 napi_budget);
-
-			/* unmap remaining buffers */
-			while (tx_desc != eop_desc) {
-=======
 
 	while (tx_desc != next_pending_desc) {
 		u32 eop_idx;
@@ -2018,22 +1817,11 @@ static bool idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
 
 			/* unmap remaining buffers */
 			while (ntc != eop_idx) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				idpf_tx_splitq_clean_bump_ntc(tx_q, ntc,
 							      tx_desc, tx_buf);
 
 				/* unmap any remaining paged data */
-<<<<<<< HEAD
-				if (dma_unmap_len(tx_buf, len)) {
-					dma_unmap_page(tx_q->dev,
-						       dma_unmap_addr(tx_buf, dma),
-						       dma_unmap_len(tx_buf, len),
-						       DMA_TO_DEVICE);
-					dma_unmap_len_set(tx_buf, len, 0);
-				}
-=======
 				libeth_tx_complete(tx_buf, &cp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 
@@ -2042,14 +1830,9 @@ fetch_next_txq_desc:
 	}
 
 tx_splitq_clean_out:
-<<<<<<< HEAD
-	ntc += tx_q->desc_count;
-	tx_q->next_to_clean = ntc;
-=======
 	tx_q->next_to_clean = ntc;
 
 	return clean_complete;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define idpf_tx_clean_buf_ring_bump_ntc(txq, ntc, buf)	\
@@ -2075,63 +1858,11 @@ do {							\
  * this completion tag.
  */
 static bool idpf_tx_clean_buf_ring(struct idpf_tx_queue *txq, u16 compl_tag,
-<<<<<<< HEAD
-				   struct idpf_cleaned_stats *cleaned,
-=======
 				   struct libeth_sq_napi_stats *cleaned,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   int budget)
 {
 	u16 idx = compl_tag & txq->compl_tag_bufid_m;
 	struct idpf_tx_buf *tx_buf = NULL;
-<<<<<<< HEAD
-	u16 ntc = txq->next_to_clean;
-	u16 num_descs_cleaned = 0;
-	u16 orig_idx = idx;
-
-	tx_buf = &txq->tx_buf[idx];
-
-	while (tx_buf->compl_tag == (int)compl_tag) {
-		if (tx_buf->skb) {
-			idpf_tx_splitq_clean_hdr(txq, tx_buf, cleaned, budget);
-		} else if (dma_unmap_len(tx_buf, len)) {
-			dma_unmap_page(txq->dev,
-				       dma_unmap_addr(tx_buf, dma),
-				       dma_unmap_len(tx_buf, len),
-				       DMA_TO_DEVICE);
-			dma_unmap_len_set(tx_buf, len, 0);
-		}
-
-		memset(tx_buf, 0, sizeof(struct idpf_tx_buf));
-		tx_buf->compl_tag = IDPF_SPLITQ_TX_INVAL_COMPL_TAG;
-
-		num_descs_cleaned++;
-		idpf_tx_clean_buf_ring_bump_ntc(txq, idx, tx_buf);
-	}
-
-	/* If we didn't clean anything on the ring for this completion, there's
-	 * nothing more to do.
-	 */
-	if (unlikely(!num_descs_cleaned))
-		return false;
-
-	/* Otherwise, if we did clean a packet on the ring directly, it's safe
-	 * to assume that the descriptors starting from the original
-	 * next_to_clean up until the previously cleaned packet can be reused.
-	 * Therefore, we will go back in the ring and stash any buffers still
-	 * in the ring into the hash table to be cleaned later.
-	 */
-	tx_buf = &txq->tx_buf[ntc];
-	while (tx_buf != &txq->tx_buf[orig_idx]) {
-		idpf_stash_flow_sch_buffers(txq, tx_buf);
-		idpf_tx_clean_buf_ring_bump_ntc(txq, ntc, tx_buf);
-	}
-
-	/* Finally, update next_to_clean to reflect the work that was just done
-	 * on the ring, if any. If the packet was only cleaned from the hash
-	 * table, the ring will not be impacted, therefore we should not touch
-	 * next_to_clean. The updated idx is used here
-=======
 	struct libeth_cq_pp cp = {
 		.dev	= txq->dev,
 		.ss	= cleaned,
@@ -2189,7 +1920,6 @@ static bool idpf_tx_clean_buf_ring(struct idpf_tx_queue *txq, u16 compl_tag,
 	/*
 	 * Otherwise, update next_to_clean to reflect the cleaning that was
 	 * done above.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	txq->next_to_clean = idx;
 
@@ -2209,11 +1939,7 @@ static bool idpf_tx_clean_buf_ring(struct idpf_tx_queue *txq, u16 compl_tag,
  */
 static void idpf_tx_handle_rs_completion(struct idpf_tx_queue *txq,
 					 struct idpf_splitq_tx_compl_desc *desc,
-<<<<<<< HEAD
-					 struct idpf_cleaned_stats *cleaned,
-=======
 					 struct libeth_sq_napi_stats *cleaned,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 int budget)
 {
 	u16 compl_tag;
@@ -2221,12 +1947,8 @@ static void idpf_tx_handle_rs_completion(struct idpf_tx_queue *txq,
 	if (!idpf_queue_has(FLOW_SCH_EN, txq)) {
 		u16 head = le16_to_cpu(desc->q_head_compl_tag.q_head);
 
-<<<<<<< HEAD
-		return idpf_tx_splitq_clean(txq, head, budget, cleaned, false);
-=======
 		idpf_tx_splitq_clean(txq, head, budget, cleaned, false);
 		return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	compl_tag = le16_to_cpu(desc->q_head_compl_tag.compl_tag);
@@ -2261,11 +1983,7 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
 	ntc -= complq->desc_count;
 
 	do {
-<<<<<<< HEAD
-		struct idpf_cleaned_stats cleaned_stats = { };
-=======
 		struct libeth_sq_napi_stats cleaned_stats = { };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct idpf_tx_queue *tx_q;
 		int rel_tx_qid;
 		u16 hw_head;
@@ -2415,32 +2133,6 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
 }
 
 /**
-<<<<<<< HEAD
- * idpf_tx_maybe_stop_common - 1st level check for common Tx stop conditions
- * @tx_q: the queue to be checked
- * @size: number of descriptors we want to assure is available
- *
- * Returns 0 if stop is not needed
- */
-int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size)
-{
-	struct netdev_queue *nq;
-
-	if (likely(IDPF_DESC_UNUSED(tx_q) >= size))
-		return 0;
-
-	u64_stats_update_begin(&tx_q->stats_sync);
-	u64_stats_inc(&tx_q->q_stats.q_busy);
-	u64_stats_update_end(&tx_q->stats_sync);
-
-	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
-
-	return netif_txq_maybe_stop(nq, IDPF_DESC_UNUSED(tx_q), size, size);
-}
-
-/**
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * idpf_tx_maybe_stop_splitq - 1st level check for Tx splitq stop conditions
  * @tx_q: the queue to be checked
  * @descs_needed: number of descriptors required for this packet
@@ -2451,11 +2143,7 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
 				     unsigned int descs_needed)
 {
 	if (idpf_tx_maybe_stop_common(tx_q, descs_needed))
-<<<<<<< HEAD
-		goto splitq_stop;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* If there are too many outstanding completions expected on the
 	 * completion queue, stop the TX queue to give the device some time to
@@ -2474,19 +2162,12 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
 	return 0;
 
 splitq_stop:
-<<<<<<< HEAD
-	u64_stats_update_begin(&tx_q->stats_sync);
-	u64_stats_inc(&tx_q->q_stats.q_busy);
-	u64_stats_update_end(&tx_q->stats_sync);
-	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
-=======
 	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
 
 out:
 	u64_stats_update_begin(&tx_q->stats_sync);
 	u64_stats_inc(&tx_q->q_stats.q_busy);
 	u64_stats_update_end(&tx_q->stats_sync);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return -EBUSY;
 }
@@ -2509,15 +2190,11 @@ void idpf_tx_buf_hw_update(struct idpf_tx_queue *tx_q, u32 val,
 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
 	tx_q->next_to_use = val;
 
-<<<<<<< HEAD
-	idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED);
-=======
 	if (idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED)) {
 		u64_stats_update_begin(&tx_q->stats_sync);
 		u64_stats_inc(&tx_q->q_stats.q_busy);
 		u64_stats_update_end(&tx_q->stats_sync);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Force memory writes to complete before letting h/w
 	 * know there are new descriptors to fetch.  (Only
@@ -2588,15 +2265,12 @@ unsigned int idpf_tx_desc_count_required(struct idpf_tx_queue *txq,
 void idpf_tx_dma_map_error(struct idpf_tx_queue *txq, struct sk_buff *skb,
 			   struct idpf_tx_buf *first, u16 idx)
 {
-<<<<<<< HEAD
-=======
 	struct libeth_sq_napi_stats ss = { };
 	struct libeth_cq_pp cp = {
 		.dev	= txq->dev,
 		.ss	= &ss,
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64_stats_update_begin(&txq->stats_sync);
 	u64_stats_inc(&txq->q_stats.dma_map_errs);
 	u64_stats_update_end(&txq->stats_sync);
@@ -2606,11 +2280,7 @@ void idpf_tx_dma_map_error(struct idpf_tx_queue *txq, struct sk_buff *skb,
 		struct idpf_tx_buf *tx_buf;
 
 		tx_buf = &txq->tx_buf[idx];
-<<<<<<< HEAD
-		idpf_tx_buf_rel(txq, tx_buf);
-=======
 		libeth_tx_complete(tx_buf, &cp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (tx_buf == first)
 			break;
 		if (idx == 0)
@@ -2689,10 +2359,7 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
 	dma = dma_map_single(tx_q->dev, skb->data, size, DMA_TO_DEVICE);
 
 	tx_buf = first;
-<<<<<<< HEAD
-=======
 	first->nr_frags = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	params->compl_tag =
 		(tx_q->compl_tag_cur_gen << tx_q->compl_tag_gen_s) | i;
@@ -2703,13 +2370,9 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
 		if (dma_mapping_error(tx_q->dev, dma))
 			return idpf_tx_dma_map_error(tx_q, skb, first, i);
 
-<<<<<<< HEAD
-		tx_buf->compl_tag = params->compl_tag;
-=======
 		first->nr_frags++;
 		idpf_tx_buf_compl_tag(tx_buf) = params->compl_tag;
 		tx_buf->type = LIBETH_SQE_FRAG;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* record length, and DMA address */
 		dma_unmap_len_set(tx_buf, len, size);
@@ -2763,25 +2426,15 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
 			idpf_tx_splitq_build_desc(tx_desc, params, td_cmd,
 						  max_data);
 
-<<<<<<< HEAD
-			tx_desc++;
-			i++;
-
-			if (i == tx_q->desc_count) {
-=======
 			if (unlikely(++i == tx_q->desc_count)) {
 				tx_buf = tx_q->tx_buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				tx_desc = &tx_q->flex_tx[0];
 				i = 0;
 				tx_q->compl_tag_cur_gen =
 					IDPF_TX_ADJ_COMPL_TAG_GEN(tx_q);
-<<<<<<< HEAD
-=======
 			} else {
 				tx_buf++;
 				tx_desc++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 
 			/* Since this packet has a buffer that is going to span
@@ -2794,12 +2447,7 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
 			 * simply pass over these holes and finish cleaning the
 			 * rest of the packet.
 			 */
-<<<<<<< HEAD
-			memset(&tx_q->tx_buf[i], 0, sizeof(struct idpf_tx_buf));
-			tx_q->tx_buf[i].compl_tag = params->compl_tag;
-=======
 			tx_buf->type = LIBETH_SQE_EMPTY;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			/* Adjust the DMA offset and the remaining size of the
 			 * fragment.  On the first iteration of this loop,
@@ -2823,15 +2471,6 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
 			break;
 
 		idpf_tx_splitq_build_desc(tx_desc, params, td_cmd, size);
-<<<<<<< HEAD
-		tx_desc++;
-		i++;
-
-		if (i == tx_q->desc_count) {
-			tx_desc = &tx_q->flex_tx[0];
-			i = 0;
-			tx_q->compl_tag_cur_gen = IDPF_TX_ADJ_COMPL_TAG_GEN(tx_q);
-=======
 
 		if (unlikely(++i == tx_q->desc_count)) {
 			tx_buf = tx_q->tx_buf;
@@ -2841,7 +2480,6 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
 		} else {
 			tx_buf++;
 			tx_desc++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		size = skb_frag_size(frag);
@@ -2849,43 +2487,24 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
 
 		dma = skb_frag_dma_map(tx_q->dev, frag, 0, size,
 				       DMA_TO_DEVICE);
-<<<<<<< HEAD
-
-		tx_buf = &tx_q->tx_buf[i];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* record SW timestamp if HW timestamp is not available */
 	skb_tx_timestamp(skb);
 
-<<<<<<< HEAD
-	/* write last descriptor with RS and EOP bits */
-=======
 	first->type = LIBETH_SQE_SKB;
 
 	/* write last descriptor with RS and EOP bits */
 	first->rs_idx = i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	td_cmd |= params->eop_cmd;
 	idpf_tx_splitq_build_desc(tx_desc, params, td_cmd, size);
 	i = idpf_tx_splitq_bump_ntu(tx_q, i);
 
-<<<<<<< HEAD
-	/* set next_to_watch value indicating a packet is present */
-	first->next_to_watch = tx_desc;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tx_q->txq_grp->num_completions_pending++;
 
 	/* record bytecount for BQL */
 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
-<<<<<<< HEAD
-	netdev_tx_sent_queue(nq, first->bytecount);
-=======
 	netdev_tx_sent_queue(nq, first->bytes);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	idpf_tx_buf_hw_update(tx_q, i, netdev_xmit_more());
 }
@@ -3085,12 +2704,7 @@ idpf_tx_splitq_get_ctx_desc(struct idpf_tx_queue *txq)
 	struct idpf_flex_tx_ctx_desc *desc;
 	int i = txq->next_to_use;
 
-<<<<<<< HEAD
-	memset(&txq->tx_buf[i], 0, sizeof(struct idpf_tx_buf));
-	txq->tx_buf[i].compl_tag = IDPF_SPLITQ_TX_INVAL_COMPL_TAG;
-=======
 	txq->tx_buf[i].type = LIBETH_SQE_CTX;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* grab the next descriptor */
 	desc = &txq->flex_ctx[i];
@@ -3174,21 +2788,12 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
 	first->skb = skb;
 
 	if (tso) {
-<<<<<<< HEAD
-		first->gso_segs = tx_params.offload.tso_segs;
-		first->bytecount = skb->len +
-			((first->gso_segs - 1) * tx_params.offload.tso_hdr_len);
-	} else {
-		first->gso_segs = 1;
-		first->bytecount = max_t(unsigned int, skb->len, ETH_ZLEN);
-=======
 		first->packets = tx_params.offload.tso_segs;
 		first->bytes = skb->len +
 			((first->packets - 1) * tx_params.offload.tso_hdr_len);
 	} else {
 		first->packets = 1;
 		first->bytes = max_t(unsigned int, skb->len, ETH_ZLEN);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (idpf_queue_has(FLOW_SCH_EN, tx_q)) {
@@ -4110,10 +3715,7 @@ void idpf_vport_intr_update_itr_ena_irq(struct idpf_q_vector *q_vector)
 	/* net_dim() updates ITR out-of-band using a work item */
 	idpf_net_dim(q_vector);
 
-<<<<<<< HEAD
-=======
 	q_vector->wb_on_itr = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intval = idpf_vport_intr_buildreg_itr(q_vector,
 					      IDPF_NO_ITR_UPDATE_IDX, 0);
 
@@ -4416,15 +4018,10 @@ static int idpf_vport_splitq_napi_poll(struct napi_struct *napi, int budget)
 	clean_complete &= idpf_tx_splitq_clean_all(q_vector, budget, &work_done);
 
 	/* If work not completed, return budget and polling will return */
-<<<<<<< HEAD
-	if (!clean_complete)
-		return budget;
-=======
 	if (!clean_complete) {
 		idpf_vport_intr_set_wb_on_itr(q_vector);
 		return budget;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	work_done = min_t(int, work_done, budget - 1);
 
@@ -4433,11 +4030,8 @@ static int idpf_vport_splitq_napi_poll(struct napi_struct *napi, int budget)
 	 */
 	if (likely(napi_complete_done(napi, work_done)))
 		idpf_vport_intr_update_itr_ena_irq(q_vector);
-<<<<<<< HEAD
-=======
 	else
 		idpf_vport_intr_set_wb_on_itr(q_vector);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Switch to poll mode in the tear-down path after sending disable
 	 * queues virtchnl message, as the interrupts will be disabled after

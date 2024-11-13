@@ -45,11 +45,8 @@
 #define IWL_WTAS_ENABLE_IEC_MSK	0x4
 #define IWL_WTAS_USA_UHB_MSK		BIT(16)
 
-<<<<<<< HEAD
-=======
 #define BIOS_MCC_CHINA 0x434e
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The profile for revision 2 is a superset of revision 1, which is in
  * turn a superset of revision 0.  So we can store all revisions
@@ -222,9 +219,6 @@ static inline u32 iwl_bios_get_ppag_flags(const u32 ppag_modes,
 	return ppag_modes & (ppag_ver < 3 ? IWL_PPAG_ETSI_CHINA_MASK :
 					    IWL_PPAG_REV3_MASK);
 }
-<<<<<<< HEAD
-=======
 
 bool iwl_puncturing_is_allowed_in_bios(u32 puncturing, u16 mcc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __fw_regulatory_h__ */

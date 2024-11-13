@@ -465,14 +465,6 @@ static int hostfs_read_folio(struct file *file, struct folio *folio)
 
 static int hostfs_write_begin(struct file *file, struct address_space *mapping,
 			      loff_t pos, unsigned len,
-<<<<<<< HEAD
-			      struct page **pagep, void **fsdata)
-{
-	pgoff_t index = pos >> PAGE_SHIFT;
-
-	*pagep = grab_cache_page_write_begin(mapping, index);
-	if (!*pagep)
-=======
 			      struct folio **foliop, void **fsdata)
 {
 	pgoff_t index = pos >> PAGE_SHIFT;
@@ -480,28 +472,12 @@ static int hostfs_write_begin(struct file *file, struct address_space *mapping,
 	*foliop = __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
 			mapping_gfp_mask(mapping));
 	if (!*foliop)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 	return 0;
 }
 
 static int hostfs_write_end(struct file *file, struct address_space *mapping,
 			    loff_t pos, unsigned len, unsigned copied,
-<<<<<<< HEAD
-			    struct page *page, void *fsdata)
-{
-	struct inode *inode = mapping->host;
-	void *buffer;
-	unsigned from = pos & (PAGE_SIZE - 1);
-	int err;
-
-	buffer = kmap_local_page(page);
-	err = write_file(FILE_HOSTFS_I(file)->fd, &pos, buffer + from, copied);
-	kunmap_local(buffer);
-
-	if (!PageUptodate(page) && err == PAGE_SIZE)
-		SetPageUptodate(page);
-=======
 			    struct folio *folio, void *fsdata)
 {
 	struct inode *inode = mapping->host;
@@ -515,7 +491,6 @@ static int hostfs_write_end(struct file *file, struct address_space *mapping,
 
 	if (!folio_test_uptodate(folio) && err == folio_size(folio))
 		folio_mark_uptodate(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If err > 0, write_file has added err to pos, so we are comparing
@@ -523,13 +498,8 @@ static int hostfs_write_end(struct file *file, struct address_space *mapping,
 	 */
 	if (err > 0 && (pos > inode->i_size))
 		inode->i_size = pos;
-<<<<<<< HEAD
-	unlock_page(page);
-	put_page(page);
-=======
 	folio_unlock(folio);
 	folio_put(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return err;
 }

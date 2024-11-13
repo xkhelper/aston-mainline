@@ -134,13 +134,10 @@ int bch2_accounting_validate(struct bch_fs *c, struct bkey_s_c k,
 	void *end = &acc_k + 1;
 	int ret = 0;
 
-<<<<<<< HEAD
-=======
 	bkey_fsck_err_on(bversion_zero(k.k->bversion),
 			 c, accounting_key_version_0,
 			 "accounting key with version=0");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (acc_k.type) {
 	case BCH_DISK_ACCOUNTING_nr_inodes:
 		end = field_end(acc_k, nr_inodes);
@@ -245,8 +242,6 @@ void bch2_accounting_swab(struct bkey_s k)
 		*p = swab64(*p);
 }
 
-<<<<<<< HEAD
-=======
 static inline void __accounting_to_replicas(struct bch_replicas_entry_v1 *r,
 					    struct disk_accounting_pos acc)
 {
@@ -255,7 +250,6 @@ static inline void __accounting_to_replicas(struct bch_replicas_entry_v1 *r,
 		      "variable length struct");
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool accounting_to_replicas(struct bch_replicas_entry_v1 *r, struct bpos p)
 {
 	struct disk_accounting_pos acc_k;
@@ -263,13 +257,7 @@ static inline bool accounting_to_replicas(struct bch_replicas_entry_v1 *r, struc
 
 	switch (acc_k.type) {
 	case BCH_DISK_ACCOUNTING_replicas:
-<<<<<<< HEAD
-		unsafe_memcpy(r, &acc_k.replicas,
-			      replicas_entry_bytes(&acc_k.replicas),
-			      "variable length struct");
-=======
 		__accounting_to_replicas(r, acc_k);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	default:
 		return false;
@@ -313,11 +301,7 @@ static int __bch2_accounting_mem_insert(struct bch_fs *c, struct bkey_s_c_accoun
 
 	struct accounting_mem_entry n = {
 		.pos		= a.k->p,
-<<<<<<< HEAD
-		.version	= a.k->version,
-=======
 		.bversion	= a.k->bversion,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.nr_counters	= bch2_accounting_counters(a.k),
 		.v[0]		= __alloc_percpu_gfp(n.nr_counters * sizeof(u64),
 						     sizeof(u64), GFP_KERNEL),
@@ -345,13 +329,6 @@ err:
 	return -BCH_ERR_ENOMEM_disk_accounting;
 }
 
-<<<<<<< HEAD
-int bch2_accounting_mem_insert(struct bch_fs *c, struct bkey_s_c_accounting a, bool gc)
-{
-	struct bch_replicas_padded r;
-
-	if (accounting_to_replicas(&r.e, a.k->p) &&
-=======
 int bch2_accounting_mem_insert(struct bch_fs *c, struct bkey_s_c_accounting a,
 			       enum bch_accounting_mode mode)
 {
@@ -359,7 +336,6 @@ int bch2_accounting_mem_insert(struct bch_fs *c, struct bkey_s_c_accounting a,
 
 	if (mode != BCH_ACCOUNTING_read &&
 	    accounting_to_replicas(&r.e, a.k->p) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !bch2_replicas_marked_locked(c, &r.e))
 		return -BCH_ERR_btree_insert_need_mark_replicas;
 
@@ -602,13 +578,9 @@ int bch2_gc_accounting_done(struct bch_fs *c)
 					struct { __BKEY_PADDED(k, BCH_ACCOUNTING_MAX_COUNTERS); } k_i;
 
 					accounting_key_init(&k_i.k, &acc_k, src_v, nr);
-<<<<<<< HEAD
-					bch2_accounting_mem_mod_locked(trans, bkey_i_to_s_c_accounting(&k_i.k), false, false);
-=======
 					bch2_accounting_mem_mod_locked(trans,
 								bkey_i_to_s_c_accounting(&k_i.k),
 								BCH_ACCOUNTING_normal);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 					preempt_disable();
 					struct bch_fs_usage_base *dst = this_cpu_ptr(c->usage);
@@ -631,36 +603,11 @@ fsck_err:
 static int accounting_read_key(struct btree_trans *trans, struct bkey_s_c k)
 {
 	struct bch_fs *c = trans->c;
-<<<<<<< HEAD
-	struct printbuf buf = PRINTBUF;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (k.k->type != KEY_TYPE_accounting)
 		return 0;
 
 	percpu_down_read(&c->mark_lock);
-<<<<<<< HEAD
-	int ret = bch2_accounting_mem_mod_locked(trans, bkey_s_c_to_accounting(k), false, true);
-	percpu_up_read(&c->mark_lock);
-
-	if (bch2_accounting_key_is_zero(bkey_s_c_to_accounting(k)) &&
-	    ret == -BCH_ERR_btree_insert_need_mark_replicas)
-		ret = 0;
-
-	struct disk_accounting_pos acc;
-	bpos_to_disk_accounting_pos(&acc, k.k->p);
-
-	if (fsck_err_on(ret == -BCH_ERR_btree_insert_need_mark_replicas,
-			trans, accounting_replicas_not_marked,
-			"accounting not marked in superblock replicas\n  %s",
-			(bch2_accounting_key_to_text(&buf, &acc),
-			 buf.buf)))
-		ret = bch2_accounting_update_sb_one(c, k.k->p);
-fsck_err:
-	printbuf_exit(&buf);
-	return ret;
-=======
 	int ret = bch2_accounting_mem_mod_locked(trans, bkey_s_c_to_accounting(k),
 						 BCH_ACCOUNTING_read);
 	percpu_up_read(&c->mark_lock);
@@ -740,7 +687,6 @@ invalid_device:
 		ret = -BCH_ERR_remove_disk_accounting_entry;
 	}
 	goto fsck_err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -751,10 +697,7 @@ int bch2_accounting_read(struct bch_fs *c)
 {
 	struct bch_accounting_mem *acc = &c->accounting;
 	struct btree_trans *trans = bch2_trans_get(c);
-<<<<<<< HEAD
-=======
 	struct printbuf buf = PRINTBUF;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int ret = for_each_btree_key(trans, iter,
 				BTREE_ID_accounting, POS_MIN,
@@ -778,11 +721,7 @@ int bch2_accounting_read(struct bch_fs *c)
 						accounting_pos_cmp, &k.k->p);
 
 			bool applied = idx < acc->k.nr &&
-<<<<<<< HEAD
-				bversion_cmp(acc->k.data[idx].version, k.k->version) >= 0;
-=======
 				bversion_cmp(acc->k.data[idx].bversion, k.k->bversion) >= 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			if (applied)
 				continue;
@@ -790,11 +729,7 @@ int bch2_accounting_read(struct bch_fs *c)
 			if (i + 1 < &darray_top(*keys) &&
 			    i[1].k->k.type == KEY_TYPE_accounting &&
 			    !journal_key_cmp(i, i + 1)) {
-<<<<<<< HEAD
-				BUG_ON(bversion_cmp(i[0].k->k.version, i[1].k->k.version) >= 0);
-=======
 				WARN_ON(bversion_cmp(i[0].k->k.bversion, i[1].k->k.bversion) >= 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				i[1].journal_seq = i[0].journal_seq;
 
@@ -812,9 +747,6 @@ int bch2_accounting_read(struct bch_fs *c)
 	}
 	keys->gap = keys->nr = dst - keys->data;
 
-<<<<<<< HEAD
-	percpu_down_read(&c->mark_lock);
-=======
 	percpu_down_write(&c->mark_lock);
 	unsigned i = 0;
 	while (i < acc->k.nr) {
@@ -853,7 +785,6 @@ int bch2_accounting_read(struct bch_fs *c)
 		i++;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	preempt_disable();
 	struct bch_fs_usage_base *usage = this_cpu_ptr(c->usage);
 
@@ -889,15 +820,10 @@ int bch2_accounting_read(struct bch_fs *c)
 		}
 	}
 	preempt_enable();
-<<<<<<< HEAD
-	percpu_up_read(&c->mark_lock);
-err:
-=======
 fsck_err:
 	percpu_up_write(&c->mark_lock);
 err:
 	printbuf_exit(&buf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch2_trans_put(trans);
 	bch_err_fn(c, ret);
 	return ret;
@@ -930,15 +856,10 @@ int bch2_dev_usage_init(struct bch_dev *ca, bool gc)
 	};
 	u64 v[3] = { ca->mi.nbuckets - ca->mi.first_bucket, 0, 0 };
 
-<<<<<<< HEAD
-	int ret = bch2_trans_do(c, NULL, NULL, 0,
-			bch2_disk_accounting_mod(trans, &acc, v, ARRAY_SIZE(v), gc));
-=======
 	int ret = bch2_trans_do(c, ({
 		bch2_disk_accounting_mod(trans, &acc, v, ARRAY_SIZE(v), gc) ?:
 		(!gc ? bch2_trans_commit(trans, NULL, NULL, 0) : 0);
 	}));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch_err_fn(c, ret);
 	return ret;
 }

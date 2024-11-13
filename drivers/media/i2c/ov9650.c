@@ -1566,13 +1566,8 @@ static void ov965x_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ov965x_id[] = {
-<<<<<<< HEAD
-	{ "OV9650", 0 },
-	{ "OV9652", 0 },
-=======
 	{ "OV9650" },
 	{ "OV9652" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(i2c, ov965x_id);

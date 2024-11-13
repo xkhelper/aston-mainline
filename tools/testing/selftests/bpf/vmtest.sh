@@ -1,21 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0
 
-<<<<<<< HEAD
-set -u
-set -e
-
-# This script currently only works for x86_64 and s390x, as
-# it is based on the VM image used by the BPF CI, which is
-# available only for these architectures.
-ARCH="$(uname -m)"
-case "${ARCH}" in
-s390x)
-	QEMU_BINARY=qemu-system-s390x
-	QEMU_CONSOLE="ttyS1"
-	QEMU_FLAGS=(-smp 2)
-	BZIMAGE="arch/s390/boot/vmlinux"
-=======
 set -e
 
 # This script currently only works for the following platforms,
@@ -32,28 +17,18 @@ s390x)
 	CROSS_FLAGS=(-smp 2)
 	BZIMAGE="arch/s390/boot/vmlinux"
 	ARCH="s390"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	;;
 x86_64)
 	QEMU_BINARY=qemu-system-x86_64
 	QEMU_CONSOLE="ttyS0,115200"
-<<<<<<< HEAD
-	QEMU_FLAGS=(-cpu host -smp 8)
-	BZIMAGE="arch/x86/boot/bzImage"
-=======
 	HOST_FLAGS=(-cpu host -enable-kvm -smp 8)
 	CROSS_FLAGS=(-smp 8)
 	BZIMAGE="arch/x86/boot/bzImage"
 	ARCH="x86"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	;;
 aarch64)
 	QEMU_BINARY=qemu-system-aarch64
 	QEMU_CONSOLE="ttyAMA0,115200"
-<<<<<<< HEAD
-	QEMU_FLAGS=(-M virt,gic-version=3 -cpu host -smp 8)
-	BZIMAGE="arch/arm64/boot/Image"
-=======
 	HOST_FLAGS=(-M virt,gic-version=3 -cpu host -enable-kvm -smp 8)
 	CROSS_FLAGS=(-M virt,gic-version=3 -cpu cortex-a76 -smp 8)
 	BZIMAGE="arch/arm64/boot/Image"
@@ -67,7 +42,6 @@ riscv64)
 	CROSS_FLAGS=(-M virt -cpu rv64,sscofpmf=true -smp 8)
 	BZIMAGE="arch/riscv/boot/Image"
 	ARCH="riscv"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	;;
 *)
 	echo "Unsupported architecture"
@@ -76,19 +50,12 @@ riscv64)
 esac
 DEFAULT_COMMAND="./test_progs"
 MOUNT_DIR="mnt"
-<<<<<<< HEAD
-=======
 LOCAL_ROOTFS_IMAGE=""
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ROOTFS_IMAGE="root.img"
 OUTPUT_DIR="$HOME/.bpf_selftests"
 KCONFIG_REL_PATHS=("tools/testing/selftests/bpf/config"
 	"tools/testing/selftests/bpf/config.vm"
-<<<<<<< HEAD
-	"tools/testing/selftests/bpf/config.${ARCH}")
-=======
 	"tools/testing/selftests/bpf/config.${PLATFORM}")
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 INDEX_URL="https://raw.githubusercontent.com/libbpf/ci/master/INDEX"
 NUM_COMPILE_JOBS="$(nproc)"
 LOG_FILE_BASE="$(date +"bpf_selftests.%Y-%m-%d_%H-%M-%S")"
@@ -108,13 +75,10 @@ tools/testing/selftests/bpf. e.g:
 If no command is specified and a debug shell (-s) is not requested,
 "${DEFAULT_COMMAND}" will be run by default.
 
-<<<<<<< HEAD
-=======
 Using PLATFORM= and CROSS_COMPILE= options will enable cross platform testing:
 
   PLATFORM=<platform> CROSS_COMPILE=<toolchain> $0 -- ./test_progs -t test_lsm
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 If you build your kernel using KBUILD_OUTPUT= or O= options, these
 can be passed as environment variables to the script:
 
@@ -126,10 +90,7 @@ or
 
 Options:
 
-<<<<<<< HEAD
-=======
 	-l)             Specify the path to the local rootfs image.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	-i)		Update the rootfs image with a newer version.
 	-d)		Update the output directory (default: ${OUTPUT_DIR})
 	-j)		Number of jobs for compilation, similar to -j in make
@@ -153,11 +114,6 @@ populate_url_map()
 	fi
 }
 
-<<<<<<< HEAD
-download()
-{
-	local file="$1"
-=======
 newest_rootfs_version()
 {
 	{
@@ -175,7 +131,6 @@ download_rootfs()
 
 	local rootfsversion="$(newest_rootfs_version)"
 	local file="${PLATFORM}/libbpf-vmtest-rootfs-$rootfsversion.tar.zst"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if [[ ! -v URLS[$file] ]]; then
 		echo "$file not found" >&2
@@ -186,43 +141,20 @@ download_rootfs()
 	curl -Lsf "${URLS[$file]}" "${@:2}"
 }
 
-<<<<<<< HEAD
-newest_rootfs_version()
-{
-	{
-	for file in "${!URLS[@]}"; do
-		if [[ $file =~ ^"${ARCH}"/libbpf-vmtest-rootfs-(.*)\.tar\.zst$ ]]; then
-			echo "${BASH_REMATCH[1]}"
-		fi
-	done
-	} | sort -rV | head -1
-}
-
-download_rootfs()
-{
-	local rootfsversion="$1"
-	local dir="$2"
-=======
 load_rootfs()
 {
 	local dir="$1"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ! which zstd &> /dev/null; then
 		echo 'Could not find "zstd" on the system, please install zstd'
 		exit 1
 	fi
 
-<<<<<<< HEAD
-	download "${ARCH}/libbpf-vmtest-rootfs-$rootfsversion.tar.zst" |
-		zstd -d | sudo tar -C "$dir" -x
-=======
 	if [[ -n "${LOCAL_ROOTFS_IMAGE}" ]]; then
 		cat "${LOCAL_ROOTFS_IMAGE}" | zstd -d | sudo tar -C "$dir" -x
 	else
 		download_rootfs | zstd -d | sudo tar -C "$dir" -x
 	fi
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 recompile_kernel()
@@ -322,11 +254,7 @@ create_vm_image()
 	mkfs.ext4 -q "${rootfs_img}"
 
 	mount_image
-<<<<<<< HEAD
-	download_rootfs "$(newest_rootfs_version)" "${mount_dir}"
-=======
 	load_rootfs "${mount_dir}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unmount_image
 }
 
@@ -343,24 +271,17 @@ EOF
 		exit 1
 	fi
 
-<<<<<<< HEAD
-=======
 	if [[ "${PLATFORM}" != "$(uname -m)" ]]; then
 		QEMU_FLAGS=("${CROSS_FLAGS[@]}")
 	else
 		QEMU_FLAGS=("${HOST_FLAGS[@]}")
 	fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	${QEMU_BINARY} \
 		-nodefaults \
 		-display none \
 		-serial mon:stdio \
 		"${QEMU_FLAGS[@]}" \
-<<<<<<< HEAD
-		-enable-kvm \
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		-m 4G \
 		-drive file="${rootfs_img}",format=raw,index=1,media=disk,if=virtio,cache=none \
 		-kernel "${kernel_bzimage}" \
@@ -452,16 +373,11 @@ main()
 	local exit_command="poweroff -f"
 	local debug_shell="no"
 
-<<<<<<< HEAD
-	while getopts ':hskid:j:' opt; do
-		case ${opt} in
-=======
 	while getopts ':hskl:id:j:' opt; do
 		case ${opt} in
 		l)
 			LOCAL_ROOTFS_IMAGE="$OPTARG"
 			;;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i)
 			update_image="yes"
 			;;
@@ -496,14 +412,11 @@ main()
 
 	trap 'catch "$?"' EXIT
 
-<<<<<<< HEAD
-=======
 	if [[ "${PLATFORM}" != "$(uname -m)" ]] && [[ -z "${CROSS_COMPILE}" ]]; then
 		echo "Cross-platform testing needs to specify CROSS_COMPILE"
 		exit 1
 	fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if [[ $# -eq 0  && "${debug_shell}" == "no" ]]; then
 		echo "No command specified, will run ${DEFAULT_COMMAND} in the vm"
 	else
@@ -511,12 +424,8 @@ main()
 	fi
 
 	local kconfig_file="${OUTPUT_DIR}/latest.config"
-<<<<<<< HEAD
-	local make_command="make -j ${NUM_COMPILE_JOBS} KCONFIG_CONFIG=${kconfig_file}"
-=======
 	local make_command="make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} \
 			    -j ${NUM_COMPILE_JOBS} KCONFIG_CONFIG=${kconfig_file}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	# Figure out where the kernel is being built.
 	# O takes precedence over KBUILD_OUTPUT.
@@ -534,11 +443,6 @@ main()
 		make_command="${make_command} KBUILD_OUTPUT=${KBUILD_OUTPUT}"
 	fi
 
-<<<<<<< HEAD
-	populate_url_map
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local rootfs_img="${OUTPUT_DIR}/${ROOTFS_IMAGE}"
 	local mount_dir="${OUTPUT_DIR}/${MOUNT_DIR}"
 

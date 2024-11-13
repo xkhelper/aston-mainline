@@ -8,10 +8,7 @@
  */
 
 #include <linux/acpi.h>
-<<<<<<< HEAD
-=======
 #include <linux/arm-smccc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/bitfield.h>
 #include <linux/clk.h>
 #include <linux/dma-mapping.h>
@@ -112,23 +109,11 @@
 #define DLL_LOCK_WO_TMOUT(x) \
 	((((x) & DWCMSHC_EMMC_DLL_LOCKED) == DWCMSHC_EMMC_DLL_LOCKED) && \
 	(((x) & DWCMSHC_EMMC_DLL_TIMEOUT) == 0))
-<<<<<<< HEAD
-#define RK35xx_MAX_CLKS 3
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PHY register area pointer */
 #define DWC_MSHC_PTR_PHY_R	0x300
 
 /* PHY general configuration */
-<<<<<<< HEAD
-#define PHY_CNFG_R		(DWC_MSHC_PTR_PHY_R + 0x00)
-#define PHY_CNFG_RSTN_DEASSERT	0x1  /* Deassert PHY reset */
-#define PHY_CNFG_PAD_SP_MASK	GENMASK(19, 16) /* bits [19:16] */
-#define PHY_CNFG_PAD_SP		0x0c /* PMOS TX drive strength */
-#define PHY_CNFG_PAD_SN_MASK	GENMASK(23, 20) /* bits [23:20] */
-#define PHY_CNFG_PAD_SN		0x0c /* NMOS TX drive strength */
-=======
 #define PHY_CNFG_R			(DWC_MSHC_PTR_PHY_R + 0x00)
 #define PHY_CNFG_RSTN_DEASSERT		0x1  /* Deassert PHY reset */
 #define PHY_CNFG_PHY_PWRGOOD_MASK	BIT_MASK(1) /* bit [1] */
@@ -138,7 +123,6 @@
 #define PHY_CNFG_PAD_SN_MASK		GENMASK(23, 20) /* bits [23:20] */
 #define PHY_CNFG_PAD_SN			0x0c /* NMOS TX drive strength */
 #define PHY_CNFG_PAD_SN_SG2042		0x08 /* NMOS TX drive strength for SG2042 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PHY command/response pad settings */
 #define PHY_CMDPAD_CNFG_R	(DWC_MSHC_PTR_PHY_R + 0x04)
@@ -167,19 +151,12 @@
 #define PHY_PAD_TXSLEW_CTRL_P		0x3 /* Slew control for P-Type pad TX */
 #define PHY_PAD_TXSLEW_CTRL_N_MASK	GENMASK(12, 9) /* bits [12:9] */
 #define PHY_PAD_TXSLEW_CTRL_N		0x3 /* Slew control for N-Type pad TX */
-<<<<<<< HEAD
-
-/* PHY CLK delay line settings */
-#define PHY_SDCLKDL_CNFG_R		(DWC_MSHC_PTR_PHY_R + 0x1d)
-#define PHY_SDCLKDL_CNFG_UPDATE	BIT(4) /* set before writing to SDCLKDL_DC */
-=======
 #define PHY_PAD_TXSLEW_CTRL_N_SG2042	0x2 /* Slew control for N-Type pad TX for SG2042 */
 
 /* PHY CLK delay line settings */
 #define PHY_SDCLKDL_CNFG_R		(DWC_MSHC_PTR_PHY_R + 0x1d)
 #define PHY_SDCLKDL_CNFG_EXTDLY_EN	BIT(0)
 #define PHY_SDCLKDL_CNFG_UPDATE		BIT(4) /* set before writing to SDCLKDL_DC */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PHY CLK delay line delay code */
 #define PHY_SDCLKDL_DC_R		(DWC_MSHC_PTR_PHY_R + 0x1e)
@@ -187,20 +164,14 @@
 #define PHY_SDCLKDL_DC_DEFAULT		0x32 /* default delay code */
 #define PHY_SDCLKDL_DC_HS400		0x18 /* delay code for HS400 mode */
 
-<<<<<<< HEAD
-=======
 #define PHY_SMPLDL_CNFG_R		(DWC_MSHC_PTR_PHY_R + 0x20)
 #define PHY_SMPLDL_CNFG_BYPASS_EN	BIT(1)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* PHY drift_cclk_rx delay line configuration setting */
 #define PHY_ATDL_CNFG_R			(DWC_MSHC_PTR_PHY_R + 0x21)
 #define PHY_ATDL_CNFG_INPSEL_MASK	GENMASK(3, 2) /* bits [3:2] */
 #define PHY_ATDL_CNFG_INPSEL		0x3 /* delay line input source */
-<<<<<<< HEAD
-=======
 #define PHY_ATDL_CNFG_INPSEL_SG2042	0x2 /* delay line input source for SG2042 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PHY DLL control settings */
 #define PHY_DLL_CTRL_R			(DWC_MSHC_PTR_PHY_R + 0x24)
@@ -231,51 +202,35 @@
 					 SDHCI_TRNS_BLK_CNT_EN | \
 					 SDHCI_TRNS_DMA)
 
-<<<<<<< HEAD
-=======
 /* SMC call for BlueField-3 eMMC RST_N */
 #define BLUEFIELD_SMC_SET_EMMC_RST_N	0x82000007
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum dwcmshc_rk_type {
 	DWCMSHC_RK3568,
 	DWCMSHC_RK3588,
 };
 
 struct rk35xx_priv {
-<<<<<<< HEAD
-	/* Rockchip specified optional clocks */
-	struct clk_bulk_data rockchip_clks[RK35xx_MAX_CLKS];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct reset_control *reset;
 	enum dwcmshc_rk_type devtype;
 	u8 txclk_tapnum;
 };
 
-<<<<<<< HEAD
-=======
 #define DWCMSHC_MAX_OTHER_CLKS 3
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dwcmshc_priv {
 	struct clk	*bus_clk;
 	int vendor_specific_area1; /* P_VENDOR_SPECIFIC_AREA1 reg */
 	int vendor_specific_area2; /* P_VENDOR_SPECIFIC_AREA2 reg */
 
-<<<<<<< HEAD
-=======
 	int num_other_clks;
 	struct clk_bulk_data other_clks[DWCMSHC_MAX_OTHER_CLKS];
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void *priv; /* pointer to SoC private stuff */
 	u16 delay_line;
 	u16 flags;
 };
 
-<<<<<<< HEAD
-=======
 struct dwcmshc_pltfm_data {
 	const struct sdhci_pltfm_data pdata;
 	int (*init)(struct device *dev, struct sdhci_host *host, struct dwcmshc_priv *dwc_priv);
@@ -310,7 +265,6 @@ static int dwcmshc_get_enable_other_clks(struct device *dev,
 	return err;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * If DMA addr spans 128MB boundary, we split the DMA transfer into two
  * so that each DMA transfer doesn't exceed the boundary.
@@ -776,8 +730,6 @@ static void rk35xx_sdhci_reset(struct sdhci_host *host, u8 mask)
 	sdhci_reset(host, mask);
 }
 
-<<<<<<< HEAD
-=======
 static int dwcmshc_rk35xx_init(struct device *dev, struct sdhci_host *host,
 			       struct dwcmshc_priv *dwc_priv)
 {
@@ -835,7 +787,6 @@ static void dwcmshc_rk35xx_postinit(struct sdhci_host *host, struct dwcmshc_priv
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int th1520_execute_tuning(struct sdhci_host *host, u32 opcode)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
@@ -901,8 +852,6 @@ static void th1520_sdhci_reset(struct sdhci_host *host, u8 mask)
 
 	sdhci_reset(host, mask);
 
-<<<<<<< HEAD
-=======
 	/* The T-Head 1520 SoC does not comply with the SDHCI specification
 	 * regarding the "Software Reset for CMD line should clear 'Command
 	 * Complete' in the Normal Interrupt Status Register." Clear the bit
@@ -911,7 +860,6 @@ static void th1520_sdhci_reset(struct sdhci_host *host, u8 mask)
 	if (mask & SDHCI_RESET_CMD)
 		sdhci_writel(host, SDHCI_INT_RESPONSE, SDHCI_INT_STATUS);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (priv->flags & FLAG_IO_FIXED_1V8) {
 		ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
 		if (!(ctrl_2 & SDHCI_CTRL_VDD_180)) {
@@ -921,8 +869,6 @@ static void th1520_sdhci_reset(struct sdhci_host *host, u8 mask)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static int th1520_init(struct device *dev,
 		       struct sdhci_host *host,
 		       struct dwcmshc_priv *dwc_priv)
@@ -952,7 +898,6 @@ static int th1520_init(struct device *dev,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void cv18xx_sdhci_reset(struct sdhci_host *host, u8 mask)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
@@ -1089,8 +1034,6 @@ static int cv18xx_sdhci_execute_tuning(struct sdhci_host *host, u32 opcode)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static inline void sg2042_sdhci_phy_init(struct sdhci_host *host)
 {
 	u32 val;
@@ -1170,7 +1113,6 @@ static int sg2042_init(struct device *dev, struct sdhci_host *host,
 					     ARRAY_SIZE(clk_ids), clk_ids);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct sdhci_ops sdhci_dwcmshc_ops = {
 	.set_clock		= sdhci_set_clock,
 	.set_bus_width		= sdhci_set_bus_width,
@@ -1181,8 +1123,6 @@ static const struct sdhci_ops sdhci_dwcmshc_ops = {
 	.irq			= dwcmshc_cqe_irq_handler,
 };
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ACPI
 static void dwcmshc_bf3_hw_reset(struct sdhci_host *host)
 {
@@ -1206,7 +1146,6 @@ static const struct sdhci_ops sdhci_dwcmshc_bf3_ops = {
 };
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct sdhci_ops sdhci_dwcmshc_rk35xx_ops = {
 	.set_clock		= dwcmshc_rk3568_set_clock,
 	.set_bus_width		= sdhci_set_bus_width,
@@ -1238,41 +1177,6 @@ static const struct sdhci_ops sdhci_dwcmshc_cv18xx_ops = {
 	.platform_execute_tuning = cv18xx_sdhci_execute_tuning,
 };
 
-<<<<<<< HEAD
-static const struct sdhci_pltfm_data sdhci_dwcmshc_pdata = {
-	.ops = &sdhci_dwcmshc_ops,
-	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-};
-
-#ifdef CONFIG_ACPI
-static const struct sdhci_pltfm_data sdhci_dwcmshc_bf3_pdata = {
-	.ops = &sdhci_dwcmshc_ops,
-	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-		   SDHCI_QUIRK2_ACMD23_BROKEN,
-};
-#endif
-
-static const struct sdhci_pltfm_data sdhci_dwcmshc_rk35xx_pdata = {
-	.ops = &sdhci_dwcmshc_rk35xx_ops,
-	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
-		  SDHCI_QUIRK_BROKEN_TIMEOUT_VAL,
-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-		   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
-};
-
-static const struct sdhci_pltfm_data sdhci_dwcmshc_th1520_pdata = {
-	.ops = &sdhci_dwcmshc_th1520_ops,
-	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-};
-
-static const struct sdhci_pltfm_data sdhci_dwcmshc_cv18xx_pdata = {
-	.ops = &sdhci_dwcmshc_cv18xx_ops,
-	.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
-	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
-=======
 static const struct sdhci_ops sdhci_dwcmshc_sg2042_ops = {
 	.set_clock		= sdhci_set_clock,
 	.set_bus_width		= sdhci_set_bus_width,
@@ -1338,7 +1242,6 @@ static const struct dwcmshc_pltfm_data sdhci_dwcmshc_sg2042_pdata = {
 		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
 	},
 	.init = sg2042_init,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct cqhci_host_ops dwcmshc_cqhci_ops = {
@@ -1408,64 +1311,6 @@ dsbl_cqe_caps:
 	host->mmc->caps2 &= ~(MMC_CAP2_CQE | MMC_CAP2_CQE_DCMD);
 }
 
-<<<<<<< HEAD
-static int dwcmshc_rk35xx_init(struct sdhci_host *host, struct dwcmshc_priv *dwc_priv)
-{
-	int err;
-	struct rk35xx_priv *priv = dwc_priv->priv;
-
-	priv->reset = devm_reset_control_array_get_optional_exclusive(mmc_dev(host->mmc));
-	if (IS_ERR(priv->reset)) {
-		err = PTR_ERR(priv->reset);
-		dev_err(mmc_dev(host->mmc), "failed to get reset control %d\n", err);
-		return err;
-	}
-
-	priv->rockchip_clks[0].id = "axi";
-	priv->rockchip_clks[1].id = "block";
-	priv->rockchip_clks[2].id = "timer";
-	err = devm_clk_bulk_get_optional(mmc_dev(host->mmc), RK35xx_MAX_CLKS,
-					 priv->rockchip_clks);
-	if (err) {
-		dev_err(mmc_dev(host->mmc), "failed to get clocks %d\n", err);
-		return err;
-	}
-
-	err = clk_bulk_prepare_enable(RK35xx_MAX_CLKS, priv->rockchip_clks);
-	if (err) {
-		dev_err(mmc_dev(host->mmc), "failed to enable clocks %d\n", err);
-		return err;
-	}
-
-	if (of_property_read_u8(mmc_dev(host->mmc)->of_node, "rockchip,txclk-tapnum",
-				&priv->txclk_tapnum))
-		priv->txclk_tapnum = DLL_TXCLK_TAPNUM_DEFAULT;
-
-	/* Disable cmd conflict check */
-	sdhci_writel(host, 0x0, dwc_priv->vendor_specific_area1 + DWCMSHC_HOST_CTRL3);
-	/* Reset previous settings */
-	sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
-	sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_STRBIN);
-
-	return 0;
-}
-
-static void dwcmshc_rk35xx_postinit(struct sdhci_host *host, struct dwcmshc_priv *dwc_priv)
-{
-	/*
-	 * Don't support highspeed bus mode with low clk speed as we
-	 * cannot use DLL for this condition.
-	 */
-	if (host->mmc->f_max <= 52000000) {
-		dev_info(mmc_dev(host->mmc), "Disabling HS200/HS400, frequency too low (%d)\n",
-			 host->mmc->f_max);
-		host->mmc->caps2 &= ~(MMC_CAP2_HS200 | MMC_CAP2_HS400);
-		host->mmc->caps &= ~(MMC_CAP_3_3V_DDR | MMC_CAP_1_8V_DDR);
-	}
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
 	{
 		.compatible = "rockchip,rk3588-dwcmshc",
@@ -1491,13 +1336,10 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
 		.compatible = "thead,th1520-dwcmshc",
 		.data = &sdhci_dwcmshc_th1520_pdata,
 	},
-<<<<<<< HEAD
-=======
 	{
 		.compatible = "sophgo,sg2042-dwcmshc",
 		.data = &sdhci_dwcmshc_sg2042_pdata,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 MODULE_DEVICE_TABLE(of, sdhci_dwcmshc_dt_ids);
@@ -1519,12 +1361,7 @@ static int dwcmshc_probe(struct platform_device *pdev)
 	struct sdhci_pltfm_host *pltfm_host;
 	struct sdhci_host *host;
 	struct dwcmshc_priv *priv;
-<<<<<<< HEAD
-	struct rk35xx_priv *rk_priv = NULL;
-	const struct sdhci_pltfm_data *pltfm_data;
-=======
 	const struct dwcmshc_pltfm_data *pltfm_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 	u32 extra, caps;
 
@@ -1534,11 +1371,7 @@ static int dwcmshc_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-	host = sdhci_pltfm_init(pdev, pltfm_data,
-=======
 	host = sdhci_pltfm_init(pdev, &pltfm_data->pdata,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				sizeof(struct dwcmshc_priv));
 	if (IS_ERR(host))
 		return PTR_ERR(host);
@@ -1583,57 +1416,12 @@ static int dwcmshc_probe(struct platform_device *pdev)
 	host->mmc_host_ops.hs400_enhanced_strobe = dwcmshc_hs400_enhanced_strobe;
 	host->mmc_host_ops.execute_tuning = dwcmshc_execute_tuning;
 
-<<<<<<< HEAD
-	if (pltfm_data == &sdhci_dwcmshc_rk35xx_pdata) {
-		rk_priv = devm_kzalloc(&pdev->dev, sizeof(struct rk35xx_priv), GFP_KERNEL);
-		if (!rk_priv) {
-			err = -ENOMEM;
-			goto err_clk;
-		}
-
-		if (of_device_is_compatible(pdev->dev.of_node, "rockchip,rk3588-dwcmshc"))
-			rk_priv->devtype = DWCMSHC_RK3588;
-		else
-			rk_priv->devtype = DWCMSHC_RK3568;
-
-		priv->priv = rk_priv;
-
-		err = dwcmshc_rk35xx_init(host, priv);
-=======
 	if (pltfm_data->init) {
 		err = pltfm_data->init(&pdev->dev, host, priv);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			goto err_clk;
 	}
 
-<<<<<<< HEAD
-	if (pltfm_data == &sdhci_dwcmshc_th1520_pdata) {
-		priv->delay_line = PHY_SDCLKDL_DC_DEFAULT;
-
-		if (device_property_read_bool(dev, "mmc-ddr-1_8v") ||
-		    device_property_read_bool(dev, "mmc-hs200-1_8v") ||
-		    device_property_read_bool(dev, "mmc-hs400-1_8v"))
-			priv->flags |= FLAG_IO_FIXED_1V8;
-		else
-			priv->flags &= ~FLAG_IO_FIXED_1V8;
-
-		/*
-		 * start_signal_voltage_switch() will try 3.3V first
-		 * then 1.8V. Use SDHCI_SIGNALING_180 rather than
-		 * SDHCI_SIGNALING_330 to avoid setting voltage to 3.3V
-		 * in sdhci_start_signal_voltage_switch().
-		 */
-		if (priv->flags & FLAG_IO_FIXED_1V8) {
-			host->flags &= ~SDHCI_SIGNALING_330;
-			host->flags |=  SDHCI_SIGNALING_180;
-		}
-
-		sdhci_enable_v4_mode(host);
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ACPI
 	if (pltfm_data == &sdhci_dwcmshc_bf3_pdata)
 		sdhci_enable_v4_mode(host);
@@ -1661,13 +1449,8 @@ static int dwcmshc_probe(struct platform_device *pdev)
 		dwcmshc_cqhci_init(host, pdev);
 	}
 
-<<<<<<< HEAD
-	if (rk_priv)
-		dwcmshc_rk35xx_postinit(host, priv);
-=======
 	if (pltfm_data->postinit)
 		pltfm_data->postinit(host, priv);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = __sdhci_add_host(host);
 	if (err)
@@ -1685,13 +1468,7 @@ err_rpm:
 err_clk:
 	clk_disable_unprepare(pltfm_host->clk);
 	clk_disable_unprepare(priv->bus_clk);
-<<<<<<< HEAD
-	if (rk_priv)
-		clk_bulk_disable_unprepare(RK35xx_MAX_CLKS,
-					   rk_priv->rockchip_clks);
-=======
 	clk_bulk_disable_unprepare(priv->num_other_clks, priv->other_clks);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 free_pltfm:
 	sdhci_pltfm_free(pdev);
 	return err;
@@ -1713,10 +1490,6 @@ static void dwcmshc_remove(struct platform_device *pdev)
 	struct sdhci_host *host = platform_get_drvdata(pdev);
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
-<<<<<<< HEAD
-	struct rk35xx_priv *rk_priv = priv->priv;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pm_runtime_get_sync(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
@@ -1728,13 +1501,7 @@ static void dwcmshc_remove(struct platform_device *pdev)
 
 	clk_disable_unprepare(pltfm_host->clk);
 	clk_disable_unprepare(priv->bus_clk);
-<<<<<<< HEAD
-	if (rk_priv)
-		clk_bulk_disable_unprepare(RK35xx_MAX_CLKS,
-					   rk_priv->rockchip_clks);
-=======
 	clk_bulk_disable_unprepare(priv->num_other_clks, priv->other_clks);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sdhci_pltfm_free(pdev);
 }
 
@@ -1744,10 +1511,6 @@ static int dwcmshc_suspend(struct device *dev)
 	struct sdhci_host *host = dev_get_drvdata(dev);
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
-<<<<<<< HEAD
-	struct rk35xx_priv *rk_priv = priv->priv;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	pm_runtime_resume(dev);
@@ -1766,13 +1529,7 @@ static int dwcmshc_suspend(struct device *dev)
 	if (!IS_ERR(priv->bus_clk))
 		clk_disable_unprepare(priv->bus_clk);
 
-<<<<<<< HEAD
-	if (rk_priv)
-		clk_bulk_disable_unprepare(RK35xx_MAX_CLKS,
-					   rk_priv->rockchip_clks);
-=======
 	clk_bulk_disable_unprepare(priv->num_other_clks, priv->other_clks);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }
@@ -1782,10 +1539,6 @@ static int dwcmshc_resume(struct device *dev)
 	struct sdhci_host *host = dev_get_drvdata(dev);
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
-<<<<<<< HEAD
-	struct rk35xx_priv *rk_priv = priv->priv;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	ret = clk_prepare_enable(pltfm_host->clk);
@@ -1798,18 +1551,6 @@ static int dwcmshc_resume(struct device *dev)
 			goto disable_clk;
 	}
 
-<<<<<<< HEAD
-	if (rk_priv) {
-		ret = clk_bulk_prepare_enable(RK35xx_MAX_CLKS,
-					      rk_priv->rockchip_clks);
-		if (ret)
-			goto disable_bus_clk;
-	}
-
-	ret = sdhci_resume_host(host);
-	if (ret)
-		goto disable_rockchip_clks;
-=======
 	ret = clk_bulk_prepare_enable(priv->num_other_clks, priv->other_clks);
 	if (ret)
 		goto disable_bus_clk;
@@ -1817,29 +1558,17 @@ static int dwcmshc_resume(struct device *dev)
 	ret = sdhci_resume_host(host);
 	if (ret)
 		goto disable_other_clks;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (host->mmc->caps2 & MMC_CAP2_CQE) {
 		ret = cqhci_resume(host->mmc);
 		if (ret)
-<<<<<<< HEAD
-			goto disable_rockchip_clks;
-=======
 			goto disable_other_clks;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
 
-<<<<<<< HEAD
-disable_rockchip_clks:
-	if (rk_priv)
-		clk_bulk_disable_unprepare(RK35xx_MAX_CLKS,
-					   rk_priv->rockchip_clks);
-=======
 disable_other_clks:
 	clk_bulk_disable_unprepare(priv->num_other_clks, priv->other_clks);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 disable_bus_clk:
 	if (!IS_ERR(priv->bus_clk))
 		clk_disable_unprepare(priv->bus_clk);

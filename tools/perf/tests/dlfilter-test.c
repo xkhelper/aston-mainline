@@ -62,11 +62,7 @@ static int test_result(const char *msg, int ret)
 	return ret;
 }
 
-<<<<<<< HEAD
-static int process(struct perf_tool *tool, union perf_event *event,
-=======
 static int process(const struct perf_tool *tool, union perf_event *event,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   struct perf_sample *sample __maybe_unused,
 		   struct machine *machine __maybe_unused)
 {

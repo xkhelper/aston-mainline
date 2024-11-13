@@ -38,10 +38,6 @@
 #include <linux/fs.h>
 #include <linux/kernel.h>
 #include <linux/mm.h>
-<<<<<<< HEAD
-#include <linux/bio-integrity.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/hdreg.h>
 #include <linux/errno.h>
 #include <linux/idr.h>
@@ -61,11 +57,7 @@
 #include <linux/pr.h>
 #include <linux/t10-pi.h>
 #include <linux/uaccess.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <scsi/scsi.h>
 #include <scsi/scsi_cmnd.h>
@@ -1389,11 +1381,7 @@ static blk_status_t sd_setup_read_write_cmnd(struct scsi_cmnd *cmd)
 	if (protect && sdkp->protection_type == T10_PI_TYPE2_PROTECTION) {
 		ret = sd_setup_rw32_cmnd(cmd, write, lba, nr_blocks,
 					 protect | fua, dld);
-<<<<<<< HEAD
-	} else if (rq->cmd_flags & REQ_ATOMIC && write) {
-=======
 	} else if (rq->cmd_flags & REQ_ATOMIC) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = sd_setup_atomic_cmnd(cmd, lba, nr_blocks,
 				sdkp->use_atomic_write_boundary,
 				protect | fua);
@@ -3415,11 +3403,7 @@ static void sd_read_block_characteristics(struct scsi_disk *sdkp,
 	rcu_read_lock();
 	vpd = rcu_dereference(sdkp->device->vpd_pgb1);
 
-<<<<<<< HEAD
-	if (!vpd || vpd->len < 8) {
-=======
 	if (!vpd || vpd->len <= 8) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rcu_read_unlock();
 	        return;
 	}
@@ -4108,11 +4092,6 @@ static int sd_start_stop_device(struct scsi_disk *sdkp, int start)
 {
 	unsigned char cmd[6] = { START_STOP };	/* START_VALID */
 	struct scsi_sense_hdr sshdr;
-<<<<<<< HEAD
-	const struct scsi_exec_args exec_args = {
-		.sshdr = &sshdr,
-		.req_flags = BLK_MQ_REQ_PM,
-=======
 	struct scsi_failure failure_defs[] = {
 		{
 			/* Power on, reset, or bus device reset occurred */
@@ -4145,7 +4124,6 @@ static int sd_start_stop_device(struct scsi_disk *sdkp, int start)
 		.sshdr = &sshdr,
 		.req_flags = BLK_MQ_REQ_PM,
 		.failures = &failures,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	struct scsi_device *sdp = sdkp->device;
 	int res;

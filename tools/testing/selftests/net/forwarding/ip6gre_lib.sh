@@ -436,8 +436,6 @@ test_mtu_change()
 	check_err $?
 	log_test "ping GRE IPv6, packet size 1800 after MTU change"
 }
-<<<<<<< HEAD
-=======
 
 topo_flat_remote_change()
 {
@@ -518,4 +516,3 @@ hier_remote_restore()
 
 	topo_hier_remote_change $old1 $new1 $old2 $new2
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

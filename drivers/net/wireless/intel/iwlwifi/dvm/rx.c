@@ -13,11 +13,7 @@
 #include <linux/slab.h>
 #include <linux/sched.h>
 #include <net/mac80211.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "iwl-trans.h"
 #include "iwl-io.h"

@@ -661,13 +661,6 @@
 	memory-region = <&gfx_memory>;
 };
 
-<<<<<<< HEAD
-&pinctrl {
-	aspeed,external-nodes = <&gfx &lhc>;
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &wdt1 {
 	aspeed,reset-type = "none";
 	aspeed,external-signal;
@@ -699,12 +692,4 @@
 	memory-region = <&video_engine_memory>;
 };
 
-<<<<<<< HEAD
-&xdma {
-	status = "okay";
-	memory-region = <&vga_memory>;
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ibm-power9-dual.dtsi"

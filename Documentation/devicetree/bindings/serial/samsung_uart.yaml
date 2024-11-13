@@ -56,19 +56,8 @@ properties:
     maxItems: 5
 
   clock-names:
-<<<<<<< HEAD
-    description: N = 0 is allowed for SoCs without internal baud clock mux.
-    minItems: 2
-    items:
-      - const: uart
-      - pattern: '^clk_uart_baud[0-3]$'
-      - pattern: '^clk_uart_baud[0-3]$'
-      - pattern: '^clk_uart_baud[0-3]$'
-      - pattern: '^clk_uart_baud[0-3]$'
-=======
     minItems: 2
     maxItems: 5
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   dmas:
     items:
@@ -108,14 +97,6 @@ allOf:
         compatible:
           contains:
             enum:
-<<<<<<< HEAD
-              - samsung,s5pv210-uart
-    then:
-      properties:
-        clocks:
-          minItems: 2
-          maxItems: 3
-=======
               - samsung,s3c6400-uart
     then:
       properties:
@@ -131,15 +112,10 @@ allOf:
 
     else:
       properties:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         clock-names:
           minItems: 2
           items:
             - const: uart
-<<<<<<< HEAD
-            - pattern: '^clk_uart_baud[0-1]$'
-            - pattern: '^clk_uart_baud[0-1]$'
-=======
             - const: clk_uart_baud0
             - const: clk_uart_baud1
             - const: clk_uart_baud2
@@ -160,7 +136,6 @@ allOf:
         clock-names:
           minItems: 3
           maxItems: 3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   - if:
       properties:
@@ -175,16 +150,9 @@ allOf:
       properties:
         clocks:
           maxItems: 2
-<<<<<<< HEAD
-        clock-names:
-          items:
-            - const: uart
-            - const: clk_uart_baud0
-=======
 
         clock-names:
           maxItems: 2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   - if:
       properties:
@@ -198,15 +166,12 @@ allOf:
       properties:
         reg-io-width: false
 
-<<<<<<< HEAD
-=======
         clocks:
           maxItems: 2
 
         clock-names:
           maxItems: 2
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:
@@ -224,8 +189,6 @@ examples:
                  <&clocks SCLK_UART>;
         samsung,uart-fifosize = <16>;
     };
-<<<<<<< HEAD
-=======
   - |
     #include <dt-bindings/clock/google,gs101.h>
     #include <dt-bindings/interrupt-controller/arm-gic.h>
@@ -242,4 +205,3 @@ examples:
       pinctrl-names = "default";
       samsung,uart-fifosize = <256>;
     };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

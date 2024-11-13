@@ -175,11 +175,7 @@ struct mv_xor_v2_device {
  * struct mv_xor_v2_sw_desc - implements a xor SW descriptor
  * @idx: descriptor index
  * @async_tx: support for the async_tx api
-<<<<<<< HEAD
- * @hw_desc: assosiated HW descriptor
-=======
  * @hw_desc: associated HW descriptor
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @free_list: node of the free SW descriprots list
 */
 struct mv_xor_v2_sw_desc {

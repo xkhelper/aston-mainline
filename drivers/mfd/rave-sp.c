@@ -21,11 +21,7 @@
 #include <linux/of_platform.h>
 #include <linux/sched.h>
 #include <linux/serdev.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * UART protocol using following entities:

@@ -53,11 +53,7 @@ static int bma400_regmap_spi_write(void *context, const void *data,
 	return spi_write(spi, data, count);
 }
 
-<<<<<<< HEAD
-static struct regmap_bus bma400_regmap_bus = {
-=======
 static const struct regmap_bus bma400_regmap_bus = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read = bma400_regmap_spi_read,
 	.write = bma400_regmap_spi_write,
 	.read_flag_mask = BIT(7),

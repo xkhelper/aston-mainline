@@ -258,15 +258,6 @@ L:	linux-acenic@sunsite.dk
 S:	Maintained
 F:	drivers/net/ethernet/alteon/acenic*
 
-<<<<<<< HEAD
-ACER ASPIRE 1 EMBEDDED CONTROLLER DRIVER
-M:	Nikita Travkin <nikita@trvn.ru>
-S:	Maintained
-F:	Documentation/devicetree/bindings/platform/acer,aspire1-ec.yaml
-F:	drivers/platform/arm64/acer-aspire1-ec.c
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER
 M:	Peter Kaestle <peter@piie.net>
 L:	platform-driver-x86@vger.kernel.org
@@ -337,10 +328,7 @@ L:	linux-acpi@vger.kernel.org
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Maintained
 F:	drivers/acpi/arm64
-<<<<<<< HEAD
-=======
 F:	include/linux/acpi_iort.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 ACPI FOR RISC-V (ACPI/riscv)
 M:	Sunil V L <sunilvl@ventanamicro.com>
@@ -455,10 +443,7 @@ S:	Supported
 W:	https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc/ad738x
 W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-<<<<<<< HEAD
-=======
 F:	Documentation/iio/ad7380.rst
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/iio/adc/ad7380.c
 
 AD7877 TOUCHSCREEN DRIVER
@@ -548,8 +533,6 @@ F:	drivers/leds/leds-adp5520.c
 F:	drivers/mfd/adp5520.c
 F:	drivers/video/backlight/adp5520_bl.c
 
-<<<<<<< HEAD
-=======
 ADP5585 GPIO EXPANDER, PWM AND KEYPAD CONTROLLER DRIVER
 M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 L:	linux-gpio@vger.kernel.org
@@ -561,7 +544,6 @@ F:	drivers/mfd/adp5585.c
 F:	drivers/pwm/pwm-adp5585.c
 F:	include/linux/mfd/adp5585.h
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ADP5588 QWERTY KEYPAD AND IO EXPANDER DRIVER (ADP5588/ADP5587)
 M:	Michael Hennerich <michael.hennerich@analog.com>
 S:	Supported
@@ -644,8 +626,6 @@ F:	drivers/iio/accel/adxl372.c
 F:	drivers/iio/accel/adxl372_i2c.c
 F:	drivers/iio/accel/adxl372_spi.c
 
-<<<<<<< HEAD
-=======
 ADXL380 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
 M:	Ramona Gradinariu <ramona.gradinariu@analog.com>
 M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
@@ -657,7 +637,6 @@ F:	drivers/iio/accel/adxl380.h
 F:	drivers/iio/accel/adxl380_i2c.c
 F:	drivers/iio/accel/adxl380_spi.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 AF8133J THREE-AXIS MAGNETOMETER DRIVER
 M:	Ondřej Jirman <megi@xff.cz>
 S:	Maintained
@@ -875,11 +854,7 @@ F:	drivers/crypto/allwinner/
 
 ALLWINNER DMIC DRIVERS
 M:	Ban Tao <fengzheng923@gmail.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/allwinner,sun50i-h6-dmic.yaml
 F:	sound/soc/sunxi/sun50i-dmic.c
@@ -907,10 +882,6 @@ F:	drivers/staging/media/sunxi/cedrus/
 
 ALPHA PORT
 M:	Richard Henderson <richard.henderson@linaro.org>
-<<<<<<< HEAD
-M:	Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 M:	Matt Turner <mattst88@gmail.com>
 L:	linux-alpha@vger.kernel.org
 S:	Odd Fixes
@@ -1059,8 +1030,6 @@ S:	Supported
 T:	git https://gitlab.freedesktop.org/agd5f/linux.git
 F:	drivers/gpu/drm/amd/display/
 
-<<<<<<< HEAD
-=======
 AMD DISPLAY CORE - DML
 M:	Chaitanya Dhere <chaitanya.dhere@amd.com>
 M:	Jun Lei <jun.lei@amd.com>
@@ -1068,7 +1037,6 @@ S:	Supported
 F:	drivers/gpu/drm/amd/display/dc/dml/
 F:	drivers/gpu/drm/amd/display/dc/dml2/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 AMD FAM15H PROCESSOR POWER MONITORING DRIVER
 M:	Huang Rui <ray.huang@amd.com>
 L:	linux-hwmon@vger.kernel.org
@@ -1184,8 +1152,6 @@ L:	dmaengine@vger.kernel.org
 S:	Maintained
 F:	drivers/dma/ptdma/
 
-<<<<<<< HEAD
-=======
 AMD QDMA DRIVER
 M:	Nishad Saraf <nishads@amd.com>
 M:	Lizhi Hou <lizhi.hou@amd.com>
@@ -1194,7 +1160,6 @@ S:	Supported
 F:	drivers/dma/amd/qdma/
 F:	include/linux/platform_data/amd_qdma.h
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 AMD SEATTLE DEVICE TREE SUPPORT
 M:	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 M:	Tom Lendacky <thomas.lendacky@amd.com>
@@ -1209,14 +1174,9 @@ F:	Documentation/hid/amd-sfh*
 F:	drivers/hid/amd-sfh-hid/
 
 AMD SPI DRIVER
-<<<<<<< HEAD
-M:	Sanjay R Mehta <sanju.mehta@amd.com>
-S:	Maintained
-=======
 M:	Raju Rangoju <Raju.Rangoju@amd.com>
 L:	linux-spi@vger.kernel.org
 S:	Supported
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/spi/spi-amd.c
 
 AMD XGBE DRIVER
@@ -1226,8 +1186,6 @@ S:	Supported
 F:	arch/arm64/boot/dts/amd/amd-seattle-xgbe*.dtsi
 F:	drivers/net/ethernet/amd/xgbe/
 
-<<<<<<< HEAD
-=======
 AMLOGIC BLUETOOTH DRIVER
 M:	Yang Li <yang.li@amlogic.com>
 L:	linux-bluetooth@vger.kernel.org
@@ -1235,7 +1193,6 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/net/bluetooth/amlogic,w155s2-bt.yaml
 F:	drivers/bluetooth/hci_aml.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 AMLOGIC DDR PMU DRIVER
 M:	Jiucheng Xu <jiucheng.xu@amlogic.com>
 L:	linux-amlogic@lists.infradead.org
@@ -1285,8 +1242,6 @@ W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
 F:	drivers/iio/dac/ad3552r.c
 
-<<<<<<< HEAD
-=======
 ANALOG DEVICES INC AD4000 DRIVER
 M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
 L:	linux-iio@vger.kernel.org
@@ -1296,7 +1251,6 @@ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
 F:	Documentation/iio/ad4000.rst
 F:	drivers/iio/adc/ad4000.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ANALOG DEVICES INC AD4130 DRIVER
 M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
 L:	linux-iio@vger.kernel.org
@@ -1306,8 +1260,6 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
 F:	Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
 F:	drivers/iio/adc/ad4130.c
 
-<<<<<<< HEAD
-=======
 ANALOG DEVICES INC AD4695 DRIVER
 M:	Michael Hennerich <michael.hennerich@analog.com>
 M:	Nuno Sá <nuno.sa@analog.com>
@@ -1320,7 +1272,6 @@ F:	Documentation/iio/ad4695.rst
 F:	drivers/iio/adc/ad4695.c
 F:	include/dt-bindings/iio/adi,ad4695.h
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ANALOG DEVICES INC AD7091R DRIVER
 M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
 L:	linux-iio@vger.kernel.org
@@ -1387,8 +1338,6 @@ W:	https://ez.analog.com/linux-software-drivers
 F:	Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
 F:	drivers/iio/adc/ad7780.c
 
-<<<<<<< HEAD
-=======
 ANALOG DEVICES INC AD9467 DRIVER
 M:	Michael Hennerich <Michael.Hennerich@analog.com>
 M:	Nuno Sa <nuno.sa@analog.com>
@@ -1399,7 +1348,6 @@ F:	Documentation/ABI/testing/debugfs-iio-ad9467
 F:	Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
 F:	drivers/iio/adc/ad9467.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ANALOG DEVICES INC AD9739a DRIVER
 M:	Nuno Sa <nuno.sa@analog.com>
 M:	Dragos Bogdan <dragos.bogdan@analog.com>
@@ -1563,11 +1511,7 @@ F:	drivers/iio/gyro/adxrs290.c
 ANALOG DEVICES INC ASOC CODEC DRIVERS
 M:	Lars-Peter Clausen <lars@metafoo.de>
 M:	Nuno Sá <nuno.sa@analog.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Supported
 W:	http://wiki.analog.com/
 W:	https://ez.analog.com/linux-software-drivers
@@ -1644,11 +1588,7 @@ F:	drivers/rtc/rtc-goldfish.c
 AOA (Apple Onboard Audio) ALSA DRIVER
 M:	Johannes Berg <johannes@sipsolutions.net>
 L:	linuxppc-dev@lists.ozlabs.org
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	sound/aoa/
 
@@ -1740,8 +1680,6 @@ F:	Documentation/admin-guide/perf/xgene-pmu.rst
 F:	Documentation/devicetree/bindings/perf/apm-xgene-pmu.txt
 F:	drivers/perf/xgene_pmu.c
 
-<<<<<<< HEAD
-=======
 APPLIED MICRO QT2025 PHY DRIVER
 M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
 R:	Trevor Gross <tmgross@umich.edu>
@@ -1750,7 +1688,6 @@ L:	rust-for-linux@vger.kernel.org
 S:	Maintained
 F:	drivers/net/phy/qt2025.rs
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 APTINA CAMERA SENSOR PLL
 M:	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
 L:	linux-media@vger.kernel.org
@@ -1818,13 +1755,8 @@ F:	include/uapi/linux/if_arcnet.h
 ARM AND ARM64 SoC SUB-ARCHITECTURES (COMMON PARTS)
 M:	Arnd Bergmann <arnd@arndb.de>
 M:	Olof Johansson <olof@lixom.net>
-<<<<<<< HEAD
-M:	soc@kernel.org
-L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-=======
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 L:	soc@lists.linux.dev
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 P:	Documentation/process/maintainer-soc.rst
 C:	irc://irc.libera.chat/armlinux
@@ -1884,8 +1816,6 @@ F:	drivers/mtd/maps/physmap-versatile.*
 F:	drivers/power/reset/arm-versatile-reboot.c
 F:	drivers/soc/versatile/
 
-<<<<<<< HEAD
-=======
 ARM INTERCONNECT PMU DRIVERS
 M:	Robin Murphy <robin.murphy@arm.com>
 S:	Supported
@@ -1897,7 +1827,6 @@ F:	drivers/perf/arm-cmn.c
 F:	drivers/perf/arm-ni.c
 F:	tools/perf/pmu-events/arch/arm64/arm/cmn/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ARM KOMEDA DRM-KMS DRIVER
 M:	Liviu Dudau <liviu.dudau@arm.com>
 S:	Supported
@@ -1915,10 +1844,7 @@ L:	dri-devel@lists.freedesktop.org
 S:	Supported
 T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
 F:	Documentation/gpu/panfrost.rst
-<<<<<<< HEAD
-=======
 F:	drivers/gpu/drm/ci/xfails/panfrost*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/gpu/drm/panfrost/
 F:	include/uapi/drm/panfrost_drm.h
 
@@ -2159,11 +2085,7 @@ F:	drivers/crypto/amlogic/
 
 ARM/Amlogic Meson SoC Sound Drivers
 M:	Jerome Brunet <jbrunet@baylibre.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/amlogic*
 F:	sound/soc/meson/
@@ -2201,11 +2123,7 @@ F:	drivers/*/*alpine*
 ARM/APPLE MACHINE SOUND DRIVERS
 M:	Martin Povišer <povik+lin@cutebit.org>
 L:	asahi@lists.linux.dev
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/adi,ssm3515.yaml
 F:	Documentation/devicetree/bindings/sound/apple,*
@@ -2339,22 +2257,10 @@ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Maintained
 F:	arch/arm/mach-ep93xx/ts72xx.c
 
-<<<<<<< HEAD
-ARM/CIRRUS LOGIC CLPS711X ARM ARCHITECTURE
-M:	Alexander Shiyan <shc_work@mail.ru>
-L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-S:	Odd Fixes
-N:	clps711x
-
-ARM/CIRRUS LOGIC EP93XX ARM ARCHITECTURE
-M:	Hartley Sweeten <hsweeten@visionengravers.com>
-M:	Alexander Sverdlin <alexander.sverdlin@gmail.com>
-=======
 ARM/CIRRUS LOGIC EP93XX ARM ARCHITECTURE
 M:	Hartley Sweeten <hsweeten@visionengravers.com>
 M:	Alexander Sverdlin <alexander.sverdlin@gmail.com>
 M:	Nikita Shubin <nikita.shubin@maquefel.me>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Maintained
 F:	Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
@@ -2612,28 +2518,20 @@ N:	lpc18xx
 
 ARM/LPC32XX SOC SUPPORT
 M:	Vladimir Zapolskiy <vz@mleia.com>
-<<<<<<< HEAD
-=======
 M:	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Maintained
 T:	git git://github.com/vzapolskiy/linux-lpc32xx.git
 F:	Documentation/devicetree/bindings/i2c/nxp,pnx-i2c.yaml
 F:	arch/arm/boot/dts/nxp/lpc/lpc32*
 F:	arch/arm/mach-lpc32xx/
-<<<<<<< HEAD
-=======
 F:	drivers/dma/lpc32xx-dmamux.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/i2c/busses/i2c-pnx.c
 F:	drivers/net/ethernet/nxp/lpc_eth.c
 F:	drivers/usb/host/ohci-nxp.c
 F:	drivers/watchdog/pnx4008_wdt.c
 N:	lpc32xx
 
-<<<<<<< HEAD
-=======
 LPC32XX DMAMUX SUPPORT
 M:	J.M.B. Downing <jonathan.downing@nautel.com>
 M:	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
@@ -2642,7 +2540,6 @@ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Maintained
 F:	Documentation/devicetree/bindings/dma/nxp,lpc3220-dmamux.yaml
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ARM/Marvell Dove/MV78xx0/Orion SOC support
 M:	Andrew Lunn <andrew@lunn.ch>
 M:	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
@@ -2930,11 +2827,7 @@ F:	drivers/iommu/msm*
 F:	drivers/mfd/ssbi.c
 F:	drivers/mmc/host/mmci_qcom*
 F:	drivers/mmc/host/sdhci-msm.c
-<<<<<<< HEAD
-F:	drivers/pci/controller/dwc/pcie-qcom.c
-=======
 F:	drivers/pci/controller/dwc/pcie-qcom*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/phy/qualcomm/
 F:	drivers/power/*/msm*
 F:	drivers/reset/reset-qcom-*
@@ -2960,11 +2853,7 @@ F:	Documentation/devicetree/bindings/arm/qcom.yaml
 F:	Documentation/devicetree/bindings/bus/qcom*
 F:	Documentation/devicetree/bindings/cache/qcom,llcc.yaml
 F:	Documentation/devicetree/bindings/firmware/qcom,scm.yaml
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/reserved-memory/qcom
-=======
 F:	Documentation/devicetree/bindings/reserved-memory/qcom*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/devicetree/bindings/soc/qcom/
 F:	arch/arm/boot/dts/qcom/
 F:	arch/arm/configs/qcom_defconfig
@@ -3831,11 +3720,7 @@ F:	arch/arm/boot/dts/microchip/at91-tse850-3.dts
 
 AXENTIA ASOC DRIVERS
 M:	Peter Rosin <peda@axentia.se>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/axentia,*
 F:	sound/soc/atmel/tse850-pcm5142.c
@@ -3861,10 +3746,7 @@ F:	drivers/spi/spi-axi-spi-engine.c
 AXI PWM GENERATOR
 M:	Michael Hennerich <michael.hennerich@analog.com>
 M:	Nuno Sá <nuno.sa@analog.com>
-<<<<<<< HEAD
-=======
 R:	Trevor Gamblin <tgamblin@baylibre.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-pwm@vger.kernel.org
 S:	Supported
 W:	https://ez.analog.com/linux-software-drivers
@@ -3922,17 +3804,6 @@ F:	drivers/video/backlight/
 F:	include/linux/backlight.h
 F:	include/linux/pwm_backlight.h
 
-<<<<<<< HEAD
-BAIKAL-T1 PVT HARDWARE MONITOR DRIVER
-M:	Serge Semin <fancer.lancer@gmail.com>
-L:	linux-hwmon@vger.kernel.org
-S:	Supported
-F:	Documentation/devicetree/bindings/hwmon/baikal,bt1-pvt.yaml
-F:	Documentation/hwmon/bt1-pvt.rst
-F:	drivers/hwmon/bt1-pvt.[ch]
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 BARCO P50 GPIO DRIVER
 M:	Santosh Kumar Yadav <santoshkumar.yadav@barco.com>
 M:	Peter Korsgaard <peter.korsgaard@barco.com>
@@ -4004,16 +3875,9 @@ F:	Documentation/filesystems/befs.rst
 F:	fs/befs/
 
 BFQ I/O SCHEDULER
-<<<<<<< HEAD
-M:	Paolo Valente <paolo.valente@unimore.it>
-M:	Jens Axboe <axboe@kernel.dk>
-L:	linux-block@vger.kernel.org
-S:	Maintained
-=======
 M:	Yu Kuai <yukuai3@huawei.com>
 L:	linux-block@vger.kernel.org
 S:	Odd Fixes
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/block/bfq-iosched.rst
 F:	block/bfq-*
 
@@ -4160,11 +4024,7 @@ F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
 F:	drivers/iio/imu/bmi323/
 
 BPF JIT for ARC
-<<<<<<< HEAD
-M:	Shahab Vahedi <shahab@synopsys.com>
-=======
 M:	Shahab Vahedi <list+bpf@vahedi.org>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	bpf@vger.kernel.org
 S:	Maintained
 F:	arch/arc/net/
@@ -4331,10 +4191,7 @@ F:	include/uapi/linux/btf*
 F:	include/uapi/linux/filter.h
 F:	kernel/bpf/
 F:	kernel/trace/bpf_trace.c
-<<<<<<< HEAD
-=======
 F:	lib/buildid.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	lib/test_bpf.c
 F:	net/bpf/
 F:	net/core/filter.c
@@ -4455,10 +4312,7 @@ L:	bpf@vger.kernel.org
 S:	Maintained
 F:	kernel/bpf/stackmap.c
 F:	kernel/trace/bpf_trace.c
-<<<<<<< HEAD
-=======
 F:	lib/buildid.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 BROADCOM ASP 2.0 ETHERNET DRIVER
 M:	Justin Chen <justin.chen@broadcom.com>
@@ -4978,11 +4832,7 @@ F:	include/uapi/linux/bsg.h
 
 BT87X AUDIO DRIVER
 M:	Clemens Ladisch <clemens@ladisch.de>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
 F:	Documentation/sound/cards/bt87x.rst
@@ -5044,11 +4894,7 @@ F:	drivers/net/can/bxcan.c
 
 C-MEDIA CMI8788 DRIVER
 M:	Clemens Ladisch <clemens@ladisch.de>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
 F:	sound/pci/oxygen/
@@ -5345,15 +5191,8 @@ F:	Documentation/devicetree/bindings/media/cec/cec-gpio.yaml
 F:	drivers/media/cec/platform/cec-gpio/
 
 CELL BROADBAND ENGINE ARCHITECTURE
-<<<<<<< HEAD
-M:	Arnd Bergmann <arnd@arndb.de>
-L:	linuxppc-dev@lists.ozlabs.org
-S:	Supported
-W:	http://www.ibm.com/developerworks/power/cell/
-=======
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Orphan
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	arch/powerpc/include/asm/cell*.h
 F:	arch/powerpc/include/asm/spu*.h
 F:	arch/powerpc/include/uapi/asm/spu*.h
@@ -5394,10 +5233,7 @@ S:	Maintained
 F:	Documentation/admin-guide/module-signing.rst
 F:	certs/
 F:	scripts/sign-file.c
-<<<<<<< HEAD
-=======
 F:	scripts/ssl-common.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	tools/certs/
 
 CFAG12864B LCD DRIVER
@@ -5873,12 +5709,7 @@ L:	linux-cxl@vger.kernel.org
 S:	Maintained
 F:	Documentation/driver-api/cxl
 F:	drivers/cxl/
-<<<<<<< HEAD
-F:	include/linux/einj-cxl.h
-F:	include/linux/cxl-event.h
-=======
 F:	include/cxl/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	include/uapi/linux/cxl_mem.h
 F:	tools/testing/cxl/
 
@@ -5960,18 +5791,12 @@ S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup.git
 F:	Documentation/admin-guide/cgroup-v1/cpusets.rst
 F:	include/linux/cpuset.h
-<<<<<<< HEAD
-F:	kernel/cgroup/cpuset.c
-F:	tools/testing/selftests/cgroup/test_cpuset.c
-F:	tools/testing/selftests/cgroup/test_cpuset_prs.sh
-=======
 F:	kernel/cgroup/cpuset-internal.h
 F:	kernel/cgroup/cpuset-v1.c
 F:	kernel/cgroup/cpuset.c
 F:	tools/testing/selftests/cgroup/test_cpuset.c
 F:	tools/testing/selftests/cgroup/test_cpuset_prs.sh
 F:	tools/testing/selftests/cgroup/test_cpuset_v1_base.sh
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)
 M:	Johannes Weiner <hannes@cmpxchg.org>
@@ -6090,12 +5915,9 @@ CPU POWER MONITORING SUBSYSTEM
 M:	Thomas Renninger <trenn@suse.com>
 M:	Shuah Khan <shuah@kernel.org>
 M:	Shuah Khan <skhan@linuxfoundation.org>
-<<<<<<< HEAD
-=======
 M:	John B. Wyatt IV <jwyatt@redhat.com>
 M:	John B. Wyatt IV <sageofredondo@gmail.com>
 M:	John Kacur <jkacur@redhat.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-pm@vger.kernel.org
 S:	Maintained
 F:	tools/power/cpupower/
@@ -6635,10 +6457,6 @@ F:	drivers/mtd/nand/raw/denali*
 
 DESIGNWARE EDMA CORE IP DRIVER
 M:	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-<<<<<<< HEAD
-R:	Serge Semin <fancer.lancer@gmail.com>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	dmaengine@vger.kernel.org
 S:	Maintained
 F:	drivers/dma/dw-edma/
@@ -6755,15 +6573,12 @@ F:	include/net/devlink.h
 F:	include/uapi/linux/devlink.h
 F:	net/devlink/
 
-<<<<<<< HEAD
-=======
 DFROBOT SD2405AL RTC DRIVER
 M:	Tóth János <gomba007@gmail.com>
 L:	linux-rtc@vger.kernel.org
 S:	Maintained
 F:	drivers/rtc/rtc-sd2405al.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DH ELECTRONICS IMX6 DHCOM/DHCOR BOARD SUPPORT
 M:	Christoph Niedermaier <cniedermaier@dh-electronics.com>
 L:	kernel@dh-electronics.com
@@ -6790,10 +6605,7 @@ F:	Documentation/devicetree/bindings/regulator/da92*.txt
 F:	Documentation/devicetree/bindings/regulator/dlg,da9*.yaml
 F:	Documentation/devicetree/bindings/regulator/dlg,slg51000.yaml
 F:	Documentation/devicetree/bindings/sound/da[79]*.txt
-<<<<<<< HEAD
-=======
 F:	Documentation/devicetree/bindings/sound/dlg,da7213.yaml
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/devicetree/bindings/thermal/dlg,da9062-thermal.yaml
 F:	Documentation/devicetree/bindings/watchdog/dlg,da9062-watchdog.yaml
 F:	Documentation/hwmon/da90??.rst
@@ -6954,10 +6766,7 @@ F:	drivers/dma-buf/dma-heap.c
 F:	drivers/dma-buf/heaps/*
 F:	include/linux/dma-heap.h
 F:	include/uapi/linux/dma-heap.h
-<<<<<<< HEAD
-=======
 F:	tools/testing/selftests/dmabuf-heaps/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 DMC FREQUENCY DRIVER FOR SAMSUNG EXYNOS5422
 M:	Lukasz Luba <lukasz.luba@arm.com>
@@ -7009,10 +6818,7 @@ DOCUMENTATION PROCESS
 M:	Jonathan Corbet <corbet@lwn.net>
 L:	workflows@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-=======
 F:	Documentation/dev-tools/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/maintainer/
 F:	Documentation/process/
 
@@ -7020,10 +6826,7 @@ DOCUMENTATION REPORTING ISSUES
 M:	Thorsten Leemhuis <linux@leemhuis.info>
 L:	linux-doc@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-=======
 F:	Documentation/admin-guide/bug-bisect.rst
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/admin-guide/quickly-build-trimmed-linux.rst
 F:	Documentation/admin-guide/reporting-issues.rst
 F:	Documentation/admin-guide/verify-bugs-and-bisect-regressions.rst
@@ -7638,17 +7441,10 @@ F:	drivers/gpu/drm/udl/
 
 DRM DRIVER FOR VIRTUAL KERNEL MODESETTING (VKMS)
 M:	Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-<<<<<<< HEAD
-M:	Melissa Wen <melissa.srw@gmail.com>
-M:	Maíra Canal <mairacanal@riseup.net>
-R:	Haneen Mohammed <hamohammed.sa@gmail.com>
-R:	Daniel Vetter <daniel@ffwll.ch>
-=======
 M:	Maíra Canal <mairacanal@riseup.net>
 R:	Haneen Mohammed <hamohammed.sa@gmail.com>
 R:	Simona Vetter <simona@ffwll.ch>
 R:	Melissa Wen <melissa.srw@gmail.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	dri-devel@lists.freedesktop.org
 S:	Maintained
 T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
@@ -7681,11 +7477,7 @@ F:	drivers/gpu/drm/panel/panel-widechips-ws2401.c
 
 DRM DRIVERS
 M:	David Airlie <airlied@gmail.com>
-<<<<<<< HEAD
-M:	Daniel Vetter <daniel@ffwll.ch>
-=======
 M:	Simona Vetter <simona@ffwll.ch>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	dri-devel@lists.freedesktop.org
 S:	Maintained
 B:	https://gitlab.freedesktop.org/drm
@@ -7781,10 +7573,6 @@ M:	Kyungmin Park <kyungmin.park@samsung.com>
 L:	dri-devel@lists.freedesktop.org
 S:	Supported
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/daeinki/drm-exynos.git
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/display/exynos/
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/devicetree/bindings/display/samsung/
 F:	drivers/gpu/drm/exynos/
 F:	include/uapi/drm/exynos_drm.h
@@ -8024,11 +7812,8 @@ F:	drivers/gpu/drm/xlnx/
 DRM GPU SCHEDULER
 M:	Luben Tuikov <ltuikov89@gmail.com>
 M:	Matthew Brost <matthew.brost@intel.com>
-<<<<<<< HEAD
-=======
 M:	Danilo Krummrich <dakr@kernel.org>
 M:	Philipp Stanner <pstanner@redhat.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	dri-devel@lists.freedesktop.org
 S:	Maintained
 T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
@@ -8449,11 +8234,7 @@ F:	drivers/edac/ti_edac.c
 
 EDIROL UA-101/UA-1000 DRIVER
 M:	Clemens Ladisch <clemens@ladisch.de>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
 F:	sound/usb/misc/ua101.c
@@ -8668,10 +8449,7 @@ F:	include/linux/mii.h
 F:	include/linux/of_net.h
 F:	include/linux/phy.h
 F:	include/linux/phy_fixed.h
-<<<<<<< HEAD
-=======
 F:	include/linux/phy_link_topology.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	include/linux/phylib_stubs.h
 F:	include/linux/platform_data/mdio-bcm-unimac.h
 F:	include/linux/platform_data/mdio-gpio.h
@@ -8687,10 +8465,7 @@ L:	netdev@vger.kernel.org
 L:	rust-for-linux@vger.kernel.org
 S:	Maintained
 F:	rust/kernel/net/phy.rs
-<<<<<<< HEAD
-=======
 F:	rust/kernel/net/phy/reg.rs
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 EXEC & BINFMT API, ELF
 R:	Eric Biederman <ebiederm@xmission.com>
@@ -8715,10 +8490,7 @@ N:	binfmt
 EXFAT FILE SYSTEM
 M:	Namjae Jeon <linkinjeon@kernel.org>
 M:	Sungjong Seo <sj1557.seo@samsung.com>
-<<<<<<< HEAD
-=======
 R:	Yuezhang Mo <yuezhang.mo@sony.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-fsdevel@vger.kernel.org
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linkinjeon/exfat.git
@@ -8802,8 +8574,6 @@ F:	lib/bootconfig.c
 F:	tools/bootconfig/*
 F:	tools/bootconfig/scripts/*
 
-<<<<<<< HEAD
-=======
 EXTRON DA HD 4K PLUS CEC DRIVER
 M:	Hans Verkuil <hverkuil@xs4all.nl>
 L:	linux-media@vger.kernel.org
@@ -8811,7 +8581,6 @@ S:	Maintained
 T:	git git://linuxtv.org/media_tree.git
 F:	drivers/media/cec/usb/extron-da-hd-4k-plus/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXYNOS DP DRIVER
 M:	Jingoo Han <jingoohan1@gmail.com>
 L:	dri-devel@lists.freedesktop.org
@@ -8887,10 +8656,7 @@ M:	Akinobu Mita <akinobu.mita@gmail.com>
 S:	Supported
 F:	Documentation/fault-injection/
 F:	lib/fault-inject.c
-<<<<<<< HEAD
-=======
 F:	tools/testing/fault-injection/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 FBTFT Framebuffer drivers
 L:	dri-devel@lists.freedesktop.org
@@ -8952,10 +8718,7 @@ M:	Christian Brauner <brauner@kernel.org>
 R:	Jan Kara <jack@suse.cz>
 L:	linux-fsdevel@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-=======
 T:	git https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	fs/*
 F:	include/linux/fs.h
 F:	include/linux/fs_types.h
@@ -9033,11 +8796,7 @@ F:	drivers/net/can/usb/f81604.c
 FIREWIRE AUDIO DRIVERS and IEC 61883-1/6 PACKET STREAMING ENGINE
 M:	Clemens Ladisch <clemens@ladisch.de>
 M:	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
 F:	include/uapi/sound/firewire.h
@@ -9111,11 +8870,7 @@ F:	drivers/input/joystick/fsia6b.c
 
 FOCUSRITE SCARLETT2 MIXER DRIVER (Scarlett Gen 2+ and Clarett)
 M:	Geoffrey D. Bennett <g@b4.vu>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 W:	https://github.com/geoffreybennett/scarlett-gen2
 B:	https://github.com/geoffreybennett/scarlett-gen2/issues
@@ -9139,11 +8894,7 @@ F:	include/linux/fortify-string.h
 F:	lib/fortify_kunit.c
 F:	lib/memcpy_kunit.c
 F:	lib/test_fortify/*
-<<<<<<< HEAD
-F:	scripts/test_fortify.sh
-=======
 K:	\bunsafe_memcpy\b
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 K:	\b__NO_FORTIFY\b
 
 FPGA DFL DRIVERS
@@ -9180,11 +8931,7 @@ W:	https://floatingpoint.billm.au/
 F:	arch/x86/math-emu/
 
 FRAMEBUFFER CORE
-<<<<<<< HEAD
-M:	Daniel Vetter <daniel@ffwll.ch>
-=======
 M:	Simona Vetter <simona@ffwll.ch>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Odd Fixes
 T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
 F:	drivers/video/fbdev/core/
@@ -9381,10 +9128,7 @@ M:	Herve Codina <herve.codina@bootlin.com>
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
-<<<<<<< HEAD
-=======
 F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ucc-qmc.yaml
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/soc/fsl/qe/qmc.c
 F:	include/soc/fsl/qe/qmc.h
 
@@ -9400,17 +9144,11 @@ M:	Herve Codina <herve.codina@bootlin.com>
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
-<<<<<<< HEAD
-F:	drivers/soc/fsl/qe/tsa.c
-F:	drivers/soc/fsl/qe/tsa.h
-F:	include/dt-bindings/soc/cpm1-fsl,tsa.h
-=======
 F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-tsa.yaml
 F:	drivers/soc/fsl/qe/tsa.c
 F:	drivers/soc/fsl/qe/tsa.h
 F:	include/dt-bindings/soc/cpm1-fsl,tsa.h
 F:	include/dt-bindings/soc/qe-fsl,tsa.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 FREESCALE QUICC ENGINE UCC ETHERNET DRIVER
 L:	netdev@vger.kernel.org
@@ -9454,11 +9192,7 @@ M:	Shengjiu Wang <shengjiu.wang@gmail.com>
 M:	Xiubo Li <Xiubo.Lee@gmail.com>
 R:	Fabio Estevam <festevam@gmail.com>
 R:	Nicolin Chen <nicoleotsuka@gmail.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Maintained
 F:	sound/soc/fsl/fsl*
@@ -9468,11 +9202,7 @@ FREESCALE SOC LPC32XX SOUND DRIVERS
 M:	J.M.B. Downing <jonathan.downing@nautel.com>
 M:	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 R:	Vladimir Zapolskiy <vz@mleia.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/nxp,lpc3220-i2s.yaml
@@ -9480,11 +9210,7 @@ F:	sound/soc/fsl/lpc3xxx-*
 
 FREESCALE SOC SOUND QMC DRIVER
 M:	Herve Codina <herve.codina@bootlin.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
@@ -9999,10 +9725,7 @@ F:	include/dt-bindings/gpio/
 F:	include/linux/gpio.h
 F:	include/linux/gpio/
 F:	include/linux/of_gpio.h
-<<<<<<< HEAD
-=======
 K:	(devm_)?gpio_(request|free|direction|get|set)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 GPIO UAPI
 M:	Bartosz Golaszewski <brgl@bgdev.pl>
@@ -10017,17 +9740,6 @@ F:	drivers/gpio/gpiolib-cdev.c
 F:	include/uapi/linux/gpio.h
 F:	tools/gpio/
 
-<<<<<<< HEAD
-GRE DEMULTIPLEXER DRIVER
-M:	Dmitry Kozlov <xeb@mail.ru>
-L:	netdev@vger.kernel.org
-S:	Maintained
-F:	include/net/gre.h
-F:	net/ipv4/gre_demux.c
-F:	net/ipv4/gre_offload.c
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 GRETH 10/100/1G Ethernet MAC device driver
 M:	Andreas Larsson <andreas@gaisler.com>
 L:	netdev@vger.kernel.org
@@ -10531,11 +10243,7 @@ F:	Documentation/devicetree/bindings/arm/hisilicon/low-pin-count.yaml
 F:	drivers/bus/hisi_lpc.c
 
 HISILICON NETWORK SUBSYSTEM 3 DRIVER (HNS3)
-<<<<<<< HEAD
-M:	Yisen Zhuang <yisen.zhuang@huawei.com>
-=======
 M:	Jian Shen <shenjian15@huawei.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 M:	Salil Mehta <salil.mehta@huawei.com>
 M:	Jijie Shao <shaojijie@huawei.com>
 L:	netdev@vger.kernel.org
@@ -10544,11 +10252,7 @@ W:	http://www.hisilicon.com
 F:	drivers/net/ethernet/hisilicon/hns3/
 
 HISILICON NETWORK SUBSYSTEM DRIVER
-<<<<<<< HEAD
-M:	Yisen Zhuang <yisen.zhuang@huawei.com>
-=======
 M:	Jian Shen <shenjian15@huawei.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 M:	Salil Mehta <salil.mehta@huawei.com>
 L:	netdev@vger.kernel.org
 S:	Maintained
@@ -11285,10 +10989,7 @@ M:	Nuno Sa <nuno.sa@analog.com>
 R:	Olivier Moysan <olivier.moysan@foss.st.com>
 L:	linux-iio@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-=======
 F:	Documentation/ABI/testing/debugfs-iio-backend
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/iio/industrialio-backend.c
 F:	include/linux/iio/backend.h
 
@@ -11391,10 +11092,7 @@ T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
 F:	Documentation/devicetree/bindings/gpu/img,powervr-rogue.yaml
 F:	Documentation/devicetree/bindings/gpu/img,powervr-sgx.yaml
 F:	Documentation/gpu/imagination/
-<<<<<<< HEAD
-=======
 F:	drivers/gpu/drm/ci/xfails/powervr*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/gpu/drm/imagination/
 F:	include/uapi/drm/pvr_drm.h
 
@@ -11432,11 +11130,7 @@ F:	drivers/iio/pressure/dps310.c
 
 INFINEON PEB2466 ASoC CODEC
 M:	Herve Codina <herve.codina@bootlin.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/infineon,peb2466.yaml
 F:	sound/soc/codecs/peb2466.c
@@ -11524,12 +11218,6 @@ F:	Documentation/devicetree/bindings/serio/
 F:	Documentation/input/
 F:	drivers/input/
 F:	include/dt-bindings/input/
-<<<<<<< HEAD
-F:	include/linux/input.h
-F:	include/linux/input/
-F:	include/uapi/linux/input-event-codes.h
-F:	include/uapi/linux/input.h
-=======
 F:	include/linux/gameport.h
 F:	include/linux/i8042.h
 F:	include/linux/input.h
@@ -11541,7 +11229,6 @@ F:	include/uapi/linux/input-event-codes.h
 F:	include/uapi/linux/input.h
 F:	include/uapi/linux/serio.h
 F:	include/uapi/linux/uinput.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 INPUT MULTITOUCH (MT) PROTOCOL
 M:	Henrik Rydberg <rydberg@bitmath.org>
@@ -11568,8 +11255,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity.git
 F:	security/integrity/
 F:	security/integrity/ima/
 
-<<<<<<< HEAD
-=======
 INTEGRITY POLICY ENFORCEMENT (IPE)
 M:	Fan Wu <wufan@kernel.org>
 L:	linux-security-module@vger.kernel.org
@@ -11580,7 +11265,6 @@ F:	Documentation/security/ipe.rst
 F:	scripts/ipe/
 F:	security/ipe/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 INTEL 810/815 FRAMEBUFFER DRIVER
 M:	Antonino Daplas <adaplas@gmail.com>
 L:	linux-fbdev@vger.kernel.org
@@ -11609,11 +11293,7 @@ M:	Bard Liao <yung-chuan.liao@linux.intel.com>
 M:	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 M:	Kai Vehmanen <kai.vehmanen@linux.intel.com>
 R:	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Supported
 F:	sound/soc/intel/
 
@@ -11792,11 +11472,7 @@ F:	include/uapi/linux/idxd.h
 
 INTEL IN FIELD SCAN (IFS) DEVICE
 M:	Jithu Joseph <jithu.joseph@intel.com>
-<<<<<<< HEAD
-R:	Ashok Raj <ashok.raj@intel.com>
-=======
 R:	Ashok Raj <ashok.raj.linux@gmail.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 R:	Tony Luck <tony.luck@intel.com>
 S:	Maintained
 F:	drivers/platform/x86/intel/ifs
@@ -11901,8 +11577,6 @@ F:	drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
 F:	drivers/crypto/intel/keembay/ocs-hcu.c
 F:	drivers/crypto/intel/keembay/ocs-hcu.h
 
-<<<<<<< HEAD
-=======
 INTEL LA JOLLA COVE ADAPTER (LJCA) USB I/O EXPANDER DRIVERS
 M:	Wentong Wu <wentong.wu@intel.com>
 M:	Sakari Ailus <sakari.ailus@linux.intel.com>
@@ -11913,7 +11587,6 @@ F:	drivers/spi/spi-ljca.c
 F:	drivers/usb/misc/usb-ljca.c
 F:	include/linux/usb/ljca.h
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 INTEL MANAGEMENT ENGINE (mei)
 M:	Tomas Winkler <tomas.winkler@intel.com>
 L:	linux-kernel@vger.kernel.org
@@ -11945,8 +11618,6 @@ S:	Maintained
 F:	Documentation/ABI/testing/sysfs-driver-intel-m10-bmc-sec-update
 F:	drivers/fpga/intel-m10-bmc-sec-update.c
 
-<<<<<<< HEAD
-=======
 INTEL MID (Mobile Internet Device) PLATFORM
 M:	Andy Shevchenko <andy@kernel.org>
 L:	linux-kernel@vger.kernel.org
@@ -11965,7 +11636,6 @@ F:	include/linux/mfd/intel_soc_pmic_mrfld.h
 F:	include/linux/platform_data/x86/intel-mid_wdt.h
 F:	include/linux/platform_data/x86/intel_scu_ipc.h
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 INTEL P-Unit IPC DRIVER
 M:	Zha Qipeng <qipeng.zha@intel.com>
 L:	platform-driver-x86@vger.kernel.org
@@ -12028,13 +11698,8 @@ F:	drivers/counter/intel-qep.c
 INTEL SCU DRIVERS
 M:	Mika Westerberg <mika.westerberg@linux.intel.com>
 S:	Maintained
-<<<<<<< HEAD
-F:	arch/x86/include/asm/intel_scu_ipc.h
-F:	drivers/platform/x86/intel_scu_*
-=======
 F:	drivers/platform/x86/intel_scu_*
 F:	include/linux/platform_data/x86/intel_scu_ipc.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 INTEL SDSI DRIVER
 M:	David E. Box <david.e.box@linux.intel.com>
@@ -12109,12 +11774,8 @@ F:	drivers/platform/x86/intel/uncore-frequency/
 INTEL VENDOR SPECIFIC EXTENDED CAPABILITIES DRIVER
 M:	David E. Box <david.e.box@linux.intel.com>
 S:	Supported
-<<<<<<< HEAD
-F:	drivers/platform/x86/intel/vsec.*
-=======
 F:	drivers/platform/x86/intel/vsec.c
 F:	include/linux/intel_vsec.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 INTEL VIRTUAL BUTTON DRIVER
 M:	AceLan Kao <acelan.kao@canonical.com>
@@ -12237,10 +11898,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/iommu/linux.git
 F:	drivers/iommu/dma-iommu.c
 F:	drivers/iommu/dma-iommu.h
 F:	drivers/iommu/iova.c
-<<<<<<< HEAD
-=======
 F:	include/linux/iommu-dma.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	include/linux/iova.h
 
 IOMMU SUBSYSTEM
@@ -12329,11 +11987,7 @@ F:	drivers/tty/ipwireless/
 
 IRON DEVICE AUDIO CODEC DRIVERS
 M:	Kiseok Jo <kiseok.jo@irondevice.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/irondevice,*
 F:	sound/soc/codecs/sma*
@@ -12571,10 +12225,7 @@ R:	Dmitry Vyukov <dvyukov@google.com>
 R:	Vincenzo Frascino <vincenzo.frascino@arm.com>
 L:	kasan-dev@googlegroups.com
 S:	Maintained
-<<<<<<< HEAD
-=======
 B:	https://bugzilla.kernel.org/buglist.cgi?component=Sanitizers&product=Memory%20Management
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/dev-tools/kasan.rst
 F:	arch/*/include/asm/*kasan.h
 F:	arch/*/mm/kasan_init*
@@ -12598,10 +12249,7 @@ R:	Dmitry Vyukov <dvyukov@google.com>
 R:	Andrey Konovalov <andreyknvl@gmail.com>
 L:	kasan-dev@googlegroups.com
 S:	Maintained
-<<<<<<< HEAD
-=======
 B:	https://bugzilla.kernel.org/buglist.cgi?component=Sanitizers&product=Memory%20Management
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/dev-tools/kcov.rst
 F:	include/linux/kcov.h
 F:	include/uapi/linux/kcov.h
@@ -12683,10 +12331,7 @@ F:	include/linux/randomize_kstack.h
 F:	kernel/configs/hardening.config
 F:	lib/usercopy_kunit.c
 F:	mm/usercopy.c
-<<<<<<< HEAD
-=======
 F:	security/Kconfig.hardening
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 K:	\b(add|choose)_random_kstack_offset\b
 K:	\b__check_(object_size|heap_object)\b
 K:	\b__counted_by\b
@@ -12803,11 +12448,7 @@ F:	virt/kvm/*
 KERNEL VIRTUAL MACHINE FOR ARM64 (KVM/arm64)
 M:	Marc Zyngier <maz@kernel.org>
 M:	Oliver Upton <oliver.upton@linux.dev>
-<<<<<<< HEAD
-R:	James Morse <james.morse@arm.com>
-=======
 R:	Joey Gouly <joey.gouly@arm.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 R:	Suzuki K Poulose <suzuki.poulose@arm.com>
 R:	Zenghui Yu <yuzenghui@huawei.com>
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
@@ -12831,10 +12472,7 @@ L:	kvm@vger.kernel.org
 L:	loongarch@lists.linux.dev
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
-<<<<<<< HEAD
-=======
 F:	Documentation/virt/kvm/loongarch/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	arch/loongarch/include/asm/kvm*
 F:	arch/loongarch/include/uapi/asm/kvm*
 F:	arch/loongarch/kvm/
@@ -13291,69 +12929,29 @@ LIBATA PATA ARASAN COMPACT FLASH CONTROLLER
 M:	Viresh Kumar <vireshk@kernel.org>
 L:	linux-ide@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git
 F:	drivers/ata/pata_arasan_cf.c
 F:	include/linux/pata_arasan_cf_data.h
 
-LIBATA PATA DRIVERS
-R:	Sergey Shtylyov <s.shtylyov@omp.ru>
-L:	linux-ide@vger.kernel.org
-F:	drivers/ata/ata_*.c
-F:	drivers/ata/pata_*.c
-
-=======
-F:	drivers/ata/pata_arasan_cf.c
-F:	include/linux/pata_arasan_cf_data.h
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 LIBATA PATA FARADAY FTIDE010 AND GEMINI SATA BRIDGE DRIVERS
 M:	Linus Walleij <linus.walleij@linaro.org>
 L:	linux-ide@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/ata/pata_ftide010.c
 F:	drivers/ata/sata_gemini.c
 F:	drivers/ata/sata_gemini.h
 
 LIBATA SATA AHCI PLATFORM devices support
 M:	Hans de Goede <hdegoede@redhat.com>
-<<<<<<< HEAD
-M:	Jens Axboe <axboe@kernel.dk>
 L:	linux-ide@vger.kernel.org
 S:	Maintained
-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git
-=======
-L:	linux-ide@vger.kernel.org
-S:	Maintained
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/ata/ahci_platform.c
 F:	drivers/ata/libahci_platform.c
 F:	include/linux/ahci_platform.h
 
-<<<<<<< HEAD
-LIBATA SATA AHCI SYNOPSYS DWC CONTROLLER DRIVER
-M:	Serge Semin <fancer.lancer@gmail.com>
-L:	linux-ide@vger.kernel.org
-S:	Maintained
-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git
-F:	Documentation/devicetree/bindings/ata/baikal,bt1-ahci.yaml
-F:	Documentation/devicetree/bindings/ata/snps,dwc-ahci.yaml
-F:	drivers/ata/ahci_dwc.c
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 LIBATA SATA PROMISE TX2/TX4 CONTROLLER DRIVER
 M:	Mikael Pettersson <mikpelinux@gmail.com>
 L:	linux-ide@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/ata/sata_promise.*
 
 LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)
@@ -13473,10 +13071,7 @@ M:	Michael Ellerman <mpe@ellerman.id.au>
 R:	Nicholas Piggin <npiggin@gmail.com>
 R:	Christophe Leroy <christophe.leroy@csgroup.eu>
 R:	Naveen N Rao <naveen@kernel.org>
-<<<<<<< HEAD
-=======
 R:	Madhavan Srinivasan <maddy@linux.ibm.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Supported
 W:	https://github.com/linuxppc/wiki/wiki
@@ -13560,10 +13155,7 @@ R:	Daniel Lustig <dlustig@nvidia.com>
 R:	Joel Fernandes <joel@joelfernandes.org>
 L:	linux-kernel@vger.kernel.org
 L:	linux-arch@vger.kernel.org
-<<<<<<< HEAD
-=======
 L:	lkmm@lists.linux.dev
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Supported
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
 F:	Documentation/atomic_bitops.txt
@@ -13832,8 +13424,6 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
 F:	drivers/iio/dac/ltc1660.c
 
-<<<<<<< HEAD
-=======
 LTC2664 IIO DAC DRIVER
 M:	Michael Hennerich <michael.hennerich@analog.com>
 M:	Kim Seer Paller <kimseer.paller@analog.com>
@@ -13844,7 +13434,6 @@ F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
 F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
 F:	drivers/iio/dac/ltc2664.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 LTC2688 IIO DAC DRIVER
 M:	Nuno Sá <nuno.sa@analog.com>
 L:	linux-iio@vger.kernel.org
@@ -14085,11 +13674,7 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
 F:	drivers/input/misc/88pm886-onkey.c
 F:	drivers/mfd/88pm886.c
-<<<<<<< HEAD
-F:	drivers/regulators/88pm886-regulator.c
-=======
 F:	drivers/regulator/88pm886-regulator.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	include/linux/mfd/88pm886.h
 
 MARVELL ARMADA 3700 PHY DRIVERS
@@ -14148,10 +13733,6 @@ M:	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 L:	netdev@vger.kernel.org
 S:	Maintained
 F:	drivers/net/ethernet/marvell/mv643xx_eth.*
-<<<<<<< HEAD
-F:	include/linux/mv643xx.h
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 MARVELL MV88X3310 PHY DRIVER
 M:	Russell King <linux@armlinux.org.uk>
@@ -14340,11 +13921,7 @@ F:	drivers/media/i2c/max96717.c
 
 MAX9860 MONO AUDIO VOICE CODEC DRIVER
 M:	Peter Rosin <peda@axentia.se>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/max9860.txt
 F:	sound/soc/codecs/max9860.*
@@ -14567,12 +14144,7 @@ T:	git git://linuxtv.org/media_tree.git
 F:	drivers/media/platform/nxp/imx-pxp.[ch]
 
 MEDIA DRIVERS FOR ASCOT2E
-<<<<<<< HEAD
-M:	Sergey Kozlov <serjk@netup.ru>
-M:	Abylay Ospan <aospan@netup.ru>
-=======
 M:	Abylay Ospan <aospan@amazon.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-media@vger.kernel.org
 S:	Supported
 W:	https://linuxtv.org
@@ -14589,12 +14161,7 @@ T:	git git://linuxtv.org/media_tree.git
 F:	drivers/media/dvb-frontends/cxd2099*
 
 MEDIA DRIVERS FOR CXD2841ER
-<<<<<<< HEAD
-M:	Sergey Kozlov <serjk@netup.ru>
-M:	Abylay Ospan <aospan@netup.ru>
-=======
 M:	Abylay Ospan <aospan@amazon.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-media@vger.kernel.org
 S:	Supported
 W:	https://linuxtv.org
@@ -14647,11 +14214,7 @@ F:	drivers/media/platform/nxp/imx7-media-csi.c
 F:	drivers/media/platform/nxp/imx8mq-mipi-csi2.c
 
 MEDIA DRIVERS FOR HELENE
-<<<<<<< HEAD
-M:	Abylay Ospan <aospan@netup.ru>
-=======
 M:	Abylay Ospan <aospan@amazon.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-media@vger.kernel.org
 S:	Supported
 W:	https://linuxtv.org
@@ -14660,12 +14223,7 @@ T:	git git://linuxtv.org/media_tree.git
 F:	drivers/media/dvb-frontends/helene*
 
 MEDIA DRIVERS FOR HORUS3A
-<<<<<<< HEAD
-M:	Sergey Kozlov <serjk@netup.ru>
-M:	Abylay Ospan <aospan@netup.ru>
-=======
 M:	Abylay Ospan <aospan@amazon.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-media@vger.kernel.org
 S:	Supported
 W:	https://linuxtv.org
@@ -14674,12 +14232,7 @@ T:	git git://linuxtv.org/media_tree.git
 F:	drivers/media/dvb-frontends/horus3a*
 
 MEDIA DRIVERS FOR LNBH25
-<<<<<<< HEAD
-M:	Sergey Kozlov <serjk@netup.ru>
-M:	Abylay Ospan <aospan@netup.ru>
-=======
 M:	Abylay Ospan <aospan@amazon.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-media@vger.kernel.org
 S:	Supported
 W:	https://linuxtv.org
@@ -14695,12 +14248,7 @@ T:	git git://linuxtv.org/media_tree.git
 F:	drivers/media/dvb-frontends/mxl5xx*
 
 MEDIA DRIVERS FOR NETUP PCI UNIVERSAL DVB devices
-<<<<<<< HEAD
-M:	Sergey Kozlov <serjk@netup.ru>
-M:	Abylay Ospan <aospan@netup.ru>
-=======
 M:	Abylay Ospan <aospan@amazon.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-media@vger.kernel.org
 S:	Supported
 W:	https://linuxtv.org
@@ -14831,13 +14379,8 @@ M:	Sean Wang <sean.wang@mediatek.com>
 L:	linux-bluetooth@vger.kernel.org
 L:	linux-mediatek@lists.infradead.org (moderated for non-subscribers)
 S:	Maintained
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/net/bluetooth/mediatek,mt7921s-bluetooth.yaml
-F:	Documentation/devicetree/bindings/net/mediatek-bluetooth.txt
-=======
 F:	Documentation/devicetree/bindings/net/bluetooth/mediatek,bluetooth.txt
 F:	Documentation/devicetree/bindings/net/bluetooth/mediatek,mt7921s-bluetooth.yaml
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/bluetooth/btmtkuart.c
 
 MEDIATEK BOARD LEVEL SHUTDOWN DRIVERS
@@ -15115,11 +14658,7 @@ MELLANOX ETHERNET DRIVER (mlx4_en)
 M:	Tariq Toukan <tariqt@nvidia.com>
 L:	netdev@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	https://patchwork.kernel.org/project/netdevbpf/list/
 F:	drivers/net/ethernet/mellanox/mlx4/en_*
 
@@ -15128,11 +14667,7 @@ M:	Saeed Mahameed <saeedm@nvidia.com>
 M:	Tariq Toukan <tariqt@nvidia.com>
 L:	netdev@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	https://patchwork.kernel.org/project/netdevbpf/list/
 F:	drivers/net/ethernet/mellanox/mlx5/core/en_*
 
@@ -15140,11 +14675,7 @@ MELLANOX ETHERNET INNOVA DRIVERS
 R:	Boris Pismenny <borisp@nvidia.com>
 L:	netdev@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	https://patchwork.kernel.org/project/netdevbpf/list/
 F:	drivers/net/ethernet/mellanox/mlx5/core/en_accel/*
 F:	drivers/net/ethernet/mellanox/mlx5/core/fpga/*
@@ -15155,11 +14686,7 @@ M:	Ido Schimmel <idosch@nvidia.com>
 M:	Petr Machata <petrm@nvidia.com>
 L:	netdev@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	https://patchwork.kernel.org/project/netdevbpf/list/
 F:	drivers/net/ethernet/mellanox/mlxsw/
 F:	tools/testing/selftests/drivers/net/mlxsw/
@@ -15168,11 +14695,7 @@ MELLANOX FIRMWARE FLASH LIBRARY (mlxfw)
 M:	mlxsw@nvidia.com
 L:	netdev@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	https://patchwork.kernel.org/project/netdevbpf/list/
 F:	drivers/net/ethernet/mellanox/mlxfw/
 
@@ -15191,11 +14714,7 @@ M:	Tariq Toukan <tariqt@nvidia.com>
 L:	netdev@vger.kernel.org
 L:	linux-rdma@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	https://patchwork.kernel.org/project/netdevbpf/list/
 F:	drivers/net/ethernet/mellanox/mlx4/
 F:	include/linux/mlx4/
@@ -15204,11 +14723,7 @@ MELLANOX MLX4 IB driver
 M:	Yishai Hadas <yishaih@nvidia.com>
 L:	linux-rdma@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	http://patchwork.kernel.org/project/linux-rdma/list/
 F:	drivers/infiniband/hw/mlx4/
 F:	include/linux/mlx4/
@@ -15221,11 +14736,7 @@ M:	Tariq Toukan <tariqt@nvidia.com>
 L:	netdev@vger.kernel.org
 L:	linux-rdma@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	https://patchwork.kernel.org/project/netdevbpf/list/
 F:	Documentation/networking/device_drivers/ethernet/mellanox/
 F:	drivers/net/ethernet/mellanox/mlx5/core/
@@ -15235,11 +14746,7 @@ MELLANOX MLX5 IB driver
 M:	Leon Romanovsky <leonro@nvidia.com>
 L:	linux-rdma@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-W:	http://www.mellanox.com
-=======
 W:	https://www.nvidia.com/networking/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Q:	http://patchwork.kernel.org/project/linux-rdma/list/
 F:	drivers/infiniband/hw/mlx5/
 F:	include/linux/mlx5/
@@ -15366,16 +14873,10 @@ N:	include/linux/page[-_]*
 
 MEMORY MAPPING
 M:	Andrew Morton <akpm@linux-foundation.org>
-<<<<<<< HEAD
-R:	Liam R. Howlett <Liam.Howlett@oracle.com>
-R:	Vlastimil Babka <vbabka@suse.cz>
-R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-=======
 M:	Liam R. Howlett <Liam.Howlett@oracle.com>
 M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 R:	Vlastimil Babka <vbabka@suse.cz>
 R:	Jann Horn <jannh@google.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-mm@kvack.org
 S:	Maintained
 W:	http://www.linux-mm.org
@@ -15398,16 +14899,6 @@ F:	drivers/mtd/
 F:	include/linux/mtd/
 F:	include/uapi/mtd/
 
-<<<<<<< HEAD
-MEMSENSING MICROSYSTEMS MSA311 DRIVER
-M:	Dmitry Rokosov <ddrokosov@sberdevices.ru>
-L:	linux-iio@vger.kernel.org
-S:	Maintained
-F:	Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
-F:	drivers/iio/accel/msa311.c
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MEN A21 WATCHDOG DRIVER
 M:	Johannes Thumshirn <morbidrsa@gmail.com>
 L:	linux-watchdog@vger.kernel.org
@@ -15477,10 +14968,7 @@ M:	Alexander Duyck <alexanderduyck@fb.com>
 M:	Jakub Kicinski <kuba@kernel.org>
 R:	kernel-team@meta.com
 S:	Supported
-<<<<<<< HEAD
-=======
 F:	Documentation/networking/device_drivers/ethernet/meta/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/net/ethernet/meta/
 
 METHODE UDPU SUPPORT
@@ -15555,12 +15043,8 @@ F:	drivers/spi/spi-at91-usart.c
 
 MICROCHIP AUDIO ASOC DRIVERS
 M:	Claudiu Beznea <claudiu.beznea@tuxon.dev>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 M:	Andrei Simion <andrei.simion@microchip.com>
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Supported
 F:	Documentation/devicetree/bindings/sound/atmel*
 F:	Documentation/devicetree/bindings/sound/axentia,tse850-pcm5142.txt
@@ -15632,8 +15116,6 @@ L:	netdev@vger.kernel.org
 S:	Maintained
 F:	drivers/net/ethernet/microchip/lan743x_*
 
-<<<<<<< HEAD
-=======
 MICROCHIP LAN8650/1 10BASE-T1S MACPHY ETHERNET DRIVER
 M:	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 L:	netdev@vger.kernel.org
@@ -15641,7 +15123,6 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/net/microchip,lan8650.yaml
 F:	drivers/net/ethernet/microchip/lan865x/lan865x.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MICROCHIP LAN87xx/LAN937x T1 PHY DRIVER
 M:	Arun Ramadoss <arun.ramadoss@microchip.com>
 R:	UNGLinuxDriver@microchip.com
@@ -15671,10 +15152,7 @@ F:	include/video/atmel_lcdc.h
 
 MICROCHIP MCP16502 PMIC DRIVER
 M:	Claudiu Beznea <claudiu.beznea@tuxon.dev>
-<<<<<<< HEAD
-=======
 M:	Andrei Simion <andrei.simion@microchip.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Supported
 F:	Documentation/devicetree/bindings/regulator/microchip,mcp16502.yaml
@@ -15715,8 +15193,6 @@ F:	Documentation/devicetree/bindings/nvmem/microchip,sama7g5-otpc.yaml
 F:	drivers/nvmem/microchip-otpc.c
 F:	include/dt-bindings/nvmem/microchip,sama7g5-otpc.h
 
-<<<<<<< HEAD
-=======
 MICROCHIP PAC1921 POWER/CURRENT MONITOR DRIVER
 M:	Matteo Martelli <matteomartelli3@gmail.com>
 L:	linux-iio@vger.kernel.org
@@ -15724,7 +15200,6 @@ S:	Supported
 F:	Documentation/devicetree/bindings/iio/adc/microchip,pac1921.yaml
 F:	drivers/iio/adc/pac1921.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MICROCHIP PAC1934 POWER/ENERGY MONITOR DRIVER
 M:	Marius Cristea <marius.cristea@microchip.com>
 L:	linux-iio@vger.kernel.org
@@ -15759,10 +15234,6 @@ F:	drivers/tty/serial/8250/8250_pci1xxxx.c
 
 MICROCHIP POLARFIRE FPGA DRIVERS
 M:	Conor Dooley <conor.dooley@microchip.com>
-<<<<<<< HEAD
-R:	Vladimir Georgiev <v.georgiev@metrotek.ru>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-fpga@vger.kernel.org
 S:	Supported
 F:	Documentation/devicetree/bindings/fpga/microchip,mpf-spi-fpga-mgr.yaml
@@ -15812,10 +15283,7 @@ F:	drivers/spi/spi-atmel.*
 
 MICROCHIP SSC DRIVER
 M:	Claudiu Beznea <claudiu.beznea@tuxon.dev>
-<<<<<<< HEAD
-=======
 M:	Andrei Simion <andrei.simion@microchip.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 S:	Supported
 F:	Documentation/devicetree/bindings/misc/atmel-ssc.txt
@@ -15912,15 +15380,12 @@ S:	Maintained
 F:	Documentation/hwmon/surface_fan.rst
 F:	drivers/hwmon/surface_fan.c
 
-<<<<<<< HEAD
-=======
 MICROSOFT SURFACE SENSOR THERMAL DRIVER
 M:	Maximilian Luz <luzmaximilian@gmail.com>
 L:	linux-hwmon@vger.kernel.org
 S:	Maintained
 F:	drivers/hwmon/surface_temp.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MICROSOFT SURFACE GPE LID SUPPORT DRIVER
 M:	Maximilian Luz <luzmaximilian@gmail.com>
 L:	platform-driver-x86@vger.kernel.org
@@ -16024,20 +15489,6 @@ F:	arch/mips/
 F:	drivers/platform/mips/
 F:	include/dt-bindings/mips/
 
-<<<<<<< HEAD
-MIPS BAIKAL-T1 PLATFORM
-M:	Serge Semin <fancer.lancer@gmail.com>
-L:	linux-mips@vger.kernel.org
-S:	Supported
-F:	Documentation/devicetree/bindings/bus/baikal,bt1-*.yaml
-F:	Documentation/devicetree/bindings/clock/baikal,bt1-*.yaml
-F:	drivers/bus/bt1-*.c
-F:	drivers/clk/baikal-t1/
-F:	drivers/memory/bt1-l2-ctl.c
-F:	drivers/mtd/maps/physmap-bt1-rom.[ch]
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MIPS BOSTON DEVELOPMENT BOARD
 M:	Paul Burton <paulburton@kernel.org>
 L:	linux-mips@vger.kernel.org
@@ -16050,10 +15501,6 @@ F:	include/dt-bindings/clock/boston-clock.h
 
 MIPS CORE DRIVERS
 M:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-<<<<<<< HEAD
-M:	Serge Semin <fancer.lancer@gmail.com>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-mips@vger.kernel.org
 S:	Supported
 F:	drivers/bus/mips_cdmm.c
@@ -16179,12 +15626,9 @@ F:	include/dt-bindings/clock/mobileye,eyeq5-clk.h
 
 MODULE SUPPORT
 M:	Luis Chamberlain <mcgrof@kernel.org>
-<<<<<<< HEAD
-=======
 R:	Petr Pavlu <petr.pavlu@suse.com>
 R:	Sami Tolvanen <samitolvanen@google.com>
 R:	Daniel Gomez <da.gomez@samsung.com>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-modules@vger.kernel.org
 L:	linux-kernel@vger.kernel.org
 S:	Maintained
@@ -16461,11 +15905,7 @@ F:	include/linux/mtd/*nand*.h
 
 NATIVE INSTRUMENTS USB SOUND INTERFACE DRIVER
 M:	Daniel Mack <zonque@gmail.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 W:	http://www.native-instruments.com
 F:	sound/usb/caiaq/
@@ -16507,10 +15947,7 @@ M:	Breno Leitao <leitao@debian.org>
 S:	Maintained
 F:	Documentation/networking/netconsole.rst
 F:	drivers/net/netconsole.c
-<<<<<<< HEAD
-=======
 F:	tools/testing/selftests/drivers/net/netcons_basic.sh
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 NETDEVSIM
 M:	Jakub Kicinski <kuba@kernel.org>
@@ -16599,10 +16036,7 @@ F:	include/uapi/linux/net_dropmon.h
 F:	net/core/drop_monitor.c
 
 NETWORKING DRIVERS
-<<<<<<< HEAD
-=======
 M:	Andrew Lunn <andrew+netdev@lunn.ch>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 M:	"David S. Miller" <davem@davemloft.net>
 M:	Eric Dumazet <edumazet@google.com>
 M:	Jakub Kicinski <kuba@kernel.org>
@@ -16650,10 +16084,6 @@ F:	drivers/net/wireless/
 
 NETWORKING [DSA]
 M:	Andrew Lunn <andrew@lunn.ch>
-<<<<<<< HEAD
-M:	Florian Fainelli <f.fainelli@gmail.com>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 M:	Vladimir Oltean <olteanv@gmail.com>
 S:	Maintained
 F:	Documentation/devicetree/bindings/net/dsa/
@@ -16671,10 +16101,7 @@ M:	"David S. Miller" <davem@davemloft.net>
 M:	Eric Dumazet <edumazet@google.com>
 M:	Jakub Kicinski <kuba@kernel.org>
 M:	Paolo Abeni <pabeni@redhat.com>
-<<<<<<< HEAD
-=======
 R:	Simon Horman <horms@kernel.org>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	netdev@vger.kernel.org
 S:	Maintained
 P:	Documentation/process/maintainer-netdev.rst
@@ -16717,12 +16144,6 @@ F:	include/uapi/linux/rtnetlink.h
 F:	lib/net_utils.c
 F:	lib/random32.c
 F:	net/
-<<<<<<< HEAD
-F:	tools/net/
-F:	tools/testing/selftests/net/
-X:	net/9p/
-X:	net/bluetooth/
-=======
 F:	samples/pktgen/
 F:	tools/net/
 F:	tools/testing/selftests/net/
@@ -16739,7 +16160,6 @@ X:	net/bluetooth/
 X:	net/mac80211/
 X:	net/rfkill/
 X:	net/wireless/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 NETWORKING [IPSEC]
 M:	Steffen Klassert <steffen.klassert@secunet.com>
@@ -17049,15 +16469,6 @@ F:	include/linux/ntb.h
 F:	include/linux/ntb_transport.h
 F:	tools/testing/selftests/ntb/
 
-<<<<<<< HEAD
-NTB IDT DRIVER
-M:	Serge Semin <fancer.lancer@gmail.com>
-L:	ntb@lists.linux.dev
-S:	Supported
-F:	drivers/ntb/hw/idt/
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 NTB INTEL DRIVER
 M:	Dave Jiang <dave.jiang@intel.com>
 L:	ntb@lists.linux.dev
@@ -17272,11 +16683,7 @@ F:	drivers/extcon/extcon-ptn5150.c
 
 NXP SGTL5000 DRIVER
 M:	Fabio Estevam <festevam@gmail.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/fsl,sgtl5000.yaml
 F:	sound/soc/codecs/sgtl5000*
@@ -17300,11 +16707,7 @@ K:	"nxp,tda998x"
 
 NXP TFA9879 DRIVER
 M:	Peter Rosin <peda@axentia.se>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/nxp,tfa9879.yaml
 F:	sound/soc/codecs/tfa9879*
@@ -17316,11 +16719,7 @@ F:	drivers/nfc/nxp-nci
 
 NXP/Goodix TFA989X (TFA1) DRIVER
 M:	Stephan Gerhold <stephan@gerhold.net>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
 F:	sound/soc/codecs/tfa989x.c
@@ -17406,11 +16805,7 @@ F:	include/uapi/misc/ocxl.h
 OMAP AUDIO SUPPORT
 M:	Peter Ujfalusi <peter.ujfalusi@gmail.com>
 M:	Jarkko Nikula <jarkko.nikula@bitmer.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-omap@vger.kernel.org
 S:	Maintained
 F:	sound/soc/ti/n810.c
@@ -17603,10 +16998,7 @@ OMNIVISION OG01A1B SENSOR DRIVER
 M:	Sakari Ailus <sakari.ailus@linux.intel.com>
 L:	linux-media@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-=======
 F:	Documentation/devicetree/bindings/media/i2c/ovti,og01a1b.yaml
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/media/i2c/og01a1b.c
 
 OMNIVISION OV01A10 SENSOR DRIVER
@@ -17877,8 +17269,6 @@ L:	linux-rdma@vger.kernel.org
 S:	Supported
 F:	drivers/infiniband/ulp/opa_vnic
 
-<<<<<<< HEAD
-=======
 OPEN ALLIANCE 10BASE-T1S MACPHY SERIAL INTERFACE FRAMEWORK
 M:	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 L:	netdev@vger.kernel.org
@@ -17887,7 +17277,6 @@ F:	Documentation/networking/oa-tc6-framework.rst
 F:	drivers/net/ethernet/oa_tc6.c
 F:	include/linux/oa_tc6.h
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 OPEN FIRMWARE AND FLATTENED DEVICE TREE
 M:	Rob Herring <robh@kernel.org>
 M:	Saravana Kannan <saravanak@google.com>
@@ -17973,11 +17362,7 @@ F:	include/linux/pm_opp.h
 
 OPL4 DRIVER
 M:	Clemens Ladisch <clemens@ladisch.de>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
 F:	sound/drivers/opl4/
@@ -18203,11 +17588,7 @@ PCI DRIVER FOR ALTERA PCIE IP
 M:	Joyce Ooi <joyce.ooi@intel.com>
 L:	linux-pci@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/pci/altera-pcie.txt
-=======
 F:	Documentation/devicetree/bindings/pci/altr,pcie-root-port.yaml
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/pci/controller/pcie-altera.c
 
 PCI DRIVER FOR APPLIEDMICRO XGENE
@@ -18439,11 +17820,7 @@ PCI MSI DRIVER FOR ALTERA MSI IP
 M:	Joyce Ooi <joyce.ooi@intel.com>
 L:	linux-pci@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/pci/altera-pcie-msi.txt
-=======
 F:	Documentation/devicetree/bindings/pci/altr,msi-controller.yaml
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/pci/controller/pcie-altera-msi.c
 
 PCI MSI DRIVER FOR APPLIEDMICRO XGENE
@@ -18596,10 +17973,7 @@ M:	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 L:	linux-pci@vger.kernel.org
 L:	linux-arm-msm@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-=======
 F:	drivers/pci/controller/dwc/pcie-qcom-common.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/pci/controller/dwc/pcie-qcom.c
 
 PCIE DRIVER FOR ROCKCHIP
@@ -18636,10 +18010,7 @@ L:	linux-pci@vger.kernel.org
 L:	linux-arm-msm@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
-<<<<<<< HEAD
-=======
 F:	drivers/pci/controller/dwc/pcie-qcom-common.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/pci/controller/dwc/pcie-qcom-ep.c
 
 PCMCIA SUBSYSTEM
@@ -19051,10 +18422,7 @@ M:	Bartosz Golaszewski <brgl@bgdev.pl>
 L:	linux-pm@vger.kernel.org
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux.git
-<<<<<<< HEAD
-=======
 F:	Documentation/driver-api/pwrseq.rst
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/power/sequencing/
 F:	include/linux/pwrseq/
 
@@ -19121,16 +18489,6 @@ F:	drivers/pps/
 F:	include/linux/pps*.h
 F:	include/uapi/linux/pps.h
 
-<<<<<<< HEAD
-PPTP DRIVER
-M:	Dmitry Kozlov <xeb@mail.ru>
-L:	netdev@vger.kernel.org
-S:	Maintained
-W:	http://sourceforge.net/projects/accel-pptp
-F:	drivers/net/ppp/pptp.c
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 PRESSURE STALL INFORMATION (PSI)
 M:	Johannes Weiner <hannes@cmpxchg.org>
 M:	Suren Baghdasaryan <surenb@google.com>
@@ -19168,11 +18526,7 @@ F:	tools/testing/selftests/proc/
 PROC SYSCTL
 M:	Luis Chamberlain <mcgrof@kernel.org>
 M:	Kees Cook <kees@kernel.org>
-<<<<<<< HEAD
-M:	Joel Granados <j.granados@samsung.com>
-=======
 M:	Joel Granados <joel.granados@kernel.org>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-kernel@vger.kernel.org
 L:	linux-fsdevel@vger.kernel.org
 S:	Maintained
@@ -19384,11 +18738,7 @@ F:	drivers/crypto/intel/qat/
 
 QCOM AUDIO (ASoC) DRIVERS
 M:	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-arm-msm@vger.kernel.org
 S:	Supported
 F:	Documentation/devicetree/bindings/soc/qcom/qcom,apr*
@@ -19610,11 +18960,7 @@ M:	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 L:	linux-media@vger.kernel.org
 S:	Maintained
 F:	Documentation/admin-guide/media/qcom_camss.rst
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/media/*camss*
-=======
 F:	Documentation/devicetree/bindings/media/qcom,*camss*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/media/platform/qcom/camss/
 
 QUALCOMM CLOCK DRIVERS
@@ -19629,10 +18975,6 @@ F:	include/dt-bindings/clock/qcom,*
 QUALCOMM CLOUD AI (QAIC) DRIVER
 M:	Jeffrey Hugo <quic_jhugo@quicinc.com>
 R:	Carl Vanderlip <quic_carlv@quicinc.com>
-<<<<<<< HEAD
-R:	Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-arm-msm@vger.kernel.org
 L:	dri-devel@lists.freedesktop.org
 S:	Supported
@@ -19727,10 +19069,7 @@ L:	linux-arm-msm@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/interconnect/qcom,msm8998-bwmon.yaml
 F:	drivers/soc/qcom/icc-bwmon.c
-<<<<<<< HEAD
-=======
 F:	drivers/soc/qcom/trace_icc-bwmon.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 QUALCOMM IOMMU
 M:	Rob Clark <robdclark@gmail.com>
@@ -19956,14 +19295,7 @@ F:	drivers/char/random.c
 F:	include/linux/random.h
 F:	include/uapi/linux/random.h
 F:	drivers/virt/vmgenid.c
-<<<<<<< HEAD
-F:	include/vdso/getrandom.h
-F:	lib/vdso/getrandom.c
-F:	arch/x86/entry/vdso/vgetrandom*
-F:	arch/x86/include/asm/vdso/getrandom*
-=======
 N:	^.*/vdso/[^/]*getrandom[^/]+$
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 RAPIDIO SUBSYSTEM
 M:	Matt Porter <mporter@kernel.crashing.org>
@@ -20074,10 +19406,7 @@ S:	Supported
 W:	https://oss.oracle.com/projects/rds/
 F:	Documentation/networking/rds.rst
 F:	net/rds/
-<<<<<<< HEAD
-=======
 F:	tools/testing/selftests/net/rds/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 RDT - RESOURCE ALLOCATION
 M:	Fenghua Yu <fenghua.yu@intel.com>
@@ -20133,8 +19462,6 @@ S:	Maintained
 F:	Documentation/tools/rtla/
 F:	tools/tracing/rtla/
 
-<<<<<<< HEAD
-=======
 Real-time Linux (PREEMPT_RT)
 M:	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 M:	Clark Williams <clrkwllms@kernel.org>
@@ -20143,7 +19470,6 @@ L:	linux-rt-devel@lists.linux.dev
 S:	Supported
 K:	PREEMPT_RT
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 REALTEK AUDIO CODECS
 M:	Oder Chiou <oder_chiou@realtek.com>
 S:	Maintained
@@ -20253,18 +19579,6 @@ S:	Supported
 F:	Documentation/devicetree/bindings/i2c/renesas,iic-emev2.yaml
 F:	drivers/i2c/busses/i2c-emev2.c
 
-<<<<<<< HEAD
-RENESAS ETHERNET AVB DRIVER
-R:	Sergey Shtylyov <s.shtylyov@omp.ru>
-L:	netdev@vger.kernel.org
-L:	linux-renesas-soc@vger.kernel.org
-F:	Documentation/devicetree/bindings/net/renesas,etheravb.yaml
-F:	drivers/net/ethernet/renesas/Kconfig
-F:	drivers/net/ethernet/renesas/Makefile
-F:	drivers/net/ethernet/renesas/ravb*
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 RENESAS ETHERNET SWITCH DRIVER
 R:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 L:	netdev@vger.kernel.org
@@ -20285,11 +19599,7 @@ F:	drivers/net/ethernet/renesas/rtsn.*
 
 RENESAS IDT821034 ASoC CODEC
 M:	Herve Codina <herve.codina@bootlin.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/renesas,idt821034.yaml
 F:	sound/soc/codecs/idt821034.c
@@ -20318,17 +19628,6 @@ F:	Documentation/devicetree/bindings/i2c/renesas,rmobile-iic.yaml
 F:	drivers/i2c/busses/i2c-rcar.c
 F:	drivers/i2c/busses/i2c-sh_mobile.c
 
-<<<<<<< HEAD
-RENESAS R-CAR SATA DRIVER
-R:	Sergey Shtylyov <s.shtylyov@omp.ru>
-L:	linux-ide@vger.kernel.org
-L:	linux-renesas-soc@vger.kernel.org
-S:	Supported
-F:	Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
-F:	drivers/ata/sata_rcar.c
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 RENESAS R-CAR THERMAL DRIVERS
 M:	Niklas Söderlund <niklas.soderlund@ragnatech.se>
 L:	linux-renesas-soc@vger.kernel.org
@@ -20404,19 +19703,6 @@ S:	Supported
 F:	Documentation/devicetree/bindings/i2c/renesas,rzv2m.yaml
 F:	drivers/i2c/busses/i2c-rzv2m.c
 
-<<<<<<< HEAD
-RENESAS SUPERH ETHERNET DRIVER
-R:	Sergey Shtylyov <s.shtylyov@omp.ru>
-L:	netdev@vger.kernel.org
-L:	linux-renesas-soc@vger.kernel.org
-F:	Documentation/devicetree/bindings/net/renesas,ether.yaml
-F:	drivers/net/ethernet/renesas/Kconfig
-F:	drivers/net/ethernet/renesas/Makefile
-F:	drivers/net/ethernet/renesas/sh_eth*
-F:	include/linux/sh_eth.h
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 RENESAS USB PHY DRIVER
 M:	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 L:	linux-renesas-soc@vger.kernel.org
@@ -20561,19 +19847,10 @@ L:	linux-riscv@lists.infradead.org
 S:	Maintained
 Q:	https://patchwork.kernel.org/project/linux-riscv/list/
 T:	git https://git.kernel.org/pub/scm/linux/kernel/git/conor/linux.git/
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/riscv/
-F:	arch/riscv/boot/dts/
-X:	arch/riscv/boot/dts/allwinner/
-X:	arch/riscv/boot/dts/renesas/
-X:	arch/riscv/boot/dts/sophgo/
-X:	arch/riscv/boot/dts/thead/
-=======
 F:	arch/riscv/boot/dts/canaan/
 F:	arch/riscv/boot/dts/microchip/
 F:	arch/riscv/boot/dts/sifive/
 F:	arch/riscv/boot/dts/starfive/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 RISC-V PMU DRIVERS
 M:	Atish Patra <atishp@atishpatra.org>
@@ -20611,8 +19888,6 @@ F:	Documentation/ABI/*/sysfs-driver-hid-roccat*
 F:	drivers/hid/hid-roccat*
 F:	include/linux/hid-roccat*
 
-<<<<<<< HEAD
-=======
 ROCKCHIP CAN-FD DRIVER
 M:	Marc Kleine-Budde <mkl@pengutronix.de>
 R:	kernel@pengutronix.de
@@ -20621,7 +19896,6 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/net/can/rockchip,rk3568v2-canfd.yaml
 F:	drivers/net/can/rockchip/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ROCKCHIP CRYPTO DRIVERS
 M:	Corentin Labbe <clabbe@baylibre.com>
 L:	linux-crypto@vger.kernel.org
@@ -20648,8 +19922,6 @@ F:	Documentation/userspace-api/media/v4l/metafmt-rkisp1.rst
 F:	drivers/media/platform/rockchip/rkisp1
 F:	include/uapi/linux/rkisp1-config.h
 
-<<<<<<< HEAD
-=======
 ROCKCHIP RK3568 RANDOM NUMBER GENERATOR SUPPORT
 M:	Daniel Golle <daniel@makrotopia.org>
 M:	Aurelien Jarno <aurelien@aurel32.net>
@@ -20657,7 +19929,6 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/rng/rockchip,rk3568-rng.yaml
 F:	drivers/char/hw_random/rockchip-rng.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ROCKCHIP RASTER 2D GRAPHIC ACCELERATION UNIT DRIVER
 M:	Jacob Chen <jacob-chen@iotwrt.com>
 M:	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
@@ -20700,15 +19971,12 @@ S:	Supported
 F:	drivers/power/supply/bd99954-charger.c
 F:	drivers/power/supply/bd99954-charger.h
 
-<<<<<<< HEAD
-=======
 ROHM BH1745 COLOUR SENSOR
 M:	Mudit Sharma <muditsharma.info@gmail.com>
 L:	linux-iio@vger.kernel.org
 S:	Maintained
 F:	drivers/iio/light/bh1745.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ROHM BH1750 AMBIENT LIGHT SENSOR DRIVER
 M:	Tomasz Duszynski <tduszyns@gmail.com>
 S:	Maintained
@@ -20783,8 +20051,6 @@ T:	git git://linuxtv.org/media_tree.git
 F:	Documentation/devicetree/bindings/media/allwinner,sun8i-a83t-de2-rotate.yaml
 F:	drivers/media/platform/sunxi/sun8i-rotate/
 
-<<<<<<< HEAD
-=======
 RPMB SUBSYSTEM
 M:	Jens Wiklander <jens.wiklander@linaro.org>
 L:	linux-kernel@vger.kernel.org
@@ -20792,15 +20058,12 @@ S:	Supported
 F:	drivers/misc/rpmb-core.c
 F:	include/linux/rpmb.h
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 RPMSG TTY DRIVER
 M:	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
 L:	linux-remoteproc@vger.kernel.org
 S:	Maintained
 F:	drivers/tty/rpmsg_tty.c
 
-<<<<<<< HEAD
-=======
 RTASE ETHERNET DRIVER
 M:	Justin Lai <justinlai0215@realtek.com>
 M:	Larry Chiu <larry.chiu@realtek.com>
@@ -20808,7 +20071,6 @@ L:	netdev@vger.kernel.org
 S:	Maintained
 F:	drivers/net/ethernet/realtek/rtase/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 RTL2830 MEDIA DRIVER
 L:	linux-media@vger.kernel.org
 S:	Orphan
@@ -20875,10 +20137,7 @@ R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
 R:	Benno Lossin <benno.lossin@proton.me>
 R:	Andreas Hindborg <a.hindborg@kernel.org>
 R:	Alice Ryhl <aliceryhl@google.com>
-<<<<<<< HEAD
-=======
 R:	Trevor Gross <tmgross@umich.edu>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	rust-for-linux@vger.kernel.org
 S:	Supported
 W:	https://rust-for-linux.com
@@ -21071,18 +20330,12 @@ F:	security/safesetid/
 
 SAMSUNG AUDIO (ASoC) DRIVERS
 M:	Sylwester Nawrocki <s.nawrocki@samsung.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 B:	mailto:linux-samsung-soc@vger.kernel.org
 F:	Documentation/devicetree/bindings/sound/samsung*
 F:	sound/soc/samsung/
 
-<<<<<<< HEAD
-=======
 SAMSUNG EXYNOS850 SoC SUPPORT
 M:	Sam Protsenko <semen.protsenko@linaro.org>
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
@@ -21093,7 +20346,6 @@ F:	arch/arm64/boot/dts/exynos/exynos850*
 F:	drivers/clk/samsung/clk-exynos850.c
 F:	include/dt-bindings/clock/exynos850.h
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SAMSUNG EXYNOS PSEUDO RANDOM NUMBER GENERATOR (RNG) DRIVER
 M:	Krzysztof Kozlowski <krzk@kernel.org>
 L:	linux-crypto@vger.kernel.org
@@ -21281,8 +20533,6 @@ F:	include/linux/wait.h
 F:	include/uapi/linux/sched.h
 F:	kernel/sched/
 
-<<<<<<< HEAD
-=======
 SCHEDULER - SCHED_EXT
 R:	Tejun Heo <tj@kernel.org>
 R:	David Vernet <void@manifault.com>
@@ -21296,7 +20546,6 @@ F:	kernel/sched/ext.c
 F:	tools/sched_ext/
 F:	tools/testing/selftests/sched_ext
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SCIOSENSE ENS160 MULTI-GAS SENSOR DRIVER
 M:	Gustavo Silva <gustavograzs@gmail.com>
 S:	Maintained
@@ -21581,15 +20830,12 @@ S:	Maintained
 F:	Documentation/devicetree/bindings/iio/chemical/sensirion,scd4x.yaml
 F:	drivers/iio/chemical/scd4x.c
 
-<<<<<<< HEAD
-=======
 SENSIRION SDP500 DIFFERENTIAL PRESSURE SENSOR DRIVER
 M:	Petar Stoykov <petar.stoykov@prodrive-technologies.com>
 S:	Maintained
 F:	Documentation/devicetree/bindings/iio/pressure/sensirion,sdp500.yaml
 F:	drivers/iio/pressure/sdp500.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SENSIRION SGP40 GAS SENSOR DRIVER
 M:	Andreas Klinger <ak@it-klinger.de>
 S:	Maintained
@@ -21620,11 +20866,7 @@ F:	drivers/media/rc/serial_ir.c
 
 SERIAL LOW-POWER INTER-CHIP MEDIA BUS (SLIMbus)
 M:	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/slimbus/
 F:	drivers/slimbus/
@@ -22058,11 +21300,7 @@ F:	Documentation/devicetree/bindings/i2c/socionext,synquacer-i2c.yaml
 F:	drivers/i2c/busses/i2c-synquacer.c
 
 SOCIONEXT UNIPHIER SOUND DRIVER
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Orphan
 F:	sound/soc/uniphier/
 
@@ -22321,11 +21559,7 @@ F:	tools/testing/selftests/alsa
 
 SOUND - COMPRESSED AUDIO
 M:	Vinod Koul <vkoul@kernel.org>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Supported
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
 F:	Documentation/sound/designs/compress-offload.rst
@@ -22383,8 +21617,6 @@ S:	Supported
 W:	https://github.com/thesofproject/linux/
 F:	sound/soc/sof/
 
-<<<<<<< HEAD
-=======
 SOUND - GENERIC SOUND CARD (Simple-Audio-Card, Audio-Graph-Card)
 M:	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 S:	Supported
@@ -22394,17 +21626,12 @@ F:	include/sound/simple_card*
 F:	Documentation/devicetree/bindings/sound/simple-card.yaml
 F:	Documentation/devicetree/bindings/sound/audio-graph*.yaml
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SOUNDWIRE SUBSYSTEM
 M:	Vinod Koul <vkoul@kernel.org>
 M:	Bard Liao <yung-chuan.liao@linux.intel.com>
 R:	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
 R:	Sanyog Kale <sanyog.r.kale@intel.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Supported
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/vkoul/soundwire.git
 F:	Documentation/driver-api/soundwire/
@@ -22477,13 +21704,8 @@ F:	drivers/accessibility/speakup/
 SPEAR PLATFORM/CLOCK/PINCTRL SUPPORT
 M:	Viresh Kumar <vireshk@kernel.org>
 M:	Shiraz Hashim <shiraz.linux.kernel@gmail.com>
-<<<<<<< HEAD
-M:	soc@kernel.org
-L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-=======
 L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 L:	soc@lists.linux.dev
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 W:	http://www.st.com/spear
 F:	arch/arm/boot/dts/st/spear*
@@ -22539,15 +21761,8 @@ F:	include/linux/spmi.h
 F:	include/trace/events/spmi.h
 
 SPU FILE SYSTEM
-<<<<<<< HEAD
-M:	Jeremy Kerr <jk@ozlabs.org>
-L:	linuxppc-dev@lists.ozlabs.org
-S:	Supported
-W:	http://www.ibm.com/developerworks/power/cell/
-=======
 L:	linuxppc-dev@lists.ozlabs.org
 S:	Orphan
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/filesystems/spufs/spufs.rst
 F:	arch/powerpc/platforms/cell/spufs/
 
@@ -22889,11 +22104,7 @@ F:	kernel/static_call.c
 
 STI AUDIO (ASoC) DRIVERS
 M:	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/st,sti-asoc-card.txt
 F:	sound/soc/sti/
@@ -22914,11 +22125,7 @@ F:	drivers/media/usb/stk1160/
 STM32 AUDIO (ASoC) DRIVERS
 M:	Olivier Moysan <olivier.moysan@foss.st.com>
 M:	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
 F:	Documentation/devicetree/bindings/sound/st,stm32-*.yaml
@@ -23156,25 +22363,11 @@ F:	drivers/tty/serial/8250/8250_lpss.c
 
 SYNOPSYS DESIGNWARE APB GPIO DRIVER
 M:	Hoan Tran <hoan@os.amperecomputing.com>
-<<<<<<< HEAD
-M:	Serge Semin <fancer.lancer@gmail.com>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 L:	linux-gpio@vger.kernel.org
 S:	Maintained
 F:	Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
 F:	drivers/gpio/gpio-dwapb.c
 
-<<<<<<< HEAD
-SYNOPSYS DESIGNWARE APB SSI DRIVER
-M:	Serge Semin <fancer.lancer@gmail.com>
-L:	linux-spi@vger.kernel.org
-S:	Supported
-F:	Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-F:	drivers/spi/spi-dw*
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SYNOPSYS DESIGNWARE AXI DMAC DRIVER
 M:	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
 S:	Maintained
@@ -23490,10 +22683,7 @@ M:	Jens Wiklander <jens.wiklander@linaro.org>
 R:	Sumit Garg <sumit.garg@linaro.org>
 L:	op-tee@lists.trustedfirmware.org
 S:	Maintained
-<<<<<<< HEAD
-=======
 F:	Documentation/ABI/testing/sysfs-class-tee
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/driver-api/tee.rst
 F:	Documentation/tee/
 F:	Documentation/userspace-api/tee.rst
@@ -23539,10 +22729,7 @@ M:	Thierry Reding <thierry.reding@gmail.com>
 R:	Krishna Reddy <vdumpa@nvidia.com>
 L:	linux-tegra@vger.kernel.org
 S:	Supported
-<<<<<<< HEAD
-=======
 F:	drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/iommu/arm/arm-smmu/arm-smmu-nvidia.c
 F:	drivers/iommu/tegra*
 
@@ -23633,11 +22820,7 @@ F:	drivers/irqchip/irq-xtensa-*
 
 TEXAS INSTRUMENTS ASoC DRIVERS
 M:	Peter Ujfalusi <peter.ujfalusi@gmail.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/davinci-mcasp-audio.yaml
 F:	sound/soc/ti/
@@ -23646,29 +22829,17 @@ TEXAS INSTRUMENTS AUDIO (ASoC/HDA) DRIVERS
 M:	Shenghao Ding <shenghao-ding@ti.com>
 M:	Kevin Lu <kevin-lu@ti.com>
 M:	Baojun Xu <baojun.xu@ti.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/tas2552.txt
 F:	Documentation/devicetree/bindings/sound/ti,tas2562.yaml
 F:	Documentation/devicetree/bindings/sound/ti,tas2770.yaml
 F:	Documentation/devicetree/bindings/sound/ti,tas27xx.yaml
-<<<<<<< HEAD
-=======
 F:	Documentation/devicetree/bindings/sound/ti,tpa6130a2.yaml
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/devicetree/bindings/sound/ti,pcm1681.yaml
 F:	Documentation/devicetree/bindings/sound/ti,pcm3168a.yaml
 F:	Documentation/devicetree/bindings/sound/ti,tlv320*.yaml
 F:	Documentation/devicetree/bindings/sound/ti,tlv320adcx140.yaml
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/sound/tlv320aic31xx.txt
-F:	Documentation/devicetree/bindings/sound/tpa6130a2.txt
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	include/sound/tas2*.h
 F:	include/sound/tlv320*.h
 F:	include/sound/tpa6130a2-plat.h
@@ -24026,11 +23197,7 @@ F:	drivers/soc/ti/*
 TI LM49xxx FAMILY ASoC CODEC DRIVERS
 M:	M R Swami Reddy <mr.swami.reddy@ti.com>
 M:	Vishwas A Deshpande <vishwas.a.deshpande@ti.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	sound/soc/codecs/isabelle*
 F:	sound/soc/codecs/lm49453*
@@ -24044,24 +23211,15 @@ F:	Documentation/devicetree/bindings/iio/adc/ti,lmp92064.yaml
 F:	drivers/iio/adc/ti-lmp92064.c
 
 TI PCM3060 ASoC CODEC DRIVER
-<<<<<<< HEAD
-M:	Kirill Marinushkin <kmarinushkin@birdec.com>
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 M:	Kirill Marinushkin <k.marinushkin@gmail.com>
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/devicetree/bindings/sound/pcm3060.txt
 F:	sound/soc/codecs/pcm3060*
 
 TI TAS571X FAMILY ASoC CODEC DRIVER
 M:	Kevin Cernekee <cernekee@chromium.org>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Odd Fixes
 F:	sound/soc/codecs/tas571x*
 
@@ -24089,11 +23247,7 @@ F:	drivers/iio/adc/ti-tsc2046.c
 
 TI TWL4030 SERIES SOC CODEC DRIVER
 M:	Peter Ujfalusi <peter.ujfalusi@gmail.com>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	sound/soc/codecs/twl4030*
 
@@ -24263,10 +23417,7 @@ Q:	https://patchwork.kernel.org/project/linux-integrity/list/
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
 F:	Documentation/devicetree/bindings/tpm/
 F:	drivers/char/tpm/
-<<<<<<< HEAD
-=======
 F:	tools/testing/selftests/tpm2/
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 TPS546D24 DRIVER
 M:	Duke Du <dukedu83@gmail.com>
@@ -24279,14 +23430,8 @@ TQ SYSTEMS BOARD & DRIVER SUPPORT
 L:	linux@ew.tq-group.com
 S:	Supported
 W:	https://www.tq-group.com/en/products/tq-embedded/
-<<<<<<< HEAD
-F:	arch/arm/boot/dts/imx*mba*.dts*
-F:	arch/arm/boot/dts/imx*tqma*.dts*
-F:	arch/arm/boot/dts/mba*.dtsi
-=======
 F:	arch/arm/boot/dts/nxp/imx/*mba*.dts*
 F:	arch/arm/boot/dts/nxp/imx/*tqma*.dts*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	arch/arm64/boot/dts/freescale/fsl-*tqml*.dts*
 F:	arch/arm64/boot/dts/freescale/imx*mba*.dts*
 F:	arch/arm64/boot/dts/freescale/imx*tqma*.dts*
@@ -24454,12 +23599,8 @@ F:	drivers/media/pci/tw686x/
 U-BOOT ENVIRONMENT VARIABLES
 M:	Rafał Miłecki <rafal@milecki.pl>
 S:	Maintained
-<<<<<<< HEAD
-F:	Documentation/devicetree/bindings/nvmem/u-boot,env.yaml
-=======
 F:	Documentation/devicetree/bindings/nvmem/layouts/u-boot,env.yaml
 F:	drivers/nvmem/layouts/u-boot-env.c
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	drivers/nvmem/u-boot-env.c
 
 UACCE ACCELERATOR FRAMEWORK
@@ -24536,15 +23677,6 @@ L:	linux-input@vger.kernel.org
 S:	Maintained
 F:	drivers/hid/hid-udraw-ps3.c
 
-<<<<<<< HEAD
-UFS FILESYSTEM
-M:	Evgeniy Dushistov <dushistov@mail.ru>
-S:	Maintained
-F:	Documentation/admin-guide/ufs.rst
-F:	fs/ufs/
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 UHID USERSPACE HID IO DRIVER
 M:	David Rheinsberg <david@readahead.eu>
 L:	linux-input@vger.kernel.org
@@ -24579,8 +23711,6 @@ F:	drivers/cdrom/cdrom.c
 F:	include/linux/cdrom.h
 F:	include/uapi/linux/cdrom.h
 
-<<<<<<< HEAD
-=======
 UNION-FIND
 M:	Xavier <xavier_qy@163.com>
 L:	linux-kernel@vger.kernel.org
@@ -24590,7 +23720,6 @@ F:	Documentation/translations/zh_CN/core-api/union_find.rst
 F:	include/linux/union_find.h
 F:	lib/union_find.c
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 UNIVERSAL FLASH STORAGE HOST CONTROLLER DRIVER
 R:	Alim Akhtar <alim.akhtar@samsung.com>
 R:	Avri Altman <avri.altman@wdc.com>
@@ -24788,11 +23917,7 @@ F:	drivers/usb/storage/
 
 USB MIDI DRIVER
 M:	Clemens Ladisch <clemens@ladisch.de>
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
 F:	sound/usb/midi.*
@@ -24854,10 +23979,7 @@ USB RAW GADGET DRIVER
 R:	Andrey Konovalov <andreyknvl@gmail.com>
 L:	linux-usb@vger.kernel.org
 S:	Maintained
-<<<<<<< HEAD
-=======
 B:	https://github.com/xairy/raw-gadget/issues
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	Documentation/usb/raw-gadget.rst
 F:	drivers/usb/gadget/legacy/raw_gadget.c
 F:	include/uapi/linux/usb/raw_gadget.h
@@ -24974,17 +24096,12 @@ F:	drivers/usb/host/xhci*
 
 USER DATAGRAM PROTOCOL (UDP)
 M:	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-<<<<<<< HEAD
-S:	Maintained
-F:	include/linux/udp.h
-=======
 L:	netdev@vger.kernel.org
 S:	Maintained
 F:	include/linux/udp.h
 F:	include/net/udp.h
 F:	include/trace/events/udp.h
 F:	include/uapi/linux/udp.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	net/ipv4/udp.c
 F:	net/ipv6/udp.c
 
@@ -25341,10 +24458,7 @@ F:	include/linux/vdpa.h
 F:	include/linux/virtio*.h
 F:	include/linux/vringh.h
 F:	include/uapi/linux/virtio_*.h
-<<<<<<< HEAD
-=======
 F:	net/vmw_vsock/virtio*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 F:	tools/virtio/
 F:	tools/testing/selftests/drivers/net/virtio_net/
 
@@ -25468,11 +24582,7 @@ VIRTIO SOUND DRIVER
 M:	Anton Yakovlev <anton.yakovlev@opensynergy.com>
 M:	"Michael S. Tsirkin" <mst@redhat.com>
 L:	virtualization@lists.linux.dev
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	include/uapi/linux/virtio_snd.h
 F:	sound/virtio/*
@@ -25539,8 +24649,6 @@ F:	include/uapi/linux/vsockmon.h
 F:	net/vmw_vsock/
 F:	tools/testing/vsock/
 
-<<<<<<< HEAD
-=======
 VMA
 M:	Andrew Morton <akpm@linux-foundation.org>
 M:	Liam R. Howlett <Liam.Howlett@oracle.com>
@@ -25556,7 +24664,6 @@ F:	mm/vma.h
 F:	mm/vma_internal.h
 F:	tools/testing/vma/
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 VMALLOC
 M:	Andrew Morton <akpm@linux-foundation.org>
 R:	Uladzislau Rezki <urezki@gmail.com>
@@ -25946,8 +25053,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/core
 F:	Documentation/arch/x86/
 F:	Documentation/devicetree/bindings/x86/
 F:	arch/x86/
-<<<<<<< HEAD
-=======
 F:	tools/testing/selftests/x86
 
 X86 CPUID DATABASE
@@ -25959,7 +25064,6 @@ L:	x86-cpuid@lists.linux.dev
 S:	Maintained
 W:	https://x86-cpuid.org
 F:	tools/arch/x86/kcpuid/cpuid.csv
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 X86 ENTRY CODE
 M:	Andy Lutomirski <luto@kernel.org>
@@ -26208,11 +25312,7 @@ F:	include/xen/interface/io/usbif.h
 XEN SOUND FRONTEND DRIVER
 M:	Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
 L:	xen-devel@lists.xenproject.org (moderated for non-subscribers)
-<<<<<<< HEAD
-L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-=======
 L:	linux-sound@vger.kernel.org
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Supported
 F:	sound/xen/*
 
@@ -26228,11 +25328,7 @@ F:	include/xen/arm/swiotlb-xen.h
 F:	include/xen/swiotlb-xen.h
 
 XFS FILESYSTEM
-<<<<<<< HEAD
-M:	Chandan Babu R <chandan.babu@oracle.com>
-=======
 M:	Carlos Maiolino <cem@kernel.org>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 R:	Darrick J. Wong <djwong@kernel.org>
 L:	linux-xfs@vger.kernel.org
 S:	Supported
@@ -26410,8 +25506,6 @@ S:	Maintained
 F:	drivers/spi/spi-xtensa-xtfpga.c
 F:	sound/soc/xtensa/xtfpga-i2s.c
 
-<<<<<<< HEAD
-=======
 XZ EMBEDDED
 M:	Lasse Collin <lasse.collin@tukaani.org>
 S:	Maintained
@@ -26425,7 +25519,6 @@ F:	lib/decompress_unxz.c
 F:	lib/xz/
 F:	scripts/xz_wrap.sh
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 YAM DRIVER FOR AX.25
 M:	Jean-Paul Roubelat <jpr@f6fbb.org>
 L:	linux-hams@vger.kernel.org
@@ -26450,10 +25543,6 @@ F:	tools/net/ynl/
 
 YEALINK PHONE DRIVER
 M:	Henk Vergonet <Henk.Vergonet@gmail.com>
-<<<<<<< HEAD
-L:	usbb2k-api-dev@nongnu.org
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 S:	Maintained
 F:	Documentation/input/devices/yealink.rst
 F:	drivers/input/misc/yealink.*

@@ -50,12 +50,8 @@ static void drm_fbdev_dma_fb_destroy(struct fb_info *info)
 	if (!fb_helper->dev)
 		return;
 
-<<<<<<< HEAD
-	fb_deferred_io_cleanup(info);
-=======
 	if (info->fbdefio)
 		fb_deferred_io_cleanup(info);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm_fb_helper_fini(fb_helper);
 
 	drm_client_buffer_vunmap(fb_helper->buffer);

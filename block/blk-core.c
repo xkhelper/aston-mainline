@@ -799,10 +799,7 @@ void submit_bio_noacct(struct bio *bio)
 
 	switch (bio_op(bio)) {
 	case REQ_OP_READ:
-<<<<<<< HEAD
-=======
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case REQ_OP_WRITE:
 		if (bio->bi_opf & REQ_ATOMIC) {
 			status = blk_validate_atomic_write_op_size(q, bio);

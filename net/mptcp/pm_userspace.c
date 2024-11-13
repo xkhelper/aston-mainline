@@ -91,10 +91,7 @@ static int mptcp_userspace_pm_delete_local_addr(struct mptcp_sock *msk,
 						struct mptcp_pm_addr_entry *addr)
 {
 	struct mptcp_pm_addr_entry *entry, *tmp;
-<<<<<<< HEAD
-=======
 	struct sock *sk = (struct sock *)msk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_for_each_entry_safe(entry, tmp, &msk->pm.userspace_pm_local_addr_list, list) {
 		if (mptcp_addresses_equal(&entry->addr, &addr->addr, false)) {
@@ -102,11 +99,7 @@ static int mptcp_userspace_pm_delete_local_addr(struct mptcp_sock *msk,
 			 * be used multiple times (e.g. fullmesh mode).
 			 */
 			list_del_rcu(&entry->list);
-<<<<<<< HEAD
-			kfree(entry);
-=======
 			sock_kfree_s(sk, entry, sizeof(*entry));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			msk->pm.local_addr_used--;
 			return 0;
 		}
@@ -127,26 +120,6 @@ mptcp_userspace_pm_lookup_addr_by_id(struct mptcp_sock *msk, unsigned int id)
 	return NULL;
 }
 
-<<<<<<< HEAD
-int mptcp_userspace_pm_get_flags_and_ifindex_by_id(struct mptcp_sock *msk,
-						   unsigned int id,
-						   u8 *flags, int *ifindex)
-{
-	struct mptcp_pm_addr_entry *match;
-
-	spin_lock_bh(&msk->pm.lock);
-	match = mptcp_userspace_pm_lookup_addr_by_id(msk, id);
-	spin_unlock_bh(&msk->pm.lock);
-	if (match) {
-		*flags = match->flags;
-		*ifindex = match->ifindex;
-	}
-
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int mptcp_userspace_pm_get_local_id(struct mptcp_sock *msk,
 				    struct mptcp_addr_info *skc)
 {
@@ -363,14 +336,9 @@ int mptcp_pm_nl_subflow_create_doit(struct sk_buff *skb, struct genl_info *info)
 	struct nlattr *raddr = info->attrs[MPTCP_PM_ATTR_ADDR_REMOTE];
 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
 	struct nlattr *laddr = info->attrs[MPTCP_PM_ATTR_ADDR];
-<<<<<<< HEAD
-	struct mptcp_pm_addr_entry local = { 0 };
-	struct mptcp_addr_info addr_r;
-=======
 	struct mptcp_pm_addr_entry entry = { 0 };
 	struct mptcp_addr_info addr_r;
 	struct mptcp_pm_local local;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mptcp_sock *msk;
 	int err = -EINVAL;
 	struct sock *sk;
@@ -396,30 +364,18 @@ int mptcp_pm_nl_subflow_create_doit(struct sk_buff *skb, struct genl_info *info)
 		goto create_err;
 	}
 
-<<<<<<< HEAD
-	err = mptcp_pm_parse_entry(laddr, info, true, &local);
-=======
 	err = mptcp_pm_parse_entry(laddr, info, true, &entry);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0) {
 		NL_SET_ERR_MSG_ATTR(info->extack, laddr, "error parsing local addr");
 		goto create_err;
 	}
 
-<<<<<<< HEAD
-	if (local.flags & MPTCP_PM_ADDR_FLAG_SIGNAL) {
-=======
 	if (entry.flags & MPTCP_PM_ADDR_FLAG_SIGNAL) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		GENL_SET_ERR_MSG(info, "invalid addr flags");
 		err = -EINVAL;
 		goto create_err;
 	}
-<<<<<<< HEAD
-	local.flags |= MPTCP_PM_ADDR_FLAG_SUBFLOW;
-=======
 	entry.flags |= MPTCP_PM_ADDR_FLAG_SUBFLOW;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = mptcp_pm_parse_addr(raddr, info, &addr_r);
 	if (err < 0) {
@@ -427,48 +383,29 @@ int mptcp_pm_nl_subflow_create_doit(struct sk_buff *skb, struct genl_info *info)
 		goto create_err;
 	}
 
-<<<<<<< HEAD
-	if (!mptcp_pm_addr_families_match(sk, &local.addr, &addr_r)) {
-=======
 	if (!mptcp_pm_addr_families_match(sk, &entry.addr, &addr_r)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		GENL_SET_ERR_MSG(info, "families mismatch");
 		err = -EINVAL;
 		goto create_err;
 	}
 
-<<<<<<< HEAD
-	err = mptcp_userspace_pm_append_new_local_addr(msk, &local, false);
-=======
 	err = mptcp_userspace_pm_append_new_local_addr(msk, &entry, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err < 0) {
 		GENL_SET_ERR_MSG(info, "did not match address and id");
 		goto create_err;
 	}
 
-<<<<<<< HEAD
-	lock_sock(sk);
-
-	err = __mptcp_subflow_connect(sk, &local.addr, &addr_r);
-
-=======
 	local.addr = entry.addr;
 	local.flags = entry.flags;
 	local.ifindex = entry.ifindex;
 
 	lock_sock(sk);
 	err = __mptcp_subflow_connect(sk, &local, &addr_r);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	release_sock(sk);
 
 	spin_lock_bh(&msk->pm.lock);
 	if (err)
-<<<<<<< HEAD
-		mptcp_userspace_pm_delete_local_addr(msk, &local);
-=======
 		mptcp_userspace_pm_delete_local_addr(msk, &entry);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		msk->pm.subflows++;
 	spin_unlock_bh(&msk->pm.lock);

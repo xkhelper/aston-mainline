@@ -342,8 +342,6 @@ dpll_msg_add_pin_freq(struct sk_buff *msg, struct dpll_pin *pin,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int
 dpll_msg_add_pin_esync(struct sk_buff *msg, struct dpll_pin *pin,
 		       struct dpll_pin_ref *ref, struct netlink_ext_ack *extack)
@@ -389,7 +387,6 @@ nest_cancel:
 	return -EMSGSIZE;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool dpll_pin_is_freq_supported(struct dpll_pin *pin, u32 freq)
 {
 	int fs;
@@ -531,12 +528,9 @@ dpll_cmd_pin_get_one(struct sk_buff *msg, struct dpll_pin *pin,
 	ret = dpll_msg_add_ffo(msg, pin, ref, extack);
 	if (ret)
 		return ret;
-<<<<<<< HEAD
-=======
 	ret = dpll_msg_add_pin_esync(msg, pin, ref, extack);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (xa_empty(&pin->parent_refs))
 		ret = dpll_msg_add_pin_dplls(msg, pin, extack);
 	else
@@ -793,8 +787,6 @@ rollback:
 }
 
 static int
-<<<<<<< HEAD
-=======
 dpll_pin_esync_set(struct dpll_pin *pin, struct nlattr *a,
 		   struct netlink_ext_ack *extack)
 {
@@ -872,7 +864,6 @@ rollback:
 }
 
 static int
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 dpll_pin_on_pin_state_set(struct dpll_pin *pin, u32 parent_idx,
 			  enum dpll_pin_state state,
 			  struct netlink_ext_ack *extack)
@@ -1173,14 +1164,11 @@ dpll_pin_set_from_nlattr(struct dpll_pin *pin, struct genl_info *info)
 			if (ret)
 				return ret;
 			break;
-<<<<<<< HEAD
-=======
 		case DPLL_A_PIN_ESYNC_FREQUENCY:
 			ret = dpll_pin_esync_set(pin, a, info->extack);
 			if (ret)
 				return ret;
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

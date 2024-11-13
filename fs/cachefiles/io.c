@@ -627,20 +627,12 @@ static void cachefiles_prepare_write_subreq(struct netfs_io_subrequest *subreq)
 {
 	struct netfs_io_request *wreq = subreq->rreq;
 	struct netfs_cache_resources *cres = &wreq->cache_resources;
-<<<<<<< HEAD
-
-	_enter("W=%x[%x] %llx", wreq->debug_id, subreq->debug_index, subreq->start);
-
-	subreq->max_len = MAX_RW_COUNT;
-	subreq->max_nr_segs = BIO_MAX_VECS;
-=======
 	struct netfs_io_stream *stream = &wreq->io_streams[subreq->stream_nr];
 
 	_enter("W=%x[%x] %llx", wreq->debug_id, subreq->debug_index, subreq->start);
 
 	stream->sreq_max_len = MAX_RW_COUNT;
 	stream->sreq_max_segs = BIO_MAX_VECS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!cachefiles_cres_file(cres)) {
 		if (!fscache_wait_for_operation(cres, FSCACHE_WANT_WRITE))
@@ -656,10 +648,7 @@ static void cachefiles_issue_write(struct netfs_io_subrequest *subreq)
 	struct netfs_cache_resources *cres = &wreq->cache_resources;
 	struct cachefiles_object *object = cachefiles_cres_object(cres);
 	struct cachefiles_cache *cache = object->volume->cache;
-<<<<<<< HEAD
-=======
 	struct netfs_io_stream *stream = &wreq->io_streams[subreq->stream_nr];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct cred *saved_cred;
 	size_t off, pre, post, len = subreq->len;
 	loff_t start = subreq->start;
@@ -673,10 +662,7 @@ static void cachefiles_issue_write(struct netfs_io_subrequest *subreq)
 	if (off) {
 		pre = CACHEFILES_DIO_BLOCK_SIZE - off;
 		if (pre >= len) {
-<<<<<<< HEAD
-=======
 			fscache_count_dio_misfit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			netfs_write_subrequest_terminated(subreq, len, false);
 			return;
 		}
@@ -687,8 +673,6 @@ static void cachefiles_issue_write(struct netfs_io_subrequest *subreq)
 	}
 
 	/* We also need to end on the cache granularity boundary */
-<<<<<<< HEAD
-=======
 	if (start + len == wreq->i_size) {
 		size_t part = len % CACHEFILES_DIO_BLOCK_SIZE;
 		size_t need = CACHEFILES_DIO_BLOCK_SIZE - part;
@@ -700,15 +684,11 @@ static void cachefiles_issue_write(struct netfs_io_subrequest *subreq)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	post = len & (CACHEFILES_DIO_BLOCK_SIZE - 1);
 	if (post) {
 		len -= post;
 		if (len == 0) {
-<<<<<<< HEAD
-=======
 			fscache_count_dio_misfit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			netfs_write_subrequest_terminated(subreq, post, false);
 			return;
 		}

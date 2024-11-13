@@ -38,15 +38,12 @@ extern int libata_noacpi;
 extern int libata_allow_tpm;
 extern const struct device_type ata_port_type;
 extern struct ata_link *ata_dev_phys_link(struct ata_device *dev);
-<<<<<<< HEAD
-=======
 
 static inline bool ata_sstatus_online(u32 sstatus)
 {
 	return (sstatus & 0xf) == 0x3;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ATA_FORCE
 extern void ata_force_cbl(struct ata_port *ap);
 #else
@@ -74,11 +71,7 @@ extern bool ata_dev_power_init_tf(struct ata_device *dev,
 				  struct ata_taskfile *tf, bool set_active);
 extern void ata_dev_power_set_standby(struct ata_device *dev);
 extern void ata_dev_power_set_active(struct ata_device *dev);
-<<<<<<< HEAD
-extern int sata_down_spd_limit(struct ata_link *link, u32 spd_limit);
-=======
 void ata_dev_free_resources(struct ata_device *dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int ata_down_xfermask_limit(struct ata_device *dev, unsigned int sel);
 extern unsigned int ata_dev_set_feature(struct ata_device *dev,
 					u8 subcmd, u8 action);
@@ -97,11 +90,6 @@ extern int ata_cmd_ioctl(struct scsi_device *scsidev, void __user *arg);
 extern const char *sata_spd_string(unsigned int spd);
 extern unsigned int ata_read_log_page(struct ata_device *dev, u8 log,
 				      u8 page, void *buf, unsigned int sectors);
-<<<<<<< HEAD
-
-#define to_ata_port(d) container_of(d, struct ata_port, tdev)
-
-=======
 void ata_dev_cleanup_cdl_resources(struct ata_device *dev);
 
 #define to_ata_port(d) container_of(d, struct ata_port, tdev)
@@ -121,7 +109,6 @@ static inline int ata_eh_get_ncq_success_sense(struct ata_link *link)
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* libata-acpi.c */
 #ifdef CONFIG_ATA_ACPI
 extern unsigned int ata_acpi_gtf_filter;
@@ -159,10 +146,6 @@ extern void ata_scsi_set_sense_information(struct ata_device *dev,
 					   const struct ata_taskfile *tf);
 extern void ata_scsi_media_change_notify(struct ata_device *dev);
 extern void ata_scsi_hotplug(struct work_struct *work);
-<<<<<<< HEAD
-extern void ata_schedule_scsi_eh(struct Scsi_Host *shost);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void ata_scsi_dev_rescan(struct work_struct *work);
 extern int ata_scsi_user_scan(struct Scsi_Host *shost, unsigned int channel,
 			      unsigned int id, u64 lun);
@@ -200,10 +183,7 @@ extern void ata_eh_finish(struct ata_port *ap);
 extern int ata_ering_map(struct ata_ering *ering,
 			 int (*map_fn)(struct ata_ering_entry *, void *),
 			 void *arg);
-<<<<<<< HEAD
-=======
 enum scsi_disposition ata_eh_decide_disposition(struct ata_queued_cmd *qc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern unsigned int atapi_eh_tur(struct ata_device *dev, u8 *r_sense_key);
 extern unsigned int atapi_eh_request_sense(struct ata_device *dev,
 					   u8 *sense_buf, u8 dfl_sense_key);

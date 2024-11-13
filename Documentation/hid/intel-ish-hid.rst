@@ -404,8 +404,6 @@ For more detailed information, please refer to the flow descriptions provided be
   | ISHTP Driver  |                                                    | ISH Bootloader  |
   +---------------+                                                    +-----------------+
 
-<<<<<<< HEAD
-=======
 Vendor Custom Firmware Loading
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -435,7 +433,6 @@ During system boot, the ISH Linux driver will attempt to load the firmware in th
 
 The driver will load the first matching firmware and skip the rest. If no matching firmware is found, it will proceed to the next pattern in the specified order. If all searches fail, the default Intel firmware, listed last in the order above, will be loaded.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ISH Debugging
 -------------
 

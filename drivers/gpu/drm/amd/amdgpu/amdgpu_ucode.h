@@ -136,8 +136,6 @@ struct psp_firmware_header_v2_0 {
 	struct psp_fw_bin_desc psp_fw_bin[];
 };
 
-<<<<<<< HEAD
-=======
 /* version_major=2, version_minor=1 */
 struct psp_firmware_header_v2_1 {
 	struct common_firmware_header header;
@@ -146,7 +144,6 @@ struct psp_firmware_header_v2_1 {
 	struct psp_fw_bin_desc psp_fw_bin[];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* version_major=1, version_minor=0 */
 struct ta_firmware_header_v1_0 {
 	struct common_firmware_header header;
@@ -437,10 +434,7 @@ union amdgpu_firmware_header {
 	struct psp_firmware_header_v1_1 psp_v1_1;
 	struct psp_firmware_header_v1_3 psp_v1_3;
 	struct psp_firmware_header_v2_0 psp_v2_0;
-<<<<<<< HEAD
-=======
 	struct psp_firmware_header_v2_0 psp_v2_1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ta_firmware_header_v1_0 ta;
 	struct ta_firmware_header_v2_0 ta_v2_0;
 	struct gfx_firmware_header_v1_0 gfx;
@@ -462,11 +456,7 @@ union amdgpu_firmware_header {
 	uint8_t raw[0x100];
 };
 
-<<<<<<< HEAD
-#define UCODE_MAX_PSP_PACKAGING ((sizeof(union amdgpu_firmware_header) - sizeof(struct common_firmware_header) - 4) / sizeof(struct psp_fw_bin_desc))
-=======
 #define UCODE_MAX_PSP_PACKAGING (((sizeof(union amdgpu_firmware_header) - sizeof(struct common_firmware_header) - 4) / sizeof(struct psp_fw_bin_desc)) * 2)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * fw loading support

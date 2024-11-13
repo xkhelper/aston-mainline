@@ -7,11 +7,7 @@
 #ifdef CONFIG_64BIT
 #define MAX_PHYSMEM_BITS	56
 #else
-<<<<<<< HEAD
-#define MAX_PHYSMEM_BITS	34
-=======
 #define MAX_PHYSMEM_BITS	32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_64BIT */
 #define SECTION_SIZE_BITS	27
 #endif /* CONFIG_SPARSEMEM */

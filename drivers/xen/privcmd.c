@@ -46,12 +46,9 @@
 #include <xen/page.h>
 #include <xen/xen-ops.h>
 #include <xen/balloon.h>
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_XEN_ACPI
 #include <xen/acpi.h>
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "privcmd.h"
 
@@ -850,8 +847,6 @@ out:
 	return rc;
 }
 
-<<<<<<< HEAD
-=======
 static long privcmd_ioctl_pcidev_get_gsi(struct file *file, void __user *udata)
 {
 #if defined(CONFIG_XEN_ACPI)
@@ -875,7 +870,6 @@ static long privcmd_ioctl_pcidev_get_gsi(struct file *file, void __user *udata)
 #endif
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_XEN_PRIVCMD_EVENTFD
 /* Irqfd support */
 static struct workqueue_struct *irqfd_cleanup_wq;
@@ -991,20 +985,12 @@ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
 	INIT_WORK(&kirqfd->shutdown, irqfd_shutdown);
 
 	f = fdget(irqfd->fd);
-<<<<<<< HEAD
-	if (!f.file) {
-=======
 	if (!fd_file(f)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto error_kfree;
 	}
 
-<<<<<<< HEAD
-	kirqfd->eventfd = eventfd_ctx_fileget(f.file);
-=======
 	kirqfd->eventfd = eventfd_ctx_fileget(fd_file(f));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(kirqfd->eventfd)) {
 		ret = PTR_ERR(kirqfd->eventfd);
 		goto error_fd_put;
@@ -1035,11 +1021,7 @@ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
 	 * Check if there was an event already pending on the eventfd before we
 	 * registered, and trigger it as if we didn't miss it.
 	 */
-<<<<<<< HEAD
-	events = vfs_poll(f.file, &kirqfd->pt);
-=======
 	events = vfs_poll(fd_file(f), &kirqfd->pt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (events & EPOLLIN)
 		irqfd_inject(kirqfd);
 
@@ -1389,20 +1371,12 @@ static int privcmd_ioeventfd_assign(struct privcmd_ioeventfd *ioeventfd)
 		return -ENOMEM;
 
 	f = fdget(ioeventfd->event_fd);
-<<<<<<< HEAD
-	if (!f.file) {
-=======
 	if (!fd_file(f)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto error_kfree;
 	}
 
-<<<<<<< HEAD
-	kioeventfd->eventfd = eventfd_ctx_fileget(f.file);
-=======
 	kioeventfd->eventfd = eventfd_ctx_fileget(fd_file(f));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fdput(f);
 
 	if (IS_ERR(kioeventfd->eventfd)) {
@@ -1595,13 +1569,10 @@ static long privcmd_ioctl(struct file *file,
 		ret = privcmd_ioctl_ioeventfd(file, udata);
 		break;
 
-<<<<<<< HEAD
-=======
 	case IOCTL_PRIVCMD_PCIDEV_GET_GSI:
 		ret = privcmd_ioctl_pcidev_get_gsi(file, udata);
 		break;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		break;
 	}

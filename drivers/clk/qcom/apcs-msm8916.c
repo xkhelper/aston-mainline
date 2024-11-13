@@ -128,11 +128,7 @@ static void qcom_apcs_msm8916_clk_remove(struct platform_device *pdev)
 
 static struct platform_driver qcom_apcs_msm8916_clk_driver = {
 	.probe = qcom_apcs_msm8916_clk_probe,
-<<<<<<< HEAD
-	.remove_new = qcom_apcs_msm8916_clk_remove,
-=======
 	.remove = qcom_apcs_msm8916_clk_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "qcom-apcs-msm8916-clk",
 	},

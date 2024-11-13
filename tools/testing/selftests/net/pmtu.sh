@@ -681,17 +681,7 @@ setup_xfrm() {
 }
 
 setup_nettest_xfrm() {
-<<<<<<< HEAD
-	if ! which nettest >/dev/null; then
-		PATH=$PWD:$PATH
-		if ! which nettest >/dev/null; then
-			echo "'nettest' command not found; skipping tests"
-			return 1
-		fi
-	fi
-=======
 	check_gen_prog "nettest"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	[ ${1} -eq 6 ] && proto="-6" || proto=""
 	port=${2}
@@ -1451,11 +1441,7 @@ test_pmtu_ipvX_over_bridged_vxlanY_or_geneveY_exception() {
 		size=$(du -sb $tmpoutfile)
 		size=${size%%/tmp/*}
 
-<<<<<<< HEAD
-		[ $size -ne 1048576 ] && err "File size $size mismatches exepcted value in locally bridged vxlan test" && return 1
-=======
 		[ $size -ne 1048576 ] && err "File size $size mismatches expected value in locally bridged vxlan test" && return 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	done
 
 	rm -f "$tmpoutfile"

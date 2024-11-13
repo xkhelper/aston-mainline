@@ -379,11 +379,7 @@ nouveau_sched_timedout_job(struct drm_sched_job *sched_job)
 	else
 		NV_PRINTK(warn, job->cli, "Generic job timeout.\n");
 
-<<<<<<< HEAD
-	drm_sched_start(sched, true);
-=======
 	drm_sched_start(sched);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return stat;
 }
@@ -408,11 +404,7 @@ nouveau_sched_init(struct nouveau_sched *sched, struct nouveau_drm *drm,
 {
 	struct drm_gpu_scheduler *drm_sched = &sched->base;
 	struct drm_sched_entity *entity = &sched->entity;
-<<<<<<< HEAD
-	long job_hang_limit = msecs_to_jiffies(NOUVEAU_SCHED_JOB_TIMEOUT_MS);
-=======
 	const long timeout = msecs_to_jiffies(NOUVEAU_SCHED_JOB_TIMEOUT_MS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (!wq) {
@@ -426,11 +418,7 @@ nouveau_sched_init(struct nouveau_sched *sched, struct nouveau_drm *drm,
 
 	ret = drm_sched_init(drm_sched, &nouveau_sched_ops, wq,
 			     NOUVEAU_SCHED_PRIORITY_COUNT,
-<<<<<<< HEAD
-			     credit_limit, 0, job_hang_limit,
-=======
 			     credit_limit, 0, timeout,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     NULL, NULL, "nouveau_sched", drm->dev->dev);
 	if (ret)
 		goto fail_wq;

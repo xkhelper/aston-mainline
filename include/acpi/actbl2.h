@@ -1607,11 +1607,7 @@ struct acpi_mpam_msc_node {
 	u32 max_nrdy_usec;
 	u64 hardware_id_linked_device;
 	u32 instance_id_linked_device;
-<<<<<<< HEAD
-	u32 num_resouce_nodes;
-=======
 	u32 num_resource_nodes;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct acpi_table_mpam {

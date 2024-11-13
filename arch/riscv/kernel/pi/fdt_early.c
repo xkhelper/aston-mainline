@@ -2,19 +2,9 @@
 #include <linux/types.h>
 #include <linux/init.h>
 #include <linux/libfdt.h>
-<<<<<<< HEAD
-
-/*
- * Declare the functions that are exported (but prefixed) here so that LLVM
- * does not complain it lacks the 'static' keyword (which, if added, makes
- * LLVM complain because the function is actually unused in this file).
- */
-u64 get_kaslr_seed(uintptr_t dtb_pa);
-=======
 #include <linux/ctype.h>
 
 #include "pi.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 u64 get_kaslr_seed(uintptr_t dtb_pa)
 {
@@ -34,8 +24,6 @@ u64 get_kaslr_seed(uintptr_t dtb_pa)
 	*prop = 0;
 	return ret;
 }
-<<<<<<< HEAD
-=======
 
 /**
  *  fdt_device_is_available - check if a device is available for use
@@ -195,4 +183,3 @@ bool fdt_early_match_extension_isa(const void *fdt, const char *ext_name)
 
 	return ret;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

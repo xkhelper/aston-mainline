@@ -8,11 +8,7 @@
 #include <linux/base64.h>
 #include <linux/prandom.h>
 #include <linux/scatterlist.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/hash.h>
 #include <crypto/dh.h>
 #include <linux/nvme.h>

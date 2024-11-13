@@ -72,11 +72,7 @@ static enum drm_gpu_sched_stat etnaviv_sched_timedout_job(struct drm_sched_job
 
 	drm_sched_resubmit_jobs(&gpu->sched);
 
-<<<<<<< HEAD
-	drm_sched_start(&gpu->sched, true);
-=======
 	drm_sched_start(&gpu->sched);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return DRM_GPU_SCHED_STAT_NOMINAL;
 
 out_no_timeout:

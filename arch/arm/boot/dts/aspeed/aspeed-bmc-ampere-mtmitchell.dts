@@ -16,8 +16,6 @@
 		serial8 = &uart9;
 
 		/*
-<<<<<<< HEAD
-=======
 		 * I2C temperature alias port
 		 */
 		i2c20 = &i2c4_bus70_chn0;
@@ -44,7 +42,6 @@
 		i2c39 = &i2c_riser1_chn_0;
 
 		/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 *  I2C NVMe alias port
 		 */
 		i2c100 = &backplane_0;
@@ -116,8 +113,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	leds {
 		compatible = "gpio-leds";
 		/*
@@ -149,7 +144,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	voltage_mon_reg: voltage-mon-regulator {
 		compatible = "regulator-fixed";
 		regulator-name = "ltc2497_reg";
@@ -578,8 +572,6 @@
 		#size-cells = <0>;
 		reg = <0x70>;
 		i2c-mux-idle-disconnect;
-<<<<<<< HEAD
-=======
 
 		ocpslot_0: i2c@0 {
 			#address-cells = <1>;
@@ -654,7 +646,6 @@
 				};
 			};
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -930,13 +921,10 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &i2c10 {
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &i2c11 {
 	status = "okay";
 	ssif-bmc@10 {
@@ -959,8 +947,6 @@
 	};
 };
 
-<<<<<<< HEAD
-=======
 &i2c15 {
 	status = "okay";
 	gpio_expander1: gpio-expander@22 {
@@ -980,7 +966,6 @@
 	};
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &adc0 {
 	status = "okay";
 

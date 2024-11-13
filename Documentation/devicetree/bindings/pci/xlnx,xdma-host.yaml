@@ -14,12 +14,6 @@ allOf:
 
 properties:
   compatible:
-<<<<<<< HEAD
-    const: xlnx,xdma-host-3.00
-
-  reg:
-    maxItems: 1
-=======
     enum:
       - xlnx,xdma-host-3.00
       - xlnx,qdma-host-3.00
@@ -35,7 +29,6 @@ properties:
       - const: cfg
       - const: breg
     minItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   ranges:
     maxItems: 2
@@ -94,8 +87,6 @@ required:
   - "#interrupt-cells"
   - interrupt-controller
 
-<<<<<<< HEAD
-=======
 if:
   properties:
     compatible:
@@ -117,7 +108,6 @@ else:
     reg-names:
       maxItems: 1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:

@@ -50,13 +50,7 @@ static int kvm_emu_cpucfg(struct kvm_vcpu *vcpu, larch_inst inst)
 		vcpu->arch.gprs[rd] = *(unsigned int *)KVM_SIGNATURE;
 		break;
 	case CPUCFG_KVM_FEATURE:
-<<<<<<< HEAD
-		ret = KVM_FEATURE_IPI;
-		if (kvm_pvtime_supported())
-			ret |= KVM_FEATURE_STEAL_TIME;
-=======
 		ret = vcpu->kvm->arch.pv_features & LOONGARCH_PV_FEAT_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vcpu->arch.gprs[rd] = ret;
 		break;
 	default:
@@ -131,8 +125,6 @@ static int kvm_handle_csr(struct kvm_vcpu *vcpu, larch_inst inst)
 	rj = inst.reg2csr_format.rj;
 	csrid = inst.reg2csr_format.csr;
 
-<<<<<<< HEAD
-=======
 	if (csrid >= LOONGARCH_CSR_PERFCTRL0 && csrid <= vcpu->arch.max_pmu_csrid) {
 		if (kvm_guest_has_pmu(&vcpu->arch)) {
 			vcpu->arch.pc -= 4;
@@ -141,7 +133,6 @@ static int kvm_handle_csr(struct kvm_vcpu *vcpu, larch_inst inst)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Process CSR ops */
 	switch (rj) {
 	case 0: /* process csrrd */
@@ -712,31 +703,12 @@ static long kvm_save_notify(struct kvm_vcpu *vcpu)
 	id   = kvm_read_reg(vcpu, LOONGARCH_GPR_A1);
 	data = kvm_read_reg(vcpu, LOONGARCH_GPR_A2);
 	switch (id) {
-<<<<<<< HEAD
-	case KVM_FEATURE_STEAL_TIME:
-		if (!kvm_pvtime_supported())
-			return KVM_HCALL_INVALID_CODE;
-
-=======
 	case BIT(KVM_FEATURE_STEAL_TIME):
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (data & ~(KVM_STEAL_PHYS_MASK | KVM_STEAL_PHYS_VALID))
 			return KVM_HCALL_INVALID_PARAMETER;
 
 		vcpu->arch.st.guest_addr = data;
 		if (!(data & KVM_STEAL_PHYS_VALID))
-<<<<<<< HEAD
-			break;
-
-		vcpu->arch.st.last_steal = current->sched_info.run_delay;
-		kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
-		break;
-	default:
-		break;
-	};
-
-	return 0;
-=======
 			return 0;
 
 		vcpu->arch.st.last_steal = current->sched_info.run_delay;
@@ -747,7 +719,6 @@ static long kvm_save_notify(struct kvm_vcpu *vcpu)
 	};
 
 	return KVM_HCALL_INVALID_CODE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -780,8 +751,6 @@ static int kvm_handle_lasx_disabled(struct kvm_vcpu *vcpu)
 	return RESUME_GUEST;
 }
 
-<<<<<<< HEAD
-=======
 static int kvm_handle_lbt_disabled(struct kvm_vcpu *vcpu)
 {
 	if (kvm_own_lbt(vcpu))
@@ -790,7 +759,6 @@ static int kvm_handle_lbt_disabled(struct kvm_vcpu *vcpu)
 	return RESUME_GUEST;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int kvm_send_pv_ipi(struct kvm_vcpu *vcpu)
 {
 	unsigned int min, cpu, i;
@@ -824,21 +792,6 @@ static int kvm_send_pv_ipi(struct kvm_vcpu *vcpu)
  */
 static void kvm_handle_service(struct kvm_vcpu *vcpu)
 {
-<<<<<<< HEAD
-	unsigned long func = kvm_read_reg(vcpu, LOONGARCH_GPR_A0);
-	long ret;
-
-	switch (func) {
-	case KVM_HCALL_FUNC_IPI:
-		kvm_send_pv_ipi(vcpu);
-		ret = KVM_HCALL_SUCCESS;
-		break;
-	case KVM_HCALL_FUNC_NOTIFY:
-		ret = kvm_save_notify(vcpu);
-		break;
-	default:
-		ret = KVM_HCALL_INVALID_CODE;
-=======
 	long ret = KVM_HCALL_INVALID_CODE;
 	unsigned long func = kvm_read_reg(vcpu, LOONGARCH_GPR_A0);
 
@@ -854,7 +807,6 @@ static void kvm_handle_service(struct kvm_vcpu *vcpu)
 			ret = kvm_save_notify(vcpu);
 		break;
 	default:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 
@@ -926,10 +878,7 @@ static exit_handle_fn kvm_fault_tables[EXCCODE_INT_START] = {
 	[EXCCODE_FPDIS]			= kvm_handle_fpu_disabled,
 	[EXCCODE_LSXDIS]		= kvm_handle_lsx_disabled,
 	[EXCCODE_LASXDIS]		= kvm_handle_lasx_disabled,
-<<<<<<< HEAD
-=======
 	[EXCCODE_BTDIS]			= kvm_handle_lbt_disabled,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[EXCCODE_GSPR]			= kvm_handle_gspr,
 	[EXCCODE_HVC]			= kvm_handle_hypercall,
 };

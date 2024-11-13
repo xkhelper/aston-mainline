@@ -14,25 +14,14 @@
 #include "util/evlist.h"
 #include "util/sort.h"
 
-<<<<<<< HEAD
-struct annotated_data_browser {
-	struct ui_browser b;
-	struct list_head entries;
-	int nr_events;
-};
-=======
 #define FOLDED_SIGN  '+'
 #define UNFOLD_SIGN  '-'
 #define NOCHLD_SIGN  ' '
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct browser_entry {
 	struct list_head node;
 	struct annotated_member *data;
 	struct type_hist_entry *hists;
-<<<<<<< HEAD
-	int indent;
-=======
 	struct browser_entry *parent;
 	struct list_head children;
 	int indent;  /*indentation level, starts from 0 */
@@ -45,7 +34,6 @@ struct annotated_data_browser {
 	struct list_head entries;
 	struct browser_entry *curr;
 	int nr_events;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct annotated_data_browser *get_browser(struct ui_browser *uib)
@@ -72,12 +60,6 @@ static int get_member_overhead(struct annotated_data_type *adt,
 		struct evsel *evsel;
 		int offset = member->offset + i;
 
-<<<<<<< HEAD
-		for_each_group_evsel(evsel, leader) {
-			h = adt->histograms[evsel->core.idx];
-			k = evsel__group_idx(evsel);
-			update_hist_entry(&entry->hists[k], &h->addr[offset]);
-=======
 		k = 0;
 		for_each_group_evsel(evsel, leader) {
 			if (symbol_conf.skip_empty &&
@@ -86,28 +68,20 @@ static int get_member_overhead(struct annotated_data_type *adt,
 
 			h = adt->histograms[evsel->core.idx];
 			update_hist_entry(&entry->hists[k++], &h->addr[offset]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	return 0;
 }
 
 static int add_child_entries(struct annotated_data_browser *browser,
-<<<<<<< HEAD
-=======
 			     struct browser_entry *parent,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     struct annotated_data_type *adt,
 			     struct annotated_member *member,
 			     struct evsel *evsel, int indent)
 {
 	struct annotated_member *pos;
 	struct browser_entry *entry;
-<<<<<<< HEAD
-	int nr_entries = 0;
-=======
 	struct list_head *parent_list;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	entry = zalloc(sizeof(*entry));
 	if (entry == NULL)
@@ -120,28 +94,13 @@ static int add_child_entries(struct annotated_data_browser *browser,
 	}
 
 	entry->data = member;
-<<<<<<< HEAD
-=======
 	entry->parent = parent;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	entry->indent = indent;
 	if (get_member_overhead(adt, entry, evsel) < 0) {
 		free(entry);
 		return -1;
 	}
 
-<<<<<<< HEAD
-	list_add_tail(&entry->node, &browser->entries);
-	nr_entries++;
-
-	list_for_each_entry(pos, &member->children, node) {
-		int nr = add_child_entries(browser, adt, pos, evsel, indent + 1);
-
-		if (nr < 0)
-			return nr;
-
-		nr_entries += nr;
-=======
 	INIT_LIST_HEAD(&entry->children);
 	if (parent)
 		parent_list = &parent->children;
@@ -155,23 +114,10 @@ static int add_child_entries(struct annotated_data_browser *browser,
 					   indent + 1);
 		if (nr < 0)
 			return nr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* add an entry for the closing bracket ("}") */
 	if (!list_empty(&member->children)) {
-<<<<<<< HEAD
-		entry = zalloc(sizeof(*entry));
-		if (entry == NULL)
-			return -1;
-
-		entry->indent = indent;
-		list_add_tail(&entry->node, &browser->entries);
-		nr_entries++;
-	}
-
-	return nr_entries;
-=======
 		struct browser_entry *bracket;
 
 		bracket = zalloc(sizeof(*bracket));
@@ -202,7 +148,6 @@ static u32 count_visible_entries(struct annotated_data_browser *browser)
 		nr += entry->nr_entries;
 
 	return nr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int annotated_data_browser__collect_entries(struct annotated_data_browser *browser)
@@ -212,18 +157,12 @@ static int annotated_data_browser__collect_entries(struct annotated_data_browser
 	struct evsel *evsel = hists_to_evsel(he->hists);
 
 	INIT_LIST_HEAD(&browser->entries);
-<<<<<<< HEAD
-	browser->b.entries = &browser->entries;
-	browser->b.nr_entries = add_child_entries(browser, adt, &adt->self,
-						  evsel, /*indent=*/0);
-=======
 
 	add_child_entries(browser, /*parent=*/NULL, adt, &adt->self, evsel,
 			  /*indent=*/0);
 
 	browser->b.entries = &browser->entries;
 	browser->b.nr_entries = count_visible_entries(browser);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -238,11 +177,6 @@ static void annotated_data_browser__delete_entries(struct annotated_data_browser
 	}
 }
 
-<<<<<<< HEAD
-static unsigned int browser__refresh(struct ui_browser *uib)
-{
-	return ui_browser__list_head_refresh(uib);
-=======
 static struct browser_entry *get_first_child(struct browser_entry *entry)
 {
 	if (list_empty(&entry->children))
@@ -395,7 +329,6 @@ static unsigned int browser__refresh(struct ui_browser *uib)
 	}
 
 	return row;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int browser__show(struct ui_browser *uib)
@@ -424,11 +357,7 @@ static int browser__show(struct ui_browser *uib)
 		strcpy(title, "Percent");
 
 	ui_browser__printf(uib, "%*s %10s %10s %10s  %s",
-<<<<<<< HEAD
-			   11 * (browser->nr_events - 1), "",
-=======
 			   2 + 11 * (browser->nr_events - 1), "",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   title, "Offset", "Size", "Field");
 	ui_browser__write_nstring(uib, "", uib->width);
 	return 0;
@@ -464,14 +393,6 @@ static void browser__write(struct ui_browser *uib, void *entry, int row)
 	struct annotated_data_type *adt = he->mem_type;
 	struct evsel *leader = hists_to_evsel(he->hists);
 	struct evsel *evsel;
-<<<<<<< HEAD
-
-	if (member == NULL) {
-		bool current = ui_browser__is_current_entry(uib, row);
-
-		/* print the closing bracket */
-		ui_browser__set_percent_color(uib, 0, current);
-=======
 	int idx = 0;
 	bool current = ui_browser__is_current_entry(uib, row);
 
@@ -479,7 +400,6 @@ static void browser__write(struct ui_browser *uib, void *entry, int row)
 		/* print the closing bracket */
 		ui_browser__set_percent_color(uib, 0, current);
 		ui_browser__printf(uib, "%c ", NOCHLD_SIGN);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ui_browser__write_nstring(uib, "", 11 * browser->nr_events);
 		ui_browser__printf(uib, " %10s %10s  %*s};",
 				   "", "", be->indent * 4, "");
@@ -487,14 +407,6 @@ static void browser__write(struct ui_browser *uib, void *entry, int row)
 		return;
 	}
 
-<<<<<<< HEAD
-	/* print the number */
-	for_each_group_evsel(evsel, leader) {
-		struct type_hist *h = adt->histograms[evsel->core.idx];
-		int idx = evsel__group_idx(evsel);
-
-		browser__write_overhead(uib, h, &be->hists[idx], row);
-=======
 	ui_browser__set_percent_color(uib, 0, current);
 
 	if (!list_empty(&be->children))
@@ -511,23 +423,10 @@ static void browser__write(struct ui_browser *uib, void *entry, int row)
 			continue;
 
 		browser__write_overhead(uib, h, &be->hists[idx++], row);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* print type info */
 	if (be->indent == 0 && !member->var_name) {
-<<<<<<< HEAD
-		ui_browser__printf(uib, " %10d %10d  %s%s",
-				   member->offset, member->size,
-				   member->type_name,
-				   list_empty(&member->children) ? ";" : " {");
-	} else {
-		ui_browser__printf(uib, " %10d %10d  %*s%s\t%s%s",
-				   member->offset, member->size,
-				   be->indent * 4, "", member->type_name,
-				   member->var_name ?: "",
-				   list_empty(&member->children) ? ";" : " {");
-=======
 		ui_browser__printf(uib, " %#10x %#10x  %s%s",
 				   member->offset, member->size,
 				   member->type_name,
@@ -538,14 +437,11 @@ static void browser__write(struct ui_browser *uib, void *entry, int row)
 				   be->indent * 4, "", member->type_name,
 				   member->var_name ?: "",
 				   list_empty(&member->children) || be->folded ? ";" : " {");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	/* fill the rest */
 	ui_browser__write_nstring(uib, "", uib->width);
 }
 
-<<<<<<< HEAD
-=======
 static void annotated_data_browser__fold(struct annotated_data_browser *browser,
 					 struct browser_entry *entry,
 					 bool recursive)
@@ -618,7 +514,6 @@ static void annotated_data_browser__toggle_fold(struct annotated_data_browser *b
 	assert(browser->b.nr_entries == count_visible_entries(browser));
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int annotated_data_browser__run(struct annotated_data_browser *browser,
 				       struct evsel *evsel __maybe_unused,
 				       struct hist_browser_timer *hbt)
@@ -643,10 +538,6 @@ static int annotated_data_browser__run(struct annotated_data_browser *browser,
 		"UP/DOWN/PGUP\n"
 		"PGDN/SPACE    Navigate\n"
 		"</>           Move to prev/next symbol\n"
-<<<<<<< HEAD
-		"q/ESC/CTRL+C  Exit\n\n");
-			continue;
-=======
 		"e             Expand/Collapse current entry\n"
 		"E             Expand/Collapse all children of the current\n"
 		"q/ESC/CTRL+C  Exit\n\n");
@@ -659,7 +550,6 @@ static int annotated_data_browser__run(struct annotated_data_browser *browser,
 			annotated_data_browser__toggle_fold(browser,
 							    /*recursive=*/true);
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		case K_LEFT:
 		case '<':
 		case '>':
@@ -682,11 +572,7 @@ int hist_entry__annotate_data_tui(struct hist_entry *he, struct evsel *evsel,
 	struct annotated_data_browser browser = {
 		.b = {
 			.refresh = browser__refresh,
-<<<<<<< HEAD
-			.seek	 = ui_browser__list_head_seek,
-=======
 			.seek	 = browser__seek,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			.write	 = browser__write,
 			.priv	 = he,
 			.extra_title_lines = 1,
@@ -697,15 +583,6 @@ int hist_entry__annotate_data_tui(struct hist_entry *he, struct evsel *evsel,
 
 	ui_helpline__push("Press ESC to exit");
 
-<<<<<<< HEAD
-	if (evsel__is_group_event(evsel))
-		browser.nr_events = evsel->core.nr_members;
-
-	ret = annotated_data_browser__collect_entries(&browser);
-	if (ret == 0)
-		ret = annotated_data_browser__run(&browser, evsel, hbt);
-
-=======
 	if (evsel__is_group_event(evsel)) {
 		struct evsel *pos;
 		int nr = 0;
@@ -730,7 +607,6 @@ int hist_entry__annotate_data_tui(struct hist_entry *he, struct evsel *evsel,
 	ret = annotated_data_browser__run(&browser, evsel, hbt);
 
 out:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	annotated_data_browser__delete_entries(&browser);
 
 	return ret;

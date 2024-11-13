@@ -1487,11 +1487,7 @@ static struct vpif_capture_config *
 vpif_capture_get_pdata(struct platform_device *pdev,
 		       struct v4l2_device *v4l2_dev)
 {
-<<<<<<< HEAD
-	struct device_node *endpoint = NULL;
-=======
 	struct device_node *endpoint;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device_node *rem = NULL;
 	struct vpif_capture_config *pdata;
 	struct vpif_subdev_info *sdinfo;
@@ -1521,24 +1517,12 @@ vpif_capture_get_pdata(struct platform_device *pdev,
 	if (!pdata->subdev_info)
 		return NULL;
 
-<<<<<<< HEAD
-	for (i = 0; i < VPIF_CAPTURE_NUM_CHANNELS; i++) {
-=======
 	i = 0;
 	for_each_endpoint_of_node(pdev->dev.of_node, endpoint) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct v4l2_fwnode_endpoint bus_cfg = { .bus_type = 0 };
 		unsigned int flags;
 		int err;
 
-<<<<<<< HEAD
-		endpoint = of_graph_get_next_endpoint(pdev->dev.of_node,
-						      endpoint);
-		if (!endpoint)
-			break;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rem = of_graph_get_remote_port_parent(endpoint);
 		if (!rem) {
 			dev_dbg(&pdev->dev, "Remote device at %pOF not found\n",
@@ -1589,13 +1573,10 @@ vpif_capture_get_pdata(struct platform_device *pdev,
 			goto err_cleanup;
 
 		of_node_put(rem);
-<<<<<<< HEAD
-=======
 
 		i++;
 		if (i >= VPIF_CAPTURE_NUM_CHANNELS)
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 done:

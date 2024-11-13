@@ -18,28 +18,18 @@
 #include "intel_pps_regs.h"
 #include "intel_quirks.h"
 
-<<<<<<< HEAD
-static void vlv_steal_power_sequencer(struct drm_i915_private *dev_priv,
-=======
 static void vlv_steal_power_sequencer(struct intel_display *display,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      enum pipe pipe);
 
 static void pps_init_delays(struct intel_dp *intel_dp);
 static void pps_init_registers(struct intel_dp *intel_dp, bool force_disable_vdd);
 
-<<<<<<< HEAD
-static const char *pps_name(struct drm_i915_private *i915,
-			    struct intel_pps *pps)
-{
-=======
 static const char *pps_name(struct intel_dp *intel_dp)
 {
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *i915 = to_i915(display->drm);
 	struct intel_pps *pps = &intel_dp->pps;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_VALLEYVIEW(i915) || IS_CHERRYVIEW(i915)) {
 		switch (pps->pps_pipe) {
 		case INVALID_PIPE:
@@ -73,23 +63,15 @@ static const char *pps_name(struct intel_dp *intel_dp)
 
 intel_wakeref_t intel_pps_lock(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_wakeref_t wakeref;
 
 	/*
 	 * See intel_pps_reset_all() why we need a power domain reference here.
 	 */
 	wakeref = intel_display_power_get(dev_priv, POWER_DOMAIN_DISPLAY_CORE);
-<<<<<<< HEAD
-	mutex_lock(&dev_priv->display.pps.mutex);
-=======
 	mutex_lock(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return wakeref;
 }
@@ -97,16 +79,10 @@ intel_wakeref_t intel_pps_lock(struct intel_dp *intel_dp)
 intel_wakeref_t intel_pps_unlock(struct intel_dp *intel_dp,
 				 intel_wakeref_t wakeref)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-
-	mutex_unlock(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
 
 	mutex_unlock(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_display_power_put(dev_priv, POWER_DOMAIN_DISPLAY_CORE, wakeref);
 
 	return 0;
@@ -115,12 +91,8 @@ intel_wakeref_t intel_pps_unlock(struct intel_dp *intel_dp,
 static void
 vlv_power_sequencer_kick(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 	enum pipe pipe = intel_dp->pps.pps_pipe;
 	bool pll_enabled, release_cl_override = false;
@@ -128,18 +100,6 @@ vlv_power_sequencer_kick(struct intel_dp *intel_dp)
 	enum dpio_channel ch = vlv_pipe_to_channel(pipe);
 	u32 DP;
 
-<<<<<<< HEAD
-	if (drm_WARN(&dev_priv->drm,
-		     intel_de_read(dev_priv, intel_dp->output_reg) & DP_PORT_EN,
-		     "skipping %s kick due to [ENCODER:%d:%s] being active\n",
-		     pps_name(dev_priv, &intel_dp->pps),
-		     dig_port->base.base.base.id, dig_port->base.base.name))
-		return;
-
-	drm_dbg_kms(&dev_priv->drm,
-		    "kicking %s for [ENCODER:%d:%s]\n",
-		    pps_name(dev_priv, &intel_dp->pps),
-=======
 	if (drm_WARN(display->drm,
 		     intel_de_read(display, intel_dp->output_reg) & DP_PORT_EN,
 		     "skipping %s kick due to [ENCODER:%d:%s] being active\n",
@@ -150,17 +110,12 @@ vlv_power_sequencer_kick(struct intel_dp *intel_dp)
 	drm_dbg_kms(display->drm,
 		    "kicking %s for [ENCODER:%d:%s]\n",
 		    pps_name(intel_dp),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    dig_port->base.base.base.id, dig_port->base.base.name);
 
 	/* Preserve the BIOS-computed detected bit. This is
 	 * supposed to be read-only.
 	 */
-<<<<<<< HEAD
-	DP = intel_de_read(dev_priv, intel_dp->output_reg) & DP_DETECTED;
-=======
 	DP = intel_de_read(display, intel_dp->output_reg) & DP_DETECTED;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DP |= DP_VOLTAGE_0_4 | DP_PRE_EMPHASIS_0;
 	DP |= DP_PORT_WIDTH(1);
 	DP |= DP_LINK_TRAIN_PAT_1;
@@ -170,11 +125,7 @@ vlv_power_sequencer_kick(struct intel_dp *intel_dp)
 	else
 		DP |= DP_PIPE_SEL(pipe);
 
-<<<<<<< HEAD
-	pll_enabled = intel_de_read(dev_priv, DPLL(dev_priv, pipe)) & DPLL_VCO_ENABLE;
-=======
 	pll_enabled = intel_de_read(display, DPLL(display, pipe)) & DPLL_VCO_ENABLE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The DPLL for the pipe must be enabled for this to work.
@@ -185,11 +136,7 @@ vlv_power_sequencer_kick(struct intel_dp *intel_dp)
 			!chv_phy_powergate_ch(dev_priv, phy, ch, true);
 
 		if (vlv_force_pll_on(dev_priv, pipe, vlv_get_dpll(dev_priv))) {
-<<<<<<< HEAD
-			drm_err(&dev_priv->drm,
-=======
 			drm_err(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				"Failed to force on PLL for pipe %c!\n",
 				pipe_name(pipe));
 			return;
@@ -202,16 +149,6 @@ vlv_power_sequencer_kick(struct intel_dp *intel_dp)
 	 * to make this power sequencer lock onto the port.
 	 * Otherwise even VDD force bit won't work.
 	 */
-<<<<<<< HEAD
-	intel_de_write(dev_priv, intel_dp->output_reg, DP);
-	intel_de_posting_read(dev_priv, intel_dp->output_reg);
-
-	intel_de_write(dev_priv, intel_dp->output_reg, DP | DP_PORT_EN);
-	intel_de_posting_read(dev_priv, intel_dp->output_reg);
-
-	intel_de_write(dev_priv, intel_dp->output_reg, DP & ~DP_PORT_EN);
-	intel_de_posting_read(dev_priv, intel_dp->output_reg);
-=======
 	intel_de_write(display, intel_dp->output_reg, DP);
 	intel_de_posting_read(display, intel_dp->output_reg);
 
@@ -220,7 +157,6 @@ vlv_power_sequencer_kick(struct intel_dp *intel_dp)
 
 	intel_de_write(display, intel_dp->output_reg, DP & ~DP_PORT_EN);
 	intel_de_posting_read(display, intel_dp->output_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!pll_enabled) {
 		vlv_force_pll_off(dev_priv, pipe);
@@ -230,11 +166,7 @@ vlv_power_sequencer_kick(struct intel_dp *intel_dp)
 	}
 }
 
-<<<<<<< HEAD
-static enum pipe vlv_find_free_pps(struct drm_i915_private *dev_priv)
-=======
 static enum pipe vlv_find_free_pps(struct intel_display *display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct intel_encoder *encoder;
 	unsigned int pipes = (1 << PIPE_A) | (1 << PIPE_B);
@@ -243,19 +175,11 @@ static enum pipe vlv_find_free_pps(struct intel_display *display)
 	 * We don't have power sequencer currently.
 	 * Pick one that's not used by other ports.
 	 */
-<<<<<<< HEAD
-	for_each_intel_dp(&dev_priv->drm, encoder) {
-		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
-
-		if (encoder->type == INTEL_OUTPUT_EDP) {
-			drm_WARN_ON(&dev_priv->drm,
-=======
 	for_each_intel_dp(display->drm, encoder) {
 		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
 
 		if (encoder->type == INTEL_OUTPUT_EDP) {
 			drm_WARN_ON(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    intel_dp->pps.active_pipe != INVALID_PIPE &&
 				    intel_dp->pps.active_pipe !=
 				    intel_dp->pps.pps_pipe);
@@ -263,11 +187,7 @@ static enum pipe vlv_find_free_pps(struct intel_display *display)
 			if (intel_dp->pps.pps_pipe != INVALID_PIPE)
 				pipes &= ~(1 << intel_dp->pps.pps_pipe);
 		} else {
-<<<<<<< HEAD
-			drm_WARN_ON(&dev_priv->drm,
-=======
 			drm_WARN_ON(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    intel_dp->pps.pps_pipe != INVALID_PIPE);
 
 			if (intel_dp->pps.active_pipe != INVALID_PIPE)
@@ -284,18 +204,6 @@ static enum pipe vlv_find_free_pps(struct intel_display *display)
 static enum pipe
 vlv_power_sequencer_pipe(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
-	enum pipe pipe;
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-
-	/* We should never land here with regular DP ports */
-	drm_WARN_ON(&dev_priv->drm, !intel_dp_is_edp(intel_dp));
-
-	drm_WARN_ON(&dev_priv->drm, intel_dp->pps.active_pipe != INVALID_PIPE &&
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 	enum pipe pipe;
@@ -306,33 +214,17 @@ vlv_power_sequencer_pipe(struct intel_dp *intel_dp)
 	drm_WARN_ON(display->drm, !intel_dp_is_edp(intel_dp));
 
 	drm_WARN_ON(display->drm, intel_dp->pps.active_pipe != INVALID_PIPE &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    intel_dp->pps.active_pipe != intel_dp->pps.pps_pipe);
 
 	if (intel_dp->pps.pps_pipe != INVALID_PIPE)
 		return intel_dp->pps.pps_pipe;
 
-<<<<<<< HEAD
-	pipe = vlv_find_free_pps(dev_priv);
-=======
 	pipe = vlv_find_free_pps(display);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Didn't find one. This should not happen since there
 	 * are two power sequencers and up to two eDP ports.
 	 */
-<<<<<<< HEAD
-	if (drm_WARN_ON(&dev_priv->drm, pipe == INVALID_PIPE))
-		pipe = PIPE_A;
-
-	vlv_steal_power_sequencer(dev_priv, pipe);
-	intel_dp->pps.pps_pipe = pipe;
-
-	drm_dbg_kms(&dev_priv->drm,
-		    "picked %s for [ENCODER:%d:%s]\n",
-		    pps_name(dev_priv, &intel_dp->pps),
-=======
 	if (drm_WARN_ON(display->drm, pipe == INVALID_PIPE))
 		pipe = PIPE_A;
 
@@ -342,7 +234,6 @@ vlv_power_sequencer_pipe(struct intel_dp *intel_dp)
 	drm_dbg_kms(display->drm,
 		    "picked %s for [ENCODER:%d:%s]\n",
 		    pps_name(intel_dp),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    dig_port->base.base.base.id, dig_port->base.base.name);
 
 	/* init power sequencer on this pipe and port */
@@ -361,15 +252,6 @@ vlv_power_sequencer_pipe(struct intel_dp *intel_dp)
 static int
 bxt_power_sequencer_idx(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	int pps_idx = intel_dp->pps.pps_idx;
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-
-	/* We should never land here with regular DP ports */
-	drm_WARN_ON(&dev_priv->drm, !intel_dp_is_edp(intel_dp));
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	int pps_idx = intel_dp->pps.pps_idx;
 
@@ -377,7 +259,6 @@ bxt_power_sequencer_idx(struct intel_dp *intel_dp)
 
 	/* We should never land here with regular DP ports */
 	drm_WARN_ON(display->drm, !intel_dp_is_edp(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!intel_dp->pps.pps_reset)
 		return pps_idx;
@@ -393,21 +274,6 @@ bxt_power_sequencer_idx(struct intel_dp *intel_dp)
 	return pps_idx;
 }
 
-<<<<<<< HEAD
-typedef bool (*pps_check)(struct drm_i915_private *dev_priv, int pps_idx);
-
-static bool pps_has_pp_on(struct drm_i915_private *dev_priv, int pps_idx)
-{
-	return intel_de_read(dev_priv, PP_STATUS(dev_priv, pps_idx)) & PP_ON;
-}
-
-static bool pps_has_vdd_on(struct drm_i915_private *dev_priv, int pps_idx)
-{
-	return intel_de_read(dev_priv, PP_CONTROL(dev_priv, pps_idx)) & EDP_FORCE_VDD;
-}
-
-static bool pps_any(struct drm_i915_private *dev_priv, int pps_idx)
-=======
 typedef bool (*pps_check)(struct intel_display *display, int pps_idx);
 
 static bool pps_has_pp_on(struct intel_display *display, int pps_idx)
@@ -421,38 +287,25 @@ static bool pps_has_vdd_on(struct intel_display *display, int pps_idx)
 }
 
 static bool pps_any(struct intel_display *display, int pps_idx)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return true;
 }
 
 static enum pipe
-<<<<<<< HEAD
-vlv_initial_pps_pipe(struct drm_i915_private *dev_priv,
-=======
 vlv_initial_pps_pipe(struct intel_display *display,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		     enum port port, pps_check check)
 {
 	enum pipe pipe;
 
 	for (pipe = PIPE_A; pipe <= PIPE_B; pipe++) {
-<<<<<<< HEAD
-		u32 port_sel = intel_de_read(dev_priv, PP_ON_DELAYS(dev_priv, pipe)) &
-=======
 		u32 port_sel = intel_de_read(display,
 					     PP_ON_DELAYS(display, pipe)) &
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			PANEL_PORT_SELECT_MASK;
 
 		if (port_sel != PANEL_PORT_SELECT_VLV(port))
 			continue;
 
-<<<<<<< HEAD
-		if (!check(dev_priv, pipe))
-=======
 		if (!check(display, pipe))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		return pipe;
@@ -464,25 +317,6 @@ vlv_initial_pps_pipe(struct intel_display *display,
 static void
 vlv_initial_power_sequencer_setup(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
-	enum port port = dig_port->base.port;
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-
-	/* try to find a pipe with this port selected */
-	/* first pick one where the panel is on */
-	intel_dp->pps.pps_pipe = vlv_initial_pps_pipe(dev_priv, port,
-						      pps_has_pp_on);
-	/* didn't find one? pick one where vdd is on */
-	if (intel_dp->pps.pps_pipe == INVALID_PIPE)
-		intel_dp->pps.pps_pipe = vlv_initial_pps_pipe(dev_priv, port,
-							      pps_has_vdd_on);
-	/* didn't find one? pick one with just the correct port */
-	if (intel_dp->pps.pps_pipe == INVALID_PIPE)
-		intel_dp->pps.pps_pipe = vlv_initial_pps_pipe(dev_priv, port,
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 	enum port port = dig_port->base.port;
@@ -500,31 +334,16 @@ vlv_initial_power_sequencer_setup(struct intel_dp *intel_dp)
 	/* didn't find one? pick one with just the correct port */
 	if (intel_dp->pps.pps_pipe == INVALID_PIPE)
 		intel_dp->pps.pps_pipe = vlv_initial_pps_pipe(display, port,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							      pps_any);
 
 	/* didn't find one? just let vlv_power_sequencer_pipe() pick one when needed */
 	if (intel_dp->pps.pps_pipe == INVALID_PIPE) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "[ENCODER:%d:%s] no initial power sequencer\n",
 			    dig_port->base.base.base.id, dig_port->base.base.name);
 		return;
 	}
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm,
-		    "[ENCODER:%d:%s] initial power sequencer: %s\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps));
-}
-
-static int intel_num_pps(struct drm_i915_private *i915)
-{
-=======
 	drm_dbg_kms(display->drm,
 		    "[ENCODER:%d:%s] initial power sequencer: %s\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
@@ -535,7 +354,6 @@ static int intel_num_pps(struct intel_display *display)
 {
 	struct drm_i915_private *i915 = to_i915(display->drm);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_VALLEYVIEW(i915) || IS_CHERRYVIEW(i915))
 		return 2;
 
@@ -556,41 +374,24 @@ static int intel_num_pps(struct intel_display *display)
 
 static bool intel_pps_is_valid(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *i915 = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (intel_dp->pps.pps_idx == 1 &&
 	    INTEL_PCH_TYPE(i915) >= PCH_ICP &&
 	    INTEL_PCH_TYPE(i915) <= PCH_ADP)
-<<<<<<< HEAD
-		return intel_de_read(i915, SOUTH_CHICKEN1) & ICP_SECOND_PPS_IO_SELECT;
-=======
 		return intel_de_read(display, SOUTH_CHICKEN1) & ICP_SECOND_PPS_IO_SELECT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return true;
 }
 
 static int
-<<<<<<< HEAD
-bxt_initial_pps_idx(struct drm_i915_private *i915, pps_check check)
-{
-	int pps_idx, pps_num = intel_num_pps(i915);
-
-	for (pps_idx = 0; pps_idx < pps_num; pps_idx++) {
-		if (check(i915, pps_idx))
-=======
 bxt_initial_pps_idx(struct intel_display *display, pps_check check)
 {
 	int pps_idx, pps_num = intel_num_pps(display);
 
 	for (pps_idx = 0; pps_idx < pps_num; pps_idx++) {
 		if (check(display, pps_idx))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return pps_idx;
 	}
 
@@ -600,19 +401,12 @@ bxt_initial_pps_idx(struct intel_display *display, pps_check check)
 static bool
 pps_initial_setup(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_encoder *encoder = &dp_to_dig_port(intel_dp)->base;
 	struct intel_connector *connector = intel_dp->attached_connector;
 	struct drm_i915_private *i915 = to_i915(encoder->base.dev);
 
-<<<<<<< HEAD
-	lockdep_assert_held(&i915->display.pps.mutex);
-=======
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (IS_VALLEYVIEW(i915) || IS_CHERRYVIEW(i915)) {
 		vlv_initial_power_sequencer_setup(intel_dp);
@@ -620,43 +414,16 @@ pps_initial_setup(struct intel_dp *intel_dp)
 	}
 
 	/* first ask the VBT */
-<<<<<<< HEAD
-	if (intel_num_pps(i915) > 1)
-=======
 	if (intel_num_pps(display) > 1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_dp->pps.pps_idx = connector->panel.vbt.backlight.controller;
 	else
 		intel_dp->pps.pps_idx = 0;
 
-<<<<<<< HEAD
-	if (drm_WARN_ON(&i915->drm, intel_dp->pps.pps_idx >= intel_num_pps(i915)))
-=======
 	if (drm_WARN_ON(display->drm, intel_dp->pps.pps_idx >= intel_num_pps(display)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_dp->pps.pps_idx = -1;
 
 	/* VBT wasn't parsed yet? pick one where the panel is on */
 	if (intel_dp->pps.pps_idx < 0)
-<<<<<<< HEAD
-		intel_dp->pps.pps_idx = bxt_initial_pps_idx(i915, pps_has_pp_on);
-	/* didn't find one? pick one where vdd is on */
-	if (intel_dp->pps.pps_idx < 0)
-		intel_dp->pps.pps_idx = bxt_initial_pps_idx(i915, pps_has_vdd_on);
-	/* didn't find one? pick any */
-	if (intel_dp->pps.pps_idx < 0) {
-		intel_dp->pps.pps_idx = bxt_initial_pps_idx(i915, pps_any);
-
-		drm_dbg_kms(&i915->drm,
-			    "[ENCODER:%d:%s] no initial power sequencer, assuming %s\n",
-			    encoder->base.base.id, encoder->base.name,
-			    pps_name(i915, &intel_dp->pps));
-	} else {
-		drm_dbg_kms(&i915->drm,
-			    "[ENCODER:%d:%s] initial power sequencer: %s\n",
-			    encoder->base.base.id, encoder->base.name,
-			    pps_name(i915, &intel_dp->pps));
-=======
 		intel_dp->pps.pps_idx = bxt_initial_pps_idx(display, pps_has_pp_on);
 	/* didn't find one? pick one where vdd is on */
 	if (intel_dp->pps.pps_idx < 0)
@@ -674,22 +441,11 @@ pps_initial_setup(struct intel_dp *intel_dp)
 			    "[ENCODER:%d:%s] initial power sequencer: %s\n",
 			    encoder->base.base.id, encoder->base.name,
 			    pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return intel_pps_is_valid(intel_dp);
 }
 
-<<<<<<< HEAD
-void intel_pps_reset_all(struct drm_i915_private *dev_priv)
-{
-	struct intel_encoder *encoder;
-
-	if (drm_WARN_ON(&dev_priv->drm, !IS_LP(dev_priv)))
-		return;
-
-	if (!HAS_DISPLAY(dev_priv))
-=======
 void intel_pps_reset_all(struct intel_display *display)
 {
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
@@ -699,7 +455,6 @@ void intel_pps_reset_all(struct intel_display *display)
 		return;
 
 	if (!HAS_DISPLAY(display))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	/*
@@ -712,27 +467,16 @@ void intel_pps_reset_all(struct intel_display *display)
 	 * should use them always.
 	 */
 
-<<<<<<< HEAD
-	for_each_intel_dp(&dev_priv->drm, encoder) {
-		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
-
-		drm_WARN_ON(&dev_priv->drm,
-=======
 	for_each_intel_dp(display->drm, encoder) {
 		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
 
 		drm_WARN_ON(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    intel_dp->pps.active_pipe != INVALID_PIPE);
 
 		if (encoder->type != INTEL_OUTPUT_EDP)
 			continue;
 
-<<<<<<< HEAD
-		if (DISPLAY_VER(dev_priv) >= 9)
-=======
 		if (DISPLAY_VER(display) >= 9)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			intel_dp->pps.pps_reset = true;
 		else
 			intel_dp->pps.pps_pipe = INVALID_PIPE;
@@ -750,12 +494,8 @@ struct pps_registers {
 static void intel_pps_get_registers(struct intel_dp *intel_dp,
 				    struct pps_registers *regs)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int pps_idx;
 
 	memset(regs, 0, sizeof(*regs));
@@ -767,28 +507,17 @@ static void intel_pps_get_registers(struct intel_dp *intel_dp,
 	else
 		pps_idx = intel_dp->pps.pps_idx;
 
-<<<<<<< HEAD
-	regs->pp_ctrl = PP_CONTROL(dev_priv, pps_idx);
-	regs->pp_stat = PP_STATUS(dev_priv, pps_idx);
-	regs->pp_on = PP_ON_DELAYS(dev_priv, pps_idx);
-	regs->pp_off = PP_OFF_DELAYS(dev_priv, pps_idx);
-=======
 	regs->pp_ctrl = PP_CONTROL(display, pps_idx);
 	regs->pp_stat = PP_STATUS(display, pps_idx);
 	regs->pp_on = PP_ON_DELAYS(display, pps_idx);
 	regs->pp_off = PP_OFF_DELAYS(display, pps_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Cycle delay moved from PP_DIVISOR to PP_CONTROL */
 	if (IS_GEMINILAKE(dev_priv) || IS_BROXTON(dev_priv) ||
 	    INTEL_PCH_TYPE(dev_priv) >= PCH_CNP)
 		regs->pp_div = INVALID_MMIO_REG;
 	else
-<<<<<<< HEAD
-		regs->pp_div = PP_DIVISOR(dev_priv, pps_idx);
-=======
 		regs->pp_div = PP_DIVISOR(display, pps_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static i915_reg_t
@@ -813,77 +542,41 @@ _pp_stat_reg(struct intel_dp *intel_dp)
 
 static bool edp_have_panel_power(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((IS_VALLEYVIEW(dev_priv) || IS_CHERRYVIEW(dev_priv)) &&
 	    intel_dp->pps.pps_pipe == INVALID_PIPE)
 		return false;
 
-<<<<<<< HEAD
-	return (intel_de_read(dev_priv, _pp_stat_reg(intel_dp)) & PP_ON) != 0;
-=======
 	return (intel_de_read(display, _pp_stat_reg(intel_dp)) & PP_ON) != 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool edp_have_panel_vdd(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((IS_VALLEYVIEW(dev_priv) || IS_CHERRYVIEW(dev_priv)) &&
 	    intel_dp->pps.pps_pipe == INVALID_PIPE)
 		return false;
 
-<<<<<<< HEAD
-	return intel_de_read(dev_priv, _pp_ctrl_reg(intel_dp)) & EDP_FORCE_VDD;
-=======
 	return intel_de_read(display, _pp_ctrl_reg(intel_dp)) & EDP_FORCE_VDD;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void intel_pps_check_power_unlocked(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 
 	if (!intel_dp_is_edp(intel_dp))
 		return;
 
 	if (!edp_have_panel_power(intel_dp) && !edp_have_panel_vdd(intel_dp)) {
-<<<<<<< HEAD
-		drm_WARN(&dev_priv->drm, 1,
-			 "[ENCODER:%d:%s] %s powered off while attempting AUX CH communication.\n",
-			 dig_port->base.base.base.id, dig_port->base.base.name,
-			 pps_name(dev_priv, &intel_dp->pps));
-		drm_dbg_kms(&dev_priv->drm,
-			    "[ENCODER:%d:%s] %s PP_STATUS: 0x%08x PP_CONTROL: 0x%08x\n",
-			    dig_port->base.base.base.id, dig_port->base.base.name,
-			    pps_name(dev_priv, &intel_dp->pps),
-			    intel_de_read(dev_priv, _pp_stat_reg(intel_dp)),
-			    intel_de_read(dev_priv, _pp_ctrl_reg(intel_dp)));
-=======
 		drm_WARN(display->drm, 1,
 			 "[ENCODER:%d:%s] %s powered off while attempting AUX CH communication.\n",
 			 dig_port->base.base.base.id, dig_port->base.base.name,
@@ -894,7 +587,6 @@ void intel_pps_check_power_unlocked(struct intel_dp *intel_dp)
 			    pps_name(intel_dp),
 			    intel_de_read(display, _pp_stat_reg(intel_dp)),
 			    intel_de_read(display, _pp_ctrl_reg(intel_dp)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -912,44 +604,17 @@ static void intel_pps_verify_state(struct intel_dp *intel_dp);
 static void wait_panel_status(struct intel_dp *intel_dp,
 			      u32 mask, u32 value)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
-	i915_reg_t pp_stat_reg, pp_ctrl_reg;
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 	i915_reg_t pp_stat_reg, pp_ctrl_reg;
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intel_pps_verify_state(intel_dp);
 
 	pp_stat_reg = _pp_stat_reg(intel_dp);
 	pp_ctrl_reg = _pp_ctrl_reg(intel_dp);
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm,
-		    "[ENCODER:%d:%s] %s mask: 0x%08x value: 0x%08x PP_STATUS: 0x%08x PP_CONTROL: 0x%08x\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps),
-		    mask, value,
-		    intel_de_read(dev_priv, pp_stat_reg),
-		    intel_de_read(dev_priv, pp_ctrl_reg));
-
-	if (intel_de_wait(dev_priv, pp_stat_reg, mask, value, 5000))
-		drm_err(&dev_priv->drm,
-			"[ENCODER:%d:%s] %s panel status timeout: PP_STATUS: 0x%08x PP_CONTROL: 0x%08x\n",
-			dig_port->base.base.base.id, dig_port->base.base.name,
-			pps_name(dev_priv, &intel_dp->pps),
-			intel_de_read(dev_priv, pp_stat_reg),
-			intel_de_read(dev_priv, pp_ctrl_reg));
-
-	drm_dbg_kms(&dev_priv->drm, "Wait complete\n");
-=======
 	drm_dbg_kms(display->drm,
 		    "[ENCODER:%d:%s] %s mask: 0x%08x value: 0x%08x PP_STATUS: 0x%08x PP_CONTROL: 0x%08x\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
@@ -967,19 +632,10 @@ static void wait_panel_status(struct intel_dp *intel_dp,
 			intel_de_read(display, pp_ctrl_reg));
 
 	drm_dbg_kms(display->drm, "Wait complete\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void wait_panel_on(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
-
-	drm_dbg_kms(&i915->drm, "[ENCODER:%d:%s] %s wait for panel power on\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(i915, &intel_dp->pps));
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 
@@ -987,20 +643,11 @@ static void wait_panel_on(struct intel_dp *intel_dp)
 		    "[ENCODER:%d:%s] %s wait for panel power on\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
 		    pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wait_panel_status(intel_dp, IDLE_ON_MASK, IDLE_ON_VALUE);
 }
 
 static void wait_panel_off(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
-
-	drm_dbg_kms(&i915->drm, "[ENCODER:%d:%s] %s wait for panel power off time\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(i915, &intel_dp->pps));
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 
@@ -1008,31 +655,20 @@ static void wait_panel_off(struct intel_dp *intel_dp)
 		    "[ENCODER:%d:%s] %s wait for panel power off time\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
 		    pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wait_panel_status(intel_dp, IDLE_OFF_MASK, IDLE_OFF_VALUE);
 }
 
 static void wait_panel_power_cycle(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 	ktime_t panel_power_on_time;
 	s64 panel_power_off_duration;
 
-<<<<<<< HEAD
-	drm_dbg_kms(&i915->drm, "[ENCODER:%d:%s] %s wait for panel power cycle\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(i915, &intel_dp->pps));
-=======
 	drm_dbg_kms(display->drm,
 		    "[ENCODER:%d:%s] %s wait for panel power cycle\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
 		    pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* take the difference of current time and panel power off time
 	 * and then make panel wait for t11_t12 if needed. */
@@ -1077,15 +713,6 @@ static void edp_wait_backlight_off(struct intel_dp *intel_dp)
 
 static  u32 ilk_get_pp_control(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	u32 control;
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-
-	control = intel_de_read(dev_priv, _pp_ctrl_reg(intel_dp));
-	if (drm_WARN_ON(&dev_priv->drm, !HAS_DDI(dev_priv) &&
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	u32 control;
 
@@ -1093,7 +720,6 @@ static  u32 ilk_get_pp_control(struct intel_dp *intel_dp)
 
 	control = intel_de_read(display, _pp_ctrl_reg(intel_dp));
 	if (drm_WARN_ON(display->drm, !HAS_DDI(display) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			(control & PANEL_UNLOCK_MASK) != PANEL_UNLOCK_REGS)) {
 		control &= ~PANEL_UNLOCK_MASK;
 		control |= PANEL_UNLOCK_REGS;
@@ -1108,22 +734,14 @@ static  u32 ilk_get_pp_control(struct intel_dp *intel_dp)
  */
 bool intel_pps_vdd_on_unlocked(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 	u32 pp;
 	i915_reg_t pp_stat_reg, pp_ctrl_reg;
 	bool need_to_disable = !intel_dp->pps.want_panel_vdd;
 
-<<<<<<< HEAD
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!intel_dp_is_edp(intel_dp))
 		return false;
@@ -1134,26 +752,16 @@ bool intel_pps_vdd_on_unlocked(struct intel_dp *intel_dp)
 	if (edp_have_panel_vdd(intel_dp))
 		return need_to_disable;
 
-<<<<<<< HEAD
-	drm_WARN_ON(&dev_priv->drm, intel_dp->pps.vdd_wakeref);
-=======
 	drm_WARN_ON(display->drm, intel_dp->pps.vdd_wakeref);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dp->pps.vdd_wakeref = intel_display_power_get(dev_priv,
 							    intel_aux_power_domain(dig_port));
 
 	pp_stat_reg = _pp_stat_reg(intel_dp);
 	pp_ctrl_reg = _pp_ctrl_reg(intel_dp);
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "[ENCODER:%d:%s] %s turning VDD on\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps));
-=======
 	drm_dbg_kms(display->drm, "[ENCODER:%d:%s] %s turning VDD on\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
 		    pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!edp_have_panel_power(intel_dp))
 		wait_panel_power_cycle(intel_dp);
@@ -1161,15 +769,6 @@ bool intel_pps_vdd_on_unlocked(struct intel_dp *intel_dp)
 	pp = ilk_get_pp_control(intel_dp);
 	pp |= EDP_FORCE_VDD;
 
-<<<<<<< HEAD
-	intel_de_write(dev_priv, pp_ctrl_reg, pp);
-	intel_de_posting_read(dev_priv, pp_ctrl_reg);
-	drm_dbg_kms(&dev_priv->drm, "[ENCODER:%d:%s] %s PP_STATUS: 0x%08x PP_CONTROL: 0x%08x\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps),
-		    intel_de_read(dev_priv, pp_stat_reg),
-		    intel_de_read(dev_priv, pp_ctrl_reg));
-=======
 	intel_de_write(display, pp_ctrl_reg, pp);
 	intel_de_posting_read(display, pp_ctrl_reg);
 	drm_dbg_kms(display->drm,
@@ -1178,22 +777,14 @@ bool intel_pps_vdd_on_unlocked(struct intel_dp *intel_dp)
 		    pps_name(intel_dp),
 		    intel_de_read(display, pp_stat_reg),
 		    intel_de_read(display, pp_ctrl_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * If the panel wasn't on, delay before accessing aux channel
 	 */
 	if (!edp_have_panel_power(intel_dp)) {
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-			    "[ENCODER:%d:%s] %s panel power wasn't enabled\n",
-			    dig_port->base.base.base.id, dig_port->base.base.name,
-			    pps_name(dev_priv, &intel_dp->pps));
-=======
 		drm_dbg_kms(display->drm,
 			    "[ENCODER:%d:%s] %s panel power wasn't enabled\n",
 			    dig_port->base.base.base.id, dig_port->base.base.name,
 			    pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		msleep(intel_dp->pps.panel_power_up_delay);
 	}
 
@@ -1208,12 +799,8 @@ bool intel_pps_vdd_on_unlocked(struct intel_dp *intel_dp)
  */
 void intel_pps_vdd_on(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *i915 = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_wakeref_t wakeref;
 	bool vdd;
 
@@ -1226,26 +813,11 @@ void intel_pps_vdd_on(struct intel_dp *intel_dp)
 	I915_STATE_WARN(i915, !vdd, "[ENCODER:%d:%s] %s VDD already requested on\n",
 			dp_to_dig_port(intel_dp)->base.base.base.id,
 			dp_to_dig_port(intel_dp)->base.base.name,
-<<<<<<< HEAD
-			pps_name(i915, &intel_dp->pps));
-=======
 			pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void intel_pps_vdd_off_sync_unlocked(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	struct intel_digital_port *dig_port =
-		dp_to_dig_port(intel_dp);
-	u32 pp;
-	i915_reg_t pp_stat_reg, pp_ctrl_reg;
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-
-	drm_WARN_ON(&dev_priv->drm, intel_dp->pps.want_panel_vdd);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
@@ -1255,20 +827,13 @@ static void intel_pps_vdd_off_sync_unlocked(struct intel_dp *intel_dp)
 	lockdep_assert_held(&display->pps.mutex);
 
 	drm_WARN_ON(display->drm, intel_dp->pps.want_panel_vdd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!edp_have_panel_vdd(intel_dp))
 		return;
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "[ENCODER:%d:%s] %s turning VDD off\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps));
-=======
 	drm_dbg_kms(display->drm, "[ENCODER:%d:%s] %s turning VDD off\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
 		    pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pp = ilk_get_pp_control(intel_dp);
 	pp &= ~EDP_FORCE_VDD;
@@ -1276,17 +841,6 @@ static void intel_pps_vdd_off_sync_unlocked(struct intel_dp *intel_dp)
 	pp_ctrl_reg = _pp_ctrl_reg(intel_dp);
 	pp_stat_reg = _pp_stat_reg(intel_dp);
 
-<<<<<<< HEAD
-	intel_de_write(dev_priv, pp_ctrl_reg, pp);
-	intel_de_posting_read(dev_priv, pp_ctrl_reg);
-
-	/* Make sure sequencer is idle before allowing subsequent activity */
-	drm_dbg_kms(&dev_priv->drm, "[ENCODER:%d:%s] %s PP_STATUS: 0x%08x PP_CONTROL: 0x%08x\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps),
-		    intel_de_read(dev_priv, pp_stat_reg),
-		    intel_de_read(dev_priv, pp_ctrl_reg));
-=======
 	intel_de_write(display, pp_ctrl_reg, pp);
 	intel_de_posting_read(display, pp_ctrl_reg);
 
@@ -1297,7 +851,6 @@ static void intel_pps_vdd_off_sync_unlocked(struct intel_dp *intel_dp)
 		    pps_name(intel_dp),
 		    intel_de_read(display, pp_stat_reg),
 		    intel_de_read(display, pp_ctrl_reg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((pp & PANEL_POWER_ON) == 0)
 		intel_dp->pps.panel_power_off_time = ktime_get_boottime();
@@ -1338,12 +891,8 @@ static void edp_panel_vdd_work(struct work_struct *__work)
 
 static void edp_panel_vdd_schedule_off(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *i915 = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long delay;
 
 	/*
@@ -1370,16 +919,10 @@ static void edp_panel_vdd_schedule_off(struct intel_dp *intel_dp)
  */
 void intel_pps_vdd_off_unlocked(struct intel_dp *intel_dp, bool sync)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!intel_dp_is_edp(intel_dp))
 		return;
@@ -1388,11 +931,7 @@ void intel_pps_vdd_off_unlocked(struct intel_dp *intel_dp, bool sync)
 			"[ENCODER:%d:%s] %s VDD not forced on",
 			dp_to_dig_port(intel_dp)->base.base.base.id,
 			dp_to_dig_port(intel_dp)->base.base.name,
-<<<<<<< HEAD
-			pps_name(dev_priv, &intel_dp->pps));
-=======
 			pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intel_dp->pps.want_panel_vdd = false;
 
@@ -1404,36 +943,16 @@ void intel_pps_vdd_off_unlocked(struct intel_dp *intel_dp, bool sync)
 
 void intel_pps_on_unlocked(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	u32 pp;
-	i915_reg_t pp_ctrl_reg;
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
 	u32 pp;
 	i915_reg_t pp_ctrl_reg;
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!intel_dp_is_edp(intel_dp))
 		return;
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "[ENCODER:%d:%s] %s turn panel power on\n",
-		    dp_to_dig_port(intel_dp)->base.base.base.id,
-		    dp_to_dig_port(intel_dp)->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps));
-
-	if (drm_WARN(&dev_priv->drm, edp_have_panel_power(intel_dp),
-		     "[ENCODER:%d:%s] %s panel power already on\n",
-		     dp_to_dig_port(intel_dp)->base.base.base.id,
-		     dp_to_dig_port(intel_dp)->base.base.name,
-		     pps_name(dev_priv, &intel_dp->pps)))
-=======
 	drm_dbg_kms(display->drm, "[ENCODER:%d:%s] %s turn panel power on\n",
 		    dp_to_dig_port(intel_dp)->base.base.base.id,
 		    dp_to_dig_port(intel_dp)->base.base.name,
@@ -1444,7 +963,6 @@ void intel_pps_on_unlocked(struct intel_dp *intel_dp)
 		     dp_to_dig_port(intel_dp)->base.base.base.id,
 		     dp_to_dig_port(intel_dp)->base.base.name,
 		     pps_name(intel_dp)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	wait_panel_power_cycle(intel_dp);
@@ -1454,12 +972,6 @@ void intel_pps_on_unlocked(struct intel_dp *intel_dp)
 	if (IS_IRONLAKE(dev_priv)) {
 		/* ILK workaround: disable reset around power sequence */
 		pp &= ~PANEL_POWER_RESET;
-<<<<<<< HEAD
-		intel_de_write(dev_priv, pp_ctrl_reg, pp);
-		intel_de_posting_read(dev_priv, pp_ctrl_reg);
-	}
-
-=======
 		intel_de_write(display, pp_ctrl_reg, pp);
 		intel_de_posting_read(display, pp_ctrl_reg);
 	}
@@ -1472,28 +984,16 @@ void intel_pps_on_unlocked(struct intel_dp *intel_dp)
 		intel_de_rmw(display, SOUTH_DSPCLK_GATE_D,
 			     0, PCH_DPLSUNIT_CLOCK_GATE_DISABLE);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pp |= PANEL_POWER_ON;
 	if (!IS_IRONLAKE(dev_priv))
 		pp |= PANEL_POWER_RESET;
 
-<<<<<<< HEAD
-	intel_de_write(dev_priv, pp_ctrl_reg, pp);
-	intel_de_posting_read(dev_priv, pp_ctrl_reg);
-=======
 	intel_de_write(display, pp_ctrl_reg, pp);
 	intel_de_posting_read(display, pp_ctrl_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	wait_panel_on(intel_dp);
 	intel_dp->pps.last_power_on = jiffies;
 
-<<<<<<< HEAD
-	if (IS_IRONLAKE(dev_priv)) {
-		pp |= PANEL_POWER_RESET; /* restore panel reset bit */
-		intel_de_write(dev_priv, pp_ctrl_reg, pp);
-		intel_de_posting_read(dev_priv, pp_ctrl_reg);
-=======
 	if (IS_DISPLAY_VER(display, 13, 14))
 		intel_de_rmw(display, SOUTH_DSPCLK_GATE_D,
 			     PCH_DPLSUNIT_CLOCK_GATE_DISABLE, 0);
@@ -1502,7 +1002,6 @@ void intel_pps_on_unlocked(struct intel_dp *intel_dp)
 		pp |= PANEL_POWER_RESET; /* restore panel reset bit */
 		intel_de_write(display, pp_ctrl_reg, pp);
 		intel_de_posting_read(display, pp_ctrl_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -1519,35 +1018,17 @@ void intel_pps_on(struct intel_dp *intel_dp)
 
 void intel_pps_off_unlocked(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 	u32 pp;
 	i915_reg_t pp_ctrl_reg;
 
-<<<<<<< HEAD
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!intel_dp_is_edp(intel_dp))
 		return;
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "[ENCODER:%d:%s] %s turn panel power off\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps));
-
-	drm_WARN(&dev_priv->drm, !intel_dp->pps.want_panel_vdd,
-		 "[ENCODER:%d:%s] %s need VDD to turn off panel\n",
-		 dig_port->base.base.base.id, dig_port->base.base.name,
-		 pps_name(dev_priv, &intel_dp->pps));
-=======
 	drm_dbg_kms(display->drm, "[ENCODER:%d:%s] %s turn panel power off\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
 		    pps_name(intel_dp));
@@ -1556,7 +1037,6 @@ void intel_pps_off_unlocked(struct intel_dp *intel_dp)
 		 "[ENCODER:%d:%s] %s need VDD to turn off panel\n",
 		 dig_port->base.base.base.id, dig_port->base.base.name,
 		 pps_name(intel_dp));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pp = ilk_get_pp_control(intel_dp);
 	/* We need to switch off panel power _and_ force vdd, for otherwise some
@@ -1568,13 +1048,8 @@ void intel_pps_off_unlocked(struct intel_dp *intel_dp)
 
 	intel_dp->pps.want_panel_vdd = false;
 
-<<<<<<< HEAD
-	intel_de_write(dev_priv, pp_ctrl_reg, pp);
-	intel_de_posting_read(dev_priv, pp_ctrl_reg);
-=======
 	intel_de_write(display, pp_ctrl_reg, pp);
 	intel_de_posting_read(display, pp_ctrl_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	wait_panel_off(intel_dp);
 	intel_dp->pps.panel_power_off_time = ktime_get_boottime();
@@ -1599,11 +1074,7 @@ void intel_pps_off(struct intel_dp *intel_dp)
 /* Enable backlight in the panel power control. */
 void intel_pps_backlight_on(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_wakeref_t wakeref;
 
 	/*
@@ -1621,24 +1092,15 @@ void intel_pps_backlight_on(struct intel_dp *intel_dp)
 		pp = ilk_get_pp_control(intel_dp);
 		pp |= EDP_BLC_ENABLE;
 
-<<<<<<< HEAD
-		intel_de_write(dev_priv, pp_ctrl_reg, pp);
-		intel_de_posting_read(dev_priv, pp_ctrl_reg);
-=======
 		intel_de_write(display, pp_ctrl_reg, pp);
 		intel_de_posting_read(display, pp_ctrl_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
 /* Disable backlight in the panel power control. */
 void intel_pps_backlight_off(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_wakeref_t wakeref;
 
 	if (!intel_dp_is_edp(intel_dp))
@@ -1651,13 +1113,8 @@ void intel_pps_backlight_off(struct intel_dp *intel_dp)
 		pp = ilk_get_pp_control(intel_dp);
 		pp &= ~EDP_BLC_ENABLE;
 
-<<<<<<< HEAD
-		intel_de_write(dev_priv, pp_ctrl_reg, pp);
-		intel_de_posting_read(dev_priv, pp_ctrl_reg);
-=======
 		intel_de_write(display, pp_ctrl_reg, pp);
 		intel_de_posting_read(display, pp_ctrl_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	intel_dp->pps.last_backlight_off = jiffies;
@@ -1670,11 +1127,7 @@ void intel_pps_backlight_off(struct intel_dp *intel_dp)
  */
 void intel_pps_backlight_power(struct intel_connector *connector, bool enable)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = to_i915(connector->base.dev);
-=======
 	struct intel_display *display = to_intel_display(connector);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_dp *intel_dp = intel_attached_dp(connector);
 	intel_wakeref_t wakeref;
 	bool is_enabled;
@@ -1685,11 +1138,7 @@ void intel_pps_backlight_power(struct intel_connector *connector, bool enable)
 	if (is_enabled == enable)
 		return;
 
-<<<<<<< HEAD
-	drm_dbg_kms(&i915->drm, "panel power control backlight %s\n",
-=======
 	drm_dbg_kms(display->drm, "panel power control backlight %s\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    enable ? "enable" : "disable");
 
 	if (enable)
@@ -1700,16 +1149,6 @@ void intel_pps_backlight_power(struct intel_connector *connector, bool enable)
 
 static void vlv_detach_power_sequencer(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
-	struct drm_i915_private *dev_priv = to_i915(dig_port->base.base.dev);
-	enum pipe pipe = intel_dp->pps.pps_pipe;
-	i915_reg_t pp_on_reg = PP_ON_DELAYS(dev_priv, pipe);
-
-	drm_WARN_ON(&dev_priv->drm, intel_dp->pps.active_pipe != INVALID_PIPE);
-
-	if (drm_WARN_ON(&dev_priv->drm, pipe != PIPE_A && pipe != PIPE_B))
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 	enum pipe pipe = intel_dp->pps.pps_pipe;
@@ -1718,7 +1157,6 @@ static void vlv_detach_power_sequencer(struct intel_dp *intel_dp)
 	drm_WARN_ON(display->drm, intel_dp->pps.active_pipe != INVALID_PIPE);
 
 	if (drm_WARN_ON(display->drm, pipe != PIPE_A && pipe != PIPE_B))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	intel_pps_vdd_off_sync_unlocked(intel_dp);
@@ -1732,49 +1170,27 @@ static void vlv_detach_power_sequencer(struct intel_dp *intel_dp)
 	 * port select always when logically disconnecting a power sequencer
 	 * from a port.
 	 */
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm,
-		    "detaching %s from [ENCODER:%d:%s]\n",
-		    pps_name(dev_priv, &intel_dp->pps),
-		    dig_port->base.base.base.id, dig_port->base.base.name);
-	intel_de_write(dev_priv, pp_on_reg, 0);
-	intel_de_posting_read(dev_priv, pp_on_reg);
-=======
 	drm_dbg_kms(display->drm,
 		    "detaching %s from [ENCODER:%d:%s]\n",
 		    pps_name(intel_dp),
 		    dig_port->base.base.base.id, dig_port->base.base.name);
 	intel_de_write(display, pp_on_reg, 0);
 	intel_de_posting_read(display, pp_on_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intel_dp->pps.pps_pipe = INVALID_PIPE;
 }
 
-<<<<<<< HEAD
-static void vlv_steal_power_sequencer(struct drm_i915_private *dev_priv,
-=======
 static void vlv_steal_power_sequencer(struct intel_display *display,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      enum pipe pipe)
 {
 	struct intel_encoder *encoder;
 
-<<<<<<< HEAD
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-
-	for_each_intel_dp(&dev_priv->drm, encoder) {
-		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
-
-		drm_WARN(&dev_priv->drm, intel_dp->pps.active_pipe == pipe,
-=======
 	lockdep_assert_held(&display->pps.mutex);
 
 	for_each_intel_dp(display->drm, encoder) {
 		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
 
 		drm_WARN(display->drm, intel_dp->pps.active_pipe == pipe,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 "stealing PPS %c from active [ENCODER:%d:%s]\n",
 			 pipe_name(pipe), encoder->base.base.id,
 			 encoder->base.name);
@@ -1782,11 +1198,7 @@ static void vlv_steal_power_sequencer(struct intel_display *display,
 		if (intel_dp->pps.pps_pipe != pipe)
 			continue;
 
-<<<<<<< HEAD
-		drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    "stealing PPS %c from [ENCODER:%d:%s]\n",
 			    pipe_name(pipe), encoder->base.base.id,
 			    encoder->base.name);
@@ -1799,15 +1211,6 @@ static void vlv_steal_power_sequencer(struct intel_display *display,
 void vlv_pps_init(struct intel_encoder *encoder,
 		  const struct intel_crtc_state *crtc_state)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
-	struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
-	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-
-	drm_WARN_ON(&dev_priv->drm, intel_dp->pps.active_pipe != INVALID_PIPE);
-=======
 	struct intel_display *display = to_intel_display(encoder);
 	struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
@@ -1815,7 +1218,6 @@ void vlv_pps_init(struct intel_encoder *encoder,
 	lockdep_assert_held(&display->pps.mutex);
 
 	drm_WARN_ON(display->drm, intel_dp->pps.active_pipe != INVALID_PIPE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (intel_dp->pps.pps_pipe != INVALID_PIPE &&
 	    intel_dp->pps.pps_pipe != crtc->pipe) {
@@ -1831,11 +1233,7 @@ void vlv_pps_init(struct intel_encoder *encoder,
 	 * We may be stealing the power
 	 * sequencer from another port.
 	 */
-<<<<<<< HEAD
-	vlv_steal_power_sequencer(dev_priv, crtc->pipe);
-=======
 	vlv_steal_power_sequencer(display, crtc->pipe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intel_dp->pps.active_pipe = crtc->pipe;
 
@@ -1845,15 +1243,9 @@ void vlv_pps_init(struct intel_encoder *encoder,
 	/* now it's all ours */
 	intel_dp->pps.pps_pipe = crtc->pipe;
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm,
-		    "initializing %s for [ENCODER:%d:%s]\n",
-		    pps_name(dev_priv, &intel_dp->pps),
-=======
 	drm_dbg_kms(display->drm,
 		    "initializing %s for [ENCODER:%d:%s]\n",
 		    pps_name(intel_dp),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    encoder->base.base.id, encoder->base.name);
 
 	/* init power sequencer on this pipe and port */
@@ -1863,18 +1255,11 @@ void vlv_pps_init(struct intel_encoder *encoder,
 
 static void pps_vdd_init(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!edp_have_panel_vdd(intel_dp))
 		return;
@@ -1885,19 +1270,11 @@ static void pps_vdd_init(struct intel_dp *intel_dp)
 	 * schedule a vdd off, so we don't hold on to the reference
 	 * indefinitely.
 	 */
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm,
-		    "[ENCODER:%d:%s] %s VDD left on by BIOS, adjusting state tracking\n",
-		    dig_port->base.base.base.id, dig_port->base.base.name,
-		    pps_name(dev_priv, &intel_dp->pps));
-	drm_WARN_ON(&dev_priv->drm, intel_dp->pps.vdd_wakeref);
-=======
 	drm_dbg_kms(display->drm,
 		    "[ENCODER:%d:%s] %s VDD left on by BIOS, adjusting state tracking\n",
 		    dig_port->base.base.base.id, dig_port->base.base.name,
 		    pps_name(intel_dp));
 	drm_WARN_ON(display->drm, intel_dp->pps.vdd_wakeref);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_dp->pps.vdd_wakeref = intel_display_power_get(dev_priv,
 							    intel_aux_power_domain(dig_port));
 }
@@ -1931,11 +1308,7 @@ static void pps_init_timestamps(struct intel_dp *intel_dp)
 static void
 intel_pps_readout_hw_state(struct intel_dp *intel_dp, struct edp_power_seq *seq)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 pp_on, pp_off, pp_ctl;
 	struct pps_registers regs;
 
@@ -1944,19 +1317,11 @@ intel_pps_readout_hw_state(struct intel_dp *intel_dp, struct edp_power_seq *seq)
 	pp_ctl = ilk_get_pp_control(intel_dp);
 
 	/* Ensure PPS is unlocked */
-<<<<<<< HEAD
-	if (!HAS_DDI(dev_priv))
-		intel_de_write(dev_priv, regs.pp_ctrl, pp_ctl);
-
-	pp_on = intel_de_read(dev_priv, regs.pp_on);
-	pp_off = intel_de_read(dev_priv, regs.pp_off);
-=======
 	if (!HAS_DDI(display))
 		intel_de_write(display, regs.pp_ctrl, pp_ctl);
 
 	pp_on = intel_de_read(display, regs.pp_on);
 	pp_off = intel_de_read(display, regs.pp_off);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Pull timing values out of registers */
 	seq->t1_t3 = REG_FIELD_GET(PANEL_POWER_UP_DELAY_MASK, pp_on);
@@ -1967,11 +1332,7 @@ intel_pps_readout_hw_state(struct intel_dp *intel_dp, struct edp_power_seq *seq)
 	if (i915_mmio_reg_valid(regs.pp_div)) {
 		u32 pp_div;
 
-<<<<<<< HEAD
-		pp_div = intel_de_read(dev_priv, regs.pp_div);
-=======
 		pp_div = intel_de_read(display, regs.pp_div);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		seq->t11_t12 = REG_FIELD_GET(PANEL_POWER_CYCLE_DELAY_MASK, pp_div) * 1000;
 	} else {
@@ -1983,16 +1344,10 @@ static void
 intel_pps_dump_state(struct intel_dp *intel_dp, const char *state_name,
 		     const struct edp_power_seq *seq)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-
-	drm_dbg_kms(&i915->drm, "%s t1_t3 %d t8 %d t9 %d t10 %d t11_t12 %d\n",
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 
 	drm_dbg_kms(display->drm,
 		    "%s t1_t3 %d t8 %d t9 %d t10 %d t11_t12 %d\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    state_name,
 		    seq->t1_t3, seq->t8, seq->t9, seq->t10, seq->t11_t12);
 }
@@ -2000,11 +1355,7 @@ intel_pps_dump_state(struct intel_dp *intel_dp, const char *state_name,
 static void
 intel_pps_verify_state(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct edp_power_seq hw;
 	struct edp_power_seq *sw = &intel_dp->pps.pps_delays;
 
@@ -2012,11 +1363,7 @@ intel_pps_verify_state(struct intel_dp *intel_dp)
 
 	if (hw.t1_t3 != sw->t1_t3 || hw.t8 != sw->t8 || hw.t9 != sw->t9 ||
 	    hw.t10 != sw->t10 || hw.t11_t12 != sw->t11_t12) {
-<<<<<<< HEAD
-		drm_err(&i915->drm, "PPS state mismatch\n");
-=======
 		drm_err(display->drm, "PPS state mismatch\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_pps_dump_state(intel_dp, "sw", sw);
 		intel_pps_dump_state(intel_dp, "hw", &hw);
 	}
@@ -2031,15 +1378,9 @@ static bool pps_delays_valid(struct edp_power_seq *delays)
 static void pps_init_delays_bios(struct intel_dp *intel_dp,
 				 struct edp_power_seq *bios)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!pps_delays_valid(&intel_dp->pps.bios_pps_delays))
 		intel_pps_readout_hw_state(intel_dp, &intel_dp->pps.bios_pps_delays);
@@ -2084,15 +1425,9 @@ static void pps_init_delays_vbt(struct intel_dp *intel_dp,
 static void pps_init_delays_spec(struct intel_dp *intel_dp,
 				 struct edp_power_seq *spec)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Upper limits from eDP 1.3 spec. Note that we use the clunky units of
 	 * our hw here, which are all in 100usec. */
@@ -2111,19 +1446,11 @@ static void pps_init_delays_spec(struct intel_dp *intel_dp,
 
 static void pps_init_delays(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	struct edp_power_seq cur, vbt, spec,
-		*final = &intel_dp->pps.pps_delays;
-
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct edp_power_seq cur, vbt, spec,
 		*final = &intel_dp->pps.pps_delays;
 
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* already initialized? */
 	if (pps_delays_valid(final))
@@ -2153,21 +1480,13 @@ static void pps_init_delays(struct intel_dp *intel_dp)
 	intel_dp->pps.panel_power_cycle_delay = get_delay(t11_t12);
 #undef get_delay
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm,
-=======
 	drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    "panel power up delay %d, power down delay %d, power cycle delay %d\n",
 		    intel_dp->pps.panel_power_up_delay,
 		    intel_dp->pps.panel_power_down_delay,
 		    intel_dp->pps.panel_power_cycle_delay);
 
-<<<<<<< HEAD
-	drm_dbg_kms(&dev_priv->drm, "backlight on delay %d, off delay %d\n",
-=======
 	drm_dbg_kms(display->drm, "backlight on delay %d, off delay %d\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    intel_dp->pps.backlight_on_delay,
 		    intel_dp->pps.backlight_off_delay);
 
@@ -2190,25 +1509,15 @@ static void pps_init_delays(struct intel_dp *intel_dp)
 
 static void pps_init_registers(struct intel_dp *intel_dp, bool force_disable_vdd)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *dev_priv = dp_to_i915(intel_dp);
-	u32 pp_on, pp_off, port_sel = 0;
-	int div = RUNTIME_INFO(dev_priv)->rawclk_freq / 1000;
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
 	u32 pp_on, pp_off, port_sel = 0;
 	int div = DISPLAY_RUNTIME_INFO(display)->rawclk_freq / 1000;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct pps_registers regs;
 	enum port port = dp_to_dig_port(intel_dp)->base.port;
 	const struct edp_power_seq *seq = &intel_dp->pps.pps_delays;
 
-<<<<<<< HEAD
-	lockdep_assert_held(&dev_priv->display.pps.mutex);
-=======
 	lockdep_assert_held(&display->pps.mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intel_pps_get_registers(intel_dp, &regs);
 
@@ -2227,28 +1536,16 @@ static void pps_init_registers(struct intel_dp *intel_dp, bool force_disable_vdd
 	if (force_disable_vdd) {
 		u32 pp = ilk_get_pp_control(intel_dp);
 
-<<<<<<< HEAD
-		drm_WARN(&dev_priv->drm, pp & PANEL_POWER_ON,
-			 "Panel power already on\n");
-
-		if (pp & EDP_FORCE_VDD)
-			drm_dbg_kms(&dev_priv->drm,
-=======
 		drm_WARN(display->drm, pp & PANEL_POWER_ON,
 			 "Panel power already on\n");
 
 		if (pp & EDP_FORCE_VDD)
 			drm_dbg_kms(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    "VDD already on, disabling first\n");
 
 		pp &= ~EDP_FORCE_VDD;
 
-<<<<<<< HEAD
-		intel_de_write(dev_priv, regs.pp_ctrl, pp);
-=======
 		intel_de_write(display, regs.pp_ctrl, pp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	pp_on = REG_FIELD_PREP(PANEL_POWER_UP_DELAY_MASK, seq->t1_t3) |
@@ -2279,34 +1576,13 @@ static void pps_init_registers(struct intel_dp *intel_dp, bool force_disable_vdd
 
 	pp_on |= port_sel;
 
-<<<<<<< HEAD
-	intel_de_write(dev_priv, regs.pp_on, pp_on);
-	intel_de_write(dev_priv, regs.pp_off, pp_off);
-=======
 	intel_de_write(display, regs.pp_on, pp_on);
 	intel_de_write(display, regs.pp_off, pp_off);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Compute the divisor for the pp clock, simply match the Bspec formula.
 	 */
 	if (i915_mmio_reg_valid(regs.pp_div))
-<<<<<<< HEAD
-		intel_de_write(dev_priv, regs.pp_div,
-			       REG_FIELD_PREP(PP_REFERENCE_DIVIDER_MASK, (100 * div) / 2 - 1) | REG_FIELD_PREP(PANEL_POWER_CYCLE_DELAY_MASK, DIV_ROUND_UP(seq->t11_t12, 1000)));
-	else
-		intel_de_rmw(dev_priv, regs.pp_ctrl, BXT_POWER_CYCLE_DELAY_MASK,
-			     REG_FIELD_PREP(BXT_POWER_CYCLE_DELAY_MASK,
-					    DIV_ROUND_UP(seq->t11_t12, 1000)));
-
-	drm_dbg_kms(&dev_priv->drm,
-		    "panel power sequencer register settings: PP_ON %#x, PP_OFF %#x, PP_DIV %#x\n",
-		    intel_de_read(dev_priv, regs.pp_on),
-		    intel_de_read(dev_priv, regs.pp_off),
-		    i915_mmio_reg_valid(regs.pp_div) ?
-		    intel_de_read(dev_priv, regs.pp_div) :
-		    (intel_de_read(dev_priv, regs.pp_ctrl) & BXT_POWER_CYCLE_DELAY_MASK));
-=======
 		intel_de_write(display, regs.pp_div,
 			       REG_FIELD_PREP(PP_REFERENCE_DIVIDER_MASK, (100 * div) / 2 - 1) | REG_FIELD_PREP(PANEL_POWER_CYCLE_DELAY_MASK, DIV_ROUND_UP(seq->t11_t12, 1000)));
 	else
@@ -2321,17 +1597,12 @@ static void pps_init_registers(struct intel_dp *intel_dp, bool force_disable_vdd
 		    i915_mmio_reg_valid(regs.pp_div) ?
 		    intel_de_read(display, regs.pp_div) :
 		    (intel_de_read(display, regs.pp_ctrl) & BXT_POWER_CYCLE_DELAY_MASK));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void intel_pps_encoder_reset(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *i915 = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	intel_wakeref_t wakeref;
 
 	if (!intel_dp_is_edp(intel_dp))
@@ -2377,30 +1648,19 @@ bool intel_pps_init(struct intel_dp *intel_dp)
 
 static void pps_init_late(struct intel_dp *intel_dp)
 {
-<<<<<<< HEAD
-	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
-=======
 	struct intel_display *display = to_intel_display(intel_dp);
 	struct drm_i915_private *i915 = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_encoder *encoder = &dp_to_dig_port(intel_dp)->base;
 	struct intel_connector *connector = intel_dp->attached_connector;
 
 	if (IS_VALLEYVIEW(i915) || IS_CHERRYVIEW(i915))
 		return;
 
-<<<<<<< HEAD
-	if (intel_num_pps(i915) < 2)
-		return;
-
-	drm_WARN(&i915->drm, connector->panel.vbt.backlight.controller >= 0 &&
-=======
 	if (intel_num_pps(display) < 2)
 		return;
 
 	drm_WARN(display->drm,
 		 connector->panel.vbt.backlight.controller >= 0 &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 intel_dp->pps.pps_idx != connector->panel.vbt.backlight.controller,
 		 "[ENCODER:%d:%s] power sequencer mismatch: %d (initial) vs. %d (VBT)\n",
 		 encoder->base.base.id, encoder->base.name,
@@ -2429,42 +1689,17 @@ void intel_pps_init_late(struct intel_dp *intel_dp)
 	}
 }
 
-<<<<<<< HEAD
-void intel_pps_unlock_regs_wa(struct drm_i915_private *dev_priv)
-=======
 void intel_pps_unlock_regs_wa(struct intel_display *display)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int pps_num;
 	int pps_idx;
 
-<<<<<<< HEAD
-	if (!HAS_DISPLAY(dev_priv) || HAS_DDI(dev_priv))
-=======
 	if (!HAS_DISPLAY(display) || HAS_DDI(display))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	/*
 	 * This w/a is needed at least on CPT/PPT, but to be sure apply it
 	 * everywhere where registers can be write protected.
 	 */
-<<<<<<< HEAD
-	pps_num = intel_num_pps(dev_priv);
-
-	for (pps_idx = 0; pps_idx < pps_num; pps_idx++)
-		intel_de_rmw(dev_priv, PP_CONTROL(dev_priv, pps_idx),
-			     PANEL_UNLOCK_MASK, PANEL_UNLOCK_REGS);
-}
-
-void intel_pps_setup(struct drm_i915_private *i915)
-{
-	if (HAS_PCH_SPLIT(i915) || IS_GEMINILAKE(i915) || IS_BROXTON(i915))
-		i915->display.pps.mmio_base = PCH_PPS_BASE;
-	else if (IS_VALLEYVIEW(i915) || IS_CHERRYVIEW(i915))
-		i915->display.pps.mmio_base = VLV_PPS_BASE;
-	else
-		i915->display.pps.mmio_base = PPS_BASE;
-=======
 	pps_num = intel_num_pps(display);
 
 	for (pps_idx = 0; pps_idx < pps_num; pps_idx++)
@@ -2482,7 +1717,6 @@ void intel_pps_setup(struct intel_display *display)
 		display->pps.mmio_base = VLV_PPS_BASE;
 	else
 		display->pps.mmio_base = PPS_BASE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int intel_pps_show(struct seq_file *m, void *data)
@@ -2516,37 +1750,23 @@ void intel_pps_connector_debugfs_add(struct intel_connector *connector)
 				    connector, &intel_pps_fops);
 }
 
-<<<<<<< HEAD
-void assert_pps_unlocked(struct drm_i915_private *dev_priv, enum pipe pipe)
-{
-=======
 void assert_pps_unlocked(struct intel_display *display, enum pipe pipe)
 {
 	struct drm_i915_private *dev_priv = to_i915(display->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	i915_reg_t pp_reg;
 	u32 val;
 	enum pipe panel_pipe = INVALID_PIPE;
 	bool locked = true;
 
-<<<<<<< HEAD
-	if (drm_WARN_ON(&dev_priv->drm, HAS_DDI(dev_priv)))
-=======
 	if (drm_WARN_ON(display->drm, HAS_DDI(display)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	if (HAS_PCH_SPLIT(dev_priv)) {
 		u32 port_sel;
 
-<<<<<<< HEAD
-		pp_reg = PP_CONTROL(dev_priv, 0);
-		port_sel = intel_de_read(dev_priv, PP_ON_DELAYS(dev_priv, 0)) & PANEL_PORT_SELECT_MASK;
-=======
 		pp_reg = PP_CONTROL(display, 0);
 		port_sel = intel_de_read(display, PP_ON_DELAYS(display, 0)) &
 			PANEL_PORT_SELECT_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		switch (port_sel) {
 		case PANEL_PORT_SELECT_LVDS:
@@ -2567,36 +1787,21 @@ void assert_pps_unlocked(struct intel_display *display, enum pipe pipe)
 		}
 	} else if (IS_VALLEYVIEW(dev_priv) || IS_CHERRYVIEW(dev_priv)) {
 		/* presumably write lock depends on pipe, not port select */
-<<<<<<< HEAD
-		pp_reg = PP_CONTROL(dev_priv, pipe);
-=======
 		pp_reg = PP_CONTROL(display, pipe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		panel_pipe = pipe;
 	} else {
 		u32 port_sel;
 
-<<<<<<< HEAD
-		pp_reg = PP_CONTROL(dev_priv, 0);
-		port_sel = intel_de_read(dev_priv, PP_ON_DELAYS(dev_priv, 0)) & PANEL_PORT_SELECT_MASK;
-
-		drm_WARN_ON(&dev_priv->drm,
-=======
 		pp_reg = PP_CONTROL(display, 0);
 		port_sel = intel_de_read(display, PP_ON_DELAYS(display, 0)) &
 			PANEL_PORT_SELECT_MASK;
 
 		drm_WARN_ON(display->drm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    port_sel != PANEL_PORT_SELECT_LVDS);
 		intel_lvds_port_enabled(dev_priv, LVDS, &panel_pipe);
 	}
 
-<<<<<<< HEAD
-	val = intel_de_read(dev_priv, pp_reg);
-=======
 	val = intel_de_read(display, pp_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(val & PANEL_POWER_ON) ||
 	    ((val & PANEL_UNLOCK_MASK) == PANEL_UNLOCK_REGS))
 		locked = false;

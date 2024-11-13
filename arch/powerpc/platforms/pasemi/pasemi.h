@@ -5,10 +5,6 @@
 extern time64_t pas_get_boot_time(void);
 extern void pas_pci_init(void);
 struct pci_dev;
-<<<<<<< HEAD
-extern void pas_pci_irq_fixup(struct pci_dev *dev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void pas_pci_dma_dev_setup(struct pci_dev *dev);
 
 void __iomem *__init pasemi_pci_getcfgaddr(struct pci_dev *dev, int offset);

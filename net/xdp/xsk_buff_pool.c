@@ -211,14 +211,11 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
 		goto err_unreg_pool;
 	}
 
-<<<<<<< HEAD
-=======
 	if (dev_get_min_mp_channel_count(netdev)) {
 		err = -EBUSY;
 		goto err_unreg_pool;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bpf.command = XDP_SETUP_XSK_POOL;
 	bpf.xsk.pool = pool;
 	bpf.xsk.queue_id = queue_id;
@@ -631,8 +628,6 @@ static u32 xp_alloc_reused(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u3
 	return nb_entries;
 }
 
-<<<<<<< HEAD
-=======
 static u32 xp_alloc_slow(struct xsk_buff_pool *pool, struct xdp_buff **xdp,
 			 u32 max)
 {
@@ -651,25 +646,12 @@ static u32 xp_alloc_slow(struct xsk_buff_pool *pool, struct xdp_buff **xdp,
 	return max;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 u32 xp_alloc_batch(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u32 max)
 {
 	u32 nb_entries1 = 0, nb_entries2;
 
-<<<<<<< HEAD
-	if (unlikely(pool->dev && dma_dev_need_sync(pool->dev))) {
-		struct xdp_buff *buff;
-
-		/* Slow path */
-		buff = xp_alloc(pool);
-		if (buff)
-			*xdp = buff;
-		return !!buff;
-	}
-=======
 	if (unlikely(pool->dev && dma_dev_need_sync(pool->dev)))
 		return xp_alloc_slow(pool, xdp, max);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(pool->free_list_cnt)) {
 		nb_entries1 = xp_alloc_reused(pool, xdp, max);
@@ -690,11 +672,6 @@ EXPORT_SYMBOL(xp_alloc_batch);
 
 bool xp_can_alloc(struct xsk_buff_pool *pool, u32 count)
 {
-<<<<<<< HEAD
-	if (pool->free_list_cnt >= count)
-		return true;
-	return xskq_cons_has_entries(pool->fq, count - pool->free_list_cnt);
-=======
 	u32 req_count, avail_count;
 
 	if (pool->free_list_cnt >= count)
@@ -706,7 +683,6 @@ bool xp_can_alloc(struct xsk_buff_pool *pool, u32 count)
 		pool->fq->queue_empty_descs++;
 
 	return avail_count >= req_count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(xp_can_alloc);
 

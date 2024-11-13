@@ -142,10 +142,6 @@ int hda_component_manager_bind(struct hda_codec *cdc,
 
 	/* Init shared and component specific data */
 	memset(parent->comps, 0, sizeof(parent->comps));
-<<<<<<< HEAD
-	parent->codec = cdc;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&parent->mutex);
 	ret = component_bind_all(hda_codec_dev(cdc), parent);
@@ -166,8 +162,6 @@ int hda_component_manager_init(struct hda_codec *cdc,
 	struct hda_scodec_match *sm;
 	int ret, i;
 
-<<<<<<< HEAD
-=======
 	if (parent->codec) {
 		codec_err(cdc, "Component binding already created (SSID: %x)\n",
 			  cdc->core.subsystem_id);
@@ -175,7 +169,6 @@ int hda_component_manager_init(struct hda_codec *cdc,
 	}
 	parent->codec = cdc;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_init(&parent->mutex);
 
 	for (i = 0; i < count; i++) {
@@ -198,14 +191,6 @@ int hda_component_manager_init(struct hda_codec *cdc,
 }
 EXPORT_SYMBOL_NS_GPL(hda_component_manager_init, SND_HDA_SCODEC_COMPONENT);
 
-<<<<<<< HEAD
-void hda_component_manager_free(struct hda_codec *cdc,
-				const struct component_master_ops *ops)
-{
-	struct device *dev = hda_codec_dev(cdc);
-
-	component_master_del(dev, ops);
-=======
 void hda_component_manager_free(struct hda_component_parent *parent,
 				const struct component_master_ops *ops)
 {
@@ -219,7 +204,6 @@ void hda_component_manager_free(struct hda_component_parent *parent,
 	component_master_del(dev, ops);
 
 	parent->codec = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_NS_GPL(hda_component_manager_free, SND_HDA_SCODEC_COMPONENT);
 

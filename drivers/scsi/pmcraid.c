@@ -1946,11 +1946,7 @@ static void pmcraid_soft_reset(struct pmcraid_cmd *cmd)
 	}
 
 	iowrite32(doorbell, pinstance->int_regs.host_ioa_interrupt_reg);
-<<<<<<< HEAD
-	ioread32(pinstance->int_regs.host_ioa_interrupt_reg),
-=======
 	ioread32(pinstance->int_regs.host_ioa_interrupt_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int_reg = ioread32(pinstance->int_regs.ioa_host_interrupt_reg);
 
 	pmcraid_info("Waiting for IOA to become operational %x:%x\n",
@@ -4013,11 +4009,7 @@ static void pmcraid_tasklet_function(unsigned long instance)
  * This routine un-registers registered interrupt handler and
  * also frees irqs/vectors.
  *
-<<<<<<< HEAD
- * Retun Value
-=======
  * Return Value
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	None
  */
 static

@@ -22,19 +22,13 @@
 #include <linux/io.h>
 #include <linux/rfkill.h>
 #include <linux/power_supply.h>
-<<<<<<< HEAD
-=======
 #include <linux/sysfs.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/acpi.h>
 #include <linux/mm.h>
 #include <linux/i8042.h>
 #include <linux/debugfs.h>
 #include <linux/seq_file.h>
-<<<<<<< HEAD
-=======
 #include <acpi/battery.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <acpi/video.h>
 #include "dell-rbtn.h"
 #include "dell-smbios.h"
@@ -107,8 +101,6 @@ static bool force_rfkill;
 static bool micmute_led_registered;
 static bool mute_led_registered;
 
-<<<<<<< HEAD
-=======
 struct battery_mode_info {
 	int token;
 	const char *label;
@@ -123,7 +115,6 @@ static const struct battery_mode_info battery_modes[] = {
 };
 static u32 battery_supported_modes;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 module_param(force_rfkill, bool, 0444);
 MODULE_PARM_DESC(force_rfkill, "enable rfkill on non whitelisted models");
 
@@ -378,8 +369,6 @@ static const struct dmi_system_id dell_quirks[] __initconst = {
 	{ }
 };
 
-<<<<<<< HEAD
-=======
 /* -1 is a sentinel value, telling us to use token->value */
 #define USE_TVAL ((u32) -1)
 static int dell_send_request_for_tokenid(struct calling_interface_buffer *buffer,
@@ -406,7 +395,6 @@ static inline int dell_set_std_token_value(struct calling_interface_buffer *buff
 			SELECT_TOKEN_STD, tokenid, value);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Derived from information in smbios-wireless-ctl:
  *
@@ -949,54 +937,17 @@ static void dell_cleanup_rfkill(void)
 static int dell_send_intensity(struct backlight_device *bd)
 {
 	struct calling_interface_buffer buffer;
-<<<<<<< HEAD
-	struct calling_interface_token *token;
-	int ret;
-
-	token = dell_smbios_find_token(BRIGHTNESS_TOKEN);
-	if (!token)
-		return -ENODEV;
-
-	dell_fill_request(&buffer,
-			   token->location, bd->props.brightness, 0, 0);
-	if (power_supply_is_system_supplied() > 0)
-		ret = dell_send_request(&buffer,
-					CLASS_TOKEN_WRITE, SELECT_TOKEN_AC);
-	else
-		ret = dell_send_request(&buffer,
-					CLASS_TOKEN_WRITE, SELECT_TOKEN_BAT);
-
-	return ret;
-=======
 	u16 select;
 
 	select = power_supply_is_system_supplied() > 0 ?
 			SELECT_TOKEN_AC : SELECT_TOKEN_BAT;
 	return dell_send_request_for_tokenid(&buffer, CLASS_TOKEN_WRITE,
 			select, BRIGHTNESS_TOKEN, bd->props.brightness);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int dell_get_intensity(struct backlight_device *bd)
 {
 	struct calling_interface_buffer buffer;
-<<<<<<< HEAD
-	struct calling_interface_token *token;
-	int ret;
-
-	token = dell_smbios_find_token(BRIGHTNESS_TOKEN);
-	if (!token)
-		return -ENODEV;
-
-	dell_fill_request(&buffer, token->location, 0, 0, 0);
-	if (power_supply_is_system_supplied() > 0)
-		ret = dell_send_request(&buffer,
-					CLASS_TOKEN_READ, SELECT_TOKEN_AC);
-	else
-		ret = dell_send_request(&buffer,
-					CLASS_TOKEN_READ, SELECT_TOKEN_BAT);
-
-=======
 	int ret;
 	u16 select;
 
@@ -1004,7 +955,6 @@ static int dell_get_intensity(struct backlight_device *bd)
 			SELECT_TOKEN_AC : SELECT_TOKEN_BAT;
 	ret = dell_send_request_for_tokenid(&buffer, CLASS_TOKEN_READ,
 			select, BRIGHTNESS_TOKEN, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret == 0)
 		ret = buffer.output[1];
 
@@ -1428,27 +1378,11 @@ static int kbd_set_state_safe(struct kbd_state *state, struct kbd_state *old)
 static int kbd_set_token_bit(u8 bit)
 {
 	struct calling_interface_buffer buffer;
-<<<<<<< HEAD
-	struct calling_interface_token *token;
-	int ret;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (bit >= ARRAY_SIZE(kbd_tokens))
 		return -EINVAL;
 
-<<<<<<< HEAD
-	token = dell_smbios_find_token(kbd_tokens[bit]);
-	if (!token)
-		return -EINVAL;
-
-	dell_fill_request(&buffer, token->location, token->value, 0, 0);
-	ret = dell_send_request(&buffer, CLASS_TOKEN_WRITE, SELECT_TOKEN_STD);
-
-	return ret;
-=======
 	return dell_set_std_token_value(&buffer, kbd_tokens[bit], USE_TVAL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int kbd_get_token_bit(u8 bit)
@@ -1467,18 +1401,10 @@ static int kbd_get_token_bit(u8 bit)
 
 	dell_fill_request(&buffer, token->location, 0, 0, 0);
 	ret = dell_send_request(&buffer, CLASS_TOKEN_READ, SELECT_TOKEN_STD);
-<<<<<<< HEAD
-	val = buffer.output[1];
-
-	if (ret)
-		return ret;
-
-=======
 	if (ret)
 		return ret;
 
 	val = buffer.output[1];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return (val == token->value);
 }
 
@@ -1584,11 +1510,7 @@ static inline int kbd_init_info(void)
 
 }
 
-<<<<<<< HEAD
-static inline void kbd_init_tokens(void)
-=======
 static inline void __init kbd_init_tokens(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 
@@ -1597,11 +1519,7 @@ static inline void __init kbd_init_tokens(void)
 			kbd_token_bits |= BIT(i);
 }
 
-<<<<<<< HEAD
-static void kbd_init(void)
-=======
 static void __init kbd_init(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret;
 
@@ -2226,29 +2144,11 @@ static int micmute_led_set(struct led_classdev *led_cdev,
 			   enum led_brightness brightness)
 {
 	struct calling_interface_buffer buffer;
-<<<<<<< HEAD
-	struct calling_interface_token *token;
-	int state = brightness != LED_OFF;
-
-	if (state == 0)
-		token = dell_smbios_find_token(GLOBAL_MIC_MUTE_DISABLE);
-	else
-		token = dell_smbios_find_token(GLOBAL_MIC_MUTE_ENABLE);
-
-	if (!token)
-		return -ENODEV;
-
-	dell_fill_request(&buffer, token->location, token->value, 0, 0);
-	dell_send_request(&buffer, CLASS_TOKEN_WRITE, SELECT_TOKEN_STD);
-
-	return 0;
-=======
 	u32 tokenid;
 
 	tokenid = brightness == LED_OFF ?
 			GLOBAL_MIC_MUTE_DISABLE : GLOBAL_MIC_MUTE_ENABLE;
 	return dell_set_std_token_value(&buffer, tokenid, USE_TVAL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct led_classdev micmute_led_cdev = {
@@ -2262,29 +2162,11 @@ static int mute_led_set(struct led_classdev *led_cdev,
 			   enum led_brightness brightness)
 {
 	struct calling_interface_buffer buffer;
-<<<<<<< HEAD
-	struct calling_interface_token *token;
-	int state = brightness != LED_OFF;
-
-	if (state == 0)
-		token = dell_smbios_find_token(GLOBAL_MUTE_DISABLE);
-	else
-		token = dell_smbios_find_token(GLOBAL_MUTE_ENABLE);
-
-	if (!token)
-		return -ENODEV;
-
-	dell_fill_request(&buffer, token->location, token->value, 0, 0);
-	dell_send_request(&buffer, CLASS_TOKEN_WRITE, SELECT_TOKEN_STD);
-
-	return 0;
-=======
 	u32 tokenid;
 
 	tokenid = brightness == LED_OFF ?
 			GLOBAL_MUTE_DISABLE : GLOBAL_MUTE_ENABLE;
 	return dell_set_std_token_value(&buffer, tokenid, USE_TVAL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct led_classdev mute_led_cdev = {
@@ -2294,11 +2176,6 @@ static struct led_classdev mute_led_cdev = {
 	.default_trigger = "audio-mute",
 };
 
-<<<<<<< HEAD
-static int __init dell_init(void)
-{
-	struct calling_interface_token *token;
-=======
 static int dell_battery_set_mode(const u16 tokenid)
 {
 	struct calling_interface_buffer buffer;
@@ -2576,7 +2453,6 @@ static void dell_battery_exit(void)
 static int __init dell_init(void)
 {
 	struct calling_interface_buffer buffer;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int max_intensity = 0;
 	int ret;
 
@@ -2610,10 +2486,7 @@ static int __init dell_init(void)
 		touchpad_led_init(&platform_device->dev);
 
 	kbd_led_init(&platform_device->dev);
-<<<<<<< HEAD
-=======
 	dell_battery_init(&platform_device->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dell_laptop_dir = debugfs_create_dir("dell_laptop", NULL);
 	debugfs_create_file("rfkill", 0444, dell_laptop_dir, NULL,
@@ -2641,23 +2514,10 @@ static int __init dell_init(void)
 	if (acpi_video_get_backlight_type() != acpi_backlight_vendor)
 		return 0;
 
-<<<<<<< HEAD
-	token = dell_smbios_find_token(BRIGHTNESS_TOKEN);
-	if (token) {
-		struct calling_interface_buffer buffer;
-
-		dell_fill_request(&buffer, token->location, 0, 0, 0);
-		ret = dell_send_request(&buffer,
-					CLASS_TOKEN_READ, SELECT_TOKEN_AC);
-		if (ret == 0)
-			max_intensity = buffer.output[3];
-	}
-=======
 	ret = dell_send_request_for_tokenid(&buffer, CLASS_TOKEN_READ,
 			SELECT_TOKEN_AC, BRIGHTNESS_TOKEN, 0);
 	if (ret == 0)
 		max_intensity = buffer.output[3];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (max_intensity) {
 		struct backlight_properties props;
@@ -2695,10 +2555,7 @@ fail_backlight:
 	if (mute_led_registered)
 		led_classdev_unregister(&mute_led_cdev);
 fail_led:
-<<<<<<< HEAD
-=======
 	dell_battery_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dell_cleanup_rfkill();
 fail_rfkill:
 	platform_device_del(platform_device);
@@ -2717,10 +2574,7 @@ static void __exit dell_exit(void)
 	if (quirks && quirks->touchpad_led)
 		touchpad_led_exit();
 	kbd_led_exit();
-<<<<<<< HEAD
-=======
 	dell_battery_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	backlight_device_unregister(dell_backlight_device);
 	if (micmute_led_registered)
 		led_classdev_unregister(&micmute_led_cdev);

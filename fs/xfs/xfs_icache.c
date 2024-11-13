@@ -65,8 +65,6 @@ static int xfs_icwalk_ag(struct xfs_perag *pag,
 					 XFS_ICWALK_FLAG_RECLAIM_SICK | \
 					 XFS_ICWALK_FLAG_UNION)
 
-<<<<<<< HEAD
-=======
 /* Marks for the perag xarray */
 #define XFS_PERAG_RECLAIM_MARK	XA_MARK_0
 #define XFS_PERAG_BLOCKGC_MARK	XA_MARK_1
@@ -79,7 +77,6 @@ static inline xa_mark_t ici_tag_to_mark(unsigned int tag)
 	return XFS_PERAG_BLOCKGC_MARK;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Allocate and initialise an xfs_inode.
  */
@@ -103,12 +100,8 @@ xfs_inode_alloc(
 
 	/* VFS doesn't initialise i_mode! */
 	VFS_I(ip)->i_mode = 0;
-<<<<<<< HEAD
-	mapping_set_large_folios(VFS_I(ip)->i_mapping);
-=======
 	mapping_set_folio_min_order(VFS_I(ip)->i_mapping,
 				    M_IGEO(mp)->min_folio_order);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	XFS_STATS_INC(mp, vn_active);
 	ASSERT(atomic_read(&ip->i_pincount) == 0);
@@ -211,11 +204,7 @@ xfs_reclaim_work_queue(
 {
 
 	rcu_read_lock();
-<<<<<<< HEAD
-	if (radix_tree_tagged(&mp->m_perag_tree, XFS_ICI_RECLAIM_TAG)) {
-=======
 	if (xa_marked(&mp->m_perags, XFS_PERAG_RECLAIM_MARK)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		queue_delayed_work(mp->m_reclaim_workqueue, &mp->m_reclaim_work,
 			msecs_to_jiffies(xfs_syncd_centisecs / 6 * 10));
 	}
@@ -265,13 +254,7 @@ xfs_perag_set_inode_tag(
 		return;
 
 	/* propagate the tag up into the perag radix tree */
-<<<<<<< HEAD
-	spin_lock(&mp->m_perag_lock);
-	radix_tree_tag_set(&mp->m_perag_tree, pag->pag_agno, tag);
-	spin_unlock(&mp->m_perag_lock);
-=======
 	xa_set_mark(&mp->m_perags, pag->pag_agno, ici_tag_to_mark(tag));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* start background work */
 	switch (tag) {
@@ -313,20 +296,12 @@ xfs_perag_clear_inode_tag(
 		return;
 
 	/* clear the tag from the perag radix tree */
-<<<<<<< HEAD
-	spin_lock(&mp->m_perag_lock);
-	radix_tree_tag_clear(&mp->m_perag_tree, pag->pag_agno, tag);
-	spin_unlock(&mp->m_perag_lock);
-=======
 	xa_clear_mark(&mp->m_perags, pag->pag_agno, ici_tag_to_mark(tag));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_xfs_perag_clear_inode_tag(pag, _RET_IP_);
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Find the next AG after @pag, or the first AG if @pag is NULL.
  */
 static struct xfs_perag *
@@ -354,7 +329,6 @@ xfs_perag_grab_next_tag(
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * When we recycle a reclaimable inode, we need to re-initialise the VFS inode
  * part of the structure. This is made more complex by the fact we store
  * information about the on-disk values in the VFS inode and so we can't just
@@ -387,12 +361,8 @@ xfs_reinit_inode(
 	inode->i_uid = uid;
 	inode->i_gid = gid;
 	inode->i_state = state;
-<<<<<<< HEAD
-	mapping_set_large_folios(inode->i_mapping);
-=======
 	mapping_set_folio_min_order(inode->i_mapping,
 				    M_IGEO(mp)->min_folio_order);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return error;
 }
 
@@ -822,11 +792,7 @@ xfs_iget(
 	ASSERT((lock_flags & (XFS_IOLOCK_EXCL | XFS_IOLOCK_SHARED)) == 0);
 
 	/* reject inode numbers outside existing AGs */
-<<<<<<< HEAD
-	if (!ino || XFS_INO_TO_AGNO(mp, ino) >= mp->m_sb.sb_agcount)
-=======
 	if (!xfs_verify_ino(mp, ino))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	XFS_STATS_INC(mp, xs_ig_attempts);
@@ -1048,11 +1014,7 @@ xfs_reclaim_inodes(
 	if (xfs_want_reclaim_sick(mp))
 		icw.icw_flags |= XFS_ICWALK_FLAG_RECLAIM_SICK;
 
-<<<<<<< HEAD
-	while (radix_tree_tagged(&mp->m_perag_tree, XFS_ICI_RECLAIM_TAG)) {
-=======
 	while (xa_marked(&mp->m_perags, XFS_PERAG_RECLAIM_MARK)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xfs_ail_push_all_sync(mp->m_ail);
 		xfs_icwalk(mp, XFS_ICWALK_RECLAIM, &icw);
 	}
@@ -1094,17 +1056,6 @@ long
 xfs_reclaim_inodes_count(
 	struct xfs_mount	*mp)
 {
-<<<<<<< HEAD
-	struct xfs_perag	*pag;
-	xfs_agnumber_t		ag = 0;
-	long			reclaimable = 0;
-
-	while ((pag = xfs_perag_get_tag(mp, ag, XFS_ICI_RECLAIM_TAG))) {
-		ag = pag->pag_agno + 1;
-		reclaimable += pag->pag_ici_reclaimable;
-		xfs_perag_put(pag);
-	}
-=======
 	XA_STATE		(xas, &mp->m_perags, 0);
 	long			reclaimable = 0;
 	struct xfs_perag	*pag;
@@ -1116,7 +1067,6 @@ xfs_reclaim_inodes_count(
 	}
 	rcu_read_unlock();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return reclaimable;
 }
 
@@ -1248,11 +1198,7 @@ xfs_inode_free_eofblocks(
 	if (xfs_can_free_eofblocks(ip))
 		return xfs_free_eofblocks(ip);
 
-<<<<<<< HEAD
-	/* inode could be preallocated or append-only */
-=======
 	/* inode could be preallocated */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_xfs_inode_free_eofblocks_invalid(ip);
 	xfs_inode_clear_eofblocks_tag(ip);
 	return 0;
@@ -1334,16 +1280,6 @@ xfs_inode_clear_eofblocks_tag(
 }
 
 /*
-<<<<<<< HEAD
- * Set ourselves up to free CoW blocks from this file.  If it's already clean
- * then we can bail out quickly, but otherwise we must back off if the file
- * is undergoing some kind of write.
- */
-static bool
-xfs_prep_free_cowblocks(
-	struct xfs_inode	*ip)
-{
-=======
  * Prepare to free COW fork blocks from an inode.
  */
 static bool
@@ -1355,7 +1291,6 @@ xfs_prep_free_cowblocks(
 
 	sync = icw && (icw->icw_flags & XFS_ICWALK_FLAG_SYNC);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Just clear the tag if we have an empty cow fork or none at all. It's
 	 * possible the inode was fully unshared since it was originally tagged.
@@ -1367,18 +1302,6 @@ xfs_prep_free_cowblocks(
 	}
 
 	/*
-<<<<<<< HEAD
-	 * If the mapping is dirty or under writeback we cannot touch the
-	 * CoW fork.  Leave it alone if we're in the midst of a directio.
-	 */
-	if ((VFS_I(ip)->i_state & I_DIRTY_PAGES) ||
-	    mapping_tagged(VFS_I(ip)->i_mapping, PAGECACHE_TAG_DIRTY) ||
-	    mapping_tagged(VFS_I(ip)->i_mapping, PAGECACHE_TAG_WRITEBACK) ||
-	    atomic_read(&VFS_I(ip)->i_dio_count))
-		return false;
-
-	return true;
-=======
 	 * A cowblocks trim of an inode can have a significant effect on
 	 * fragmentation even when a reasonable COW extent size hint is set.
 	 * Therefore, we prefer to not process cowblocks unless they are clean
@@ -1395,7 +1318,6 @@ xfs_prep_free_cowblocks(
 	if (!sync && inode_is_open_for_write(VFS_I(ip)))
 		return false;
 	return xfs_can_free_cowblocks(ip);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1424,11 +1346,7 @@ xfs_inode_free_cowblocks(
 	if (!xfs_iflags_test(ip, XFS_ICOWBLOCKS))
 		return 0;
 
-<<<<<<< HEAD
-	if (!xfs_prep_free_cowblocks(ip))
-=======
 	if (!xfs_prep_free_cowblocks(ip, icw))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	if (!xfs_icwalk_match(ip, icw))
@@ -1457,11 +1375,7 @@ xfs_inode_free_cowblocks(
 	 * Check again, nobody else should be able to dirty blocks or change
 	 * the reflink iflag now that we have the first two locks held.
 	 */
-<<<<<<< HEAD
-	if (xfs_prep_free_cowblocks(ip))
-=======
 	if (xfs_prep_free_cowblocks(ip, icw))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = xfs_reflink_cancel_cow_range(ip, 0, NULLFILEOFF, false);
 	return ret;
 }
@@ -1503,22 +1417,13 @@ void
 xfs_blockgc_start(
 	struct xfs_mount	*mp)
 {
-<<<<<<< HEAD
-	struct xfs_perag	*pag;
-	xfs_agnumber_t		agno;
-=======
 	struct xfs_perag	*pag = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (xfs_set_blockgc_enabled(mp))
 		return;
 
 	trace_xfs_blockgc_start(mp, __return_address);
-<<<<<<< HEAD
-	for_each_perag_tag(mp, agno, pag, XFS_ICI_BLOCKGC_TAG)
-=======
 	while ((pag = xfs_perag_grab_next_tag(mp, pag, XFS_ICI_BLOCKGC_TAG)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xfs_blockgc_queue(pag);
 }
 
@@ -1634,27 +1539,11 @@ int
 xfs_blockgc_flush_all(
 	struct xfs_mount	*mp)
 {
-<<<<<<< HEAD
-	struct xfs_perag	*pag;
-	xfs_agnumber_t		agno;
-=======
 	struct xfs_perag	*pag = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_xfs_blockgc_flush_all(mp, __return_address);
 
 	/*
-<<<<<<< HEAD
-	 * For each blockgc worker, move its queue time up to now.  If it
-	 * wasn't queued, it will not be requeued.  Then flush whatever's
-	 * left.
-	 */
-	for_each_perag_tag(mp, agno, pag, XFS_ICI_BLOCKGC_TAG)
-		mod_delayed_work(pag->pag_mount->m_blockgc_wq,
-				&pag->pag_blockgc_work, 0);
-
-	for_each_perag_tag(mp, agno, pag, XFS_ICI_BLOCKGC_TAG)
-=======
 	 * For each blockgc worker, move its queue time up to now.  If it wasn't
 	 * queued, it will not be requeued.  Then flush whatever is left.
 	 */
@@ -1663,7 +1552,6 @@ xfs_blockgc_flush_all(
 				&pag->pag_blockgc_work, 0);
 
 	while ((pag = xfs_perag_grab_next_tag(mp, pag, XFS_ICI_BLOCKGC_TAG)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		flush_delayed_work(&pag->pag_blockgc_work);
 
 	return xfs_inodegc_flush(mp);
@@ -1909,20 +1797,11 @@ xfs_icwalk(
 	enum xfs_icwalk_goal	goal,
 	struct xfs_icwalk	*icw)
 {
-<<<<<<< HEAD
-	struct xfs_perag	*pag;
-	int			error = 0;
-	int			last_error = 0;
-	xfs_agnumber_t		agno;
-
-	for_each_perag_tag(mp, agno, pag, goal) {
-=======
 	struct xfs_perag	*pag = NULL;
 	int			error = 0;
 	int			last_error = 0;
 
 	while ((pag = xfs_perag_grab_next_tag(mp, pag, goal))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = xfs_icwalk_ag(pag, goal, icw);
 		if (error) {
 			last_error = error;

@@ -52,10 +52,7 @@ struct ivpu_hw_info {
 	int dma_bits;
 	ktime_t d0i3_entry_host_ts;
 	u64 d0i3_entry_vpu_ts;
-<<<<<<< HEAD
-=======
 	atomic_t firewall_irq_counter;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 int ivpu_hw_init(struct ivpu_device *vdev);

@@ -429,24 +429,14 @@ static int ps2_gpio_probe(struct platform_device *pdev)
 	}
 
 	error = devm_request_irq(dev, drvdata->irq, ps2_gpio_irq,
-<<<<<<< HEAD
-				 IRQF_NO_THREAD, DRIVER_NAME, drvdata);
-=======
 				 IRQF_NO_THREAD | IRQF_NO_AUTOEN, DRIVER_NAME,
 				 drvdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error) {
 		dev_err(dev, "failed to request irq %d: %d\n",
 			drvdata->irq, error);
 		goto err_free_serio;
 	}
 
-<<<<<<< HEAD
-	/* Keep irq disabled until serio->open is called. */
-	disable_irq(drvdata->irq);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	serio->id.type = SERIO_8042;
 	serio->open = ps2_gpio_open;
 	serio->close = ps2_gpio_close;

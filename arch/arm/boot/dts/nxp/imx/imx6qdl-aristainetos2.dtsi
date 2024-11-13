@@ -506,11 +506,7 @@
 		>;
 	};
 
-<<<<<<< HEAD
-	pinctrl_gpmi_nand: gpmi-nand {
-=======
 	pinctrl_gpmi_nand: gpminandgrp {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fsl,pins = <
 			MX6QDL_PAD_NANDF_CLE__NAND_CLE     0xb0b1
 			MX6QDL_PAD_NANDF_ALE__NAND_ALE     0xb0b1

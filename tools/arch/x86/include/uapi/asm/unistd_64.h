@@ -11,12 +11,9 @@
 #ifndef __NR_getpgid
 #define __NR_getpgid 121
 #endif
-<<<<<<< HEAD
-=======
 #ifndef __NR_capget
 #define __NR_capget 125
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __NR_gettid
 #define __NR_gettid 186
 #endif

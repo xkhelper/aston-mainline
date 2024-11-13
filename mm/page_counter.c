@@ -13,14 +13,11 @@
 #include <linux/bug.h>
 #include <asm/page.h>
 
-<<<<<<< HEAD
-=======
 static bool track_protection(struct page_counter *c)
 {
 	return c->protection_support;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void propagate_protected_usage(struct page_counter *c,
 				      unsigned long usage)
 {
@@ -65,12 +62,8 @@ void page_counter_cancel(struct page_counter *counter, unsigned long nr_pages)
 		new = 0;
 		atomic_long_set(&counter->usage, new);
 	}
-<<<<<<< HEAD
-	propagate_protected_usage(counter, new);
-=======
 	if (track_protection(counter))
 		propagate_protected_usage(counter, new);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -83,24 +76,12 @@ void page_counter_cancel(struct page_counter *counter, unsigned long nr_pages)
 void page_counter_charge(struct page_counter *counter, unsigned long nr_pages)
 {
 	struct page_counter *c;
-<<<<<<< HEAD
-=======
 	bool protection = track_protection(counter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (c = counter; c; c = c->parent) {
 		long new;
 
 		new = atomic_long_add_return(nr_pages, &c->usage);
-<<<<<<< HEAD
-		propagate_protected_usage(c, new);
-		/*
-		 * This is indeed racy, but we can live with some
-		 * inaccuracy in the watermark.
-		 */
-		if (new > READ_ONCE(c->watermark))
-			WRITE_ONCE(c->watermark, new);
-=======
 		if (protection)
 			propagate_protected_usage(c, new);
 		/*
@@ -122,7 +103,6 @@ void page_counter_charge(struct page_counter *counter, unsigned long nr_pages)
 			if (new > READ_ONCE(c->watermark))
 				WRITE_ONCE(c->watermark, new);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -140,10 +120,7 @@ bool page_counter_try_charge(struct page_counter *counter,
 			     struct page_counter **fail)
 {
 	struct page_counter *c;
-<<<<<<< HEAD
-=======
 	bool protection = track_protection(counter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (c = counter; c; c = c->parent) {
 		long new;
@@ -173,15 +150,6 @@ bool page_counter_try_charge(struct page_counter *counter,
 			*fail = c;
 			goto failed;
 		}
-<<<<<<< HEAD
-		propagate_protected_usage(c, new);
-		/*
-		 * Just like with failcnt, we can live with some
-		 * inaccuracy in the watermark.
-		 */
-		if (new > READ_ONCE(c->watermark))
-			WRITE_ONCE(c->watermark, new);
-=======
 		if (protection)
 			propagate_protected_usage(c, new);
 
@@ -191,7 +159,6 @@ bool page_counter_try_charge(struct page_counter *counter,
 			if (new > READ_ONCE(c->watermark))
 				WRITE_ONCE(c->watermark, new);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return true;
 
@@ -321,10 +288,7 @@ int page_counter_memparse(const char *buf, const char *max,
 }
 
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_MEMCG
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This function calculates an individual page counter's effective
  * protection which is derived from its own memory.min/low, its
@@ -496,7 +460,4 @@ void page_counter_calculate_protection(struct page_counter *root,
 			atomic_long_read(&parent->children_low_usage),
 			recursive_protection));
 }
-<<<<<<< HEAD
-=======
 #endif /* CONFIG_MEMCG */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

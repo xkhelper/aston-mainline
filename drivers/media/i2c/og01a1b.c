@@ -1,14 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (c) 2022 Intel Corporation.
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-#include <linux/acpi.h>
-#include <linux/delay.h>
-#include <linux/i2c.h>
-#include <linux/module.h>
-#include <linux/pm_runtime.h>
-=======
 #include <linux/unaligned.h>
 #include <linux/acpi.h>
 #include <linux/clk.h>
@@ -18,7 +10,6 @@
 #include <linux/module.h>
 #include <linux/pm_runtime.h>
 #include <linux/regulator/consumer.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <media/v4l2-ctrls.h>
 #include <media/v4l2-device.h>
 #include <media/v4l2-fwnode.h>
@@ -430,15 +421,12 @@ static const struct og01a1b_mode supported_modes[] = {
 };
 
 struct og01a1b {
-<<<<<<< HEAD
-=======
 	struct clk *xvclk;
 	struct gpio_desc *reset_gpio;
 	struct regulator *avdd;
 	struct regulator *dovdd;
 	struct regulator *dvdd;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct v4l2_subdev sd;
 	struct media_pad pad;
 	struct v4l2_ctrl_handler ctrl_handler;
@@ -919,15 +907,10 @@ static int og01a1b_identify_module(struct og01a1b *og01a1b)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int og01a1b_check_hwcfg(struct device *dev)
-{
-=======
 static int og01a1b_check_hwcfg(struct og01a1b *og01a1b)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(&og01a1b->sd);
 	struct device *dev = &client->dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct fwnode_handle *ep;
 	struct fwnode_handle *fwnode = dev_fwnode(dev);
 	struct v4l2_fwnode_endpoint bus_cfg = {
@@ -941,12 +924,6 @@ static int og01a1b_check_hwcfg(struct og01a1b *og01a1b)
 		return -ENXIO;
 
 	ret = fwnode_property_read_u32(fwnode, "clock-frequency", &mclk);
-<<<<<<< HEAD
-
-	if (ret) {
-		dev_err(dev, "can't get clock frequency");
-		return ret;
-=======
 	if (ret) {
 		if (!og01a1b->xvclk) {
 			dev_err(dev, "can't get clock frequency");
@@ -954,7 +931,6 @@ static int og01a1b_check_hwcfg(struct og01a1b *og01a1b)
 		}
 
 		mclk = clk_get_rate(og01a1b->xvclk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (mclk != OG01A1B_MCLK) {
@@ -1005,8 +981,6 @@ check_hwcfg_error:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /* Power/clock management functions */
 static int og01a1b_power_on(struct device *dev)
 {
@@ -1084,7 +1058,6 @@ static int og01a1b_power_off(struct device *dev)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void og01a1b_remove(struct i2c_client *client)
 {
 	struct v4l2_subdev *sd = i2c_get_clientdata(client);
@@ -1102,9 +1075,6 @@ static int og01a1b_probe(struct i2c_client *client)
 	struct og01a1b *og01a1b;
 	int ret;
 
-<<<<<<< HEAD
-	ret = og01a1b_check_hwcfg(&client->dev);
-=======
 	og01a1b = devm_kzalloc(&client->dev, sizeof(*og01a1b), GFP_KERNEL);
 	if (!og01a1b)
 		return -ENOMEM;
@@ -1119,24 +1089,12 @@ static int og01a1b_probe(struct i2c_client *client)
 	}
 
 	ret = og01a1b_check_hwcfg(og01a1b);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		dev_err(&client->dev, "failed to check HW configuration: %d",
 			ret);
 		return ret;
 	}
 
-<<<<<<< HEAD
-	og01a1b = devm_kzalloc(&client->dev, sizeof(*og01a1b), GFP_KERNEL);
-	if (!og01a1b)
-		return -ENOMEM;
-
-	v4l2_i2c_subdev_init(&og01a1b->sd, client, &og01a1b_subdev_ops);
-	ret = og01a1b_identify_module(og01a1b);
-	if (ret) {
-		dev_err(&client->dev, "failed to find sensor: %d", ret);
-		return ret;
-=======
 	og01a1b->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
 						      GPIOD_OUT_LOW);
 	if (IS_ERR(og01a1b->reset_gpio)) {
@@ -1189,7 +1147,6 @@ static int og01a1b_probe(struct i2c_client *client)
 	if (ret) {
 		dev_err(&client->dev, "failed to find sensor: %d", ret);
 		goto power_off;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mutex_init(&og01a1b->mutex);
@@ -1218,14 +1175,7 @@ static int og01a1b_probe(struct i2c_client *client)
 		goto probe_error_media_entity_cleanup;
 	}
 
-<<<<<<< HEAD
-	/*
-	 * Device is already turned on by i2c-core with ACPI domain PM.
-	 * Enable runtime PM and turn off the device.
-	 */
-=======
 	/* Enable runtime PM and turn off the device */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_set_active(&client->dev);
 	pm_runtime_enable(&client->dev);
 	pm_runtime_idle(&client->dev);
@@ -1239,11 +1189,6 @@ probe_error_v4l2_ctrl_handler_free:
 	v4l2_ctrl_handler_free(og01a1b->sd.ctrl_handler);
 	mutex_destroy(&og01a1b->mutex);
 
-<<<<<<< HEAD
-	return ret;
-}
-
-=======
 power_off:
 	og01a1b_power_off(&client->dev);
 
@@ -1254,7 +1199,6 @@ static const struct dev_pm_ops og01a1b_pm_ops = {
 	SET_RUNTIME_PM_OPS(og01a1b_power_off, og01a1b_power_on, NULL)
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ACPI
 static const struct acpi_device_id og01a1b_acpi_ids[] = {
 	{"OVTI01AC"},
@@ -1264,12 +1208,6 @@ static const struct acpi_device_id og01a1b_acpi_ids[] = {
 MODULE_DEVICE_TABLE(acpi, og01a1b_acpi_ids);
 #endif
 
-<<<<<<< HEAD
-static struct i2c_driver og01a1b_i2c_driver = {
-	.driver = {
-		.name = "og01a1b",
-		.acpi_match_table = ACPI_PTR(og01a1b_acpi_ids),
-=======
 static const struct of_device_id og01a1b_of_match[] = {
 	{ .compatible = "ovti,og01a1b" },
 	{ /* sentinel */ }
@@ -1282,7 +1220,6 @@ static struct i2c_driver og01a1b_i2c_driver = {
 		.pm = &og01a1b_pm_ops,
 		.acpi_match_table = ACPI_PTR(og01a1b_acpi_ids),
 		.of_match_table = og01a1b_of_match,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe = og01a1b_probe,
 	.remove = og01a1b_remove,

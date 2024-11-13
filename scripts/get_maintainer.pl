@@ -54,10 +54,7 @@ my $output_section_maxlen = 50;
 my $scm = 0;
 my $tree = 1;
 my $web = 0;
-<<<<<<< HEAD
-=======
 my $bug = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 my $subsystem = 0;
 my $status = 0;
 my $letters = "";
@@ -275,10 +272,7 @@ if (!GetOptions(
 		'scm!' => \$scm,
 		'tree!' => \$tree,
 		'web!' => \$web,
-<<<<<<< HEAD
-=======
 		'bug!' => \$bug,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		'letters=s' => \$letters,
 		'pattern-depth=i' => \$pattern_depth,
 		'k|keywords!' => \$keywords,
@@ -328,23 +322,14 @@ if ($sections || $letters ne "") {
     $status = 0;
     $subsystem = 0;
     $web = 0;
-<<<<<<< HEAD
-=======
     $bug = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     $keywords = 0;
     $keywords_in_file = 0;
     $interactive = 0;
 } else {
-<<<<<<< HEAD
-    my $selections = $email + $scm + $status + $subsystem + $web;
-    if ($selections == 0) {
-	die "$P:  Missing required option: email, scm, status, subsystem or web\n";
-=======
     my $selections = $email + $scm + $status + $subsystem + $web + $bug;
     if ($selections == 0) {
 	die "$P:  Missing required option: email, scm, status, subsystem, web or bug\n";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 }
 
@@ -649,10 +634,7 @@ my %hash_list_to;
 my @list_to = ();
 my @scm = ();
 my @web = ();
-<<<<<<< HEAD
-=======
 my @bug = ();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 my @subsystem = ();
 my @status = ();
 my %deduplicate_name_hash = ();
@@ -684,14 +666,11 @@ if ($web) {
     output(@web);
 }
 
-<<<<<<< HEAD
-=======
 if ($bug) {
     @bug = uniq(@bug);
     output(@bug);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 exit($exit);
 
 sub self_test {
@@ -877,10 +856,7 @@ sub get_maintainers {
     @list_to = ();
     @scm = ();
     @web = ();
-<<<<<<< HEAD
-=======
     @bug = ();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     @subsystem = ();
     @status = ();
     %deduplicate_name_hash = ();
@@ -1103,10 +1079,7 @@ MAINTAINER field selection options:
   --status => print status if any
   --subsystem => print subsystem name if any
   --web => print website(s) if any
-<<<<<<< HEAD
-=======
   --bug => print bug reporting info if any
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Output type options:
   --separator [, ] => separator for multiple entries on 1 line
@@ -1420,11 +1393,8 @@ sub add_categories {
 		push(@scm, $pvalue . $suffix);
 	    } elsif ($ptype eq "W") {
 		push(@web, $pvalue . $suffix);
-<<<<<<< HEAD
-=======
 	    } elsif ($ptype eq "B") {
 		push(@bug, $pvalue . $suffix);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    } elsif ($ptype eq "S") {
 		push(@status, $pvalue . $suffix);
 	    }

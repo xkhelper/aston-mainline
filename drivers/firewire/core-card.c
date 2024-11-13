@@ -168,10 +168,6 @@ static size_t required_space(struct fw_descriptor *desc)
 int fw_core_add_descriptor(struct fw_descriptor *desc)
 {
 	size_t i;
-<<<<<<< HEAD
-	int ret;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Check descriptor is valid; the length of all blocks in the
@@ -185,25 +181,6 @@ int fw_core_add_descriptor(struct fw_descriptor *desc)
 	if (i != desc->length)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	mutex_lock(&card_mutex);
-
-	if (config_rom_length + required_space(desc) > 256) {
-		ret = -EBUSY;
-	} else {
-		list_add_tail(&desc->link, &descriptor_list);
-		config_rom_length += required_space(desc);
-		descriptor_count++;
-		if (desc->immediate > 0)
-			descriptor_count++;
-		update_config_roms();
-		ret = 0;
-	}
-
-	mutex_unlock(&card_mutex);
-
-	return ret;
-=======
 	guard(mutex)(&card_mutex);
 
 	if (config_rom_length + required_space(desc) > 256)
@@ -217,17 +194,12 @@ int fw_core_add_descriptor(struct fw_descriptor *desc)
 	update_config_roms();
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(fw_core_add_descriptor);
 
 void fw_core_remove_descriptor(struct fw_descriptor *desc)
 {
-<<<<<<< HEAD
-	mutex_lock(&card_mutex);
-=======
 	guard(mutex)(&card_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_del(&desc->link);
 	config_rom_length -= required_space(desc);
@@ -235,11 +207,6 @@ void fw_core_remove_descriptor(struct fw_descriptor *desc)
 	if (desc->immediate > 0)
 		descriptor_count--;
 	update_config_roms();
-<<<<<<< HEAD
-
-	mutex_unlock(&card_mutex);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(fw_core_remove_descriptor);
 
@@ -407,19 +374,11 @@ static void bm_work(struct work_struct *work)
 
 		bm_id = be32_to_cpu(transaction_data[0]);
 
-<<<<<<< HEAD
-		spin_lock_irq(&card->lock);
-		if (rcode == RCODE_COMPLETE && generation == card->generation)
-			card->bm_node_id =
-			    bm_id == 0x3f ? local_id : 0xffc0 | bm_id;
-		spin_unlock_irq(&card->lock);
-=======
 		scoped_guard(spinlock_irq, &card->lock) {
 			if (rcode == RCODE_COMPLETE && generation == card->generation)
 				card->bm_node_id =
 				    bm_id == 0x3f ? local_id : 0xffc0 | bm_id;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (rcode == RCODE_COMPLETE && bm_id != 0x3f) {
 			/* Somebody else is BM.  Only act as IRM. */
@@ -612,13 +571,6 @@ void fw_card_initialize(struct fw_card *card,
 }
 EXPORT_SYMBOL(fw_card_initialize);
 
-<<<<<<< HEAD
-int fw_card_add(struct fw_card *card,
-		u32 max_receive, u32 link_speed, u64 guid)
-{
-	int ret;
-
-=======
 int fw_card_add(struct fw_card *card, u32 max_receive, u32 link_speed, u64 guid,
 		unsigned int supported_isoc_contexts)
 {
@@ -643,23 +595,10 @@ int fw_card_add(struct fw_card *card, u32 max_receive, u32 link_speed, u64 guid,
 	if (!isoc_wq)
 		return -ENOMEM;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	card->max_receive = max_receive;
 	card->link_speed = link_speed;
 	card->guid = guid;
 
-<<<<<<< HEAD
-	mutex_lock(&card_mutex);
-
-	generate_config_rom(card, tmp_config_rom);
-	ret = card->driver->enable(card, tmp_config_rom, config_rom_length);
-	if (ret == 0)
-		list_add_tail(&card->link, &card_list);
-
-	mutex_unlock(&card_mutex);
-
-	return ret;
-=======
 	guard(mutex)(&card_mutex);
 
 	generate_config_rom(card, tmp_config_rom);
@@ -673,7 +612,6 @@ int fw_card_add(struct fw_card *card, u32 max_receive, u32 link_speed, u64 guid,
 	list_add_tail(&card->link, &card_list);
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(fw_card_add);
 
@@ -791,51 +729,31 @@ EXPORT_SYMBOL_GPL(fw_card_release);
 void fw_core_remove_card(struct fw_card *card)
 {
 	struct fw_card_driver dummy_driver = dummy_driver_template;
-<<<<<<< HEAD
-	unsigned long flags;
-=======
 
 	might_sleep();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	card->driver->update_phy_reg(card, 4,
 				     PHY_LINK_ACTIVE | PHY_CONTENDER, 0);
 	fw_schedule_bus_reset(card, false, true);
 
-<<<<<<< HEAD
-	mutex_lock(&card_mutex);
-	list_del_init(&card->link);
-	mutex_unlock(&card_mutex);
-=======
 	scoped_guard(mutex, &card_mutex)
 		list_del_init(&card->link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Switch off most of the card driver interface. */
 	dummy_driver.free_iso_context	= card->driver->free_iso_context;
 	dummy_driver.stop_iso		= card->driver->stop_iso;
 	card->driver = &dummy_driver;
-<<<<<<< HEAD
-
-	spin_lock_irqsave(&card->lock, flags);
-	fw_destroy_nodes(card);
-	spin_unlock_irqrestore(&card->lock, flags);
-=======
 	drain_workqueue(card->isoc_wq);
 
 	scoped_guard(spinlock_irqsave, &card->lock)
 		fw_destroy_nodes(card);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Wait for all users, especially device workqueue jobs, to finish. */
 	fw_card_put(card);
 	wait_for_completion(&card->done);
 
-<<<<<<< HEAD
-=======
 	destroy_workqueue(card->isoc_wq);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	WARN_ON(!list_empty(&card->transaction_list));
 }
 EXPORT_SYMBOL(fw_core_remove_card);

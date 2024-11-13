@@ -21,14 +21,10 @@ record_open_file() {
 	echo "Recording open file:"
 	# Check presence of libtraceevent support to run perf record
 	skip_no_probe_record_support "probe:vfs_getname*"
-<<<<<<< HEAD
-	[ $? -eq 2 ] && return 2
-=======
 	if [ $? -eq 2 ]; then
 		echo "WARN: Skipping test record_open_file. No libtraceevent support"
 		return 2
 	fi
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf record -o ${perfdata} -e probe:vfs_getname\* touch $file
 }
 

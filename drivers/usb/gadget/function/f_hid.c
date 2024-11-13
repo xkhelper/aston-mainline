@@ -15,30 +15,21 @@
 #include <linux/uaccess.h>
 #include <linux/wait.h>
 #include <linux/sched.h>
-<<<<<<< HEAD
-#include <linux/usb/g_hid.h>
-
-#include "u_f.h"
-=======
 #include <linux/workqueue.h>
 #include <linux/usb/func_utils.h>
 #include <linux/usb/g_hid.h>
 #include <uapi/linux/usb/g_hid.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "u_hid.h"
 
 #define HIDG_MINORS	4
 
-<<<<<<< HEAD
-=======
 /*
  * Most operating systems seem to allow for 5000ms timeout, we will allow
  * userspace half that time to respond before we return an empty report.
  */
 #define GET_REPORT_TIMEOUT_MS 2500
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int major, minors;
 
 static const struct class hidg_class = {
@@ -48,14 +39,11 @@ static const struct class hidg_class = {
 static DEFINE_IDA(hidg_ida);
 static DEFINE_MUTEX(hidg_ida_lock); /* protects access to hidg_ida */
 
-<<<<<<< HEAD
-=======
 struct report_entry {
 	struct usb_hidg_report report_data;
 	struct list_head node;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*-------------------------------------------------------------------------*/
 /*                            HID gadget struct                            */
 
@@ -100,8 +88,6 @@ struct f_hidg {
 	wait_queue_head_t		write_queue;
 	struct usb_request		*req;
 
-<<<<<<< HEAD
-=======
 	/* get report */
 	struct usb_request		*get_req;
 	struct usb_hidg_report		get_report;
@@ -115,7 +101,6 @@ struct f_hidg {
 	struct workqueue_struct		*workqueue;
 	struct list_head		report_list;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device			dev;
 	struct cdev			cdev;
 	struct usb_function		func;
@@ -565,8 +550,6 @@ release_write_pending:
 	return status;
 }
 
-<<<<<<< HEAD
-=======
 static struct report_entry *f_hidg_search_for_report(struct f_hidg *hidg, u8 report_id)
 {
 	struct list_head	*ptr;
@@ -735,7 +718,6 @@ static long f_hidg_ioctl(struct file *file, unsigned int code, unsigned long arg
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __poll_t f_hidg_poll(struct file *file, poll_table *wait)
 {
 	struct f_hidg	*hidg  = file->private_data;
@@ -743,11 +725,8 @@ static __poll_t f_hidg_poll(struct file *file, poll_table *wait)
 
 	poll_wait(file, &hidg->read_queue, wait);
 	poll_wait(file, &hidg->write_queue, wait);
-<<<<<<< HEAD
-=======
 	poll_wait(file, &hidg->get_queue, wait);
 	poll_wait(file, &hidg->get_id_queue, wait);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (WRITE_COND)
 		ret |= EPOLLOUT | EPOLLWRNORM;
@@ -760,22 +739,16 @@ static __poll_t f_hidg_poll(struct file *file, poll_table *wait)
 			ret |= EPOLLIN | EPOLLRDNORM;
 	}
 
-<<<<<<< HEAD
-=======
 	if (GET_REPORT_COND)
 		ret |= EPOLLPRI;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
 #undef WRITE_COND
 #undef READ_COND_SSREPORT
 #undef READ_COND_INTOUT
-<<<<<<< HEAD
-=======
 #undef GET_REPORT_COND
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int f_hidg_release(struct inode *inode, struct file *fd)
 {
@@ -868,13 +841,10 @@ static void hidg_ssreport_complete(struct usb_ep *ep, struct usb_request *req)
 	wake_up(&hidg->read_queue);
 }
 
-<<<<<<< HEAD
-=======
 static void hidg_get_report_complete(struct usb_ep *ep, struct usb_request *req)
 {
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int hidg_setup(struct usb_function *f,
 		const struct usb_ctrlrequest *ctrl)
 {
@@ -883,10 +853,7 @@ static int hidg_setup(struct usb_function *f,
 	struct usb_request		*req  = cdev->req;
 	int status = 0;
 	__u16 value, length;
-<<<<<<< HEAD
-=======
 	unsigned long	flags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	value	= __le16_to_cpu(ctrl->wValue);
 	length	= __le16_to_cpu(ctrl->wLength);
@@ -898,16 +865,6 @@ static int hidg_setup(struct usb_function *f,
 	switch ((ctrl->bRequestType << 8) | ctrl->bRequest) {
 	case ((USB_DIR_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE) << 8
 		  | HID_REQ_GET_REPORT):
-<<<<<<< HEAD
-		VDBG(cdev, "get_report\n");
-
-		/* send an empty report */
-		length = min_t(unsigned, length, hidg->report_length);
-		memset(req->buf, 0x0, length);
-
-		goto respond;
-		break;
-=======
 		VDBG(cdev, "get_report | wLength=%d\n", ctrl->wLength);
 
 		/*
@@ -922,7 +879,6 @@ static int hidg_setup(struct usb_function *f,
 		queue_work(hidg->workqueue, &hidg->work);
 
 		return status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	case ((USB_DIR_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE) << 8
 		  | HID_REQ_GET_PROTOCOL):
@@ -1048,8 +1004,6 @@ static void hidg_disable(struct usb_function *f)
 		spin_unlock_irqrestore(&hidg->read_spinlock, flags);
 	}
 
-<<<<<<< HEAD
-=======
 	spin_lock_irqsave(&hidg->get_report_spinlock, flags);
 	if (!hidg->get_report_returned) {
 		usb_ep_free_request(f->config->cdev->gadget->ep0, hidg->get_req);
@@ -1058,7 +1012,6 @@ static void hidg_disable(struct usb_function *f)
 	}
 	spin_unlock_irqrestore(&hidg->get_report_spinlock, flags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock_irqsave(&hidg->write_spinlock, flags);
 	if (!hidg->write_pending) {
 		free_ep_req(hidg->in_ep, hidg->req);
@@ -1168,8 +1121,6 @@ fail:
 	return status;
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_COMPAT
 static long f_hidg_compat_ioctl(struct file *file, unsigned int code,
 		unsigned long value)
@@ -1178,7 +1129,6 @@ static long f_hidg_compat_ioctl(struct file *file, unsigned int code,
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct file_operations f_hidg_fops = {
 	.owner		= THIS_MODULE,
 	.open		= f_hidg_open,
@@ -1186,13 +1136,10 @@ static const struct file_operations f_hidg_fops = {
 	.write		= f_hidg_write,
 	.read		= f_hidg_read,
 	.poll		= f_hidg_poll,
-<<<<<<< HEAD
-=======
 	.unlocked_ioctl	= f_hidg_ioctl,
 #ifdef CONFIG_COMPAT
 	.compat_ioctl = f_hidg_compat_ioctl,
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.llseek		= noop_llseek,
 };
 
@@ -1203,8 +1150,6 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
 	struct usb_string	*us;
 	int			status;
 
-<<<<<<< HEAD
-=======
 	hidg->get_req = usb_ep_alloc_request(c->cdev->gadget->ep0, GFP_ATOMIC);
 	if (!hidg->get_req)
 		return -ENOMEM;
@@ -1214,7 +1159,6 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
 	hidg->get_req->context = hidg;
 	hidg->get_report_returned = true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* maybe allocate device-global string IDs, and patch descriptors */
 	us = usb_gstrings_attach(c->cdev, ct_func_strings,
 				 ARRAY_SIZE(ct_func_string_defs));
@@ -1300,11 +1244,6 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
 	hidg->write_pending = 1;
 	hidg->req = NULL;
 	spin_lock_init(&hidg->read_spinlock);
-<<<<<<< HEAD
-	init_waitqueue_head(&hidg->write_queue);
-	init_waitqueue_head(&hidg->read_queue);
-	INIT_LIST_HEAD(&hidg->completed_out_req);
-=======
 	spin_lock_init(&hidg->get_report_spinlock);
 	init_waitqueue_head(&hidg->write_queue);
 	init_waitqueue_head(&hidg->read_queue);
@@ -1323,7 +1262,6 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
 		status = -ENOMEM;
 		goto fail;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* create char device */
 	cdev_init(&hidg->cdev, &f_hidg_fops);
@@ -1333,22 +1271,16 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
 
 	return 0;
 fail_free_descs:
-<<<<<<< HEAD
-=======
 	destroy_workqueue(hidg->workqueue);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	usb_free_all_descriptors(f);
 fail:
 	ERROR(f->config->cdev, "hidg_bind FAILED\n");
 	if (hidg->req != NULL)
 		free_ep_req(hidg->in_ep, hidg->req);
 
-<<<<<<< HEAD
-=======
 	usb_ep_free_request(c->cdev->gadget->ep0, hidg->get_req);
 	hidg->get_req = NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return status;
 }
 
@@ -1583,11 +1515,7 @@ static void hidg_unbind(struct usb_configuration *c, struct usb_function *f)
 	struct f_hidg *hidg = func_to_hidg(f);
 
 	cdev_device_del(&hidg->cdev, &hidg->dev);
-<<<<<<< HEAD
-
-=======
 	destroy_workqueue(hidg->workqueue);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	usb_free_all_descriptors(f);
 }
 

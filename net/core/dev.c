@@ -158,15 +158,10 @@
 #include <net/page_pool/types.h>
 #include <net/page_pool/helpers.h>
 #include <net/rps.h>
-<<<<<<< HEAD
-
-#include "dev.h"
-=======
 #include <linux/phy_link_topology.h>
 
 #include "dev.h"
 #include "devmem.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "net-sysfs.h"
 
 static DEFINE_SPINLOCK(ptype_lock);
@@ -3317,13 +3312,10 @@ int skb_checksum_help(struct sk_buff *skb)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
 	if (!skb_frags_readable(skb)) {
 		return -EFAULT;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Before computing a checksum, we should make sure no frag could
 	 * be modified by an external entity : checksum could be wrong.
 	 */
@@ -3400,10 +3392,7 @@ int skb_crc32c_csum_help(struct sk_buff *skb)
 out:
 	return ret;
 }
-<<<<<<< HEAD
-=======
 EXPORT_SYMBOL(skb_crc32c_csum_help);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 __be16 skb_network_protocol(struct sk_buff *skb, int *depth)
 {
@@ -3449,14 +3438,9 @@ static int illegal_highdma(struct net_device *dev, struct sk_buff *skb)
 	if (!(dev->features & NETIF_F_HIGHDMA)) {
 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
 			skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
-<<<<<<< HEAD
-
-			if (PageHighMem(skb_frag_page(frag)))
-=======
 			struct page *page = skb_frag_page(frag);
 
 			if (page && PageHighMem(page))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return 1;
 		}
 	}
@@ -3528,11 +3512,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
 	if (gso_segs > READ_ONCE(dev->gso_max_segs))
 		return features & ~NETIF_F_GSO_MASK;
 
-<<<<<<< HEAD
-	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
-=======
 	if (unlikely(skb->len >= netif_get_gso_max_size(dev, skb)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return features & ~NETIF_F_GSO_MASK;
 
 	if (!skb_shinfo(skb)->gso_type) {
@@ -3659,12 +3639,9 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
 		return 0;
 
 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-<<<<<<< HEAD
-=======
 		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
 		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
 			goto sw_checksum;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		switch (skb->csum_offset) {
 		case offsetof(struct tcphdr, check):
 		case offsetof(struct udphdr, check):
@@ -3672,10 +3649,7 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
 		}
 	}
 
-<<<<<<< HEAD
-=======
 sw_checksum:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return skb_checksum_help(skb);
 }
 EXPORT_SYMBOL(skb_csum_hwoffload_help);
@@ -3743,11 +3717,7 @@ struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *d
 		next = skb->next;
 		skb_mark_not_on_list(skb);
 
-<<<<<<< HEAD
-		/* in case skb wont be segmented, point to itself */
-=======
 		/* in case skb won't be segmented, point to itself */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		skb->prev = skb;
 
 		skb = validate_xmit_skb(skb, dev, again);
@@ -3792,11 +3762,7 @@ static void qdisc_pkt_len_init(struct sk_buff *skb)
 						sizeof(_tcphdr), &_tcphdr);
 			if (likely(th))
 				hdr_len += __tcp_hdrlen(th);
-<<<<<<< HEAD
-		} else {
-=======
 		} else if (shinfo->gso_type & SKB_GSO_UDP_L4) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct udphdr _udphdr;
 
 			if (skb_header_pointer(skb, hdr_len,
@@ -3804,12 +3770,6 @@ static void qdisc_pkt_len_init(struct sk_buff *skb)
 				hdr_len += sizeof(struct udphdr);
 		}
 
-<<<<<<< HEAD
-		if (shinfo->gso_type & SKB_GSO_DODGY)
-			gso_segs = DIV_ROUND_UP(skb->len - hdr_len,
-						shinfo->gso_size);
-
-=======
 		if (unlikely(shinfo->gso_type & SKB_GSO_DODGY)) {
 			int payload = skb->len - hdr_len;
 
@@ -3818,7 +3778,6 @@ static void qdisc_pkt_len_init(struct sk_buff *skb)
 				return;
 			gso_segs = DIV_ROUND_UP(payload, shinfo->gso_size);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		qdisc_skb_cb(skb)->pkt_len += (gso_segs - 1) * hdr_len;
 	}
 }
@@ -4302,16 +4261,6 @@ u16 dev_pick_tx_zero(struct net_device *dev, struct sk_buff *skb,
 }
 EXPORT_SYMBOL(dev_pick_tx_zero);
 
-<<<<<<< HEAD
-u16 dev_pick_tx_cpu_id(struct net_device *dev, struct sk_buff *skb,
-		       struct net_device *sb_dev)
-{
-	return (u16)raw_smp_processor_id() % dev->real_num_tx_queues;
-}
-EXPORT_SYMBOL(dev_pick_tx_cpu_id);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 u16 netdev_pick_tx(struct net_device *dev, struct sk_buff *skb,
 		     struct net_device *sb_dev)
 {
@@ -5308,11 +5257,7 @@ int netif_rx(struct sk_buff *skb)
 }
 EXPORT_SYMBOL(netif_rx);
 
-<<<<<<< HEAD
-static __latent_entropy void net_tx_action(struct softirq_action *h)
-=======
 static __latent_entropy void net_tx_action(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct softnet_data *sd = this_cpu_ptr(&softnet_data);
 
@@ -5789,16 +5734,9 @@ static void __netif_receive_skb_list_core(struct list_head *head, bool pfmemallo
 	struct packet_type *pt_curr = NULL;
 	/* Current (common) orig_dev of sublist */
 	struct net_device *od_curr = NULL;
-<<<<<<< HEAD
-	struct list_head sublist;
-	struct sk_buff *skb, *next;
-
-	INIT_LIST_HEAD(&sublist);
-=======
 	struct sk_buff *skb, *next;
 	LIST_HEAD(sublist);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe(skb, next, head, list) {
 		struct net_device *orig_dev = skb->dev;
 		struct packet_type *pt_prev = NULL;
@@ -5936,14 +5874,8 @@ static int netif_receive_skb_internal(struct sk_buff *skb)
 void netif_receive_skb_list_internal(struct list_head *head)
 {
 	struct sk_buff *skb, *next;
-<<<<<<< HEAD
-	struct list_head sublist;
-
-	INIT_LIST_HEAD(&sublist);
-=======
 	LIST_HEAD(sublist);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe(skb, next, head, list) {
 		net_timestamp_check(READ_ONCE(net_hotdata.tstamp_prequeue),
 				    skb);
@@ -6996,11 +6928,7 @@ static int napi_threaded_poll(void *data)
 	return 0;
 }
 
-<<<<<<< HEAD
-static __latent_entropy void net_rx_action(struct softirq_action *h)
-=======
 static __latent_entropy void net_rx_action(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct softnet_data *sd = this_cpu_ptr(&softnet_data);
 	unsigned long time_limit = jiffies +
@@ -9351,11 +9279,7 @@ EXPORT_SYMBOL(netdev_port_same_parent_id);
  */
 int dev_change_proto_down(struct net_device *dev, bool proto_down)
 {
-<<<<<<< HEAD
-	if (!(dev->priv_flags & IFF_CHANGE_PROTO_DOWN))
-=======
 	if (!dev->change_proto_down)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EOPNOTSUPP;
 	if (!netif_device_present(dev))
 		return -ENODEV;
@@ -9452,8 +9376,6 @@ u8 dev_xdp_prog_count(struct net_device *dev)
 }
 EXPORT_SYMBOL_GPL(dev_xdp_prog_count);
 
-<<<<<<< HEAD
-=======
 int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
 {
 	if (!dev->netdev_ops->ndo_bpf)
@@ -9468,7 +9390,6 @@ int dev_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
 }
 EXPORT_SYMBOL_GPL(dev_xdp_propagate);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode)
 {
 	struct bpf_prog *prog = dev_xdp_prog(dev, mode);
@@ -9497,14 +9418,11 @@ static int dev_xdp_install(struct net_device *dev, enum bpf_xdp_mode mode,
 	struct netdev_bpf xdp;
 	int err;
 
-<<<<<<< HEAD
-=======
 	if (dev_get_min_mp_channel_count(dev)) {
 		NL_SET_ERR_MSG(extack, "unable to install XDP to device using memory provider");
 		return -EBUSY;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(&xdp, 0, sizeof(xdp));
 	xdp.command = mode == XDP_MODE_HW ? XDP_SETUP_PROG_HW : XDP_SETUP_PROG;
 	xdp.extack = extack;
@@ -9929,8 +9847,6 @@ err_out:
 	return err;
 }
 
-<<<<<<< HEAD
-=======
 u32 dev_get_min_mp_channel_count(const struct net_device *dev)
 {
 	int i;
@@ -9945,7 +9861,6 @@ u32 dev_get_min_mp_channel_count(const struct net_device *dev)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * dev_index_reserve() - allocate an ifindex in a namespace
  * @net: the applicable net namespace
@@ -10446,8 +10361,6 @@ static void netdev_do_free_pcpu_stats(struct net_device *dev)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void netdev_free_phy_link_topology(struct net_device *dev)
 {
 	struct phy_link_topology *topo = dev->link_topo;
@@ -10459,7 +10372,6 @@ static void netdev_free_phy_link_topology(struct net_device *dev)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * register_netdevice() - register a network device
  * @dev: device to register
@@ -11007,11 +10919,7 @@ noinline void netdev_core_stats_inc(struct net_device *dev, u32 offset)
 			return;
 	}
 
-<<<<<<< HEAD
-	field = (__force unsigned long __percpu *)((__force void *)p + offset);
-=======
 	field = (unsigned long __percpu *)((void __percpu *)p + offset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	this_cpu_inc(*field);
 }
 EXPORT_SYMBOL_GPL(netdev_core_stats_inc);
@@ -11242,10 +11150,7 @@ struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
 #ifdef CONFIG_NET_SCHED
 	hash_init(dev->qdisc_hash);
 #endif
-<<<<<<< HEAD
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->priv_flags = IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM;
 	setup(dev);
 
@@ -11267,11 +11172,7 @@ struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
 	if (!dev->ethtool)
 		goto free_all;
 
-<<<<<<< HEAD
-	strcpy(dev->name, name);
-=======
 	strscpy(dev->name, name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->name_assign_type = name_assign_type;
 	dev->group = INIT_NETDEV_GROUP;
 	if (!dev->ethtool_ops)
@@ -11342,11 +11243,8 @@ void free_netdev(struct net_device *dev)
 	free_percpu(dev->xdp_bulkq);
 	dev->xdp_bulkq = NULL;
 
-<<<<<<< HEAD
-=======
 	netdev_free_phy_link_topology(dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*  Compatibility with error handling in drivers */
 	if (dev->reg_state == NETREG_UNINITIALIZED ||
 	    dev->reg_state == NETREG_DUMMY) {
@@ -11499,10 +11397,7 @@ void unregister_netdevice_many_notify(struct list_head *head,
 		dev_tcx_uninstall(dev);
 		dev_xdp_uninstall(dev);
 		bpf_dev_bound_netdev_unregister(dev);
-<<<<<<< HEAD
-=======
 		dev_dmabuf_uninstall(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		netdev_offload_xstats_disable_all(dev);
 
@@ -11567,11 +11462,7 @@ void unregister_netdevice_many_notify(struct list_head *head,
  *	@head: list of devices
  *
  *  Note: As most callers use a stack allocated list_head,
-<<<<<<< HEAD
- *  we force a list_del() to make sure stack wont be corrupted later.
-=======
  *  we force a list_del() to make sure stack won't be corrupted later.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void unregister_netdevice_many(struct list_head *head)
 {
@@ -11626,17 +11517,10 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
 
 	/* Don't allow namespace local devices to be moved. */
 	err = -EINVAL;
-<<<<<<< HEAD
-	if (dev->features & NETIF_F_NETNS_LOCAL)
-		goto out;
-
-	/* Ensure the device has been registrered */
-=======
 	if (dev->netns_local)
 		goto out;
 
 	/* Ensure the device has been registered */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dev->reg_state != NETREG_REGISTERED)
 		goto out;
 
@@ -12015,11 +11899,7 @@ static void __net_exit default_device_exit_net(struct net *net)
 		char fb_name[IFNAMSIZ];
 
 		/* Ignore unmoveable devices (i.e. loopback) */
-<<<<<<< HEAD
-		if (dev->features & NETIF_F_NETNS_LOCAL)
-=======
 		if (dev->netns_local)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		/* Leave virtual devices for the generic cleanup */
@@ -12080,11 +11960,7 @@ static struct pernet_operations __net_initdata default_device_ops = {
 static void __init net_dev_struct_check(void)
 {
 	/* TX read-mostly hotpath */
-<<<<<<< HEAD
-	CACHELINE_ASSERT_GROUP_MEMBER(struct net_device, net_device_read_tx, priv_flags);
-=======
 	CACHELINE_ASSERT_GROUP_MEMBER(struct net_device, net_device_read_tx, priv_flags_fast);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	CACHELINE_ASSERT_GROUP_MEMBER(struct net_device, net_device_read_tx, netdev_ops);
 	CACHELINE_ASSERT_GROUP_MEMBER(struct net_device, net_device_read_tx, header_ops);
 	CACHELINE_ASSERT_GROUP_MEMBER(struct net_device, net_device_read_tx, _tx);

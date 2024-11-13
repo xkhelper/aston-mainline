@@ -127,15 +127,8 @@ static int mwifiex_unregister(struct mwifiex_adapter *adapter)
 
 	/* Free private structures */
 	for (i = 0; i < adapter->priv_num; i++) {
-<<<<<<< HEAD
-		if (adapter->priv[i]) {
-			mwifiex_free_curr_bcn(adapter->priv[i]);
-			kfree(adapter->priv[i]);
-		}
-=======
 		mwifiex_free_curr_bcn(adapter->priv[i]);
 		kfree(adapter->priv[i]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (adapter->nd_info) {
@@ -535,14 +528,11 @@ static void mwifiex_terminate_workqueue(struct mwifiex_adapter *adapter)
 		destroy_workqueue(adapter->rx_workqueue);
 		adapter->rx_workqueue = NULL;
 	}
-<<<<<<< HEAD
-=======
 
 	if (adapter->host_mlme_workqueue) {
 		destroy_workqueue(adapter->host_mlme_workqueue);
 		adapter->host_mlme_workqueue = NULL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -815,13 +805,10 @@ mwifiex_bypass_tx_queue(struct mwifiex_private *priv,
 			    "bypass txqueue; eth type %#x, mgmt %d\n",
 			     ntohs(eth_hdr->h_proto),
 			     mwifiex_is_skb_mgmt_frame(skb));
-<<<<<<< HEAD
-=======
 		if (eth_hdr->h_proto == htons(ETH_P_PAE))
 			mwifiex_dbg(priv->adapter, MSG,
 				    "key: send EAPOL to %pM\n",
 				    eth_hdr->h_dest);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	}
 
@@ -1182,11 +1169,7 @@ void mwifiex_drv_info_dump(struct mwifiex_adapter *adapter)
 	}
 
 	for (i = 0; i < adapter->priv_num; i++) {
-<<<<<<< HEAD
-		if (!adapter->priv[i] || !adapter->priv[i]->netdev)
-=======
 		if (!adapter->priv[i]->netdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 		priv = adapter->priv[i];
 		p += sprintf(p, "\n[interface  : \"%s\"]\n",
@@ -1225,11 +1208,7 @@ void mwifiex_drv_info_dump(struct mwifiex_adapter *adapter)
 	debug_info = kzalloc(sizeof(*debug_info), GFP_KERNEL);
 	if (debug_info) {
 		for (i = 0; i < adapter->priv_num; i++) {
-<<<<<<< HEAD
-			if (!adapter->priv[i] || !adapter->priv[i]->netdev)
-=======
 			if (!adapter->priv[i]->netdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 			priv = adapter->priv[i];
 			mwifiex_get_debug_info(priv, debug_info);
@@ -1412,8 +1391,6 @@ int is_command_pending(struct mwifiex_adapter *adapter)
 	return !is_cmd_pend_q_empty;
 }
 
-<<<<<<< HEAD
-=======
 /* This is the host mlme work queue function.
  * It handles the host mlme operations.
  */
@@ -1443,7 +1420,6 @@ static void mwifiex_host_mlme_work_queue(struct work_struct *work)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This is the RX work queue function.
  *
@@ -1494,11 +1470,7 @@ static void mwifiex_uninit_sw(struct mwifiex_adapter *adapter)
 	/* Stop data */
 	for (i = 0; i < adapter->priv_num; i++) {
 		priv = adapter->priv[i];
-<<<<<<< HEAD
-		if (priv && priv->netdev) {
-=======
 		if (priv->netdev) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			mwifiex_stop_net_dev_queue(priv->netdev, adapter);
 			if (netif_carrier_ok(priv->netdev))
 				netif_carrier_off(priv->netdev);
@@ -1523,11 +1495,6 @@ static void mwifiex_uninit_sw(struct mwifiex_adapter *adapter)
 
 	for (i = 0; i < adapter->priv_num; i++) {
 		priv = adapter->priv[i];
-<<<<<<< HEAD
-		if (!priv)
-			continue;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rtnl_lock();
 		if (priv->netdev &&
 		    priv->wdev.iftype != NL80211_IFTYPE_UNSPECIFIED) {
@@ -1625,8 +1592,6 @@ mwifiex_reinit_sw(struct mwifiex_adapter *adapter)
 		INIT_WORK(&adapter->rx_work, mwifiex_rx_work_queue);
 	}
 
-<<<<<<< HEAD
-=======
 	if (adapter->host_mlme_enabled) {
 		adapter->host_mlme_workqueue =
 			alloc_workqueue("MWIFIEX_HOST_MLME_WORK_QUEUE",
@@ -1639,7 +1604,6 @@ mwifiex_reinit_sw(struct mwifiex_adapter *adapter)
 			  mwifiex_host_mlme_work_queue);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Register the device. Fill up the private data structure with
 	 * relevant information from the card. Some code extracted from
 	 * mwifiex_register_dev()
@@ -1803,8 +1767,6 @@ mwifiex_add_card(void *card, struct completion *fw_done,
 		goto err_registerdev;
 	}
 
-<<<<<<< HEAD
-=======
 	if (adapter->host_mlme_enabled) {
 		adapter->host_mlme_workqueue =
 			alloc_workqueue("MWIFIEX_HOST_MLME_WORK_QUEUE",
@@ -1817,7 +1779,6 @@ mwifiex_add_card(void *card, struct completion *fw_done,
 			  mwifiex_host_mlme_work_queue);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (mwifiex_init_hw_fw(adapter, true)) {
 		pr_err("%s: firmware init failed\n", __func__);
 		goto err_init_fw;

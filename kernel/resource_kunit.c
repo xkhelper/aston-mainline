@@ -7,11 +7,8 @@
 #include <linux/ioport.h>
 #include <linux/kernel.h>
 #include <linux/string.h>
-<<<<<<< HEAD
-=======
 #include <linux/sizes.h>
 #include <linux/mm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define R0_START	0x0000
 #define R0_END		0xffff
@@ -142,11 +139,6 @@ static void resource_test_intersection(struct kunit *test)
 	} while (++i < ARRAY_SIZE(results_for_intersection));
 }
 
-<<<<<<< HEAD
-static struct kunit_case resource_test_cases[] = {
-	KUNIT_CASE(resource_test_union),
-	KUNIT_CASE(resource_test_intersection),
-=======
 /*
  * The test resource tree for region_intersects() test:
  *
@@ -301,7 +293,6 @@ static struct kunit_case resource_test_cases[] = {
 	KUNIT_CASE(resource_test_union),
 	KUNIT_CASE(resource_test_intersection),
 	KUNIT_CASE(resource_test_region_intersects),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

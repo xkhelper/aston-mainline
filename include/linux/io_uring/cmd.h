@@ -23,8 +23,6 @@ static inline const void *io_uring_sqe_cmd(const struct io_uring_sqe *sqe)
 	return sqe->cmd;
 }
 
-<<<<<<< HEAD
-=======
 static inline void io_uring_cmd_private_sz_check(size_t cmd_sz)
 {
 	BUILD_BUG_ON(cmd_sz > sizeof_field(struct io_uring_cmd, pdu));
@@ -34,7 +32,6 @@ static inline void io_uring_cmd_private_sz_check(size_t cmd_sz)
 	((pdu_type *)&(cmd)->pdu) \
 )
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if defined(CONFIG_IO_URING)
 int io_uring_cmd_import_fixed(u64 ubuf, unsigned long len, int rw,
 			      struct iov_iter *iter, void *ioucmd);
@@ -60,12 +57,9 @@ void __io_uring_cmd_do_in_task(struct io_uring_cmd *ioucmd,
 void io_uring_cmd_mark_cancelable(struct io_uring_cmd *cmd,
 		unsigned int issue_flags);
 
-<<<<<<< HEAD
-=======
 /* Execute the request from a blocking context */
 void io_uring_cmd_issue_blocking(struct io_uring_cmd *ioucmd);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static inline int io_uring_cmd_import_fixed(u64 ubuf, unsigned long len, int rw,
 			      struct iov_iter *iter, void *ioucmd)
@@ -85,12 +79,9 @@ static inline void io_uring_cmd_mark_cancelable(struct io_uring_cmd *cmd,
 		unsigned int issue_flags)
 {
 }
-<<<<<<< HEAD
-=======
 static inline void io_uring_cmd_issue_blocking(struct io_uring_cmd *ioucmd)
 {
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 /*

@@ -10,11 +10,7 @@
 #define _CIFSPDU_H
 
 #include <net/sock.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "../common/smbfsctl.h"
 
 #define CIFS_PROT   0
@@ -785,11 +781,7 @@ typedef struct smb_com_logoff_andx_rsp {
 	__u16 ByteCount;
 } __attribute__((packed)) LOGOFF_ANDX_RSP;
 
-<<<<<<< HEAD
-typedef union smb_com_tree_disconnect {	/* as an altetnative can use flag on
-=======
 typedef union smb_com_tree_disconnect {	/* as an alternative can use flag on
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					tree_connect PDU to effect disconnect */
 					/* tdis is probably simplest SMB PDU */
 	struct {
@@ -2414,11 +2406,7 @@ struct cifs_posix_ace { /* access control entry (ACE) */
 	__le64 cifs_uid; /* or gid */
 } __attribute__((packed));
 
-<<<<<<< HEAD
-struct cifs_posix_acl { /* access conrol list  (ACL) */
-=======
 struct cifs_posix_acl { /* access control list  (ACL) */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le16	version;
 	__le16	access_entry_count;  /* access ACL - count of entries */
 	__le16	default_entry_count; /* default ACL - count of entries */
@@ -2585,15 +2573,6 @@ typedef struct {
 } __attribute__((packed)) FIND_FILE_STANDARD_INFO; /* level 0x1 FF resp data */
 
 
-<<<<<<< HEAD
-struct win_dev {
-	unsigned char type[8]; /* IntxCHR or IntxBLK or LnxFIFO or LnxSOCK */
-	__le64 major;
-	__le64 minor;
-} __attribute__((packed));
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct fea {
 	unsigned char EA_flags;
 	__u8 name_len;

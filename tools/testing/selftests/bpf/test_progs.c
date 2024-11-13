@@ -10,10 +10,6 @@
 #include <sched.h>
 #include <signal.h>
 #include <string.h>
-<<<<<<< HEAD
-#include <execinfo.h> /* backtrace */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <sys/sysinfo.h> /* get_nprocs */
 #include <netinet/in.h>
 #include <sys/select.h>
@@ -22,8 +18,6 @@
 #include <bpf/btf.h>
 #include "json_writer.h"
 
-<<<<<<< HEAD
-=======
 #include "network_helpers.h"
 
 #ifdef __GLIBC__
@@ -43,7 +37,6 @@ __weak void backtrace_symbols_fd(void *const *buffer, int size, int fd)
 
 int env_verbosity = 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool verbose(void)
 {
 	return env.verbosity > VERBOSE_NONE;
@@ -62,25 +55,15 @@ static void stdio_hijack_init(char **log_buf, size_t *log_cnt)
 
 	stdout = open_memstream(log_buf, log_cnt);
 	if (!stdout) {
-<<<<<<< HEAD
-		stdout = env.stdout;
-=======
 		stdout = env.stdout_saved;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		perror("open_memstream");
 		return;
 	}
 
 	if (env.subtest_state)
-<<<<<<< HEAD
-		env.subtest_state->stdout = stdout;
-	else
-		env.test_state->stdout = stdout;
-=======
 		env.subtest_state->stdout_saved = stdout;
 	else
 		env.test_state->stdout_saved = stdout;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	stderr = stdout;
 #endif
@@ -94,13 +77,8 @@ static void stdio_hijack(char **log_buf, size_t *log_cnt)
 		return;
 	}
 
-<<<<<<< HEAD
-	env.stdout = stdout;
-	env.stderr = stderr;
-=======
 	env.stdout_saved = stdout;
 	env.stderr_saved = stderr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	stdio_hijack_init(log_buf, log_cnt);
 #endif
@@ -117,15 +95,6 @@ static void stdio_restore_cleanup(void)
 	fflush(stdout);
 
 	if (env.subtest_state) {
-<<<<<<< HEAD
-		fclose(env.subtest_state->stdout);
-		env.subtest_state->stdout = NULL;
-		stdout = env.test_state->stdout;
-		stderr = env.test_state->stdout;
-	} else {
-		fclose(env.test_state->stdout);
-		env.test_state->stdout = NULL;
-=======
 		fclose(env.subtest_state->stdout_saved);
 		env.subtest_state->stdout_saved = NULL;
 		stdout = env.test_state->stdout_saved;
@@ -133,7 +102,6 @@ static void stdio_restore_cleanup(void)
 	} else {
 		fclose(env.test_state->stdout_saved);
 		env.test_state->stdout_saved = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 #endif
 }
@@ -146,22 +114,13 @@ static void stdio_restore(void)
 		return;
 	}
 
-<<<<<<< HEAD
-	if (stdout == env.stdout)
-=======
 	if (stdout == env.stdout_saved)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	stdio_restore_cleanup();
 
-<<<<<<< HEAD
-	stdout = env.stdout;
-	stderr = env.stderr;
-=======
 	stdout = env.stdout_saved;
 	stderr = env.stderr_saved;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 
@@ -200,10 +159,7 @@ struct prog_test_def {
 	void (*run_serial_test)(void);
 	bool should_run;
 	bool need_cgroup_cleanup;
-<<<<<<< HEAD
-=======
 	bool should_tmon;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Override C runtime library's usleep() implementation to ensure nanosleep()
@@ -241,8 +197,6 @@ static bool should_run(struct test_selector *sel, int num, const char *name)
 	return num < sel->num_set_len && sel->num_set[num];
 }
 
-<<<<<<< HEAD
-=======
 static bool match_subtest(struct test_filter_set *filter,
 			  const char *test_name,
 			  const char *subtest_name)
@@ -265,48 +219,17 @@ static bool match_subtest(struct test_filter_set *filter,
 	return false;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool should_run_subtest(struct test_selector *sel,
 			       struct test_selector *subtest_sel,
 			       int subtest_num,
 			       const char *test_name,
 			       const char *subtest_name)
 {
-<<<<<<< HEAD
-	int i, j;
-
-	for (i = 0; i < sel->blacklist.cnt; i++) {
-		if (glob_match(test_name, sel->blacklist.tests[i].name)) {
-			if (!sel->blacklist.tests[i].subtest_cnt)
-				return false;
-
-			for (j = 0; j < sel->blacklist.tests[i].subtest_cnt; j++) {
-				if (glob_match(subtest_name,
-					       sel->blacklist.tests[i].subtests[j]))
-					return false;
-			}
-		}
-	}
-
-	for (i = 0; i < sel->whitelist.cnt; i++) {
-		if (glob_match(test_name, sel->whitelist.tests[i].name)) {
-			if (!sel->whitelist.tests[i].subtest_cnt)
-				return true;
-
-			for (j = 0; j < sel->whitelist.tests[i].subtest_cnt; j++) {
-				if (glob_match(subtest_name,
-					       sel->whitelist.tests[i].subtests[j]))
-					return true;
-			}
-		}
-	}
-=======
 	if (match_subtest(&sel->blacklist, test_name, subtest_name))
 		return false;
 
 	if (match_subtest(&sel->whitelist, test_name, subtest_name))
 		return true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!sel->whitelist.cnt && !subtest_sel->num_set)
 		return true;
@@ -314,8 +237,6 @@ static bool should_run_subtest(struct test_selector *sel,
 	return subtest_num < subtest_sel->num_set_len && subtest_sel->num_set[subtest_num];
 }
 
-<<<<<<< HEAD
-=======
 static bool should_tmon(struct test_selector *sel, const char *name)
 {
 	int i;
@@ -329,7 +250,6 @@ static bool should_tmon(struct test_selector *sel, const char *name)
 	return false;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static char *test_result(bool failed, bool skipped)
 {
 	return failed ? "FAIL" : (skipped ? "SKIP" : "OK");
@@ -342,19 +262,6 @@ static void print_test_result(const struct prog_test_def *test, const struct tes
 	int skipped_cnt = test_state->skip_cnt;
 	int subtests_cnt = test_state->subtest_num;
 
-<<<<<<< HEAD
-	fprintf(env.stdout, "#%-*d %s:", TEST_NUM_WIDTH, test->test_num, test->test_name);
-	if (test_state->error_cnt)
-		fprintf(env.stdout, "FAIL");
-	else if (!skipped_cnt)
-		fprintf(env.stdout, "OK");
-	else if (skipped_cnt == subtests_cnt || !subtests_cnt)
-		fprintf(env.stdout, "SKIP");
-	else
-		fprintf(env.stdout, "OK (SKIP: %d/%d)", skipped_cnt, subtests_cnt);
-
-	fprintf(env.stdout, "\n");
-=======
 	fprintf(env.stdout_saved, "#%-*d %s:", TEST_NUM_WIDTH, test->test_num, test->test_name);
 	if (test_state->error_cnt)
 		fprintf(env.stdout_saved, "FAIL");
@@ -366,21 +273,14 @@ static void print_test_result(const struct prog_test_def *test, const struct tes
 		fprintf(env.stdout_saved, "OK (SKIP: %d/%d)", skipped_cnt, subtests_cnt);
 
 	fprintf(env.stdout_saved, "\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void print_test_log(char *log_buf, size_t log_cnt)
 {
 	log_buf[log_cnt] = '\0';
-<<<<<<< HEAD
-	fprintf(env.stdout, "%s", log_buf);
-	if (log_buf[log_cnt - 1] != '\n')
-		fprintf(env.stdout, "\n");
-=======
 	fprintf(env.stdout_saved, "%s", log_buf);
 	if (log_buf[log_cnt - 1] != '\n')
 		fprintf(env.stdout_saved, "\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void print_subtest_name(int test_num, int subtest_num,
@@ -391,24 +291,14 @@ static void print_subtest_name(int test_num, int subtest_num,
 
 	snprintf(test_num_str, sizeof(test_num_str), "%d/%d", test_num, subtest_num);
 
-<<<<<<< HEAD
-	fprintf(env.stdout, "#%-*s %s/%s",
-=======
 	fprintf(env.stdout_saved, "#%-*s %s/%s",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		TEST_NUM_WIDTH, test_num_str,
 		test_name, subtest_name);
 
 	if (result)
-<<<<<<< HEAD
-		fprintf(env.stdout, ":%s", result);
-
-	fprintf(env.stdout, "\n");
-=======
 		fprintf(env.stdout_saved, ":%s", result);
 
 	fprintf(env.stdout_saved, "\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void jsonw_write_log_message(json_writer_t *w, char *log_buf, size_t log_cnt)
@@ -593,11 +483,7 @@ bool test__start_subtest(const char *subtest_name)
 	memset(subtest_state, 0, sub_state_size);
 
 	if (!subtest_name || !subtest_name[0]) {
-<<<<<<< HEAD
-		fprintf(env.stderr,
-=======
 		fprintf(env.stderr_saved,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"Subtest #%d didn't provide sub-test name!\n",
 			state->subtest_num);
 		return false;
@@ -605,11 +491,7 @@ bool test__start_subtest(const char *subtest_name)
 
 	subtest_state->name = strdup(subtest_name);
 	if (!subtest_state->name) {
-<<<<<<< HEAD
-		fprintf(env.stderr,
-=======
 		fprintf(env.stderr_saved,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"Subtest #%d: failed to copy subtest name!\n",
 			state->subtest_num);
 		return false;
@@ -624,13 +506,10 @@ bool test__start_subtest(const char *subtest_name)
 		return false;
 	}
 
-<<<<<<< HEAD
-=======
 	subtest_state->should_tmon = match_subtest(&env.tmon_selector.whitelist,
 						   test->test_name,
 						   subtest_name);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	env.subtest_state = subtest_state;
 	stdio_hijack_init(&subtest_state->log_buf, &subtest_state->log_cnt);
 
@@ -767,8 +646,6 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
-=======
 struct netns_obj {
 	char *nsname;
 	struct tmonitor_ctx *tmon;
@@ -855,7 +732,6 @@ void netns_free(struct netns_obj *netns_obj)
 	free(netns_obj);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* extern declarations for test funcs */
 #define DEFINE_TEST(name)				\
 	extern void test_##name(void) __weak;		\
@@ -899,12 +775,8 @@ enum ARG_KEYS {
 	ARG_TEST_NAME_GLOB_DENYLIST = 'd',
 	ARG_NUM_WORKERS = 'j',
 	ARG_DEBUG = -1,
-<<<<<<< HEAD
-	ARG_JSON_SUMMARY = 'J'
-=======
 	ARG_JSON_SUMMARY = 'J',
 	ARG_TRAFFIC_MONITOR = 'm',
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct argp_option opts[] = {
@@ -931,13 +803,10 @@ static const struct argp_option opts[] = {
 	{ "debug", ARG_DEBUG, NULL, 0,
 	  "print extra debug information for test_progs." },
 	{ "json-summary", ARG_JSON_SUMMARY, "FILE", 0, "Write report in json format to this file."},
-<<<<<<< HEAD
-=======
 #ifdef TRAFFIC_MONITOR
 	{ "traffic-monitor", ARG_TRAFFIC_MONITOR, "NAMES", 0,
 	  "Monitor network traffic of tests with name matching the pattern (supports '*' wildcard)." },
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 
@@ -1106,10 +975,7 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
 				return -EINVAL;
 			}
 		}
-<<<<<<< HEAD
-=======
 		env_verbosity = env->verbosity;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (verbose()) {
 			if (setenv("SELFTESTS_VERBOSE", "1", 1) == -1) {
@@ -1153,8 +1019,6 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
 		break;
 	case ARGP_KEY_END:
 		break;
-<<<<<<< HEAD
-=======
 #ifdef TRAFFIC_MONITOR
 	case ARG_TRAFFIC_MONITOR:
 		if (arg[0] == '@')
@@ -1167,7 +1031,6 @@ static error_t parse_arg(int key, char *arg, struct argp_state *state)
 					      true);
 		break;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return ARGP_ERR_UNKNOWN;
 	}
@@ -1306,11 +1169,7 @@ void crash_handler(int signum)
 
 	sz = backtrace(bt, ARRAY_SIZE(bt));
 
-<<<<<<< HEAD
-	if (env.stdout)
-=======
 	if (env.stdout_saved)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		stdio_restore();
 	if (env.test) {
 		env.test_state->error_cnt++;
@@ -1626,11 +1485,7 @@ static void calculate_summary_and_print_errors(struct test_env *env)
 	if (env->json) {
 		w = jsonw_new(env->json);
 		if (!w)
-<<<<<<< HEAD
-			fprintf(env->stderr, "Failed to create new JSON stream.");
-=======
 			fprintf(env->stderr_saved, "Failed to create new JSON stream.");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (w) {
@@ -1645,11 +1500,7 @@ static void calculate_summary_and_print_errors(struct test_env *env)
 
 	/*
 	 * We only print error logs summary when there are failed tests and
-<<<<<<< HEAD
-	 * verbose mode is not enabled. Otherwise, results may be incosistent.
-=======
 	 * verbose mode is not enabled. Otherwise, results may be inconsistent.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 *
 	 */
 	if (!verbose() && fail_cnt) {
@@ -1983,13 +1834,8 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-<<<<<<< HEAD
-	env.stdout = stdout;
-	env.stderr = stderr;
-=======
 	env.stdout_saved = stdout;
 	env.stderr_saved = stderr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	env.has_testmod = true;
 	if (!env.list_test_names) {
@@ -1997,11 +1843,7 @@ int main(int argc, char **argv)
 		unload_bpf_testmod(verbose());
 
 		if (load_bpf_testmod(verbose())) {
-<<<<<<< HEAD
-			fprintf(env.stderr, "WARNING! Selftests relying on bpf_testmod.ko will be skipped.\n");
-=======
 			fprintf(env.stderr_saved, "WARNING! Selftests relying on bpf_testmod.ko will be skipped.\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			env.has_testmod = false;
 		}
 	}
@@ -2020,11 +1862,8 @@ int main(int argc, char **argv)
 				test->test_num, test->test_name, test->test_name, test->test_name);
 			exit(EXIT_ERR_SETUP_INFRA);
 		}
-<<<<<<< HEAD
-=======
 		if (test->should_run)
 			test->should_tmon = should_tmon(&env.tmon_selector, test->test_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* ignore workers if we are just listing */
@@ -2034,11 +1873,7 @@ int main(int argc, char **argv)
 	/* launch workers if requested */
 	env.worker_id = -1; /* main process */
 	if (env.workers) {
-<<<<<<< HEAD
-		env.worker_pids = calloc(sizeof(__pid_t), env.workers);
-=======
 		env.worker_pids = calloc(sizeof(pid_t), env.workers);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		env.worker_socks = calloc(sizeof(int), env.workers);
 		if (env.debug)
 			fprintf(stdout, "Launching %d workers.\n", env.workers);
@@ -2088,11 +1923,7 @@ int main(int argc, char **argv)
 		}
 
 		if (env.list_test_names) {
-<<<<<<< HEAD
-			fprintf(env.stdout, "%s\n", test->test_name);
-=======
 			fprintf(env.stdout_saved, "%s\n", test->test_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			env.succ_cnt++;
 			continue;
 		}
@@ -2117,10 +1948,7 @@ out:
 
 	free_test_selector(&env.test_selector);
 	free_test_selector(&env.subtest_selector);
-<<<<<<< HEAD
-=======
 	free_test_selector(&env.tmon_selector);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free_test_states();
 
 	if (env.succ_cnt + env.fail_cnt + env.skip_cnt == 0)

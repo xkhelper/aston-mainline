@@ -30,8 +30,6 @@
 #include "amdgpu.h"
 #include "amdgpu_trace.h"
 #include "amdgpu_reset.h"
-<<<<<<< HEAD
-=======
 #include "amdgpu_dev_coredump.h"
 #include "amdgpu_xgmi.h"
 
@@ -86,7 +84,6 @@ static void amdgpu_job_core_dump(struct amdgpu_device *adev,
 		amdgpu_put_xgmi_hive(hive);
 	}
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 {
@@ -105,11 +102,6 @@ static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 		return DRM_GPU_SCHED_STAT_ENODEV;
 	}
 
-<<<<<<< HEAD
-
-	adev->job_hang = true;
-
-=======
 	adev->job_hang = true;
 
 	/*
@@ -121,7 +113,6 @@ static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 	if (!amdgpu_sriov_vf(adev))
 		amdgpu_job_core_dump(adev, job);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (amdgpu_gpu_recovery &&
 	    amdgpu_ring_soft_recovery(ring, job->vmid, s_job->s_fence->parent)) {
 		dev_err(adev->dev, "ring %s timeout, but soft recovered\n",
@@ -143,8 +134,6 @@ static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 
 	dma_fence_set_error(&s_job->s_fence->finished, -ETIME);
 
-<<<<<<< HEAD
-=======
 	/* attempt a per ring reset */
 	if (amdgpu_gpu_recovery &&
 	    ring->funcs->reset) {
@@ -165,7 +154,6 @@ static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (amdgpu_device_should_recover_gpu(ring->adev)) {
 		struct amdgpu_reset_context reset_context;
 		memset(&reset_context, 0, sizeof(reset_context));
@@ -175,15 +163,12 @@ static enum drm_gpu_sched_stat amdgpu_job_timedout(struct drm_sched_job *s_job)
 		reset_context.src = AMDGPU_RESET_SRC_JOB;
 		clear_bit(AMDGPU_NEED_FULL_RESET, &reset_context.flags);
 
-<<<<<<< HEAD
-=======
 		/*
 		 * To avoid an unnecessary extra coredump, as we have already
 		 * got the very close representation of GPU's error status
 		 */
 		set_bit(AMDGPU_SKIP_COREDUMP, &reset_context.flags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		r = amdgpu_device_gpu_recover(ring->adev, job, &reset_context);
 		if (r)
 			dev_err(adev->dev, "GPU Recovery Failed: %d\n", r);

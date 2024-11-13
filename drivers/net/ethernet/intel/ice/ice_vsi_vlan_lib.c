@@ -787,8 +787,6 @@ int ice_vsi_clear_outer_port_vlan(struct ice_vsi *vsi)
 	kfree(ctxt);
 	return err;
 }
-<<<<<<< HEAD
-=======
 
 int ice_vsi_clear_port_vlan(struct ice_vsi *vsi)
 {
@@ -846,4 +844,3 @@ int ice_vsi_clear_port_vlan(struct ice_vsi *vsi)
 	kfree(ctxt);
 	return err;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

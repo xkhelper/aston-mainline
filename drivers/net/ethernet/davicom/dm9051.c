@@ -1235,10 +1235,7 @@ static const struct of_device_id dm9051_match_table[] = {
 	{ .compatible = "davicom,dm9051" },
 	{}
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(of, dm9051_match_table);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct spi_device_id dm9051_id_table[] = {
 	{ "dm9051", 0 },

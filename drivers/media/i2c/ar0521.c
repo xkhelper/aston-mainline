@@ -255,17 +255,10 @@ static u32 calc_pll(struct ar0521_dev *sensor, u32 freq, u16 *pre_ptr, u16 *mult
 			continue; /* Minimum value */
 		if (new_mult > 254)
 			break; /* Maximum, larger pre won't work either */
-<<<<<<< HEAD
-		if (sensor->extclk_freq * (u64)new_mult < AR0521_PLL_MIN *
-		    new_pre)
-			continue;
-		if (sensor->extclk_freq * (u64)new_mult > AR0521_PLL_MAX *
-=======
 		if (sensor->extclk_freq * (u64)new_mult < (u64)AR0521_PLL_MIN *
 		    new_pre)
 			continue;
 		if (sensor->extclk_freq * (u64)new_mult > (u64)AR0521_PLL_MAX *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    new_pre)
 			break; /* Larger pre won't work either */
 		new_pll = div64_round_up(sensor->extclk_freq * (u64)new_mult,
@@ -842,33 +835,20 @@ static const struct initial_reg {
 	     be(0x0707)), /* 3F44: couple k factor 2 */
 };
 
-<<<<<<< HEAD
-static int ar0521_power_off(struct device *dev)
-=======
 static void __ar0521_power_off(struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
 	struct ar0521_dev *sensor = to_ar0521_dev(sd);
 	int i;
 
-<<<<<<< HEAD
-	clk_disable_unprepare(sensor->extclk);
-
-	if (sensor->reset_gpio)
-		gpiod_set_value(sensor->reset_gpio, 1); /* assert RESET signal */
-=======
 	if (sensor->reset_gpio)
 		/* assert RESET signal */
 		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = ARRAY_SIZE(ar0521_supply_names) - 1; i >= 0; i--) {
 		if (sensor->supplies[i])
 			regulator_disable(sensor->supplies[i]);
 	}
-<<<<<<< HEAD
-=======
 }
 
 static int ar0521_power_off(struct device *dev)
@@ -879,7 +859,6 @@ static int ar0521_power_off(struct device *dev)
 	clk_disable_unprepare(sensor->extclk);
 	__ar0521_power_off(dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -908,11 +887,7 @@ static int ar0521_power_on(struct device *dev)
 
 	if (sensor->reset_gpio)
 		/* deassert RESET signal */
-<<<<<<< HEAD
-		gpiod_set_value(sensor->reset_gpio, 0);
-=======
 		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	usleep_range(4500, 5000); /* min 45000 clocks */
 
 	for (cnt = 0; cnt < ARRAY_SIZE(initial_regs); cnt++) {
@@ -942,12 +917,8 @@ static int ar0521_power_on(struct device *dev)
 
 	return 0;
 off:
-<<<<<<< HEAD
-	ar0521_power_off(dev);
-=======
 	clk_disable_unprepare(sensor->extclk);
 	__ar0521_power_off(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 

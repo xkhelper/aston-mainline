@@ -146,8 +146,6 @@ struct apds9960_data {
 
 	/* gesture buffer */
 	u8 buffer[4]; /* 4 8-bit channels */
-<<<<<<< HEAD
-=======
 
 	/* calibration value buffer */
 	int calibbias[5];
@@ -167,7 +165,6 @@ static const unsigned int apds9960_offset_regs[][2] = {
 	[APDS9960_CHAN_GESTURE_DOWN] = {APDS9960_REG_GOFFSET_D, 0},
 	[APDS9960_CHAN_GESTURE_LEFT] = {APDS9960_REG_GOFFSET_L, 0},
 	[APDS9960_CHAN_GESTURE_RIGHT] = {APDS9960_REG_GOFFSET_R, 0},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct reg_default apds9960_reg_defaults[] = {
@@ -277,10 +274,7 @@ static const struct iio_event_spec apds9960_als_event_spec[] = {
 
 #define APDS9960_GESTURE_CHANNEL(_dir, _si) { \
 	.type = IIO_PROXIMITY, \
-<<<<<<< HEAD
-=======
 	.info_mask_separate = BIT(IIO_CHAN_INFO_CALIBBIAS), \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.channel = _si + 1, \
 	.scan_index = _si, \
 	.indexed = 1, \
@@ -308,12 +302,8 @@ static const struct iio_chan_spec apds9960_channels[] = {
 	{
 		.type = IIO_PROXIMITY,
 		.address = APDS9960_REG_PDATA,
-<<<<<<< HEAD
-		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-=======
 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
 			BIT(IIO_CHAN_INFO_CALIBBIAS),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
 		.channel = 0,
 		.indexed = 0,
@@ -347,8 +337,6 @@ static const struct iio_chan_spec apds9960_channels[] = {
 	APDS9960_INTENSITY_CHANNEL(BLUE),
 };
 
-<<<<<<< HEAD
-=======
 static int apds9960_set_calibbias(struct apds9960_data *data,
 		struct iio_chan_spec const *chan, int calibbias)
 {
@@ -371,7 +359,6 @@ static int apds9960_set_calibbias(struct apds9960_data *data,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* integration time in us */
 static const int apds9960_int_time[][2] = {
 	{ 28000, 246},
@@ -587,15 +574,12 @@ static int apds9960_read_raw(struct iio_dev *indio_dev,
 		}
 		mutex_unlock(&data->lock);
 		break;
-<<<<<<< HEAD
-=======
 	case IIO_CHAN_INFO_CALIBBIAS:
 		mutex_lock(&data->lock);
 		*val = data->calibbias[chan->channel];
 		ret = IIO_VAL_INT;
 		mutex_unlock(&data->lock);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;
@@ -629,13 +613,10 @@ static int apds9960_write_raw(struct iio_dev *indio_dev,
 		default:
 			return -EINVAL;
 		}
-<<<<<<< HEAD
-=======
 	case IIO_CHAN_INFO_CALIBBIAS:
 		if (val2 != 0)
 			return -EINVAL;
 		return apds9960_set_calibbias(data, chan, val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -EINVAL;
 	}

@@ -64,10 +64,7 @@ static struct i2c_driver goodix_berlin_i2c_driver = {
 		.name = "goodix-berlin-i2c",
 		.of_match_table = goodix_berlin_i2c_of_match,
 		.pm = pm_sleep_ptr(&goodix_berlin_pm_ops),
-<<<<<<< HEAD
-=======
 		.dev_groups = goodix_berlin_groups,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe = goodix_berlin_i2c_probe,
 	.id_table = goodix_berlin_i2c_id,

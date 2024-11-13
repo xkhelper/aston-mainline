@@ -646,17 +646,10 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
 	 * really care if it changes underneath us after this point).
 	 */
 	if (FNAME(gpte_changed)(vcpu, gw, top_level))
-<<<<<<< HEAD
-		goto out_gpte_changed;
-
-	if (WARN_ON_ONCE(!VALID_PAGE(vcpu->arch.mmu->root.hpa)))
-		goto out_gpte_changed;
-=======
 		return RET_PF_RETRY;
 
 	if (WARN_ON_ONCE(!VALID_PAGE(vcpu->arch.mmu->root.hpa)))
 		return RET_PF_RETRY;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Load a new root and retry the faulting instruction in the extremely
@@ -666,11 +659,7 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
 	 */
 	if (unlikely(kvm_mmu_is_dummy_root(vcpu->arch.mmu->root.hpa))) {
 		kvm_make_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu);
-<<<<<<< HEAD
-		goto out_gpte_changed;
-=======
 		return RET_PF_RETRY;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	for_each_shadow_entry(vcpu, fault->addr, it) {
@@ -685,36 +674,6 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
 		sp = kvm_mmu_get_child_sp(vcpu, it.sptep, table_gfn,
 					  false, access);
 
-<<<<<<< HEAD
-		if (sp != ERR_PTR(-EEXIST)) {
-			/*
-			 * We must synchronize the pagetable before linking it
-			 * because the guest doesn't need to flush tlb when
-			 * the gpte is changed from non-present to present.
-			 * Otherwise, the guest may use the wrong mapping.
-			 *
-			 * For PG_LEVEL_4K, kvm_mmu_get_page() has already
-			 * synchronized it transiently via kvm_sync_page().
-			 *
-			 * For higher level pagetable, we synchronize it via
-			 * the slower mmu_sync_children().  If it needs to
-			 * break, some progress has been made; return
-			 * RET_PF_RETRY and retry on the next #PF.
-			 * KVM_REQ_MMU_SYNC is not necessary but it
-			 * expedites the process.
-			 */
-			if (sp->unsync_children &&
-			    mmu_sync_children(vcpu, sp, false))
-				return RET_PF_RETRY;
-		}
-
-		/*
-		 * Verify that the gpte in the page we've just write
-		 * protected is still there.
-		 */
-		if (FNAME(gpte_changed)(vcpu, gw, it.level - 1))
-			goto out_gpte_changed;
-=======
 		/*
 		 * Synchronize the new page before linking it, as the CPU (KVM)
 		 * is architecturally disallowed from inserting non-present
@@ -747,7 +706,6 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
 		 */
 		if (FNAME(gpte_changed)(vcpu, gw, it.level - 1))
 			return RET_PF_RETRY;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (sp != ERR_PTR(-EEXIST))
 			link_shadow_page(vcpu, it.sptep, sp);
@@ -801,12 +759,6 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
 
 	FNAME(pte_prefetch)(vcpu, gw, it.sptep);
 	return ret;
-<<<<<<< HEAD
-
-out_gpte_changed:
-	return RET_PF_RETRY;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -854,11 +806,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
 
 	if (page_fault_handle_page_track(vcpu, fault)) {
 		shadow_page_table_clear_flood(vcpu, fault->addr);
-<<<<<<< HEAD
-		return RET_PF_EMULATE;
-=======
 		return RET_PF_WRITE_PROTECTED;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	r = mmu_topup_memory_caches(vcpu, true);

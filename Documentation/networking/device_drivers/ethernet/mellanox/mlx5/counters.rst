@@ -218,8 +218,6 @@ the software port.
        [#accel]_.
      - Informative
 
-<<<<<<< HEAD
-=======
    * - `rx[i]_hds_nosplit_packets`
      - Number of packets that were not split in header/data split mode. A
        packet will not get split when the hardware does not support its
@@ -236,7 +234,6 @@ the software port.
        [#accel]_.
      - Informative
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    * - `rx[i]_lro_packets`
      - The number of LRO packets received on ring i [#accel]_.
      - Acceleration

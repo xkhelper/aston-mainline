@@ -137,10 +137,6 @@ struct omap8250_priv {
 	atomic_t active;
 	bool is_suspending;
 	int wakeirq;
-<<<<<<< HEAD
-	int wakeups_enabled;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 latency;
 	u32 calc_latency;
 	struct pm_qos_request pm_qos_request;
@@ -1526,14 +1522,10 @@ static int omap8250_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, priv);
 
-<<<<<<< HEAD
-	device_init_wakeup(&pdev->dev, true);
-=======
 	device_set_wakeup_capable(&pdev->dev, true);
 	if (of_property_read_bool(np, "wakeup-source"))
 		device_set_wakeup_enable(&pdev->dev, true);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_enable(&pdev->dev);
 	pm_runtime_use_autosuspend(&pdev->dev);
 
@@ -1591,11 +1583,7 @@ static int omap8250_probe(struct platform_device *pdev)
 	ret = devm_request_irq(&pdev->dev, up.port.irq, omap8250_irq, 0,
 			       dev_name(&pdev->dev), priv);
 	if (ret < 0)
-<<<<<<< HEAD
-		return ret;
-=======
 		goto err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	priv->wakeirq = irq_of_parse_and_map(np, 1);
 
@@ -1636,11 +1624,7 @@ static void omap8250_remove(struct platform_device *pdev)
 	flush_work(&priv->qos_work);
 	pm_runtime_disable(&pdev->dev);
 	cpu_latency_qos_remove_request(&priv->pm_qos_request);
-<<<<<<< HEAD
-	device_init_wakeup(&pdev->dev, false);
-=======
 	device_set_wakeup_capable(&pdev->dev, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int omap8250_prepare(struct device *dev)

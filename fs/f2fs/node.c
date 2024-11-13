@@ -20,11 +20,7 @@
 #include "iostat.h"
 #include <trace/events/f2fs.h>
 
-<<<<<<< HEAD
-#define on_f2fs_build_free_nids(nmi) mutex_is_locked(&(nm_i)->build_lock)
-=======
 #define on_f2fs_build_free_nids(nm_i) mutex_is_locked(&(nm_i)->build_lock)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct kmem_cache *nat_entry_slab;
 static struct kmem_cache *free_nid_slab;
@@ -127,11 +123,7 @@ bool f2fs_available_free_memory(struct f2fs_sb_info *sbi, int type)
 static void clear_node_page_dirty(struct page *page)
 {
 	if (PageDirty(page)) {
-<<<<<<< HEAD
-		f2fs_clear_page_cache_dirty_tag(page);
-=======
 		f2fs_clear_page_cache_dirty_tag(page_folio(page));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		clear_page_dirty_for_io(page);
 		dec_page_count(F2FS_P_SB(page), F2FS_DIRTY_NODES);
 	}
@@ -927,11 +919,7 @@ static int truncate_node(struct dnode_of_data *dn)
 	clear_node_page_dirty(dn->node_page);
 	set_sbi_flag(sbi, SBI_IS_DIRTY);
 
-<<<<<<< HEAD
-	index = dn->node_page->index;
-=======
 	index = page_folio(dn->node_page)->index;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	f2fs_put_page(dn->node_page, 1);
 
 	invalidate_mapping_pages(NODE_MAPPING(sbi),
@@ -1381,10 +1369,7 @@ fail:
  */
 static int read_node_page(struct page *page, blk_opf_t op_flags)
 {
-<<<<<<< HEAD
-=======
 	struct folio *folio = page_folio(page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct f2fs_sb_info *sbi = F2FS_P_SB(page);
 	struct node_info ni;
 	struct f2fs_io_info fio = {
@@ -1397,35 +1382,21 @@ static int read_node_page(struct page *page, blk_opf_t op_flags)
 	};
 	int err;
 
-<<<<<<< HEAD
-	if (PageUptodate(page)) {
-		if (!f2fs_inode_chksum_verify(sbi, page)) {
-			ClearPageUptodate(page);
-=======
 	if (folio_test_uptodate(folio)) {
 		if (!f2fs_inode_chksum_verify(sbi, page)) {
 			folio_clear_uptodate(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EFSBADCRC;
 		}
 		return LOCKED_PAGE;
 	}
 
-<<<<<<< HEAD
-	err = f2fs_get_node_info(sbi, page->index, &ni, false);
-=======
 	err = f2fs_get_node_info(sbi, folio->index, &ni, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
 	/* NEW_ADDR can be seen, after cp_error drops some dirty node pages */
 	if (unlikely(ni.blk_addr == NULL_ADDR || ni.blk_addr == NEW_ADDR)) {
-<<<<<<< HEAD
-		ClearPageUptodate(page);
-=======
 		folio_clear_uptodate(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOENT;
 	}
 
@@ -1522,11 +1493,7 @@ out_err:
 out_put_err:
 	/* ENOENT comes from read_node_page which is not an error. */
 	if (err != -ENOENT)
-<<<<<<< HEAD
-		f2fs_handle_page_eio(sbi, page->index, NODE);
-=======
 		f2fs_handle_page_eio(sbi, page_folio(page), NODE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	f2fs_put_page(page, 1);
 	return ERR_PTR(err);
 }
@@ -1569,11 +1536,7 @@ static void flush_inline_data(struct f2fs_sb_info *sbi, nid_t ino)
 	if (!clear_page_dirty_for_io(page))
 		goto page_out;
 
-<<<<<<< HEAD
-	ret = f2fs_write_inline_data(inode, page);
-=======
 	ret = f2fs_write_inline_data(inode, page_folio(page));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	inode_dec_dirty_pages(inode);
 	f2fs_remove_dirty_inode(inode);
 	if (ret)
@@ -1646,10 +1609,7 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
 				enum iostat_type io_type, unsigned int *seq_id)
 {
 	struct f2fs_sb_info *sbi = F2FS_P_SB(page);
-<<<<<<< HEAD
-=======
 	struct folio *folio = page_folio(page);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nid_t nid;
 	struct node_info ni;
 	struct f2fs_io_info fio = {
@@ -1666,25 +1626,15 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
 	};
 	unsigned int seq;
 
-<<<<<<< HEAD
-	trace_f2fs_writepage(page_folio(page), NODE);
-=======
 	trace_f2fs_writepage(folio, NODE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(f2fs_cp_error(sbi))) {
 		/* keep node pages in remount-ro mode */
 		if (F2FS_OPTION(sbi).errors == MOUNT_ERRORS_READONLY)
 			goto redirty_out;
-<<<<<<< HEAD
-		ClearPageUptodate(page);
-		dec_page_count(sbi, F2FS_DIRTY_NODES);
-		unlock_page(page);
-=======
 		folio_clear_uptodate(folio);
 		dec_page_count(sbi, F2FS_DIRTY_NODES);
 		folio_unlock(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -1698,11 +1648,7 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
 
 	/* get old block addr of this node page */
 	nid = nid_of_node(page);
-<<<<<<< HEAD
-	f2fs_bug_on(sbi, page->index != nid);
-=======
 	f2fs_bug_on(sbi, folio->index != nid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (f2fs_get_node_info(sbi, nid, &ni, !do_balance))
 		goto redirty_out;
@@ -1716,17 +1662,10 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
 
 	/* This page is already truncated */
 	if (unlikely(ni.blk_addr == NULL_ADDR)) {
-<<<<<<< HEAD
-		ClearPageUptodate(page);
-		dec_page_count(sbi, F2FS_DIRTY_NODES);
-		f2fs_up_read(&sbi->node_write);
-		unlock_page(page);
-=======
 		folio_clear_uptodate(folio);
 		dec_page_count(sbi, F2FS_DIRTY_NODES);
 		f2fs_up_read(&sbi->node_write);
 		folio_unlock(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -1737,11 +1676,7 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
 		goto redirty_out;
 	}
 
-<<<<<<< HEAD
-	if (atomic && !test_opt(sbi, NOBARRIER) && !f2fs_sb_has_blkzoned(sbi))
-=======
 	if (atomic && !test_opt(sbi, NOBARRIER))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
 
 	/* should add to global list before clearing PAGECACHE status */
@@ -1751,11 +1686,7 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
 			*seq_id = seq;
 	}
 
-<<<<<<< HEAD
-	set_page_writeback(page);
-=======
 	folio_start_writeback(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fio.old_blkaddr = ni.blk_addr;
 	f2fs_do_write_node_page(nid, &fio);
@@ -1768,11 +1699,7 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
 		submitted = NULL;
 	}
 
-<<<<<<< HEAD
-	unlock_page(page);
-=======
 	folio_unlock(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(f2fs_cp_error(sbi))) {
 		f2fs_submit_merged_write(sbi, NODE);
@@ -1786,11 +1713,7 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
 	return 0;
 
 redirty_out:
-<<<<<<< HEAD
-	redirty_page_for_writepage(wbc, page);
-=======
 	folio_redirty_for_writepage(wbc, folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return AOP_WRITEPAGE_ACTIVATE;
 }
 
@@ -1946,11 +1869,7 @@ continue_unlock:
 	}
 	if (!ret && atomic && !marked) {
 		f2fs_debug(sbi, "Retry to write fsync mark: ino=%u, idx=%lx",
-<<<<<<< HEAD
-			   ino, last_page->index);
-=======
 			   ino, page_folio(last_page)->index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		lock_page(last_page);
 		f2fs_wait_on_page_writeback(last_page, NODE, true, true);
 		set_page_dirty(last_page);
@@ -3249,11 +3168,7 @@ static int __get_nat_bitmaps(struct f2fs_sb_info *sbi)
 
 	nm_i->nat_bits_blocks = F2FS_BLK_ALIGN((nat_bits_bytes << 1) + 8);
 	nm_i->nat_bits = f2fs_kvzalloc(sbi,
-<<<<<<< HEAD
-			nm_i->nat_bits_blocks << F2FS_BLKSIZE_BITS, GFP_KERNEL);
-=======
 			F2FS_BLK_TO_BYTES(nm_i->nat_bits_blocks), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!nm_i->nat_bits)
 		return -ENOMEM;
 
@@ -3272,11 +3187,7 @@ static int __get_nat_bitmaps(struct f2fs_sb_info *sbi)
 		if (IS_ERR(page))
 			return PTR_ERR(page);
 
-<<<<<<< HEAD
-		memcpy(nm_i->nat_bits + (i << F2FS_BLKSIZE_BITS),
-=======
 		memcpy(nm_i->nat_bits + F2FS_BLK_TO_BYTES(i),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					page_address(page), F2FS_BLKSIZE);
 		f2fs_put_page(page, 1);
 	}

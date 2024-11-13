@@ -8,10 +8,7 @@
 #include <linux/btf.h>
 #include <string.h>
 #include <errno.h>
-<<<<<<< HEAD
-=======
 #include "bpf_misc.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 char _license[] SEC("license") = "GPL";
 
@@ -123,11 +120,7 @@ int load_prog(struct args *ctx)
 	static __u64 value = 34;
 	static union bpf_attr prog_load_attr = {
 		.prog_type = BPF_PROG_TYPE_XDP,
-<<<<<<< HEAD
-		.insn_cnt = sizeof(insns) / sizeof(insns[0]),
-=======
 		.insn_cnt = ARRAY_SIZE(insns),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	int ret;
 

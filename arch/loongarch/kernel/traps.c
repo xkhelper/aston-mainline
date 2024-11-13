@@ -555,12 +555,9 @@ asmlinkage void noinstr do_ale(struct pt_regs *regs)
 #else
 	unsigned int *pc;
 
-<<<<<<< HEAD
-=======
 	if (regs->csr_prmd & CSR_PRMD_PIE)
 		local_irq_enable();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_sw_event(PERF_COUNT_SW_ALIGNMENT_FAULTS, 1, regs, regs->csr_badvaddr);
 
 	/*
@@ -585,11 +582,8 @@ sigbus:
 	die_if_kernel("Kernel ale access", regs);
 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *)regs->csr_badvaddr);
 out:
-<<<<<<< HEAD
-=======
 	if (regs->csr_prmd & CSR_PRMD_PIE)
 		local_irq_disable();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	irqentry_exit(regs, state);
 }

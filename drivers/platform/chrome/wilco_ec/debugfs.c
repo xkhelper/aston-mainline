@@ -156,10 +156,6 @@ static const struct file_operations fops_raw = {
 	.owner = THIS_MODULE,
 	.read = raw_read,
 	.write = raw_write,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define CMD_KB_CHROME		0x88

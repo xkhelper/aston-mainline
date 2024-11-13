@@ -15,11 +15,7 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <math.h>
-<<<<<<< HEAD
-#include <asm-generic/unistd.h>
-=======
 #include <asm/unistd.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <pthread.h>
 #include <sys/resource.h>
 #include <assert.h>

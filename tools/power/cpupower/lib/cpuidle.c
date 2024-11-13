@@ -116,10 +116,7 @@ enum idlestate_value {
 	IDLESTATE_USAGE,
 	IDLESTATE_POWER,
 	IDLESTATE_LATENCY,
-<<<<<<< HEAD
-=======
 	IDLESTATE_RESIDENCY,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	IDLESTATE_TIME,
 	IDLESTATE_DISABLE,
 	MAX_IDLESTATE_VALUE_FILES
@@ -129,10 +126,7 @@ static const char *idlestate_value_files[MAX_IDLESTATE_VALUE_FILES] = {
 	[IDLESTATE_USAGE] = "usage",
 	[IDLESTATE_POWER] = "power",
 	[IDLESTATE_LATENCY] = "latency",
-<<<<<<< HEAD
-=======
 	[IDLESTATE_RESIDENCY] = "residency",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[IDLESTATE_TIME]  = "time",
 	[IDLESTATE_DISABLE]  = "disable",
 };
@@ -262,15 +256,12 @@ unsigned long cpuidle_state_latency(unsigned int cpu,
 	return cpuidle_state_get_one_value(cpu, idlestate, IDLESTATE_LATENCY);
 }
 
-<<<<<<< HEAD
-=======
 unsigned long cpuidle_state_residency(unsigned int cpu,
 					  unsigned int idlestate)
 {
 	return cpuidle_state_get_one_value(cpu, idlestate, IDLESTATE_RESIDENCY);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unsigned long cpuidle_state_usage(unsigned int cpu,
 					unsigned int idlestate)
 {

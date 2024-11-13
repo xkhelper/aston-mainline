@@ -19,10 +19,7 @@ struct autofs_info *autofs_new_ino(struct autofs_sb_info *sbi)
 		INIT_LIST_HEAD(&ino->expiring);
 		ino->last_used = jiffies;
 		ino->sbi = sbi;
-<<<<<<< HEAD
-=======
 		ino->exp_timeout = -1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ino->count = 1;
 	}
 	return ino;
@@ -32,10 +29,7 @@ void autofs_clean_ino(struct autofs_info *ino)
 {
 	ino->uid = GLOBAL_ROOT_UID;
 	ino->gid = GLOBAL_ROOT_GID;
-<<<<<<< HEAD
-=======
 	ino->exp_timeout = -1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ino->last_used = jiffies;
 }
 
@@ -180,12 +174,7 @@ static int autofs_parse_fd(struct fs_context *fc, struct autofs_sb_info *sbi,
 	ret = autofs_check_pipe(pipe);
 	if (ret < 0) {
 		errorf(fc, "Invalid/unusable pipe");
-<<<<<<< HEAD
-		if (param->type != fs_value_is_file)
-			fput(pipe);
-=======
 		fput(pipe);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 	}
 

@@ -73,9 +73,6 @@ static struct irq_chip lmh_irq_chip = {
 static int lmh_irq_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t hw)
 {
 	struct lmh_hw_data *lmh_data = d->host_data;
-<<<<<<< HEAD
-
-=======
 	static struct lock_class_key lmh_lock_key;
 	static struct lock_class_key lmh_request_key;
 
@@ -84,7 +81,6 @@ static int lmh_irq_map(struct irq_domain *d, unsigned int irq, irq_hw_number_t h
 	 * category than their parents, so it won't report false recursion.
 	 */
 	irq_set_lockdep_class(irq, &lmh_lock_key, &lmh_request_key);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	irq_set_chip_and_handler(irq, &lmh_irq_chip, handle_simple_irq);
 	irq_set_chip_data(irq, lmh_data);
 

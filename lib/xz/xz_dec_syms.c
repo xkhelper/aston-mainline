@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-=======
 // SPDX-License-Identifier: 0BSD
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * XZ decoder module information
  *
  * Author: Lasse Collin <lasse.collin@tukaani.org>
-<<<<<<< HEAD
- *
- * This file has been put into the public domain.
- * You can do whatever you want with this file.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <linux/module.h>
@@ -31,17 +22,6 @@ EXPORT_SYMBOL(xz_dec_microlzma_end);
 #endif
 
 MODULE_DESCRIPTION("XZ decompressor");
-<<<<<<< HEAD
-MODULE_VERSION("1.1");
-MODULE_AUTHOR("Lasse Collin <lasse.collin@tukaani.org> and Igor Pavlov");
-
-/*
- * This code is in the public domain, but in Linux it's simplest to just
- * say it's GPL and consider the authors as the copyright holders.
- */
-MODULE_LICENSE("GPL");
-=======
 MODULE_VERSION("1.2");
 MODULE_AUTHOR("Lasse Collin <lasse.collin@tukaani.org> and Igor Pavlov");
 MODULE_LICENSE("Dual BSD/GPL");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

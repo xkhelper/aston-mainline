@@ -12,20 +12,13 @@
 extern void ack_bad_irq(unsigned int irq);
 #define ack_bad_irq ack_bad_irq
 
-<<<<<<< HEAD
-#define NR_IPI	3
-=======
 #define NR_IPI	4
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum ipi_msg_type {
 	IPI_RESCHEDULE,
 	IPI_CALL_FUNCTION,
 	IPI_IRQ_WORK,
-<<<<<<< HEAD
-=======
 	IPI_CLEAR_VECTOR,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 typedef struct {

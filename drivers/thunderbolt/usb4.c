@@ -48,11 +48,7 @@ enum usb4_ba_index {
 
 /* Delays in us used with usb4_port_wait_for_bit() */
 #define USB4_PORT_DELAY			50
-<<<<<<< HEAD
-#define USB4_PORT_SB_DELAY		5000
-=======
 #define USB4_PORT_SB_DELAY		1000
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int usb4_native_switch_op(struct tb_switch *sw, u16 opcode,
 				 u32 *metadata, u8 *status,
@@ -1657,42 +1653,19 @@ int usb4_port_margining_caps(struct tb_port *port, enum usb4_sb_target target,
  * @port: USB4 port
  * @target: Sideband target
  * @index: Retimer index if taget is %USB4_SB_TARGET_RETIMER
-<<<<<<< HEAD
- * @lanes: Which lanes to run (must match the port capabilities). Can be
- *	   %0, %1 or %7.
- * @ber_level: BER level contour value
- * @timing: Perform timing margining instead of voltage
- * @right_high: Use Right/high margin instead of left/low
-=======
  * @params: Parameters for USB4 hardware margining
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @results: Array with at least two elements to hold the results
  *
  * Runs hardware lane margining on USB4 port and returns the result in
  * @results.
  */
 int usb4_port_hw_margin(struct tb_port *port, enum usb4_sb_target target,
-<<<<<<< HEAD
-			u8 index, unsigned int lanes, unsigned int ber_level,
-			bool timing, bool right_high, u32 *results)
-=======
 			u8 index, const struct usb4_port_margining_params *params,
 			u32 *results)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 val;
 	int ret;
 
-<<<<<<< HEAD
-	val = lanes;
-	if (timing)
-		val |= USB4_MARGIN_HW_TIME;
-	if (right_high)
-		val |= USB4_MARGIN_HW_RH;
-	if (ber_level)
-		val |= (ber_level << USB4_MARGIN_HW_BER_SHIFT) &
-			USB4_MARGIN_HW_BER_MASK;
-=======
 	if (WARN_ON_ONCE(!params))
 		return -EINVAL;
 
@@ -1705,7 +1678,6 @@ int usb4_port_hw_margin(struct tb_port *port, enum usb4_sb_target target,
 		val |= FIELD_PREP(USB4_MARGIN_HW_BER_MASK, params->ber_level);
 	if (params->optional_voltage_offset_range)
 		val |= USB4_MARGIN_HW_OPT_VOLTAGE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = usb4_port_sb_write(port, target, index, USB4_SB_METADATA, &val,
 				 sizeof(val));
@@ -1726,42 +1698,20 @@ int usb4_port_hw_margin(struct tb_port *port, enum usb4_sb_target target,
  * @port: USB4 port
  * @target: Sideband target
  * @index: Retimer index if taget is %USB4_SB_TARGET_RETIMER
-<<<<<<< HEAD
- * @lanes: Which lanes to run (must match the port capabilities). Can be
- *	   %0, %1 or %7.
- * @timing: Perform timing margining instead of voltage
- * @right_high: Use Right/high margin instead of left/low
- * @counter: What to do with the error counter
-=======
  * @params: Parameters for USB4 software margining
  * @results: Data word for the operation completion data
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Runs software lane margining on USB4 port. Read back the error
  * counters by calling usb4_port_sw_margin_errors(). Returns %0 in
  * success and negative errno otherwise.
  */
 int usb4_port_sw_margin(struct tb_port *port, enum usb4_sb_target target,
-<<<<<<< HEAD
-			u8 index, unsigned int lanes, bool timing,
-			bool right_high, u32 counter)
-=======
 			u8 index, const struct usb4_port_margining_params *params,
 			u32 *results)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 val;
 	int ret;
 
-<<<<<<< HEAD
-	val = lanes;
-	if (timing)
-		val |= USB4_MARGIN_SW_TIME;
-	if (right_high)
-		val |= USB4_MARGIN_SW_RH;
-	val |= (counter << USB4_MARGIN_SW_COUNTER_SHIFT) &
-		USB4_MARGIN_SW_COUNTER_MASK;
-=======
 	if (WARN_ON_ONCE(!params))
 		return -EINVAL;
 
@@ -1774,17 +1724,12 @@ int usb4_port_sw_margin(struct tb_port *port, enum usb4_sb_target target,
 		val |= USB4_MARGIN_SW_RH;
 	val |= FIELD_PREP(USB4_MARGIN_SW_COUNTER_MASK, params->error_counter);
 	val |= FIELD_PREP(USB4_MARGIN_SW_VT_MASK, params->voltage_time_offset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = usb4_port_sb_write(port, target, index, USB4_SB_METADATA, &val,
 				 sizeof(val));
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	return usb4_port_sb_op(port, target, index,
-			       USB4_SB_OPCODE_RUN_SW_LANE_MARGINING, 2500);
-=======
 	ret = usb4_port_sb_op(port, target, index,
 			      USB4_SB_OPCODE_RUN_SW_LANE_MARGINING, 2500);
 	if (ret)
@@ -1793,7 +1738,6 @@ int usb4_port_sw_margin(struct tb_port *port, enum usb4_sb_target target,
 	return usb4_port_sb_read(port, target, index, USB4_SB_DATA, results,
 				 sizeof(*results));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

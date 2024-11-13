@@ -12,13 +12,9 @@
 
 #include "tests/xe_kunit_helpers.h"
 #include "tests/xe_pci_test.h"
-<<<<<<< HEAD
-#include "xe_device_types.h"
-=======
 #include "xe_device.h"
 #include "xe_device_types.h"
 #include "xe_pm.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * xe_kunit_helper_alloc_xe_device - Allocate a &xe_device for a KUnit test.
@@ -94,8 +90,6 @@ int xe_kunit_helper_xe_device_test_init(struct kunit *test)
 	return 0;
 }
 EXPORT_SYMBOL_IF_KUNIT(xe_kunit_helper_xe_device_test_init);
-<<<<<<< HEAD
-=======
 
 KUNIT_DEFINE_ACTION_WRAPPER(put_xe_pm_runtime, xe_pm_runtime_put, struct xe_device *);
 
@@ -133,4 +127,3 @@ int xe_kunit_helper_xe_device_live_test_init(struct kunit *test)
 	return 0;
 }
 EXPORT_SYMBOL_IF_KUNIT(xe_kunit_helper_xe_device_live_test_init);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

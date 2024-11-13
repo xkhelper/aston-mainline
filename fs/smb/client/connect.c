@@ -795,38 +795,13 @@ cifs_discard_from_socket(struct TCP_Server_Info *server, size_t to_read)
 }
 
 int
-<<<<<<< HEAD
-cifs_read_page_from_socket(struct TCP_Server_Info *server, struct page *page,
-	unsigned int page_offset, unsigned int to_read)
-{
-	struct msghdr smb_msg = {};
-	struct bio_vec bv;
-
-	bvec_set_page(&bv, page, to_read, page_offset);
-	iov_iter_bvec(&smb_msg.msg_iter, ITER_DEST, &bv, 1, to_read);
-	return cifs_readv_from_socket(server, &smb_msg);
-}
-
-int
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 cifs_read_iter_from_socket(struct TCP_Server_Info *server, struct iov_iter *iter,
 			   unsigned int to_read)
 {
 	struct msghdr smb_msg = { .msg_iter = *iter };
-<<<<<<< HEAD
-	int ret;
-
-	iov_iter_truncate(&smb_msg.msg_iter, to_read);
-	ret = cifs_readv_from_socket(server, &smb_msg);
-	if (ret > 0)
-		iov_iter_advance(iter, ret);
-	return ret;
-=======
 
 	iov_iter_truncate(&smb_msg.msg_iter, to_read);
 	return cifs_readv_from_socket(server, &smb_msg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool
@@ -1018,18 +993,10 @@ clean_demultiplex_info(struct TCP_Server_Info *server)
 	}
 
 	if (!list_empty(&server->pending_mid_q)) {
-<<<<<<< HEAD
-		struct list_head dispose_list;
-		struct mid_q_entry *mid_entry;
-		struct list_head *tmp, *tmp2;
-
-		INIT_LIST_HEAD(&dispose_list);
-=======
 		struct mid_q_entry *mid_entry;
 		struct list_head *tmp, *tmp2;
 		LIST_HEAD(dispose_list);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_lock(&server->mid_lock);
 		list_for_each_safe(tmp, tmp2, &server->pending_mid_q) {
 			mid_entry = list_entry(tmp, struct mid_q_entry, qhead);
@@ -1070,10 +1037,7 @@ clean_demultiplex_info(struct TCP_Server_Info *server)
 		 */
 	}
 
-<<<<<<< HEAD
-=======
 	put_net(cifs_net_ns(server));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(server->leaf_fullpath);
 	kfree(server);
 
@@ -1551,12 +1515,9 @@ static int match_server(struct TCP_Server_Info *server,
 	if (server->nosharesock)
 		return 0;
 
-<<<<<<< HEAD
-=======
 	if (!match_super && (ctx->dfs_conn || server->dfs_conn))
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* If multidialect negotiation see if existing sessions match one */
 	if (strcmp(ctx->vals->version_string, SMB3ANY_VERSION_STRING) == 0) {
 		if (server->vals->protocol_id < SMB30_PROT_ID)
@@ -1675,11 +1636,6 @@ cifs_put_tcp_session(struct TCP_Server_Info *server, int from_reconnect)
 	/* srv_count can never go negative */
 	WARN_ON(server->srv_count < 0);
 
-<<<<<<< HEAD
-	put_net(cifs_net_ns(server));
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_del_init(&server->tcp_ses_list);
 	spin_unlock(&cifs_tcp_ses_lock);
 
@@ -1753,10 +1709,7 @@ cifs_get_tcp_session(struct smb3_fs_context *ctx,
 
 	if (ctx->nosharesock)
 		tcp_ses->nosharesock = true;
-<<<<<<< HEAD
-=======
 	tcp_ses->dfs_conn = ctx->dfs_conn;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tcp_ses->ops = ctx->ops;
 	tcp_ses->vals = ctx->vals;
@@ -1907,23 +1860,15 @@ out_err:
 }
 
 /* this function must be called with ses_lock and chan_lock held */
-<<<<<<< HEAD
-static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
-=======
 static int match_session(struct cifs_ses *ses,
 			 struct smb3_fs_context *ctx,
 			 bool match_super)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (ctx->sectype != Unspecified &&
 	    ctx->sectype != ses->sectype)
 		return 0;
 
-<<<<<<< HEAD
-	if (ctx->dfs_root_ses != ses->dfs_root_ses)
-=======
 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	/*
@@ -2042,11 +1987,7 @@ cifs_find_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
 			continue;
 		}
 		spin_lock(&ses->chan_lock);
-<<<<<<< HEAD
-		if (match_session(ses, ctx)) {
-=======
 		if (match_session(ses, ctx, false)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			spin_unlock(&ses->chan_lock);
 			spin_unlock(&ses->ses_lock);
 			ret = ses;
@@ -2106,12 +2047,7 @@ void __cifs_put_smb_ses(struct cifs_ses *ses)
 	if (do_logoff) {
 		xid = get_xid();
 		rc = server->ops->logoff(xid, ses);
-<<<<<<< HEAD
-		if (rc)
-			cifs_server_dbg(VFS, "%s: Session Logoff failure rc=%d\n",
-=======
 		cifs_server_dbg(FYI, "%s: Session Logoff: rc=%d\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				__func__, rc);
 		_free_xid(xid);
 	}
@@ -2434,11 +2370,6 @@ cifs_get_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
 	 * need to lock before changing something in the session.
 	 */
 	spin_lock(&cifs_tcp_ses_lock);
-<<<<<<< HEAD
-	if (ctx->dfs_root_ses)
-		cifs_smb_ses_inc_refcount(ctx->dfs_root_ses);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ses->dfs_root_ses = ctx->dfs_root_ses;
 	list_add(&ses->smb_ses_list, &server->smb_ses_list);
 	spin_unlock(&cifs_tcp_ses_lock);
@@ -2513,10 +2444,7 @@ cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
 {
 	unsigned int xid;
 	struct cifs_ses *ses;
-<<<<<<< HEAD
-=======
 	LIST_HEAD(ses_list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * IPC tcon share the lifetime of their session and are
@@ -2541,12 +2469,9 @@ cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
 
 	list_del_init(&tcon->tcon_list);
 	tcon->status = TID_EXITING;
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CIFS_DFS_UPCALL
 	list_replace_init(&tcon->dfs_ses_list, &ses_list);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(&tcon->tc_lock);
 	spin_unlock(&cifs_tcp_ses_lock);
 
@@ -2574,12 +2499,9 @@ cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
 	cifs_fscache_release_super_cookie(tcon);
 	tconInfoFree(tcon, netfs_trace_tcon_ref_free);
 	cifs_put_smb_ses(ses);
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CIFS_DFS_UPCALL
 	dfs_put_root_smb_sessions(&ses_list);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -2963,11 +2885,7 @@ cifs_match_super(struct super_block *sb, void *data)
 	spin_lock(&ses->chan_lock);
 	spin_lock(&tcon->tc_lock);
 	if (!match_server(tcp_srv, ctx, true) ||
-<<<<<<< HEAD
-	    !match_session(ses, ctx) ||
-=======
 	    !match_session(ses, ctx, true) ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !match_tcon(tcon, ctx) ||
 	    !match_prepath(sb, tcon, mnt_data)) {
 		rc = 0;
@@ -3151,29 +3069,22 @@ generic_ip_connect(struct TCP_Server_Info *server)
 	if (server->ssocket) {
 		socket = server->ssocket;
 	} else {
-<<<<<<< HEAD
-		rc = __sock_create(cifs_net_ns(server), sfamily, SOCK_STREAM,
-=======
 		struct net *net = cifs_net_ns(server);
 		struct sock *sk;
 
 		rc = __sock_create(net, sfamily, SOCK_STREAM,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   IPPROTO_TCP, &server->ssocket, 1);
 		if (rc < 0) {
 			cifs_server_dbg(VFS, "Error %d creating socket\n", rc);
 			return rc;
 		}
 
-<<<<<<< HEAD
-=======
 		sk = server->ssocket->sk;
 		__netns_tracker_free(net, &sk->ns_tracker, false);
 		sk->sk_net_refcnt = 1;
 		get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
 		sock_inuse_add(net, 1);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* BB other socket options to set KEEPALIVE, NODELAY? */
 		cifs_dbg(FYI, "Socket created\n");
 		socket = server->ssocket;
@@ -3714,22 +3625,12 @@ out:
 int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb3_fs_context *ctx)
 {
 	struct cifs_mount_ctx mnt_ctx = { .cifs_sb = cifs_sb, .fs_ctx = ctx, };
-<<<<<<< HEAD
-	bool isdfs;
-	int rc;
-
-	rc = dfs_mount_share(&mnt_ctx, &isdfs);
-	if (rc)
-		goto error;
-	if (!isdfs)
-=======
 	int rc;
 
 	rc = dfs_mount_share(&mnt_ctx);
 	if (rc)
 		goto error;
 	if (!ctx->dfs_conn)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 
 	/*
@@ -4134,11 +4035,7 @@ cifs_set_vol_auth(struct smb3_fs_context *ctx, struct cifs_ses *ses)
 }
 
 static struct cifs_tcon *
-<<<<<<< HEAD
-__cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
-=======
 cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int rc;
 	struct cifs_tcon *master_tcon = cifs_sb_master_tcon(cifs_sb);
@@ -4184,11 +4081,7 @@ cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
 
 	ses = cifs_get_smb_ses(master_tcon->ses->server, ctx);
 	if (IS_ERR(ses)) {
-<<<<<<< HEAD
-		tcon = (struct cifs_tcon *)ses;
-=======
 		tcon = ERR_CAST(ses);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cifs_put_tcp_session(master_tcon->ses->server, 0);
 		goto out;
 	}
@@ -4240,20 +4133,6 @@ out:
 	return tcon;
 }
 
-<<<<<<< HEAD
-static struct cifs_tcon *
-cifs_construct_tcon(struct cifs_sb_info *cifs_sb, kuid_t fsuid)
-{
-	struct cifs_tcon *ret;
-
-	cifs_mount_lock();
-	ret = __cifs_construct_tcon(cifs_sb, fsuid);
-	cifs_mount_unlock();
-	return ret;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cifs_tcon *
 cifs_sb_master_tcon(struct cifs_sb_info *cifs_sb)
 {
@@ -4323,15 +4202,9 @@ tlink_rb_insert(struct rb_root *root, struct tcon_link *new_tlink)
 struct tcon_link *
 cifs_sb_tlink(struct cifs_sb_info *cifs_sb)
 {
-<<<<<<< HEAD
-	int ret;
-	kuid_t fsuid = current_fsuid();
-	struct tcon_link *tlink, *newtlink;
-=======
 	struct tcon_link *tlink, *newtlink;
 	kuid_t fsuid = current_fsuid();
 	int err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MULTIUSER))
 		return cifs_get_tlink(cifs_sb_master_tlink(cifs_sb));
@@ -4366,15 +4239,9 @@ cifs_sb_tlink(struct cifs_sb_info *cifs_sb)
 		spin_unlock(&cifs_sb->tlink_tree_lock);
 	} else {
 wait_for_construction:
-<<<<<<< HEAD
-		ret = wait_on_bit(&tlink->tl_flags, TCON_LINK_PENDING,
-				  TASK_INTERRUPTIBLE);
-		if (ret) {
-=======
 		err = wait_on_bit(&tlink->tl_flags, TCON_LINK_PENDING,
 				  TASK_INTERRUPTIBLE);
 		if (err) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			cifs_put_tlink(tlink);
 			return ERR_PTR(-ERESTARTSYS);
 		}
@@ -4385,14 +4252,9 @@ wait_for_construction:
 
 		/* return error if we tried this already recently */
 		if (time_before(jiffies, tlink->tl_time + TLINK_ERROR_EXPIRE)) {
-<<<<<<< HEAD
-			cifs_put_tlink(tlink);
-			return ERR_PTR(-EACCES);
-=======
 			err = PTR_ERR(tlink->tl_tcon);
 			cifs_put_tlink(tlink);
 			return ERR_PTR(err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (test_and_set_bit(TCON_LINK_PENDING, &tlink->tl_flags))
@@ -4404,16 +4266,11 @@ wait_for_construction:
 	wake_up_bit(&tlink->tl_flags, TCON_LINK_PENDING);
 
 	if (IS_ERR(tlink->tl_tcon)) {
-<<<<<<< HEAD
-		cifs_put_tlink(tlink);
-		return ERR_PTR(-EACCES);
-=======
 		err = PTR_ERR(tlink->tl_tcon);
 		if (err == -ENOKEY)
 			err = -EACCES;
 		cifs_put_tlink(tlink);
 		return ERR_PTR(err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return tlink;

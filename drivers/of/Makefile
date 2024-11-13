@@ -19,13 +19,9 @@ obj-y	+= kexec.o
 endif
 endif
 
-<<<<<<< HEAD
-obj-$(CONFIG_OF_KUNIT_TEST) += of_test.o
-=======
 obj-$(CONFIG_KUNIT) += of_kunit_helpers.o
 obj-$(CONFIG_OF_KUNIT_TEST) += of_test.o
 obj-$(CONFIG_OF_OVERLAY_KUNIT_TEST) += overlay-test.o
 overlay-test-y := overlay_test.o kunit_overlay_test.dtbo.o
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 obj-$(CONFIG_OF_UNITTEST) += unittest-data/

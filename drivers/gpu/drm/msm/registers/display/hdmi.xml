@@ -1012,8 +1012,6 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
 		<reg32 offset="0x00110" name="TX_ALOG_INTF_OBSV"/>
 </domain>
 
-<<<<<<< HEAD
-=======
 <domain name="HDMI_8998_PHY" width="32">
 	<reg32 offset="0x00000" name="CFG"/>
 	<reg32 offset="0x00004" name="PD_CTL"/>
@@ -1103,5 +1101,4 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
 	<reg32 offset="0x002C" name="LANE_MODE"/>
 </domain>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 </database>

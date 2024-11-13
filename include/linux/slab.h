@@ -213,15 +213,12 @@ enum _slab_flag_bits {
 #endif
 
 /*
-<<<<<<< HEAD
-=======
  * freeptr_t represents a SLUB freelist pointer, which might be encoded
  * and not dereferenceable if CONFIG_SLAB_FREELIST_HARDENED is enabled.
  */
 typedef struct { unsigned long v; } freeptr_t;
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
  *
  * Dereferencing ZERO_SIZE_PTR will lead to a distinct access fault.
@@ -243,16 +240,6 @@ struct mem_cgroup;
  */
 bool slab_is_available(void);
 
-<<<<<<< HEAD
-struct kmem_cache *kmem_cache_create(const char *name, unsigned int size,
-			unsigned int align, slab_flags_t flags,
-			void (*ctor)(void *));
-struct kmem_cache *kmem_cache_create_usercopy(const char *name,
-			unsigned int size, unsigned int align,
-			slab_flags_t flags,
-			unsigned int useroffset, unsigned int usersize,
-			void (*ctor)(void *));
-=======
 /**
  * struct kmem_cache_args - Less common arguments for kmem_cache_create()
  *
@@ -420,7 +407,6 @@ __kmem_cache_default_args(const char *name, unsigned int size,
 		void *: __kmem_cache_default_args,			\
 		default: __kmem_cache_create)(__name, __object_size, __args, __VA_ARGS__)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void kmem_cache_destroy(struct kmem_cache *s);
 int kmem_cache_shrink(struct kmem_cache *s);
 
@@ -432,30 +418,16 @@ int kmem_cache_shrink(struct kmem_cache *s);
  * f.e. add ____cacheline_aligned_in_smp to the struct declaration
  * then the objects will be properly aligned in SMP configurations.
  */
-<<<<<<< HEAD
-#define KMEM_CACHE(__struct, __flags)					\
-		kmem_cache_create(#__struct, sizeof(struct __struct),	\
-			__alignof__(struct __struct), (__flags), NULL)
-=======
 #define KMEM_CACHE(__struct, __flags)                                   \
 	__kmem_cache_create_args(#__struct, sizeof(struct __struct),    \
 			&(struct kmem_cache_args) {			\
 				.align	= __alignof__(struct __struct), \
 			}, (__flags))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * To whitelist a single field for copying to/from usercopy, use this
  * macro instead for KMEM_CACHE() above.
  */
-<<<<<<< HEAD
-#define KMEM_CACHE_USERCOPY(__struct, __flags, __field)			\
-		kmem_cache_create_usercopy(#__struct,			\
-			sizeof(struct __struct),			\
-			__alignof__(struct __struct), (__flags),	\
-			offsetof(struct __struct, __field),		\
-			sizeof_field(struct __struct, __field), NULL)
-=======
 #define KMEM_CACHE_USERCOPY(__struct, __flags, __field)						\
 	__kmem_cache_create_args(#__struct, sizeof(struct __struct),				\
 			&(struct kmem_cache_args) {						\
@@ -463,7 +435,6 @@ int kmem_cache_shrink(struct kmem_cache *s);
 				.useroffset	= offsetof(struct __struct, __field),		\
 				.usersize	= sizeof_field(struct __struct, __field),	\
 			}, (__flags))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Common kmalloc functions provided by all allocators
@@ -744,8 +715,6 @@ void *kmem_cache_alloc_lru_noprof(struct kmem_cache *s, struct list_lru *lru,
 			    gfp_t gfpflags) __assume_slab_alignment __malloc;
 #define kmem_cache_alloc_lru(...)	alloc_hooks(kmem_cache_alloc_lru_noprof(__VA_ARGS__))
 
-<<<<<<< HEAD
-=======
 /**
  * kmem_cache_charge - memcg charge an already allocated slab memory
  * @objp: address of the slab object to memcg charge
@@ -775,7 +744,6 @@ void *kmem_cache_alloc_lru_noprof(struct kmem_cache *s, struct list_lru *lru,
  * Return: true if charge was successful otherwise false.
  */
 bool kmem_cache_charge(void *objp, gfp_t gfpflags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void kmem_cache_free(struct kmem_cache *s, void *objp);
 
 kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
@@ -962,8 +930,6 @@ static inline __alloc_size(1, 2) void *kmalloc_array_noprof(size_t n, size_t siz
  * @new_n: new number of elements to alloc
  * @new_size: new size of a single member of the array
  * @flags: the type of memory to allocate (see kmalloc)
-<<<<<<< HEAD
-=======
  *
  * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
  * initial memory allocation, every subsequent call to this API for the same
@@ -974,7 +940,6 @@ static inline __alloc_size(1, 2) void *kmalloc_array_noprof(size_t n, size_t siz
  *
  * In any case, the contents of the object pointed to are preserved up to the
  * lesser of the new and old sizes.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static inline __realloc_size(2, 3) void * __must_check krealloc_array_noprof(void *p,
 								       size_t new_n,
@@ -1083,13 +1048,8 @@ kvmalloc_array_node_noprof(size_t n, size_t size, gfp_t flags, int node)
 #define kvcalloc_node(...)			alloc_hooks(kvcalloc_node_noprof(__VA_ARGS__))
 #define kvcalloc(...)				alloc_hooks(kvcalloc_noprof(__VA_ARGS__))
 
-<<<<<<< HEAD
-extern void *kvrealloc_noprof(const void *p, size_t oldsize, size_t newsize, gfp_t flags)
-		      __realloc_size(3);
-=======
 void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
 		__realloc_size(2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define kvrealloc(...)				alloc_hooks(kvrealloc_noprof(__VA_ARGS__))
 
 extern void kvfree(const void *addr);

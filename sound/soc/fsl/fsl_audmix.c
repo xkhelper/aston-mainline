@@ -512,10 +512,6 @@ static void fsl_audmix_remove(struct platform_device *pdev)
 		platform_device_unregister(priv->pdev);
 }
 
-<<<<<<< HEAD
-#ifdef CONFIG_PM
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int fsl_audmix_runtime_resume(struct device *dev)
 {
 	struct fsl_audmix *priv = dev_get_drvdata(dev);
@@ -543,39 +539,20 @@ static int fsl_audmix_runtime_suspend(struct device *dev)
 
 	return 0;
 }
-<<<<<<< HEAD
-#endif /* CONFIG_PM */
-
-static const struct dev_pm_ops fsl_audmix_pm = {
-	SET_RUNTIME_PM_OPS(fsl_audmix_runtime_suspend,
-			   fsl_audmix_runtime_resume,
-			   NULL)
-	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-				pm_runtime_force_resume)
-=======
 
 static const struct dev_pm_ops fsl_audmix_pm = {
 	RUNTIME_PM_OPS(fsl_audmix_runtime_suspend, fsl_audmix_runtime_resume,
 		       NULL)
 	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct platform_driver fsl_audmix_driver = {
 	.probe = fsl_audmix_probe,
-<<<<<<< HEAD
-	.remove_new = fsl_audmix_remove,
-	.driver = {
-		.name = "fsl-audmix",
-		.of_match_table = fsl_audmix_ids,
-		.pm = &fsl_audmix_pm,
-=======
 	.remove = fsl_audmix_remove,
 	.driver = {
 		.name = "fsl-audmix",
 		.of_match_table = fsl_audmix_ids,
 		.pm = pm_ptr(&fsl_audmix_pm),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 module_platform_driver(fsl_audmix_driver);

@@ -209,15 +209,6 @@ static const struct regmap_access_table axp313a_volatile_table = {
 };
 
 static const struct regmap_range axp717_writeable_ranges[] = {
-<<<<<<< HEAD
-	regmap_reg_range(AXP717_IRQ0_EN, AXP717_IRQ4_EN),
-	regmap_reg_range(AXP717_IRQ0_STATE, AXP717_IRQ4_STATE),
-	regmap_reg_range(AXP717_DCDC_OUTPUT_CONTROL, AXP717_CPUSLDO_CONTROL),
-};
-
-static const struct regmap_range axp717_volatile_ranges[] = {
-	regmap_reg_range(AXP717_IRQ0_STATE, AXP717_IRQ4_STATE),
-=======
 	regmap_reg_range(AXP717_PMU_FAULT, AXP717_MODULE_EN_CONTROL_1),
 	regmap_reg_range(AXP717_MIN_SYS_V_CONTROL, AXP717_BOOST_CONTROL),
 	regmap_reg_range(AXP717_VSYS_V_POWEROFF, AXP717_VSYS_V_POWEROFF),
@@ -235,7 +226,6 @@ static const struct regmap_range axp717_volatile_ranges[] = {
 	regmap_reg_range(AXP717_BATT_PERCENT_DATA, AXP717_BATT_PERCENT_DATA),
 	regmap_reg_range(AXP717_BATT_V_H, AXP717_BATT_CHRG_I_L),
 	regmap_reg_range(AXP717_ADC_DATA_H, AXP717_ADC_DATA_L),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct regmap_access_table axp717_writeable_table = {
@@ -328,15 +318,12 @@ static const struct resource axp22x_usb_power_supply_resources[] = {
 	DEFINE_RES_IRQ_NAMED(AXP22X_IRQ_VBUS_REMOVAL, "VBUS_REMOVAL"),
 };
 
-<<<<<<< HEAD
-=======
 static const struct resource axp717_usb_power_supply_resources[] = {
 	DEFINE_RES_IRQ_NAMED(AXP717_IRQ_VBUS_OVER_V, "VBUS_OVER_V"),
 	DEFINE_RES_IRQ_NAMED(AXP717_IRQ_VBUS_PLUGIN, "VBUS_PLUGIN"),
 	DEFINE_RES_IRQ_NAMED(AXP717_IRQ_VBUS_REMOVAL, "VBUS_REMOVAL"),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* AXP803 and AXP813/AXP818 share the same interrupts */
 static const struct resource axp803_usb_power_supply_resources[] = {
 	DEFINE_RES_IRQ_NAMED(AXP803_IRQ_VBUS_PLUGIN, "VBUS_PLUGIN"),
@@ -451,11 +438,7 @@ static const struct regmap_config axp717_regmap_config = {
 	.val_bits = 8,
 	.wr_table = &axp717_writeable_table,
 	.volatile_table = &axp717_volatile_table,
-<<<<<<< HEAD
-	.max_register = AXP717_CPUSLDO_CONTROL,
-=======
 	.max_register = AXP717_ADC_DATA_L,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.cache_type = REGCACHE_MAPLE,
 };
 
@@ -1057,8 +1040,6 @@ static struct mfd_cell axp313a_cells[] = {
 static struct mfd_cell axp717_cells[] = {
 	MFD_CELL_NAME("axp20x-regulator"),
 	MFD_CELL_RES("axp20x-pek", axp717_pek_resources),
-<<<<<<< HEAD
-=======
 	MFD_CELL_OF("axp717-adc",
 		    NULL, NULL, 0, 0, "x-powers,axp717-adc"),
 	MFD_CELL_OF("axp20x-usb-power-supply",
@@ -1066,7 +1047,6 @@ static struct mfd_cell axp717_cells[] = {
 		    "x-powers,axp717-usb-power-supply"),
 	MFD_CELL_OF("axp20x-battery-power-supply",
 		    NULL, NULL, 0, 0, "x-powers,axp717-battery-power-supply"),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct resource axp288_adc_resources[] = {

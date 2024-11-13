@@ -151,8 +151,6 @@ Contact:	Sergey Senozhatsky <senozhatsky@chromium.org>
 Description:
 		The recompress file is write-only and triggers re-compression
 		with secondary compression algorithms.
-<<<<<<< HEAD
-=======
 
 What:		/sys/block/zram<id>/algorithm_params
 Date:		August 2024
@@ -160,4 +158,3 @@ Contact:	Sergey Senozhatsky <senozhatsky@chromium.org>
 Description:
 		The algorithm_params file is write-only and is used to setup
 		compression algorithm parameters.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

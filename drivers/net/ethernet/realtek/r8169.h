@@ -69,10 +69,7 @@ enum mac_version {
 	RTL_GIGA_MAC_VER_61,
 	RTL_GIGA_MAC_VER_63,
 	RTL_GIGA_MAC_VER_65,
-<<<<<<< HEAD
-=======
 	RTL_GIGA_MAC_VER_66,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	RTL_GIGA_MAC_NONE
 };
 

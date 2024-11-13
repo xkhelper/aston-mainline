@@ -13,11 +13,7 @@
 #include <linux/can/error.h>
 #include <linux/can/platform/sja1000.h>
 
-<<<<<<< HEAD
-#include <asm-generic/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* vendor and product id */
 #define F81604_VENDOR_ID 0x2c42

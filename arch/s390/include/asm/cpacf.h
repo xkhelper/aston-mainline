@@ -54,11 +54,8 @@
 #define CPACF_KM_XTS_256	0x34
 #define CPACF_KM_PXTS_128	0x3a
 #define CPACF_KM_PXTS_256	0x3c
-<<<<<<< HEAD
-=======
 #define CPACF_KM_XTS_128_FULL	0x52
 #define CPACF_KM_XTS_256_FULL	0x54
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Function codes for the KMC (CIPHER MESSAGE WITH CHAINING)
@@ -126,32 +123,15 @@
 #define CPACF_KMAC_DEA		0x01
 #define CPACF_KMAC_TDEA_128	0x02
 #define CPACF_KMAC_TDEA_192	0x03
-<<<<<<< HEAD
-=======
 #define CPACF_KMAC_HMAC_SHA_224	0x70
 #define CPACF_KMAC_HMAC_SHA_256	0x71
 #define CPACF_KMAC_HMAC_SHA_384	0x72
 #define CPACF_KMAC_HMAC_SHA_512	0x73
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Function codes for the PCKMO (PERFORM CRYPTOGRAPHIC KEY MANAGEMENT)
  * instruction
  */
-<<<<<<< HEAD
-#define CPACF_PCKMO_QUERY		0x00
-#define CPACF_PCKMO_ENC_DES_KEY		0x01
-#define CPACF_PCKMO_ENC_TDES_128_KEY	0x02
-#define CPACF_PCKMO_ENC_TDES_192_KEY	0x03
-#define CPACF_PCKMO_ENC_AES_128_KEY	0x12
-#define CPACF_PCKMO_ENC_AES_192_KEY	0x13
-#define CPACF_PCKMO_ENC_AES_256_KEY	0x14
-#define CPACF_PCKMO_ENC_ECC_P256_KEY	0x20
-#define CPACF_PCKMO_ENC_ECC_P384_KEY	0x21
-#define CPACF_PCKMO_ENC_ECC_P521_KEY	0x22
-#define CPACF_PCKMO_ENC_ECC_ED25519_KEY	0x28
-#define CPACF_PCKMO_ENC_ECC_ED448_KEY	0x29
-=======
 #define CPACF_PCKMO_QUERY		       0x00
 #define CPACF_PCKMO_ENC_DES_KEY		       0x01
 #define CPACF_PCKMO_ENC_TDES_128_KEY	       0x02
@@ -168,7 +148,6 @@
 #define CPACF_PCKMO_ENC_ECC_ED448_KEY	       0x29
 #define CPACF_PCKMO_ENC_HMAC_512_KEY	       0x76
 #define CPACF_PCKMO_ENC_HMAC_1024_KEY	       0x7a
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Function codes for the PRNO (PERFORM RANDOM NUMBER OPERATION)
@@ -196,9 +175,6 @@
 #define CPACF_KMA_LAAD	0x200	/* Last-AAD */
 #define CPACF_KMA_HS	0x400	/* Hash-subkey Supplied */
 
-<<<<<<< HEAD
-typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
-=======
 /*
  * Flags for the KIMD/KLMD (COMPUTE INTERMEDIATE/LAST MESSAGE DIGEST)
  * instructions
@@ -233,7 +209,6 @@ typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
 
 typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
 typedef struct { unsigned char bytes[256]; } cpacf_qai_t;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Prototype for a not existing function to produce a link
@@ -243,32 +218,6 @@ typedef struct { unsigned char bytes[256]; } cpacf_qai_t;
 void __cpacf_bad_opcode(void);
 
 static __always_inline void __cpacf_query_rre(u32 opc, u8 r1, u8 r2,
-<<<<<<< HEAD
-					      cpacf_mask_t *mask)
-{
-	asm volatile(
-		"	la	%%r1,%[mask]\n"
-		"	xgr	%%r0,%%r0\n"
-		"	.insn	rre,%[opc] << 16,%[r1],%[r2]\n"
-		: [mask] "=R" (*mask)
-		: [opc] "i" (opc),
-		  [r1] "i" (r1), [r2] "i" (r2)
-		: "cc", "r0", "r1");
-}
-
-static __always_inline void __cpacf_query_rrf(u32 opc,
-					      u8 r1, u8 r2, u8 r3, u8 m4,
-					      cpacf_mask_t *mask)
-{
-	asm volatile(
-		"	la	%%r1,%[mask]\n"
-		"	xgr	%%r0,%%r0\n"
-		"	.insn	rrf,%[opc] << 16,%[r1],%[r2],%[r3],%[m4]\n"
-		: [mask] "=R" (*mask)
-		: [opc] "i" (opc), [r1] "i" (r1), [r2] "i" (r2),
-		  [r3] "i" (r3), [m4] "i" (m4)
-		: "cc", "r0", "r1");
-=======
 					      u8 *pb, u8 fc)
 {
 	asm volatile(
@@ -340,59 +289,12 @@ static __always_inline void __cpacf_query_insn(unsigned int opcode, void *pb,
 	default:
 		__cpacf_bad_opcode();
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static __always_inline void __cpacf_query(unsigned int opcode,
 					  cpacf_mask_t *mask)
 {
-<<<<<<< HEAD
-	switch (opcode) {
-	case CPACF_KDSA:
-		__cpacf_query_rre(CPACF_KDSA, 0, 2, mask);
-		break;
-	case CPACF_KIMD:
-		__cpacf_query_rre(CPACF_KIMD, 0, 2, mask);
-		break;
-	case CPACF_KLMD:
-		__cpacf_query_rre(CPACF_KLMD, 0, 2, mask);
-		break;
-	case CPACF_KM:
-		__cpacf_query_rre(CPACF_KM, 2, 4, mask);
-		break;
-	case CPACF_KMA:
-		__cpacf_query_rrf(CPACF_KMA, 2, 4, 6, 0, mask);
-		break;
-	case CPACF_KMAC:
-		__cpacf_query_rre(CPACF_KMAC, 0, 2, mask);
-		break;
-	case CPACF_KMC:
-		__cpacf_query_rre(CPACF_KMC, 2, 4, mask);
-		break;
-	case CPACF_KMCTR:
-		__cpacf_query_rrf(CPACF_KMCTR, 2, 4, 6, 0, mask);
-		break;
-	case CPACF_KMF:
-		__cpacf_query_rre(CPACF_KMF, 2, 4, mask);
-		break;
-	case CPACF_KMO:
-		__cpacf_query_rre(CPACF_KMO, 2, 4, mask);
-		break;
-	case CPACF_PCC:
-		__cpacf_query_rre(CPACF_PCC, 0, 0, mask);
-		break;
-	case CPACF_PCKMO:
-		__cpacf_query_rre(CPACF_PCKMO, 0, 0, mask);
-		break;
-	case CPACF_PRNO:
-		__cpacf_query_rre(CPACF_PRNO, 2, 4, mask);
-		break;
-	default:
-		__cpacf_bad_opcode();
-	}
-=======
 	__cpacf_query_insn(opcode, mask, CPACF_FC_QUERY);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static __always_inline int __cpacf_check_opcode(unsigned int opcode)
@@ -415,11 +317,8 @@ static __always_inline int __cpacf_check_opcode(unsigned int opcode)
 		return test_facility(57);	/* check for MSA5 */
 	case CPACF_KMA:
 		return test_facility(146);	/* check for MSA8 */
-<<<<<<< HEAD
-=======
 	case CPACF_KDSA:
 		return test_facility(155);	/* check for MSA9 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		__cpacf_bad_opcode();
 		return 0;
@@ -427,25 +326,15 @@ static __always_inline int __cpacf_check_opcode(unsigned int opcode)
 }
 
 /**
-<<<<<<< HEAD
- * cpacf_query() - check if a specific CPACF function is available
- * @opcode: the opcode of the crypto instruction
- * @func: the function code to test for
-=======
  * cpacf_query() - Query the function code mask for this CPACF opcode
  * @opcode: the opcode of the crypto instruction
  * @mask: ptr to struct cpacf_mask_t
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Executes the query function for the given crypto instruction @opcode
  * and checks if @func is available
  *
-<<<<<<< HEAD
- * Returns 1 if @func is available for @opcode, 0 otherwise
-=======
  * On success 1 is returned and the mask is filled with the function
  * code mask for this CPACF opcode, otherwise 0 is returned.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static __always_inline int cpacf_query(unsigned int opcode, cpacf_mask_t *mask)
 {
@@ -462,12 +351,8 @@ static inline int cpacf_test_func(cpacf_mask_t *mask, unsigned int func)
 	return (mask->bytes[func >> 3] & (0x80 >> (func & 7))) != 0;
 }
 
-<<<<<<< HEAD
-static __always_inline int cpacf_query_func(unsigned int opcode, unsigned int func)
-=======
 static __always_inline int cpacf_query_func(unsigned int opcode,
 					    unsigned int func)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	cpacf_mask_t mask;
 
@@ -476,8 +361,6 @@ static __always_inline int cpacf_query_func(unsigned int opcode,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static __always_inline void __cpacf_qai(unsigned int opcode, cpacf_qai_t *qai)
 {
 	__cpacf_query_insn(opcode, qai, CPACF_FC_QUERY_AUTH_INFO);
@@ -504,7 +387,6 @@ static __always_inline int cpacf_qai(unsigned int opcode, cpacf_qai_t *qai)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * cpacf_km() - executes the KM (CIPHER MESSAGE) instruction
  * @func: the function code passed to KM; see CPACF_KM_xxx defines
@@ -587,11 +469,7 @@ static inline void cpacf_kimd(unsigned long func, void *param,
 	asm volatile(
 		"	lgr	0,%[fc]\n"
 		"	lgr	1,%[pba]\n"
-<<<<<<< HEAD
-		"0:	.insn	rre,%[opc] << 16,0,%[src]\n"
-=======
 		"0:	.insn	rrf,%[opc] << 16,0,%[src],8,0\n"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"	brc	1,0b\n" /* handle partial completion */
 		: [src] "+&d" (s.pair)
 		: [fc] "d" (func), [pba] "d" ((unsigned long)(param)),
@@ -616,11 +494,7 @@ static inline void cpacf_klmd(unsigned long func, void *param,
 	asm volatile(
 		"	lgr	0,%[fc]\n"
 		"	lgr	1,%[pba]\n"
-<<<<<<< HEAD
-		"0:	.insn	rre,%[opc] << 16,0,%[src]\n"
-=======
 		"0:	.insn	rrf,%[opc] << 16,0,%[src],8,0\n"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"	brc	1,0b\n" /* handle partial completion */
 		: [src] "+&d" (s.pair)
 		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
@@ -629,11 +503,6 @@ static inline void cpacf_klmd(unsigned long func, void *param,
 }
 
 /**
-<<<<<<< HEAD
- * cpacf_kmac() - executes the KMAC (COMPUTE MESSAGE AUTHENTICATION CODE)
- *		  instruction
- * @func: the function code passed to KM; see CPACF_KMAC_xxx defines
-=======
  * _cpacf_kmac() - executes the KMAC (COMPUTE MESSAGE AUTHENTICATION CODE)
  * instruction and updates flags in gr0
  * @gr0: pointer to gr0 (fc and flags) passed to KMAC; see CPACF_KMAC_xxx defines
@@ -668,7 +537,6 @@ static inline int _cpacf_kmac(unsigned long *gr0, void *param,
  * cpacf_kmac() - executes the KMAC (COMPUTE MESSAGE AUTHENTICATION CODE)
  * instruction
  * @func: function code passed to KMAC; see CPACF_KMAC_xxx defines
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @param: address of parameter block; see POP for details on each func
  * @src: address of source memory area
  * @src_len: length of src operand in bytes
@@ -678,25 +546,7 @@ static inline int _cpacf_kmac(unsigned long *gr0, void *param,
 static inline int cpacf_kmac(unsigned long func, void *param,
 			     const u8 *src, long src_len)
 {
-<<<<<<< HEAD
-	union register_pair s;
-
-	s.even = (unsigned long)src;
-	s.odd  = (unsigned long)src_len;
-	asm volatile(
-		"	lgr	0,%[fc]\n"
-		"	lgr	1,%[pba]\n"
-		"0:	.insn	rre,%[opc] << 16,0,%[src]\n"
-		"	brc	1,0b\n" /* handle partial completion */
-		: [src] "+&d" (s.pair)
-		: [fc] "d" (func), [pba] "d" ((unsigned long)param),
-		  [opc] "i" (CPACF_KMAC)
-		: "cc", "memory", "0", "1");
-
-	return src_len - s.odd;
-=======
 	return _cpacf_kmac(&func, param, src, src_len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

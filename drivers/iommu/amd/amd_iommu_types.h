@@ -8,10 +8,7 @@
 #ifndef _ASM_X86_AMD_IOMMU_TYPES_H
 #define _ASM_X86_AMD_IOMMU_TYPES_H
 
-<<<<<<< HEAD
-=======
 #include <linux/bitfield.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/iommu.h>
 #include <linux/types.h>
 #include <linux/mmu_notifier.h>
@@ -99,41 +96,21 @@
 #define FEATURE_GA		BIT_ULL(7)
 #define FEATURE_HE		BIT_ULL(8)
 #define FEATURE_PC		BIT_ULL(9)
-<<<<<<< HEAD
-#define FEATURE_GATS_SHIFT	(12)
-#define FEATURE_GATS_MASK	(3ULL)
-#define FEATURE_GAM_VAPIC	BIT_ULL(21)
-=======
 #define FEATURE_GATS		GENMASK_ULL(13, 12)
 #define FEATURE_GLX		GENMASK_ULL(15, 14)
 #define FEATURE_GAM_VAPIC	BIT_ULL(21)
 #define FEATURE_PASMAX		GENMASK_ULL(36, 32)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define FEATURE_GIOSUP		BIT_ULL(48)
 #define FEATURE_HASUP		BIT_ULL(49)
 #define FEATURE_EPHSUP		BIT_ULL(50)
 #define FEATURE_HDSUP		BIT_ULL(52)
 #define FEATURE_SNP		BIT_ULL(63)
 
-<<<<<<< HEAD
-#define FEATURE_PASID_SHIFT	32
-#define FEATURE_PASID_MASK	(0x1fULL << FEATURE_PASID_SHIFT)
-
-#define FEATURE_GLXVAL_SHIFT	14
-#define FEATURE_GLXVAL_MASK	(0x03ULL << FEATURE_GLXVAL_SHIFT)
-
-/* Extended Feature 2 Bits */
-#define FEATURE_SNPAVICSUP_SHIFT	5
-#define FEATURE_SNPAVICSUP_MASK		(0x07ULL << FEATURE_SNPAVICSUP_SHIFT)
-#define FEATURE_SNPAVICSUP_GAM(x) \
-	((x & FEATURE_SNPAVICSUP_MASK) >> FEATURE_SNPAVICSUP_SHIFT == 0x1)
-=======
 
 /* Extended Feature 2 Bits */
 #define FEATURE_SNPAVICSUP	GENMASK_ULL(7, 5)
 #define FEATURE_SNPAVICSUP_GAM(x) \
 	(FIELD_GET(FEATURE_SNPAVICSUP, x) == 0x1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Note:
  * The current driver only support 16-bit PASID.
@@ -313,10 +290,6 @@
  * that we support.
  *
  * 512GB Pages are not supported due to a hardware bug
-<<<<<<< HEAD
- */
-#define AMD_IOMMU_PGSIZES	((~0xFFFUL) & ~(2ULL << 38))
-=======
  * Page sizes >= the 52 bit max physical address of the CPU are not supported.
  */
 #define AMD_IOMMU_PGSIZES	(GENMASK_ULL(51, 12) ^ SZ_512G)
@@ -324,7 +297,6 @@
 /* Special mode where page-sizes are limited to 4 KiB */
 #define AMD_IOMMU_PGSIZES_4K	(PAGE_SIZE)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* 4K, 2MB, 1G page sizes are supported */
 #define AMD_IOMMU_PGSIZES_V2	(PAGE_SIZE | (1ULL << 21) | (1ULL << 30))
 
@@ -448,13 +420,6 @@
 #define DTE_GCR3_VAL_B(x)	(((x) >> 15) & 0x0ffffULL)
 #define DTE_GCR3_VAL_C(x)	(((x) >> 31) & 0x1fffffULL)
 
-<<<<<<< HEAD
-#define DTE_GCR3_INDEX_A	0
-#define DTE_GCR3_INDEX_B	1
-#define DTE_GCR3_INDEX_C	1
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DTE_GCR3_SHIFT_A	58
 #define DTE_GCR3_SHIFT_B	16
 #define DTE_GCR3_SHIFT_C	43
@@ -559,11 +524,7 @@ struct amd_irte_ops;
 #define AMD_IOMMU_FLAG_TRANS_PRE_ENABLED      (1 << 0)
 
 #define io_pgtable_to_data(x) \
-<<<<<<< HEAD
-	container_of((x), struct amd_io_pgtable, iop)
-=======
 	container_of((x), struct amd_io_pgtable, pgtbl)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define io_pgtable_ops_to_data(x) \
 	io_pgtable_to_data(io_pgtable_ops_to_pgtable(x))
@@ -573,11 +534,7 @@ struct amd_irte_ops;
 		     struct protection_domain, iop)
 
 #define io_pgtable_cfg_to_data(x) \
-<<<<<<< HEAD
-	container_of((x), struct amd_io_pgtable, pgtbl_cfg)
-=======
 	container_of((x), struct amd_io_pgtable, pgtbl.cfg)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct gcr3_tbl_info {
 	u64	*gcr3_tbl;	/* Guest CR3 table */
@@ -587,12 +544,7 @@ struct gcr3_tbl_info {
 };
 
 struct amd_io_pgtable {
-<<<<<<< HEAD
-	struct io_pgtable_cfg	pgtbl_cfg;
-	struct io_pgtable	iop;
-=======
 	struct io_pgtable	pgtbl;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			mode;
 	u64			*root;
 	u64			*pgd;		/* v2 pgtable pgd pointer */
@@ -624,10 +576,6 @@ struct protection_domain {
 	struct amd_io_pgtable iop;
 	spinlock_t lock;	/* mostly used to lock the page table*/
 	u16 id;			/* the domain id written to the device table */
-<<<<<<< HEAD
-	int nid;		/* Node ID */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	enum protection_domain_mode pd_mode; /* Track page table type */
 	bool dirty_tracking;	/* dirty tracking is enabled in the domain */
 	unsigned dev_cnt;	/* devices assigned to this domain */

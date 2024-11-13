@@ -147,11 +147,7 @@ void abort_hooks(void)
  * will then fault, which makes sure that the fault code handles
  * execute-only memory properly.
  */
-<<<<<<< HEAD
-#ifdef __powerpc64__
-=======
 #if defined(__powerpc64__) || defined(__aarch64__)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* This way, both 4K and 64K alignment are maintained */
 __attribute__((__aligned__(65536)))
 #else
@@ -216,10 +212,6 @@ void pkey_disable_set(int pkey, int flags)
 	unsigned long syscall_flags = 0;
 	int ret;
 	int pkey_rights;
-<<<<<<< HEAD
-	u64 orig_pkey_reg = read_pkey_reg();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dprintf1("START->%s(%d, 0x%x)\n", __func__,
 		pkey, flags);
@@ -249,11 +241,6 @@ void pkey_disable_set(int pkey, int flags)
 
 	dprintf1("%s(%d) pkey_reg: 0x%016llx\n",
 		__func__, pkey, read_pkey_reg());
-<<<<<<< HEAD
-	if (flags)
-		pkey_assert(read_pkey_reg() >= orig_pkey_reg);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dprintf1("END<---%s(%d, 0x%x)\n", __func__,
 		pkey, flags);
 }
@@ -263,10 +250,6 @@ void pkey_disable_clear(int pkey, int flags)
 	unsigned long syscall_flags = 0;
 	int ret;
 	int pkey_rights = hw_pkey_get(pkey, syscall_flags);
-<<<<<<< HEAD
-	u64 orig_pkey_reg = read_pkey_reg();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pkey_assert(flags & (PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE));
 
@@ -286,11 +269,6 @@ void pkey_disable_clear(int pkey, int flags)
 
 	dprintf1("%s(%d) pkey_reg: 0x%016llx\n", __func__,
 			pkey, read_pkey_reg());
-<<<<<<< HEAD
-	if (flags)
-		assert(read_pkey_reg() <= orig_pkey_reg);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void pkey_write_allow(int pkey)
@@ -330,13 +308,9 @@ void signal_handler(int signum, siginfo_t *si, void *vucontext)
 	ucontext_t *uctxt = vucontext;
 	int trapno;
 	unsigned long ip;
-<<<<<<< HEAD
-	char *fpregs;
-=======
 #ifdef MCONTEXT_FPREGS
 	char *fpregs;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if defined(__i386__) || defined(__x86_64__) /* arch */
 	u32 *pkey_reg_ptr;
 	int pkey_reg_offset;
@@ -350,17 +324,11 @@ void signal_handler(int signum, siginfo_t *si, void *vucontext)
 			__func__, __LINE__,
 			__read_pkey_reg(), shadow_pkey_reg);
 
-<<<<<<< HEAD
-	trapno = uctxt->uc_mcontext.gregs[REG_TRAPNO];
-	ip = uctxt->uc_mcontext.gregs[REG_IP_IDX];
-	fpregs = (char *) uctxt->uc_mcontext.fpregs;
-=======
 	trapno = MCONTEXT_TRAPNO(uctxt->uc_mcontext);
 	ip = MCONTEXT_IP(uctxt->uc_mcontext);
 #ifdef MCONTEXT_FPREGS
 	fpregs = (char *) uctxt->uc_mcontext.fpregs;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dprintf2("%s() trapno: %d ip: 0x%016lx info->si_code: %s/%d\n",
 			__func__, trapno, ip, si_code_str(si->si_code),
@@ -389,13 +357,9 @@ void signal_handler(int signum, siginfo_t *si, void *vucontext)
 #endif /* arch */
 
 	dprintf1("siginfo: %p\n", si);
-<<<<<<< HEAD
-	dprintf1(" fpregs: %p\n", fpregs);
-=======
 #ifdef MCONTEXT_FPREGS
 	dprintf1(" fpregs: %p\n", fpregs);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((si->si_code == SEGV_MAPERR) ||
 	    (si->si_code == SEGV_ACCERR) ||
@@ -425,11 +389,8 @@ void signal_handler(int signum, siginfo_t *si, void *vucontext)
 #elif defined(__powerpc64__) /* arch */
 	/* restore access and let the faulting instruction continue */
 	pkey_access_allow(siginfo_pkey);
-<<<<<<< HEAD
-=======
 #elif defined(__aarch64__)
 	aarch64_write_signal_pkey(uctxt, PKEY_ALLOW_ALL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* arch */
 	pkey_faults++;
 	dprintf1("<<<<==================================================\n");
@@ -943,13 +904,9 @@ void expected_pkey_fault(int pkey)
 	 * test program continue.  We now have to restore it.
 	 */
 	if (__read_pkey_reg() != 0)
-<<<<<<< HEAD
-#else /* arch */
-=======
 #elif defined(__aarch64__)
 	if (__read_pkey_reg() != PKEY_ALLOW_ALL)
 #else
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (__read_pkey_reg() != shadow_pkey_reg)
 #endif /* arch */
 		pkey_assert(0);
@@ -997,19 +954,6 @@ void close_test_fds(void)
 	nr_test_fds = 0;
 }
 
-<<<<<<< HEAD
-#define barrier() __asm__ __volatile__("": : :"memory")
-__attribute__((noinline)) int read_ptr(int *ptr)
-{
-	/*
-	 * Keep GCC from optimizing this away somehow
-	 */
-	barrier();
-	return *ptr;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_pkey_alloc_free_attach_pkey0(int *ptr, u16 pkey)
 {
 	int i, err;
@@ -1542,14 +1486,11 @@ void test_executing_on_unreadable_memory(int *ptr, u16 pkey)
 	lots_o_noops_around_write(&scratch);
 	do_not_expect_pkey_fault("executing on PROT_EXEC memory");
 	expect_fault_on_read_execonly_key(p1, pkey);
-<<<<<<< HEAD
-=======
 
 	// Reset back to PROT_EXEC | PROT_READ for architectures that support
 	// non-PKEY execute-only permissions.
 	ret = mprotect_pkey(p1, PAGE_SIZE, PROT_EXEC | PROT_READ, (u64)pkey);
 	pkey_assert(!ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void test_implicit_mprotect_exec_only_memory(int *ptr, u16 pkey)
@@ -1723,8 +1664,6 @@ void test_ptrace_modifies_pkru(int *ptr, u16 pkey)
 }
 #endif
 
-<<<<<<< HEAD
-=======
 #if defined(__aarch64__)
 void test_ptrace_modifies_pkru(int *ptr, u16 pkey)
 {
@@ -1803,7 +1742,6 @@ void test_ptrace_modifies_pkru(int *ptr, u16 pkey)
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_mprotect_pkey_on_unsupported_cpu(int *ptr, u16 pkey)
 {
 	int size = PAGE_SIZE;
@@ -1839,11 +1777,7 @@ void (*pkey_tests[])(int *ptr, u16 pkey) = {
 	test_pkey_syscalls_bad_args,
 	test_pkey_alloc_exhaust,
 	test_pkey_alloc_free_attach_pkey0,
-<<<<<<< HEAD
-#if defined(__i386__) || defined(__x86_64__)
-=======
 #if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	test_ptrace_modifies_pkru,
 #endif
 };

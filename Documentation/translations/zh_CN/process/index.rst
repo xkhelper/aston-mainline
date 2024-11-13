@@ -49,18 +49,11 @@ TODOLIST:
 
    embargoed-hardware-issues
    cve
-<<<<<<< HEAD
-
-TODOLIST:
-
-* security-bugs
-=======
    security-bugs
 
 TODOLIST:
 
 * handling-regressions
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 其它大多数开发人员感兴趣的社区指南：
 

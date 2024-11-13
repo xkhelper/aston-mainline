@@ -51,10 +51,6 @@ struct s390_aes_ctx {
 };
 
 struct s390_xts_ctx {
-<<<<<<< HEAD
-	u8 key[32];
-	u8 pcc_key[32];
-=======
 	union {
 		u8 keys[64];
 		struct {
@@ -62,7 +58,6 @@ struct s390_xts_ctx {
 			u8 pcc_key[32];
 		};
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int key_len;
 	unsigned long fc;
 	struct crypto_skcipher *fallback;
@@ -536,8 +531,6 @@ static struct skcipher_alg xts_aes_alg = {
 	.decrypt		=	xts_aes_decrypt,
 };
 
-<<<<<<< HEAD
-=======
 static int fullxts_aes_set_key(struct crypto_skcipher *tfm, const u8 *in_key,
 			       unsigned int key_len)
 {
@@ -640,7 +633,6 @@ static struct skcipher_alg fullxts_aes_alg = {
 	.decrypt		=	fullxts_aes_decrypt,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ctr_aes_set_key(struct crypto_skcipher *tfm, const u8 *in_key,
 			   unsigned int key_len)
 {
@@ -1070,11 +1062,7 @@ static struct aead_alg gcm_aes_aead = {
 };
 
 static struct crypto_alg *aes_s390_alg;
-<<<<<<< HEAD
-static struct skcipher_alg *aes_s390_skcipher_algs[4];
-=======
 static struct skcipher_alg *aes_s390_skcipher_algs[5];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int aes_s390_skciphers_num;
 static struct aead_alg *aes_s390_aead_alg;
 
@@ -1131,8 +1119,6 @@ static int __init aes_s390_init(void)
 			goto out_err;
 	}
 
-<<<<<<< HEAD
-=======
 	if (cpacf_test_func(&km_functions, CPACF_KM_XTS_128_FULL) ||
 	    cpacf_test_func(&km_functions, CPACF_KM_XTS_256_FULL)) {
 		ret = aes_s390_register_skcipher(&fullxts_aes_alg);
@@ -1140,7 +1126,6 @@ static int __init aes_s390_init(void)
 			goto out_err;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cpacf_test_func(&km_functions, CPACF_KM_XTS_128) ||
 	    cpacf_test_func(&km_functions, CPACF_KM_XTS_256)) {
 		ret = aes_s390_register_skcipher(&xts_aes_alg);

@@ -31,24 +31,18 @@ description: |
   This device also represents the FIQ interrupt sources on platforms using AIC,
   which do not go through a discrete interrupt controller.
 
-<<<<<<< HEAD
-=======
   IPIs may be performed via MMIO registers on all variants of AIC. Starting
   from A11, system registers may also be used for "fast" IPIs. Starting from
   M1, even faster IPIs within the same cluster may be achieved by writing to
   a "local" fast IPI register as opposed to using the "global" fast IPI
   register.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 allOf:
   - $ref: /schemas/interrupt-controller.yaml#
 
 properties:
   compatible:
     items:
-<<<<<<< HEAD
-      - const: apple,t8103-aic
-=======
       - enum:
           - apple,s5l8960x-aic
           - apple,t7000-aic
@@ -56,7 +50,6 @@ properties:
           - apple,t8010-aic
           - apple,t8015-aic
           - apple,t8103-aic
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - const: apple,aic
 
   interrupt-controller: true

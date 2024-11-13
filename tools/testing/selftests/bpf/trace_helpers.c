@@ -10,11 +10,8 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <linux/perf_event.h>
-<<<<<<< HEAD
-=======
 #include <linux/fs.h>
 #include <sys/ioctl.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <sys/mman.h>
 #include "trace_helpers.h"
 #include <linux/limits.h>
@@ -249,14 +246,6 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
-ssize_t get_uprobe_offset(const void *addr)
-{
-	size_t start, end, base;
-	char buf[256];
-	bool found = false;
-	FILE *f;
-=======
 #ifdef PROCMAP_QUERY
 int env_verbosity __weak = 0;
 
@@ -316,26 +305,11 @@ ssize_t get_uprobe_offset(const void *addr)
 	FILE *f;
 	char buf[256];
 	int err, flags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	f = fopen("/proc/self/maps", "r");
 	if (!f)
 		return -errno;
 
-<<<<<<< HEAD
-	while (fscanf(f, "%zx-%zx %s %zx %*[^\n]\n", &start, &end, buf, &base) == 4) {
-		if (buf[2] == 'x' && (uintptr_t)addr >= start && (uintptr_t)addr < end) {
-			found = true;
-			break;
-		}
-	}
-
-	fclose(f);
-
-	if (!found)
-		return -ESRCH;
-
-=======
 	/* requested executable VMA only */
 	err = procmap_query(fileno(f), addr, PROCMAP_QUERY_VMA_EXECUTABLE, &start, &base, &flags);
 	if (err == -EOPNOTSUPP) {
@@ -357,7 +331,6 @@ ssize_t get_uprobe_offset(const void *addr)
 	}
 	fclose(f);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if defined(__powerpc64__) && defined(_CALL_ELF) && _CALL_ELF == 2
 
 #define OP_RT_RA_MASK   0xffff0000UL
@@ -398,21 +371,12 @@ ssize_t get_rel_offset(uintptr_t addr)
 	size_t start, end, offset;
 	char buf[256];
 	FILE *f;
-<<<<<<< HEAD
-=======
 	int err, flags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	f = fopen("/proc/self/maps", "r");
 	if (!f)
 		return -errno;
 
-<<<<<<< HEAD
-	while (fscanf(f, "%zx-%zx %s %zx %*[^\n]\n", &start, &end, buf, &offset) == 4) {
-		if (addr >= start && addr < end) {
-			fclose(f);
-			return (size_t)addr - start + offset;
-=======
 	err = procmap_query(fileno(f), (const void *)addr, 0, &start, &offset, &flags);
 	if (err == 0) {
 		fclose(f);
@@ -426,7 +390,6 @@ ssize_t get_rel_offset(uintptr_t addr)
 				fclose(f);
 				return (size_t)addr - start + offset;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

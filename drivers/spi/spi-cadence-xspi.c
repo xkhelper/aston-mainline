@@ -2,10 +2,7 @@
 // Cadence XSPI flash controller driver
 // Copyright (C) 2020-21 Cadence
 
-<<<<<<< HEAD
-=======
 #include <linux/acpi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/completion.h>
 #include <linux/delay.h>
 #include <linux/err.h>
@@ -23,10 +20,7 @@
 #include <linux/bitfield.h>
 #include <linux/limits.h>
 #include <linux/log2.h>
-<<<<<<< HEAD
-=======
 #include <linux/bitrev.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define CDNS_XSPI_MAGIC_NUM_VALUE	0x6522
 #define CDNS_XSPI_MAX_BANKS		8
@@ -201,8 +195,6 @@
 		((op)->data.dir == SPI_MEM_DATA_IN) ? \
 		CDNS_XSPI_STIG_CMD_DIR_READ : CDNS_XSPI_STIG_CMD_DIR_WRITE))
 
-<<<<<<< HEAD
-=======
 /* Helper macros for GENERIC and GENERIC-DSEQ instruction type */
 #define CMD_REG_LEN (6*4)
 #define INSTRUCTION_TYPE_GENERIC 96
@@ -295,7 +287,6 @@
 #define GENERIC_CMD_REG_3_NEEDED(len)		(len > 7)
 #define GENERIC_CMD_REG_2_NEEDED(len)		(len > 3)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum cdns_xspi_stig_instr_type {
 	CDNS_XSPI_STIG_INSTR_TYPE_0,
 	CDNS_XSPI_STIG_INSTR_TYPE_1,
@@ -312,8 +303,6 @@ enum cdns_xspi_stig_cmd_dir {
 	CDNS_XSPI_STIG_CMD_DIR_WRITE,
 };
 
-<<<<<<< HEAD
-=======
 struct cdns_xspi_driver_data {
 	bool mrvl_hw_overlay;
 	u32 dll_phy_ctrl;
@@ -359,7 +348,6 @@ static const int cdns_mrvl_xspi_clk_div_list[] = {
 	128	//0xD = Divide by 128. SPI clock is 6.25 MHz.
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cdns_xspi_dev {
 	struct platform_device *pdev;
 	struct device *dev;
@@ -367,10 +355,7 @@ struct cdns_xspi_dev {
 	void __iomem *iobase;
 	void __iomem *auxbase;
 	void __iomem *sdmabase;
-<<<<<<< HEAD
-=======
 	void __iomem *xferbase;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int irq;
 	int cur_cs;
@@ -385,10 +370,6 @@ struct cdns_xspi_dev {
 	const void *out_buffer;
 
 	u8 hw_num_banks;
-<<<<<<< HEAD
-};
-
-=======
 
 	const struct cdns_xspi_driver_data *driver_data;
 	void (*sdma_handler)(struct cdns_xspi_dev *cdns_xspi);
@@ -485,7 +466,6 @@ static bool cdns_mrvl_xspi_setup_clock(struct cdns_xspi_dev *cdns_xspi,
 	return update_clk;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cdns_xspi_wait_for_controller_idle(struct cdns_xspi_dev *cdns_xspi)
 {
 	u32 ctrl_stat;
@@ -558,8 +538,6 @@ static void cdns_xspi_set_interrupts(struct cdns_xspi_dev *cdns_xspi,
 	writel(intr_enable, cdns_xspi->iobase + CDNS_XSPI_INTR_ENABLE_REG);
 }
 
-<<<<<<< HEAD
-=======
 static void marvell_xspi_set_interrupts(struct cdns_xspi_dev *cdns_xspi,
 				     bool enabled)
 {
@@ -577,7 +555,6 @@ static void marvell_xspi_set_interrupts(struct cdns_xspi_dev *cdns_xspi,
 	writel(intr_enable, cdns_xspi->iobase + CDNS_XSPI_INTR_ENABLE_REG);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cdns_xspi_controller_init(struct cdns_xspi_dev *cdns_xspi)
 {
 	u32 ctrl_ver;
@@ -595,11 +572,7 @@ static int cdns_xspi_controller_init(struct cdns_xspi_dev *cdns_xspi)
 
 	ctrl_features = readl(cdns_xspi->iobase + CDNS_XSPI_CTRL_FEATURES_REG);
 	cdns_xspi->hw_num_banks = FIELD_GET(CDNS_XSPI_NUM_BANKS, ctrl_features);
-<<<<<<< HEAD
-	cdns_xspi_set_interrupts(cdns_xspi, false);
-=======
 	cdns_xspi->set_interrupts_handler(cdns_xspi, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -626,8 +599,6 @@ static void cdns_xspi_sdma_handle(struct cdns_xspi_dev *cdns_xspi)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void m_ioreadq(void __iomem  *addr, void *buf, int len)
 {
 	if (IS_ALIGNED((long)buf, 8) && len >= 8) {
@@ -700,7 +671,6 @@ static void marvell_xspi_sdma_handle(struct cdns_xspi_dev *cdns_xspi)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
 				       const struct spi_mem_op *op,
 				       bool data_phase)
@@ -717,11 +687,7 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
 	writel(FIELD_PREP(CDNS_XSPI_CTRL_WORK_MODE, CDNS_XSPI_WORK_MODE_STIG),
 	       cdns_xspi->iobase + CDNS_XSPI_CTRL_CONFIG_REG);
 
-<<<<<<< HEAD
-	cdns_xspi_set_interrupts(cdns_xspi, true);
-=======
 	cdns_xspi->set_interrupts_handler(cdns_xspi, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cdns_xspi->sdma_error = false;
 
 	memset(cmd_regs, 0, sizeof(cmd_regs));
@@ -753,16 +719,6 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
 
 		wait_for_completion(&cdns_xspi->sdma_complete);
 		if (cdns_xspi->sdma_error) {
-<<<<<<< HEAD
-			cdns_xspi_set_interrupts(cdns_xspi, false);
-			return -EIO;
-		}
-		cdns_xspi_sdma_handle(cdns_xspi);
-	}
-
-	wait_for_completion(&cdns_xspi->cmd_complete);
-	cdns_xspi_set_interrupts(cdns_xspi, false);
-=======
 			cdns_xspi->set_interrupts_handler(cdns_xspi, false);
 			return -EIO;
 		}
@@ -771,7 +727,6 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
 
 	wait_for_completion(&cdns_xspi->cmd_complete);
 	cdns_xspi->set_interrupts_handler(cdns_xspi, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cmd_status = cdns_xspi_check_command_status(cdns_xspi);
 	if (cmd_status)
@@ -805,8 +760,6 @@ static int cdns_xspi_mem_op_execute(struct spi_mem *mem,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int marvell_xspi_mem_op_execute(struct spi_mem *mem,
 				    const struct spi_mem_op *op)
 {
@@ -882,7 +835,6 @@ static bool cdns_xspi_supports_op(struct spi_mem *mem,
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cdns_xspi_adjust_mem_op_size(struct spi_mem *mem, struct spi_mem_op *op)
 {
 	struct cdns_xspi_dev *cdns_xspi =
@@ -894,18 +846,13 @@ static int cdns_xspi_adjust_mem_op_size(struct spi_mem *mem, struct spi_mem_op *
 }
 
 static const struct spi_controller_mem_ops cadence_xspi_mem_ops = {
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ACPI
 	.supports_op = cdns_xspi_supports_op,
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.exec_op = cdns_xspi_mem_op_execute,
 	.adjust_op_size = cdns_xspi_adjust_mem_op_size,
 };
 
-<<<<<<< HEAD
-=======
 static const struct spi_controller_mem_ops marvell_xspi_mem_ops = {
 #ifdef CONFIG_ACPI
 	.supports_op = cdns_xspi_supports_op,
@@ -914,7 +861,6 @@ static const struct spi_controller_mem_ops marvell_xspi_mem_ops = {
 	.adjust_op_size = cdns_xspi_adjust_mem_op_size,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static irqreturn_t cdns_xspi_irq_handler(int this_irq, void *dev)
 {
 	struct cdns_xspi_dev *cdns_xspi = dev;
@@ -958,17 +904,6 @@ static irqreturn_t cdns_xspi_irq_handler(int this_irq, void *dev)
 
 static int cdns_xspi_of_get_plat_data(struct platform_device *pdev)
 {
-<<<<<<< HEAD
-	struct device_node *node_prop = pdev->dev.of_node;
-	unsigned int cs;
-
-	for_each_available_child_of_node_scoped(node_prop, node_child) {
-		if (of_property_read_u32(node_child, "reg", &cs)) {
-			dev_err(&pdev->dev, "Couldn't get memory chip select\n");
-			return -ENXIO;
-		} else if (cs >= CDNS_XSPI_MAX_BANKS) {
-			dev_err(&pdev->dev, "reg (cs) parameter value too large\n");
-=======
 	struct fwnode_handle *fwnode_child;
 	unsigned int cs;
 
@@ -983,7 +918,6 @@ static int cdns_xspi_of_get_plat_data(struct platform_device *pdev)
 		} else if (cs >= CDNS_XSPI_MAX_BANKS) {
 			dev_err(&pdev->dev, "reg (cs) parameter value too large\n");
 			fwnode_handle_put(fwnode_child);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENXIO;
 		}
 	}
@@ -1008,8 +942,6 @@ static void cdns_xspi_print_phy_config(struct cdns_xspi_dev *cdns_xspi)
 		 readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DLL_SLAVE_CTRL));
 }
 
-<<<<<<< HEAD
-=======
 static int cdns_xspi_prepare_generic(int cs, const void *dout, int len, int glue, u32 *cmd_regs)
 {
 	u8 *data = (u8 *)dout;
@@ -1208,7 +1140,6 @@ static int cdns_xspi_transfer_one_message_b0(struct spi_controller *controller,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cdns_xspi_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -1225,9 +1156,6 @@ static int cdns_xspi_probe(struct platform_device *pdev)
 		SPI_RX_DUAL | SPI_RX_QUAD | SPI_TX_OCTAL | SPI_RX_OCTAL |
 		SPI_MODE_0  | SPI_MODE_3;
 
-<<<<<<< HEAD
-	host->mem_ops = &cadence_xspi_mem_ops;
-=======
 	cdns_xspi = spi_controller_get_devdata(host);
 	cdns_xspi->driver_data = of_device_get_match_data(dev);
 	if (!cdns_xspi->driver_data) {
@@ -1246,16 +1174,11 @@ static int cdns_xspi_probe(struct platform_device *pdev)
 		cdns_xspi->sdma_handler = &cdns_xspi_sdma_handle;
 		cdns_xspi->set_interrupts_handler = &cdns_xspi_set_interrupts;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	host->dev.of_node = pdev->dev.of_node;
 	host->bus_num = -1;
 
 	platform_set_drvdata(pdev, host);
 
-<<<<<<< HEAD
-	cdns_xspi = spi_controller_get_devdata(host);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cdns_xspi->pdev = pdev;
 	cdns_xspi->dev = &pdev->dev;
 	cdns_xspi->cur_cs = 0;
@@ -1270,39 +1193,25 @@ static int cdns_xspi_probe(struct platform_device *pdev)
 
 	cdns_xspi->iobase = devm_platform_ioremap_resource_byname(pdev, "io");
 	if (IS_ERR(cdns_xspi->iobase)) {
-<<<<<<< HEAD
-		dev_err(dev, "Failed to remap controller base address\n");
-		return PTR_ERR(cdns_xspi->iobase);
-=======
 		cdns_xspi->iobase = devm_platform_ioremap_resource(pdev, 0);
 		if (IS_ERR(cdns_xspi->iobase)) {
 			dev_err(dev, "Failed to remap controller base address\n");
 			return PTR_ERR(cdns_xspi->iobase);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "sdma");
 	cdns_xspi->sdmabase = devm_ioremap_resource(dev, res);
-<<<<<<< HEAD
-	if (IS_ERR(cdns_xspi->sdmabase))
-		return PTR_ERR(cdns_xspi->sdmabase);
-=======
 	if (IS_ERR(cdns_xspi->sdmabase)) {
 		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
 		cdns_xspi->sdmabase = devm_ioremap_resource(dev, res);
 		if (IS_ERR(cdns_xspi->sdmabase))
 			return PTR_ERR(cdns_xspi->sdmabase);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cdns_xspi->sdmasize = resource_size(res);
 
 	cdns_xspi->auxbase = devm_platform_ioremap_resource_byname(pdev, "aux");
 	if (IS_ERR(cdns_xspi->auxbase)) {
-<<<<<<< HEAD
-		dev_err(dev, "Failed to remap AUX address\n");
-		return PTR_ERR(cdns_xspi->auxbase);
-=======
 		cdns_xspi->auxbase = devm_platform_ioremap_resource(pdev, 2);
 		if (IS_ERR(cdns_xspi->auxbase)) {
 			dev_err(dev, "Failed to remap AUX address\n");
@@ -1320,7 +1229,6 @@ static int cdns_xspi_probe(struct platform_device *pdev)
 				cdns_xspi->xferbase = cdns_xspi->iobase + 0x8000;
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	cdns_xspi->irq = platform_get_irq(pdev, 0);
@@ -1334,14 +1242,11 @@ static int cdns_xspi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-<<<<<<< HEAD
-=======
 	if (cdns_xspi->driver_data->mrvl_hw_overlay) {
 		cdns_mrvl_xspi_setup_clock(cdns_xspi, MRVL_DEFAULT_CLK);
 		cdns_xspi_configure_phy(cdns_xspi);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cdns_xspi_print_phy_config(cdns_xspi);
 
 	ret = cdns_xspi_controller_init(cdns_xspi);
@@ -1366,14 +1271,11 @@ static int cdns_xspi_probe(struct platform_device *pdev)
 static const struct of_device_id cdns_xspi_of_match[] = {
 	{
 		.compatible = "cdns,xspi-nor",
-<<<<<<< HEAD
-=======
 		.data = &cdns_driver_data,
 	},
 	{
 		.compatible = "marvell,cn10-xspi-nor",
 		.data = &marvell_driver_data,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{ /* end of table */}
 };

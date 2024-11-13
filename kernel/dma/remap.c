@@ -10,15 +10,10 @@ struct page **dma_common_find_pages(void *cpu_addr)
 {
 	struct vm_struct *area = find_vm_area(cpu_addr);
 
-<<<<<<< HEAD
-	if (!area || area->flags != VM_DMA_COHERENT)
-		return NULL;
-=======
 	if (!area || !(area->flags & VM_DMA_COHERENT))
 		return NULL;
 	WARN(area->flags != VM_DMA_COHERENT,
 	     "unexpected flags in area: %p\n", cpu_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return area->pages;
 }
 
@@ -68,11 +63,7 @@ void dma_common_free_remap(void *cpu_addr, size_t size)
 {
 	struct vm_struct *area = find_vm_area(cpu_addr);
 
-<<<<<<< HEAD
-	if (!area || area->flags != VM_DMA_COHERENT) {
-=======
 	if (!area || !(area->flags & VM_DMA_COHERENT)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WARN(1, "trying to free invalid coherent area: %p\n", cpu_addr);
 		return;
 	}

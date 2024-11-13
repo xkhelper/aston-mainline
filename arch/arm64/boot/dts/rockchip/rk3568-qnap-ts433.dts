@@ -6,19 +6,14 @@
 
 /dts-v1/;
 
-<<<<<<< HEAD
-=======
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/leds/common.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/gpio/gpio.h>
 #include "rk3568.dtsi"
 
 / {
 	model = "Qnap TS-433-4G NAS System 4-Bay";
 	compatible = "qnap,ts433", "rockchip,rk3568";
-<<<<<<< HEAD
-=======
 
 	aliases {
 		ethernet0 = &gmac0;
@@ -195,7 +190,6 @@
 
 &cpu3 {
 	cpu-supply = <&vdd_cpu>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &gmac0 {
@@ -204,43 +198,28 @@
 	assigned-clock-rates = <0>, <125000000>;
 	clock_in_out = "output";
 	phy-handle = <&rgmii_phy0>;
-<<<<<<< HEAD
-	phy-mode = "rgmii";
-=======
 	phy-mode = "rgmii-id";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac0_miim
 		     &gmac0_tx_bus2
 		     &gmac0_rx_bus2
 		     &gmac0_rgmii_clk
 		     &gmac0_rgmii_bus>;
-<<<<<<< HEAD
-	rx_delay = <0x2f>;
-	tx_delay = <0x3c>;
-=======
 	status = "okay";
 };
 
 &gpu {
 	mali-supply = <&vdd_gpu>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };
 
 &i2c0 {
-<<<<<<< HEAD
-=======
 	status = "okay";
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pmic@20 {
 		compatible = "rockchip,rk809";
 		reg = <0x20>;
 		interrupt-parent = <&gpio0>;
-<<<<<<< HEAD
-		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-=======
 		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
 		#clock-cells = <1>;
 		pinctrl-names = "default";
@@ -464,24 +443,17 @@
 		regulator-max-microvolt = <1390000>;
 		regulator-ramp-delay = <2300>;
 		vin-supply = <&vcc5v0_sys>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
 &i2c1 {
 	status = "okay";
 
-<<<<<<< HEAD
-	rtc@51 {
-=======
 	rtc_rv8263: rtc@51 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		compatible = "microcrystal,rv8263";
 		reg = <0x51>;
 		wakeup-source;
 	};
-<<<<<<< HEAD
-=======
 
 	/* eeprom for vital-product-data on the mainboard */
 	eeprom@54 {
@@ -502,7 +474,6 @@
 		pagesize = <16>;
 		read-only;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &mdio0 {
@@ -513,14 +484,6 @@
 };
 
 &pcie30phy {
-<<<<<<< HEAD
-	status = "okay";
-};
-
-&pcie3x1 {
-	/* The downstream dts has: rockchip,bifurcation, XXX: find out what this is about */
-	reset-gpios = <&gpio0 RK_PC7 GPIO_ACTIVE_HIGH>;
-=======
 	data-lanes = <1 2>;
 	status = "okay";
 };
@@ -597,7 +560,6 @@
 };
 
 &sata2 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	status = "okay";
 };
 
@@ -608,8 +570,6 @@
 	status = "okay";
 };
 
-<<<<<<< HEAD
-=======
 &tsadc {
 	rockchip,hw-tshut-mode = <1>;
 	rockchip,hw-tshut-polarity = <0>;
@@ -624,7 +584,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Pins available on CN3 connector at TTL voltage level (3V3).
  * ,_  _.
@@ -634,8 +593,6 @@
 &uart2 {
 	status = "okay";
 };
-<<<<<<< HEAD
-=======
 
 &usb2phy0 {
 	status = "okay";
@@ -686,4 +643,3 @@
 &usb_host1_ohci {
 	status = "okay";
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

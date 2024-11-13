@@ -1,17 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #include <linux/bitops.h>
 #include <linux/device.h>
-<<<<<<< HEAD
-#include <linux/iio/iio.h>
-#include <linux/regmap.h>
-#include <linux/regulator/consumer.h>
-
-=======
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
 
 #include <linux/iio/iio.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* BMP580 specific registers */
 #define BMP580_REG_CMD			0x7E
@@ -311,8 +304,6 @@
 #define BMP280_PRESS_SKIPPED		0x80000
 #define BMP280_HUMIDITY_SKIPPED		0x8000
 
-<<<<<<< HEAD
-=======
 /* Number of bytes for each value */
 #define BMP280_NUM_PRESS_BYTES		3
 #define BMP280_NUM_TEMP_BYTES		3
@@ -323,7 +314,6 @@
 					 BMP280_NUM_TEMP_BYTES + \
 					 BME280_NUM_HUMIDITY_BYTES)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Core exported structs */
 
 static const char *const bmp280_supply_names[] = {
@@ -418,25 +408,18 @@ struct bmp280_data {
 	int sampling_freq;
 
 	/*
-<<<<<<< HEAD
-=======
 	 * Data to push to userspace triggered buffer. Up to 3 channels and
 	 * s64 timestamp, aligned.
 	 */
 	s32 sensor_data[6] __aligned(8);
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * DMA (thus cache coherency maintenance) may require the
 	 * transfer buffers to live in their own cache lines.
 	 */
 	union {
 		/* Sensor data buffer */
-<<<<<<< HEAD
-		u8 buf[3];
-=======
 		u8 buf[BME280_BURST_READ_BYTES];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Calibration data buffers */
 		__le16 bmp280_cal_buf[BMP280_CONTIGUOUS_CALIB_REGS / 2];
 		__be16 bmp180_cal_buf[BMP180_REG_CALIB_COUNT / 2];
@@ -458,10 +441,7 @@ struct bmp280_chip_info {
 	const struct iio_chan_spec *channels;
 	int num_channels;
 	unsigned int start_up_time;
-<<<<<<< HEAD
-=======
 	const unsigned long *avail_scan_masks;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	const int *oversampling_temp_avail;
 	int num_oversampling_temp_avail;
@@ -483,14 +463,6 @@ struct bmp280_chip_info {
 	int num_sampling_freq_avail;
 	int sampling_freq_default;
 
-<<<<<<< HEAD
-	int (*chip_config)(struct bmp280_data *data);
-	int (*read_temp)(struct bmp280_data *data, int *val, int *val2);
-	int (*read_press)(struct bmp280_data *data, int *val, int *val2);
-	int (*read_humid)(struct bmp280_data *data, int *val, int *val2);
-	int (*read_calib)(struct bmp280_data *data);
-	int (*preinit)(struct bmp280_data *data);
-=======
 	const int *temp_coeffs;
 	const int temp_coeffs_type;
 	const int *press_coeffs;
@@ -506,7 +478,6 @@ struct bmp280_chip_info {
 	int (*preinit)(struct bmp280_data *data);
 
 	irqreturn_t (*trigger_handler)(int irq, void *p);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Chip infos for each variant */
@@ -519,10 +490,7 @@ extern const struct bmp280_chip_info bmp580_chip_info;
 /* Regmap configurations */
 extern const struct regmap_config bmp180_regmap_config;
 extern const struct regmap_config bmp280_regmap_config;
-<<<<<<< HEAD
-=======
 extern const struct regmap_config bme280_regmap_config;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct regmap_config bmp380_regmap_config;
 extern const struct regmap_config bmp580_regmap_config;
 

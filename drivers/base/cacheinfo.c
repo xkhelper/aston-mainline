@@ -202,38 +202,16 @@ static void cache_of_set_props(struct cacheinfo *this_leaf,
 
 static int cache_setup_of_node(unsigned int cpu)
 {
-<<<<<<< HEAD
-	struct device_node *np, *prev;
-	struct cacheinfo *this_leaf;
-	unsigned int index = 0;
-
-	np = of_cpu_device_node_get(cpu);
-=======
 	struct cacheinfo *this_leaf;
 	unsigned int index = 0;
 
 	struct device_node *np __free(device_node) = of_cpu_device_node_get(cpu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!np) {
 		pr_err("Failed to find cpu%d device node\n", cpu);
 		return -ENOENT;
 	}
 
 	if (!of_check_cache_nodes(np)) {
-<<<<<<< HEAD
-		of_node_put(np);
-		return -ENOENT;
-	}
-
-	prev = np;
-
-	while (index < cache_leaves(cpu)) {
-		this_leaf = per_cpu_cacheinfo_idx(cpu, index);
-		if (this_leaf->level != 1) {
-			np = of_find_next_cache_node(np);
-			of_node_put(prev);
-			prev = np;
-=======
 		return -ENOENT;
 	}
 
@@ -242,7 +220,6 @@ static int cache_setup_of_node(unsigned int cpu)
 		if (this_leaf->level != 1) {
 			struct device_node *prev __free(device_node) = np;
 			np = of_find_next_cache_node(np);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (!np)
 				break;
 		}
@@ -251,11 +228,6 @@ static int cache_setup_of_node(unsigned int cpu)
 		index++;
 	}
 
-<<<<<<< HEAD
-	of_node_put(np);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (index != cache_leaves(cpu)) /* not all OF nodes populated */
 		return -ENOENT;
 
@@ -264,25 +236,14 @@ static int cache_setup_of_node(unsigned int cpu)
 
 static bool of_check_cache_nodes(struct device_node *np)
 {
-<<<<<<< HEAD
-	struct device_node *next;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (of_property_present(np, "cache-size")   ||
 	    of_property_present(np, "i-cache-size") ||
 	    of_property_present(np, "d-cache-size") ||
 	    of_property_present(np, "cache-unified"))
 		return true;
 
-<<<<<<< HEAD
-	next = of_find_next_cache_node(np);
-	if (next) {
-		of_node_put(next);
-=======
 	struct device_node *next __free(device_node) = of_find_next_cache_node(np);
 	if (next) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	}
 
@@ -316,19 +277,10 @@ static int of_count_cache_leaves(struct device_node *np)
 int init_of_cache_level(unsigned int cpu)
 {
 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-<<<<<<< HEAD
-	struct device_node *np = of_cpu_device_node_get(cpu);
-	struct device_node *prev = NULL;
-	unsigned int levels = 0, leaves, level;
-
-	if (!of_check_cache_nodes(np)) {
-		of_node_put(np);
-=======
 	struct device_node *np __free(device_node) = of_cpu_device_node_get(cpu);
 	unsigned int levels = 0, leaves, level;
 
 	if (!of_check_cache_nodes(np)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOENT;
 	}
 
@@ -336,18 +288,6 @@ int init_of_cache_level(unsigned int cpu)
 	if (leaves > 0)
 		levels = 1;
 
-<<<<<<< HEAD
-	prev = np;
-	while ((np = of_find_next_cache_node(np))) {
-		of_node_put(prev);
-		prev = np;
-		if (!of_device_is_compatible(np, "cache"))
-			goto err_out;
-		if (of_property_read_u32(np, "cache-level", &level))
-			goto err_out;
-		if (level <= levels)
-			goto err_out;
-=======
 	while (1) {
 		struct device_node *prev __free(device_node) = np;
 		np = of_find_next_cache_node(np);
@@ -360,27 +300,15 @@ int init_of_cache_level(unsigned int cpu)
 			return -EINVAL;
 		if (level <= levels)
 			return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		leaves += of_count_cache_leaves(np);
 		levels = level;
 	}
 
-<<<<<<< HEAD
-	of_node_put(np);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	this_cpu_ci->num_levels = levels;
 	this_cpu_ci->num_leaves = leaves;
 
 	return 0;
-<<<<<<< HEAD
-
-err_out:
-	of_node_put(np);
-	return -EINVAL;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #else

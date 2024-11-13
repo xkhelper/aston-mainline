@@ -2259,40 +2259,12 @@ static const struct file_operations mtip_regs_fops = {
 	.owner  = THIS_MODULE,
 	.open   = simple_open,
 	.read   = mtip_hw_read_registers,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct file_operations mtip_flags_fops = {
 	.owner  = THIS_MODULE,
 	.open   = simple_open,
 	.read   = mtip_hw_read_flags,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-};
-
-static int mtip_hw_debugfs_init(struct driver_data *dd)
-{
-	if (!dfs_parent)
-		return -1;
-
-	dd->dfs_node = debugfs_create_dir(dd->disk->disk_name, dfs_parent);
-	if (IS_ERR_OR_NULL(dd->dfs_node)) {
-		dev_warn(&dd->pdev->dev,
-			"Error creating node %s under debugfs\n",
-						dd->disk->disk_name);
-		dd->dfs_node = NULL;
-		return -1;
-	}
-
-	debugfs_create_file("flags", 0444, dd->dfs_node, dd, &mtip_flags_fops);
-	debugfs_create_file("registers", 0444, dd->dfs_node, dd,
-			    &mtip_regs_fops);
-
-	return 0;
-=======
 };
 
 static void mtip_hw_debugfs_init(struct driver_data *dd)
@@ -2301,7 +2273,6 @@ static void mtip_hw_debugfs_init(struct driver_data *dd)
 	debugfs_create_file("flags", 0444, dd->dfs_node, dd, &mtip_flags_fops);
 	debugfs_create_file("registers", 0444, dd->dfs_node, dd,
 			    &mtip_regs_fops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void mtip_hw_debugfs_exit(struct driver_data *dd)
@@ -4057,13 +4028,6 @@ static int __init mtip_init(void)
 	mtip_major = error;
 
 	dfs_parent = debugfs_create_dir("rssd", NULL);
-<<<<<<< HEAD
-	if (IS_ERR_OR_NULL(dfs_parent)) {
-		pr_warn("Error creating debugfs parent\n");
-		dfs_parent = NULL;
-	}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Register our PCI operations. */
 	error = pci_register_driver(&mtip_pci_driver);

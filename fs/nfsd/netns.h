@@ -13,10 +13,7 @@
 #include <linux/filelock.h>
 #include <linux/nfs4.h>
 #include <linux/percpu_counter.h>
-<<<<<<< HEAD
-=======
 #include <linux/percpu-refcount.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/siphash.h>
 #include <linux/sunrpc/stats.h>
 
@@ -143,13 +140,9 @@ struct nfsd_net {
 
 	struct svc_info nfsd_info;
 #define nfsd_serv nfsd_info.serv
-<<<<<<< HEAD
-
-=======
 	struct percpu_ref nfsd_serv_ref;
 	struct completion nfsd_serv_confirm_done;
 	struct completion nfsd_serv_free_done;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * clientid and stateid data for construction of net unique COPY
@@ -158,21 +151,13 @@ struct nfsd_net {
 	u32		s2s_cp_cl_id;
 	struct idr	s2s_cp_stateids;
 	spinlock_t	s2s_cp_lock;
-<<<<<<< HEAD
-=======
 	atomic_t	pending_async_copies;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Version information
 	 */
-<<<<<<< HEAD
-	bool *nfsd_versions;
-	bool *nfsd4_minorversions;
-=======
 	bool nfsd_versions[NFSD_MAXVERS + 1];
 	bool nfsd4_minorversions[NFSD_SUPPORTED_MINOR_VERSION + 1];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Duplicate reply cache
@@ -232,31 +217,21 @@ struct nfsd_net {
 	/* last time an admin-revoke happened for NFSv4.0 */
 	time64_t		nfs40_last_revoke;
 
-<<<<<<< HEAD
-=======
 #if IS_ENABLED(CONFIG_NFS_LOCALIO)
 	/* Local clients to be invalidated when net is shut down */
 	struct list_head	local_clients;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Simple check to find out if a given net was properly initialized */
 #define nfsd_netns_ready(nn) ((nn)->sessionid_hashtbl)
 
 extern bool nfsd_support_version(int vers);
-<<<<<<< HEAD
-extern void nfsd_netns_free_versions(struct nfsd_net *nn);
-
-extern unsigned int nfsd_net_id;
-
-=======
 extern unsigned int nfsd_net_id;
 
 bool nfsd_serv_try_get(struct net *net);
 void nfsd_serv_put(struct net *net);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void nfsd_copy_write_verifier(__be32 verf[2], struct nfsd_net *nn);
 void nfsd_reset_write_verifier(struct nfsd_net *nn);
 #endif /* __NFSD_NETNS_H__ */

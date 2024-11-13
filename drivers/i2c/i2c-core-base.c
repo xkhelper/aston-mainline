@@ -915,8 +915,6 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Serialize device instantiation in case it can be instantiated explicitly
  * and by auto-detection
@@ -938,7 +936,6 @@ static void i2c_unlock_addr(struct i2c_adapter *adap, unsigned short addr,
 		clear_bit(addr, adap->addrs_in_instantiation);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * i2c_new_client_device - instantiate an i2c device
  * @adap: the adapter managing the device
@@ -986,13 +983,10 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
 		goto out_err_silent;
 	}
 
-<<<<<<< HEAD
-=======
 	status = i2c_lock_addr(adap, client->addr, client->flags);
 	if (status)
 		goto out_err_silent;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Check for address business */
 	status = i2c_check_addr_busy(adap, i2c_encode_flags_to_addr(client));
 	if (status)
@@ -1024,11 +1018,8 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
 	dev_dbg(&adap->dev, "client [%s] registered with bus id %s\n",
 		client->name, dev_name(&client->dev));
 
-<<<<<<< HEAD
-=======
 	i2c_unlock_addr(adap, client->addr, client->flags);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return client;
 
 out_remove_swnode:
@@ -1040,10 +1031,7 @@ out_err:
 	dev_err(&adap->dev,
 		"Failed to register i2c client %s at 0x%02x (%d)\n",
 		client->name, client->addr, status);
-<<<<<<< HEAD
-=======
 	i2c_unlock_addr(adap, client->addr, client->flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_err_silent:
 	if (need_put)
 		put_device(&client->dev);
@@ -1108,11 +1096,7 @@ EXPORT_SYMBOL(i2c_find_device_by_fwnode);
 static const struct i2c_device_id dummy_id[] = {
 	{ "dummy", },
 	{ "smbus_host_notify", },
-<<<<<<< HEAD
-	{ },
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int dummy_probe(struct i2c_client *client)
@@ -1411,13 +1395,6 @@ struct i2c_adapter *i2c_verify_adapter(struct device *dev)
 }
 EXPORT_SYMBOL(i2c_verify_adapter);
 
-<<<<<<< HEAD
-#ifdef CONFIG_I2C_COMPAT
-static struct class_compat *i2c_adapter_compat_class;
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void i2c_scan_static_board_info(struct i2c_adapter *adapter)
 {
 	struct i2c_devinfo	*devinfo;
@@ -1571,9 +1548,6 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
 	dev_set_name(&adap->dev, "i2c-%d", adap->nr);
 	adap->dev.bus = &i2c_bus_type;
 	adap->dev.type = &i2c_adapter_type;
-<<<<<<< HEAD
-	res = device_register(&adap->dev);
-=======
 	device_initialize(&adap->dev);
 
 	/*
@@ -1586,7 +1560,6 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
 	pm_runtime_enable(&adap->dev);
 
 	res = device_add(&adap->dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (res) {
 		pr_err("adapter '%s': can't register device (%d)\n", adap->name, res);
 		goto out_list;
@@ -1598,31 +1571,12 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
 	if (res)
 		goto out_reg;
 
-<<<<<<< HEAD
-	device_enable_async_suspend(&adap->dev);
-	pm_runtime_no_callbacks(&adap->dev);
-	pm_suspend_ignore_children(&adap->dev, true);
-	pm_runtime_enable(&adap->dev);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	res = i2c_init_recovery(adap);
 	if (res == -EPROBE_DEFER)
 		goto out_reg;
 
 	dev_dbg(&adap->dev, "adapter [%s] registered\n", adap->name);
 
-<<<<<<< HEAD
-#ifdef CONFIG_I2C_COMPAT
-	res = class_compat_create_link(i2c_adapter_compat_class, &adap->dev,
-				       adap->dev.parent);
-	if (res)
-		dev_warn(&adap->dev,
-			 "Failed to create compatibility class link\n");
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* create pre-declared device nodes */
 	of_i2c_register_devices(adap);
 	i2c_acpi_install_space_handler(adap);
@@ -1829,14 +1783,6 @@ void i2c_del_adapter(struct i2c_adapter *adap)
 	device_for_each_child(&adap->dev, NULL, __unregister_client);
 	device_for_each_child(&adap->dev, NULL, __unregister_dummy);
 
-<<<<<<< HEAD
-#ifdef CONFIG_I2C_COMPAT
-	class_compat_remove_link(i2c_adapter_compat_class, &adap->dev,
-				 adap->dev.parent);
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* device name is gone after device_unregister */
 	dev_dbg(&adap->dev, "adapter [%s] unregistered\n", adap->name);
 
@@ -2145,16 +2091,6 @@ static int __init i2c_init(void)
 
 	i2c_debugfs_root = debugfs_create_dir("i2c", NULL);
 
-<<<<<<< HEAD
-#ifdef CONFIG_I2C_COMPAT
-	i2c_adapter_compat_class = class_compat_register("i2c-adapter");
-	if (!i2c_adapter_compat_class) {
-		retval = -ENOMEM;
-		goto bus_err;
-	}
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	retval = i2c_add_driver(&dummy_driver);
 	if (retval)
 		goto class_err;
@@ -2167,13 +2103,6 @@ static int __init i2c_init(void)
 	return 0;
 
 class_err:
-<<<<<<< HEAD
-#ifdef CONFIG_I2C_COMPAT
-	class_compat_unregister(i2c_adapter_compat_class);
-bus_err:
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	is_registered = false;
 	bus_unregister(&i2c_bus_type);
 	return retval;
@@ -2186,12 +2115,6 @@ static void __exit i2c_exit(void)
 	if (IS_ENABLED(CONFIG_OF_DYNAMIC))
 		WARN_ON(of_reconfig_notifier_unregister(&i2c_of_notifier));
 	i2c_del_driver(&dummy_driver);
-<<<<<<< HEAD
-#ifdef CONFIG_I2C_COMPAT
-	class_compat_unregister(i2c_adapter_compat_class);
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	debugfs_remove_recursive(i2c_debugfs_root);
 	bus_unregister(&i2c_bus_type);
 	tracepoint_synchronize_unregister();

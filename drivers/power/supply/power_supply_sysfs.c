@@ -209,11 +209,7 @@ static struct power_supply_attr power_supply_attrs[] = {
 	POWER_SUPPLY_ATTR(TIME_TO_FULL_NOW),
 	POWER_SUPPLY_ATTR(TIME_TO_FULL_AVG),
 	POWER_SUPPLY_ENUM_ATTR(TYPE),
-<<<<<<< HEAD
-	POWER_SUPPLY_ATTR(USB_TYPE),
-=======
 	POWER_SUPPLY_ENUM_ATTR(USB_TYPE),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	POWER_SUPPLY_ENUM_ATTR(SCOPE),
 	POWER_SUPPLY_ATTR(PRECHARGE_CURRENT),
 	POWER_SUPPLY_ATTR(CHARGE_TERM_CURRENT),
@@ -241,28 +237,6 @@ static enum power_supply_property dev_attr_psp(struct device_attribute *attr)
 	return  to_ps_attr(attr) - power_supply_attrs;
 }
 
-<<<<<<< HEAD
-static ssize_t power_supply_show_usb_type(struct device *dev,
-					  const struct power_supply_desc *desc,
-					  union power_supply_propval *value,
-					  char *buf)
-{
-	enum power_supply_usb_type usb_type;
-	ssize_t count = 0;
-	bool match = false;
-	int i;
-
-	for (i = 0; i < desc->num_usb_types; ++i) {
-		usb_type = desc->usb_types[i];
-
-		if (value->intval == usb_type) {
-			count += sysfs_emit_at(buf, count, "[%s] ",
-					 POWER_SUPPLY_USB_TYPE_TEXT[usb_type]);
-			match = true;
-		} else {
-			count += sysfs_emit_at(buf, count, "%s ",
-					 POWER_SUPPLY_USB_TYPE_TEXT[usb_type]);
-=======
 static ssize_t power_supply_show_enum_with_available(
 			struct device *dev, const char * const labels[], int label_count,
 			unsigned int available_values, int value, char *buf)
@@ -280,16 +254,11 @@ static ssize_t power_supply_show_enum_with_available(
 			match = true;
 		} else if (available) {
 			count += sysfs_emit_at(buf, count, "%s ", labels[i]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
 	if (!match) {
-<<<<<<< HEAD
-		dev_warn(dev, "driver reporting unsupported connected type\n");
-=======
 		dev_warn(dev, "driver reporting unavailable enum value %d\n", value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -328,15 +297,10 @@ static ssize_t power_supply_show_property(struct device *dev,
 
 	switch (psp) {
 	case POWER_SUPPLY_PROP_USB_TYPE:
-<<<<<<< HEAD
-		ret = power_supply_show_usb_type(dev, psy->desc,
-						&value, buf);
-=======
 		ret = power_supply_show_enum_with_available(
 				dev, POWER_SUPPLY_USB_TYPE_TEXT,
 				ARRAY_SIZE(POWER_SUPPLY_USB_TYPE_TEXT),
 				psy->desc->usb_types, value.intval, buf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_BEHAVIOUR:
 		ret = power_supply_charge_behaviour_show(dev, psy->desc->charge_behaviours,
@@ -558,40 +522,10 @@ ssize_t power_supply_charge_behaviour_show(struct device *dev,
 					   enum power_supply_charge_behaviour current_behaviour,
 					   char *buf)
 {
-<<<<<<< HEAD
-	bool match = false, available, active;
-	ssize_t count = 0;
-	int i;
-
-	for (i = 0; i < ARRAY_SIZE(POWER_SUPPLY_CHARGE_BEHAVIOUR_TEXT); i++) {
-		available = available_behaviours & BIT(i);
-		active = i == current_behaviour;
-
-		if (available && active) {
-			count += sysfs_emit_at(buf, count, "[%s] ",
-					       POWER_SUPPLY_CHARGE_BEHAVIOUR_TEXT[i]);
-			match = true;
-		} else if (available) {
-			count += sysfs_emit_at(buf, count, "%s ",
-					       POWER_SUPPLY_CHARGE_BEHAVIOUR_TEXT[i]);
-		}
-	}
-
-	if (!match) {
-		dev_warn(dev, "driver reporting unsupported charge behaviour\n");
-		return -EINVAL;
-	}
-
-	if (count)
-		buf[count - 1] = '\n';
-
-	return count;
-=======
 	return power_supply_show_enum_with_available(
 				dev, POWER_SUPPLY_CHARGE_BEHAVIOUR_TEXT,
 				ARRAY_SIZE(POWER_SUPPLY_CHARGE_BEHAVIOUR_TEXT),
 				available_behaviours, current_behaviour, buf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(power_supply_charge_behaviour_show);
 

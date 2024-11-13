@@ -3,24 +3,17 @@
  * Copyright © 2023-2024 Intel Corporation
  */
 
-<<<<<<< HEAD
-=======
 #include <drm/drm_managed.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "abi/guc_actions_sriov_abi.h"
 
 #include "xe_device.h"
 #include "xe_gt.h"
-<<<<<<< HEAD
-#include "xe_gt_sriov_pf_control.h"
-=======
 #include "xe_gt_sriov_pf_config.h"
 #include "xe_gt_sriov_pf_control.h"
 #include "xe_gt_sriov_pf_helpers.h"
 #include "xe_gt_sriov_pf_monitor.h"
 #include "xe_gt_sriov_pf_service.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xe_gt_sriov_printk.h"
 #include "xe_guc_ct.h"
 #include "xe_sriov.h"
@@ -54,13 +47,6 @@ static int guc_action_vf_control_cmd(struct xe_guc *guc, u32 vfid, u32 cmd)
 	};
 	int ret;
 
-<<<<<<< HEAD
-	/* XXX those two commands are now sent from the G2H handler */
-	if (cmd == GUC_PF_TRIGGER_VF_FLR_START || cmd == GUC_PF_TRIGGER_VF_FLR_FINISH)
-		return xe_guc_ct_send_g2h_handler(&guc->ct, request, ARRAY_SIZE(request));
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = xe_guc_ct_send_block(&guc->ct, request, ARRAY_SIZE(request));
 	return ret > 0 ? -EPROTO : ret;
 }
@@ -70,11 +56,8 @@ static int pf_send_vf_control_cmd(struct xe_gt *gt, unsigned int vfid, u32 cmd)
 	int err;
 
 	xe_gt_assert(gt, vfid != PFID);
-<<<<<<< HEAD
-=======
 	xe_gt_sriov_dbg_verbose(gt, "sending VF%u control command %s\n",
 				vfid, control_cmd_to_string(cmd));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = guc_action_vf_control_cmd(&gt->uc.guc, vfid, cmd);
 	if (unlikely(err))
@@ -109,8 +92,6 @@ static int pf_send_vf_flr_finish(struct xe_gt *gt, unsigned int vfid)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * DOC: The VF state machine
  *
  * The simplified VF state machine could be presented as::
@@ -561,7 +542,6 @@ static bool pf_enter_vf_pause_wip(struct xe_gt *gt, unsigned int vfid)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * xe_gt_sriov_pf_control_pause_vf - Pause a VF.
  * @gt: the &xe_gt
  * @vfid: the VF identifier
@@ -572,9 +552,6 @@ static bool pf_enter_vf_pause_wip(struct xe_gt *gt, unsigned int vfid)
  */
 int xe_gt_sriov_pf_control_pause_vf(struct xe_gt *gt, unsigned int vfid)
 {
-<<<<<<< HEAD
-	return pf_send_vf_pause(gt, vfid);
-=======
 	unsigned long timeout = pf_get_default_timeout(XE_GT_SRIOV_STATE_PAUSE_WIP);
 	int err;
 
@@ -709,7 +686,6 @@ static bool pf_enter_vf_resume_wip(struct xe_gt *gt, unsigned int vfid)
 	}
 
 	return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -723,9 +699,6 @@ static bool pf_enter_vf_resume_wip(struct xe_gt *gt, unsigned int vfid)
  */
 int xe_gt_sriov_pf_control_resume_vf(struct xe_gt *gt, unsigned int vfid)
 {
-<<<<<<< HEAD
-	return pf_send_vf_resume(gt, vfid);
-=======
 	unsigned long timeout = pf_get_default_timeout(XE_GT_SRIOV_STATE_RESUME_WIP);
 	int err;
 
@@ -854,7 +827,6 @@ static bool pf_enter_vf_stop_wip(struct xe_gt *gt, unsigned int vfid)
 		return true;
 	}
 	return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -868,9 +840,6 @@ static bool pf_enter_vf_stop_wip(struct xe_gt *gt, unsigned int vfid)
  */
 int xe_gt_sriov_pf_control_stop_vf(struct xe_gt *gt, unsigned int vfid)
 {
-<<<<<<< HEAD
-	return pf_send_vf_stop(gt, vfid);
-=======
 	unsigned long timeout = pf_get_default_timeout(XE_GT_SRIOV_STATE_STOP_WIP);
 	int err;
 
@@ -1145,7 +1114,6 @@ static void pf_enter_vf_flr_guc_done(struct xe_gt *gt, unsigned int vfid)
 {
 	if (pf_enter_vf_state(gt, vfid, XE_GT_SRIOV_STATE_FLR_GUC_DONE))
 		pf_queue_vf(gt, vfid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1159,16 +1127,6 @@ static void pf_enter_vf_flr_guc_done(struct xe_gt *gt, unsigned int vfid)
  */
 int xe_gt_sriov_pf_control_trigger_flr(struct xe_gt *gt, unsigned int vfid)
 {
-<<<<<<< HEAD
-	int err;
-
-	/* XXX pf_send_vf_flr_start() expects ct->lock */
-	mutex_lock(&gt->uc.guc.ct.lock);
-	err = pf_send_vf_flr_start(gt, vfid);
-	mutex_unlock(&gt->uc.guc.ct.lock);
-
-	return err;
-=======
 	unsigned long timeout = pf_get_default_timeout(XE_GT_SRIOV_STATE_FLR_WIP);
 	int err;
 
@@ -1185,41 +1143,11 @@ int xe_gt_sriov_pf_control_trigger_flr(struct xe_gt *gt, unsigned int vfid)
 		return -EIO;
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
  * DOC: The VF FLR Flow with GuC
  *
-<<<<<<< HEAD
- *          PF                        GUC             PCI
- * ========================================================
- *          |                          |               |
- * (1)      |                         [ ] <----- FLR --|
- *          |                         [ ]              :
- * (2)     [ ] <-------- NOTIFY FLR --[ ]
- *         [ ]                         |
- * (3)     [ ]                         |
- *         [ ]                         |
- *         [ ]-- START FLR ---------> [ ]
- *          |                         [ ]
- * (4)      |                         [ ]
- *          |                         [ ]
- *         [ ] <--------- FLR DONE -- [ ]
- *         [ ]                         |
- * (5)     [ ]                         |
- *         [ ]                         |
- *         [ ]-- FINISH FLR --------> [ ]
- *          |                          |
- *
- * Step 1: PCI HW generates interrupt to the GuC about VF FLR
- * Step 2: GuC FW sends G2H notification to the PF about VF FLR
- * Step 2a: on some platforms G2H is only received from root GuC
- * Step 3: PF sends H2G request to the GuC to start VF FLR sequence
- * Step 3a: on some platforms PF must send H2G to all other GuCs
- * Step 4: GuC FW performs VF FLR cleanups and notifies the PF when done
- * Step 5: PF performs VF FLR cleanups and notifies the GuC FW when finished
-=======
  * The VF FLR flow includes several steps::
  *
  *	         PF                        GUC             PCI
@@ -1249,7 +1177,6 @@ int xe_gt_sriov_pf_control_trigger_flr(struct xe_gt *gt, unsigned int vfid)
  * * Step 3a: on some platforms PF must send H2G to all other GuCs
  * * Step 4: GuC FW performs VF FLR cleanups and notifies the PF when done
  * * Step 5: PF performs VF FLR cleanups and notifies the GuC FW when finished
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 static bool needs_dispatch_flr(struct xe_device *xe)
@@ -1267,23 +1194,14 @@ static void pf_handle_vf_flr(struct xe_gt *gt, u32 vfid)
 
 	if (needs_dispatch_flr(xe)) {
 		for_each_gt(gtit, xe, gtid)
-<<<<<<< HEAD
-			pf_send_vf_flr_start(gtit, vfid);
-	} else {
-		pf_send_vf_flr_start(gt, vfid);
-=======
 			pf_enter_vf_flr_wip(gtit, vfid);
 	} else {
 		pf_enter_vf_flr_wip(gt, vfid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
 static void pf_handle_vf_flr_done(struct xe_gt *gt, u32 vfid)
 {
-<<<<<<< HEAD
-	pf_send_vf_flr_finish(gt, vfid);
-=======
 	if (!pf_exit_vf_flr_wait_guc(gt, vfid)) {
 		xe_gt_sriov_dbg(gt, "Received out of order 'VF%u FLR done'\n", vfid);
 		pf_enter_vf_mismatch(gt, vfid);
@@ -1302,19 +1220,15 @@ static void pf_handle_vf_pause_done(struct xe_gt *gt, u32 vfid)
 	}
 
 	pf_enter_vf_pause_guc_done(gt, vfid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int pf_handle_vf_event(struct xe_gt *gt, u32 vfid, u32 eventid)
 {
-<<<<<<< HEAD
-=======
 	xe_gt_sriov_dbg_verbose(gt, "received VF%u event %#x\n", vfid, eventid);
 
 	if (vfid > xe_gt_sriov_pf_get_totalvfs(gt))
 		return -EPROTO;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (eventid) {
 	case GUC_PF_NOTIFY_VF_FLR:
 		pf_handle_vf_flr(gt, vfid);
@@ -1323,10 +1237,7 @@ static int pf_handle_vf_event(struct xe_gt *gt, u32 vfid, u32 eventid)
 		pf_handle_vf_flr_done(gt, vfid);
 		break;
 	case GUC_PF_NOTIFY_VF_PAUSE_DONE:
-<<<<<<< HEAD
-=======
 		pf_handle_vf_pause_done(gt, vfid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case GUC_PF_NOTIFY_VF_FIXUP_DONE:
 		break;
@@ -1385,8 +1296,6 @@ int xe_gt_sriov_pf_control_process_guc2pf(struct xe_gt *gt, const u32 *msg, u32 
 
 	return vfid ? pf_handle_vf_event(gt, vfid, eventid) : pf_handle_pf_event(gt, eventid);
 }
-<<<<<<< HEAD
-=======
 
 static bool pf_process_vf_state_machine(struct xe_gt *gt, unsigned int vfid)
 {
@@ -1543,4 +1452,3 @@ void xe_gt_sriov_pf_control_restart(struct xe_gt *gt)
 	for (n = 1; n <= totalvfs; n++)
 		pf_enter_vf_ready(gt, n);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

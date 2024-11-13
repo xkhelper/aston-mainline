@@ -131,12 +131,6 @@
 
 &phyrst {
 	status = "okay";
-<<<<<<< HEAD
-	usb0_vbus_otg: regulator-vbus {
-		regulator-name = "vbus";
-	};
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &scif0 {

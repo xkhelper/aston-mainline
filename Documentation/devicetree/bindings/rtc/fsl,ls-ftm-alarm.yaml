@@ -42,11 +42,7 @@ properties:
         minItems: 1
     description:
       phandle to rcpm node, Please refer
-<<<<<<< HEAD
-      Documentation/devicetree/bindings/soc/fsl/rcpm.txt
-=======
       Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   big-endian:
     $ref: /schemas/types.yaml#/definitions/flag

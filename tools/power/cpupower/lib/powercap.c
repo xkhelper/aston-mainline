@@ -78,8 +78,6 @@ int powercap_get_enabled(int *mode)
 }
 
 /*
-<<<<<<< HEAD
-=======
  * TODO: implement function. Returns dummy 0 for now.
  */
 int powercap_set_enabled(int mode)
@@ -88,7 +86,6 @@ int powercap_set_enabled(int mode)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Hardcoded, because rapl is the only powercap implementation
 - * this needs to get more generic if more powercap implementations
  * should show up

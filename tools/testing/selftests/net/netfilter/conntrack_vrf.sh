@@ -32,10 +32,7 @@ source lib.sh
 
 IP0=172.30.30.1
 IP1=172.30.30.2
-<<<<<<< HEAD
-=======
 DUMMYNET=10.9.9
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 PFXL=30
 ret=0
 
@@ -58,10 +55,7 @@ setup_ns ns0 ns1
 ip netns exec "$ns0" sysctl -q -w net.ipv4.conf.default.rp_filter=0
 ip netns exec "$ns0" sysctl -q -w net.ipv4.conf.all.rp_filter=0
 ip netns exec "$ns0" sysctl -q -w net.ipv4.conf.all.rp_filter=0
-<<<<<<< HEAD
-=======
 ip netns exec "$ns0" sysctl -q -w net.ipv4.conf.all.forwarding=1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 if ! ip link add veth0 netns "$ns0" type veth peer name veth0 netns "$ns1" > /dev/null 2>&1; then
 	echo "SKIP: Could not add veth device"
@@ -73,11 +67,6 @@ if ! ip -net "$ns0" li add tvrf type vrf table 9876; then
 	exit $ksft_skip
 fi
 
-<<<<<<< HEAD
-ip -net "$ns0" li set veth0 master tvrf
-ip -net "$ns0" li set tvrf up
-ip -net "$ns0" li set veth0 up
-=======
 ip -net "$ns0" link add dummy0 type dummy
 
 ip -net "$ns0" li set veth0 master tvrf
@@ -85,15 +74,11 @@ ip -net "$ns0" li set dummy0 master tvrf
 ip -net "$ns0" li set tvrf up
 ip -net "$ns0" li set veth0 up
 ip -net "$ns0" li set dummy0 up
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ip -net "$ns1" li set veth0 up
 
 ip -net "$ns0" addr add $IP0/$PFXL dev veth0
 ip -net "$ns1" addr add $IP1/$PFXL dev veth0
-<<<<<<< HEAD
-=======
 ip -net "$ns0" addr add $DUMMYNET.1/$PFXL dev dummy0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 listener_ready()
 {
@@ -234,8 +219,6 @@ EOF
 	fi
 }
 
-<<<<<<< HEAD
-=======
 test_fib()
 {
 ip netns exec "$ns0" nft -f - <<EOF
@@ -261,14 +244,10 @@ EOF
 	fi
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 test_ct_zone_in
 test_masquerade_vrf "default"
 test_masquerade_vrf "pfifo"
 test_masquerade_veth
-<<<<<<< HEAD
-=======
 test_fib
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 exit $ret

@@ -129,8 +129,6 @@ static const struct adreno_reglist a615_hwcg[] = {
 	{},
 };
 
-<<<<<<< HEAD
-=======
 static const struct adreno_reglist a620_hwcg[] = {
 	{REG_A6XX_RBBM_CLOCK_CNTL_SP0, 0x02222222},
 	{REG_A6XX_RBBM_CLOCK_CNTL2_SP0, 0x02222220},
@@ -184,7 +182,6 @@ static const struct adreno_reglist a620_hwcg[] = {
 	{},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct adreno_reglist a630_hwcg[] = {
 	{REG_A6XX_RBBM_CLOCK_CNTL_SP0, 0x22222222},
 	{REG_A6XX_RBBM_CLOCK_CNTL_SP1, 0x22222222},
@@ -504,10 +501,6 @@ static const struct adreno_reglist a690_hwcg[] = {
 	{REG_A6XX_RBBM_CLOCK_CNTL_GMU_GX, 0x00000222},
 	{REG_A6XX_RBBM_CLOCK_DELAY_GMU_GX, 0x00000111},
 	{REG_A6XX_RBBM_CLOCK_HYST_GMU_GX, 0x00000555},
-<<<<<<< HEAD
-	{REG_A6XX_GPU_GMU_AO_GMU_CGC_MODE_CNTL, 0x20200},
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{REG_A6XX_GPU_GMU_AO_GMU_CGC_DELAY_CNTL, 0x10111},
 	{REG_A6XX_GPU_GMU_AO_GMU_CGC_HYST_CNTL, 0x5555},
 	{}
@@ -550,10 +543,6 @@ static const u32 a630_protect_regs[] = {
 };
 DECLARE_ADRENO_PROTECT(a630_protect, 32);
 
-<<<<<<< HEAD
-/* These are for a620 and a650 */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const u32 a650_protect_regs[] = {
 	A6XX_PROTECT_RDONLY(0x00000, 0x04ff),
 	A6XX_PROTECT_RDONLY(0x00501, 0x0005),
@@ -698,11 +687,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a612_hwcg,
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
 			.prim_fifo_threshold = 0x00080000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		/*
 		 * There are (at least) three SoCs implementing A610: SM6125
@@ -719,8 +705,6 @@ static const struct adreno_info a6xx_gpus[] = {
 			{ 127, 4 },
 		),
 	}, {
-<<<<<<< HEAD
-=======
 		.chip_ids = ADRENO_CHIP_IDS(0x06010500),
 		.family = ADRENO_6XX_GEN1,
 		.revn = 615,
@@ -750,7 +734,6 @@ static const struct adreno_info a6xx_gpus[] = {
 			{ 163, 3 },
 		),
 	}, {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.machine = "qcom,sm7150",
 		.chip_ids = ADRENO_CHIP_IDS(0x06010800),
 		.family = ADRENO_6XX_GEN1,
@@ -766,11 +749,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a615_hwcg,
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00000222,
 			.prim_fifo_threshold = 0x00180000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
@@ -793,11 +773,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.init = a6xx_gpu_init,
 		.a6xx = &(const struct a6xx_info) {
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00000222,
 			.prim_fifo_threshold = 0x00180000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
@@ -820,11 +797,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a615_hwcg,
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00000222,
 			.prim_fifo_threshold = 0x00018000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
@@ -847,11 +821,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a615_hwcg,
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00000222,
 			.prim_fifo_threshold = 0x00018000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
@@ -874,11 +845,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a615_hwcg,
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00000222,
 			.prim_fifo_threshold = 0x00018000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
@@ -888,8 +856,6 @@ static const struct adreno_info a6xx_gpus[] = {
 			{ 180, 1 },
 		),
 	}, {
-<<<<<<< HEAD
-=======
 		.chip_ids = ADRENO_CHIP_IDS(0x06020100),
 		.family = ADRENO_6XX_GEN3,
 		.fw = {
@@ -914,7 +880,6 @@ static const struct adreno_info a6xx_gpus[] = {
 			{ 137, 1 },
 		),
 	}, {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.chip_ids = ADRENO_CHIP_IDS(
 			0x06030001,
 			0x06030002
@@ -933,11 +898,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a630_hwcg,
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
 			.prim_fifo_threshold = 0x00180000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 	}, {
 		.chip_ids = ADRENO_CHIP_IDS(0x06040001),
@@ -955,11 +917,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a640_hwcg,
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
 			.prim_fifo_threshold = 0x00180000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0, 0 },
@@ -982,11 +941,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a650_hwcg,
 			.protect = &a650_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
 			.prim_fifo_threshold = 0x00300200,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.address_space_size = SZ_16G,
 		.speedbins = ADRENO_SPEEDBINS(
@@ -1012,11 +968,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a660_hwcg,
 			.protect = &a660_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020000,
 			.prim_fifo_threshold = 0x00300200,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.address_space_size = SZ_16G,
 	}, {
@@ -1035,20 +988,14 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a660_hwcg,
 			.protect = &a660_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
 			.prim_fifo_threshold = 0x00200200,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.address_space_size = SZ_16G,
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
 			{ 117, 0 },
-<<<<<<< HEAD
-=======
 			{ 129, 4 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			{ 172, 2 }, /* Called speedbin 1 downstream, but let's not break things! */
 			{ 190, 1 },
 		),
@@ -1068,11 +1015,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a640_hwcg,
 			.protect = &a630_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
 			.prim_fifo_threshold = 0x00200200,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 	}, {
 		.chip_ids = ADRENO_CHIP_IDS(0x06090000),
@@ -1090,11 +1034,8 @@ static const struct adreno_info a6xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a690_hwcg,
 			.protect = &a690_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020200,
 			.prim_fifo_threshold = 0x00800200,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.address_space_size = SZ_16G,
 	}
@@ -1355,11 +1296,8 @@ static const struct adreno_info a7xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a702_hwcg,
 			.protect = &a650_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
 			.prim_fifo_threshold = 0x0000c000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.speedbins = ADRENO_SPEEDBINS(
 			{ 0,   0 },
@@ -1383,10 +1321,7 @@ static const struct adreno_info a7xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.hwcg = a730_hwcg,
 			.protect = &a730_protect,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.address_space_size = SZ_16G,
 	}, {
@@ -1406,10 +1341,7 @@ static const struct adreno_info a7xx_gpus[] = {
 			.hwcg = a740_hwcg,
 			.protect = &a730_protect,
 			.gmu_chipid = 0x7020100,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.address_space_size = SZ_16G,
 	}, {
@@ -1428,10 +1360,7 @@ static const struct adreno_info a7xx_gpus[] = {
 			.hwcg = a740_hwcg,
 			.protect = &a730_protect,
 			.gmu_chipid = 0x7050001,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.address_space_size = SZ_256G,
 	}, {
@@ -1450,10 +1379,7 @@ static const struct adreno_info a7xx_gpus[] = {
 		.a6xx = &(const struct a6xx_info) {
 			.protect = &a730_protect,
 			.gmu_chipid = 0x7090100,
-<<<<<<< HEAD
-=======
 			.gmu_cgc_mode = 0x00020202,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		},
 		.address_space_size = SZ_16G,
 	}

@@ -80,15 +80,6 @@ struct ata_internal {
 #define transport_class_to_port(dev)				\
 	tdev_to_port((dev)->parent)
 
-<<<<<<< HEAD
-
-/* Device objects are always created whit link objects */
-static int ata_tdev_add(struct ata_device *dev);
-static void ata_tdev_delete(struct ata_device *dev);
-
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Hack to allow attributes of the same name in different objects.
  */
@@ -368,138 +359,6 @@ unsigned int ata_port_classify(struct ata_port *ap,
 EXPORT_SYMBOL_GPL(ata_port_classify);
 
 /*
-<<<<<<< HEAD
- * ATA link attributes
- */
-static int noop(int x) { return x; }
-
-#define ata_link_show_linkspeed(field, format)				\
-static ssize_t								\
-show_ata_link_##field(struct device *dev,				\
-		      struct device_attribute *attr, char *buf)		\
-{									\
-	struct ata_link *link = transport_class_to_link(dev);		\
-									\
-	return sprintf(buf, "%s\n", sata_spd_string(format(link->field))); \
-}
-
-#define ata_link_linkspeed_attr(field, format)				\
-	ata_link_show_linkspeed(field, format)				\
-static DEVICE_ATTR(field, S_IRUGO, show_ata_link_##field, NULL)
-
-ata_link_linkspeed_attr(hw_sata_spd_limit, fls);
-ata_link_linkspeed_attr(sata_spd_limit, fls);
-ata_link_linkspeed_attr(sata_spd, noop);
-
-
-static DECLARE_TRANSPORT_CLASS(ata_link_class,
-		"ata_link", NULL, NULL, NULL);
-
-static void ata_tlink_release(struct device *dev)
-{
-}
-
-/**
- * ata_is_link --  check if a struct device represents a ATA link
- * @dev:	device to check
- *
- * Returns:
- *	%1 if the device represents a ATA link, %0 else
- */
-static int ata_is_link(const struct device *dev)
-{
-	return dev->release == ata_tlink_release;
-}
-
-static int ata_tlink_match(struct attribute_container *cont,
-			   struct device *dev)
-{
-	struct ata_internal* i = to_ata_internal(ata_scsi_transport_template);
-	if (!ata_is_link(dev))
-		return 0;
-	return &i->link_attr_cont.ac == cont;
-}
-
-/**
- * ata_tlink_delete  --  remove ATA LINK
- * @link:	ATA LINK to remove
- *
- * Removes the specified ATA LINK.  remove associated ATA device(s) as well.
- */
-void ata_tlink_delete(struct ata_link *link)
-{
-	struct device *dev = &link->tdev;
-	struct ata_device *ata_dev;
-
-	ata_for_each_dev(ata_dev, link, ALL) {
-		ata_tdev_delete(ata_dev);
-	}
-
-	transport_remove_device(dev);
-	device_del(dev);
-	transport_destroy_device(dev);
-	put_device(dev);
-}
-
-/**
- * ata_tlink_add  --  initialize a transport ATA link structure
- * @link:	allocated ata_link structure.
- *
- * Initialize an ATA LINK structure for sysfs.  It will be added in the
- * device tree below the ATA PORT it belongs to.
- *
- * Returns %0 on success
- */
-int ata_tlink_add(struct ata_link *link)
-{
-	struct device *dev = &link->tdev;
-	struct ata_port *ap = link->ap;
-	struct ata_device *ata_dev;
-	int error;
-
-	device_initialize(dev);
-	dev->parent = &ap->tdev;
-	dev->release = ata_tlink_release;
-	if (ata_is_host_link(link))
-		dev_set_name(dev, "link%d", ap->print_id);
-	else
-		dev_set_name(dev, "link%d.%d", ap->print_id, link->pmp);
-
-	transport_setup_device(dev);
-
-	error = device_add(dev);
-	if (error) {
-		goto tlink_err;
-	}
-
-	error = transport_add_device(dev);
-	if (error)
-		goto tlink_transport_err;
-	transport_configure_device(dev);
-
-	ata_for_each_dev(ata_dev, link, ALL) {
-		error = ata_tdev_add(ata_dev);
-		if (error) {
-			goto tlink_dev_err;
-		}
-	}
-	return 0;
-  tlink_dev_err:
-	while (--ata_dev >= link->device) {
-		ata_tdev_delete(ata_dev);
-	}
-	transport_remove_device(dev);
-  tlink_transport_err:
-	device_del(dev);
-  tlink_err:
-	transport_destroy_device(dev);
-	put_device(dev);
-	return error;
-}
-
-/*
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ATA device attributes
  */
 
@@ -623,17 +482,10 @@ show_ata_dev_trim(struct device *dev,
 
 	if (!ata_id_has_trim(ata_dev->id))
 		mode = "unsupported";
-<<<<<<< HEAD
-	else if (ata_dev->horkage & ATA_HORKAGE_NOTRIM)
-		mode = "forced_unsupported";
-	else if (ata_dev->horkage & ATA_HORKAGE_NO_NCQ_TRIM)
-			mode = "forced_unqueued";
-=======
 	else if (ata_dev->quirks & ATA_QUIRK_NOTRIM)
 		mode = "forced_unsupported";
 	else if (ata_dev->quirks & ATA_QUIRK_NO_NCQ_TRIM)
 		mode = "forced_unqueued";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else if (ata_fpdma_dsm_supported(ata_dev))
 		mode = "queued";
 	else
@@ -656,15 +508,9 @@ static void ata_tdev_release(struct device *dev)
  * @dev:	device to check
  *
  * Returns:
-<<<<<<< HEAD
- *	%1 if the device represents a ATA device, %0 else
- */
-static int ata_is_ata_dev(const struct device *dev)
-=======
  *	true if the device represents a ATA device, false otherwise
  */
 static bool ata_is_ata_dev(const struct device *dev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return dev->release == ata_tdev_release;
 }
@@ -672,28 +518,14 @@ static bool ata_is_ata_dev(const struct device *dev)
 static int ata_tdev_match(struct attribute_container *cont,
 			  struct device *dev)
 {
-<<<<<<< HEAD
-	struct ata_internal* i = to_ata_internal(ata_scsi_transport_template);
-=======
 	struct ata_internal *i = to_ata_internal(ata_scsi_transport_template);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ata_is_ata_dev(dev))
 		return 0;
 	return &i->dev_attr_cont.ac == cont;
 }
 
 /**
-<<<<<<< HEAD
- * ata_tdev_free  --  free a ATA LINK
- * @dev:	ATA PHY to free
- *
- * Frees the specified ATA PHY.
- *
- * Note:
- *   This function must only be called on a PHY that has not
- *   successfully been added using ata_tdev_add().
-=======
  * ata_tdev_free  --  free an ATA transport device
  * @dev:	struct ata_device owning the transport device to free
  *
@@ -702,7 +534,6 @@ static int ata_tdev_match(struct attribute_container *cont,
  * Note:
  *   This function must only be called for a ATA transport device that has not
  *   yet successfully been added using ata_tdev_add().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static void ata_tdev_free(struct ata_device *dev)
 {
@@ -711,17 +542,10 @@ static void ata_tdev_free(struct ata_device *dev)
 }
 
 /**
-<<<<<<< HEAD
- * ata_tdev_delete  --  remove ATA device
- * @ata_dev:	ATA device to remove
- *
- * Removes the specified ATA device.
-=======
  * ata_tdev_delete  --  remove an ATA transport device
  * @ata_dev:	struct ata_device owning the transport device to delete
  *
  * Removes the ATA transport device for the specified ATA device.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static void ata_tdev_delete(struct ata_device *ata_dev)
 {
@@ -732,17 +556,6 @@ static void ata_tdev_delete(struct ata_device *ata_dev)
 	ata_tdev_free(ata_dev);
 }
 
-<<<<<<< HEAD
-
-/**
- * ata_tdev_add  --  initialize a transport ATA device structure.
- * @ata_dev:	ata_dev structure.
- *
- * Initialize an ATA device structure for sysfs.  It will be added in the
- * device tree below the ATA LINK device it belongs to.
- *
- * Returns %0 on success
-=======
 /**
  * ata_tdev_add  --  initialize an ATA transport device
  * @ata_dev:	struct ata_device owning the transport device to add
@@ -751,7 +564,6 @@ static void ata_tdev_delete(struct ata_device *ata_dev)
  * device tree below the ATA link device it belongs to.
  *
  * Returns %0 on success and a negative error code on error.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int ata_tdev_add(struct ata_device *ata_dev)
 {
@@ -787,8 +599,6 @@ static int ata_tdev_add(struct ata_device *ata_dev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * ATA link attributes
  */
@@ -919,7 +729,6 @@ int ata_tlink_add(struct ata_link *link)
 	put_device(dev);
 	return error;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Setup / Teardown code

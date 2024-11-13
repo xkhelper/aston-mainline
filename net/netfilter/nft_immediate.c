@@ -244,12 +244,7 @@ nla_put_failure:
 }
 
 static int nft_immediate_validate(const struct nft_ctx *ctx,
-<<<<<<< HEAD
-				  const struct nft_expr *expr,
-				  const struct nft_data **d)
-=======
 				  const struct nft_expr *expr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct nft_immediate_expr *priv = nft_expr_priv(expr);
 	struct nft_ctx *pctx = (struct nft_ctx *)ctx;

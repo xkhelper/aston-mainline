@@ -452,10 +452,7 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
 {
 	u32 __user *offsets, *syncs;
 	struct drm_v3d_timestamp_query timestamp;
-<<<<<<< HEAD
-=======
 	struct v3d_timestamp_query_info *query_info = &job->timestamp_query;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int i;
 	int err;
 
@@ -477,17 +474,10 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
 
 	job->job_type = V3D_CPU_JOB_TYPE_TIMESTAMP_QUERY;
 
-<<<<<<< HEAD
-	job->timestamp_query.queries = kvmalloc_array(timestamp.count,
-						      sizeof(struct v3d_timestamp_query),
-						      GFP_KERNEL);
-	if (!job->timestamp_query.queries)
-=======
 	query_info->queries = kvmalloc_array(timestamp.count,
 					     sizeof(struct v3d_timestamp_query),
 					     GFP_KERNEL);
 	if (!query_info->queries)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 
 	offsets = u64_to_user_ptr(timestamp.offsets);
@@ -496,45 +486,26 @@ v3d_get_cpu_timestamp_query_params(struct drm_file *file_priv,
 	for (i = 0; i < timestamp.count; i++) {
 		u32 offset, sync;
 
-<<<<<<< HEAD
-		if (copy_from_user(&offset, offsets++, sizeof(offset))) {
-=======
 		if (get_user(offset, offsets++)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -EFAULT;
 			goto error;
 		}
 
-<<<<<<< HEAD
-		job->timestamp_query.queries[i].offset = offset;
-
-		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
-=======
 		query_info->queries[i].offset = offset;
 
 		if (get_user(sync, syncs++)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -EFAULT;
 			goto error;
 		}
 
-<<<<<<< HEAD
-		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-		if (!job->timestamp_query.queries[i].syncobj) {
-=======
 		query_info->queries[i].syncobj = drm_syncobj_find(file_priv,
 								  sync);
 		if (!query_info->queries[i].syncobj) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -ENOENT;
 			goto error;
 		}
 	}
-<<<<<<< HEAD
-	job->timestamp_query.count = timestamp.count;
-=======
 	query_info->count = timestamp.count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -550,10 +521,7 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
 {
 	u32 __user *syncs;
 	struct drm_v3d_reset_timestamp_query reset;
-<<<<<<< HEAD
-=======
 	struct v3d_timestamp_query_info *query_info = &job->timestamp_query;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int i;
 	int err;
 
@@ -572,17 +540,10 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
 
 	job->job_type = V3D_CPU_JOB_TYPE_RESET_TIMESTAMP_QUERY;
 
-<<<<<<< HEAD
-	job->timestamp_query.queries = kvmalloc_array(reset.count,
-						      sizeof(struct v3d_timestamp_query),
-						      GFP_KERNEL);
-	if (!job->timestamp_query.queries)
-=======
 	query_info->queries = kvmalloc_array(reset.count,
 					     sizeof(struct v3d_timestamp_query),
 					     GFP_KERNEL);
 	if (!query_info->queries)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 
 	syncs = u64_to_user_ptr(reset.syncs);
@@ -590,36 +551,21 @@ v3d_get_cpu_reset_timestamp_params(struct drm_file *file_priv,
 	for (i = 0; i < reset.count; i++) {
 		u32 sync;
 
-<<<<<<< HEAD
-		job->timestamp_query.queries[i].offset = reset.offset + 8 * i;
-
-		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
-=======
 		query_info->queries[i].offset = reset.offset + 8 * i;
 
 		if (get_user(sync, syncs++)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -EFAULT;
 			goto error;
 		}
 
-<<<<<<< HEAD
-		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-		if (!job->timestamp_query.queries[i].syncobj) {
-=======
 		query_info->queries[i].syncobj = drm_syncobj_find(file_priv,
 								  sync);
 		if (!query_info->queries[i].syncobj) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -ENOENT;
 			goto error;
 		}
 	}
-<<<<<<< HEAD
-	job->timestamp_query.count = reset.count;
-=======
 	query_info->count = reset.count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -636,10 +582,7 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
 {
 	u32 __user *offsets, *syncs;
 	struct drm_v3d_copy_timestamp_query copy;
-<<<<<<< HEAD
-=======
 	struct v3d_timestamp_query_info *query_info = &job->timestamp_query;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int i;
 	int err;
 
@@ -661,17 +604,10 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
 
 	job->job_type = V3D_CPU_JOB_TYPE_COPY_TIMESTAMP_QUERY;
 
-<<<<<<< HEAD
-	job->timestamp_query.queries = kvmalloc_array(copy.count,
-						      sizeof(struct v3d_timestamp_query),
-						      GFP_KERNEL);
-	if (!job->timestamp_query.queries)
-=======
 	query_info->queries = kvmalloc_array(copy.count,
 					     sizeof(struct v3d_timestamp_query),
 					     GFP_KERNEL);
 	if (!query_info->queries)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ENOMEM;
 
 	offsets = u64_to_user_ptr(copy.offsets);
@@ -680,45 +616,26 @@ v3d_get_cpu_copy_query_results_params(struct drm_file *file_priv,
 	for (i = 0; i < copy.count; i++) {
 		u32 offset, sync;
 
-<<<<<<< HEAD
-		if (copy_from_user(&offset, offsets++, sizeof(offset))) {
-=======
 		if (get_user(offset, offsets++)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -EFAULT;
 			goto error;
 		}
 
-<<<<<<< HEAD
-		job->timestamp_query.queries[i].offset = offset;
-
-		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
-=======
 		query_info->queries[i].offset = offset;
 
 		if (get_user(sync, syncs++)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -EFAULT;
 			goto error;
 		}
 
-<<<<<<< HEAD
-		job->timestamp_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-		if (!job->timestamp_query.queries[i].syncobj) {
-=======
 		query_info->queries[i].syncobj = drm_syncobj_find(file_priv,
 								  sync);
 		if (!query_info->queries[i].syncobj) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			err = -ENOENT;
 			goto error;
 		}
 	}
-<<<<<<< HEAD
-	job->timestamp_query.count = copy.count;
-=======
 	query_info->count = copy.count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	job->copy.do_64bit = copy.do_64bit;
 	job->copy.do_partial = copy.do_partial;
@@ -734,8 +651,6 @@ error:
 }
 
 static int
-<<<<<<< HEAD
-=======
 v3d_copy_query_info(struct v3d_performance_query_info *query_info,
 		    unsigned int count,
 		    unsigned int nperfmons,
@@ -799,20 +714,12 @@ error:
 }
 
 static int
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 v3d_get_cpu_reset_performance_params(struct drm_file *file_priv,
 				     struct drm_v3d_extension __user *ext,
 				     struct v3d_cpu_job *job)
 {
-<<<<<<< HEAD
-	u32 __user *syncs;
-	u64 __user *kperfmon_ids;
-	struct drm_v3d_reset_performance_query reset;
-	unsigned int i, j;
-=======
 	struct v3d_performance_query_info *query_info = &job->performance_query;
 	struct drm_v3d_reset_performance_query reset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (!job) {
@@ -828,63 +735,6 @@ v3d_get_cpu_reset_performance_params(struct drm_file *file_priv,
 	if (copy_from_user(&reset, ext, sizeof(reset)))
 		return -EFAULT;
 
-<<<<<<< HEAD
-	if (reset.nperfmons > V3D_MAX_PERFMONS)
-		return -EINVAL;
-
-	job->job_type = V3D_CPU_JOB_TYPE_RESET_PERFORMANCE_QUERY;
-
-	job->performance_query.queries = kvmalloc_array(reset.count,
-							sizeof(struct v3d_performance_query),
-							GFP_KERNEL);
-	if (!job->performance_query.queries)
-		return -ENOMEM;
-
-	syncs = u64_to_user_ptr(reset.syncs);
-	kperfmon_ids = u64_to_user_ptr(reset.kperfmon_ids);
-
-	for (i = 0; i < reset.count; i++) {
-		u32 sync;
-		u64 ids;
-		u32 __user *ids_pointer;
-		u32 id;
-
-		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
-			err = -EFAULT;
-			goto error;
-		}
-
-		if (copy_from_user(&ids, kperfmon_ids++, sizeof(ids))) {
-			err = -EFAULT;
-			goto error;
-		}
-
-		ids_pointer = u64_to_user_ptr(ids);
-
-		for (j = 0; j < reset.nperfmons; j++) {
-			if (copy_from_user(&id, ids_pointer++, sizeof(id))) {
-				err = -EFAULT;
-				goto error;
-			}
-
-			job->performance_query.queries[i].kperfmon_ids[j] = id;
-		}
-
-		job->performance_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-		if (!job->performance_query.queries[i].syncobj) {
-			err = -ENOENT;
-			goto error;
-		}
-	}
-	job->performance_query.count = reset.count;
-	job->performance_query.nperfmons = reset.nperfmons;
-
-	return 0;
-
-error:
-	v3d_performance_query_info_free(&job->performance_query, i);
-	return err;
-=======
 	job->job_type = V3D_CPU_JOB_TYPE_RESET_PERFORMANCE_QUERY;
 
 	query_info->queries =
@@ -907,7 +757,6 @@ error:
 	query_info->nperfmons = reset.nperfmons;
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -915,15 +764,8 @@ v3d_get_cpu_copy_performance_query_params(struct drm_file *file_priv,
 					  struct drm_v3d_extension __user *ext,
 					  struct v3d_cpu_job *job)
 {
-<<<<<<< HEAD
-	u32 __user *syncs;
-	u64 __user *kperfmon_ids;
-	struct drm_v3d_copy_performance_query copy;
-	unsigned int i, j;
-=======
 	struct v3d_performance_query_info *query_info = &job->performance_query;
 	struct drm_v3d_copy_performance_query copy;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int err;
 
 	if (!job) {
@@ -942,58 +784,6 @@ v3d_get_cpu_copy_performance_query_params(struct drm_file *file_priv,
 	if (copy.pad)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	if (copy.nperfmons > V3D_MAX_PERFMONS)
-		return -EINVAL;
-
-	job->job_type = V3D_CPU_JOB_TYPE_COPY_PERFORMANCE_QUERY;
-
-	job->performance_query.queries = kvmalloc_array(copy.count,
-							sizeof(struct v3d_performance_query),
-							GFP_KERNEL);
-	if (!job->performance_query.queries)
-		return -ENOMEM;
-
-	syncs = u64_to_user_ptr(copy.syncs);
-	kperfmon_ids = u64_to_user_ptr(copy.kperfmon_ids);
-
-	for (i = 0; i < copy.count; i++) {
-		u32 sync;
-		u64 ids;
-		u32 __user *ids_pointer;
-		u32 id;
-
-		if (copy_from_user(&sync, syncs++, sizeof(sync))) {
-			err = -EFAULT;
-			goto error;
-		}
-
-		if (copy_from_user(&ids, kperfmon_ids++, sizeof(ids))) {
-			err = -EFAULT;
-			goto error;
-		}
-
-		ids_pointer = u64_to_user_ptr(ids);
-
-		for (j = 0; j < copy.nperfmons; j++) {
-			if (copy_from_user(&id, ids_pointer++, sizeof(id))) {
-				err = -EFAULT;
-				goto error;
-			}
-
-			job->performance_query.queries[i].kperfmon_ids[j] = id;
-		}
-
-		job->performance_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-		if (!job->performance_query.queries[i].syncobj) {
-			err = -ENOENT;
-			goto error;
-		}
-	}
-	job->performance_query.count = copy.count;
-	job->performance_query.nperfmons = copy.nperfmons;
-	job->performance_query.ncounters = copy.ncounters;
-=======
 	job->job_type = V3D_CPU_JOB_TYPE_COPY_PERFORMANCE_QUERY;
 
 	query_info->queries =
@@ -1015,7 +805,6 @@ v3d_get_cpu_copy_performance_query_params(struct drm_file *file_priv,
 	query_info->count = copy.count;
 	query_info->nperfmons = copy.nperfmons;
 	query_info->ncounters = copy.ncounters;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	job->copy.do_64bit = copy.do_64bit;
 	job->copy.do_partial = copy.do_partial;
@@ -1024,13 +813,6 @@ v3d_get_cpu_copy_performance_query_params(struct drm_file *file_priv,
 	job->copy.stride = copy.stride;
 
 	return 0;
-<<<<<<< HEAD
-
-error:
-	v3d_performance_query_info_free(&job->performance_query, i);
-	return err;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Whenever userspace sets ioctl extensions, v3d_get_extensions parses data

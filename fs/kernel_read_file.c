@@ -178,17 +178,10 @@ ssize_t kernel_read_file_from_fd(int fd, loff_t offset, void **buf,
 	struct fd f = fdget(fd);
 	ssize_t ret = -EBADF;
 
-<<<<<<< HEAD
-	if (!f.file || !(f.file->f_mode & FMODE_READ))
-		goto out;
-
-	ret = kernel_read_file(f.file, offset, buf, buf_size, file_size, id);
-=======
 	if (!fd_file(f) || !(fd_file(f)->f_mode & FMODE_READ))
 		goto out;
 
 	ret = kernel_read_file(fd_file(f), offset, buf, buf_size, file_size, id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	fdput(f);
 	return ret;

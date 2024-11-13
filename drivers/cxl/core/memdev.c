@@ -58,11 +58,7 @@ static ssize_t payload_max_show(struct device *dev,
 
 	if (!mds)
 		return sysfs_emit(buf, "\n");
-<<<<<<< HEAD
-	return sysfs_emit(buf, "%zu\n", mds->payload_size);
-=======
 	return sysfs_emit(buf, "%zu\n", cxlds->cxl_mbox.payload_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 static DEVICE_ATTR_RO(payload_max);
 
@@ -128,26 +124,16 @@ static ssize_t security_state_show(struct device *dev,
 {
 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
 	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
 	unsigned long state = mds->security.state;
 	int rc = 0;
 
 	/* sync with latest submission state */
-<<<<<<< HEAD
-	mutex_lock(&mds->mbox_mutex);
-	if (mds->security.sanitize_active)
-		rc = sysfs_emit(buf, "sanitize\n");
-	mutex_unlock(&mds->mbox_mutex);
-=======
 	mutex_lock(&cxl_mbox->mbox_mutex);
 	if (mds->security.sanitize_active)
 		rc = sysfs_emit(buf, "sanitize\n");
 	mutex_unlock(&cxl_mbox->mbox_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc)
 		return rc;
 
@@ -292,11 +278,7 @@ static int cxl_validate_poison_dpa(struct cxl_memdev *cxlmd, u64 dpa)
 
 int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa)
 {
-<<<<<<< HEAD
-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_inject_poison inject;
 	struct cxl_poison_record record;
 	struct cxl_mbox_cmd mbox_cmd;
@@ -326,21 +308,13 @@ int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa)
 		.size_in = sizeof(inject),
 		.payload_in = &inject,
 	};
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc)
 		goto out;
 
 	cxlr = cxl_dpa_to_region(cxlmd, dpa);
 	if (cxlr)
-<<<<<<< HEAD
-		dev_warn_once(mds->cxlds.dev,
-=======
 		dev_warn_once(cxl_mbox->host,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      "poison inject dpa:%#llx region: %s\n", dpa,
 			      dev_name(&cxlr->dev));
 
@@ -359,11 +333,7 @@ EXPORT_SYMBOL_NS_GPL(cxl_inject_poison, CXL);
 
 int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa)
 {
-<<<<<<< HEAD
-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlmd->cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_clear_poison clear;
 	struct cxl_poison_record record;
 	struct cxl_mbox_cmd mbox_cmd;
@@ -402,21 +372,13 @@ int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa)
 		.payload_in = &clear,
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc)
 		goto out;
 
 	cxlr = cxl_dpa_to_region(cxlmd, dpa);
 	if (cxlr)
-<<<<<<< HEAD
-		dev_warn_once(mds->cxlds.dev,
-=======
 		dev_warn_once(cxl_mbox->host,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      "poison clear dpa:%#llx region: %s\n", dpa,
 			      dev_name(&cxlr->dev));
 
@@ -753,10 +715,7 @@ static int cxl_memdev_release_file(struct inode *inode, struct file *file)
  */
 static int cxl_mem_get_fw_info(struct cxl_memdev_state *mds)
 {
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_get_fw_info info;
 	struct cxl_mbox_cmd mbox_cmd;
 	int rc;
@@ -767,11 +726,7 @@ static int cxl_mem_get_fw_info(struct cxl_memdev_state *mds)
 		.payload_out = &info,
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0)
 		return rc;
 
@@ -795,10 +750,7 @@ static int cxl_mem_get_fw_info(struct cxl_memdev_state *mds)
  */
 static int cxl_mem_activate_fw(struct cxl_memdev_state *mds, int slot)
 {
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_activate_fw activate;
 	struct cxl_mbox_cmd mbox_cmd;
 
@@ -815,11 +767,7 @@ static int cxl_mem_activate_fw(struct cxl_memdev_state *mds, int slot)
 	activate.action = CXL_FW_ACTIVATE_OFFLINE;
 	activate.slot = slot;
 
-<<<<<<< HEAD
-	return cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	return cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -834,10 +782,7 @@ static int cxl_mem_activate_fw(struct cxl_memdev_state *mds, int slot)
  */
 static int cxl_mem_abort_fw_xfer(struct cxl_memdev_state *mds)
 {
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_transfer_fw *transfer;
 	struct cxl_mbox_cmd mbox_cmd;
 	int rc;
@@ -857,11 +802,7 @@ static int cxl_mem_abort_fw_xfer(struct cxl_memdev_state *mds)
 
 	transfer->action = CXL_FW_TRANSFER_ACTION_ABORT;
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(transfer);
 	return rc;
 }
@@ -892,20 +833,13 @@ static enum fw_upload_err cxl_fw_prepare(struct fw_upload *fwl, const u8 *data,
 {
 	struct cxl_memdev_state *mds = fwl->dd_handle;
 	struct cxl_mbox_transfer_fw *transfer;
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!size)
 		return FW_UPLOAD_ERR_INVALID_SIZE;
 
 	mds->fw.oneshot = struct_size(transfer, data, size) <
-<<<<<<< HEAD
-			    mds->payload_size;
-=======
 			    cxl_mbox->payload_size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cxl_mem_get_fw_info(mds))
 		return FW_UPLOAD_ERR_HW_ERROR;
@@ -925,10 +859,7 @@ static enum fw_upload_err cxl_fw_write(struct fw_upload *fwl, const u8 *data,
 {
 	struct cxl_memdev_state *mds = fwl->dd_handle;
 	struct cxl_dev_state *cxlds = &mds->cxlds;
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_memdev *cxlmd = cxlds->cxlmd;
 	struct cxl_mbox_transfer_fw *transfer;
 	struct cxl_mbox_cmd mbox_cmd;
@@ -952,11 +883,7 @@ static enum fw_upload_err cxl_fw_write(struct fw_upload *fwl, const u8 *data,
 	 * sizeof(*transfer) is 128.  These constraints imply that @cur_size
 	 * will always be 128b aligned.
 	 */
-<<<<<<< HEAD
-	cur_size = min_t(size_t, size, mds->payload_size - sizeof(*transfer));
-=======
 	cur_size = min_t(size_t, size, cxl_mbox->payload_size - sizeof(*transfer));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	remaining = size - cur_size;
 	size_in = struct_size(transfer, data, cur_size);
@@ -1000,11 +927,7 @@ static enum fw_upload_err cxl_fw_write(struct fw_upload *fwl, const u8 *data,
 		.poll_count = 30,
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0) {
 		rc = FW_UPLOAD_ERR_RW_ERROR;
 		goto out_free;
@@ -1142,27 +1065,17 @@ EXPORT_SYMBOL_NS_GPL(devm_cxl_add_memdev, CXL);
 static void sanitize_teardown_notifier(void *data)
 {
 	struct cxl_memdev_state *mds = data;
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct kernfs_node *state;
 
 	/*
 	 * Prevent new irq triggered invocations of the workqueue and
 	 * flush inflight invocations.
 	 */
-<<<<<<< HEAD
-	mutex_lock(&mds->mbox_mutex);
-	state = mds->security.sanitize_node;
-	mds->security.sanitize_node = NULL;
-	mutex_unlock(&mds->mbox_mutex);
-=======
 	mutex_lock(&cxl_mbox->mbox_mutex);
 	state = mds->security.sanitize_node;
 	mds->security.sanitize_node = NULL;
 	mutex_unlock(&cxl_mbox->mbox_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cancel_delayed_work_sync(&mds->security.poll_dwork);
 	sysfs_put(state);

@@ -152,11 +152,7 @@ int intel_dp_hdcp_repeater_present(struct intel_digital_port *dig_port,
 	ssize_t ret;
 	u8 bcaps;
 
-<<<<<<< HEAD
-	ret = intel_dp_hdcp_read_bcaps(&dig_port->dp.aux, i915,  &bcaps);
-=======
 	ret = intel_dp_hdcp_read_bcaps(&dig_port->dp.aux, i915, &bcaps);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -681,10 +677,6 @@ static
 int intel_dp_hdcp2_get_capability(struct intel_connector *connector,
 				  bool *capable)
 {
-<<<<<<< HEAD
-	struct intel_digital_port *dig_port = intel_attached_dig_port(connector);
-	struct drm_dp_aux *aux = &dig_port->dp.aux;
-=======
 	struct intel_digital_port *dig_port;
 	struct drm_dp_aux *aux;
 
@@ -694,7 +686,6 @@ int intel_dp_hdcp2_get_capability(struct intel_connector *connector,
 
 	dig_port = intel_attached_dig_port(connector);
 	aux = &dig_port->dp.aux;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return _intel_dp_hdcp2_get_capability(aux, capable);
 }

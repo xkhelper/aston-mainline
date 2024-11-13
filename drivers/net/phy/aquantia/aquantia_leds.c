@@ -120,12 +120,8 @@ int aqr_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
 int aqr_phy_led_active_low_set(struct phy_device *phydev, int index, bool enable)
 {
 	return phy_modify_mmd(phydev, MDIO_MMD_VEND1, AQR_LED_DRIVE(index),
-<<<<<<< HEAD
-			      VEND1_GLOBAL_LED_DRIVE_VDD, enable);
-=======
 			      VEND1_GLOBAL_LED_DRIVE_VDD,
 			      enable ? VEND1_GLOBAL_LED_DRIVE_VDD : 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int aqr_phy_led_polarity_set(struct phy_device *phydev, int index, unsigned long modes)

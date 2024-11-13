@@ -347,11 +347,7 @@ static __always_inline int __waiter_prio(struct task_struct *task)
 {
 	int prio = task->prio;
 
-<<<<<<< HEAD
-	if (!rt_prio(prio))
-=======
 	if (!rt_or_dl_prio(prio))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return DEFAULT_PRIO;
 
 	return prio;
@@ -439,11 +435,7 @@ static inline bool rt_mutex_steal(struct rt_mutex_waiter *waiter,
 	 * Note that RT tasks are excluded from same priority (lateral)
 	 * steals to prevent the introduction of an unbounded latency.
 	 */
-<<<<<<< HEAD
-	if (rt_prio(waiter->tree.prio) || dl_prio(waiter->tree.prio))
-=======
 	if (rt_or_dl_prio(waiter->tree.prio))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 
 	return rt_waiter_node_equal(&waiter->tree, &top_waiter->tree);

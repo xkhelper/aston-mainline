@@ -133,11 +133,7 @@ static int axg_card_add_tdm_loopback(struct snd_soc_card *card,
 	lb->stream_name = lb->name;
 	lb->cpus->of_node = pad->cpus->of_node;
 	lb->cpus->dai_name = "TDM Loopback";
-<<<<<<< HEAD
-	lb->dpcm_capture = 1;
-=======
 	lb->capture_only = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lb->no_pcm = 1;
 	lb->ops = &axg_card_tdm_be_ops;
 	lb->init = axg_card_tdm_dai_lb_init;
@@ -181,11 +177,7 @@ static int axg_card_parse_cpu_tdm_slots(struct snd_soc_card *card,
 
 	/* Disable playback is the interface has no tx slots */
 	if (!tx)
-<<<<<<< HEAD
-		link->dpcm_playback = 0;
-=======
 		link->capture_only = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0, rx = 0; i < AXG_TDM_NUM_LANES; i++) {
 		snprintf(propname, 32, "dai-tdm-slot-rx-mask-%d", i);
@@ -195,15 +187,9 @@ static int axg_card_parse_cpu_tdm_slots(struct snd_soc_card *card,
 
 	/* Disable capture is the interface has no rx slots */
 	if (!rx)
-<<<<<<< HEAD
-		link->dpcm_capture = 0;
-
-	/* ... but the interface should at least have one of them */
-=======
 		link->playback_only = 1;
 
 	/* ... but the interface should at least have one direction */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!tx && !rx) {
 		dev_err(card->dev, "tdm link has no cpu slots\n");
 		return -EINVAL;
@@ -290,11 +276,7 @@ static int axg_card_parse_tdm(struct snd_soc_card *card,
 		return ret;
 
 	/* Add loopback if the pad dai has playback */
-<<<<<<< HEAD
-	if (link->dpcm_playback) {
-=======
 	if (!link->capture_only) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = axg_card_add_tdm_loopback(card, index);
 		if (ret)
 			return ret;
@@ -358,10 +340,6 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
 		dai_link->num_c2c_params = 1;
 	} else {
 		dai_link->no_pcm = 1;
-<<<<<<< HEAD
-		snd_soc_dai_link_set_capabilities(dai_link);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (axg_card_cpu_is_tdm_iface(dai_link->cpus->of_node))
 			ret = axg_card_parse_tdm(card, np, index);
 	}
@@ -383,11 +361,7 @@ MODULE_DEVICE_TABLE(of, axg_card_of_match);
 
 static struct platform_driver axg_card_pdrv = {
 	.probe = meson_card_probe,
-<<<<<<< HEAD
-	.remove_new = meson_card_remove,
-=======
 	.remove = meson_card_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "axg-sound-card",
 		.of_match_table = axg_card_of_match,

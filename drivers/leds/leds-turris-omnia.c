@@ -452,11 +452,7 @@ static int omnia_mcu_get_features(const struct i2c_client *client)
 static int omnia_leds_probe(struct i2c_client *client)
 {
 	struct device *dev = &client->dev;
-<<<<<<< HEAD
-	struct device_node *np = dev_of_node(dev), *child;
-=======
 	struct device_node *np = dev_of_node(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct omnia_leds *leds;
 	struct omnia_led *led;
 	int ret, count;
@@ -501,19 +497,10 @@ static int omnia_leds_probe(struct i2c_client *client)
 	}
 
 	led = &leds->leds[0];
-<<<<<<< HEAD
-	for_each_available_child_of_node(np, child) {
-		ret = omnia_led_register(client, led, child);
-		if (ret < 0) {
-			of_node_put(child);
-			return ret;
-		}
-=======
 	for_each_available_child_of_node_scoped(np, child) {
 		ret = omnia_led_register(client, led, child);
 		if (ret < 0)
 			return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		led += ret;
 	}
@@ -543,10 +530,7 @@ static const struct of_device_id of_omnia_leds_match[] = {
 	{ .compatible = "cznic,turris-omnia-leds", },
 	{},
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(of, of_omnia_leds_match);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct i2c_device_id omnia_id[] = {
 	{ "omnia" },

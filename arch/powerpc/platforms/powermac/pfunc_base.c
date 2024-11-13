@@ -313,11 +313,7 @@ static void __init uninorth_install_pfunc(void)
 	/*
 	 * Install handlers for the hwclock child if any
 	 */
-<<<<<<< HEAD
-	for (np = NULL; (np = of_get_next_child(uninorth_node, np)) != NULL;)
-=======
 	for_each_child_of_node(uninorth_node, np)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (of_node_name_eq(np, "hw-clock")) {
 			unin_hwclock = np;
 			break;

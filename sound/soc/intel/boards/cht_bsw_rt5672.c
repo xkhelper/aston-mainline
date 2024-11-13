@@ -479,15 +479,11 @@ static int snd_cht_mc_probe(struct platform_device *pdev)
 		snprintf(drv->codec_name, sizeof(drv->codec_name),
 			 "i2c-%s", acpi_dev_name(adev));
 		cht_dailink[dai_index].codecs->name = drv->codec_name;
-<<<<<<< HEAD
-	}
-=======
 	}  else {
 		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
 		return -ENOENT;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	acpi_dev_put(adev);
 
 	/* Use SSP0 on Bay Trail CR devices */

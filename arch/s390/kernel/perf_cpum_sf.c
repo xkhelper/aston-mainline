@@ -24,8 +24,6 @@
 #include <asm/timex.h>
 #include <linux/io.h>
 
-<<<<<<< HEAD
-=======
 /* Perf PMU definitions for the sampling facility */
 #define PERF_CPUM_SF_MAX_CTR		2
 #define PERF_EVENT_CPUM_SF		0xB0000UL /* Event: Basic-sampling */
@@ -42,7 +40,6 @@
 #define SAMPL_DIAG_MODE(hwc)	(SAMPL_FLAGS(hwc) & PERF_CPUM_SF_DIAG_MODE)
 #define SAMPL_FREQ_MODE(hwc)	(SAMPL_FLAGS(hwc) & PERF_CPUM_SF_FREQ_MODE)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Minimum number of sample-data-block-tables:
  * At least one table is required for the sampling buffer structure.
  * A single table contains up to 511 pointers to sample-data-blocks.
@@ -132,20 +129,6 @@ static inline unsigned long sample_rate_to_freq(struct hws_qsi_info_block *qsi,
 	return USEC_PER_SEC * qsi->cpu_speed / rate;
 }
 
-<<<<<<< HEAD
-/* Return TOD timestamp contained in an trailer entry */
-static inline unsigned long long trailer_timestamp(struct hws_trailer_entry *te)
-{
-	/* TOD in STCKE format */
-	if (te->header.t)
-		return *((unsigned long long *)&te->timestamp[1]);
-
-	/* TOD in STCK format */
-	return *((unsigned long long *)&te->timestamp[0]);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Return pointer to trailer entry of an sample data block */
 static inline struct hws_trailer_entry *trailer_entry_ptr(unsigned long v)
 {
@@ -176,20 +159,12 @@ static inline unsigned long *get_next_sdbt(unsigned long *s)
 /*
  * sf_disable() - Switch off sampling facility
  */
-<<<<<<< HEAD
-static int sf_disable(void)
-=======
 static void sf_disable(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct hws_lsctl_request_block sreq;
 
 	memset(&sreq, 0, sizeof(sreq));
-<<<<<<< HEAD
-	return lsctl(&sreq);
-=======
 	lsctl(&sreq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -238,11 +213,6 @@ static void free_sampling_buffer(struct sf_buffer *sfb)
 		}
 	}
 
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 5, "%s: freed sdbt %#lx\n", __func__,
-			    (unsigned long)sfb->sdbt);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(sfb, 0, sizeof(*sfb));
 }
 
@@ -298,15 +268,8 @@ static int realloc_sampling_buffer(struct sf_buffer *sfb,
 	 * the sampling buffer origin.
 	 */
 	if (sfb->sdbt != get_next_sdbt(tail)) {
-<<<<<<< HEAD
-		debug_sprintf_event(sfdbg, 3, "%s: "
-				    "sampling buffer is not linked: origin %#lx"
-				    " tail %#lx\n", __func__,
-				    (unsigned long)sfb->sdbt,
-=======
 		debug_sprintf_event(sfdbg, 3, "%s buffer not linked origin %#lx tail %#lx\n",
 				    __func__, (unsigned long)sfb->sdbt,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    (unsigned long)tail);
 		return -EINVAL;
 	}
@@ -356,12 +319,6 @@ static int realloc_sampling_buffer(struct sf_buffer *sfb,
 	*tail = virt_to_phys(sfb->sdbt) + 1;
 	sfb->tail = tail;
 
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 4, "%s: new buffer"
-			    " settings: sdbt %lu sdb %lu\n", __func__,
-			    sfb->num_sdbt, sfb->num_sdb);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc;
 }
 
@@ -398,20 +355,8 @@ static int alloc_sampling_buffer(struct sf_buffer *sfb, unsigned long num_sdb)
 
 	/* Allocate requested number of sample-data-blocks */
 	rc = realloc_sampling_buffer(sfb, num_sdb, GFP_KERNEL);
-<<<<<<< HEAD
-	if (rc) {
-		free_sampling_buffer(sfb);
-		debug_sprintf_event(sfdbg, 4, "%s: "
-			"realloc_sampling_buffer failed with rc %i\n",
-			__func__, rc);
-	} else
-		debug_sprintf_event(sfdbg, 4,
-			"%s: tear %#lx dear %#lx\n", __func__,
-			(unsigned long)sfb->sdbt, (unsigned long)*sfb->sdbt);
-=======
 	if (rc)
 		free_sampling_buffer(sfb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc;
 }
 
@@ -423,13 +368,8 @@ static void sfb_set_limits(unsigned long min, unsigned long max)
 	CPUM_SF_MAX_SDB = max;
 
 	memset(&si, 0, sizeof(si));
-<<<<<<< HEAD
-	if (!qsi(&si))
-		CPUM_SF_SDB_DIAG_FACTOR = DIV_ROUND_UP(si.dsdes, si.bsdes);
-=======
 	qsi(&si);
 	CPUM_SF_SDB_DIAG_FACTOR = DIV_ROUND_UP(si.dsdes, si.bsdes);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static unsigned long sfb_max_limit(struct hw_perf_event *hwc)
@@ -448,15 +388,6 @@ static unsigned long sfb_pending_allocs(struct sf_buffer *sfb,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int sfb_has_pending_allocs(struct sf_buffer *sfb,
-				   struct hw_perf_event *hwc)
-{
-	return sfb_pending_allocs(sfb, hwc) > 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void sfb_account_allocs(unsigned long num, struct hw_perf_event *hwc)
 {
 	/* Limit the number of SDBs to not exceed the maximum */
@@ -480,10 +411,6 @@ static void deallocate_buffers(struct cpu_hw_sf *cpuhw)
 static int allocate_buffers(struct cpu_hw_sf *cpuhw, struct hw_perf_event *hwc)
 {
 	unsigned long n_sdb, freq;
-<<<<<<< HEAD
-	size_t sample_size;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Calculate sampling buffers using 4K pages
 	 *
@@ -514,10 +441,6 @@ static int allocate_buffers(struct cpu_hw_sf *cpuhw, struct hw_perf_event *hwc)
 	 *	 ensure a minimum of CPUM_SF_MIN_SDBT (one table can manage up
 	 *	 to 511 SDBs).
 	 */
-<<<<<<< HEAD
-	sample_size = sizeof(struct hws_basic_entry);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	freq = sample_rate_to_freq(&cpuhw->qsi, SAMPL_RATE(hwc));
 	n_sdb = CPUM_SF_MIN_SDB + DIV_ROUND_UP(freq, 10000);
 
@@ -533,15 +456,6 @@ static int allocate_buffers(struct cpu_hw_sf *cpuhw, struct hw_perf_event *hwc)
 	if (sf_buffer_available(cpuhw))
 		return 0;
 
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 3,
-			    "%s: rate %lu f %lu sdb %lu/%lu"
-			    " sample_size %lu cpuhw %p\n", __func__,
-			    SAMPL_RATE(hwc), freq, n_sdb, sfb_max_limit(hwc),
-			    sample_size, cpuhw);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return alloc_sampling_buffer(&cpuhw->sfb,
 				     sfb_pending_allocs(&cpuhw->sfb, hwc));
 }
@@ -598,11 +512,6 @@ static void sfb_account_overflows(struct cpu_hw_sf *cpuhw,
 	if (num)
 		sfb_account_allocs(num, hwc);
 
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 5, "%s: overflow %llu ratio %lu num %lu\n",
-			    __func__, OVERFLOW_REG(hwc), ratio, num);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	OVERFLOW_REG(hwc) = 0;
 }
 
@@ -620,20 +529,11 @@ static void sfb_account_overflows(struct cpu_hw_sf *cpuhw,
 static void extend_sampling_buffer(struct sf_buffer *sfb,
 				   struct hw_perf_event *hwc)
 {
-<<<<<<< HEAD
-	unsigned long num, num_old;
-	int rc;
-=======
 	unsigned long num;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	num = sfb_pending_allocs(sfb, hwc);
 	if (!num)
 		return;
-<<<<<<< HEAD
-	num_old = sfb->num_sdb;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Disable the sampling facility to reset any states and also
 	 * clear pending measurement alerts.
@@ -645,61 +545,16 @@ static void extend_sampling_buffer(struct sf_buffer *sfb,
 	 * called by perf.  Because this is a reallocation, it is fine if the
 	 * new SDB-request cannot be satisfied immediately.
 	 */
-<<<<<<< HEAD
-	rc = realloc_sampling_buffer(sfb, num, GFP_ATOMIC);
-	if (rc)
-		debug_sprintf_event(sfdbg, 5, "%s: realloc failed with rc %i\n",
-				    __func__, rc);
-
-	if (sfb_has_pending_allocs(sfb, hwc))
-		debug_sprintf_event(sfdbg, 5, "%s: "
-				    "req %lu alloc %lu remaining %lu\n",
-				    __func__, num, sfb->num_sdb - num_old,
-				    sfb_pending_allocs(sfb, hwc));
-}
-
-/* Number of perf events counting hardware events */
-static atomic_t num_events;
-=======
 	realloc_sampling_buffer(sfb, num, GFP_ATOMIC);
 }
 
 /* Number of perf events counting hardware events */
 static refcount_t num_events;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Used to avoid races in calling reserve/release_cpumf_hardware */
 static DEFINE_MUTEX(pmc_reserve_mutex);
 
 #define PMC_INIT      0
 #define PMC_RELEASE   1
-<<<<<<< HEAD
-#define PMC_FAILURE   2
-static void setup_pmc_cpu(void *flags)
-{
-	struct cpu_hw_sf *cpusf = this_cpu_ptr(&cpu_hw_sf);
-	int err = 0;
-
-	switch (*((int *)flags)) {
-	case PMC_INIT:
-		memset(cpusf, 0, sizeof(*cpusf));
-		err = qsi(&cpusf->qsi);
-		if (err)
-			break;
-		cpusf->flags |= PMU_F_RESERVED;
-		err = sf_disable();
-		break;
-	case PMC_RELEASE:
-		cpusf->flags &= ~PMU_F_RESERVED;
-		err = sf_disable();
-		if (!err)
-			deallocate_buffers(cpusf);
-		break;
-	}
-	if (err) {
-		*((int *)flags) |= PMC_FAILURE;
-		pr_err("Switching off the sampling facility failed with rc %i\n", err);
-	}
-=======
 static void setup_pmc_cpu(void *flags)
 {
 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
@@ -717,7 +572,6 @@ static void setup_pmc_cpu(void *flags)
 		deallocate_buffers(cpuhw);
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void release_pmc_hardware(void)
@@ -728,40 +582,19 @@ static void release_pmc_hardware(void)
 	on_each_cpu(setup_pmc_cpu, &flags, 1);
 }
 
-<<<<<<< HEAD
-static int reserve_pmc_hardware(void)
-=======
 static void reserve_pmc_hardware(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int flags = PMC_INIT;
 
 	on_each_cpu(setup_pmc_cpu, &flags, 1);
-<<<<<<< HEAD
-	if (flags & PMC_FAILURE) {
-		release_pmc_hardware();
-		return -ENODEV;
-	}
 	irq_subclass_register(IRQ_SUBCLASS_MEASUREMENT_ALERT);
-
-	return 0;
-=======
-	irq_subclass_register(IRQ_SUBCLASS_MEASUREMENT_ALERT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void hw_perf_event_destroy(struct perf_event *event)
 {
 	/* Release PMC if this is the last perf event */
-<<<<<<< HEAD
-	if (!atomic_add_unless(&num_events, -1, 1)) {
-		mutex_lock(&pmc_reserve_mutex);
-		if (atomic_dec_return(&num_events) == 0)
-			release_pmc_hardware();
-=======
 	if (refcount_dec_and_mutex_lock(&num_events, &pmc_reserve_mutex)) {
 		release_pmc_hardware();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mutex_unlock(&pmc_reserve_mutex);
 	}
 }
@@ -865,12 +698,6 @@ static unsigned long getrate(bool freq, unsigned long sample,
 		 */
 		if (sample_rate_to_freq(si, rate) >
 		    sysctl_perf_event_sample_rate) {
-<<<<<<< HEAD
-			debug_sprintf_event(sfdbg, 1, "%s: "
-					    "Sampling rate exceeds maximum "
-					    "perf sample rate\n", __func__);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rate = 0;
 		}
 	}
@@ -915,12 +742,6 @@ static int __hw_perf_event_init_rate(struct perf_event *event,
 	attr->sample_period = rate;
 	SAMPL_RATE(hwc) = rate;
 	hw_init_period(hwc, SAMPL_RATE(hwc));
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 4, "%s: cpu %d period %#llx freq %d,%#lx\n",
-			    __func__, event->cpu, event->attr.sample_period,
-			    event->attr.freq, SAMPLE_FREQ_MODE(hwc));
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -930,25 +751,6 @@ static int __hw_perf_event_init(struct perf_event *event)
 	struct hws_qsi_info_block si;
 	struct perf_event_attr *attr = &event->attr;
 	struct hw_perf_event *hwc = &event->hw;
-<<<<<<< HEAD
-	int cpu, err;
-
-	/* Reserve CPU-measurement sampling facility */
-	err = 0;
-	if (!atomic_inc_not_zero(&num_events)) {
-		mutex_lock(&pmc_reserve_mutex);
-		if (atomic_read(&num_events) == 0 && reserve_pmc_hardware())
-			err = -EBUSY;
-		else
-			atomic_inc(&num_events);
-		mutex_unlock(&pmc_reserve_mutex);
-	}
-	event->destroy = hw_perf_event_destroy;
-
-	if (err)
-		goto out;
-
-=======
 	int cpu, err = 0;
 
 	/* Reserve CPU-measurement sampling facility */
@@ -960,7 +762,6 @@ static int __hw_perf_event_init(struct perf_event *event)
 	mutex_unlock(&pmc_reserve_mutex);
 	event->destroy = hw_perf_event_destroy;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Access per-CPU sampling information (query sampling info) */
 	/*
 	 * The event->cpu value can be -1 to count on every CPU, for example,
@@ -972,15 +773,9 @@ static int __hw_perf_event_init(struct perf_event *event)
 	 */
 	memset(&si, 0, sizeof(si));
 	cpuhw = NULL;
-<<<<<<< HEAD
-	if (event->cpu == -1)
-		qsi(&si);
-	else {
-=======
 	if (event->cpu == -1) {
 		qsi(&si);
 	} else {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Event is pinned to a particular CPU, retrieve the per-CPU
 		 * sampling structure for accessing the CPU-specific QSI.
 		 */
@@ -1021,13 +816,6 @@ static int __hw_perf_event_init(struct perf_event *event)
 	if (err)
 		goto out;
 
-<<<<<<< HEAD
-	/* Initialize sample data overflow accounting */
-	hwc->extra_reg.reg = REG_OVERFLOW;
-	OVERFLOW_REG(hwc) = 0;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Use AUX buffer. No need to allocate it by ourself */
 	if (attr->config == PERF_EVENT_CPUM_SF_DIAG)
 		return 0;
@@ -1150,11 +938,7 @@ static void cpumsf_pmu_enable(struct pmu *pmu)
 			extend_sampling_buffer(&cpuhw->sfb, hwc);
 		}
 		/* Rate may be adjusted with ioctl() */
-<<<<<<< HEAD
-		cpuhw->lsctl.interval = SAMPL_RATE(&cpuhw->event->hw);
-=======
 		cpuhw->lsctl.interval = SAMPL_RATE(hwc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* (Re)enable the PMU and sampling facility */
@@ -1170,15 +954,6 @@ static void cpumsf_pmu_enable(struct pmu *pmu)
 
 	/* Load current program parameter */
 	lpp(&get_lowcore()->lpp);
-<<<<<<< HEAD
-
-	debug_sprintf_event(sfdbg, 6, "%s: es %i cs %i ed %i cd %i "
-			    "interval %#lx tear %#lx dear %#lx\n", __func__,
-			    cpuhw->lsctl.es, cpuhw->lsctl.cs, cpuhw->lsctl.ed,
-			    cpuhw->lsctl.cd, cpuhw->lsctl.interval,
-			    cpuhw->lsctl.tear, cpuhw->lsctl.dear);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void cpumsf_pmu_disable(struct pmu *pmu)
@@ -1205,23 +980,6 @@ static void cpumsf_pmu_disable(struct pmu *pmu)
 		return;
 	}
 
-<<<<<<< HEAD
-	/* Save state of TEAR and DEAR register contents */
-	err = qsi(&si);
-	if (!err) {
-		/* TEAR/DEAR values are valid only if the sampling facility is
-		 * enabled.  Note that cpumsf_pmu_disable() might be called even
-		 * for a disabled sampling facility because cpumsf_pmu_enable()
-		 * controls the enable/disable state.
-		 */
-		if (si.es) {
-			cpuhw->lsctl.tear = si.tear;
-			cpuhw->lsctl.dear = si.dear;
-		}
-	} else
-		debug_sprintf_event(sfdbg, 3, "%s: qsi() failed with err %i\n",
-				    __func__, err);
-=======
 	/*
 	 * Save state of TEAR and DEAR register contents.
 	 * TEAR/DEAR values are valid only if the sampling facility is
@@ -1234,7 +992,6 @@ static void cpumsf_pmu_disable(struct pmu *pmu)
 		cpuhw->lsctl.tear = si.tear;
 		cpuhw->lsctl.dear = si.dear;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cpuhw->flags &= ~PMU_F_ENABLED;
 }
@@ -1400,14 +1157,6 @@ static void hw_collect_samples(struct perf_event *event, unsigned long *sdbt,
 				/* Count discarded samples */
 				*overflow += 1;
 		} else {
-<<<<<<< HEAD
-			debug_sprintf_event(sfdbg, 4,
-					    "%s: Found unknown"
-					    " sampling data entry: te->f %i"
-					    " basic.def %#4x (%p)\n", __func__,
-					    te->header.f, sample->def, sample);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* Sample slot is not yet written or other record.
 			 *
 			 * This condition can occur if the buffer was reused
@@ -1452,11 +1201,7 @@ static void hw_perf_event_update(struct perf_event *event, int flush_all)
 	 * AUX buffer is used when in diagnostic sampling mode.
 	 * No perf events/samples are created.
 	 */
-<<<<<<< HEAD
-	if (SAMPL_DIAG_MODE(&event->hw))
-=======
 	if (SAMPL_DIAG_MODE(hwc))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	sdbt = (unsigned long *)TEAR_REG(hwc);
@@ -1481,16 +1226,6 @@ static void hw_perf_event_update(struct perf_event *event, int flush_all)
 			 */
 			sampl_overflow += te->header.overflow;
 
-<<<<<<< HEAD
-		/* Timestamps are valid for full sample-data-blocks only */
-		debug_sprintf_event(sfdbg, 6, "%s: sdbt %#lx/%#lx "
-				    "overflow %llu timestamp %#llx\n",
-				    __func__, sdb, (unsigned long)sdbt,
-				    te->header.overflow,
-				    (te->header.f) ? trailer_timestamp(te) : 0ULL);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Collect all samples from a single sample-data-block and
 		 * flag if an (perf) event overflow happened.  If so, the PMU
 		 * is stopped and remaining samples will be discarded.
@@ -1515,11 +1250,7 @@ static void hw_perf_event_update(struct perf_event *event, int flush_all)
 			sdbt = get_next_sdbt(sdbt);
 
 		/* Update event hardware registers */
-<<<<<<< HEAD
-		TEAR_REG(hwc) = (unsigned long) sdbt;
-=======
 		TEAR_REG(hwc) = (unsigned long)sdbt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Stop processing sample-data if all samples of the current
 		 * sample-data-block were flushed even if it was not full.
@@ -1541,24 +1272,8 @@ static void hw_perf_event_update(struct perf_event *event, int flush_all)
 	 * are dropped.
 	 * Slightly increase the interval to avoid hitting this limit.
 	 */
-<<<<<<< HEAD
-	if (event_overflow) {
-		SAMPL_RATE(hwc) += DIV_ROUND_UP(SAMPL_RATE(hwc), 10);
-		debug_sprintf_event(sfdbg, 1, "%s: rate adjustment %ld\n",
-				    __func__,
-				    DIV_ROUND_UP(SAMPL_RATE(hwc), 10));
-	}
-
-	if (sampl_overflow || event_overflow)
-		debug_sprintf_event(sfdbg, 4, "%s: "
-				    "overflows: sample %llu event %llu"
-				    " total %llu num_sdb %llu\n",
-				    __func__, sampl_overflow, event_overflow,
-				    OVERFLOW_REG(hwc), num_sdb);
-=======
 	if (event_overflow)
 		SAMPL_RATE(hwc) += DIV_ROUND_UP(SAMPL_RATE(hwc), 10);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline unsigned long aux_sdb_index(struct aux_buffer *aux,
@@ -1626,12 +1341,6 @@ static void aux_output_end(struct perf_output_handle *handle)
 	/* Remove alert indicators in the buffer */
 	te = aux_sdb_trailer(aux, aux->alert_mark);
 	te->header.a = 0;
-<<<<<<< HEAD
-
-	debug_sprintf_event(sfdbg, 6, "%s: SDBs %ld range %ld head %ld\n",
-			    __func__, i, range_scan, aux->head);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1650,11 +1359,7 @@ static int aux_output_begin(struct perf_output_handle *handle,
 	unsigned long range, i, range_scan, idx, head, base, offset;
 	struct hws_trailer_entry *te;
 
-<<<<<<< HEAD
-	if (WARN_ON_ONCE(handle->head & ~PAGE_MASK))
-=======
 	if (handle->head & ~PAGE_MASK)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	aux->head = handle->head >> PAGE_SHIFT;
@@ -1666,13 +1371,6 @@ static int aux_output_begin(struct perf_output_handle *handle,
 	 * SDBs between aux->head and aux->empty_mark are already ready
 	 * for new data. range_scan is num of SDBs not within them.
 	 */
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 6,
-			    "%s: range %ld head %ld alert %ld empty %ld\n",
-			    __func__, range, aux->head, aux->alert_mark,
-			    aux->empty_mark);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (range > aux_sdb_num_empty(aux)) {
 		range_scan = range - aux_sdb_num_empty(aux);
 		idx = aux->empty_mark + 1;
@@ -1698,15 +1396,6 @@ static int aux_output_begin(struct perf_output_handle *handle,
 	cpuhw->lsctl.tear = virt_to_phys((void *)base) + offset * sizeof(unsigned long);
 	cpuhw->lsctl.dear = virt_to_phys((void *)aux->sdb_index[head]);
 
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 6, "%s: head %ld alert %ld empty %ld "
-			    "index %ld tear %#lx dear %#lx\n", __func__,
-			    aux->head, aux->alert_mark, aux->empty_mark,
-			    head / CPUM_SF_SDB_PER_TABLE,
-			    cpuhw->lsctl.tear, cpuhw->lsctl.dear);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1768,22 +1457,11 @@ static bool aux_set_alert(struct aux_buffer *aux, unsigned long alert_index,
 static bool aux_reset_buffer(struct aux_buffer *aux, unsigned long range,
 			     unsigned long long *overflow)
 {
-<<<<<<< HEAD
-	unsigned long i, range_scan, idx, idx_old;
-	union hws_trailer_header old, prev, new;
-	unsigned long long orig_overflow;
-	struct hws_trailer_entry *te;
-
-	debug_sprintf_event(sfdbg, 6, "%s: range %ld head %ld alert %ld "
-			    "empty %ld\n", __func__, range, aux->head,
-			    aux->alert_mark, aux->empty_mark);
-=======
 	union hws_trailer_header old, prev, new;
 	unsigned long i, range_scan, idx;
 	unsigned long long orig_overflow;
 	struct hws_trailer_entry *te;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (range <= aux_sdb_num_empty(aux))
 		/*
 		 * No need to scan. All SDBs in range are marked as empty.
@@ -1806,11 +1484,7 @@ static bool aux_reset_buffer(struct aux_buffer *aux, unsigned long range,
 	 * indicator fall into this range, set it.
 	 */
 	range_scan = range - aux_sdb_num_empty(aux);
-<<<<<<< HEAD
-	idx_old = idx = aux->empty_mark + 1;
-=======
 	idx = aux->empty_mark + 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < range_scan; i++, idx++) {
 		te = aux_sdb_trailer(aux, idx);
 		prev.val = READ_ONCE_ALIGNED_128(te->header.val);
@@ -1832,12 +1506,6 @@ static bool aux_reset_buffer(struct aux_buffer *aux, unsigned long range,
 	/* Update empty_mark to new position */
 	aux->empty_mark = aux->head + range - 1;
 
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 6, "%s: range_scan %ld idx %ld..%ld "
-			    "empty %ld\n", __func__, range_scan, idx_old,
-			    idx - 1, aux->empty_mark);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return true;
 }
 
@@ -1854,20 +1522,12 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
 	unsigned long num_sdb;
 
 	aux = perf_get_aux(handle);
-<<<<<<< HEAD
-	if (WARN_ON_ONCE(!aux))
-=======
 	if (!aux)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	/* Inform user space new data arrived */
 	size = aux_sdb_num_alert(aux) << PAGE_SHIFT;
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 6, "%s: #alert %ld\n", __func__,
-=======
 	debug_sprintf_event(sfdbg, 6, "%s #alert %ld\n", __func__,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    size >> PAGE_SHIFT);
 	perf_aux_output_end(handle, size);
 
@@ -1881,11 +1541,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
 				num_sdb);
 			break;
 		}
-<<<<<<< HEAD
-		if (WARN_ON_ONCE(!aux))
-=======
 		if (!aux)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return;
 
 		/* Update head and alert_mark to new position */
@@ -1905,31 +1561,11 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
 			perf_aux_output_end(&cpuhw->handle, size);
 			pr_err("Sample data caused the AUX buffer with %lu "
 			       "pages to overflow\n", aux->sfb.num_sdb);
-<<<<<<< HEAD
-			debug_sprintf_event(sfdbg, 1, "%s: head %ld range %ld "
-					    "overflow %lld\n", __func__,
-					    aux->head, range, overflow);
-		} else {
-			size = aux_sdb_num_alert(aux) << PAGE_SHIFT;
-			perf_aux_output_end(&cpuhw->handle, size);
-			debug_sprintf_event(sfdbg, 6, "%s: head %ld alert %ld "
-					    "already full, try another\n",
-					    __func__,
-					    aux->head, aux->alert_mark);
-		}
-	}
-
-	if (done)
-		debug_sprintf_event(sfdbg, 6, "%s: head %ld alert %ld "
-				    "empty %ld\n", __func__, aux->head,
-				    aux->alert_mark, aux->empty_mark);
-=======
 		} else {
 			size = aux_sdb_num_alert(aux) << PAGE_SHIFT;
 			perf_aux_output_end(&cpuhw->handle, size);
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1951,11 +1587,6 @@ static void aux_buffer_free(void *data)
 	kfree(aux->sdbt_index);
 	kfree(aux->sdb_index);
 	kfree(aux);
-<<<<<<< HEAD
-
-	debug_sprintf_event(sfdbg, 4, "%s: SDBTs %lu\n", __func__, num_sdbt);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void aux_sdb_init(unsigned long sdb)
@@ -2063,12 +1694,6 @@ static void *aux_buffer_setup(struct perf_event *event, void **pages,
 	 */
 	aux->empty_mark = sfb->num_sdb - 1;
 
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 4, "%s: SDBTs %lu SDBs %lu\n", __func__,
-			    sfb->num_sdbt, sfb->num_sdb);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return aux;
 
 no_sdbt:
@@ -2101,12 +1726,7 @@ static int cpumsf_pmu_check_period(struct perf_event *event, u64 value)
 
 	memset(&si, 0, sizeof(si));
 	if (event->cpu == -1) {
-<<<<<<< HEAD
-		if (qsi(&si))
-			return -ENODEV;
-=======
 		qsi(&si);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		/* Event is pinned to a particular CPU, retrieve the per-CPU
 		 * sampling structure for accessing the CPU-specific QSI.
@@ -2116,11 +1736,7 @@ static int cpumsf_pmu_check_period(struct perf_event *event, u64 value)
 		si = cpuhw->qsi;
 	}
 
-<<<<<<< HEAD
-	do_freq = !!SAMPLE_FREQ_MODE(&event->hw);
-=======
 	do_freq = !!SAMPL_FREQ_MODE(&event->hw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rate = getrate(do_freq, value, &si);
 	if (!rate)
 		return -EINVAL;
@@ -2128,13 +1744,6 @@ static int cpumsf_pmu_check_period(struct perf_event *event, u64 value)
 	event->attr.sample_period = rate;
 	SAMPL_RATE(&event->hw) = rate;
 	hw_init_period(&event->hw, SAMPL_RATE(&event->hw));
-<<<<<<< HEAD
-	debug_sprintf_event(sfdbg, 4, "%s:"
-			    " cpu %d value %#llx period %#llx freq %d\n",
-			    __func__, event->cpu, value,
-			    event->attr.sample_period, do_freq);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2145,17 +1754,8 @@ static void cpumsf_pmu_start(struct perf_event *event, int flags)
 {
 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
 
-<<<<<<< HEAD
-	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
-		return;
-
-	if (flags & PERF_EF_RELOAD)
-		WARN_ON_ONCE(!(event->hw.state & PERF_HES_UPTODATE));
-
-=======
 	if (!(event->hw.state & PERF_HES_STOPPED))
 		return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_pmu_disable(event->pmu);
 	event->hw.state = 0;
 	cpuhw->lsctl.cs = 1;
@@ -2190,11 +1790,7 @@ static int cpumsf_pmu_add(struct perf_event *event, int flags)
 {
 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
 	struct aux_buffer *aux;
-<<<<<<< HEAD
-	int err;
-=======
 	int err = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (cpuhw->flags & PMU_F_IN_USE)
 		return -EAGAIN;
@@ -2202,10 +1798,6 @@ static int cpumsf_pmu_add(struct perf_event *event, int flags)
 	if (!SAMPL_DIAG_MODE(&event->hw) && !cpuhw->sfb.sdbt)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	err = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_pmu_disable(event->pmu);
 
 	event->hw.state = PERF_HES_UPTODATE | PERF_HES_STOPPED;
@@ -2376,11 +1968,7 @@ static void cpumf_measurement_alert(struct ext_code ext_code,
 
 	/* Report measurement alerts only for non-PRA codes */
 	if (alert != CPU_MF_INT_SF_PRA)
-<<<<<<< HEAD
-		debug_sprintf_event(sfdbg, 6, "%s: alert %#x\n", __func__,
-=======
 		debug_sprintf_event(sfdbg, 6, "%s alert %#x\n", __func__,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    alert);
 
 	/* Sampling authorization change request */
@@ -2408,11 +1996,7 @@ static int cpusf_pmu_setup(unsigned int cpu, int flags)
 	/* Ignore the notification if no events are scheduled on the PMU.
 	 * This might be racy...
 	 */
-<<<<<<< HEAD
-	if (!atomic_read(&num_events))
-=======
 	if (!refcount_read(&num_events))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	local_irq_disable();
@@ -2474,19 +2058,12 @@ static const struct kernel_param_ops param_ops_sfb_size = {
 	.get = param_get_sfb_size,
 };
 
-<<<<<<< HEAD
-#define RS_INIT_FAILURE_QSI	  0x0001
-#define RS_INIT_FAILURE_BSDES	  0x0002
-#define RS_INIT_FAILURE_ALRT	  0x0003
-#define RS_INIT_FAILURE_PERF	  0x0004
-=======
 enum {
 	RS_INIT_FAILURE_BSDES	= 2,	/* Bad basic sampling size */
 	RS_INIT_FAILURE_ALRT	= 3,	/* IRQ registration failure */
 	RS_INIT_FAILURE_PERF	= 4	/* PMU registration failure */
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __init pr_cpumsf_err(unsigned int reason)
 {
 	pr_err("Sampling facility support for perf is not available: "
@@ -2502,15 +2079,7 @@ static int __init init_cpum_sampling_pmu(void)
 		return -ENODEV;
 
 	memset(&si, 0, sizeof(si));
-<<<<<<< HEAD
-	if (qsi(&si)) {
-		pr_cpumsf_err(RS_INIT_FAILURE_QSI);
-		return -ENODEV;
-	}
-
-=======
 	qsi(&si);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!si.as && !si.ad)
 		return -ENODEV;
 

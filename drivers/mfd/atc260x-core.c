@@ -235,13 +235,8 @@ int atc260x_match_device(struct atc260x *atc260x, struct regmap_config *regmap_c
 
 	mutex_init(atc260x->regmap_mutex);
 
-<<<<<<< HEAD
-	regmap_cfg->lock = regmap_lock_mutex,
-	regmap_cfg->unlock = regmap_unlock_mutex,
-=======
 	regmap_cfg->lock = regmap_lock_mutex;
 	regmap_cfg->unlock = regmap_unlock_mutex;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	regmap_cfg->lock_arg = atc260x->regmap_mutex;
 
 	return 0;

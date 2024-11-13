@@ -248,19 +248,11 @@
 
 		smd-edge {
 			interrupts = <GIC_SPI 168 IRQ_TYPE_EDGE_RISING>;
-<<<<<<< HEAD
-			mboxes = <&apcs1_mbox 0>;
-			qcom,smd-edge = <15>;
-
-			rpm_requests: rpm-requests {
-				compatible = "qcom,rpm-msm8936";
-=======
 			qcom,ipc = <&apcs1_mbox 8 0>;
 			qcom,smd-edge = <15>;
 
 			rpm_requests: rpm-requests {
 				compatible = "qcom,rpm-msm8936", "qcom,smd-rpm";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,smd-channels = "rpm_requests";
 
 				rpmcc: clock-controller {

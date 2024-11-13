@@ -534,17 +534,10 @@ static int __sev_issue_cmd(int fd, int id, void *data, int *error)
 	int ret;
 
 	f = fdget(fd);
-<<<<<<< HEAD
-	if (!f.file)
-		return -EBADF;
-
-	ret = sev_issue_cmd_external_user(f.file, id, data, error);
-=======
 	if (!fd_file(f))
 		return -EBADF;
 
 	ret = sev_issue_cmd_external_user(fd_file(f), id, data, error);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fdput(f);
 	return ret;
@@ -2085,26 +2078,15 @@ int sev_vm_move_enc_context_from(struct kvm *kvm, unsigned int source_fd)
 	bool charged = false;
 	int ret;
 
-<<<<<<< HEAD
-	if (!f.file)
-		return -EBADF;
-
-	if (!file_is_kvm(f.file)) {
-=======
 	if (!fd_file(f))
 		return -EBADF;
 
 	if (!file_is_kvm(fd_file(f))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out_fput;
 	}
 
-<<<<<<< HEAD
-	source_kvm = f.file->private_data;
-=======
 	source_kvm = fd_file(f)->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = sev_lock_two_vms(kvm, source_kvm);
 	if (ret)
 		goto out_fput;
@@ -2821,26 +2803,15 @@ int sev_vm_copy_enc_context_from(struct kvm *kvm, unsigned int source_fd)
 	struct kvm_sev_info *source_sev, *mirror_sev;
 	int ret;
 
-<<<<<<< HEAD
-	if (!f.file)
-		return -EBADF;
-
-	if (!file_is_kvm(f.file)) {
-=======
 	if (!fd_file(f))
 		return -EBADF;
 
 	if (!file_is_kvm(fd_file(f))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto e_source_fput;
 	}
 
-<<<<<<< HEAD
-	source_kvm = f.file->private_data;
-=======
 	source_kvm = fd_file(f)->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = sev_lock_two_vms(kvm, source_kvm);
 	if (ret)
 		goto e_source_fput;

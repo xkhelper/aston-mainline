@@ -707,10 +707,6 @@ static loff_t ceph_dir_llseek(struct file *file, loff_t offset, int whence)
 
 		if (offset != file->f_pos) {
 			file->f_pos = offset;
-<<<<<<< HEAD
-			file->f_version = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dfi->file_info.flags &= ~CEPH_F_ATEND;
 		}
 		retval = offset;
@@ -2062,11 +2058,7 @@ static int ceph_d_delete(const struct dentry *dentry)
 		return 0;
 	if (ceph_snap(d_inode(dentry)) != CEPH_NOSNAP)
 		return 0;
-<<<<<<< HEAD
-	/* vaild lease? */
-=======
 	/* valid lease? */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	di = ceph_dentry(dentry);
 	if (di) {
 		if (__dentry_lease_is_valid(di))

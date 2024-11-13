@@ -357,13 +357,8 @@ SECTIONS
 	PERCPU_SECTION(INTERNODE_CACHE_BYTES)
 #endif
 
-<<<<<<< HEAD
-	RUNTIME_CONST(shift, d_hash_shift)
-	RUNTIME_CONST(ptr, dentry_hashtable)
-=======
 	RUNTIME_CONST_VARIABLES
 	RUNTIME_CONST(ptr, USER_PTR_MAX)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	. = ALIGN(PAGE_SIZE);
 

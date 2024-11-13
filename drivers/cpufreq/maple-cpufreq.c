@@ -238,8 +238,5 @@ bail_noprops:
 module_init(maple_cpufreq_init);
 
 
-<<<<<<< HEAD
-=======
 MODULE_DESCRIPTION("cpufreq driver for Maple 970FX/970MP boards");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL");

@@ -153,9 +153,6 @@
 #define OHCI1394_evt_unknown		0xe
 #define OHCI1394_evt_flushed		0xf
 
-<<<<<<< HEAD
-#define OHCI1394_phy_tcode		0xe
-=======
 
 // Asynchronous Transmit DMA.
 //
@@ -355,7 +352,6 @@ static inline void ohci1394_it_data_set_data_length(__le32 *data, unsigned int d
 	data[1] &= cpu_to_le32(~OHCI1394_IT_DATA_Q1_dataLength_MASK);
 	data[1] |= cpu_to_le32((data_length << OHCI1394_IT_DATA_Q1_dataLength_SHIFT) & OHCI1394_IT_DATA_Q1_dataLength_MASK);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 // Self-ID DMA.
 

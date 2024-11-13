@@ -160,17 +160,10 @@ SYSCALL_DEFINE4(osf_getdirentries, unsigned int, fd,
 		.count = count
 	};
 
-<<<<<<< HEAD
-	if (!arg.file)
-		return -EBADF;
-
-	error = iterate_dir(arg.file, &buf.ctx);
-=======
 	if (!fd_file(arg))
 		return -EBADF;
 
 	error = iterate_dir(fd_file(arg), &buf.ctx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error >= 0)
 		error = buf.error;
 	if (count != buf.count)
@@ -1236,11 +1229,7 @@ arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
 unsigned long
 arch_get_unmapped_area(struct file *filp, unsigned long addr,
 		       unsigned long len, unsigned long pgoff,
-<<<<<<< HEAD
-		       unsigned long flags)
-=======
 		       unsigned long flags, vm_flags_t vm_flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long limit;
 

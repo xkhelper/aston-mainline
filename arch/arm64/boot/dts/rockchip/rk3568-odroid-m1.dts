@@ -13,11 +13,7 @@
 
 / {
 	model = "Hardkernel ODROID-M1";
-<<<<<<< HEAD
-	compatible = "rockchip,rk3568-odroid-m1", "rockchip,rk3568";
-=======
 	compatible = "hardkernel,odroid-m1", "rockchip,rk3568";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	aliases {
 		ethernet0 = &gmac0;

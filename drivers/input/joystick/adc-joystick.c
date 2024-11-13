@@ -11,11 +11,7 @@
 #include <linux/platform_device.h>
 #include <linux/property.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct adc_joystick_axis {
 	u32 code;
@@ -136,10 +132,6 @@ static void adc_joystick_cleanup(void *data)
 static int adc_joystick_set_axes(struct device *dev, struct adc_joystick *joy)
 {
 	struct adc_joystick_axis *axes = joy->axes;
-<<<<<<< HEAD
-	struct fwnode_handle *child;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s32 range[2], fuzz, flat;
 	unsigned int num_axes;
 	int error, i;
@@ -156,19 +148,6 @@ static int adc_joystick_set_axes(struct device *dev, struct adc_joystick *joy)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	device_for_each_child_node(dev, child) {
-		error = fwnode_property_read_u32(child, "reg", &i);
-		if (error) {
-			dev_err(dev, "reg invalid or missing\n");
-			goto err_fwnode_put;
-		}
-
-		if (i >= num_axes) {
-			error = -EINVAL;
-			dev_err(dev, "No matching axis for reg %d\n", i);
-			goto err_fwnode_put;
-=======
 	device_for_each_child_node_scoped(dev, child) {
 		error = fwnode_property_read_u32(child, "reg", &i);
 		if (error) {
@@ -179,29 +158,20 @@ static int adc_joystick_set_axes(struct device *dev, struct adc_joystick *joy)
 		if (i >= num_axes) {
 			dev_err(dev, "No matching axis for reg %d\n", i);
 			return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		error = fwnode_property_read_u32(child, "linux,code",
 						 &axes[i].code);
 		if (error) {
 			dev_err(dev, "linux,code invalid or missing\n");
-<<<<<<< HEAD
-			goto err_fwnode_put;
-=======
 			return error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		error = fwnode_property_read_u32_array(child, "abs-range",
 						       range, 2);
 		if (error) {
 			dev_err(dev, "abs-range invalid or missing\n");
-<<<<<<< HEAD
-			goto err_fwnode_put;
-=======
 			return error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (range[0] > range[1]) {
@@ -221,13 +191,6 @@ static int adc_joystick_set_axes(struct device *dev, struct adc_joystick *joy)
 	}
 
 	return 0;
-<<<<<<< HEAD
-
-err_fwnode_put:
-	fwnode_handle_put(child);
-	return error;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 

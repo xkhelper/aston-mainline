@@ -768,8 +768,6 @@ error_destroy_tt:
 	ttm_tt_destroy(bo->bdev, ttm);
 	return ret;
 }
-<<<<<<< HEAD
-=======
 
 static bool ttm_lru_walk_trylock(struct ttm_lru_walk *walk,
 				 struct ttm_buffer_object *bo,
@@ -921,4 +919,3 @@ s64 ttm_lru_walk_for_evict(struct ttm_lru_walk *walk, struct ttm_device *bdev,
 
 	return progress;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

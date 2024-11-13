@@ -524,8 +524,6 @@ static int gic_irq_set_irqchip_state(struct irq_data *d,
 	}
 
 	gic_poke_irq(d, reg);
-<<<<<<< HEAD
-=======
 
 	/*
 	 * Force read-back to guarantee that the active state has taken
@@ -533,7 +531,6 @@ static int gic_irq_set_irqchip_state(struct irq_data *d,
 	 */
 	if (reg == GICD_ISACTIVER)
 		gic_peek_irq(d, reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -940,11 +937,7 @@ static void __gic_handle_irq_from_irqsoff(struct pt_regs *regs)
 	__gic_handle_nmi(irqnr, regs);
 }
 
-<<<<<<< HEAD
-static asmlinkage void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
-=======
 static void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (unlikely(gic_supports_nmi() && !interrupts_enabled(regs)))
 		__gic_handle_irq_from_irqsoff(regs);

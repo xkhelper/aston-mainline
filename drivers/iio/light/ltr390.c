@@ -23,16 +23,6 @@
 #include <linux/module.h>
 #include <linux/mutex.h>
 #include <linux/regmap.h>
-<<<<<<< HEAD
-
-#include <linux/iio/iio.h>
-
-#include <asm/unaligned.h>
-
-#define LTR390_MAIN_CTRL      0x00
-#define LTR390_PART_ID	      0x06
-#define LTR390_UVS_DATA	      0x10
-=======
 #include <linux/bitfield.h>
 
 #include <linux/iio/iio.h>
@@ -51,17 +41,12 @@
 #define LTR390_ALS_UVS_GAIN_MASK	0x07
 #define LTR390_ALS_UVS_INT_TIME_MASK	0x70
 #define LTR390_ALS_UVS_INT_TIME(x)	FIELD_PREP(LTR390_ALS_UVS_INT_TIME_MASK, (x))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define LTR390_SW_RESET	      BIT(4)
 #define LTR390_UVS_MODE	      BIT(3)
 #define LTR390_SENSOR_ENABLE  BIT(1)
 
-<<<<<<< HEAD
-#define LTR390_PART_NUMBER_ID 0xb
-=======
 #define LTR390_FRACTIONAL_PRECISION 100
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * At 20-bit resolution (integration time: 400ms) and 18x gain, 2300 counts of
@@ -80,25 +65,19 @@
  */
 #define LTR390_WINDOW_FACTOR 1
 
-<<<<<<< HEAD
-=======
 enum ltr390_mode {
 	LTR390_SET_ALS_MODE,
 	LTR390_SET_UVS_MODE,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ltr390_data {
 	struct regmap *regmap;
 	struct i2c_client *client;
 	/* Protects device from simulataneous reads */
 	struct mutex lock;
-<<<<<<< HEAD
-=======
 	enum ltr390_mode mode;
 	int gain;
 	int int_time_us;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct regmap_config ltr390_regmap_config = {
@@ -114,11 +93,6 @@ static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
 	int ret;
 	u8 recieve_buffer[3];
 
-<<<<<<< HEAD
-	guard(mutex)(&data->lock);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = regmap_bulk_read(data->regmap, register_address, recieve_buffer,
 			       sizeof(recieve_buffer));
 	if (ret) {
@@ -129,8 +103,6 @@ static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
 	return get_unaligned_le24(recieve_buffer);
 }
 
-<<<<<<< HEAD
-=======
 static int ltr390_set_mode(struct ltr390_data *data, enum ltr390_mode mode)
 {
 	int ret;
@@ -163,7 +135,6 @@ static int ltr390_counts_per_uvi(struct ltr390_data *data)
 	return DIV_ROUND_CLOSEST(23 * data->gain * data->int_time_us, 10 * orig_gain * orig_int_time);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int ltr390_read_raw(struct iio_dev *iio_device,
 			   struct iio_chan_spec const *chan, int *val,
 			   int *val2, long mask)
@@ -171,19 +142,6 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
 	int ret;
 	struct ltr390_data *data = iio_priv(iio_device);
 
-<<<<<<< HEAD
-	switch (mask) {
-	case IIO_CHAN_INFO_RAW:
-		ret = ltr390_register_read(data, LTR390_UVS_DATA);
-		if (ret < 0)
-			return ret;
-		*val = ret;
-		return IIO_VAL_INT;
-	case IIO_CHAN_INFO_SCALE:
-		*val = LTR390_WINDOW_FACTOR;
-		*val2 = LTR390_COUNTS_PER_UVI;
-		return IIO_VAL_FRACTIONAL;
-=======
 	guard(mutex)(&data->lock);
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
@@ -343,7 +301,6 @@ static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec cons
 
 		return ltr390_set_int_time(data, val);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -EINVAL;
 	}
@@ -351,16 +308,8 @@ static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec cons
 
 static const struct iio_info ltr390_info = {
 	.read_raw = ltr390_read_raw,
-<<<<<<< HEAD
-};
-
-static const struct iio_chan_spec ltr390_channel = {
-	.type = IIO_UVINDEX,
-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE)
-=======
 	.write_raw = ltr390_write_raw,
 	.read_avail = ltr390_read_avail,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int ltr390_probe(struct i2c_client *client)
@@ -383,13 +332,6 @@ static int ltr390_probe(struct i2c_client *client)
 				     "regmap initialization failed\n");
 
 	data->client = client;
-<<<<<<< HEAD
-	mutex_init(&data->lock);
-
-	indio_dev->info = &ltr390_info;
-	indio_dev->channels = &ltr390_channel;
-	indio_dev->num_channels = 1;
-=======
 	/* default value of integration time from pg: 15 of the datasheet */
 	data->int_time_us = 100000;
 	/* default value of gain from pg: 16 of the datasheet */
@@ -402,7 +344,6 @@ static int ltr390_probe(struct i2c_client *client)
 	indio_dev->info = &ltr390_info;
 	indio_dev->channels = ltr390_channels;
 	indio_dev->num_channels = ARRAY_SIZE(ltr390_channels);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	indio_dev->name = "ltr390";
 
 	ret = regmap_read(data->regmap, LTR390_PART_ID, &part_number);
@@ -420,12 +361,7 @@ static int ltr390_probe(struct i2c_client *client)
 	/* Wait for the registers to reset before proceeding */
 	usleep_range(1000, 2000);
 
-<<<<<<< HEAD
-	ret = regmap_set_bits(data->regmap, LTR390_MAIN_CTRL,
-			      LTR390_SENSOR_ENABLE | LTR390_UVS_MODE);
-=======
 	ret = regmap_set_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_SENSOR_ENABLE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return dev_err_probe(dev, ret, "failed to enable the sensor\n");
 

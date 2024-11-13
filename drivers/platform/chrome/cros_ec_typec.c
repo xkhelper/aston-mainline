@@ -1285,8 +1285,6 @@ unregister_ports:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static void cros_typec_remove(struct platform_device *pdev)
 {
 	struct cros_typec_data *typec = platform_get_drvdata(pdev);
@@ -1296,7 +1294,6 @@ static void cros_typec_remove(struct platform_device *pdev)
 	cros_unregister_ports(typec);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __maybe_unused cros_typec_suspend(struct device *dev)
 {
 	struct cros_typec_data *typec = dev_get_drvdata(dev);
@@ -1328,10 +1325,7 @@ static struct platform_driver cros_typec_driver = {
 		.pm = &cros_typec_pm_ops,
 	},
 	.probe = cros_typec_probe,
-<<<<<<< HEAD
-=======
 	.remove_new = cros_typec_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(cros_typec_driver);

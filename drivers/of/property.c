@@ -452,14 +452,6 @@ EXPORT_SYMBOL_GPL(of_property_read_string);
 
 /**
  * of_property_match_string() - Find string in a list and return index
-<<<<<<< HEAD
- * @np: pointer to node containing string list property
- * @propname: string list property name
- * @string: pointer to string to search for in string list
- *
- * This function searches a string list property and returns the index
- * of a specific string value.
-=======
  * @np: pointer to the node containing the string list property
  * @propname: string list property name
  * @string: pointer to the string to search for in the string list
@@ -471,7 +463,6 @@ EXPORT_SYMBOL_GPL(of_property_read_string);
  * if the property does not exist, -ENODATA if the property does not have a
  * value, and -EILSEQ if the string is not null-terminated within the length of
  * the property data.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int of_property_match_string(const struct device_node *np, const char *propname,
 			     const char *string)
@@ -787,24 +778,11 @@ EXPORT_SYMBOL(of_graph_get_port_parent);
 struct device_node *of_graph_get_remote_port_parent(
 			       const struct device_node *node)
 {
-<<<<<<< HEAD
-	struct device_node *np, *pp;
-
-	/* Get remote endpoint node. */
-	np = of_graph_get_remote_endpoint(node);
-
-	pp = of_graph_get_port_parent(np);
-
-	of_node_put(np);
-
-	return pp;
-=======
 	/* Get remote endpoint node. */
 	struct device_node *np __free(device_node) =
 		of_graph_get_remote_endpoint(node);
 
 	return of_graph_get_port_parent(np);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(of_graph_get_remote_port_parent);
 
@@ -1086,21 +1064,6 @@ static void of_link_to_phandle(struct device_node *con_np,
 			      struct device_node *sup_np,
 			      u8 flags)
 {
-<<<<<<< HEAD
-	struct device_node *tmp_np = of_node_get(sup_np);
-
-	/* Check that sup_np and its ancestors are available. */
-	while (tmp_np) {
-		if (of_fwnode_handle(tmp_np)->dev) {
-			of_node_put(tmp_np);
-			break;
-		}
-
-		if (!of_device_is_available(tmp_np)) {
-			of_node_put(tmp_np);
-			return;
-		}
-=======
 	struct device_node *tmp_np __free(device_node) = of_node_get(sup_np);
 
 	/* Check that sup_np and its ancestors are available. */
@@ -1110,7 +1073,6 @@ static void of_link_to_phandle(struct device_node *con_np,
 
 		if (!of_device_is_available(tmp_np))
 			return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		tmp_np = of_get_next_parent(tmp_np);
 	}
@@ -1474,25 +1436,13 @@ static int of_link_property(struct device_node *con_np, const char *prop_name)
 		}
 
 		while ((phandle = s->parse_prop(con_np, prop_name, i))) {
-<<<<<<< HEAD
-			struct device_node *con_dev_np;
-
-			con_dev_np = s->get_con_dev
-					? s->get_con_dev(con_np)
-					: of_node_get(con_np);
-=======
 			struct device_node *con_dev_np __free(device_node) =
 				s->get_con_dev ? s->get_con_dev(con_np) : of_node_get(con_np);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			matched = true;
 			i++;
 			of_link_to_phandle(con_dev_np, phandle, s->fwlink_flags);
 			of_node_put(phandle);
-<<<<<<< HEAD
-			of_node_put(con_dev_np);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		s++;
 	}

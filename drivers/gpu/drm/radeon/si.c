@@ -6277,11 +6277,7 @@ restart_ih:
 				event_name = "vblank";
 
 				if (rdev->irq.crtc_vblank_int[crtc_idx]) {
-<<<<<<< HEAD
-					drm_handle_vblank(rdev->ddev, crtc_idx);
-=======
 					drm_handle_vblank(rdev_to_drm(rdev), crtc_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					rdev->pm.vblank_sync = true;
 					wake_up(&rdev->irq.vblank_queue);
 				}
@@ -6843,11 +6839,7 @@ int si_init(struct radeon_device *rdev)
 	/* Initialize surface registers */
 	radeon_surface_init(rdev);
 	/* Initialize clocks */
-<<<<<<< HEAD
-	radeon_get_clock_info(rdev->ddev);
-=======
 	radeon_get_clock_info(rdev_to_drm(rdev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Fence driver */
 	radeon_fence_driver_init(rdev);

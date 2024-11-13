@@ -26,8 +26,6 @@ config NVMEM_LAYOUT_ONIE_TLV
 
 	  If unsure, say N.
 
-<<<<<<< HEAD
-=======
 config NVMEM_LAYOUT_U_BOOT_ENV
 	tristate "U-Boot environment variables layout"
 	select CRC32
@@ -39,7 +37,6 @@ config NVMEM_LAYOUT_U_BOOT_ENV
 
 	  If unsure, say N.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endmenu
 
 endif

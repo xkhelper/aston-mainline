@@ -1544,13 +1544,6 @@ int erdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask,
 	return ret;
 }
 
-<<<<<<< HEAD
-int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
-		   int qp_attr_mask, struct ib_qp_init_attr *qp_init_attr)
-{
-	struct erdma_qp *qp;
-	struct erdma_dev *dev;
-=======
 static enum ib_qp_state query_qp_state(struct erdma_qp *qp)
 {
 	switch (qp->attrs.state) {
@@ -1576,7 +1569,6 @@ int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 {
 	struct erdma_dev *dev;
 	struct erdma_qp *qp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ibqp && qp_attr && qp_init_attr) {
 		qp = to_eqp(ibqp);
@@ -1603,12 +1595,9 @@ int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
 
 	qp_init_attr->cap = qp_attr->cap;
 
-<<<<<<< HEAD
-=======
 	qp_attr->qp_state = query_qp_state(qp);
 	qp_attr->cur_qp_state = query_qp_state(qp);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1735,13 +1724,10 @@ err_out_xa:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 void erdma_disassociate_ucontext(struct ib_ucontext *ibcontext)
 {
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void erdma_set_mtu(struct erdma_dev *dev, u32 mtu)
 {
 	struct erdma_cmdq_config_mtu_req req;

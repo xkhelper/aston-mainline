@@ -445,8 +445,6 @@ static int _mlx5_modify_lag(struct mlx5_lag *ldev, u8 *ports)
 	return mlx5_cmd_modify_lag(dev0, ldev->ports, ports);
 }
 
-<<<<<<< HEAD
-=======
 static struct net_device *mlx5_lag_active_backup_get_netdev(struct mlx5_core_dev *dev)
 {
 	struct net_device *ndev = NULL;
@@ -475,7 +473,6 @@ unlock:
 	return ndev;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mlx5_modify_lag(struct mlx5_lag *ldev,
 		     struct lag_tracker *tracker)
 {
@@ -508,11 +505,6 @@ void mlx5_modify_lag(struct mlx5_lag *ldev,
 		}
 	}
 
-<<<<<<< HEAD
-	if (tracker->tx_type == NETDEV_LAG_TX_TYPE_ACTIVEBACKUP &&
-	    !(ldev->mode == MLX5_LAG_MODE_ROCE))
-		mlx5_lag_drop_rule_setup(ldev, tracker);
-=======
 	if (tracker->tx_type == NETDEV_LAG_TX_TYPE_ACTIVEBACKUP) {
 		struct net_device *ndev = mlx5_lag_active_backup_get_netdev(dev0);
 
@@ -525,7 +517,6 @@ void mlx5_modify_lag(struct mlx5_lag *ldev,
 					     MLX5_DRIVER_EVENT_ACTIVE_BACKUP_LAG_CHANGE_LOWERSTATE,
 					     ndev);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int mlx5_lag_set_port_sel_mode_roce(struct mlx5_lag *ldev,
@@ -659,10 +650,7 @@ static int mlx5_create_lag(struct mlx5_lag *ldev,
 			mlx5_core_err(dev0,
 				      "Failed to deactivate RoCE LAG; driver restart required\n");
 	}
-<<<<<<< HEAD
-=======
 	BLOCKING_INIT_NOTIFIER_HEAD(&dev0->priv.lag_nh);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return err;
 }
@@ -1542,41 +1530,6 @@ void mlx5_lag_enable_change(struct mlx5_core_dev *dev)
 	mlx5_queue_bond_work(ldev, 0);
 }
 
-<<<<<<< HEAD
-struct net_device *mlx5_lag_get_roce_netdev(struct mlx5_core_dev *dev)
-{
-	struct net_device *ndev = NULL;
-	struct mlx5_lag *ldev;
-	unsigned long flags;
-	int i;
-
-	spin_lock_irqsave(&lag_lock, flags);
-	ldev = mlx5_lag_dev(dev);
-
-	if (!(ldev && __mlx5_lag_is_roce(ldev)))
-		goto unlock;
-
-	if (ldev->tracker.tx_type == NETDEV_LAG_TX_TYPE_ACTIVEBACKUP) {
-		for (i = 0; i < ldev->ports; i++)
-			if (ldev->tracker.netdev_state[i].tx_enabled)
-				ndev = ldev->pf[i].netdev;
-		if (!ndev)
-			ndev = ldev->pf[ldev->ports - 1].netdev;
-	} else {
-		ndev = ldev->pf[MLX5_LAG_P1].netdev;
-	}
-	if (ndev)
-		dev_hold(ndev);
-
-unlock:
-	spin_unlock_irqrestore(&lag_lock, flags);
-
-	return ndev;
-}
-EXPORT_SYMBOL(mlx5_lag_get_roce_netdev);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 u8 mlx5_lag_get_slave_port(struct mlx5_core_dev *dev,
 			   struct net_device *slave)
 {

@@ -8,11 +8,7 @@
 #include <asm/hwcap.h>
 #include <asm/neon.h>
 #include <asm/simd.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/aes.h>
 #include <crypto/ctr.h>
 #include <crypto/internal/simd.h>
@@ -715,11 +711,7 @@ static int __init aes_init(void)
 		algname = aes_algs[i].base.cra_name + 2;
 		drvname = aes_algs[i].base.cra_driver_name + 2;
 		basename = aes_algs[i].base.cra_driver_name;
-<<<<<<< HEAD
-		simd = simd_skcipher_create_compat(algname, drvname, basename);
-=======
 		simd = simd_skcipher_create_compat(aes_algs + i, algname, drvname, basename);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = PTR_ERR(simd);
 		if (IS_ERR(simd))
 			goto unregister_simds;

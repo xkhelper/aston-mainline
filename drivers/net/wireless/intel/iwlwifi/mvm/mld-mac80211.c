@@ -41,11 +41,6 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
 	/* reset deflink MLO parameters */
 	mvmvif->deflink.fw_link_id = IWL_MVM_FW_LINK_ID_INVALID;
 	mvmvif->deflink.active = 0;
-<<<<<<< HEAD
-	/* the first link always points to the default one */
-	mvmvif->link[0] = &mvmvif->deflink;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = iwl_mvm_mld_mac_ctxt_add(mvm, vif);
 	if (ret)
@@ -63,11 +58,6 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
 				     IEEE80211_VIF_SUPPORTS_CQM_RSSI;
 	}
 
-<<<<<<< HEAD
-	ret = iwl_mvm_add_link(mvm, vif, &vif->bss_conf);
-	if (ret)
-		goto out_free_bf;
-=======
 	/* We want link[0] to point to the default link, unless we have MLO and
 	 * in this case this will be modified later by .change_vif_links()
 	 * If we are in the restart flow with an MLD connection, we will wait
@@ -81,7 +71,6 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
 		if (ret)
 			goto out_free_bf;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Save a pointer to p2p device vif, so it can later be used to
 	 * update the p2p device MAC when a GO is started/stopped
@@ -242,11 +231,7 @@ static void iwl_mvm_restart_mpdu_count(struct iwl_mvm *mvm,
 		spin_unlock_bh(&mvmsta->mpdu_counters[q].lock);
 	}
 
-<<<<<<< HEAD
-	IWL_DEBUG_STATS(mvm, "MPDU counters are cleared\n");
-=======
 	IWL_DEBUG_INFO(mvm, "MPDU counters are cleared\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int iwl_mvm_esr_mode_active(struct iwl_mvm *mvm,
@@ -292,12 +277,9 @@ static int iwl_mvm_esr_mode_active(struct iwl_mvm *mvm,
 	 */
 	iwl_mvm_restart_mpdu_count(mvm, mvmvif);
 
-<<<<<<< HEAD
-=======
 	iwl_dbg_tlv_time_point(&mvm->fwrt, IWL_FW_INI_TIME_ESR_LINK_UP,
 			       NULL);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -376,14 +358,6 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
 		rcu_read_unlock();
 	}
 
-<<<<<<< HEAD
-	if (vif->type == NL80211_IFTYPE_STATION)
-		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif,
-							link_conf,
-							false);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* then activate */
 	ret = iwl_mvm_link_changed(mvm, vif, link_conf,
 				   LINK_CONTEXT_MODIFY_ACTIVE |
@@ -392,14 +366,11 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
-=======
 	if (vif->type == NL80211_IFTYPE_STATION)
 		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif,
 							link_conf,
 							false);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Power state must be updated before quotas,
 	 * otherwise fw will complain.
@@ -496,12 +467,9 @@ static int iwl_mvm_esr_mode_inactive(struct iwl_mvm *mvm,
 	/* Start a new counting window */
 	iwl_mvm_restart_mpdu_count(mvm, mvmvif);
 
-<<<<<<< HEAD
-=======
 	iwl_dbg_tlv_time_point(&mvm->fwrt, IWL_FW_INI_TIME_ESR_LINK_DOWN,
 			       NULL);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1234,15 +1202,11 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
 
 	mutex_lock(&mvm->mutex);
 
-<<<<<<< HEAD
-	if (old_links == 0) {
-=======
 	/* If we're in RESTART flow, the default link wasn't added in
          * drv_add_interface(), and link[0] doesn't point to it.
 	 */
 	if (old_links == 0 && !test_bit(IWL_MVM_STATUS_IN_HW_RESTART,
 					&mvm->status)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = iwl_mvm_disable_link(mvm, vif, &vif->bss_conf);
 		if (err)
 			goto out_err;
@@ -1389,8 +1353,6 @@ iwl_mvm_mld_mac_pre_channel_switch(struct ieee80211_hw *hw,
 		else
 			selected = primary;
 
-<<<<<<< HEAD
-=======
 		/*
 		 * remembers to tell the firmware that this link can't tx
 		 * Note that this logic seems to be unrelated to esr, but it
@@ -1407,7 +1369,6 @@ iwl_mvm_mld_mac_pre_channel_switch(struct ieee80211_hw *hw,
 		if (chsw->block_tx && mvmvif->link[chsw->link_id])
 			mvmvif->link[chsw->link_id]->csa_block_tx = true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		iwl_mvm_exit_esr(mvm, vif, IWL_MVM_ESR_EXIT_CSA, selected);
 		mutex_unlock(&mvm->mutex);
 

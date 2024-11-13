@@ -21,17 +21,11 @@ struct uid_gid_extent {
 };
 
 struct uid_gid_map { /* 64 bytes -- 1 cache line */
-<<<<<<< HEAD
-	u32 nr_extents;
-	union {
-		struct uid_gid_extent extent[UID_GID_MAP_MAX_BASE_EXTENTS];
-=======
 	union {
 		struct {
 			struct uid_gid_extent extent[UID_GID_MAP_MAX_BASE_EXTENTS];
 			u32 nr_extents;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct {
 			struct uid_gid_extent *forward;
 			struct uid_gid_extent *reverse;
@@ -147,12 +141,8 @@ static inline long get_rlimit_value(struct ucounts *ucounts, enum rlimit_type ty
 
 long inc_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
 bool dec_rlimit_ucounts(struct ucounts *ucounts, enum rlimit_type type, long v);
-<<<<<<< HEAD
-long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type);
-=======
 long inc_rlimit_get_ucounts(struct ucounts *ucounts, enum rlimit_type type,
 			    bool override_rlimit);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void dec_rlimit_put_ucounts(struct ucounts *ucounts, enum rlimit_type type);
 bool is_rlimit_overlimit(struct ucounts *ucounts, enum rlimit_type type, unsigned long max);
 

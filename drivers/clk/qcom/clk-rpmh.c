@@ -263,11 +263,8 @@ static int clk_rpmh_bcm_send_cmd(struct clk_rpmh *c, bool enable)
 		cmd_state = 0;
 	}
 
-<<<<<<< HEAD
-=======
 	cmd_state = min(cmd_state, BCM_TCS_CMD_VOTE_MASK);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (c->last_sent_aggr_state != cmd_state) {
 		cmd.addr = c->res_addr;
 		cmd.data = BCM_TCS_CMD(1, enable, 0, cmd_state);

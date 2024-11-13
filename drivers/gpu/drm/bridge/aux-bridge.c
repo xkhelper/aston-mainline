@@ -58,16 +58,10 @@ int drm_aux_bridge_register(struct device *parent)
 	adev->id = ret;
 	adev->name = "aux_bridge";
 	adev->dev.parent = parent;
-<<<<<<< HEAD
-	adev->dev.of_node = of_node_get(parent->of_node);
-	adev->dev.release = drm_aux_bridge_release;
-
-=======
 	adev->dev.release = drm_aux_bridge_release;
 
 	device_set_of_node_from_dev(&adev->dev, parent);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = auxiliary_device_init(adev);
 	if (ret) {
 		ida_free(&drm_aux_bridge_ida, adev->id);

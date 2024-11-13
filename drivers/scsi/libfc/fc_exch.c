@@ -2693,12 +2693,8 @@ int fc_setup_exch_mgr(void)
 	fc_cpu_order = ilog2(roundup_pow_of_two(nr_cpu_ids));
 	fc_cpu_mask = (1 << fc_cpu_order) - 1;
 
-<<<<<<< HEAD
-	fc_exch_workqueue = create_singlethread_workqueue("fc_exch_workqueue");
-=======
 	fc_exch_workqueue = alloc_ordered_workqueue("%s", WQ_MEM_RECLAIM,
 						    "fc_exch_workqueue");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!fc_exch_workqueue)
 		goto err;
 	return 0;

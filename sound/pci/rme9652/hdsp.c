@@ -1298,15 +1298,10 @@ static int snd_hdsp_midi_output_possible (struct hdsp *hdsp, int id)
 
 static void snd_hdsp_flush_midi_input (struct hdsp *hdsp, int id)
 {
-<<<<<<< HEAD
-	while (snd_hdsp_midi_input_available (hdsp, id))
-		snd_hdsp_midi_read_byte (hdsp, id);
-=======
 	int count = 256;
 
 	while (snd_hdsp_midi_input_available(hdsp, id) && --count)
 		snd_hdsp_midi_read_byte(hdsp, id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int snd_hdsp_midi_output_write (struct hdsp_midi *hmidi)
@@ -4306,17 +4301,6 @@ static const struct snd_pcm_hw_constraint_list hdsp_hw_constraints_period_sizes 
 	.mask = 0
 };
 
-<<<<<<< HEAD
-static const unsigned int hdsp_9632_sample_rates[] = { 32000, 44100, 48000, 64000, 88200, 96000, 128000, 176400, 192000 };
-
-static const struct snd_pcm_hw_constraint_list hdsp_hw_constraints_9632_sample_rates = {
-	.count = ARRAY_SIZE(hdsp_9632_sample_rates),
-	.list = hdsp_9632_sample_rates,
-	.mask = 0
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int snd_hdsp_hw_rule_in_channels(struct snd_pcm_hw_params *params,
 					struct snd_pcm_hw_rule *rule)
 {
@@ -4507,14 +4491,9 @@ static int snd_hdsp_playback_open(struct snd_pcm_substream *substream)
 		runtime->hw.rate_min = runtime->hw.rate_max = hdsp->system_sample_rate;
 	} else if (hdsp->io_type == H9632) {
 		runtime->hw.rate_max = 192000;
-<<<<<<< HEAD
-		runtime->hw.rates = SNDRV_PCM_RATE_KNOT;
-		snd_pcm_hw_constraint_list(runtime, 0, SNDRV_PCM_HW_PARAM_RATE, &hdsp_hw_constraints_9632_sample_rates);
-=======
 		runtime->hw.rates |= (SNDRV_PCM_RATE_128000 |
 				      SNDRV_PCM_RATE_176400 |
 				      SNDRV_PCM_RATE_192000);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (hdsp->io_type == H9632) {
 		runtime->hw.channels_min = hdsp->qs_out_channels;
@@ -4589,14 +4568,9 @@ static int snd_hdsp_capture_open(struct snd_pcm_substream *substream)
 		runtime->hw.channels_min = hdsp->qs_in_channels;
 		runtime->hw.channels_max = hdsp->ss_in_channels;
 		runtime->hw.rate_max = 192000;
-<<<<<<< HEAD
-		runtime->hw.rates = SNDRV_PCM_RATE_KNOT;
-		snd_pcm_hw_constraint_list(runtime, 0, SNDRV_PCM_HW_PARAM_RATE, &hdsp_hw_constraints_9632_sample_rates);
-=======
 		runtime->hw.rates |= (SNDRV_PCM_RATE_128000 |
 				      SNDRV_PCM_RATE_176400 |
 				      SNDRV_PCM_RATE_192000);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	snd_pcm_hw_rule_add(runtime, 0, SNDRV_PCM_HW_PARAM_CHANNELS,
 			     snd_hdsp_hw_rule_in_channels, hdsp,

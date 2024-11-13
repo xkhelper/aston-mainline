@@ -515,8 +515,6 @@ bool dp_is_interlane_aligned(union lane_align_status_updated align_status)
 	return align_status.bits.INTERLANE_ALIGN_DONE == 1;
 }
 
-<<<<<<< HEAD
-=======
 bool dp_check_interlane_aligned(union lane_align_status_updated align_status,
 		struct dc_link *link,
 		uint8_t retries)
@@ -552,7 +550,6 @@ bool dp_check_dpcd_reqeust_status(const struct dc_link *link,
 	return (status != DC_OK && link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum link_training_result dp_check_link_loss_status(
 	struct dc_link *link,
 	const struct link_training_settings *link_training_setting)
@@ -1011,26 +1008,17 @@ void repeater_training_done(struct dc_link *link, uint32_t offset)
 		dpcd_pattern.v1_4.TRAINING_PATTERN_SET);
 }
 
-<<<<<<< HEAD
-static void dpcd_exit_training_mode(struct dc_link *link, enum dp_link_encoding encoding)
-{
-=======
 static enum link_training_result dpcd_exit_training_mode(struct dc_link *link, enum dp_link_encoding encoding)
 {
 	enum dc_status status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uint8_t sink_status = 0;
 	uint8_t i;
 
 	/* clear training pattern set */
-<<<<<<< HEAD
-	dpcd_set_training_pattern(link, DP_TRAINING_PATTERN_VIDEOIDLE);
-=======
 	status = dpcd_set_training_pattern(link, DP_TRAINING_PATTERN_VIDEOIDLE);
 
 	if (dp_check_dpcd_reqeust_status(link, status))
 		return LINK_TRAINING_ABORT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (encoding == DP_128b_132b_ENCODING) {
 		/* poll for intra-hop disable */
@@ -1041,11 +1029,8 @@ static enum link_training_result dpcd_exit_training_mode(struct dc_link *link, e
 			fsleep(1000);
 		}
 	}
-<<<<<<< HEAD
-=======
 
 	return LINK_TRAINING_SUCCESS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 enum dc_status dpcd_configure_channel_coding(struct dc_link *link,
@@ -1069,29 +1054,18 @@ enum dc_status dpcd_configure_channel_coding(struct dc_link *link,
 	return status;
 }
 
-<<<<<<< HEAD
-void dpcd_set_training_pattern(
-	struct dc_link *link,
-	enum dc_dp_training_pattern training_pattern)
-{
-=======
 enum dc_status dpcd_set_training_pattern(
 	struct dc_link *link,
 	enum dc_dp_training_pattern training_pattern)
 {
 	enum dc_status status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	union dpcd_training_pattern dpcd_pattern = {0};
 
 	dpcd_pattern.v1_4.TRAINING_PATTERN_SET =
 			dp_training_pattern_to_dpcd_training_pattern(
 					link, training_pattern);
 
-<<<<<<< HEAD
-	core_link_write_dpcd(
-=======
 	status = core_link_write_dpcd(
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		link,
 		DP_TRAINING_PATTERN_SET,
 		&dpcd_pattern.raw,
@@ -1101,11 +1075,8 @@ enum dc_status dpcd_set_training_pattern(
 		__func__,
 		DP_TRAINING_PATTERN_SET,
 		dpcd_pattern.v1_4.TRAINING_PATTERN_SET);
-<<<<<<< HEAD
-=======
 
 	return status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 enum dc_status dpcd_set_link_settings(
@@ -1258,8 +1229,6 @@ void dpcd_set_lt_pattern_and_lane_settings(
 	dpcd_lt_buffer[DP_TRAINING_PATTERN_SET - DP_TRAINING_PATTERN_SET]
 		= dpcd_pattern.raw;
 
-<<<<<<< HEAD
-=======
 	if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA)
 		dpia_set_tps_notification(
 			link,
@@ -1267,7 +1236,6 @@ void dpcd_set_lt_pattern_and_lane_settings(
 			dpcd_pattern.v1_4.TRAINING_PATTERN_SET,
 			offset);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (is_repeater(lt_settings, offset)) {
 		DC_LOG_HW_LINK_TRAINING("%s\n LTTPR Repeater ID: %d\n 0x%X pattern = %x\n",
 			__func__,
@@ -1538,12 +1506,8 @@ static enum link_training_result dp_transition_to_video_idle(
 		 */
 		if (link->connector_signal != SIGNAL_TYPE_EDP && status == LINK_TRAINING_SUCCESS) {
 			msleep(5);
-<<<<<<< HEAD
-			status = dp_check_link_loss_status(link, lt_settings);
-=======
 			if (!link->skip_fallback_on_link_loss)
 				status = dp_check_link_loss_status(link, lt_settings);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		return status;
 	}
@@ -1609,13 +1573,9 @@ enum link_training_result dp_perform_link_training(
 		ASSERT(0);
 
 	/* exit training mode */
-<<<<<<< HEAD
-	dpcd_exit_training_mode(link, encoding);
-=======
 	if ((dpcd_exit_training_mode(link, encoding) != LINK_TRAINING_SUCCESS || status == LINK_TRAINING_ABORT) &&
 			link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA)
 		dpia_training_abort(link, &lt_settings, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* switch to video idle */
 	if ((status == LINK_TRAINING_SUCCESS) || !skip_video_pattern)
@@ -1693,12 +1653,7 @@ bool perform_link_training_with_retries(
 			dp_perform_link_training_skip_aux(link, &pipe_ctx->link_res, &cur_link_settings);
 			return true;
 		} else {
-<<<<<<< HEAD
-			/** @todo Consolidate USB4 DP and DPx.x training. */
-			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA) {
-=======
 			if (!link->dc->config.consolidated_dpia_dp_lt && link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				status = dpia_perform_link_training(
 						link,
 						&pipe_ctx->link_res,
@@ -1727,10 +1682,6 @@ bool perform_link_training_with_retries(
 			dp_trace_lt_total_count_increment(link, false);
 			dp_trace_lt_result_update(link, status, false);
 			dp_trace_set_lt_end_timestamp(link, false);
-<<<<<<< HEAD
-			if (status == LINK_TRAINING_SUCCESS && !is_link_bw_low)
-				return true;
-=======
 			if (status == LINK_TRAINING_SUCCESS && !is_link_bw_low) {
 				// Update verified link settings to current one
 				// Because DPIA LT might fallback to lower link setting.
@@ -1742,7 +1693,6 @@ bool perform_link_training_with_retries(
 				}
 				return true;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		fail_count++;

@@ -19,27 +19,6 @@
  * Must be called under a lock that serializes taking new references
  * to i_dio_count, usually by inode->i_mutex.
  */
-<<<<<<< HEAD
-static int inode_dio_wait_interruptible(struct inode *inode)
-{
-	if (!atomic_read(&inode->i_dio_count))
-		return 0;
-
-	wait_queue_head_t *wq = bit_waitqueue(&inode->i_state, __I_DIO_WAKEUP);
-	DEFINE_WAIT_BIT(q, &inode->i_state, __I_DIO_WAKEUP);
-
-	for (;;) {
-		prepare_to_wait(wq, &q.wq_entry, TASK_INTERRUPTIBLE);
-		if (!atomic_read(&inode->i_dio_count))
-			break;
-		if (signal_pending(current))
-			break;
-		schedule();
-	}
-	finish_wait(wq, &q.wq_entry);
-
-	return atomic_read(&inode->i_dio_count) ? -ERESTARTSYS : 0;
-=======
 static int netfs_inode_dio_wait_interruptible(struct inode *inode)
 {
 	if (inode_dio_finished(inode))
@@ -47,7 +26,6 @@ static int netfs_inode_dio_wait_interruptible(struct inode *inode)
 
 	inode_dio_wait_interruptible(inode);
 	return !inode_dio_finished(inode) ? -ERESTARTSYS : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Call with exclusively locked inode->i_rwsem */
@@ -56,11 +34,7 @@ static int netfs_block_o_direct(struct netfs_inode *ictx)
 	if (!test_bit(NETFS_ICTX_ODIRECT, &ictx->flags))
 		return 0;
 	clear_bit(NETFS_ICTX_ODIRECT, &ictx->flags);
-<<<<<<< HEAD
-	return inode_dio_wait_interruptible(&ictx->inode);
-=======
 	return netfs_inode_dio_wait_interruptible(&ictx->inode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -135,10 +109,7 @@ int netfs_start_io_write(struct inode *inode)
 		up_write(&inode->i_rwsem);
 		return -ERESTARTSYS;
 	}
-<<<<<<< HEAD
-=======
 	downgrade_write(&inode->i_rwsem);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL(netfs_start_io_write);
@@ -153,11 +124,7 @@ EXPORT_SYMBOL(netfs_start_io_write);
 void netfs_end_io_write(struct inode *inode)
 	__releases(inode->i_rwsem)
 {
-<<<<<<< HEAD
-	up_write(&inode->i_rwsem);
-=======
 	up_read(&inode->i_rwsem);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(netfs_end_io_write);
 

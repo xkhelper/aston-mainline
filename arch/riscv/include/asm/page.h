@@ -112,13 +112,6 @@ struct kernel_mapping {
 	/* Offset between linear mapping virtual address and kernel load address */
 	unsigned long va_pa_offset;
 	/* Offset between kernel mapping virtual address and kernel load address */
-<<<<<<< HEAD
-	unsigned long va_kernel_pa_offset;
-	unsigned long va_kernel_xip_pa_offset;
-#ifdef CONFIG_XIP_KERNEL
-	uintptr_t xiprom;
-	uintptr_t xiprom_sz;
-=======
 #ifdef CONFIG_XIP_KERNEL
 	unsigned long va_kernel_xip_text_pa_offset;
 	unsigned long va_kernel_xip_data_pa_offset;
@@ -126,7 +119,6 @@ struct kernel_mapping {
 	uintptr_t xiprom_sz;
 #else
 	unsigned long va_kernel_pa_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 };
 
@@ -144,14 +136,6 @@ extern phys_addr_t phys_ram_base;
 #else
 void *linear_mapping_pa_to_va(unsigned long x);
 #endif
-<<<<<<< HEAD
-#define kernel_mapping_pa_to_va(y)	({					\
-	unsigned long _y = (unsigned long)(y);					\
-	(IS_ENABLED(CONFIG_XIP_KERNEL) && _y < phys_ram_base) ?			\
-		(void *)(_y + kernel_map.va_kernel_xip_pa_offset) :		\
-		(void *)(_y + kernel_map.va_kernel_pa_offset + XIP_OFFSET);	\
-	})
-=======
 
 #ifdef CONFIG_XIP_KERNEL
 #define kernel_mapping_pa_to_va(y)	({					\
@@ -164,7 +148,6 @@ void *linear_mapping_pa_to_va(unsigned long x);
 #define kernel_mapping_pa_to_va(y) ((void *)((unsigned long)(y) + kernel_map.va_kernel_pa_offset))
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define __pa_to_va_nodebug(x)		linear_mapping_pa_to_va(x)
 
 #ifndef CONFIG_DEBUG_VIRTUAL
@@ -172,14 +155,6 @@ void *linear_mapping_pa_to_va(unsigned long x);
 #else
 phys_addr_t linear_mapping_va_to_pa(unsigned long x);
 #endif
-<<<<<<< HEAD
-#define kernel_mapping_va_to_pa(y) ({						\
-	unsigned long _y = (unsigned long)(y);					\
-	(IS_ENABLED(CONFIG_XIP_KERNEL) && _y < kernel_map.virt_addr + XIP_OFFSET) ? \
-		(_y - kernel_map.va_kernel_xip_pa_offset) :			\
-		(_y - kernel_map.va_kernel_pa_offset - XIP_OFFSET);		\
-	})
-=======
 
 #ifdef CONFIG_XIP_KERNEL
 #define kernel_mapping_va_to_pa(y) ({						\
@@ -191,7 +166,6 @@ phys_addr_t linear_mapping_va_to_pa(unsigned long x);
 #else
 #define kernel_mapping_va_to_pa(y) ((unsigned long)(y) - kernel_map.va_kernel_pa_offset)
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define __va_to_pa_nodebug(x)	({						\
 	unsigned long _x = x;							\

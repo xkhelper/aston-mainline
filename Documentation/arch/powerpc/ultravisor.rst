@@ -134,11 +134,7 @@ Hardware
 
       * PTCR and partition table entries (partition table is in secure
         memory). An attempt to write to PTCR will cause a Hypervisor
-<<<<<<< HEAD
-        Emulation Assitance interrupt.
-=======
         Emulation Assistance interrupt.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       * LDBAR (LD Base Address Register) and IMC (In-Memory Collection)
         non-architected registers. An attempt to write to them will cause a

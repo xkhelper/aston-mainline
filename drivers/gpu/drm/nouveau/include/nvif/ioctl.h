@@ -2,25 +2,12 @@
 #ifndef __NVIF_IOCTL_H__
 #define __NVIF_IOCTL_H__
 
-<<<<<<< HEAD
-#define NVIF_VERSION_LATEST                               0x0000000000000100ULL
-
 struct nvif_ioctl_v0 {
 	__u8  version;
-#define NVIF_IOCTL_V0_NOP                                                  0x00
-=======
-struct nvif_ioctl_v0 {
-	__u8  version;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define NVIF_IOCTL_V0_SCLASS                                               0x01
 #define NVIF_IOCTL_V0_NEW                                                  0x02
 #define NVIF_IOCTL_V0_DEL                                                  0x03
 #define NVIF_IOCTL_V0_MTHD                                                 0x04
-<<<<<<< HEAD
-#define NVIF_IOCTL_V0_RD                                                   0x05
-#define NVIF_IOCTL_V0_WR                                                   0x06
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define NVIF_IOCTL_V0_MAP                                                  0x07
 #define NVIF_IOCTL_V0_UNMAP                                                0x08
 	__u8  type;
@@ -36,13 +23,6 @@ struct nvif_ioctl_v0 {
 	__u8  data[];		/* ioctl data (below) */
 };
 
-<<<<<<< HEAD
-struct nvif_ioctl_nop_v0 {
-	__u64 version;
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct nvif_ioctl_sclass_v0 {
 	/* nvif_ioctl ... */
 	__u8  version;
@@ -78,27 +58,6 @@ struct nvif_ioctl_mthd_v0 {
 	__u8  data[];		/* method data (class.h) */
 };
 
-<<<<<<< HEAD
-struct nvif_ioctl_rd_v0 {
-	/* nvif_ioctl ... */
-	__u8  version;
-	__u8  size;
-	__u8  pad02[2];
-	__u32 data;
-	__u64 addr;
-};
-
-struct nvif_ioctl_wr_v0 {
-	/* nvif_ioctl ... */
-	__u8  version;
-	__u8  size;
-	__u8  pad02[2];
-	__u32 data;
-	__u64 addr;
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct nvif_ioctl_map_v0 {
 	/* nvif_ioctl ... */
 	__u8  version;

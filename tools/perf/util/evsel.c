@@ -59,10 +59,7 @@
 #include <internal/xyarray.h>
 #include <internal/lib.h>
 #include <internal/threadmap.h>
-<<<<<<< HEAD
-=======
 #include "util/intel-tpebs.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/ctype.h>
 
@@ -776,11 +773,7 @@ const char *evsel__name(struct evsel *evsel)
 
 	case PERF_TYPE_SOFTWARE:
 		if (evsel__is_tool(evsel))
-<<<<<<< HEAD
-			evsel__tool_name(evsel->tool_event, bf, sizeof(bf));
-=======
 			evsel__tool_name(evsel__tool_event(evsel), bf, sizeof(bf));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			evsel__sw_name(evsel, bf, sizeof(bf));
 		break;
@@ -818,11 +811,7 @@ const char *evsel__metric_id(const struct evsel *evsel)
 		return evsel->metric_id;
 
 	if (evsel__is_tool(evsel))
-<<<<<<< HEAD
-		return perf_tool_event__to_str(evsel->tool_event);
-=======
 		return perf_tool_event__to_str(evsel__tool_event(evsel));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return "unknown";
 }
@@ -1514,13 +1503,8 @@ void evsel__exit(struct evsel *evsel)
 	evsel->per_pkg_mask = NULL;
 	zfree(&evsel->metric_events);
 	perf_evsel__object.fini(evsel);
-<<<<<<< HEAD
-	if (evsel->tool_event == PERF_TOOL_SYSTEM_TIME ||
-	    evsel->tool_event == PERF_TOOL_USER_TIME)
-=======
 	if (evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME ||
 	    evsel__tool_event(evsel) == PERF_TOOL_USER_TIME)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xyarray__delete(evsel->start_times);
 }
 
@@ -1556,14 +1540,11 @@ static int evsel__read_one(struct evsel *evsel, int cpu_map_idx, int thread)
 	return perf_evsel__read(&evsel->core, cpu_map_idx, thread, count);
 }
 
-<<<<<<< HEAD
-=======
 static int evsel__read_retire_lat(struct evsel *evsel, int cpu_map_idx, int thread)
 {
 	return tpebs_set_evsel(evsel, cpu_map_idx, thread);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void evsel__set_count(struct evsel *counter, int cpu_map_idx, int thread,
 			     u64 val, u64 ena, u64 run, u64 lost)
 {
@@ -1571,15 +1552,12 @@ static void evsel__set_count(struct evsel *counter, int cpu_map_idx, int thread,
 
 	count = perf_counts(counter->counts, cpu_map_idx, thread);
 
-<<<<<<< HEAD
-=======
 	if (counter->retire_lat) {
 		evsel__read_retire_lat(counter, cpu_map_idx, thread);
 		perf_counts__set_loaded(counter->counts, cpu_map_idx, thread, true);
 		return;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	count->val    = val;
 	count->ena    = ena;
 	count->run    = run;
@@ -1588,8 +1566,6 @@ static void evsel__set_count(struct evsel *counter, int cpu_map_idx, int thread,
 	perf_counts__set_loaded(counter->counts, cpu_map_idx, thread, true);
 }
 
-<<<<<<< HEAD
-=======
 static bool evsel__group_has_tpebs(struct evsel *leader)
 {
 	struct evsel *evsel;
@@ -1644,7 +1620,6 @@ static u64 evsel__group_read_size(struct evsel *leader)
 	return size;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int evsel__process_group_data(struct evsel *leader, int cpu_map_idx, int thread, u64 *data)
 {
 	u64 read_format = leader->core.attr.read_format;
@@ -1653,11 +1628,7 @@ static int evsel__process_group_data(struct evsel *leader, int cpu_map_idx, int 
 
 	nr = *data++;
 
-<<<<<<< HEAD
-	if (nr != (u64) leader->core.nr_members)
-=======
 	if (nr != evsel__group_read_nr_members(leader))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
@@ -1687,11 +1658,7 @@ static int evsel__read_group(struct evsel *leader, int cpu_map_idx, int thread)
 {
 	struct perf_stat_evsel *ps = leader->stats;
 	u64 read_format = leader->core.attr.read_format;
-<<<<<<< HEAD
-	int size = perf_evsel__read_size(&leader->core);
-=======
 	int size = evsel__group_read_size(leader);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 *data = ps->group_data;
 
 	if (!(read_format & PERF_FORMAT_ID))
@@ -1818,11 +1785,7 @@ static int evsel__read_tool(struct evsel *evsel, int cpu_map_idx, int thread)
 
 	count = perf_counts(evsel->counts, cpu_map_idx, thread);
 
-<<<<<<< HEAD
-	switch (evsel->tool_event) {
-=======
 	switch (evsel__tool_event(evsel)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case PERF_TOOL_DURATION_TIME:
 		/*
 		 * Pretend duration_time is only on the first CPU and thread, or
@@ -1837,11 +1800,7 @@ static int evsel__read_tool(struct evsel *evsel, int cpu_map_idx, int thread)
 		break;
 	case PERF_TOOL_USER_TIME:
 	case PERF_TOOL_SYSTEM_TIME: {
-<<<<<<< HEAD
-		bool system = evsel->tool_event == PERF_TOOL_SYSTEM_TIME;
-=======
 		bool system = evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		start_time = xyarray__entry(evsel->start_times, cpu_map_idx, thread);
 		fd = FD(evsel, cpu_map_idx, thread);
@@ -1891,12 +1850,9 @@ int evsel__read_counter(struct evsel *evsel, int cpu_map_idx, int thread)
 	if (evsel__is_tool(evsel))
 		return evsel__read_tool(evsel, cpu_map_idx, thread);
 
-<<<<<<< HEAD
-=======
 	if (evsel__is_retire_lat(evsel))
 		return evsel__read_retire_lat(evsel, cpu_map_idx, thread);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (evsel->core.attr.read_format & PERF_FORMAT_GROUP)
 		return evsel__read_group(evsel, cpu_map_idx, thread);
 
@@ -2116,13 +2072,8 @@ static int __evsel__prepare_open(struct evsel *evsel, struct perf_cpu_map *cpus,
 	    perf_evsel__alloc_fd(&evsel->core, perf_cpu_map__nr(cpus), nthreads) < 0)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	if ((evsel->tool_event == PERF_TOOL_SYSTEM_TIME ||
-	     evsel->tool_event == PERF_TOOL_USER_TIME) &&
-=======
 	if ((evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME ||
 	     evsel__tool_event(evsel) == PERF_TOOL_USER_TIME) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !evsel->start_times) {
 		evsel->start_times = xyarray__new(perf_cpu_map__nr(cpus), nthreads, sizeof(__u64));
 		if (!evsel->start_times)
@@ -2311,23 +2262,16 @@ static int evsel__open_cpu(struct evsel *evsel, struct perf_cpu_map *cpus,
 	int pid = -1, err, old_errno;
 	enum rlimit_action set_rlimit = NO_CHANGE;
 
-<<<<<<< HEAD
-	if (evsel->tool_event == PERF_TOOL_DURATION_TIME) {
-=======
 	if (evsel__tool_event(evsel) == PERF_TOOL_DURATION_TIME) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (evsel->core.attr.sample_period) /* no sampling */
 			return -EINVAL;
 		evsel->start_time = rdclock();
 		return 0;
 	}
 
-<<<<<<< HEAD
-=======
 	if (evsel__is_retire_lat(evsel))
 		return tpebs_start(evsel->evlist);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = __evsel__prepare_open(evsel, cpus, threads);
 	if (err)
 		return err;
@@ -2360,15 +2304,9 @@ retry_open:
 			if (!evsel->cgrp && !evsel->core.system_wide)
 				pid = perf_thread_map__pid(threads, thread);
 
-<<<<<<< HEAD
-			if (evsel->tool_event == PERF_TOOL_USER_TIME ||
-			    evsel->tool_event == PERF_TOOL_SYSTEM_TIME) {
-				bool system = evsel->tool_event == PERF_TOOL_SYSTEM_TIME;
-=======
 			if (evsel__tool_event(evsel) == PERF_TOOL_USER_TIME ||
 			    evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME) {
 				bool system = evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				__u64 *start_time = NULL;
 
 				if (evsel->core.attr.sample_period) {
@@ -2526,11 +2464,8 @@ int evsel__open(struct evsel *evsel, struct perf_cpu_map *cpus,
 
 void evsel__close(struct evsel *evsel)
 {
-<<<<<<< HEAD
-=======
 	if (evsel__is_retire_lat(evsel))
 		tpebs_delete();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_evsel__close(&evsel->core);
 	perf_evsel__free_id(&evsel->core);
 }
@@ -2701,30 +2636,18 @@ u64 evsel__bitfield_swap_branch_flags(u64 value)
 
 static inline bool evsel__has_branch_counters(const struct evsel *evsel)
 {
-<<<<<<< HEAD
-	struct evsel *cur, *leader = evsel__leader(evsel);
-=======
 	struct evsel *leader = evsel__leader(evsel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* The branch counters feature only supports group */
 	if (!leader || !evsel->evlist)
 		return false;
 
-<<<<<<< HEAD
-	evlist__for_each_entry(evsel->evlist, cur) {
-		if ((leader == evsel__leader(cur)) &&
-		    (cur->core.attr.branch_sample_type & PERF_SAMPLE_BRANCH_COUNTERS))
-			return true;
-	}
-=======
 	if (evsel->evlist->nr_br_cntr < 0)
 		evlist__update_br_cntr(evsel->evlist);
 
 	if (leader->br_cntr_nr > 0)
 		return true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return false;
 }
 
@@ -2962,11 +2885,6 @@ int evsel__parse_sample(struct evsel *evsel, union perf_event *event,
 		array = (void *)array + sz;
 
 		if (evsel__has_branch_counters(evsel)) {
-<<<<<<< HEAD
-			OVERFLOW_CHECK_u64(array);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			data->branch_stack_cntr = (u64 *)array;
 			sz = data->branch_stack->nr * sizeof(u64);
 
@@ -3130,11 +3048,7 @@ int evsel__parse_sample_timestamp(struct evsel *evsel, union perf_event *event,
 	return 0;
 }
 
-<<<<<<< HEAD
-u16 evsel__id_hdr_size(struct evsel *evsel)
-=======
 u16 evsel__id_hdr_size(const struct evsel *evsel)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 sample_type = evsel->core.attr.sample_type;
 	u16 size = 0;
@@ -3516,12 +3430,9 @@ static int store_evsel_ids(struct evsel *evsel, struct evlist *evlist)
 {
 	int cpu_map_idx, thread;
 
-<<<<<<< HEAD
-=======
 	if (evsel__is_retire_lat(evsel))
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (cpu_map_idx = 0; cpu_map_idx < xyarray__max_x(evsel->core.fd); cpu_map_idx++) {
 		for (thread = 0; thread < xyarray__max_y(evsel->core.fd);
 		     thread++) {

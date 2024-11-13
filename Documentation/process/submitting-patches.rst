@@ -842,8 +842,6 @@ Make sure that base commit is in an official maintainer/mainline tree
 and not in some internal, accessible only to you tree - otherwise it
 would be worthless.
 
-<<<<<<< HEAD
-=======
 Tooling
 -------
 
@@ -852,7 +850,6 @@ b4, documented at <https://b4.docs.kernel.org/en/latest/>. This can
 help with things like tracking dependencies, running checkpatch and
 with formatting and sending mails.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 References
 ----------
 

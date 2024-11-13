@@ -431,11 +431,7 @@ static void cgroup_storage_seq_show_elem(struct bpf_map *map, void *key,
 		seq_puts(m, ": ");
 		btf_type_seq_show(map->btf, map->btf_value_type_id,
 				  &READ_ONCE(storage->buf)->data[0], m);
-<<<<<<< HEAD
-		seq_puts(m, "\n");
-=======
 		seq_putc(m, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		seq_puts(m, ": {\n");
 		for_each_possible_cpu(cpu) {
@@ -443,11 +439,7 @@ static void cgroup_storage_seq_show_elem(struct bpf_map *map, void *key,
 			btf_type_seq_show(map->btf, map->btf_value_type_id,
 					  per_cpu_ptr(storage->percpu_buf, cpu),
 					  m);
-<<<<<<< HEAD
-			seq_puts(m, "\n");
-=======
 			seq_putc(m, '\n');
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		seq_puts(m, "}\n");
 	}

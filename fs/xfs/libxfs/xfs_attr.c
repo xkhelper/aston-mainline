@@ -51,10 +51,6 @@ STATIC int xfs_attr_shortform_addname(xfs_da_args_t *args);
 STATIC int xfs_attr_leaf_get(xfs_da_args_t *args);
 STATIC int xfs_attr_leaf_removename(xfs_da_args_t *args);
 STATIC int xfs_attr_leaf_hasname(struct xfs_da_args *args, struct xfs_buf **bp);
-<<<<<<< HEAD
-STATIC int xfs_attr_leaf_try_add(struct xfs_da_args *args);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Internal routines when attribute list is more than one block.
@@ -440,8 +436,6 @@ xfs_attr_hashval(
 	return xfs_attr_hashname(name, namelen);
 }
 
-<<<<<<< HEAD
-=======
 /* Save the current remote block info and clear the current pointers. */
 static void
 xfs_attr_save_rmt_blk(
@@ -469,7 +463,6 @@ xfs_attr_restore_rmt_blk(
 	args->rmtvaluelen = args->rmtvaluelen2;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * PPTR_REPLACE operations require the caller to set the old and new names and
  * values explicitly.  Update the canonical fields to the new name and value
@@ -515,53 +508,24 @@ xfs_attr_complete_op(
 	return replace_state;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Try to add an attribute to an inode in leaf form.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int
 xfs_attr_leaf_addname(
 	struct xfs_attr_intent	*attr)
 {
 	struct xfs_da_args	*args = attr->xattri_da_args;
-<<<<<<< HEAD
-=======
 	struct xfs_buf		*bp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			error;
 
 	ASSERT(xfs_attr_is_leaf(args->dp));
 
-<<<<<<< HEAD
-	/*
-	 * Use the leaf buffer we may already hold locked as a result of
-	 * a sf-to-leaf conversion.
-	 */
-	error = xfs_attr_leaf_try_add(args);
-
-	if (error == -ENOSPC) {
-		error = xfs_attr3_leaf_to_node(args);
-		if (error)
-			return error;
-
-		/*
-		 * We're not in leaf format anymore, so roll the transaction and
-		 * retry the add to the newly allocated node block.
-		 */
-		attr->xattri_dela_state = XFS_DAS_NODE_ADD;
-		goto out;
-	}
-=======
 	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, &bp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error)
 		return error;
 
 	/*
-<<<<<<< HEAD
-=======
 	 * Look up the xattr name to set the insertion point for the new xattr.
 	 */
 	error = xfs_attr3_leaf_lookup_int(bp, args);
@@ -589,20 +553,10 @@ xfs_attr_leaf_addname(
 	}
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * We need to commit and roll if we need to allocate remote xattr blocks
 	 * or perform more xattr manipulations. Otherwise there is nothing more
 	 * to do and we can return success.
 	 */
-<<<<<<< HEAD
-	if (args->rmtblkno)
-		attr->xattri_dela_state = XFS_DAS_LEAF_SET_RMT;
-	else
-		attr->xattri_dela_state = xfs_attr_complete_op(attr,
-							XFS_DAS_LEAF_REPLACE);
-out:
-	trace_xfs_attr_leaf_addname_return(attr->xattri_dela_state, args->dp);
-=======
 	if (!xfs_attr3_leaf_add(bp, args)) {
 		error = xfs_attr3_leaf_to_node(args);
 		if (error)
@@ -621,7 +575,6 @@ out:
 
 out_brelse:
 	xfs_trans_brelse(args->trans, bp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return error;
 }
 
@@ -644,11 +597,7 @@ xfs_attr_node_addname(
 		return error;
 
 	error = xfs_attr_node_try_addname(attr);
-<<<<<<< HEAD
-	if (error == -ENOSPC) {
-=======
 	if (error == 1) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = xfs_attr3_leaf_to_node(args);
 		if (error)
 			return error;
@@ -1272,91 +1221,6 @@ xfs_attr_shortform_addname(
  * External routines when attribute list is one block
  *========================================================================*/
 
-<<<<<<< HEAD
-/* Save the current remote block info and clear the current pointers. */
-static void
-xfs_attr_save_rmt_blk(
-	struct xfs_da_args	*args)
-{
-	args->blkno2 = args->blkno;
-	args->index2 = args->index;
-	args->rmtblkno2 = args->rmtblkno;
-	args->rmtblkcnt2 = args->rmtblkcnt;
-	args->rmtvaluelen2 = args->rmtvaluelen;
-	args->rmtblkno = 0;
-	args->rmtblkcnt = 0;
-	args->rmtvaluelen = 0;
-}
-
-/* Set stored info about a remote block */
-static void
-xfs_attr_restore_rmt_blk(
-	struct xfs_da_args	*args)
-{
-	args->blkno = args->blkno2;
-	args->index = args->index2;
-	args->rmtblkno = args->rmtblkno2;
-	args->rmtblkcnt = args->rmtblkcnt2;
-	args->rmtvaluelen = args->rmtvaluelen2;
-}
-
-/*
- * Tries to add an attribute to an inode in leaf form
- *
- * This function is meant to execute as part of a delayed operation and leaves
- * the transaction handling to the caller.  On success the attribute is added
- * and the inode and transaction are left dirty.  If there is not enough space,
- * the attr data is converted to node format and -ENOSPC is returned. Caller is
- * responsible for handling the dirty inode and transaction or adding the attr
- * in node format.
- */
-STATIC int
-xfs_attr_leaf_try_add(
-	struct xfs_da_args	*args)
-{
-	struct xfs_buf		*bp;
-	int			error;
-
-	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, &bp);
-	if (error)
-		return error;
-
-	/*
-	 * Look up the xattr name to set the insertion point for the new xattr.
-	 */
-	error = xfs_attr3_leaf_lookup_int(bp, args);
-	switch (error) {
-	case -ENOATTR:
-		if (args->op_flags & XFS_DA_OP_REPLACE)
-			goto out_brelse;
-		break;
-	case -EEXIST:
-		if (!(args->op_flags & XFS_DA_OP_REPLACE))
-			goto out_brelse;
-
-		trace_xfs_attr_leaf_replace(args);
-		/*
-		 * Save the existing remote attr state so that the current
-		 * values reflect the state of the new attribute we are about to
-		 * add, not the attribute we just found and will remove later.
-		 */
-		xfs_attr_save_rmt_blk(args);
-		break;
-	case 0:
-		break;
-	default:
-		goto out_brelse;
-	}
-
-	return xfs_attr3_leaf_add(bp, args);
-
-out_brelse:
-	xfs_trans_brelse(args->trans, bp);
-	return error;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Return EEXIST if attr is found, or ENOATTR if not
  */
@@ -1522,18 +1386,12 @@ error:
 /*
  * Add a name to a Btree-format attribute list.
  *
-<<<<<<< HEAD
- * This will involve walking down the Btree, and may involve splitting
- * leaf nodes and even splitting intermediate nodes up to and including
- * the root node (a special case of an intermediate node).
-=======
  * This will involve walking down the Btree, and may involve splitting leaf
  * nodes and even splitting intermediate nodes up to and including the root
  * node (a special case of an intermediate node).
  *
  * If the tree was still in single leaf format and needs to converted to
  * real node format return 1 and let the caller handle that.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static int
 xfs_attr_node_try_addname(
@@ -1541,33 +1399,21 @@ xfs_attr_node_try_addname(
 {
 	struct xfs_da_state		*state = attr->xattri_da_state;
 	struct xfs_da_state_blk		*blk;
-<<<<<<< HEAD
-	int				error;
-=======
 	int				error = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_xfs_attr_node_addname(state->args);
 
 	blk = &state->path.blk[state->path.active-1];
 	ASSERT(blk->magic == XFS_ATTR_LEAF_MAGIC);
 
-<<<<<<< HEAD
-	error = xfs_attr3_leaf_add(blk->bp, state->args);
-	if (error == -ENOSPC) {
-=======
 	if (!xfs_attr3_leaf_add(blk->bp, state->args)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (state->path.active == 1) {
 			/*
 			 * Its really a single leaf node, but it had
 			 * out-of-line values so it looked like it *might*
 			 * have been a b-tree. Let the caller deal with this.
 			 */
-<<<<<<< HEAD
-=======
 			error = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out;
 		}
 

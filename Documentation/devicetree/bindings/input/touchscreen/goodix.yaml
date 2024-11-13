@@ -69,11 +69,7 @@ examples:
     i2c {
       #address-cells = <1>;
       #size-cells = <0>;
-<<<<<<< HEAD
-      gt928@5d {
-=======
       touchscreen@5d {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         compatible = "goodix,gt928";
         reg = <0x5d>;
         interrupt-parent = <&gpio>;

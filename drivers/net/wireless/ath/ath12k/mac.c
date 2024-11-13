@@ -2196,14 +2196,8 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
 	 * request, then use MAX_AMPDU_LEN_FACTOR as 16 to calculate max_ampdu
 	 * length.
 	 */
-<<<<<<< HEAD
-	ampdu_factor = (he_cap->he_cap_elem.mac_cap_info[3] &
-			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK) >>
-			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK;
-=======
 	ampdu_factor = u8_get_bits(he_cap->he_cap_elem.mac_cap_info[3],
 				   IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (ampdu_factor) {
 		if (sta->deflink.vht_cap.vht_supported)
@@ -3669,11 +3663,7 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
 	struct ath12k *ar, *prev_ar;
 	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
 	struct cfg80211_scan_request *req = &hw_req->req;
-<<<<<<< HEAD
-	struct ath12k_wmi_scan_req_arg arg = {};
-=======
 	struct ath12k_wmi_scan_req_arg *arg = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 	int i;
 	bool create = true;
@@ -3755,35 +3745,6 @@ scan:
 	if (ret)
 		goto exit;
 
-<<<<<<< HEAD
-	ath12k_wmi_start_scan_init(ar, &arg);
-	arg.vdev_id = arvif->vdev_id;
-	arg.scan_id = ATH12K_SCAN_ID;
-
-	if (req->ie_len) {
-		arg.extraie.ptr = kmemdup(req->ie, req->ie_len, GFP_KERNEL);
-		if (!arg.extraie.ptr) {
-			ret = -ENOMEM;
-			goto exit;
-		}
-		arg.extraie.len = req->ie_len;
-	}
-
-	if (req->n_ssids) {
-		arg.num_ssids = req->n_ssids;
-		for (i = 0; i < arg.num_ssids; i++)
-			arg.ssid[i] = req->ssids[i];
-	} else {
-		arg.scan_f_passive = 1;
-	}
-
-	if (req->n_channels) {
-		arg.num_chan = req->n_channels;
-		arg.chan_list = kcalloc(arg.num_chan, sizeof(*arg.chan_list),
-					GFP_KERNEL);
-
-		if (!arg.chan_list) {
-=======
 	arg = kzalloc(sizeof(*arg), GFP_KERNEL);
 	if (!arg) {
 		ret = -ENOMEM;
@@ -3816,24 +3777,15 @@ scan:
 		arg->chan_list = kcalloc(arg->num_chan, sizeof(*arg->chan_list),
 					 GFP_KERNEL);
 		if (!arg->chan_list) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = -ENOMEM;
 			goto exit;
 		}
 
-<<<<<<< HEAD
-		for (i = 0; i < arg.num_chan; i++)
-			arg.chan_list[i] = req->channels[i]->center_freq;
-	}
-
-	ret = ath12k_start_scan(ar, &arg);
-=======
 		for (i = 0; i < arg->num_chan; i++)
 			arg->chan_list[i] = req->channels[i]->center_freq;
 	}
 
 	ret = ath12k_start_scan(ar, arg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		ath12k_warn(ar->ab, "failed to start hw scan: %d\n", ret);
 		spin_lock_bh(&ar->data_lock);
@@ -3843,16 +3795,6 @@ scan:
 
 	/* Add a margin to account for event/command processing */
 	ieee80211_queue_delayed_work(ath12k_ar_to_hw(ar), &ar->scan.timeout,
-<<<<<<< HEAD
-				     msecs_to_jiffies(arg.max_scan_time +
-						      ATH12K_MAC_SCAN_TIMEOUT_MSECS));
-
-exit:
-	kfree(arg.chan_list);
-
-	if (req->ie_len)
-		kfree(arg.extraie.ptr);
-=======
 				     msecs_to_jiffies(arg->max_scan_time +
 						      ATH12K_MAC_SCAN_TIMEOUT_MSECS));
 
@@ -3862,7 +3804,6 @@ exit:
 		kfree(arg->extraie.ptr);
 		kfree(arg);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&ar->conf_mutex);
 
@@ -9144,20 +9085,11 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
 			ar->mac_addr[4] += ar->pdev_idx;
 		}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		if (!is_valid_ether_addr(ar->mac_addr)) {
 			ath12k_warn(ab, "invalid MAC address; choosing random\n");
 			eth_random_addr(ar->mac_addr);
 		}
 
-<<<<<<< HEAD
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		ret = ath12k_mac_setup_register(ar, &ht_cap_info, hw->wiphy->bands);
 		if (ret)
 			goto err_cleanup_unregister;

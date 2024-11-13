@@ -1186,8 +1186,6 @@ Here are the available options:
   trace_printk
 	Can disable trace_printk() from writing into the buffer.
 
-<<<<<<< HEAD
-=======
   trace_printk_dest
 	Set to have trace_printk() and similar internal tracing functions
 	write into this instance. Note, only one trace instance can have
@@ -1200,7 +1198,6 @@ Here are the available options:
 	default instance. The only way the top level instance has this flag
 	cleared, is by it being set in another instance.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   annotate
 	It is sometimes confusing when the CPU buffers are full
 	and one CPU buffer had a lot of events recently, thus

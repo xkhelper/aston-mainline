@@ -1430,11 +1430,7 @@ static struct platform_driver asoc_mcbsp_driver = {
 	},
 
 	.probe = asoc_mcbsp_probe,
-<<<<<<< HEAD
-	.remove_new = asoc_mcbsp_remove,
-=======
 	.remove = asoc_mcbsp_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(asoc_mcbsp_driver);

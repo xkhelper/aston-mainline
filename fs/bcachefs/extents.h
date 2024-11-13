@@ -357,11 +357,7 @@ out:									\
 	__bkey_for_each_ptr_decode(_k, (_p).start, (_p).end,		\
 				   _ptr, _entry)
 
-<<<<<<< HEAD
-#define bkey_crc_next(_k, _start, _end, _crc, _iter)			\
-=======
 #define bkey_crc_next(_k, _end, _crc, _iter)			\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ({									\
 	__bkey_extent_entry_for_each_from(_iter, _end, _iter)		\
 		if (extent_entry_is_crc(_iter)) {			\
@@ -376,11 +372,7 @@ out:									\
 #define __bkey_for_each_crc(_k, _start, _end, _crc, _iter)		\
 	for ((_crc) = bch2_extent_crc_unpack(_k, NULL),			\
 	     (_iter) = (_start);					\
-<<<<<<< HEAD
-	     bkey_crc_next(_k, _start, _end, _crc, _iter);		\
-=======
 	     bkey_crc_next(_k, _end, _crc, _iter);		\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     (_iter) = extent_entry_next(_iter))
 
 #define bkey_for_each_crc(_k, _p, _crc, _iter)				\
@@ -619,12 +611,6 @@ unsigned bch2_extent_ptr_desired_durability(struct bch_fs *, struct extent_ptr_d
 unsigned bch2_extent_ptr_durability(struct bch_fs *, struct extent_ptr_decoded *);
 unsigned bch2_bkey_durability(struct bch_fs *, struct bkey_s_c);
 
-<<<<<<< HEAD
-void bch2_bkey_drop_device(struct bkey_s, unsigned);
-void bch2_bkey_drop_device_noerror(struct bkey_s, unsigned);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct bch_extent_ptr *bch2_bkey_has_device_c(struct bkey_s_c, unsigned);
 
 static inline struct bch_extent_ptr *bch2_bkey_has_device(struct bkey_s k, unsigned dev)
@@ -663,8 +649,6 @@ void bch2_extent_ptr_decoded_append(struct bkey_i *,
 void bch2_bkey_drop_ptr_noerror(struct bkey_s, struct bch_extent_ptr *);
 void bch2_bkey_drop_ptr(struct bkey_s, struct bch_extent_ptr *);
 
-<<<<<<< HEAD
-=======
 void bch2_bkey_drop_device_noerror(struct bkey_s, unsigned);
 void bch2_bkey_drop_device(struct bkey_s, unsigned);
 
@@ -682,7 +666,6 @@ _again:									\
 		}							\
 } while (0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define bch2_bkey_drop_ptrs(_k, _ptr, _cond)				\
 do {									\
 	__label__ _again;						\
@@ -703,26 +686,18 @@ bool bch2_extents_match(struct bkey_s_c, struct bkey_s_c);
 struct bch_extent_ptr *
 bch2_extent_has_ptr(struct bkey_s_c, struct extent_ptr_decoded, struct bkey_s);
 
-<<<<<<< HEAD
-void bch2_extent_ptr_set_cached(struct bkey_s, struct bch_extent_ptr *);
-
-bool bch2_extent_normalize(struct bch_fs *, struct bkey_s);
-=======
 void bch2_extent_ptr_set_cached(struct bch_fs *, struct bch_io_opts *,
 				struct bkey_s, struct bch_extent_ptr *);
 
 bool bch2_extent_normalize_by_opts(struct bch_fs *, struct bch_io_opts *, struct bkey_s);
 bool bch2_extent_normalize(struct bch_fs *, struct bkey_s);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_extent_ptr_to_text(struct printbuf *out, struct bch_fs *, const struct bch_extent_ptr *);
 void bch2_bkey_ptrs_to_text(struct printbuf *, struct bch_fs *,
 			    struct bkey_s_c);
 int bch2_bkey_ptrs_validate(struct bch_fs *, struct bkey_s_c,
 			    enum bch_validate_flags);
 
-<<<<<<< HEAD
-=======
 static inline bool bch2_extent_ptr_eq(struct bch_extent_ptr ptr1,
 				      struct bch_extent_ptr ptr2)
 {
@@ -733,7 +708,6 @@ static inline bool bch2_extent_ptr_eq(struct bch_extent_ptr ptr1,
 		ptr1.dev	== ptr2.dev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void bch2_ptr_swab(struct bkey_s);
 
 const struct bch_extent_rebalance *bch2_bkey_rebalance_opts(struct bkey_s_c);

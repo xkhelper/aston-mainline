@@ -743,11 +743,7 @@ static void mn88473_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id mn88473_id_table[] = {
-<<<<<<< HEAD
-	{"mn88473", 0},
-=======
 	{ "mn88473" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, mn88473_id_table);

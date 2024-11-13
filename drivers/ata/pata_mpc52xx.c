@@ -620,10 +620,6 @@ static struct ata_port_operations mpc52xx_ata_port_ops = {
 	.bmdma_start		= mpc52xx_bmdma_start,
 	.bmdma_stop		= mpc52xx_bmdma_stop,
 	.bmdma_status		= mpc52xx_bmdma_status,
-<<<<<<< HEAD
-	.qc_prep		= ata_noop_qc_prep,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int mpc52xx_ata_init_one(struct device *dev,

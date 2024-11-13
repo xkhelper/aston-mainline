@@ -33,10 +33,7 @@
 #include <linux/debugfs.h>
 #include <linux/cpuhotplug.h>
 #include <linux/part_stat.h>
-<<<<<<< HEAD
-=======
 #include <linux/kernel_read_file.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "zram_drv.h"
 
@@ -63,29 +60,17 @@ static int zram_read_page(struct zram *zram, struct page *page, u32 index,
 
 static int zram_slot_trylock(struct zram *zram, u32 index)
 {
-<<<<<<< HEAD
-	return bit_spin_trylock(ZRAM_LOCK, &zram->table[index].flags);
-=======
 	return spin_trylock(&zram->table[index].lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void zram_slot_lock(struct zram *zram, u32 index)
 {
-<<<<<<< HEAD
-	bit_spin_lock(ZRAM_LOCK, &zram->table[index].flags);
-=======
 	spin_lock(&zram->table[index].lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void zram_slot_unlock(struct zram *zram, u32 index)
 {
-<<<<<<< HEAD
-	bit_spin_unlock(ZRAM_LOCK, &zram->table[index].flags);
-=======
 	spin_unlock(&zram->table[index].lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline bool init_done(struct zram *zram)
@@ -1014,8 +999,6 @@ static int __comp_algorithm_store(struct zram *zram, u32 prio, const char *buf)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static void comp_params_reset(struct zram *zram, u32 prio)
 {
 	struct zcomp_params *params = &zram->params[prio];
@@ -1113,7 +1096,6 @@ static ssize_t algorithm_params_store(struct device *dev,
 	return ret ? ret : len;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t comp_algorithm_show(struct device *dev,
 				   struct device_attribute *attr,
 				   char *buf)
@@ -1327,11 +1309,7 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
 
 static bool zram_meta_alloc(struct zram *zram, u64 disksize)
 {
-<<<<<<< HEAD
-	size_t num_pages;
-=======
 	size_t num_pages, index;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	num_pages = disksize >> PAGE_SHIFT;
 	zram->table = vzalloc(array_size(num_pages, sizeof(*zram->table)));
@@ -1346,12 +1324,9 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
 
 	if (!huge_class_size)
 		huge_class_size = zs_huge_class_size(zram->mem_pool);
-<<<<<<< HEAD
-=======
 
 	for (index = 0; index < num_pages; index++)
 		spin_lock_init(&zram->table[index].lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return true;
 }
 
@@ -1409,11 +1384,7 @@ out:
 	zram_set_handle(zram, index, 0);
 	zram_set_obj_size(zram, index, 0);
 	WARN_ON_ONCE(zram->table[index].flags &
-<<<<<<< HEAD
-		~(1UL << ZRAM_LOCK | 1UL << ZRAM_UNDER_WB));
-=======
 		~(1UL << ZRAM_UNDER_WB));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1457,12 +1428,8 @@ static int zram_read_from_zspool(struct zram *zram, struct page *page,
 		ret = 0;
 	} else {
 		dst = kmap_local_page(page);
-<<<<<<< HEAD
-		ret = zcomp_decompress(zstrm, src, size, dst);
-=======
 		ret = zcomp_decompress(zram->comps[prio], zstrm,
 				       src, size, dst);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kunmap_local(dst);
 		zcomp_stream_put(zram->comps[prio]);
 	}
@@ -1549,12 +1516,8 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
 compress_again:
 	zstrm = zcomp_stream_get(zram->comps[ZRAM_PRIMARY_COMP]);
 	src = kmap_local_page(page);
-<<<<<<< HEAD
-	ret = zcomp_compress(zstrm, src, &comp_len);
-=======
 	ret = zcomp_compress(zram->comps[ZRAM_PRIMARY_COMP], zstrm,
 			     src, &comp_len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kunmap_local(src);
 
 	if (unlikely(ret)) {
@@ -1741,12 +1704,8 @@ static int zram_recompress(struct zram *zram, u32 index, struct page *page,
 		num_recomps++;
 		zstrm = zcomp_stream_get(zram->comps[prio]);
 		src = kmap_local_page(page);
-<<<<<<< HEAD
-		ret = zcomp_compress(zstrm, src, &comp_len_new);
-=======
 		ret = zcomp_compress(zram->comps[prio], zstrm,
 				     src, &comp_len_new);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kunmap_local(src);
 
 		if (ret) {
@@ -1899,8 +1858,6 @@ static ssize_t recompress_store(struct device *dev,
 			algo = val;
 			continue;
 		}
-<<<<<<< HEAD
-=======
 
 		if (!strcmp(param, "priority")) {
 			ret = kstrtouint(val, 10, &prio);
@@ -1913,7 +1870,6 @@ static ssize_t recompress_store(struct device *dev,
 			prio_max = min(prio + 1, ZRAM_MAX_COMPS);
 			continue;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (threshold >= huge_class_size)
@@ -2136,8 +2092,6 @@ static void zram_slot_free_notify(struct block_device *bdev,
 	zram_slot_unlock(zram, index);
 }
 
-<<<<<<< HEAD
-=======
 static void zram_comp_params_reset(struct zram *zram)
 {
 	u32 prio;
@@ -2147,7 +2101,6 @@ static void zram_comp_params_reset(struct zram *zram)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void zram_destroy_comps(struct zram *zram)
 {
 	u32 prio;
@@ -2161,8 +2114,6 @@ static void zram_destroy_comps(struct zram *zram)
 		zcomp_destroy(comp);
 		zram->num_active_comps--;
 	}
-<<<<<<< HEAD
-=======
 
 	for (prio = ZRAM_PRIMARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
 		/* Do not free statically defined compression algorithms */
@@ -2172,7 +2123,6 @@ static void zram_destroy_comps(struct zram *zram)
 	}
 
 	zram_comp_params_reset(zram);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void zram_reset_device(struct zram *zram)
@@ -2230,12 +2180,8 @@ static ssize_t disksize_store(struct device *dev,
 		if (!zram->comp_algs[prio])
 			continue;
 
-<<<<<<< HEAD
-		comp = zcomp_create(zram->comp_algs[prio]);
-=======
 		comp = zcomp_create(zram->comp_algs[prio],
 				    &zram->params[prio]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(comp)) {
 			pr_err("Cannot initialise %s compressing backend\n",
 			       zram->comp_algs[prio]);
@@ -2338,10 +2284,7 @@ static DEVICE_ATTR_RW(writeback_limit_enable);
 static DEVICE_ATTR_RW(recomp_algorithm);
 static DEVICE_ATTR_WO(recompress);
 #endif
-<<<<<<< HEAD
-=======
 static DEVICE_ATTR_WO(algorithm_params);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct attribute *zram_disk_attrs[] = {
 	&dev_attr_disksize.attr,
@@ -2369,10 +2312,7 @@ static struct attribute *zram_disk_attrs[] = {
 	&dev_attr_recomp_algorithm.attr,
 	&dev_attr_recompress.attr,
 #endif
-<<<<<<< HEAD
-=======
 	&dev_attr_algorithm_params.attr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL,
 };
 
@@ -2448,10 +2388,7 @@ static int zram_add(void)
 	if (ret)
 		goto out_cleanup_disk;
 
-<<<<<<< HEAD
-=======
 	zram_comp_params_reset(zram);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
 
 	zram_debugfs_register(zram);
@@ -2602,16 +2539,10 @@ static void destroy_devices(void)
 
 static int __init zram_init(void)
 {
-<<<<<<< HEAD
-	int ret;
-
-	BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > BITS_PER_LONG);
-=======
 	struct zram_table_entry zram_te;
 	int ret;
 
 	BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > sizeof(zram_te.flags) * 8);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = cpuhp_setup_state_multi(CPUHP_ZCOMP_PREPARE, "block/zram:prepare",
 				      zcomp_cpu_up_prepare, zcomp_cpu_dead);

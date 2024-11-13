@@ -42,11 +42,7 @@ struct rmnet_map_ul_csum_header {
 
 /* csum_info field:
  *  OFFSET:	where (offset in bytes) to insert computed checksum
-<<<<<<< HEAD
- *  UDP:	1 = UDP checksum (zero checkum means no checksum)
-=======
  *  UDP:	1 = UDP checksum (zero checksum means no checksum)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *  ENABLED:	1 = checksum computation requested
  */
 #define MAP_CSUM_UL_OFFSET_MASK		GENMASK(13, 0)

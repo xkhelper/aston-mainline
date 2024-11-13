@@ -4726,11 +4726,7 @@ static int con_font_get(struct vc_data *vc, struct console_font_op *op)
 		return -EINVAL;
 
 	if (op->data) {
-<<<<<<< HEAD
-		font.data = kvmalloc(max_font_size, GFP_KERNEL);
-=======
 		font.data = kvzalloc(max_font_size, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!font.data)
 			return -ENOMEM;
 	} else

@@ -26,10 +26,7 @@
 /* PCI VID definitions */
 #define PCI_VENDOR_ID_THALES	0x1269
 #define PCI_VENDOR_ID_QUECTEL	0x1eac
-<<<<<<< HEAD
-=======
 #define PCI_VENDOR_ID_NETPRISMA	0x203e
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MHI_EDL_DB			91
 #define MHI_EDL_COOKIE			0xEDEDEDED
@@ -437,13 +434,8 @@ static const struct mhi_controller_config modem_foxconn_sdx72_config = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_sdx55_info = {
 	.name = "foxconn-sdx55",
-<<<<<<< HEAD
-	.fw = "qcom/sdx55m/sbl1.mbn",
-	.edl = "qcom/sdx55m/edl.mbn",
-=======
 	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
 	.edl_trigger = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config = &modem_foxconn_sdx55_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -453,13 +445,8 @@ static const struct mhi_pci_dev_info mhi_foxconn_sdx55_info = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_t99w175_info = {
 	.name = "foxconn-t99w175",
-<<<<<<< HEAD
-	.fw = "qcom/sdx55m/sbl1.mbn",
-	.edl = "qcom/sdx55m/edl.mbn",
-=======
 	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
 	.edl_trigger = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config = &modem_foxconn_sdx55_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -469,13 +456,8 @@ static const struct mhi_pci_dev_info mhi_foxconn_t99w175_info = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_dw5930e_info = {
 	.name = "foxconn-dw5930e",
-<<<<<<< HEAD
-	.fw = "qcom/sdx55m/sbl1.mbn",
-	.edl = "qcom/sdx55m/edl.mbn",
-=======
 	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
 	.edl_trigger = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config = &modem_foxconn_sdx55_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -485,11 +467,8 @@ static const struct mhi_pci_dev_info mhi_foxconn_dw5930e_info = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_t99w368_info = {
 	.name = "foxconn-t99w368",
-<<<<<<< HEAD
-=======
 	.edl = "qcom/sdx65m/foxconn/prog_firehose_lite.elf",
 	.edl_trigger = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config = &modem_foxconn_sdx55_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -499,11 +478,8 @@ static const struct mhi_pci_dev_info mhi_foxconn_t99w368_info = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_t99w373_info = {
 	.name = "foxconn-t99w373",
-<<<<<<< HEAD
-=======
 	.edl = "qcom/sdx65m/foxconn/prog_firehose_lite.elf",
 	.edl_trigger = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config = &modem_foxconn_sdx55_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -513,11 +489,8 @@ static const struct mhi_pci_dev_info mhi_foxconn_t99w373_info = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_t99w510_info = {
 	.name = "foxconn-t99w510",
-<<<<<<< HEAD
-=======
 	.edl = "qcom/sdx24m/foxconn/prog_firehose_sdx24.mbn",
 	.edl_trigger = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config = &modem_foxconn_sdx55_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -527,11 +500,8 @@ static const struct mhi_pci_dev_info mhi_foxconn_t99w510_info = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_dw5932e_info = {
 	.name = "foxconn-dw5932e",
-<<<<<<< HEAD
-=======
 	.edl = "qcom/sdx65m/foxconn/prog_firehose_lite.elf",
 	.edl_trigger = true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config = &modem_foxconn_sdx55_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -541,11 +511,7 @@ static const struct mhi_pci_dev_info mhi_foxconn_dw5932e_info = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_t99w515_info = {
 	.name = "foxconn-t99w515",
-<<<<<<< HEAD
-	.edl = "fox/sdx72m/edl.mbn",
-=======
 	.edl = "qcom/sdx72m/foxconn/edl.mbn",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.edl_trigger = true,
 	.config = &modem_foxconn_sdx72_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
@@ -556,11 +522,7 @@ static const struct mhi_pci_dev_info mhi_foxconn_t99w515_info = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_dw5934e_info = {
 	.name = "foxconn-dw5934e",
-<<<<<<< HEAD
-	.edl = "fox/sdx72m/edl.mbn",
-=======
 	.edl = "qcom/sdx72m/foxconn/edl.mbn",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.edl_trigger = true,
 	.config = &modem_foxconn_sdx72_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
@@ -727,8 +689,6 @@ static const struct mhi_pci_dev_info mhi_telit_fn990_info = {
 	.mru_default = 32768,
 };
 
-<<<<<<< HEAD
-=======
 static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
 	.name = "telit-fe990a",
 	.config = &modem_telit_fn990_config,
@@ -758,7 +718,6 @@ static const struct mhi_pci_dev_info mhi_netprisma_fcun69_info = {
 	.sideband_wake = true,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Keep the list sorted based on the PID. New VID should be added as the last entry */
 static const struct pci_device_id mhi_pci_id_table[] = {
 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
@@ -776,15 +735,9 @@ static const struct pci_device_id mhi_pci_id_table[] = {
 	/* Telit FN990 */
 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2010),
 		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-<<<<<<< HEAD
-	/* Telit FE990 */
-	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
-		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-=======
 	/* Telit FE990A */
 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
 		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
@@ -863,15 +816,12 @@ static const struct pci_device_id mhi_pci_id_table[] = {
 	/* T99W175 (sdx55), HP variant */
 	{ PCI_DEVICE(0x03f0, 0x0a6c),
 		.driver_data = (kernel_ulong_t) &mhi_foxconn_t99w175_info },
-<<<<<<< HEAD
-=======
 	/* NETPRISMA LCUR57 (SDX24) */
 	{ PCI_DEVICE(PCI_VENDOR_ID_NETPRISMA, 0x1000),
 		.driver_data = (kernel_ulong_t) &mhi_netprisma_lcur57_info },
 	/* NETPRISMA FCUN69 (SDX6X) */
 	{ PCI_DEVICE(PCI_VENDOR_ID_NETPRISMA, 0x1001),
 		.driver_data = (kernel_ulong_t) &mhi_netprisma_fcun69_info },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{  }
 };
 MODULE_DEVICE_TABLE(pci, mhi_pci_id_table);

@@ -5,12 +5,9 @@
  * Copyright (C) 2017 Rockchip Electronics Co., Ltd.
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/math.h>
 #include <linux/string.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <media/v4l2-common.h>
 #include <media/v4l2-event.h>
 #include <media/v4l2-ioctl.h>
@@ -39,8 +36,6 @@
 #define RKISP1_ISP_CC_COEFF(n) \
 			(RKISP1_CIF_ISP_CC_COEFF_0 + (n) * 4)
 
-<<<<<<< HEAD
-=======
 #define RKISP1_EXT_PARAMS_BLOCK_GROUP_OTHERS	BIT(0)
 #define RKISP1_EXT_PARAMS_BLOCK_GROUP_LSC	BIT(1)
 
@@ -94,7 +89,6 @@ rkisp1_params_get_format_info(u32 dataformat)
 	return &rkisp1_params_formats[RKISP1_PARAMS_FIXED];
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void
 rkisp1_param_set_bits(struct rkisp1_params *params, u32 reg, u32 bit_mask)
 {
@@ -174,56 +168,6 @@ static void rkisp1_bls_config(struct rkisp1_params *params,
 	new_control &= RKISP1_CIF_ISP_BLS_ENA;
 	/* fixed subtraction values */
 	if (!arg->enable_auto) {
-<<<<<<< HEAD
-		const struct rkisp1_cif_isp_bls_fixed_val *pval =
-								&arg->fixed_val;
-
-		switch (params->raw_type) {
-		case RKISP1_RAW_BGGR:
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_D_FIXED,
-				     pval->r);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_C_FIXED,
-				     pval->gr);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_B_FIXED,
-				     pval->gb);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_A_FIXED,
-				     pval->b);
-			break;
-		case RKISP1_RAW_GBRG:
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_C_FIXED,
-				     pval->r);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_D_FIXED,
-				     pval->gr);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_A_FIXED,
-				     pval->gb);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_B_FIXED,
-				     pval->b);
-			break;
-		case RKISP1_RAW_GRBG:
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_B_FIXED,
-				     pval->r);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_A_FIXED,
-				     pval->gr);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_D_FIXED,
-				     pval->gb);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_C_FIXED,
-				     pval->b);
-			break;
-		case RKISP1_RAW_RGGB:
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_A_FIXED,
-				     pval->r);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_B_FIXED,
-				     pval->gr);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_C_FIXED,
-				     pval->gb);
-			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_D_FIXED,
-				     pval->b);
-			break;
-		default:
-			break;
-		}
-
-=======
 		static const u32 regs[] = {
 			RKISP1_CIF_ISP_BLS_A_FIXED,
 			RKISP1_CIF_ISP_BLS_B_FIXED,
@@ -238,7 +182,6 @@ static void rkisp1_bls_config(struct rkisp1_params *params,
 		rkisp1_write(params->rkisp1, swapped[1], arg->fixed_val.gr);
 		rkisp1_write(params->rkisp1, swapped[2], arg->fixed_val.gb);
 		rkisp1_write(params->rkisp1, swapped[3], arg->fixed_val.b);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		if (arg->en_windows & BIT(1)) {
 			rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_BLS_H2_START,
@@ -1318,8 +1261,6 @@ rkisp1_dpf_strength_config(struct rkisp1_params *params,
 	rkisp1_write(params->rkisp1, RKISP1_CIF_ISP_DPF_STRENGTH_R, arg->r);
 }
 
-<<<<<<< HEAD
-=======
 static void rkisp1_compand_write_px_curve(struct rkisp1_params *params,
 					  unsigned int addr, const u8 *curve)
 {
@@ -1407,7 +1348,6 @@ rkisp1_compand_compress_config(struct rkisp1_params *params,
 				       arg->x);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void
 rkisp1_isp_isr_other_config(struct rkisp1_params *params,
 			    const struct rkisp1_params_cfg *new_params)
@@ -1418,15 +1358,12 @@ rkisp1_isp_isr_other_config(struct rkisp1_params *params,
 	module_cfg_update = new_params->module_cfg_update;
 	module_ens = new_params->module_ens;
 
-<<<<<<< HEAD
-=======
 	if (!rkisp1_has_feature(params->rkisp1, BLS)) {
 		module_en_update &= ~RKISP1_CIF_ISP_MODULE_BLS;
 		module_cfg_update &= ~RKISP1_CIF_ISP_MODULE_BLS;
 		module_ens &= ~RKISP1_CIF_ISP_MODULE_BLS;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* update dpc config */
 	if (module_cfg_update & RKISP1_CIF_ISP_MODULE_DPCC)
 		rkisp1_dpcc_config(params,
@@ -1679,23 +1616,6 @@ static void rkisp1_isp_isr_meas_config(struct rkisp1_params *params,
 	}
 }
 
-<<<<<<< HEAD
-static bool rkisp1_params_get_buffer(struct rkisp1_params *params,
-				     struct rkisp1_buffer **buf,
-				     struct rkisp1_params_cfg **cfg)
-{
-	if (list_empty(&params->params))
-		return false;
-
-	*buf = list_first_entry(&params->params, struct rkisp1_buffer, queue);
-	*cfg = vb2_plane_vaddr(&(*buf)->vb.vb2_buf, 0);
-
-	return true;
-}
-
-static void rkisp1_params_complete_buffer(struct rkisp1_params *params,
-					  struct rkisp1_buffer *buf,
-=======
 /*------------------------------------------------------------------------------
  * Extensible parameters format handling
  */
@@ -2241,7 +2161,6 @@ static void rkisp1_ext_params_config(struct rkisp1_params *params,
 
 static void rkisp1_params_complete_buffer(struct rkisp1_params *params,
 					  struct rkisp1_params_buffer *buf,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  unsigned int frame_sequence)
 {
 	list_del(&buf->queue);
@@ -2253,19 +2172,6 @@ static void rkisp1_params_complete_buffer(struct rkisp1_params *params,
 void rkisp1_params_isr(struct rkisp1_device *rkisp1)
 {
 	struct rkisp1_params *params = &rkisp1->params;
-<<<<<<< HEAD
-	struct rkisp1_params_cfg *new_params;
-	struct rkisp1_buffer *cur_buf;
-
-	spin_lock(&params->config_lock);
-
-	if (!rkisp1_params_get_buffer(params, &cur_buf, &new_params))
-		goto unlock;
-
-	rkisp1_isp_isr_other_config(params, new_params);
-	rkisp1_isp_isr_lsc_config(params, new_params);
-	rkisp1_isp_isr_meas_config(params, new_params);
-=======
 	struct rkisp1_params_buffer *cur_buf;
 
 	spin_lock(&params->config_lock);
@@ -2284,7 +2190,6 @@ void rkisp1_params_isr(struct rkisp1_device *rkisp1)
 					 RKISP1_EXT_PARAMS_BLOCK_GROUP_OTHERS |
 					 RKISP1_EXT_PARAMS_BLOCK_GROUP_LSC);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* update shadow register immediately */
 	rkisp1_param_set_bits(params, RKISP1_CIF_ISP_CTRL,
@@ -2350,12 +2255,7 @@ void rkisp1_params_pre_configure(struct rkisp1_params *params,
 				 enum v4l2_ycbcr_encoding ycbcr_encoding)
 {
 	struct rkisp1_cif_isp_hst_config hst = rkisp1_hst_params_default_config;
-<<<<<<< HEAD
-	struct rkisp1_params_cfg *new_params;
-	struct rkisp1_buffer *cur_buf;
-=======
 	struct rkisp1_params_buffer *cur_buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	params->quantization = quantization;
 	params->ycbcr_encoding = ycbcr_encoding;
@@ -2384,13 +2284,6 @@ void rkisp1_params_pre_configure(struct rkisp1_params *params,
 
 	/* apply the first buffer if there is one already */
 
-<<<<<<< HEAD
-	if (!rkisp1_params_get_buffer(params, &cur_buf, &new_params))
-		goto unlock;
-
-	rkisp1_isp_isr_other_config(params, new_params);
-	rkisp1_isp_isr_meas_config(params, new_params);
-=======
 	cur_buf = list_first_entry_or_null(&params->params,
 					   struct rkisp1_params_buffer, queue);
 	if (!cur_buf)
@@ -2403,7 +2296,6 @@ void rkisp1_params_pre_configure(struct rkisp1_params *params,
 		rkisp1_ext_params_config(params, cur_buf->cfg,
 					 RKISP1_EXT_PARAMS_BLOCK_GROUP_OTHERS);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* update shadow register immediately */
 	rkisp1_param_set_bits(params, RKISP1_CIF_ISP_CTRL,
@@ -2415,12 +2307,7 @@ unlock:
 
 void rkisp1_params_post_configure(struct rkisp1_params *params)
 {
-<<<<<<< HEAD
-	struct rkisp1_params_cfg *new_params;
-	struct rkisp1_buffer *cur_buf;
-=======
 	struct rkisp1_params_buffer *cur_buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irq(&params->config_lock);
 
@@ -2432,13 +2319,6 @@ void rkisp1_params_post_configure(struct rkisp1_params *params)
 	 * ordering doesn't affect other ISP versions negatively, do so
 	 * unconditionally.
 	 */
-<<<<<<< HEAD
-
-	if (!rkisp1_params_get_buffer(params, &cur_buf, &new_params))
-		goto unlock;
-
-	rkisp1_isp_isr_lsc_config(params, new_params);
-=======
 	cur_buf = list_first_entry_or_null(&params->params,
 					   struct rkisp1_params_buffer, queue);
 	if (!cur_buf)
@@ -2449,7 +2329,6 @@ void rkisp1_params_post_configure(struct rkisp1_params *params)
 	else
 		rkisp1_ext_params_config(params, cur_buf->cfg,
 					 RKISP1_EXT_PARAMS_BLOCK_GROUP_LSC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* update shadow register immediately */
 	rkisp1_param_set_bits(params, RKISP1_CIF_ISP_CTRL,
@@ -2525,21 +2404,12 @@ static int rkisp1_params_enum_fmt_meta_out(struct file *file, void *priv,
 					   struct v4l2_fmtdesc *f)
 {
 	struct video_device *video = video_devdata(file);
-<<<<<<< HEAD
-	struct rkisp1_params *params = video_get_drvdata(video);
-
-	if (f->index > 0 || f->type != video->queue->type)
-		return -EINVAL;
-
-	f->pixelformat = params->vdev_fmt.fmt.meta.dataformat;
-=======
 
 	if (f->index >= ARRAY_SIZE(rkisp1_params_formats) ||
 	    f->type != video->queue->type)
 		return -EINVAL;
 
 	f->pixelformat = rkisp1_params_formats[f->index].dataformat;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -2554,11 +2424,6 @@ static int rkisp1_params_g_fmt_meta_out(struct file *file, void *fh,
 	if (f->type != video->queue->type)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	memset(meta, 0, sizeof(*meta));
-	meta->dataformat = params->vdev_fmt.fmt.meta.dataformat;
-	meta->buffersize = params->vdev_fmt.fmt.meta.buffersize;
-=======
 	*meta = *params->metafmt;
 
 	return 0;
@@ -2593,7 +2458,6 @@ static int rkisp1_params_s_fmt_meta_out(struct file *file, void *fh,
 
 	params->metafmt = rkisp1_params_get_format_info(meta->dataformat);
 	*meta = *params->metafmt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -2623,13 +2487,8 @@ static const struct v4l2_ioctl_ops rkisp1_params_ioctl = {
 	.vidioc_streamoff = vb2_ioctl_streamoff,
 	.vidioc_enum_fmt_meta_out = rkisp1_params_enum_fmt_meta_out,
 	.vidioc_g_fmt_meta_out = rkisp1_params_g_fmt_meta_out,
-<<<<<<< HEAD
-	.vidioc_s_fmt_meta_out = rkisp1_params_g_fmt_meta_out,
-	.vidioc_try_fmt_meta_out = rkisp1_params_g_fmt_meta_out,
-=======
 	.vidioc_s_fmt_meta_out = rkisp1_params_s_fmt_meta_out,
 	.vidioc_try_fmt_meta_out = rkisp1_params_try_fmt_meta_out,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.vidioc_querycap = rkisp1_params_querycap,
 	.vidioc_subscribe_event = v4l2_ctrl_subscribe_event,
 	.vidioc_unsubscribe_event = v4l2_event_unsubscribe,
@@ -2641,33 +2500,19 @@ static int rkisp1_params_vb2_queue_setup(struct vb2_queue *vq,
 					 unsigned int sizes[],
 					 struct device *alloc_devs[])
 {
-<<<<<<< HEAD
-=======
 	struct rkisp1_params *params = vq->drv_priv;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*num_buffers = clamp_t(u32, *num_buffers,
 			       RKISP1_ISP_PARAMS_REQ_BUFS_MIN,
 			       RKISP1_ISP_PARAMS_REQ_BUFS_MAX);
 
 	*num_planes = 1;
 
-<<<<<<< HEAD
-	sizes[0] = sizeof(struct rkisp1_params_cfg);
-=======
 	sizes[0] = params->metafmt->buffersize;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
-<<<<<<< HEAD
-static void rkisp1_params_vb2_buf_queue(struct vb2_buffer *vb)
-{
-	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
-	struct rkisp1_buffer *params_buf =
-		container_of(vbuf, struct rkisp1_buffer, vb);
-=======
 static int rkisp1_params_vb2_buf_init(struct vb2_buffer *vb)
 {
 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
@@ -2695,7 +2540,6 @@ static void rkisp1_params_vb2_buf_queue(struct vb2_buffer *vb)
 {
 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
 	struct rkisp1_params_buffer *params_buf = to_rkisp1_params_buffer(vbuf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct vb2_queue *vq = vb->vb2_queue;
 	struct rkisp1_params *params = vq->drv_priv;
 
@@ -2704,14 +2548,6 @@ static void rkisp1_params_vb2_buf_queue(struct vb2_buffer *vb)
 	spin_unlock_irq(&params->config_lock);
 }
 
-<<<<<<< HEAD
-static int rkisp1_params_vb2_buf_prepare(struct vb2_buffer *vb)
-{
-	if (vb2_plane_size(vb, 0) < sizeof(struct rkisp1_params_cfg))
-		return -EINVAL;
-
-	vb2_set_plane_payload(vb, 0, sizeof(struct rkisp1_params_cfg));
-=======
 static int rkisp1_params_prepare_ext_params(struct rkisp1_params *params,
 					    struct vb2_buffer *vb)
 {
@@ -2839,7 +2675,6 @@ static int rkisp1_params_vb2_buf_prepare(struct vb2_buffer *vb)
 	 * userspace modifying the buffer content while the driver processes it.
 	 */
 	memcpy(params_buf->cfg, cfg, payload);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -2847,11 +2682,7 @@ static int rkisp1_params_vb2_buf_prepare(struct vb2_buffer *vb)
 static void rkisp1_params_vb2_stop_streaming(struct vb2_queue *vq)
 {
 	struct rkisp1_params *params = vq->drv_priv;
-<<<<<<< HEAD
-	struct rkisp1_buffer *buf;
-=======
 	struct rkisp1_params_buffer *buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	LIST_HEAD(tmp_list);
 
 	/*
@@ -2865,29 +2696,19 @@ static void rkisp1_params_vb2_stop_streaming(struct vb2_queue *vq)
 
 	list_for_each_entry(buf, &tmp_list, queue)
 		vb2_buffer_done(&buf->vb.vb2_buf, VB2_BUF_STATE_ERROR);
-<<<<<<< HEAD
-=======
 
 	params->enabled_blocks = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct vb2_ops rkisp1_params_vb2_ops = {
 	.queue_setup = rkisp1_params_vb2_queue_setup,
-<<<<<<< HEAD
-=======
 	.buf_init = rkisp1_params_vb2_buf_init,
 	.buf_cleanup = rkisp1_params_vb2_buf_cleanup,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.wait_prepare = vb2_ops_wait_prepare,
 	.wait_finish = vb2_ops_wait_finish,
 	.buf_queue = rkisp1_params_vb2_buf_queue,
 	.buf_prepare = rkisp1_params_vb2_buf_prepare,
 	.stop_streaming = rkisp1_params_vb2_stop_streaming,
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct v4l2_file_operations rkisp1_params_fops = {
@@ -2910,33 +2731,13 @@ static int rkisp1_params_init_vb2_queue(struct vb2_queue *q,
 	q->drv_priv = params;
 	q->ops = &rkisp1_params_vb2_ops;
 	q->mem_ops = &vb2_vmalloc_memops;
-<<<<<<< HEAD
-	q->buf_struct_size = sizeof(struct rkisp1_buffer);
-=======
 	q->buf_struct_size = sizeof(struct rkisp1_params_buffer);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
 	q->lock = &node->vlock;
 
 	return vb2_queue_init(q);
 }
 
-<<<<<<< HEAD
-static void rkisp1_init_params(struct rkisp1_params *params)
-{
-	params->vdev_fmt.fmt.meta.dataformat =
-		V4L2_META_FMT_RK_ISP1_PARAMS;
-	params->vdev_fmt.fmt.meta.buffersize =
-		sizeof(struct rkisp1_params_cfg);
-
-	if (params->rkisp1->info->isp_ver == RKISP1_V12)
-		params->ops = &rkisp1_v12_params_ops;
-	else
-		params->ops = &rkisp1_v10_params_ops;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int rkisp1_params_register(struct rkisp1_device *rkisp1)
 {
 	struct rkisp1_params *params = &rkisp1->params;
@@ -2965,9 +2766,6 @@ int rkisp1_params_register(struct rkisp1_device *rkisp1)
 	vdev->device_caps = V4L2_CAP_STREAMING | V4L2_CAP_META_OUTPUT;
 	vdev->vfl_dir = VFL_DIR_TX;
 	rkisp1_params_init_vb2_queue(vdev->queue, params);
-<<<<<<< HEAD
-	rkisp1_init_params(params);
-=======
 
 	params->metafmt = &rkisp1_params_formats[RKISP1_PARAMS_FIXED];
 
@@ -2976,7 +2774,6 @@ int rkisp1_params_register(struct rkisp1_device *rkisp1)
 	else
 		params->ops = &rkisp1_v10_params_ops;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	video_set_drvdata(vdev, params);
 
 	node->pad.flags = MEDIA_PAD_FL_SOURCE;

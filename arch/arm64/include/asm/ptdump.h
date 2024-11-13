@@ -5,11 +5,8 @@
 #ifndef __ASM_PTDUMP_H
 #define __ASM_PTDUMP_H
 
-<<<<<<< HEAD
-=======
 #include <linux/ptdump.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PTDUMP_CORE
 
 #include <linux/mm_types.h>
@@ -26,9 +23,6 @@ struct ptdump_info {
 	unsigned long			base_addr;
 };
 
-<<<<<<< HEAD
-void ptdump_walk(struct seq_file *s, struct ptdump_info *info);
-=======
 struct ptdump_prot_bits {
 	u64		mask;
 	u64		val;
@@ -66,21 +60,16 @@ struct ptdump_pg_state {
 void ptdump_walk(struct seq_file *s, struct ptdump_info *info);
 void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
 	       u64 val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PTDUMP_DEBUGFS
 #define EFI_RUNTIME_MAP_END	DEFAULT_MAP_WINDOW_64
 void __init ptdump_debugfs_register(struct ptdump_info *info, const char *name);
 #else
 static inline void ptdump_debugfs_register(struct ptdump_info *info,
 					   const char *name) { }
-<<<<<<< HEAD
-#endif
-=======
 #endif /* CONFIG_PTDUMP_DEBUGFS */
 #else
 static inline void note_page(struct ptdump_state *pt_st, unsigned long addr,
 			     int level, u64 val) { }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_PTDUMP_CORE */
 
 #endif /* __ASM_PTDUMP_H */

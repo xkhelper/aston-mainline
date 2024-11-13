@@ -734,11 +734,7 @@ static struct clk_rcg2 mdp_clk_src = {
 	},
 };
 
-<<<<<<< HEAD
-static struct freq_tbl extpclk_freq_tbl[] = {
-=======
 static const struct freq_tbl extpclk_freq_tbl[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .src = P_HDMIPLL },
 	{ }
 };
@@ -757,11 +753,7 @@ static struct clk_rcg2 extpclk_clk_src = {
 	},
 };
 
-<<<<<<< HEAD
-static struct freq_tbl ftbl_mdss_vsync_clk[] = {
-=======
 static const struct freq_tbl ftbl_mdss_vsync_clk[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	F(19200000, P_XO, 1, 0, 0),
 	{ }
 };
@@ -779,11 +771,7 @@ static struct clk_rcg2 vsync_clk_src = {
 	},
 };
 
-<<<<<<< HEAD
-static struct freq_tbl ftbl_mdss_hdmi_clk[] = {
-=======
 static const struct freq_tbl ftbl_mdss_hdmi_clk[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	F(19200000, P_XO, 1, 0, 0),
 	{ }
 };
@@ -827,11 +815,7 @@ static struct clk_rcg2 byte1_clk_src = {
 	},
 };
 
-<<<<<<< HEAD
-static struct freq_tbl ftbl_mdss_esc0_1_clk[] = {
-=======
 static const struct freq_tbl ftbl_mdss_esc0_1_clk[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	F(19200000, P_XO, 1, 0, 0),
 	{ }
 };

@@ -15,10 +15,7 @@
 #include <linux/rtnetlink.h>
 #include <linux/iopoll.h>
 #include <linux/crc16.h>
-<<<<<<< HEAD
-=======
 #include <linux/phylink.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lan743x_main.h"
 #include "lan743x_ethtool.h"
 
@@ -996,8 +993,6 @@ static int lan743x_sgmii_write(struct lan743x_adapter *adapter,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int lan743x_get_lsd(int speed, int duplex, u8 mss)
 {
 	int lsd;
@@ -1034,7 +1029,6 @@ static int lan743x_get_lsd(int speed, int duplex, u8 mss)
 	return lsd;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int lan743x_sgmii_mpll_set(struct lan743x_adapter *adapter,
 				  u16 baud)
 {
@@ -1084,30 +1078,7 @@ static int lan743x_sgmii_2_5G_mode_set(struct lan743x_adapter *adapter,
 					      VR_MII_BAUD_RATE_1P25GBPS);
 }
 
-<<<<<<< HEAD
-static int lan743x_is_sgmii_2_5G_mode(struct lan743x_adapter *adapter,
-				      bool *status)
-{
-	int ret;
-
-	ret = lan743x_sgmii_read(adapter, MDIO_MMD_VEND2,
-				 VR_MII_GEN2_4_MPLL_CTRL1);
-	if (ret < 0)
-		return ret;
-
-	if (ret == VR_MII_MPLL_MULTIPLIER_125 ||
-	    ret == VR_MII_MPLL_MULTIPLIER_50)
-		*status = true;
-	else
-		*status = false;
-
-	return 0;
-}
-
-static int lan743x_sgmii_aneg_update(struct lan743x_adapter *adapter)
-=======
 static int lan743x_serdes_clock_and_aneg_update(struct lan743x_adapter *adapter)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	enum lan743x_sgmii_lsd lsd = adapter->sgmii_lsd;
 	int mii_ctrl;
@@ -1194,76 +1165,11 @@ static int lan743x_pcs_seq_state(struct lan743x_adapter *adapter, u8 state)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int lan743x_sgmii_config(struct lan743x_adapter *adapter)
-{
-	struct net_device *netdev = adapter->netdev;
-	struct phy_device *phydev = netdev->phydev;
-	enum lan743x_sgmii_lsd lsd = POWER_DOWN;
-	int mii_ctl;
-	bool status;
-	int ret;
-
-	switch (phydev->speed) {
-	case SPEED_2500:
-		if (phydev->master_slave_state == MASTER_SLAVE_STATE_MASTER)
-			lsd = LINK_2500_MASTER;
-		else
-			lsd = LINK_2500_SLAVE;
-		break;
-	case SPEED_1000:
-		if (phydev->master_slave_state == MASTER_SLAVE_STATE_MASTER)
-			lsd = LINK_1000_MASTER;
-		else
-			lsd = LINK_1000_SLAVE;
-		break;
-	case SPEED_100:
-		if (phydev->duplex)
-			lsd = LINK_100FD;
-		else
-			lsd = LINK_100HD;
-		break;
-	case SPEED_10:
-		if (phydev->duplex)
-			lsd = LINK_10FD;
-		else
-			lsd = LINK_10HD;
-		break;
-	default:
-		netif_err(adapter, drv, adapter->netdev,
-			  "Invalid speed %d\n", phydev->speed);
-		return -EINVAL;
-	}
-
-	adapter->sgmii_lsd = lsd;
-	ret = lan743x_sgmii_aneg_update(adapter);
-	if (ret < 0) {
-		netif_err(adapter, drv, adapter->netdev,
-			  "error %d SGMII cfg failed\n", ret);
-		return ret;
-	}
-
-	ret = lan743x_is_sgmii_2_5G_mode(adapter, &status);
-	if (ret < 0) {
-		netif_err(adapter, drv, adapter->netdev,
-			  "error %d SGMII get mode failed\n", ret);
-		return ret;
-	}
-
-	if (status)
-		netif_dbg(adapter, drv, adapter->netdev,
-			  "SGMII 2.5G mode enable\n");
-	else
-		netif_dbg(adapter, drv, adapter->netdev,
-			  "SGMII 1G mode enable\n");
-
-=======
 static int lan743x_pcs_power_reset(struct lan743x_adapter *adapter)
 {
 	int mii_ctl;
 	int ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* SGMII/1000/2500BASE-X PCS power down */
 	mii_ctl = lan743x_sgmii_read(adapter, MDIO_MMD_VEND2, MII_BMCR);
 	if (mii_ctl < 0)
@@ -1284,15 +1190,7 @@ static int lan743x_pcs_power_reset(struct lan743x_adapter *adapter)
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	ret = lan743x_pcs_seq_state(adapter, PCS_POWER_STATE_UP);
-	if (ret < 0)
-		return ret;
-
-	return 0;
-=======
 	return lan743x_pcs_seq_state(adapter, PCS_POWER_STATE_UP);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void lan743x_mac_set_address(struct lan743x_adapter *adapter,
@@ -1448,109 +1346,11 @@ static int lan743x_phy_reset(struct lan743x_adapter *adapter)
 				  50000, 1000000);
 }
 
-<<<<<<< HEAD
-static void lan743x_phy_update_flowcontrol(struct lan743x_adapter *adapter,
-					   u16 local_adv, u16 remote_adv)
-{
-	struct lan743x_phy *phy = &adapter->phy;
-	u8 cap;
-
-	if (phy->fc_autoneg)
-		cap = mii_resolve_flowctrl_fdx(local_adv, remote_adv);
-	else
-		cap = phy->fc_request_control;
-
-	lan743x_mac_flow_ctrl_set_enables(adapter,
-					  cap & FLOW_CTRL_TX,
-					  cap & FLOW_CTRL_RX);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int lan743x_phy_init(struct lan743x_adapter *adapter)
 {
 	return lan743x_phy_reset(adapter);
 }
 
-<<<<<<< HEAD
-static void lan743x_phy_link_status_change(struct net_device *netdev)
-{
-	struct lan743x_adapter *adapter = netdev_priv(netdev);
-	struct phy_device *phydev = netdev->phydev;
-	u32 data;
-
-	phy_print_status(phydev);
-	if (phydev->state == PHY_RUNNING) {
-		int remote_advertisement = 0;
-		int local_advertisement = 0;
-
-		data = lan743x_csr_read(adapter, MAC_CR);
-
-		/* set duplex mode */
-		if (phydev->duplex)
-			data |= MAC_CR_DPX_;
-		else
-			data &= ~MAC_CR_DPX_;
-
-		/* set bus speed */
-		switch (phydev->speed) {
-		case SPEED_10:
-			data &= ~MAC_CR_CFG_H_;
-			data &= ~MAC_CR_CFG_L_;
-		break;
-		case SPEED_100:
-			data &= ~MAC_CR_CFG_H_;
-			data |= MAC_CR_CFG_L_;
-		break;
-		case SPEED_1000:
-			data |= MAC_CR_CFG_H_;
-			data &= ~MAC_CR_CFG_L_;
-		break;
-		case SPEED_2500:
-			data |= MAC_CR_CFG_H_;
-			data |= MAC_CR_CFG_L_;
-		break;
-		}
-		lan743x_csr_write(adapter, MAC_CR, data);
-
-		local_advertisement =
-			linkmode_adv_to_mii_adv_t(phydev->advertising);
-		remote_advertisement =
-			linkmode_adv_to_mii_adv_t(phydev->lp_advertising);
-
-		lan743x_phy_update_flowcontrol(adapter, local_advertisement,
-					       remote_advertisement);
-		lan743x_ptp_update_latency(adapter, phydev->speed);
-		if (phydev->interface == PHY_INTERFACE_MODE_SGMII ||
-		    phydev->interface == PHY_INTERFACE_MODE_1000BASEX ||
-		    phydev->interface == PHY_INTERFACE_MODE_2500BASEX)
-			lan743x_sgmii_config(adapter);
-
-		data = lan743x_csr_read(adapter, MAC_CR);
-		if (phydev->enable_tx_lpi)
-			data |=  MAC_CR_EEE_EN_;
-		else
-			data &= ~MAC_CR_EEE_EN_;
-		lan743x_csr_write(adapter, MAC_CR, data);
-	}
-}
-
-static void lan743x_phy_close(struct lan743x_adapter *adapter)
-{
-	struct net_device *netdev = adapter->netdev;
-	struct phy_device *phydev = netdev->phydev;
-
-	phy_stop(netdev->phydev);
-	phy_disconnect(netdev->phydev);
-
-	/* using phydev here as phy_disconnect NULLs netdev->phydev */
-	if (phy_is_pseudo_fixed_link(phydev))
-		fixed_phy_unregister(phydev);
-
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void lan743x_phy_interface_select(struct lan743x_adapter *adapter)
 {
 	u32 id_rev;
@@ -1567,71 +1367,9 @@ static void lan743x_phy_interface_select(struct lan743x_adapter *adapter)
 		adapter->phy_interface = PHY_INTERFACE_MODE_MII;
 	else
 		adapter->phy_interface = PHY_INTERFACE_MODE_RGMII;
-<<<<<<< HEAD
-}
-
-static int lan743x_phy_open(struct lan743x_adapter *adapter)
-{
-	struct net_device *netdev = adapter->netdev;
-	struct lan743x_phy *phy = &adapter->phy;
-	struct fixed_phy_status fphy_status = {
-		.link = 1,
-		.speed = SPEED_1000,
-		.duplex = DUPLEX_FULL,
-	};
-	struct phy_device *phydev;
-	int ret = -EIO;
-
-	/* try devicetree phy, or fixed link */
-	phydev = of_phy_get_and_connect(netdev, adapter->pdev->dev.of_node,
-					lan743x_phy_link_status_change);
-
-	if (!phydev) {
-		/* try internal phy */
-		phydev = phy_find_first(adapter->mdiobus);
-		if (!phydev)	{
-			if ((adapter->csr.id_rev & ID_REV_ID_MASK_) ==
-					ID_REV_ID_LAN7431_) {
-				phydev = fixed_phy_register(PHY_POLL,
-							    &fphy_status, NULL);
-				if (IS_ERR(phydev)) {
-					netdev_err(netdev, "No PHY/fixed_PHY found\n");
-					return PTR_ERR(phydev);
-				}
-			} else {
-				goto return_error;
-				}
-		}
-
-		lan743x_phy_interface_select(adapter);
-
-		ret = phy_connect_direct(netdev, phydev,
-					 lan743x_phy_link_status_change,
-					 adapter->phy_interface);
-		if (ret)
-			goto return_error;
-	}
-
-	/* MAC doesn't support 1000T Half */
-	phy_remove_link_mode(phydev, ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
-
-	/* support both flow controls */
-	phy_support_asym_pause(phydev);
-	phy->fc_request_control = (FLOW_CTRL_RX | FLOW_CTRL_TX);
-	phy->fc_autoneg = phydev->autoneg;
-
-	phy_start(phydev);
-	phy_start_aneg(phydev);
-	phy_attached_info(phydev);
-	return 0;
-
-return_error:
-	return ret;
-=======
 
 	netif_dbg(adapter, drv, adapter->netdev,
 		  "selected phy interface: 0x%X\n", adapter->phy_interface);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void lan743x_rfe_open(struct lan743x_adapter *adapter)
@@ -3132,8 +2870,6 @@ return_error:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int lan743x_phylink_sgmii_config(struct lan743x_adapter *adapter)
 {
 	u32 sgmii_ctl;
@@ -3464,7 +3200,6 @@ static void lan743x_phylink_disconnect(struct lan743x_adapter *adapter)
 	phylink_disconnect_phy(adapter->phylink);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int lan743x_netdev_close(struct net_device *netdev)
 {
 	struct lan743x_adapter *adapter = netdev_priv(netdev);
@@ -3478,11 +3213,7 @@ static int lan743x_netdev_close(struct net_device *netdev)
 
 	lan743x_ptp_close(adapter);
 
-<<<<<<< HEAD
-	lan743x_phy_close(adapter);
-=======
 	lan743x_phylink_disconnect(adapter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lan743x_mac_close(adapter);
 
@@ -3505,21 +3236,13 @@ static int lan743x_netdev_open(struct net_device *netdev)
 	if (ret)
 		goto close_intr;
 
-<<<<<<< HEAD
-	ret = lan743x_phy_open(adapter);
-=======
 	ret = lan743x_phylink_connect(adapter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		goto close_mac;
 
 	ret = lan743x_ptp_open(adapter);
 	if (ret)
-<<<<<<< HEAD
-		goto close_phy;
-=======
 		goto close_mac;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lan743x_rfe_open(adapter);
 
@@ -3535,12 +3258,9 @@ static int lan743x_netdev_open(struct net_device *netdev)
 			goto close_tx;
 	}
 
-<<<<<<< HEAD
-=======
 	if (netdev->phydev)
 		phy_support_eee(netdev->phydev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PM
 	if (adapter->netdev->phydev) {
 		struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
@@ -3565,14 +3285,8 @@ close_rx:
 			lan743x_rx_close(&adapter->rx[index]);
 	}
 	lan743x_ptp_close(adapter);
-<<<<<<< HEAD
-
-close_phy:
-	lan743x_phy_close(adapter);
-=======
 	if (adapter->phylink)
 		lan743x_phylink_disconnect(adapter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 close_mac:
 	lan743x_mac_close(adapter);
@@ -3601,21 +3315,14 @@ static netdev_tx_t lan743x_netdev_xmit_frame(struct sk_buff *skb,
 static int lan743x_netdev_ioctl(struct net_device *netdev,
 				struct ifreq *ifr, int cmd)
 {
-<<<<<<< HEAD
-=======
 	struct lan743x_adapter *adapter = netdev_priv(netdev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!netif_running(netdev))
 		return -EINVAL;
 	if (cmd == SIOCSHWTSTAMP)
 		return lan743x_ptp_ioctl(netdev, ifr, cmd);
-<<<<<<< HEAD
-	return phy_mii_ioctl(netdev->phydev, ifr, cmd);
-=======
 
 	return phylink_mii_ioctl(adapter->phylink, ifr, cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void lan743x_netdev_set_multicast(struct net_device *netdev)
@@ -3720,23 +3427,17 @@ static void lan743x_mdiobus_cleanup(struct lan743x_adapter *adapter)
 	mdiobus_unregister(adapter->mdiobus);
 }
 
-<<<<<<< HEAD
-=======
 static void lan743x_destroy_phylink(struct lan743x_adapter *adapter)
 {
 	phylink_destroy(adapter->phylink);
 	adapter->phylink = NULL;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void lan743x_full_cleanup(struct lan743x_adapter *adapter)
 {
 	unregister_netdev(adapter->netdev);
 
-<<<<<<< HEAD
-=======
 	lan743x_destroy_phylink(adapter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	lan743x_mdiobus_cleanup(adapter);
 	lan743x_hardware_cleanup(adapter);
 	lan743x_pci_cleanup(adapter);
@@ -3950,16 +3651,6 @@ static int lan743x_pcidev_probe(struct pci_dev *pdev,
 				    NETIF_F_HW_CSUM | NETIF_F_RXCSUM;
 	adapter->netdev->hw_features = adapter->netdev->features;
 
-<<<<<<< HEAD
-	/* carrier off reporting is important to ethtool even BEFORE open */
-	netif_carrier_off(netdev);
-
-	ret = register_netdev(adapter->netdev);
-	if (ret < 0)
-		goto cleanup_mdiobus;
-	return 0;
-
-=======
 	ret = lan743x_phylink_create(adapter);
 	if (ret < 0) {
 		netif_err(adapter, probe, netdev,
@@ -3975,7 +3666,6 @@ static int lan743x_pcidev_probe(struct pci_dev *pdev,
 cleanup_phylink:
 	lan743x_destroy_phylink(adapter);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 cleanup_mdiobus:
 	lan743x_mdiobus_cleanup(adapter);
 
@@ -4231,10 +3921,7 @@ static int lan743x_pm_resume(struct device *dev)
 	       MAC_WK_SRC_WK_FR_SAVED_;
 	lan743x_csr_write(adapter, MAC_WK_SRC, data);
 
-<<<<<<< HEAD
-=======
 	rtnl_lock();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* open netdev when netdev is at running state while resume.
 	 * For instance, it is true when system wakesup after pm-suspend
 	 * However, it is false when system wakes up after suspend GUI menu
@@ -4243,10 +3930,7 @@ static int lan743x_pm_resume(struct device *dev)
 		lan743x_netdev_open(netdev);
 
 	netif_device_attach(netdev);
-<<<<<<< HEAD
-=======
 	rtnl_unlock();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

@@ -567,8 +567,6 @@ static void meson_ir_shutdown(struct platform_device *pdev)
 	spin_unlock_irqrestore(&ir->lock, flags);
 }
 
-<<<<<<< HEAD
-=======
 static __maybe_unused int meson_ir_resume(struct device *dev)
 {
 	struct meson_ir *ir = dev_get_drvdata(dev);
@@ -595,7 +593,6 @@ static __maybe_unused int meson_ir_suspend(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(meson_ir_pm_ops, meson_ir_suspend, meson_ir_resume);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct meson_ir_param meson6_ir_param = {
 	.support_hw_decoder = false,
 	.max_register = IR_DEC_REG1,
@@ -636,10 +633,7 @@ static struct platform_driver meson_ir_driver = {
 	.driver = {
 		.name		= DRIVER_NAME,
 		.of_match_table	= meson_ir_match,
-<<<<<<< HEAD
-=======
 		.pm = pm_ptr(&meson_ir_pm_ops),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

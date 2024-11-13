@@ -39,10 +39,6 @@ struct rsi_dbg_files {
 
 struct rsi_debugfs {
 	struct dentry *subdir;
-<<<<<<< HEAD
-	struct rsi_dbg_ops *dfs_get_ops;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dentry *rsi_files[MAX_DEBUGFS_ENTRIES];
 };
 int rsi_init_dbgfs(struct rsi_hw *adapter);

@@ -22,11 +22,7 @@
 #include <linux/of_device.h>
 #include <linux/property.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IQS7211_PROD_NUM			0x00
 

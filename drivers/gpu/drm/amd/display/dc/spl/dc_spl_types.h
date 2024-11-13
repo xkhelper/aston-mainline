@@ -2,32 +2,6 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
-<<<<<<< HEAD
-#include "os_types.h"
-#include "dc_hw_types.h"
-#ifndef ASSERT
-#define ASSERT(_bool) (void *)0
-#endif
-#include "include/fixed31_32.h"	// fixed31_32 and related functions
-#ifndef __DC_SPL_TYPES_H__
-#define __DC_SPL_TYPES_H__
-
-enum lb_memory_config {
-	/* Enable all 3 pieces of memory */
-	LB_MEMORY_CONFIG_0 = 0,
-
-	/* Enable only the first piece of memory */
-	LB_MEMORY_CONFIG_1 = 1,
-
-	/* Enable only the second piece of memory */
-	LB_MEMORY_CONFIG_2 = 2,
-
-	/* Only applicable in 4:2:0 mode, enable all 3 pieces of memory and the
-	 * last piece of chroma memory used for the luma storage
-	 */
-	LB_MEMORY_CONFIG_3 = 3
-};
-=======
 #ifndef __DC_SPL_TYPES_H__
 #define __DC_SPL_TYPES_H__
 
@@ -37,7 +11,6 @@ enum lb_memory_config {
 #endif
 #include "spl_fixpt31_32.h"	// fixed31_32 and related functions
 #include "spl_custom_float.h" // custom float and related functions
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct spl_size {
 	uint32_t width;
@@ -51,18 +24,6 @@ struct spl_rect	{
 };
 
 struct spl_ratios {
-<<<<<<< HEAD
-	struct fixed31_32 horz;
-	struct fixed31_32 vert;
-	struct fixed31_32 horz_c;
-	struct fixed31_32 vert_c;
-};
-struct spl_inits {
-	struct fixed31_32 h;
-	struct fixed31_32 h_c;
-	struct fixed31_32 v;
-	struct fixed31_32 v_c;
-=======
 	struct spl_fixed31_32 horz;
 	struct spl_fixed31_32 vert;
 	struct spl_fixed31_32 horz_c;
@@ -73,7 +34,6 @@ struct spl_inits {
 	struct spl_fixed31_32 h_c;
 	struct spl_fixed31_32 v;
 	struct spl_fixed31_32 v_c;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct spl_taps	{
@@ -106,11 +66,8 @@ enum spl_pixel_format {
 	SPL_PIXEL_FORMAT_420BPP10,
 	/*end of pixel format definition*/
 	SPL_PIXEL_FORMAT_INVALID,
-<<<<<<< HEAD
-=======
 	SPL_PIXEL_FORMAT_422BPP8,
 	SPL_PIXEL_FORMAT_422BPP10,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	SPL_PIXEL_FORMAT_GRPH_BEGIN = SPL_PIXEL_FORMAT_INDEX8,
 	SPL_PIXEL_FORMAT_GRPH_END = SPL_PIXEL_FORMAT_FP16,
 	SPL_PIXEL_FORMAT_VIDEO_BEGIN = SPL_PIXEL_FORMAT_420BPP8,
@@ -118,8 +75,6 @@ enum spl_pixel_format {
 	SPL_PIXEL_FORMAT_UNKNOWN
 };
 
-<<<<<<< HEAD
-=======
 enum lb_memory_config {
 	/* Enable all 3 pieces of memory */
 	LB_MEMORY_CONFIG_0 = 0,
@@ -136,7 +91,6 @@ enum lb_memory_config {
 	LB_MEMORY_CONFIG_3 = 3
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Rotation angle */
 enum spl_rotation_angle {
 	SPL_ROTATION_ANGLE_0 = 0,
@@ -169,8 +123,6 @@ enum spl_color_space {
 	SPL_COLOR_SPACE_YCBCR709_BLACK,
 };
 
-<<<<<<< HEAD
-=======
 enum chroma_cositing {
 	CHROMA_COSITING_NONE,
 	CHROMA_COSITING_LEFT,
@@ -178,7 +130,6 @@ enum chroma_cositing {
 	CHROMA_COSITING_COUNT
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 // Scratch space for calculating scaler params
 struct spl_scaler_data {
 	int h_active;
@@ -188,10 +139,7 @@ struct spl_scaler_data {
 	struct spl_rect viewport_c;
 	struct spl_rect recout;
 	struct spl_ratios ratios;
-<<<<<<< HEAD
-=======
 	struct spl_ratios recip_ratios;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct spl_inits inits;
 };
 
@@ -459,8 +407,6 @@ struct dscl_prog_data {
 	/* blur and scale filter */
 	const uint16_t *filter_blur_scale_v;
 	const uint16_t *filter_blur_scale_h;
-<<<<<<< HEAD
-=======
 	int sharpness_level; /* Track sharpness level */
 };
 
@@ -469,17 +415,11 @@ struct dscl_prog_data {
 struct spl_scratch {
 	// Pack all SPL outputs in scl_data
 	struct spl_scaler_data scl_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* SPL input and output definitions */
 // SPL outputs struct
 struct spl_out	{
-<<<<<<< HEAD
-	// Pack all SPL outputs in scl_data
-	struct spl_scaler_data scl_data;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	// Pack all output need to program hw registers
 	struct dscl_prog_data *dscl_prog_data;
 };
@@ -521,16 +461,6 @@ struct basic_out {
 	bool alpha_en;
 	bool use_two_pixels_per_container;
 };
-<<<<<<< HEAD
-enum explicit_sharpness	{
-	SHARPNESS_LOW = 0,
-	SHARPNESS_MID,
-	SHARPNESS_HIGH
-};
-struct adaptive_sharpness	{
-	bool enable;
-	enum explicit_sharpness sharpness;
-=======
 enum sharpness_setting	{
 	SHARPNESS_HW_OFF = 0,
 	SHARPNESS_ZERO,
@@ -551,15 +481,12 @@ struct adaptive_sharpness {
 	bool enable;
 	int sharpness_level;
 	struct spl_sharpness_range sharpness_range;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 enum linear_light_scaling	{	// convert it in translation logic
 	LLS_PREF_DONT_CARE = 0,
 	LLS_PREF_YES,
 	LLS_PREF_NO
 };
-<<<<<<< HEAD
-=======
 enum sharpen_policy {
 	SHARPEN_ALWAYS = 0,
 	SHARPEN_YUV = 1,
@@ -571,7 +498,6 @@ enum scale_to_sharpness_policy {
 	SCALE_TO_SHARPNESS_ADJ_YUV = 1,
 	SCALE_TO_SHARPNESS_ADJ_ALL = 2
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct spl_funcs	{
 	void (*spl_calc_lb_num_partitions)
 		(bool alpha_en,
@@ -584,11 +510,8 @@ struct spl_funcs	{
 struct spl_debug {
 	int visual_confirm_base_offset;
 	int visual_confirm_dpp_offset;
-<<<<<<< HEAD
-=======
 	enum sharpen_policy sharpen_policy;
 	enum scale_to_sharpness_policy scale_to_sharpness_policy;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct spl_in	{
@@ -604,14 +527,11 @@ struct spl_in	{
 	bool prefer_easf;
 	bool disable_easf;
 	struct spl_debug debug;
-<<<<<<< HEAD
-=======
 	bool is_fullscreen;
 	bool is_hdr_on;
 	int h_active;
 	int v_active;
 	int sdr_white_level_nits;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 // end of SPL inputs
 

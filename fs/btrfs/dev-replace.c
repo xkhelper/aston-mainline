@@ -824,24 +824,6 @@ static void btrfs_dev_replace_update_device_in_mapping_tree(
 						struct btrfs_device *srcdev,
 						struct btrfs_device *tgtdev)
 {
-<<<<<<< HEAD
-	u64 start = 0;
-	int i;
-
-	write_lock(&fs_info->mapping_tree_lock);
-	do {
-		struct btrfs_chunk_map *map;
-
-		map = btrfs_find_chunk_map_nolock(fs_info, start, U64_MAX);
-		if (!map)
-			break;
-		for (i = 0; i < map->num_stripes; i++)
-			if (srcdev == map->stripes[i].dev)
-				map->stripes[i].dev = tgtdev;
-		start = map->start + map->chunk_len;
-		btrfs_free_chunk_map(map);
-	} while (start);
-=======
 	struct rb_node *node;
 
 	/*
@@ -881,7 +863,6 @@ static void btrfs_dev_replace_update_device_in_mapping_tree(
 			node = next;
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	write_unlock(&fs_info->mapping_tree_lock);
 }
 

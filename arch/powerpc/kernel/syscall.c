@@ -27,11 +27,7 @@ notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
 
 	trace_hardirqs_off(); /* finish reconciling */
 
-<<<<<<< HEAD
-	CT_WARN_ON(ct_state() == CONTEXT_KERNEL);
-=======
 	CT_WARN_ON(ct_state() == CT_STATE_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	user_exit_irqoff();
 
 	BUG_ON(regs_is_unrecoverable(regs));

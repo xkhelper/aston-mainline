@@ -272,54 +272,10 @@ static inline bool fd_is_open(unsigned int fd, const struct fdtable *fdt)
 	return test_bit(fd, fdt->open_fds);
 }
 
-<<<<<<< HEAD
-static unsigned int count_open_files(struct fdtable *fdt)
-{
-	unsigned int size = fdt->max_fds;
-	unsigned int i;
-
-	/* Find the last open fd */
-	for (i = size / BITS_PER_LONG; i > 0; ) {
-		if (fdt->open_fds[--i])
-			break;
-	}
-	i = (i + 1) * BITS_PER_LONG;
-	return i;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Note that a sane fdtable size always has to be a multiple of
  * BITS_PER_LONG, since we have bitmaps that are sized by this.
  *
-<<<<<<< HEAD
- * 'max_fds' will normally already be properly aligned, but it
- * turns out that in the close_range() -> __close_range() ->
- * unshare_fd() -> dup_fd() -> sane_fdtable_size() we can end
- * up having a 'max_fds' value that isn't already aligned.
- *
- * Rather than make close_range() have to worry about this,
- * just make that BITS_PER_LONG alignment be part of a sane
- * fdtable size. Becuase that's really what it is.
- */
-static unsigned int sane_fdtable_size(struct fdtable *fdt, unsigned int max_fds)
-{
-	unsigned int count;
-
-	count = count_open_files(fdt);
-	if (max_fds < NR_OPEN_DEFAULT)
-		max_fds = NR_OPEN_DEFAULT;
-	return ALIGN(min(count, max_fds), BITS_PER_LONG);
-}
-
-/*
- * Allocate a new files structure and copy contents from the
- * passed in files structure.
- * errorp will be valid only when the returned files_struct is NULL.
- */
-struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int *errorp)
-=======
  * punch_hole is optional - when close_range() is asked to unshare
  * and close, we don't need to copy descriptors in that range, so
  * a smaller cloned descriptor table might suffice if the last
@@ -345,25 +301,16 @@ static unsigned int sane_fdtable_size(struct fdtable *fdt, struct fd_range *punc
  * on failure.  For 'punch_hole' see sane_fdtable_size().
  */
 struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_hole)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct files_struct *newf;
 	struct file **old_fds, **new_fds;
 	unsigned int open_files, i;
 	struct fdtable *old_fdt, *new_fdt;
-<<<<<<< HEAD
-
-	*errorp = -ENOMEM;
-	newf = kmem_cache_alloc(files_cachep, GFP_KERNEL);
-	if (!newf)
-		goto out;
-=======
 	int error;
 
 	newf = kmem_cache_alloc(files_cachep, GFP_KERNEL);
 	if (!newf)
 		return ERR_PTR(-ENOMEM);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	atomic_set(&newf->count, 1);
 
@@ -380,11 +327,7 @@ struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_ho
 
 	spin_lock(&oldf->file_lock);
 	old_fdt = files_fdtable(oldf);
-<<<<<<< HEAD
-	open_files = sane_fdtable_size(old_fdt, max_fds);
-=======
 	open_files = sane_fdtable_size(old_fdt, punch_hole);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Check whether we need to allocate a larger fd array and fd set.
@@ -397,22 +340,14 @@ struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_ho
 
 		new_fdt = alloc_fdtable(open_files - 1);
 		if (!new_fdt) {
-<<<<<<< HEAD
-			*errorp = -ENOMEM;
-=======
 			error = -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out_release;
 		}
 
 		/* beyond sysctl_nr_open; nothing to do */
 		if (unlikely(new_fdt->max_fds < open_files)) {
 			__free_fdtable(new_fdt);
-<<<<<<< HEAD
-			*errorp = -EMFILE;
-=======
 			error = -EMFILE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto out_release;
 		}
 
@@ -423,11 +358,7 @@ struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_ho
 		 */
 		spin_lock(&oldf->file_lock);
 		old_fdt = files_fdtable(oldf);
-<<<<<<< HEAD
-		open_files = sane_fdtable_size(old_fdt, max_fds);
-=======
 		open_files = sane_fdtable_size(old_fdt, punch_hole);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	copy_fd_bitmaps(new_fdt, old_fdt, open_files / BITS_PER_LONG);
@@ -461,12 +392,7 @@ struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_ho
 
 out_release:
 	kmem_cache_free(files_cachep, newf);
-<<<<<<< HEAD
-out:
-	return NULL;
-=======
 	return ERR_PTR(error);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct fdtable *close_files(struct files_struct * files)
@@ -731,11 +657,7 @@ int close_fd(unsigned fd)
 
 	return filp_close(file, files);
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL(close_fd); /* for ksys_close() */
-=======
 EXPORT_SYMBOL(close_fd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * last_fd - return last valid index into fd table
@@ -811,55 +733,25 @@ int __close_range(unsigned fd, unsigned max_fd, unsigned int flags)
 	if (fd > max_fd)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	if (flags & CLOSE_RANGE_UNSHARE) {
-		int ret;
-		unsigned int max_unshare_fds = NR_OPEN_MAX;
-=======
 	if ((flags & CLOSE_RANGE_UNSHARE) && atomic_read(&cur_fds->count) > 1) {
 		struct fd_range range = {fd, max_fd}, *punch_hole = &range;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * If the caller requested all fds to be made cloexec we always
 		 * copy all of the file descriptors since they still want to
 		 * use them.
 		 */
-<<<<<<< HEAD
-		if (!(flags & CLOSE_RANGE_CLOEXEC)) {
-			/*
-			 * If the requested range is greater than the current
-			 * maximum, we're closing everything so only copy all
-			 * file descriptors beneath the lowest file descriptor.
-			 */
-			rcu_read_lock();
-			if (max_fd >= last_fd(files_fdtable(cur_fds)))
-				max_unshare_fds = fd;
-			rcu_read_unlock();
-		}
-
-		ret = unshare_fd(CLONE_FILES, max_unshare_fds, &fds);
-		if (ret)
-			return ret;
-
-=======
 		if (flags & CLOSE_RANGE_CLOEXEC)
 			punch_hole = NULL;
 
 		fds = dup_fd(cur_fds, punch_hole);
 		if (IS_ERR(fds))
 			return PTR_ERR(fds);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * We used to share our file descriptor table, and have now
 		 * created a private one, make sure we're using it below.
 		 */
-<<<<<<< HEAD
-		if (fds)
-			swap(cur_fds, fds);
-=======
 		swap(cur_fds, fds);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (flags & CLOSE_RANGE_CLOEXEC)
@@ -1205,11 +1097,7 @@ EXPORT_SYMBOL(task_lookup_next_fdget_rcu);
  * The fput_needed flag returned by fget_light should be passed to the
  * corresponding fput_light.
  */
-<<<<<<< HEAD
-static unsigned long __fget_light(unsigned int fd, fmode_t mask)
-=======
 static inline struct fd __fget_light(unsigned int fd, fmode_t mask)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct files_struct *files = current->files;
 	struct file *file;
@@ -1226,24 +1114,6 @@ static inline struct fd __fget_light(unsigned int fd, fmode_t mask)
 	if (likely(atomic_read_acquire(&files->count) == 1)) {
 		file = files_lookup_fd_raw(files, fd);
 		if (!file || unlikely(file->f_mode & mask))
-<<<<<<< HEAD
-			return 0;
-		return (unsigned long)file;
-	} else {
-		file = __fget_files(files, fd, mask);
-		if (!file)
-			return 0;
-		return FDPUT_FPUT | (unsigned long)file;
-	}
-}
-unsigned long __fdget(unsigned int fd)
-{
-	return __fget_light(fd, FMODE_PATH);
-}
-EXPORT_SYMBOL(__fdget);
-
-unsigned long __fdget_raw(unsigned int fd)
-=======
 			return EMPTY_FD;
 		return BORROWED_FD(file);
 	} else {
@@ -1260,7 +1130,6 @@ struct fd fdget(unsigned int fd)
 EXPORT_SYMBOL(fdget);
 
 struct fd fdget_raw(unsigned int fd)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return __fget_light(fd, 0);
 }
@@ -1281,18 +1150,6 @@ static inline bool file_needs_f_pos_lock(struct file *file)
 		(file_count(file) > 1 || file->f_op->iterate_shared);
 }
 
-<<<<<<< HEAD
-unsigned long __fdget_pos(unsigned int fd)
-{
-	unsigned long v = __fdget(fd);
-	struct file *file = (struct file *)(v & ~3);
-
-	if (file && file_needs_f_pos_lock(file)) {
-		v |= FDPUT_POS_UNLOCK;
-		mutex_lock(&file->f_pos_lock);
-	}
-	return v;
-=======
 struct fd fdget_pos(unsigned int fd)
 {
 	struct fd f = fdget(fd);
@@ -1303,7 +1160,6 @@ struct fd fdget_pos(unsigned int fd)
 		mutex_lock(&file->f_pos_lock);
 	}
 	return f;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void __f_unlock_pos(struct file *f)

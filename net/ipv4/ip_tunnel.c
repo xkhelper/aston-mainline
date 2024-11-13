@@ -43,10 +43,7 @@
 #include <net/rtnetlink.h>
 #include <net/udp.h>
 #include <net/dst_metadata.h>
-<<<<<<< HEAD
-=======
 #include <net/inet_dscp.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #if IS_ENABLED(CONFIG_IPV6)
 #include <net/ipv6.h>
@@ -221,11 +218,7 @@ static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
 
 	ip_tunnel_flags_copy(flags, parms->i_flags);
 
-<<<<<<< HEAD
-	hlist_for_each_entry_rcu(t, head, hash_node) {
-=======
 	hlist_for_each_entry_rcu(t, head, hash_node, lockdep_rtnl_is_held()) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (local == t->parms.iph.saddr &&
 		    remote == t->parms.iph.daddr &&
 		    link == READ_ONCE(t->parms.link) &&
@@ -301,11 +294,7 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
 
 		ip_tunnel_init_flow(&fl4, iph->protocol, iph->daddr,
 				    iph->saddr, tunnel->parms.o_key,
-<<<<<<< HEAD
-				    RT_TOS(iph->tos), dev_net(dev),
-=======
 				    iph->tos & INET_DSCP_MASK, dev_net(dev),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    tunnel->parms.link, tunnel->fwmark, 0, 0);
 		rt = ip_route_output_key(tunnel->net, &fl4);
 
@@ -621,15 +610,9 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
 			tos = ipv6_get_dsfield((const struct ipv6hdr *)inner_iph);
 	}
 	ip_tunnel_init_flow(&fl4, proto, key->u.ipv4.dst, key->u.ipv4.src,
-<<<<<<< HEAD
-			    tunnel_id_to_key32(key->tun_id), RT_TOS(tos),
-			    dev_net(dev), 0, skb->mark, skb_get_hash(skb),
-			    key->flow_flags);
-=======
 			    tunnel_id_to_key32(key->tun_id),
 			    tos & INET_DSCP_MASK, dev_net(dev), 0, skb->mark,
 			    skb_get_hash(skb), key->flow_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!tunnel_hlen)
 		tunnel_hlen = ip_encap_hlen(&tun_info->encap);
@@ -790,11 +773,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
 	}
 
 	ip_tunnel_init_flow(&fl4, protocol, dst, tnl_params->saddr,
-<<<<<<< HEAD
-			    tunnel->parms.o_key, RT_TOS(tos),
-=======
 			    tunnel->parms.o_key, tos & INET_DSCP_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			    dev_net(dev), READ_ONCE(tunnel->parms.link),
 			    tunnel->fwmark, skb_get_hash(skb), 0);
 
@@ -1183,11 +1162,7 @@ int ip_tunnel_init_net(struct net *net, unsigned int ip_tnl_net_id,
 	 * Allowing to move it to another netns is clearly unsafe.
 	 */
 	if (!IS_ERR(itn->fb_tunnel_dev)) {
-<<<<<<< HEAD
-		itn->fb_tunnel_dev->features |= NETIF_F_NETNS_LOCAL;
-=======
 		itn->fb_tunnel_dev->netns_local = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		itn->fb_tunnel_dev->mtu = ip_tunnel_bind_dev(itn->fb_tunnel_dev);
 		ip_tunnel_add(itn, netdev_priv(itn->fb_tunnel_dev));
 		itn->type = itn->fb_tunnel_dev->type;
@@ -1352,11 +1327,7 @@ int ip_tunnel_init(struct net_device *dev)
 
 	tunnel->dev = dev;
 	tunnel->net = dev_net(dev);
-<<<<<<< HEAD
-	strcpy(tunnel->parms.name, dev->name);
-=======
 	strscpy(tunnel->parms.name, dev->name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iph->version		= 4;
 	iph->ihl		= 5;
 

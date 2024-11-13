@@ -22,8 +22,6 @@
 
 #define CY_I2C_DATA_SIZE	128
 
-<<<<<<< HEAD
-=======
 static int cyttsp_i2c_read_block_data(struct device *dev, u8 *xfer_buf,
 				      u16 addr, u8 length, void *values)
 {
@@ -79,7 +77,6 @@ static int cyttsp_i2c_write_block_data(struct device *dev, u8 *xfer_buf,
 	return retval != ARRAY_SIZE(msgs) ? -EIO : 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct cyttsp_bus_ops cyttsp_i2c_bus_ops = {
 	.bustype	= BUS_I2C,
 	.write		= cyttsp_i2c_write_block_data,

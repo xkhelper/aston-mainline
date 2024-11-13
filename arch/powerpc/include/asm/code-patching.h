@@ -76,8 +76,6 @@ int patch_instruction(u32 *addr, ppc_inst_t instr);
 int raw_patch_instruction(u32 *addr, ppc_inst_t instr);
 int patch_instructions(u32 *addr, u32 *code, size_t len, bool repeat_instr);
 
-<<<<<<< HEAD
-=======
 /*
  * The data patching functions patch_uint() and patch_ulong(), etc., must be
  * called on aligned addresses.
@@ -115,7 +113,6 @@ static inline int patch_ulong(void *addr, unsigned long val)
 
 #define patch_u32 patch_uint
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline unsigned long patch_site_addr(s32 *site)
 {
 	return (unsigned long)site + *site;

@@ -183,9 +183,6 @@ hash_by_src(const struct net *net,
 	return reciprocal_scale(hash, nf_nat_htable_size);
 }
 
-<<<<<<< HEAD
-/* Is this tuple already taken? (not by us) */
-=======
 /**
  * nf_nat_used_tuple - check if proposed nat tuple clashes with existing entry
  * @tuple: proposed NAT binding
@@ -215,7 +212,6 @@ hash_by_src(const struct net *net,
  *
  * @return: true if the proposed NAT mapping collides with an existing entry.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int
 nf_nat_used_tuple(const struct nf_conntrack_tuple *tuple,
 		  const struct nf_conn *ignored_conntrack)
@@ -232,8 +228,6 @@ nf_nat_used_tuple(const struct nf_conntrack_tuple *tuple,
 	return nf_conntrack_tuple_taken(&reply, ignored_conntrack);
 }
 
-<<<<<<< HEAD
-=======
 static bool nf_nat_allow_clash(const struct nf_conn *ct)
 {
 	return nf_ct_l4proto_find(nf_ct_protonum(ct))->allow_clash;
@@ -322,7 +316,6 @@ out:
 	return taken;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool nf_nat_may_kill(struct nf_conn *ct, unsigned long flags)
 {
 	static const unsigned long flags_refuse = IPS_FIXED_TIMEOUT |
@@ -734,11 +727,7 @@ get_unique_tuple(struct nf_conntrack_tuple *tuple,
 	    !(range->flags & NF_NAT_RANGE_PROTO_RANDOM_ALL)) {
 		/* try the original tuple first */
 		if (nf_in_range(orig_tuple, range)) {
-<<<<<<< HEAD
-			if (!nf_nat_used_tuple(orig_tuple, ct)) {
-=======
 			if (!nf_nat_used_tuple_new(orig_tuple, ct)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				*tuple = *orig_tuple;
 				return;
 			}
@@ -1231,11 +1220,7 @@ int nf_nat_register_fn(struct net *net, u8 pf, const struct nf_hook_ops *ops,
 	if (!nat_proto_net->nat_hook_ops) {
 		WARN_ON(nat_proto_net->users != 0);
 
-<<<<<<< HEAD
-		nat_ops = kmemdup(orig_nat_ops, sizeof(*orig_nat_ops) * ops_count, GFP_KERNEL);
-=======
 		nat_ops = kmemdup_array(orig_nat_ops, ops_count, sizeof(*orig_nat_ops), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!nat_ops) {
 			mutex_unlock(&nf_nat_proto_mutex);
 			return -ENOMEM;
@@ -1339,10 +1324,6 @@ static const struct nf_nat_hook nat_hook = {
 #ifdef CONFIG_XFRM
 	.decode_session		= __nf_nat_decode_session,
 #endif
-<<<<<<< HEAD
-	.manip_pkt		= nf_nat_manip_pkt,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.remove_nat_bysrc	= nf_nat_cleanup_conntrack,
 };
 

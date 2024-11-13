@@ -238,11 +238,7 @@ int amdtp_tscm_init(struct amdtp_stream *s, struct fw_unit *unit,
 	err = amdtp_stream_init(s, unit, dir, flags, fmt,
 			process_ctx_payloads, sizeof(struct amdtp_tscm));
 	if (err < 0)
-<<<<<<< HEAD
-		return 0;
-=======
 		return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (dir == AMDTP_OUT_STREAM) {
 		// Use fixed value for FDF field.

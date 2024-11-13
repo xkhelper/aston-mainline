@@ -481,10 +481,6 @@ devm_hwmon_device_register_with_info(struct device *dev,
 				const struct attribute_group **extra_groups);
 
 void hwmon_device_unregister(struct device *dev);
-<<<<<<< HEAD
-void devm_hwmon_device_unregister(struct device *dev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int hwmon_notify_event(struct device *dev, enum hwmon_sensor_types type,
 		       u32 attr, int channel);

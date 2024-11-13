@@ -78,11 +78,8 @@ extern void kvm_s2_mmu_iterate_by_vmid(struct kvm *kvm, u16 vmid,
 extern void kvm_vcpu_load_hw_mmu(struct kvm_vcpu *vcpu);
 extern void kvm_vcpu_put_hw_mmu(struct kvm_vcpu *vcpu);
 
-<<<<<<< HEAD
-=======
 extern void check_nested_vcpu_requests(struct kvm_vcpu *vcpu);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct kvm_s2_trans {
 	phys_addr_t output;
 	unsigned long block_size;
@@ -90,11 +87,7 @@ struct kvm_s2_trans {
 	bool readable;
 	int level;
 	u32 esr;
-<<<<<<< HEAD
-	u64 upper_attr;
-=======
 	u64 desc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline phys_addr_t kvm_s2_trans_output(struct kvm_s2_trans *trans)
@@ -124,11 +117,7 @@ static inline bool kvm_s2_trans_writable(struct kvm_s2_trans *trans)
 
 static inline bool kvm_s2_trans_executable(struct kvm_s2_trans *trans)
 {
-<<<<<<< HEAD
-	return !(trans->upper_attr & BIT(54));
-=======
 	return !(trans->desc & BIT(54));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 extern int kvm_walk_nested_s2(struct kvm_vcpu *vcpu, phys_addr_t gipa,
@@ -137,11 +126,7 @@ extern int kvm_s2_handle_perm_fault(struct kvm_vcpu *vcpu,
 				    struct kvm_s2_trans *trans);
 extern int kvm_inject_s2_fault(struct kvm_vcpu *vcpu, u64 esr_el2);
 extern void kvm_nested_s2_wp(struct kvm *kvm);
-<<<<<<< HEAD
-extern void kvm_nested_s2_unmap(struct kvm *kvm);
-=======
 extern void kvm_nested_s2_unmap(struct kvm *kvm, bool may_block);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern void kvm_nested_s2_flush(struct kvm *kvm);
 
 unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val);
@@ -222,8 +207,6 @@ static inline u64 kvm_encode_nested_level(struct kvm_s2_trans *trans)
 	return FIELD_PREP(KVM_NV_GUEST_MAP_SZ, trans->level);
 }
 
-<<<<<<< HEAD
-=======
 /* Adjust alignment for the contiguous bit as per StageOA() */
 #define contiguous_bit_shift(d, wi, l)					\
 	({								\
@@ -260,5 +243,4 @@ static inline unsigned int ps_to_output_size(unsigned int ps)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __ARM64_KVM_NESTED_H */

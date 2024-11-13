@@ -473,12 +473,8 @@ poly1305_blocks_neon:
 	subs	$len,$len,#64
 	ldp	x9,x13,[$inp,#48]
 	add	$in2,$inp,#96
-<<<<<<< HEAD
-	adr	$zeros,.Lzeros
-=======
 	adrp	$zeros,.Lzeros
 	add	$zeros,$zeros,#:lo12:.Lzeros
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lsl	$padbit,$padbit,#24
 	add	x15,$ctx,#48
@@ -890,19 +886,13 @@ poly1305_blocks_neon:
 	ret
 .size	poly1305_blocks_neon,.-poly1305_blocks_neon
 
-<<<<<<< HEAD
-=======
 .pushsection .rodata
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .align	5
 .Lzeros:
 .long	0,0,0,0,0,0,0,0
 .asciz	"Poly1305 for ARMv8, CRYPTOGAMS by \@dot-asm"
-<<<<<<< HEAD
-=======
 .popsection
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .align	2
 #if !defined(__KERNEL__) && !defined(_WIN64)
 .comm	OPENSSL_armcap_P,4,4

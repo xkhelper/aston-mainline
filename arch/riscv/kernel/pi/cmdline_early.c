@@ -6,21 +6,9 @@
 #include <asm/pgtable.h>
 #include <asm/setup.h>
 
-<<<<<<< HEAD
-static char early_cmdline[COMMAND_LINE_SIZE];
-
-/*
- * Declare the functions that are exported (but prefixed) here so that LLVM
- * does not complain it lacks the 'static' keyword (which, if added, makes
- * LLVM complain because the function is actually unused in this file).
- */
-u64 set_satp_mode_from_cmdline(uintptr_t dtb_pa);
-bool set_nokaslr_from_cmdline(uintptr_t dtb_pa);
-=======
 #include "pi.h"
 
 static char early_cmdline[COMMAND_LINE_SIZE];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static char *get_early_cmdline(uintptr_t dtb_pa)
 {

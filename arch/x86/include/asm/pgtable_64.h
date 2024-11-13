@@ -245,10 +245,6 @@ extern void cleanup_highmap(void);
 
 #define HAVE_ARCH_UNMAPPED_AREA
 #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
-<<<<<<< HEAD
-#define HAVE_ARCH_UNMAPPED_AREA_VMFLAGS
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define PAGE_AGP    PAGE_KERNEL_NOCACHE
 #define HAVE_PAGE_AGP 1
@@ -274,9 +270,6 @@ static inline bool gup_fast_permitted(unsigned long start, unsigned long end)
 
 #include <asm/pgtable-invert.h>
 
-<<<<<<< HEAD
-#endif /* !__ASSEMBLY__ */
-=======
 #else /* __ASSEMBLY__ */
 
 #define l4_index(x)	(((x) >> 39) & 511)
@@ -299,5 +292,4 @@ L3_START_KERNEL = pud_index(__START_KERNEL_map)
 	.endr
 
 #endif /* __ASSEMBLY__ */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _ASM_X86_PGTABLE_64_H */

@@ -29,11 +29,7 @@ static int
 dac507d_ctrl(struct nv50_core *core, int or, u32 ctrl,
 	     struct nv50_head_atom *asyh)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = core->chan.push;
-=======
 	struct nvif_push *push = &core->chan.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 sync = 0;
 	int ret;
 

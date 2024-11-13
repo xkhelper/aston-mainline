@@ -38,13 +38,6 @@
 	};
 };
 
-<<<<<<< HEAD
-&saradc {
-	compatible = "amlogic,meson-gxlx-saradc", "amlogic,meson-saradc";
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &usb {
 	dr_mode = "host";
 };

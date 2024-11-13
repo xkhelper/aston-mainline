@@ -66,11 +66,6 @@ static int intel_nested_attach_dev(struct iommu_domain *domain,
 	list_add(&info->link, &dmar_domain->devices);
 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
 
-<<<<<<< HEAD
-	domain_update_iotlb(dmar_domain);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 unassign_tag:
 	cache_tag_unassign_domain(dmar_domain, dev, IOMMU_NO_PASID);
@@ -88,10 +83,7 @@ static void intel_nested_domain_free(struct iommu_domain *domain)
 	spin_lock(&s2_domain->s1_lock);
 	list_del(&dmar_domain->s2_link);
 	spin_unlock(&s2_domain->s1_lock);
-<<<<<<< HEAD
-=======
 	kfree(dmar_domain->qi_batch);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(dmar_domain);
 }
 

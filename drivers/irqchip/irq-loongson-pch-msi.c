@@ -15,12 +15,9 @@
 #include <linux/pci.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
-=======
 #include "irq-msi-lib.h"
 #include "irq-loongson.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int nr_pics;
 
 struct pch_msi_data {
@@ -33,29 +30,6 @@ struct pch_msi_data {
 
 static struct fwnode_handle *pch_msi_handle[MAX_IO_PICS];
 
-<<<<<<< HEAD
-static void pch_msi_mask_msi_irq(struct irq_data *d)
-{
-	pci_msi_mask_irq(d);
-	irq_chip_mask_parent(d);
-}
-
-static void pch_msi_unmask_msi_irq(struct irq_data *d)
-{
-	irq_chip_unmask_parent(d);
-	pci_msi_unmask_irq(d);
-}
-
-static struct irq_chip pch_msi_irq_chip = {
-	.name			= "PCH PCI MSI",
-	.irq_mask		= pch_msi_mask_msi_irq,
-	.irq_unmask		= pch_msi_unmask_msi_irq,
-	.irq_ack		= irq_chip_ack_parent,
-	.irq_set_affinity	= irq_chip_set_affinity_parent,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int pch_msi_allocate_hwirq(struct pch_msi_data *priv, int num_req)
 {
 	int first;
@@ -94,15 +68,6 @@ static void pch_msi_compose_msi_msg(struct irq_data *data,
 	msg->data = data->hwirq;
 }
 
-<<<<<<< HEAD
-static struct msi_domain_info pch_msi_domain_info = {
-	.flags	= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
-		  MSI_FLAG_MULTI_PCI_MSI | MSI_FLAG_PCI_MSIX,
-	.chip	= &pch_msi_irq_chip,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct irq_chip middle_irq_chip = {
 	.name			= "PCH MSI",
 	.irq_mask		= irq_chip_mask_parent,
@@ -167,8 +132,6 @@ static void pch_msi_middle_domain_free(struct irq_domain *domain,
 static const struct irq_domain_ops pch_msi_middle_domain_ops = {
 	.alloc	= pch_msi_middle_domain_alloc,
 	.free	= pch_msi_middle_domain_free,
-<<<<<<< HEAD
-=======
 	.select	= msi_lib_irq_domain_select,
 };
 
@@ -187,18 +150,13 @@ static struct msi_parent_ops pch_msi_parent_ops = {
 	.bus_select_token	= DOMAIN_BUS_NEXUS,
 	.prefix			= "PCH-",
 	.init_dev_msi_info	= msi_lib_init_dev_msi_info,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int pch_msi_init_domains(struct pch_msi_data *priv,
 				struct irq_domain *parent,
 				struct fwnode_handle *domain_handle)
 {
-<<<<<<< HEAD
-	struct irq_domain *middle_domain, *msi_domain;
-=======
 	struct irq_domain *middle_domain;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	middle_domain = irq_domain_create_hierarchy(parent, 0, priv->num_irqs,
 						    domain_handle,
@@ -211,19 +169,8 @@ static int pch_msi_init_domains(struct pch_msi_data *priv,
 
 	irq_domain_update_bus_token(middle_domain, DOMAIN_BUS_NEXUS);
 
-<<<<<<< HEAD
-	msi_domain = pci_msi_create_irq_domain(domain_handle,
-					       &pch_msi_domain_info,
-					       middle_domain);
-	if (!msi_domain) {
-		pr_err("Failed to create PCI MSI domain\n");
-		irq_domain_remove(middle_domain);
-		return -ENOMEM;
-	}
-=======
 	middle_domain->flags |= IRQ_DOMAIN_FLAG_MSI_PARENT;
 	middle_domain->msi_parent_ops = &pch_msi_parent_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -308,19 +255,6 @@ IRQCHIP_DECLARE(pch_msi, "loongson,pch-msi-1.0", pch_msi_of_init);
 #ifdef CONFIG_ACPI
 struct fwnode_handle *get_pch_msi_handle(int pci_segment)
 {
-<<<<<<< HEAD
-	int i;
-
-	for (i = 0; i < MAX_IO_PICS; i++) {
-		if (msi_group[i].pci_segment == pci_segment)
-			return pch_msi_handle[i];
-	}
-	return NULL;
-}
-
-int __init pch_msi_acpi_init(struct irq_domain *parent,
-					struct acpi_madt_msi_pic *acpi_pchmsi)
-=======
 	if (cpu_has_avecint)
 		return pch_msi_handle[0];
 
@@ -332,7 +266,6 @@ int __init pch_msi_acpi_init(struct irq_domain *parent,
 }
 
 int __init pch_msi_acpi_init(struct irq_domain *parent, struct acpi_madt_msi_pic *acpi_pchmsi)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret;
 	struct fwnode_handle *domain_handle;
@@ -345,8 +278,6 @@ int __init pch_msi_acpi_init(struct irq_domain *parent, struct acpi_madt_msi_pic
 
 	return ret;
 }
-<<<<<<< HEAD
-=======
 
 int __init pch_msi_acpi_init_avec(struct irq_domain *parent)
 {
@@ -361,5 +292,4 @@ int __init pch_msi_acpi_init_avec(struct irq_domain *parent)
 
 	return 0;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

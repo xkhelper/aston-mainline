@@ -27,20 +27,6 @@
 #include "cifs_unicode.h"
 
 /* security id for everyone/world system group */
-<<<<<<< HEAD
-static const struct cifs_sid sid_everyone = {
-	1, 1, {0, 0, 0, 0, 0, 1}, {0} };
-/* security id for Authenticated Users system group */
-static const struct cifs_sid sid_authusers = {
-	1, 1, {0, 0, 0, 0, 0, 5}, {cpu_to_le32(11)} };
-
-/* S-1-22-1 Unmapped Unix users */
-static const struct cifs_sid sid_unix_users = {1, 1, {0, 0, 0, 0, 0, 22},
-		{cpu_to_le32(1), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
-
-/* S-1-22-2 Unmapped Unix groups */
-static const struct cifs_sid sid_unix_groups = { 1, 1, {0, 0, 0, 0, 0, 22},
-=======
 static const struct smb_sid sid_everyone = {
 	1, 1, {0, 0, 0, 0, 0, 1}, {0} };
 /* security id for Authenticated Users system group */
@@ -53,7 +39,6 @@ static const struct smb_sid sid_unix_users = {1, 1, {0, 0, 0, 0, 0, 22},
 
 /* S-1-22-2 Unmapped Unix groups */
 static const struct smb_sid sid_unix_groups = { 1, 1, {0, 0, 0, 0, 0, 22},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{cpu_to_le32(2), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
 
 /*
@@ -63,29 +48,17 @@ static const struct smb_sid sid_unix_groups = { 1, 1, {0, 0, 0, 0, 0, 22},
 /* S-1-5-88 MS NFS and Apple style UID/GID/mode */
 
 /* S-1-5-88-1 Unix uid */
-<<<<<<< HEAD
-static const struct cifs_sid sid_unix_NFS_users = { 1, 2, {0, 0, 0, 0, 0, 5},
-=======
 static const struct smb_sid sid_unix_NFS_users = { 1, 2, {0, 0, 0, 0, 0, 5},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{cpu_to_le32(88),
 	 cpu_to_le32(1), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
 
 /* S-1-5-88-2 Unix gid */
-<<<<<<< HEAD
-static const struct cifs_sid sid_unix_NFS_groups = { 1, 2, {0, 0, 0, 0, 0, 5},
-=======
 static const struct smb_sid sid_unix_NFS_groups = { 1, 2, {0, 0, 0, 0, 0, 5},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{cpu_to_le32(88),
 	 cpu_to_le32(2), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
 
 /* S-1-5-88-3 Unix mode */
-<<<<<<< HEAD
-static const struct cifs_sid sid_unix_NFS_mode = { 1, 2, {0, 0, 0, 0, 0, 5},
-=======
 static const struct smb_sid sid_unix_NFS_mode = { 1, 2, {0, 0, 0, 0, 0, 5},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{cpu_to_le32(88),
 	 cpu_to_le32(3), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
 
@@ -133,11 +106,7 @@ static struct key_type cifs_idmap_key_type = {
 };
 
 static char *
-<<<<<<< HEAD
-sid_to_key_str(struct cifs_sid *sidptr, unsigned int type)
-=======
 sid_to_key_str(struct smb_sid *sidptr, unsigned int type)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i, len;
 	unsigned int saval;
@@ -189,11 +158,7 @@ sid_to_key_str(struct smb_sid *sidptr, unsigned int type)
  * the same returns zero, if they do not match returns non-zero.
  */
 static int
-<<<<<<< HEAD
-compare_sids(const struct cifs_sid *ctsid, const struct cifs_sid *cwsid)
-=======
 compare_sids(const struct smb_sid *ctsid, const struct smb_sid *cwsid)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 	int num_subauth, num_sat, num_saw;
@@ -222,11 +187,7 @@ compare_sids(const struct smb_sid *ctsid, const struct smb_sid *cwsid)
 	/* compare all of the subauth values if any */
 	num_sat = ctsid->num_subauth;
 	num_saw = cwsid->num_subauth;
-<<<<<<< HEAD
-	num_subauth = num_sat < num_saw ? num_sat : num_saw;
-=======
 	num_subauth = min(num_sat, num_saw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (num_subauth) {
 		for (i = 0; i < num_subauth; ++i) {
 			if (ctsid->sub_auth[i] != cwsid->sub_auth[i]) {
@@ -243,19 +204,11 @@ compare_sids(const struct smb_sid *ctsid, const struct smb_sid *cwsid)
 }
 
 static bool
-<<<<<<< HEAD
-is_well_known_sid(const struct cifs_sid *psid, uint32_t *puid, bool is_group)
-{
-	int i;
-	int num_subauth;
-	const struct cifs_sid *pwell_known_sid;
-=======
 is_well_known_sid(const struct smb_sid *psid, uint32_t *puid, bool is_group)
 {
 	int i;
 	int num_subauth;
 	const struct smb_sid *pwell_known_sid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!psid || (puid == NULL))
 		return false;
@@ -307,11 +260,7 @@ is_well_known_sid(const struct smb_sid *psid, uint32_t *puid, bool is_group)
 }
 
 static __u16
-<<<<<<< HEAD
-cifs_copy_sid(struct cifs_sid *dst, const struct cifs_sid *src)
-=======
 cifs_copy_sid(struct smb_sid *dst, const struct smb_sid *src)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 	__u16 size = 1 + 1 + 6;
@@ -328,19 +277,11 @@ cifs_copy_sid(struct smb_sid *dst, const struct smb_sid *src)
 }
 
 static int
-<<<<<<< HEAD
-id_to_sid(unsigned int cid, uint sidtype, struct cifs_sid *ssid)
-{
-	int rc;
-	struct key *sidkey;
-	struct cifs_sid *ksid;
-=======
 id_to_sid(unsigned int cid, uint sidtype, struct smb_sid *ssid)
 {
 	int rc;
 	struct key *sidkey;
 	struct smb_sid *ksid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int ksid_size;
 	char desc[3 + 10 + 1]; /* 3 byte prefix + 10 bytes for value + NULL */
 	const struct cred *saved_cred;
@@ -371,13 +312,8 @@ id_to_sid(unsigned int cid, uint sidtype, struct smb_sid *ssid)
 	 * it could be.
 	 */
 	ksid = sidkey->datalen <= sizeof(sidkey->payload) ?
-<<<<<<< HEAD
-		(struct cifs_sid *)&sidkey->payload :
-		(struct cifs_sid *)sidkey->payload.data[0];
-=======
 		(struct smb_sid *)&sidkey->payload :
 		(struct smb_sid *)sidkey->payload.data[0];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ksid_size = CIFS_SID_BASE_SIZE + (ksid->num_subauth * sizeof(__le32));
 	if (ksid_size > sidkey->datalen) {
@@ -400,11 +336,7 @@ invalidate_key:
 }
 
 int
-<<<<<<< HEAD
-sid_to_id(struct cifs_sb_info *cifs_sb, struct cifs_sid *psid,
-=======
 sid_to_id(struct cifs_sb_info *cifs_sb, struct smb_sid *psid,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct cifs_fattr *fattr, uint sidtype)
 {
 	int rc = 0;
@@ -583,16 +515,6 @@ exit_cifs_idmap(void)
 }
 
 /* copy ntsd, owner sid, and group sid from a security descriptor to another */
-<<<<<<< HEAD
-static __u32 copy_sec_desc(const struct cifs_ntsd *pntsd,
-				struct cifs_ntsd *pnntsd,
-				__u32 sidsoffset,
-				struct cifs_sid *pownersid,
-				struct cifs_sid *pgrpsid)
-{
-	struct cifs_sid *owner_sid_ptr, *group_sid_ptr;
-	struct cifs_sid *nowner_sid_ptr, *ngroup_sid_ptr;
-=======
 static __u32 copy_sec_desc(const struct smb_ntsd *pntsd,
 				struct smb_ntsd *pnntsd,
 				__u32 sidsoffset,
@@ -601,51 +523,28 @@ static __u32 copy_sec_desc(const struct smb_ntsd *pntsd,
 {
 	struct smb_sid *owner_sid_ptr, *group_sid_ptr;
 	struct smb_sid *nowner_sid_ptr, *ngroup_sid_ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* copy security descriptor control portion */
 	pnntsd->revision = pntsd->revision;
 	pnntsd->type = pntsd->type;
-<<<<<<< HEAD
-	pnntsd->dacloffset = cpu_to_le32(sizeof(struct cifs_ntsd));
-	pnntsd->sacloffset = 0;
-	pnntsd->osidoffset = cpu_to_le32(sidsoffset);
-	pnntsd->gsidoffset = cpu_to_le32(sidsoffset + sizeof(struct cifs_sid));
-=======
 	pnntsd->dacloffset = cpu_to_le32(sizeof(struct smb_ntsd));
 	pnntsd->sacloffset = 0;
 	pnntsd->osidoffset = cpu_to_le32(sidsoffset);
 	pnntsd->gsidoffset = cpu_to_le32(sidsoffset + sizeof(struct smb_sid));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* copy owner sid */
 	if (pownersid)
 		owner_sid_ptr = pownersid;
 	else
-<<<<<<< HEAD
-		owner_sid_ptr = (struct cifs_sid *)((char *)pntsd +
-				le32_to_cpu(pntsd->osidoffset));
-	nowner_sid_ptr = (struct cifs_sid *)((char *)pnntsd + sidsoffset);
-=======
 		owner_sid_ptr = (struct smb_sid *)((char *)pntsd +
 				le32_to_cpu(pntsd->osidoffset));
 	nowner_sid_ptr = (struct smb_sid *)((char *)pnntsd + sidsoffset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cifs_copy_sid(nowner_sid_ptr, owner_sid_ptr);
 
 	/* copy group sid */
 	if (pgrpsid)
 		group_sid_ptr = pgrpsid;
 	else
-<<<<<<< HEAD
-		group_sid_ptr = (struct cifs_sid *)((char *)pntsd +
-				le32_to_cpu(pntsd->gsidoffset));
-	ngroup_sid_ptr = (struct cifs_sid *)((char *)pnntsd + sidsoffset +
-					sizeof(struct cifs_sid));
-	cifs_copy_sid(ngroup_sid_ptr, group_sid_ptr);
-
-	return sidsoffset + (2 * sizeof(struct cifs_sid));
-=======
 		group_sid_ptr = (struct smb_sid *)((char *)pntsd +
 				le32_to_cpu(pntsd->gsidoffset));
 	ngroup_sid_ptr = (struct smb_sid *)((char *)pnntsd + sidsoffset +
@@ -653,7 +552,6 @@ static __u32 copy_sec_desc(const struct smb_ntsd *pntsd,
 	cifs_copy_sid(ngroup_sid_ptr, group_sid_ptr);
 
 	return sidsoffset + (2 * sizeof(struct smb_sid));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 
@@ -768,11 +666,7 @@ static void mode_to_access_flags(umode_t mode, umode_t bits_to_use,
 	return;
 }
 
-<<<<<<< HEAD
-static __u16 cifs_copy_ace(struct cifs_ace *dst, struct cifs_ace *src, struct cifs_sid *psid)
-=======
 static __u16 cifs_copy_ace(struct smb_ace *dst, struct smb_ace *src, struct smb_sid *psid)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	__u16 size = 1 + 1 + 2 + 4;
 
@@ -791,13 +685,8 @@ static __u16 cifs_copy_ace(struct smb_ace *dst, struct smb_ace *src, struct smb_
 	return size;
 }
 
-<<<<<<< HEAD
-static __u16 fill_ace_for_sid(struct cifs_ace *pntace,
-			const struct cifs_sid *psid, __u64 nmode,
-=======
 static __u16 fill_ace_for_sid(struct smb_ace *pntace,
 			const struct smb_sid *psid, __u64 nmode,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			umode_t bits, __u8 access_type,
 			bool allow_delete_child)
 {
@@ -834,11 +723,7 @@ static __u16 fill_ace_for_sid(struct smb_ace *pntace,
 
 
 #ifdef CONFIG_CIFS_DEBUG2
-<<<<<<< HEAD
-static void dump_ace(struct cifs_ace *pace, char *end_of_acl)
-=======
 static void dump_ace(struct smb_ace *pace, char *end_of_acl)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int num_subauth;
 
@@ -873,24 +758,15 @@ static void dump_ace(struct smb_ace *pace, char *end_of_acl)
 }
 #endif
 
-<<<<<<< HEAD
-static void parse_dacl(struct cifs_acl *pdacl, char *end_of_acl,
-		       struct cifs_sid *pownersid, struct cifs_sid *pgrpsid,
-=======
 static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
 		       struct smb_sid *pownersid, struct smb_sid *pgrpsid,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		       struct cifs_fattr *fattr, bool mode_from_special_sid)
 {
 	int i;
 	int num_aces = 0;
 	int acl_size;
 	char *acl_base;
-<<<<<<< HEAD
-	struct cifs_ace **ppace;
-=======
 	struct smb_ace **ppace;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* BB need to add parm so we can store the SID BB */
 
@@ -917,35 +793,21 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
 	fattr->cf_mode &= ~(0777);
 
 	acl_base = (char *)pdacl;
-<<<<<<< HEAD
-	acl_size = sizeof(struct cifs_acl);
-=======
 	acl_size = sizeof(struct smb_acl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	num_aces = le32_to_cpu(pdacl->num_aces);
 	if (num_aces > 0) {
 		umode_t denied_mode = 0;
 
-<<<<<<< HEAD
-		if (num_aces > ULONG_MAX / sizeof(struct cifs_ace *))
-			return;
-		ppace = kmalloc_array(num_aces, sizeof(struct cifs_ace *),
-=======
 		if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
 			return;
 		ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      GFP_KERNEL);
 		if (!ppace)
 			return;
 
 		for (i = 0; i < num_aces; ++i) {
-<<<<<<< HEAD
-			ppace[i] = (struct cifs_ace *) (acl_base + acl_size);
-=======
 			ppace[i] = (struct smb_ace *) (acl_base + acl_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_CIFS_DEBUG2
 			dump_ace(ppace[i], end_of_acl);
 #endif
@@ -987,11 +849,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
 
 /*			memcpy((void *)(&(cifscred->aces[i])),
 				(void *)ppace[i],
-<<<<<<< HEAD
-				sizeof(struct cifs_ace)); */
-=======
 				sizeof(struct smb_ace)); */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			acl_base = (char *)ppace[i];
 			acl_size = le16_to_cpu(ppace[i]->size);
@@ -1003,11 +861,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
 	return;
 }
 
-<<<<<<< HEAD
-unsigned int setup_authusers_ACE(struct cifs_ace *pntace)
-=======
 unsigned int setup_authusers_ACE(struct smb_ace *pntace)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 	unsigned int ace_size = 20;
@@ -1031,11 +885,7 @@ unsigned int setup_authusers_ACE(struct smb_ace *pntace)
  * Fill in the special SID based on the mode. See
  * https://technet.microsoft.com/en-us/library/hh509017(v=ws.10).aspx
  */
-<<<<<<< HEAD
-unsigned int setup_special_mode_ACE(struct cifs_ace *pntace, __u64 nmode)
-=======
 unsigned int setup_special_mode_ACE(struct smb_ace *pntace, __u64 nmode)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 	unsigned int ace_size = 28;
@@ -1057,11 +907,7 @@ unsigned int setup_special_mode_ACE(struct smb_ace *pntace, __u64 nmode)
 	return ace_size;
 }
 
-<<<<<<< HEAD
-unsigned int setup_special_user_owner_ACE(struct cifs_ace *pntace)
-=======
 unsigned int setup_special_user_owner_ACE(struct smb_ace *pntace)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 	unsigned int ace_size = 28;
@@ -1084,13 +930,8 @@ unsigned int setup_special_user_owner_ACE(struct smb_ace *pntace)
 }
 
 static void populate_new_aces(char *nacl_base,
-<<<<<<< HEAD
-		struct cifs_sid *pownersid,
-		struct cifs_sid *pgrpsid,
-=======
 		struct smb_sid *pownersid,
 		struct smb_sid *pgrpsid,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__u64 *pnmode, u32 *pnum_aces, u16 *pnsize,
 		bool modefromsid)
 {
@@ -1103,28 +944,17 @@ static void populate_new_aces(char *nacl_base,
 	__u64 deny_user_mode = 0;
 	__u64 deny_group_mode = 0;
 	bool sticky_set = false;
-<<<<<<< HEAD
-	struct cifs_ace *pnntace = NULL;
-=======
 	struct smb_ace *pnntace = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	nmode = *pnmode;
 	num_aces = *pnum_aces;
 	nsize = *pnsize;
 
 	if (modefromsid) {
-<<<<<<< HEAD
-		pnntace = (struct cifs_ace *) (nacl_base + nsize);
-		nsize += setup_special_mode_ACE(pnntace, nmode);
-		num_aces++;
-		pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 		pnntace = (struct smb_ace *) (nacl_base + nsize);
 		nsize += setup_special_mode_ACE(pnntace, nmode);
 		num_aces++;
 		pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nsize += setup_authusers_ACE(pnntace);
 		num_aces++;
 		goto set_size;
@@ -1137,11 +967,7 @@ static void populate_new_aces(char *nacl_base,
 	 * updated in the inode.
 	 */
 
-<<<<<<< HEAD
-	if (!memcmp(pownersid, pgrpsid, sizeof(struct cifs_sid))) {
-=======
 	if (!memcmp(pownersid, pgrpsid, sizeof(struct smb_sid))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Case when owner and group SIDs are the same.
 		 * Set the more restrictive of the two modes.
@@ -1166,11 +992,7 @@ static void populate_new_aces(char *nacl_base,
 		sticky_set = true;
 
 	if (deny_user_mode) {
-<<<<<<< HEAD
-		pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 		pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nsize += fill_ace_for_sid(pnntace, pownersid, deny_user_mode,
 				0700, ACCESS_DENIED, false);
 		num_aces++;
@@ -1178,51 +1000,31 @@ static void populate_new_aces(char *nacl_base,
 
 	/* Group DENY ACE does not conflict with owner ALLOW ACE. Keep in preferred order*/
 	if (deny_group_mode && !(deny_group_mode & (user_mode >> 3))) {
-<<<<<<< HEAD
-		pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 		pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nsize += fill_ace_for_sid(pnntace, pgrpsid, deny_group_mode,
 				0070, ACCESS_DENIED, false);
 		num_aces++;
 	}
 
-<<<<<<< HEAD
-	pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 	pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nsize += fill_ace_for_sid(pnntace, pownersid, user_mode,
 			0700, ACCESS_ALLOWED, true);
 	num_aces++;
 
 	/* Group DENY ACE conflicts with owner ALLOW ACE. So keep it after. */
 	if (deny_group_mode && (deny_group_mode & (user_mode >> 3))) {
-<<<<<<< HEAD
-		pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 		pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nsize += fill_ace_for_sid(pnntace, pgrpsid, deny_group_mode,
 				0070, ACCESS_DENIED, false);
 		num_aces++;
 	}
 
-<<<<<<< HEAD
-	pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 	pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nsize += fill_ace_for_sid(pnntace, pgrpsid, group_mode,
 			0070, ACCESS_ALLOWED, !sticky_set);
 	num_aces++;
 
-<<<<<<< HEAD
-	pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 	pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nsize += fill_ace_for_sid(pnntace, &sid_everyone, other_mode,
 			0007, ACCESS_ALLOWED, !sticky_set);
 	num_aces++;
@@ -1232,19 +1034,6 @@ set_size:
 	*pnsize = nsize;
 }
 
-<<<<<<< HEAD
-static __u16 replace_sids_and_copy_aces(struct cifs_acl *pdacl, struct cifs_acl *pndacl,
-		struct cifs_sid *pownersid, struct cifs_sid *pgrpsid,
-		struct cifs_sid *pnownersid, struct cifs_sid *pngrpsid)
-{
-	int i;
-	u16 size = 0;
-	struct cifs_ace *pntace = NULL;
-	char *acl_base = NULL;
-	u32 src_num_aces = 0;
-	u16 nsize = 0;
-	struct cifs_ace *pnntace = NULL;
-=======
 static __u16 replace_sids_and_copy_aces(struct smb_acl *pdacl, struct smb_acl *pndacl,
 		struct smb_sid *pownersid, struct smb_sid *pgrpsid,
 		struct smb_sid *pnownersid, struct smb_sid *pngrpsid)
@@ -1256,23 +1045,10 @@ static __u16 replace_sids_and_copy_aces(struct smb_acl *pdacl, struct smb_acl *p
 	u32 src_num_aces = 0;
 	u16 nsize = 0;
 	struct smb_ace *pnntace = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *nacl_base = NULL;
 	u16 ace_size = 0;
 
 	acl_base = (char *)pdacl;
-<<<<<<< HEAD
-	size = sizeof(struct cifs_acl);
-	src_num_aces = le32_to_cpu(pdacl->num_aces);
-
-	nacl_base = (char *)pndacl;
-	nsize = sizeof(struct cifs_acl);
-
-	/* Go through all the ACEs */
-	for (i = 0; i < src_num_aces; ++i) {
-		pntace = (struct cifs_ace *) (acl_base + size);
-		pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 	size = sizeof(struct smb_acl);
 	src_num_aces = le32_to_cpu(pdacl->num_aces);
 
@@ -1283,7 +1059,6 @@ static __u16 replace_sids_and_copy_aces(struct smb_acl *pdacl, struct smb_acl *p
 	for (i = 0; i < src_num_aces; ++i) {
 		pntace = (struct smb_ace *) (acl_base + size);
 		pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (pnownersid && compare_sids(&pntace->sid, pownersid) == 0)
 			ace_size = cifs_copy_ace(pnntace, pntace, pnownersid);
@@ -1299,41 +1074,24 @@ static __u16 replace_sids_and_copy_aces(struct smb_acl *pdacl, struct smb_acl *p
 	return nsize;
 }
 
-<<<<<<< HEAD
-static int set_chmod_dacl(struct cifs_acl *pdacl, struct cifs_acl *pndacl,
-		struct cifs_sid *pownersid,	struct cifs_sid *pgrpsid,
-=======
 static int set_chmod_dacl(struct smb_acl *pdacl, struct smb_acl *pndacl,
 		struct smb_sid *pownersid,	struct smb_sid *pgrpsid,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__u64 *pnmode, bool mode_from_sid)
 {
 	int i;
 	u16 size = 0;
-<<<<<<< HEAD
-	struct cifs_ace *pntace = NULL;
-	char *acl_base = NULL;
-	u32 src_num_aces = 0;
-	u16 nsize = 0;
-	struct cifs_ace *pnntace = NULL;
-=======
 	struct smb_ace *pntace = NULL;
 	char *acl_base = NULL;
 	u32 src_num_aces = 0;
 	u16 nsize = 0;
 	struct smb_ace *pnntace = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *nacl_base = NULL;
 	u32 num_aces = 0;
 	bool new_aces_set = false;
 
 	/* Assuming that pndacl and pnmode are never NULL */
 	nacl_base = (char *)pndacl;
-<<<<<<< HEAD
-	nsize = sizeof(struct cifs_acl);
-=======
 	nsize = sizeof(struct smb_acl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* If pdacl is NULL, we don't have a src. Simply populate new ACL. */
 	if (!pdacl) {
@@ -1345,20 +1103,12 @@ static int set_chmod_dacl(struct smb_acl *pdacl, struct smb_acl *pndacl,
 	}
 
 	acl_base = (char *)pdacl;
-<<<<<<< HEAD
-	size = sizeof(struct cifs_acl);
-=======
 	size = sizeof(struct smb_acl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	src_num_aces = le32_to_cpu(pdacl->num_aces);
 
 	/* Retain old ACEs which we can retain */
 	for (i = 0; i < src_num_aces; ++i) {
-<<<<<<< HEAD
-		pntace = (struct cifs_ace *) (acl_base + size);
-=======
 		pntace = (struct smb_ace *) (acl_base + size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!new_aces_set && (pntace->flags & INHERITED_ACE)) {
 			/* Place the new ACEs in between existing explicit and inherited */
@@ -1380,11 +1130,7 @@ static int set_chmod_dacl(struct smb_acl *pdacl, struct smb_acl *pndacl,
 		}
 
 		/* update the pointer to the next ACE to populate*/
-<<<<<<< HEAD
-		pnntace = (struct cifs_ace *) (nacl_base + nsize);
-=======
 		pnntace = (struct smb_ace *) (nacl_base + nsize);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		nsize += cifs_copy_ace(pnntace, pntace, NULL);
 		num_aces++;
@@ -1410,11 +1156,7 @@ finalize_dacl:
 	return 0;
 }
 
-<<<<<<< HEAD
-static int parse_sid(struct cifs_sid *psid, char *end_of_acl)
-=======
 static int parse_sid(struct smb_sid *psid, char *end_of_acl)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/* BB need to add parm so we can store the SID BB */
 
@@ -1449,42 +1191,24 @@ static int parse_sid(struct smb_sid *psid, char *end_of_acl)
 
 /* Convert CIFS ACL to POSIX form */
 static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
-<<<<<<< HEAD
-		struct cifs_ntsd *pntsd, int acl_len, struct cifs_fattr *fattr,
-		bool get_mode_from_special_sid)
-{
-	int rc = 0;
-	struct cifs_sid *owner_sid_ptr, *group_sid_ptr;
-	struct cifs_acl *dacl_ptr; /* no need for SACL ptr */
-=======
 		struct smb_ntsd *pntsd, int acl_len, struct cifs_fattr *fattr,
 		bool get_mode_from_special_sid)
 {
 	int rc = 0;
 	struct smb_sid *owner_sid_ptr, *group_sid_ptr;
 	struct smb_acl *dacl_ptr; /* no need for SACL ptr */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *end_of_acl = ((char *)pntsd) + acl_len;
 	__u32 dacloffset;
 
 	if (pntsd == NULL)
 		return -EIO;
 
-<<<<<<< HEAD
-	owner_sid_ptr = (struct cifs_sid *)((char *)pntsd +
-				le32_to_cpu(pntsd->osidoffset));
-	group_sid_ptr = (struct cifs_sid *)((char *)pntsd +
-				le32_to_cpu(pntsd->gsidoffset));
-	dacloffset = le32_to_cpu(pntsd->dacloffset);
-	dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
-=======
 	owner_sid_ptr = (struct smb_sid *)((char *)pntsd +
 				le32_to_cpu(pntsd->osidoffset));
 	group_sid_ptr = (struct smb_sid *)((char *)pntsd +
 				le32_to_cpu(pntsd->gsidoffset));
 	dacloffset = le32_to_cpu(pntsd->dacloffset);
 	dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cifs_dbg(NOISY, "revision %d type 0x%x ooffset 0x%x goffset 0x%x sacloffset 0x%x dacloffset 0x%x\n",
 		 pntsd->revision, pntsd->type, le32_to_cpu(pntsd->osidoffset),
 		 le32_to_cpu(pntsd->gsidoffset),
@@ -1525,11 +1249,7 @@ static int parse_sec_desc(struct cifs_sb_info *cifs_sb,
 }
 
 /* Convert permission bits from mode to equivalent CIFS ACL */
-<<<<<<< HEAD
-static int build_sec_desc(struct cifs_ntsd *pntsd, struct cifs_ntsd *pnntsd,
-=======
 static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__u32 secdesclen, __u32 *pnsecdesclen, __u64 *pnmode, kuid_t uid, kgid_t gid,
 	bool mode_from_sid, bool id_from_sid, int *aclflag)
 {
@@ -1537,43 +1257,22 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
 	__u32 dacloffset;
 	__u32 ndacloffset;
 	__u32 sidsoffset;
-<<<<<<< HEAD
-	struct cifs_sid *owner_sid_ptr, *group_sid_ptr;
-	struct cifs_sid *nowner_sid_ptr = NULL, *ngroup_sid_ptr = NULL;
-	struct cifs_acl *dacl_ptr = NULL;  /* no need for SACL ptr */
-	struct cifs_acl *ndacl_ptr = NULL; /* no need for SACL ptr */
-=======
 	struct smb_sid *owner_sid_ptr, *group_sid_ptr;
 	struct smb_sid *nowner_sid_ptr = NULL, *ngroup_sid_ptr = NULL;
 	struct smb_acl *dacl_ptr = NULL;  /* no need for SACL ptr */
 	struct smb_acl *ndacl_ptr = NULL; /* no need for SACL ptr */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *end_of_acl = ((char *)pntsd) + secdesclen;
 	u16 size = 0;
 
 	dacloffset = le32_to_cpu(pntsd->dacloffset);
 	if (dacloffset) {
-<<<<<<< HEAD
-		dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
-=======
 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
 			cifs_dbg(VFS, "Server returned illegal ACL size\n");
 			return -EINVAL;
 		}
 	}
 
-<<<<<<< HEAD
-	owner_sid_ptr = (struct cifs_sid *)((char *)pntsd +
-			le32_to_cpu(pntsd->osidoffset));
-	group_sid_ptr = (struct cifs_sid *)((char *)pntsd +
-			le32_to_cpu(pntsd->gsidoffset));
-
-	if (pnmode && *pnmode != NO_CHANGE_64) { /* chmod */
-		ndacloffset = sizeof(struct cifs_ntsd);
-		ndacl_ptr = (struct cifs_acl *)((char *)pnntsd + ndacloffset);
-=======
 	owner_sid_ptr = (struct smb_sid *)((char *)pntsd +
 			le32_to_cpu(pntsd->osidoffset));
 	group_sid_ptr = (struct smb_sid *)((char *)pntsd +
@@ -1582,7 +1281,6 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
 	if (pnmode && *pnmode != NO_CHANGE_64) { /* chmod */
 		ndacloffset = sizeof(struct smb_ntsd);
 		ndacl_ptr = (struct smb_acl *)((char *)pnntsd + ndacloffset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ndacl_ptr->revision =
 			dacloffset ? dacl_ptr->revision : cpu_to_le16(ACL_REVISION);
 
@@ -1599,24 +1297,15 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
 
 		*aclflag |= CIFS_ACL_DACL;
 	} else {
-<<<<<<< HEAD
-		ndacloffset = sizeof(struct cifs_ntsd);
-		ndacl_ptr = (struct cifs_acl *)((char *)pnntsd + ndacloffset);
-=======
 		ndacloffset = sizeof(struct smb_ntsd);
 		ndacl_ptr = (struct smb_acl *)((char *)pnntsd + ndacloffset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ndacl_ptr->revision =
 			dacloffset ? dacl_ptr->revision : cpu_to_le16(ACL_REVISION);
 		ndacl_ptr->num_aces = dacl_ptr ? dacl_ptr->num_aces : 0;
 
 		if (uid_valid(uid)) { /* chown */
 			uid_t id;
-<<<<<<< HEAD
-			nowner_sid_ptr = kzalloc(sizeof(struct cifs_sid),
-=======
 			nowner_sid_ptr = kzalloc(sizeof(struct smb_sid),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 								GFP_KERNEL);
 			if (!nowner_sid_ptr) {
 				rc = -ENOMEM;
@@ -1645,11 +1334,7 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
 		}
 		if (gid_valid(gid)) { /* chgrp */
 			gid_t id;
-<<<<<<< HEAD
-			ngroup_sid_ptr = kzalloc(sizeof(struct cifs_sid),
-=======
 			ngroup_sid_ptr = kzalloc(sizeof(struct smb_sid),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 								GFP_KERNEL);
 			if (!ngroup_sid_ptr) {
 				rc = -ENOMEM;
@@ -1700,19 +1385,11 @@ chown_chgrp_exit:
 }
 
 #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
-<<<<<<< HEAD
-struct cifs_ntsd *get_cifs_acl_by_fid(struct cifs_sb_info *cifs_sb,
-				      const struct cifs_fid *cifsfid, u32 *pacllen,
-				      u32 __maybe_unused unused)
-{
-	struct cifs_ntsd *pntsd = NULL;
-=======
 struct smb_ntsd *get_cifs_acl_by_fid(struct cifs_sb_info *cifs_sb,
 				      const struct cifs_fid *cifsfid, u32 *pacllen,
 				      u32 __maybe_unused unused)
 {
 	struct smb_ntsd *pntsd = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int xid;
 	int rc;
 	struct tcon_link *tlink = cifs_sb_tlink(cifs_sb);
@@ -1733,17 +1410,10 @@ struct smb_ntsd *get_cifs_acl_by_fid(struct cifs_sb_info *cifs_sb,
 	return pntsd;
 }
 
-<<<<<<< HEAD
-static struct cifs_ntsd *get_cifs_acl_by_path(struct cifs_sb_info *cifs_sb,
-		const char *path, u32 *pacllen)
-{
-	struct cifs_ntsd *pntsd = NULL;
-=======
 static struct smb_ntsd *get_cifs_acl_by_path(struct cifs_sb_info *cifs_sb,
 		const char *path, u32 *pacllen)
 {
 	struct smb_ntsd *pntsd = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int oplock = 0;
 	unsigned int xid;
 	int rc;
@@ -1784,19 +1454,11 @@ static struct smb_ntsd *get_cifs_acl_by_path(struct cifs_sb_info *cifs_sb,
 }
 
 /* Retrieve an ACL from the server */
-<<<<<<< HEAD
-struct cifs_ntsd *get_cifs_acl(struct cifs_sb_info *cifs_sb,
-				      struct inode *inode, const char *path,
-			       u32 *pacllen, u32 info)
-{
-	struct cifs_ntsd *pntsd = NULL;
-=======
 struct smb_ntsd *get_cifs_acl(struct cifs_sb_info *cifs_sb,
 				      struct inode *inode, const char *path,
 			       u32 *pacllen, u32 info)
 {
 	struct smb_ntsd *pntsd = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cifsFileInfo *open_file = NULL;
 
 	if (inode)
@@ -1810,11 +1472,7 @@ struct smb_ntsd *get_cifs_acl(struct cifs_sb_info *cifs_sb,
 }
 
  /* Set an ACL on the server */
-<<<<<<< HEAD
-int set_cifs_acl(struct cifs_ntsd *pnntsd, __u32 acllen,
-=======
 int set_cifs_acl(struct smb_ntsd *pnntsd, __u32 acllen,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct inode *inode, const char *path, int aclflag)
 {
 	int oplock = 0;
@@ -1870,11 +1528,7 @@ cifs_acl_to_fattr(struct cifs_sb_info *cifs_sb, struct cifs_fattr *fattr,
 		  struct inode *inode, bool mode_from_special_sid,
 		  const char *path, const struct cifs_fid *pfid)
 {
-<<<<<<< HEAD
-	struct cifs_ntsd *pntsd = NULL;
-=======
 	struct smb_ntsd *pntsd = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 acllen = 0;
 	int rc = 0;
 	struct tcon_link *tlink = cifs_sb_tlink(cifs_sb);
@@ -1926,15 +1580,9 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
 	__u32 secdesclen = 0;
 	__u32 nsecdesclen = 0;
 	__u32 dacloffset = 0;
-<<<<<<< HEAD
-	struct cifs_acl *dacl_ptr = NULL;
-	struct cifs_ntsd *pntsd = NULL; /* acl obtained from server */
-	struct cifs_ntsd *pnntsd = NULL; /* modified acl to be sent to server */
-=======
 	struct smb_acl *dacl_ptr = NULL;
 	struct smb_ntsd *pntsd = NULL; /* acl obtained from server */
 	struct smb_ntsd *pnntsd = NULL; /* modified acl to be sent to server */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
 	struct tcon_link *tlink = cifs_sb_tlink(cifs_sb);
 	struct smb_version_operations *ops;
@@ -1977,20 +1625,6 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
 	nsecdesclen = secdesclen;
 	if (pnmode && *pnmode != NO_CHANGE_64) { /* chmod */
 		if (mode_from_sid)
-<<<<<<< HEAD
-			nsecdesclen += 2 * sizeof(struct cifs_ace);
-		else /* cifsacl */
-			nsecdesclen += 5 * sizeof(struct cifs_ace);
-	} else { /* chown */
-		/* When ownership changes, changes new owner sid length could be different */
-		nsecdesclen = sizeof(struct cifs_ntsd) + (sizeof(struct cifs_sid) * 2);
-		dacloffset = le32_to_cpu(pntsd->dacloffset);
-		if (dacloffset) {
-			dacl_ptr = (struct cifs_acl *)((char *)pntsd + dacloffset);
-			if (mode_from_sid)
-				nsecdesclen +=
-					le32_to_cpu(dacl_ptr->num_aces) * sizeof(struct cifs_ace);
-=======
 			nsecdesclen += 2 * sizeof(struct smb_ace);
 		else /* cifsacl */
 			nsecdesclen += 5 * sizeof(struct smb_ace);
@@ -2003,7 +1637,6 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
 			if (mode_from_sid)
 				nsecdesclen +=
 					le32_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			else /* cifsacl */
 				nsecdesclen += le16_to_cpu(dacl_ptr->size);
 		}

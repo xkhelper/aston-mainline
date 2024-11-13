@@ -296,35 +296,17 @@ static int xway_stp_probe(struct platform_device *pdev)
 	if (!of_property_read_bool(pdev->dev.of_node, "lantiq,rising"))
 		chip->edge = XWAY_STP_FALLING;
 
-<<<<<<< HEAD
-	clk = devm_clk_get(&pdev->dev, NULL);
-=======
 	clk = devm_clk_get_enabled(&pdev->dev, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(clk)) {
 		dev_err(&pdev->dev, "Failed to get clock\n");
 		return PTR_ERR(clk);
 	}
 
-<<<<<<< HEAD
-	ret = clk_prepare_enable(clk);
-	if (ret)
-		return ret;
-
-	xway_stp_hw_init(chip);
-
-	ret = devm_gpiochip_add_data(&pdev->dev, &chip->gc, chip);
-	if (ret) {
-		clk_disable_unprepare(clk);
-		return ret;
-	}
-=======
 	xway_stp_hw_init(chip);
 
 	ret = devm_gpiochip_add_data(&pdev->dev, &chip->gc, chip);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_info(&pdev->dev, "Init done\n");
 

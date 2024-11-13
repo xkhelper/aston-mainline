@@ -20,11 +20,8 @@
 #include <sys/mman.h>
 #include <poll.h>
 #include <signal.h>
-<<<<<<< HEAD
-=======
 #include <sys/ioctl.h>
 #include <linux/sockios.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "vsock_test_zerocopy.h"
 #include "timeout.h"
@@ -1243,8 +1240,6 @@ static void test_double_bind_connect_client(const struct test_opts *opts)
 	}
 }
 
-<<<<<<< HEAD
-=======
 #define MSG_BUF_IOCTL_LEN 64
 static void test_unsent_bytes_server(const struct test_opts *opts, int type)
 {
@@ -1318,7 +1313,6 @@ static void test_seqpacket_unsent_bytes_server(const struct test_opts *opts)
 	test_unsent_bytes_server(opts, SOCK_SEQPACKET);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RCVLOWAT_CREDIT_UPD_BUF_SIZE	(1024 * 128)
 /* This define is the same as in 'include/linux/virtio_vsock.h':
  * it is used to decide when to send credit update message during
@@ -1604,8 +1598,6 @@ static struct test_case test_cases[] = {
 		.run_client = test_stream_rcvlowat_def_cred_upd_client,
 		.run_server = test_stream_cred_upd_on_low_rx_bytes,
 	},
-<<<<<<< HEAD
-=======
 	{
 		.name = "SOCK_STREAM ioctl(SIOCOUTQ) 0 unsent bytes",
 		.run_client = test_stream_unsent_bytes_client,
@@ -1616,7 +1608,6 @@ static struct test_case test_cases[] = {
 		.run_client = test_seqpacket_unsent_bytes_client,
 		.run_server = test_seqpacket_unsent_bytes_server,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 

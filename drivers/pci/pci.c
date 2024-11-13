@@ -1067,10 +1067,6 @@ static void pci_std_enable_acs(struct pci_dev *dev, struct pci_acs *caps)
 static void pci_enable_acs(struct pci_dev *dev)
 {
 	struct pci_acs caps;
-<<<<<<< HEAD
-	int pos;
-
-=======
 	bool enable_acs = false;
 	int pos;
 
@@ -1080,7 +1076,6 @@ static void pci_enable_acs(struct pci_dev *dev)
 			enable_acs = true;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pos = dev->acs_cap;
 	if (!pos)
 		return;
@@ -1089,16 +1084,8 @@ static void pci_enable_acs(struct pci_dev *dev)
 	pci_read_config_word(dev, pos + PCI_ACS_CTRL, &caps.ctrl);
 	caps.fw_ctrl = caps.ctrl;
 
-<<<<<<< HEAD
-	/* If an iommu is present we start with kernel default caps */
-	if (pci_acs_enable) {
-		if (pci_dev_specific_enable_acs(dev))
-			pci_std_enable_acs(dev, &caps);
-	}
-=======
 	if (enable_acs)
 		pci_std_enable_acs(dev, &caps);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Always apply caps from the command line, even if there is no iommu.
@@ -1300,13 +1287,9 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
 {
 	int delay = 1;
 	bool retrain = false;
-<<<<<<< HEAD
-	struct pci_dev *bridge;
-=======
 	struct pci_dev *root, *bridge;
 
 	root = pcie_find_root_port(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (pci_is_pcie(dev)) {
 		bridge = pci_upstream_bridge(dev);
@@ -1315,18 +1298,6 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
 	}
 
 	/*
-<<<<<<< HEAD
-	 * After reset, the device should not silently discard config
-	 * requests, but it may still indicate that it needs more time by
-	 * responding to them with CRS completions.  The Root Port will
-	 * generally synthesize ~0 (PCI_ERROR_RESPONSE) data to complete
-	 * the read (except when CRS SV is enabled and the read was for the
-	 * Vendor ID; in that case it synthesizes 0x0001 data).
-	 *
-	 * Wait for the device to return a non-CRS completion.  Read the
-	 * Command register instead of Vendor ID so we don't have to
-	 * contend with the CRS SV value.
-=======
 	 * The caller has already waited long enough after a reset that the
 	 * device should respond to config requests, but it may respond
 	 * with Request Retry Status (RRS) if it needs more time to
@@ -1344,7 +1315,6 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
 	 * (PCI_ERROR_RESPONSE) data to complete the read.  Reading Vendor
 	 * ID for VFs and non-existent devices also returns ~0, so read the
 	 * Command register until it returns something other than ~0.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	for (;;) {
 		u32 id;
@@ -1354,11 +1324,6 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
 			return -ENOTTY;
 		}
 
-<<<<<<< HEAD
-		pci_read_config_dword(dev, PCI_COMMAND, &id);
-		if (!PCI_POSSIBLE_ERROR(id))
-			break;
-=======
 		if (root && root->config_rrs_sv) {
 			pci_read_config_dword(dev, PCI_VENDOR_ID, &id);
 			if (!pci_bus_rrs_vendor_id(id))
@@ -1368,7 +1333,6 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
 			if (!PCI_POSSIBLE_ERROR(id))
 				break;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (delay > timeout) {
 			pci_warn(dev, "not ready %dms after %s; giving up\n",
@@ -1379,11 +1343,7 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
 		if (delay > PCI_RESET_WAIT) {
 			if (retrain) {
 				retrain = false;
-<<<<<<< HEAD
-				if (pcie_failed_link_retrain(bridge)) {
-=======
 				if (pcie_failed_link_retrain(bridge) == 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					delay = 1;
 					continue;
 				}
@@ -4777,9 +4737,6 @@ int pcie_retrain_link(struct pci_dev *pdev, bool use_lt)
 		pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_RL);
 	}
 
-<<<<<<< HEAD
-	return pcie_wait_for_link_status(pdev, use_lt, !use_lt);
-=======
 	rc = pcie_wait_for_link_status(pdev, use_lt, !use_lt);
 
 	/*
@@ -4789,7 +4746,6 @@ int pcie_retrain_link(struct pci_dev *pdev, bool use_lt)
 	 */
 	pcie_capability_write_word(pdev, PCI_EXP_LNKSTA, PCI_EXP_LNKSTA_LBMS);
 	return rc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -5743,15 +5699,10 @@ static void pci_bus_restore_locked(struct pci_bus *bus)
 
 	list_for_each_entry(dev, &bus->devices, bus_list) {
 		pci_dev_restore(dev);
-<<<<<<< HEAD
-		if (dev->subordinate)
-			pci_bus_restore_locked(dev->subordinate);
-=======
 		if (dev->subordinate) {
 			pci_bridge_wait_for_secondary_bus(dev, "bus reset");
 			pci_bus_restore_locked(dev->subordinate);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -5785,15 +5736,10 @@ static void pci_slot_restore_locked(struct pci_slot *slot)
 		if (!dev->slot || dev->slot != slot)
 			continue;
 		pci_dev_restore(dev);
-<<<<<<< HEAD
-		if (dev->subordinate)
-			pci_bus_restore_locked(dev->subordinate);
-=======
 		if (dev->subordinate) {
 			pci_bridge_wait_for_secondary_bus(dev, "slot reset");
 			pci_bus_restore_locked(dev->subordinate);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -6887,18 +6833,6 @@ static int of_pci_bus_find_domain_nr(struct device *parent)
 	return ida_alloc(&pci_domain_nr_dynamic_ida, GFP_KERNEL);
 }
 
-<<<<<<< HEAD
-static void of_pci_bus_release_domain_nr(struct pci_bus *bus, struct device *parent)
-{
-	if (bus->domain_nr < 0)
-		return;
-
-	/* Release domain from IDA where it was allocated. */
-	if (of_get_pci_domain_nr(parent->of_node) == bus->domain_nr)
-		ida_free(&pci_domain_nr_static_ida, bus->domain_nr);
-	else
-		ida_free(&pci_domain_nr_dynamic_ida, bus->domain_nr);
-=======
 static void of_pci_bus_release_domain_nr(struct device *parent, int domain_nr)
 {
 	if (domain_nr < 0)
@@ -6909,7 +6843,6 @@ static void of_pci_bus_release_domain_nr(struct device *parent, int domain_nr)
 		ida_free(&pci_domain_nr_static_ida, domain_nr);
 	else
 		ida_free(&pci_domain_nr_dynamic_ida, domain_nr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int pci_bus_find_domain_nr(struct pci_bus *bus, struct device *parent)
@@ -6918,19 +6851,11 @@ int pci_bus_find_domain_nr(struct pci_bus *bus, struct device *parent)
 			       acpi_pci_bus_find_domain_nr(bus);
 }
 
-<<<<<<< HEAD
-void pci_bus_release_domain_nr(struct pci_bus *bus, struct device *parent)
-{
-	if (!acpi_disabled)
-		return;
-	of_pci_bus_release_domain_nr(bus, parent);
-=======
 void pci_bus_release_domain_nr(struct device *parent, int domain_nr)
 {
 	if (!acpi_disabled)
 		return;
 	of_pci_bus_release_domain_nr(parent, domain_nr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #endif
 

@@ -38,26 +38,20 @@ static const struct class hidraw_class = {
 static struct hidraw *hidraw_table[HIDRAW_MAX_DEVICES];
 static DECLARE_RWSEM(minors_rwsem);
 
-<<<<<<< HEAD
-=======
 static inline bool hidraw_is_revoked(struct hidraw_list *list)
 {
 	return list->revoked;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t hidraw_read(struct file *file, char __user *buffer, size_t count, loff_t *ppos)
 {
 	struct hidraw_list *list = file->private_data;
 	int ret = 0, len;
 	DECLARE_WAITQUEUE(wait, current);
 
-<<<<<<< HEAD
-=======
 	if (hidraw_is_revoked(list))
 		return -ENODEV;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_lock(&list->read_mutex);
 
 	while (ret == 0) {
@@ -175,11 +169,6 @@ out:
 
 static ssize_t hidraw_write(struct file *file, const char __user *buffer, size_t count, loff_t *ppos)
 {
-<<<<<<< HEAD
-	ssize_t ret;
-	down_read(&minors_rwsem);
-	ret = hidraw_send_report(file, buffer, count, HID_OUTPUT_REPORT);
-=======
 	struct hidraw_list *list = file->private_data;
 	ssize_t ret;
 	down_read(&minors_rwsem);
@@ -187,7 +176,6 @@ static ssize_t hidraw_write(struct file *file, const char __user *buffer, size_t
 		ret = -ENODEV;
 	else
 		ret = hidraw_send_report(file, buffer, count, HID_OUTPUT_REPORT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	up_read(&minors_rwsem);
 	return ret;
 }
@@ -280,11 +268,7 @@ static __poll_t hidraw_poll(struct file *file, poll_table *wait)
 	poll_wait(file, &list->hidraw->wait, wait);
 	if (list->head != list->tail)
 		mask |= EPOLLIN | EPOLLRDNORM;
-<<<<<<< HEAD
-	if (!list->hidraw->exist)
-=======
 	if (!list->hidraw->exist || hidraw_is_revoked(list))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mask |= EPOLLERR | EPOLLHUP;
 	return mask;
 }
@@ -348,12 +332,9 @@ static int hidraw_fasync(int fd, struct file *file, int on)
 {
 	struct hidraw_list *list = file->private_data;
 
-<<<<<<< HEAD
-=======
 	if (hidraw_is_revoked(list))
 		return -ENODEV;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return fasync_helper(fd, file, on, &list->fasync);
 }
 
@@ -406,8 +387,6 @@ static int hidraw_release(struct inode * inode, struct file * file)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int hidraw_revoke(struct hidraw_list *list)
 {
 	list->revoked = true;
@@ -415,7 +394,6 @@ static int hidraw_revoke(struct hidraw_list *list)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static long hidraw_ioctl(struct file *file, unsigned int cmd,
 							unsigned long arg)
 {
@@ -423,19 +401,12 @@ static long hidraw_ioctl(struct file *file, unsigned int cmd,
 	unsigned int minor = iminor(inode);
 	long ret = 0;
 	struct hidraw *dev;
-<<<<<<< HEAD
-=======
 	struct hidraw_list *list = file->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __user *user_arg = (void __user*) arg;
 
 	down_read(&minors_rwsem);
 	dev = hidraw_table[minor];
-<<<<<<< HEAD
-	if (!dev || !dev->exist) {
-=======
 	if (!dev || !dev->exist || hidraw_is_revoked(list)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -ENODEV;
 		goto out;
 	}
@@ -473,8 +444,6 @@ static long hidraw_ioctl(struct file *file, unsigned int cmd,
 					ret = -EFAULT;
 				break;
 			}
-<<<<<<< HEAD
-=======
 		case HIDIOCREVOKE:
 			{
 				if (user_arg)
@@ -483,7 +452,6 @@ static long hidraw_ioctl(struct file *file, unsigned int cmd,
 					ret = hidraw_revoke(list);
 				break;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		default:
 			{
 				struct hid_device *hid = dev->hid;
@@ -590,11 +558,7 @@ int hidraw_report_event(struct hid_device *hid, u8 *data, int len)
 	list_for_each_entry(list, &dev->list, node) {
 		int new_head = (list->head + 1) & (HIDRAW_BUFFER_SIZE - 1);
 
-<<<<<<< HEAD
-		if (new_head == list->tail)
-=======
 		if (hidraw_is_revoked(list) || new_head == list->tail)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		if (!(list->buffer[list->head].value = kmemdup(data, len, GFP_ATOMIC))) {

@@ -28,8 +28,6 @@ static int	nfs3_ftypes[] = {
 	S_IFIFO,		/* NF3FIFO */
 };
 
-<<<<<<< HEAD
-=======
 static __be32 nfsd3_map_status(__be32 status)
 {
 	switch (status) {
@@ -53,7 +51,6 @@ static __be32 nfsd3_map_status(__be32 status)
 	return status;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * NULL call.
  */
@@ -83,10 +80,7 @@ nfsd3_proc_getattr(struct svc_rqst *rqstp)
 
 	resp->status = fh_getattr(&resp->fh, &resp->stat);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -110,10 +104,7 @@ nfsd3_proc_setattr(struct svc_rqst *rqstp)
 	if (argp->check_guard)
 		guardtime = &argp->guardtime;
 	resp->status = nfsd_setattr(rqstp, &resp->fh, &attrs, guardtime);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -137,10 +128,7 @@ nfsd3_proc_lookup(struct svc_rqst *rqstp)
 	resp->status = nfsd_lookup(rqstp, &resp->dirfh,
 				   argp->name, argp->len,
 				   &resp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -160,10 +148,7 @@ nfsd3_proc_access(struct svc_rqst *rqstp)
 	fh_copy(&resp->fh, &argp->fh);
 	resp->access = argp->access;
 	resp->status = nfsd_access(rqstp, &resp->fh, &resp->access, NULL);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -184,10 +169,7 @@ nfsd3_proc_readlink(struct svc_rqst *rqstp)
 	resp->pages = rqstp->rq_next_page++;
 	resp->status = nfsd_readlink(rqstp, &resp->fh,
 				     page_address(*resp->pages), &resp->len);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -225,10 +207,7 @@ nfsd3_proc_read(struct svc_rqst *rqstp)
 	fh_copy(&resp->fh, &argp->fh);
 	resp->status = nfsd_read(rqstp, &resp->fh, argp->offset,
 				 &resp->count, &resp->eof);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -262,10 +241,7 @@ nfsd3_proc_write(struct svc_rqst *rqstp)
 				  rqstp->rq_vec, nvecs, &cnt,
 				  resp->committed, resp->verf);
 	resp->count = cnt;
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -413,10 +389,7 @@ nfsd3_proc_create(struct svc_rqst *rqstp)
 	newfhp = fh_init(&resp->fh, NFS3_FHSIZE);
 
 	resp->status = nfsd3_create_file(rqstp, dirfhp, newfhp, argp);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -442,10 +415,7 @@ nfsd3_proc_mkdir(struct svc_rqst *rqstp)
 	fh_init(&resp->fh, NFS3_FHSIZE);
 	resp->status = nfsd_create(rqstp, &resp->dirfh, argp->name, argp->len,
 				   &attrs, S_IFDIR, 0, &resp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -486,10 +456,7 @@ nfsd3_proc_symlink(struct svc_rqst *rqstp)
 				    argp->flen, argp->tname, &attrs, &resp->fh);
 	kfree(argp->tname);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -531,10 +498,7 @@ nfsd3_proc_mknod(struct svc_rqst *rqstp)
 	resp->status = nfsd_create(rqstp, &resp->dirfh, argp->name, argp->len,
 				   &attrs, type, rdev, &resp->fh);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -556,10 +520,7 @@ nfsd3_proc_remove(struct svc_rqst *rqstp)
 	fh_copy(&resp->fh, &argp->fh);
 	resp->status = nfsd_unlink(rqstp, &resp->fh, -S_IFDIR,
 				   argp->name, argp->len);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -580,10 +541,7 @@ nfsd3_proc_rmdir(struct svc_rqst *rqstp)
 	fh_copy(&resp->fh, &argp->fh);
 	resp->status = nfsd_unlink(rqstp, &resp->fh, S_IFDIR,
 				   argp->name, argp->len);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -606,10 +564,7 @@ nfsd3_proc_rename(struct svc_rqst *rqstp)
 	fh_copy(&resp->tfh, &argp->tfh);
 	resp->status = nfsd_rename(rqstp, &resp->ffh, argp->fname, argp->flen,
 				   &resp->tfh, argp->tname, argp->tlen);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -630,10 +585,7 @@ nfsd3_proc_link(struct svc_rqst *rqstp)
 	fh_copy(&resp->tfh, &argp->tfh);
 	resp->status = nfsd_link(rqstp, &resp->tfh, argp->tname, argp->tlen,
 				 &resp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -686,10 +638,7 @@ nfsd3_proc_readdir(struct svc_rqst *rqstp)
 	/* Recycle only pages that were part of the reply */
 	rqstp->rq_next_page = resp->xdr.page_ptr + 1;
 
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -734,10 +683,7 @@ nfsd3_proc_readdirplus(struct svc_rqst *rqstp)
 	rqstp->rq_next_page = resp->xdr.page_ptr + 1;
 
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -755,10 +701,7 @@ nfsd3_proc_fsstat(struct svc_rqst *rqstp)
 
 	resp->status = nfsd_statfs(rqstp, &argp->fh, &resp->stats, 0);
 	fh_put(&argp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -802,10 +745,7 @@ nfsd3_proc_fsinfo(struct svc_rqst *rqstp)
 	}
 
 	fh_put(&argp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -848,10 +788,7 @@ nfsd3_proc_pathconf(struct svc_rqst *rqstp)
 	}
 
 	fh_put(&argp->fh);
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 
@@ -879,10 +816,7 @@ nfsd3_proc_commit(struct svc_rqst *rqstp)
 				   argp->count, resp->verf);
 	nfsd_file_put(nf);
 out:
-<<<<<<< HEAD
-=======
 	resp->status = nfsd3_map_status(resp->status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rpc_success;
 }
 

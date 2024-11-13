@@ -14,15 +14,12 @@
 #include "fs_context.h"
 #include "reparse.h"
 
-<<<<<<< HEAD
-=======
 static int detect_directory_symlink_target(struct cifs_sb_info *cifs_sb,
 					   const unsigned int xid,
 					   const char *full_path,
 					   const char *symname,
 					   bool *directory);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
 				struct dentry *dentry, struct cifs_tcon *tcon,
 				const char *full_path, const char *symname)
@@ -33,10 +30,7 @@ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
 	struct inode *new;
 	struct kvec iov;
 	__le16 *path;
-<<<<<<< HEAD
-=======
 	bool directory;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *sym, sep = CIFS_DIR_SEP(cifs_sb);
 	u16 len, plen;
 	int rc = 0;
@@ -58,8 +52,6 @@ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
 		goto out;
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * SMB distinguish between symlink to directory and symlink to file.
 	 * They cannot be exchanged (symlink of file type which points to
@@ -72,7 +64,6 @@ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
 	if (rc < 0)
 		goto out;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	plen = 2 * UniStrnlen((wchar_t *)path, PATH_MAX);
 	len = sizeof(*buf) + plen * 2;
 	buf = kzalloc(len, GFP_KERNEL);
@@ -97,12 +88,8 @@ int smb2_create_reparse_symlink(const unsigned int xid, struct inode *inode,
 	iov.iov_base = buf;
 	iov.iov_len = len;
 	new = smb2_get_reparse_inode(&data, inode->i_sb, xid,
-<<<<<<< HEAD
-				     tcon, full_path, &iov, NULL);
-=======
 				     tcon, full_path, directory,
 				     &iov, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!IS_ERR(new))
 		d_instantiate(dentry, new);
 	else
@@ -114,8 +101,6 @@ out:
 	return rc;
 }
 
-<<<<<<< HEAD
-=======
 static int detect_directory_symlink_target(struct cifs_sb_info *cifs_sb,
 					   const unsigned int xid,
 					   const char *full_path,
@@ -254,7 +239,6 @@ static int detect_directory_symlink_target(struct cifs_sb_info *cifs_sb,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int nfs_set_reparse_buf(struct reparse_posix_data *buf,
 			       mode_t mode, dev_t dev,
 			       struct kvec *iov)
@@ -282,13 +266,8 @@ static int nfs_set_reparse_buf(struct reparse_posix_data *buf,
 	buf->InodeType = cpu_to_le64(type);
 	buf->ReparseDataLength = cpu_to_le16(len + dlen -
 					     sizeof(struct reparse_data_buffer));
-<<<<<<< HEAD
-	*(__le64 *)buf->DataBuffer = cpu_to_le64(((u64)MAJOR(dev) << 32) |
-						 MINOR(dev));
-=======
 	*(__le64 *)buf->DataBuffer = cpu_to_le64(((u64)MINOR(dev) << 32) |
 						 MAJOR(dev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iov->iov_base = buf;
 	iov->iov_len = len + dlen;
 	return 0;
@@ -316,11 +295,7 @@ static int mknod_nfs(unsigned int xid, struct inode *inode,
 	};
 
 	new = smb2_get_reparse_inode(&data, inode->i_sb, xid,
-<<<<<<< HEAD
-				     tcon, full_path, &iov, NULL);
-=======
 				     tcon, full_path, false, &iov, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!IS_ERR(new))
 		d_instantiate(dentry, new);
 	else
@@ -466,11 +441,7 @@ static int mknod_wsl(unsigned int xid, struct inode *inode,
 	data.wsl.eas_len = len;
 
 	new = smb2_get_reparse_inode(&data, inode->i_sb,
-<<<<<<< HEAD
-				     xid, tcon, full_path,
-=======
 				     xid, tcon, full_path, false,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     &reparse_iov, &xattr_iov);
 	if (!IS_ERR(new))
 		d_instantiate(dentry, new);
@@ -507,11 +478,6 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
 	unsigned int len;
 	u64 type;
 
-<<<<<<< HEAD
-	switch ((type = le64_to_cpu(buf->InodeType))) {
-	case NFS_SPECFILE_LNK:
-		len = le16_to_cpu(buf->ReparseDataLength);
-=======
 	len = le16_to_cpu(buf->ReparseDataLength);
 	if (len < sizeof(buf->InodeType)) {
 		cifs_dbg(VFS, "srv returned malformed nfs buffer\n");
@@ -534,25 +500,16 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
 			cifs_dbg(VFS, "srv returned null byte in nfs symlink target location\n");
 			return -EIO;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		data->symlink_target = cifs_strndup_from_utf16(buf->DataBuffer,
 							       len, true,
 							       cifs_sb->local_nls);
 		if (!data->symlink_target)
 			return -ENOMEM;
-<<<<<<< HEAD
-		convert_delimiter(data->symlink_target, '/');
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cifs_dbg(FYI, "%s: target path: %s\n",
 			 __func__, data->symlink_target);
 		break;
 	case NFS_SPECFILE_CHR:
 	case NFS_SPECFILE_BLK:
-<<<<<<< HEAD
-	case NFS_SPECFILE_FIFO:
-	case NFS_SPECFILE_SOCK:
-=======
 		/* DataBuffer for block and char devices contains two 32-bit numbers */
 		if (len != 8) {
 			cifs_dbg(VFS, "srv returned malformed nfs buffer for type: 0x%llx\n", type);
@@ -566,7 +523,6 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
 			cifs_dbg(VFS, "srv returned malformed nfs buffer for type: 0x%llx\n", type);
 			return -EIO;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		cifs_dbg(VFS, "%s: unhandled inode type: 0x%llx\n",
@@ -699,11 +655,7 @@ static void wsl_to_fattr(struct cifs_open_info_data *data,
 		else if (!strncmp(name, SMB2_WSL_XATTR_MODE, nlen))
 			fattr->cf_mode = (umode_t)le32_to_cpu(*(__le32 *)v);
 		else if (!strncmp(name, SMB2_WSL_XATTR_DEV, nlen))
-<<<<<<< HEAD
-			fattr->cf_rdev = wsl_mkdev(v);
-=======
 			fattr->cf_rdev = reparse_mkdev(v);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} while (next);
 out:
 	fattr->cf_dtype = S_DT(fattr->cf_mode);
@@ -717,16 +669,6 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
 	u32 tag = data->reparse.tag;
 
 	if (tag == IO_REPARSE_TAG_NFS && buf) {
-<<<<<<< HEAD
-		switch (le64_to_cpu(buf->InodeType)) {
-		case NFS_SPECFILE_CHR:
-			fattr->cf_mode |= S_IFCHR;
-			fattr->cf_rdev = reparse_nfs_mkdev(buf);
-			break;
-		case NFS_SPECFILE_BLK:
-			fattr->cf_mode |= S_IFBLK;
-			fattr->cf_rdev = reparse_nfs_mkdev(buf);
-=======
 		if (le16_to_cpu(buf->ReparseDataLength) < sizeof(buf->InodeType))
 			return false;
 		switch (le64_to_cpu(buf->InodeType)) {
@@ -741,7 +683,6 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
 				return false;
 			fattr->cf_mode |= S_IFBLK;
 			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case NFS_SPECFILE_FIFO:
 			fattr->cf_mode |= S_IFIFO;

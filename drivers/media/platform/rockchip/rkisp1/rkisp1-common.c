@@ -178,8 +178,6 @@ void rkisp1_sd_adjust_crop(struct v4l2_rect *crop,
 
 	rkisp1_sd_adjust_crop_rect(crop, &crop_bounds);
 }
-<<<<<<< HEAD
-=======
 
 void rkisp1_bls_swap_regs(enum rkisp1_fmt_raw_pat_type pattern,
 			  const u32 input[4], u32 output[4])
@@ -194,4 +192,3 @@ void rkisp1_bls_swap_regs(enum rkisp1_fmt_raw_pat_type pattern,
 	for (unsigned int i = 0; i < 4; ++i)
 		output[i] = input[swap[pattern][i]];
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

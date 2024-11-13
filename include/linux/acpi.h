@@ -107,10 +107,7 @@ enum acpi_irq_model_id {
 	ACPI_IRQ_MODEL_PLATFORM,
 	ACPI_IRQ_MODEL_GIC,
 	ACPI_IRQ_MODEL_LPIC,
-<<<<<<< HEAD
-=======
 	ACPI_IRQ_MODEL_RINTC,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ACPI_IRQ_MODEL_COUNT
 };
 
@@ -366,10 +363,7 @@ void acpi_unregister_gsi (u32 gsi);
 
 struct pci_dev;
 
-<<<<<<< HEAD
-=======
 struct acpi_prt_entry *acpi_pci_irq_lookup(struct pci_dev *dev, int pin);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int acpi_pci_irq_enable (struct pci_dev *dev);
 void acpi_penalize_isa_irq(int irq, int active);
 bool acpi_isa_irq_available(int irq);
@@ -394,11 +388,7 @@ extern bool acpi_is_pnp_device(struct acpi_device *);
 
 #if defined(CONFIG_ACPI_WMI) || defined(CONFIG_ACPI_WMI_MODULE)
 
-<<<<<<< HEAD
-typedef void (*wmi_notify_handler) (u32 value, void *context);
-=======
 typedef void (*wmi_notify_handler) (union acpi_object *data, void *context);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int wmi_instance_count(const char *guid);
 
@@ -413,10 +403,6 @@ extern acpi_status wmi_set_block(const char *guid, u8 instance,
 extern acpi_status wmi_install_notify_handler(const char *guid,
 					wmi_notify_handler handler, void *data);
 extern acpi_status wmi_remove_notify_handler(const char *guid);
-<<<<<<< HEAD
-extern acpi_status wmi_get_event_data(u32 event, struct acpi_buffer *out);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern bool wmi_has_guid(const char *guid);
 extern char *wmi_get_acpi_device_uid(const char *guid);
 
@@ -1358,11 +1344,8 @@ struct acpi_probe_entry {
 	kernel_ulong_t driver_data;
 };
 
-<<<<<<< HEAD
-=======
 void arch_sort_irqchip_probe(struct acpi_probe_entry *ap_head, int nr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ACPI_DECLARE_PROBE_ENTRY(table, name, table_id, subtable,	\
 				 valid, data, fn)			\
 	static const struct acpi_probe_entry __acpi_probe_##name	\
@@ -1549,15 +1532,12 @@ void acpi_arm_init(void);
 static inline void acpi_arm_init(void) { }
 #endif
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_RISCV
 void acpi_riscv_init(void);
 #else
 static inline void acpi_riscv_init(void) { }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ACPI_PCC
 void acpi_init_pcc(void);
 #else

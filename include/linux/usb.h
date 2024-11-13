@@ -495,15 +495,12 @@ struct usb_dev_state;
 
 struct usb_tt;
 
-<<<<<<< HEAD
-=======
 enum usb_link_tunnel_mode {
 	USB_LINK_UNKNOWN = 0,
 	USB_LINK_NATIVE,
 	USB_LINK_TUNNELED,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum usb_port_connect_type {
 	USB_PORT_CONNECT_TYPE_UNKNOWN = 0,
 	USB_PORT_CONNECT_TYPE_HOT_PLUG,
@@ -614,10 +611,7 @@ struct usb3_lpm_parameters {
  *	WUSB devices are not, until we authorize them from user space.
  *	FIXME -- complete doc
  * @authenticated: Crypto authentication passed
-<<<<<<< HEAD
-=======
  * @tunnel_mode: Connection native or tunneled over USB4
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @lpm_capable: device supports LPM
  * @lpm_devinit_allow: Allow USB3 device initiated LPM, exit latency is in range
  * @usb2_hw_lpm_capable: device can perform USB2 hardware LPM
@@ -727,10 +721,7 @@ struct usb_device {
 	unsigned do_remote_wakeup:1;
 	unsigned reset_resume:1;
 	unsigned port_is_suspended:1;
-<<<<<<< HEAD
-=======
 	enum usb_link_tunnel_mode tunnel_mode;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int slot_id;
 	struct usb2_lpm_parameters l1_params;

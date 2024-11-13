@@ -16,13 +16,9 @@
 
 #include <linux/atomic.h>
 #include <linux/bits.h>
-<<<<<<< HEAD
-#include <linux/rculist.h>
-=======
 #include <linux/irq_work.h>
 #include <linux/rculist.h>
 #include <linux/rcuwait.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/types.h>
 #include <linux/vesa.h>
 
@@ -309,11 +305,7 @@ struct nbcon_write_context {
 /**
  * struct console - The console descriptor structure
  * @name:		The name of the console driver
-<<<<<<< HEAD
- * @write:		Write callback to output messages (Optional)
-=======
  * @write:		Legacy write callback to output messages (Optional)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @read:		Read callback for console input (Optional)
  * @device:		The underlying TTY device driver (Optional)
  * @unblank:		Callback to unblank the console (Optional)
@@ -330,12 +322,6 @@ struct nbcon_write_context {
  * @data:		Driver private data
  * @node:		hlist node for the console list
  *
-<<<<<<< HEAD
- * @write_atomic:	Write callback for atomic context
- * @nbcon_state:	State for nbcon consoles
- * @nbcon_seq:		Sequence number of the next record for nbcon to print
- * @pbufs:		Pointer to nbcon private buffer
-=======
  * @nbcon_state:	State for nbcon consoles
  * @nbcon_seq:		Sequence number of the next record for nbcon to print
  * @nbcon_device_ctxt:	Context available for non-printing operations
@@ -344,7 +330,6 @@ struct nbcon_write_context {
  * @kthread:		Printer kthread for this console
  * @rcuwait:		RCU-safe wait object for @kthread waking
  * @irq_work:		Defer @kthread waking to IRQ work context
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct console {
 	char			name[16];
@@ -366,13 +351,6 @@ struct console {
 	struct hlist_node	node;
 
 	/* nbcon console specific members */
-<<<<<<< HEAD
-	bool			(*write_atomic)(struct console *con,
-						struct nbcon_write_context *wctxt);
-	atomic_t		__private nbcon_state;
-	atomic_long_t		__private nbcon_seq;
-	struct printk_buffers	*pbufs;
-=======
 
 	/**
 	 * @write_atomic:
@@ -488,7 +466,6 @@ struct console {
 	struct task_struct	*kthread;
 	struct rcuwait		rcuwait;
 	struct irq_work		irq_work;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #ifdef CONFIG_LOCKDEP
@@ -517,20 +494,6 @@ extern void console_list_unlock(void) __releases(console_mutex);
 extern struct hlist_head console_list;
 
 /**
-<<<<<<< HEAD
- * console_srcu_read_flags - Locklessly read the console flags
- * @con:	struct console pointer of console to read flags from
- *
- * This function provides the necessary READ_ONCE() and data_race()
- * notation for locklessly reading the console flags. The READ_ONCE()
- * in this function matches the WRITE_ONCE() when @flags are modified
- * for registered consoles with console_srcu_write_flags().
- *
- * Only use this function to read console flags when locklessly
- * iterating the console list via srcu.
- *
- * Context: Any context.
-=======
  * console_srcu_read_flags - Locklessly read flags of a possibly registered
  *				console
  * @con:	struct console pointer of console to read flags from
@@ -551,22 +514,14 @@ extern struct hlist_head console_list;
  *
  * Context: Any context.
  * Return: The current value of the @con->flags field.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 static inline short console_srcu_read_flags(const struct console *con)
 {
 	WARN_ON_ONCE(!console_srcu_read_lock_is_held());
 
 	/*
-<<<<<<< HEAD
-	 * Locklessly reading console->flags provides a consistent
-	 * read value because there is at most one CPU modifying
-	 * console->flags and that CPU is using only read-modify-write
-	 * operations to do so.
-=======
 	 * The READ_ONCE() matches the WRITE_ONCE() when @flags are modified
 	 * for registered consoles with console_srcu_write_flags().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	return data_race(READ_ONCE(con->flags));
 }
@@ -644,15 +599,6 @@ static inline bool console_is_registered(const struct console *con)
 	hlist_for_each_entry(con, &console_list, node)
 
 #ifdef CONFIG_PRINTK
-<<<<<<< HEAD
-extern bool nbcon_can_proceed(struct nbcon_write_context *wctxt);
-extern bool nbcon_enter_unsafe(struct nbcon_write_context *wctxt);
-extern bool nbcon_exit_unsafe(struct nbcon_write_context *wctxt);
-#else
-static inline bool nbcon_can_proceed(struct nbcon_write_context *wctxt) { return false; }
-static inline bool nbcon_enter_unsafe(struct nbcon_write_context *wctxt) { return false; }
-static inline bool nbcon_exit_unsafe(struct nbcon_write_context *wctxt) { return false; }
-=======
 extern void nbcon_cpu_emergency_enter(void);
 extern void nbcon_cpu_emergency_exit(void);
 extern bool nbcon_can_proceed(struct nbcon_write_context *wctxt);
@@ -666,7 +612,6 @@ static inline bool nbcon_can_proceed(struct nbcon_write_context *wctxt) { return
 static inline bool nbcon_enter_unsafe(struct nbcon_write_context *wctxt) { return false; }
 static inline bool nbcon_exit_unsafe(struct nbcon_write_context *wctxt) { return false; }
 static inline void nbcon_reacquire_nobuf(struct nbcon_write_context *wctxt) { }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 extern int console_set_on_cmdline;

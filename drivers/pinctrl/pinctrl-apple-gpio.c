@@ -474,12 +474,9 @@ static int apple_gpio_pinctrl_probe(struct platform_device *pdev)
 	for (i = 0; i < npins; i++) {
 		pins[i].number = i;
 		pins[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "PIN%u", i);
-<<<<<<< HEAD
-=======
 		if (!pins[i].name)
 			return -ENOMEM;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pins[i].drv_data = pctl;
 		pin_names[i] = pins[i].name;
 		pin_nums[i] = i;

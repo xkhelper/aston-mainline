@@ -23,11 +23,6 @@
 #include <sound/opl3.h>
 #include <sound/sb.h>
 
-<<<<<<< HEAD
-#define PFX "als100: "
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_DESCRIPTION("Avance Logic ALS007/ALS1X0");
 MODULE_AUTHOR("Massimo Piccioni <dafastidio@libero.it>");
 MODULE_LICENSE("GPL");
@@ -115,11 +110,7 @@ static int snd_card_als100_pnp(int dev, struct snd_card_als100 *acard,
 
 	err = pnp_activate_dev(pdev);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR PFX "AUDIO pnp configure failure\n");
-=======
 		dev_err(&pdev->dev, "AUDIO pnp configure failure\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	port[dev] = pnp_port_start(pdev, 0);
@@ -142,11 +133,7 @@ static int snd_card_als100_pnp(int dev, struct snd_card_als100 *acard,
 	     __mpu_error:
 	     	if (pdev) {
 		     	pnp_release_card_device(pdev);
-<<<<<<< HEAD
-	     		snd_printk(KERN_ERR PFX "MPU401 pnp configure failure, skipping\n");
-=======
 			dev_err(&pdev->dev, "MPU401 pnp configure failure, skipping\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     	}
 	     	acard->devmpu = NULL;
 	     	mpu_port[dev] = -1;
@@ -162,11 +149,7 @@ static int snd_card_als100_pnp(int dev, struct snd_card_als100 *acard,
 	      __fm_error:
 	     	if (pdev) {
 		     	pnp_release_card_device(pdev);
-<<<<<<< HEAD
-	     		snd_printk(KERN_ERR PFX "OPL3 pnp configure failure, skipping\n");
-=======
 			dev_err(&pdev->dev, "OPL3 pnp configure failure, skipping\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     	}
 	     	acard->devopl = NULL;
 	     	fm_port[dev] = -1;
@@ -245,24 +228,15 @@ static int snd_card_als100_probe(int dev,
 					mpu_port[dev], 0, 
 					mpu_irq[dev],
 					NULL) < 0)
-<<<<<<< HEAD
-			snd_printk(KERN_ERR PFX "no MPU-401 device at 0x%lx\n", mpu_port[dev]);
-=======
 			dev_err(card->dev, "no MPU-401 device at 0x%lx\n", mpu_port[dev]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (fm_port[dev] > 0 && fm_port[dev] != SNDRV_AUTO_PORT) {
 		if (snd_opl3_create(card,
 				    fm_port[dev], fm_port[dev] + 2,
 				    OPL3_HW_AUTO, 0, &opl3) < 0) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR PFX "no OPL device at 0x%lx-0x%lx\n",
-				   fm_port[dev], fm_port[dev] + 2);
-=======
 			dev_err(card->dev, "no OPL device at 0x%lx-0x%lx\n",
 				fm_port[dev], fm_port[dev] + 2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			error = snd_opl3_timer_new(opl3, 0, 1);
 			if (error < 0)
@@ -348,11 +322,7 @@ static int __init alsa_card_als100_init(void)
 	if (!als100_devices) {
 		pnp_unregister_card_driver(&als100_pnpc_driver);
 #ifdef MODULE
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "no Avance Logic based soundcards found\n");
-=======
 		pr_err("no Avance Logic based soundcards found\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 		return -ENODEV;
 	}

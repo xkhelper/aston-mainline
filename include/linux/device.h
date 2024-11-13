@@ -707,11 +707,8 @@ struct device_physical_location {
  *		for dma allocations.  This flag is managed by the dma ops
  *		instance from ->dma_supported.
  * @dma_skip_sync: DMA sync operations can be skipped for coherent buffers.
-<<<<<<< HEAD
-=======
  * @dma_iommu: Device is using default IOMMU implementation for DMA and
  *		doesn't rely on dma_ops structure.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * At the lowest level, every device in a Linux system is represented by an
  * instance of struct device. The device structure contains the information
@@ -753,11 +750,7 @@ struct device {
 	struct dev_pin_info	*pins;
 #endif
 	struct dev_msi_info	msi;
-<<<<<<< HEAD
-#ifdef CONFIG_DMA_OPS
-=======
 #ifdef CONFIG_ARCH_HAS_DMA_OPS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct dma_map_ops *dma_ops;
 #endif
 	u64		*dma_mask;	/* dma mask (if dma'able device) */
@@ -831,12 +824,9 @@ struct device {
 #ifdef CONFIG_DMA_NEED_SYNC
 	bool			dma_skip_sync:1;
 #endif
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_IOMMU_DMA
 	bool			dma_iommu:1;
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**
@@ -1088,12 +1078,9 @@ int device_for_each_child(struct device *dev, void *data,
 			  int (*fn)(struct device *dev, void *data));
 int device_for_each_child_reverse(struct device *dev, void *data,
 				  int (*fn)(struct device *dev, void *data));
-<<<<<<< HEAD
-=======
 int device_for_each_child_reverse_from(struct device *parent,
 				       struct device *from, const void *data,
 				       int (*fn)(struct device *, const void *));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct device *device_find_child(struct device *dev, void *data,
 				 int (*match)(struct device *dev, void *data));
 struct device *device_find_child_by_name(struct device *parent,

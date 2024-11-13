@@ -80,28 +80,9 @@ static inline void bucket_lock(struct bucket *b)
 			 TASK_UNINTERRUPTIBLE);
 }
 
-<<<<<<< HEAD
-static inline struct bucket_array *gc_bucket_array(struct bch_dev *ca)
-{
-	return rcu_dereference_check(ca->buckets_gc,
-				     !ca->fs ||
-				     percpu_rwsem_is_held(&ca->fs->mark_lock) ||
-				     lockdep_is_held(&ca->fs->state_lock) ||
-				     lockdep_is_held(&ca->bucket_lock));
-}
-
-static inline struct bucket *gc_bucket(struct bch_dev *ca, size_t b)
-{
-	struct bucket_array *buckets = gc_bucket_array(ca);
-
-	if (b - buckets->first_bucket >= buckets->nbuckets_minus_first)
-		return NULL;
-	return buckets->b + b;
-=======
 static inline struct bucket *gc_bucket(struct bch_dev *ca, size_t b)
 {
 	return genradix_ptr(&ca->buckets_gc, b);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline struct bucket_gens *bucket_gens(struct bch_dev *ca)
@@ -122,14 +103,6 @@ static inline u8 *bucket_gen(struct bch_dev *ca, size_t b)
 	return gens->b + b;
 }
 
-<<<<<<< HEAD
-static inline u8 bucket_gen_get(struct bch_dev *ca, size_t b)
-{
-	rcu_read_lock();
-	u8 gen = *bucket_gen(ca, b);
-	rcu_read_unlock();
-	return gen;
-=======
 static inline int bucket_gen_get_rcu(struct bch_dev *ca, size_t b)
 {
 	u8 *gen = bucket_gen(ca, b);
@@ -142,7 +115,6 @@ static inline int bucket_gen_get(struct bch_dev *ca, size_t b)
 	int ret = bucket_gen_get_rcu(ca, b);
 	rcu_read_unlock();
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline size_t PTR_BUCKET_NR(const struct bch_dev *ca,
@@ -203,15 +175,8 @@ static inline int gen_after(u8 a, u8 b)
 
 static inline int dev_ptr_stale_rcu(struct bch_dev *ca, const struct bch_extent_ptr *ptr)
 {
-<<<<<<< HEAD
-	u8 *gen = bucket_gen(ca, PTR_BUCKET_NR(ca, ptr));
-	if (!gen)
-		return -1;
-	return gen_after(*gen, ptr->gen);
-=======
 	int gen = bucket_gen_get_rcu(ca, PTR_BUCKET_NR(ca, ptr));
 	return gen < 0 ? gen : gen_after(gen, ptr->gen);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -223,10 +188,6 @@ static inline int dev_ptr_stale(struct bch_dev *ca, const struct bch_extent_ptr 
 	rcu_read_lock();
 	int ret = dev_ptr_stale_rcu(ca, ptr);
 	rcu_read_unlock();
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -386,16 +347,6 @@ static inline void bch2_disk_reservation_put(struct bch_fs *c,
 	}
 }
 
-<<<<<<< HEAD
-#define BCH_DISK_RESERVATION_NOFAIL		(1 << 0)
-
-int __bch2_disk_reservation_add(struct bch_fs *,
-				struct disk_reservation *,
-				u64, int);
-
-static inline int bch2_disk_reservation_add(struct bch_fs *c, struct disk_reservation *res,
-					    u64 sectors, int flags)
-=======
 enum bch_reservation_flags {
 	BCH_DISK_RESERVATION_NOFAIL	= 1 << 0,
 	BCH_DISK_RESERVATION_PARTIAL	= 1 << 1,
@@ -406,7 +357,6 @@ int __bch2_disk_reservation_add(struct bch_fs *, struct disk_reservation *,
 
 static inline int bch2_disk_reservation_add(struct bch_fs *c, struct disk_reservation *res,
 					    u64 sectors, enum bch_reservation_flags flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 #ifdef __KERNEL__
 	u64 old, new;

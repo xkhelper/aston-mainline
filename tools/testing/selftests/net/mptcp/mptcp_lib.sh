@@ -29,10 +29,7 @@ declare -rx MPTCP_LIB_AF_INET6=10
 MPTCP_LIB_SUBTESTS=()
 MPTCP_LIB_SUBTESTS_DUPLICATED=0
 MPTCP_LIB_SUBTEST_FLAKY=0
-<<<<<<< HEAD
-=======
 MPTCP_LIB_SUBTESTS_LAST_TS_MS=
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MPTCP_LIB_TEST_COUNTER=0
 MPTCP_LIB_TEST_FORMAT="%02u %-50s"
 MPTCP_LIB_IP_MPTCP=0
@@ -209,14 +206,11 @@ mptcp_lib_kversion_ge() {
 	mptcp_lib_fail_if_expected_feature "kernel version ${1} lower than ${v}"
 }
 
-<<<<<<< HEAD
-=======
 mptcp_lib_subtests_last_ts_reset() {
 	MPTCP_LIB_SUBTESTS_LAST_TS_MS="$(date +%s%3N)"
 }
 mptcp_lib_subtests_last_ts_reset
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 __mptcp_lib_result_check_duplicated() {
 	local subtest
 
@@ -231,20 +225,14 @@ __mptcp_lib_result_check_duplicated() {
 
 __mptcp_lib_result_add() {
 	local result="${1}"
-<<<<<<< HEAD
-=======
 	local time="time="
 	local ts_prev_ms
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	shift
 
 	local id=$((${#MPTCP_LIB_SUBTESTS[@]} + 1))
 
 	__mptcp_lib_result_check_duplicated "${*}"
 
-<<<<<<< HEAD
-	MPTCP_LIB_SUBTESTS+=("${result} ${id} - ${KSFT_TEST}: ${*}")
-=======
 	# not to add two '#'
 	[[ "${*}" != *"#"* ]] && time="# ${time}"
 
@@ -253,7 +241,6 @@ __mptcp_lib_result_add() {
 	time+="$((MPTCP_LIB_SUBTESTS_LAST_TS_MS - ts_prev_ms))ms"
 
 	MPTCP_LIB_SUBTESTS+=("${result} ${id} - ${KSFT_TEST}: ${*} ${time}")
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 # $1: test name

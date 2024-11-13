@@ -876,25 +876,14 @@ err_attr:
 }
 
 static int
-<<<<<<< HEAD
-mlx5_tc_ct_entry_replace_rule(struct mlx5_tc_ct_priv *ct_priv,
-			      struct flow_rule *flow_rule,
-			      struct mlx5_ct_entry *entry,
-			      bool nat, u8 zone_restore_id)
-=======
 mlx5_tc_ct_entry_update_rule(struct mlx5_tc_ct_priv *ct_priv,
 			     struct flow_rule *flow_rule,
 			     struct mlx5_ct_entry *entry,
 			     bool nat, u8 zone_restore_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mlx5_ct_zone_rule *zone_rule = &entry->zone_rules[nat];
 	struct mlx5_flow_attr *attr = zone_rule->attr, *old_attr;
 	struct mlx5e_mod_hdr_handle *mh;
-<<<<<<< HEAD
-	struct mlx5_ct_fs_rule *rule;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mlx5_flow_spec *spec;
 	int err;
 
@@ -912,46 +901,26 @@ mlx5_tc_ct_entry_update_rule(struct mlx5_tc_ct_priv *ct_priv,
 	err = mlx5_tc_ct_entry_create_mod_hdr(ct_priv, attr, flow_rule, &mh, zone_restore_id,
 					      nat, mlx5_tc_ct_entry_in_ct_nat_table(entry));
 	if (err) {
-<<<<<<< HEAD
-		ct_dbg("Failed to create ct entry mod hdr");
-=======
 		ct_dbg("Failed to create ct entry mod hdr, err: %d", err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err_mod_hdr;
 	}
 
 	mlx5_tc_ct_set_tuple_match(ct_priv, spec, flow_rule);
 	mlx5e_tc_match_to_reg_match(spec, ZONE_TO_REG, entry->tuple.zone, MLX5_CT_ZONE_MASK);
 
-<<<<<<< HEAD
-	rule = ct_priv->fs_ops->ct_rule_add(ct_priv->fs, spec, attr, flow_rule);
-	if (IS_ERR(rule)) {
-		err = PTR_ERR(rule);
-		ct_dbg("Failed to add replacement ct entry rule, nat: %d", nat);
-		goto err_rule;
-	}
-
-	ct_priv->fs_ops->ct_rule_del(ct_priv->fs, zone_rule->rule);
-	zone_rule->rule = rule;
-=======
 	err = ct_priv->fs_ops->ct_rule_update(ct_priv->fs, zone_rule->rule, spec, attr);
 	if (err) {
 		ct_dbg("Failed to update ct entry rule, nat: %d, err: %d", nat, err);
 		goto err_rule;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5_tc_ct_entry_destroy_mod_hdr(ct_priv, old_attr, zone_rule->mh);
 	zone_rule->mh = mh;
 	mlx5_put_label_mapping(ct_priv, old_attr->ct_attr.ct_labels_id);
 
 	kfree(old_attr);
 	kvfree(spec);
-<<<<<<< HEAD
-	ct_dbg("Replaced ct entry rule in zone %d", entry->tuple.zone);
-=======
 	ct_dbg("Updated ct entry rule in zone %d", entry->tuple.zone);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 
@@ -1168,40 +1137,23 @@ err_orig:
 }
 
 static int
-<<<<<<< HEAD
-mlx5_tc_ct_entry_replace_rules(struct mlx5_tc_ct_priv *ct_priv,
-			       struct flow_rule *flow_rule,
-			       struct mlx5_ct_entry *entry,
-			       u8 zone_restore_id)
-=======
 mlx5_tc_ct_entry_update_rules(struct mlx5_tc_ct_priv *ct_priv,
 			      struct flow_rule *flow_rule,
 			      struct mlx5_ct_entry *entry,
 			      u8 zone_restore_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err = 0;
 
 	if (mlx5_tc_ct_entry_in_ct_table(entry)) {
-<<<<<<< HEAD
-		err = mlx5_tc_ct_entry_replace_rule(ct_priv, flow_rule, entry, false,
-						    zone_restore_id);
-=======
 		err = mlx5_tc_ct_entry_update_rule(ct_priv, flow_rule, entry, false,
 						   zone_restore_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 	}
 
 	if (mlx5_tc_ct_entry_in_ct_nat_table(entry)) {
-<<<<<<< HEAD
-		err = mlx5_tc_ct_entry_replace_rule(ct_priv, flow_rule, entry, true,
-						    zone_restore_id);
-=======
 		err = mlx5_tc_ct_entry_update_rule(ct_priv, flow_rule, entry, true,
 						   zone_restore_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err && mlx5_tc_ct_entry_in_ct_table(entry))
 			mlx5_tc_ct_entry_del_rule(ct_priv, entry, false);
 	}
@@ -1209,22 +1161,13 @@ mlx5_tc_ct_entry_update_rules(struct mlx5_tc_ct_priv *ct_priv,
 }
 
 static int
-<<<<<<< HEAD
-mlx5_tc_ct_block_flow_offload_replace(struct mlx5_ct_ft *ft, struct flow_rule *flow_rule,
-				      struct mlx5_ct_entry *entry, unsigned long cookie)
-=======
 mlx5_tc_ct_block_flow_offload_update(struct mlx5_ct_ft *ft, struct flow_rule *flow_rule,
 				     struct mlx5_ct_entry *entry, unsigned long cookie)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mlx5_tc_ct_priv *ct_priv = ft->ct_priv;
 	int err;
 
-<<<<<<< HEAD
-	err = mlx5_tc_ct_entry_replace_rules(ct_priv, flow_rule, entry, ft->zone_restore_id);
-=======
 	err = mlx5_tc_ct_entry_update_rules(ct_priv, flow_rule, entry, ft->zone_restore_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!err)
 		return 0;
 
@@ -1269,11 +1212,7 @@ mlx5_tc_ct_block_flow_offload_add(struct mlx5_ct_ft *ft,
 		entry->restore_cookie = meta_action->ct_metadata.cookie;
 		spin_unlock_bh(&ct_priv->ht_lock);
 
-<<<<<<< HEAD
-		err = mlx5_tc_ct_block_flow_offload_replace(ft, flow_rule, entry, cookie);
-=======
 		err = mlx5_tc_ct_block_flow_offload_update(ft, flow_rule, entry, cookie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mlx5_tc_ct_entry_put(entry);
 		return err;
 	}

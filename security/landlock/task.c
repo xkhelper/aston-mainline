@@ -13,18 +13,12 @@
 #include <linux/lsm_hooks.h>
 #include <linux/rcupdate.h>
 #include <linux/sched.h>
-<<<<<<< HEAD
-
-#include "common.h"
-#include "cred.h"
-=======
 #include <net/af_unix.h>
 #include <net/sock.h>
 
 #include "common.h"
 #include "cred.h"
 #include "fs.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "ruleset.h"
 #include "setup.h"
 #include "task.h"
@@ -117,11 +111,6 @@ static int hook_ptrace_traceme(struct task_struct *const parent)
 	return task_ptrace(parent, current);
 }
 
-<<<<<<< HEAD
-static struct security_hook_list landlock_hooks[] __ro_after_init = {
-	LSM_HOOK_INIT(ptrace_access_check, hook_ptrace_access_check),
-	LSM_HOOK_INIT(ptrace_traceme, hook_ptrace_traceme),
-=======
 /**
  * domain_is_scoped - Checks if the client domain is scoped in the same
  *		      domain as the server.
@@ -315,7 +304,6 @@ static struct security_hook_list landlock_hooks[] __ro_after_init = {
 
 	LSM_HOOK_INIT(task_kill, hook_task_kill),
 	LSM_HOOK_INIT(file_send_sigiotask, hook_file_send_sigiotask),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 __init void landlock_add_task_hooks(void)

@@ -5,10 +5,7 @@
 #include <asm/clocksource.h>
 #include <asm/pvclock-abi.h>
 
-<<<<<<< HEAD
-=======
 struct timespec64;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* some helper functions for xen and kvm pv clock sources */
 u64 pvclock_clocksource_read(struct pvclock_vcpu_time_info *src);
 u64 pvclock_clocksource_read_nowd(struct pvclock_vcpu_time_info *src);

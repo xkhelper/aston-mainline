@@ -757,11 +757,7 @@ int dlpar_cpu(struct pseries_hp_errorlog *hp_elog)
 	u32 drc_index;
 	int rc;
 
-<<<<<<< HEAD
-	drc_index = hp_elog->_drc_u.drc_index;
-=======
 	drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lock_device_hotplug();
 

@@ -230,13 +230,8 @@ struct ext4_new_flex_group_data {
 #define MAX_RESIZE_BG				16384
 
 /*
-<<<<<<< HEAD
- * alloc_flex_gd() allocates a ext4_new_flex_group_data with size of
- * @flexbg_size.
-=======
  * alloc_flex_gd() allocates an ext4_new_flex_group_data that satisfies the
  * resizing from @o_group to @n_group, its size is typically @flexbg_size.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Returns NULL on failure otherwise address of the allocated structure.
  */
@@ -244,36 +239,19 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size,
 				ext4_group_t o_group, ext4_group_t n_group)
 {
 	ext4_group_t last_group;
-<<<<<<< HEAD
-=======
 	unsigned int max_resize_bg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ext4_new_flex_group_data *flex_gd;
 
 	flex_gd = kmalloc(sizeof(*flex_gd), GFP_NOFS);
 	if (flex_gd == NULL)
 		goto out3;
 
-<<<<<<< HEAD
-	if (unlikely(flexbg_size > MAX_RESIZE_BG))
-		flex_gd->resize_bg = MAX_RESIZE_BG;
-	else
-		flex_gd->resize_bg = flexbg_size;
-=======
 	max_resize_bg = umin(flexbg_size, MAX_RESIZE_BG);
 	flex_gd->resize_bg = max_resize_bg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Avoid allocating large 'groups' array if not needed */
 	last_group = o_group | (flex_gd->resize_bg - 1);
 	if (n_group <= last_group)
-<<<<<<< HEAD
-		flex_gd->resize_bg = 1 << fls(n_group - o_group + 1);
-	else if (n_group - last_group < flex_gd->resize_bg)
-		flex_gd->resize_bg = 1 << max(fls(last_group - o_group + 1),
-					      fls(n_group - last_group));
-
-=======
 		flex_gd->resize_bg = 1 << fls(n_group - o_group);
 	else if (n_group - last_group < flex_gd->resize_bg)
 		flex_gd->resize_bg = 1 << max(fls(last_group - o_group),
@@ -282,7 +260,6 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size,
 	if (WARN_ON_ONCE(flex_gd->resize_bg > max_resize_bg))
 		flex_gd->resize_bg = max_resize_bg;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	flex_gd->groups = kmalloc_array(flex_gd->resize_bg,
 					sizeof(struct ext4_new_group_data),
 					GFP_NOFS);
@@ -1344,12 +1321,7 @@ static int ext4_set_bitmap_checksums(struct super_block *sb,
 	bh = ext4_get_bitmap(sb, group_data->inode_bitmap);
 	if (!bh)
 		return -EIO;
-<<<<<<< HEAD
-	ext4_inode_bitmap_csum_set(sb, gdp, bh,
-				   EXT4_INODES_PER_GROUP(sb) / 8);
-=======
 	ext4_inode_bitmap_csum_set(sb, gdp, bh);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	brelse(bh);
 
 	bh = ext4_get_bitmap(sb, group_data->block_bitmap);

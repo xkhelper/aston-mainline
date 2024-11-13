@@ -10,10 +10,7 @@
 #include <linux/mlx5/eswitch.h>
 #include <linux/mlx5/vport.h>
 #include "mlx5_ib.h"
-<<<<<<< HEAD
-=======
 #include "data_direct.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define UVERBS_MODULE_NAME mlx5_ib
 #include <rdma/uverbs_named_ioctl.h>
@@ -115,8 +112,6 @@ out:
 	return err;
 }
 
-<<<<<<< HEAD
-=======
 static int fill_multiport_info(struct mlx5_ib_dev *dev, u32 port_num,
 			       struct mlx5_ib_uapi_query_port *info)
 {
@@ -134,7 +129,6 @@ static int fill_multiport_info(struct mlx5_ib_dev *dev, u32 port_num,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int fill_switchdev_info(struct mlx5_ib_dev *dev, u32 port_num,
 			       struct mlx5_ib_uapi_query_port *info)
 {
@@ -201,21 +195,16 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_QUERY_PORT)(
 		ret = fill_switchdev_info(dev, port_num, &info);
 		if (ret)
 			return ret;
-<<<<<<< HEAD
-=======
 	} else if (mlx5_core_mp_enabled(dev->mdev)) {
 		ret = fill_multiport_info(dev, port_num, &info);
 		if (ret)
 			return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return uverbs_copy_to_struct_or_zero(attrs, MLX5_IB_ATTR_QUERY_PORT, &info,
 					     sizeof(info));
 }
 
-<<<<<<< HEAD
-=======
 static int UVERBS_HANDLER(MLX5_IB_METHOD_GET_DATA_DIRECT_SYSFS_PATH)(
 	struct uverbs_attr_bundle *attrs)
 {
@@ -260,7 +249,6 @@ end:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DECLARE_UVERBS_NAMED_METHOD(
 	MLX5_IB_METHOD_QUERY_PORT,
 	UVERBS_ATTR_PTR_IN(MLX5_IB_ATTR_QUERY_PORT_PORT_NUM,
@@ -271,11 +259,6 @@ DECLARE_UVERBS_NAMED_METHOD(
 				   reg_c0),
 		UA_MANDATORY));
 
-<<<<<<< HEAD
-ADD_UVERBS_METHODS(mlx5_ib_device,
-		   UVERBS_OBJECT_DEVICE,
-		   &UVERBS_METHOD(MLX5_IB_METHOD_QUERY_PORT));
-=======
 DECLARE_UVERBS_NAMED_METHOD(
 	MLX5_IB_METHOD_GET_DATA_DIRECT_SYSFS_PATH,
 	UVERBS_ATTR_PTR_OUT(
@@ -287,7 +270,6 @@ ADD_UVERBS_METHODS(mlx5_ib_device,
 		   UVERBS_OBJECT_DEVICE,
 		   &UVERBS_METHOD(MLX5_IB_METHOD_QUERY_PORT),
 		   &UVERBS_METHOD(MLX5_IB_METHOD_GET_DATA_DIRECT_SYSFS_PATH));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 DECLARE_UVERBS_NAMED_METHOD(
 	MLX5_IB_METHOD_PD_QUERY,

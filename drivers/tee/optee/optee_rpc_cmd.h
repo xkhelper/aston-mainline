@@ -104,8 +104,6 @@
 /* I2C master control flags */
 #define OPTEE_RPC_I2C_FLAGS_TEN_BIT	BIT(0)
 
-<<<<<<< HEAD
-=======
 /*
  * Reset RPMB probing
  *
@@ -141,5 +139,4 @@
  */
 #define OPTEE_RPC_CMD_RPMB_FRAMES	24
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /*__OPTEE_RPC_CMD_H*/

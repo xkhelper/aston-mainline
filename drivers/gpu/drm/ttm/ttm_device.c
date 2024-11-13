@@ -148,50 +148,20 @@ int ttm_global_swapout(struct ttm_operation_ctx *ctx, gfp_t gfp_flags)
 int ttm_device_swapout(struct ttm_device *bdev, struct ttm_operation_ctx *ctx,
 		       gfp_t gfp_flags)
 {
-<<<<<<< HEAD
-	struct ttm_resource_cursor cursor;
-	struct ttm_resource_manager *man;
-	struct ttm_resource *res;
-	unsigned i;
-	int ret;
-
-	spin_lock(&bdev->lru_lock);
-=======
 	struct ttm_resource_manager *man;
 	unsigned i;
 	s64 lret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = TTM_PL_SYSTEM; i < TTM_NUM_MEM_TYPES; ++i) {
 		man = ttm_manager_type(bdev, i);
 		if (!man || !man->use_tt)
 			continue;
 
-<<<<<<< HEAD
-		ttm_resource_manager_for_each_res(man, &cursor, res) {
-			struct ttm_buffer_object *bo = res->bo;
-			uint32_t num_pages;
-
-			if (!bo || bo->resource != res)
-				continue;
-
-			num_pages = PFN_UP(bo->base.size);
-			ret = ttm_bo_swapout(bo, ctx, gfp_flags);
-			/* ttm_bo_swapout has dropped the lru_lock */
-			if (!ret)
-				return num_pages;
-			if (ret != -EBUSY)
-				return ret;
-		}
-	}
-	spin_unlock(&bdev->lru_lock);
-=======
 		lret = ttm_bo_swapout(bdev, ctx, man, gfp_flags, 1);
 		/* Can be both positive (num_pages) and negative (error) */
 		if (lret)
 			return lret;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL(ttm_device_swapout);
@@ -289,22 +259,14 @@ static void ttm_device_clear_lru_dma_mappings(struct ttm_device *bdev,
 	struct ttm_resource *res;
 
 	spin_lock(&bdev->lru_lock);
-<<<<<<< HEAD
-	while ((res = list_first_entry_or_null(list, typeof(*res), lru))) {
-=======
 	while ((res = ttm_lru_first_res_or_null(list))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct ttm_buffer_object *bo = res->bo;
 
 		/* Take ref against racing releases once lru_lock is unlocked */
 		if (!ttm_bo_get_unless_zero(bo))
 			continue;
 
-<<<<<<< HEAD
-		list_del_init(&res->lru);
-=======
 		list_del_init(&bo->resource->lru.link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_unlock(&bdev->lru_lock);
 
 		if (bo->ttm)

@@ -579,11 +579,7 @@ static void release_afu_config_record(struct kobject *kobj)
 	kfree(cr);
 }
 
-<<<<<<< HEAD
-static struct kobj_type afu_config_record_type = {
-=======
 static const struct kobj_type afu_config_record_type = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.sysfs_ops = &kobj_sysfs_ops,
 	.release = release_afu_config_record,
 	.default_groups = afu_cr_groups,

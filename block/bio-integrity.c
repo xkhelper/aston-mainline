@@ -367,10 +367,6 @@ free_bvec:
 		kfree(bvec);
 	return ret;
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(bio_integrity_map_user);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * bio_integrity_prep - Prepare bio for integrity I/O

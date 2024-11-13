@@ -5,10 +5,6 @@
  * sleep+wake cycles. EEVDF placement strategy #1, #2 if disabled.
  */
 SCHED_FEAT(PLACE_LAG, true)
-<<<<<<< HEAD
-SCHED_FEAT(PLACE_DEADLINE_INITIAL, true)
-SCHED_FEAT(RUN_TO_PARITY, true)
-=======
 /*
  * Give new tasks half a slice to ease into the competition.
  */
@@ -27,7 +23,6 @@ SCHED_FEAT(RUN_TO_PARITY, true)
  * current.
  */
 SCHED_FEAT(PREEMPT_SHORT, true)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Prefer to schedule the task we woke last (assuming it failed
@@ -43,8 +38,6 @@ SCHED_FEAT(NEXT_BUDDY, false)
 SCHED_FEAT(CACHE_HOT_BUDDY, true)
 
 /*
-<<<<<<< HEAD
-=======
  * Delay dequeueing tasks until they get selected or woken.
  *
  * By delaying the dequeue for non-eligible tasks, they remain in the
@@ -57,7 +50,6 @@ SCHED_FEAT(DELAY_DEQUEUE, true)
 SCHED_FEAT(DELAY_ZERO, true)
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Allow wakeup-time preemption of the current task:
  */
 SCHED_FEAT(WAKEUP_PREEMPTION, true)
@@ -121,8 +113,3 @@ SCHED_FEAT(WA_BIAS, true)
 SCHED_FEAT(UTIL_EST, true)
 
 SCHED_FEAT(LATENCY_WARN, false)
-<<<<<<< HEAD
-
-SCHED_FEAT(HZ_BW, true)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -37,11 +37,6 @@
 #include <linux/semaphore.h>
 #include <linux/refcount.h>
 
-<<<<<<< HEAD
-#define SIXPACK_VERSION    "Revision: 0.3.0"
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* sixpack priority commands */
 #define SIXP_SEOF		0x40	/* start and end of a 6pack frame */
 #define SIXP_TX_URUN		0x48	/* transmit overrun */
@@ -91,33 +86,18 @@ struct sixpack {
 	struct net_device	*dev;		/* easy for intr handling  */
 
 	/* These are pointers to the malloc()ed frame buffers. */
-<<<<<<< HEAD
-	unsigned char		*rbuff;		/* receiver buffer	*/
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			rcount;         /* received chars counter  */
 	unsigned char		*xbuff;		/* transmitter buffer	*/
 	unsigned char		*xhead;         /* next byte to XMIT */
 	int			xleft;          /* bytes left in XMIT queue  */
 
-<<<<<<< HEAD
-	unsigned char		raw_buf[4];
-	unsigned char		cooked_buf[400];
-=======
 	u8			raw_buf[4];
 	u8			cooked_buf[400];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	unsigned int		rx_count;
 	unsigned int		rx_count_cooked;
 	spinlock_t		rxlock;
 
-<<<<<<< HEAD
-	int			mtu;		/* Our mtu (to spot changes!) */
-	int			buffsize;       /* Max buffers sizes */
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		flags;		/* Flag values/ mode etc */
 	unsigned char		mode;		/* 6pack mode */
 
@@ -127,13 +107,8 @@ struct sixpack {
 	unsigned char		slottime;
 	unsigned char		duplex;
 	unsigned char		led_state;
-<<<<<<< HEAD
-	unsigned char		status;
-	unsigned char		status1;
-=======
 	u8			status;
 	u8			status1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned char		status2;
 	unsigned char		tx_enable;
 	unsigned char		tnc_state;
@@ -147,11 +122,7 @@ struct sixpack {
 
 #define AX25_6PACK_HEADER_LEN 0
 
-<<<<<<< HEAD
-static void sixpack_decode(struct sixpack *, const unsigned char[], int);
-=======
 static void sixpack_decode(struct sixpack *, const u8 *, size_t);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int encode_sixpack(unsigned char *, unsigned char *, int, unsigned char);
 
 /*
@@ -190,11 +161,7 @@ static void sp_encaps(struct sixpack *sp, unsigned char *icp, int len)
 	unsigned char *msg, *p = icp;
 	int actual, count;
 
-<<<<<<< HEAD
-	if (len > sp->mtu) {	/* sp->mtu = AX25_MTU = max. PACLEN = 256 */
-=======
 	if (len > AX25_MTU + 73) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		msg = "oversized transmit packet!";
 		goto out_drop;
 	}
@@ -360,11 +327,7 @@ static void sp_bump(struct sixpack *sp, char cmd)
 {
 	struct sk_buff *skb;
 	int count;
-<<<<<<< HEAD
-	unsigned char *ptr;
-=======
 	u8 *ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	count = sp->rcount + 1;
 
@@ -462,11 +425,7 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
 				const u8 *fp, size_t count)
 {
 	struct sixpack *sp;
-<<<<<<< HEAD
-	int count1;
-=======
 	size_t count1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!count)
 		return;
@@ -579,11 +538,7 @@ static inline int tnc_init(struct sixpack *sp)
  */
 static int sixpack_open(struct tty_struct *tty)
 {
-<<<<<<< HEAD
-	char *rbuff = NULL, *xbuff = NULL;
-=======
 	char *xbuff = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct net_device *dev;
 	struct sixpack *sp;
 	unsigned long len;
@@ -613,15 +568,8 @@ static int sixpack_open(struct tty_struct *tty)
 
 	len = dev->mtu * 2;
 
-<<<<<<< HEAD
-	rbuff = kmalloc(len + 4, GFP_KERNEL);
-	xbuff = kmalloc(len + 4, GFP_KERNEL);
-
-	if (rbuff == NULL || xbuff == NULL) {
-=======
 	xbuff = kmalloc(len + 4, GFP_KERNEL);
 	if (xbuff == NULL) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -ENOBUFS;
 		goto out_free;
 	}
@@ -630,16 +578,8 @@ static int sixpack_open(struct tty_struct *tty)
 
 	sp->tty = tty;
 
-<<<<<<< HEAD
-	sp->rbuff	= rbuff;
 	sp->xbuff	= xbuff;
 
-	sp->mtu		= AX25_MTU + 73;
-	sp->buffsize	= len;
-=======
-	sp->xbuff	= xbuff;
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sp->rcount	= 0;
 	sp->rx_count	= 0;
 	sp->rx_count_cooked = 0;
@@ -680,10 +620,6 @@ static int sixpack_open(struct tty_struct *tty)
 
 out_free:
 	kfree(xbuff);
-<<<<<<< HEAD
-	kfree(rbuff);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	free_netdev(dev);
 
@@ -728,10 +664,6 @@ static void sixpack_close(struct tty_struct *tty)
 	del_timer_sync(&sp->resync_t);
 
 	/* Free all 6pack frame buffers after unreg. */
-<<<<<<< HEAD
-	kfree(sp->rbuff);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(sp->xbuff);
 
 	free_netdev(sp->dev);
@@ -811,31 +743,14 @@ static struct tty_ldisc_ops sp_ldisc = {
 
 /* Initialize 6pack control device -- register 6pack line discipline */
 
-<<<<<<< HEAD
-static const char msg_banner[]  __initconst = KERN_INFO \
-	"AX.25: 6pack driver, " SIXPACK_VERSION "\n";
-static const char msg_regfail[] __initconst = KERN_ERR  \
-	"6pack: can't register line discipline (err = %d)\n";
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init sixpack_init_driver(void)
 {
 	int status;
 
-<<<<<<< HEAD
-	printk(msg_banner);
-
-	/* Register the provided line protocol discipline */
-	status = tty_register_ldisc(&sp_ldisc);
-	if (status)
-		printk(msg_regfail, status);
-=======
 	/* Register the provided line protocol discipline */
 	status = tty_register_ldisc(&sp_ldisc);
 	if (status)
 		pr_err("6pack: can't register line discipline (err = %d)\n", status);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return status;
 }
@@ -885,15 +800,9 @@ static int encode_sixpack(unsigned char *tx_buf, unsigned char *tx_buf_raw,
 
 /* decode 4 sixpack-encoded bytes into 3 data bytes */
 
-<<<<<<< HEAD
-static void decode_data(struct sixpack *sp, unsigned char inbyte)
-{
-	unsigned char *buf;
-=======
 static void decode_data(struct sixpack *sp, u8 inbyte)
 {
 	u8 *buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (sp->rx_count != 3) {
 		sp->raw_buf[sp->rx_count++] = inbyte;
@@ -919,15 +828,9 @@ static void decode_data(struct sixpack *sp, u8 inbyte)
 
 /* identify and execute a 6pack priority command byte */
 
-<<<<<<< HEAD
-static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
-{
-	int actual;
-=======
 static void decode_prio_command(struct sixpack *sp, u8 cmd)
 {
 	ssize_t actual;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((cmd & SIXP_PRIO_DATA_MASK) != 0) {     /* idle ? */
 
@@ -975,15 +878,9 @@ static void decode_prio_command(struct sixpack *sp, u8 cmd)
 
 /* identify and execute a standard 6pack command byte */
 
-<<<<<<< HEAD
-static void decode_std_command(struct sixpack *sp, unsigned char cmd)
-{
-	unsigned char checksum = 0, rest = 0;
-=======
 static void decode_std_command(struct sixpack *sp, u8 cmd)
 {
 	u8 checksum = 0, rest = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	short i;
 
 	switch (cmd & SIXP_CMD_MASK) {     /* normal command */
@@ -1031,17 +928,10 @@ static void decode_std_command(struct sixpack *sp, u8 cmd)
 /* decode a 6pack packet */
 
 static void
-<<<<<<< HEAD
-sixpack_decode(struct sixpack *sp, const unsigned char *pre_rbuff, int count)
-{
-	unsigned char inbyte;
-	int count1;
-=======
 sixpack_decode(struct sixpack *sp, const u8 *pre_rbuff, size_t count)
 {
 	size_t count1;
 	u8 inbyte;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (count1 = 0; count1 < count; count1++) {
 		inbyte = pre_rbuff[count1];

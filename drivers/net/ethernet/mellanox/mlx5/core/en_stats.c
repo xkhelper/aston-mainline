@@ -144,11 +144,8 @@ static const struct counter_desc sw_stats_desc[] = {
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, rx_gro_large_hds) },
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, rx_hds_nodata_packets) },
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, rx_hds_nodata_bytes) },
-<<<<<<< HEAD
-=======
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, rx_hds_nosplit_packets) },
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, rx_hds_nosplit_bytes) },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, rx_ecn_mark) },
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, rx_removed_vlan_packets) },
 	{ MLX5E_DECLARE_STAT(struct mlx5e_sw_stats, rx_csum_unnecessary) },
@@ -352,11 +349,8 @@ static void mlx5e_stats_grp_sw_update_stats_rq_stats(struct mlx5e_sw_stats *s,
 	s->rx_gro_large_hds           += rq_stats->gro_large_hds;
 	s->rx_hds_nodata_packets      += rq_stats->hds_nodata_packets;
 	s->rx_hds_nodata_bytes        += rq_stats->hds_nodata_bytes;
-<<<<<<< HEAD
-=======
 	s->rx_hds_nosplit_packets     += rq_stats->hds_nosplit_packets;
 	s->rx_hds_nosplit_bytes       += rq_stats->hds_nosplit_bytes;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s->rx_ecn_mark                += rq_stats->ecn_mark;
 	s->rx_removed_vlan_packets    += rq_stats->removed_vlan_packets;
 	s->rx_csum_none               += rq_stats->csum_none;
@@ -2072,11 +2066,8 @@ static const struct counter_desc rq_stats_desc[] = {
 	{ MLX5E_DECLARE_RX_STAT(struct mlx5e_rq_stats, gro_large_hds) },
 	{ MLX5E_DECLARE_RX_STAT(struct mlx5e_rq_stats, hds_nodata_packets) },
 	{ MLX5E_DECLARE_RX_STAT(struct mlx5e_rq_stats, hds_nodata_bytes) },
-<<<<<<< HEAD
-=======
 	{ MLX5E_DECLARE_RX_STAT(struct mlx5e_rq_stats, hds_nosplit_packets) },
 	{ MLX5E_DECLARE_RX_STAT(struct mlx5e_rq_stats, hds_nosplit_bytes) },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ MLX5E_DECLARE_RX_STAT(struct mlx5e_rq_stats, ecn_mark) },
 	{ MLX5E_DECLARE_RX_STAT(struct mlx5e_rq_stats, removed_vlan_packets) },
 	{ MLX5E_DECLARE_RX_STAT(struct mlx5e_rq_stats, wqe_err) },

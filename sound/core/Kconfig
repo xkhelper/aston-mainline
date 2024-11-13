@@ -175,18 +175,6 @@ config SND_VERBOSE_PROCFS
 	  useful information to developers when a problem occurs).  On the
 	  other side, it makes the ALSA subsystem larger.
 
-<<<<<<< HEAD
-config SND_VERBOSE_PRINTK
-	bool "Verbose printk"
-	help
-	  Say Y here to enable verbose log messages.  These messages
-	  will help to identify source file and position containing
-	  printed messages.
-
-	  You don't need this unless you're debugging ALSA.
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config SND_CTL_FAST_LOOKUP
 	bool "Fast lookup of control elements" if EXPERT
 	default y
@@ -254,8 +242,6 @@ config SND_JACK_INJECTION_DEBUG
 	  Say Y if you are debugging via jack injection interface.
 	  If unsure select "N".
 
-<<<<<<< HEAD
-=======
 config SND_UTIMER
 	bool "Enable support for userspace-controlled virtual timers"
 	depends on SND_TIMER
@@ -266,7 +252,6 @@ config SND_UTIMER
 	  sound timing with userspace applications (for instance, when sending
 	  data through snd-aloop).
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config SND_VMASTER
 	bool
 

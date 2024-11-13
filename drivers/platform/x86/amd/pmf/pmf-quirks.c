@@ -37,8 +37,6 @@ static const struct dmi_system_id fwbug_list[] = {
 		},
 		.driver_data = &quirk_no_sps_bug,
 	},
-<<<<<<< HEAD
-=======
 	{
 		.ident = "ASUS TUF Gaming A14",
 		.matches = {
@@ -47,7 +45,6 @@ static const struct dmi_system_id fwbug_list[] = {
 		},
 		.driver_data = &quirk_no_sps_bug,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

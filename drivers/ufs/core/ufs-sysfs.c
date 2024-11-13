@@ -4,11 +4,7 @@
 #include <linux/err.h>
 #include <linux/string.h>
 #include <linux/bitfield.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <ufs/ufs.h>
 #include <ufs/unipro.h>
@@ -202,8 +198,6 @@ static u32 ufshcd_us_to_ahit(unsigned int timer)
 	       FIELD_PREP(UFSHCI_AHIBERN8_SCALE_MASK, scale);
 }
 
-<<<<<<< HEAD
-=======
 static int ufshcd_read_hci_reg(struct ufs_hba *hba, u32 *val, unsigned int reg)
 {
 	down(&hba->host_sem);
@@ -222,7 +216,6 @@ static int ufshcd_read_hci_reg(struct ufs_hba *hba, u32 *val, unsigned int reg)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t auto_hibern8_show(struct device *dev,
 				 struct device_attribute *attr, char *buf)
 {
@@ -233,31 +226,11 @@ static ssize_t auto_hibern8_show(struct device *dev,
 	if (!ufshcd_is_auto_hibern8_supported(hba))
 		return -EOPNOTSUPP;
 
-<<<<<<< HEAD
-	down(&hba->host_sem);
-	if (!ufshcd_is_user_access_allowed(hba)) {
-		ret = -EBUSY;
-		goto out;
-	}
-
-	pm_runtime_get_sync(hba->dev);
-	ufshcd_hold(hba);
-	ahit = ufshcd_readl(hba, REG_AUTO_HIBERNATE_IDLE_TIMER);
-	ufshcd_release(hba);
-	pm_runtime_put_sync(hba->dev);
-
-	ret = sysfs_emit(buf, "%d\n", ufshcd_ahit_to_us(ahit));
-
-out:
-	up(&hba->host_sem);
-	return ret;
-=======
 	ret = ufshcd_read_hci_reg(hba, &ahit, REG_AUTO_HIBERNATE_IDLE_TIMER);
 	if (ret)
 		return ret;
 
 	return sysfs_emit(buf, "%d\n", ufshcd_ahit_to_us(ahit));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t auto_hibern8_store(struct device *dev,
@@ -552,8 +525,6 @@ static const struct attribute_group ufs_sysfs_capabilities_group = {
 	.attrs = ufs_sysfs_capabilities_attrs,
 };
 
-<<<<<<< HEAD
-=======
 static ssize_t version_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -606,7 +577,6 @@ static const struct attribute_group ufs_sysfs_ufshci_group = {
 	.attrs = ufs_sysfs_ufshci_cap_attrs,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t monitor_enable_show(struct device *dev,
 				   struct device_attribute *attr, char *buf)
 {
@@ -1590,10 +1560,7 @@ static const struct attribute_group ufs_sysfs_attributes_group = {
 static const struct attribute_group *ufs_sysfs_groups[] = {
 	&ufs_sysfs_default_group,
 	&ufs_sysfs_capabilities_group,
-<<<<<<< HEAD
-=======
 	&ufs_sysfs_ufshci_group,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	&ufs_sysfs_monitor_group,
 	&ufs_sysfs_power_info_group,
 	&ufs_sysfs_device_descriptor_group,

@@ -2093,11 +2093,7 @@ static const struct dev_pm_ops fsl_easrc_pm_ops = {
 
 static struct platform_driver fsl_easrc_driver = {
 	.probe = fsl_easrc_probe,
-<<<<<<< HEAD
-	.remove_new = fsl_easrc_remove,
-=======
 	.remove = fsl_easrc_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "fsl-easrc",
 		.pm = pm_ptr(&fsl_easrc_pm_ops),

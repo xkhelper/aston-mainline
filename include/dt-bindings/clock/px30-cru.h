@@ -175,11 +175,6 @@
 #define PCLK_CIF		352
 #define PCLK_OTP_PHY		353
 
-<<<<<<< HEAD
-#define CLK_NR_CLKS		(PCLK_OTP_PHY + 1)
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* pmu-clocks indices */
 
 #define PLL_GPLL		1
@@ -198,11 +193,6 @@
 #define PCLK_GPIO0_PMU		20
 #define PCLK_UART0_PMU		21
 
-<<<<<<< HEAD
-#define CLKPMU_NR_CLKS		(PCLK_UART0_PMU + 1)
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* soft-reset indices */
 #define SRST_CORE0_PO		0
 #define SRST_CORE1_PO		1

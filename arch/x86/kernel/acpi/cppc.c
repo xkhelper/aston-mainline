@@ -9,8 +9,6 @@
 #include <asm/processor.h>
 #include <asm/topology.h>
 
-<<<<<<< HEAD
-=======
 #define CPPC_HIGHEST_PERF_PERFORMANCE	196
 #define CPPC_HIGHEST_PERF_PREFCORE	166
 
@@ -22,7 +20,6 @@ enum amd_pref_core {
 static enum amd_pref_core amd_pref_core_detected;
 static u64 boost_numerator;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Refer to drivers/acpi/cppc_acpi.c for the description of functions */
 
 bool cpc_supported_by_cpu(void)
@@ -83,37 +80,12 @@ int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
 static void amd_set_max_freq_ratio(void)
 {
 	struct cppc_perf_caps perf_caps;
-<<<<<<< HEAD
-	u64 highest_perf, nominal_perf;
-=======
 	u64 numerator, nominal_perf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 perf_ratio;
 	int rc;
 
 	rc = cppc_get_perf_caps(0, &perf_caps);
 	if (rc) {
-<<<<<<< HEAD
-		pr_debug("Could not retrieve perf counters (%d)\n", rc);
-		return;
-	}
-
-	highest_perf = amd_get_highest_perf();
-	nominal_perf = perf_caps.nominal_perf;
-
-	if (!highest_perf || !nominal_perf) {
-		pr_debug("Could not retrieve highest or nominal performance\n");
-		return;
-	}
-
-	perf_ratio = div_u64(highest_perf * SCHED_CAPACITY_SCALE, nominal_perf);
-	/* midpoint between max_boost and max_P */
-	perf_ratio = (perf_ratio + SCHED_CAPACITY_SCALE) >> 1;
-	if (!perf_ratio) {
-		pr_debug("Non-zero highest/nominal perf values led to a 0 ratio\n");
-		return;
-	}
-=======
 		pr_warn("Could not retrieve perf counters (%d)\n", rc);
 		return;
 	}
@@ -132,18 +104,13 @@ static void amd_set_max_freq_ratio(void)
 
 	/* midpoint between max_boost and max_P */
 	perf_ratio = (div_u64(numerator * SCHED_CAPACITY_SCALE, nominal_perf) + SCHED_CAPACITY_SCALE) >> 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	freq_invariance_set_perf_ratio(perf_ratio, false);
 }
 
 static DEFINE_MUTEX(freq_invariance_lock);
 
-<<<<<<< HEAD
-void init_freq_invariance_cppc(void)
-=======
 static inline void init_freq_invariance_cppc(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	static bool init_done;
 
@@ -159,8 +126,6 @@ static inline void init_freq_invariance_cppc(void)
 	init_done = true;
 	mutex_unlock(&freq_invariance_lock);
 }
-<<<<<<< HEAD
-=======
 
 void acpi_processor_init_invariance_cppc(void)
 {
@@ -306,4 +271,3 @@ int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(amd_get_boost_ratio_numerator);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

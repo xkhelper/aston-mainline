@@ -152,10 +152,7 @@ static struct test_workload *workloads[] = {
 	&workload__sqrtloop,
 	&workload__brstack,
 	&workload__datasym,
-<<<<<<< HEAD
-=======
 	&workload__landlock,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int num_subtests(const struct test_suite *t)

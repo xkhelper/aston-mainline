@@ -3,12 +3,9 @@
 
 #include <linux/vm_sockets.h>
 
-<<<<<<< HEAD
-=======
 /* include/linux/net.h */
 #define SOCK_TYPE_MASK 0xf
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define IO_TIMEOUT_SEC 30
 #define MAX_STRERR_LEN 256
 #define MAX_TEST_NAME 80
@@ -20,8 +17,6 @@
 
 #define __always_unused	__attribute__((__unused__))
 
-<<<<<<< HEAD
-=======
 /* include/linux/cleanup.h */
 #define __get_and_null(p, nullvalue)                                           \
 	({                                                                     \
@@ -33,7 +28,6 @@
 
 #define take_fd(fd) __get_and_null(fd, -EBADF)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define _FAIL(errnum, fmt...)                                                  \
 	({                                                                     \
 		error_at_line(0, (errnum), __func__, __LINE__, fmt);           \
@@ -199,8 +193,6 @@
 		__ret;                                                         \
 	})
 
-<<<<<<< HEAD
-=======
 static inline void close_fd(int *fd)
 {
 	if (*fd >= 0)
@@ -209,7 +201,6 @@ static inline void close_fd(int *fd)
 
 #define __close_fd __attribute__((cleanup(close_fd)))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int poll_connect(int fd, unsigned int timeout_sec)
 {
 	struct timeval timeout = { .tv_sec = timeout_sec };
@@ -343,57 +334,6 @@ static inline int add_to_sockmap(int sock_mapfd, int fd1, int fd2)
 	return xbpf_map_update_elem(sock_mapfd, &key, &value, BPF_NOEXIST);
 }
 
-<<<<<<< HEAD
-static inline int create_pair(int s, int family, int sotype, int *c, int *p)
-{
-	struct sockaddr_storage addr;
-	socklen_t len;
-	int err = 0;
-
-	len = sizeof(addr);
-	err = xgetsockname(s, sockaddr(&addr), &len);
-	if (err)
-		return err;
-
-	*c = xsocket(family, sotype, 0);
-	if (*c < 0)
-		return errno;
-	err = xconnect(*c, sockaddr(&addr), len);
-	if (err) {
-		err = errno;
-		goto close_cli0;
-	}
-
-	*p = xaccept_nonblock(s, NULL, NULL);
-	if (*p < 0) {
-		err = errno;
-		goto close_cli0;
-	}
-	return err;
-close_cli0:
-	close(*c);
-	return err;
-}
-
-static inline int create_socket_pairs(int s, int family, int sotype,
-				      int *c0, int *c1, int *p0, int *p1)
-{
-	int err;
-
-	err = create_pair(s, family, sotype, c0, p0);
-	if (err)
-		return err;
-
-	err = create_pair(s, family, sotype, c1, p1);
-	if (err) {
-		close(*c0);
-		close(*p0);
-	}
-	return err;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int enable_reuseport(int s, int progfd)
 {
 	int err, one = 1;
@@ -446,8 +386,6 @@ static inline int socket_loopback(int family, int sotype)
 	return socket_loopback_reuseport(family, sotype, -1);
 }
 
-<<<<<<< HEAD
-=======
 static inline int create_pair(int family, int sotype, int *p0, int *p1)
 {
 	__close_fd int s, c = -1, p = -1;
@@ -527,6 +465,5 @@ static inline int create_socket_pairs(int family, int sotype, int *c0, int *c1,
 
 	return err;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif // __SOCKMAP_HELPERS__

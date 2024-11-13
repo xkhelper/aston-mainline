@@ -19,10 +19,7 @@ $(YNL_OUTPUTS): CFLAGS += \
 $(OUTPUT)/libynl.a:
 	$(Q)$(MAKE) -C $(top_srcdir)/tools/net/ynl GENS="$(YNL_GENS)" libynl.a
 	$(Q)cp $(top_srcdir)/tools/net/ynl/libynl.a $(OUTPUT)/libynl.a
-<<<<<<< HEAD
-=======
 
 EXTRA_CLEAN += \
 	$(top_srcdir)/tools/net/ynl/lib/__pycache__ \
 	$(top_srcdir)/tools/net/ynl/lib/*.[ado]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

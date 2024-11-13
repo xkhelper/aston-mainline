@@ -19,10 +19,7 @@ properties:
       - fsl,imx53-ahci
       - fsl,imx6q-ahci
       - fsl,imx6qp-ahci
-<<<<<<< HEAD
-=======
       - fsl,imx8qm-ahci
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1
@@ -31,20 +28,14 @@ properties:
     maxItems: 1
 
   clocks:
-<<<<<<< HEAD
-=======
     minItems: 2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     items:
       - description: sata clock
       - description: sata reference clock
       - description: ahb clock
 
   clock-names:
-<<<<<<< HEAD
-=======
     minItems: 2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     items:
       - const: sata
       - const: sata_ref
@@ -70,8 +61,6 @@ properties:
     $ref: /schemas/types.yaml#/definitions/flag
     description: if present, disable spread-spectrum clocking on the SATA link.
 
-<<<<<<< HEAD
-=======
   phys:
     items:
       - description: phandle to SATA PHY.
@@ -91,7 +80,6 @@ properties:
   power-domains:
     maxItems: 1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - reg
@@ -99,8 +87,6 @@ required:
   - clocks
   - clock-names
 
-<<<<<<< HEAD
-=======
 allOf:
   - if:
       properties:
@@ -126,7 +112,6 @@ allOf:
         clock-names:
           minItems: 2
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:

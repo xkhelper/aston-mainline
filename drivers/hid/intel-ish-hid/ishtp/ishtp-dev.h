@@ -129,15 +129,6 @@ struct ishtp_hw_ops {
  * ISHTP device instance. It allows for the storage of data that is unique to
  * a particular driver or hardware variant.
  *
-<<<<<<< HEAD
- * @fw_filename: The firmware filename associated with a specific hardware
- *               variant of the Intel Integrated Sensor Hub (ISH). This allows
- *               the driver to load the correct firmware based on the device's
- *               hardware variant.
- */
-struct ishtp_driver_data {
-	char *fw_filename;
-=======
  * @fw_generation: The generation name associated with a specific hardware
  *               variant of the Intel Integrated Sensor Hub (ISH). This allows
  *               the driver to load the correct firmware based on the device's
@@ -147,7 +138,6 @@ struct ishtp_driver_data {
  */
 struct ishtp_driver_data {
 	char *fw_generation;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

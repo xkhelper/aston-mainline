@@ -248,8 +248,6 @@ static const struct imx95_blk_ctl_dev_data dispmix_csr_dev_data = {
 	.clk_reg_offset = 0,
 };
 
-<<<<<<< HEAD
-=======
 static const struct imx95_blk_ctl_clk_dev_data netxmix_clk_dev_data[] = {
 	[IMX95_CLK_NETCMIX_ENETC0_RMII] = {
 		.name = "enetc0_rmii_sel",
@@ -279,7 +277,6 @@ static const struct imx95_blk_ctl_dev_data netcmix_dev_data = {
 	.clk_reg_offset = 0,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int imx95_bc_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -451,10 +448,7 @@ static const struct of_device_id imx95_bc_of_match[] = {
 	{ .compatible = "nxp,imx95-lvds-csr", .data = &lvds_csr_dev_data },
 	{ .compatible = "nxp,imx95-display-csr", .data = &dispmix_csr_dev_data },
 	{ .compatible = "nxp,imx95-vpu-csr", .data = &vpublk_dev_data },
-<<<<<<< HEAD
-=======
 	{ .compatible = "nxp,imx95-netcmix-blk-ctrl", .data = &netcmix_dev_data},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* Sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, imx95_bc_of_match);

@@ -20,17 +20,6 @@
 #include <asm/code-patching.h>
 #include <asm/inst.h>
 
-<<<<<<< HEAD
-static int __patch_instruction(u32 *exec_addr, ppc_inst_t instr, u32 *patch_addr)
-{
-	if (!ppc_inst_prefixed(instr)) {
-		u32 val = ppc_inst_val(instr);
-
-		__put_kernel_nofault(patch_addr, &val, u32, failed);
-	} else {
-		u64 val = ppc_inst_as_ulong(instr);
-
-=======
 static int __patch_mem(void *exec_addr, unsigned long val, void *patch_addr, bool is_dword)
 {
 	if (!IS_ENABLED(CONFIG_PPC64) || likely(!is_dword)) {
@@ -39,7 +28,6 @@ static int __patch_mem(void *exec_addr, unsigned long val, void *patch_addr, boo
 
 		__put_kernel_nofault(patch_addr, &val32, u32, failed);
 	} else {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__put_kernel_nofault(patch_addr, &val, u64, failed);
 	}
 
@@ -55,14 +43,10 @@ failed:
 
 int raw_patch_instruction(u32 *addr, ppc_inst_t instr)
 {
-<<<<<<< HEAD
-	return __patch_instruction(addr, instr, addr);
-=======
 	if (ppc_inst_prefixed(instr))
 		return __patch_mem(addr, ppc_inst_as_ulong(instr), addr, true);
 	else
 		return __patch_mem(addr, ppc_inst_val(instr), addr, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct patch_context {
@@ -294,11 +278,7 @@ static void unmap_patch_area(unsigned long addr)
 	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
 }
 
-<<<<<<< HEAD
-static int __do_patch_instruction_mm(u32 *addr, ppc_inst_t instr)
-=======
 static int __do_patch_mem_mm(void *addr, unsigned long val, bool is_dword)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 	u32 *patch_addr;
@@ -327,11 +307,7 @@ static int __do_patch_mem_mm(void *addr, unsigned long val, bool is_dword)
 
 	orig_mm = start_using_temp_mm(patching_mm);
 
-<<<<<<< HEAD
-	err = __patch_instruction(addr, instr, patch_addr);
-=======
 	err = __patch_mem(addr, val, patch_addr, is_dword);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* context synchronisation performed by __patch_instruction (isync or exception) */
 	stop_using_temp_mm(patching_mm, orig_mm);
@@ -348,11 +324,7 @@ static int __do_patch_mem_mm(void *addr, unsigned long val, bool is_dword)
 	return err;
 }
 
-<<<<<<< HEAD
-static int __do_patch_instruction(u32 *addr, ppc_inst_t instr)
-=======
 static int __do_patch_mem(void *addr, unsigned long val, bool is_dword)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 	u32 *patch_addr;
@@ -369,11 +341,7 @@ static int __do_patch_mem(void *addr, unsigned long val, bool is_dword)
 	if (radix_enabled())
 		asm volatile("ptesync": : :"memory");
 
-<<<<<<< HEAD
-	err = __patch_instruction(addr, instr, patch_addr);
-=======
 	err = __patch_mem(addr, val, patch_addr, is_dword);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pte_clear(&init_mm, text_poke_addr, pte);
 	flush_tlb_kernel_range(text_poke_addr, text_poke_addr + PAGE_SIZE);
@@ -381,11 +349,7 @@ static int __do_patch_mem(void *addr, unsigned long val, bool is_dword)
 	return err;
 }
 
-<<<<<<< HEAD
-int patch_instruction(u32 *addr, ppc_inst_t instr)
-=======
 static int patch_mem(void *addr, unsigned long val, bool is_dword)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err;
 	unsigned long flags;
@@ -397,15 +361,6 @@ static int patch_mem(void *addr, unsigned long val, bool is_dword)
 	 */
 	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX) ||
 	    !static_branch_likely(&poking_init_done))
-<<<<<<< HEAD
-		return raw_patch_instruction(addr, instr);
-
-	local_irq_save(flags);
-	if (mm_patch_enabled())
-		err = __do_patch_instruction_mm(addr, instr);
-	else
-		err = __do_patch_instruction(addr, instr);
-=======
 		return __patch_mem(addr, val, addr, is_dword);
 
 	local_irq_save(flags);
@@ -413,15 +368,10 @@ static int patch_mem(void *addr, unsigned long val, bool is_dword)
 		err = __do_patch_mem_mm(addr, val, is_dword);
 	else
 		err = __do_patch_mem(addr, val, is_dword);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	local_irq_restore(flags);
 
 	return err;
 }
-<<<<<<< HEAD
-NOKPROBE_SYMBOL(patch_instruction);
-
-=======
 
 #ifdef CONFIG_PPC64
 
@@ -462,7 +412,6 @@ NOKPROBE_SYMBOL(patch_instruction)
 
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int patch_memset64(u64 *addr, u64 val, size_t count)
 {
 	for (u64 *end = addr + count; addr < end; addr++)

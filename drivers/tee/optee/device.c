@@ -43,8 +43,6 @@ static int get_devices(struct tee_context *ctx, u32 session,
 	ret = tee_client_invoke_func(ctx, &inv_arg, param);
 	if ((ret < 0) || ((inv_arg.ret != TEEC_SUCCESS) &&
 			  (inv_arg.ret != TEEC_ERROR_SHORT_BUFFER))) {
-<<<<<<< HEAD
-=======
 		/*
 		 * TEE_ERROR_STORAGE_NOT_AVAILABLE is returned when getting
 		 * the list of device TAs that depends on RPMB but a usable
@@ -52,7 +50,6 @@ static int get_devices(struct tee_context *ctx, u32 session,
 		 */
 		if (inv_arg.ret == TEE_ERROR_STORAGE_NOT_AVAILABLE)
 			return -ENODEV;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_err("PTA_CMD_GET_DEVICES invoke function err: %x\n",
 		       inv_arg.ret);
 		return -EINVAL;

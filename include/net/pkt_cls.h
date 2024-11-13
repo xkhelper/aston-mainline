@@ -491,11 +491,7 @@ int __tcf_em_tree_match(struct sk_buff *, struct tcf_ematch_tree *,
 			struct tcf_pkt_info *);
 
 /**
-<<<<<<< HEAD
- * tcf_em_tree_match - evaulate an ematch tree
-=======
  * tcf_em_tree_match - evaluate an ematch tree
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * @skb: socket buffer of the packet in question
  * @tree: ematch tree to be used for evaluation

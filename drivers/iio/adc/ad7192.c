@@ -8,10 +8,7 @@
 #include <linux/interrupt.h>
 #include <linux/bitfield.h>
 #include <linux/clk.h>
-<<<<<<< HEAD
-=======
 #include <linux/clk-provider.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/device.h>
 #include <linux/kernel.h>
 #include <linux/slab.h>
@@ -205,10 +202,7 @@ struct ad7192_chip_info {
 struct ad7192_state {
 	const struct ad7192_chip_info	*chip_info;
 	struct clk			*mclk;
-<<<<<<< HEAD
-=======
 	struct clk_hw			int_clk_hw;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16				int_vref_mv;
 	u32				aincom_mv;
 	u32				fclk;
@@ -292,11 +286,7 @@ static const struct iio_chan_spec_ext_info ad7192_calibsys_ext_info[] = {
 		 &ad7192_syscalib_mode_enum),
 	IIO_ENUM_AVAILABLE("sys_calibration_mode", IIO_SHARED_BY_TYPE,
 			   &ad7192_syscalib_mode_enum),
-<<<<<<< HEAD
-	{}
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct ad7192_state *ad_sigma_delta_to_ad7192(struct ad_sigma_delta *sd)
@@ -408,27 +398,6 @@ static inline bool ad7192_valid_external_frequency(u32 freq)
 		freq <= AD7192_EXT_FREQ_MHZ_MAX);
 }
 
-<<<<<<< HEAD
-static int ad7192_clock_select(struct ad7192_state *st)
-{
-	struct device *dev = &st->sd.spi->dev;
-	unsigned int clock_sel;
-
-	clock_sel = AD7192_CLK_INT;
-
-	/* use internal clock */
-	if (!st->mclk) {
-		if (device_property_read_bool(dev, "adi,int-clock-output-enable"))
-			clock_sel = AD7192_CLK_INT_CO;
-	} else {
-		if (device_property_read_bool(dev, "adi,clock-xtal"))
-			clock_sel = AD7192_CLK_EXT_MCLK1_2;
-		else
-			clock_sel = AD7192_CLK_EXT_MCLK2;
-	}
-
-	return clock_sel;
-=======
 /*
  * Position 0 of ad7192_clock_names, xtal, corresponds to clock source
  * configuration AD7192_CLK_EXT_MCLK1_2 and position 1, mclk, corresponds to
@@ -585,7 +554,6 @@ static int ad7192_clock_setup(struct ad7192_state *st)
 				     "External clock frequency out of bounds\n");
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ad7192_setup(struct iio_dev *indio_dev, struct device *dev)
@@ -1446,27 +1414,9 @@ static int ad7192_probe(struct spi_device *spi)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	st->fclk = AD7192_INT_FREQ_MHZ;
-
-	st->mclk = devm_clk_get_optional_enabled(dev, "mclk");
-	if (IS_ERR(st->mclk))
-		return PTR_ERR(st->mclk);
-
-	st->clock_sel = ad7192_clock_select(st);
-
-	if (st->clock_sel == AD7192_CLK_EXT_MCLK1_2 ||
-	    st->clock_sel == AD7192_CLK_EXT_MCLK2) {
-		st->fclk = clk_get_rate(st->mclk);
-		if (!ad7192_valid_external_frequency(st->fclk))
-			return dev_err_probe(dev, -EINVAL,
-					     "External clock frequency out of bounds\n");
-	}
-=======
 	ret = ad7192_clock_setup(st);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ad7192_setup(indio_dev, dev);
 	if (ret)
@@ -1481,11 +1431,7 @@ static const struct of_device_id ad7192_of_match[] = {
 	{ .compatible = "adi,ad7193", .data = &ad7192_chip_info_tbl[ID_AD7193] },
 	{ .compatible = "adi,ad7194", .data = &ad7192_chip_info_tbl[ID_AD7194] },
 	{ .compatible = "adi,ad7195", .data = &ad7192_chip_info_tbl[ID_AD7195] },
-<<<<<<< HEAD
-	{}
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, ad7192_of_match);
 
@@ -1495,11 +1441,7 @@ static const struct spi_device_id ad7192_ids[] = {
 	{ "ad7193", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7193] },
 	{ "ad7194", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7194] },
 	{ "ad7195", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7195] },
-<<<<<<< HEAD
-	{}
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(spi, ad7192_ids);
 

@@ -66,13 +66,8 @@ SYSCALL_DEFINE4(spu_create, const char __user *, name, unsigned int, flags,
 	if (flags & SPU_CREATE_AFFINITY_SPU) {
 		struct fd neighbor = fdget(neighbor_fd);
 		ret = -EBADF;
-<<<<<<< HEAD
-		if (neighbor.file) {
-			ret = calls->create_thread(name, flags, mode, neighbor.file);
-=======
 		if (fd_file(neighbor)) {
 			ret = calls->create_thread(name, flags, mode, fd_file(neighbor));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			fdput(neighbor);
 		}
 	} else
@@ -94,13 +89,8 @@ SYSCALL_DEFINE3(spu_run,int, fd, __u32 __user *, unpc, __u32 __user *, ustatus)
 
 	ret = -EBADF;
 	arg = fdget(fd);
-<<<<<<< HEAD
-	if (arg.file) {
-		ret = calls->spu_run(arg.file, unpc, ustatus);
-=======
 	if (fd_file(arg)) {
 		ret = calls->spu_run(fd_file(arg), unpc, ustatus);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(arg);
 	}
 

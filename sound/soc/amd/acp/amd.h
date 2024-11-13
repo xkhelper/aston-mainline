@@ -22,10 +22,7 @@
 #define ACP6X_DEV			6
 #define ACP63_DEV			0x63
 #define ACP70_DEV			0x70
-<<<<<<< HEAD
-=======
 #define ACP71_DEV			0x71
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DMIC_INSTANCE			0x00
 #define I2S_SP_INSTANCE			0x01
@@ -65,8 +62,6 @@
 #define I2S_HS_TX_MEM_WINDOW_START      0x40A0000
 #define I2S_HS_RX_MEM_WINDOW_START      0x40C0000
 
-<<<<<<< HEAD
-=======
 #define ACP7x_I2S_SP_TX_MEM_WINDOW_START	0x4000000
 #define ACP7x_I2S_SP_RX_MEM_WINDOW_START	0x4200000
 #define ACP7x_I2S_BT_TX_MEM_WINDOW_START	0x4400000
@@ -75,7 +70,6 @@
 #define ACP7x_I2S_HS_RX_MEM_WINDOW_START	0x4A00000
 #define ACP7x_DMIC_MEM_WINDOW_START			0x4C00000
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SP_PB_FIFO_ADDR_OFFSET		0x500
 #define SP_CAPT_FIFO_ADDR_OFFSET	0x700
 #define BT_PB_FIFO_ADDR_OFFSET		0x900
@@ -118,11 +112,8 @@
 #define ACP70_PGFSM_CONTROL			ACP6X_PGFSM_CONTROL
 #define ACP70_PGFSM_STATUS			ACP6X_PGFSM_STATUS
 
-<<<<<<< HEAD
-=======
 #define ACP_ZSC_DSP_CTRL			0x0001014
 #define ACP_ZSC_STS				0x0001018
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ACP_SOFT_RST_DONE_MASK	0x00010001
 
 #define ACP_PGFSM_CNTL_POWER_ON_MASK            0xffffffff
@@ -276,21 +267,12 @@ static inline u64 acp_get_byte_count(struct acp_dev_data *adata, int dai_id, int
 	if (direction == SNDRV_PCM_STREAM_PLAYBACK) {
 		switch (dai_id) {
 		case I2S_BT_INSTANCE:
-<<<<<<< HEAD
-			high = readl(adata->acp_base + ACP_BT_TX_LINEARPOSITIONCNTR_HIGH);
-			low = readl(adata->acp_base + ACP_BT_TX_LINEARPOSITIONCNTR_LOW);
-			break;
-		case I2S_SP_INSTANCE:
-			high = readl(adata->acp_base + ACP_I2S_TX_LINEARPOSITIONCNTR_HIGH);
-			low = readl(adata->acp_base + ACP_I2S_TX_LINEARPOSITIONCNTR_LOW);
-=======
 			high = readl(adata->acp_base + ACP_BT_TX_LINEARPOSITIONCNTR_HIGH(adata));
 			low = readl(adata->acp_base + ACP_BT_TX_LINEARPOSITIONCNTR_LOW(adata));
 			break;
 		case I2S_SP_INSTANCE:
 			high = readl(adata->acp_base + ACP_I2S_TX_LINEARPOSITIONCNTR_HIGH(adata));
 			low = readl(adata->acp_base + ACP_I2S_TX_LINEARPOSITIONCNTR_LOW(adata));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case I2S_HS_INSTANCE:
 			high = readl(adata->acp_base + ACP_HS_TX_LINEARPOSITIONCNTR_HIGH);
@@ -303,21 +285,12 @@ static inline u64 acp_get_byte_count(struct acp_dev_data *adata, int dai_id, int
 	} else {
 		switch (dai_id) {
 		case I2S_BT_INSTANCE:
-<<<<<<< HEAD
-			high = readl(adata->acp_base + ACP_BT_RX_LINEARPOSITIONCNTR_HIGH);
-			low = readl(adata->acp_base + ACP_BT_RX_LINEARPOSITIONCNTR_LOW);
-			break;
-		case I2S_SP_INSTANCE:
-			high = readl(adata->acp_base + ACP_I2S_RX_LINEARPOSITIONCNTR_HIGH);
-			low = readl(adata->acp_base + ACP_I2S_RX_LINEARPOSITIONCNTR_LOW);
-=======
 			high = readl(adata->acp_base + ACP_BT_RX_LINEARPOSITIONCNTR_HIGH(adata));
 			low = readl(adata->acp_base + ACP_BT_RX_LINEARPOSITIONCNTR_LOW(adata));
 			break;
 		case I2S_SP_INSTANCE:
 			high = readl(adata->acp_base + ACP_I2S_RX_LINEARPOSITIONCNTR_HIGH(adata));
 			low = readl(adata->acp_base + ACP_I2S_RX_LINEARPOSITIONCNTR_LOW(adata));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		case I2S_HS_INSTANCE:
 			high = readl(adata->acp_base + ACP_HS_RX_LINEARPOSITIONCNTR_HIGH);

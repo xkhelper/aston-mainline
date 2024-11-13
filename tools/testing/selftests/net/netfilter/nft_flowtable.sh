@@ -71,11 +71,8 @@ omtu=9000
 lmtu=1500
 rmtu=2000
 
-<<<<<<< HEAD
-=======
 filesize=$((2 * 1024 * 1024))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 usage(){
 	echo "nft_flowtable.sh [OPTIONS]"
 	echo
@@ -86,20 +83,13 @@ usage(){
 	exit 1
 }
 
-<<<<<<< HEAD
-while getopts "o:l:r:" o
-=======
 while getopts "o:l:r:s:" o
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 do
 	case $o in
 		o) omtu=$OPTARG;;
 		l) lmtu=$OPTARG;;
 		r) rmtu=$OPTARG;;
-<<<<<<< HEAD
-=======
 		s) filesize=$OPTARG;;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*) usage;;
 	esac
 done
@@ -230,25 +220,10 @@ ns2out=$(mktemp)
 
 make_file()
 {
-<<<<<<< HEAD
-	name=$1
-
-	SIZE=$((RANDOM % (1024 * 128)))
-	SIZE=$((SIZE + (1024 * 8)))
-	TSIZE=$((SIZE * 1024))
-
-	dd if=/dev/urandom of="$name" bs=1024 count=$SIZE 2> /dev/null
-
-	SIZE=$((RANDOM % 1024))
-	SIZE=$((SIZE + 128))
-	TSIZE=$((TSIZE + SIZE))
-	dd if=/dev/urandom conf=notrunc of="$name" bs=1 count=$SIZE 2> /dev/null
-=======
 	name="$1"
 	sz="$2"
 
 	head -c "$sz" < /dev/urandom > "$name"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 check_counters()
@@ -266,30 +241,18 @@ check_counters()
 	local fs
 	fs=$(du -sb "$nsin")
 	local max_orig=${fs%%/*}
-<<<<<<< HEAD
-	local max_repl=$((max_orig/4))
-=======
 	local max_repl=$((max_orig))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	# flowtable fastpath should bypass normal routing one, i.e. the counters in forward hook
 	# should always be lower than the size of the transmitted file (max_orig).
 	if [ "$orig_cnt" -gt "$max_orig" ];then
-<<<<<<< HEAD
-		echo "FAIL: $what: original counter $orig_cnt exceeds expected value $max_orig" 1>&2
-=======
 		echo "FAIL: $what: original counter $orig_cnt exceeds expected value $max_orig, reply counter $repl_cnt" 1>&2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret=1
 		ok=0
 	fi
 
 	if [ "$repl_cnt" -gt $max_repl ];then
-<<<<<<< HEAD
-		echo "FAIL: $what: reply counter $repl_cnt exceeds expected value $max_repl" 1>&2
-=======
 		echo "FAIL: $what: reply counter $repl_cnt exceeds expected value $max_repl, original counter $orig_cnt" 1>&2
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret=1
 		ok=0
 	fi
@@ -487,11 +450,7 @@ test_tcp_forwarding_nat()
 	return $lret
 }
 
-<<<<<<< HEAD
-make_file "$nsin"
-=======
 make_file "$nsin" "$filesize"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # First test:
 # No PMTU discovery, nsr1 is expected to fragment packets from ns1 to ns2 as needed.
@@ -700,10 +659,6 @@ if [ "$1" = "" ]; then
 	l=$(((RANDOM%mtu) + low))
 	r=$(((RANDOM%mtu) + low))
 
-<<<<<<< HEAD
-	echo "re-run with random mtus: -o $o -l $l -r $r"
-	$0 -o "$o" -l "$l" -r "$r"
-=======
 	MINSIZE=$((2 *  1000 * 1000))
 	MAXSIZE=$((64 * 1000 * 1000))
 
@@ -714,7 +669,6 @@ if [ "$1" = "" ]; then
 
 	echo "re-run with random mtus and file size: -o $o -l $l -r $r -s $filesize"
 	$0 -o "$o" -l "$l" -r "$r" -s "$filesize"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 fi
 
 exit $ret

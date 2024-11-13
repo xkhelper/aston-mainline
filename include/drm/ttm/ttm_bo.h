@@ -190,8 +190,6 @@ struct ttm_operation_ctx {
 	uint64_t bytes_moved;
 };
 
-<<<<<<< HEAD
-=======
 struct ttm_lru_walk;
 
 /** struct ttm_lru_walk_ops - Operations for a LRU walk. */
@@ -227,7 +225,6 @@ struct ttm_lru_walk {
 s64 ttm_lru_walk_for_evict(struct ttm_lru_walk *walk, struct ttm_device *bdev,
 			   struct ttm_resource_manager *man, s64 target);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ttm_bo_get - reference a struct ttm_buffer_object
  *
@@ -416,17 +413,6 @@ void ttm_bo_kunmap(struct ttm_bo_kmap_obj *map);
 int ttm_bo_vmap(struct ttm_buffer_object *bo, struct iosys_map *map);
 void ttm_bo_vunmap(struct ttm_buffer_object *bo, struct iosys_map *map);
 int ttm_bo_mmap_obj(struct vm_area_struct *vma, struct ttm_buffer_object *bo);
-<<<<<<< HEAD
-int ttm_bo_swapout(struct ttm_buffer_object *bo, struct ttm_operation_ctx *ctx,
-		   gfp_t gfp_flags);
-void ttm_bo_pin(struct ttm_buffer_object *bo);
-void ttm_bo_unpin(struct ttm_buffer_object *bo);
-int ttm_mem_evict_first(struct ttm_device *bdev,
-			struct ttm_resource_manager *man,
-			const struct ttm_place *place,
-			struct ttm_operation_ctx *ctx,
-			struct ww_acquire_ctx *ticket);
-=======
 s64 ttm_bo_swapout(struct ttm_device *bdev, struct ttm_operation_ctx *ctx,
 		   struct ttm_resource_manager *man, gfp_t gfp_flags,
 		   s64 target);
@@ -435,7 +421,6 @@ void ttm_bo_unpin(struct ttm_buffer_object *bo);
 int ttm_bo_evict_first(struct ttm_device *bdev,
 		       struct ttm_resource_manager *man,
 		       struct ttm_operation_ctx *ctx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 vm_fault_t ttm_bo_vm_reserve(struct ttm_buffer_object *bo,
 			     struct vm_fault *vmf);
 vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,

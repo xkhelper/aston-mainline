@@ -21,11 +21,7 @@
 #include <linux/regmap.h>
 #include <linux/util_macros.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum {
 	MT6370_LED_ISNK1 = 0,

@@ -12,10 +12,7 @@
 #include <linux/bits.h>
 #include <linux/bitfield.h>
 #include <linux/device.h>
-<<<<<<< HEAD
-=======
 #include <linux/intel_vsec.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/iopoll.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -26,11 +23,6 @@
 #include <linux/types.h>
 #include <linux/uaccess.h>
 
-<<<<<<< HEAD
-#include "vsec.h"
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ACCESS_TYPE_BARID		2
 #define ACCESS_TYPE_LOCAL		3
 

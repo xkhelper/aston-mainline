@@ -115,8 +115,6 @@ enum axp20x_variants {
 #define AXP313A_IRQ_STATE		0x21
 
 #define AXP717_ON_INDICATE		0x00
-<<<<<<< HEAD
-=======
 #define AXP717_PMU_STATUS_2		0x01
 #define AXP717_BC_DETECT		0x05
 #define AXP717_PMU_FAULT		0x08
@@ -127,7 +125,6 @@ enum axp20x_variants {
 #define AXP717_MODULE_EN_CONTROL_2	0x19
 #define AXP717_BOOST_CONTROL		0x1e
 #define AXP717_VSYS_V_POWEROFF		0x24
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define AXP717_IRQ0_EN			0x40
 #define AXP717_IRQ1_EN			0x41
 #define AXP717_IRQ2_EN			0x42
@@ -138,12 +135,9 @@ enum axp20x_variants {
 #define AXP717_IRQ2_STATE		0x4a
 #define AXP717_IRQ3_STATE		0x4b
 #define AXP717_IRQ4_STATE		0x4c
-<<<<<<< HEAD
-=======
 #define AXP717_ICC_CHG_SET		0x62
 #define AXP717_ITERM_CHG_SET		0x63
 #define AXP717_CV_CHG_SET		0x64
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define AXP717_DCDC_OUTPUT_CONTROL	0x80
 #define AXP717_DCDC1_CONTROL		0x83
 #define AXP717_DCDC2_CONTROL		0x84
@@ -164,8 +158,6 @@ enum axp20x_variants {
 #define AXP717_CLDO3_CONTROL		0x9d
 #define AXP717_CLDO4_CONTROL		0x9e
 #define AXP717_CPUSLDO_CONTROL		0x9f
-<<<<<<< HEAD
-=======
 #define AXP717_BATT_PERCENT_DATA	0xa4
 #define AXP717_ADC_CH_EN_CONTROL	0xc0
 #define AXP717_BATT_V_H			0xc4
@@ -179,7 +171,6 @@ enum axp20x_variants {
 #define AXP717_ADC_DATA_SEL		0xcd
 #define AXP717_ADC_DATA_H		0xce
 #define AXP717_ADC_DATA_L		0xcf
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define AXP806_STARTUP_SRC		0x00
 #define AXP806_CHIP_ID			0x03
@@ -519,10 +510,7 @@ enum {
 	AXP717_CLDO3,
 	AXP717_CLDO4,
 	AXP717_CPUSLDO,
-<<<<<<< HEAD
-=======
 	AXP717_BOOST,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	AXP717_REG_ID_MAX,
 };
 

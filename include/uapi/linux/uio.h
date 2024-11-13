@@ -20,8 +20,6 @@ struct iovec
 	__kernel_size_t iov_len; /* Must be size_t (1003.1g) */
 };
 
-<<<<<<< HEAD
-=======
 struct dmabuf_cmsg {
 	__u64 frag_offset;	/* offset into the dmabuf where the frag starts.
 				 */
@@ -40,7 +38,6 @@ struct dmabuf_token {
 	__u32 token_count;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  *	UIO_MAXIOV shall be at least 16 1003.1g (5.4.1.1)
  */

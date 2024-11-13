@@ -3,14 +3,10 @@
 #include <test_progs.h>
 #include <network_helpers.h>
 #include "tailcall_poke.skel.h"
-<<<<<<< HEAD
-
-=======
 #include "tailcall_bpf2bpf_hierarchy2.skel.h"
 #include "tailcall_bpf2bpf_hierarchy3.skel.h"
 #include "tailcall_freplace.skel.h"
 #include "tc_bpf2bpf.skel.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* test_tailcall_1 checks basic functionality by patching multiple locations
  * in a single program for a single tail call slot with nop->jmp, jmp->nop
@@ -1194,8 +1190,6 @@ out:
 	tailcall_poke__destroy(call);
 }
 
-<<<<<<< HEAD
-=======
 static void test_tailcall_hierarchy_count(const char *which, bool test_fentry,
 					  bool test_fexit,
 					  bool test_fentry_entry)
@@ -1562,7 +1556,6 @@ out:
 	tailcall_freplace__destroy(freplace_skel);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_tailcalls(void)
 {
 	if (test__start_subtest("tailcall_1"))
@@ -1599,8 +1592,6 @@ void test_tailcalls(void)
 		test_tailcall_bpf2bpf_fentry_entry();
 	if (test__start_subtest("tailcall_poke"))
 		test_tailcall_poke();
-<<<<<<< HEAD
-=======
 	if (test__start_subtest("tailcall_bpf2bpf_hierarchy_1"))
 		test_tailcall_bpf2bpf_hierarchy_1();
 	if (test__start_subtest("tailcall_bpf2bpf_hierarchy_fentry"))
@@ -1615,5 +1606,4 @@ void test_tailcalls(void)
 	test_tailcall_bpf2bpf_hierarchy_3();
 	if (test__start_subtest("tailcall_freplace"))
 		test_tailcall_freplace();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

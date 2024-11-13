@@ -339,10 +339,6 @@ static int svc_rdma_cma_handler(struct rdma_cm_id *cma_id,
 		svc_xprt_enqueue(xprt);
 		break;
 	case RDMA_CM_EVENT_DISCONNECTED:
-<<<<<<< HEAD
-	case RDMA_CM_EVENT_DEVICE_REMOVAL:
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		svc_xprt_deferred_close(xprt);
 		break;
 	default:
@@ -373,11 +369,7 @@ static struct svc_xprt *svc_rdma_create(struct svc_serv *serv,
 	listen_id = svc_rdma_create_listen_id(net, sa, cma_xprt);
 	if (IS_ERR(listen_id)) {
 		kfree(cma_xprt);
-<<<<<<< HEAD
-		return (struct svc_xprt *)listen_id;
-=======
 		return ERR_CAST(listen_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	cma_xprt->sc_cm_id = listen_id;
 
@@ -391,8 +383,6 @@ static struct svc_xprt *svc_rdma_create(struct svc_serv *serv,
 	return &cma_xprt->sc_xprt;
 }
 
-<<<<<<< HEAD
-=======
 static void svc_rdma_xprt_done(struct rpcrdma_notification *rn)
 {
 	struct svcxprt_rdma *rdma = container_of(rn, struct svcxprt_rdma,
@@ -403,7 +393,6 @@ static void svc_rdma_xprt_done(struct rpcrdma_notification *rn)
 	svc_xprt_close(&rdma->sc_xprt);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This is the xpo_recvfrom function for listening endpoints. Its
  * purpose is to accept incoming connections. The CMA callback handler
@@ -445,12 +434,9 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
 	dev = newxprt->sc_cm_id->device;
 	newxprt->sc_port_num = newxprt->sc_cm_id->port_num;
 
-<<<<<<< HEAD
-=======
 	if (rpcrdma_rn_register(dev, &newxprt->sc_rn, svc_rdma_xprt_done))
 		goto errout;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	newxprt->sc_max_req_size = svcrdma_max_req_size;
 	newxprt->sc_max_requests = svcrdma_max_requests;
 	newxprt->sc_max_bc_requests = svcrdma_max_bc_requests;
@@ -606,10 +592,7 @@ static void __svc_rdma_free(struct work_struct *work)
 {
 	struct svcxprt_rdma *rdma =
 		container_of(work, struct svcxprt_rdma, sc_work);
-<<<<<<< HEAD
-=======
 	struct ib_device *device = rdma->sc_cm_id->device;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* This blocks until the Completion Queues are empty */
 	if (rdma->sc_qp && !IS_ERR(rdma->sc_qp))
@@ -638,10 +621,7 @@ static void __svc_rdma_free(struct work_struct *work)
 	/* Destroy the CM ID */
 	rdma_destroy_id(rdma->sc_cm_id);
 
-<<<<<<< HEAD
-=======
 	rpcrdma_rn_unregister(device, &rdma->sc_rn);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(rdma);
 }
 

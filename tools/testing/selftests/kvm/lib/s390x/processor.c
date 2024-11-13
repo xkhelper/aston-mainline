@@ -14,11 +14,7 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
 {
 	vm_paddr_t paddr;
 
-<<<<<<< HEAD
-	TEST_ASSERT(vm->page_size == 4096, "Unsupported page size: 0x%x",
-=======
 	TEST_ASSERT(vm->page_size == PAGE_SIZE, "Unsupported page size: 0x%x",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    vm->page_size);
 
 	if (vm->pgd_created)
@@ -83,11 +79,7 @@ void virt_arch_pg_map(struct kvm_vm *vm, uint64_t gva, uint64_t gpa)
 	}
 
 	/* Fill in page table entry */
-<<<<<<< HEAD
-	idx = (gva >> 12) & 0x0ffu;		/* page index */
-=======
 	idx = (gva >> PAGE_SHIFT) & 0x0ffu;		/* page index */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(entry[idx] & PAGE_INVALID))
 		fprintf(stderr,
 			"WARNING: PTE for gpa=0x%"PRIx64" already set!\n", gpa);
@@ -99,11 +91,7 @@ vm_paddr_t addr_arch_gva2gpa(struct kvm_vm *vm, vm_vaddr_t gva)
 	int ri, idx;
 	uint64_t *entry;
 
-<<<<<<< HEAD
-	TEST_ASSERT(vm->page_size == 4096, "Unsupported page size: 0x%x",
-=======
 	TEST_ASSERT(vm->page_size == PAGE_SIZE, "Unsupported page size: 0x%x",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    vm->page_size);
 
 	entry = addr_gpa2hva(vm, vm->pgd);
@@ -115,11 +103,7 @@ vm_paddr_t addr_arch_gva2gpa(struct kvm_vm *vm, vm_vaddr_t gva)
 		entry = addr_gpa2hva(vm, entry[idx] & REGION_ENTRY_ORIGIN);
 	}
 
-<<<<<<< HEAD
-	idx = (gva >> 12) & 0x0ffu;		/* page index */
-=======
 	idx = (gva >> PAGE_SHIFT) & 0x0ffu;		/* page index */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	TEST_ASSERT(!(entry[idx] & PAGE_INVALID),
 		    "No page mapping for vm virtual address 0x%lx", gva);
@@ -184,11 +168,7 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, uint32_t vcpu_id)
 	struct kvm_sregs sregs;
 	struct kvm_vcpu *vcpu;
 
-<<<<<<< HEAD
-	TEST_ASSERT(vm->page_size == 4096, "Unsupported page size: 0x%x",
-=======
 	TEST_ASSERT(vm->page_size == PAGE_SIZE, "Unsupported page size: 0x%x",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    vm->page_size);
 
 	stack_vaddr = __vm_vaddr_alloc(vm, stack_size,

@@ -25,10 +25,7 @@ enum rtw_debug_mask {
 	RTW_DBG_HW_SCAN		= 0x00010000,
 	RTW_DBG_STATE		= 0x00020000,
 	RTW_DBG_SDIO		= 0x00040000,
-<<<<<<< HEAD
-=======
 	RTW_DBG_USB		= 0x00080000,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	RTW_DBG_UNEXP		= 0x80000000,
 	RTW_DBG_ALL		= 0xffffffff
@@ -37,19 +34,13 @@ enum rtw_debug_mask {
 #ifdef CONFIG_RTW88_DEBUGFS
 
 void rtw_debugfs_init(struct rtw_dev *rtwdev);
-<<<<<<< HEAD
-=======
 void rtw_debugfs_deinit(struct rtw_dev *rtwdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void rtw_debugfs_get_simple_phy_info(struct seq_file *m);
 
 #else
 
 static inline void rtw_debugfs_init(struct rtw_dev *rtwdev) {}
-<<<<<<< HEAD
-=======
 static inline void rtw_debugfs_deinit(struct rtw_dev *rtwdev) {}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* CONFIG_RTW88_DEBUGFS */
 

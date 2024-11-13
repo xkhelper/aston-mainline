@@ -116,8 +116,6 @@ void pud_init(void *addr)
 EXPORT_SYMBOL_GPL(pud_init);
 #endif
 
-<<<<<<< HEAD
-=======
 void kernel_pte_init(void *addr)
 {
 	unsigned long *p, *end;
@@ -138,7 +136,6 @@ void kernel_pte_init(void *addr)
 	} while (p != end);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 pmd_t mk_pmd(struct page *page, pgprot_t prot)
 {
 	pmd_t pmd;

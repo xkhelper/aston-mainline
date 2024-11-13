@@ -582,13 +582,9 @@ bool dcn32_set_output_transfer_func(struct dc *dc,
 		}
 	}
 
-<<<<<<< HEAD
-	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
-=======
 	if (mpc->funcs->set_output_gamma)
 		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -785,11 +781,7 @@ void dcn32_init_hw(struct dc *dc)
 	uint32_t backlight = MAX_BACKLIGHT_LEVEL;
 	uint32_t user_level = MAX_BACKLIGHT_LEVEL;
 
-<<<<<<< HEAD
-	if (dc->clk_mgr && dc->clk_mgr->funcs->init_clocks)
-=======
 	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->init_clocks)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dc->clk_mgr->funcs->init_clocks(dc->clk_mgr);
 
 	// Initialize the dccg
@@ -911,17 +903,10 @@ void dcn32_init_hw(struct dc *dc)
 				if (edp_link->link_enc->funcs->is_dig_enabled &&
 						edp_link->link_enc->funcs->is_dig_enabled(edp_link->link_enc) &&
 						dc->hwss.edp_backlight_control &&
-<<<<<<< HEAD
-						dc->hwss.power_down &&
-						dc->hwss.edp_power_control) {
-					dc->hwss.edp_backlight_control(edp_link, false);
-					dc->hwss.power_down(dc);
-=======
 						hws->funcs.power_down &&
 						dc->hwss.edp_power_control) {
 					dc->hwss.edp_backlight_control(edp_link, false);
 					hws->funcs.power_down(dc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					dc->hwss.edp_power_control(edp_link, false);
 				}
 			}
@@ -931,13 +916,8 @@ void dcn32_init_hw(struct dc *dc)
 
 				if (link->link_enc->funcs->is_dig_enabled &&
 						link->link_enc->funcs->is_dig_enabled(link->link_enc) &&
-<<<<<<< HEAD
-						dc->hwss.power_down) {
-					dc->hwss.power_down(dc);
-=======
 						hws->funcs.power_down) {
 					hws->funcs.power_down(dc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					break;
 				}
 
@@ -980,18 +960,11 @@ void dcn32_init_hw(struct dc *dc)
 	if (!dcb->funcs->is_accelerated_mode(dcb) && dc->res_pool->hubbub->funcs->init_watermarks)
 		dc->res_pool->hubbub->funcs->init_watermarks(dc->res_pool->hubbub);
 
-<<<<<<< HEAD
-	if (dc->clk_mgr->funcs->notify_wm_ranges)
-		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
-
-	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
-=======
 	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->notify_wm_ranges)
 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
 
 	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->set_hard_max_memclk &&
 	    !dc->clk_mgr->dc_mode_softmax_enabled)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
 
 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
@@ -1012,10 +985,6 @@ void dcn32_init_hw(struct dc *dc)
 		dc->caps.dmub_caps.gecc_enable = dc->ctx->dmub_srv->dmub->feature_caps.gecc_enable;
 		dc->caps.dmub_caps.mclk_sw = dc->ctx->dmub_srv->dmub->feature_caps.fw_assisted_mclk_switch_ver;
 
-<<<<<<< HEAD
-		if (dc->ctx->dmub_srv->dmub->fw_version <
-				DMUB_FW_VERSION(7, 0, 35)) {
-=======
 		/* for DCN401 testing only */
 		dc->caps.dmub_caps.fams_ver = dc->ctx->dmub_srv->dmub->feature_caps.fw_assisted_mclk_switch_ver;
 		if (dc->caps.dmub_caps.fams_ver == 2) {
@@ -1029,7 +998,6 @@ void dcn32_init_hw(struct dc *dc)
 				/* update bounding box if FAMS2 disabled */
 				dc->res_pool->funcs->update_bw_bounding_box(dc, dc->clk_mgr->bw_params);
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dc->debug.force_disable_subvp = true;
 			dc->debug.disable_fpo_optimizations = true;
 		}
@@ -1064,8 +1032,6 @@ void dcn32_update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
 		struct dsc_config dsc_cfg;
 		struct dsc_optc_config dsc_optc_cfg = {0};
 		enum optc_dsc_mode optc_dsc_mode;
-<<<<<<< HEAD
-=======
 		struct dcn_dsc_state dsc_state = {0};
 
 		if (!dsc) {
@@ -1080,7 +1046,6 @@ void dcn32_update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
 				return;
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Enable DSC hw block */
 		dsc_cfg.pic_width = (stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right) / opp_cnt;
@@ -1092,40 +1057,20 @@ void dcn32_update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
 		ASSERT(dsc_cfg.dc_dsc_cfg.num_slices_h % opp_cnt == 0);
 		dsc_cfg.dc_dsc_cfg.num_slices_h /= opp_cnt;
 
-<<<<<<< HEAD
-		dsc->funcs->dsc_set_config(dsc, &dsc_cfg, &dsc_optc_cfg);
-		dsc->funcs->dsc_enable(dsc, pipe_ctx->stream_res.opp->inst);
-		if (should_use_dto_dscclk)
-			dccg->funcs->set_dto_dscclk(dccg, dsc->inst, true);
-=======
 		if (should_use_dto_dscclk)
 			dccg->funcs->set_dto_dscclk(dccg, dsc->inst);
 		dsc->funcs->dsc_set_config(dsc, &dsc_cfg, &dsc_optc_cfg);
 		dsc->funcs->dsc_enable(dsc, pipe_ctx->stream_res.opp->inst);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe) {
 			struct display_stream_compressor *odm_dsc = odm_pipe->stream_res.dsc;
 
 			ASSERT(odm_dsc);
-<<<<<<< HEAD
-			odm_dsc->funcs->dsc_set_config(odm_dsc, &dsc_cfg, &dsc_optc_cfg);
-			odm_dsc->funcs->dsc_enable(odm_dsc, odm_pipe->stream_res.opp->inst);
-			if (should_use_dto_dscclk)
-				dccg->funcs->set_dto_dscclk(dccg, odm_dsc->inst, true);
-		}
-		dsc_cfg.dc_dsc_cfg.num_slices_h *= opp_cnt;
-		dsc_cfg.pic_width *= opp_cnt;
-
-		optc_dsc_mode = dsc_optc_cfg.is_pixel_format_444 ? OPTC_DSC_ENABLED_444 : OPTC_DSC_ENABLED_NATIVE_SUBSAMPLED;
-
-=======
 			if (should_use_dto_dscclk)
 				dccg->funcs->set_dto_dscclk(dccg, odm_dsc->inst);
 			odm_dsc->funcs->dsc_set_config(odm_dsc, &dsc_cfg, &dsc_optc_cfg);
 			odm_dsc->funcs->dsc_enable(odm_dsc, odm_pipe->stream_res.opp->inst);
 		}
 		optc_dsc_mode = dsc_optc_cfg.is_pixel_format_444 ? OPTC_DSC_ENABLED_444 : OPTC_DSC_ENABLED_NATIVE_SUBSAMPLED;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Enable DSC in OPTC */
 		DC_LOG_DSC("Setting optc DSC config for tg instance %d:", pipe_ctx->stream_res.tg->inst);
 		pipe_ctx->stream_res.tg->funcs->set_dsc_config(pipe_ctx->stream_res.tg,
@@ -1139,19 +1084,9 @@ void dcn32_update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
 				OPTC_DSC_DISABLED, 0, 0);
 
 		/* only disconnect DSC block, DSC is disabled when OPP head pipe is reset */
-<<<<<<< HEAD
-		if (dccg->funcs->set_dto_dscclk)
-			dccg->funcs->set_dto_dscclk(dccg, pipe_ctx->stream_res.dsc->inst, false);
-		dsc->funcs->dsc_disable(pipe_ctx->stream_res.dsc);
-		for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe) {
-			ASSERT(odm_pipe->stream_res.dsc);
-			if (dccg->funcs->set_dto_dscclk)
-				dccg->funcs->set_dto_dscclk(dccg, odm_pipe->stream_res.dsc->inst, false);
-=======
 		dsc->funcs->dsc_disconnect(pipe_ctx->stream_res.dsc);
 		for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe) {
 			ASSERT(odm_pipe->stream_res.dsc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			odm_pipe->stream_res.dsc->funcs->dsc_disconnect(odm_pipe->stream_res.dsc);
 		}
 	}
@@ -1222,14 +1157,7 @@ void dcn32_update_odm(struct dc *dc, struct dc_state *context, struct pipe_ctx *
 		if (!pipe_ctx->next_odm_pipe && current_pipe_ctx->next_odm_pipe &&
 				current_pipe_ctx->next_odm_pipe->stream_res.dsc) {
 			struct display_stream_compressor *dsc = current_pipe_ctx->next_odm_pipe->stream_res.dsc;
-<<<<<<< HEAD
-			struct dccg *dccg = dc->res_pool->dccg;
 
-			if (dccg->funcs->set_dto_dscclk)
-				dccg->funcs->set_dto_dscclk(dccg, dsc->inst, false);
-=======
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/* disconnect DSC block from stream */
 			dsc->funcs->dsc_disconnect(dsc);
 		}
@@ -1301,20 +1229,11 @@ void dcn32_calculate_pix_rate_divider(
 	}
 }
 
-<<<<<<< HEAD
-void dcn32_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_state *context)
-=======
 void dcn32_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_state *context, unsigned int current_pipe_idx)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int i;
 	struct pipe_ctx *pipe = NULL;
 	bool otg_disabled[MAX_PIPES] = {false};
-<<<<<<< HEAD
-
-	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-		pipe = &dc->current_state->res_ctx.pipe_ctx[i];
-=======
 	struct dc_state *dc_state = NULL;
 
 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
@@ -1325,17 +1244,12 @@ void dcn32_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_
 			pipe = &dc->current_state->res_ctx.pipe_ctx[i];
 			dc_state = dc->current_state;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (!resource_is_pipe_type(pipe, OTG_MASTER))
 			continue;
 
 		if ((pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal))
-<<<<<<< HEAD
-			&& dc_state_get_pipe_subvp_type(dc->current_state, pipe) != SUBVP_PHANTOM) {
-=======
 			&& dc_state_get_pipe_subvp_type(dc_state, pipe) != SUBVP_PHANTOM) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pipe->stream_res.tg->funcs->disable_crtc(pipe->stream_res.tg);
 			reset_sync_context_for_pipe(dc, context, i);
 			otg_disabled[i] = true;
@@ -1345,14 +1259,10 @@ void dcn32_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_
 	hws->ctx->dc->res_pool->dccg->funcs->trigger_dio_fifo_resync(hws->ctx->dc->res_pool->dccg);
 
 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-<<<<<<< HEAD
-		pipe = &dc->current_state->res_ctx.pipe_ctx[i];
-=======
 		if (i <= current_pipe_idx)
 			pipe = &context->res_ctx.pipe_ctx[i];
 		else
 			pipe = &dc->current_state->res_ctx.pipe_ctx[i];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (otg_disabled[i]) {
 			int opp_inst[MAX_PIPES] = { pipe->stream_res.opp->inst };
@@ -1700,11 +1610,7 @@ void dcn32_enable_phantom_streams(struct dc *dc, struct dc_state *context)
 
 #ifdef CONFIG_DRM_AMD_DC_FP
 		if (hws->funcs.resync_fifo_dccg_dio)
-<<<<<<< HEAD
-			hws->funcs.resync_fifo_dccg_dio(hws, dc, context);
-=======
 			hws->funcs.resync_fifo_dccg_dio(hws, dc, context, i);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	}
 }
@@ -1838,8 +1744,6 @@ void dcn32_blank_phantom(struct dc *dc,
 		hws->funcs.wait_for_blank_complete(opp);
 }
 
-<<<<<<< HEAD
-=======
 /* phantom stream id's can change often, but can be identical between contexts.
 *  This function checks for the condition the streams are identical to avoid
 *  redundant pipe transitions.
@@ -1862,7 +1766,6 @@ static bool is_subvp_phantom_topology_transition_seamless(
 			cur_paired_stream->stream_id == new_paired_stream->stream_id;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool dcn32_is_pipe_topology_transition_seamless(struct dc *dc,
 		const struct dc_state *cur_ctx,
 		const struct dc_state *new_ctx)
@@ -1881,12 +1784,8 @@ bool dcn32_is_pipe_topology_transition_seamless(struct dc *dc,
 			continue;
 		else if (resource_is_pipe_type(cur_pipe, OTG_MASTER)) {
 			if (resource_is_pipe_type(new_pipe, OTG_MASTER))
-<<<<<<< HEAD
-				if (cur_pipe->stream->stream_id == new_pipe->stream->stream_id)
-=======
 				if (cur_pipe->stream->stream_id == new_pipe->stream->stream_id ||
 						is_subvp_phantom_topology_transition_seamless(cur_ctx, new_ctx, cur_pipe, new_pipe))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				/* OTG master with the same stream is seamless */
 					continue;
 		} else if (resource_is_pipe_type(cur_pipe, OPP_HEAD)) {
@@ -1972,8 +1871,6 @@ void dcn32_interdependent_update_lock(struct dc *dc,
 			dc->hwss.pipe_control_lock(dc, pipe, false);
 	}
 }
-<<<<<<< HEAD
-=======
 
 void dcn32_program_outstanding_updates(struct dc *dc,
 		struct dc_state *context)
@@ -1984,4 +1881,3 @@ void dcn32_program_outstanding_updates(struct dc *dc,
 	if (hubbub->funcs->program_compbuf_size)
 		hubbub->funcs->program_compbuf_size(hubbub, context->bw_ctx.bw.dcn.compbuf_size_kb, true);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -14,15 +14,9 @@ config SPARC
 	bool
 	default y
 	select ARCH_HAS_CPU_CACHE_ALIASING
-<<<<<<< HEAD
-	select ARCH_MIGHT_HAVE_PC_PARPORT if SPARC64 && PCI
-	select ARCH_MIGHT_HAVE_PC_SERIO
-	select DMA_OPS
-=======
 	select ARCH_HAS_DMA_OPS
 	select ARCH_MIGHT_HAVE_PC_PARPORT if SPARC64 && PCI
 	select ARCH_MIGHT_HAVE_PC_SERIO
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select OF
 	select OF_PROMTREE
 	select HAVE_ASM_MODVERSIONS

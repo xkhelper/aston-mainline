@@ -8,12 +8,7 @@ config HAS_DMA
 	depends on !NO_DMA
 	default y
 
-<<<<<<< HEAD
-config DMA_OPS
-	depends on HAS_DMA
-=======
 config DMA_OPS_HELPERS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool
 
 #
@@ -113,13 +108,8 @@ config DMA_BOUNCE_UNALIGNED_KMALLOC
 
 config DMA_NEED_SYNC
 	def_bool ARCH_HAS_SYNC_DMA_FOR_DEVICE || ARCH_HAS_SYNC_DMA_FOR_CPU || \
-<<<<<<< HEAD
-		 ARCH_HAS_SYNC_DMA_FOR_CPU_ALL || DMA_API_DEBUG || DMA_OPS || \
-		 SWIOTLB
-=======
 		 ARCH_HAS_SYNC_DMA_FOR_CPU_ALL || DMA_API_DEBUG || \
 		 ARCH_HAS_DMA_OPS || SWIOTLB
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 config DMA_RESTRICTED_POOL
 	bool "DMA Restricted Pool"

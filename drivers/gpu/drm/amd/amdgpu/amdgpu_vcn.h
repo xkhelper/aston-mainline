@@ -330,12 +330,9 @@ struct amdgpu_vcn {
 	uint16_t inst_mask;
 	uint8_t	num_inst_per_aid;
 	bool using_unified_queue;
-<<<<<<< HEAD
-=======
 
 	/* IP reg dump */
 	uint32_t		*ip_dump;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct amdgpu_fw_shared_rb_ptrs_struct {

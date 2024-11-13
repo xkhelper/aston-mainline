@@ -24,11 +24,8 @@ helpme()
 	[-t <basic: Basic cpufreq testing
 	     suspend: suspend/resume,
 	     hibernate: hibernate/resume,
-<<<<<<< HEAD
-=======
 	     suspend_rtc: suspend/resume back using the RTC wakeup alarm,
 	     hibernate_rtc: hibernate/resume back using the RTC wakeup alarm,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     modtest: test driver or governor modules. Only to be used with -d or -g options,
 	     sptest1: Simple governor switch to produce lockdep.
 	     sptest2: Concurrent governor switch to produce lockdep.
@@ -81,12 +78,8 @@ parse_arguments()
 				helpme
 				;;
 
-<<<<<<< HEAD
-			t) # --func_type (Function to perform: basic, suspend, hibernate, modtest, sptest1/2/3/4 (default: basic))
-=======
 			t) # --func_type (Function to perform: basic, suspend, hibernate,
 			   # suspend_rtc, hibernate_rtc, modtest, sptest1/2/3/4 (default: basic))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				FUNC=$OPTARG
 				;;
 
@@ -131,8 +124,6 @@ do_test()
 		do_suspend "hibernate" 1
 		;;
 
-<<<<<<< HEAD
-=======
 		"suspend_rtc")
                 do_suspend "suspend" 1 rtc
                 ;;
@@ -141,7 +132,6 @@ do_test()
                 do_suspend "hibernate" 1 rtc
                 ;;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"modtest")
 		# Do we have modules in place?
 		if [ -z $DRIVER_MOD ] && [ -z $GOVERNOR_MOD ]; then

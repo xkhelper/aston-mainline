@@ -23,11 +23,7 @@
 
 &i2c3 {
 	lm75: temperature-sensor@49 {
-<<<<<<< HEAD
-		compatible = "national,lm75";
-=======
 		compatible = "national,lm75a";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		reg = <0x49>;
 		vs-supply = <&reg_mba6_3p3v>;
 	};
@@ -54,15 +50,3 @@
 		reg = <0x68>;
 	};
 };
-<<<<<<< HEAD
-
-&iomuxc {
-	pinctrl_i2c1: i2c1grp {
-		fsl,pins = <
-			MX6QDL_PAD_CSI0_DAT8__I2C1_SDA 0x4001b899
-			MX6QDL_PAD_CSI0_DAT9__I2C1_SCL 0x4001b899
-		>;
-	};
-};
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

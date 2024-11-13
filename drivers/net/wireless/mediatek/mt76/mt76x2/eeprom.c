@@ -5,11 +5,7 @@
 
 #include <linux/module.h>
 #include <linux/of.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "mt76x2.h"
 #include "eeprom.h"
 

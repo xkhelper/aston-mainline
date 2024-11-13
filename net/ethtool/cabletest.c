@@ -13,11 +13,7 @@
 
 const struct nla_policy ethnl_cable_test_act_policy[] = {
 	[ETHTOOL_A_CABLE_TEST_HEADER]		=
-<<<<<<< HEAD
-		NLA_POLICY_NESTED(ethnl_header_policy),
-=======
 		NLA_POLICY_NESTED(ethnl_header_policy_phy),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int ethnl_cable_test_started(struct phy_device *phydev, u8 cmd)
@@ -62,10 +58,7 @@ int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info)
 	struct ethnl_req_info req_info = {};
 	const struct ethtool_phy_ops *ops;
 	struct nlattr **tb = info->attrs;
-<<<<<<< HEAD
-=======
 	struct phy_device *phydev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct net_device *dev;
 	int ret;
 
@@ -77,14 +70,6 @@ int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info)
 		return ret;
 
 	dev = req_info.dev;
-<<<<<<< HEAD
-	if (!dev->phydev) {
-		ret = -EOPNOTSUPP;
-		goto out_dev_put;
-	}
-
-	rtnl_lock();
-=======
 
 	rtnl_lock();
 	phydev = ethnl_req_get_phydev(&req_info,
@@ -95,7 +80,6 @@ int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info)
 		goto out_rtnl;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ops = ethtool_phy_ops;
 	if (!ops || !ops->start_cable_test) {
 		ret = -EOPNOTSUPP;
@@ -106,28 +90,15 @@ int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info)
 	if (ret < 0)
 		goto out_rtnl;
 
-<<<<<<< HEAD
-	ret = ops->start_cable_test(dev->phydev, info->extack);
-=======
 	ret = ops->start_cable_test(phydev, info->extack);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ethnl_ops_complete(dev);
 
 	if (!ret)
-<<<<<<< HEAD
-		ethnl_cable_test_started(dev->phydev,
-					 ETHTOOL_MSG_CABLE_TEST_NTF);
-
-out_rtnl:
-	rtnl_unlock();
-out_dev_put:
-=======
 		ethnl_cable_test_started(phydev, ETHTOOL_MSG_CABLE_TEST_NTF);
 
 out_rtnl:
 	rtnl_unlock();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ethnl_parse_header_dev_put(&req_info);
 	return ret;
 }
@@ -192,12 +163,8 @@ void ethnl_cable_test_finished(struct phy_device *phydev)
 }
 EXPORT_SYMBOL_GPL(ethnl_cable_test_finished);
 
-<<<<<<< HEAD
-int ethnl_cable_test_result(struct phy_device *phydev, u8 pair, u8 result)
-=======
 int ethnl_cable_test_result_with_src(struct phy_device *phydev, u8 pair,
 				     u8 result, u32 src)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct nlattr *nest;
 	int ret = -EMSGSIZE;
@@ -210,13 +177,10 @@ int ethnl_cable_test_result_with_src(struct phy_device *phydev, u8 pair,
 		goto err;
 	if (nla_put_u8(phydev->skb, ETHTOOL_A_CABLE_RESULT_CODE, result))
 		goto err;
-<<<<<<< HEAD
-=======
 	if (src != ETHTOOL_A_CABLE_INF_SRC_UNSPEC) {
 		if (nla_put_u32(phydev->skb, ETHTOOL_A_CABLE_RESULT_SRC, src))
 			goto err;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	nla_nest_end(phydev->skb, nest);
 	return 0;
@@ -225,16 +189,10 @@ err:
 	nla_nest_cancel(phydev->skb, nest);
 	return ret;
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(ethnl_cable_test_result);
-
-int ethnl_cable_test_fault_length(struct phy_device *phydev, u8 pair, u32 cm)
-=======
 EXPORT_SYMBOL_GPL(ethnl_cable_test_result_with_src);
 
 int ethnl_cable_test_fault_length_with_src(struct phy_device *phydev, u8 pair,
 					   u32 cm, u32 src)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct nlattr *nest;
 	int ret = -EMSGSIZE;
@@ -248,14 +206,11 @@ int ethnl_cable_test_fault_length_with_src(struct phy_device *phydev, u8 pair,
 		goto err;
 	if (nla_put_u32(phydev->skb, ETHTOOL_A_CABLE_FAULT_LENGTH_CM, cm))
 		goto err;
-<<<<<<< HEAD
-=======
 	if (src != ETHTOOL_A_CABLE_INF_SRC_UNSPEC) {
 		if (nla_put_u32(phydev->skb, ETHTOOL_A_CABLE_FAULT_LENGTH_SRC,
 				src))
 			goto err;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	nla_nest_end(phydev->skb, nest);
 	return 0;
@@ -264,11 +219,7 @@ err:
 	nla_nest_cancel(phydev->skb, nest);
 	return ret;
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(ethnl_cable_test_fault_length);
-=======
 EXPORT_SYMBOL_GPL(ethnl_cable_test_fault_length_with_src);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct nla_policy cable_test_tdr_act_cfg_policy[] = {
 	[ETHTOOL_A_CABLE_TEST_TDR_CFG_FIRST]	= { .type = NLA_U32 },
@@ -279,11 +230,7 @@ static const struct nla_policy cable_test_tdr_act_cfg_policy[] = {
 
 const struct nla_policy ethnl_cable_test_tdr_act_policy[] = {
 	[ETHTOOL_A_CABLE_TEST_TDR_HEADER]	=
-<<<<<<< HEAD
-		NLA_POLICY_NESTED(ethnl_header_policy),
-=======
 		NLA_POLICY_NESTED(ethnl_header_policy_phy),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[ETHTOOL_A_CABLE_TEST_TDR_CFG]		= { .type = NLA_NESTED },
 };
 
@@ -372,10 +319,7 @@ int ethnl_act_cable_test_tdr(struct sk_buff *skb, struct genl_info *info)
 	struct ethnl_req_info req_info = {};
 	const struct ethtool_phy_ops *ops;
 	struct nlattr **tb = info->attrs;
-<<<<<<< HEAD
-=======
 	struct phy_device *phydev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct phy_tdr_config cfg;
 	struct net_device *dev;
 	int ret;
@@ -388,13 +332,6 @@ int ethnl_act_cable_test_tdr(struct sk_buff *skb, struct genl_info *info)
 		return ret;
 
 	dev = req_info.dev;
-<<<<<<< HEAD
-	if (!dev->phydev) {
-		ret = -EOPNOTSUPP;
-		goto out_dev_put;
-	}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ethnl_act_cable_test_tdr_cfg(tb[ETHTOOL_A_CABLE_TEST_TDR_CFG],
 					   info, &cfg);
@@ -402,8 +339,6 @@ int ethnl_act_cable_test_tdr(struct sk_buff *skb, struct genl_info *info)
 		goto out_dev_put;
 
 	rtnl_lock();
-<<<<<<< HEAD
-=======
 	phydev = ethnl_req_get_phydev(&req_info,
 				      tb[ETHTOOL_A_CABLE_TEST_TDR_HEADER],
 				      info->extack);
@@ -412,7 +347,6 @@ int ethnl_act_cable_test_tdr(struct sk_buff *skb, struct genl_info *info)
 		goto out_rtnl;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ops = ethtool_phy_ops;
 	if (!ops || !ops->start_cable_test_tdr) {
 		ret = -EOPNOTSUPP;
@@ -423,20 +357,12 @@ int ethnl_act_cable_test_tdr(struct sk_buff *skb, struct genl_info *info)
 	if (ret < 0)
 		goto out_rtnl;
 
-<<<<<<< HEAD
-	ret = ops->start_cable_test_tdr(dev->phydev, info->extack, &cfg);
-=======
 	ret = ops->start_cable_test_tdr(phydev, info->extack, &cfg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ethnl_ops_complete(dev);
 
 	if (!ret)
-<<<<<<< HEAD
-		ethnl_cable_test_started(dev->phydev,
-=======
 		ethnl_cable_test_started(phydev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					 ETHTOOL_MSG_CABLE_TEST_TDR_NTF);
 
 out_rtnl:

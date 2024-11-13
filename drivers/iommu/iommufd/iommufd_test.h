@@ -4,13 +4,8 @@
 #ifndef _UAPI_IOMMUFD_TEST_H
 #define _UAPI_IOMMUFD_TEST_H
 
-<<<<<<< HEAD
-#include <linux/types.h>
-#include <linux/iommufd.h>
-=======
 #include <linux/iommufd.h>
 #include <linux/types.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum {
 	IOMMU_TEST_OP_ADD_RESERVED = 1,

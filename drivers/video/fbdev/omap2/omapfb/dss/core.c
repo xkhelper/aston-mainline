@@ -185,17 +185,10 @@ static void omap_dss_shutdown(struct platform_device *pdev)
 }
 
 static struct platform_driver omap_dss_driver = {
-<<<<<<< HEAD
-	.remove_new     = omap_dss_remove,
-	.shutdown	= omap_dss_shutdown,
-	.driver         = {
-		.name   = "omapdss",
-=======
 	.remove		= omap_dss_remove,
 	.shutdown	= omap_dss_shutdown,
 	.driver		= {
 		.name	= "omapdss",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 

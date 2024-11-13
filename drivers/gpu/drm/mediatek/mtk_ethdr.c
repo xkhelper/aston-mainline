@@ -3,10 +3,7 @@
  * Copyright (c) 2021 MediaTek Inc.
  */
 
-<<<<<<< HEAD
-=======
 #include <drm/drm_blend.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <drm/drm_fourcc.h>
 #include <drm/drm_framebuffer.h>
 #include <linux/clk.h>
@@ -39,10 +36,7 @@
 #define MIX_SRC_L0_EN				BIT(0)
 #define MIX_L_SRC_CON(n)		(0x28 + 0x18 * (n))
 #define NON_PREMULTI_SOURCE			(2 << 12)
-<<<<<<< HEAD
-=======
 #define PREMULTI_SOURCE				(3 << 12)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define MIX_L_SRC_SIZE(n)		(0x30 + 0x18 * (n))
 #define MIX_L_SRC_OFFSET(n)		(0x34 + 0x18 * (n))
 #define MIX_FUNC_DCM0			0x120
@@ -151,8 +145,6 @@ static irqreturn_t mtk_ethdr_irq_handler(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
-<<<<<<< HEAD
-=======
 u32 mtk_ethdr_get_blend_modes(struct device *dev)
 {
 	return BIT(DRM_MODE_BLEND_PREMULTI) |
@@ -160,7 +152,6 @@ u32 mtk_ethdr_get_blend_modes(struct device *dev)
 	       BIT(DRM_MODE_BLEND_PIXEL_NONE);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
 			    struct mtk_plane_state *state,
 			    struct cmdq_pkt *cmdq_pkt)
@@ -193,9 +184,6 @@ void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
 		alpha_con |= state->base.alpha & MIXER_ALPHA;
 	}
 
-<<<<<<< HEAD
-	if (state->base.fb && !state->base.fb->format->has_alpha) {
-=======
 	if (state->base.pixel_blend_mode == DRM_MODE_BLEND_PREMULTI)
 		alpha_con |= PREMULTI_SOURCE;
 	else
@@ -203,7 +191,6 @@ void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
 
 	if ((state->base.fb && !state->base.fb->format->has_alpha) ||
 	    state->base.pixel_blend_mode == DRM_MODE_BLEND_PIXEL_NONE) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Mixer doesn't support CONST_BLD mode,
 		 * use a trick to make the output equivalent
@@ -219,12 +206,7 @@ void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
 	mtk_ddp_write(cmdq_pkt, pending->height << 16 | align_width, &mixer->cmdq_base,
 		      mixer->regs, MIX_L_SRC_SIZE(idx));
 	mtk_ddp_write(cmdq_pkt, offset, &mixer->cmdq_base, mixer->regs, MIX_L_SRC_OFFSET(idx));
-<<<<<<< HEAD
-	mtk_ddp_write_mask(cmdq_pkt, alpha_con, &mixer->cmdq_base, mixer->regs, MIX_L_SRC_CON(idx),
-			   0x1ff);
-=======
 	mtk_ddp_write(cmdq_pkt, alpha_con, &mixer->cmdq_base, mixer->regs, MIX_L_SRC_CON(idx));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mtk_ddp_write_mask(cmdq_pkt, BIT(idx), &mixer->cmdq_base, mixer->regs, MIX_SRC_CON,
 			   BIT(idx));
 }

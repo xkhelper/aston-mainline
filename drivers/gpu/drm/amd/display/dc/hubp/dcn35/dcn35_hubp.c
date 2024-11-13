@@ -188,11 +188,7 @@ void hubp35_program_surface_config(
 	hubp35_program_pixel_format(hubp, format);
 }
 
-<<<<<<< HEAD
-struct hubp_funcs dcn35_hubp_funcs = {
-=======
 static struct hubp_funcs dcn35_hubp_funcs = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.hubp_enable_tripleBuffer = hubp2_enable_triplebuffer,
 	.hubp_is_triplebuffer_enabled = hubp2_is_triplebuffer_enabled,
 	.hubp_program_surface_flip_and_addr = hubp3_program_surface_flip_and_addr,

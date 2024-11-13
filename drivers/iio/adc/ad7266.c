@@ -123,12 +123,8 @@ static int ad7266_update_scan_mode(struct iio_dev *indio_dev,
 	const unsigned long *scan_mask)
 {
 	struct ad7266_state *st = iio_priv(indio_dev);
-<<<<<<< HEAD
-	unsigned int nr = find_first_bit(scan_mask, indio_dev->masklength);
-=======
 	unsigned int nr = find_first_bit(scan_mask,
 					 iio_get_masklength(indio_dev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ad7266_select_input(st, nr);
 
@@ -461,13 +457,8 @@ static int ad7266_probe(struct spi_device *spi)
 }
 
 static const struct spi_device_id ad7266_id[] = {
-<<<<<<< HEAD
-	{"ad7265", 0},
-	{"ad7266", 0},
-=======
 	{ "ad7265", 0 },
 	{ "ad7266", 0 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(spi, ad7266_id);

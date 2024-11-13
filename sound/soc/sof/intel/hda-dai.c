@@ -302,10 +302,7 @@ static int __maybe_unused hda_dai_trigger(struct snd_pcm_substream *substream, i
 	}
 
 	switch (cmd) {
-<<<<<<< HEAD
-=======
 	case SNDRV_PCM_TRIGGER_STOP:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case SNDRV_PCM_TRIGGER_SUSPEND:
 		ret = hda_link_dma_cleanup(substream, hext_stream, dai);
 		if (ret < 0) {
@@ -374,8 +371,6 @@ static int non_hda_dai_hw_params_data(struct snd_pcm_substream *substream,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
 	sdev = widget_to_sdev(w);
 	hext_stream = ops->get_hext_stream(sdev, cpu_dai, substream);
 
@@ -383,7 +378,6 @@ static int non_hda_dai_hw_params_data(struct snd_pcm_substream *substream,
 	if (hext_stream && hext_stream->link_prepared)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* use HDaudio stream handling */
 	ret = hda_dai_hw_params_data(substream, params, cpu_dai, data, flags);
 	if (ret < 0) {
@@ -391,10 +385,6 @@ static int non_hda_dai_hw_params_data(struct snd_pcm_substream *substream,
 		return ret;
 	}
 
-<<<<<<< HEAD
-	sdev = widget_to_sdev(w);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sdev->dspless_mode_selected)
 		return 0;
 
@@ -499,8 +489,6 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
 	int ret;
 	int i;
 
-<<<<<<< HEAD
-=======
 	ops = hda_dai_get_ops(substream, cpu_dai);
 	if (!ops) {
 		dev_err(cpu_dai->dev, "DAI widget ops not set\n");
@@ -526,7 +514,6 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
 		return ret;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data.dai_index = (link_id << 8) | cpu_dai->id;
 	data.dai_node_id = intel_alh_id;
 	ret = non_hda_dai_hw_params_data(substream, params, cpu_dai, &data, flags);
@@ -535,14 +522,7 @@ int sdw_hda_dai_hw_params(struct snd_pcm_substream *substream,
 		return ret;
 	}
 
-<<<<<<< HEAD
-	ops = hda_dai_get_ops(substream, cpu_dai);
-	sdev = widget_to_sdev(w);
 	hext_stream = ops->get_hext_stream(sdev, cpu_dai, substream);
-
-=======
-	hext_stream = ops->get_hext_stream(sdev, cpu_dai, substream);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!hext_stream)
 		return -ENODEV;
 

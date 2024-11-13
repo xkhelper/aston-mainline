@@ -1517,11 +1517,7 @@ static int check_extent_item(struct extent_buffer *leaf,
 				     dref_objectid > BTRFS_LAST_FREE_OBJECTID)) {
 				extent_err(leaf, slot,
 					   "invalid data ref objectid value %llu",
-<<<<<<< HEAD
-					   dref_root);
-=======
 					   dref_objectid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return -EUCLEAN;
 			}
 			if (unlikely(!IS_ALIGNED(dref_offset,

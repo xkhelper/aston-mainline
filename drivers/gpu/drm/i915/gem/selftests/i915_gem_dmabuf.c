@@ -506,11 +506,7 @@ static int igt_dmabuf_export_vmap(void *arg)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	if (memchr_inv(ptr, 0, dmabuf->size)) {
-=======
 	if (!mem_is_zero(ptr, dmabuf->size)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_err("Exported object not initialised to zero!\n");
 		err = -EINVAL;
 		goto out;

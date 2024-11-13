@@ -62,10 +62,7 @@
 #include "util/record.h"
 #include "util/util.h"
 #include "util/cgroup.h"
-<<<<<<< HEAD
-=======
 #include "util/annotate.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "perf.h"
 
 #include <linux/ctype.h>
@@ -142,10 +139,7 @@ enum perf_output_field {
 	PERF_OUTPUT_DSOFF           = 1ULL << 41,
 	PERF_OUTPUT_DISASM          = 1ULL << 42,
 	PERF_OUTPUT_BRSTACKDISASM   = 1ULL << 43,
-<<<<<<< HEAD
-=======
 	PERF_OUTPUT_BRCNTR          = 1ULL << 44,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct perf_script {
@@ -221,10 +215,7 @@ struct output_option {
 	{.str = "cgroup", .field = PERF_OUTPUT_CGROUP},
 	{.str = "retire_lat", .field = PERF_OUTPUT_RETIRE_LAT},
 	{.str = "brstackdisasm", .field = PERF_OUTPUT_BRSTACKDISASM},
-<<<<<<< HEAD
-=======
 	{.str = "brcntr", .field = PERF_OUTPUT_BRCNTR},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum {
@@ -532,15 +523,12 @@ static int evsel__check_attr(struct evsel *evsel, struct perf_session *session)
 		       "Hint: run 'perf record -b ...'\n");
 		return -EINVAL;
 	}
-<<<<<<< HEAD
-=======
 	if (PRINT_FIELD(BRCNTR) &&
 	    !(evlist__combined_branch_type(session->evlist) & PERF_SAMPLE_BRANCH_COUNTERS)) {
 		pr_err("Display of branch counter requested but it's not enabled\n"
 		       "Hint: run 'perf record -j any,counter ...'\n");
 		return -EINVAL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if ((PRINT_FIELD(PID) || PRINT_FIELD(TID)) &&
 	    evsel__check_stype(evsel, PERF_SAMPLE_TID, "TID", PERF_OUTPUT_TID|PERF_OUTPUT_PID))
 		return -EINVAL;
@@ -810,8 +798,6 @@ static int perf_sample__fprintf_start(struct perf_script *script,
 	int printed = 0;
 	char tstr[128];
 
-<<<<<<< HEAD
-=======
 	/*
 	 * Print the branch counter's abbreviation list,
 	 * if the branch counter is available.
@@ -825,7 +811,6 @@ static int perf_sample__fprintf_start(struct perf_script *script,
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (PRINT_FIELD(MACHINE_PID) && sample->machine_pid)
 		printed += fprintf(fp, "VM:%5d ", sample->machine_pid);
 
@@ -1232,13 +1217,9 @@ static int ip__fprintf_jump(uint64_t ip, struct branch_entry *en,
 			    struct perf_insn *x, u8 *inbuf, int len,
 			    int insn, FILE *fp, int *total_cycles,
 			    struct perf_event_attr *attr,
-<<<<<<< HEAD
-			    struct thread *thread)
-=======
 			    struct thread *thread,
 			    struct evsel *evsel,
 			    u64 br_cntr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ilen = 0;
 	int printed = fprintf(fp, "\t%016" PRIx64 "\t", ip);
@@ -1259,8 +1240,6 @@ static int ip__fprintf_jump(uint64_t ip, struct branch_entry *en,
 		addr_location__exit(&al);
 	}
 
-<<<<<<< HEAD
-=======
 	if (PRINT_FIELD(BRCNTR)) {
 		struct evsel *pos = evsel__leader(evsel);
 		unsigned int i = 0, j, num, mask, width;
@@ -1284,7 +1263,6 @@ static int ip__fprintf_jump(uint64_t ip, struct branch_entry *en,
 		printed += fprintf(fp, "\t");
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printed += fprintf(fp, "#%s%s%s%s",
 			      en->flags.predicted ? " PRED" : "",
 			      en->flags.mispred ? " MISPRED" : "",
@@ -1341,10 +1319,7 @@ out:
 }
 
 static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
-<<<<<<< HEAD
-=======
 					    struct evsel *evsel,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    struct thread *thread,
 					    struct perf_event_attr *attr,
 					    struct machine *machine, FILE *fp)
@@ -1358,10 +1333,7 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
 	unsigned off;
 	struct symbol *lastsym = NULL;
 	int total_cycles = 0;
-<<<<<<< HEAD
-=======
 	u64 br_cntr = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!(br && br->nr))
 		return 0;
@@ -1373,12 +1345,9 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
 	x.machine = machine;
 	x.cpu = sample->cpu;
 
-<<<<<<< HEAD
-=======
 	if (PRINT_FIELD(BRCNTR) && sample->branch_stack_cntr)
 		br_cntr = sample->branch_stack_cntr[nr - 1];
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printed += fprintf(fp, "%c", '\n');
 
 	/* Handle first from jump, of which we don't know the entry. */
@@ -1390,11 +1359,7 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
 					   x.cpumode, x.cpu, &lastsym, attr, fp);
 		printed += ip__fprintf_jump(entries[nr - 1].from, &entries[nr - 1],
 					    &x, buffer, len, 0, fp, &total_cycles,
-<<<<<<< HEAD
-					    attr, thread);
-=======
 					    attr, thread, evsel, br_cntr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (PRINT_FIELD(SRCCODE))
 			printed += print_srccode(thread, x.cpumode, entries[nr - 1].from);
 	}
@@ -1424,15 +1389,10 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
 
 			printed += ip__fprintf_sym(ip, thread, x.cpumode, x.cpu, &lastsym, attr, fp);
 			if (ip == end) {
-<<<<<<< HEAD
-				printed += ip__fprintf_jump(ip, &entries[i], &x, buffer + off, len - off, ++insn, fp,
-							    &total_cycles, attr, thread);
-=======
 				if (PRINT_FIELD(BRCNTR) && sample->branch_stack_cntr)
 					br_cntr = sample->branch_stack_cntr[i];
 				printed += ip__fprintf_jump(ip, &entries[i], &x, buffer + off, len - off, ++insn, fp,
 							    &total_cycles, attr, thread, evsel, br_cntr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (PRINT_FIELD(SRCCODE))
 					printed += print_srccode(thread, x.cpumode, ip);
 				break;
@@ -1469,11 +1429,7 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
 	 * Due to pipeline delays the LBRs might be missing a branch
 	 * or two, which can result in very large or negative blocks
 	 * between final branch and sample. When this happens just
-<<<<<<< HEAD
-	 * continue walking after the last TO until we hit a branch.
-=======
 	 * continue walking after the last TO.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	start = entries[0].to;
 	end = sample->ip;
@@ -1508,13 +1464,9 @@ static int perf_sample__fprintf_brstackinsn(struct perf_sample *sample,
 		printed += fprintf(fp, "\n");
 		if (ilen == 0)
 			break;
-<<<<<<< HEAD
-		if (arch_is_branch(buffer + off, len - off, x.is64bit) && start + off != sample->ip) {
-=======
 		if ((attr->branch_sample_type == 0 || attr->branch_sample_type & PERF_SAMPLE_BRANCH_ANY)
 				&& arch_is_uncond_branch(buffer + off, len - off, x.is64bit)
 				&& start + off != sample->ip) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*
 			 * Hit a missing branch. Just stop.
 			 */
@@ -1651,10 +1603,7 @@ void script_fetch_insn(struct perf_sample *sample, struct thread *thread,
 }
 
 static int perf_sample__fprintf_insn(struct perf_sample *sample,
-<<<<<<< HEAD
-=======
 				     struct evsel *evsel,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     struct perf_event_attr *attr,
 				     struct thread *thread,
 				     struct machine *machine, FILE *fp,
@@ -1675,11 +1624,7 @@ static int perf_sample__fprintf_insn(struct perf_sample *sample,
 		printed += sample__fprintf_insn_asm(sample, thread, machine, fp, al);
 	}
 	if (PRINT_FIELD(BRSTACKINSN) || PRINT_FIELD(BRSTACKINSNLEN) || PRINT_FIELD(BRSTACKDISASM))
-<<<<<<< HEAD
-		printed += perf_sample__fprintf_brstackinsn(sample, thread, attr, machine, fp);
-=======
 		printed += perf_sample__fprintf_brstackinsn(sample, evsel, thread, attr, machine, fp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return printed;
 }
@@ -1751,11 +1696,7 @@ static int perf_sample__fprintf_bts(struct perf_sample *sample,
 	if (print_srcline_last)
 		printed += map__fprintf_srcline(al->map, al->addr, "\n  ", fp);
 
-<<<<<<< HEAD
-	printed += perf_sample__fprintf_insn(sample, attr, thread, machine, fp, al);
-=======
 	printed += perf_sample__fprintf_insn(sample, evsel, attr, thread, machine, fp, al);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printed += fprintf(fp, "\n");
 	if (PRINT_FIELD(SRCCODE)) {
 		int ret = map__fprintf_srccode(al->map, al->addr, stdout,
@@ -2413,11 +2354,7 @@ static void process_event(struct perf_script *script,
 
 	if (evsel__is_bpf_output(evsel) && PRINT_FIELD(BPF_OUTPUT))
 		perf_sample__fprintf_bpf_output(sample, fp);
-<<<<<<< HEAD
-	perf_sample__fprintf_insn(sample, attr, thread, machine, fp, al);
-=======
 	perf_sample__fprintf_insn(sample, evsel, attr, thread, machine, fp, al);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (PRINT_FIELD(PHYS_ADDR))
 		fprintf(fp, "%16" PRIx64, sample->phys_addr);
@@ -2519,11 +2456,7 @@ static bool filter_cpu(struct perf_sample *sample)
 	return false;
 }
 
-<<<<<<< HEAD
-static int process_sample_event(struct perf_tool *tool,
-=======
 static int process_sample_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct evsel *evsel,
@@ -2610,11 +2543,7 @@ out_put:
 // Used when scr->per_event_dump is not set
 static struct evsel_script es_stdout;
 
-<<<<<<< HEAD
-static int process_attr(struct perf_tool *tool, union perf_event *event,
-=======
 static int process_attr(const struct perf_tool *tool, union perf_event *event,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct evlist **pevlist)
 {
 	struct perf_script *scr = container_of(tool, struct perf_script, tool);
@@ -2680,11 +2609,7 @@ static int process_attr(const struct perf_tool *tool, union perf_event *event,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int print_event_with_time(struct perf_tool *tool,
-=======
 static int print_event_with_time(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				 union perf_event *event,
 				 struct perf_sample *sample,
 				 struct machine *machine,
@@ -2720,22 +2645,14 @@ static int print_event_with_time(const struct perf_tool *tool,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int print_event(struct perf_tool *tool, union perf_event *event,
-=======
 static int print_event(const struct perf_tool *tool, union perf_event *event,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		       struct perf_sample *sample, struct machine *machine,
 		       pid_t pid, pid_t tid)
 {
 	return print_event_with_time(tool, event, sample, machine, pid, tid, 0);
 }
 
-<<<<<<< HEAD
-static int process_comm_event(struct perf_tool *tool,
-=======
 static int process_comm_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample,
 			      struct machine *machine)
@@ -2747,11 +2664,7 @@ static int process_comm_event(const struct perf_tool *tool,
 			   event->comm.tid);
 }
 
-<<<<<<< HEAD
-static int process_namespaces_event(struct perf_tool *tool,
-=======
 static int process_namespaces_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    union perf_event *event,
 				    struct perf_sample *sample,
 				    struct machine *machine)
@@ -2763,11 +2676,7 @@ static int process_namespaces_event(const struct perf_tool *tool,
 			   event->namespaces.tid);
 }
 
-<<<<<<< HEAD
-static int process_cgroup_event(struct perf_tool *tool,
-=======
 static int process_cgroup_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct machine *machine)
@@ -2779,11 +2688,7 @@ static int process_cgroup_event(const struct perf_tool *tool,
 			    sample->tid);
 }
 
-<<<<<<< HEAD
-static int process_fork_event(struct perf_tool *tool,
-=======
 static int process_fork_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample,
 			      struct machine *machine)
@@ -2795,11 +2700,7 @@ static int process_fork_event(const struct perf_tool *tool,
 				     event->fork.pid, event->fork.tid,
 				     event->fork.time);
 }
-<<<<<<< HEAD
-static int process_exit_event(struct perf_tool *tool,
-=======
 static int process_exit_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample,
 			      struct machine *machine)
@@ -2812,11 +2713,7 @@ static int process_exit_event(const struct perf_tool *tool,
 	return perf_event__process_exit(tool, event, sample, machine);
 }
 
-<<<<<<< HEAD
-static int process_mmap_event(struct perf_tool *tool,
-=======
 static int process_mmap_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample,
 			      struct machine *machine)
@@ -2828,11 +2725,7 @@ static int process_mmap_event(const struct perf_tool *tool,
 			   event->mmap.tid);
 }
 
-<<<<<<< HEAD
-static int process_mmap2_event(struct perf_tool *tool,
-=======
 static int process_mmap2_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      union perf_event *event,
 			      struct perf_sample *sample,
 			      struct machine *machine)
@@ -2844,11 +2737,7 @@ static int process_mmap2_event(const struct perf_tool *tool,
 			   event->mmap2.tid);
 }
 
-<<<<<<< HEAD
-static int process_switch_event(struct perf_tool *tool,
-=======
 static int process_switch_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct machine *machine)
@@ -2880,11 +2769,7 @@ static int process_auxtrace_error(struct perf_session *session,
 }
 
 static int
-<<<<<<< HEAD
-process_lost_event(struct perf_tool *tool,
-=======
 process_lost_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   union perf_event *event,
 		   struct perf_sample *sample,
 		   struct machine *machine)
@@ -2894,11 +2779,7 @@ process_lost_event(const struct perf_tool *tool,
 }
 
 static int
-<<<<<<< HEAD
-process_throttle_event(struct perf_tool *tool __maybe_unused,
-=======
 process_throttle_event(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		       union perf_event *event,
 		       struct perf_sample *sample,
 		       struct machine *machine)
@@ -2909,11 +2790,7 @@ process_throttle_event(const struct perf_tool *tool __maybe_unused,
 }
 
 static int
-<<<<<<< HEAD
-process_finished_round_event(struct perf_tool *tool __maybe_unused,
-=======
 process_finished_round_event(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     union perf_event *event,
 			     struct ordered_events *oe __maybe_unused)
 
@@ -2923,11 +2800,7 @@ process_finished_round_event(const struct perf_tool *tool __maybe_unused,
 }
 
 static int
-<<<<<<< HEAD
-process_bpf_events(struct perf_tool *tool __maybe_unused,
-=======
 process_bpf_events(const struct perf_tool *tool __maybe_unused,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   union perf_event *event,
 		   struct perf_sample *sample,
 		   struct machine *machine)
@@ -2939,11 +2812,7 @@ process_bpf_events(const struct perf_tool *tool __maybe_unused,
 			   sample->tid);
 }
 
-<<<<<<< HEAD
-static int process_text_poke_events(struct perf_tool *tool,
-=======
 static int process_text_poke_events(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    union perf_event *event,
 				    struct perf_sample *sample,
 				    struct machine *machine)
@@ -3945,11 +3814,7 @@ static
 int process_thread_map_event(struct perf_session *session,
 			     union perf_event *event)
 {
-<<<<<<< HEAD
-	struct perf_tool *tool = session->tool;
-=======
 	const struct perf_tool *tool = session->tool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_script *script = container_of(tool, struct perf_script, tool);
 
 	if (dump_trace)
@@ -3971,11 +3836,7 @@ static
 int process_cpu_map_event(struct perf_session *session,
 			  union perf_event *event)
 {
-<<<<<<< HEAD
-	struct perf_tool *tool = session->tool;
-=======
 	const struct perf_tool *tool = session->tool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_script *script = container_of(tool, struct perf_script, tool);
 
 	if (dump_trace)
@@ -4005,18 +3866,10 @@ static int process_feature_event(struct perf_session *session,
 static int perf_script__process_auxtrace_info(struct perf_session *session,
 					      union perf_event *event)
 {
-<<<<<<< HEAD
-	struct perf_tool *tool = session->tool;
-
-	int ret = perf_event__process_auxtrace_info(session, event);
-
-	if (ret == 0) {
-=======
 	int ret = perf_event__process_auxtrace_info(session, event);
 
 	if (ret == 0) {
 		const struct perf_tool *tool = session->tool;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct perf_script *script = container_of(tool, struct perf_script, tool);
 
 		ret = perf_script__setup_per_event_dump(script);
@@ -4103,42 +3956,7 @@ int cmd_script(int argc, const char **argv)
 	const char *dlfilter_file = NULL;
 	const char **__argv;
 	int i, j, err = 0;
-<<<<<<< HEAD
-	struct perf_script script = {
-		.tool = {
-			.sample		 = process_sample_event,
-			.mmap		 = perf_event__process_mmap,
-			.mmap2		 = perf_event__process_mmap2,
-			.comm		 = perf_event__process_comm,
-			.namespaces	 = perf_event__process_namespaces,
-			.cgroup		 = perf_event__process_cgroup,
-			.exit		 = perf_event__process_exit,
-			.fork		 = perf_event__process_fork,
-			.attr		 = process_attr,
-			.event_update   = perf_event__process_event_update,
-#ifdef HAVE_LIBTRACEEVENT
-			.tracing_data	 = perf_event__process_tracing_data,
-#endif
-			.feature	 = process_feature_event,
-			.build_id	 = perf_event__process_build_id,
-			.id_index	 = perf_event__process_id_index,
-			.auxtrace_info	 = perf_script__process_auxtrace_info,
-			.auxtrace	 = perf_event__process_auxtrace,
-			.auxtrace_error	 = perf_event__process_auxtrace_error,
-			.stat		 = perf_event__process_stat_event,
-			.stat_round	 = process_stat_round_event,
-			.stat_config	 = process_stat_config_event,
-			.thread_map	 = process_thread_map_event,
-			.cpu_map	 = process_cpu_map_event,
-			.throttle	 = process_throttle_event,
-			.unthrottle	 = process_throttle_event,
-			.ordered_events	 = true,
-			.ordering_requires_timestamps = true,
-		},
-	};
-=======
 	struct perf_script script = {};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct perf_data data = {
 		.mode = PERF_DATA_MODE_READ,
 	};
@@ -4186,12 +4004,8 @@ int cmd_script(int argc, const char **argv)
 		     "brstacksym,flags,data_src,weight,bpf-output,brstackinsn,"
 		     "brstackinsnlen,brstackdisasm,brstackoff,callindent,insn,disasm,insnlen,synth,"
 		     "phys_addr,metric,misc,srccode,ipc,tod,data_page_size,"
-<<<<<<< HEAD
-		     "code_page_size,ins_lat,machine_pid,vcpu,cgroup,retire_lat",
-=======
 		     "code_page_size,ins_lat,machine_pid,vcpu,cgroup,retire_lat,"
 		     "brcntr",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		     parse_output_fields),
 	OPT_BOOLEAN('a', "all-cpus", &system_wide,
 		    "system-wide collection from all CPUs"),
@@ -4264,11 +4078,8 @@ int cmd_script(int argc, const char **argv)
 			"Enable symbol demangling"),
 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
 			"Enable kernel symbol demangling"),
-<<<<<<< HEAD
-=======
 	OPT_STRING(0, "addr2line", &symbol_conf.addr2line_path, "path",
 			"addr2line binary to use for line numbers"),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	OPT_STRING(0, "time", &script.time_str, "str",
 		   "Time span of interest (start,stop)"),
 	OPT_BOOLEAN(0, "inline", &symbol_conf.inline_name,
@@ -4320,15 +4131,8 @@ int cmd_script(int argc, const char **argv)
 	data.path  = input_name;
 	data.force = symbol_conf.force;
 
-<<<<<<< HEAD
-	if (unsorted_dump) {
-		dump_trace = true;
-		script.tool.ordered_events = false;
-	}
-=======
 	if (unsorted_dump)
 		dump_trace = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (symbol__validate_sym_arguments())
 		return -1;
@@ -4519,8 +4323,6 @@ script_found:
 		use_browser = 0;
 	}
 
-<<<<<<< HEAD
-=======
 	perf_tool__init(&script.tool, !unsorted_dump);
 	script.tool.sample		 = process_sample_event;
 	script.tool.mmap		 = perf_event__process_mmap;
@@ -4549,7 +4351,6 @@ script_found:
 	script.tool.throttle		 = process_throttle_event;
 	script.tool.unthrottle		 = process_throttle_event;
 	script.tool.ordering_requires_timestamps = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	session = perf_session__new(&data, &script.tool);
 	if (IS_ERR(session))
 		return PTR_ERR(session);

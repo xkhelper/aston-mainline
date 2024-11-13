@@ -45,11 +45,7 @@ export TEST_IGNORE_MISSING_PMU=${TEST_IGNORE_MISSING_PMU:-n}
 export LC_ALL=C
 
 #### colors
-<<<<<<< HEAD
-if [ -t 1 -o "$TESTLOG_FORCE_COLOR" = "yes" ]; then
-=======
 if [ -t 1 ] || [ "$TESTLOG_FORCE_COLOR" = "yes" ]; then
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	export MPASS="\e[32m"
 	export MALLPASS="\e[1;32m"
 	export MFAIL="\e[31m"
@@ -69,8 +65,6 @@ else
 	export MEND=""
 fi
 
-<<<<<<< HEAD
-=======
 ### general info
 DIR_PATH=`dirname "$(readlink -e "$0")"`
 
@@ -96,16 +90,12 @@ else
 	export HEADER_TAR_DIR="./header_tar"
 fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #### test parametrization
 if [ ! -d ./common ]; then
 	# set parameters based on runmode
 	if [ -f ../common/parametrization.$PERFTOOL_TESTSUITE_RUNMODE.sh ]; then
-<<<<<<< HEAD
-=======
 		# shellcheck source=/dev/null
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		. ../common/parametrization.$PERFTOOL_TESTSUITE_RUNMODE.sh
 	fi
 	# if some parameters haven't been set until now, set them to default

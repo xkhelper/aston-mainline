@@ -7,10 +7,7 @@
 
 #include <linux/bitmap.h>
 #include <linux/bitops.h>
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/io.h>
@@ -272,13 +269,7 @@ static irqreturn_t at91_adc_trigger_handler(int irq, void *p)
 	struct iio_chan_spec const *chan;
 	int i, j = 0;
 
-<<<<<<< HEAD
-	for (i = 0; i < idev->masklength; i++) {
-		if (!test_bit(i, idev->active_scan_mask))
-			continue;
-=======
 	iio_for_each_active_channel(idev, i) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chan = idev->channels + i;
 		st->buffer[j] = at91_adc_readl(st, AT91_ADC_CHAN(st, chan->channel));
 		j++;
@@ -551,35 +542,18 @@ static int at91_adc_get_trigger_value_by_name(struct iio_dev *idev,
 	int i;
 
 	for (i = 0; i < st->caps->trigger_number; i++) {
-<<<<<<< HEAD
-		char *name = kasprintf(GFP_KERNEL,
-				"%s-dev%d-%s",
-				idev->name,
-				iio_device_id(idev),
-				triggers[i].name);
-=======
 		char *name __free(kfree) = kasprintf(GFP_KERNEL, "%s-dev%d-%s",
 						     idev->name,
 						     iio_device_id(idev),
 						     triggers[i].name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!name)
 			return -ENOMEM;
 
 		if (strcmp(trigger_name, name) == 0) {
-<<<<<<< HEAD
-			kfree(name);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (triggers[i].value == 0)
 				return -EINVAL;
 			return triggers[i].value;
 		}
-<<<<<<< HEAD
-
-		kfree(name);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return -EINVAL;
@@ -1361,11 +1335,7 @@ static const struct of_device_id at91_adc_dt_ids[] = {
 	{ .compatible = "atmel,at91sam9g45-adc", .data = &at91sam9g45_caps },
 	{ .compatible = "atmel,at91sam9x5-adc", .data = &at91sam9x5_caps },
 	{ .compatible = "atmel,sama5d3-adc", .data = &sama5d3_caps },
-<<<<<<< HEAD
-	{},
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, at91_adc_dt_ids);
 

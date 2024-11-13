@@ -197,11 +197,7 @@ static struct attribute *zpci_ident_attrs[] = {
 	NULL,
 };
 
-<<<<<<< HEAD
-static struct attribute_group zpci_ident_attr_group = {
-=======
 const struct attribute_group zpci_ident_attr_group = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.attrs = zpci_ident_attrs,
 	.is_visible = zpci_index_is_visible,
 };
@@ -227,11 +223,7 @@ static struct attribute *zpci_dev_attrs[] = {
 	NULL,
 };
 
-<<<<<<< HEAD
-static struct attribute_group zpci_attr_group = {
-=======
 const struct attribute_group zpci_attr_group = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.attrs = zpci_dev_attrs,
 	.bin_attrs = zpci_bin_attrs,
 };
@@ -243,22 +235,8 @@ static struct attribute *pfip_attrs[] = {
 	&dev_attr_segment3.attr,
 	NULL,
 };
-<<<<<<< HEAD
-static struct attribute_group pfip_attr_group = {
-	.name = "pfip",
-	.attrs = pfip_attrs,
-};
-
-const struct attribute_group *zpci_attr_groups[] = {
-	&zpci_attr_group,
-	&pfip_attr_group,
-	&zpci_ident_attr_group,
-	NULL,
-};
-=======
 
 const struct attribute_group pfip_attr_group = {
 	.name = "pfip",
 	.attrs = pfip_attrs,
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -634,8 +634,6 @@ int iwl_bios_get_dsm(struct iwl_fw_runtime *fwrt, enum iwl_dsm_funcs func,
 	GET_BIOS_TABLE(dsm, fwrt, func, value);
 }
 IWL_EXPORT_SYMBOL(iwl_bios_get_dsm);
-<<<<<<< HEAD
-=======
 
 bool iwl_puncturing_is_allowed_in_bios(u32 puncturing, u16 mcc)
 {
@@ -652,4 +650,3 @@ bool iwl_puncturing_is_allowed_in_bios(u32 puncturing, u16 mcc)
 	}
 }
 IWL_EXPORT_SYMBOL(iwl_puncturing_is_allowed_in_bios);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

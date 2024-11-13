@@ -27,12 +27,9 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
 	struct tpm_header *header = (void *)buf;
 	ssize_t ret, len;
 
-<<<<<<< HEAD
-=======
 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
 		tpm2_end_auth_session(chip);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = tpm2_prepare_space(chip, space, buf, bufsiz);
 	/* If the command is not implemented by the TPM, synthesize a
 	 * response with a TPM2_RC_COMMAND_CODE return for user-space.
@@ -53,11 +50,8 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
 
 	if (!ret)
 		ret = tpm2_commit_space(chip, space, buf, &len);
-<<<<<<< HEAD
-=======
 	else
 		tpm2_flush_space(chip);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 out_rc:
 	return ret ? ret : len;

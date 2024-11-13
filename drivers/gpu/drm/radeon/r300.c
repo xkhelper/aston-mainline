@@ -616,11 +616,7 @@ DEFINE_SHOW_ATTRIBUTE(rv370_debugfs_pcie_gart_info);
 static void rv370_debugfs_pcie_gart_info_init(struct radeon_device *rdev)
 {
 #if defined(CONFIG_DEBUG_FS)
-<<<<<<< HEAD
-	struct dentry *root = rdev->ddev->primary->debugfs_root;
-=======
 	struct dentry *root = rdev_to_drm(rdev)->primary->debugfs_root;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	debugfs_create_file("rv370_pcie_gart_info", 0444, root, rdev,
 			    &rv370_debugfs_pcie_gart_info_fops);
@@ -1456,11 +1452,7 @@ int r300_resume(struct radeon_device *rdev)
 			RREG32(R_0007C0_CP_STAT));
 	}
 	/* post */
-<<<<<<< HEAD
-	radeon_combios_asic_init(rdev->ddev);
-=======
 	radeon_combios_asic_init(rdev_to_drm(rdev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Resume clock after posting */
 	r300_clock_startup(rdev);
 	/* Initialize surface registers */
@@ -1546,11 +1538,7 @@ int r300_init(struct radeon_device *rdev)
 	/* Set asic errata */
 	r300_errata(rdev);
 	/* Initialize clocks */
-<<<<<<< HEAD
-	radeon_get_clock_info(rdev->ddev);
-=======
 	radeon_get_clock_info(rdev_to_drm(rdev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* initialize AGP */
 	if (rdev->flags & RADEON_IS_AGP) {
 		r = radeon_agp_init(rdev);

@@ -125,8 +125,6 @@ slowwait_for_counter()
 	slowwait "$timeout" until_counter_is ">= $((base + delta))" "$@"
 }
 
-<<<<<<< HEAD
-=======
 # Check for existence of tools which are built as part of selftests
 # but may also already exist in $PATH
 check_gen_prog()
@@ -142,7 +140,6 @@ check_gen_prog()
 	fi
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 remove_ns_list()
 {
 	local item=$1

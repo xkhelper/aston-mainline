@@ -3,14 +3,6 @@
 #define _ALPHA_CMPXCHG_H
 
 /*
-<<<<<<< HEAD
- * Atomic exchange routines.
- */
-
-#define ____xchg(type, args...)		__arch_xchg ## type ## _local(args)
-#define ____cmpxchg(type, args...)	__cmpxchg ## type ## _local(args)
-#include <asm/xchg.h>
-=======
  * Atomic exchange.
  * Since it can be used to implement critical sections
  * it must clobber "memory" (also for interrupts in UP).
@@ -232,16 +224,11 @@ ____cmpxchg(volatile void *ptr, unsigned long old, unsigned long new,
 		size == 8 ? ____cmpxchg_u64(ptr, old, new) :
 			(__cmpxchg_called_with_bad_pointer(), old);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define xchg_local(ptr, x)						\
 ({									\
 	__typeof__(*(ptr)) _x_ = (x);					\
-<<<<<<< HEAD
-	(__typeof__(*(ptr))) __arch_xchg_local((ptr), (unsigned long)_x_,\
-=======
 	(__typeof__(*(ptr))) ____xchg((ptr), (unsigned long)_x_,	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					       sizeof(*(ptr)));		\
 })
 
@@ -249,11 +236,7 @@ ____cmpxchg(volatile void *ptr, unsigned long old, unsigned long new,
 ({									\
 	__typeof__(*(ptr)) _o_ = (o);					\
 	__typeof__(*(ptr)) _n_ = (n);					\
-<<<<<<< HEAD
-	(__typeof__(*(ptr))) __cmpxchg_local((ptr), (unsigned long)_o_,	\
-=======
 	(__typeof__(*(ptr))) ____cmpxchg((ptr), (unsigned long)_o_,	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  (unsigned long)_n_,		\
 					  sizeof(*(ptr)));		\
 })
@@ -264,15 +247,6 @@ ____cmpxchg(volatile void *ptr, unsigned long old, unsigned long new,
 	cmpxchg_local((ptr), (o), (n));					\
 })
 
-<<<<<<< HEAD
-#undef ____xchg
-#undef ____cmpxchg
-#define ____xchg(type, args...)		__arch_xchg ##type(args)
-#define ____cmpxchg(type, args...)	__cmpxchg ##type(args)
-#include <asm/xchg.h>
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The leading and the trailing memory barriers guarantee that these
  * operations are fully ordered.
@@ -283,11 +257,7 @@ ____cmpxchg(volatile void *ptr, unsigned long old, unsigned long new,
 	__typeof__(*(ptr)) _x_ = (x);					\
 	smp_mb();							\
 	__ret = (__typeof__(*(ptr)))					\
-<<<<<<< HEAD
-		__arch_xchg((ptr), (unsigned long)_x_, sizeof(*(ptr)));	\
-=======
 		____xchg((ptr), (unsigned long)_x_, sizeof(*(ptr)));	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	smp_mb();							\
 	__ret;								\
 })
@@ -298,11 +268,7 @@ ____cmpxchg(volatile void *ptr, unsigned long old, unsigned long new,
 	__typeof__(*(ptr)) _o_ = (o);					\
 	__typeof__(*(ptr)) _n_ = (n);					\
 	smp_mb();							\
-<<<<<<< HEAD
-	__ret = (__typeof__(*(ptr))) __cmpxchg((ptr),			\
-=======
 	__ret = (__typeof__(*(ptr))) ____cmpxchg((ptr),			\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		(unsigned long)_o_, (unsigned long)_n_, sizeof(*(ptr)));\
 	smp_mb();							\
 	__ret;								\
@@ -314,9 +280,4 @@ ____cmpxchg(volatile void *ptr, unsigned long old, unsigned long new,
 	arch_cmpxchg((ptr), (o), (n));					\
 })
 
-<<<<<<< HEAD
-#undef ____cmpxchg
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _ALPHA_CMPXCHG_H */

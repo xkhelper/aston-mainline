@@ -42,24 +42,16 @@ static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
 		 * the temporary mappings we use during restore.
 		 */
 		__set_pte(dst_ptep, pte_mkwrite_novma(pte));
-<<<<<<< HEAD
-	} else if ((debug_pagealloc_enabled() ||
-		   is_kfence_address((void *)addr)) && !pte_none(pte)) {
-=======
 	} else if (!pte_none(pte)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * debug_pagealloc will removed the PTE_VALID bit if
 		 * the page isn't in use by the resume kernel. It may have
 		 * been in use by the original kernel, in which case we need
 		 * to put it back in our copy to do the restore.
 		 *
-<<<<<<< HEAD
-=======
 		 * Other cases include kfence / vmalloc / memfd_secret which
 		 * may call `set_direct_map_invalid_noflush()`.
 		 *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 * Before marking this entry valid, check the pfn should
 		 * be mapped.
 		 */

@@ -4302,8 +4302,6 @@ const struct efx_nic_type efx_hunt_a0_nic_type = {
 	.sensor_event = efx_mcdi_sensor_event,
 	.rx_recycle_ring_size = efx_ef10_recycle_ring_size,
 };
-<<<<<<< HEAD
-=======
 
 const struct efx_nic_type efx_x4_nic_type = {
 	.is_vf = false,
@@ -4431,4 +4429,3 @@ const struct efx_nic_type efx_x4_nic_type = {
 	.rx_recycle_ring_size = efx_ef10_recycle_ring_size,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -21,11 +21,8 @@
 #include <linux/of.h>
 #include <linux/util_macros.h>
 
-<<<<<<< HEAD
-=======
 #include <dt-bindings/pwm/pwm.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Indexes for the sysfs hooks */
 enum adt_sysfs_id {
 	INPUT		= 0,
@@ -1667,8 +1664,6 @@ static int adt7475_set_pwm_polarity(struct i2c_client *client)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 struct adt7475_pwm_config {
 	int index;
 	int freq;
@@ -1792,7 +1787,6 @@ static int adt7475_fan_pwm_config(struct i2c_client *client)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int adt7475_probe(struct i2c_client *client)
 {
 	enum chips chip;
@@ -1905,13 +1899,10 @@ static int adt7475_probe(struct i2c_client *client)
 	if (ret && ret != -EINVAL)
 		dev_warn(&client->dev, "Error configuring pwm polarity\n");
 
-<<<<<<< HEAD
-=======
 	ret = adt7475_fan_pwm_config(client);
 	if (ret)
 		dev_warn(&client->dev, "Error %d configuring fan/pwm\n", ret);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Start monitoring */
 	switch (chip) {
 	case adt7475:

@@ -136,13 +136,8 @@ static int kvm_no_compat_open(struct inode *inode, struct file *file)
 #define KVM_COMPAT(c)	.compat_ioctl	= kvm_no_compat_ioctl,	\
 			.open		= kvm_no_compat_open
 #endif
-<<<<<<< HEAD
-static int hardware_enable_all(void);
-static void hardware_disable_all(void);
-=======
 static int kvm_enable_virtualization(void);
 static void kvm_disable_virtualization(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void kvm_io_bus_destroy(struct kvm_io_bus *bus);
 
@@ -1225,11 +1220,7 @@ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
 	if (r)
 		goto out_err_no_arch_destroy_vm;
 
-<<<<<<< HEAD
-	r = hardware_enable_all();
-=======
 	r = kvm_enable_virtualization();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r)
 		goto out_err_no_disable;
 
@@ -1272,11 +1263,7 @@ out_no_coalesced_mmio:
 		mmu_notifier_unregister(&kvm->mmu_notifier, current->mm);
 #endif
 out_err_no_mmu_notifier:
-<<<<<<< HEAD
-	hardware_disable_all();
-=======
 	kvm_disable_virtualization();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_err_no_disable:
 	kvm_arch_destroy_vm(kvm);
 out_err_no_arch_destroy_vm:
@@ -1373,11 +1360,7 @@ static void kvm_destroy_vm(struct kvm *kvm)
 #endif
 	kvm_arch_free_vm(kvm);
 	preempt_notifier_dec();
-<<<<<<< HEAD
-	hardware_disable_all();
-=======
 	kvm_disable_virtualization();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mmdrop(mm);
 }
 
@@ -2877,21 +2860,11 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
 			       unsigned long addr, bool write_fault,
 			       bool *writable, kvm_pfn_t *p_pfn)
 {
-<<<<<<< HEAD
-	kvm_pfn_t pfn;
-	pte_t *ptep;
-	pte_t pte;
-	spinlock_t *ptl;
-	int r;
-
-	r = follow_pte(vma, addr, &ptep, &ptl);
-=======
 	struct follow_pfnmap_args args = { .vma = vma, .address = addr };
 	kvm_pfn_t pfn;
 	int r;
 
 	r = follow_pfnmap_start(&args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		/*
 		 * get_user_pages fails for VM_IO and VM_PFNMAP vmas and does
@@ -2906,34 +2879,19 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
 		if (r)
 			return r;
 
-<<<<<<< HEAD
-		r = follow_pte(vma, addr, &ptep, &ptl);
-=======
 		r = follow_pfnmap_start(&args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (r)
 			return r;
 	}
 
-<<<<<<< HEAD
-	pte = ptep_get(ptep);
-
-	if (write_fault && !pte_write(pte)) {
-=======
 	if (write_fault && !args.writable) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pfn = KVM_PFN_ERR_RO_FAULT;
 		goto out;
 	}
 
 	if (writable)
-<<<<<<< HEAD
-		*writable = pte_write(pte);
-	pfn = pte_pfn(pte);
-=======
 		*writable = args.writable;
 	pfn = args.pfn;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Get a reference here because callers of *hva_to_pfn* and
@@ -2954,14 +2912,8 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
 	 */
 	if (!kvm_try_get_pfn(pfn))
 		r = -EFAULT;
-<<<<<<< HEAD
-
-out:
-	pte_unmap_unlock(ptep, ptl);
-=======
 out:
 	follow_pfnmap_end(&args);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*p_pfn = pfn;
 
 	return r;
@@ -3083,30 +3035,12 @@ kvm_pfn_t gfn_to_pfn_memslot_atomic(const struct kvm_memory_slot *slot, gfn_t gf
 }
 EXPORT_SYMBOL_GPL(gfn_to_pfn_memslot_atomic);
 
-<<<<<<< HEAD
-kvm_pfn_t kvm_vcpu_gfn_to_pfn_atomic(struct kvm_vcpu *vcpu, gfn_t gfn)
-{
-	return gfn_to_pfn_memslot_atomic(kvm_vcpu_gfn_to_memslot(vcpu, gfn), gfn);
-}
-EXPORT_SYMBOL_GPL(kvm_vcpu_gfn_to_pfn_atomic);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 kvm_pfn_t gfn_to_pfn(struct kvm *kvm, gfn_t gfn)
 {
 	return gfn_to_pfn_memslot(gfn_to_memslot(kvm, gfn), gfn);
 }
 EXPORT_SYMBOL_GPL(gfn_to_pfn);
 
-<<<<<<< HEAD
-kvm_pfn_t kvm_vcpu_gfn_to_pfn(struct kvm_vcpu *vcpu, gfn_t gfn)
-{
-	return gfn_to_pfn_memslot(kvm_vcpu_gfn_to_memslot(vcpu, gfn), gfn);
-}
-EXPORT_SYMBOL_GPL(kvm_vcpu_gfn_to_pfn);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int gfn_to_page_many_atomic(struct kvm_memory_slot *slot, gfn_t gfn,
 			    struct page **pages, int nr_pages)
 {
@@ -3324,12 +3258,9 @@ static int __kvm_read_guest_page(struct kvm_memory_slot *slot, gfn_t gfn,
 	int r;
 	unsigned long addr;
 
-<<<<<<< HEAD
-=======
 	if (WARN_ON_ONCE(offset + len > PAGE_SIZE))
 		return -EFAULT;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	addr = gfn_to_hva_memslot_prot(slot, gfn, NULL);
 	if (kvm_is_error_hva(addr))
 		return -EFAULT;
@@ -3403,12 +3334,9 @@ static int __kvm_read_guest_atomic(struct kvm_memory_slot *slot, gfn_t gfn,
 	int r;
 	unsigned long addr;
 
-<<<<<<< HEAD
-=======
 	if (WARN_ON_ONCE(offset + len > PAGE_SIZE))
 		return -EFAULT;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	addr = gfn_to_hva_memslot_prot(slot, gfn, NULL);
 	if (kvm_is_error_hva(addr))
 		return -EFAULT;
@@ -3439,12 +3367,9 @@ static int __kvm_write_guest_page(struct kvm *kvm,
 	int r;
 	unsigned long addr;
 
-<<<<<<< HEAD
-=======
 	if (WARN_ON_ONCE(offset + len > PAGE_SIZE))
 		return -EFAULT;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	addr = gfn_to_hva_memslot(memslot, gfn);
 	if (kvm_is_error_hva(addr))
 		return -EFAULT;
@@ -3648,11 +3573,7 @@ int kvm_clear_guest(struct kvm *kvm, gpa_t gpa, unsigned long len)
 	int ret;
 
 	while ((seg = next_segment(len, offset)) != 0) {
-<<<<<<< HEAD
-		ret = kvm_write_guest_page(kvm, gfn, zero_page, offset, len);
-=======
 		ret = kvm_write_guest_page(kvm, gfn, zero_page, offset, seg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			return ret;
 		offset = 0;
@@ -5642,20 +5563,6 @@ static struct miscdevice kvm_dev = {
 };
 
 #ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
-<<<<<<< HEAD
-__visible bool kvm_rebooting;
-EXPORT_SYMBOL_GPL(kvm_rebooting);
-
-static DEFINE_PER_CPU(bool, hardware_enabled);
-static int kvm_usage_count;
-
-static int __hardware_enable_nolock(void)
-{
-	if (__this_cpu_read(hardware_enabled))
-		return 0;
-
-	if (kvm_arch_hardware_enable()) {
-=======
 static bool enable_virt_at_load = true;
 module_param(enable_virt_at_load, bool, 0444);
 
@@ -5682,61 +5589,22 @@ static int kvm_enable_virtualization_cpu(void)
 		return 0;
 
 	if (kvm_arch_enable_virtualization_cpu()) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_info("kvm: enabling virtualization on CPU%d failed\n",
 			raw_smp_processor_id());
 		return -EIO;
 	}
 
-<<<<<<< HEAD
-	__this_cpu_write(hardware_enabled, true);
-	return 0;
-}
-
-static void hardware_enable_nolock(void *failed)
-{
-	if (__hardware_enable_nolock())
-		atomic_inc(failed);
-}
-
-static int kvm_online_cpu(unsigned int cpu)
-{
-	int ret = 0;
-
-=======
 	__this_cpu_write(virtualization_enabled, true);
 	return 0;
 }
 
 static int kvm_online_cpu(unsigned int cpu)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Abort the CPU online process if hardware virtualization cannot
 	 * be enabled. Otherwise running VMs would encounter unrecoverable
 	 * errors when scheduled to this CPU.
 	 */
-<<<<<<< HEAD
-	mutex_lock(&kvm_lock);
-	if (kvm_usage_count)
-		ret = __hardware_enable_nolock();
-	mutex_unlock(&kvm_lock);
-	return ret;
-}
-
-static void hardware_disable_nolock(void *junk)
-{
-	/*
-	 * Note, hardware_disable_all_nolock() tells all online CPUs to disable
-	 * hardware, not just CPUs that successfully enabled hardware!
-	 */
-	if (!__this_cpu_read(hardware_enabled))
-		return;
-
-	kvm_arch_hardware_disable();
-
-	__this_cpu_write(hardware_enabled, false);
-=======
 	return kvm_enable_virtualization_cpu();
 }
 
@@ -5748,90 +5616,14 @@ static void kvm_disable_virtualization_cpu(void *ign)
 	kvm_arch_disable_virtualization_cpu();
 
 	__this_cpu_write(virtualization_enabled, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int kvm_offline_cpu(unsigned int cpu)
 {
-<<<<<<< HEAD
-	mutex_lock(&kvm_lock);
-	if (kvm_usage_count)
-		hardware_disable_nolock(NULL);
-	mutex_unlock(&kvm_lock);
-	return 0;
-}
-
-static void hardware_disable_all_nolock(void)
-{
-	BUG_ON(!kvm_usage_count);
-
-	kvm_usage_count--;
-	if (!kvm_usage_count)
-		on_each_cpu(hardware_disable_nolock, NULL, 1);
-}
-
-static void hardware_disable_all(void)
-{
-	cpus_read_lock();
-	mutex_lock(&kvm_lock);
-	hardware_disable_all_nolock();
-	mutex_unlock(&kvm_lock);
-	cpus_read_unlock();
-}
-
-static int hardware_enable_all(void)
-{
-	atomic_t failed = ATOMIC_INIT(0);
-	int r;
-
-	/*
-	 * Do not enable hardware virtualization if the system is going down.
-	 * If userspace initiated a forced reboot, e.g. reboot -f, then it's
-	 * possible for an in-flight KVM_CREATE_VM to trigger hardware enabling
-	 * after kvm_reboot() is called.  Note, this relies on system_state
-	 * being set _before_ kvm_reboot(), which is why KVM uses a syscore ops
-	 * hook instead of registering a dedicated reboot notifier (the latter
-	 * runs before system_state is updated).
-	 */
-	if (system_state == SYSTEM_HALT || system_state == SYSTEM_POWER_OFF ||
-	    system_state == SYSTEM_RESTART)
-		return -EBUSY;
-
-	/*
-	 * When onlining a CPU, cpu_online_mask is set before kvm_online_cpu()
-	 * is called, and so on_each_cpu() between them includes the CPU that
-	 * is being onlined.  As a result, hardware_enable_nolock() may get
-	 * invoked before kvm_online_cpu(), which also enables hardware if the
-	 * usage count is non-zero.  Disable CPU hotplug to avoid attempting to
-	 * enable hardware multiple times.
-	 */
-	cpus_read_lock();
-	mutex_lock(&kvm_lock);
-
-	r = 0;
-
-	kvm_usage_count++;
-	if (kvm_usage_count == 1) {
-		on_each_cpu(hardware_enable_nolock, &failed, 1);
-
-		if (atomic_read(&failed)) {
-			hardware_disable_all_nolock();
-			r = -EBUSY;
-		}
-	}
-
-	mutex_unlock(&kvm_lock);
-	cpus_read_unlock();
-
-	return r;
-}
-
-=======
 	kvm_disable_virtualization_cpu(NULL);
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void kvm_shutdown(void)
 {
 	/*
@@ -5847,30 +5639,13 @@ static void kvm_shutdown(void)
 	 */
 	pr_info("kvm: exiting hardware virtualization\n");
 	kvm_rebooting = true;
-<<<<<<< HEAD
-	on_each_cpu(hardware_disable_nolock, NULL, 1);
-=======
 	on_each_cpu(kvm_disable_virtualization_cpu, NULL, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int kvm_suspend(void)
 {
 	/*
 	 * Secondary CPUs and CPU hotplug are disabled across the suspend/resume
-<<<<<<< HEAD
-	 * callbacks, i.e. no need to acquire kvm_lock to ensure the usage count
-	 * is stable.  Assert that kvm_lock is not held to ensure the system
-	 * isn't suspended while KVM is enabling hardware.  Hardware enabling
-	 * can be preempted, but the task cannot be frozen until it has dropped
-	 * all locks (userspace tasks are frozen via a fake signal).
-	 */
-	lockdep_assert_not_held(&kvm_lock);
-	lockdep_assert_irqs_disabled();
-
-	if (kvm_usage_count)
-		hardware_disable_nolock(NULL);
-=======
 	 * callbacks, i.e. no need to acquire kvm_usage_lock to ensure the usage
 	 * count is stable.  Assert that kvm_usage_lock is not held to ensure
 	 * the system isn't suspended while KVM is enabling hardware.  Hardware
@@ -5881,24 +5656,15 @@ static int kvm_suspend(void)
 	lockdep_assert_irqs_disabled();
 
 	kvm_disable_virtualization_cpu(NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
 static void kvm_resume(void)
 {
-<<<<<<< HEAD
-	lockdep_assert_not_held(&kvm_lock);
-	lockdep_assert_irqs_disabled();
-
-	if (kvm_usage_count)
-		WARN_ON_ONCE(__hardware_enable_nolock());
-=======
 	lockdep_assert_not_held(&kvm_usage_lock);
 	lockdep_assert_irqs_disabled();
 
 	WARN_ON_ONCE(kvm_enable_virtualization_cpu());
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct syscore_ops kvm_syscore_ops = {
@@ -5906,10 +5672,6 @@ static struct syscore_ops kvm_syscore_ops = {
 	.resume = kvm_resume,
 	.shutdown = kvm_shutdown,
 };
-<<<<<<< HEAD
-#else /* CONFIG_KVM_GENERIC_HARDWARE_ENABLING */
-static int hardware_enable_all(void)
-=======
 
 static int kvm_enable_virtualization(void)
 {
@@ -5984,14 +5746,10 @@ static void kvm_uninit_virtualization(void)
 }
 #else /* CONFIG_KVM_GENERIC_HARDWARE_ENABLING */
 static int kvm_enable_virtualization(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return 0;
 }
 
-<<<<<<< HEAD
-static void hardware_disable_all(void)
-=======
 static int kvm_init_virtualization(void)
 {
 	return 0;
@@ -6003,7 +5761,6 @@ static void kvm_disable_virtualization(void)
 }
 
 static void kvm_uninit_virtualization(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 
 }
@@ -6436,10 +6193,6 @@ static const struct file_operations stat_fops_per_vm = {
 	.release = kvm_debugfs_release,
 	.read = simple_attr_read,
 	.write = simple_attr_write,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int vm_stat_get(void *_offset, u64 *val)
@@ -6622,11 +6375,7 @@ static void kvm_sched_out(struct preempt_notifier *pn,
 
 	WRITE_ONCE(vcpu->scheduled_out, true);
 
-<<<<<<< HEAD
-	if (current->on_rq && vcpu->wants_to_run) {
-=======
 	if (task_is_runnable(current) && vcpu->wants_to_run) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		WRITE_ONCE(vcpu->preempted, true);
 		WRITE_ONCE(vcpu->ready, true);
 	}
@@ -6712,18 +6461,6 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
 	int r;
 	int cpu;
 
-<<<<<<< HEAD
-#ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
-	r = cpuhp_setup_state_nocalls(CPUHP_AP_KVM_ONLINE, "kvm/cpu:online",
-				      kvm_online_cpu, kvm_offline_cpu);
-	if (r)
-		return r;
-
-	register_syscore_ops(&kvm_syscore_ops);
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* A kmem cache lets us meet the alignment requirements of fx_save. */
 	if (!vcpu_align)
 		vcpu_align = __alignof__(struct kvm_vcpu);
@@ -6734,15 +6471,8 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
 					   offsetofend(struct kvm_vcpu, stats_id)
 					   - offsetof(struct kvm_vcpu, arch),
 					   NULL);
-<<<<<<< HEAD
-	if (!kvm_vcpu_cache) {
-		r = -ENOMEM;
-		goto err_vcpu_cache;
-	}
-=======
 	if (!kvm_vcpu_cache)
 		return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for_each_possible_cpu(cpu) {
 		if (!alloc_cpumask_var_node(&per_cpu(cpu_kick_mask, cpu),
@@ -6776,13 +6506,10 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
 
 	kvm_gmem_init(module);
 
-<<<<<<< HEAD
-=======
 	r = kvm_init_virtualization();
 	if (r)
 		goto err_virt;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Registration _must_ be the very last thing done, as this exposes
 	 * /dev/kvm to userspace, i.e. all infrastructure must be setup!
@@ -6796,11 +6523,8 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
 	return 0;
 
 err_register:
-<<<<<<< HEAD
-=======
 	kvm_uninit_virtualization();
 err_virt:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvm_vfio_ops_exit();
 err_vfio:
 	kvm_async_pf_deinit();
@@ -6811,14 +6535,6 @@ err_cpu_kick_mask:
 	for_each_possible_cpu(cpu)
 		free_cpumask_var(per_cpu(cpu_kick_mask, cpu));
 	kmem_cache_destroy(kvm_vcpu_cache);
-<<<<<<< HEAD
-err_vcpu_cache:
-#ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
-	unregister_syscore_ops(&kvm_syscore_ops);
-	cpuhp_remove_state_nocalls(CPUHP_AP_KVM_ONLINE);
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return r;
 }
 EXPORT_SYMBOL_GPL(kvm_init);
@@ -6834,24 +6550,14 @@ void kvm_exit(void)
 	 */
 	misc_deregister(&kvm_dev);
 
-<<<<<<< HEAD
-=======
 	kvm_uninit_virtualization();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	debugfs_remove_recursive(kvm_debugfs_dir);
 	for_each_possible_cpu(cpu)
 		free_cpumask_var(per_cpu(cpu_kick_mask, cpu));
 	kmem_cache_destroy(kvm_vcpu_cache);
 	kvm_vfio_ops_exit();
 	kvm_async_pf_deinit();
-<<<<<<< HEAD
-#ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
-	unregister_syscore_ops(&kvm_syscore_ops);
-	cpuhp_remove_state_nocalls(CPUHP_AP_KVM_ONLINE);
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvm_irqfd_exit();
 }
 EXPORT_SYMBOL_GPL(kvm_exit);

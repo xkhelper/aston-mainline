@@ -2,10 +2,6 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dml2_mcg_factory.h"
 #include "dml2_mcg_dcn4.h"
 #include "dml2_external_lib_deps.h"

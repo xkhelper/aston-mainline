@@ -43,8 +43,6 @@ struct vgetrandom_state {
 	bool 			in_use;
 };
 
-<<<<<<< HEAD
-=======
 /**
  * __arch_chacha20_blocks_nostack - Generate ChaCha20 stream without using the stack.
  * @dst_bytes:	Destination buffer to hold @nblocks * 64 bytes of output.
@@ -73,5 +71,4 @@ extern void __arch_chacha20_blocks_nostack(u8 *dst_bytes, const u32 *key, u32 *c
  */
 extern ssize_t __vdso_getrandom(void *buffer, size_t len, unsigned int flags, void *opaque_state, size_t opaque_len);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _VDSO_GETRANDOM_H */

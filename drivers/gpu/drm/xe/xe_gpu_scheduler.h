@@ -22,10 +22,6 @@ void xe_sched_fini(struct xe_gpu_scheduler *sched);
 void xe_sched_submission_start(struct xe_gpu_scheduler *sched);
 void xe_sched_submission_stop(struct xe_gpu_scheduler *sched);
 
-<<<<<<< HEAD
-void xe_sched_add_msg(struct xe_gpu_scheduler *sched,
-		      struct xe_sched_msg *msg);
-=======
 void xe_sched_submission_resume_tdr(struct xe_gpu_scheduler *sched);
 
 void xe_sched_add_msg(struct xe_gpu_scheduler *sched,
@@ -42,7 +38,6 @@ static inline void xe_sched_msg_unlock(struct xe_gpu_scheduler *sched)
 {
 	spin_unlock(&sched->base.job_list_lock);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline void xe_sched_stop(struct xe_gpu_scheduler *sched)
 {
@@ -68,13 +63,9 @@ xe_sched_invalidate_job(struct xe_sched_job *job, int threshold)
 static inline void xe_sched_add_pending_job(struct xe_gpu_scheduler *sched,
 					    struct xe_sched_job *job)
 {
-<<<<<<< HEAD
-	list_add(&job->drm.list, &sched->base.pending_list);
-=======
 	spin_lock(&sched->base.job_list_lock);
 	list_add(&job->drm.list, &sched->base.pending_list);
 	spin_unlock(&sched->base.job_list_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline

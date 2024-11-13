@@ -10,10 +10,7 @@ struct rss_req_info {
 
 struct rss_reply_data {
 	struct ethnl_reply_data		base;
-<<<<<<< HEAD
-=======
 	bool				no_key_fields;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32				indir_size;
 	u32				hkey_size;
 	u32				hfunc;
@@ -31,10 +28,7 @@ struct rss_reply_data {
 const struct nla_policy ethnl_rss_get_policy[] = {
 	[ETHTOOL_A_RSS_HEADER] = NLA_POLICY_NESTED(ethnl_header_policy),
 	[ETHTOOL_A_RSS_CONTEXT] = { .type = NLA_U32 },
-<<<<<<< HEAD
-=======
 	[ETHTOOL_A_RSS_START_CONTEXT] = { .type = NLA_U32 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int
@@ -45,31 +39,18 @@ rss_parse_request(struct ethnl_req_info *req_info, struct nlattr **tb,
 
 	if (tb[ETHTOOL_A_RSS_CONTEXT])
 		request->rss_context = nla_get_u32(tb[ETHTOOL_A_RSS_CONTEXT]);
-<<<<<<< HEAD
-=======
 	if (tb[ETHTOOL_A_RSS_START_CONTEXT]) {
 		NL_SET_BAD_ATTR(extack, tb[ETHTOOL_A_RSS_START_CONTEXT]);
 		return -EINVAL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
 
 static int
-<<<<<<< HEAD
-rss_prepare_data(const struct ethnl_req_info *req_base,
-		 struct ethnl_reply_data *reply_base,
-		 const struct genl_info *info)
-{
-	struct rss_reply_data *data = RSS_REPDATA(reply_base);
-	struct rss_req_info *request = RSS_REQINFO(req_base);
-	struct net_device *dev = reply_base->dev;
-=======
 rss_prepare_get(const struct rss_req_info *request, struct net_device *dev,
 		struct rss_reply_data *data, const struct genl_info *info)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ethtool_rxfh_param rxfh = {};
 	const struct ethtool_ops *ops;
 	u32 total_size, indir_bytes;
@@ -77,15 +58,6 @@ rss_prepare_get(const struct rss_req_info *request, struct net_device *dev,
 	int ret;
 
 	ops = dev->ethtool_ops;
-<<<<<<< HEAD
-	if (!ops->get_rxfh)
-		return -EOPNOTSUPP;
-
-	/* Some drivers don't handle rss_context */
-	if (request->rss_context && !ops->cap_rss_ctx_supported)
-		return -EOPNOTSUPP;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ethnl_ops_begin(dev);
 	if (ret < 0)
@@ -115,10 +87,6 @@ rss_prepare_get(const struct rss_req_info *request, struct net_device *dev,
 	rxfh.indir = data->indir_table;
 	rxfh.key_size = data->hkey_size;
 	rxfh.key = data->hkey;
-<<<<<<< HEAD
-	rxfh.rss_context = request->rss_context;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ops->get_rxfh(dev, &rxfh);
 	if (ret)
@@ -132,8 +100,6 @@ out_ops:
 }
 
 static int
-<<<<<<< HEAD
-=======
 rss_prepare_ctx(const struct rss_req_info *request, struct net_device *dev,
 		struct rss_reply_data *data, const struct genl_info *info)
 {
@@ -195,7 +161,6 @@ rss_prepare_data(const struct ethnl_req_info *req_base,
 }
 
 static int
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 rss_reply_size(const struct ethnl_req_info *req_base,
 	       const struct ethnl_reply_data *reply_base)
 {
@@ -222,8 +187,6 @@ rss_fill_reply(struct sk_buff *skb, const struct ethnl_req_info *req_base,
 	    nla_put_u32(skb, ETHTOOL_A_RSS_CONTEXT, request->rss_context))
 		return -EMSGSIZE;
 
-<<<<<<< HEAD
-=======
 	if ((data->indir_size &&
 	     nla_put(skb, ETHTOOL_A_RSS_INDIR,
 		     sizeof(u32) * data->indir_size, data->indir_table)))
@@ -232,17 +195,10 @@ rss_fill_reply(struct sk_buff *skb, const struct ethnl_req_info *req_base,
 	if (data->no_key_fields)
 		return 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if ((data->hfunc &&
 	     nla_put_u32(skb, ETHTOOL_A_RSS_HFUNC, data->hfunc)) ||
 	    (data->input_xfrm &&
 	     nla_put_u32(skb, ETHTOOL_A_RSS_INPUT_XFRM, data->input_xfrm)) ||
-<<<<<<< HEAD
-	    (data->indir_size &&
-	     nla_put(skb, ETHTOOL_A_RSS_INDIR,
-		     sizeof(u32) * data->indir_size, data->indir_table)) ||
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    (data->hkey_size &&
 	     nla_put(skb, ETHTOOL_A_RSS_HKEY, data->hkey_size, data->hkey)))
 		return -EMSGSIZE;
@@ -257,8 +213,6 @@ static void rss_cleanup_data(struct ethnl_reply_data *reply_base)
 	kfree(data->indir_table);
 }
 
-<<<<<<< HEAD
-=======
 struct rss_nl_dump_ctx {
 	unsigned long		ifindex;
 	unsigned long		ctx_idx;
@@ -399,7 +353,6 @@ int ethnl_rss_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct ethnl_request_ops ethnl_rss_request_ops = {
 	.request_cmd		= ETHTOOL_MSG_RSS_GET,
 	.reply_cmd		= ETHTOOL_MSG_RSS_GET_REPLY,

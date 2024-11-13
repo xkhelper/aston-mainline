@@ -5,12 +5,6 @@
 #ifdef CONFIG_NUMA
 #include <linux/numa.h>
 
-<<<<<<< HEAD
-extern struct pglist_data *node_data[];
-#define NODE_DATA(nid)		(node_data[nid])
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int pfn_to_nid(unsigned long pfn)
 {
 	int nid;

@@ -1347,11 +1347,7 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		if (attr->max_dest_rd_atomic > dev->hw_attrs.max_hw_ird) {
 			ibdev_err(&iwdev->ibdev,
 				  "rd_atomic = %d, above max_hw_ird=%d\n",
-<<<<<<< HEAD
-				   attr->max_rd_atomic,
-=======
 				   attr->max_dest_rd_atomic,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   dev->hw_attrs.max_hw_ird);
 			return -EINVAL;
 		}
@@ -3089,11 +3085,7 @@ error:
 static struct ib_mr *irdma_reg_user_mr_dmabuf(struct ib_pd *pd, u64 start,
 					      u64 len, u64 virt,
 					      int fd, int access,
-<<<<<<< HEAD
-					      struct ib_udata *udata)
-=======
 					      struct uverbs_attr_bundle *attrs)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct irdma_device *iwdev = to_iwdev(pd->device);
 	struct ib_umem_dmabuf *umem_dmabuf;

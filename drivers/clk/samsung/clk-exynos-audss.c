@@ -292,11 +292,7 @@ static struct platform_driver exynos_audss_clk_driver = {
 		.pm = &exynos_audss_clk_pm_ops,
 	},
 	.probe = exynos_audss_clk_probe,
-<<<<<<< HEAD
-	.remove_new = exynos_audss_clk_remove,
-=======
 	.remove = exynos_audss_clk_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(exynos_audss_clk_driver);

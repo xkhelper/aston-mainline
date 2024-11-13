@@ -72,11 +72,7 @@ static umode_t vexpress_hwmon_attr_is_visible(struct kobject *kobj,
 				struct device_attribute, attr);
 
 	if (dev_attr->show == vexpress_hwmon_label_show &&
-<<<<<<< HEAD
-			!of_get_property(dev->of_node, "label", NULL))
-=======
 			!of_property_present(dev->of_node, "label"))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	return attr->mode;

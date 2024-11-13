@@ -28,10 +28,7 @@
 #include <asm/setup.h>
 #include <asm/set_memory.h>
 #include <asm/cpu.h>
-<<<<<<< HEAD
-=======
 #include <asm/efi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_ACPI
 /*
@@ -91,11 +88,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
 {
 #ifdef CONFIG_EFI
 	unsigned long mstart, mend;
-<<<<<<< HEAD
-=======
 	void *kaddr;
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!efi_enabled(EFI_BOOT))
 		return 0;
@@ -111,8 +105,6 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
 	if (!mstart)
 		return 0;
 
-<<<<<<< HEAD
-=======
 	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
 	if (ret)
 		return ret;
@@ -137,7 +129,6 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
 
 	memunmap(kaddr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
 #endif
 	return 0;

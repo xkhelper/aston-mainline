@@ -100,13 +100,8 @@ struct ksmbd_file {
 	struct list_head		blocked_works;
 	struct list_head		lock_list;
 
-<<<<<<< HEAD
-	int				durable_timeout;
-	int				durable_scavenger_timeout;
-=======
 	unsigned int			durable_timeout;
 	unsigned int			durable_scavenger_timeout;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* if ls is happening on directory, below is valid*/
 	struct ksmbd_readdir_data	readdir_data;

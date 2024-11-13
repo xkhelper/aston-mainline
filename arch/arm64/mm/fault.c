@@ -23,10 +23,7 @@
 #include <linux/sched/debug.h>
 #include <linux/highmem.h>
 #include <linux/perf_event.h>
-<<<<<<< HEAD
-=======
 #include <linux/pkeys.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/preempt.h>
 #include <linux/hugetlb.h>
 
@@ -490,8 +487,6 @@ static void do_bad_area(unsigned long far, unsigned long esr,
 	}
 }
 
-<<<<<<< HEAD
-=======
 static bool fault_from_pkey(unsigned long esr, struct vm_area_struct *vma,
 			unsigned int mm_flags)
 {
@@ -509,7 +504,6 @@ static bool fault_from_pkey(unsigned long esr, struct vm_area_struct *vma,
 			false);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool is_el0_instruction_abort(unsigned long esr)
 {
 	return ESR_ELx_EC(esr) == ESR_ELx_EC_IABT_LOW;
@@ -535,10 +529,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
 	unsigned long addr = untagged_addr(far);
 	struct vm_area_struct *vma;
 	int si_code;
-<<<<<<< HEAD
-=======
 	int pkey = -1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (kprobe_page_fault(regs, esr))
 		return 0;
@@ -603,8 +594,6 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
 		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
 		goto bad_area;
 	}
-<<<<<<< HEAD
-=======
 
 	if (fault_from_pkey(esr, vma, mm_flags)) {
 		pkey = vma_pkey(vma);
@@ -615,7 +604,6 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
 		goto bad_area;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fault = handle_mm_fault(vma, addr, mm_flags | FAULT_FLAG_VMA_LOCK, regs);
 	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
 		vma_end_read(vma);
@@ -651,9 +639,6 @@ retry:
 		goto bad_area;
 	}
 
-<<<<<<< HEAD
-	fault = handle_mm_fault(vma, addr, mm_flags, regs);
-=======
 	if (fault_from_pkey(esr, vma, mm_flags)) {
 		pkey = vma_pkey(vma);
 		mmap_read_unlock(mm);
@@ -664,7 +649,6 @@ retry:
 
 	fault = handle_mm_fault(vma, addr, mm_flags, regs);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Quick path to respond to signals */
 	if (fault_signal_pending(fault, regs)) {
 		if (!user_mode(regs))
@@ -723,10 +707,6 @@ bad_area:
 
 		arm64_force_sig_mceerr(BUS_MCEERR_AR, far, lsb, inf->name);
 	} else {
-<<<<<<< HEAD
-		/* Something tried to access memory that out of memory map */
-		arm64_force_sig_fault(SIGSEGV, si_code, far, inf->name);
-=======
 		/*
 		 * The pkey value that we return to userspace can be different
 		 * from the pkey that caused the fault.
@@ -744,7 +724,6 @@ bad_area:
 			arm64_force_sig_fault_pkey(far, inf->name, pkey);
 		else
 			arm64_force_sig_fault(SIGSEGV, si_code, far, inf->name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

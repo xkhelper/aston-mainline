@@ -167,10 +167,6 @@
 
 static irqreturn_t shpc_isr(int irq, void *dev_id);
 static void start_int_poll_timer(struct controller *ctrl, int sec);
-<<<<<<< HEAD
-static int hpc_check_cmd_status(struct controller *ctrl);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline u8 shpc_readb(struct controller *ctrl, int reg)
 {
@@ -320,11 +316,7 @@ static int shpc_write_cmd(struct slot *slot, u8 t_slot, u8 cmd)
 	if (retval)
 		goto out;
 
-<<<<<<< HEAD
-	cmd_status = hpc_check_cmd_status(slot->ctrl);
-=======
 	cmd_status = shpchp_check_cmd_status(slot->ctrl);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cmd_status) {
 		ctrl_err(ctrl, "Failed to issued command 0x%x (error code = %d)\n",
 			 cmd, cmd_status);
@@ -335,11 +327,7 @@ static int shpc_write_cmd(struct slot *slot, u8 t_slot, u8 cmd)
 	return retval;
 }
 
-<<<<<<< HEAD
-static int hpc_check_cmd_status(struct controller *ctrl)
-=======
 int shpchp_check_cmd_status(struct controller *ctrl)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval = 0;
 	u16 cmd_status = shpc_readw(ctrl, CMD_STATUS) & 0x000F;
@@ -368,11 +356,7 @@ int shpchp_check_cmd_status(struct controller *ctrl)
 }
 
 
-<<<<<<< HEAD
-static int hpc_get_attention_status(struct slot *slot, u8 *status)
-=======
 int shpchp_get_attention_status(struct slot *slot, u8 *status)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct controller *ctrl = slot->ctrl;
 	u32 slot_reg = shpc_readl(ctrl, SLOT_REG(slot->hp_slot));
@@ -396,11 +380,7 @@ int shpchp_get_attention_status(struct slot *slot, u8 *status)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int hpc_get_power_status(struct slot *slot, u8 *status)
-=======
 int shpchp_get_power_status(struct slot *slot, u8 *status)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct controller *ctrl = slot->ctrl;
 	u32 slot_reg = shpc_readl(ctrl, SLOT_REG(slot->hp_slot));
@@ -425,11 +405,7 @@ int shpchp_get_power_status(struct slot *slot, u8 *status)
 }
 
 
-<<<<<<< HEAD
-static int hpc_get_latch_status(struct slot *slot, u8 *status)
-=======
 int shpchp_get_latch_status(struct slot *slot, u8 *status)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct controller *ctrl = slot->ctrl;
 	u32 slot_reg = shpc_readl(ctrl, SLOT_REG(slot->hp_slot));
@@ -439,11 +415,7 @@ int shpchp_get_latch_status(struct slot *slot, u8 *status)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int hpc_get_adapter_status(struct slot *slot, u8 *status)
-=======
 int shpchp_get_adapter_status(struct slot *slot, u8 *status)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct controller *ctrl = slot->ctrl;
 	u32 slot_reg = shpc_readl(ctrl, SLOT_REG(slot->hp_slot));
@@ -454,11 +426,7 @@ int shpchp_get_adapter_status(struct slot *slot, u8 *status)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int hpc_get_prog_int(struct slot *slot, u8 *prog_int)
-=======
 int shpchp_get_prog_int(struct slot *slot, u8 *prog_int)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct controller *ctrl = slot->ctrl;
 
@@ -467,11 +435,7 @@ int shpchp_get_prog_int(struct slot *slot, u8 *prog_int)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int hpc_get_adapter_speed(struct slot *slot, enum pci_bus_speed *value)
-=======
 int shpchp_get_adapter_speed(struct slot *slot, enum pci_bus_speed *value)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval = 0;
 	struct controller *ctrl = slot->ctrl;
@@ -479,11 +443,7 @@ int shpchp_get_adapter_speed(struct slot *slot, enum pci_bus_speed *value)
 	u8 m66_cap  = !!(slot_reg & MHZ66_CAP);
 	u8 pi, pcix_cap;
 
-<<<<<<< HEAD
-	retval = hpc_get_prog_int(slot, &pi);
-=======
 	retval = shpchp_get_prog_int(slot, &pi);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (retval)
 		return retval;
 
@@ -528,11 +488,7 @@ int shpchp_get_adapter_speed(struct slot *slot, enum pci_bus_speed *value)
 	return retval;
 }
 
-<<<<<<< HEAD
-static int hpc_query_power_fault(struct slot *slot)
-=======
 int shpchp_query_power_fault(struct slot *slot)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct controller *ctrl = slot->ctrl;
 	u32 slot_reg = shpc_readl(ctrl, SLOT_REG(slot->hp_slot));
@@ -541,11 +497,7 @@ int shpchp_query_power_fault(struct slot *slot)
 	return !(slot_reg & POWER_FAULT);
 }
 
-<<<<<<< HEAD
-static int hpc_set_attention_status(struct slot *slot, u8 value)
-=======
 int shpchp_set_attention_status(struct slot *slot, u8 value)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u8 slot_cmd = 0;
 
@@ -567,38 +519,22 @@ int shpchp_set_attention_status(struct slot *slot, u8 value)
 }
 
 
-<<<<<<< HEAD
-static void hpc_set_green_led_on(struct slot *slot)
-=======
 void shpchp_green_led_on(struct slot *slot)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	shpc_write_cmd(slot, slot->hp_slot, SET_PWR_ON);
 }
 
-<<<<<<< HEAD
-static void hpc_set_green_led_off(struct slot *slot)
-=======
 void shpchp_green_led_off(struct slot *slot)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	shpc_write_cmd(slot, slot->hp_slot, SET_PWR_OFF);
 }
 
-<<<<<<< HEAD
-static void hpc_set_green_led_blink(struct slot *slot)
-=======
 void shpchp_green_led_blink(struct slot *slot)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	shpc_write_cmd(slot, slot->hp_slot, SET_PWR_BLINK);
 }
 
-<<<<<<< HEAD
-static void hpc_release_ctlr(struct controller *ctrl)
-=======
 void shpchp_release_ctlr(struct controller *ctrl)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 	u32 slot_reg, serr_int;
@@ -638,11 +574,7 @@ void shpchp_release_ctlr(struct controller *ctrl)
 	release_mem_region(ctrl->mmio_base, ctrl->mmio_size);
 }
 
-<<<<<<< HEAD
-static int hpc_power_on_slot(struct slot *slot)
-=======
 int shpchp_power_on_slot(struct slot *slot)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval;
 
@@ -653,11 +585,7 @@ int shpchp_power_on_slot(struct slot *slot)
 	return retval;
 }
 
-<<<<<<< HEAD
-static int hpc_slot_enable(struct slot *slot)
-=======
 int shpchp_slot_enable(struct slot *slot)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval;
 
@@ -670,11 +598,7 @@ int shpchp_slot_enable(struct slot *slot)
 	return retval;
 }
 
-<<<<<<< HEAD
-static int hpc_slot_disable(struct slot *slot)
-=======
 int shpchp_slot_disable(struct slot *slot)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval;
 
@@ -756,11 +680,7 @@ static int shpc_get_cur_bus_speed(struct controller *ctrl)
 }
 
 
-<<<<<<< HEAD
-static int hpc_set_bus_speed_mode(struct slot *slot, enum pci_bus_speed value)
-=======
 int shpchp_set_bus_speed_mode(struct slot *slot, enum pci_bus_speed value)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int retval;
 	struct controller *ctrl = slot->ctrl;
@@ -950,31 +870,6 @@ static int shpc_get_max_bus_speed(struct controller *ctrl)
 	return retval;
 }
 
-<<<<<<< HEAD
-static const struct hpc_ops shpchp_hpc_ops = {
-	.power_on_slot			= hpc_power_on_slot,
-	.slot_enable			= hpc_slot_enable,
-	.slot_disable			= hpc_slot_disable,
-	.set_bus_speed_mode		= hpc_set_bus_speed_mode,
-	.set_attention_status	= hpc_set_attention_status,
-	.get_power_status		= hpc_get_power_status,
-	.get_attention_status	= hpc_get_attention_status,
-	.get_latch_status		= hpc_get_latch_status,
-	.get_adapter_status		= hpc_get_adapter_status,
-
-	.get_adapter_speed		= hpc_get_adapter_speed,
-	.get_prog_int			= hpc_get_prog_int,
-
-	.query_power_fault		= hpc_query_power_fault,
-	.green_led_on			= hpc_set_green_led_on,
-	.green_led_off			= hpc_set_green_led_off,
-	.green_led_blink		= hpc_set_green_led_blink,
-
-	.release_ctlr			= hpc_release_ctlr,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int shpc_init(struct controller *ctrl, struct pci_dev *pdev)
 {
 	int rc = -1, num_slots = 0;
@@ -1060,11 +955,6 @@ int shpc_init(struct controller *ctrl, struct pci_dev *pdev)
 	/* Setup wait queue */
 	init_waitqueue_head(&ctrl->queue);
 
-<<<<<<< HEAD
-	ctrl->hpc_ops = &shpchp_hpc_ops;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Return PCI Controller Info */
 	slot_config = shpc_readl(ctrl, SLOT_CONFIG);
 	ctrl->slot_device_offset = (slot_config & FIRST_DEV_NUM) >> 8;

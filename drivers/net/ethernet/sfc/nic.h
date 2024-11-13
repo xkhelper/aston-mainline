@@ -211,9 +211,6 @@ int efx_ef10_tx_tso_desc(struct efx_tx_queue *tx_queue, struct sk_buff *skb,
 extern const struct efx_nic_type efx_hunt_a0_nic_type;
 extern const struct efx_nic_type efx_hunt_a0_vf_nic_type;
 
-<<<<<<< HEAD
-=======
 extern const struct efx_nic_type efx_x4_nic_type;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* EFX_NIC_H */

@@ -5,13 +5,6 @@
  */
 
 #include <linux/bitfield.h>
-<<<<<<< HEAD
-#include <linux/device.h>
-#include <linux/gpio/consumer.h>
-#include <linux/init.h>
-#include <linux/kernel.h>
-#include <linux/module.h>
-=======
 #include <linux/cleanup.h>
 #include <linux/device.h>
 #include <linux/gpio/consumer.h>
@@ -20,7 +13,6 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pm_runtime.h>
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
@@ -312,10 +304,6 @@
 #define WSA884X_PA_FSM_MSK1		(WSA884X_DIG_CTRL0_BASE + 0x3b)
 #define WSA884X_PA_FSM_BYP_CTL		(WSA884X_DIG_CTRL0_BASE + 0x3c)
 #define WSA884X_PA_FSM_BYP0		(WSA884X_DIG_CTRL0_BASE + 0x3d)
-<<<<<<< HEAD
-#define WSA884X_PA_FSM_BYP1		(WSA884X_DIG_CTRL0_BASE + 0x3e)
-#define WSA884X_TADC_VALUE_CTL		(WSA884X_DIG_CTRL0_BASE + 0x50)
-=======
 #define WSA884X_PA_FSM_BYP0_DC_CAL_EN_MASK		0x01
 #define WSA884X_PA_FSM_BYP0_DC_CAL_EN_SHIFT		0
 #define WSA884X_PA_FSM_BYP0_CLK_WD_EN_MASK		0x02
@@ -338,7 +326,6 @@
 #define WSA884X_TADC_VALUE_CTL_TEMP_VALUE_RD_EN_SHIFT	0
 #define WSA884X_TADC_VALUE_CTL_VBAT_VALUE_RD_EN_MASK	0x02
 #define WSA884X_TADC_VALUE_CTL_VBAT_VALUE_RD_EN_SHIFT	1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define WSA884X_TEMP_DETECT_CTL		(WSA884X_DIG_CTRL0_BASE + 0x51)
 #define WSA884X_TEMP_DIN_MSB		(WSA884X_DIG_CTRL0_BASE + 0x52)
 #define WSA884X_TEMP_DIN_LSB		(WSA884X_DIG_CTRL0_BASE + 0x53)
@@ -727,8 +714,6 @@
 		SNDRV_PCM_FMTBIT_S24_LE |\
 		SNDRV_PCM_FMTBIT_S24_3LE | SNDRV_PCM_FMTBIT_S32_LE)
 
-<<<<<<< HEAD
-=======
 /* Two-point trimming for temperature calibration */
 #define WSA884X_T1_TEMP			-10L
 #define WSA884X_T2_TEMP			150L
@@ -740,7 +725,6 @@
 #define WSA884X_LOW_TEMP_THRESHOLD	5
 #define WSA884X_HIGH_TEMP_THRESHOLD	45
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct wsa884x_priv {
 	struct regmap *regmap;
 	struct device *dev;
@@ -753,12 +737,6 @@ struct wsa884x_priv {
 	struct reset_control *sd_reset;
 	bool port_prepared[WSA884X_MAX_SWR_PORTS];
 	bool port_enable[WSA884X_MAX_SWR_PORTS];
-<<<<<<< HEAD
-	unsigned int variant;
-	int active_ports;
-	int dev_mode;
-	bool hw_init;
-=======
 	int active_ports;
 	int dev_mode;
 	bool hw_init;
@@ -769,7 +747,6 @@ struct wsa884x_priv {
 	struct mutex sp_lock;
 	unsigned int temperature;
 	bool pa_on;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 enum {
@@ -845,71 +822,47 @@ static const struct soc_enum wsa884x_dev_mode_enum =
 	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(wsa884x_dev_mode_text), wsa884x_dev_mode_text);
 
 static struct sdw_dpn_prop wsa884x_sink_dpn_prop[WSA884X_MAX_SWR_PORTS] = {
-<<<<<<< HEAD
-	{
-=======
 	[WSA884X_PORT_DAC] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.num = WSA884X_PORT_DAC + 1,
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
 		.simple_ch_prep_sm = true,
 		.read_only_wordlength = true,
-<<<<<<< HEAD
-	}, {
-=======
 	},
 	[WSA884X_PORT_COMP] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.num = WSA884X_PORT_COMP + 1,
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
 		.simple_ch_prep_sm = true,
 		.read_only_wordlength = true,
-<<<<<<< HEAD
-	}, {
-=======
 	},
 	[WSA884X_PORT_BOOST] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.num = WSA884X_PORT_BOOST + 1,
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
 		.simple_ch_prep_sm = true,
 		.read_only_wordlength = true,
-<<<<<<< HEAD
-	}, {
-=======
 	},
 	[WSA884X_PORT_PBR] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.num = WSA884X_PORT_PBR + 1,
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
 		.simple_ch_prep_sm = true,
 		.read_only_wordlength = true,
-<<<<<<< HEAD
-	}, {
-=======
 	},
 	[WSA884X_PORT_VISENSE] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.num = WSA884X_PORT_VISENSE + 1,
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
 		.max_ch = 1,
 		.simple_ch_prep_sm = true,
 		.read_only_wordlength = true,
-<<<<<<< HEAD
-	}, {
-=======
 	},
 	[WSA884X_PORT_CPS] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.num = WSA884X_PORT_CPS + 1,
 		.type = SDW_DPN_SIMPLE,
 		.min_ch = 1,
@@ -920,24 +873,6 @@ static struct sdw_dpn_prop wsa884x_sink_dpn_prop[WSA884X_MAX_SWR_PORTS] = {
 };
 
 static const struct sdw_port_config wsa884x_pconfig[WSA884X_MAX_SWR_PORTS] = {
-<<<<<<< HEAD
-	{
-		.num = WSA884X_PORT_DAC + 1,
-		.ch_mask = 0x1,
-	}, {
-		.num = WSA884X_PORT_COMP + 1,
-		.ch_mask = 0xf,
-	}, {
-		.num = WSA884X_PORT_BOOST + 1,
-		.ch_mask = 0x3,
-	}, {
-		.num = WSA884X_PORT_PBR + 1,
-		.ch_mask = 0x1,
-	}, {
-		.num = WSA884X_PORT_VISENSE + 1,
-		.ch_mask = 0x3,
-	}, {
-=======
 	[WSA884X_PORT_DAC] = {
 		.num = WSA884X_PORT_DAC + 1,
 		.ch_mask = 0x1,
@@ -959,7 +894,6 @@ static const struct sdw_port_config wsa884x_pconfig[WSA884X_MAX_SWR_PORTS] = {
 		.ch_mask = 0x3,
 	},
 	[WSA884X_PORT_CPS] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.num = WSA884X_PORT_CPS + 1,
 		.ch_mask = 0x3,
 	},
@@ -1581,11 +1515,7 @@ static void wsa884x_init(struct wsa884x_priv *wsa884x)
 	unsigned int variant = 0;
 
 	if (!regmap_read(wsa884x->regmap, WSA884X_OTP_REG_0, &variant))
-<<<<<<< HEAD
-		wsa884x->variant = variant & WSA884X_OTP_REG_0_ID_MASK;
-=======
 		variant = variant & WSA884X_OTP_REG_0_ID_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	regmap_multi_reg_write(wsa884x->regmap, wsa884x_reg_init,
 			       ARRAY_SIZE(wsa884x_reg_init));
@@ -1594,11 +1524,7 @@ static void wsa884x_init(struct wsa884x_priv *wsa884x)
 	wo_ctl_0 |= FIELD_PREP(WSA884X_ANA_WO_CTL_0_DAC_CM_CLAMP_EN_MASK,
 			       WSA884X_ANA_WO_CTL_0_DAC_CM_CLAMP_EN_MODE_SPEAKER);
 	/* Assume that compander is enabled by default unless it is haptics sku */
-<<<<<<< HEAD
-	if (wsa884x->variant == WSA884X_OTP_ID_WSA8845H)
-=======
 	if (variant == WSA884X_OTP_ID_WSA8845H)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wo_ctl_0 |= FIELD_PREP(WSA884X_ANA_WO_CTL_0_PA_AUX_GAIN_MASK,
 				       WSA884X_ANA_WO_CTL_0_PA_AUX_18_DB);
 	else
@@ -1775,13 +1701,10 @@ static int wsa884x_spkr_event(struct snd_soc_dapm_widget *w,
 
 	switch (event) {
 	case SND_SOC_DAPM_POST_PMU:
-<<<<<<< HEAD
-=======
 		mutex_lock(&wsa884x->sp_lock);
 		wsa884x->pa_on = true;
 		mutex_unlock(&wsa884x->sp_lock);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wsa884x_spkr_post_pmu(component, wsa884x);
 
 		snd_soc_component_write_field(component, WSA884X_PDM_WD_CTL,
@@ -1793,13 +1716,10 @@ static int wsa884x_spkr_event(struct snd_soc_dapm_widget *w,
 		snd_soc_component_write_field(component, WSA884X_PDM_WD_CTL,
 					      WSA884X_PDM_WD_CTL_PDM_WD_EN_MASK,
 					      0x0);
-<<<<<<< HEAD
-=======
 
 		mutex_lock(&wsa884x->sp_lock);
 		wsa884x->pa_on = false;
 		mutex_unlock(&wsa884x->sp_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 
@@ -1939,8 +1859,6 @@ static struct snd_soc_dai_driver wsa884x_dais[] = {
 	},
 };
 
-<<<<<<< HEAD
-=======
 static int wsa884x_get_temp(struct wsa884x_priv *wsa884x, long *temp)
 {
 	unsigned int d1_msb = 0, d1_lsb = 0, d2_msb = 0, d2_lsb = 0;
@@ -2079,7 +1997,6 @@ static const struct hwmon_chip_info wsa884x_hwmon_chip_info = {
 	.info	= wsa884x_hwmon_info,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void wsa884x_reset_powerdown(void *data)
 {
 	struct wsa884x_priv *wsa884x = data;
@@ -2136,11 +2053,8 @@ static int wsa884x_probe(struct sdw_slave *pdev,
 	if (!wsa884x)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
 	mutex_init(&wsa884x->sp_lock);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < WSA884X_SUPPLIES_NUM; i++)
 		wsa884x->supplies[i].supply = wsa884x_supply_name[i];
 
@@ -2198,8 +2112,6 @@ static int wsa884x_probe(struct sdw_slave *pdev,
 	regcache_cache_only(wsa884x->regmap, true);
 	wsa884x->hw_init = true;
 
-<<<<<<< HEAD
-=======
 	if (IS_REACHABLE(CONFIG_HWMON)) {
 		struct device *hwmon;
 
@@ -2212,7 +2124,6 @@ static int wsa884x_probe(struct sdw_slave *pdev,
 					     "Failed to register hwmon sensor\n");
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pm_runtime_set_autosuspend_delay(dev, 3000);
 	pm_runtime_use_autosuspend(dev);
 	pm_runtime_mark_last_busy(dev);

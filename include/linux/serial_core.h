@@ -11,11 +11,8 @@
 #include <linux/compiler.h>
 #include <linux/console.h>
 #include <linux/interrupt.h>
-<<<<<<< HEAD
-=======
 #include <linux/lockdep.h>
 #include <linux/printk.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/spinlock.h>
 #include <linux/sched.h>
 #include <linux/tty.h>
@@ -595,8 +592,6 @@ struct uart_port {
 	void			*private_data;		/* generic platform data pointer */
 };
 
-<<<<<<< HEAD
-=======
 /*
  * Only for console->device_lock()/_unlock() callbacks and internal
  * port lock wrapper synchronization.
@@ -686,7 +681,6 @@ static inline void __uart_port_nbcon_release(struct uart_port *up)
 	nbcon_device_release(up->cons);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * uart_port_lock - Lock the UART port
  * @up:		Pointer to UART port structure
@@ -694,10 +688,7 @@ static inline void __uart_port_nbcon_release(struct uart_port *up)
 static inline void uart_port_lock(struct uart_port *up)
 {
 	spin_lock(&up->lock);
-<<<<<<< HEAD
-=======
 	__uart_port_nbcon_acquire(up);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -707,10 +698,7 @@ static inline void uart_port_lock(struct uart_port *up)
 static inline void uart_port_lock_irq(struct uart_port *up)
 {
 	spin_lock_irq(&up->lock);
-<<<<<<< HEAD
-=======
 	__uart_port_nbcon_acquire(up);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -721,10 +709,7 @@ static inline void uart_port_lock_irq(struct uart_port *up)
 static inline void uart_port_lock_irqsave(struct uart_port *up, unsigned long *flags)
 {
 	spin_lock_irqsave(&up->lock, *flags);
-<<<<<<< HEAD
-=======
 	__uart_port_nbcon_acquire(up);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -735,9 +720,6 @@ static inline void uart_port_lock_irqsave(struct uart_port *up, unsigned long *f
  */
 static inline bool uart_port_trylock(struct uart_port *up)
 {
-<<<<<<< HEAD
-	return spin_trylock(&up->lock);
-=======
 	if (!spin_trylock(&up->lock))
 		return false;
 
@@ -747,7 +729,6 @@ static inline bool uart_port_trylock(struct uart_port *up)
 	}
 
 	return true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -759,9 +740,6 @@ static inline bool uart_port_trylock(struct uart_port *up)
  */
 static inline bool uart_port_trylock_irqsave(struct uart_port *up, unsigned long *flags)
 {
-<<<<<<< HEAD
-	return spin_trylock_irqsave(&up->lock, *flags);
-=======
 	if (!spin_trylock_irqsave(&up->lock, *flags))
 		return false;
 
@@ -771,7 +749,6 @@ static inline bool uart_port_trylock_irqsave(struct uart_port *up, unsigned long
 	}
 
 	return true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -780,10 +757,7 @@ static inline bool uart_port_trylock_irqsave(struct uart_port *up, unsigned long
  */
 static inline void uart_port_unlock(struct uart_port *up)
 {
-<<<<<<< HEAD
-=======
 	__uart_port_nbcon_release(up);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(&up->lock);
 }
 
@@ -793,10 +767,7 @@ static inline void uart_port_unlock(struct uart_port *up)
  */
 static inline void uart_port_unlock_irq(struct uart_port *up)
 {
-<<<<<<< HEAD
-=======
 	__uart_port_nbcon_release(up);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irq(&up->lock);
 }
 
@@ -807,10 +778,7 @@ static inline void uart_port_unlock_irq(struct uart_port *up)
  */
 static inline void uart_port_unlock_irqrestore(struct uart_port *up, unsigned long flags)
 {
-<<<<<<< HEAD
-=======
 	__uart_port_nbcon_release(up);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irqrestore(&up->lock, flags);
 }
 

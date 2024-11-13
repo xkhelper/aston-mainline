@@ -7,10 +7,7 @@
 
 #include <linux/delay.h>
 #include <linux/of_dma.h>
-<<<<<<< HEAD
-=======
 #include <sound/dmaengine_pcm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "rsnd.h"
 
 /*
@@ -26,11 +23,6 @@
 
 struct rsnd_dmaen {
 	struct dma_chan		*chan;
-<<<<<<< HEAD
-	dma_cookie_t		cookie;
-	unsigned int		dma_len;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct rsnd_dmapp {
@@ -73,23 +65,6 @@ static struct rsnd_mod mem = {
 /*
  *		Audio DMAC
  */
-<<<<<<< HEAD
-static void __rsnd_dmaen_complete(struct rsnd_mod *mod,
-				  struct rsnd_dai_stream *io)
-{
-	if (rsnd_io_is_working(io))
-		rsnd_dai_period_elapsed(io);
-}
-
-static void rsnd_dmaen_complete(void *data)
-{
-	struct rsnd_mod *mod = data;
-
-	rsnd_mod_interrupt(mod, __rsnd_dmaen_complete);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct dma_chan *rsnd_dmaen_request_channel(struct rsnd_dai_stream *io,
 						   struct rsnd_mod *mod_from,
 						   struct rsnd_mod *mod_to)
@@ -108,17 +83,7 @@ static int rsnd_dmaen_stop(struct rsnd_mod *mod,
 			   struct rsnd_dai_stream *io,
 			   struct rsnd_priv *priv)
 {
-<<<<<<< HEAD
-	struct rsnd_dma *dma = rsnd_mod_to_dma(mod);
-	struct rsnd_dmaen *dmaen = rsnd_dma_to_dmaen(dma);
-
-	if (dmaen->chan)
-		dmaengine_terminate_async(dmaen->chan);
-
-	return 0;
-=======
 	return snd_dmaengine_pcm_trigger(io->substream, SNDRV_PCM_TRIGGER_STOP);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rsnd_dmaen_cleanup(struct rsnd_mod *mod,
@@ -134,11 +99,7 @@ static int rsnd_dmaen_cleanup(struct rsnd_mod *mod,
 	 * Let's call it under prepare
 	 */
 	if (dmaen->chan)
-<<<<<<< HEAD
-		dma_release_channel(dmaen->chan);
-=======
 		snd_dmaengine_pcm_close_release_chan(io->substream);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dmaen->chan = NULL;
 
@@ -171,11 +132,7 @@ static int rsnd_dmaen_prepare(struct rsnd_mod *mod,
 		return -EIO;
 	}
 
-<<<<<<< HEAD
-	return 0;
-=======
 	return snd_dmaengine_pcm_open(io->substream, dmaen->chan);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rsnd_dmaen_start(struct rsnd_mod *mod,
@@ -184,18 +141,9 @@ static int rsnd_dmaen_start(struct rsnd_mod *mod,
 {
 	struct rsnd_dma *dma = rsnd_mod_to_dma(mod);
 	struct rsnd_dmaen *dmaen = rsnd_dma_to_dmaen(dma);
-<<<<<<< HEAD
-	struct snd_pcm_substream *substream = io->substream;
-	struct device *dev = rsnd_priv_to_dev(priv);
-	struct dma_async_tx_descriptor *desc;
-	struct dma_slave_config cfg = {};
-	enum dma_slave_buswidth buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
-	int is_play = rsnd_io_is_play(io);
-=======
 	struct device *dev = rsnd_priv_to_dev(priv);
 	struct dma_slave_config cfg = {};
 	enum dma_slave_buswidth buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	/*
@@ -223,11 +171,7 @@ static int rsnd_dmaen_start(struct rsnd_mod *mod,
 		}
 	}
 
-<<<<<<< HEAD
-	cfg.direction	= is_play ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM;
-=======
 	cfg.direction	= snd_pcm_substream_to_dma_direction(io->substream);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cfg.src_addr	= dma->src_addr;
 	cfg.dst_addr	= dma->dst_addr;
 	cfg.src_addr_width = buswidth;
@@ -241,36 +185,7 @@ static int rsnd_dmaen_start(struct rsnd_mod *mod,
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	desc = dmaengine_prep_dma_cyclic(dmaen->chan,
-					 substream->runtime->dma_addr,
-					 snd_pcm_lib_buffer_bytes(substream),
-					 snd_pcm_lib_period_bytes(substream),
-					 is_play ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM,
-					 DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-
-	if (!desc) {
-		dev_err(dev, "dmaengine_prep_slave_sg() fail\n");
-		return -EIO;
-	}
-
-	desc->callback		= rsnd_dmaen_complete;
-	desc->callback_param	= rsnd_mod_get(dma);
-
-	dmaen->dma_len		= snd_pcm_lib_buffer_bytes(substream);
-
-	dmaen->cookie = dmaengine_submit(desc);
-	if (dmaen->cookie < 0) {
-		dev_err(dev, "dmaengine_submit() fail\n");
-		return -EIO;
-	}
-
-	dma_async_issue_pending(dmaen->chan);
-
-	return 0;
-=======
 	return snd_dmaengine_pcm_trigger(io->substream, SNDRV_PCM_TRIGGER_START);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct dma_chan *rsnd_dma_request_channel(struct device_node *of_node, char *name,
@@ -343,23 +258,7 @@ static int rsnd_dmaen_pointer(struct rsnd_mod *mod,
 			      struct rsnd_dai_stream *io,
 			      snd_pcm_uframes_t *pointer)
 {
-<<<<<<< HEAD
-	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
-	struct rsnd_dma *dma = rsnd_mod_to_dma(mod);
-	struct rsnd_dmaen *dmaen = rsnd_dma_to_dmaen(dma);
-	struct dma_tx_state state;
-	enum dma_status status;
-	unsigned int pos = 0;
-
-	status = dmaengine_tx_status(dmaen->chan, dmaen->cookie, &state);
-	if (status == DMA_IN_PROGRESS || status == DMA_PAUSED) {
-		if (state.residue > 0 && state.residue <= dmaen->dma_len)
-			pos = dmaen->dma_len - state.residue;
-	}
-	*pointer = bytes_to_frames(runtime, pos);
-=======
 	*pointer = snd_dmaengine_pcm_pointer(io->substream);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

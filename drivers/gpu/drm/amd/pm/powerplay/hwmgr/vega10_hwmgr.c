@@ -2934,13 +2934,7 @@ static int vega10_stop_dpm(struct pp_hwmgr *hwmgr, uint32_t bitmap)
 		}
 	}
 
-<<<<<<< HEAD
-	vega10_enable_smc_features(hwmgr, false, feature_mask);
-
-	return 0;
-=======
 	return vega10_enable_smc_features(hwmgr, false, feature_mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

@@ -203,21 +203,12 @@ unsigned long bitmap_find_next_zero_area_off(unsigned long *map,
  * the bit offset of all zero areas this function finds is multiples of that
  * power of 2. A @align_mask of 0 means no alignment is required.
  */
-<<<<<<< HEAD
-static inline unsigned long
-bitmap_find_next_zero_area(unsigned long *map,
-			   unsigned long size,
-			   unsigned long start,
-			   unsigned int nr,
-			   unsigned long align_mask)
-=======
 static __always_inline
 unsigned long bitmap_find_next_zero_area(unsigned long *map,
 					 unsigned long size,
 					 unsigned long start,
 					 unsigned int nr,
 					 unsigned long align_mask)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return bitmap_find_next_zero_area_off(map, size, start, nr,
 					      align_mask, 0);
@@ -237,11 +228,7 @@ void bitmap_fold(unsigned long *dst, const unsigned long *orig,
 
 #define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
 
-<<<<<<< HEAD
-static inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
-=======
 static __always_inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int len = bitmap_size(nbits);
 
@@ -251,11 +238,7 @@ static __always_inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
 		memset(dst, 0, len);
 }
 
-<<<<<<< HEAD
-static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
-=======
 static __always_inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int len = bitmap_size(nbits);
 
@@ -265,13 +248,8 @@ static __always_inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
 		memset(dst, 0xff, len);
 }
 
-<<<<<<< HEAD
-static inline void bitmap_copy(unsigned long *dst, const unsigned long *src,
-			unsigned int nbits)
-=======
 static __always_inline
 void bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int len = bitmap_size(nbits);
 
@@ -284,13 +262,8 @@ void bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbit
 /*
  * Copy bitmap and clear tail bits in last word.
  */
-<<<<<<< HEAD
-static inline void bitmap_copy_clear_tail(unsigned long *dst,
-		const unsigned long *src, unsigned int nbits)
-=======
 static __always_inline
 void bitmap_copy_clear_tail(unsigned long *dst, const unsigned long *src, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bitmap_copy(dst, src, nbits);
 	if (nbits % BITS_PER_LONG)
@@ -345,28 +318,18 @@ void bitmap_to_arr64(u64 *buf, const unsigned long *bitmap, unsigned int nbits);
 	bitmap_copy_clear_tail((unsigned long *)(buf), (const unsigned long *)(bitmap), (nbits))
 #endif
 
-<<<<<<< HEAD
-static inline bool bitmap_and(unsigned long *dst, const unsigned long *src1,
-			const unsigned long *src2, unsigned int nbits)
-=======
 static __always_inline
 bool bitmap_and(unsigned long *dst, const unsigned long *src1,
 		const unsigned long *src2, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		return (*dst = *src1 & *src2 & BITMAP_LAST_WORD_MASK(nbits)) != 0;
 	return __bitmap_and(dst, src1, src2, nbits);
 }
 
-<<<<<<< HEAD
-static inline void bitmap_or(unsigned long *dst, const unsigned long *src1,
-			const unsigned long *src2, unsigned int nbits)
-=======
 static __always_inline
 void bitmap_or(unsigned long *dst, const unsigned long *src1,
 	       const unsigned long *src2, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		*dst = *src1 | *src2;
@@ -374,14 +337,9 @@ void bitmap_or(unsigned long *dst, const unsigned long *src1,
 		__bitmap_or(dst, src1, src2, nbits);
 }
 
-<<<<<<< HEAD
-static inline void bitmap_xor(unsigned long *dst, const unsigned long *src1,
-			const unsigned long *src2, unsigned int nbits)
-=======
 static __always_inline
 void bitmap_xor(unsigned long *dst, const unsigned long *src1,
 		const unsigned long *src2, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		*dst = *src1 ^ *src2;
@@ -389,27 +347,17 @@ void bitmap_xor(unsigned long *dst, const unsigned long *src1,
 		__bitmap_xor(dst, src1, src2, nbits);
 }
 
-<<<<<<< HEAD
-static inline bool bitmap_andnot(unsigned long *dst, const unsigned long *src1,
-			const unsigned long *src2, unsigned int nbits)
-=======
 static __always_inline
 bool bitmap_andnot(unsigned long *dst, const unsigned long *src1,
 		   const unsigned long *src2, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		return (*dst = *src1 & ~(*src2) & BITMAP_LAST_WORD_MASK(nbits)) != 0;
 	return __bitmap_andnot(dst, src1, src2, nbits);
 }
 
-<<<<<<< HEAD
-static inline void bitmap_complement(unsigned long *dst, const unsigned long *src,
-			unsigned int nbits)
-=======
 static __always_inline
 void bitmap_complement(unsigned long *dst, const unsigned long *src, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		*dst = ~(*src);
@@ -424,13 +372,8 @@ void bitmap_complement(unsigned long *dst, const unsigned long *src, unsigned in
 #endif
 #define BITMAP_MEM_MASK (BITMAP_MEM_ALIGNMENT - 1)
 
-<<<<<<< HEAD
-static inline bool bitmap_equal(const unsigned long *src1,
-				const unsigned long *src2, unsigned int nbits)
-=======
 static __always_inline
 bool bitmap_equal(const unsigned long *src1, const unsigned long *src2, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		return !((*src1 ^ *src2) & BITMAP_LAST_WORD_MASK(nbits));
@@ -449,16 +392,9 @@ bool bitmap_equal(const unsigned long *src1, const unsigned long *src2, unsigned
  *
  * Returns: True if (*@src1 | *@src2) == *@src3, false otherwise
  */
-<<<<<<< HEAD
-static inline bool bitmap_or_equal(const unsigned long *src1,
-				   const unsigned long *src2,
-				   const unsigned long *src3,
-				   unsigned int nbits)
-=======
 static __always_inline
 bool bitmap_or_equal(const unsigned long *src1, const unsigned long *src2,
 		     const unsigned long *src3, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (!small_const_nbits(nbits))
 		return __bitmap_or_equal(src1, src2, src3, nbits);
@@ -466,14 +402,8 @@ bool bitmap_or_equal(const unsigned long *src1, const unsigned long *src2,
 	return !(((*src1 | *src2) ^ *src3) & BITMAP_LAST_WORD_MASK(nbits));
 }
 
-<<<<<<< HEAD
-static inline bool bitmap_intersects(const unsigned long *src1,
-				     const unsigned long *src2,
-				     unsigned int nbits)
-=======
 static __always_inline
 bool bitmap_intersects(const unsigned long *src1, const unsigned long *src2, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		return ((*src1 & *src2) & BITMAP_LAST_WORD_MASK(nbits)) != 0;
@@ -481,13 +411,8 @@ bool bitmap_intersects(const unsigned long *src1, const unsigned long *src2, uns
 		return __bitmap_intersects(src1, src2, nbits);
 }
 
-<<<<<<< HEAD
-static inline bool bitmap_subset(const unsigned long *src1,
-				 const unsigned long *src2, unsigned int nbits)
-=======
 static __always_inline
 bool bitmap_subset(const unsigned long *src1, const unsigned long *src2, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		return ! ((*src1 & ~(*src2)) & BITMAP_LAST_WORD_MASK(nbits));
@@ -495,12 +420,8 @@ bool bitmap_subset(const unsigned long *src1, const unsigned long *src2, unsigne
 		return __bitmap_subset(src1, src2, nbits);
 }
 
-<<<<<<< HEAD
-static inline bool bitmap_empty(const unsigned long *src, unsigned nbits)
-=======
 static __always_inline
 bool bitmap_empty(const unsigned long *src, unsigned nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		return ! (*src & BITMAP_LAST_WORD_MASK(nbits));
@@ -508,12 +429,8 @@ bool bitmap_empty(const unsigned long *src, unsigned nbits)
 	return find_first_bit(src, nbits) == nbits;
 }
 
-<<<<<<< HEAD
-static inline bool bitmap_full(const unsigned long *src, unsigned int nbits)
-=======
 static __always_inline
 bool bitmap_full(const unsigned long *src, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		return ! (~(*src) & BITMAP_LAST_WORD_MASK(nbits));
@@ -547,13 +464,8 @@ unsigned long bitmap_weight_andnot(const unsigned long *src1,
 	return __bitmap_weight_andnot(src1, src2, nbits);
 }
 
-<<<<<<< HEAD
-static __always_inline void bitmap_set(unsigned long *map, unsigned int start,
-		unsigned int nbits)
-=======
 static __always_inline
 void bitmap_set(unsigned long *map, unsigned int start, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (__builtin_constant_p(nbits) && nbits == 1)
 		__set_bit(start, map);
@@ -568,13 +480,8 @@ void bitmap_set(unsigned long *map, unsigned int start, unsigned int nbits)
 		__bitmap_set(map, start, nbits);
 }
 
-<<<<<<< HEAD
-static __always_inline void bitmap_clear(unsigned long *map, unsigned int start,
-		unsigned int nbits)
-=======
 static __always_inline
 void bitmap_clear(unsigned long *map, unsigned int start, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (__builtin_constant_p(nbits) && nbits == 1)
 		__clear_bit(start, map);
@@ -589,14 +496,9 @@ void bitmap_clear(unsigned long *map, unsigned int start, unsigned int nbits)
 		__bitmap_clear(map, start, nbits);
 }
 
-<<<<<<< HEAD
-static inline void bitmap_shift_right(unsigned long *dst, const unsigned long *src,
-				unsigned int shift, unsigned int nbits)
-=======
 static __always_inline
 void bitmap_shift_right(unsigned long *dst, const unsigned long *src,
 			unsigned int shift, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		*dst = (*src & BITMAP_LAST_WORD_MASK(nbits)) >> shift;
@@ -604,14 +506,9 @@ void bitmap_shift_right(unsigned long *dst, const unsigned long *src,
 		__bitmap_shift_right(dst, src, shift, nbits);
 }
 
-<<<<<<< HEAD
-static inline void bitmap_shift_left(unsigned long *dst, const unsigned long *src,
-				unsigned int shift, unsigned int nbits)
-=======
 static __always_inline
 void bitmap_shift_left(unsigned long *dst, const unsigned long *src,
 		       unsigned int shift, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		*dst = (*src << shift) & BITMAP_LAST_WORD_MASK(nbits);
@@ -619,20 +516,12 @@ void bitmap_shift_left(unsigned long *dst, const unsigned long *src,
 		__bitmap_shift_left(dst, src, shift, nbits);
 }
 
-<<<<<<< HEAD
-static inline void bitmap_replace(unsigned long *dst,
-				  const unsigned long *old,
-				  const unsigned long *new,
-				  const unsigned long *mask,
-				  unsigned int nbits)
-=======
 static __always_inline
 void bitmap_replace(unsigned long *dst,
 		    const unsigned long *old,
 		    const unsigned long *new,
 		    const unsigned long *mask,
 		    unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (small_const_nbits(nbits))
 		*dst = (*old & ~(*mask)) | (*new & *mask);
@@ -675,14 +564,9 @@ void bitmap_replace(unsigned long *dst,
  * bitmap_gather() can be seen as the 'reverse' bitmap_scatter() operation.
  * See bitmap_scatter() for details related to this relationship.
  */
-<<<<<<< HEAD
-static inline void bitmap_scatter(unsigned long *dst, const unsigned long *src,
-				  const unsigned long *mask, unsigned int nbits)
-=======
 static __always_inline
 void bitmap_scatter(unsigned long *dst, const unsigned long *src,
 		    const unsigned long *mask, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int n = 0;
 	unsigned int bit;
@@ -735,14 +619,9 @@ void bitmap_scatter(unsigned long *dst, const unsigned long *src,
  * bitmap_scatter(res, src, mask, n) and a call to
  * bitmap_scatter(res, result, mask, n) will lead to the same res value.
  */
-<<<<<<< HEAD
-static inline void bitmap_gather(unsigned long *dst, const unsigned long *src,
-				 const unsigned long *mask, unsigned int nbits)
-=======
 static __always_inline
 void bitmap_gather(unsigned long *dst, const unsigned long *src,
 		   const unsigned long *mask, unsigned int nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int n = 0;
 	unsigned int bit;
@@ -753,15 +632,9 @@ void bitmap_gather(unsigned long *dst, const unsigned long *src,
 		__assign_bit(n++, dst, test_bit(bit, src));
 }
 
-<<<<<<< HEAD
-static inline void bitmap_next_set_region(unsigned long *bitmap,
-					  unsigned int *rs, unsigned int *re,
-					  unsigned int end)
-=======
 static __always_inline
 void bitmap_next_set_region(unsigned long *bitmap, unsigned int *rs,
 			    unsigned int *re, unsigned int end)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	*rs = find_next_bit(bitmap, end, *rs);
 	*re = find_next_zero_bit(bitmap, end, *rs + 1);
@@ -776,12 +649,8 @@ void bitmap_next_set_region(unsigned long *bitmap, unsigned int *rs,
  * This is the complement to __bitmap_find_free_region() and releases
  * the found region (by clearing it in the bitmap).
  */
-<<<<<<< HEAD
-static inline void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
-=======
 static __always_inline
 void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bitmap_clear(bitmap, pos, BIT(order));
 }
@@ -797,12 +666,8 @@ void bitmap_release_region(unsigned long *bitmap, unsigned int pos, int order)
  * Returns: 0 on success, or %-EBUSY if specified region wasn't
  * free (not all bits were zero).
  */
-<<<<<<< HEAD
-static inline int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
-=======
 static __always_inline
 int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int len = BIT(order);
 
@@ -826,12 +691,8 @@ int bitmap_allocate_region(unsigned long *bitmap, unsigned int pos, int order)
  * Returns: the bit offset in bitmap of the allocated region,
  * or -errno on failure.
  */
-<<<<<<< HEAD
-static inline int bitmap_find_free_region(unsigned long *bitmap, unsigned int bits, int order)
-=======
 static __always_inline
 int bitmap_find_free_region(unsigned long *bitmap, unsigned int bits, int order)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int pos, end;		/* scans bitmap by regions of size order */
 
@@ -885,11 +746,7 @@ int bitmap_find_free_region(unsigned long *bitmap, unsigned int bits, int order)
  * That is ``(u32 *)(&val)[0]`` gets the upper 32 bits,
  * but we expect the lower 32-bits of u64.
  */
-<<<<<<< HEAD
-static inline void bitmap_from_u64(unsigned long *dst, u64 mask)
-=======
 static __always_inline void bitmap_from_u64(unsigned long *dst, u64 mask)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bitmap_from_arr64(dst, &mask, 64);
 }
@@ -904,14 +761,8 @@ static __always_inline void bitmap_from_u64(unsigned long *dst, u64 mask)
  * @map memory region. For @nbits = 0 and @nbits > BITS_PER_LONG the return
  * value is undefined.
  */
-<<<<<<< HEAD
-static inline unsigned long bitmap_read(const unsigned long *map,
-					unsigned long start,
-					unsigned long nbits)
-=======
 static __always_inline
 unsigned long bitmap_read(const unsigned long *map, unsigned long start, unsigned long nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	size_t index = BIT_WORD(start);
 	unsigned long offset = start % BITS_PER_LONG;
@@ -944,14 +795,9 @@ unsigned long bitmap_read(const unsigned long *map, unsigned long start, unsigne
  *
  * For @nbits == 0 and @nbits > BITS_PER_LONG no writes are performed.
  */
-<<<<<<< HEAD
-static inline void bitmap_write(unsigned long *map, unsigned long value,
-				unsigned long start, unsigned long nbits)
-=======
 static __always_inline
 void bitmap_write(unsigned long *map, unsigned long value,
 		  unsigned long start, unsigned long nbits)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	size_t index;
 	unsigned long offset;

@@ -500,8 +500,6 @@ Description:
 		console drivers from the device.  Raw users of pci-sysfs
 		resourceN attributes must be terminated prior to resizing.
 		Success of the resizing operation is not guaranteed.
-<<<<<<< HEAD
-=======
 
 What:		/sys/bus/pci/devices/.../leds/*:enclosure:*/brightness
 What:		/sys/class/leds/*:enclosure:*/brightness
@@ -574,4 +572,3 @@ Description:
 		enclosure-specific indications "specific0" to "specific7",
 		hence the corresponding led class devices are unavailable if
 		the DSM interface is used.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

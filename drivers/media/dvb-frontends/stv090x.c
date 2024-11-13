@@ -5079,11 +5079,7 @@ error:
 EXPORT_SYMBOL_GPL(stv090x_attach);
 
 static const struct i2c_device_id stv090x_id_table[] = {
-<<<<<<< HEAD
-	{"stv090x", 0},
-=======
 	{ "stv090x" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, stv090x_id_table);

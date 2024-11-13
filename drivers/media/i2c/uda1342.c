@@ -79,11 +79,7 @@ static void uda1342_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id uda1342_id[] = {
-<<<<<<< HEAD
-	{ "uda1342", 0 },
-=======
 	{ "uda1342" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, uda1342_id);

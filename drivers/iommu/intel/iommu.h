@@ -584,8 +584,6 @@ struct iommu_domain_info {
 					 * to VT-d spec, section 9.3 */
 };
 
-<<<<<<< HEAD
-=======
 /*
  * We start simply by using a fixed size for the batched descriptors. This
  * size is currently sufficient for our needs. Future improvements could
@@ -599,15 +597,10 @@ struct qi_batch {
 	unsigned int index;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct dmar_domain {
 	int	nid;			/* node id */
 	struct xarray iommu_array;	/* Attached IOMMU array */
 
-<<<<<<< HEAD
-	u8 has_iotlb_device: 1;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 iommu_coherency: 1;		/* indicate coherency of iommu access */
 	u8 force_snooping : 1;		/* Create IOPTEs with snoop control */
 	u8 set_pte_snp:1;
@@ -628,10 +621,7 @@ struct dmar_domain {
 
 	spinlock_t cache_lock;		/* Protect the cache tag list */
 	struct list_head cache_tags;	/* Cache tag list */
-<<<<<<< HEAD
-=======
 	struct qi_batch *qi_batch;	/* Batched QI descriptors */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int		iommu_superpage;/* Level of superpages supported:
 					   0 == 4KiB (no superpages), 1 == 2MiB,
@@ -710,11 +700,6 @@ struct iommu_pmu {
 	DECLARE_BITMAP(used_mask, IOMMU_PMU_IDX_MAX);
 	struct perf_event	*event_list[IOMMU_PMU_IDX_MAX];
 	unsigned char		irq_name[16];
-<<<<<<< HEAD
-	struct hlist_node	cpuhp_node;
-	int			cpu;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define IOMMU_IRQ_ID_OFFSET_PRQ		(DMAR_UNITS_SUPPORTED)
@@ -1093,8 +1078,6 @@ static inline unsigned long nrpages_to_size(unsigned long npages)
 	return npages << VTD_PAGE_SHIFT;
 }
 
-<<<<<<< HEAD
-=======
 static inline void qi_desc_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
 				 unsigned int size_order, u64 type,
 				 struct qi_desc *desc)
@@ -1204,7 +1187,6 @@ static inline void qi_desc_dev_iotlb_pasid(u16 sid, u16 pfsid, u32 pasid,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Convert value to context PASID directory size field coding. */
 #define context_pdts(pds)	(((pds) & 0x7) << 9)
 
@@ -1236,22 +1218,15 @@ void qi_flush_pasid_cache(struct intel_iommu *iommu, u16 did, u64 granu,
 
 int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
 		   unsigned int count, unsigned long options);
-<<<<<<< HEAD
-=======
 
 void __iommu_flush_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
 			 unsigned int size_order, u64 type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Options used in qi_submit_sync:
  * QI_OPT_WAIT_DRAIN - Wait for PRQ drain completion, spec 6.5.2.8.
  */
 #define QI_OPT_WAIT_DRAIN		BIT(0)
 
-<<<<<<< HEAD
-void domain_update_iotlb(struct dmar_domain *domain);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
 void domain_detach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
 void device_block_translation(struct device *dev);

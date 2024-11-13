@@ -30,18 +30,7 @@
 
 source lib.sh
 
-<<<<<<< HEAD
-# nettest can be run from PATH or from same directory as this selftest
-if ! which nettest >/dev/null; then
-	PATH=$PWD:$PATH
-	if ! which nettest >/dev/null; then
-		echo "'nettest' command not found; skipping tests"
-		exit $ksft_skip
-	fi
-fi
-=======
 check_gen_prog "nettest"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 result=0
 

@@ -111,8 +111,5 @@ SYM_FUNC_START(__memset)
 	ret
 SYM_FUNC_END(__memset)
 SYM_FUNC_ALIAS_WEAK(memset, __memset)
-<<<<<<< HEAD
-=======
 SYM_FUNC_ALIAS(__pi_memset, __memset)
 SYM_FUNC_ALIAS(__pi___memset, __memset)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

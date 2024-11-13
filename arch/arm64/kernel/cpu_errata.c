@@ -439,10 +439,7 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-<<<<<<< HEAD
-=======
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A725),
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
@@ -451,15 +448,10 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
-<<<<<<< HEAD
-	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-=======
 	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N3),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
@@ -467,8 +459,6 @@ static const struct midr_range erratum_spec_ssbs_list[] = {
 };
 #endif
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_AMPERE_ERRATUM_AC03_CPU_38
 static const struct midr_range erratum_ac03_cpu_38_list[] = {
 	MIDR_ALL_VERSIONS(MIDR_AMPERE1),
@@ -477,7 +467,6 @@ static const struct midr_range erratum_ac03_cpu_38_list[] = {
 };
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct arm64_cpu_capabilities arm64_errata[] = {
 #ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
 	{
@@ -794,11 +783,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
 	{
 		.desc = "AmpereOne erratum AC03_CPU_38",
 		.capability = ARM64_WORKAROUND_AMPERE_AC03_CPU_38,
-<<<<<<< HEAD
-		ERRATA_MIDR_ALL_VERSIONS(MIDR_AMPERE1),
-=======
 		ERRATA_MIDR_RANGE_LIST(erratum_ac03_cpu_38_list),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 #endif
 	{

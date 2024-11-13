@@ -75,11 +75,8 @@
 };
 
 &ethernet1 {
-<<<<<<< HEAD
-=======
 	nvmem-cell-names = "mac-address";
 	nvmem-cells = <&ethernet_mac1_address>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phy-handle = <&ethphy1>;
 	phy-mode = "rgmii-id";
 	pinctrl-0 = <&eth1_rgmii_pins_a>;
@@ -99,11 +96,6 @@
 			interrupt-parent = <&gpiog>;
 			interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
 			reg = <1>;
-<<<<<<< HEAD
-			reset-assert-us = <15000>;
-			reset-deassert-us = <55000>;
-			reset-gpios = <&gpioa 11 GPIO_ACTIVE_LOW>;
-=======
 			realtek,clkout-disable;
 			reset-assert-us = <15000>;
 			reset-deassert-us = <55000>;
@@ -127,17 +119,13 @@
 					linux,default-trigger = "netdev";
 				};
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };
 
 &ethernet2 {
-<<<<<<< HEAD
-=======
 	nvmem-cell-names = "mac-address";
 	nvmem-cells = <&ethernet_mac2_address>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phy-handle = <&ethphy2>;
 	phy-mode = "rgmii-id";
 	pinctrl-0 = <&eth2_rgmii_pins_a>;
@@ -157,11 +145,6 @@
 			interrupt-parent = <&gpiog>;
 			interrupts = <15 IRQ_TYPE_LEVEL_LOW>;
 			reg = <1>;
-<<<<<<< HEAD
-			reset-assert-us = <15000>;
-			reset-deassert-us = <55000>;
-			reset-gpios = <&gpiog 8 GPIO_ACTIVE_LOW>;
-=======
 			realtek,clkout-disable;
 			reset-assert-us = <15000>;
 			reset-deassert-us = <55000>;
@@ -185,7 +168,6 @@
 					linux,default-trigger = "netdev";
 				};
 			};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };

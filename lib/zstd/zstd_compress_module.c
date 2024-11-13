@@ -66,15 +66,12 @@ int zstd_max_clevel(void)
 }
 EXPORT_SYMBOL(zstd_max_clevel);
 
-<<<<<<< HEAD
-=======
 int zstd_default_clevel(void)
 {
 	return ZSTD_defaultCLevel();
 }
 EXPORT_SYMBOL(zstd_default_clevel);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 size_t zstd_compress_bound(size_t src_size)
 {
 	return ZSTD_compressBound(src_size);
@@ -88,8 +85,6 @@ zstd_parameters zstd_get_params(int level,
 }
 EXPORT_SYMBOL(zstd_get_params);
 
-<<<<<<< HEAD
-=======
 zstd_compression_parameters zstd_get_cparams(int level,
 	unsigned long long estimated_src_size, size_t dict_size)
 {
@@ -97,7 +92,6 @@ zstd_compression_parameters zstd_get_cparams(int level,
 }
 EXPORT_SYMBOL(zstd_get_cparams);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 size_t zstd_cctx_workspace_bound(const zstd_compression_parameters *cparams)
 {
 	return ZSTD_estimateCCtxSize_usingCParams(*cparams);
@@ -112,8 +106,6 @@ zstd_cctx *zstd_init_cctx(void *workspace, size_t workspace_size)
 }
 EXPORT_SYMBOL(zstd_init_cctx);
 
-<<<<<<< HEAD
-=======
 zstd_cctx *zstd_create_cctx_advanced(zstd_custom_mem custom_mem)
 {
 	return ZSTD_createCCtx_advanced(custom_mem);
@@ -141,7 +133,6 @@ size_t zstd_free_cdict(zstd_cdict *cdict)
 }
 EXPORT_SYMBOL(zstd_free_cdict);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 size_t zstd_compress_cctx(zstd_cctx *cctx, void *dst, size_t dst_capacity,
 	const void *src, size_t src_size, const zstd_parameters *parameters)
 {
@@ -150,8 +141,6 @@ size_t zstd_compress_cctx(zstd_cctx *cctx, void *dst, size_t dst_capacity,
 }
 EXPORT_SYMBOL(zstd_compress_cctx);
 
-<<<<<<< HEAD
-=======
 size_t zstd_compress_using_cdict(zstd_cctx *cctx, void *dst,
 	size_t dst_capacity, const void *src, size_t src_size,
 	const ZSTD_CDict *cdict)
@@ -161,7 +150,6 @@ size_t zstd_compress_using_cdict(zstd_cctx *cctx, void *dst,
 }
 EXPORT_SYMBOL(zstd_compress_using_cdict);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 size_t zstd_cstream_workspace_bound(const zstd_compression_parameters *cparams)
 {
 	return ZSTD_estimateCStreamSize_usingCParams(*cparams);

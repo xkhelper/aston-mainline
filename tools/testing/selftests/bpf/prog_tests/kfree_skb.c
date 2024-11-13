@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-<<<<<<< HEAD
-=======
 #define _GNU_SOURCE
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <test_progs.h>
 #include <network_helpers.h>
 #include "kfree_skb.skel.h"

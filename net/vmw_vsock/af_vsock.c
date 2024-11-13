@@ -112,10 +112,7 @@
 #include <net/sock.h>
 #include <net/af_vsock.h>
 #include <uapi/linux/vm_sockets.h>
-<<<<<<< HEAD
-=======
 #include <uapi/asm-generic/ioctls.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr);
 static void vsock_sk_destruct(struct sock *sk);
@@ -1299,8 +1296,6 @@ int vsock_dgram_recvmsg(struct socket *sock, struct msghdr *msg,
 }
 EXPORT_SYMBOL_GPL(vsock_dgram_recvmsg);
 
-<<<<<<< HEAD
-=======
 static int vsock_do_ioctl(struct socket *sock, unsigned int cmd,
 			  int __user *arg)
 {
@@ -1352,7 +1347,6 @@ static int vsock_ioctl(struct socket *sock, unsigned int cmd,
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct proto_ops vsock_dgram_ops = {
 	.family = PF_VSOCK,
 	.owner = THIS_MODULE,
@@ -1363,11 +1357,7 @@ static const struct proto_ops vsock_dgram_ops = {
 	.accept = sock_no_accept,
 	.getname = vsock_getname,
 	.poll = vsock_poll,
-<<<<<<< HEAD
-	.ioctl = sock_no_ioctl,
-=======
 	.ioctl = vsock_ioctl,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.listen = sock_no_listen,
 	.shutdown = vsock_shutdown,
 	.sendmsg = vsock_dgram_sendmsg,
@@ -2356,11 +2346,7 @@ static const struct proto_ops vsock_stream_ops = {
 	.accept = vsock_accept,
 	.getname = vsock_getname,
 	.poll = vsock_poll,
-<<<<<<< HEAD
-	.ioctl = sock_no_ioctl,
-=======
 	.ioctl = vsock_ioctl,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.listen = vsock_listen,
 	.shutdown = vsock_shutdown,
 	.setsockopt = vsock_connectible_setsockopt,
@@ -2382,11 +2368,7 @@ static const struct proto_ops vsock_seqpacket_ops = {
 	.accept = vsock_accept,
 	.getname = vsock_getname,
 	.poll = vsock_poll,
-<<<<<<< HEAD
-	.ioctl = sock_no_ioctl,
-=======
 	.ioctl = vsock_ioctl,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.listen = vsock_listen,
 	.shutdown = vsock_shutdown,
 	.setsockopt = vsock_connectible_setsockopt,

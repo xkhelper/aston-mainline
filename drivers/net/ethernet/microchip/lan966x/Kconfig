@@ -8,10 +8,7 @@ config LAN966X_SWITCH
 	select PHYLINK
 	select PAGE_POOL
 	select VCAP
-<<<<<<< HEAD
-=======
 	select FDMA
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  This driver supports the Lan966x network switch device.
 

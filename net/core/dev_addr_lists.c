@@ -262,11 +262,7 @@ static int __hw_addr_sync_multiple(struct netdev_hw_addr_list *to_list,
 }
 
 /* This function only works where there is a strict 1-1 relationship
-<<<<<<< HEAD
- * between source and destionation of they synch. If you ever need to
-=======
  * between source and destination of they synch. If you ever need to
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * sync addresses to more then 1 destination, you need to use
  * __hw_addr_sync_multiple().
  */
@@ -303,13 +299,8 @@ void __hw_addr_unsync(struct netdev_hw_addr_list *to_list,
 EXPORT_SYMBOL(__hw_addr_unsync);
 
 /**
-<<<<<<< HEAD
- *  __hw_addr_sync_dev - Synchonize device's multicast list
- *  @list: address list to syncronize
-=======
  *  __hw_addr_sync_dev - Synchronize device's multicast list
  *  @list: address list to synchronize
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *  @dev:  device to sync
  *  @sync: function to call if address should be added
  *  @unsync: function to call if address should be removed

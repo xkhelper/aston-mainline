@@ -19,11 +19,7 @@
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/display/drm_dp_helper.h>
 #include <drm/drm_atomic_helper.h>

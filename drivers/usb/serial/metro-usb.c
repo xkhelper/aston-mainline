@@ -341,10 +341,6 @@ static void metrousb_unthrottle(struct tty_struct *tty)
 
 static struct usb_serial_driver metrousb_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner =	THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"metro-usb",
 	},
 	.description		= "Metrologic USB to Serial",

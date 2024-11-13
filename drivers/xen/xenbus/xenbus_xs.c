@@ -427,20 +427,12 @@ char **xenbus_directory(struct xenbus_transaction t,
 
 	path = join(dir, node);
 	if (IS_ERR(path))
-<<<<<<< HEAD
-		return (char **)path;
-=======
 		return ERR_CAST(path);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	strings = xs_single(t, XS_DIRECTORY, path, &len);
 	kfree(path);
 	if (IS_ERR(strings))
-<<<<<<< HEAD
-		return (char **)strings;
-=======
 		return ERR_CAST(strings);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return split(strings, len, num);
 }
@@ -473,11 +465,7 @@ void *xenbus_read(struct xenbus_transaction t,
 
 	path = join(dir, node);
 	if (IS_ERR(path))
-<<<<<<< HEAD
-		return (void *)path;
-=======
 		return ERR_CAST(path);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = xs_single(t, XS_READ, path, len);
 	kfree(path);

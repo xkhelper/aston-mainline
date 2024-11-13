@@ -555,12 +555,7 @@ static int aspeed_adc_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	if (of_find_property(data->dev->of_node, "aspeed,battery-sensing",
-			     NULL)) {
-=======
 	if (of_property_present(data->dev->of_node, "aspeed,battery-sensing")) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (data->model_data->bat_sense_sup) {
 			data->battery_sensing = 1;
 			if (readl(data->base + ASPEED_REG_ENGINE_CONTROL) &
@@ -699,11 +694,7 @@ static const struct of_device_id aspeed_adc_matches[] = {
 	{ .compatible = "aspeed,ast2500-adc", .data = &ast2500_model_data },
 	{ .compatible = "aspeed,ast2600-adc0", .data = &ast2600_adc0_model_data },
 	{ .compatible = "aspeed,ast2600-adc1", .data = &ast2600_adc1_model_data },
-<<<<<<< HEAD
-	{},
-=======
 	{ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(of, aspeed_adc_matches);
 

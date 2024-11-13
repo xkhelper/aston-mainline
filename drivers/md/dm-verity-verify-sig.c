@@ -127,11 +127,7 @@ int verity_verify_root_hash(const void *root_hash, size_t root_hash_len,
 #endif
 				VERIFYING_UNSPECIFIED_SIGNATURE, NULL, NULL);
 #ifdef CONFIG_DM_VERITY_VERIFY_ROOTHASH_SIG_PLATFORM_KEYRING
-<<<<<<< HEAD
-	if (ret == -ENOKEY)
-=======
 	if (ret == -ENOKEY || ret == -EKEYREJECTED)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = verify_pkcs7_signature(root_hash, root_hash_len, sig_data,
 					sig_len,
 					VERIFY_USE_PLATFORM_KEYRING,

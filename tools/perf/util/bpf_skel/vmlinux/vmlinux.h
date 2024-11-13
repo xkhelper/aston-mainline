@@ -15,10 +15,7 @@
 
 typedef __u8 u8;
 typedef __u32 u32;
-<<<<<<< HEAD
-=======
 typedef __s32 s32;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 typedef __u64 u64;
 typedef __s64 s64;
 
@@ -174,22 +171,16 @@ struct perf_sample_data {
 		u32		 cpu;
 	} cpu_entry;
 	u64			 phys_addr;
-<<<<<<< HEAD
-=======
 	u64			 cgroup;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64			 data_page_size;
 	u64			 code_page_size;
 } __attribute__((__aligned__(64))) __attribute__((preserve_access_index));
 
-<<<<<<< HEAD
-=======
 struct perf_event {
 	struct perf_event	*parent;
 	u64			id;
 } __attribute__((preserve_access_index));
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct bpf_perf_event_data_kern {
 	struct perf_sample_data *data;
 	struct perf_event	*event;

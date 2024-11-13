@@ -2,12 +2,8 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
-<<<<<<< HEAD
-#include "dc_spl_types.h"
-=======
 #include "spl_debug.h"
 #include "dc_spl_filters.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "dc_spl_isharp_filters.h"
 
 //========================================
@@ -21,11 +17,7 @@
 // C_start = 40.000000
 // C_end   = 64.000000
 //========================================
-<<<<<<< HEAD
-static const uint32_t filter_isharp_1D_lut_0[32] = {
-=======
 static const uint32_t filter_isharp_1D_lut_0[ISHARP_LUT_TABLE_SIZE] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 0x02010000,
 0x0A070503,
 0x1614100D,
@@ -71,11 +63,7 @@ static const uint32_t filter_isharp_1D_lut_0[ISHARP_LUT_TABLE_SIZE] = {
 // C_end   = 127.000000
 //========================================
 
-<<<<<<< HEAD
-static const uint32_t filter_isharp_1D_lut_0p5x[32] = {
-=======
 static const uint32_t filter_isharp_1D_lut_0p5x[ISHARP_LUT_TABLE_SIZE] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 0x00000000,
 0x02020101,
 0x06050403,
@@ -120,11 +108,7 @@ static const uint32_t filter_isharp_1D_lut_0p5x[ISHARP_LUT_TABLE_SIZE] = {
 // C_start = 96.000000
 // C_end   = 127.000000
 //========================================
-<<<<<<< HEAD
-static const uint32_t filter_isharp_1D_lut_1p0x[32] = {
-=======
 static const uint32_t filter_isharp_1D_lut_1p0x[ISHARP_LUT_TABLE_SIZE] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 0x01000000,
 0x05040302,
 0x0B0A0806,
@@ -169,11 +153,7 @@ static const uint32_t filter_isharp_1D_lut_1p0x[ISHARP_LUT_TABLE_SIZE] = {
 // C_start = 96.000000
 // C_end   = 127.000000
 //========================================
-<<<<<<< HEAD
-static const uint32_t filter_isharp_1D_lut_1p5x[32] = {
-=======
 static const uint32_t filter_isharp_1D_lut_1p5x[ISHARP_LUT_TABLE_SIZE] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 0x01010000,
 0x07050402,
 0x110F0C0A,
@@ -218,11 +198,7 @@ static const uint32_t filter_isharp_1D_lut_1p5x[ISHARP_LUT_TABLE_SIZE] = {
 // C_start = 40.000000
 // C_end   = 127.000000
 //========================================
-<<<<<<< HEAD
-static const uint32_t filter_isharp_1D_lut_2p0x[32] = {
-=======
 static const uint32_t filter_isharp_1D_lut_2p0x[ISHARP_LUT_TABLE_SIZE] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 0x02010000,
 0x0A070503,
 0x1614100D,
@@ -256,8 +232,6 @@ static const uint32_t filter_isharp_1D_lut_2p0x[ISHARP_LUT_TABLE_SIZE] = {
 0x080B0D0E,
 0x00020406,
 };
-<<<<<<< HEAD
-=======
 //========================================
 // Delta Gain 1DLUT
 // LUT content is packed as 4-bytes into one DWORD/entry
@@ -305,7 +279,6 @@ static const uint32_t filter_isharp_1D_lut_3p0x[ISHARP_LUT_TABLE_SIZE] = {
 };
 
 //========================================
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 // Wide scaler coefficients
 //========================================================
 // <using>			gen_scaler_coeffs.m
@@ -360,11 +333,7 @@ static const uint16_t filter_isharp_wide_6tap_64p[198] = {
 // <CoefType>		Blur & Scale LPF
 // <CoefQuant>		S1.10
 //========================================================
-<<<<<<< HEAD
-static const uint16_t filter_isharp_bs_4tap_64p[198] = {
-=======
 static const uint16_t filter_isharp_bs_4tap_in_6_64p[198] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 0x0000, 0x00E5, 0x0237, 0x00E4, 0x0000, 0x0000,
 0x0000, 0x00DE, 0x0237, 0x00EB, 0x0000, 0x0000,
 0x0000, 0x00D7, 0x0236, 0x00F2, 0x0001, 0x0000,
@@ -399,8 +368,6 @@ static const uint16_t filter_isharp_bs_4tap_in_6_64p[198] = {
 0x0000, 0x003B, 0x01CF, 0x01C2, 0x0034, 0x0000,
 0x0000, 0x0037, 0x01C9, 0x01C9, 0x0037, 0x0000
 };
-<<<<<<< HEAD
-=======
 //========================================================
 // <using>			gen_BlurScale_coeffs.m
 // <date>			25-Apr-2022
@@ -542,7 +509,6 @@ struct scale_ratio_to_sharpness_level_adj sharpness_level_adj[NUM_SHARPNESS_ADJ_
 	{1, 1, 5},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const uint32_t *spl_get_filter_isharp_1D_lut_0(void)
 {
 	return filter_isharp_1D_lut_0;
@@ -563,23 +529,14 @@ const uint32_t *spl_get_filter_isharp_1D_lut_2p0x(void)
 {
 	return filter_isharp_1D_lut_2p0x;
 }
-<<<<<<< HEAD
-=======
 const uint32_t *spl_get_filter_isharp_1D_lut_3p0x(void)
 {
 	return filter_isharp_1D_lut_3p0x;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const uint16_t *spl_get_filter_isharp_wide_6tap_64p(void)
 {
 	return filter_isharp_wide_6tap_64p;
 }
-<<<<<<< HEAD
-const uint16_t *spl_get_filter_isharp_bs_4tap_64p(void)
-{
-	return filter_isharp_bs_4tap_64p;
-}
-=======
 uint16_t *spl_get_filter_isharp_bs_4tap_in_6_64p(void)
 {
 	return filter_isharp_bs_4tap_in_6_64p_s1_12;
@@ -798,4 +755,3 @@ void spl_set_blur_scale_data(struct dscl_prog_data *dscl_prog_data,
 		spl_dscl_get_blur_scale_coeffs_64p(data->taps.v_taps);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

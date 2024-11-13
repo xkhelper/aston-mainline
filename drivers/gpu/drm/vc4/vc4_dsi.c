@@ -613,10 +613,7 @@ struct vc4_dsi {
 static inline void
 dsi_dma_workaround_write(struct vc4_dsi *dsi, u32 offset, u32 val)
 {
-<<<<<<< HEAD
-=======
 	struct drm_device *drm = dsi->bridge.dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dma_chan *chan = dsi->reg_dma_chan;
 	struct dma_async_tx_descriptor *tx;
 	dma_cookie_t cookie;
@@ -637,31 +634,19 @@ dsi_dma_workaround_write(struct vc4_dsi *dsi, u32 offset, u32 val)
 						  dsi->reg_dma_paddr,
 						  4, 0);
 	if (!tx) {
-<<<<<<< HEAD
-		DRM_ERROR("Failed to set up DMA register write\n");
-=======
 		drm_err(drm, "Failed to set up DMA register write\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
 	cookie = tx->tx_submit(tx);
 	ret = dma_submit_error(cookie);
 	if (ret) {
-<<<<<<< HEAD
-		DRM_ERROR("Failed to submit DMA: %d\n", ret);
-=======
 		drm_err(drm, "Failed to submit DMA: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 	ret = dma_sync_wait(chan, cookie);
 	if (ret)
-<<<<<<< HEAD
-		DRM_ERROR("Failed to wait for DMA: %d\n", ret);
-=======
 		drm_err(drm, "Failed to wait for DMA: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #define DSI_READ(offset)								\
@@ -909,11 +894,7 @@ static void vc4_dsi_bridge_pre_enable(struct drm_bridge *bridge,
 
 	ret = pm_runtime_resume_and_get(dev);
 	if (ret) {
-<<<<<<< HEAD
-		DRM_ERROR("Failed to runtime PM enable on DSI%d\n", dsi->variant->port);
-=======
 		drm_err(bridge->dev, "Failed to runtime PM enable on DSI%d\n", dsi->variant->port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -1006,22 +987,14 @@ static void vc4_dsi_bridge_pre_enable(struct drm_bridge *bridge,
 
 	ret = clk_prepare_enable(dsi->escape_clock);
 	if (ret) {
-<<<<<<< HEAD
-		DRM_ERROR("Failed to turn on DSI escape clock: %d\n", ret);
-=======
 		drm_err(bridge->dev, "Failed to turn on DSI escape clock: %d\n",
 			ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
 	ret = clk_prepare_enable(dsi->pll_phy_clock);
 	if (ret) {
-<<<<<<< HEAD
-		DRM_ERROR("Failed to turn on DSI PLL: %d\n", ret);
-=======
 		drm_err(bridge->dev, "Failed to turn on DSI PLL: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -1043,11 +1016,7 @@ static void vc4_dsi_bridge_pre_enable(struct drm_bridge *bridge,
 
 	ret = clk_prepare_enable(dsi->pixel_clock);
 	if (ret) {
-<<<<<<< HEAD
-		DRM_ERROR("Failed to turn on DSI pixel clock: %d\n", ret);
-=======
 		drm_err(bridge->dev, "Failed to turn on DSI pixel clock: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -1205,10 +1174,7 @@ static ssize_t vc4_dsi_host_transfer(struct mipi_dsi_host *host,
 				     const struct mipi_dsi_msg *msg)
 {
 	struct vc4_dsi *dsi = host_to_dsi(host);
-<<<<<<< HEAD
-=======
 	struct drm_device *drm = dsi->bridge.dev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mipi_dsi_packet packet;
 	u32 pkth = 0, pktc = 0;
 	int i, ret;
@@ -1340,13 +1306,8 @@ static ssize_t vc4_dsi_host_transfer(struct mipi_dsi_host *host,
 						  DSI_RXPKT1H_BC_PARAM);
 
 			if (rxlen != msg->rx_len) {
-<<<<<<< HEAD
-				DRM_ERROR("DSI returned %db, expecting %db\n",
-					  rxlen, (int)msg->rx_len);
-=======
 				drm_err(drm, "DSI returned %db, expecting %db\n",
 					rxlen, (int)msg->rx_len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				ret = -ENXIO;
 				goto reset_fifo_and_return;
 			}
@@ -1368,11 +1329,7 @@ static ssize_t vc4_dsi_host_transfer(struct mipi_dsi_host *host,
 	return ret;
 
 reset_fifo_and_return:
-<<<<<<< HEAD
-	DRM_ERROR("DSI transfer failed, resetting: %d\n", ret);
-=======
 	drm_err(drm, "DSI transfer failed, resetting: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	DSI_PORT_WRITE(TXPKT1C, DSI_PORT_READ(TXPKT1C) & ~DSI_TXPKT1C_CMD_EN);
 	udelay(1);
@@ -1514,12 +1471,8 @@ static void dsi_handle_error(struct vc4_dsi *dsi,
 	if (!(stat & bit))
 		return;
 
-<<<<<<< HEAD
-	DRM_ERROR("DSI%d: %s error\n", dsi->variant->port, type);
-=======
 	drm_err(dsi->bridge.dev, "DSI%d: %s error\n", dsi->variant->port,
 		type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	*ret = IRQ_HANDLED;
 }
 
@@ -1738,11 +1691,7 @@ static int vc4_dsi_bind(struct device *dev, struct device *master, void *data)
 						      &dsi->reg_dma_paddr,
 						      GFP_KERNEL);
 		if (!dsi->reg_dma_mem) {
-<<<<<<< HEAD
-			DRM_ERROR("Failed to get DMA memory\n");
-=======
 			drm_err(drm, "Failed to get DMA memory\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENOMEM;
 		}
 
@@ -1757,13 +1706,8 @@ static int vc4_dsi_bind(struct device *dev, struct device *master, void *data)
 		if (IS_ERR(dsi->reg_dma_chan)) {
 			ret = PTR_ERR(dsi->reg_dma_chan);
 			if (ret != -EPROBE_DEFER)
-<<<<<<< HEAD
-				DRM_ERROR("Failed to get DMA channel: %d\n",
-					  ret);
-=======
 				drm_err(drm, "Failed to get DMA channel: %d\n",
 					ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 

@@ -102,11 +102,7 @@ void imsic_vector_debug_show_summary(struct seq_file *m, int ind);
 
 void imsic_state_online(void);
 void imsic_state_offline(void);
-<<<<<<< HEAD
-int imsic_setup_state(struct fwnode_handle *fwnode);
-=======
 int imsic_setup_state(struct fwnode_handle *fwnode, void *opaque);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int imsic_irqdomain_init(void);
 
 #endif

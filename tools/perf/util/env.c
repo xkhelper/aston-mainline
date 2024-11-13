@@ -624,8 +624,6 @@ out:
 	free(cap_eq);
 	return NULL;
 }
-<<<<<<< HEAD
-=======
 
 void perf_env__find_br_cntr_info(struct perf_env *env,
 				 unsigned int *nr,
@@ -641,4 +639,3 @@ void perf_env__find_br_cntr_info(struct perf_env *env,
 					     env->pmu_caps->br_cntr_width;
 	}
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

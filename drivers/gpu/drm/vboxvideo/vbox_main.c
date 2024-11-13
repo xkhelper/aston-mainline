@@ -114,13 +114,10 @@ int vbox_hw_init(struct vbox_private *vbox)
 
 	DRM_INFO("VRAM %08x\n", vbox->full_vram_size);
 
-<<<<<<< HEAD
-=======
 	ret = pcim_request_region(pdev, 0, "vboxvideo");
 	if (ret)
 		return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Map guest-heap at end of vram */
 	vbox->guest_heap = pcim_iomap_range(pdev, 0,
 			GUEST_HEAP_OFFSET(vbox), GUEST_HEAP_SIZE);

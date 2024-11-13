@@ -7,7 +7,4 @@ generated-y += unistd_nr.h
 generic-y += asm-offsets.h
 generic-y += kvm_types.h
 generic-y += mcs_spinlock.h
-<<<<<<< HEAD
-=======
 generic-y += mmzone.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

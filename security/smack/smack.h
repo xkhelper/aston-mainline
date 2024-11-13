@@ -355,8 +355,6 @@ static inline struct superblock_smack *smack_superblock(
 	return superblock->s_security + smack_blob_sizes.lbs_superblock;
 }
 
-<<<<<<< HEAD
-=======
 static inline struct socket_smack *smack_sock(const struct sock *sock)
 {
 	return sock->sk_security + smack_blob_sizes.lbs_sock;
@@ -369,7 +367,6 @@ static inline struct smack_known **smack_key(const struct key *key)
 }
 #endif /* CONFIG_KEYS */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Is the directory transmuting?
  */

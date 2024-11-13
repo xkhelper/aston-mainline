@@ -19,7 +19,4 @@ Security Documentation
    digsig
    landlock
    secrets/index
-<<<<<<< HEAD
-=======
    ipe
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

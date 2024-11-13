@@ -22,10 +22,6 @@ int xe_sync_entry_parse(struct xe_device *xe, struct xe_file *xef,
 			struct xe_sync_entry *sync,
 			struct drm_xe_sync __user *sync_user,
 			unsigned int flags);
-<<<<<<< HEAD
-int xe_sync_entry_wait(struct xe_sync_entry *sync);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int xe_sync_entry_add_deps(struct xe_sync_entry *sync,
 			   struct xe_sched_job *job);
 void xe_sync_entry_signal(struct xe_sync_entry *sync,

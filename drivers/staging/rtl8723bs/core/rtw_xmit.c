@@ -5,10 +5,6 @@
  *
  ******************************************************************************/
 #include <drv_types.h>
-<<<<<<< HEAD
-#include <rtw_debug.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static u8 P802_1H_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0xf8 };
 static u8 RFC1042_OUI[P80211_OUI_LEN] = { 0x00, 0x00, 0x00 };
@@ -48,11 +44,7 @@ s32 _rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, struct adapter *padapter)
 	init_completion(&pxmitpriv->terminate_xmitthread_comp);
 
 	/*
-<<<<<<< HEAD
-	 * Please insert all the queue initializaiton using _rtw_init_queue below
-=======
 	 * Please insert all the queue initialization using _rtw_init_queue below
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 
 	pxmitpriv->adapter = padapter;

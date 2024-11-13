@@ -11,13 +11,9 @@
 #define __XEN_PUBLIC_ELFNOTE_H__
 
 /*
-<<<<<<< HEAD
- * The notes should live in a SHT_NOTE segment and have "Xen" in the
-=======
  * `incontents 200 elfnotes ELF notes
  *
  * The notes should live in a PT_NOTE segment and have "Xen" in the
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * name field.
  *
  * Numeric types are either 4 or 8 bytes depending on the content of
@@ -28,11 +24,8 @@
  *
  * String values (for non-legacy) are NULL terminated ASCII, also known
  * as ASCIZ type.
-<<<<<<< HEAD
-=======
  *
  * Xen only uses ELF Notes contained in x86 binaries.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 /*
@@ -63,11 +56,7 @@
 #define XEN_ELFNOTE_VIRT_BASE      3
 
 /*
-<<<<<<< HEAD
- * The offset of the ELF paddr field from the acutal required
-=======
  * The offset of the ELF paddr field from the actual required
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * pseudo-physical address (numeric).
  *
  * This is used to maintain backwards compatibility with older kernels
@@ -107,16 +96,12 @@
 #define XEN_ELFNOTE_LOADER         8
 
 /*
-<<<<<<< HEAD
- * The kernel supports PAE (x86/32 only, string = "yes" or "no").
-=======
  * The kernel supports PAE (x86/32 only, string = "yes", "no" or
  * "bimodal").
  *
  * For compatibility with Xen 3.0.3 and earlier the "bimodal" setting
  * may be given as "yes,bimodal" which will cause older Xen to treat
  * this kernel as PAE.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * LEGACY: PAE (n.b. The legacy interface included a provision to
  * indicate 'extended-cr3' support allowing L3 page tables to be
@@ -173,13 +158,9 @@
  * The (non-default) location the initial phys-to-machine map should be
  * placed at by the hypervisor (Dom0) or the tools (DomU).
  * The kernel must be prepared for this mapping to be established using
-<<<<<<< HEAD
- * large pages, despite such otherwise not being available to guests.
-=======
  * large pages, despite such otherwise not being available to guests. Note
  * that these large pages may be misaligned in PFN space (they'll obviously
  * be aligned in MFN and virtual address spaces).
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * The kernel must also be able to handle the page table pages used for
  * this mapping not being accessible through the initial mapping.
  * (Only x86-64 supports this at present.)
@@ -216,11 +197,6 @@
 #define XEN_ELFNOTE_PHYS32_ENTRY 18
 
 /*
-<<<<<<< HEAD
- * The number of the highest elfnote defined.
- */
-#define XEN_ELFNOTE_MAX XEN_ELFNOTE_PHYS32_ENTRY
-=======
  * Physical loading constraints for PVH kernels
  *
  * The presence of this note indicates the kernel supports relocating itself.
@@ -296,6 +272,5 @@
  * See tools/libxc/xc_core.h for more information.
  */
 #define XEN_ELFNOTE_DUMPCORE_FORMAT_VERSION     0x2000003
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* __XEN_PUBLIC_ELFNOTE_H__ */

@@ -42,38 +42,24 @@ static const unsigned int isp_4_1_1_int_srcid[MAX_ISP411_INT_SRC] = {
 static int isp_v4_1_1_hw_init(struct amdgpu_isp *isp)
 {
 	struct amdgpu_device *adev = isp->adev;
-<<<<<<< HEAD
-	u64 isp_base;
-	int int_idx;
-	int r;
-=======
 	int idx, int_idx, num_res, r;
 	u64 isp_base;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (adev->rmmio_size == 0 || adev->rmmio_size < 0x5289)
 		return -EINVAL;
 
 	isp_base = adev->rmmio_base;
 
-<<<<<<< HEAD
-	isp->isp_cell = kcalloc(1, sizeof(struct mfd_cell), GFP_KERNEL);
-=======
 	isp->isp_cell = kcalloc(2, sizeof(struct mfd_cell), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!isp->isp_cell) {
 		r = -ENOMEM;
 		DRM_ERROR("%s: isp mfd cell alloc failed\n", __func__);
 		goto failure;
 	}
 
-<<<<<<< HEAD
-	isp->isp_res = kcalloc(MAX_ISP411_INT_SRC + 1, sizeof(struct resource),
-=======
 	num_res = MAX_ISP411_MEM_RES + MAX_ISP411_SENSOR_RES + MAX_ISP411_INT_SRC;
 
 	isp->isp_res = kcalloc(num_res, sizeof(struct resource),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			       GFP_KERNEL);
 	if (!isp->isp_res) {
 		r = -ENOMEM;
@@ -98,19 +84,6 @@ static int isp_v4_1_1_hw_init(struct amdgpu_isp *isp)
 	isp->isp_res[0].start = isp_base;
 	isp->isp_res[0].end = isp_base + ISP_REGS_OFFSET_END;
 
-<<<<<<< HEAD
-	for (int_idx = 0; int_idx < MAX_ISP411_INT_SRC; int_idx++) {
-		isp->isp_res[int_idx + 1].name = "isp_4_1_1_irq";
-		isp->isp_res[int_idx + 1].flags = IORESOURCE_IRQ;
-		isp->isp_res[int_idx + 1].start =
-			amdgpu_irq_create_mapping(adev, isp_4_1_1_int_srcid[int_idx]);
-		isp->isp_res[int_idx + 1].end =
-			isp->isp_res[int_idx + 1].start;
-	}
-
-	isp->isp_cell[0].name = "amd_isp_capture";
-	isp->isp_cell[0].num_resources = MAX_ISP411_INT_SRC + 1;
-=======
 	isp->isp_res[1].name = "isp_4_1_1_phy0_reg";
 	isp->isp_res[1].flags = IORESOURCE_MEM;
 	isp->isp_res[1].start = isp_base + ISP411_PHY0_OFFSET;
@@ -134,14 +107,10 @@ static int isp_v4_1_1_hw_init(struct amdgpu_isp *isp)
 
 	isp->isp_cell[0].name = "amd_isp_capture";
 	isp->isp_cell[0].num_resources = num_res;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	isp->isp_cell[0].resources = &isp->isp_res[0];
 	isp->isp_cell[0].platform_data = isp->isp_pdata;
 	isp->isp_cell[0].pdata_size = sizeof(struct isp_platform_data);
 
-<<<<<<< HEAD
-	r = mfd_add_hotplug_devices(isp->parent, isp->isp_cell, 1);
-=======
 	isp->isp_i2c_res = kcalloc(1, sizeof(struct resource), GFP_KERNEL);
 	if (!isp->isp_i2c_res) {
 		r = -ENOMEM;
@@ -161,7 +130,6 @@ static int isp_v4_1_1_hw_init(struct amdgpu_isp *isp)
 	isp->isp_cell[1].pdata_size = sizeof(struct isp_platform_data);
 
 	r = mfd_add_hotplug_devices(isp->parent, isp->isp_cell, 2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (r) {
 		DRM_ERROR("%s: add mfd hotplug device failed\n", __func__);
 		goto failure;
@@ -174,10 +142,7 @@ failure:
 	kfree(isp->isp_pdata);
 	kfree(isp->isp_res);
 	kfree(isp->isp_cell);
-<<<<<<< HEAD
-=======
 	kfree(isp->isp_i2c_res);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return r;
 }
@@ -189,10 +154,7 @@ static int isp_v4_1_1_hw_fini(struct amdgpu_isp *isp)
 	kfree(isp->isp_res);
 	kfree(isp->isp_cell);
 	kfree(isp->isp_pdata);
-<<<<<<< HEAD
-=======
 	kfree(isp->isp_i2c_res);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

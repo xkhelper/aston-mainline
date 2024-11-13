@@ -368,11 +368,7 @@ No additional type data follow ``btf_type``.
   * ``info.kind_flag``: 0
   * ``info.kind``: BTF_KIND_FUNC
   * ``info.vlen``: linkage information (BTF_FUNC_STATIC, BTF_FUNC_GLOBAL
-<<<<<<< HEAD
-                   or BTF_FUNC_EXTERN)
-=======
                    or BTF_FUNC_EXTERN - see :ref:`BTF_Function_Linkage_Constants`)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   * ``type``: a BTF_KIND_FUNC_PROTO type
 
 No additional type data follow ``btf_type``.
@@ -428,14 +424,8 @@ following data::
         __u32   linkage;
     };
 
-<<<<<<< HEAD
-``struct btf_var`` encoding:
-  * ``linkage``: currently only static variable 0, or globally allocated
-                 variable in ELF sections 1
-=======
 ``btf_var.linkage`` may take the values: BTF_VAR_STATIC, BTF_VAR_GLOBAL_ALLOCATED or BTF_VAR_GLOBAL_EXTERN -
 see :ref:`BTF_Var_Linkage_Constants`.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Not all type of global variables are supported by LLVM at this point.
 The following is currently available:
@@ -558,8 +548,6 @@ The ``btf_enum64`` encoding:
 If the original enum value is signed and the size is less than 8,
 that value will be sign extended into 8 bytes.
 
-<<<<<<< HEAD
-=======
 2.3 Constant Values
 -------------------
 
@@ -592,7 +580,6 @@ that value will be sign extended into 8 bytes.
   ``BTF_VAR_GLOBAL_EXTERN``     0x2    declaration of global variable whose definition is outside the containing compilation unit
   ============================  =====  ===========
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 3. BTF Kernel API
 =================
 

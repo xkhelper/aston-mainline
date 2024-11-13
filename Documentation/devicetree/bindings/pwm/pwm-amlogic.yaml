@@ -39,13 +39,10 @@ properties:
           - amlogic,meson-s4-pwm
       - items:
           - enum:
-<<<<<<< HEAD
-=======
               - amlogic,meson-a1-pwm
           - const: amlogic,meson-s4-pwm
       - items:
           - enum:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
               - amlogic,meson8b-pwm-v2
               - amlogic,meson-gxbb-pwm-v2
               - amlogic,meson-axg-pwm-v2
@@ -63,12 +60,9 @@ properties:
     minItems: 1
     maxItems: 2
 
-<<<<<<< HEAD
-=======
   power-domains:
     maxItems: 1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   "#pwm-cells":
     const: 3
 
@@ -149,8 +143,6 @@ allOf:
       required:
         - clocks
 
-<<<<<<< HEAD
-=======
   - if:
       properties:
         compatible:
@@ -161,7 +153,6 @@ allOf:
       required:
         - power-domains
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 additionalProperties: false
 
 examples:

@@ -354,14 +354,7 @@ struct dpu_caps {
 	bool has_dim_layer;
 	bool has_idle_pc;
 	bool has_3d_merge;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	bool has_active_ctls;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	bool has_active_ctls;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	/* SSPP limits */
 	u32 max_linewidth;
 	u32 pixel_ram_size;

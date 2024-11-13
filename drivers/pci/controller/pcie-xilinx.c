@@ -208,14 +208,6 @@ static struct irq_chip xilinx_msi_top_chip = {
 	.irq_ack	= xilinx_msi_top_irq_ack,
 };
 
-<<<<<<< HEAD
-static int xilinx_msi_set_affinity(struct irq_data *d, const struct cpumask *mask, bool force)
-{
-	return -EINVAL;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void xilinx_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
 {
 	struct xilinx_pcie *pcie = irq_data_get_irq_chip_data(data);
@@ -228,10 +220,6 @@ static void xilinx_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
 
 static struct irq_chip xilinx_msi_bottom_chip = {
 	.name			= "Xilinx MSI",
-<<<<<<< HEAD
-	.irq_set_affinity 	= xilinx_msi_set_affinity,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.irq_compose_msi_msg	= xilinx_compose_msi_msg,
 };
 
@@ -277,12 +265,8 @@ static const struct irq_domain_ops xilinx_msi_domain_ops = {
 };
 
 static struct msi_domain_info xilinx_msi_info = {
-<<<<<<< HEAD
-	.flags	= (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS),
-=======
 	.flags	= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
 		  MSI_FLAG_NO_AFFINITY,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.chip	= &xilinx_msi_top_chip,
 };
 

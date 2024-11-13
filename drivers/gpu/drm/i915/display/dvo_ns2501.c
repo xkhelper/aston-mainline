@@ -398,21 +398,13 @@ static bool ns2501_readb(struct intel_dvo_device *dvo, int addr, u8 *ch)
 
 	struct i2c_msg msgs[] = {
 		{
-<<<<<<< HEAD
-		 .addr = dvo->slave_addr,
-=======
 		 .addr = dvo->target_addr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 .flags = 0,
 		 .len = 1,
 		 .buf = out_buf,
 		 },
 		{
-<<<<<<< HEAD
-		 .addr = dvo->slave_addr,
-=======
 		 .addr = dvo->target_addr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 .flags = I2C_M_RD,
 		 .len = 1,
 		 .buf = in_buf,
@@ -430,11 +422,7 @@ static bool ns2501_readb(struct intel_dvo_device *dvo, int addr, u8 *ch)
 	if (!ns->quiet) {
 		DRM_DEBUG_KMS
 		    ("Unable to read register 0x%02x from %s:0x%02x.\n", addr,
-<<<<<<< HEAD
-		     adapter->name, dvo->slave_addr);
-=======
 		     adapter->name, dvo->target_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return false;
@@ -453,11 +441,7 @@ static bool ns2501_writeb(struct intel_dvo_device *dvo, int addr, u8 ch)
 	u8 out_buf[2];
 
 	struct i2c_msg msg = {
-<<<<<<< HEAD
-		.addr = dvo->slave_addr,
-=======
 		.addr = dvo->target_addr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.flags = 0,
 		.len = 2,
 		.buf = out_buf,
@@ -472,11 +456,7 @@ static bool ns2501_writeb(struct intel_dvo_device *dvo, int addr, u8 ch)
 
 	if (!ns->quiet) {
 		DRM_DEBUG_KMS("Unable to write register 0x%02x to %s:%d\n",
-<<<<<<< HEAD
-			      addr, adapter->name, dvo->slave_addr);
-=======
 			      addr, adapter->name, dvo->target_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return false;
@@ -507,13 +487,8 @@ static bool ns2501_init(struct intel_dvo_device *dvo,
 		goto out;
 
 	if (ch != (NS2501_VID & 0xff)) {
-<<<<<<< HEAD
-		DRM_DEBUG_KMS("ns2501 not detected got %d: from %s Slave %d.\n",
-			      ch, adapter->name, dvo->slave_addr);
-=======
 		DRM_DEBUG_KMS("ns2501 not detected got %d: from %s Target %d.\n",
 			      ch, adapter->name, dvo->target_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 
@@ -521,13 +496,8 @@ static bool ns2501_init(struct intel_dvo_device *dvo,
 		goto out;
 
 	if (ch != (NS2501_DID & 0xff)) {
-<<<<<<< HEAD
-		DRM_DEBUG_KMS("ns2501 not detected got %d: from %s Slave %d.\n",
-			      ch, adapter->name, dvo->slave_addr);
-=======
 		DRM_DEBUG_KMS("ns2501 not detected got %d: from %s Target %d.\n",
 			      ch, adapter->name, dvo->target_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 	ns->quiet = false;

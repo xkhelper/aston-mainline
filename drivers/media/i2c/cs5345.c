@@ -189,11 +189,7 @@ static void cs5345_remove(struct i2c_client *client)
 /* ----------------------------------------------------------------------- */
 
 static const struct i2c_device_id cs5345_id[] = {
-<<<<<<< HEAD
-	{ "cs5345", 0 },
-=======
 	{ "cs5345" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, cs5345_id);

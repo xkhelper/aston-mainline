@@ -107,16 +107,6 @@
 
 #endif
 
-<<<<<<< HEAD
-#ifdef CONFIG_XIP_KERNEL
-#define XIP_OFFSET		SZ_32M
-#define XIP_OFFSET_MASK		(SZ_32M - 1)
-#else
-#define XIP_OFFSET		0
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __ASSEMBLY__
 
 #include <asm/page.h>
@@ -145,13 +135,6 @@
 
 #ifdef CONFIG_XIP_KERNEL
 #define XIP_FIXUP(addr) ({							\
-<<<<<<< HEAD
-	uintptr_t __a = (uintptr_t)(addr);					\
-	(__a >= CONFIG_XIP_PHYS_ADDR && \
-	 __a < CONFIG_XIP_PHYS_ADDR + XIP_OFFSET * 2) ?	\
-		__a - CONFIG_XIP_PHYS_ADDR + CONFIG_PHYS_RAM_BASE - XIP_OFFSET :\
-		__a;								\
-=======
 	extern char _sdata[], _start[], _end[];					\
 	uintptr_t __rom_start_data = CONFIG_XIP_PHYS_ADDR			\
 				+ (uintptr_t)&_sdata - (uintptr_t)&_start;	\
@@ -160,7 +143,6 @@
 	uintptr_t __a = (uintptr_t)(addr);					\
 	(__a >= __rom_start_data && __a < __rom_end_data) ?			\
 		__a - __rom_start_data + CONFIG_PHYS_RAM_BASE :	__a;		\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	})
 #else
 #define XIP_FIXUP(addr)		(addr)
@@ -515,12 +497,9 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
 		struct vm_area_struct *vma, unsigned long address,
 		pte_t *ptep, unsigned int nr)
 {
-<<<<<<< HEAD
-=======
 	asm goto(ALTERNATIVE("nop", "j %l[svvptc]", 0, RISCV_ISA_EXT_SVVPTC, 1)
 		 : : : : svvptc);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The kernel assumes that TLBs don't cache invalid entries, but
 	 * in RISC-V, SFENCE.VMA specifies an ordering constraint, not a
@@ -530,8 +509,6 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
 	 */
 	while (nr--)
 		local_flush_tlb_page(address + nr * PAGE_SIZE);
-<<<<<<< HEAD
-=======
 
 svvptc:;
 	/*
@@ -539,7 +516,6 @@ svvptc:;
 	 * a bounded timeframe, so when the uarch does not cache invalid
 	 * entries, we don't have to do anything.
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #define update_mmu_cache(vma, addr, ptep) \
 	update_mmu_cache_range(NULL, vma, addr, ptep, 1)

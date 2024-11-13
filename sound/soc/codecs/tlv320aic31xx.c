@@ -12,10 +12,7 @@
  * and mono/stereo Class-D speaker driver.
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
@@ -26,10 +23,7 @@
 #include <linux/gpio/consumer.h>
 #include <linux/regulator/consumer.h>
 #include <linux/acpi.h>
-<<<<<<< HEAD
-=======
 #include <linux/firmware.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/of.h>
 #include <linux/slab.h>
 #include <sound/core.h>
@@ -901,11 +895,7 @@ static int aic31xx_setup_pll(struct snd_soc_component *component,
 		dev_err(component->dev,
 			"%s: Sample rate (%u) and format not supported\n",
 			__func__, params_rate(params));
-<<<<<<< HEAD
-		/* See bellow for details how fix this. */
-=======
 		/* See below for details on how to fix this. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	if (bclk_score != 0) {
@@ -1650,8 +1640,6 @@ static const struct i2c_device_id aic31xx_i2c_id[] = {
 };
 MODULE_DEVICE_TABLE(i2c, aic31xx_i2c_id);
 
-<<<<<<< HEAD
-=======
 static int tlv320dac3100_fw_load(struct aic31xx_priv *aic31xx,
 				 const u8 *data, size_t size)
 {
@@ -1744,7 +1732,6 @@ static int tlv320dac3100_load_coeffs(struct aic31xx_priv *aic31xx,
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int aic31xx_i2c_probe(struct i2c_client *i2c)
 {
 	struct aic31xx_priv *aic31xx;
@@ -1834,15 +1821,12 @@ static int aic31xx_i2c_probe(struct i2c_client *i2c)
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	if (aic31xx->codec_type == DAC3100) {
 		ret = tlv320dac3100_load_coeffs(aic31xx, "tlv320dac3100-coeffs.bin");
 		if (ret)
 			dev_warn(aic31xx->dev, "Did not load any filter coefficients\n");
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (aic31xx->codec_type & DAC31XX_BIT)
 		return devm_snd_soc_register_component(&i2c->dev,
 				&soc_codec_driver_aic31xx,

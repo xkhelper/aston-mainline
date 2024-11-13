@@ -52,18 +52,11 @@
 #define NFSD_FILE_CACHE_UP		     (0)
 
 /* We only care about NFSD_MAY_READ/WRITE for this cache */
-<<<<<<< HEAD
-#define NFSD_FILE_MAY_MASK	(NFSD_MAY_READ|NFSD_MAY_WRITE)
-
-static DEFINE_PER_CPU(unsigned long, nfsd_file_cache_hits);
-static DEFINE_PER_CPU(unsigned long, nfsd_file_acquisitions);
-=======
 #define NFSD_FILE_MAY_MASK	(NFSD_MAY_READ|NFSD_MAY_WRITE|NFSD_MAY_LOCALIO)
 
 static DEFINE_PER_CPU(unsigned long, nfsd_file_cache_hits);
 static DEFINE_PER_CPU(unsigned long, nfsd_file_acquisitions);
 static DEFINE_PER_CPU(unsigned long, nfsd_file_allocations);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static DEFINE_PER_CPU(unsigned long, nfsd_file_releases);
 static DEFINE_PER_CPU(unsigned long, nfsd_file_total_age);
 static DEFINE_PER_CPU(unsigned long, nfsd_file_evictions);
@@ -119,11 +112,7 @@ static void
 nfsd_file_schedule_laundrette(void)
 {
 	if (test_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags))
-<<<<<<< HEAD
-		queue_delayed_work(system_wq, &nfsd_filecache_laundrette,
-=======
 		queue_delayed_work(system_unbound_wq, &nfsd_filecache_laundrette,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   NFSD_LAUNDRETTE_DELAY);
 }
 
@@ -163,11 +152,7 @@ nfsd_file_mark_put(struct nfsd_file_mark *nfm)
 }
 
 static struct nfsd_file_mark *
-<<<<<<< HEAD
-nfsd_file_mark_find_or_create(struct nfsd_file *nf, struct inode *inode)
-=======
 nfsd_file_mark_find_or_create(struct inode *inode)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int			err;
 	struct fsnotify_mark	*mark;
@@ -231,13 +216,9 @@ nfsd_file_alloc(struct net *net, struct inode *inode, unsigned char need,
 	if (unlikely(!nf))
 		return NULL;
 
-<<<<<<< HEAD
-	INIT_LIST_HEAD(&nf->nf_lru);
-=======
 	this_cpu_inc(nfsd_file_allocations);
 	INIT_LIST_HEAD(&nf->nf_lru);
 	INIT_LIST_HEAD(&nf->nf_gc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nf->nf_birthtime = ktime_get();
 	nf->nf_file = NULL;
 	nf->nf_cred = get_current_cred();
@@ -409,8 +390,6 @@ nfsd_file_put(struct nfsd_file *nf)
 		nfsd_file_free(nf);
 }
 
-<<<<<<< HEAD
-=======
 /**
  * nfsd_file_put_local - put the reference to nfsd_file and local nfsd_serv
  * @nf: nfsd_file of which to put the references
@@ -439,20 +418,14 @@ nfsd_file_file(struct nfsd_file *nf)
 	return nf->nf_file;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void
 nfsd_file_dispose_list(struct list_head *dispose)
 {
 	struct nfsd_file *nf;
 
 	while (!list_empty(dispose)) {
-<<<<<<< HEAD
-		nf = list_first_entry(dispose, struct nfsd_file, nf_lru);
-		list_del_init(&nf->nf_lru);
-=======
 		nf = list_first_entry(dispose, struct nfsd_file, nf_gc);
 		list_del_init(&nf->nf_gc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nfsd_file_free(nf);
 	}
 }
@@ -469,20 +442,12 @@ nfsd_file_dispose_list_delayed(struct list_head *dispose)
 {
 	while(!list_empty(dispose)) {
 		struct nfsd_file *nf = list_first_entry(dispose,
-<<<<<<< HEAD
-						struct nfsd_file, nf_lru);
-=======
 						struct nfsd_file, nf_gc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct nfsd_net *nn = net_generic(nf->nf_net, nfsd_net_id);
 		struct nfsd_fcache_disposal *l = nn->fcache_disposal;
 
 		spin_lock(&l->lock);
-<<<<<<< HEAD
-		list_move_tail(&nf->nf_lru, &l->freeme);
-=======
 		list_move_tail(&nf->nf_gc, &l->freeme);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_unlock(&l->lock);
 		svc_wake_up(nn->nfsd_serv);
 	}
@@ -569,12 +534,8 @@ nfsd_file_lru_cb(struct list_head *item, struct list_lru_one *lru,
 
 	/* Refcount went to zero. Unhash it and queue it to the dispose list */
 	nfsd_file_unhash(nf);
-<<<<<<< HEAD
-	list_lru_isolate_move(lru, &nf->nf_lru, head);
-=======
 	list_lru_isolate(lru, &nf->nf_lru);
 	list_add(&nf->nf_gc, head);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	this_cpu_inc(nfsd_file_evictions);
 	trace_nfsd_file_gc_disposed(nf);
 	return LRU_REMOVED;
@@ -649,11 +610,7 @@ nfsd_file_cond_queue(struct nfsd_file *nf, struct list_head *dispose)
 
 	/* If refcount goes to 0, then put on the dispose list */
 	if (refcount_sub_and_test(decrement, &nf->nf_ref)) {
-<<<<<<< HEAD
-		list_add(&nf->nf_lru, dispose);
-=======
 		list_add(&nf->nf_gc, dispose);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		trace_nfsd_file_closing(nf);
 	}
 }
@@ -729,13 +686,8 @@ nfsd_file_close_inode_sync(struct inode *inode)
 
 	nfsd_file_queue_for_close(inode, &dispose);
 	while (!list_empty(&dispose)) {
-<<<<<<< HEAD
-		nf = list_first_entry(&dispose, struct nfsd_file, nf_lru);
-		list_del_init(&nf->nf_lru);
-=======
 		nf = list_first_entry(&dispose, struct nfsd_file, nf_gc);
 		list_del_init(&nf->nf_gc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nfsd_file_free(nf);
 	}
 }
@@ -799,11 +751,7 @@ nfsd_file_cache_init(void)
 
 	ret = rhltable_init(&nfsd_file_rhltable, &nfsd_file_rhash_params);
 	if (ret)
-<<<<<<< HEAD
-		return ret;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = -ENOMEM;
 	nfsd_file_slab = KMEM_CACHE(nfsd_file, 0);
@@ -844,11 +792,7 @@ nfsd_file_cache_init(void)
 	}
 
 	nfsd_file_fsnotify_group = fsnotify_alloc_group(&nfsd_file_fsnotify_ops,
-<<<<<<< HEAD
-							FSNOTIFY_GROUP_NOFS);
-=======
 							0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(nfsd_file_fsnotify_group)) {
 		pr_err("nfsd: unable to create fsnotify group: %ld\n",
 			PTR_ERR(nfsd_file_fsnotify_group));
@@ -859,11 +803,8 @@ nfsd_file_cache_init(void)
 
 	INIT_DELAYED_WORK(&nfsd_filecache_laundrette, nfsd_file_gc_worker);
 out:
-<<<<<<< HEAD
-=======
 	if (ret)
 		clear_bit(NFSD_FILE_CACHE_UP, &nfsd_file_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 out_notifier:
 	lease_unregister_notifier(&nfsd_file_lease_notifier);
@@ -1002,10 +943,7 @@ nfsd_file_cache_shutdown(void)
 	for_each_possible_cpu(i) {
 		per_cpu(nfsd_file_cache_hits, i) = 0;
 		per_cpu(nfsd_file_acquisitions, i) = 0;
-<<<<<<< HEAD
-=======
 		per_cpu(nfsd_file_allocations, i) = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		per_cpu(nfsd_file_releases, i) = 0;
 		per_cpu(nfsd_file_total_age, i) = 0;
 		per_cpu(nfsd_file_evictions, i) = 0;
@@ -1074,22 +1012,14 @@ nfsd_file_is_cached(struct inode *inode)
 }
 
 static __be32
-<<<<<<< HEAD
-nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
-=======
 nfsd_file_do_acquire(struct svc_rqst *rqstp, struct net *net,
 		     struct svc_cred *cred,
 		     struct auth_domain *client,
 		     struct svc_fh *fhp,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		     unsigned int may_flags, struct file *file,
 		     struct nfsd_file **pnf, bool want_gc)
 {
 	unsigned char need = may_flags & NFSD_FILE_MAY_MASK;
-<<<<<<< HEAD
-	struct net *net = SVC_NET(rqstp);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nfsd_file *new, *nf;
 	bool stale_retry = true;
 	bool open_retry = true;
@@ -1098,10 +1028,6 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct net *net,
 	int ret;
 
 retry:
-<<<<<<< HEAD
-	status = fh_verify(rqstp, fhp, S_IFREG,
-				may_flags|NFSD_MAY_OWNER_OVERRIDE);
-=======
 	if (rqstp) {
 		status = fh_verify(rqstp, fhp, S_IFREG,
 				   may_flags|NFSD_MAY_OWNER_OVERRIDE);
@@ -1109,7 +1035,6 @@ retry:
 		status = fh_verify_local(net, cred, client, fhp, S_IFREG,
 					 may_flags|NFSD_MAY_OWNER_OVERRIDE);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (status != nfs_ok)
 		return status;
 	inode = d_inode(fhp->fh_dentry);
@@ -1141,11 +1066,7 @@ retry:
 	if (unlikely(nf)) {
 		spin_unlock(&inode->i_lock);
 		rcu_read_unlock();
-<<<<<<< HEAD
-		nfsd_file_slab_free(&new->nf_rcu);
-=======
 		nfsd_file_free(new);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto wait_for_construction;
 	}
 	nf = new;
@@ -1156,11 +1077,6 @@ retry:
 	if (likely(ret == 0))
 		goto open_file;
 
-<<<<<<< HEAD
-	if (ret == -EEXIST)
-		goto retry;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_nfsd_file_insert_err(rqstp, inode, may_flags, ret);
 	status = nfserr_jukebox;
 	goto construction_err;
@@ -1175,10 +1091,7 @@ wait_for_construction:
 			status = nfserr_jukebox;
 			goto construction_err;
 		}
-<<<<<<< HEAD
-=======
 		nfsd_file_put(nf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		open_retry = false;
 		fh_put(fhp);
 		goto retry;
@@ -1202,11 +1115,7 @@ out:
 
 open_file:
 	trace_nfsd_file_alloc(nf);
-<<<<<<< HEAD
-	nf->nf_mark = nfsd_file_mark_find_or_create(nf, inode);
-=======
 	nf->nf_mark = nfsd_file_mark_find_or_create(inode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nf->nf_mark) {
 		if (file) {
 			get_file(file);
@@ -1271,12 +1180,8 @@ __be32
 nfsd_file_acquire_gc(struct svc_rqst *rqstp, struct svc_fh *fhp,
 		     unsigned int may_flags, struct nfsd_file **pnf)
 {
-<<<<<<< HEAD
-	return nfsd_file_do_acquire(rqstp, fhp, may_flags, NULL, pnf, true);
-=======
 	return nfsd_file_do_acquire(rqstp, SVC_NET(rqstp), NULL, NULL,
 				    fhp, may_flags, NULL, pnf, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1300,9 +1205,6 @@ __be32
 nfsd_file_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
 		  unsigned int may_flags, struct nfsd_file **pnf)
 {
-<<<<<<< HEAD
-	return nfsd_file_do_acquire(rqstp, fhp, may_flags, NULL, pnf, false);
-=======
 	return nfsd_file_do_acquire(rqstp, SVC_NET(rqstp), NULL, NULL,
 				    fhp, may_flags, NULL, pnf, false);
 }
@@ -1352,7 +1254,6 @@ nfsd_file_acquire_local(struct net *net, struct svc_cred *cred,
 				     fhp, may_flags, NULL, pnf, true);
 	revert_creds(save_cred);
 	return beres;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1378,12 +1279,8 @@ nfsd_file_acquire_opened(struct svc_rqst *rqstp, struct svc_fh *fhp,
 			 unsigned int may_flags, struct file *file,
 			 struct nfsd_file **pnf)
 {
-<<<<<<< HEAD
-	return nfsd_file_do_acquire(rqstp, fhp, may_flags, file, pnf, false);
-=======
 	return nfsd_file_do_acquire(rqstp, SVC_NET(rqstp), NULL, NULL,
 				    fhp, may_flags, file, pnf, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1393,11 +1290,7 @@ nfsd_file_acquire_opened(struct svc_rqst *rqstp, struct svc_fh *fhp,
  */
 int nfsd_file_cache_stats_show(struct seq_file *m, void *v)
 {
-<<<<<<< HEAD
-	unsigned long releases = 0, evictions = 0;
-=======
 	unsigned long allocations = 0, releases = 0, evictions = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long hits = 0, acquisitions = 0;
 	unsigned int i, count = 0, buckets = 0;
 	unsigned long lru = 0, total_age = 0;
@@ -1422,10 +1315,7 @@ int nfsd_file_cache_stats_show(struct seq_file *m, void *v)
 	for_each_possible_cpu(i) {
 		hits += per_cpu(nfsd_file_cache_hits, i);
 		acquisitions += per_cpu(nfsd_file_acquisitions, i);
-<<<<<<< HEAD
-=======
 		allocations += per_cpu(nfsd_file_allocations, i);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		releases += per_cpu(nfsd_file_releases, i);
 		total_age += per_cpu(nfsd_file_total_age, i);
 		evictions += per_cpu(nfsd_file_evictions, i);
@@ -1436,10 +1326,7 @@ int nfsd_file_cache_stats_show(struct seq_file *m, void *v)
 	seq_printf(m, "lru entries:   %lu\n", lru);
 	seq_printf(m, "cache hits:    %lu\n", hits);
 	seq_printf(m, "acquisitions:  %lu\n", acquisitions);
-<<<<<<< HEAD
-=======
 	seq_printf(m, "allocations:   %lu\n", allocations);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	seq_printf(m, "releases:      %lu\n", releases);
 	seq_printf(m, "evictions:     %lu\n", evictions);
 	if (releases)

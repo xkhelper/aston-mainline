@@ -74,8 +74,6 @@ config EROFS_FS_SECURITY
 
 	  If you are not using a security module, say N.
 
-<<<<<<< HEAD
-=======
 config EROFS_FS_BACKED_BY_FILE
 	bool "File-backed EROFS filesystem support"
 	depends on EROFS_FS
@@ -93,7 +91,6 @@ config EROFS_FS_BACKED_BY_FILE
 
 	  If you don't want to enable this feature, say N.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config EROFS_FS_ZIP
 	bool "EROFS Data Compression Support"
 	depends on EROFS_FS
@@ -148,11 +145,7 @@ config EROFS_FS_ZIP_ZSTD
 	  If unsure, say N.
 
 config EROFS_FS_ONDEMAND
-<<<<<<< HEAD
-	bool "EROFS fscache-based on-demand read support"
-=======
 	bool "EROFS fscache-based on-demand read support (deprecated)"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	depends on EROFS_FS
 	select NETFS_SUPPORT
 	select FSCACHE
@@ -162,12 +155,9 @@ config EROFS_FS_ONDEMAND
 	  This permits EROFS to use fscache-backed data blobs with on-demand
 	  read support.
 
-<<<<<<< HEAD
-=======
 	  It is now deprecated and scheduled to be removed from the kernel
 	  after fanotify pre-content hooks are landed.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	  If unsure, say N.
 
 config EROFS_FS_PCPU_KTHREAD

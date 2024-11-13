@@ -8,8 +8,6 @@
 #include <linux/swap.h>
 #include "internal.h"
 
-<<<<<<< HEAD
-=======
 /*
  * Make sure there's space in the rolling queue.
  */
@@ -136,7 +134,6 @@ void netfs_reset_iter(struct netfs_io_subrequest *subreq)
 	iov_iter_truncate(&subreq->io_iter, remain);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * netfs_dirty_folio - Mark folio dirty and pin a cache object for writeback
  * @mapping: The mapping the folio belongs to.

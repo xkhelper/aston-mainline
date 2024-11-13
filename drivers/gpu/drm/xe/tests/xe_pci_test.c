@@ -16,11 +16,7 @@
 
 static void check_graphics_ip(const struct xe_graphics_desc *graphics)
 {
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 mask = graphics->hw_engine_mask;
 
 	/* RCS, CCS, and BCS engines are allowed on the graphics IP */
@@ -34,11 +30,7 @@ static void check_graphics_ip(const struct xe_graphics_desc *graphics)
 
 static void check_media_ip(const struct xe_media_desc *media)
 {
-<<<<<<< HEAD
-	struct kunit *test = xe_cur_kunit();
-=======
 	struct kunit *test = kunit_get_current_test();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 mask = media->hw_engine_mask;
 
 	/* VCS, VECS and GSCCS engines are allowed on the media IP */

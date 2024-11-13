@@ -2519,11 +2519,7 @@ static int super_validate(struct raid_set *rs, struct md_rdev *rdev)
 		rdev->saved_raid_disk = rdev->raid_disk;
 	}
 
-<<<<<<< HEAD
-	/* Reshape support -> restore repective data offsets */
-=======
 	/* Reshape support -> restore respective data offsets */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rdev->data_offset = le64_to_cpu(sb->data_offset);
 	rdev->new_data_offset = le64_to_cpu(sb->new_data_offset);
 
@@ -3953,13 +3949,9 @@ static int __load_dirty_region_bitmap(struct raid_set *rs)
 	/* Try loading the bitmap unless "raid0", which does not have one */
 	if (!rs_is_raid0(rs) &&
 	    !test_and_set_bit(RT_FLAG_RS_BITMAP_LOADED, &rs->runtime_flags)) {
-<<<<<<< HEAD
-		r = md_bitmap_load(&rs->md);
-=======
 		struct mddev *mddev = &rs->md;
 
 		r = mddev->bitmap_ops->load(mddev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (r)
 			DMERR("Failed to load bitmap");
 	}
@@ -4076,12 +4068,8 @@ static int raid_preresume(struct dm_target *ti)
 	       mddev->bitmap_info.chunksize != to_bytes(rs->requested_bitmap_chunk_sectors)))) {
 		int chunksize = to_bytes(rs->requested_bitmap_chunk_sectors) ?: mddev->bitmap_info.chunksize;
 
-<<<<<<< HEAD
-		r = md_bitmap_resize(mddev->bitmap, mddev->dev_sectors, chunksize, 0);
-=======
 		r = mddev->bitmap_ops->resize(mddev, mddev->dev_sectors,
 					      chunksize, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (r)
 			DMERR("Failed to resize bitmap");
 	}

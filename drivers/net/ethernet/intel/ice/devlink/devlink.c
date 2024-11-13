@@ -6,17 +6,11 @@
 #include "ice.h"
 #include "ice_lib.h"
 #include "devlink.h"
-<<<<<<< HEAD
-#include "ice_eswitch.h"
-#include "ice_fw_update.h"
-#include "ice_dcb_lib.h"
-=======
 #include "devlink_port.h"
 #include "ice_eswitch.h"
 #include "ice_fw_update.h"
 #include "ice_dcb_lib.h"
 #include "ice_sf_eth.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* context for devlink info version reporting */
 struct ice_info_ctx {
@@ -752,10 +746,7 @@ static void ice_traverse_tx_tree(struct devlink *devlink, struct ice_sched_node 
 				 struct ice_sched_node *tc_node, struct ice_pf *pf)
 {
 	struct devlink_rate *rate_node = NULL;
-<<<<<<< HEAD
-=======
 	struct ice_dynamic_port *sf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ice_vf *vf;
 	int i;
 
@@ -767,10 +758,7 @@ static void ice_traverse_tx_tree(struct devlink *devlink, struct ice_sched_node 
 		/* create root node */
 		rate_node = devl_rate_node_create(devlink, node, node->name, NULL);
 	} else if (node->vsi_handle &&
-<<<<<<< HEAD
-=======
 		   pf->vsi[node->vsi_handle]->type == ICE_VSI_VF &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   pf->vsi[node->vsi_handle]->vf) {
 		vf = pf->vsi[node->vsi_handle]->vf;
 		if (!vf->devlink_port.devlink_rate)
@@ -779,8 +767,6 @@ static void ice_traverse_tx_tree(struct devlink *devlink, struct ice_sched_node 
 			 */
 			devl_rate_leaf_create(&vf->devlink_port, node,
 					      node->parent->rate_node);
-<<<<<<< HEAD
-=======
 	} else if (node->vsi_handle &&
 		   pf->vsi[node->vsi_handle]->type == ICE_VSI_SF &&
 		   pf->vsi[node->vsi_handle]->sf) {
@@ -791,7 +777,6 @@ static void ice_traverse_tx_tree(struct devlink *devlink, struct ice_sched_node 
 			 */
 			devl_rate_leaf_create(&sf->devlink_port, node,
 					      node->parent->rate_node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (node->info.data.elem_type != ICE_AQC_ELEM_TYPE_LEAF &&
 		   node->parent->rate_node) {
 		rate_node = devl_rate_node_create(devlink, node, node->name,
@@ -1306,17 +1291,12 @@ static const struct devlink_ops ice_devlink_ops = {
 
 	.rate_leaf_parent_set = ice_devlink_set_parent,
 	.rate_node_parent_set = ice_devlink_set_parent,
-<<<<<<< HEAD
-};
-
-=======
 
 	.port_new = ice_devlink_port_new,
 };
 
 static const struct devlink_ops ice_sf_devlink_ops;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int
 ice_devlink_enable_roce_get(struct devlink *devlink, u32 id,
 			    struct devlink_param_gset_ctx *ctx)
@@ -1600,8 +1580,6 @@ struct ice_pf *ice_allocate_pf(struct device *dev)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ice_allocate_sf - Allocate devlink and return SF structure pointer
  * @dev: the device to allocate for
  * @pf: pointer to the PF structure
@@ -1630,7 +1608,6 @@ struct ice_sf_priv *ice_allocate_sf(struct device *dev, struct ice_pf *pf)
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_devlink_register - Register devlink interface for this PF
  * @pf: the PF to register the devlink for.
  *

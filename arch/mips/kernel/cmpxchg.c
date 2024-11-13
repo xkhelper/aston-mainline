@@ -102,7 +102,4 @@ unsigned long __cmpxchg_small(volatile void *ptr, unsigned long old,
 			return old;
 	}
 }
-<<<<<<< HEAD
-=======
 EXPORT_SYMBOL(__cmpxchg_small);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

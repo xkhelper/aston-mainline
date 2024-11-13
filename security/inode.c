@@ -296,11 +296,7 @@ void securityfs_remove(struct dentry *dentry)
 {
 	struct inode *dir;
 
-<<<<<<< HEAD
-	if (!dentry || IS_ERR(dentry))
-=======
 	if (IS_ERR_OR_NULL(dentry))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	dir = d_inode(dentry->d_parent);
@@ -317,8 +313,6 @@ void securityfs_remove(struct dentry *dentry)
 }
 EXPORT_SYMBOL_GPL(securityfs_remove);
 
-<<<<<<< HEAD
-=======
 static void remove_one(struct dentry *victim)
 {
 	simple_release_fs(&mount, &mount_count);
@@ -344,7 +338,6 @@ void securityfs_recursive_remove(struct dentry *dentry)
 }
 EXPORT_SYMBOL_GPL(securityfs_recursive_remove);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_SECURITY
 static struct dentry *lsm_dentry;
 static ssize_t lsm_read(struct file *filp, char __user *buf, size_t count,

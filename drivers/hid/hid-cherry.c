@@ -22,11 +22,7 @@
  * Cherry Cymotion keyboard have an invalid HID report descriptor,
  * that needs fixing before we can parse it.
  */
-<<<<<<< HEAD
-static __u8 *ch_report_fixup(struct hid_device *hdev, __u8 *rdesc,
-=======
 static const __u8 *ch_report_fixup(struct hid_device *hdev, __u8 *rdesc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int *rsize)
 {
 	if (*rsize >= 18 && rdesc[11] == 0x3c && rdesc[12] == 0x02) {

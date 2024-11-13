@@ -1013,8 +1013,6 @@ static void __intel_gt_set_wedged(struct intel_gt *gt)
 	GT_TRACE(gt, "end\n");
 }
 
-<<<<<<< HEAD
-=======
 static void set_wedged_work(struct work_struct *w)
 {
 	struct intel_gt *gt = container_of(w, struct intel_gt, wedge);
@@ -1024,7 +1022,6 @@ static void set_wedged_work(struct work_struct *w)
 		__intel_gt_set_wedged(gt);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void intel_gt_set_wedged(struct intel_gt *gt)
 {
 	intel_wakeref_t wakeref;
@@ -1626,10 +1623,7 @@ void intel_gt_init_reset(struct intel_gt *gt)
 	init_waitqueue_head(&gt->reset.queue);
 	mutex_init(&gt->reset.mutex);
 	init_srcu_struct(&gt->reset.backoff_srcu);
-<<<<<<< HEAD
-=======
 	INIT_WORK(&gt->wedge, set_wedged_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * While undesirable to wait inside the shrinker, complain anyway.
@@ -1656,11 +1650,7 @@ static void intel_wedge_me(struct work_struct *work)
 	struct intel_wedge_me *w = container_of(work, typeof(*w), work.work);
 
 	gt_err(w->gt, "%s timed out, cancelling all in-flight rendering.\n", w->name);
-<<<<<<< HEAD
-	intel_gt_set_wedged(w->gt);
-=======
 	set_wedged_work(&w->gt->wedge);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void __intel_init_wedge(struct intel_wedge_me *w,

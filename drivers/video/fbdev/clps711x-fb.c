@@ -371,11 +371,7 @@ static struct platform_driver clps711x_fb_driver = {
 		.of_match_table	= clps711x_fb_dt_ids,
 	},
 	.probe	= clps711x_fb_probe,
-<<<<<<< HEAD
-	.remove_new = clps711x_fb_remove,
-=======
 	.remove	= clps711x_fb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(clps711x_fb_driver);
 

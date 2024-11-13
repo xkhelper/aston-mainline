@@ -188,11 +188,7 @@
 			qcom,remote-pid = <6>;
 
 			rpm_requests: rpm-requests {
-<<<<<<< HEAD
-				compatible = "qcom,rpm-msm8994";
-=======
 				compatible = "qcom,rpm-msm8994", "qcom,smd-rpm";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				qcom,smd-channels = "rpm_requests";
 
 				rpmcc: clock-controller {

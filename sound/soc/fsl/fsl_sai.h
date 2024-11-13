@@ -137,10 +137,7 @@
 
 /* SAI Transmit and Receive Configuration 4 Register */
 
-<<<<<<< HEAD
-=======
 #define FSL_SAI_CR4_FCONT_MASK	BIT(28)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define FSL_SAI_CR4_FCONT	BIT(28)
 #define FSL_SAI_CR4_FCOMB_SHIFT BIT(26)
 #define FSL_SAI_CR4_FCOMB_SOFT  BIT(27)

@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0+
 /*
-<<<<<<< HEAD
- * Motorcomm 8511/8521/8531/8531S PHY driver.
-=======
  * Motorcomm 8511/8521/8531/8531S/8821 PHY driver.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Author: Peter Geis <pgwipeout@gmail.com>
  * Author: Frank <Frank.Sae@motor-comm.com>
@@ -20,13 +16,8 @@
 #define PHY_ID_YT8521		0x0000011a
 #define PHY_ID_YT8531		0x4f51e91b
 #define PHY_ID_YT8531S		0x4f51e91a
-<<<<<<< HEAD
-
-/* YT8521/YT8531S Register Overview
-=======
 #define PHY_ID_YT8821		0x4f51ea19
 /* YT8521/YT8531S/YT8821 Register Overview
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *	UTP Register space	|	FIBER Register space
  *  ------------------------------------------------------------
  * |	UTP MII			|	FIBER MII		|
@@ -55,21 +46,12 @@
 
 /* Specific Status Register */
 #define YTPHY_SPECIFIC_STATUS_REG		0x11
-<<<<<<< HEAD
-#define YTPHY_SSR_SPEED_MODE_OFFSET		14
-
-#define YTPHY_SSR_SPEED_MODE_MASK		(BIT(15) | BIT(14))
-#define YTPHY_SSR_SPEED_10M			0x0
-#define YTPHY_SSR_SPEED_100M			0x1
-#define YTPHY_SSR_SPEED_1000M			0x2
-=======
 #define YTPHY_SSR_SPEED_MASK			((0x3 << 14) | BIT(9))
 #define YTPHY_SSR_SPEED_10M			((0x0 << 14))
 #define YTPHY_SSR_SPEED_100M			((0x1 << 14))
 #define YTPHY_SSR_SPEED_1000M			((0x2 << 14))
 #define YTPHY_SSR_SPEED_10G			((0x3 << 14))
 #define YTPHY_SSR_SPEED_2500M			((0x0 << 14) | BIT(9))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define YTPHY_SSR_DUPLEX_OFFSET			13
 #define YTPHY_SSR_DUPLEX			BIT(13)
 #define YTPHY_SSR_PAGE_RECEIVED			BIT(12)
@@ -288,8 +270,6 @@
 #define YT8531_SCR_CLK_SRC_REF_25M		4
 #define YT8531_SCR_CLK_SRC_SSC_25M		5
 
-<<<<<<< HEAD
-=======
 #define YT8821_SDS_EXT_CSR_CTRL_REG			0x23
 #define YT8821_SDS_EXT_CSR_VCO_LDO_EN			BIT(15)
 #define YT8821_SDS_EXT_CSR_VCO_BIAS_LPF_EN		BIT(8)
@@ -364,19 +344,15 @@
 
 #define YT8821_UTP_EXT_TXGE_NFR_FR_THP_CTRL_REG		0x660
 #define YT8821_UTP_EXT_NFR_TX_ABILITY			BIT(3)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Extended Register  end */
 
 #define YTPHY_DTS_OUTPUT_CLK_DIS		0
 #define YTPHY_DTS_OUTPUT_CLK_25M		25000000
 #define YTPHY_DTS_OUTPUT_CLK_125M		125000000
 
-<<<<<<< HEAD
-=======
 #define YT8821_CHIP_MODE_AUTO_BX2500_SGMII	0
 #define YT8821_CHIP_MODE_FORCE_BX2500		1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct yt8521_priv {
 	/* combo_advertising is used for case of YT8521 in combo mode,
 	 * this means that yt8521 may work in utp or fiber mode which depends
@@ -1288,12 +1264,7 @@ static int yt8521_adjust_status(struct phy_device *phydev, int status,
 	else
 		duplex = DUPLEX_FULL;	/* for fiber, it always DUPLEX_FULL */
 
-<<<<<<< HEAD
-	speed_mode = (status & YTPHY_SSR_SPEED_MODE_MASK) >>
-		     YTPHY_SSR_SPEED_MODE_OFFSET;
-=======
 	speed_mode = status & YTPHY_SSR_SPEED_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (speed_mode) {
 	case YTPHY_SSR_SPEED_10M:
@@ -2357,8 +2328,6 @@ static int yt8521_get_features(struct phy_device *phydev)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * yt8821_get_features - read mmd register to get 2.5G capability
  * @phydev: target phy_device struct
@@ -2925,7 +2894,6 @@ static int yt8821_resume(struct phy_device *phydev)
 	return yt8821_modify_utp_fiber_bmcr(phydev, BMCR_PDOWN, 0);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct phy_driver motorcomm_phy_drvs[] = {
 	{
 		PHY_ID_MATCH_EXACT(PHY_ID_YT8511),
@@ -2981,8 +2949,6 @@ static struct phy_driver motorcomm_phy_drvs[] = {
 		.suspend	= yt8521_suspend,
 		.resume		= yt8521_resume,
 	},
-<<<<<<< HEAD
-=======
 	{
 		PHY_ID_MATCH_EXACT(PHY_ID_YT8821),
 		.name			= "YT8821 2.5Gbps PHY",
@@ -3000,16 +2966,11 @@ static struct phy_driver motorcomm_phy_drvs[] = {
 		.suspend		= yt8821_suspend,
 		.resume			= yt8821_resume,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_phy_driver(motorcomm_phy_drvs);
 
-<<<<<<< HEAD
-MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S PHY driver");
-=======
 MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/8821 PHY driver");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_AUTHOR("Peter Geis");
 MODULE_AUTHOR("Frank");
 MODULE_LICENSE("GPL");
@@ -3019,10 +2980,7 @@ static const struct mdio_device_id __maybe_unused motorcomm_tbl[] = {
 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8521) },
 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8531) },
 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8531S) },
-<<<<<<< HEAD
-=======
 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8821) },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ /* sentinel */ }
 };
 

@@ -22,10 +22,7 @@
 
 #include <stdlib.h>
 
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lkc.h"
 #include "qconf.h"
 
@@ -1098,10 +1095,6 @@ QString ConfigInfoView::debug_info(struct symbol *sym)
 		case P_RANGE:
 		case P_COMMENT:
 		case P_IMPLY:
-<<<<<<< HEAD
-		case P_SYMBOL:
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			stream << prop_get_type_name(prop->type);
 			stream << ": ";
 			expr_print(prop->expr, expr_print_help,
@@ -1173,11 +1166,7 @@ void ConfigInfoView::clicked(const QUrl &url)
 {
 	QByteArray str = url.toEncoded();
 	const std::size_t count = str.size();
-<<<<<<< HEAD
-	char *data = new char[count + 1];
-=======
 	char *data = new char[count + 2];  // '$' + '\0'
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct symbol **result;
 	struct menu *m = NULL;
 
@@ -1516,11 +1505,8 @@ ConfigMainWindow::ConfigMainWindow(void)
 	connect(helpText, &ConfigInfoView::menuSelected,
 		this, &ConfigMainWindow::setMenuLink);
 
-<<<<<<< HEAD
-=======
 	conf_read(NULL);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	QString listMode = configSettings->value("/listMode", "symbol").toString();
 	if (listMode == "single")
 		showSingleView();
@@ -1922,11 +1908,6 @@ int main(int ac, char** av)
 	configApp->connect(configApp, SIGNAL(lastWindowClosed()), SLOT(quit()));
 	configApp->connect(configApp, SIGNAL(aboutToQuit()), v, SLOT(saveSettings()));
 
-<<<<<<< HEAD
-	conf_read(NULL);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	v->show();
 	configApp->exec();
 

@@ -16,14 +16,11 @@
 	cmpxchg8b (\reg)
 .endm
 
-<<<<<<< HEAD
-=======
 .macro read64_nonatomic reg
 	movl (\reg), %eax
 	movl 4(\reg), %edx
 .endm
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SYM_FUNC_START(atomic64_read_cx8)
 	read64 %ecx
 	RET
@@ -59,11 +56,7 @@ SYM_FUNC_START(atomic64_\func\()_return_cx8)
 	movl %edx, %edi
 	movl %ecx, %ebp
 
-<<<<<<< HEAD
-	read64 %ecx
-=======
 	read64_nonatomic %ecx
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 1:
 	movl %eax, %ebx
 	movl %edx, %ecx
@@ -91,11 +84,7 @@ addsub_return sub sub sbb
 SYM_FUNC_START(atomic64_\func\()_return_cx8)
 	pushl %ebx
 
-<<<<<<< HEAD
-	read64 %esi
-=======
 	read64_nonatomic %esi
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 1:
 	movl %eax, %ebx
 	movl %edx, %ecx

@@ -586,11 +586,7 @@ API, and return the results to the user-space.
 The ABIs are designed to be used for user space applications development,
 rather than human beings' fingers.  Human users are recommended to use such
 user space tools.  One such Python-written user space tool is available at
-<<<<<<< HEAD
-Github (https://github.com/awslabs/damo), Pypi
-=======
 Github (https://github.com/damonitor/damo), Pypi
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 (https://pypistats.org/packages/damo), and Fedora
 (https://packages.fedoraproject.org/pkgs/python-damo/damo/).
 

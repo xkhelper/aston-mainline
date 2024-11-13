@@ -10,10 +10,6 @@
 
 #define pr_fmt(fmt) "ACPI: battery: " fmt
 
-<<<<<<< HEAD
-#include <linux/async.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/dmi.h>
 #include <linux/jiffies.h>
@@ -25,11 +21,7 @@
 #include <linux/suspend.h>
 #include <linux/types.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/acpi.h>
 #include <linux/power_supply.h>
@@ -57,11 +49,6 @@ MODULE_AUTHOR("Alexey Starikovskiy <astarikovskiy@suse.de>");
 MODULE_DESCRIPTION("ACPI Battery Driver");
 MODULE_LICENSE("GPL");
 
-<<<<<<< HEAD
-static async_cookie_t async_cookie;
-static bool battery_driver_registered;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int battery_bix_broken_package;
 static int battery_notification_delay_ms;
 static int battery_ac_is_broken;
@@ -716,45 +703,25 @@ static LIST_HEAD(acpi_battery_list);
 static LIST_HEAD(battery_hook_list);
 static DEFINE_MUTEX(hook_mutex);
 
-<<<<<<< HEAD
-static void __battery_hook_unregister(struct acpi_battery_hook *hook, int lock)
-{
-	struct acpi_battery *battery;
-=======
 static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
 {
 	struct acpi_battery *battery;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * In order to remove a hook, we first need to
 	 * de-register all the batteries that are registered.
 	 */
-<<<<<<< HEAD
-	if (lock)
-		mutex_lock(&hook_mutex);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry(battery, &acpi_battery_list, list) {
 		if (!hook->remove_battery(battery->bat, hook))
 			power_supply_changed(battery->bat);
 	}
-<<<<<<< HEAD
-	list_del(&hook->list);
-	if (lock)
-		mutex_unlock(&hook_mutex);
-=======
 	list_del_init(&hook->list);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pr_info("extension unregistered: %s\n", hook->name);
 }
 
 void battery_hook_unregister(struct acpi_battery_hook *hook)
 {
-<<<<<<< HEAD
-	__battery_hook_unregister(hook, 1);
-=======
 	mutex_lock(&hook_mutex);
 	/*
 	 * Ignore already unregistered battery hooks. This might happen
@@ -765,7 +732,6 @@ void battery_hook_unregister(struct acpi_battery_hook *hook)
 		battery_hook_unregister_unlocked(hook);
 
 	mutex_unlock(&hook_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(battery_hook_unregister);
 
@@ -774,10 +740,6 @@ void battery_hook_register(struct acpi_battery_hook *hook)
 	struct acpi_battery *battery;
 
 	mutex_lock(&hook_mutex);
-<<<<<<< HEAD
-	INIT_LIST_HEAD(&hook->list);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_add(&hook->list, &battery_hook_list);
 	/*
 	 * Now that the driver is registered, we need
@@ -794,11 +756,7 @@ void battery_hook_register(struct acpi_battery_hook *hook)
 			 * hooks.
 			 */
 			pr_err("extension failed to load: %s", hook->name);
-<<<<<<< HEAD
-			__battery_hook_unregister(hook, 0);
-=======
 			battery_hook_unregister_unlocked(hook);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto end;
 		}
 
@@ -852,11 +810,7 @@ static void battery_hook_add_battery(struct acpi_battery *battery)
 			 */
 			pr_err("error in extension, unloading: %s",
 					hook_node->name);
-<<<<<<< HEAD
-			__battery_hook_unregister(hook_node, 0);
-=======
 			battery_hook_unregister_unlocked(hook_node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 	mutex_unlock(&hook_mutex);
@@ -889,11 +843,7 @@ static void __exit battery_hook_exit(void)
 	 * need to remove the hooks.
 	 */
 	list_for_each_entry_safe(hook, ptr, &battery_hook_list, list) {
-<<<<<<< HEAD
-		__battery_hook_unregister(hook, 1);
-=======
 		battery_hook_unregister(hook);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	mutex_destroy(&hook_mutex);
 }
@@ -1260,11 +1210,7 @@ static int acpi_battery_update_retry(struct acpi_battery *battery)
 static int acpi_battery_add(struct acpi_device *device)
 {
 	int result = 0;
-<<<<<<< HEAD
-	struct acpi_battery *battery = NULL;
-=======
 	struct acpi_battery *battery;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!device)
 		return -EINVAL;
@@ -1276,13 +1222,8 @@ static int acpi_battery_add(struct acpi_device *device)
 	if (!battery)
 		return -ENOMEM;
 	battery->device = device;
-<<<<<<< HEAD
-	strcpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
-	strcpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
-=======
 	strscpy(acpi_device_name(device), ACPI_BATTERY_DEVICE_NAME);
 	strscpy(acpi_device_class(device), ACPI_BATTERY_CLASS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	device->driver_data = battery;
 	mutex_init(&battery->lock);
 	mutex_init(&battery->sysfs_lock);
@@ -1322,11 +1263,7 @@ fail:
 
 static void acpi_battery_remove(struct acpi_device *device)
 {
-<<<<<<< HEAD
-	struct acpi_battery *battery = NULL;
-=======
 	struct acpi_battery *battery;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!device || !acpi_driver_data(device))
 		return;
@@ -1377,30 +1314,6 @@ static struct acpi_driver acpi_battery_driver = {
 		.remove = acpi_battery_remove,
 		},
 	.drv.pm = &acpi_battery_pm,
-<<<<<<< HEAD
-};
-
-static void __init acpi_battery_init_async(void *unused, async_cookie_t cookie)
-{
-	int result;
-
-	if (acpi_quirk_skip_acpi_ac_and_battery())
-		return;
-
-	dmi_check_system(bat_dmi_table);
-
-	result = acpi_bus_register_driver(&acpi_battery_driver);
-	battery_driver_registered = (result == 0);
-}
-
-static int __init acpi_battery_init(void)
-{
-	if (acpi_disabled)
-		return -ENODEV;
-
-	async_cookie = async_schedule(acpi_battery_init_async, NULL);
-	return 0;
-=======
 	.drv.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 };
 
@@ -1412,21 +1325,12 @@ static int __init acpi_battery_init(void)
 	dmi_check_system(bat_dmi_table);
 
 	return acpi_bus_register_driver(&acpi_battery_driver);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __exit acpi_battery_exit(void)
 {
-<<<<<<< HEAD
-	async_synchronize_cookie(async_cookie + 1);
-	if (battery_driver_registered) {
-		acpi_bus_unregister_driver(&acpi_battery_driver);
-		battery_hook_exit();
-	}
-=======
 	acpi_bus_unregister_driver(&acpi_battery_driver);
 	battery_hook_exit();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 module_init(acpi_battery_init);

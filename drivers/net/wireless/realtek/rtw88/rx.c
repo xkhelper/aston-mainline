@@ -146,8 +146,6 @@ static void rtw_set_rx_freq_by_pktstat(struct rtw_rx_pkt_stat *pkt_stat,
 	rx_status->band = pkt_stat->band;
 }
 
-<<<<<<< HEAD
-=======
 void rtw_update_rx_freq_from_ie(struct rtw_dev *rtwdev, struct sk_buff *skb,
 				struct ieee80211_rx_status *rx_status,
 				struct rtw_rx_pkt_stat *pkt_stat)
@@ -189,7 +187,6 @@ fill_rx_status:
 }
 EXPORT_SYMBOL(rtw_update_rx_freq_from_ie);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void rtw_rx_fill_rx_status(struct rtw_dev *rtwdev,
 			   struct rtw_rx_pkt_stat *pkt_stat,
 			   struct ieee80211_hdr *hdr,

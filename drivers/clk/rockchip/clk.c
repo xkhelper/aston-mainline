@@ -439,11 +439,7 @@ unsigned long rockchip_clk_find_max_clk_id(struct rockchip_clk_branch *list,
 		if (list->id > max)
 			max = list->id;
 		if (list->child && list->child->id > max)
-<<<<<<< HEAD
-			max = list->id;
-=======
 			max = list->child->id;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return max;
@@ -454,20 +450,13 @@ void rockchip_clk_register_branches(struct rockchip_clk_provider *ctx,
 				    struct rockchip_clk_branch *list,
 				    unsigned int nr_clk)
 {
-<<<<<<< HEAD
-	struct clk *clk = NULL;
-=======
 	struct clk *clk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int idx;
 	unsigned long flags;
 
 	for (idx = 0; idx < nr_clk; idx++, list++) {
 		flags = list->flags;
-<<<<<<< HEAD
-=======
 		clk = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* catch simple muxes */
 		switch (list->branch_type) {

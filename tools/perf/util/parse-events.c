@@ -8,10 +8,7 @@
 #include <sys/ioctl.h>
 #include <sys/param.h>
 #include "term.h"
-<<<<<<< HEAD
-=======
 #include "env.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "evlist.h"
 #include "evsel.h"
 #include <subcmd/parse-options.h>
@@ -231,21 +228,12 @@ __add_event(struct list_head *list, int *idx,
 	    bool init_attr,
 	    const char *name, const char *metric_id, struct perf_pmu *pmu,
 	    struct list_head *config_terms, bool auto_merge_stats,
-<<<<<<< HEAD
-	    const char *cpu_list)
-{
-	struct evsel *evsel;
-	struct perf_cpu_map *cpus = pmu ? perf_cpu_map__get(pmu->cpus) :
-			       cpu_list ? perf_cpu_map__new(cpu_list) : NULL;
-
-=======
 	    struct perf_cpu_map *cpu_list)
 {
 	struct evsel *evsel;
 	struct perf_cpu_map *cpus = perf_cpu_map__is_empty(cpu_list) && pmu ? pmu->cpus : cpu_list;
 
 	cpus = perf_cpu_map__get(cpus);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pmu)
 		perf_pmu__warn_invalid_formats(pmu);
 
@@ -318,28 +306,17 @@ static int add_event_tool(struct list_head *list, int *idx,
 		.type = PERF_TYPE_SOFTWARE,
 		.config = PERF_COUNT_SW_DUMMY,
 	};
-<<<<<<< HEAD
-	const char *cpu_list = NULL;
-
-	if (tool_event == PERF_TOOL_DURATION_TIME) {
-		/* Duration time is gathered globally, pretend it is only on CPU0. */
-		cpu_list = "0";
-=======
 	struct perf_cpu_map *cpu_list = NULL;
 
 	if (tool_event == PERF_TOOL_DURATION_TIME) {
 		/* Duration time is gathered globally, pretend it is only on CPU0. */
 		cpu_list = perf_cpu_map__new("0");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	evsel = __add_event(list, idx, &attr, /*init_attr=*/true, /*name=*/NULL,
 			    /*metric_id=*/NULL, /*pmu=*/NULL,
 			    /*config_terms=*/NULL, /*auto_merge_stats=*/false,
 			    cpu_list);
-<<<<<<< HEAD
-=======
 	perf_cpu_map__put(cpu_list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!evsel)
 		return -ENOMEM;
 	evsel->tool_event = tool_event;
@@ -695,8 +672,6 @@ static int add_tracepoint_multi_sys(struct parse_events_state *parse_state,
 }
 #endif /* HAVE_LIBTRACEEVENT */
 
-<<<<<<< HEAD
-=======
 size_t default_breakpoint_len(void)
 {
 #if defined(__i386__)
@@ -717,7 +692,6 @@ size_t default_breakpoint_len(void)
 #endif
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int
 parse_breakpoint_type(const char *type, struct perf_event_attr *attr)
 {
@@ -776,11 +750,7 @@ int parse_events_add_breakpoint(struct parse_events_state *parse_state,
 	/* Provide some defaults if len is not specified */
 	if (!len) {
 		if (attr.bp_type == HW_BREAKPOINT_X)
-<<<<<<< HEAD
-			len = sizeof(long);
-=======
 			len = default_breakpoint_len();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			len = HW_BREAKPOINT_LEN_4;
 	}
@@ -1530,13 +1500,8 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
 	}
 
 	/* Look for event names in the terms and rewrite into format based terms. */
-<<<<<<< HEAD
-	if (!parse_state->fake_pmu && perf_pmu__check_alias(pmu, &parsed_terms,
-							    &info, &alias_rewrote_terms, err)) {
-=======
 	if (perf_pmu__check_alias(pmu, &parsed_terms,
 				  &info, &alias_rewrote_terms, err)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		parse_events_terms__exit(&parsed_terms);
 		return -EINVAL;
 	}
@@ -1572,12 +1537,7 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
 		return -ENOMEM;
 	}
 
-<<<<<<< HEAD
-	if (!parse_state->fake_pmu &&
-	    perf_pmu__config(pmu, &attr, &parsed_terms, parse_state->error)) {
-=======
 	if (perf_pmu__config(pmu, &attr, &parsed_terms, parse_state->error)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		free_config_terms(&config_terms);
 		parse_events_terms__exit(&parsed_terms);
 		return -EINVAL;
@@ -1597,14 +1557,6 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
 
 	evsel->percore = config_term_percore(&evsel->config_terms);
 
-<<<<<<< HEAD
-	if (parse_state->fake_pmu) {
-		parse_events_terms__exit(&parsed_terms);
-		return 0;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	parse_events_terms__exit(&parsed_terms);
 	free((char *)evsel->unit);
 	evsel->unit = strdup(info.unit);
@@ -1680,21 +1632,13 @@ int parse_events_multi_pmu_add(struct parse_events_state *parse_state,
 	}
 
 	if (parse_state->fake_pmu) {
-<<<<<<< HEAD
-		if (!parse_events_add_pmu(parse_state, list, parse_state->fake_pmu, &parsed_terms,
-=======
 		if (!parse_events_add_pmu(parse_state, list, perf_pmus__fake_pmu(), &parsed_terms,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  /*auto_merge_stats=*/true)) {
 			struct strbuf sb;
 
 			strbuf_init(&sb, /*hint=*/ 0);
 			parse_events_terms__to_strbuf(&parsed_terms, &sb);
-<<<<<<< HEAD
-			pr_debug("%s -> %s/%s/\n", event_name, "fake_pmu", sb.buf);
-=======
 			pr_debug("%s -> fake/%s/\n", event_name, sb.buf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			strbuf_release(&sb);
 			ok++;
 		}
@@ -1728,17 +1672,11 @@ int parse_events_multi_pmu_add_or_add_pmu(struct parse_events_state *parse_state
 	INIT_LIST_HEAD(*listp);
 
 	/* Attempt to add to list assuming event_or_pmu is a PMU name. */
-<<<<<<< HEAD
-	pmu = parse_state->fake_pmu ?: perf_pmus__find(event_or_pmu);
-=======
 	pmu = perf_pmus__find(event_or_pmu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (pmu && !parse_events_add_pmu(parse_state, *listp, pmu, const_parsed_terms,
 					/*auto_merge_stats=*/false))
 		return 0;
 
-<<<<<<< HEAD
-=======
 	if (parse_state->fake_pmu) {
 		if (!parse_events_add_pmu(parse_state, *listp, perf_pmus__fake_pmu(),
 					  const_parsed_terms,
@@ -1746,7 +1684,6 @@ int parse_events_multi_pmu_add_or_add_pmu(struct parse_events_state *parse_state
 			return 0;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pmu = NULL;
 	/* Failed to add, try wildcard expansion of event_or_pmu as a PMU name. */
 	while ((pmu = perf_pmus__scan(pmu)) != NULL) {
@@ -1897,11 +1834,8 @@ static int parse_events__modifier_list(struct parse_events_state *parse_state,
 			evsel->weak_group = true;
 		if (mod.bpf)
 			evsel->bpf_counter = true;
-<<<<<<< HEAD
-=======
 		if (mod.retire_lat)
 			evsel->retire_lat = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }
@@ -2050,13 +1984,8 @@ static int evsel__compute_group_pmu_name(struct evsel *evsel,
 			}
 		}
 	}
-<<<<<<< HEAD
-	/* Assign the actual name taking care that the fake PMU lacks a name. */
-	evsel->group_pmu_name = strdup(group_pmu_name ?: "fake");
-=======
 	/* Record computed name. */
 	evsel->group_pmu_name = strdup(group_pmu_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return evsel->group_pmu_name ? 0 : -ENOMEM;
 }
 
@@ -2218,11 +2147,7 @@ static int parse_events__sort_events_and_fix_groups(struct list_head *list)
 }
 
 int __parse_events(struct evlist *evlist, const char *str, const char *pmu_filter,
-<<<<<<< HEAD
-		   struct parse_events_error *err, struct perf_pmu *fake_pmu,
-=======
 		   struct parse_events_error *err, bool fake_pmu,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   bool warn_if_reordered, bool fake_tp)
 {
 	struct parse_events_state parse_state = {
@@ -2441,11 +2366,7 @@ int parse_events_option(const struct option *opt, const char *str,
 
 	parse_events_error__init(&err);
 	ret = __parse_events(*args->evlistp, str, args->pmu_filter, &err,
-<<<<<<< HEAD
-			     /*fake_pmu=*/NULL, /*warn_if_reordered=*/true,
-=======
 			     /*fake_pmu=*/false, /*warn_if_reordered=*/true,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     /*fake_tp=*/false);
 
 	if (ret) {

@@ -17,11 +17,7 @@
 #include <linux/error-injection.h>
 #include <linux/crc32c.h>
 #include <linux/sched/mm.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/hash.h>
 #include "ctree.h"
 #include "disk-io.h"
@@ -529,11 +525,7 @@ static bool btree_release_folio(struct folio *folio, gfp_t gfp_flags)
 	if (folio_test_writeback(folio) || folio_test_dirty(folio))
 		return false;
 
-<<<<<<< HEAD
-	return try_release_extent_buffer(&folio->page);
-=======
 	return try_release_extent_buffer(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void btree_invalidate_folio(struct folio *folio, size_t offset,
@@ -1293,10 +1285,6 @@ void btrfs_free_fs_info(struct btrfs_fs_info *fs_info)
 	btrfs_extent_buffer_leak_debug_check(fs_info);
 	kfree(fs_info->super_copy);
 	kfree(fs_info->super_for_commit);
-<<<<<<< HEAD
-	kfree(fs_info->subpage_info);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvfree(fs_info);
 }
 
@@ -1971,11 +1959,7 @@ static void btrfs_init_qgroup(struct btrfs_fs_info *fs_info)
 	fs_info->qgroup_seq = 1;
 	fs_info->qgroup_ulist = NULL;
 	fs_info->qgroup_rescan_running = false;
-<<<<<<< HEAD
-	fs_info->qgroup_drop_subtree_thres = BTRFS_MAX_LEVEL;
-=======
 	fs_info->qgroup_drop_subtree_thres = BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_init(&fs_info->qgroup_rescan_lock);
 }
 
@@ -3337,10 +3321,7 @@ int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_device
 	fs_info->nodesize = nodesize;
 	fs_info->sectorsize = sectorsize;
 	fs_info->sectorsize_bits = ilog2(sectorsize);
-<<<<<<< HEAD
-=======
 	fs_info->sectors_per_page = (PAGE_SIZE >> fs_info->sectorsize_bits);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fs_info->csums_per_leaf = BTRFS_MAX_ITEM_SIZE(fs_info) / fs_info->csum_size;
 	fs_info->stripesize = stripesize;
 
@@ -3365,27 +3346,10 @@ int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_device
 	 */
 	fs_info->max_inline = min_t(u64, fs_info->max_inline, fs_info->sectorsize);
 
-<<<<<<< HEAD
-	if (sectorsize < PAGE_SIZE) {
-		struct btrfs_subpage_info *subpage_info;
-
-		btrfs_warn(fs_info,
-		"read-write for sector size %u with page size %lu is experimental",
-			   sectorsize, PAGE_SIZE);
-		subpage_info = kzalloc(sizeof(*subpage_info), GFP_KERNEL);
-		if (!subpage_info) {
-			ret = -ENOMEM;
-			goto fail_alloc;
-		}
-		btrfs_init_subpage_info(subpage_info, sectorsize);
-		fs_info->subpage_info = subpage_info;
-	}
-=======
 	if (sectorsize < PAGE_SIZE)
 		btrfs_warn(fs_info,
 		"read-write for sector size %u with page size %lu is experimental",
 			   sectorsize, PAGE_SIZE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = btrfs_init_workqueues(fs_info);
 	if (ret)
@@ -4292,8 +4256,6 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
 	btrfs_cleanup_defrag_inodes(fs_info);
 
 	/*
-<<<<<<< HEAD
-=======
 	 * Wait for any fixup workers to complete.
 	 * If we don't wait for them here and they are still running by the time
 	 * we call kthread_stop() against the cleaner kthread further below, we
@@ -4305,7 +4267,6 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
 	btrfs_flush_workqueue(fs_info->fixup_workers);
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * After we parked the cleaner kthread, ordered extents may have
 	 * completed and created new delayed iputs. If one of the async reclaim
 	 * tasks is running and in the RUN_DELAYED_IPUTS flush state, then we

@@ -6,10 +6,7 @@
 #include "xe_guc_hwconfig.h"
 
 #include <drm/drm_managed.h>
-<<<<<<< HEAD
-=======
 #include <drm/drm_print.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "abi/guc_actions_abi.h"
 #include "xe_bo.h"
@@ -107,8 +104,6 @@ void xe_guc_hwconfig_copy(struct xe_guc *guc, void *dst)
 	xe_map_memcpy_from(xe, dst, &guc->hwconfig.bo->vmap, 0,
 			   guc->hwconfig.size);
 }
-<<<<<<< HEAD
-=======
 
 void xe_guc_hwconfig_dump(struct xe_guc *guc, struct drm_printer *p)
 {
@@ -205,4 +200,3 @@ int xe_guc_hwconfig_lookup_u32(struct xe_guc *guc, u32 attribute, u32 *val)
 
 	return found ? 0 : -ENOENT;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -21,8 +21,6 @@ struct media_intf_devnode;
 
 #define MAX_CARD_INTERFACES	16
 
-<<<<<<< HEAD
-=======
 /*
  * Structure holding assosiation between Audio Control Interface
  * and given Streaming or Midi Interface.
@@ -32,7 +30,6 @@ struct snd_intf_to_ctrl {
 	struct usb_host_interface *ctrl_intf;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct snd_usb_audio {
 	int index;
 	struct usb_device *dev;
@@ -75,12 +72,9 @@ struct snd_usb_audio {
 	struct usb_host_interface *ctrl_intf;	/* the audio control interface */
 	struct media_device *media_dev;
 	struct media_intf_devnode *ctl_intf_media_devnode;
-<<<<<<< HEAD
-=======
 
 	unsigned int num_intf_to_ctrl;
 	struct snd_intf_to_ctrl intf_to_ctrl[MAX_CARD_INTERFACES];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define USB_AUDIO_IFACE_UNUSED	((void *)-1L)

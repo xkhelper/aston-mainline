@@ -296,10 +296,6 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
 		return NULL;
 	}
 
-<<<<<<< HEAD
-	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
-		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-=======
 	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
 		 /* Detect modified geometry and pass those to skb_segment. */
 		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
@@ -320,7 +316,6 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
 						  ip_hdr(gso_skb)->saddr,
 						  ip_hdr(gso_skb)->daddr, 0);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	skb_pull(gso_skb, sizeof(*uh));
 

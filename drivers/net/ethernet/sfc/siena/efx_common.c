@@ -725,10 +725,6 @@ void efx_siena_reset_down(struct efx_nic *efx, enum reset_type method)
 
 	mutex_lock(&efx->mac_lock);
 	down_write(&efx->filter_sem);
-<<<<<<< HEAD
-	mutex_lock(&efx->rss_lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	efx->type->fini(efx);
 }
 
@@ -789,12 +785,6 @@ int efx_siena_reset_up(struct efx_nic *efx, enum reset_type method, bool ok)
 			   " VFs may not function\n", rc);
 #endif
 
-<<<<<<< HEAD
-	if (efx->type->rx_restore_rss_contexts)
-		efx->type->rx_restore_rss_contexts(efx);
-	mutex_unlock(&efx->rss_lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	efx->type->filter_table_restore(efx);
 	up_write(&efx->filter_sem);
 	if (efx->type->sriov_reset)
@@ -812,10 +802,6 @@ int efx_siena_reset_up(struct efx_nic *efx, enum reset_type method, bool ok)
 fail:
 	efx->port_initialized = false;
 
-<<<<<<< HEAD
-	mutex_unlock(&efx->rss_lock);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	up_write(&efx->filter_sem);
 	mutex_unlock(&efx->mac_lock);
 
@@ -1025,13 +1011,7 @@ int efx_siena_init_struct(struct efx_nic *efx,
 		efx->type->rx_hash_offset - efx->type->rx_prefix_size;
 	efx->rx_packet_ts_offset =
 		efx->type->rx_ts_offset - efx->type->rx_prefix_size;
-<<<<<<< HEAD
-	INIT_LIST_HEAD(&efx->rss_context.list);
 	efx->rss_context.context_id = EFX_MCDI_RSS_CONTEXT_INVALID;
-	mutex_init(&efx->rss_lock);
-=======
-	efx->rss_context.context_id = EFX_MCDI_RSS_CONTEXT_INVALID;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	efx->vport_id = EVB_PORT_ID_ASSIGNED;
 	spin_lock_init(&efx->stats_lock);
 	efx->vi_stride = EFX_DEFAULT_VI_STRIDE;

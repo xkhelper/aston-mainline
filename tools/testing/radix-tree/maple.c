@@ -14,11 +14,7 @@
 #include "test.h"
 #include <stdlib.h>
 #include <time.h>
-<<<<<<< HEAD
-#include "linux/init.h"
-=======
 #include <linux/init.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define module_init(x)
 #define module_exit(x)
@@ -124,11 +120,7 @@ static noinline void __init check_new_node(struct maple_tree *mt)
 	MT_BUG_ON(mt, mas.alloc->slot[0] == NULL);
 	mas_push_node(&mas, mn);
 	mas_reset(&mas);
-<<<<<<< HEAD
-	mas_nomem(&mas, GFP_KERNEL); /* free */
-=======
 	mas_destroy(&mas);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mtree_unlock(mt);
 
 
@@ -152,11 +144,7 @@ static noinline void __init check_new_node(struct maple_tree *mt)
 	mn->parent = ma_parent_ptr(mn);
 	ma_free_rcu(mn);
 	mas.status = ma_start;
-<<<<<<< HEAD
-	mas_nomem(&mas, GFP_KERNEL);
-=======
 	mas_destroy(&mas);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Allocate 3 nodes, will fail. */
 	mas_node_count(&mas, 3);
 	/* Drop the lock and allocate 3 nodes. */
@@ -173,11 +161,7 @@ static noinline void __init check_new_node(struct maple_tree *mt)
 	MT_BUG_ON(mt, mas_allocated(&mas) != 3);
 	/* Free. */
 	mas_reset(&mas);
-<<<<<<< HEAD
-	mas_nomem(&mas, GFP_KERNEL);
-=======
 	mas_destroy(&mas);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Set allocation request to 1. */
 	mas_set_alloc_req(&mas, 1);
@@ -293,10 +277,7 @@ static noinline void __init check_new_node(struct maple_tree *mt)
 		}
 		mas_reset(&mas);
 		MT_BUG_ON(mt, mas_nomem(&mas, GFP_KERNEL));
-<<<<<<< HEAD
-=======
 		mas_destroy(&mas);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	}
 
@@ -319,11 +300,7 @@ static noinline void __init check_new_node(struct maple_tree *mt)
 	}
 	MT_BUG_ON(mt, mas_allocated(&mas) != total);
 	mas_reset(&mas);
-<<<<<<< HEAD
-	mas_nomem(&mas, GFP_KERNEL); /* Free. */
-=======
 	mas_destroy(&mas); /* Free. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	MT_BUG_ON(mt, mas_allocated(&mas) != 0);
 	for (i = 1; i < 128; i++) {
@@ -35871,10 +35848,7 @@ static noinline void __init check_nomem(struct maple_tree *mt)
 	mas_store(&ms, &ms); /* insert 1 -> &ms */
 	mas_nomem(&ms, GFP_KERNEL); /* Node allocated in here. */
 	mtree_unlock(mt);
-<<<<<<< HEAD
-=======
 	mas_destroy(&ms);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mtree_destroy(mt);
 }
 
@@ -36252,8 +36226,6 @@ static noinline void __init check_mtree_dup(struct maple_tree *mt)
 
 extern void test_kmem_cache_bulk(void);
 
-<<<<<<< HEAD
-=======
 /* callback function used for check_nomem_writer_race() */
 static void writer2(void *maple_tree)
 {
@@ -36367,7 +36339,6 @@ static inline void check_bulk_rebalance(struct maple_tree *mt)
 	mas_destroy(&mas);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void farmer_tests(void)
 {
 	struct maple_node *node;
@@ -36375,8 +36346,6 @@ void farmer_tests(void)
 
 	mt_dump(&tree, mt_dump_dec);
 
-<<<<<<< HEAD
-=======
 	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN | MT_FLAGS_USE_RCU);
 	check_vma_modification(&tree);
 	mtree_destroy(&tree);
@@ -36385,7 +36354,6 @@ void farmer_tests(void)
 	check_bulk_rebalance(&tree);
 	mtree_destroy(&tree);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tree.ma_root = xa_mk_value(0);
 	mt_dump(&tree, mt_dump_dec);
 
@@ -36412,13 +36380,10 @@ void farmer_tests(void)
 	check_dfs_preorder(&tree);
 	mtree_destroy(&tree);
 
-<<<<<<< HEAD
-=======
 	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE | MT_FLAGS_USE_RCU);
 	check_nomem_writer_race(&tree);
 	mtree_destroy(&tree);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE);
 	check_prealloc(&tree);
 	mtree_destroy(&tree);
@@ -36467,11 +36432,6 @@ void farmer_tests(void)
 	check_nomem(&tree);
 }
 
-<<<<<<< HEAD
-void maple_tree_tests(void)
-{
-#if !defined(BENCH)
-=======
 static unsigned long get_last_index(struct ma_state *mas)
 {
 	struct maple_node *node = mas_mn(mas);
@@ -36559,7 +36519,6 @@ void maple_tree_tests(void)
 {
 #if !defined(BENCH)
 	regression_tests();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	farmer_tests();
 #endif
 	maple_tree_seed();

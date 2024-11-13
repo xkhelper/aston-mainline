@@ -3122,10 +3122,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
 	struct il_cmd_meta *out_meta;
 	dma_addr_t phys_addr;
 	unsigned long flags;
-<<<<<<< HEAD
-=======
 	u8 *out_payload;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 idx;
 	u16 fix_size;
 
@@ -3161,8 +3158,6 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
 	out_cmd = txq->cmd[idx];
 	out_meta = &txq->meta[idx];
 
-<<<<<<< HEAD
-=======
 	/* The payload is in the same place in regular and huge
 	 * command buffers, but we need to let the compiler know when
 	 * we're using a larger payload buffer to avoid "field-
@@ -3173,7 +3168,6 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
 	else
 		out_payload = out_cmd->cmd.payload;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (WARN_ON(out_meta->flags & CMD_MAPPED)) {
 		spin_unlock_irqrestore(&il->hcmd_lock, flags);
 		return -ENOSPC;
@@ -3187,11 +3181,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
 		out_meta->callback = cmd->callback;
 
 	out_cmd->hdr.cmd = cmd->id;
-<<<<<<< HEAD
-	memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
-=======
 	memcpy(out_payload, cmd->data, cmd->len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* At this point, the out_cmd now has all of the incoming cmd
 	 * information */
@@ -4983,11 +4973,8 @@ il_pci_resume(struct device *device)
 	 */
 	pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
 
-<<<<<<< HEAD
-=======
 	_il_wr(il, CSR_INT, 0xffffffff);
 	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	il_enable_interrupts(il);
 
 	if (!(_il_rd(il, CSR_GP_CNTRL) & CSR_GP_CNTRL_REG_FLAG_HW_RF_KILL_SW))

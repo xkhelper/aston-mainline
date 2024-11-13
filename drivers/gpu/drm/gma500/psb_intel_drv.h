@@ -80,11 +80,7 @@ struct psb_intel_mode_device {
 struct gma_i2c_chan {
 	struct i2c_adapter base;
 	struct i2c_algo_bit_data algo;
-<<<<<<< HEAD
-	u8 slave_addr;
-=======
 	u8 target_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* for getting at dev. private (mmio etc.) */
 	struct drm_device *drm_dev;

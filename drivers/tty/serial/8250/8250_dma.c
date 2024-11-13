@@ -89,13 +89,9 @@ int serial8250_tx_dma(struct uart_8250_port *p)
 	struct tty_port			*tport = &p->port.state->port;
 	struct dma_async_tx_descriptor	*desc;
 	struct uart_port		*up = &p->port;
-<<<<<<< HEAD
-	struct scatterlist sg;
-=======
 	struct scatterlist		*sg;
 	struct scatterlist		sgl[2];
 	int i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (dma->tx_running) {
@@ -116,20 +112,6 @@ int serial8250_tx_dma(struct uart_8250_port *p)
 
 	serial8250_do_prepare_tx_dma(p);
 
-<<<<<<< HEAD
-	sg_init_table(&sg, 1);
-	/* kfifo can do more than one sg, we don't (quite yet) */
-	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
-					   UART_XMIT_SIZE, dma->tx_addr);
-
-	/* we already checked empty fifo above, so there should be something */
-	if (WARN_ON_ONCE(ret != 1))
-		return 0;
-
-	dma->tx_size = sg_dma_len(&sg);
-
-	desc = dmaengine_prep_slave_sg(dma->txchan, &sg, 1,
-=======
 	sg_init_table(sgl, ARRAY_SIZE(sgl));
 
 	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, sgl, ARRAY_SIZE(sgl),
@@ -141,7 +123,6 @@ int serial8250_tx_dma(struct uart_8250_port *p)
 		dma->tx_size += sg_dma_len(sg);
 
 	desc = dmaengine_prep_slave_sg(dma->txchan, sgl, ret,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       DMA_MEM_TO_DEV,
 				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
 	if (!desc) {

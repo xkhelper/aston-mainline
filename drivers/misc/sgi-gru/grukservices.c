@@ -258,10 +258,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
 	int lcpu;
 
 	BUG_ON(dsr_bytes > GRU_NUM_KERNEL_DSR_BYTES);
-<<<<<<< HEAD
-	preempt_disable();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bs = gru_lock_kernel_context(-1);
 	lcpu = uv_blade_processor_id();
 	*cb = bs->kernel_cb + lcpu * GRU_HANDLE_STRIDE;
@@ -275,10 +271,6 @@ static int gru_get_cpu_resources(int dsr_bytes, void **cb, void **dsr)
 static void gru_free_cpu_resources(void *cb, void *dsr)
 {
 	gru_unlock_kernel_context(uv_numa_blade_id());
-<<<<<<< HEAD
-	preempt_enable();
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

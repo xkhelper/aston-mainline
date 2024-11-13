@@ -15,10 +15,6 @@
 #define _SMC_LOOPBACK_H
 
 #include <linux/device.h>
-<<<<<<< HEAD
-#include <linux/err.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/smc.h>
 
 #if IS_ENABLED(CONFIG_SMC_LO)

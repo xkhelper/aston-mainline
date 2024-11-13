@@ -28,27 +28,10 @@ struct thread_struct {
 	struct arch_thread arch;
 	jmp_buf switch_buf;
 	struct {
-<<<<<<< HEAD
-		int op;
-		union {
-			struct {
-				int pid;
-			} fork, exec;
-			struct {
-				int (*proc)(void *);
-				void *arg;
-			} thread;
-			struct {
-				void (*proc)(void *);
-				void *arg;
-			} cb;
-		} u;
-=======
 		struct {
 			int (*proc)(void *);
 			void *arg;
 		} thread;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} request;
 };
 
@@ -58,11 +41,7 @@ struct thread_struct {
 	.fault_addr		= NULL, \
 	.prev_sched		= NULL, \
 	.arch			= INIT_ARCH_THREAD, \
-<<<<<<< HEAD
-	.request		= { 0 } \
-=======
 	.request		= { } \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

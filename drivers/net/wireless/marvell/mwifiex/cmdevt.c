@@ -5,11 +5,7 @@
  * Copyright 2011-2020 NXP
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "decl.h"
 #include "ioctl.h"
 #include "util.h"
@@ -486,11 +482,7 @@ int mwifiex_process_event(struct mwifiex_adapter *adapter)
 	if ((adapter->event_cause & EVENT_ID_MASK) == EVENT_RADAR_DETECTED) {
 		for (i = 0; i < adapter->priv_num; i++) {
 			priv = adapter->priv[i];
-<<<<<<< HEAD
-			if (priv && mwifiex_is_11h_active(priv)) {
-=======
 			if (mwifiex_is_11h_active(priv)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				adapter->event_cause |=
 					((priv->bss_num & 0xff) << 16) |
 					((priv->bss_type & 0xff) << 24);
@@ -643,11 +635,8 @@ int mwifiex_send_cmd(struct mwifiex_private *priv, u16 cmd_no,
 		case HostCmd_CMD_UAP_STA_DEAUTH:
 		case HOST_CMD_APCMD_SYS_RESET:
 		case HOST_CMD_APCMD_STA_LIST:
-<<<<<<< HEAD
-=======
 		case HostCmd_CMD_CHAN_REPORT_REQUEST:
 		case HostCmd_CMD_ADD_NEW_STATION:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = mwifiex_uap_prepare_cmd(priv, cmd_no, cmd_action,
 						      cmd_oid, data_buf,
 						      cmd_ptr);
@@ -937,8 +926,6 @@ int mwifiex_process_cmdresp(struct mwifiex_adapter *adapter)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 void mwifiex_process_assoc_resp(struct mwifiex_adapter *adapter)
 {
 	struct cfg80211_rx_assoc_resp_data assoc_resp = {
@@ -957,7 +944,6 @@ void mwifiex_process_assoc_resp(struct mwifiex_adapter *adapter)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * This function handles the timeout of command sending.
  *
@@ -1706,8 +1692,6 @@ int mwifiex_ret_get_hw_spec(struct mwifiex_private *priv,
 	if (adapter->fw_api_ver == MWIFIEX_FW_V15)
 		adapter->scan_chan_gap_enabled = true;
 
-<<<<<<< HEAD
-=======
 	if (adapter->key_api_major_ver != KEY_API_VER_MAJOR_V2)
 		adapter->host_mlme_enabled = false;
 
@@ -1715,7 +1699,6 @@ int mwifiex_ret_get_hw_spec(struct mwifiex_private *priv,
 		    adapter->host_mlme_enabled ? "enable" : "disable",
 		    adapter->key_api_major_ver);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

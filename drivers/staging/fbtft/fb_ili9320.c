@@ -35,11 +35,6 @@ static int init_display(struct fbtft_par *par)
 	par->fbtftops.reset(par);
 
 	devcode = read_devicecode(par);
-<<<<<<< HEAD
-	fbtft_par_dbg(DEBUG_INIT_DISPLAY, par, "Device code: 0x%04X\n",
-		      devcode);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if ((devcode != 0x0000) && (devcode != 0x9320))
 		dev_warn(par->info->device,
 			 "Unrecognized Device code: 0x%04X (expected 0x9320)\n",

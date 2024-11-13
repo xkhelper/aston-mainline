@@ -178,8 +178,6 @@ static bool is_sibling_call(struct instruction *insn)
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Checks if a string ends with another.
  */
 static bool str_ends_with(const char *s, const char *sub)
@@ -226,7 +224,6 @@ static bool is_rust_noreturn(const struct symbol *func)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * This checks to see if the given function is a "noreturn" function.
  *
  * For global functions which are outside the scope of this object file, we
@@ -251,12 +248,6 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
 	if (!func)
 		return false;
 
-<<<<<<< HEAD
-	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK)
-		for (i = 0; i < ARRAY_SIZE(global_noreturns); i++)
-			if (!strcmp(func->name, global_noreturns[i]))
-				return true;
-=======
 	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK) {
 		if (is_rust_noreturn(func))
 			return true;
@@ -265,7 +256,6 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
 			if (!strcmp(func->name, global_noreturns[i]))
 				return true;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (func->bind == STB_WEAK)
 		return false;
@@ -3053,12 +3043,6 @@ static int update_cfi_state(struct instruction *insn,
 				break;
 			}
 
-<<<<<<< HEAD
-			if (op->dest.reg == CFI_SP && op->src.reg == CFI_BP) {
-
-				/* lea disp(%rbp), %rsp */
-				cfi->stack_size = -(op->src.offset + regs[CFI_BP].offset);
-=======
 			if (op->dest.reg == CFI_BP && op->src.reg == CFI_SP &&
 			    insn->sym->frame_pointer) {
 				/* addi.d fp,sp,imm on LoongArch */
@@ -3080,7 +3064,6 @@ static int update_cfi_state(struct instruction *insn,
 					/* lea disp(%rbp), %rsp */
 					cfi->stack_size = -(op->src.offset + regs[CFI_BP].offset);
 				}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 			}
 

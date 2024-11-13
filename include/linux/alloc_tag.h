@@ -70,11 +70,7 @@ static inline struct alloc_tag *ct_to_alloc_tag(struct codetag *ct)
 /*
  * When percpu variables are required to be defined as weak, static percpu
  * variables can't be used inside a function (see comments for DECLARE_PER_CPU_SECTION).
-<<<<<<< HEAD
- * Instead we will accound all module allocations to a single counter.
-=======
  * Instead we will account all module allocations to a single counter.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 DECLARE_PER_CPU(struct alloc_tag_counters, _shared_alloc_tag);
 
@@ -139,11 +135,6 @@ static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
 #endif
 
 /* Caller should verify both ref and tag to be valid */
-<<<<<<< HEAD
-static inline void __alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
-{
-	ref->ct = &tag->ct;
-=======
 static inline bool __alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
 {
 	alloc_tag_add_check(ref, tag);
@@ -159,7 +150,6 @@ static inline bool alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *t
 	if (unlikely(!__alloc_tag_ref_set(ref, tag)))
 		return false;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * We need in increment the call counter every time we have a new
 	 * allocation or when we split a large allocation into smaller ones.
@@ -167,34 +157,13 @@ static inline bool alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *t
 	 * counter because when we free each part the counter will be decremented.
 	 */
 	this_cpu_inc(tag->counters->calls);
-<<<<<<< HEAD
-}
-
-static inline void alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
-{
-	alloc_tag_add_check(ref, tag);
-	if (!ref || !tag)
-		return;
-
-	__alloc_tag_ref_set(ref, tag);
-=======
 	return true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes)
 {
-<<<<<<< HEAD
-	alloc_tag_add_check(ref, tag);
-	if (!ref || !tag)
-		return;
-
-	__alloc_tag_ref_set(ref, tag);
-	this_cpu_add(tag->counters->bytes, bytes);
-=======
 	if (likely(alloc_tag_ref_set(ref, tag)))
 		this_cpu_add(tag->counters->bytes, bytes);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)

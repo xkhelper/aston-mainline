@@ -23,12 +23,6 @@
 #define UPLL_DIV		2
 #define PLL_MUL_MAX		(FIELD_GET(PMC_PLL_CTRL1_MUL_MSK, UINT_MAX) + 1)
 
-<<<<<<< HEAD
-#define FCORE_MIN		(600000000)
-#define FCORE_MAX		(1200000000)
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PLL_MAX_ID		7
 
 struct sam9x60_pll_core {
@@ -79,11 +73,6 @@ static unsigned long sam9x60_frac_pll_recalc_rate(struct clk_hw *hw,
 {
 	struct sam9x60_pll_core *core = to_sam9x60_pll_core(hw);
 	struct sam9x60_frac *frac = to_sam9x60_frac(core);
-<<<<<<< HEAD
-
-	return parent_rate * (frac->mul + 1) +
-		DIV_ROUND_CLOSEST_ULL((u64)parent_rate * frac->frac, (1 << 22));
-=======
 	unsigned long freq;
 
 	freq = parent_rate * (frac->mul + 1) +
@@ -93,7 +82,6 @@ static unsigned long sam9x60_frac_pll_recalc_rate(struct clk_hw *hw,
 		freq >>= 1;
 
 	return freq;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int sam9x60_frac_pll_set(struct sam9x60_pll_core *core)
@@ -209,12 +197,8 @@ static long sam9x60_frac_pll_compute_mul_frac(struct sam9x60_pll_core *core,
 	unsigned long nmul = 0;
 	unsigned long nfrac = 0;
 
-<<<<<<< HEAD
-	if (rate < FCORE_MIN || rate > FCORE_MAX)
-=======
 	if (rate < core->characteristics->core_output[0].min ||
 	    rate > core->characteristics->core_output[0].max)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ERANGE;
 
 	/*
@@ -234,12 +218,8 @@ static long sam9x60_frac_pll_compute_mul_frac(struct sam9x60_pll_core *core,
 	}
 
 	/* Check if resulted rate is a valid.  */
-<<<<<<< HEAD
-	if (tmprate < FCORE_MIN || tmprate > FCORE_MAX)
-=======
 	if (tmprate < core->characteristics->core_output[0].min ||
 	    tmprate > core->characteristics->core_output[0].max)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -ERANGE;
 
 	if (update) {
@@ -458,15 +438,12 @@ static unsigned long sam9x60_div_pll_recalc_rate(struct clk_hw *hw,
 	return DIV_ROUND_CLOSEST_ULL(parent_rate, (div->div + 1));
 }
 
-<<<<<<< HEAD
-=======
 static unsigned long sam9x60_fixed_div_pll_recalc_rate(struct clk_hw *hw,
 						       unsigned long parent_rate)
 {
 	return parent_rate >> 1;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static long sam9x60_div_pll_compute_div(struct sam9x60_pll_core *core,
 					unsigned long *parent_rate,
 					unsigned long rate)
@@ -641,8 +618,6 @@ static const struct clk_ops sam9x60_div_pll_ops_chg = {
 	.restore_context = sam9x60_div_pll_restore_context,
 };
 
-<<<<<<< HEAD
-=======
 static const struct clk_ops sam9x60_fixed_div_pll_ops = {
 	.prepare = sam9x60_div_pll_prepare,
 	.unprepare = sam9x60_div_pll_unprepare,
@@ -653,7 +628,6 @@ static const struct clk_ops sam9x60_fixed_div_pll_ops = {
 	.restore_context = sam9x60_div_pll_restore_context,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct clk_hw * __init
 sam9x60_clk_register_frac_pll(struct regmap *regmap, spinlock_t *lock,
 			      const char *name, const char *parent_name,
@@ -716,12 +690,8 @@ sam9x60_clk_register_frac_pll(struct regmap *regmap, spinlock_t *lock,
 			goto free;
 		}
 
-<<<<<<< HEAD
-		ret = sam9x60_frac_pll_compute_mul_frac(&frac->core, FCORE_MIN,
-=======
 		ret = sam9x60_frac_pll_compute_mul_frac(&frac->core,
 							characteristics->core_output[0].min,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 							parent_rate, true);
 		if (ret < 0) {
 			hw = ERR_PTR(ret);
@@ -777,12 +747,6 @@ sam9x60_clk_register_div_pll(struct regmap *regmap, spinlock_t *lock,
 	else
 		init.parent_names = &parent_name;
 	init.num_parents = 1;
-<<<<<<< HEAD
-	if (flags & CLK_SET_RATE_GATE)
-		init.ops = &sam9x60_div_pll_ops;
-	else
-		init.ops = &sam9x60_div_pll_ops_chg;
-=======
 
 	if (layout->div2)
 		init.ops = &sam9x60_fixed_div_pll_ops;
@@ -791,7 +755,6 @@ sam9x60_clk_register_div_pll(struct regmap *regmap, spinlock_t *lock,
 	else
 		init.ops = &sam9x60_div_pll_ops_chg;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	init.flags = flags;
 
 	div->core.id = id;

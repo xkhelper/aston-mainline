@@ -7,11 +7,7 @@
 
 #ifndef _FC_ENCODE_H_
 #define _FC_ENCODE_H_
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/utsname.h>
 #include <scsi/fc/fc_ms.h>
 

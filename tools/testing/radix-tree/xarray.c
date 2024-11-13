@@ -4,23 +4,9 @@
  * Copyright (c) 2018 Matthew Wilcox <willy@infradead.org>
  */
 
-<<<<<<< HEAD
-#define XA_DEBUG
-#include "test.h"
-
-#define module_init(x)
-#define module_exit(x)
-#define MODULE_AUTHOR(x)
-#define MODULE_DESCRIPTION(X)
-#define MODULE_LICENSE(x)
-#define dump_stack()	assert(0)
-
-#include "../../../lib/xarray.c"
-=======
 #include "xarray-shared.h"
 #include "test.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #undef XA_DEBUG
 #include "../../../lib/test_xarray.c"
 

@@ -531,10 +531,7 @@ static const struct sysrq_key_op *sysrq_key_table[62] = {
 	NULL,				/* P */
 	NULL,				/* Q */
 	&sysrq_replay_logs_op,		/* R */
-<<<<<<< HEAD
-=======
 	/* S: May be registered by sched_ext for resetting */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL,				/* S */
 	NULL,				/* T */
 	NULL,				/* U */

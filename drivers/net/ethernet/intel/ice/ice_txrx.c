@@ -2368,11 +2368,7 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
 					ICE_TXD_CTX_QW1_CMD_S);
 
 	ice_tstamp(tx_ring, skb, first, &offload);
-<<<<<<< HEAD
-	if (ice_is_switchdev_running(vsi->back))
-=======
 	if (ice_is_switchdev_running(vsi->back) && vsi->type != ICE_VSI_SF)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ice_eswitch_set_target_vsi(skb, &offload);
 
 	if (offload.cd_qw1 & ICE_TX_DESC_DTYPE_CTX) {

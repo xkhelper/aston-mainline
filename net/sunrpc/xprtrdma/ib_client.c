@@ -153,10 +153,7 @@ static void rpcrdma_remove_one(struct ib_device *device,
 	}
 
 	trace_rpcrdma_client_remove_one_done(device);
-<<<<<<< HEAD
-=======
 	xa_destroy(&rd->rd_xa);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(rd);
 }
 

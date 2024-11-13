@@ -486,11 +486,7 @@ struct agg_tx_status {
 #define IWL_MVM_TX_RES_GET_RA(_ra_tid) ((_ra_tid) >> 4)
 
 /**
-<<<<<<< HEAD
- * struct iwl_mvm_tx_resp_v3 - notifies that fw is TXing a packet
-=======
  * struct iwl_tx_resp_v3 - notifies that fw is TXing a packet
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ( REPLY_TX = 0x1c )
  * @frame_count: 1 no aggregation, >1 aggregation
  * @bt_kill_count: num of times blocked by bluetooth (unused for agg)
@@ -521,11 +517,7 @@ struct agg_tx_status {
  * After the array of statuses comes the SSN of the SCD. Look at
  * %iwl_mvm_get_scd_ssn for more details.
  */
-<<<<<<< HEAD
-struct iwl_mvm_tx_resp_v3 {
-=======
 struct iwl_tx_resp_v3 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 frame_count;
 	u8 bt_kill_count;
 	u8 failure_rts;
@@ -551,11 +543,7 @@ struct iwl_tx_resp_v3 {
 } __packed; /* TX_RSP_API_S_VER_3 */
 
 /**
-<<<<<<< HEAD
- * struct iwl_mvm_tx_resp - notifies that fw is TXing a packet
-=======
  * struct iwl_tx_resp - notifies that fw is TXing a packet
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ( REPLY_TX = 0x1c )
  * @frame_count: 1 no aggregation, >1 aggregation
  * @bt_kill_count: num of times blocked by bluetooth (unused for agg)
@@ -587,11 +575,7 @@ struct iwl_tx_resp_v3 {
  * After the array of statuses comes the SSN of the SCD. Look at
  * %iwl_mvm_get_scd_ssn for more details.
  */
-<<<<<<< HEAD
-struct iwl_mvm_tx_resp {
-=======
 struct iwl_tx_resp {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 frame_count;
 	u8 bt_kill_count;
 	u8 failure_rts;
@@ -839,11 +823,7 @@ struct iwl_mac_beacon_cmd {
 	     */
 
 struct iwl_beacon_notif {
-<<<<<<< HEAD
-	struct iwl_mvm_tx_resp beacon_notify_hdr;
-=======
 	struct iwl_tx_resp beacon_notify_hdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le64 tsf;
 	__le32 ibss_mgr_status;
 } __packed;
@@ -856,11 +836,7 @@ struct iwl_beacon_notif {
  * @gp2: last beacon time in gp2
  */
 struct iwl_extended_beacon_notif_v5 {
-<<<<<<< HEAD
-	struct iwl_mvm_tx_resp beacon_notify_hdr;
-=======
 	struct iwl_tx_resp beacon_notify_hdr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le64 tsf;
 	__le32 ibss_mgr_status;
 	__le32 gp2;

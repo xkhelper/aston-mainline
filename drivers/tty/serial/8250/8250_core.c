@@ -423,19 +423,11 @@ static int univ8250_console_setup(struct console *co, char *options)
 
 	port = &serial8250_ports[co->index].port;
 	/* link port to console */
-<<<<<<< HEAD
-	port->cons = co;
-
-	retval = serial8250_console_setup(port, options, false);
-	if (retval != 0)
-		port->cons = NULL;
-=======
 	uart_port_set_cons(port, co);
 
 	retval = serial8250_console_setup(port, options, false);
 	if (retval != 0)
 		uart_port_set_cons(port, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return retval;
 }
 
@@ -493,11 +485,7 @@ static int univ8250_console_match(struct console *co, char *name, int idx,
 			continue;
 
 		co->index = i;
-<<<<<<< HEAD
-		port->cons = co;
-=======
 		uart_port_set_cons(port, co);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return serial8250_console_setup(port, options, true);
 	}
 

@@ -70,13 +70,8 @@ int pinctrl_utils_add_map_configs(struct pinctrl_dev *pctldev,
 	if (WARN_ON(*num_maps == *reserved_maps))
 		return -ENOSPC;
 
-<<<<<<< HEAD
-	dup_configs = kmemdup(configs, num_configs * sizeof(*dup_configs),
-			      GFP_KERNEL);
-=======
 	dup_configs = kmemdup_array(configs, num_configs,
 				sizeof(*dup_configs), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!dup_configs)
 		return -ENOMEM;
 

@@ -113,12 +113,8 @@ int snd_pmac_tumbler_post_init(void)
 
 	err = keywest_ctx->init_client(keywest_ctx);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "tumbler: %i :cannot initialize the MCS\n", err);
-=======
 		dev_err(&keywest_ctx->client->dev,
 			"tumbler: %i :cannot initialize the MCS\n", err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	return 0;
@@ -141,11 +137,7 @@ int snd_pmac_keywest_init(struct pmac_keywest *i2c)
 
 	err = i2c_add_driver(&keywest_driver);
 	if (err) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "cannot register keywest i2c driver\n");
-=======
 		dev_err(&i2c->client->dev, "cannot register keywest i2c driver\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i2c_put_adapter(adap);
 		return err;
 	}

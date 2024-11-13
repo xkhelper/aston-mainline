@@ -95,8 +95,6 @@ static inline int rtw89_wow_get_sec_hdr_len(struct rtw89_dev *rtwdev)
 }
 
 #ifdef CONFIG_PM
-<<<<<<< HEAD
-=======
 static inline bool rtw89_wow_mgd_linked(struct rtw89_dev *rtwdev)
 {
 	struct ieee80211_vif *wow_vif = rtwdev->wow.wow_vif;
@@ -120,7 +118,6 @@ static inline bool rtw_wow_has_mgd_features(struct rtw89_dev *rtwdev)
 	return !bitmap_empty(rtw_wow->flags, RTW89_WOW_FLAG_NUM);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int rtw89_wow_suspend(struct rtw89_dev *rtwdev, struct cfg80211_wowlan *wowlan);
 int rtw89_wow_resume(struct rtw89_dev *rtwdev);
 void rtw89_wow_parse_akm(struct rtw89_dev *rtwdev, struct sk_buff *skb);

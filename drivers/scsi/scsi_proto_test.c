@@ -3,11 +3,7 @@
  * Copyright 2023 Google LLC
  */
 #include <kunit/test.h>
-<<<<<<< HEAD
-#include <asm-generic/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <scsi/scsi_proto.h>
 
 static void test_scsi_proto(struct kunit *test)

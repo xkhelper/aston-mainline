@@ -425,8 +425,6 @@ static const struct intel_vgpu_regops intel_vgpu_regops_opregion = {
 	.release = intel_vgpu_reg_release_opregion,
 };
 
-<<<<<<< HEAD
-=======
 static bool edid_valid(const void *edid, size_t size)
 {
 	const struct drm_edid *drm_edid;
@@ -439,7 +437,6 @@ static bool edid_valid(const void *edid, size_t size)
 	return is_valid;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int handle_edid_regs(struct intel_vgpu *vgpu,
 			struct vfio_edid_region *region, char *buf,
 			size_t count, u16 offset, bool is_write)
@@ -458,15 +455,7 @@ static int handle_edid_regs(struct intel_vgpu *vgpu,
 		switch (offset) {
 		case offsetof(struct vfio_region_gfx_edid, link_state):
 			if (data == VFIO_DEVICE_GFX_LINK_STATE_UP) {
-<<<<<<< HEAD
-				if (!drm_edid_block_valid(
-					(u8 *)region->edid_blob,
-					0,
-					true,
-					NULL)) {
-=======
 				if (!edid_valid(region->edid_blob, EDID_SIZE)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					gvt_vgpu_err("invalid EDID blob\n");
 					return -EINVAL;
 				}

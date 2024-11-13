@@ -6,15 +6,12 @@
 #include <linux/compiler.h>
 #include <linux/rbtree.h>
 #include <linux/types.h>
-<<<<<<< HEAD
-=======
 #include "dwarf-regs.h"
 #include "annotate.h"
 
 #ifdef HAVE_DWARF_SUPPORT
 #include "debuginfo.h"
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct annotated_op_loc;
 struct debuginfo;
@@ -24,8 +21,6 @@ struct hist_entry;
 struct map_symbol;
 struct thread;
 
-<<<<<<< HEAD
-=======
 #define pr_debug_dtp(fmt, ...)					\
 do {								\
 	if (debug_type_profile)					\
@@ -43,7 +38,6 @@ enum type_state_kind {
 	TSR_KIND_CANARY,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct annotated_member - Type of member field
  * @node: List entry in the parent list
@@ -129,15 +123,9 @@ struct data_loc_info {
 	u64 var_addr;
 	u8 cpumode;
 	struct annotated_op_loc *op;
-<<<<<<< HEAD
-
-	/* These are used internally */
-	struct debuginfo *di;
-=======
 	struct debuginfo *di;
 
 	/* These are used internally */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int fbreg;
 	bool fb_cfa;
 
@@ -178,8 +166,6 @@ struct annotated_data_stat {
 extern struct annotated_data_stat ann_data_stat;
 
 #ifdef HAVE_DWARF_SUPPORT
-<<<<<<< HEAD
-=======
 /*
  * Type information in a register, valid when @ok is true.
  * The @caller_saved registers are invalidated after a function call.
@@ -226,7 +212,6 @@ struct type_state {
 	/* stack pointer register */
 	int stack_reg;
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Returns data type at the location (ip, reg, offset) */
 struct annotated_data_type *find_data_type(struct data_loc_info *dloc);
@@ -244,8 +229,6 @@ void global_var_type__tree_delete(struct rb_root *root);
 
 int hist_entry__annotate_data_tty(struct hist_entry *he, struct evsel *evsel);
 
-<<<<<<< HEAD
-=======
 bool has_reg_type(struct type_state *state, int reg);
 struct type_state_stack *findnew_stack_state(struct type_state *state,
 						int offset, u8 kind,
@@ -261,7 +244,6 @@ bool get_global_var_info(struct data_loc_info *dloc, u64 addr,
 				const char **var_name, int *var_offset);
 void pr_debug_type_name(Dwarf_Die *die, enum type_state_kind kind);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else /* HAVE_DWARF_SUPPORT */
 
 static inline struct annotated_data_type *

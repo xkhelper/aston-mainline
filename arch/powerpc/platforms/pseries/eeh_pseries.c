@@ -784,8 +784,6 @@ static int pseries_notify_resume(struct eeh_dev *edev)
 }
 #endif
 
-<<<<<<< HEAD
-=======
 /**
  * pseries_eeh_err_inject - Inject specified error to the indicated PE
  * @pe: the indicated PE
@@ -823,7 +821,6 @@ static int pseries_eeh_err_inject(struct eeh_pe *pe, int type, int func,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct eeh_ops pseries_eeh_ops = {
 	.name			= "pseries",
 	.probe			= pseries_eeh_probe,
@@ -832,11 +829,7 @@ static struct eeh_ops pseries_eeh_ops = {
 	.reset			= pseries_eeh_reset,
 	.get_log		= pseries_eeh_get_log,
 	.configure_bridge       = pseries_eeh_configure_bridge,
-<<<<<<< HEAD
-	.err_inject		= NULL,
-=======
 	.err_inject		= pseries_eeh_err_inject,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read_config		= pseries_eeh_read_config,
 	.write_config		= pseries_eeh_write_config,
 	.next_error		= NULL,

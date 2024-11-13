@@ -38,13 +38,10 @@
 #include "lib/eq.h"
 #include "en.h"
 #include "clock.h"
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_X86
 #include <linux/timekeeping.h>
 #include <linux/cpufeature.h>
 #endif /* CONFIG_X86 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum {
 	MLX5_PIN_MODE_IN		= 0x0,
@@ -155,8 +152,6 @@ static int mlx5_set_mtutc(struct mlx5_core_dev *dev, u32 *mtutc, u32 size)
 				    MLX5_REG_MTUTC, 0, 1);
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_X86
 static bool mlx5_is_ptm_source_time_available(struct mlx5_core_dev *dev)
 {
@@ -238,7 +233,6 @@ static int mlx5_ptp_getcrosststamp(struct ptp_clock_info *ptp,
 }
 #endif /* CONFIG_X86 */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static u64 mlx5_read_time(struct mlx5_core_dev *dev,
 			  struct ptp_system_timestamp *sts,
 			  bool real_time)
@@ -1125,15 +1119,12 @@ static void mlx5_init_timer_clock(struct mlx5_core_dev *mdev)
 	if (MLX5_CAP_MCAM_REG(mdev, mtutc))
 		mlx5_init_timer_max_freq_adjustment(mdev);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_X86
 	if (MLX5_CAP_MCAM_REG3(mdev, mtptm) &&
 	    MLX5_CAP_MCAM_REG3(mdev, mtctr) && boot_cpu_has(X86_FEATURE_ART))
 		clock->ptp_info.getcrosststamp = mlx5_ptp_getcrosststamp;
 #endif /* CONFIG_X86 */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mlx5_timecounter_init(mdev);
 	mlx5_init_clock_info(mdev);
 	mlx5_init_overflow_period(clock);

@@ -209,16 +209,6 @@ static int ufs_unlink(struct inode *dir, struct dentry *dentry)
 {
 	struct inode * inode = d_inode(dentry);
 	struct ufs_dir_entry *de;
-<<<<<<< HEAD
-	struct page *page;
-	int err = -ENOENT;
-
-	de = ufs_find_entry(dir, &dentry->d_name, &page);
-	if (!de)
-		goto out;
-
-	err = ufs_delete_entry(dir, de, page);
-=======
 	struct folio *folio;
 	int err = -ENOENT;
 
@@ -227,7 +217,6 @@ static int ufs_unlink(struct inode *dir, struct dentry *dentry)
 		goto out;
 
 	err = ufs_delete_entry(dir, de, folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto out;
 
@@ -260,46 +249,28 @@ static int ufs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
 {
 	struct inode *old_inode = d_inode(old_dentry);
 	struct inode *new_inode = d_inode(new_dentry);
-<<<<<<< HEAD
-	struct page *dir_page = NULL;
-	struct ufs_dir_entry * dir_de = NULL;
-	struct page *old_page;
-=======
 	struct folio *dir_folio = NULL;
 	struct ufs_dir_entry * dir_de = NULL;
 	struct folio *old_folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ufs_dir_entry *old_de;
 	int err = -ENOENT;
 
 	if (flags & ~RENAME_NOREPLACE)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	old_de = ufs_find_entry(old_dir, &old_dentry->d_name, &old_page);
-=======
 	old_de = ufs_find_entry(old_dir, &old_dentry->d_name, &old_folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!old_de)
 		goto out;
 
 	if (S_ISDIR(old_inode->i_mode)) {
 		err = -EIO;
-<<<<<<< HEAD
-		dir_de = ufs_dotdot(old_inode, &dir_page);
-=======
 		dir_de = ufs_dotdot(old_inode, &dir_folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!dir_de)
 			goto out_old;
 	}
 
 	if (new_inode) {
-<<<<<<< HEAD
-		struct page *new_page;
-=======
 		struct folio *new_folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct ufs_dir_entry *new_de;
 
 		err = -ENOTEMPTY;
@@ -307,17 +278,10 @@ static int ufs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
 			goto out_dir;
 
 		err = -ENOENT;
-<<<<<<< HEAD
-		new_de = ufs_find_entry(new_dir, &new_dentry->d_name, &new_page);
-		if (!new_de)
-			goto out_dir;
-		ufs_set_link(new_dir, new_de, new_page, old_inode, 1);
-=======
 		new_de = ufs_find_entry(new_dir, &new_dentry->d_name, &new_folio);
 		if (!new_de)
 			goto out_dir;
 		ufs_set_link(new_dir, new_de, new_folio, old_inode, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		inode_set_ctime_current(new_inode);
 		if (dir_de)
 			drop_nlink(new_inode);
@@ -336,46 +300,24 @@ static int ufs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
 	 */
 	inode_set_ctime_current(old_inode);
 
-<<<<<<< HEAD
-	ufs_delete_entry(old_dir, old_de, old_page);
-=======
 	ufs_delete_entry(old_dir, old_de, old_folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mark_inode_dirty(old_inode);
 
 	if (dir_de) {
 		if (old_dir != new_dir)
-<<<<<<< HEAD
-			ufs_set_link(old_inode, dir_de, dir_page, new_dir, 0);
-		else {
-			kunmap(dir_page);
-			put_page(dir_page);
-		}
-=======
 			ufs_set_link(old_inode, dir_de, dir_folio, new_dir, 0);
 		else
 			folio_release_kmap(dir_folio, dir_de);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		inode_dec_link_count(old_dir);
 	}
 	return 0;
 
 
 out_dir:
-<<<<<<< HEAD
-	if (dir_de) {
-		kunmap(dir_page);
-		put_page(dir_page);
-	}
-out_old:
-	kunmap(old_page);
-	put_page(old_page);
-=======
 	if (dir_de)
 		folio_release_kmap(dir_folio, dir_de);
 out_old:
 	folio_release_kmap(old_folio, old_de);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	return err;
 }

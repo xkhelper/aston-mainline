@@ -21,8 +21,6 @@ config AD_SIGMA_DELTA
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
 
-<<<<<<< HEAD
-=======
 config AD4000
 	tristate "Analog Devices AD4000 ADC Driver"
 	depends on SPI
@@ -35,7 +33,6 @@ config AD4000
 	  To compile this driver as a module, choose M here: the module will be
 	  called ad4000.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config AD4130
 	tristate "Analog Device AD4130 ADC Driver"
 	depends on SPI
@@ -51,8 +48,6 @@ config AD4130
 	  To compile this driver as a module, choose M here: the module will be
 	  called ad4130.
 
-<<<<<<< HEAD
-=======
 config AD4695
 	tristate "Analog Device AD4695 ADC Driver"
 	depends on SPI
@@ -66,7 +61,6 @@ config AD4695
 	  To compile this driver as a module, choose M here: the module will be
 	  called ad4695.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config AD7091R
 	tristate
 
@@ -336,11 +330,8 @@ config AD7923
 config AD7944
 	tristate "Analog Devices AD7944 and similar ADCs driver"
 	depends on SPI
-<<<<<<< HEAD
-=======
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Say yes here to build support for Analog Devices
 	  AD7944, AD7985, AD7986 ADCs.
@@ -1027,8 +1018,6 @@ config NPCM_ADC
 	  This driver can also be built as a module. If so, the module
 	  will be called npcm_adc.
 
-<<<<<<< HEAD
-=======
 config PAC1921
 	tristate "Microchip Technology PAC1921 driver"
 	depends on I2C
@@ -1042,7 +1031,6 @@ config PAC1921
 	  This driver can also be built as a module. If so, the module
 	  will be called pac1921.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config PAC1934
 	tristate "Microchip Technology PAC1934 driver"
 	depends on I2C
@@ -1208,8 +1196,6 @@ config SC27XX_ADC
 	  This driver can also be built as a module. If so, the module
 	  will be called sc27xx_adc.
 
-<<<<<<< HEAD
-=======
 config SOPHGO_CV1800B_ADC
 	tristate "Sophgo CV1800B SARADC"
 	depends on ARCH_SOPHGO || COMPILE_TEST
@@ -1220,7 +1206,6 @@ config SOPHGO_CV1800B_ADC
 	  This driver can also be built as a module. If so, the module
 	  will be called sophgo_cv1800b_adc.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config SPEAR_ADC
 	tristate "ST SPEAr ADC"
 	depends on PLAT_SPEAR || COMPILE_TEST
@@ -1236,10 +1221,7 @@ config SD_ADC_MODULATOR
 	tristate "Generic sigma delta modulator"
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
-<<<<<<< HEAD
-=======
 	select IIO_BACKEND
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Select this option to enables sigma delta modulator. This driver can
 	  support generic sigma delta modulators.
@@ -1294,10 +1276,7 @@ config STM32_DFSDM_ADC
 	select IIO_BUFFER
 	select IIO_BUFFER_HW_CONSUMER
 	select IIO_TRIGGERED_BUFFER
-<<<<<<< HEAD
-=======
 	select IIO_BACKEND
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Select this option to support ADCSigma delta modulator for
 	  STMicroelectronics STM32 digital filter for sigma delta converter.
@@ -1506,11 +1485,8 @@ config TI_ADS8344
 config TI_ADS8688
 	tristate "Texas Instruments ADS8688"
 	depends on SPI
-<<<<<<< HEAD
-=======
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  If you say yes here you get support for Texas Instruments ADS8684 and
 	  and ADS8688 ADC chips
@@ -1521,11 +1497,8 @@ config TI_ADS8688
 config TI_ADS124S08
 	tristate "Texas Instruments ADS124S08"
 	depends on SPI
-<<<<<<< HEAD
-=======
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  If you say yes here you get support for Texas Instruments ADS124S08
 	  and ADS124S06 ADC chips
@@ -1560,12 +1533,9 @@ config TI_AM335X_ADC
 config TI_LMP92064
 	tristate "Texas Instruments LMP92064 ADC driver"
 	depends on SPI
-<<<<<<< HEAD
-=======
 	select REGMAP_SPI
 	select IIO_BUFFER
 	select IIO_TRIGGERED_BUFFER
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Say yes here to build support for the LMP92064 Precision Current and Voltage
 	  sensor.

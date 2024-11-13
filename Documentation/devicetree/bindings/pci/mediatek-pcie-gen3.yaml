@@ -53,10 +53,7 @@ properties:
               - mediatek,mt8195-pcie
           - const: mediatek,mt8192-pcie
       - const: mediatek,mt8192-pcie
-<<<<<<< HEAD
-=======
       - const: airoha,en7581-pcie
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1
@@ -80,22 +77,6 @@ properties:
 
   resets:
     minItems: 1
-<<<<<<< HEAD
-    maxItems: 2
-
-  reset-names:
-    minItems: 1
-    maxItems: 2
-    items:
-      enum: [ phy, mac ]
-
-  clocks:
-    minItems: 4
-    maxItems: 6
-
-  clock-names:
-    minItems: 4
-=======
     maxItems: 3
 
   reset-names:
@@ -110,7 +91,6 @@ properties:
 
   clock-names:
     minItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     maxItems: 6
 
   assigned-clocks:
@@ -168,12 +148,9 @@ allOf:
           const: mediatek,mt8192-pcie
     then:
       properties:
-<<<<<<< HEAD
-=======
         clocks:
           minItems: 4
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         clock-names:
           items:
             - const: pl_250m
@@ -182,8 +159,6 @@ allOf:
             - const: tl_32k
             - const: peri_26m
             - const: top_133m
-<<<<<<< HEAD
-=======
 
         resets:
           minItems: 1
@@ -193,7 +168,6 @@ allOf:
           minItems: 1
           maxItems: 2
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - if:
       properties:
         compatible:
@@ -203,12 +177,9 @@ allOf:
               - mediatek,mt8195-pcie
     then:
       properties:
-<<<<<<< HEAD
-=======
         clocks:
           minItems: 4
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         clock-names:
           items:
             - const: pl_250m
@@ -217,8 +188,6 @@ allOf:
             - const: tl_32k
             - const: peri_26m
             - const: peri_mem
-<<<<<<< HEAD
-=======
 
         resets:
           minItems: 1
@@ -228,7 +197,6 @@ allOf:
           minItems: 1
           maxItems: 2
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - if:
       properties:
         compatible:
@@ -237,12 +205,9 @@ allOf:
               - mediatek,mt7986-pcie
     then:
       properties:
-<<<<<<< HEAD
-=======
         clocks:
           minItems: 4
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         clock-names:
           items:
             - const: pl_250m
@@ -250,8 +215,6 @@ allOf:
             - const: peri_26m
             - const: top_133m
 
-<<<<<<< HEAD
-=======
         resets:
           minItems: 1
           maxItems: 2
@@ -282,7 +245,6 @@ allOf:
             - const: phy-lane1
             - const: phy-lane2
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unevaluatedProperties: false
 
 examples:

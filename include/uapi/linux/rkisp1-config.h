@@ -165,14 +165,11 @@
 #define RKISP1_CIF_ISP_DPF_MAX_SPATIAL_COEFFS  6
 
 /*
-<<<<<<< HEAD
-=======
  * Compand
  */
 #define RKISP1_CIF_ISP_COMPAND_NUM_POINTS	64
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Measurement types
  */
 #define RKISP1_CIF_ISP_STAT_AWB           (1U << 0)
@@ -859,8 +856,6 @@ struct rkisp1_params_cfg {
 	struct rkisp1_cif_isp_isp_other_cfg others;
 };
 
-<<<<<<< HEAD
-=======
 /**
  * struct rkisp1_cif_isp_compand_bls_config - Rockchip ISP1 Companding parameters (BLS)
  * @r: Fixed subtraction value for Bayer pattern R
@@ -894,7 +889,6 @@ struct rkisp1_cif_isp_compand_curve_config {
 	__u32 y[RKISP1_CIF_ISP_COMPAND_NUM_POINTS];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*---------- PART2: Measurement Statistics ------------*/
 
 /**
@@ -1040,8 +1034,6 @@ struct rkisp1_stat_buffer {
 	struct rkisp1_cif_isp_stat params;
 };
 
-<<<<<<< HEAD
-=======
 /*---------- PART3: Extensible Configuration Parameters  ------------*/
 
 /**
@@ -1582,5 +1574,4 @@ struct rkisp1_ext_params_cfg {
 	__u8 data[RKISP1_EXT_PARAMS_MAX_SIZE];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _UAPI_RKISP1_CONFIG_H */

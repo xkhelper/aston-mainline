@@ -156,10 +156,6 @@ xlog_cil_insert_pcp_aggregate(
 	struct xfs_cil		*cil,
 	struct xfs_cil_ctx	*ctx)
 {
-<<<<<<< HEAD
-	struct xlog_cil_pcp	*cilpcp;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			cpu;
 	int			count = 0;
 
@@ -174,21 +170,11 @@ xlog_cil_insert_pcp_aggregate(
 	 * structures that could have a nonzero space_used.
 	 */
 	for_each_cpu(cpu, &ctx->cil_pcpmask) {
-<<<<<<< HEAD
-		int	old, prev;
-
-		cilpcp = per_cpu_ptr(cil->xc_pcp, cpu);
-		do {
-			old = cilpcp->space_used;
-			prev = cmpxchg(&cilpcp->space_used, old, 0);
-		} while (old != prev);
-=======
 		struct xlog_cil_pcp	*cilpcp = per_cpu_ptr(cil->xc_pcp, cpu);
 		int			old = READ_ONCE(cilpcp->space_used);
 
 		while (!try_cmpxchg(&cilpcp->space_used, &old, 0))
 			;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count += old;
 	}
 	atomic_add(count, &ctx->space_used);

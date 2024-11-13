@@ -61,8 +61,6 @@ static inline int is_x32_frame(struct ksignal *ksig)
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Enable all pkeys temporarily, so as to ensure that both the current
  * execution stack as well as the alternate signal stack are writeable.
  * The application can use any of the available pkeys to protect the
@@ -81,7 +79,6 @@ static inline u32 sig_prepare_pkru(void)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Set up a signal frame.
  */
 
@@ -105,10 +102,7 @@ get_sigframe(struct ksignal *ksig, struct pt_regs *regs, size_t frame_size,
 	unsigned long math_size = 0;
 	unsigned long sp = regs->sp;
 	unsigned long buf_fx = 0;
-<<<<<<< HEAD
-=======
 	u32 pkru;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* redzone */
 	if (!ia32_frame)
@@ -163,11 +157,6 @@ get_sigframe(struct ksignal *ksig, struct pt_regs *regs, size_t frame_size,
 		return (void __user *)-1L;
 	}
 
-<<<<<<< HEAD
-	/* save i387 and extended state */
-	if (!copy_fpstate_to_sigframe(*fpstate, (void __user *)buf_fx, math_size))
-		return (void __user *)-1L;
-=======
 	/* Update PKRU to enable access to the alternate signal stack. */
 	pkru = sig_prepare_pkru();
 	/* save i387 and extended state */
@@ -179,7 +168,6 @@ get_sigframe(struct ksignal *ksig, struct pt_regs *regs, size_t frame_size,
 		write_pkru(pkru);
 		return (void __user *)-1L;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return (void __user *)sp;
 }

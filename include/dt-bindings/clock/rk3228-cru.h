@@ -146,11 +146,6 @@
 #define HCLK_S_CRYPTO		477
 #define HCLK_PERI		478
 
-<<<<<<< HEAD
-#define CLK_NR_CLKS		(HCLK_PERI + 1)
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* soft-reset indices */
 #define SRST_CORE0_PO		0
 #define SRST_CORE1_PO		1

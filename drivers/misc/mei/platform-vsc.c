@@ -19,11 +19,7 @@
 #include <linux/types.h>
 
 #include <asm-generic/bug.h>
-<<<<<<< HEAD
-#include <asm-generic/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "mei_dev.h"
 #include "vsc-tp.h"

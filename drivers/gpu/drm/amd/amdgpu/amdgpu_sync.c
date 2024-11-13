@@ -260,8 +260,6 @@ int amdgpu_sync_resv(struct amdgpu_device *adev, struct amdgpu_sync *sync,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * amdgpu_sync_kfd - sync to KFD fences
  *
@@ -292,7 +290,6 @@ int amdgpu_sync_kfd(struct amdgpu_sync *sync, struct dma_resv *resv)
 	return r;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Free the entry back to the slab */
 static void amdgpu_sync_entry_free(struct amdgpu_sync_entry *e)
 {

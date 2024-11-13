@@ -334,8 +334,6 @@ VESA DMT
 
 :author:    Video Electronics Standards Association (http://www.vesa.org)
 
-<<<<<<< HEAD
-=======
 .. _vesaeddc:
 
 E-DDC
@@ -347,7 +345,6 @@ E-DDC
 
 :author:    Video Electronics Standards Association (http://www.vesa.org)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .. _vesaedid:
 
 EDID

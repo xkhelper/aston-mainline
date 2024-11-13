@@ -84,8 +84,6 @@
 		},							\
 	}
 
-<<<<<<< HEAD
-=======
 #define PIN_BANK_IOMUX_FLAGS_OFFSET_PULL_FLAGS(id, pins, label, iom0,	\
 					       iom1, iom2, iom3,	\
 					       offset0, offset1,	\
@@ -107,7 +105,6 @@
 		.pull_type[3] = pull3,					\
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PIN_BANK_DRV_FLAGS(id, pins, label, type0, type1, type2, type3) \
 	{								\
 		.bank_num	= id,					\
@@ -1144,14 +1141,11 @@ static int rockchip_get_mux(struct rockchip_pin_bank *bank, int pin)
 	if (bank->recalced_mask & BIT(pin))
 		rockchip_get_recalced_mux(bank, pin, &reg, &bit, &mask);
 
-<<<<<<< HEAD
-=======
 	if (ctrl->type == RK3576) {
 		if ((bank->bank_num == 0) && (pin >= RK_PB4) && (pin <= RK_PB7))
 			reg += 0x1ff4; /* GPIO0_IOC_GPIO0B_IOMUX_SEL_H */
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ctrl->type == RK3588) {
 		if (bank->bank_num == 0) {
 			if ((pin >= RK_PB4) && (pin <= RK_PD7)) {
@@ -1266,14 +1260,11 @@ static int rockchip_set_mux(struct rockchip_pin_bank *bank, int pin, int mux)
 	if (bank->recalced_mask & BIT(pin))
 		rockchip_get_recalced_mux(bank, pin, &reg, &bit, &mask);
 
-<<<<<<< HEAD
-=======
 	if (ctrl->type == RK3576) {
 		if ((bank->bank_num == 0) && (pin >= RK_PB4) && (pin <= RK_PB7))
 			reg += 0x1ff4; /* GPIO0_IOC_GPIO0B_IOMUX_SEL_H */
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ctrl->type == RK3588) {
 		if (bank->bank_num == 0) {
 			if ((pin >= RK_PB4) && (pin <= RK_PD7)) {
@@ -2078,8 +2069,6 @@ static int rk3568_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 #define RK3576_DRV_BITS_PER_PIN		4
 #define RK3576_DRV_PINS_PER_REG		4
 #define RK3576_DRV_GPIO0_AL_OFFSET	0x10
@@ -2216,7 +2205,6 @@ static int rk3576_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define RK3588_PMU1_IOC_REG		(0x0000)
 #define RK3588_PMU2_IOC_REG		(0x4000)
 #define RK3588_BUS_IOC_REG		(0x8000)
@@ -2511,13 +2499,10 @@ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
 		rmask_bits = RK3568_DRV_BITS_PER_PIN;
 		ret = (1 << (strength + 1)) - 1;
 		goto config;
-<<<<<<< HEAD
-=======
 	} else if (ctrl->type == RK3576) {
 		rmask_bits = RK3576_DRV_BITS_PER_PIN;
 		ret = ((strength & BIT(2)) >> 2) | ((strength & BIT(0)) << 2) | (strength & BIT(1));
 		goto config;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (ctrl->type == RV1126) {
@@ -2655,10 +2640,7 @@ static int rockchip_get_pull(struct rockchip_pin_bank *bank, int pin_num)
 	case RK3368:
 	case RK3399:
 	case RK3568:
-<<<<<<< HEAD
-=======
 	case RK3576:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case RK3588:
 		pull_type = bank->pull_type[pin_num / 8];
 		data >>= bit;
@@ -2718,10 +2700,7 @@ static int rockchip_set_pull(struct rockchip_pin_bank *bank,
 	case RK3368:
 	case RK3399:
 	case RK3568:
-<<<<<<< HEAD
-=======
 	case RK3576:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case RK3588:
 		pull_type = bank->pull_type[pin_num / 8];
 		ret = -EINVAL;
@@ -2987,10 +2966,7 @@ static bool rockchip_pinconf_pull_valid(struct rockchip_pin_ctrl *ctrl,
 	case RK3368:
 	case RK3399:
 	case RK3568:
-<<<<<<< HEAD
-=======
 	case RK3576:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case RK3588:
 		return (pull != PIN_CONFIG_BIAS_PULL_PIN_DEFAULT);
 	}
@@ -4147,8 +4123,6 @@ static struct rockchip_pin_ctrl rk3568_pin_ctrl = {
 	.schmitt_calc_reg	= rk3568_calc_schmitt_reg_and_bit,
 };
 
-<<<<<<< HEAD
-=======
 #define RK3576_PIN_BANK(ID, LABEL, OFFSET0, OFFSET1, OFFSET2, OFFSET3)	\
 	PIN_BANK_IOMUX_FLAGS_OFFSET_PULL_FLAGS(ID, 32, LABEL,		\
 					       IOMUX_WIDTH_4BIT,	\
@@ -4180,7 +4154,6 @@ static struct rockchip_pin_ctrl rk3576_pin_ctrl __maybe_unused = {
 	.schmitt_calc_reg	= rk3576_calc_schmitt_reg_and_bit,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct rockchip_pin_bank rk3588_pin_banks[] = {
 	RK3588_PIN_BANK_FLAGS(0, 32, "gpio0",
 			      IOMUX_WIDTH_4BIT, PULL_TYPE_IO_1V8_ONLY),
@@ -4237,11 +4210,8 @@ static const struct of_device_id rockchip_pinctrl_dt_match[] = {
 		.data = &rk3399_pin_ctrl },
 	{ .compatible = "rockchip,rk3568-pinctrl",
 		.data = &rk3568_pin_ctrl },
-<<<<<<< HEAD
-=======
 	{ .compatible = "rockchip,rk3576-pinctrl",
 		.data = &rk3576_pin_ctrl },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "rockchip,rk3588-pinctrl",
 		.data = &rk3588_pin_ctrl },
 	{},

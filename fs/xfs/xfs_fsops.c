@@ -87,10 +87,7 @@ xfs_growfs_data_private(
 	struct xfs_mount	*mp,		/* mount point for filesystem */
 	struct xfs_growfs_data	*in)		/* growfs data input struct */
 {
-<<<<<<< HEAD
-=======
 	xfs_agnumber_t		oagcount = mp->m_sb.sb_agcount;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xfs_buf		*bp;
 	int			error;
 	xfs_agnumber_t		nagcount;
@@ -98,10 +95,6 @@ xfs_growfs_data_private(
 	xfs_rfsblock_t		nb, nb_div, nb_mod;
 	int64_t			delta;
 	bool			lastag_extended = false;
-<<<<<<< HEAD
-	xfs_agnumber_t		oagcount;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct xfs_trans	*tp;
 	struct aghdr_init_data	id = {};
 	struct xfs_perag	*last_pag;
@@ -145,18 +138,6 @@ xfs_growfs_data_private(
 	if (delta == 0)
 		return 0;
 
-<<<<<<< HEAD
-	oagcount = mp->m_sb.sb_agcount;
-	/* allocate the new per-ag structures */
-	if (nagcount > oagcount) {
-		error = xfs_initialize_perag(mp, nagcount, nb, &nagimax);
-		if (error)
-			return error;
-	} else if (nagcount < oagcount) {
-		/* TODO: shrinking the entire AGs hasn't yet completed */
-		return -EINVAL;
-	}
-=======
 	/* TODO: shrinking the entire AGs hasn't yet completed */
 	if (nagcount < oagcount)
 		return -EINVAL;
@@ -165,7 +146,6 @@ xfs_growfs_data_private(
 	error = xfs_initialize_perag(mp, oagcount, nagcount, nb, &nagimax);
 	if (error)
 		return error;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (delta > 0)
 		error = xfs_trans_alloc(mp, &M_RES(mp)->tr_growdata,
@@ -249,11 +229,7 @@ out_trans_cancel:
 	xfs_trans_cancel(tp);
 out_free_unused_perag:
 	if (nagcount > oagcount)
-<<<<<<< HEAD
-		xfs_free_unused_perag_range(mp, oagcount, nagcount);
-=======
 		xfs_free_perag_range(mp, oagcount, nagcount);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return error;
 }
 
@@ -507,11 +483,7 @@ xfs_do_force_shutdown(
 	const char	*why;
 
 
-<<<<<<< HEAD
-	if (test_and_set_bit(XFS_OPSTATE_SHUTDOWN, &mp->m_opstate)) {
-=======
 	if (xfs_set_shutdown(mp)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xlog_shutdown_wait(mp->m_log);
 		return;
 	}

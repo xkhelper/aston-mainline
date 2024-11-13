@@ -23,10 +23,7 @@
 
 #include <hashtable.h>
 #include <list.h>
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "modpost.h"
 #include "../../include/linux/license.h"
 
@@ -54,12 +51,9 @@ static bool error_occurred;
 
 static bool extra_warn;
 
-<<<<<<< HEAD
-=======
 bool target_is_big_endian;
 bool host_is_big_endian;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Cut off the warnings when there are too many. This typically occurs when
  * vmlinux is missing. ('make modules' without building vmlinux.)
@@ -73,22 +67,6 @@ static unsigned int nr_unresolved;
 
 #define MODULE_NAME_LEN (64 - sizeof(Elf_Addr))
 
-<<<<<<< HEAD
-void modpost_log(enum loglevel loglevel, const char *fmt, ...)
-{
-	va_list arglist;
-
-	switch (loglevel) {
-	case LOG_WARN:
-		fprintf(stderr, "WARNING: ");
-		break;
-	case LOG_ERROR:
-		fprintf(stderr, "ERROR: ");
-		error_occurred = true;
-		break;
-	default: /* invalid loglevel, ignore */
-		break;
-=======
 void modpost_log(bool is_error, const char *fmt, ...)
 {
 	va_list arglist;
@@ -98,7 +76,6 @@ void modpost_log(bool is_error, const char *fmt, ...)
 		error_occurred = true;
 	} else {
 		fprintf(stderr, "WARNING: ");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	fprintf(stderr, "modpost: ");
@@ -116,17 +93,6 @@ static inline bool strends(const char *str, const char *postfix)
 	return strcmp(str + strlen(str) - strlen(postfix), postfix) == 0;
 }
 
-<<<<<<< HEAD
-void *do_nofail(void *ptr, const char *expr)
-{
-	if (!ptr)
-		fatal("Memory allocation failure: %s.\n", expr);
-
-	return ptr;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 char *read_text_file(const char *filename)
 {
 	struct stat st;
@@ -145,11 +111,7 @@ char *read_text_file(const char *filename)
 		exit(1);
 	}
 
-<<<<<<< HEAD
-	buf = NOFAIL(malloc(st.st_size + 1));
-=======
 	buf = xmalloc(st.st_size + 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	nbytes = st.st_size;
 
@@ -207,11 +169,7 @@ static struct module *new_module(const char *name, size_t namelen)
 {
 	struct module *mod;
 
-<<<<<<< HEAD
-	mod = NOFAIL(malloc(sizeof(*mod) + namelen + 1));
-=======
 	mod = xmalloc(sizeof(*mod) + namelen + 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(mod, 0, sizeof(*mod));
 
 	INIT_LIST_HEAD(&mod->exported_symbols);
@@ -270,11 +228,7 @@ static inline unsigned int tdb_hash(const char *name)
  **/
 static struct symbol *alloc_symbol(const char *name)
 {
-<<<<<<< HEAD
-	struct symbol *s = NOFAIL(malloc(sizeof(*s) + strlen(name) + 1));
-=======
 	struct symbol *s = xmalloc(sizeof(*s) + strlen(name) + 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memset(s, 0, sizeof(*s));
 	strcpy(s->name, name);
@@ -347,12 +301,7 @@ static void add_namespace(struct list_head *head, const char *namespace)
 	struct namespace_list *ns_entry;
 
 	if (!contains_namespace(head, namespace)) {
-<<<<<<< HEAD
-		ns_entry = NOFAIL(malloc(sizeof(*ns_entry) +
-					 strlen(namespace) + 1));
-=======
 		ns_entry = xmalloc(sizeof(*ns_entry) + strlen(namespace) + 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		strcpy(ns_entry->namespace, namespace);
 		list_add_tail(&ns_entry->list, head);
 	}
@@ -407,11 +356,7 @@ static struct symbol *sym_add_exported(const char *name, struct module *mod,
 	s = alloc_symbol(name);
 	s->module = mod;
 	s->is_gpl_only = gpl_only;
-<<<<<<< HEAD
-	s->namespace = NOFAIL(strdup(namespace));
-=======
 	s->namespace = xstrdup(namespace);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_add_tail(&s->list, &mod->exported_symbols);
 	hash_add_symbol(s);
 
@@ -483,8 +428,6 @@ static int parse_elf(struct elf_info *info, const char *filename)
 		/* Not an ELF file - silently ignore it */
 		return 0;
 	}
-<<<<<<< HEAD
-=======
 
 	switch (hdr->e_ident[EI_DATA]) {
 	case ELFDATA2LSB:
@@ -497,7 +440,6 @@ static int parse_elf(struct elf_info *info, const char *filename)
 		fatal("target endian is unknown\n");
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Fix endianness in ELF header */
 	hdr->e_type      = TO_NATIVE(hdr->e_type);
 	hdr->e_machine   = TO_NATIVE(hdr->e_machine);
@@ -682,11 +624,7 @@ static void handle_symbol(struct module *mod, struct elf_info *info,
 			if (ELF_ST_TYPE(sym->st_info) == STT_SPARC_REGISTER)
 				break;
 			if (symname[0] == '.') {
-<<<<<<< HEAD
-				char *munged = NOFAIL(strdup(symname));
-=======
 				char *munged = xstrdup(symname);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				munged[0] = '_';
 				munged[1] = toupper(munged[1]);
 				symname = munged;
@@ -754,14 +692,7 @@ static char *get_modinfo(struct elf_info *info, const char *tag)
 
 static const char *sym_name(struct elf_info *elf, Elf_Sym *sym)
 {
-<<<<<<< HEAD
-	if (sym)
-		return elf->strtab + sym->st_name;
-	else
-		return "(unknown)";
-=======
 	return sym ? elf->strtab + sym->st_name : "";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1074,10 +1005,7 @@ static void default_mismatch_handler(const char *modname, struct elf_info *elf,
 	Elf_Sym *from;
 	const char *tosym;
 	const char *fromsym;
-<<<<<<< HEAD
-=======
 	char taddr_str[16];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	from = find_fromsym(elf, faddr, fsecndx);
 	fromsym = sym_name(elf, from);
@@ -1091,12 +1019,6 @@ static void default_mismatch_handler(const char *modname, struct elf_info *elf,
 
 	sec_mismatch_count++;
 
-<<<<<<< HEAD
-	warn("%s: section mismatch in reference: %s+0x%x (section: %s) -> %s (section: %s)\n",
-	     modname, fromsym,
-	     (unsigned int)(faddr - (from ? from->st_value : 0)),
-	     fromsec, tosym, tosec);
-=======
 	if (!tosym[0])
 		snprintf(taddr_str, sizeof(taddr_str), "0x%x", (unsigned int)taddr);
 
@@ -1108,7 +1030,6 @@ static void default_mismatch_handler(const char *modname, struct elf_info *elf,
 	     modname, fromsym, fromsym[0] ? "+" : "",
 	     (unsigned int)(faddr - (fromsym[0] ? from->st_value : 0)),
 	     fromsec, tosym[0] ? tosym : taddr_str, tosec);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mismatch->mismatch == EXTABLE_TO_NON_TEXT) {
 		if (match(tosec, mismatch->bad_tosec))
@@ -1748,11 +1669,7 @@ void buf_write(struct buffer *buf, const char *s, int len)
 {
 	if (buf->size - buf->pos < len) {
 		buf->size += len + SZ;
-<<<<<<< HEAD
-		buf->p = NOFAIL(realloc(buf->p, buf->size));
-=======
 		buf->p = xrealloc(buf->p, buf->size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	strncpy(buf->p + buf->pos, s, len);
 	buf->pos += len;
@@ -1767,11 +1684,7 @@ static void check_exports(struct module *mod)
 		exp = find_symbol(s->name);
 		if (!exp) {
 			if (!s->weak && nr_unresolved++ < MAX_UNRESOLVED_REPORTS)
-<<<<<<< HEAD
-				modpost_log(warn_unresolved ? LOG_WARN : LOG_ERROR,
-=======
 				modpost_log(!warn_unresolved,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    "\"%s\" [%s.ko] undefined!\n",
 					    s->name, mod->name);
 			continue;
@@ -1794,11 +1707,7 @@ static void check_exports(struct module *mod)
 			basename = mod->name;
 
 		if (!contains_namespace(&mod->imported_namespaces, exp->namespace)) {
-<<<<<<< HEAD
-			modpost_log(allow_missing_ns_imports ? LOG_WARN : LOG_ERROR,
-=======
 			modpost_log(!allow_missing_ns_imports,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    "module %s uses symbol %s from namespace %s, but does not import it.\n",
 				    basename, exp->name, exp->namespace);
 			add_namespace(&mod->missing_namespaces, exp->namespace);
@@ -1846,32 +1755,9 @@ static void check_modname_len(struct module *mod)
 static void add_header(struct buffer *b, struct module *mod)
 {
 	buf_printf(b, "#include <linux/module.h>\n");
-<<<<<<< HEAD
-	/*
-	 * Include build-salt.h after module.h in order to
-	 * inherit the definitions.
-	 */
-	buf_printf(b, "#define INCLUDE_VERMAGIC\n");
-	buf_printf(b, "#include <linux/build-salt.h>\n");
-	buf_printf(b, "#include <linux/elfnote-lto.h>\n");
-	buf_printf(b, "#include <linux/export-internal.h>\n");
-	buf_printf(b, "#include <linux/vermagic.h>\n");
-	buf_printf(b, "#include <linux/compiler.h>\n");
-	buf_printf(b, "\n");
-	buf_printf(b, "#ifdef CONFIG_UNWINDER_ORC\n");
-	buf_printf(b, "#include <asm/orc_header.h>\n");
-	buf_printf(b, "ORC_HEADER;\n");
-	buf_printf(b, "#endif\n");
-	buf_printf(b, "\n");
-	buf_printf(b, "BUILD_SALT;\n");
-	buf_printf(b, "BUILD_LTO_INFO;\n");
-	buf_printf(b, "\n");
-	buf_printf(b, "MODULE_INFO(vermagic, VERMAGIC_STRING);\n");
-=======
 	buf_printf(b, "#include <linux/export-internal.h>\n");
 	buf_printf(b, "#include <linux/compiler.h>\n");
 	buf_printf(b, "\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	buf_printf(b, "MODULE_INFO(name, KBUILD_MODNAME);\n");
 	buf_printf(b, "\n");
 	buf_printf(b, "__visible struct module __this_module\n");
@@ -1889,15 +1775,6 @@ static void add_header(struct buffer *b, struct module *mod)
 	if (!external_module)
 		buf_printf(b, "\nMODULE_INFO(intree, \"Y\");\n");
 
-<<<<<<< HEAD
-	buf_printf(b,
-		   "\n"
-		   "#ifdef CONFIG_MITIGATION_RETPOLINE\n"
-		   "MODULE_INFO(retpoline, \"Y\");\n"
-		   "#endif\n");
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (strstarts(mod->name, "drivers/staging"))
 		buf_printf(b, "\nMODULE_INFO(staging, \"Y\");\n");
 
@@ -2054,11 +1931,7 @@ static void write_if_changed(struct buffer *b, const char *fname)
 	if (st.st_size != b->pos)
 		goto close_write;
 
-<<<<<<< HEAD
-	tmp = NOFAIL(malloc(b->pos));
-=======
 	tmp = xmalloc(b->pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (fread(tmp, 1, b->pos, file) != b->pos)
 		goto free_write;
 
@@ -2228,8 +2101,6 @@ struct dump_list {
 	const char *file;
 };
 
-<<<<<<< HEAD
-=======
 static void check_host_endian(void)
 {
 	static const union {
@@ -2249,7 +2120,6 @@ static void check_host_endian(void)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int main(int argc, char **argv)
 {
 	struct module *mod;
@@ -2266,11 +2136,7 @@ int main(int argc, char **argv)
 			external_module = true;
 			break;
 		case 'i':
-<<<<<<< HEAD
-			dl = NOFAIL(malloc(sizeof(*dl)));
-=======
 			dl = xmalloc(sizeof(*dl));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dl->file = optarg;
 			list_add_tail(&dl->list, &dump_lists);
 			break;
@@ -2318,11 +2184,8 @@ int main(int argc, char **argv)
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	check_host_endian();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_safe(dl, dl2, &dump_lists, list) {
 		read_dump(dl->file);
 		list_del(&dl->list);

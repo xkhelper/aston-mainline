@@ -29,11 +29,7 @@ static int
 sorc37d_ctrl(struct nv50_core *core, int or, u32 ctrl,
 	     struct nv50_head_atom *asyh)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = core->chan.push;
-=======
 	struct nvif_push *push = &core->chan.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if ((ret = PUSH_WAIT(push, 2)))

@@ -34,10 +34,6 @@ nodes_compatible=$(
 		# Check if node is available
 		if [[ -e "${node}"/status ]]; then
 			status=$(tr -d '\000' < "${node}"/status)
-<<<<<<< HEAD
-			[[ "${status}" != "okay" && "${status}" != "ok" ]] && continue
-		fi
-=======
 			if [[ "${status}" != "okay" && "${status}" != "ok" ]]; then
 				if [ -n "${disabled_nodes_regex}" ]; then
 					disabled_nodes_regex="${disabled_nodes_regex}|${node}"
@@ -53,7 +49,6 @@ nodes_compatible=$(
 			echo "${node}" | grep -q -E "${disabled_nodes_regex}" && continue
 		fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		echo "${node}" | sed -e 's|\/proc\/device-tree||'
 	done | sort
 	)

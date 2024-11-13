@@ -1778,8 +1778,6 @@ u64 x86_default_get_root_pointer(void)
 {
 	return boot_params.acpi_rsdp_addr;
 }
-<<<<<<< HEAD
-=======
 
 #ifdef CONFIG_XEN_PV
 void __iomem *x86_acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
@@ -1791,4 +1789,3 @@ void __iomem * (*acpi_os_ioremap)(acpi_physical_address phys, acpi_size size) =
 	x86_acpi_os_ioremap;
 EXPORT_SYMBOL_GPL(acpi_os_ioremap);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

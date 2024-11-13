@@ -7,10 +7,7 @@
 #define KMSG_COMPONENT "setup"
 #define pr_fmt(fmt) KMSG_COMPONENT ": " fmt
 
-<<<<<<< HEAD
-=======
 #include <linux/sched/debug.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/compiler.h>
 #include <linux/init.h>
 #include <linux/errno.h>
@@ -179,12 +176,6 @@ static __init void setup_topology(void)
 	topology_max_mnest = max_mnest;
 }
 
-<<<<<<< HEAD
-void __do_early_pgm_check(struct pt_regs *regs)
-{
-	if (!fixup_exception(regs))
-		disabled_wait();
-=======
 void __init __do_early_pgm_check(struct pt_regs *regs)
 {
 	struct lowcore *lc = get_lowcore();
@@ -211,28 +202,19 @@ void __init __do_early_pgm_check(struct pt_regs *regs)
 		     regs->int_code & 0xffff, regs->psw.mask, regs->psw.addr);
 	show_regs(regs);
 	disabled_wait();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static noinline __init void setup_lowcore_early(void)
 {
-<<<<<<< HEAD
-=======
 	struct lowcore *lc = get_lowcore();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	psw_t psw;
 
 	psw.addr = (unsigned long)early_pgm_check_handler;
 	psw.mask = PSW_KERNEL_BITS;
-<<<<<<< HEAD
-	get_lowcore()->program_new_psw = psw;
-	get_lowcore()->preempt_count = INIT_PREEMPT_COUNT;
-=======
 	lc->program_new_psw = psw;
 	lc->preempt_count = INIT_PREEMPT_COUNT;
 	lc->return_lpswe = gen_lpswe(__LC_RETURN_PSW);
 	lc->return_mcck_lpswe = gen_lpswe(__LC_RETURN_MCCK_PSW);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static __init void detect_diag9c(void)
@@ -286,11 +268,8 @@ static __init void detect_machine_facilities(void)
 	}
 	if (test_facility(194))
 		get_lowcore()->machine_flags |= MACHINE_FLAG_RDP;
-<<<<<<< HEAD
-=======
 	if (test_facility(85))
 		get_lowcore()->machine_flags |= MACHINE_FLAG_SEQ_INSN;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void save_vector_registers(void)

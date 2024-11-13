@@ -44,10 +44,7 @@
 #include <net/inet_common.h>
 #include <net/inet_ecn.h>
 #include <net/udp_tunnel.h>
-<<<<<<< HEAD
-=======
 #include <net/inet_dscp.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define MAX_SCTP_PORT_HASH_ENTRIES (64 * 1024)
 
@@ -439,11 +436,7 @@ static void sctp_v4_get_dst(struct sctp_transport *t, union sctp_addr *saddr,
 	fl4->fl4_dport = daddr->v4.sin_port;
 	fl4->flowi4_proto = IPPROTO_SCTP;
 	if (asoc) {
-<<<<<<< HEAD
-		fl4->flowi4_tos = RT_TOS(tos);
-=======
 		fl4->flowi4_tos = tos & INET_DSCP_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fl4->flowi4_scope = ip_sock_rt_scope(asoc->base.sk);
 		fl4->flowi4_oif = asoc->base.sk->sk_bound_dev_if;
 		fl4->fl4_sport = htons(asoc->base.bind_addr.port);

@@ -27,23 +27,17 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
 {
 	struct sk_buff_head *rx_queue;
 	struct rxrpc_local *local = rcu_dereference_sk_user_data(udp_sk);
-<<<<<<< HEAD
-=======
 	struct task_struct *io_thread;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(!local)) {
 		kfree_skb(skb);
 		return 0;
 	}
-<<<<<<< HEAD
-=======
 	io_thread = READ_ONCE(local->io_thread);
 	if (!io_thread) {
 		kfree_skb(skb);
 		return 0;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (skb->tstamp == 0)
 		skb->tstamp = ktime_get_real();
 
@@ -59,11 +53,7 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
 #endif
 
 	skb_queue_tail(rx_queue, skb);
-<<<<<<< HEAD
-	rxrpc_wake_up_io_thread(local);
-=======
 	wake_up_process(io_thread);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -581,11 +571,7 @@ int rxrpc_io_thread(void *data)
 	__set_current_state(TASK_RUNNING);
 	rxrpc_see_local(local, rxrpc_local_stop);
 	rxrpc_destroy_local(local);
-<<<<<<< HEAD
-	local->io_thread = NULL;
-=======
 	WRITE_ONCE(local->io_thread, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rxrpc_see_local(local, rxrpc_local_stopped);
 	return 0;
 }

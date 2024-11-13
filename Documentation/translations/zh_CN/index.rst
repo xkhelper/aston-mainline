@@ -89,17 +89,10 @@ TODOList:
    admin-guide/index
    admin-guide/reporting-issues.rst
    userspace-api/index
-<<<<<<< HEAD
-
-TODOList:
-
-* 内核构建系统 <kbuild/index>
-=======
    内核构建系统 <kbuild/index>
 
 TODOList:
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 * 用户空间工具 <tools/index>
 
 也可参考独立于内核文档的 `Linux 手册页 <https://www.kernel.org/doc/man-pages/>`_ 。

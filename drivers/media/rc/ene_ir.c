@@ -451,12 +451,6 @@ select_timeout:
 		dev->rdev->max_timeout = 200000;
 	}
 
-<<<<<<< HEAD
-	if (dev->hw_learning_and_tx_capable)
-		dev->rdev->tx_resolution = sample_period;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (dev->rdev->timeout > dev->rdev->max_timeout)
 		dev->rdev->timeout = dev->rdev->max_timeout;
 	if (dev->rdev->timeout < dev->rdev->min_timeout)

@@ -438,8 +438,6 @@ static void __init test_multi_instruction_patching(void)
 	vfree(buf);
 }
 
-<<<<<<< HEAD
-=======
 static void __init test_data_patching(void)
 {
 	void *buf;
@@ -480,7 +478,6 @@ static void __init test_data_patching(void)
 	vfree(buf);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init test_code_patching(void)
 {
 	pr_info("Running code patching self-tests ...\n");
@@ -491,10 +488,7 @@ static int __init test_code_patching(void)
 	test_translate_branch();
 	test_prefixed_patching();
 	test_multi_instruction_patching();
-<<<<<<< HEAD
-=======
 	test_data_patching();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

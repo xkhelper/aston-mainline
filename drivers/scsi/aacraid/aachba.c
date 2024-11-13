@@ -27,11 +27,7 @@
 #include <linux/uaccess.h>
 #include <linux/module.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <scsi/scsi.h>
 #include <scsi/scsi_cmnd.h>
@@ -1271,11 +1267,7 @@ static int aac_read_raw_io(struct fib * fib, struct scsi_cmnd * cmd, u64 lba, u3
 			return ret;
 		command = ContainerRawIo;
 		fibsize = sizeof(struct aac_raw_io) +
-<<<<<<< HEAD
-			((le32_to_cpu(readcmd->sg.count)-1) * sizeof(struct sgentryraw));
-=======
 			(le32_to_cpu(readcmd->sg.count) * sizeof(struct sgentryraw));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	BUG_ON(fibsize > (fib->dev->max_fib_size - sizeof(struct aac_fibhdr)));
@@ -1310,11 +1302,7 @@ static int aac_read_block64(struct fib * fib, struct scsi_cmnd * cmd, u64 lba, u
 	if (ret < 0)
 		return ret;
 	fibsize = sizeof(struct aac_read64) +
-<<<<<<< HEAD
-		((le32_to_cpu(readcmd->sg.count) - 1) *
-=======
 		(le32_to_cpu(readcmd->sg.count) *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 sizeof (struct sgentry64));
 	BUG_ON (fibsize > (fib->dev->max_fib_size -
 				sizeof(struct aac_fibhdr)));
@@ -1349,11 +1337,7 @@ static int aac_read_block(struct fib * fib, struct scsi_cmnd * cmd, u64 lba, u32
 	if (ret < 0)
 		return ret;
 	fibsize = sizeof(struct aac_read) +
-<<<<<<< HEAD
-			((le32_to_cpu(readcmd->sg.count) - 1) *
-=======
 			(le32_to_cpu(readcmd->sg.count) *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 sizeof (struct sgentry));
 	BUG_ON (fibsize > (fib->dev->max_fib_size -
 				sizeof(struct aac_fibhdr)));
@@ -1417,11 +1401,7 @@ static int aac_write_raw_io(struct fib * fib, struct scsi_cmnd * cmd, u64 lba, u
 			return ret;
 		command = ContainerRawIo;
 		fibsize = sizeof(struct aac_raw_io) +
-<<<<<<< HEAD
-			((le32_to_cpu(writecmd->sg.count)-1) * sizeof (struct sgentryraw));
-=======
 			(le32_to_cpu(writecmd->sg.count) * sizeof(struct sgentryraw));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	BUG_ON(fibsize > (fib->dev->max_fib_size - sizeof(struct aac_fibhdr)));
@@ -1456,11 +1436,7 @@ static int aac_write_block64(struct fib * fib, struct scsi_cmnd * cmd, u64 lba, 
 	if (ret < 0)
 		return ret;
 	fibsize = sizeof(struct aac_write64) +
-<<<<<<< HEAD
-		((le32_to_cpu(writecmd->sg.count) - 1) *
-=======
 		(le32_to_cpu(writecmd->sg.count) *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 sizeof (struct sgentry64));
 	BUG_ON (fibsize > (fib->dev->max_fib_size -
 				sizeof(struct aac_fibhdr)));
@@ -1497,11 +1473,7 @@ static int aac_write_block(struct fib * fib, struct scsi_cmnd * cmd, u64 lba, u3
 	if (ret < 0)
 		return ret;
 	fibsize = sizeof(struct aac_write) +
-<<<<<<< HEAD
-		((le32_to_cpu(writecmd->sg.count) - 1) *
-=======
 		(le32_to_cpu(writecmd->sg.count) *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 sizeof (struct sgentry));
 	BUG_ON (fibsize > (fib->dev->max_fib_size -
 				sizeof(struct aac_fibhdr)));
@@ -1620,15 +1592,9 @@ static int aac_scsi_64(struct fib * fib, struct scsi_cmnd * cmd)
 	/*
 	 *	Build Scatter/Gather list
 	 */
-<<<<<<< HEAD
-	fibsize = sizeof (struct aac_srb) - sizeof (struct sgentry) +
-		((le32_to_cpu(srbcmd->sg.count) & 0xff) *
-		 sizeof (struct sgentry64));
-=======
 	fibsize = sizeof(struct aac_srb) +
 		((le32_to_cpu(srbcmd->sg.count) & 0xff) *
 		 sizeof(struct sgentry64));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BUG_ON (fibsize > (fib->dev->max_fib_size -
 				sizeof(struct aac_fibhdr)));
 
@@ -1658,11 +1624,7 @@ static int aac_scsi_32(struct fib * fib, struct scsi_cmnd * cmd)
 	 *	Build Scatter/Gather list
 	 */
 	fibsize = sizeof (struct aac_srb) +
-<<<<<<< HEAD
-		(((le32_to_cpu(srbcmd->sg.count) & 0xff) - 1) *
-=======
 		((le32_to_cpu(srbcmd->sg.count) & 0xff) *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 sizeof (struct sgentry));
 	BUG_ON (fibsize > (fib->dev->max_fib_size -
 				sizeof(struct aac_fibhdr)));
@@ -1731,12 +1693,7 @@ static int aac_send_safw_bmic_cmd(struct aac_dev *dev,
 	fibptr->hw_fib_va->header.XferState &=
 		~cpu_to_le32(FastResponseCapable);
 
-<<<<<<< HEAD
-	fibsize  = sizeof(struct aac_srb) - sizeof(struct sgentry) +
-						sizeof(struct sgentry64);
-=======
 	fibsize = sizeof(struct aac_srb) + sizeof(struct sgentry64);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* allocate DMA buffer for response */
 	addr = dma_map_single(&dev->pdev->dev, xfer_buf, xfer_len,
@@ -1875,11 +1832,7 @@ static int aac_get_safw_ciss_luns(struct aac_dev *dev)
 	struct aac_ciss_phys_luns_resp *phys_luns;
 
 	datasize = sizeof(struct aac_ciss_phys_luns_resp) +
-<<<<<<< HEAD
-		(AAC_MAX_TARGETS - 1) * sizeof(struct _ciss_lun);
-=======
 		AAC_MAX_TARGETS * sizeof(struct _ciss_lun);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	phys_luns = kmalloc(datasize, GFP_KERNEL);
 	if (phys_luns == NULL)
 		goto out;
@@ -2313,11 +2266,7 @@ int aac_get_adapter_info(struct aac_dev* dev)
 		dev->a_ops.adapter_bounds = aac_bounds_32;
 		dev->scsi_host_ptr->sg_tablesize = (dev->max_fib_size -
 			sizeof(struct aac_fibhdr) -
-<<<<<<< HEAD
-			sizeof(struct aac_write) + sizeof(struct sgentry)) /
-=======
 			sizeof(struct aac_write)) /
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				sizeof(struct sgentry);
 		if (dev->dac_support) {
 			dev->a_ops.adapter_read = aac_read_block64;
@@ -2328,12 +2277,7 @@ int aac_get_adapter_info(struct aac_dev* dev)
 			dev->scsi_host_ptr->sg_tablesize =
 				(dev->max_fib_size -
 				sizeof(struct aac_fibhdr) -
-<<<<<<< HEAD
-				sizeof(struct aac_write64) +
-				sizeof(struct sgentry64)) /
-=======
 				sizeof(struct aac_write64)) /
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					sizeof(struct sgentry64);
 		} else {
 			dev->a_ops.adapter_read = aac_read_block;

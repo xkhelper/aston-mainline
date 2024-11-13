@@ -1188,14 +1188,8 @@ static int sja1105_parse_ports_node(struct sja1105_private *priv,
 				    struct device_node *ports_node)
 {
 	struct device *dev = &priv->spidev->dev;
-<<<<<<< HEAD
-	struct device_node *child;
-
-	for_each_available_child_of_node(ports_node, child) {
-=======
 
 	for_each_available_child_of_node_scoped(ports_node, child) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct device_node *phy_node;
 		phy_interface_t phy_mode;
 		u32 index;
@@ -1205,10 +1199,6 @@ static int sja1105_parse_ports_node(struct sja1105_private *priv,
 		if (of_property_read_u32(child, "reg", &index) < 0) {
 			dev_err(dev, "Port number not defined in device tree "
 				"(property \"reg\")\n");
-<<<<<<< HEAD
-			of_node_put(child);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENODEV;
 		}
 
@@ -1218,10 +1208,6 @@ static int sja1105_parse_ports_node(struct sja1105_private *priv,
 			dev_err(dev, "Failed to read phy-mode or "
 				"phy-interface-type property for port %d\n",
 				index);
-<<<<<<< HEAD
-			of_node_put(child);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENODEV;
 		}
 
@@ -1230,10 +1216,6 @@ static int sja1105_parse_ports_node(struct sja1105_private *priv,
 			if (!of_phy_is_fixed_link(child)) {
 				dev_err(dev, "phy-handle or fixed-link "
 					"properties missing!\n");
-<<<<<<< HEAD
-				of_node_put(child);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return -ENODEV;
 			}
 			/* phy-handle is missing, but fixed-link isn't.
@@ -1247,15 +1229,8 @@ static int sja1105_parse_ports_node(struct sja1105_private *priv,
 		priv->phy_mode[index] = phy_mode;
 
 		err = sja1105_parse_rgmii_delays(priv, index, child);
-<<<<<<< HEAD
-		if (err) {
-			of_node_put(child);
-			return err;
-		}
-=======
 		if (err)
 			return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -3183,10 +3158,6 @@ static int sja1105_setup(struct dsa_switch *ds)
 	 * TPID is ETH_P_SJA1105, and the VLAN ID is the port pvid.
 	 */
 	ds->vlan_filtering_is_global = true;
-<<<<<<< HEAD
-	ds->untag_bridge_pvid = true;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ds->fdb_isolation = true;
 	ds->max_num_bridges = DSA_TAG_8021Q_MAX_NUM_BRIDGES;
 

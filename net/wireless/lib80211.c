@@ -34,11 +34,7 @@ MODULE_LICENSE("GPL");
 
 struct lib80211_crypto_alg {
 	struct list_head list;
-<<<<<<< HEAD
-	struct lib80211_crypto_ops *ops;
-=======
 	const struct lib80211_crypto_ops *ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static LIST_HEAD(lib80211_crypto_algs);
@@ -165,11 +161,7 @@ void lib80211_crypt_delayed_deinit(struct lib80211_crypt_info *info,
 }
 EXPORT_SYMBOL(lib80211_crypt_delayed_deinit);
 
-<<<<<<< HEAD
-int lib80211_register_crypto_ops(struct lib80211_crypto_ops *ops)
-=======
 int lib80211_register_crypto_ops(const struct lib80211_crypto_ops *ops)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long flags;
 	struct lib80211_crypto_alg *alg;
@@ -191,11 +183,7 @@ int lib80211_register_crypto_ops(const struct lib80211_crypto_ops *ops)
 }
 EXPORT_SYMBOL(lib80211_register_crypto_ops);
 
-<<<<<<< HEAD
-int lib80211_unregister_crypto_ops(struct lib80211_crypto_ops *ops)
-=======
 int lib80211_unregister_crypto_ops(const struct lib80211_crypto_ops *ops)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct lib80211_crypto_alg *alg;
 	unsigned long flags;
@@ -218,11 +206,7 @@ int lib80211_unregister_crypto_ops(const struct lib80211_crypto_ops *ops)
 }
 EXPORT_SYMBOL(lib80211_unregister_crypto_ops);
 
-<<<<<<< HEAD
-struct lib80211_crypto_ops *lib80211_get_crypto_ops(const char *name)
-=======
 const struct lib80211_crypto_ops *lib80211_get_crypto_ops(const char *name)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct lib80211_crypto_alg *alg;
 	unsigned long flags;
@@ -250,11 +234,7 @@ static void lib80211_crypt_null_deinit(void *priv)
 {
 }
 
-<<<<<<< HEAD
-static struct lib80211_crypto_ops lib80211_crypt_null = {
-=======
 static const struct lib80211_crypto_ops lib80211_crypt_null = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "NULL",
 	.init = lib80211_crypt_null_init,
 	.deinit = lib80211_crypt_null_deinit,

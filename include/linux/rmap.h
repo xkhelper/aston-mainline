@@ -331,11 +331,7 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
 	switch (level) {
 	case RMAP_LEVEL_PTE:
 		if (!folio_test_large(folio)) {
-<<<<<<< HEAD
-			atomic_inc(&page->_mapcount);
-=======
 			atomic_inc(&folio->_mapcount);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 
@@ -429,11 +425,7 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
 		if (!folio_test_large(folio)) {
 			if (PageAnonExclusive(page))
 				ClearPageAnonExclusive(page);
-<<<<<<< HEAD
-			atomic_inc(&page->_mapcount);
-=======
 			atomic_inc(&folio->_mapcount);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 
@@ -753,16 +745,12 @@ int folio_mkclean(struct folio *);
 int pfn_mkclean_range(unsigned long pfn, unsigned long nr_pages, pgoff_t pgoff,
 		      struct vm_area_struct *vma);
 
-<<<<<<< HEAD
-void remove_migration_ptes(struct folio *src, struct folio *dst, bool locked);
-=======
 enum rmp_flags {
 	RMP_LOCKED		= 1 << 0,
 	RMP_USE_SHARED_ZEROPAGE	= 1 << 1,
 };
 
 void remove_migration_ptes(struct folio *src, struct folio *dst, int flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * rmap_walk_control: To control rmap traversing for specific needs

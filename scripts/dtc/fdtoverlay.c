@@ -48,11 +48,7 @@ static void *apply_one(char *base, const char *overlay, size_t *buf_len,
 	int ret;
 
 	/*
-<<<<<<< HEAD
-	 * We take a copies first, because a failed apply can trash
-=======
 	 * We take copies first, because a failed apply can trash
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * both the base blob and the overlay
 	 */
 	tmpo = xmalloc(fdt_totalsize(overlay));

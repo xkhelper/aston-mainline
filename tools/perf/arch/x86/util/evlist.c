@@ -89,15 +89,12 @@ int arch_evlist__cmp(const struct evsel *lhs, const struct evsel *rhs)
 			return 1;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Retire latency event should not be group leader*/
 	if (lhs->retire_lat && !rhs->retire_lat)
 		return 1;
 	if (!lhs->retire_lat && rhs->retire_lat)
 		return -1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Default ordering by insertion index. */
 	return lhs->core.idx - rhs->core.idx;
 }

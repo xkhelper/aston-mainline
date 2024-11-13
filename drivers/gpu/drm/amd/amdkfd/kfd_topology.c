@@ -292,11 +292,8 @@ static ssize_t iolink_show(struct kobject *kobj, struct attribute *attr,
 			      iolink->max_bandwidth);
 	sysfs_show_32bit_prop(buffer, offs, "recommended_transfer_size",
 			      iolink->rec_transfer_size);
-<<<<<<< HEAD
-=======
 	sysfs_show_32bit_prop(buffer, offs, "recommended_sdma_engine_id_mask",
 			      iolink->rec_sdma_eng_id_mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sysfs_show_32bit_prop(buffer, offs, "flags", iolink->flags);
 
 	return offs;
@@ -1270,8 +1267,6 @@ static void kfd_set_iolink_non_coherent(struct kfd_topology_device *to_dev,
 	}
 }
 
-<<<<<<< HEAD
-=======
 #define REC_SDMA_NUM_GPU	8
 static const int rec_sdma_eng_map[REC_SDMA_NUM_GPU][REC_SDMA_NUM_GPU] = {
 							{ -1, 14, 12, 2, 4, 8, 10, 6 },
@@ -1320,7 +1315,6 @@ static void kfd_set_recommended_sdma_engines(struct kfd_topology_device *to_dev,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void kfd_fill_iolink_non_crat_info(struct kfd_topology_device *dev)
 {
 	struct kfd_iolink_properties *link, *inbound_link;
@@ -1359,10 +1353,7 @@ static void kfd_fill_iolink_non_crat_info(struct kfd_topology_device *dev)
 			inbound_link->flags = CRAT_IOLINK_FLAGS_ENABLED;
 			kfd_set_iolink_no_atomics(peer_dev, dev, inbound_link);
 			kfd_set_iolink_non_coherent(peer_dev, link, inbound_link);
-<<<<<<< HEAD
-=======
 			kfd_set_recommended_sdma_engines(peer_dev, link, inbound_link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -2087,11 +2078,7 @@ int kfd_topology_add_device(struct kfd_node *gpu)
 			HSA_CAP_ASIC_REVISION_MASK);
 
 	dev->node_props.location_id = pci_dev_id(gpu->adev->pdev);
-<<<<<<< HEAD
-	if (KFD_GC_VERSION(dev->gpu->kfd) == IP_VERSION(9, 4, 3))
-=======
 	if (gpu->kfd->num_nodes > 1)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev->node_props.location_id |= dev->gpu->node_id;
 
 	dev->node_props.domain = pci_domain_nr(gpu->adev->pdev->bus);
@@ -2184,11 +2171,8 @@ int kfd_topology_add_device(struct kfd_node *gpu)
 		dev->gpu->adev->gmc.xgmi.connected_to_cpu)
 		dev->node_props.capability |= HSA_CAP_FLAGS_COHERENTHOSTACCESS;
 
-<<<<<<< HEAD
-=======
 	kfd_queue_ctx_save_restore_size(dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfd_debug_print_topology();
 
 	kfd_notify_gpu_change(gpu_id, 1);

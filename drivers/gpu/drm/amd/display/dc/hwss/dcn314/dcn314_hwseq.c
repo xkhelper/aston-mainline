@@ -355,26 +355,18 @@ void dcn314_calculate_pix_rate_divider(
 	}
 }
 
-<<<<<<< HEAD
-void dcn314_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_state *context)
-=======
 void dcn314_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_state *context, unsigned int current_pipe_idx)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int i;
 	struct pipe_ctx *pipe = NULL;
 	bool otg_disabled[MAX_PIPES] = {false};
 
 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-<<<<<<< HEAD
-		pipe = &dc->current_state->res_ctx.pipe_ctx[i];
-=======
 		if (i <= current_pipe_idx) {
 			pipe = &context->res_ctx.pipe_ctx[i];
 		} else {
 			pipe = &dc->current_state->res_ctx.pipe_ctx[i];
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (pipe->top_pipe || pipe->prev_odm_pipe)
 			continue;
@@ -389,14 +381,10 @@ void dcn314_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc
 	hws->ctx->dc->res_pool->dccg->funcs->trigger_dio_fifo_resync(hws->ctx->dc->res_pool->dccg);
 
 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-<<<<<<< HEAD
-		pipe = &dc->current_state->res_ctx.pipe_ctx[i];
-=======
 		if (i <= current_pipe_idx)
 			pipe = &context->res_ctx.pipe_ctx[i];
 		else
 			pipe = &dc->current_state->res_ctx.pipe_ctx[i];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (otg_disabled[i]) {
 			int opp_inst[MAX_PIPES] = { pipe->stream_res.opp->inst };

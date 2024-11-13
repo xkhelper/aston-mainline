@@ -5,11 +5,7 @@
  * Copyright (C) 2018 Rockchip Electronics Co., Ltd.
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <media/v4l2-mem2mem.h>
 #include "hantro_jpeg.h"
 #include "hantro.h"

@@ -590,20 +590,13 @@ static enum sas_linkrate mpi3mr_convert_phy_link_rate(u8 link_rate)
  * @mrioc: Adapter instance reference
  * @mr_sas_port: Internal Port object
  * @mr_sas_phy: Internal Phy object
-<<<<<<< HEAD
-=======
  * @host_node: Flag to indicate this is a host_node
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return: None.
  */
 static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
 	struct mpi3mr_sas_port *mr_sas_port,
-<<<<<<< HEAD
-	struct mpi3mr_sas_phy *mr_sas_phy)
-=======
 	struct mpi3mr_sas_phy *mr_sas_phy, u8 host_node)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 sas_address = mr_sas_port->remote_identify.sas_address;
 
@@ -613,11 +606,6 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
 
 	list_del(&mr_sas_phy->port_siblings);
 	mr_sas_port->num_phys--;
-<<<<<<< HEAD
-	mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
-	if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
-		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-=======
 
 	if (host_node) {
 		mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
@@ -625,7 +613,6 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
 		if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
 			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sas_port_delete_phy(mr_sas_port->port, mr_sas_phy->phy);
 	mr_sas_phy->phy_belongs_to_port = 0;
 }
@@ -635,20 +622,13 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
  * @mrioc: Adapter instance reference
  * @mr_sas_port: Internal Port object
  * @mr_sas_phy: Internal Phy object
-<<<<<<< HEAD
-=======
  * @host_node: Flag to indicate this is a host_node
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return: None.
  */
 static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
 	struct mpi3mr_sas_port *mr_sas_port,
-<<<<<<< HEAD
-	struct mpi3mr_sas_phy *mr_sas_phy)
-=======
 	struct mpi3mr_sas_phy *mr_sas_phy, u8 host_node)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 sas_address = mr_sas_port->remote_identify.sas_address;
 
@@ -658,18 +638,12 @@ static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
 
 	list_add_tail(&mr_sas_phy->port_siblings, &mr_sas_port->phy_list);
 	mr_sas_port->num_phys++;
-<<<<<<< HEAD
-	mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
-	if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
-		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-=======
 	if (host_node) {
 		mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
 
 		if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
 			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sas_port_add_phy(mr_sas_port->port, mr_sas_phy->phy);
 	mr_sas_phy->phy_belongs_to_port = 1;
 }
@@ -710,11 +684,7 @@ static void mpi3mr_add_phy_to_an_existing_port(struct mpi3mr_ioc *mrioc,
 			if (srch_phy == mr_sas_phy)
 				return;
 		}
-<<<<<<< HEAD
-		mpi3mr_add_sas_phy(mrioc, mr_sas_port, mr_sas_phy);
-=======
 		mpi3mr_add_sas_phy(mrioc, mr_sas_port, mr_sas_phy, mr_sas_node->host_node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 }
@@ -775,11 +745,7 @@ static void mpi3mr_del_phy_from_an_existing_port(struct mpi3mr_ioc *mrioc,
 				mpi3mr_delete_sas_port(mrioc, mr_sas_port);
 			else
 				mpi3mr_delete_sas_phy(mrioc, mr_sas_port,
-<<<<<<< HEAD
-				    mr_sas_phy);
-=======
 				    mr_sas_phy, mr_sas_node->host_node);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return;
 		}
 	}
@@ -1071,11 +1037,7 @@ mpi3mr_alloc_hba_port(struct mpi3mr_ioc *mrioc, u16 port_id)
 /**
  * mpi3mr_get_hba_port_by_id - find hba port by id
  * @mrioc: Adapter instance reference
-<<<<<<< HEAD
- * @port_id - Port ID to search
-=======
  * @port_id: Port ID to search
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Return: mpi3mr_hba_port reference for the matched port
  */
@@ -1414,12 +1376,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
 	mpi3mr_sas_port_sanity_check(mrioc, mr_sas_node,
 	    mr_sas_port->remote_identify.sas_address, hba_port);
 
-<<<<<<< HEAD
-	if (mr_sas_node->num_phys >= sizeof(mr_sas_port->phy_mask) * 8)
-=======
 	if (mr_sas_node->host_node && mr_sas_node->num_phys >=
 			sizeof(mr_sas_port->phy_mask) * 8)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ioc_info(mrioc, "max port count %u could be too high\n",
 		    mr_sas_node->num_phys);
 
@@ -1429,11 +1387,7 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
 		    (mr_sas_node->phy[i].hba_port != hba_port))
 			continue;
 
-<<<<<<< HEAD
-		if (i >= sizeof(mr_sas_port->phy_mask) * 8) {
-=======
 		if (mr_sas_node->host_node && (i >= sizeof(mr_sas_port->phy_mask) * 8)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ioc_warn(mrioc, "skipping port %u, max allowed value is %zu\n",
 			    i, sizeof(mr_sas_port->phy_mask) * 8);
 			goto out_fail;
@@ -1441,12 +1395,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
 		list_add_tail(&mr_sas_node->phy[i].port_siblings,
 		    &mr_sas_port->phy_list);
 		mr_sas_port->num_phys++;
-<<<<<<< HEAD
-		mr_sas_port->phy_mask |= (1 << i);
-=======
 		if (mr_sas_node->host_node)
 			mr_sas_port->phy_mask |= (1 << i);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (!mr_sas_port->num_phys) {
@@ -1455,12 +1405,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
 		goto out_fail;
 	}
 
-<<<<<<< HEAD
-	mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-=======
 	if (mr_sas_node->host_node)
 		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mr_sas_port->remote_identify.device_type == SAS_END_DEVICE) {
 		tgtdev = mpi3mr_get_tgtdev_by_addr(mrioc,

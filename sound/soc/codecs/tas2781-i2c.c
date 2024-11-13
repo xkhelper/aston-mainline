@@ -22,10 +22,6 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
-<<<<<<< HEAD
-#include <linux/of_gpio.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/of_irq.h>
 #include <linux/regmap.h>
 #include <linux/slab.h>
@@ -33,10 +29,6 @@
 #include <sound/soc.h>
 #include <sound/tas2781.h>
 #include <sound/tlv.h>
-<<<<<<< HEAD
-#include <sound/tas2781-tlv.h>
-#include <asm/unaligned.h>
-=======
 #include <sound/tas2563-tlv.h>
 #include <sound/tas2781-tlv.h>
 #include <linux/unaligned.h>
@@ -103,7 +95,6 @@ static const struct bulk_reg_val tas2781_cali_start_reg[] = {
 	X2781_CL_STT_LEN_UNLOCKED(TAS2781_PRM_SINEGAIN_REG),
 	X2781_CL_STT_LEN_UNLOCKED(TAS2781_PRM_SINEGAIN2_REG),
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const struct i2c_device_id tasdevice_id[] = {
 	{ "tas2563", TAS2563 },
@@ -213,8 +204,6 @@ static int tasdev_force_fwload_put(struct snd_kcontrol *kcontrol,
 	return change;
 }
 
-<<<<<<< HEAD
-=======
 static int tasdev_cali_data_get(struct snd_kcontrol *kcontrol,
 	struct snd_ctl_elem_value *ucontrol)
 {
@@ -766,7 +755,6 @@ static int tasdev_nop_get(
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int tas2563_digital_gain_get(
 	struct snd_kcontrol *kcontrol,
 	struct snd_ctl_elem_value *ucontrol)
@@ -783,11 +771,7 @@ static int tas2563_digital_gain_get(
 
 	mutex_lock(&tas_dev->codec_lock);
 	/* Read the primary device */
-<<<<<<< HEAD
-	ret =  tasdevice_dev_bulk_read(tas_dev, 0, reg, data, 4);
-=======
 	ret = tasdevice_dev_bulk_read(tas_dev, 0, reg, data, 4);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		dev_err(tas_dev->dev, "%s, get AMP vol error\n", __func__);
 		goto out;
@@ -833,11 +817,7 @@ static int tas2563_digital_gain_put(
 	vol = clamp(vol, 0, max);
 	mutex_lock(&tas_dev->codec_lock);
 	/* Read the primary device */
-<<<<<<< HEAD
-	ret =  tasdevice_dev_bulk_read(tas_dev, 0, reg, data, 4);
-=======
 	ret = tasdevice_dev_bulk_read(tas_dev, 0, reg, data, 4);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		dev_err(tas_dev->dev, "%s, get AMP vol error\n", __func__);
 		rc = -1;
@@ -875,8 +855,6 @@ static const struct snd_kcontrol_new tasdevice_snd_controls[] = {
 		tasdev_force_fwload_get, tasdev_force_fwload_put),
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_kcontrol_new tasdevice_cali_controls[] = {
 	SOC_SINGLE_EXT("Calibration Stop", SND_SOC_NOPM, 0, 1, 0,
 		tasdev_nop_get, tasdev_calib_stop_put),
@@ -887,7 +865,6 @@ static const struct snd_kcontrol_new tasdevice_cali_controls[] = {
 	SND_SOC_BYTES_EXT("Amp XMA2 Data", 6, tasdev_XMA2_data_get, NULL),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_kcontrol_new tas2781_snd_controls[] = {
 	SOC_SINGLE_RANGE_EXT_TLV("Speaker Analog Gain", TAS2781_AMP_LEVEL,
 		1, 0, 20, 0, tas2781_amp_getvol,
@@ -897,13 +874,10 @@ static const struct snd_kcontrol_new tas2781_snd_controls[] = {
 		tas2781_digital_putvol, dvc_tlv),
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_kcontrol_new tas2781_cali_controls[] = {
 	SND_SOC_BYTES_EXT("Amp Latch Data", 3, tas2781_latch_reg_get, NULL),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_kcontrol_new tas2563_snd_controls[] = {
 	SOC_SINGLE_RANGE_EXT_TLV("Speaker Digital Volume", TAS2563_DVC_LVL, 0,
 		0, ARRAY_SIZE(tas2563_dvc_table) - 1, 0,
@@ -911,14 +885,11 @@ static const struct snd_kcontrol_new tas2563_snd_controls[] = {
 		tas2563_dvc_tlv),
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_kcontrol_new tas2563_cali_controls[] = {
 	SOC_SINGLE_EXT("Calibration Start", SND_SOC_NOPM, 0, 1, 0,
 		tasdev_nop_get, tas2563_calib_start_put),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int tasdevice_set_profile_id(struct snd_kcontrol *kcontrol,
 		struct snd_ctl_elem_value *ucontrol)
 {
@@ -936,8 +907,6 @@ static int tasdevice_set_profile_id(struct snd_kcontrol *kcontrol,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int tasdevice_info_active_num(struct snd_kcontrol *kcontrol,
 			struct snd_ctl_elem_info *uinfo)
 {
@@ -963,7 +932,6 @@ static int tasdevice_info_chip_id(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int tasdevice_info_programs(struct snd_kcontrol *kcontrol,
 			struct snd_ctl_elem_info *uinfo)
 {
@@ -1020,8 +988,6 @@ static int tasdevice_get_profile_id(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int tasdevice_get_chip_id(struct snd_kcontrol *kcontrol,
 			struct snd_ctl_elem_value *ucontrol)
 {
@@ -1033,7 +999,6 @@ static int tasdevice_get_chip_id(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int tasdevice_create_control(struct tasdevice_priv *tas_priv)
 {
 	struct snd_kcontrol_new *prof_ctrls;
@@ -1050,20 +1015,11 @@ static int tasdevice_create_control(struct tasdevice_priv *tas_priv)
 	}
 
 	/* Create a mixer item for selecting the active profile */
-<<<<<<< HEAD
-	name = devm_kzalloc(tas_priv->dev, SNDRV_CTL_ELEM_ID_NAME_MAXLEN,
-		GFP_KERNEL);
-=======
 	name = devm_kstrdup(tas_priv->dev, "Speaker Profile Id", GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!name) {
 		ret = -ENOMEM;
 		goto out;
 	}
-<<<<<<< HEAD
-	scnprintf(name, SNDRV_CTL_ELEM_ID_NAME_MAXLEN, "Speaker Profile Id");
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	prof_ctrls[mix_index].name = name;
 	prof_ctrls[mix_index].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
 	prof_ctrls[mix_index].info = tasdevice_info_profile;
@@ -1134,14 +1090,6 @@ static int tasdevice_configuration_put(
 	return ret;
 }
 
-<<<<<<< HEAD
-static int tasdevice_dsp_create_ctrls(
-	struct tasdevice_priv *tas_priv)
-{
-	struct snd_kcontrol_new *dsp_ctrls;
-	char *prog_name, *conf_name;
-	int nr_controls = 2;
-=======
 static int tasdevice_active_num_get(struct snd_kcontrol *kcontrol,
 	struct snd_ctl_elem_value *ucontrol)
 {
@@ -1183,7 +1131,6 @@ static int tasdevice_dsp_create_ctrls(struct tasdevice_priv *tas_priv)
 	char *active_dev_num, *chip_id;
 	char *conf_name, *prog_name;
 	int nr_controls = 4;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int mix_index = 0;
 	int ret;
 
@@ -1197,20 +1144,6 @@ static int tasdevice_dsp_create_ctrls(struct tasdevice_priv *tas_priv)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	/* Create a mixer item for selecting the active profile */
-	prog_name = devm_kzalloc(tas_priv->dev,
-		SNDRV_CTL_ELEM_ID_NAME_MAXLEN, GFP_KERNEL);
-	conf_name = devm_kzalloc(tas_priv->dev, SNDRV_CTL_ELEM_ID_NAME_MAXLEN,
-		GFP_KERNEL);
-	if (!prog_name || !conf_name) {
-		ret = -ENOMEM;
-		goto out;
-	}
-
-	scnprintf(prog_name, SNDRV_CTL_ELEM_ID_NAME_MAXLEN,
-		"Speaker Program Id");
-=======
 	/* Create mixer items for selecting the active Program and Config */
 	prog_name = devm_kstrdup(tas_priv->dev, "Speaker Program Id",
 		GFP_KERNEL);
@@ -1218,7 +1151,6 @@ static int tasdevice_dsp_create_ctrls(struct tasdevice_priv *tas_priv)
 		ret = -ENOMEM;
 		goto out;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dsp_ctrls[mix_index].name = prog_name;
 	dsp_ctrls[mix_index].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
 	dsp_ctrls[mix_index].info = tasdevice_info_programs;
@@ -1226,17 +1158,12 @@ static int tasdevice_dsp_create_ctrls(struct tasdevice_priv *tas_priv)
 	dsp_ctrls[mix_index].put = tasdevice_program_put;
 	mix_index++;
 
-<<<<<<< HEAD
-	scnprintf(conf_name, SNDRV_CTL_ELEM_ID_NAME_MAXLEN,
-		"Speaker Config Id");
-=======
 	conf_name = devm_kstrdup(tas_priv->dev, "Speaker Config Id",
 		GFP_KERNEL);
 	if (!conf_name) {
 		ret = -ENOMEM;
 		goto out;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dsp_ctrls[mix_index].name = conf_name;
 	dsp_ctrls[mix_index].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
 	dsp_ctrls[mix_index].info = tasdevice_info_configurations;
@@ -1244,8 +1171,6 @@ static int tasdevice_dsp_create_ctrls(struct tasdevice_priv *tas_priv)
 	dsp_ctrls[mix_index].put = tasdevice_configuration_put;
 	mix_index++;
 
-<<<<<<< HEAD
-=======
 	active_dev_num = devm_kstrdup(tas_priv->dev, "Activate Tasdevice Num",
 		GFP_KERNEL);
 	if (!active_dev_num) {
@@ -1270,7 +1195,6 @@ static int tasdevice_dsp_create_ctrls(struct tasdevice_priv *tas_priv)
 	dsp_ctrls[mix_index].get = tasdevice_get_chip_id;
 	mix_index++;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = snd_soc_add_component_controls(tas_priv->codec, dsp_ctrls,
 		nr_controls < mix_index ? nr_controls : mix_index);
 
@@ -1278,8 +1202,6 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int tasdevice_create_cali_ctrls(struct tasdevice_priv *priv)
 {
 	struct calidata *cali_data = &priv->cali_data;
@@ -1423,7 +1345,6 @@ static int tasdevice_create_cali_ctrls(struct tasdevice_priv *priv)
 	return rc;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void tasdevice_fw_ready(const struct firmware *fmw,
 	void *context)
 {
@@ -1470,15 +1391,12 @@ static void tasdevice_fw_ready(const struct firmware *fmw,
 		goto out;
 	}
 
-<<<<<<< HEAD
-=======
 	ret = tasdevice_create_cali_ctrls(tas_priv);
 	if (ret) {
 		dev_err(tas_priv->dev, "cali controls error\n");
 		goto out;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
 
 	/* If calibrated data occurs error, dsp will still works with default
@@ -1539,21 +1457,13 @@ static const struct snd_soc_dapm_widget tasdevice_dapm_widgets[] = {
 		SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
 	SND_SOC_DAPM_SPK("SPK", tasdevice_dapm_event),
 	SND_SOC_DAPM_OUTPUT("OUT"),
-<<<<<<< HEAD
-	SND_SOC_DAPM_INPUT("DMIC")
-=======
 	SND_SOC_DAPM_INPUT("DMIC"),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct snd_soc_dapm_route tasdevice_audio_map[] = {
 	{"SPK", NULL, "ASI"},
 	{"OUT", NULL, "SPK"},
-<<<<<<< HEAD
-	{"ASI OUT", NULL, "DMIC"}
-=======
 	{"ASI OUT", NULL, "DMIC"},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int tasdevice_startup(struct snd_pcm_substream *substream,
@@ -1636,11 +1546,7 @@ static const struct snd_soc_dai_ops tasdevice_dai_ops = {
 
 static struct snd_soc_dai_driver tasdevice_dai_driver[] = {
 	{
-<<<<<<< HEAD
-		.name = "tas2781_codec",
-=======
 		.name = "tasdev_codec",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.id = 0,
 		.playback = {
 			.stream_name = "Playback",
@@ -1692,14 +1598,11 @@ static int tasdevice_codec_probe(struct snd_soc_component *codec)
 static void tasdevice_deinit(void *context)
 {
 	struct tasdevice_priv *tas_priv = (struct tasdevice_priv *) context;
-<<<<<<< HEAD
-=======
 	struct tasdevice *tasdev = tas_priv->tasdevice;
 	int i;
 
 	for (i = 0; i < tas_priv->ndev; i++)
 		kfree(tasdev[i].cali_data_backup);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tasdevice_config_info_remove(tas_priv);
 	tasdevice_dsp_remove(tas_priv);
@@ -1707,12 +1610,7 @@ static void tasdevice_deinit(void *context)
 	tas_priv->fw_state = TASDEVICE_DSP_FW_PENDING;
 }
 
-<<<<<<< HEAD
-static void tasdevice_codec_remove(
-	struct snd_soc_component *codec)
-=======
 static void tasdevice_codec_remove(struct snd_soc_component *codec)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct tasdevice_priv *tas_priv = snd_soc_component_get_drvdata(codec);
 
@@ -1737,11 +1635,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
 {
 	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
 	unsigned int dev_addrs[TASDEVICE_MAX_CHANNELS];
-<<<<<<< HEAD
-	int rc, i, ndev = 0;
-=======
 	int i, ndev = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (tas_priv->isacpi) {
 		ndev = device_property_read_u32_array(&client->dev,
@@ -1756,11 +1650,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
 				"ti,audio-slots", dev_addrs, ndev);
 		}
 
-<<<<<<< HEAD
-		tas_priv->irq_info.irq_gpio =
-=======
 		tas_priv->irq =
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			acpi_dev_gpio_irq_get(ACPI_COMPANION(&client->dev), 0);
 	} else if (IS_ENABLED(CONFIG_OF)) {
 		struct device_node *np = tas_priv->dev->of_node;
@@ -1772,11 +1662,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
 			dev_addrs[ndev++] = addr;
 		}
 
-<<<<<<< HEAD
-		tas_priv->irq_info.irq_gpio = of_irq_get(np, 0);
-=======
 		tas_priv->irq = of_irq_get(np, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		ndev = 1;
 		dev_addrs[0] = client->addr;
@@ -1786,36 +1672,12 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
 		tas_priv->tasdevice[i].dev_addr = dev_addrs[i];
 
 	tas_priv->reset = devm_gpiod_get_optional(&client->dev,
-<<<<<<< HEAD
-			"reset-gpios", GPIOD_OUT_HIGH);
-=======
 			"reset", GPIOD_OUT_HIGH);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(tas_priv->reset))
 		dev_err(tas_priv->dev, "%s Can't get reset GPIO\n",
 			__func__);
 
 	strcpy(tas_priv->dev_name, tasdevice_id[tas_priv->chip_id].name);
-<<<<<<< HEAD
-
-	if (gpio_is_valid(tas_priv->irq_info.irq_gpio)) {
-		rc = gpio_request(tas_priv->irq_info.irq_gpio,
-				"AUDEV-IRQ");
-		if (!rc) {
-			gpio_direction_input(
-				tas_priv->irq_info.irq_gpio);
-
-			tas_priv->irq_info.irq =
-				gpio_to_irq(tas_priv->irq_info.irq_gpio);
-		} else
-			dev_err(tas_priv->dev, "%s: GPIO %d request error\n",
-				__func__, tas_priv->irq_info.irq_gpio);
-	} else
-		dev_err(tas_priv->dev,
-			"Looking up irq-gpio property failed %d\n",
-			tas_priv->irq_info.irq_gpio);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int tasdevice_i2c_probe(struct i2c_client *i2c)

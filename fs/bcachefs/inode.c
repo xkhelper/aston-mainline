@@ -12,10 +12,7 @@
 #include "error.h"
 #include "extents.h"
 #include "extent_update.h"
-<<<<<<< HEAD
-=======
 #include "fs.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "inode.h"
 #include "str_hash.h"
 #include "snapshot.h"
@@ -24,11 +21,7 @@
 
 #include <linux/random.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define x(name, ...)	#name,
 const char * const bch2_inode_opts[] = {
@@ -42,11 +35,8 @@ static const char * const bch2_inode_flag_strs[] = {
 };
 #undef  x
 
-<<<<<<< HEAD
-=======
 static int delete_ancestor_snapshot_inodes(struct btree_trans *, struct bpos);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const u8 byte_table[8] = { 1, 2, 3, 4, 6, 8, 10, 13 };
 
 static int inode_decode_field(const u8 *in, const u8 *end,
@@ -173,13 +163,8 @@ static noinline int bch2_inode_unpack_v1(struct bkey_s_c_inode inode,
 	unsigned fieldnr = 0, field_bits;
 	int ret;
 
-<<<<<<< HEAD
-#define x(_name, _bits)					\
-	if (fieldnr++ == INODE_NR_FIELDS(inode.v)) {			\
-=======
 #define x(_name, _bits)							\
 	if (fieldnr++ == INODEv1_NR_FIELDS(inode.v)) {			\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned offset = offsetof(struct bch_inode_unpacked, _name);\
 		memset((void *) unpacked + offset, 0,			\
 		       sizeof(*unpacked) - offset);			\
@@ -298,11 +283,8 @@ static noinline int bch2_inode_unpack_slowpath(struct bkey_s_c k,
 {
 	memset(unpacked, 0, sizeof(*unpacked));
 
-<<<<<<< HEAD
-=======
 	unpacked->bi_snapshot = k.k->p.snapshot;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (k.k->type) {
 	case KEY_TYPE_inode: {
 		struct bkey_s_c_inode inode = bkey_s_c_to_inode(k);
@@ -313,17 +295,10 @@ static noinline int bch2_inode_unpack_slowpath(struct bkey_s_c k,
 		unpacked->bi_flags	= le32_to_cpu(inode.v->bi_flags);
 		unpacked->bi_mode	= le16_to_cpu(inode.v->bi_mode);
 
-<<<<<<< HEAD
-		if (INODE_NEW_VARINT(inode.v)) {
-			return bch2_inode_unpack_v2(unpacked, inode.v->fields,
-						    bkey_val_end(inode),
-						    INODE_NR_FIELDS(inode.v));
-=======
 		if (INODEv1_NEW_VARINT(inode.v)) {
 			return bch2_inode_unpack_v2(unpacked, inode.v->fields,
 						    bkey_val_end(inode),
 						    INODEv1_NR_FIELDS(inode.v));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			return bch2_inode_unpack_v1(inode, unpacked);
 		}
@@ -350,29 +325,6 @@ static noinline int bch2_inode_unpack_slowpath(struct bkey_s_c k,
 int bch2_inode_unpack(struct bkey_s_c k,
 		      struct bch_inode_unpacked *unpacked)
 {
-<<<<<<< HEAD
-	if (likely(k.k->type == KEY_TYPE_inode_v3))
-		return bch2_inode_unpack_v3(k, unpacked);
-	return bch2_inode_unpack_slowpath(k, unpacked);
-}
-
-int bch2_inode_peek_nowarn(struct btree_trans *trans,
-		    struct btree_iter *iter,
-		    struct bch_inode_unpacked *inode,
-		    subvol_inum inum, unsigned flags)
-{
-	struct bkey_s_c k;
-	u32 snapshot;
-	int ret;
-
-	ret = bch2_subvolume_get_snapshot(trans, inum.subvol, &snapshot);
-	if (ret)
-		return ret;
-
-	k = bch2_bkey_get_iter(trans, iter, BTREE_ID_inodes,
-			       SPOS(0, inum.inum, snapshot),
-			       flags|BTREE_ITER_cached);
-=======
 	unpacked->bi_snapshot = k.k->p.snapshot;
 
 	return likely(k.k->type == KEY_TYPE_inode_v3)
@@ -394,7 +346,6 @@ int __bch2_inode_peek(struct btree_trans *trans,
 	struct bkey_s_c k = bch2_bkey_get_iter(trans, iter, BTREE_ID_inodes,
 					       SPOS(0, inum.inum, snapshot),
 					       flags|BTREE_ITER_cached);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = bkey_err(k);
 	if (ret)
 		return ret;
@@ -409,28 +360,12 @@ int __bch2_inode_peek(struct btree_trans *trans,
 
 	return 0;
 err:
-<<<<<<< HEAD
-=======
 	if (warn)
 		bch_err_msg(trans->c, ret, "looking up inum %llu:%llu:", inum.subvol, inum.inum);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch2_trans_iter_exit(trans, iter);
 	return ret;
 }
 
-<<<<<<< HEAD
-int bch2_inode_peek(struct btree_trans *trans,
-		    struct btree_iter *iter,
-		    struct bch_inode_unpacked *inode,
-		    subvol_inum inum, unsigned flags)
-{
-	int ret = bch2_inode_peek_nowarn(trans, iter, inode, inum, flags);
-	bch_err_msg(trans->c, ret, "looking up inum %u:%llu:", inum.subvol, inum.inum);
-	return ret;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_inode_write_flags(struct btree_trans *trans,
 		     struct btree_iter *iter,
 		     struct bch_inode_unpacked *inode,
@@ -447,13 +382,7 @@ int bch2_inode_write_flags(struct btree_trans *trans,
 	return bch2_trans_update(trans, iter, &inode_p->inode.k_i, flags);
 }
 
-<<<<<<< HEAD
-int __bch2_fsck_write_inode(struct btree_trans *trans,
-			 struct bch_inode_unpacked *inode,
-			 u32 snapshot)
-=======
 int __bch2_fsck_write_inode(struct btree_trans *trans, struct bch_inode_unpacked *inode)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct bkey_inode_buf *inode_p =
 		bch2_trans_kmalloc(trans, sizeof(*inode_p));
@@ -462,30 +391,17 @@ int __bch2_fsck_write_inode(struct btree_trans *trans, struct bch_inode_unpacked
 		return PTR_ERR(inode_p);
 
 	bch2_inode_pack(inode_p, inode);
-<<<<<<< HEAD
-	inode_p->inode.k.p.snapshot = snapshot;
-=======
 	inode_p->inode.k.p.snapshot = inode->bi_snapshot;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return bch2_btree_insert_nonextent(trans, BTREE_ID_inodes,
 				&inode_p->inode.k_i,
 				BTREE_UPDATE_internal_snapshot_node);
 }
 
-<<<<<<< HEAD
-int bch2_fsck_write_inode(struct btree_trans *trans,
-			    struct bch_inode_unpacked *inode,
-			    u32 snapshot)
-{
-	int ret = commit_do(trans, NULL, NULL, BCH_TRANS_COMMIT_no_enospc,
-			    __bch2_fsck_write_inode(trans, inode, snapshot));
-=======
 int bch2_fsck_write_inode(struct btree_trans *trans, struct bch_inode_unpacked *inode)
 {
 	int ret = commit_do(trans, NULL, NULL, BCH_TRANS_COMMIT_no_enospc,
 			    __bch2_fsck_write_inode(trans, inode));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch_err_fn(trans->c, ret);
 	return ret;
 }
@@ -557,17 +473,10 @@ int bch2_inode_validate(struct bch_fs *c, struct bkey_s_c k,
 	struct bkey_s_c_inode inode = bkey_s_c_to_inode(k);
 	int ret = 0;
 
-<<<<<<< HEAD
-	bkey_fsck_err_on(INODE_STR_HASH(inode.v) >= BCH_STR_HASH_NR,
-			 c, inode_str_hash_invalid,
-			 "invalid str hash type (%llu >= %u)",
-			 INODE_STR_HASH(inode.v), BCH_STR_HASH_NR);
-=======
 	bkey_fsck_err_on(INODEv1_STR_HASH(inode.v) >= BCH_STR_HASH_NR,
 			 c, inode_str_hash_invalid,
 			 "invalid str hash type (%llu >= %u)",
 			 INODEv1_STR_HASH(inode.v), BCH_STR_HASH_NR);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = __bch2_inode_validate(c, k, flags);
 fsck_err:
@@ -626,13 +535,10 @@ static void __bch2_inode_unpacked_to_text(struct printbuf *out,
 	prt_printf(out, "(%x)\n", inode->bi_flags);
 
 	prt_printf(out, "journal_seq=%llu\n",	inode->bi_journal_seq);
-<<<<<<< HEAD
-=======
 	prt_printf(out, "hash_seed=%llx\n",	inode->bi_hash_seed);
 	prt_printf(out, "hash_type=");
 	bch2_prt_str_hash_type(out, INODE_STR_HASH(inode));
 	prt_newline(out);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	prt_printf(out, "bi_size=%llu\n",	inode->bi_size);
 	prt_printf(out, "bi_sectors=%llu\n",	inode->bi_sectors);
 	prt_printf(out, "bi_version=%llu\n",	inode->bi_version);
@@ -648,11 +554,7 @@ static void __bch2_inode_unpacked_to_text(struct printbuf *out,
 
 void bch2_inode_unpacked_to_text(struct printbuf *out, struct bch_inode_unpacked *inode)
 {
-<<<<<<< HEAD
-	prt_printf(out, "inum: %llu ", inode->bi_inum);
-=======
 	prt_printf(out, "inum: %llu:%u ", inode->bi_inum, inode->bi_snapshot);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__bch2_inode_unpacked_to_text(out, inode);
 }
 
@@ -682,11 +584,6 @@ static inline u64 bkey_inode_flags(struct bkey_s_c k)
 	}
 }
 
-<<<<<<< HEAD
-static inline bool bkey_is_deleted_inode(struct bkey_s_c k)
-{
-	return bkey_inode_flags(k) & BCH_INODE_unlinked;
-=======
 static inline void bkey_inode_flags_set(struct bkey_s k, u64 f)
 {
 	switch (k.k->type) {
@@ -818,7 +715,6 @@ static int update_parent_inode_has_children(struct btree_trans *trans, struct bp
 err:
 	bch2_trans_iter_exit(trans, &iter);
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int bch2_trigger_inode(struct btree_trans *trans,
@@ -827,11 +723,8 @@ int bch2_trigger_inode(struct btree_trans *trans,
 		       struct bkey_s new,
 		       enum btree_iter_update_trigger_flags flags)
 {
-<<<<<<< HEAD
-=======
 	struct bch_fs *c = trans->c;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if ((flags & BTREE_TRIGGER_atomic) && (flags & BTREE_TRIGGER_insert)) {
 		BUG_ON(!trans->journal_res.seq);
 		bkey_s_to_inode_v3(new).v->bi_journal_seq = cpu_to_le64(trans->journal_res.seq);
@@ -845,15 +738,6 @@ int bch2_trigger_inode(struct btree_trans *trans,
 			return ret;
 	}
 
-<<<<<<< HEAD
-	int deleted_delta =	(int) bkey_is_deleted_inode(new.s_c) -
-				(int) bkey_is_deleted_inode(old);
-	if ((flags & BTREE_TRIGGER_transactional) && deleted_delta) {
-		int ret = bch2_btree_bit_mod_buffered(trans, BTREE_ID_deleted_inodes,
-						      new.k->p, deleted_delta > 0);
-		if (ret)
-			return ret;
-=======
 	if (flags & BTREE_TRIGGER_transactional) {
 		int unlinked_delta =	(int) bkey_is_unlinked_inode(new.s_c) -
 					(int) bkey_is_unlinked_inode(old);
@@ -889,7 +773,6 @@ int bch2_trigger_inode(struct btree_trans *trans,
 			if (ret)
 				return ret;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -923,15 +806,8 @@ void bch2_inode_init_early(struct bch_fs *c,
 
 	memset(inode_u, 0, sizeof(*inode_u));
 
-<<<<<<< HEAD
-	/* ick */
-	inode_u->bi_flags |= str_hash << INODE_STR_HASH_OFFSET;
-	get_random_bytes(&inode_u->bi_hash_seed,
-			 sizeof(inode_u->bi_hash_seed));
-=======
 	SET_INODE_STR_HASH(inode_u, str_hash);
 	get_random_bytes(&inode_u->bi_hash_seed, sizeof(inode_u->bi_hash_seed));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void bch2_inode_init_late(struct bch_inode_unpacked *inode_u, u64 now,
@@ -1177,14 +1053,11 @@ err:
 	if (bch2_err_matches(ret, BCH_ERR_transaction_restart))
 		goto retry;
 
-<<<<<<< HEAD
-=======
 	if (ret)
 		goto err2;
 
 	ret = delete_ancestor_snapshot_inodes(trans, SPOS(0, inum.inum, snapshot));
 err2:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch2_trans_put(trans);
 	return ret;
 }
@@ -1218,12 +1091,7 @@ int bch2_inode_find_by_inum_trans(struct btree_trans *trans,
 int bch2_inode_find_by_inum(struct bch_fs *c, subvol_inum inum,
 			    struct bch_inode_unpacked *inode)
 {
-<<<<<<< HEAD
-	return bch2_trans_do(c, NULL, NULL, 0,
-		bch2_inode_find_by_inum_trans(trans, inum, inode));
-=======
 	return bch2_trans_do(c, bch2_inode_find_by_inum_trans(trans, inum, inode));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int bch2_inode_nlink_inc(struct bch_inode_unpacked *bi)
@@ -1293,11 +1161,7 @@ int bch2_inum_opts_get(struct btree_trans *trans, subvol_inum inum, struct bch_i
 	return 0;
 }
 
-<<<<<<< HEAD
-int bch2_inode_rm_snapshot(struct btree_trans *trans, u64 inum, u32 snapshot)
-=======
 static noinline int __bch2_inode_rm_snapshot(struct btree_trans *trans, u64 inum, u32 snapshot)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct bch_fs *c = trans->c;
 	struct btree_iter iter = { NULL };
@@ -1360,8 +1224,6 @@ err:
 	return ret ?: -BCH_ERR_transaction_restart_nested;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * After deleting an inode, there may be versions in older snapshots that should
  * also be deleted - if they're not referenced by sibling snapshots and not open
@@ -1401,7 +1263,6 @@ int bch2_inode_rm_snapshot(struct btree_trans *trans, u64 inum, u32 snapshot)
 		delete_ancestor_snapshot_inodes(trans, SPOS(0, inum, snapshot));
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int may_delete_deleted_inode(struct btree_trans *trans,
 				    struct btree_iter *iter,
 				    struct bpos pos,
@@ -1411,10 +1272,7 @@ static int may_delete_deleted_inode(struct btree_trans *trans,
 	struct btree_iter inode_iter;
 	struct bkey_s_c k;
 	struct bch_inode_unpacked inode;
-<<<<<<< HEAD
-=======
 	struct printbuf buf = PRINTBUF;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	k = bch2_bkey_get_iter(trans, &inode_iter, BTREE_ID_inodes, pos, BTREE_ITER_cached);
@@ -1450,9 +1308,6 @@ static int may_delete_deleted_inode(struct btree_trans *trans,
 			pos.offset, pos.snapshot))
 		goto delete;
 
-<<<<<<< HEAD
-	if (c->sb.clean &&
-=======
 	if (fsck_err_on(inode.bi_flags & BCH_INODE_has_child_snapshot,
 			trans, deleted_inode_has_child_snapshots,
 			"inode with child snapshots %llu:%u in deleted_inodes btree",
@@ -1479,7 +1334,6 @@ static int may_delete_deleted_inode(struct btree_trans *trans,
 	}
 
 	if (test_bit(BCH_FS_clean_recovery, &c->flags) &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    !fsck_err(trans, deleted_inode_but_clean,
 		      "filesystem marked as clean but have deleted inode %llu:%u",
 		      pos.offset, pos.snapshot)) {
@@ -1487,40 +1341,11 @@ static int may_delete_deleted_inode(struct btree_trans *trans,
 		goto out;
 	}
 
-<<<<<<< HEAD
-	if (bch2_snapshot_is_internal_node(c, pos.snapshot)) {
-		struct bpos new_min_pos;
-
-		ret = bch2_propagate_key_to_snapshot_leaves(trans, inode_iter.btree_id, k, &new_min_pos);
-		if (ret)
-			goto out;
-
-		inode.bi_flags &= ~BCH_INODE_unlinked;
-
-		ret = bch2_inode_write_flags(trans, &inode_iter, &inode,
-					     BTREE_UPDATE_internal_snapshot_node);
-		bch_err_msg(c, ret, "clearing inode unlinked flag");
-		if (ret)
-			goto out;
-
-		/*
-		 * We'll need another write buffer flush to pick up the new
-		 * unlinked inodes in the snapshot leaves:
-		 */
-		*need_another_pass = true;
-		goto out;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = 1;
 out:
 fsck_err:
 	bch2_trans_iter_exit(trans, &inode_iter);
-<<<<<<< HEAD
-=======
 	printbuf_exit(&buf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 delete:
 	ret = bch2_btree_bit_mod_buffered(trans, BTREE_ID_deleted_inodes, pos, false);

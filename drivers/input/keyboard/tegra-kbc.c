@@ -241,18 +241,10 @@ static void tegra_kbc_set_fifo_interrupt(struct tegra_kbc *kbc, bool enable)
 static void tegra_kbc_keypress_timer(struct timer_list *t)
 {
 	struct tegra_kbc *kbc = from_timer(kbc, t, timer);
-<<<<<<< HEAD
-	unsigned long flags;
-	u32 val;
-	unsigned int i;
-
-	spin_lock_irqsave(&kbc->lock, flags);
-=======
 	u32 val;
 	unsigned int i;
 
 	guard(spinlock_irqsave)(&kbc->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	val = (readl(kbc->mmio + KBC_INT_0) >> 4) & 0xf;
 	if (val) {
@@ -277,26 +269,14 @@ static void tegra_kbc_keypress_timer(struct timer_list *t)
 		/* All keys are released so enable the keypress interrupt */
 		tegra_kbc_set_fifo_interrupt(kbc, true);
 	}
-<<<<<<< HEAD
-
-	spin_unlock_irqrestore(&kbc->lock, flags);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static irqreturn_t tegra_kbc_isr(int irq, void *args)
 {
 	struct tegra_kbc *kbc = args;
-<<<<<<< HEAD
-	unsigned long flags;
-	u32 val;
-
-	spin_lock_irqsave(&kbc->lock, flags);
-=======
 	u32 val;
 
 	guard(spinlock_irqsave)(&kbc->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Quickly bail out & reenable interrupts if the fifo threshold
@@ -317,11 +297,6 @@ static irqreturn_t tegra_kbc_isr(int irq, void *args)
 		kbc->keypress_caused_wake = true;
 	}
 
-<<<<<<< HEAD
-	spin_unlock_irqrestore(&kbc->lock, flags);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return IRQ_HANDLED;
 }
 
@@ -432,16 +407,6 @@ static int tegra_kbc_start(struct tegra_kbc *kbc)
 
 static void tegra_kbc_stop(struct tegra_kbc *kbc)
 {
-<<<<<<< HEAD
-	unsigned long flags;
-	u32 val;
-
-	spin_lock_irqsave(&kbc->lock, flags);
-	val = readl(kbc->mmio + KBC_CONTROL_0);
-	val &= ~1;
-	writel(val, kbc->mmio + KBC_CONTROL_0);
-	spin_unlock_irqrestore(&kbc->lock, flags);
-=======
 	u32 val;
 
 	scoped_guard(spinlock_irqsave, &kbc->lock) {
@@ -449,7 +414,6 @@ static void tegra_kbc_stop(struct tegra_kbc *kbc)
 		val &= ~1;
 		writel(val, kbc->mmio + KBC_CONTROL_0);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	disable_irq(kbc->irq);
 	del_timer_sync(&kbc->timer);
@@ -520,19 +484,10 @@ static int tegra_kbc_parse_dt(struct tegra_kbc *kbc)
 	struct device_node *np = kbc->dev->of_node;
 	u32 prop;
 	int i;
-<<<<<<< HEAD
-	u32 num_rows = 0;
-	u32 num_cols = 0;
-	u32 cols_cfg[KBC_MAX_GPIO];
-	u32 rows_cfg[KBC_MAX_GPIO];
-	int proplen;
-	int ret;
-=======
 	int num_rows;
 	int num_cols;
 	u32 cols_cfg[KBC_MAX_GPIO];
 	u32 rows_cfg[KBC_MAX_GPIO];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!of_property_read_u32(np, "nvidia,debounce-delay-ms", &prop))
 		kbc->debounce_cnt = prop;
@@ -546,65 +501,15 @@ static int tegra_kbc_parse_dt(struct tegra_kbc *kbc)
 	    of_property_read_bool(np, "nvidia,wakeup-source")) /* legacy */
 		kbc->wakeup = true;
 
-<<<<<<< HEAD
-	if (!of_get_property(np, "nvidia,kbc-row-pins", &proplen)) {
-		dev_err(kbc->dev, "property nvidia,kbc-row-pins not found\n");
-		return -ENOENT;
-	}
-	num_rows = proplen / sizeof(u32);
-
-	if (!of_get_property(np, "nvidia,kbc-col-pins", &proplen)) {
-		dev_err(kbc->dev, "property nvidia,kbc-col-pins not found\n");
-		return -ENOENT;
-	}
-	num_cols = proplen / sizeof(u32);
-
-	if (num_rows > kbc->hw_support->max_rows) {
-		dev_err(kbc->dev,
-			"Number of rows is more than supported by hardware\n");
-		return -EINVAL;
-	}
-
-	if (num_cols > kbc->hw_support->max_columns) {
-		dev_err(kbc->dev,
-			"Number of cols is more than supported by hardware\n");
-		return -EINVAL;
-	}
-
-	if (!of_get_property(np, "linux,keymap", &proplen)) {
-=======
 	if (!of_property_present(np, "linux,keymap")) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(kbc->dev, "property linux,keymap not found\n");
 		return -ENOENT;
 	}
 
-<<<<<<< HEAD
-	if (!num_rows || !num_cols || ((num_rows + num_cols) > KBC_MAX_GPIO)) {
-		dev_err(kbc->dev,
-			"keypad rows/columns not properly specified\n");
-		return -EINVAL;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Set all pins as non-configured */
 	for (i = 0; i < kbc->num_rows_and_columns; i++)
 		kbc->pin_cfg[i].type = PIN_CFG_IGNORE;
 
-<<<<<<< HEAD
-	ret = of_property_read_u32_array(np, "nvidia,kbc-row-pins",
-				rows_cfg, num_rows);
-	if (ret < 0) {
-		dev_err(kbc->dev, "Rows configurations are not proper\n");
-		return -EINVAL;
-	}
-
-	ret = of_property_read_u32_array(np, "nvidia,kbc-col-pins",
-				cols_cfg, num_cols);
-	if (ret < 0) {
-		dev_err(kbc->dev, "Cols configurations are not proper\n");
-=======
 	num_rows = of_property_read_variable_u32_array(np, "nvidia,kbc-row-pins",
 				rows_cfg, 1, KBC_MAX_GPIO);
 	if (num_rows < 0) {
@@ -613,7 +518,6 @@ static int tegra_kbc_parse_dt(struct tegra_kbc *kbc)
 	} else if (num_rows > kbc->hw_support->max_rows) {
 		dev_err(kbc->dev,
 			"Number of rows is more than supported by hardware\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 
@@ -622,8 +526,6 @@ static int tegra_kbc_parse_dt(struct tegra_kbc *kbc)
 		kbc->pin_cfg[rows_cfg[i]].num = i;
 	}
 
-<<<<<<< HEAD
-=======
 	num_cols = of_property_read_variable_u32_array(np, "nvidia,kbc-col-pins",
 				cols_cfg, 1, KBC_MAX_GPIO);
 	if (num_cols < 0) {
@@ -635,21 +537,17 @@ static int tegra_kbc_parse_dt(struct tegra_kbc *kbc)
 		return -EINVAL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < num_cols; i++) {
 		kbc->pin_cfg[cols_cfg[i]].type = PIN_CFG_COL;
 		kbc->pin_cfg[cols_cfg[i]].num = i;
 	}
 
-<<<<<<< HEAD
-=======
 	if (!num_rows || !num_cols || ((num_rows + num_cols) > KBC_MAX_GPIO)) {
 		dev_err(kbc->dev,
 			"keypad rows/columns not properly specified\n");
 		return -EINVAL;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -801,12 +699,8 @@ static int tegra_kbc_suspend(struct device *dev)
 	struct platform_device *pdev = to_platform_device(dev);
 	struct tegra_kbc *kbc = platform_get_drvdata(pdev);
 
-<<<<<<< HEAD
-	mutex_lock(&kbc->idev->mutex);
-=======
 	guard(mutex)(&kbc->idev->mutex);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (device_may_wakeup(&pdev->dev)) {
 		disable_irq(kbc->irq);
 		del_timer_sync(&kbc->timer);
@@ -829,17 +723,9 @@ static int tegra_kbc_suspend(struct device *dev)
 		tegra_kbc_set_keypress_interrupt(kbc, true);
 		enable_irq(kbc->irq);
 		enable_irq_wake(kbc->irq);
-<<<<<<< HEAD
-	} else {
-		if (input_device_enabled(kbc->idev))
-			tegra_kbc_stop(kbc);
-	}
-	mutex_unlock(&kbc->idev->mutex);
-=======
 	} else if (input_device_enabled(kbc->idev)) {
 		tegra_kbc_stop(kbc);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -848,16 +734,10 @@ static int tegra_kbc_resume(struct device *dev)
 {
 	struct platform_device *pdev = to_platform_device(dev);
 	struct tegra_kbc *kbc = platform_get_drvdata(pdev);
-<<<<<<< HEAD
-	int err = 0;
-
-	mutex_lock(&kbc->idev->mutex);
-=======
 	int err;
 
 	guard(mutex)(&kbc->idev->mutex);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (device_may_wakeup(&pdev->dev)) {
 		disable_irq_wake(kbc->irq);
 		tegra_kbc_setup_wakekeys(kbc, false);
@@ -882,15 +762,6 @@ static int tegra_kbc_resume(struct device *dev)
 			input_report_key(kbc->idev, kbc->wakeup_key, 0);
 			input_sync(kbc->idev);
 		}
-<<<<<<< HEAD
-	} else {
-		if (input_device_enabled(kbc->idev))
-			err = tegra_kbc_start(kbc);
-	}
-	mutex_unlock(&kbc->idev->mutex);
-
-	return err;
-=======
 	} else if (input_device_enabled(kbc->idev)) {
 		err = tegra_kbc_start(kbc);
 		if (err)
@@ -898,7 +769,6 @@ static int tegra_kbc_resume(struct device *dev)
 	}
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static DEFINE_SIMPLE_DEV_PM_OPS(tegra_kbc_pm_ops,

@@ -10,9 +10,6 @@ int __s390_vdso_getcpu(unsigned *cpu, unsigned *node, struct getcpu_cache *unuse
 int __s390_vdso_gettimeofday(struct __kernel_old_timeval *tv, struct timezone *tz);
 int __s390_vdso_clock_gettime(clockid_t clock, struct __kernel_timespec *ts);
 int __s390_vdso_clock_getres(clockid_t clock, struct __kernel_timespec *ts);
-<<<<<<< HEAD
-=======
 ssize_t __kernel_getrandom(void *buffer, size_t len, unsigned int flags, void *opaque_state, size_t opaque_len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* __ARCH_S390_KERNEL_VDSO64_VDSO_H */

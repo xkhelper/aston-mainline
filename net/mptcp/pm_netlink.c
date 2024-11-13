@@ -149,11 +149,7 @@ static bool lookup_subflow_by_daddr(const struct list_head *list,
 static bool
 select_local_address(const struct pm_nl_pernet *pernet,
 		     const struct mptcp_sock *msk,
-<<<<<<< HEAD
-		     struct mptcp_pm_addr_entry *new_entry)
-=======
 		     struct mptcp_pm_local *new_local)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mptcp_pm_addr_entry *entry;
 	bool found = false;
@@ -168,13 +164,9 @@ select_local_address(const struct pm_nl_pernet *pernet,
 		if (!test_bit(entry->addr.id, msk->pm.id_avail_bitmap))
 			continue;
 
-<<<<<<< HEAD
-		*new_entry = *entry;
-=======
 		new_local->addr = entry->addr;
 		new_local->flags = entry->flags;
 		new_local->ifindex = entry->ifindex;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		found = true;
 		break;
 	}
@@ -185,11 +177,7 @@ select_local_address(const struct pm_nl_pernet *pernet,
 
 static bool
 select_signal_address(struct pm_nl_pernet *pernet, const struct mptcp_sock *msk,
-<<<<<<< HEAD
-		      struct mptcp_pm_addr_entry *new_entry)
-=======
 		     struct mptcp_pm_local *new_local)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mptcp_pm_addr_entry *entry;
 	bool found = false;
@@ -207,13 +195,9 @@ select_signal_address(struct pm_nl_pernet *pernet, const struct mptcp_sock *msk,
 		if (!(entry->flags & MPTCP_PM_ADDR_FLAG_SIGNAL))
 			continue;
 
-<<<<<<< HEAD
-		*new_entry = *entry;
-=======
 		new_local->addr = entry->addr;
 		new_local->flags = entry->flags;
 		new_local->ifindex = entry->ifindex;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		found = true;
 		break;
 	}
@@ -550,18 +534,11 @@ __lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info)
 static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
 {
 	struct sock *sk = (struct sock *)msk;
-<<<<<<< HEAD
-	struct mptcp_pm_addr_entry local;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int add_addr_signal_max;
 	bool signal_and_subflow = false;
 	unsigned int local_addr_max;
 	struct pm_nl_pernet *pernet;
-<<<<<<< HEAD
-=======
 	struct mptcp_pm_local local;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int subflows_max;
 
 	pernet = pm_nl_get_pernet(sock_net(sk));
@@ -662,11 +639,7 @@ subflow:
 
 		spin_unlock_bh(&msk->pm.lock);
 		for (i = 0; i < nr; i++)
-<<<<<<< HEAD
-			__mptcp_subflow_connect(sk, &local.addr, &addrs[i]);
-=======
 			__mptcp_subflow_connect(sk, &local, &addrs[i]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		spin_lock_bh(&msk->pm.lock);
 	}
 	mptcp_pm_nl_check_work_pending(msk);
@@ -687,11 +660,7 @@ static void mptcp_pm_nl_subflow_established(struct mptcp_sock *msk)
  */
 static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
 					     struct mptcp_addr_info *remote,
-<<<<<<< HEAD
-					     struct mptcp_addr_info *addrs)
-=======
 					     struct mptcp_pm_local *locals)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct sock *sk = (struct sock *)msk;
 	struct mptcp_pm_addr_entry *entry;
@@ -714,15 +683,6 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
 			continue;
 
 		if (msk->pm.subflows < subflows_max) {
-<<<<<<< HEAD
-			msk->pm.subflows++;
-			addrs[i] = entry->addr;
-
-			/* Special case for ID0: set the correct ID */
-			if (mptcp_addresses_equal(&entry->addr, &mpc_addr, entry->addr.port))
-				addrs[i].id = 0;
-
-=======
 			locals[i].addr = entry->addr;
 			locals[i].flags = entry->flags;
 			locals[i].ifindex = entry->ifindex;
@@ -732,7 +692,6 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
 				locals[i].addr.id = 0;
 
 			msk->pm.subflows++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			i++;
 		}
 	}
@@ -742,34 +701,19 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
 	 * 'IPADDRANY' local address
 	 */
 	if (!i) {
-<<<<<<< HEAD
-		struct mptcp_addr_info local;
-
-		memset(&local, 0, sizeof(local));
-		local.family =
-=======
 		memset(&locals[i], 0, sizeof(locals[i]));
 		locals[i].addr.family =
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_MPTCP_IPV6)
 			       remote->family == AF_INET6 &&
 			       ipv6_addr_v4mapped(&remote->addr6) ? AF_INET :
 #endif
 			       remote->family;
 
-<<<<<<< HEAD
-		if (!mptcp_pm_addr_families_match(sk, &local, remote))
-			return 0;
-
-		msk->pm.subflows++;
-		addrs[i++] = local;
-=======
 		if (!mptcp_pm_addr_families_match(sk, &locals[i].addr, remote))
 			return 0;
 
 		msk->pm.subflows++;
 		i++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return i;
@@ -777,11 +721,7 @@ static unsigned int fill_local_addresses_vec(struct mptcp_sock *msk,
 
 static void mptcp_pm_nl_add_addr_received(struct mptcp_sock *msk)
 {
-<<<<<<< HEAD
-	struct mptcp_addr_info addrs[MPTCP_PM_ADDR_MAX];
-=======
 	struct mptcp_pm_local locals[MPTCP_PM_ADDR_MAX];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct sock *sk = (struct sock *)msk;
 	unsigned int add_addr_accept_max;
 	struct mptcp_addr_info remote;
@@ -810,21 +750,13 @@ static void mptcp_pm_nl_add_addr_received(struct mptcp_sock *msk)
 	/* connect to the specified remote address, using whatever
 	 * local address the routing configuration will pick.
 	 */
-<<<<<<< HEAD
-	nr = fill_local_addresses_vec(msk, &remote, addrs);
-=======
 	nr = fill_local_addresses_vec(msk, &remote, locals);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nr == 0)
 		return;
 
 	spin_unlock_bh(&msk->pm.lock);
 	for (i = 0; i < nr; i++)
-<<<<<<< HEAD
-		if (__mptcp_subflow_connect(sk, &addrs[i], &remote) == 0)
-=======
 		if (__mptcp_subflow_connect(sk, &locals[i], &remote) == 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			sf_created = true;
 	spin_lock_bh(&msk->pm.lock);
 
@@ -928,12 +860,8 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
 			u8 id = subflow_get_local_id(subflow);
 
-<<<<<<< HEAD
-			if (inet_sk_state_load(ssk) == TCP_CLOSE)
-=======
 			if ((1 << inet_sk_state_load(ssk)) &
 			    (TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | TCPF_CLOSING | TCPF_CLOSE))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				continue;
 			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
 				continue;
@@ -945,19 +873,12 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
 				 i, rm_id, id, remote_id, msk->mpc_endpoint_id);
 			spin_unlock_bh(&msk->pm.lock);
 			mptcp_subflow_shutdown(sk, ssk, how);
-<<<<<<< HEAD
-=======
 			removed |= subflow->request_join;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			/* the following takes care of updating the subflows counter */
 			mptcp_close_ssk(sk, ssk, subflow);
 			spin_lock_bh(&msk->pm.lock);
 
-<<<<<<< HEAD
-			removed |= subflow->request_join;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
 		}
@@ -1200,10 +1121,7 @@ static int mptcp_pm_nl_create_listen_socket(struct sock *sk,
 	 */
 	inet_sk_state_store(newsk, TCP_LISTEN);
 	lock_sock(ssk);
-<<<<<<< HEAD
-=======
 	WRITE_ONCE(mptcp_subflow_ctx(ssk)->pm_listener, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = __inet_listen_sk(ssk, backlog);
 	if (!err)
 		mptcp_event_pm_listener(ssk, MPTCP_EVENT_LISTENER_CREATED);
@@ -1527,31 +1445,6 @@ out_free:
 	return ret;
 }
 
-<<<<<<< HEAD
-int mptcp_pm_nl_get_flags_and_ifindex_by_id(struct mptcp_sock *msk, unsigned int id,
-					    u8 *flags, int *ifindex)
-{
-	struct mptcp_pm_addr_entry *entry;
-	struct sock *sk = (struct sock *)msk;
-	struct net *net = sock_net(sk);
-
-	/* No entries with ID 0 */
-	if (id == 0)
-		return 0;
-
-	rcu_read_lock();
-	entry = __lookup_addr_by_id(pm_nl_get_pernet(net), id);
-	if (entry) {
-		*flags = entry->flags;
-		*ifindex = entry->ifindex;
-	}
-	rcu_read_unlock();
-
-	return 0;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
 				      const struct mptcp_addr_info *addr)
 {
@@ -1768,13 +1661,8 @@ void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list)
 }
 
 /* Called from the in-kernel PM only */
-<<<<<<< HEAD
-static void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
-					       struct list_head *rm_list)
-=======
 static void mptcp_pm_flush_addrs_and_subflows(struct mptcp_sock *msk,
 					      struct list_head *rm_list)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mptcp_rm_list alist = { .nr = 0 }, slist = { .nr = 0 };
 	struct mptcp_pm_addr_entry *entry;
@@ -1802,13 +1690,8 @@ static void mptcp_pm_flush_addrs_and_subflows(struct mptcp_sock *msk,
 	spin_unlock_bh(&msk->pm.lock);
 }
 
-<<<<<<< HEAD
-static void mptcp_nl_remove_addrs_list(struct net *net,
-				       struct list_head *rm_list)
-=======
 static void mptcp_nl_flush_addrs_list(struct net *net,
 				      struct list_head *rm_list)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	long s_slot = 0, s_num = 0;
 	struct mptcp_sock *msk;
@@ -1821,11 +1704,7 @@ static void mptcp_nl_flush_addrs_list(struct net *net,
 
 		if (!mptcp_pm_is_userspace(msk)) {
 			lock_sock(sk);
-<<<<<<< HEAD
-			mptcp_pm_remove_addrs_and_subflows(msk, rm_list);
-=======
 			mptcp_pm_flush_addrs_and_subflows(msk, rm_list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			release_sock(sk);
 		}
 
@@ -1866,11 +1745,7 @@ int mptcp_pm_nl_flush_addrs_doit(struct sk_buff *skb, struct genl_info *info)
 	pernet->next_id = 1;
 	bitmap_zero(pernet->id_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
 	spin_unlock_bh(&pernet->lock);
-<<<<<<< HEAD
-	mptcp_nl_remove_addrs_list(sock_net(skb->sk), &free_list);
-=======
 	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	synchronize_rcu();
 	__flush_addrs(&free_list);
 	return 0;

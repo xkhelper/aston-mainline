@@ -63,20 +63,6 @@ __mlx5_log_page_size_to_bitmap(unsigned int log_pgsz_bits,
 	return GENMASK(largest_pg_shift, pgsz_shift);
 }
 
-<<<<<<< HEAD
-/*
- * For mkc users, instead of a page_offset the command has a start_iova which
- * specifies both the page_offset and the on-the-wire IOVA
- */
-#define mlx5_umem_find_best_pgsz(umem, typ, log_pgsz_fld, pgsz_shift, iova)    \
-	ib_umem_find_best_pgsz(umem,                                           \
-			       __mlx5_log_page_size_to_bitmap(                 \
-				       __mlx5_bit_sz(typ, log_pgsz_fld),       \
-				       pgsz_shift),                            \
-			       iova)
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __always_inline unsigned long
 __mlx5_page_offset_to_bitmask(unsigned int page_offset_bits,
 			      unsigned int offset_shift)
@@ -643,11 +629,8 @@ enum mlx5_mkey_type {
 	MLX5_MKEY_MR = 1,
 	MLX5_MKEY_MW,
 	MLX5_MKEY_INDIRECT_DEVX,
-<<<<<<< HEAD
-=======
 	MLX5_MKEY_NULL,
 	MLX5_MKEY_IMPLICIT_CHILD,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct mlx5r_cache_rb_key {
@@ -690,11 +673,8 @@ struct mlx5_ib_mr {
 	struct mlx5_ib_mkey mmkey;
 
 	struct ib_umem *umem;
-<<<<<<< HEAD
-=======
 	/* The mr is data direct related */
 	u8 data_direct :1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	union {
 		/* Used only by kernel MRs (umem == NULL) */
@@ -732,14 +712,11 @@ struct mlx5_ib_mr {
 			} odp_destroy;
 			struct ib_odp_counters odp_stats;
 			bool is_odp_implicit;
-<<<<<<< HEAD
-=======
 			/* The affilated data direct crossed mr */
 			struct mlx5_ib_mr *dd_crossed_mr;
 			struct list_head dd_node;
 			u8 revoked :1;
 			struct mlx5_ib_mkey null_mmkey;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 };
@@ -817,10 +794,7 @@ struct mlx5_cache_ent {
 	u8 is_tmp:1;
 	u8 disabled:1;
 	u8 fill_to_high_water:1;
-<<<<<<< HEAD
-=======
 	u8 tmp_cleanup_scheduled:1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * - limit is the low water mark for stored mkeys, 2* limit is the
@@ -852,10 +826,6 @@ struct mlx5_mkey_cache {
 	struct mutex		rb_lock;
 	struct dentry		*fs_root;
 	unsigned long		last_add;
-<<<<<<< HEAD
-	struct delayed_work	remove_ent_dwork;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct mlx5_ib_port_resources {
@@ -863,14 +833,11 @@ struct mlx5_ib_port_resources {
 	struct work_struct pkey_change_work;
 };
 
-<<<<<<< HEAD
-=======
 struct mlx5_data_direct_resources {
 	u32 pdn;
 	u32 mkey;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mlx5_ib_resources {
 	struct ib_cq	*c0;
 	struct mutex cq_lock;
@@ -921,11 +888,6 @@ struct mlx5_roce {
 	/* Protect mlx5_ib_get_netdev from invoking dev_hold() with a NULL
 	 * netdev pointer
 	 */
-<<<<<<< HEAD
-	rwlock_t		netdev_lock;
-	struct net_device	*netdev;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct notifier_block	nb;
 	struct netdev_net_notifier nn;
 	struct notifier_block	mdev_nb;
@@ -1170,15 +1132,11 @@ struct mlx5_macsec {
 struct mlx5_ib_dev {
 	struct ib_device		ib_dev;
 	struct mlx5_core_dev		*mdev;
-<<<<<<< HEAD
-	struct notifier_block		mdev_events;
-=======
 	struct mlx5_data_direct_dev	*data_direct_dev;
 	/* protect accessing data_direct_dev */
 	struct mutex			data_direct_lock;
 	struct notifier_block		mdev_events;
 	struct notifier_block           lag_events;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int				num_ports;
 	/* serialize update of capability mask
 	 */
@@ -1208,10 +1166,7 @@ struct mlx5_ib_dev {
 	/* protect resources needed as part of reset flow */
 	spinlock_t		reset_flow_resource_lock;
 	struct list_head	qp_list;
-<<<<<<< HEAD
-=======
 	struct list_head data_direct_mr_list;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Array with num_ports elements */
 	struct mlx5_ib_port	*port;
 	struct mlx5_sq_bfreg	bfreg;
@@ -1236,10 +1191,7 @@ struct mlx5_ib_dev {
 	u16 pkey_table_len;
 	u8 lag_ports;
 	struct mlx5_special_mkeys mkeys;
-<<<<<<< HEAD
-=======
 	struct mlx5_data_direct_resources ddr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_MLX5_MACSEC
 	struct mlx5_macsec macsec;
@@ -1400,11 +1352,7 @@ struct ib_mr *mlx5_ib_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 struct ib_mr *mlx5_ib_reg_user_mr_dmabuf(struct ib_pd *pd, u64 start,
 					 u64 length, u64 virt_addr,
 					 int fd, int access_flags,
-<<<<<<< HEAD
-					 struct ib_udata *udata);
-=======
 					 struct uverbs_attr_bundle *attrs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int mlx5_ib_advise_mr(struct ib_pd *pd,
 		      enum ib_uverbs_advise_mr_advice advice,
 		      u32 flags,
@@ -1415,10 +1363,6 @@ int mlx5_ib_alloc_mw(struct ib_mw *mw, struct ib_udata *udata);
 int mlx5_ib_dealloc_mw(struct ib_mw *mw);
 struct mlx5_ib_mr *mlx5_ib_alloc_implicit_mr(struct mlx5_ib_pd *pd,
 					     int access_flags);
-<<<<<<< HEAD
-void mlx5_ib_free_implicit_mr(struct mlx5_ib_mr *mr);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mlx5_ib_free_odp_mr(struct mlx5_ib_mr *mr);
 struct ib_mr *mlx5_ib_rereg_user_mr(struct ib_mr *ib_mr, int flags, u64 start,
 				    u64 length, u64 virt_addr, int access_flags,
@@ -1487,13 +1431,10 @@ int mlx5_ib_destroy_rwq_ind_table(struct ib_rwq_ind_table *wq_ind_table);
 struct ib_mr *mlx5_ib_reg_dm_mr(struct ib_pd *pd, struct ib_dm *dm,
 				struct ib_dm_mr_attr *attr,
 				struct uverbs_attr_bundle *attrs);
-<<<<<<< HEAD
-=======
 void mlx5_ib_data_direct_bind(struct mlx5_ib_dev *ibdev,
 			      struct mlx5_data_direct_dev *dev);
 void mlx5_ib_data_direct_unbind(struct mlx5_ib_dev *ibdev);
 void mlx5_ib_revoke_data_direct_mrs(struct mlx5_ib_dev *dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_INFINIBAND_ON_DEMAND_PAGING
 int mlx5_ib_odp_init_one(struct mlx5_ib_dev *ibdev);
@@ -1702,11 +1643,6 @@ static inline void mlx5r_deref_wait_odp_mkey(struct mlx5_ib_mkey *mmkey)
 	wait_event(mmkey->wait, refcount_read(&mmkey->usecount) == 0);
 }
 
-<<<<<<< HEAD
-int mlx5_ib_test_wc(struct mlx5_ib_dev *dev);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool mlx5_ib_lag_should_assign_affinity(struct mlx5_ib_dev *dev)
 {
 	/*
@@ -1779,8 +1715,6 @@ static inline u32 smi_to_native_portnum(struct mlx5_ib_dev *dev, u32 port)
 	return (port - 1) / dev->num_ports + 1;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * For mkc users, instead of a page_offset the command has a start_iova which
  * specifies both the page_offset and the on-the-wire IOVA
@@ -1797,5 +1731,4 @@ mlx5_umem_mkc_find_best_pgsz(struct mlx5_ib_dev *dev, struct ib_umem *umem,
 	return ib_umem_find_best_pgsz(umem, bitmap, iova);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* MLX5_IB_H */

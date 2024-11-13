@@ -168,12 +168,9 @@ struct hw_perf_event {
 			struct hw_perf_event_extra extra_reg;
 			struct hw_perf_event_extra branch_reg;
 		};
-<<<<<<< HEAD
-=======
 		struct { /* aux / Intel-PT */
 			u64		aux_config;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct { /* software */
 			struct hrtimer	hrtimer;
 		};
@@ -298,8 +295,6 @@ struct perf_event_pmu_context;
 #define PERF_PMU_CAP_AUX_OUTPUT			0x0080
 #define PERF_PMU_CAP_EXTENDED_HW_TYPE		0x0100
 
-<<<<<<< HEAD
-=======
 /**
  * pmu::scope
  */
@@ -313,7 +308,6 @@ enum perf_pmu_scope {
 	PERF_PMU_MAX_SCOPE,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct perf_output_handle;
 
 #define PMU_NULL_DEV	((void *)(~0UL))
@@ -337,14 +331,11 @@ struct pmu {
 	 */
 	int				capabilities;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * PMU scope
 	 */
 	unsigned int			scope;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int __percpu			*pmu_disable_count;
 	struct perf_cpu_pmu_context __percpu *cpu_pmu_context;
 	atomic_t			exclusive_cnt; /* < 0: cpu; > 0: tsk */
@@ -645,19 +636,13 @@ typedef void (*perf_overflow_handler_t)(struct perf_event *,
  * PERF_EV_CAP_SIBLING: An event with this flag must be a group sibling and
  * cannot be a group leader. If an event with this flag is detached from the
  * group it is scheduled out and moved into an unrecoverable ERROR state.
-<<<<<<< HEAD
-=======
  * PERF_EV_CAP_READ_SCOPE: A CPU event that can be read from any CPU of the
  * PMU scope where it is active.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 #define PERF_EV_CAP_SOFTWARE		BIT(0)
 #define PERF_EV_CAP_READ_ACTIVE_PKG	BIT(1)
 #define PERF_EV_CAP_SIBLING		BIT(2)
-<<<<<<< HEAD
-=======
 #define PERF_EV_CAP_READ_SCOPE		BIT(3)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define SWEVENT_HLIST_BITS		8
 #define SWEVENT_HLIST_SIZE		(1 << SWEVENT_HLIST_BITS)
@@ -1002,24 +987,16 @@ struct perf_event_context {
 	struct rcu_head			rcu_head;
 
 	/*
-<<<<<<< HEAD
-	 * Sum (event->pending_work + event->pending_work)
-=======
 	 * The count of events for which using the switch-out fast path
 	 * should be avoided.
 	 *
 	 * Sum (event->pending_work + events with
 	 *    (attr->inherit && (attr->sample_type & PERF_SAMPLE_READ)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 *
 	 * The SIGTRAP is targeted at ctx->task, as such it won't do changing
 	 * that until the signal is delivered.
 	 */
-<<<<<<< HEAD
-	local_t				nr_pending;
-=======
 	local_t				nr_no_switch_fast;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct perf_cpu_pmu_context {
@@ -1653,17 +1630,7 @@ static inline int perf_is_paranoid(void)
 	return sysctl_perf_event_paranoid > -1;
 }
 
-<<<<<<< HEAD
-static inline int perf_allow_kernel(struct perf_event_attr *attr)
-{
-	if (sysctl_perf_event_paranoid > 1 && !perfmon_capable())
-		return -EACCES;
-
-	return security_perf_event_open(attr, PERF_SECURITY_KERNEL);
-}
-=======
 int perf_allow_kernel(struct perf_event_attr *attr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline int perf_allow_cpu(struct perf_event_attr *attr)
 {

@@ -450,10 +450,7 @@ static struct qm_typical_qos_table shaper_cbs_s[] = {
 };
 
 static void qm_irqs_unregister(struct hisi_qm *qm);
-<<<<<<< HEAD
-=======
 static int qm_reset_device(struct hisi_qm *qm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static u32 qm_get_hw_error_status(struct hisi_qm *qm)
 {
@@ -4018,8 +4015,6 @@ static int qm_set_vf_mse(struct hisi_qm *qm, bool set)
 	return -ETIMEDOUT;
 }
 
-<<<<<<< HEAD
-=======
 static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
 {
 	u32 nfe_enb = 0;
@@ -4042,7 +4037,6 @@ static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int qm_vf_reset_prepare(struct hisi_qm *qm,
 			       enum qm_stop_reason stop_reason)
 {
@@ -4107,11 +4101,8 @@ static int qm_controller_reset_prepare(struct hisi_qm *qm)
 		return ret;
 	}
 
-<<<<<<< HEAD
-=======
 	qm_dev_ecc_mbit_handle(qm);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* PF obtains the information of VF by querying the register. */
 	qm_cmd_uninit(qm);
 
@@ -4142,35 +4133,6 @@ static int qm_controller_reset_prepare(struct hisi_qm *qm)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
-{
-	u32 nfe_enb = 0;
-
-	/* Kunpeng930 hardware automatically close master ooo when NFE occurs */
-	if (qm->ver >= QM_HW_V3)
-		return;
-
-	if (!qm->err_status.is_dev_ecc_mbit &&
-	    qm->err_status.is_qm_ecc_mbit &&
-	    qm->err_ini->close_axi_master_ooo) {
-		qm->err_ini->close_axi_master_ooo(qm);
-	} else if (qm->err_status.is_dev_ecc_mbit &&
-		   !qm->err_status.is_qm_ecc_mbit &&
-		   !qm->err_ini->close_axi_master_ooo) {
-		nfe_enb = readl(qm->io_base + QM_RAS_NFE_ENABLE);
-		writel(nfe_enb & QM_RAS_NFE_MBIT_DISABLE,
-		       qm->io_base + QM_RAS_NFE_ENABLE);
-		writel(QM_ECC_MBIT, qm->io_base + QM_ABNORMAL_INT_SET);
-	}
-}
-
-static int qm_soft_reset(struct hisi_qm *qm)
-{
-	struct pci_dev *pdev = qm->pdev;
-	int ret;
-	u32 val;
-=======
 static int qm_master_ooo_check(struct hisi_qm *qm)
 {
 	u32 val;
@@ -4191,7 +4153,6 @@ static int qm_soft_reset_prepare(struct hisi_qm *qm)
 {
 	struct pci_dev *pdev = qm->pdev;
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Ensure all doorbells and mailboxes received by QM */
 	ret = qm_check_req_recv(qm);
@@ -4212,38 +4173,14 @@ static int qm_soft_reset_prepare(struct hisi_qm *qm)
 		return ret;
 	}
 
-<<<<<<< HEAD
-	qm_dev_ecc_mbit_handle(qm);
-
-	/* OOO register set and check */
-	writel(ACC_MASTER_GLOBAL_CTRL_SHUTDOWN,
-	       qm->io_base + ACC_MASTER_GLOBAL_CTRL);
-
-	/* If bus lock, reset chip */
-	ret = readl_relaxed_poll_timeout(qm->io_base + ACC_MASTER_TRANS_RETURN,
-					 val,
-					 (val == ACC_MASTER_TRANS_RETURN_RW),
-					 POLL_PERIOD, POLL_TIMEOUT);
-	if (ret) {
-		pci_emerg(pdev, "Bus lock! Please reset system.\n");
-		return ret;
-	}
-=======
 	ret = qm_master_ooo_check(qm);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (qm->err_ini->close_sva_prefetch)
 		qm->err_ini->close_sva_prefetch(qm);
 
 	ret = qm_set_pf_mse(qm, false);
-<<<<<<< HEAD
-	if (ret) {
-		pci_err(pdev, "Fails to disable pf MSE bit.\n");
-		return ret;
-	}
-=======
 	if (ret)
 		pci_err(pdev, "Fails to disable pf MSE bit.\n");
 
@@ -4253,7 +4190,6 @@ static int qm_soft_reset_prepare(struct hisi_qm *qm)
 static int qm_reset_device(struct hisi_qm *qm)
 {
 	struct pci_dev *pdev = qm->pdev;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* The reset related sub-control registers are not in PCI BAR */
 	if (ACPI_HANDLE(&pdev->dev)) {
@@ -4272,14 +4208,6 @@ static int qm_reset_device(struct hisi_qm *qm)
 			pci_err(pdev, "Reset step %llu failed!\n", value);
 			return -EIO;
 		}
-<<<<<<< HEAD
-	} else {
-		pci_err(pdev, "No reset method!\n");
-		return -EINVAL;
-	}
-
-	return 0;
-=======
 
 		return 0;
 	}
@@ -4297,7 +4225,6 @@ static int qm_soft_reset(struct hisi_qm *qm)
 		return ret;
 
 	return qm_reset_device(qm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int qm_vf_reset_done(struct hisi_qm *qm)
@@ -5250,8 +5177,6 @@ err_request_mem_regions:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int qm_clear_device(struct hisi_qm *qm)
 {
 	acpi_handle handle = ACPI_HANDLE(&qm->pdev->dev);
@@ -5281,7 +5206,6 @@ static int qm_clear_device(struct hisi_qm *qm)
 	return qm_reset_device(qm);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int hisi_qm_pci_init(struct hisi_qm *qm)
 {
 	struct pci_dev *pdev = qm->pdev;
@@ -5311,10 +5235,6 @@ static int hisi_qm_pci_init(struct hisi_qm *qm)
 		goto err_get_pci_res;
 	}
 
-<<<<<<< HEAD
-	return 0;
-
-=======
 	ret = qm_clear_device(qm);
 	if (ret)
 		goto err_free_vectors;
@@ -5323,7 +5243,6 @@ static int hisi_qm_pci_init(struct hisi_qm *qm)
 
 err_free_vectors:
 	pci_free_irq_vectors(pdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_get_pci_res:
 	qm_put_pci_res(qm);
 err_disable_pcidev:
@@ -5624,10 +5543,6 @@ static int qm_prepare_for_suspend(struct hisi_qm *qm)
 {
 	struct pci_dev *pdev = qm->pdev;
 	int ret;
-<<<<<<< HEAD
-	u32 val;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = qm->ops->set_msi(qm, false);
 	if (ret) {
@@ -5635,24 +5550,9 @@ static int qm_prepare_for_suspend(struct hisi_qm *qm)
 		return ret;
 	}
 
-<<<<<<< HEAD
-	/* shutdown OOO register */
-	writel(ACC_MASTER_GLOBAL_CTRL_SHUTDOWN,
-	       qm->io_base + ACC_MASTER_GLOBAL_CTRL);
-
-	ret = readl_relaxed_poll_timeout(qm->io_base + ACC_MASTER_TRANS_RETURN,
-					 val,
-					 (val == ACC_MASTER_TRANS_RETURN_RW),
-					 POLL_PERIOD, POLL_TIMEOUT);
-	if (ret) {
-		pci_emerg(pdev, "Bus lock! Please reset system.\n");
-		return ret;
-	}
-=======
 	ret = qm_master_ooo_check(qm);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = qm_set_pf_mse(qm, false);
 	if (ret)

@@ -18,11 +18,7 @@
 
 #include "hid-ids.h"
 
-<<<<<<< HEAD
-static __u8 *aureal_report_fixup(struct hid_device *hdev, __u8 *rdesc,
-=======
 static const __u8 *aureal_report_fixup(struct hid_device *hdev, __u8 *rdesc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int *rsize)
 {
 	if (*rsize >= 54 && rdesc[52] == 0x25 && rdesc[53] == 0x01) {

@@ -325,14 +325,10 @@ EXPORT_SYMBOL_GPL(scmi_driver_unregister);
 
 static void scmi_device_release(struct device *dev)
 {
-<<<<<<< HEAD
-	kfree(to_scmi_dev(dev));
-=======
 	struct scmi_device *scmi_dev = to_scmi_dev(dev);
 
 	kfree_const(scmi_dev->name);
 	kfree(scmi_dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void __scmi_device_destroy(struct scmi_device *scmi_dev)
@@ -345,10 +341,6 @@ static void __scmi_device_destroy(struct scmi_device *scmi_dev)
 	if (scmi_dev->protocol_id == SCMI_PROTOCOL_SYSTEM)
 		atomic_set(&scmi_syspower_registered, 0);
 
-<<<<<<< HEAD
-	kfree_const(scmi_dev->name);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ida_free(&scmi_bus_id, scmi_dev->id);
 	device_unregister(&scmi_dev->dev);
 }
@@ -420,10 +412,6 @@ __scmi_device_create(struct device_node *np, struct device *parent,
 
 	return scmi_dev;
 put_dev:
-<<<<<<< HEAD
-	kfree_const(scmi_dev->name);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	put_device(&scmi_dev->dev);
 	ida_free(&scmi_bus_id, id);
 	return NULL;

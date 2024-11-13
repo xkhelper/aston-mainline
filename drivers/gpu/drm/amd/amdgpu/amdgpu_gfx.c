@@ -24,19 +24,13 @@
  */
 
 #include <linux/firmware.h>
-<<<<<<< HEAD
-=======
 #include <linux/pm_runtime.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "amdgpu.h"
 #include "amdgpu_gfx.h"
 #include "amdgpu_rlc.h"
 #include "amdgpu_ras.h"
-<<<<<<< HEAD
-=======
 #include "amdgpu_reset.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "amdgpu_xcp.h"
 #include "amdgpu_xgmi.h"
 
@@ -891,16 +885,11 @@ int amdgpu_gfx_ras_late_init(struct amdgpu_device *adev, struct ras_common_if *r
 	int r;
 
 	if (amdgpu_ras_is_supported(adev, ras_block->block)) {
-<<<<<<< HEAD
-		if (!amdgpu_persistent_edc_harvesting_supported(adev))
-			amdgpu_ras_reset_error_status(adev, AMDGPU_RAS_BLOCK__GFX);
-=======
 		if (!amdgpu_persistent_edc_harvesting_supported(adev)) {
 			r = amdgpu_ras_reset_error_status(adev, AMDGPU_RAS_BLOCK__GFX);
 			if (r)
 				return r;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		r = amdgpu_ras_block_late_init(adev, ras_block);
 		if (r)
@@ -1044,14 +1033,10 @@ uint32_t amdgpu_kiq_rreg(struct amdgpu_device *adev, uint32_t reg, uint32_t xcc_
 		pr_err("critical bug! too many kiq readers\n");
 		goto failed_unlock;
 	}
-<<<<<<< HEAD
-	amdgpu_ring_alloc(ring, 32);
-=======
 	r = amdgpu_ring_alloc(ring, 32);
 	if (r)
 		goto failed_unlock;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	amdgpu_ring_emit_rreg(ring, reg, reg_val_offs);
 	r = amdgpu_fence_emit_polling(ring, &seq, MAX_KIQ_REG_WAIT);
 	if (r)
@@ -1117,14 +1102,10 @@ void amdgpu_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v, uint3
 	}
 
 	spin_lock_irqsave(&kiq->ring_lock, flags);
-<<<<<<< HEAD
-	amdgpu_ring_alloc(ring, 32);
-=======
 	r = amdgpu_ring_alloc(ring, 32);
 	if (r)
 		goto failed_unlock;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	amdgpu_ring_emit_wreg(ring, reg, v);
 	r = amdgpu_fence_emit_polling(ring, &seq, MAX_KIQ_REG_WAIT);
 	if (r)
@@ -1160,10 +1141,7 @@ void amdgpu_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v, uint3
 
 failed_undo:
 	amdgpu_ring_undo(ring);
-<<<<<<< HEAD
-=======
 failed_unlock:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irqrestore(&kiq->ring_lock, flags);
 failed_kiq_write:
 	dev_err(adev->dev, "failed to write reg:%x\n", reg);
@@ -1416,8 +1394,6 @@ static ssize_t amdgpu_gfx_get_available_compute_partition(struct device *dev,
 	return sysfs_emit(buf, "%s\n", supported_partition);
 }
 
-<<<<<<< HEAD
-=======
 static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
 {
 	struct amdgpu_device *adev = ring->adev;
@@ -1629,7 +1605,6 @@ static DEVICE_ATTR(enforce_isolation, 0644,
 		   amdgpu_gfx_get_enforce_isolation,
 		   amdgpu_gfx_set_enforce_isolation);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static DEVICE_ATTR(current_compute_partition, 0644,
 		   amdgpu_gfx_get_current_compute_partition,
 		   amdgpu_gfx_set_compute_partition);
@@ -1655,8 +1630,6 @@ void amdgpu_gfx_sysfs_fini(struct amdgpu_device *adev)
 	device_remove_file(adev->dev, &dev_attr_current_compute_partition);
 	device_remove_file(adev->dev, &dev_attr_available_compute_partition);
 }
-<<<<<<< HEAD
-=======
 
 int amdgpu_gfx_sysfs_isolation_shader_init(struct amdgpu_device *adev)
 {
@@ -1880,4 +1853,3 @@ void amdgpu_gfx_enforce_isolation_ring_end_use(struct amdgpu_ring *ring)
 	}
 	mutex_unlock(&adev->enforce_isolation_mutex);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

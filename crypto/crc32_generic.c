@@ -7,11 +7,7 @@
  * This is crypto api shash wrappers to crc32_le.
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/crc32.h>
 #include <crypto/internal/hash.h>
 #include <linux/init.h>

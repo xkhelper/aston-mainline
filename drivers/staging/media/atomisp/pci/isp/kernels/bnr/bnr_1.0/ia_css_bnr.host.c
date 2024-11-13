@@ -45,12 +45,8 @@ ia_css_bnr_dump(
     const struct sh_css_isp_bnr_params *bnr,
     unsigned int level)
 {
-<<<<<<< HEAD
-	if (!bnr) return;
-=======
 	if (!bnr)
 		return;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ia_css_debug_dtrace(level, "Bayer Noise Reduction:\n");
 	ia_css_debug_dtrace(level, "\t%-32s = %d\n",
 			    "bnr_gain_all", bnr->gain_all);

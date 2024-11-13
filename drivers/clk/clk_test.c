@@ -4,19 +4,12 @@
  */
 #include <linux/clk.h>
 #include <linux/clk-provider.h>
-<<<<<<< HEAD
-=======
 #include <linux/of.h>
 #include <linux/platform_device.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Needed for clk_hw_get_clk() */
 #include "clk.h"
 
-<<<<<<< HEAD
-#include <kunit/test.h>
-
-=======
 #include <kunit/clk.h>
 #include <kunit/of.h>
 #include <kunit/platform_device.h>
@@ -24,7 +17,6 @@
 
 #include "clk_parent_data_test.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct clk_ops empty_clk_ops = { };
 
 #define DUMMY_CLOCK_INIT_RATE	(42 * 1000 * 1000)
@@ -481,11 +473,7 @@ clk_multiple_parents_mux_test_init(struct kunit *test)
 							    &clk_dummy_rate_ops,
 							    0);
 	ctx->parents_ctx[0].rate = DUMMY_CLOCK_RATE_1;
-<<<<<<< HEAD
-	ret = clk_hw_register(NULL, &ctx->parents_ctx[0].hw);
-=======
 	ret = clk_hw_register_kunit(test, NULL, &ctx->parents_ctx[0].hw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -493,11 +481,7 @@ clk_multiple_parents_mux_test_init(struct kunit *test)
 							    &clk_dummy_rate_ops,
 							    0);
 	ctx->parents_ctx[1].rate = DUMMY_CLOCK_RATE_2;
-<<<<<<< HEAD
-	ret = clk_hw_register(NULL, &ctx->parents_ctx[1].hw);
-=======
 	ret = clk_hw_register_kunit(test, NULL, &ctx->parents_ctx[1].hw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -505,30 +489,13 @@ clk_multiple_parents_mux_test_init(struct kunit *test)
 	ctx->hw.init = CLK_HW_INIT_PARENTS("test-mux", parents,
 					   &clk_multiple_parents_mux_ops,
 					   CLK_SET_RATE_PARENT);
-<<<<<<< HEAD
-	ret = clk_hw_register(NULL, &ctx->hw);
-=======
 	ret = clk_hw_register_kunit(test, NULL, &ctx->hw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
 	return 0;
 }
 
-<<<<<<< HEAD
-static void
-clk_multiple_parents_mux_test_exit(struct kunit *test)
-{
-	struct clk_multiple_parent_ctx *ctx = test->priv;
-
-	clk_hw_unregister(&ctx->hw);
-	clk_hw_unregister(&ctx->parents_ctx[0].hw);
-	clk_hw_unregister(&ctx->parents_ctx[1].hw);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Test that for a clock with multiple parents, clk_get_parent()
  * actually returns the current one.
@@ -584,30 +551,18 @@ clk_test_multiple_parents_mux_set_range_set_parent_get_rate(struct kunit *test)
 {
 	struct clk_multiple_parent_ctx *ctx = test->priv;
 	struct clk_hw *hw = &ctx->hw;
-<<<<<<< HEAD
-	struct clk *clk = clk_hw_get_clk(hw, NULL);
-=======
 	struct clk *clk = clk_hw_get_clk_kunit(test, hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct clk *parent1, *parent2;
 	unsigned long rate;
 	int ret;
 
 	kunit_skip(test, "This needs to be fixed in the core.");
 
-<<<<<<< HEAD
-	parent1 = clk_hw_get_clk(&ctx->parents_ctx[0].hw, NULL);
-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, parent1);
-	KUNIT_ASSERT_TRUE(test, clk_is_match(clk_get_parent(clk), parent1));
-
-	parent2 = clk_hw_get_clk(&ctx->parents_ctx[1].hw, NULL);
-=======
 	parent1 = clk_hw_get_clk_kunit(test, &ctx->parents_ctx[0].hw, NULL);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, parent1);
 	KUNIT_ASSERT_TRUE(test, clk_is_match(clk_get_parent(clk), parent1));
 
 	parent2 = clk_hw_get_clk_kunit(test, &ctx->parents_ctx[1].hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, parent2);
 
 	ret = clk_set_rate(parent1, DUMMY_CLOCK_RATE_1);
@@ -628,13 +583,6 @@ clk_test_multiple_parents_mux_set_range_set_parent_get_rate(struct kunit *test)
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_GE(test, rate, DUMMY_CLOCK_RATE_1 - 1000);
 	KUNIT_EXPECT_LE(test, rate, DUMMY_CLOCK_RATE_1 + 1000);
-<<<<<<< HEAD
-
-	clk_put(parent2);
-	clk_put(parent1);
-	clk_put(clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct kunit_case clk_multiple_parents_mux_test_cases[] = {
@@ -655,10 +603,6 @@ static struct kunit_suite
 clk_multiple_parents_mux_test_suite = {
 	.name = "clk-multiple-parents-mux-test",
 	.init = clk_multiple_parents_mux_test_init,
-<<<<<<< HEAD
-	.exit = clk_multiple_parents_mux_test_exit,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.test_cases = clk_multiple_parents_mux_test_cases,
 };
 
@@ -678,40 +622,20 @@ clk_orphan_transparent_multiple_parent_mux_test_init(struct kunit *test)
 							    &clk_dummy_rate_ops,
 							    0);
 	ctx->parents_ctx[1].rate = DUMMY_CLOCK_INIT_RATE;
-<<<<<<< HEAD
-	ret = clk_hw_register(NULL, &ctx->parents_ctx[1].hw);
-=======
 	ret = clk_hw_register_kunit(test, NULL, &ctx->parents_ctx[1].hw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
 	ctx->hw.init = CLK_HW_INIT_PARENTS("test-orphan-mux", parents,
 					   &clk_multiple_parents_mux_ops,
 					   CLK_SET_RATE_PARENT);
-<<<<<<< HEAD
-	ret = clk_hw_register(NULL, &ctx->hw);
-=======
 	ret = clk_hw_register_kunit(test, NULL, &ctx->hw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
 	return 0;
 }
 
-<<<<<<< HEAD
-static void
-clk_orphan_transparent_multiple_parent_mux_test_exit(struct kunit *test)
-{
-	struct clk_multiple_parent_ctx *ctx = test->priv;
-
-	clk_hw_unregister(&ctx->hw);
-	clk_hw_unregister(&ctx->parents_ctx[1].hw);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Test that, for a mux whose current parent hasn't been registered yet and is
  * thus orphan, clk_get_parent() will return NULL.
@@ -964,11 +888,7 @@ clk_test_orphan_transparent_multiple_parent_mux_set_range_set_parent_get_rate(st
 {
 	struct clk_multiple_parent_ctx *ctx = test->priv;
 	struct clk_hw *hw = &ctx->hw;
-<<<<<<< HEAD
-	struct clk *clk = clk_hw_get_clk(hw, NULL);
-=======
 	struct clk *clk = clk_hw_get_clk_kunit(test, hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct clk *parent;
 	unsigned long rate;
 	int ret;
@@ -977,11 +897,7 @@ clk_test_orphan_transparent_multiple_parent_mux_set_range_set_parent_get_rate(st
 
 	clk_hw_set_rate_range(hw, DUMMY_CLOCK_RATE_1, DUMMY_CLOCK_RATE_2);
 
-<<<<<<< HEAD
-	parent = clk_hw_get_clk(&ctx->parents_ctx[1].hw, NULL);
-=======
 	parent = clk_hw_get_clk_kunit(test, &ctx->parents_ctx[1].hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, parent);
 
 	ret = clk_set_parent(clk, parent);
@@ -991,12 +907,6 @@ clk_test_orphan_transparent_multiple_parent_mux_set_range_set_parent_get_rate(st
 	KUNIT_ASSERT_GT(test, rate, 0);
 	KUNIT_EXPECT_GE(test, rate, DUMMY_CLOCK_RATE_1);
 	KUNIT_EXPECT_LE(test, rate, DUMMY_CLOCK_RATE_2);
-<<<<<<< HEAD
-
-	clk_put(parent);
-	clk_put(clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct kunit_case clk_orphan_transparent_multiple_parent_mux_test_cases[] = {
@@ -1024,10 +934,6 @@ static struct kunit_case clk_orphan_transparent_multiple_parent_mux_test_cases[]
 static struct kunit_suite clk_orphan_transparent_multiple_parent_mux_test_suite = {
 	.name = "clk-orphan-transparent-multiple-parent-mux-test",
 	.init = clk_orphan_transparent_multiple_parent_mux_test_init,
-<<<<<<< HEAD
-	.exit = clk_orphan_transparent_multiple_parent_mux_test_exit,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.test_cases = clk_orphan_transparent_multiple_parent_mux_test_cases,
 };
 
@@ -1052,11 +958,7 @@ static int clk_single_parent_mux_test_init(struct kunit *test)
 				      &clk_dummy_rate_ops,
 				      0);
 
-<<<<<<< HEAD
-	ret = clk_hw_register(NULL, &ctx->parent_ctx.hw);
-=======
 	ret = clk_hw_register_kunit(test, NULL, &ctx->parent_ctx.hw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1064,11 +966,7 @@ static int clk_single_parent_mux_test_init(struct kunit *test)
 				   &clk_dummy_single_parent_ops,
 				   CLK_SET_RATE_PARENT);
 
-<<<<<<< HEAD
-	ret = clk_hw_register(NULL, &ctx->hw);
-=======
 	ret = clk_hw_register_kunit(test, NULL, &ctx->hw);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1134,11 +1032,7 @@ clk_test_single_parent_mux_set_range_disjoint_child_last(struct kunit *test)
 {
 	struct clk_single_parent_ctx *ctx = test->priv;
 	struct clk_hw *hw = &ctx->hw;
-<<<<<<< HEAD
-	struct clk *clk = clk_hw_get_clk(hw, NULL);
-=======
 	struct clk *clk = clk_hw_get_clk_kunit(test, hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct clk *parent;
 	int ret;
 
@@ -1152,11 +1046,6 @@ clk_test_single_parent_mux_set_range_disjoint_child_last(struct kunit *test)
 
 	ret = clk_set_rate_range(clk, 3000, 4000);
 	KUNIT_EXPECT_LT(test, ret, 0);
-<<<<<<< HEAD
-
-	clk_put(clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1173,11 +1062,7 @@ clk_test_single_parent_mux_set_range_disjoint_parent_last(struct kunit *test)
 {
 	struct clk_single_parent_ctx *ctx = test->priv;
 	struct clk_hw *hw = &ctx->hw;
-<<<<<<< HEAD
-	struct clk *clk = clk_hw_get_clk(hw, NULL);
-=======
 	struct clk *clk = clk_hw_get_clk_kunit(test, hw, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct clk *parent;
 	int ret;
 
@@ -1191,11 +1076,6 @@ clk_test_single_parent_mux_set_range_disjoint_parent_last(struct kunit *test)
 
 	ret = clk_set_rate_range(parent, 3000, 4000);
 	KUNIT_EXPECT_LT(test, ret, 0);
-<<<<<<< HEAD
-
-	clk_put(clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -1326,10 +1206,6 @@ static struct kunit_suite
 clk_single_parent_mux_test_suite = {
 	.name = "clk-single-parent-mux-test",
 	.init = clk_single_parent_mux_test_init,
-<<<<<<< HEAD
-	.exit = clk_single_parent_mux_test_exit,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.test_cases = clk_single_parent_mux_test_cases,
 };
 
@@ -2757,8 +2633,6 @@ static struct kunit_suite clk_mux_no_reparent_test_suite = {
 	.test_cases = clk_mux_no_reparent_test_cases,
 };
 
-<<<<<<< HEAD
-=======
 struct clk_register_clk_parent_data_test_case {
 	const char *desc;
 	struct clk_parent_data pdata;
@@ -3201,7 +3075,6 @@ static struct kunit_suite clk_register_clk_parent_data_device_suite = {
 	.test_cases = clk_register_clk_parent_data_device_test_cases,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 kunit_test_suites(
 	&clk_leaf_mux_set_rate_parent_test_suite,
 	&clk_test_suite,
@@ -3214,15 +3087,10 @@ kunit_test_suites(
 	&clk_range_test_suite,
 	&clk_range_maximize_test_suite,
 	&clk_range_minimize_test_suite,
-<<<<<<< HEAD
-	&clk_single_parent_mux_test_suite,
-	&clk_uncached_test_suite
-=======
 	&clk_register_clk_parent_data_of_suite,
 	&clk_register_clk_parent_data_device_suite,
 	&clk_single_parent_mux_test_suite,
 	&clk_uncached_test_suite,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 );
 MODULE_DESCRIPTION("Kunit tests for clk framework");
 MODULE_LICENSE("GPL v2");

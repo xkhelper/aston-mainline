@@ -522,18 +522,10 @@ unsigned int nf_conncount_count(struct net *net,
 }
 EXPORT_SYMBOL_GPL(nf_conncount_count);
 
-<<<<<<< HEAD
-struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int family,
-					    unsigned int keylen)
-{
-	struct nf_conncount_data *data;
-	int ret, i;
-=======
 struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int keylen)
 {
 	struct nf_conncount_data *data;
 	int i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (keylen % sizeof(u32) ||
 	    keylen / sizeof(u32) > MAX_KEYLEN ||
@@ -546,15 +538,6 @@ struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int keylen
 	if (!data)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
-	ret = nf_ct_netns_get(net, family);
-	if (ret < 0) {
-		kfree(data);
-		return ERR_PTR(ret);
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < ARRAY_SIZE(data->root); ++i)
 		data->root[i] = RB_ROOT;
 
@@ -591,20 +574,11 @@ static void destroy_tree(struct rb_root *r)
 	}
 }
 
-<<<<<<< HEAD
-void nf_conncount_destroy(struct net *net, unsigned int family,
-			  struct nf_conncount_data *data)
-=======
 void nf_conncount_destroy(struct net *net, struct nf_conncount_data *data)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned int i;
 
 	cancel_work_sync(&data->gc_work);
-<<<<<<< HEAD
-	nf_ct_netns_put(net, family);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < ARRAY_SIZE(data->root); ++i)
 		destroy_tree(&data->root[i]);

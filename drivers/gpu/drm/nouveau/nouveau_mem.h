@@ -8,11 +8,7 @@ struct ttm_tt;
 
 struct nouveau_mem {
 	struct ttm_resource base;
-<<<<<<< HEAD
-	struct nouveau_cli *cli;
-=======
 	struct nouveau_drm *drm;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 kind;
 	u8 comp;
 	struct nvif_mem mem;
@@ -25,11 +21,7 @@ nouveau_mem(struct ttm_resource *reg)
 	return container_of(reg, struct nouveau_mem, base);
 }
 
-<<<<<<< HEAD
-int nouveau_mem_new(struct nouveau_cli *, u8 kind, u8 comp,
-=======
 int nouveau_mem_new(struct nouveau_drm *, u8 kind, u8 comp,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		    struct ttm_resource **);
 void nouveau_mem_del(struct ttm_resource_manager *man,
 		     struct ttm_resource *);

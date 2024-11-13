@@ -29,12 +29,6 @@
 #include "dc.h"
 #include "dm_pp_smu.h"
 
-<<<<<<< HEAD
-#define DCN_MINIMUM_DISPCLK_Khz 100000
-#define DCN_MINIMUM_DPPCLK_Khz 100000
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Constants */
 #define DDR4_DRAM_WIDTH   64
 #define WM_A 0
@@ -183,10 +177,7 @@ struct clk_state_registers_and_bypass {
 	uint32_t dispclk;
 	uint32_t dppclk;
 	uint32_t dtbclk;
-<<<<<<< HEAD
-=======
 	uint32_t fclk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	uint32_t dppclk_bypass;
 	uint32_t dcfclk_bypass;

@@ -129,7 +129,4 @@ obj-$(CONFIG_EFIVAR_FS)		+= efivarfs/
 obj-$(CONFIG_EROFS_FS)		+= erofs/
 obj-$(CONFIG_VBOXSF_FS)		+= vboxsf/
 obj-$(CONFIG_ZONEFS_FS)		+= zonefs/
-<<<<<<< HEAD
-=======
 obj-$(CONFIG_BPF_LSM)		+= bpf_fs_kfuncs.o
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

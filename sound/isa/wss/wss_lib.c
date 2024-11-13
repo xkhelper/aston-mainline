@@ -187,26 +187,16 @@ void snd_wss_out(struct snd_wss *chip, unsigned char reg, unsigned char value)
 	snd_wss_wait(chip);
 #ifdef CONFIG_SND_DEBUG
 	if (wss_inb(chip, CS4231P(REGSEL)) & CS4231_INIT)
-<<<<<<< HEAD
-		snd_printk(KERN_DEBUG "out: auto calibration time out "
-			   "- reg = 0x%x, value = 0x%x\n", reg, value);
-=======
 		dev_dbg(chip->card->dev,
 			"out: auto calibration time out - reg = 0x%x, value = 0x%x\n",
 			reg, value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	wss_outb(chip, CS4231P(REGSEL), chip->mce_bit | reg);
 	wss_outb(chip, CS4231P(REG), value);
 	chip->image[reg] = value;
 	mb();
-<<<<<<< HEAD
-	snd_printdd("codec out - reg 0x%x = 0x%x\n",
-			chip->mce_bit | reg, value);
-=======
 	dev_dbg(chip->card->dev, "codec out - reg 0x%x = 0x%x\n",
 		chip->mce_bit | reg, value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(snd_wss_out);
 
@@ -215,13 +205,8 @@ unsigned char snd_wss_in(struct snd_wss *chip, unsigned char reg)
 	snd_wss_wait(chip);
 #ifdef CONFIG_SND_DEBUG
 	if (wss_inb(chip, CS4231P(REGSEL)) & CS4231_INIT)
-<<<<<<< HEAD
-		snd_printk(KERN_DEBUG "in: auto calibration time out "
-			   "- reg = 0x%x\n", reg);
-=======
 		dev_dbg(chip->card->dev,
 			"in: auto calibration time out - reg = 0x%x\n", reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	wss_outb(chip, CS4231P(REGSEL), chip->mce_bit | reg);
 	mb();
@@ -238,11 +223,7 @@ void snd_cs4236_ext_out(struct snd_wss *chip, unsigned char reg,
 	wss_outb(chip, CS4231P(REG), val);
 	chip->eimage[CS4236_REG(reg)] = val;
 #if 0
-<<<<<<< HEAD
-	printk(KERN_DEBUG "ext out : reg = 0x%x, val = 0x%x\n", reg, val);
-=======
 	dev_dbg(chip->card->dev, "ext out : reg = 0x%x, val = 0x%x\n", reg, val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 EXPORT_SYMBOL(snd_cs4236_ext_out);
@@ -258,13 +239,8 @@ unsigned char snd_cs4236_ext_in(struct snd_wss *chip, unsigned char reg)
 	{
 		unsigned char res;
 		res = wss_inb(chip, CS4231P(REG));
-<<<<<<< HEAD
-		printk(KERN_DEBUG "ext in : reg = 0x%x, val = 0x%x\n",
-		       reg, res);
-=======
 		dev_dbg(chip->card->dev, "ext in : reg = 0x%x, val = 0x%x\n",
 			reg, res);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return res;
 	}
 #endif
@@ -275,155 +251,87 @@ EXPORT_SYMBOL(snd_cs4236_ext_in);
 
 static void snd_wss_debug(struct snd_wss *chip)
 {
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"CS4231 REGS:      INDEX = 0x%02x  "
 		"                 STATUS = 0x%02x\n",
 					wss_inb(chip, CS4231P(REGSEL)),
 					wss_inb(chip, CS4231P(STATUS)));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x00: left input      = 0x%02x  "
 		"  0x10: alt 1 (CFIG 2)  = 0x%02x\n",
 					snd_wss_in(chip, 0x00),
 					snd_wss_in(chip, 0x10));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x01: right input     = 0x%02x  "
 		"  0x11: alt 2 (CFIG 3)  = 0x%02x\n",
 					snd_wss_in(chip, 0x01),
 					snd_wss_in(chip, 0x11));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x02: GF1 left input  = 0x%02x  "
 		"  0x12: left line in    = 0x%02x\n",
 					snd_wss_in(chip, 0x02),
 					snd_wss_in(chip, 0x12));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x03: GF1 right input = 0x%02x  "
 		"  0x13: right line in   = 0x%02x\n",
 					snd_wss_in(chip, 0x03),
 					snd_wss_in(chip, 0x13));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x04: CD left input   = 0x%02x  "
 		"  0x14: timer low       = 0x%02x\n",
 					snd_wss_in(chip, 0x04),
 					snd_wss_in(chip, 0x14));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x05: CD right input  = 0x%02x  "
 		"  0x15: timer high      = 0x%02x\n",
 					snd_wss_in(chip, 0x05),
 					snd_wss_in(chip, 0x15));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x06: left output     = 0x%02x  "
 		"  0x16: left MIC (PnP)  = 0x%02x\n",
 					snd_wss_in(chip, 0x06),
 					snd_wss_in(chip, 0x16));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x07: right output    = 0x%02x  "
 		"  0x17: right MIC (PnP) = 0x%02x\n",
 					snd_wss_in(chip, 0x07),
 					snd_wss_in(chip, 0x17));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x08: playback format = 0x%02x  "
 		"  0x18: IRQ status      = 0x%02x\n",
 					snd_wss_in(chip, 0x08),
 					snd_wss_in(chip, 0x18));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x09: iface (CFIG 1)  = 0x%02x  "
 		"  0x19: left line out   = 0x%02x\n",
 					snd_wss_in(chip, 0x09),
 					snd_wss_in(chip, 0x19));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x0a: pin control     = 0x%02x  "
 		"  0x1a: mono control    = 0x%02x\n",
 					snd_wss_in(chip, 0x0a),
 					snd_wss_in(chip, 0x1a));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x0b: init & status   = 0x%02x  "
 		"  0x1b: right line out  = 0x%02x\n",
 					snd_wss_in(chip, 0x0b),
 					snd_wss_in(chip, 0x1b));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x0c: revision & mode = 0x%02x  "
 		"  0x1c: record format   = 0x%02x\n",
 					snd_wss_in(chip, 0x0c),
 					snd_wss_in(chip, 0x1c));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x0d: loopback        = 0x%02x  "
 		"  0x1d: var freq (PnP)  = 0x%02x\n",
 					snd_wss_in(chip, 0x0d),
 					snd_wss_in(chip, 0x1d));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x0e: ply upr count   = 0x%02x  "
 		"  0x1e: ply lwr count   = 0x%02x\n",
 					snd_wss_in(chip, 0x0e),
 					snd_wss_in(chip, 0x1e));
-<<<<<<< HEAD
-	printk(KERN_DEBUG
-=======
 	dev_dbg(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		"  0x0f: rec upr count   = 0x%02x  "
 		"  0x1f: rec lwr count   = 0x%02x\n",
 					snd_wss_in(chip, 0x0f),
@@ -458,27 +366,16 @@ void snd_wss_mce_up(struct snd_wss *chip)
 	snd_wss_wait(chip);
 #ifdef CONFIG_SND_DEBUG
 	if (wss_inb(chip, CS4231P(REGSEL)) & CS4231_INIT)
-<<<<<<< HEAD
-		snd_printk(KERN_DEBUG
-			   "mce_up - auto calibration time out (0)\n");
-=======
 		dev_dbg(chip->card->dev,
 			"mce_up - auto calibration time out (0)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	spin_lock_irqsave(&chip->reg_lock, flags);
 	chip->mce_bit |= CS4231_MCE;
 	timeout = wss_inb(chip, CS4231P(REGSEL));
 	if (timeout == 0x80)
-<<<<<<< HEAD
-		snd_printk(KERN_DEBUG "mce_up [0x%lx]: "
-			   "serious init problem - codec still busy\n",
-			   chip->port);
-=======
 		dev_dbg(chip->card->dev,
 			"mce_up [0x%lx]: serious init problem - codec still busy\n",
 			chip->port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!(timeout & CS4231_MCE))
 		wss_outb(chip, CS4231P(REGSEL),
 			 chip->mce_bit | (timeout & 0x1f));
@@ -497,15 +394,9 @@ void snd_wss_mce_down(struct snd_wss *chip)
 
 #ifdef CONFIG_SND_DEBUG
 	if (wss_inb(chip, CS4231P(REGSEL)) & CS4231_INIT)
-<<<<<<< HEAD
-		snd_printk(KERN_DEBUG "mce_down [0x%lx] - "
-			   "auto calibration time out (0)\n",
-			   (long)CS4231P(REGSEL));
-=======
 		dev_dbg(chip->card->dev,
 			"mce_down [0x%lx] - auto calibration time out (0)\n",
 			(long)CS4231P(REGSEL));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	spin_lock_irqsave(&chip->reg_lock, flags);
 	chip->mce_bit &= ~CS4231_MCE;
@@ -513,15 +404,9 @@ void snd_wss_mce_down(struct snd_wss *chip)
 	wss_outb(chip, CS4231P(REGSEL), chip->mce_bit | (timeout & 0x1f));
 	spin_unlock_irqrestore(&chip->reg_lock, flags);
 	if (timeout == 0x80)
-<<<<<<< HEAD
-		snd_printk(KERN_DEBUG "mce_down [0x%lx]: "
-			   "serious init problem - codec still busy\n",
-			   chip->port);
-=======
 		dev_dbg(chip->card->dev,
 			"mce_down [0x%lx]: serious init problem - codec still busy\n",
 			chip->port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if ((timeout & CS4231_MCE) == 0 || !(chip->hardware & hw_mask))
 		return;
 
@@ -532,11 +417,7 @@ void snd_wss_mce_down(struct snd_wss *chip)
 	 */
 	msleep(1);
 
-<<<<<<< HEAD
-	snd_printdd("(1) jiffies = %lu\n", jiffies);
-=======
 	dev_dbg(chip->card->dev, "(1) jiffies = %lu\n", jiffies);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* check condition up to 250 ms */
 	end_time = jiffies + msecs_to_jiffies(250);
@@ -544,47 +425,29 @@ void snd_wss_mce_down(struct snd_wss *chip)
 		CS4231_CALIB_IN_PROGRESS) {
 
 		if (time_after(jiffies, end_time)) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "mce_down - "
-					"auto calibration time out (2)\n");
-=======
 			dev_err(chip->card->dev,
 				"mce_down - auto calibration time out (2)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return;
 		}
 		msleep(1);
 	}
 
-<<<<<<< HEAD
-	snd_printdd("(2) jiffies = %lu\n", jiffies);
-=======
 	dev_dbg(chip->card->dev, "(2) jiffies = %lu\n", jiffies);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* check condition up to 100 ms */
 	end_time = jiffies + msecs_to_jiffies(100);
 	while (wss_inb(chip, CS4231P(REGSEL)) & CS4231_INIT) {
 		if (time_after(jiffies, end_time)) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "mce_down - auto calibration time out (3)\n");
-=======
 			dev_err(chip->card->dev,
 				"mce_down - auto calibration time out (3)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return;
 		}
 		msleep(1);
 	}
 
-<<<<<<< HEAD
-	snd_printdd("(3) jiffies = %lu\n", jiffies);
-	snd_printd("mce_down - exit = 0x%x\n", wss_inb(chip, CS4231P(REGSEL)));
-=======
 	dev_dbg(chip->card->dev, "(3) jiffies = %lu\n", jiffies);
 	dev_dbg(chip->card->dev, "mce_down - exit = 0x%x\n",
 		wss_inb(chip, CS4231P(REGSEL)));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(snd_wss_mce_down);
 
@@ -683,11 +546,7 @@ static unsigned char snd_wss_get_format(struct snd_wss *chip,
 	if (channels > 1)
 		rformat |= CS4231_STEREO;
 #if 0
-<<<<<<< HEAD
-	snd_printk(KERN_DEBUG "get_format: 0x%x (mode=0x%x)\n", format, mode);
-=======
 	dev_dbg(chip->card->dev, "get_format: 0x%x (mode=0x%x)\n", format, mode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	return rformat;
 }
@@ -937,11 +796,7 @@ static void snd_wss_init(struct snd_wss *chip)
 	snd_wss_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
-<<<<<<< HEAD
-	snd_printk(KERN_DEBUG "init: (1)\n");
-=======
 	dev_dbg(chip->card->dev, "init: (1)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 	snd_wss_mce_up(chip);
 	spin_lock_irqsave(&chip->reg_lock, flags);
@@ -956,11 +811,7 @@ static void snd_wss_init(struct snd_wss *chip)
 	snd_wss_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
-<<<<<<< HEAD
-	snd_printk(KERN_DEBUG "init: (2)\n");
-=======
 	dev_dbg(chip->card->dev, "init: (2)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	snd_wss_mce_up(chip);
@@ -973,13 +824,8 @@ static void snd_wss_init(struct snd_wss *chip)
 	snd_wss_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
-<<<<<<< HEAD
-	snd_printk(KERN_DEBUG "init: (3) - afei = 0x%x\n",
-		   chip->image[CS4231_ALT_FEATURE_1]);
-=======
 	dev_dbg(chip->card->dev, "init: (3) - afei = 0x%x\n",
 		chip->image[CS4231_ALT_FEATURE_1]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	spin_lock_irqsave(&chip->reg_lock, flags);
@@ -995,11 +841,7 @@ static void snd_wss_init(struct snd_wss *chip)
 	snd_wss_mce_down(chip);
 
 #ifdef SNDRV_DEBUG_MCE
-<<<<<<< HEAD
-	snd_printk(KERN_DEBUG "init: (4)\n");
-=======
 	dev_dbg(chip->card->dev, "init: (4)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 	snd_wss_mce_up(chip);
@@ -1012,11 +854,7 @@ static void snd_wss_init(struct snd_wss *chip)
 	snd_wss_calibrate_mute(chip, 0);
 
 #ifdef SNDRV_DEBUG_MCE
-<<<<<<< HEAD
-	snd_printk(KERN_DEBUG "init: (5)\n");
-=======
 	dev_dbg(chip->card->dev, "init: (5)\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 
@@ -1421,21 +1259,13 @@ static int snd_wss_probe(struct snd_wss *chip)
 					break;	/* this is valid value */
 			}
 		}
-<<<<<<< HEAD
-		snd_printdd("wss: port = 0x%lx, id = 0x%x\n", chip->port, id);
-=======
 		dev_dbg(chip->card->dev, "wss: port = 0x%lx, id = 0x%x\n",
 			chip->port, id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (id != 0x0a)
 			return -ENODEV;	/* no valid device found */
 
 		rev = snd_wss_in(chip, CS4231_VERSION) & 0xe7;
-<<<<<<< HEAD
-		snd_printdd("CS4231: VERSION (I25) = 0x%x\n", rev);
-=======
 		dev_dbg(chip->card->dev, "CS4231: VERSION (I25) = 0x%x\n", rev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (rev == 0x80) {
 			unsigned char tmp = snd_wss_in(chip, 23);
 			snd_wss_out(chip, 23, ~tmp);
@@ -1454,13 +1284,8 @@ static int snd_wss_probe(struct snd_wss *chip)
 		} else if (rev == 0x03) {
 			chip->hardware = WSS_HW_CS4236B;
 		} else {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR
-				   "unknown CS chip with version 0x%x\n", rev);
-=======
 			dev_err(chip->card->dev,
 				"unknown CS chip with version 0x%x\n", rev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -ENODEV;		/* unknown CS4231 chip? */
 		}
 	}
@@ -1519,13 +1344,9 @@ static int snd_wss_probe(struct snd_wss *chip)
 			snd_cs4236_ext_out(chip, CS4236_VERSION, 0xff);
 			id = snd_cs4236_ext_in(chip, CS4236_VERSION);
 			snd_cs4236_ext_out(chip, CS4236_VERSION, rev);
-<<<<<<< HEAD
-			snd_printdd("CS4231: ext version; rev = 0x%x, id = 0x%x\n", rev, id);
-=======
 			dev_dbg(chip->card->dev,
 				"CS4231: ext version; rev = 0x%x, id = 0x%x\n",
 				rev, id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if ((id & 0x1f) == 0x1d) {	/* CS4235 */
 				chip->hardware = WSS_HW_CS4235;
 				switch (id >> 5) {
@@ -1534,16 +1355,9 @@ static int snd_wss_probe(struct snd_wss *chip)
 				case 6:
 					break;
 				default:
-<<<<<<< HEAD
-					snd_printk(KERN_WARNING
-						"unknown CS4235 chip "
-						"(enhanced version = 0x%x)\n",
-						id);
-=======
 					dev_warn(chip->card->dev,
 						 "unknown CS4235 chip (enhanced version = 0x%x)\n",
 						 id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			} else if ((id & 0x1f) == 0x0b) {	/* CS4236/B */
 				switch (id >> 5) {
@@ -1554,16 +1368,9 @@ static int snd_wss_probe(struct snd_wss *chip)
 					chip->hardware = WSS_HW_CS4236B;
 					break;
 				default:
-<<<<<<< HEAD
-					snd_printk(KERN_WARNING
-						"unknown CS4236 chip "
-						"(enhanced version = 0x%x)\n",
-						id);
-=======
 					dev_warn(chip->card->dev,
 						 "unknown CS4236 chip (enhanced version = 0x%x)\n",
 						 id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			} else if ((id & 0x1f) == 0x08) {	/* CS4237B */
 				chip->hardware = WSS_HW_CS4237B;
@@ -1574,16 +1381,9 @@ static int snd_wss_probe(struct snd_wss *chip)
 				case 7:
 					break;
 				default:
-<<<<<<< HEAD
-					snd_printk(KERN_WARNING
-						"unknown CS4237B chip "
-						"(enhanced version = 0x%x)\n",
-						id);
-=======
 					dev_warn(chip->card->dev,
 						 "unknown CS4237B chip (enhanced version = 0x%x)\n",
 						 id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			} else if ((id & 0x1f) == 0x09) {	/* CS4238B */
 				chip->hardware = WSS_HW_CS4238B;
@@ -1593,16 +1393,9 @@ static int snd_wss_probe(struct snd_wss *chip)
 				case 7:
 					break;
 				default:
-<<<<<<< HEAD
-					snd_printk(KERN_WARNING
-						"unknown CS4238B chip "
-						"(enhanced version = 0x%x)\n",
-						id);
-=======
 					dev_warn(chip->card->dev,
 						 "unknown CS4238B chip (enhanced version = 0x%x)\n",
 						 id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				}
 			} else if ((id & 0x1f) == 0x1e) {	/* CS4239 */
 				chip->hardware = WSS_HW_CS4239;
@@ -1612,17 +1405,6 @@ static int snd_wss_probe(struct snd_wss *chip)
 				case 6:
 					break;
 				default:
-<<<<<<< HEAD
-					snd_printk(KERN_WARNING
-						"unknown CS4239 chip "
-						"(enhanced version = 0x%x)\n",
-						id);
-				}
-			} else {
-				snd_printk(KERN_WARNING
-					   "unknown CS4236/CS423xB chip "
-					   "(enhanced version = 0x%x)\n", id);
-=======
 					dev_warn(chip->card->dev,
 						 "unknown CS4239 chip (enhanced version = 0x%x)\n",
 						 id);
@@ -1631,7 +1413,6 @@ static int snd_wss_probe(struct snd_wss *chip)
 				dev_warn(chip->card->dev,
 					 "unknown CS4236/CS423xB chip (enhanced version = 0x%x)\n",
 					 id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	}
@@ -1864,14 +1645,9 @@ static void snd_wss_resume(struct snd_wss *chip)
 	wss_outb(chip, CS4231P(REGSEL), chip->mce_bit | (timeout & 0x1f));
 	spin_unlock_irqrestore(&chip->reg_lock, flags);
 	if (timeout == 0x80)
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "down [0x%lx]: serious init problem "
-			   "- codec still busy\n", chip->port);
-=======
 		dev_err(chip->card->dev
 			"down [0x%lx]: serious init problem - codec still busy\n",
 			chip->port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if ((timeout & CS4231_MCE) == 0 ||
 	    !(chip->hardware & (WSS_HW_CS4231_MASK | WSS_HW_CS4232_MASK))) {
 		return;
@@ -1983,11 +1759,7 @@ int snd_wss_create(struct snd_card *card,
 
 	chip->res_port = devm_request_region(card->dev, port, 4, "WSS");
 	if (!chip->res_port) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "wss: can't grab port 0x%lx\n", port);
-=======
 		dev_err(chip->card->dev, "wss: can't grab port 0x%lx\n", port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	chip->port = port;
@@ -1995,11 +1767,7 @@ int snd_wss_create(struct snd_card *card,
 		chip->res_cport = devm_request_region(card->dev, cport, 8,
 						      "CS4232 Control");
 		if (!chip->res_cport) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR
-=======
 			dev_err(chip->card->dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				"wss: can't grab control port 0x%lx\n", cport);
 			return -ENODEV;
 		}
@@ -2008,32 +1776,20 @@ int snd_wss_create(struct snd_card *card,
 	if (!(hwshare & WSS_HWSHARE_IRQ))
 		if (devm_request_irq(card->dev, irq, snd_wss_interrupt, 0,
 				     "WSS", (void *) chip)) {
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "wss: can't grab IRQ %d\n", irq);
-=======
 			dev_err(chip->card->dev, "wss: can't grab IRQ %d\n", irq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EBUSY;
 		}
 	chip->irq = irq;
 	card->sync_irq = chip->irq;
 	if (!(hwshare & WSS_HWSHARE_DMA1) &&
 	    snd_devm_request_dma(card->dev, dma1, "WSS - 1")) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "wss: can't grab DMA1 %d\n", dma1);
-=======
 		dev_err(chip->card->dev, "wss: can't grab DMA1 %d\n", dma1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	chip->dma1 = dma1;
 	if (!(hwshare & WSS_HWSHARE_DMA2) && dma1 != dma2 && dma2 >= 0 &&
 	    snd_devm_request_dma(card->dev, dma2, "WSS - 2")) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "wss: can't grab DMA2 %d\n", dma2);
-=======
 		dev_err(chip->card->dev, "wss: can't grab DMA2 %d\n", dma2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	if (dma1 == dma2 || dma2 < 0) {
@@ -2056,13 +1812,8 @@ int snd_wss_create(struct snd_card *card,
 #if 0
 	if (chip->hardware & WSS_HW_CS4232_MASK) {
 		if (chip->res_cport == NULL)
-<<<<<<< HEAD
-			snd_printk(KERN_ERR "CS4232 control port features are "
-				   "not accessible\n");
-=======
 			dev_err(chip->card->dev,
 				"CS4232 control port features are not accessible\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 #endif
 

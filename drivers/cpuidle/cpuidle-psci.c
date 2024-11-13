@@ -37,10 +37,7 @@ struct psci_cpuidle_data {
 
 static DEFINE_PER_CPU_READ_MOSTLY(struct psci_cpuidle_data, psci_cpuidle_data);
 static DEFINE_PER_CPU(u32, domain_state);
-<<<<<<< HEAD
-=======
 static bool psci_cpuidle_use_syscore;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool psci_cpuidle_use_cpuhp;
 
 void psci_set_domain_state(u32 state)
@@ -170,15 +167,12 @@ static struct syscore_ops psci_idle_syscore_ops = {
 	.resume = psci_idle_syscore_resume,
 };
 
-<<<<<<< HEAD
-=======
 static void psci_idle_init_syscore(void)
 {
 	if (psci_cpuidle_use_syscore)
 		register_syscore_ops(&psci_idle_syscore_ops);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void psci_idle_init_cpuhp(void)
 {
 	int err;
@@ -186,11 +180,6 @@ static void psci_idle_init_cpuhp(void)
 	if (!psci_cpuidle_use_cpuhp)
 		return;
 
-<<<<<<< HEAD
-	register_syscore_ops(&psci_idle_syscore_ops);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = cpuhp_setup_state_nocalls(CPUHP_AP_CPU_PM_STARTING,
 					"cpuidle/psci:online",
 					psci_idle_cpuhp_up,
@@ -238,27 +227,10 @@ static int psci_dt_cpu_init_topology(struct cpuidle_driver *drv,
 	if (!psci_has_osi_support())
 		return 0;
 
-<<<<<<< HEAD
-	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-		return 0;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data->dev = dt_idle_attach_cpu(cpu, "psci");
 	if (IS_ERR_OR_NULL(data->dev))
 		return PTR_ERR_OR_ZERO(data->dev);
 
-<<<<<<< HEAD
-	/*
-	 * Using the deepest state for the CPU to trigger a potential selection
-	 * of a shared state for the domain, assumes the domain states are all
-	 * deeper states.
-	 */
-	drv->states[state_count - 1].flags |= CPUIDLE_FLAG_RCU_IDLE;
-	drv->states[state_count - 1].enter = psci_enter_domain_idle_state;
-	drv->states[state_count - 1].enter_s2idle = psci_enter_s2idle_domain_idle_state;
-	psci_cpuidle_use_cpuhp = true;
-=======
 	psci_cpuidle_use_syscore = true;
 
 	/*
@@ -272,7 +244,6 @@ static int psci_dt_cpu_init_topology(struct cpuidle_driver *drv,
 		drv->states[state_count - 1].enter = psci_enter_domain_idle_state;
 		psci_cpuidle_use_cpuhp = true;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -348,10 +319,7 @@ static void psci_cpu_deinit_idle(int cpu)
 	struct psci_cpuidle_data *data = per_cpu_ptr(&psci_cpuidle_data, cpu);
 
 	dt_idle_detach_cpu(data->dev);
-<<<<<<< HEAD
-=======
 	psci_cpuidle_use_syscore = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	psci_cpuidle_use_cpuhp = false;
 }
 
@@ -448,10 +416,7 @@ static int psci_cpuidle_probe(struct platform_device *pdev)
 			goto out_fail;
 	}
 
-<<<<<<< HEAD
-=======
 	psci_idle_init_syscore();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	psci_idle_init_cpuhp();
 	return 0;
 

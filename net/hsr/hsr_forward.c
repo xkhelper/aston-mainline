@@ -599,13 +599,9 @@ static void handle_std_frame(struct sk_buff *skb,
 	if (port->type == HSR_PT_MASTER ||
 	    port->type == HSR_PT_INTERLINK) {
 		/* Sequence nr for the master/interlink node */
-<<<<<<< HEAD
-		frame->sequence_nr = atomic_inc_return(&hsr->sequence_nr);
-=======
 		lockdep_assert_held(&hsr->seqnr_lock);
 		frame->sequence_nr = hsr->sequence_nr;
 		hsr->sequence_nr++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 

@@ -1407,11 +1407,7 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
 	fs_info->quota_root = NULL;
 	fs_info->qgroup_flags &= ~BTRFS_QGROUP_STATUS_FLAG_ON;
 	fs_info->qgroup_flags &= ~BTRFS_QGROUP_STATUS_FLAG_SIMPLE_MODE;
-<<<<<<< HEAD
-	fs_info->qgroup_drop_subtree_thres = BTRFS_MAX_LEVEL;
-=======
 	fs_info->qgroup_drop_subtree_thres = BTRFS_QGROUP_DROP_SUBTREE_THRES_DEFAULT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(&fs_info->qgroup_lock);
 
 	btrfs_free_qgroup_config(fs_info);
@@ -2002,54 +1998,18 @@ out:
  *
  * Return 0 for success insert
  * Return >0 for existing record, caller can free @record safely.
-<<<<<<< HEAD
- * Error is not possible
-=======
  * Return <0 for insertion failure, caller can free @record safely.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int btrfs_qgroup_trace_extent_nolock(struct btrfs_fs_info *fs_info,
 				struct btrfs_delayed_ref_root *delayed_refs,
 				struct btrfs_qgroup_extent_record *record)
 {
-<<<<<<< HEAD
-	struct rb_node **p = &delayed_refs->dirty_extent_root.rb_node;
-	struct rb_node *parent_node = NULL;
-	struct btrfs_qgroup_extent_record *entry;
-	u64 bytenr = record->bytenr;
-=======
 	struct btrfs_qgroup_extent_record *existing, *ret;
 	const unsigned long index = (record->bytenr >> fs_info->sectorsize_bits);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!btrfs_qgroup_full_accounting(fs_info))
 		return 1;
 
-<<<<<<< HEAD
-	lockdep_assert_held(&delayed_refs->lock);
-	trace_btrfs_qgroup_trace_extent(fs_info, record);
-
-	while (*p) {
-		parent_node = *p;
-		entry = rb_entry(parent_node, struct btrfs_qgroup_extent_record,
-				 node);
-		if (bytenr < entry->bytenr) {
-			p = &(*p)->rb_left;
-		} else if (bytenr > entry->bytenr) {
-			p = &(*p)->rb_right;
-		} else {
-			if (record->data_rsv && !entry->data_rsv) {
-				entry->data_rsv = record->data_rsv;
-				entry->data_rsv_refroot =
-					record->data_rsv_refroot;
-			}
-			return 1;
-		}
-	}
-
-	rb_link_node(&record->node, parent_node, p);
-	rb_insert_color(&record->node, &delayed_refs->dirty_extent_root);
-=======
 #if BITS_PER_LONG == 32
 	if (record->bytenr >= MAX_LFS_FILESIZE) {
 		btrfs_err_rl(fs_info,
@@ -2081,7 +2041,6 @@ int btrfs_qgroup_trace_extent_nolock(struct btrfs_fs_info *fs_info,
 		return xa_err(ret);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2180,10 +2139,7 @@ int btrfs_qgroup_trace_extent(struct btrfs_trans_handle *trans, u64 bytenr,
 	struct btrfs_fs_info *fs_info = trans->fs_info;
 	struct btrfs_qgroup_extent_record *record;
 	struct btrfs_delayed_ref_root *delayed_refs;
-<<<<<<< HEAD
-=======
 	const unsigned long index = (bytenr >> fs_info->sectorsize_bits);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (!btrfs_qgroup_full_accounting(fs_info) || bytenr == 0 || num_bytes == 0)
@@ -2192,14 +2148,11 @@ int btrfs_qgroup_trace_extent(struct btrfs_trans_handle *trans, u64 bytenr,
 	if (!record)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
 	if (xa_reserve(&trans->transaction->delayed_refs.dirty_extents, index, GFP_NOFS)) {
 		kfree(record);
 		return -ENOMEM;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	delayed_refs = &trans->transaction->delayed_refs;
 	record->bytenr = bytenr;
 	record->num_bytes = num_bytes;
@@ -2208,13 +2161,9 @@ int btrfs_qgroup_trace_extent(struct btrfs_trans_handle *trans, u64 bytenr,
 	spin_lock(&delayed_refs->lock);
 	ret = btrfs_qgroup_trace_extent_nolock(fs_info, delayed_refs, record);
 	spin_unlock(&delayed_refs->lock);
-<<<<<<< HEAD
-	if (ret > 0) {
-=======
 	if (ret) {
 		/* Clean up if insertion fails or item exists. */
 		xa_release(&delayed_refs->dirty_extents, index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(record);
 		return 0;
 	}
@@ -3083,11 +3032,7 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
 	struct btrfs_qgroup_extent_record *record;
 	struct btrfs_delayed_ref_root *delayed_refs;
 	struct ulist *new_roots = NULL;
-<<<<<<< HEAD
-	struct rb_node *node;
-=======
 	unsigned long index;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 num_dirty_extents = 0;
 	u64 qgroup_to_skip;
 	int ret = 0;
@@ -3097,14 +3042,7 @@ int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans)
 
 	delayed_refs = &trans->transaction->delayed_refs;
 	qgroup_to_skip = delayed_refs->qgroup_to_skip;
-<<<<<<< HEAD
-	while ((node = rb_first(&delayed_refs->dirty_extent_root))) {
-		record = rb_entry(node, struct btrfs_qgroup_extent_record,
-				  node);
-
-=======
 	xa_for_each(&delayed_refs->dirty_extents, index, record) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		num_dirty_extents++;
 		trace_btrfs_qgroup_account_extents(fs_info, record);
 
@@ -3170,11 +3108,7 @@ cleanup:
 		ulist_free(record->old_roots);
 		ulist_free(new_roots);
 		new_roots = NULL;
-<<<<<<< HEAD
-		rb_erase(node, &delayed_refs->dirty_extent_root);
-=======
 		xa_erase(&delayed_refs->dirty_extents, index);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kfree(record);
 
 	}
@@ -4951,17 +4885,6 @@ out:
 void btrfs_qgroup_destroy_extent_records(struct btrfs_transaction *trans)
 {
 	struct btrfs_qgroup_extent_record *entry;
-<<<<<<< HEAD
-	struct btrfs_qgroup_extent_record *next;
-	struct rb_root *root;
-
-	root = &trans->delayed_refs.dirty_extent_root;
-	rbtree_postorder_for_each_entry_safe(entry, next, root, node) {
-		ulist_free(entry->old_roots);
-		kfree(entry);
-	}
-	*root = RB_ROOT;
-=======
 	unsigned long index;
 
 	xa_for_each(&trans->delayed_refs.dirty_extents, index, entry) {
@@ -4969,7 +4892,6 @@ void btrfs_qgroup_destroy_extent_records(struct btrfs_transaction *trans)
 		kfree(entry);
 	}
 	xa_destroy(&trans->delayed_refs.dirty_extents);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void btrfs_free_squota_rsv(struct btrfs_fs_info *fs_info, u64 root, u64 rsv_bytes)

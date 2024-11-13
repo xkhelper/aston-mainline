@@ -241,13 +241,10 @@
 
 /* Link Training */
 #define DP0_SRCCTRL		0x06a0
-<<<<<<< HEAD
-=======
 #define DP0_SRCCTRL_PRE1		GENMASK(29, 28)
 #define DP0_SRCCTRL_SWG1		GENMASK(25, 24)
 #define DP0_SRCCTRL_PRE0		GENMASK(21, 20)
 #define DP0_SRCCTRL_SWG0		GENMASK(17, 16)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DP0_SRCCTRL_SCRMBLDIS		BIT(13)
 #define DP0_SRCCTRL_EN810B		BIT(12)
 #define DP0_SRCCTRL_NOTP		(0 << 8)
@@ -285,11 +282,8 @@
 #define AUDIFDATA6		0x0720	/* DP0 Audio Info Frame Bytes 27 to 24 */
 
 #define DP1_SRCCTRL		0x07a0	/* DP1 Control Register */
-<<<<<<< HEAD
-=======
 #define DP1_SRCCTRL_PRE			GENMASK(21, 20)
 #define DP1_SRCCTRL_SWG			GENMASK(17, 16)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* PHY */
 #define DP_PHY_CTRL		0x0800
@@ -381,10 +375,7 @@ struct tc_data {
 
 	u32			rev;
 	u8			assr;
-<<<<<<< HEAD
-=======
 	u8			pre_emphasis[2];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct gpio_desc	*sd_gpio;
 	struct gpio_desc	*reset_gpio;
@@ -1106,25 +1097,17 @@ static int tc_main_link_enable(struct tc_data *tc)
 			return ret;
 	}
 
-<<<<<<< HEAD
-	ret = regmap_write(tc->regmap, DP0_SRCCTRL, tc_srcctrl(tc));
-=======
 	ret = regmap_write(tc->regmap, DP0_SRCCTRL,
 			   tc_srcctrl(tc) |
 			   FIELD_PREP(DP0_SRCCTRL_PRE0, tc->pre_emphasis[0]) |
 			   FIELD_PREP(DP0_SRCCTRL_PRE1, tc->pre_emphasis[1]));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 	/* SSCG and BW27 on DP1 must be set to the same as on DP0 */
 	ret = regmap_write(tc->regmap, DP1_SRCCTRL,
 		 (tc->link.spread ? DP0_SRCCTRL_SSCG : 0) |
-<<<<<<< HEAD
-		 ((tc->link.rate != 162000) ? DP0_SRCCTRL_BW27 : 0));
-=======
 		 ((tc->link.rate != 162000) ? DP0_SRCCTRL_BW27 : 0) |
 		 FIELD_PREP(DP1_SRCCTRL_PRE, tc->pre_emphasis[1]));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1216,15 +1199,10 @@ static int tc_main_link_enable(struct tc_data *tc)
 		goto err_dpcd_write;
 
 	/* Reset voltage-swing & pre-emphasis */
-<<<<<<< HEAD
-	tmp[0] = tmp[1] = DP_TRAIN_VOLTAGE_SWING_LEVEL_0 |
-			  DP_TRAIN_PRE_EMPH_LEVEL_0;
-=======
 	tmp[0] = DP_TRAIN_VOLTAGE_SWING_LEVEL_0 |
 		 FIELD_PREP(DP_TRAIN_PRE_EMPHASIS_MASK, tc->pre_emphasis[0]);
 	tmp[1] = DP_TRAIN_VOLTAGE_SWING_LEVEL_0 |
 		 FIELD_PREP(DP_TRAIN_PRE_EMPHASIS_MASK, tc->pre_emphasis[1]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = drm_dp_dpcd_write(aux, DP_TRAINING_LANE0_SET, tmp, 2);
 	if (ret < 0)
 		goto err_dpcd_write;
@@ -1248,13 +1226,9 @@ static int tc_main_link_enable(struct tc_data *tc)
 	ret = regmap_write(tc->regmap, DP0_SRCCTRL,
 			   tc_srcctrl(tc) | DP0_SRCCTRL_SCRMBLDIS |
 			   DP0_SRCCTRL_AUTOCORRECT |
-<<<<<<< HEAD
-			   DP0_SRCCTRL_TP1);
-=======
 			   DP0_SRCCTRL_TP1 |
 			   FIELD_PREP(DP0_SRCCTRL_PRE0, tc->pre_emphasis[0]) |
 			   FIELD_PREP(DP0_SRCCTRL_PRE1, tc->pre_emphasis[1]));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1289,13 +1263,9 @@ static int tc_main_link_enable(struct tc_data *tc)
 	ret = regmap_write(tc->regmap, DP0_SRCCTRL,
 			   tc_srcctrl(tc) | DP0_SRCCTRL_SCRMBLDIS |
 			   DP0_SRCCTRL_AUTOCORRECT |
-<<<<<<< HEAD
-			   DP0_SRCCTRL_TP2);
-=======
 			   DP0_SRCCTRL_TP2 |
 			   FIELD_PREP(DP0_SRCCTRL_PRE0, tc->pre_emphasis[0]) |
 			   FIELD_PREP(DP0_SRCCTRL_PRE1, tc->pre_emphasis[1]));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -1321,13 +1291,9 @@ static int tc_main_link_enable(struct tc_data *tc)
 
 	/* Clear Training Pattern, set AutoCorrect Mode = 1 */
 	ret = regmap_write(tc->regmap, DP0_SRCCTRL, tc_srcctrl(tc) |
-<<<<<<< HEAD
-			   DP0_SRCCTRL_AUTOCORRECT);
-=======
 			   DP0_SRCCTRL_AUTOCORRECT |
 			   FIELD_PREP(DP0_SRCCTRL_PRE0, tc->pre_emphasis[0]) |
 			   FIELD_PREP(DP0_SRCCTRL_PRE1, tc->pre_emphasis[1]));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -2416,8 +2382,6 @@ static int tc_probe_bridge_endpoint(struct tc_data *tc)
 			return -EINVAL;
 		}
 		mode |= BIT(endpoint.port);
-<<<<<<< HEAD
-=======
 
 		if (endpoint.port == 2) {
 			of_property_read_u8_array(node, "toshiba,pre-emphasis",
@@ -2431,7 +2395,6 @@ static int tc_probe_bridge_endpoint(struct tc_data *tc)
 				return -EINVAL;
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (mode == mode_dpi_to_edp || mode == mode_dpi_to_dp) {

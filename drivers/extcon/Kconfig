@@ -75,8 +75,6 @@ config EXTCON_INTEL_MRFLD
 	  Say Y here to enable extcon support for charger detection / control
 	  on the Intel Merrifield Basin Cove PMIC.
 
-<<<<<<< HEAD
-=======
 config EXTCON_LC824206XA
 	tristate "LC824206XA extcon Support"
 	depends on I2C
@@ -88,7 +86,6 @@ config EXTCON_LC824206XA
 	  using I2C and enables USB data, stereo and mono audio, video,
 	  microphone and UART data to use a common connector port.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config EXTCON_MAX14577
 	tristate "Maxim MAX14577/77836 EXTCON Support"
 	depends on MFD_MAX14577

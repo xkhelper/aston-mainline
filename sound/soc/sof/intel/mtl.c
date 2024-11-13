@@ -245,8 +245,6 @@ int mtl_dsp_pre_fw_run(struct snd_sof_dev *sdev)
 	u32 cpa;
 	u32 pgs;
 	int ret;
-<<<<<<< HEAD
-=======
 	u32 dsppwrctl;
 	u32 dsppwrsts;
 	const struct sof_intel_dsp_desc *chip;
@@ -259,7 +257,6 @@ int mtl_dsp_pre_fw_run(struct snd_sof_dev *sdev)
 		dsppwrctl = MTL_HFPWRCTL;
 		dsppwrsts = MTL_HFPWRSTS;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Set the DSP subsystem power on */
 	snd_sof_dsp_update_bits(sdev, HDA_DSP_BAR, MTL_HFDSSCS,
@@ -279,22 +276,14 @@ int mtl_dsp_pre_fw_run(struct snd_sof_dev *sdev)
 	}
 
 	/* Power up gated-DSP-0 domain in order to access the DSP shim register block. */
-<<<<<<< HEAD
-	snd_sof_dsp_update_bits(sdev, HDA_DSP_BAR, MTL_HFPWRCTL,
-=======
 	snd_sof_dsp_update_bits(sdev, HDA_DSP_BAR, dsppwrctl,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				MTL_HFPWRCTL_WPDSPHPXPG, MTL_HFPWRCTL_WPDSPHPXPG);
 
 	usleep_range(1000, 1010);
 
 	/* poll with timeout to check if operation successful */
 	pgs = MTL_HFPWRSTS_DSPHPXPGS_MASK;
-<<<<<<< HEAD
-	ret = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR, MTL_HFPWRSTS, dsphfpwrsts,
-=======
 	ret = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR, dsppwrsts, dsphfpwrsts,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    (dsphfpwrsts & pgs) == pgs,
 					    HDA_DSP_REG_POLL_INTERVAL_US,
 					    HDA_DSP_RESET_TIMEOUT_US);

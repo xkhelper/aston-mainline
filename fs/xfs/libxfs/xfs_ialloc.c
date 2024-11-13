@@ -1855,20 +1855,12 @@ out_release:
 int
 xfs_dialloc(
 	struct xfs_trans	**tpp,
-<<<<<<< HEAD
-	xfs_ino_t		parent,
-	umode_t			mode,
-	xfs_ino_t		*new_ino)
-{
-	struct xfs_mount	*mp = (*tpp)->t_mountp;
-=======
 	const struct xfs_icreate_args *args,
 	xfs_ino_t		*new_ino)
 {
 	struct xfs_mount	*mp = (*tpp)->t_mountp;
 	xfs_ino_t		parent = args->pip ? args->pip->i_ino : 0;
 	umode_t			mode = args->mode & S_IFMT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_agnumber_t		agno;
 	int			error = 0;
 	xfs_agnumber_t		start_agno;
@@ -2956,13 +2948,8 @@ xfs_ialloc_setup_geometry(
 
 	/* Compute inode btree geometry. */
 	igeo->agino_log = sbp->sb_inopblog + sbp->sb_agblklog;
-<<<<<<< HEAD
-	igeo->inobt_mxr[0] = xfs_inobt_maxrecs(mp, sbp->sb_blocksize, 1);
-	igeo->inobt_mxr[1] = xfs_inobt_maxrecs(mp, sbp->sb_blocksize, 0);
-=======
 	igeo->inobt_mxr[0] = xfs_inobt_maxrecs(mp, sbp->sb_blocksize, true);
 	igeo->inobt_mxr[1] = xfs_inobt_maxrecs(mp, sbp->sb_blocksize, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	igeo->inobt_mnr[0] = igeo->inobt_mxr[0] / 2;
 	igeo->inobt_mnr[1] = igeo->inobt_mxr[1] / 2;
 
@@ -3047,14 +3034,11 @@ xfs_ialloc_setup_geometry(
 		igeo->ialloc_align = mp->m_dalign;
 	else
 		igeo->ialloc_align = 0;
-<<<<<<< HEAD
-=======
 
 	if (mp->m_sb.sb_blocksize > PAGE_SIZE)
 		igeo->min_folio_order = mp->m_sb.sb_blocklog - PAGE_SHIFT;
 	else
 		igeo->min_folio_order = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /* Compute the location of the root directory inode that is laid out by mkfs. */

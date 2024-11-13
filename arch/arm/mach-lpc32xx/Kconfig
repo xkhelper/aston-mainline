@@ -8,9 +8,6 @@ config ARCH_LPC32XX
 	select CLKSRC_LPC32XX
 	select CPU_ARM926T
 	select GPIOLIB
-<<<<<<< HEAD
-=======
 	select LPC32XX_DMAMUX if AMBA_PL08X
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	help
 	  Support for the NXP LPC32XX family of processors

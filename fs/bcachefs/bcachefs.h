@@ -542,11 +542,7 @@ struct bch_dev {
 	 * gc_gens_lock, for device resize - holding any is sufficient for
 	 * access: Or rcu_read_lock(), but only for dev_ptr_stale():
 	 */
-<<<<<<< HEAD
-	struct bucket_array __rcu *buckets_gc;
-=======
 	GENRADIX(struct bucket)	buckets_gc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bucket_gens __rcu *bucket_gens;
 	u8			*oldest_gen;
 	unsigned long		*buckets_nouse;
@@ -559,10 +555,7 @@ struct bch_dev {
 	u64			alloc_cursor[3];
 
 	unsigned		nr_open_buckets;
-<<<<<<< HEAD
-=======
 	unsigned		nr_partial_buckets;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned		nr_btree_reserve;
 
 	size_t			inc_gen_needs_gc;
@@ -602,10 +595,7 @@ struct bch_dev {
 #define BCH_FS_FLAGS()			\
 	x(new_fs)			\
 	x(started)			\
-<<<<<<< HEAD
-=======
 	x(clean_recovery)		\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	x(btree_running)		\
 	x(accounting_replay_done)	\
 	x(may_go_rw)			\
@@ -788,11 +778,7 @@ struct bch_fs {
 		unsigned	nsec_per_time_unit;
 		u64		features;
 		u64		compat;
-<<<<<<< HEAD
-		unsigned long	errors_silent[BITS_TO_LONGS(BCH_SB_ERR_MAX)];
-=======
 		unsigned long	errors_silent[BITS_TO_LONGS(BCH_FSCK_ERR_MAX)];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		u64		btrees_lost_data;
 	}			sb;
 
@@ -887,10 +873,7 @@ struct bch_fs {
 
 	/* ALLOCATION */
 	struct bch_devs_mask	rw_devs[BCH_DATA_NR];
-<<<<<<< HEAD
-=======
 	unsigned long		rw_devs_change_count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u64			capacity; /* sectors */
 	u64			reserved; /* sectors */
@@ -1043,10 +1026,7 @@ struct bch_fs {
 	/* fs.c */
 	struct list_head	vfs_inodes_list;
 	struct mutex		vfs_inodes_lock;
-<<<<<<< HEAD
-=======
 	struct rhashtable	vfs_inodes_table;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* VFS IO PATH - fs-io.c */
 	struct bio_set		writepage_bioset;
@@ -1068,11 +1048,6 @@ struct bch_fs {
 	 * for signaling to the toplevel code which pass we want to run now.
 	 */
 	enum bch_recovery_pass	curr_recovery_pass;
-<<<<<<< HEAD
-	/* bitmap of explicitly enabled recovery passes: */
-	u64			recovery_passes_explicit;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* bitmask of recovery passes that we actually ran */
 	u64			recovery_passes_complete;
 	/* never rewinds version of curr_recovery_pass */
@@ -1112,10 +1087,6 @@ struct bch_fs {
 	u64 __percpu		*counters;
 
 	unsigned		copy_gc_enabled:1;
-<<<<<<< HEAD
-	bool			promote_whole_extents;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct bch2_time_stats	times[BCH_TIME_STAT_NR];
 
@@ -1225,23 +1196,15 @@ static inline bool btree_id_cached(const struct bch_fs *c, enum btree_id btree)
 static inline struct timespec64 bch2_time_to_timespec(const struct bch_fs *c, s64 time)
 {
 	struct timespec64 t;
-<<<<<<< HEAD
-=======
 	s64 sec;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	s32 rem;
 
 	time += c->sb.time_base_lo;
 
-<<<<<<< HEAD
-	t.tv_sec = div_s64_rem(time, c->sb.time_units_per_sec, &rem);
-	t.tv_nsec = rem * c->sb.nsec_per_time_unit;
-=======
 	sec = div_s64_rem(time, c->sb.time_units_per_sec, &rem);
 
 	set_normalized_timespec64(&t, sec, rem * (s64)c->sb.nsec_per_time_unit);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return t;
 }
 

@@ -99,8 +99,6 @@ struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id)
 }
 EXPORT_SYMBOL_GPL(devm_clk_get_optional_enabled);
 
-<<<<<<< HEAD
-=======
 struct clk *devm_clk_get_optional_enabled_with_rate(struct device *dev,
 						    const char *id,
 						    unsigned long rate)
@@ -129,7 +127,6 @@ out_put_clk:
 }
 EXPORT_SYMBOL_GPL(devm_clk_get_optional_enabled_with_rate);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct clk_bulk_devres {
 	struct clk_bulk_data *clks;
 	int num_clks;

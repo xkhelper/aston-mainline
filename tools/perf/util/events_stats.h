@@ -18,9 +18,6 @@
  * PERF_RECORD_LOST_SAMPLES event. The number of lost-samples events is stored
  * in .nr_events[PERF_RECORD_LOST_SAMPLES] while total_lost_samples tells
  * exactly how many samples the kernel in fact dropped, i.e. it is the sum of
-<<<<<<< HEAD
- * all struct perf_record_lost_samples.lost fields reported.
-=======
  * all struct perf_record_lost_samples.lost fields reported without setting the
  * misc field in the header.
  *
@@ -33,7 +30,6 @@
  * exactly how many samples the BPF program in fact dropped, i.e. it is the sum
  * of all struct perf_record_lost_samples.lost fields reported with the misc
  * field set in the header.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * The total_period is needed because by default auto-freq is used, so
  * multiplying nr_events[PERF_EVENT_SAMPLE] by a frequency isn't possible to get
@@ -43,10 +39,7 @@
 struct events_stats {
 	u64 total_lost;
 	u64 total_lost_samples;
-<<<<<<< HEAD
-=======
 	u64 total_dropped_samples;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 total_aux_lost;
 	u64 total_aux_partial;
 	u64 total_aux_collision;
@@ -67,10 +60,7 @@ struct hists_stats {
 	u32 nr_samples;
 	u32 nr_non_filtered_samples;
 	u32 nr_lost_samples;
-<<<<<<< HEAD
-=======
 	u32 nr_dropped_samples;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void events_stats__inc(struct events_stats *stats, u32 type);

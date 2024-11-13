@@ -417,20 +417,11 @@ affs_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
 
 static int affs_write_begin(struct file *file, struct address_space *mapping,
 			loff_t pos, unsigned len,
-<<<<<<< HEAD
-			struct page **pagep, void **fsdata)
-{
-	int ret;
-
-	*pagep = NULL;
-	ret = cont_write_begin(file, mapping, pos, len, pagep, fsdata,
-=======
 			struct folio **foliop, void **fsdata)
 {
 	int ret;
 
 	ret = cont_write_begin(file, mapping, pos, len, foliop, fsdata,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				affs_get_block,
 				&AFFS_I(mapping->host)->mmu_private);
 	if (unlikely(ret))
@@ -441,20 +432,12 @@ static int affs_write_begin(struct file *file, struct address_space *mapping,
 
 static int affs_write_end(struct file *file, struct address_space *mapping,
 			  loff_t pos, unsigned int len, unsigned int copied,
-<<<<<<< HEAD
-			  struct page *page, void *fsdata)
-=======
 			  struct folio *folio, void *fsdata)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct inode *inode = mapping->host;
 	int ret;
 
-<<<<<<< HEAD
-	ret = generic_write_end(file, mapping, pos, len, copied, page, fsdata);
-=======
 	ret = generic_write_end(file, mapping, pos, len, copied, folio, fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Clear Archived bit on file writes, as AmigaOS would do */
 	if (AFFS_I(inode)->i_protect & FIBF_ARCHIVED) {
@@ -664,11 +647,7 @@ static int affs_read_folio_ofs(struct file *file, struct folio *folio)
 
 static int affs_write_begin_ofs(struct file *file, struct address_space *mapping,
 				loff_t pos, unsigned len,
-<<<<<<< HEAD
-				struct page **pagep, void **fsdata)
-=======
 				struct folio **foliop, void **fsdata)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct inode *inode = mapping->host;
 	struct folio *folio;
@@ -691,11 +670,7 @@ static int affs_write_begin_ofs(struct file *file, struct address_space *mapping
 			mapping_gfp_mask(mapping));
 	if (IS_ERR(folio))
 		return PTR_ERR(folio);
-<<<<<<< HEAD
-	*pagep = &folio->page;
-=======
 	*foliop = folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (folio_test_uptodate(folio))
 		return 0;
@@ -711,14 +686,8 @@ static int affs_write_begin_ofs(struct file *file, struct address_space *mapping
 
 static int affs_write_end_ofs(struct file *file, struct address_space *mapping,
 				loff_t pos, unsigned len, unsigned copied,
-<<<<<<< HEAD
-				struct page *page, void *fsdata)
-{
-	struct folio *folio = page_folio(page);
-=======
 				struct folio *folio, void *fsdata)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct inode *inode = mapping->host;
 	struct super_block *sb = inode->i_sb;
 	struct buffer_head *bh, *prev_bh;
@@ -911,24 +880,14 @@ affs_truncate(struct inode *inode)
 
 	if (inode->i_size > AFFS_I(inode)->mmu_private) {
 		struct address_space *mapping = inode->i_mapping;
-<<<<<<< HEAD
-		struct page *page;
-=======
 		struct folio *folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		void *fsdata = NULL;
 		loff_t isize = inode->i_size;
 		int res;
 
-<<<<<<< HEAD
-		res = mapping->a_ops->write_begin(NULL, mapping, isize, 0, &page, &fsdata);
-		if (!res)
-			res = mapping->a_ops->write_end(NULL, mapping, isize, 0, 0, page, fsdata);
-=======
 		res = mapping->a_ops->write_begin(NULL, mapping, isize, 0, &folio, &fsdata);
 		if (!res)
 			res = mapping->a_ops->write_end(NULL, mapping, isize, 0, 0, folio, fsdata);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		else
 			inode->i_size = AFFS_I(inode)->mmu_private;
 		mark_inode_dirty(inode);

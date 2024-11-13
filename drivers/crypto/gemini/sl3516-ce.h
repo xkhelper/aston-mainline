@@ -326,11 +326,6 @@ struct sl3516_ce_alg_template {
 	unsigned long stat_bytes;
 };
 
-<<<<<<< HEAD
-int sl3516_ce_enqueue(struct crypto_async_request *areq, u32 type);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int sl3516_ce_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
 			 unsigned int keylen);
 int sl3516_ce_cipher_init(struct crypto_tfm *tfm);

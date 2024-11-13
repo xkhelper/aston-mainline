@@ -83,10 +83,7 @@ struct vdso_arch_data {
 	__u32 compat_syscall_map[SYSCALL_MAP_SIZE];	/* Map of compat syscalls */
 
 	struct vdso_data data[CS_BASES];
-<<<<<<< HEAD
-=======
 	struct vdso_rng_data rng_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #else /* CONFIG_PPC64 */
@@ -99,10 +96,7 @@ struct vdso_arch_data {
 	__u32 syscall_map[SYSCALL_MAP_SIZE]; /* Map of syscalls */
 	__u32 compat_syscall_map[0];	/* No compat syscalls on PPC32 */
 	struct vdso_data data[CS_BASES];
-<<<<<<< HEAD
-=======
 	struct vdso_rng_data rng_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #endif /* CONFIG_PPC64 */
@@ -119,8 +113,6 @@ extern struct vdso_arch_data *vdso_data;
 	addi	\ptr, \ptr, (_vdso_datapage - 999b)@l
 .endm
 
-<<<<<<< HEAD
-=======
 #include <asm/asm-offsets.h>
 #include <asm/page.h>
 
@@ -136,7 +128,6 @@ extern struct vdso_arch_data *vdso_data;
 #endif
 .endm
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __ASSEMBLY__ */
 
 #endif /* __KERNEL__ */

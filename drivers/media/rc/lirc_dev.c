@@ -706,10 +706,6 @@ static const struct file_operations lirc_fops = {
 	.poll		= lirc_poll,
 	.open		= lirc_open,
 	.release	= lirc_close,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void lirc_release_device(struct device *ld)
@@ -823,35 +819,20 @@ struct rc_dev *rc_dev_get_from_fd(int fd, bool write)
 	struct lirc_fh *fh;
 	struct rc_dev *dev;
 
-<<<<<<< HEAD
-	if (!f.file)
-		return ERR_PTR(-EBADF);
-
-	if (f.file->f_op != &lirc_fops) {
-=======
 	if (!fd_file(f))
 		return ERR_PTR(-EBADF);
 
 	if (fd_file(f)->f_op != &lirc_fops) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 		return ERR_PTR(-EINVAL);
 	}
 
-<<<<<<< HEAD
-	if (write && !(f.file->f_mode & FMODE_WRITE)) {
-=======
 	if (write && !(fd_file(f)->f_mode & FMODE_WRITE)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fdput(f);
 		return ERR_PTR(-EPERM);
 	}
 
-<<<<<<< HEAD
-	fh = f.file->private_data;
-=======
 	fh = fd_file(f)->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev = fh->rc;
 
 	get_device(&dev->dev);

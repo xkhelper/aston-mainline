@@ -535,8 +535,6 @@ cleanup:
 	btf__free(vmlinux_btf);
 }
 
-<<<<<<< HEAD
-=======
 /* Split and new base BTFs should inherit endianness from source BTF. */
 static void test_distilled_endianness(void)
 {
@@ -603,7 +601,6 @@ cleanup:
 	btf__free(base);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_btf_distill(void)
 {
 	if (test__start_subtest("distilled_base"))
@@ -618,9 +615,6 @@ void test_btf_distill(void)
 		test_distilled_base_multi_err2();
 	if (test__start_subtest("distilled_base_vmlinux"))
 		test_distilled_base_vmlinux();
-<<<<<<< HEAD
-=======
 	if (test__start_subtest("distilled_endianness"))
 		test_distilled_endianness();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

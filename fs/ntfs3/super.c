@@ -90,11 +90,7 @@ void ntfs_printk(const struct super_block *sb, const char *fmt, ...)
 	level = printk_get_level(fmt);
 	vaf.fmt = printk_skip_level(fmt);
 	vaf.va = &args;
-<<<<<<< HEAD
-	printk("%c%cntfs3: %s: %pV\n", KERN_SOH_ASCII, level, sb->s_id, &vaf);
-=======
 	printk("%c%cntfs3(%s): %pV\n", KERN_SOH_ASCII, level, sb->s_id, &vaf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	va_end(args);
 }
@@ -128,12 +124,6 @@ void ntfs_inode_printk(struct inode *inode, const char *fmt, ...)
 		struct dentry *de = d_find_alias(inode);
 
 		if (de) {
-<<<<<<< HEAD
-			spin_lock(&de->d_lock);
-			snprintf(name, sizeof(s_name_buf), " \"%s\"",
-				 de->d_name.name);
-			spin_unlock(&de->d_lock);
-=======
 			int len;
 			spin_lock(&de->d_lock);
 			len = snprintf(name, sizeof(s_name_buf), " \"%s\"",
@@ -143,7 +133,6 @@ void ntfs_inode_printk(struct inode *inode, const char *fmt, ...)
 				name[0] = 0;
 			else if (len >= sizeof(s_name_buf))
 				name[sizeof(s_name_buf) - 1] = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			name[0] = 0;
 		}
@@ -156,11 +145,7 @@ void ntfs_inode_printk(struct inode *inode, const char *fmt, ...)
 	vaf.fmt = printk_skip_level(fmt);
 	vaf.va = &args;
 
-<<<<<<< HEAD
-	printk("%c%cntfs3: %s: ino=%lx,%s %pV\n", KERN_SOH_ASCII, level,
-=======
 	printk("%c%cntfs3(%s): ino=%lx,%s %pV\n", KERN_SOH_ASCII, level,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	       sb->s_id, inode->i_ino, name ? name : "", &vaf);
 
 	va_end(args);
@@ -279,25 +264,6 @@ enum Opt {
 
 // clang-format off
 static const struct fs_parameter_spec ntfs_fs_parameters[] = {
-<<<<<<< HEAD
-	fsparam_uid("uid",			Opt_uid),
-	fsparam_gid("gid",			Opt_gid),
-	fsparam_u32oct("umask",			Opt_umask),
-	fsparam_u32oct("dmask",			Opt_dmask),
-	fsparam_u32oct("fmask",			Opt_fmask),
-	fsparam_flag_no("sys_immutable",	Opt_immutable),
-	fsparam_flag_no("discard",		Opt_discard),
-	fsparam_flag_no("force",		Opt_force),
-	fsparam_flag_no("sparse",		Opt_sparse),
-	fsparam_flag_no("hidden",		Opt_nohidden),
-	fsparam_flag_no("hide_dot_files",	Opt_hide_dot_files),
-	fsparam_flag_no("windows_names",	Opt_windows_names),
-	fsparam_flag_no("showmeta",		Opt_showmeta),
-	fsparam_flag_no("acl",			Opt_acl),
-	fsparam_string("iocharset",		Opt_iocharset),
-	fsparam_flag_no("prealloc",		Opt_prealloc),
-	fsparam_flag_no("case",		Opt_nocase),
-=======
 	fsparam_uid("uid",		Opt_uid),
 	fsparam_gid("gid",		Opt_gid),
 	fsparam_u32oct("umask",		Opt_umask),
@@ -315,7 +281,6 @@ static const struct fs_parameter_spec ntfs_fs_parameters[] = {
 	fsparam_string("iocharset",	Opt_iocharset),
 	fsparam_flag("prealloc",	Opt_prealloc),
 	fsparam_flag("nocase",		Opt_nocase),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 // clang-format on
@@ -385,30 +350,6 @@ static int ntfs_fs_parse_param(struct fs_context *fc,
 		opts->fmask = 1;
 		break;
 	case Opt_immutable:
-<<<<<<< HEAD
-		opts->sys_immutable = result.negated ? 0 : 1;
-		break;
-	case Opt_discard:
-		opts->discard = result.negated ? 0 : 1;
-		break;
-	case Opt_force:
-		opts->force = result.negated ? 0 : 1;
-		break;
-	case Opt_sparse:
-		opts->sparse = result.negated ? 0 : 1;
-		break;
-	case Opt_nohidden:
-		opts->nohidden = result.negated ? 1 : 0;
-		break;
-	case Opt_hide_dot_files:
-		opts->hide_dot_files = result.negated ? 0 : 1;
-		break;
-	case Opt_windows_names:
-		opts->windows_names = result.negated ? 0 : 1;
-		break;
-	case Opt_showmeta:
-		opts->showmeta = result.negated ? 0 : 1;
-=======
 		opts->sys_immutable = 1;
 		break;
 	case Opt_discard:
@@ -431,7 +372,6 @@ static int ntfs_fs_parse_param(struct fs_context *fc,
 		break;
 	case Opt_showmeta:
 		opts->showmeta = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case Opt_acl:
 		if (!result.negated)
@@ -450,17 +390,10 @@ static int ntfs_fs_parse_param(struct fs_context *fc,
 		param->string = NULL;
 		break;
 	case Opt_prealloc:
-<<<<<<< HEAD
-		opts->prealloc = result.negated ? 0 : 1;
-		break;
-	case Opt_nocase:
-		opts->nocase = result.negated ? 1 : 0;
-=======
 		opts->prealloc = 1;
 		break;
 	case Opt_nocase:
 		opts->nocase = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		/* Should not be here unless we forget add case. */
@@ -1563,18 +1496,10 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
 
 #ifdef __BIG_ENDIAN
 	{
-<<<<<<< HEAD
-		const __le16 *src = sbi->upcase;
-		u16 *dst = sbi->upcase;
-
-		for (i = 0; i < 0x10000; i++)
-			*dst++ = le16_to_cpu(*src++);
-=======
 		u16 *dst = sbi->upcase;
 
 		for (i = 0; i < 0x10000; i++)
 			__swab16s(dst++);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 #endif
 

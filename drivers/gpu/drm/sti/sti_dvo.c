@@ -582,10 +582,6 @@ MODULE_DEVICE_TABLE(of, dvo_of_match);
 struct platform_driver sti_dvo_driver = {
 	.driver = {
 		.name = "sti-dvo",
-<<<<<<< HEAD
-		.owner = THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.of_match_table = dvo_of_match,
 	},
 	.probe = sti_dvo_probe,

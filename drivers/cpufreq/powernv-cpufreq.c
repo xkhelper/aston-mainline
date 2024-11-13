@@ -692,11 +692,7 @@ static void gpstate_timer_handler(struct timer_list *t)
 	}
 
 	/*
-<<<<<<< HEAD
-	 * If PMCR was last updated was using fast_swtich then
-=======
 	 * If PMCR was last updated was using fast_switch then
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * We may have wrong in gpstate->last_lpstate_idx
 	 * value. Hence, read from PMCR to get correct data.
 	 */
@@ -1164,9 +1160,6 @@ static void __exit powernv_cpufreq_exit(void)
 }
 module_exit(powernv_cpufreq_exit);
 
-<<<<<<< HEAD
-=======
 MODULE_DESCRIPTION("cpufreq driver for IBM/OpenPOWER powernv systems");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Vaidyanathan Srinivasan <svaidy at linux.vnet.ibm.com>");

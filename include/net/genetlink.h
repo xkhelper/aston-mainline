@@ -531,20 +531,12 @@ static inline int genlmsg_multicast(const struct genl_family *family,
  * @skb: netlink message as socket buffer
  * @portid: own netlink portid to avoid sending to yourself
  * @group: offset of multicast group in groups array
-<<<<<<< HEAD
- * @flags: allocation flags
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This function must hold the RTNL or rcu_read_lock().
  */
 int genlmsg_multicast_allns(const struct genl_family *family,
 			    struct sk_buff *skb, u32 portid,
-<<<<<<< HEAD
-			    unsigned int group, gfp_t flags);
-=======
 			    unsigned int group);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * genlmsg_unicast - unicast a netlink message

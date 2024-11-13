@@ -11,11 +11,7 @@
 /* Module modprobe variables */
 struct xe_modparam {
 	bool force_execlist;
-<<<<<<< HEAD
-	bool enable_display;
-=======
 	bool probe_display;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 force_vram_bar_size;
 	int guc_log_level;
 	char *guc_firmware_path;

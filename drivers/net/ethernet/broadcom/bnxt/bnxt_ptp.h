@@ -146,13 +146,6 @@ struct bnxt_ptp_cfg {
 };
 
 #if BITS_PER_LONG == 32
-<<<<<<< HEAD
-#define BNXT_READ_TIME64(ptp, dst, src)		\
-do {						\
-	spin_lock_bh(&(ptp)->ptp_lock);		\
-	(dst) = (src);				\
-	spin_unlock_bh(&(ptp)->ptp_lock);	\
-=======
 #define BNXT_READ_TIME64(ptp, dst, src)				\
 do {								\
 	unsigned long flags;					\
@@ -160,7 +153,6 @@ do {								\
 	spin_lock_irqsave(&(ptp)->ptp_lock, flags);		\
 	(dst) = (src);						\
 	spin_unlock_irqrestore(&(ptp)->ptp_lock, flags);	\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 } while (0)
 #else
 #define BNXT_READ_TIME64(ptp, dst, src)		\

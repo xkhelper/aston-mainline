@@ -10,15 +10,6 @@
 #include <linux/bitfield.h>
 #include <linux/i2c.h>
 #include <linux/module.h>
-<<<<<<< HEAD
-#include <linux/power_supply.h>
-#include <linux/regmap.h>
-
-#include <asm/unaligned.h>
-
-/* Nonvolatile registers */
-#define MAX1720X_NRSENSE		0xCF	/* RSense in 10^-5 Ohm */
-=======
 #include <linux/nvmem-provider.h>
 #include <linux/power_supply.h>
 #include <linux/regmap.h>
@@ -29,7 +20,6 @@
 #define MAX1720X_NXTABLE0		0x80
 #define MAX1720X_NRSENSE		0xCF	/* RSense in 10^-5 Ohm */
 #define MAX1720X_NDEVICE_NAME4		0xDF
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* ModelGauge m5 */
 #define MAX172XX_STATUS			0x00	/* Status */
@@ -59,11 +49,8 @@ static const char *const max17205_model = "MAX17205";
 
 struct max1720x_device_info {
 	struct regmap *regmap;
-<<<<<<< HEAD
-=======
 	struct regmap *regmap_nv;
 	struct i2c_client *ancillary;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int rsense;
 };
 
@@ -124,8 +111,6 @@ static const struct regmap_config max1720x_regmap_cfg = {
 	.cache_type = REGCACHE_RBTREE,
 };
 
-<<<<<<< HEAD
-=======
 static const struct regmap_range max1720x_nvmem_allow[] = {
 	regmap_reg_range(MAX1720X_NXTABLE0, MAX1720X_NDEVICE_NAME4),
 };
@@ -254,7 +239,6 @@ static const struct nvmem_cell_info max1720x_nvmem_cells[] = {
 	{ .name = "nDeviceName4",   .offset = 190, .bytes = 2, },
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const enum power_supply_property max1720x_battery_props[] = {
 	POWER_SUPPLY_PROP_PRESENT,
 	POWER_SUPPLY_PROP_CAPACITY,
@@ -398,27 +382,6 @@ static int max1720x_battery_get_property(struct power_supply *psy,
 	return ret;
 }
 
-<<<<<<< HEAD
-static int max1720x_probe_sense_resistor(struct i2c_client *client,
-					 struct max1720x_device_info *info)
-{
-	struct device *dev = &client->dev;
-	struct i2c_client *ancillary;
-	int ret;
-
-	ancillary = i2c_new_ancillary_device(client, "nvmem", 0xb);
-	if (IS_ERR(ancillary)) {
-		dev_err(dev, "Failed to initialize ancillary i2c device\n");
-		return PTR_ERR(ancillary);
-	}
-
-	ret = i2c_smbus_read_word_data(ancillary, MAX1720X_NRSENSE);
-	i2c_unregister_device(ancillary);
-	if (ret < 0)
-		return ret;
-
-	info->rsense = ret;
-=======
 static
 int max1720x_nvmem_reg_read(void *priv, unsigned int off, void *val, size_t len)
 {
@@ -482,21 +445,17 @@ static int max1720x_probe_nvmem(struct i2c_client *client,
 	}
 
 	info->rsense = val;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!info->rsense) {
 		dev_warn(dev, "RSense not calibrated, set 10 mOhms!\n");
 		info->rsense = 1000; /* in regs in 10^-5 */
 	}
 
-<<<<<<< HEAD
-=======
 	nvmem = devm_nvmem_register(dev, &nvmem_config);
 	if (IS_ERR(nvmem)) {
 		dev_err(dev, "Could not register nvmem!");
 		return PTR_ERR(nvmem);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -523,25 +482,15 @@ static int max1720x_probe(struct i2c_client *client)
 
 	psy_cfg.drv_data = info;
 	psy_cfg.fwnode = dev_fwnode(dev);
-<<<<<<< HEAD
-=======
 	i2c_set_clientdata(client, info);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	info->regmap = devm_regmap_init_i2c(client, &max1720x_regmap_cfg);
 	if (IS_ERR(info->regmap))
 		return dev_err_probe(dev, PTR_ERR(info->regmap),
 				     "regmap initialization failed\n");
 
-<<<<<<< HEAD
-	ret = max1720x_probe_sense_resistor(client, info);
-	if (ret)
-		return dev_err_probe(dev, ret,
-				     "Failed to read sense resistor value\n");
-=======
 	ret = max1720x_probe_nvmem(client, info);
 	if (ret)
 		return dev_err_probe(dev, ret, "Failed to probe nvmem\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bat = devm_power_supply_register(dev, &max1720x_bat_desc, &psy_cfg);
 	if (IS_ERR(bat))

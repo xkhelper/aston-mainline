@@ -360,10 +360,7 @@ int snd_motu_create_pcm_devices(struct snd_motu *motu)
 	if (err < 0)
 		return err;
 	pcm->private_data = motu;
-<<<<<<< HEAD
-=======
 	pcm->nonatomic = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	strcpy(pcm->name, motu->card->shortname);
 
 	snd_pcm_set_ops(pcm, SNDRV_PCM_STREAM_CAPTURE, &capture_ops);

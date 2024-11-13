@@ -15,20 +15,11 @@
 #include <linux/slab.h>
 #include <linux/sysfs.h>
 #include <linux/regulator/consumer.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
 
-<<<<<<< HEAD
-#include <linux/platform_data/ad5449.h>
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define AD5449_MAX_CHANNELS		2
 #define AD5449_MAX_VREFS		2
 
@@ -275,10 +266,6 @@ static const char *ad5449_vref_name(struct ad5449 *st, int n)
 
 static int ad5449_spi_probe(struct spi_device *spi)
 {
-<<<<<<< HEAD
-	struct ad5449_platform_data *pdata = spi->dev.platform_data;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct spi_device_id *id = spi_get_device_id(spi);
 	struct iio_dev *indio_dev;
 	struct ad5449 *st;
@@ -316,21 +303,8 @@ static int ad5449_spi_probe(struct spi_device *spi)
 	mutex_init(&st->lock);
 
 	if (st->chip_info->has_ctrl) {
-<<<<<<< HEAD
-		unsigned int ctrl = 0x00;
-		if (pdata) {
-			if (pdata->hardware_clear_to_midscale)
-				ctrl |= AD5449_CTRL_HCLR_TO_MIDSCALE;
-			ctrl |= pdata->sdo_mode << AD5449_CTRL_SDO_OFFSET;
-			st->has_sdo = pdata->sdo_mode != AD5449_SDO_DISABLED;
-		} else {
-			st->has_sdo = true;
-		}
-		ad5449_write(indio_dev, AD5449_CMD_CTRL, ctrl);
-=======
 		st->has_sdo = true;
 		ad5449_write(indio_dev, AD5449_CMD_CTRL, 0x0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = iio_device_register(indio_dev);

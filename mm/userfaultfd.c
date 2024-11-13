@@ -391,11 +391,7 @@ static int mfill_atomic_pte_continue(pmd_t *dst_pmd,
 	struct page *page;
 	int ret;
 
-<<<<<<< HEAD
-	ret = shmem_get_folio(inode, pgoff, &folio, SGP_NOALLOC);
-=======
 	ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Our caller expects us to return -EFAULT if we failed to find folio */
 	if (ret == -ENOENT)
 		ret = -EFAULT;
@@ -1767,8 +1763,6 @@ out:
 	VM_WARN_ON(!moved && !err);
 	return moved ? moved : err;
 }
-<<<<<<< HEAD
-=======
 
 static void userfaultfd_set_vm_flags(struct vm_area_struct *vma,
 				     vm_flags_t flags)
@@ -1937,4 +1931,3 @@ void userfaultfd_release_all(struct mm_struct *mm,
 	mmap_write_unlock(mm);
 	mmput(mm);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

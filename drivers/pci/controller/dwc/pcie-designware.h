@@ -125,8 +125,6 @@
 #define GEN3_RELATED_OFF_GEN3_EQ_DISABLE	BIT(16)
 #define GEN3_RELATED_OFF_RATE_SHADOW_SEL_SHIFT	24
 #define GEN3_RELATED_OFF_RATE_SHADOW_SEL_MASK	GENMASK(25, 24)
-<<<<<<< HEAD
-=======
 #define GEN3_RELATED_OFF_RATE_SHADOW_SEL_16_0GT	0x1
 
 #define GEN3_EQ_CONTROL_OFF			0x8A8
@@ -140,7 +138,6 @@
 #define GEN3_EQ_FMDC_N_EVALS			GENMASK(9, 5)
 #define GEN3_EQ_FMDC_MAX_PRE_CUSROR_DELTA	GENMASK(13, 10)
 #define GEN3_EQ_FMDC_MAX_POST_CUSROR_DELTA	GENMASK(17, 14)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define PCIE_PORT_MULTI_LANE_CTRL	0x8C0
 #define PORT_MLTI_UPCFG_SUPPORT		BIT(7)
@@ -214,8 +211,6 @@
 #define PCIE_PL_CHK_REG_ERR_ADDR			0xB28
 
 /*
-<<<<<<< HEAD
-=======
  * 16.0 GT/s (Gen 4) lane margining register definitions
  */
 #define GEN4_LANE_MARGINING_1_OFF		0xB80
@@ -234,7 +229,6 @@
 #define MARGINING_SAMPLE_RATE_TIMING		GENMASK(13, 8)
 #define MARGINING_SAMPLE_RATE_VOLTAGE		GENMASK(5, 0)
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * iATU Unroll-specific register definitions
  * From 4.80 core version the address translation will be made by unroll
  */
@@ -444,15 +438,10 @@ struct dw_pcie_ops {
 struct dw_pcie {
 	struct device		*dev;
 	void __iomem		*dbi_base;
-<<<<<<< HEAD
-	void __iomem		*dbi_base2;
-	void __iomem		*atu_base;
-=======
 	resource_size_t		dbi_phys_addr;
 	void __iomem		*dbi_base2;
 	void __iomem		*atu_base;
 	resource_size_t		atu_phys_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	size_t			atu_size;
 	u32			num_ib_windows;
 	u32			num_ob_windows;
@@ -465,11 +454,7 @@ struct dw_pcie {
 	u32			type;
 	unsigned long		caps;
 	int			num_lanes;
-<<<<<<< HEAD
-	int			link_gen;
-=======
 	int			max_link_speed;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8			n_fts[2];
 	struct dw_edma_chip	edma;
 	struct clk_bulk_data	app_clks[DW_PCIE_NUM_APP_CLKS];

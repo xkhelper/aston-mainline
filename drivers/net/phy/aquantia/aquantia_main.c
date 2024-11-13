@@ -435,12 +435,9 @@ static int aqr107_set_tunable(struct phy_device *phydev,
 	}
 }
 
-<<<<<<< HEAD
-=======
 #define AQR_FW_WAIT_SLEEP_US	20000
 #define AQR_FW_WAIT_TIMEOUT_US	2000000
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* If we configure settings whilst firmware is still initializing the chip,
  * then these settings may be overwritten. Therefore make sure chip
  * initialization has completed. Use presence of the firmware ID as
@@ -450,13 +447,6 @@ static int aqr107_set_tunable(struct phy_device *phydev,
  */
 int aqr_wait_reset_complete(struct phy_device *phydev)
 {
-<<<<<<< HEAD
-	int val;
-
-	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
-					 VEND1_GLOBAL_FW_ID, val, val != 0,
-					 20000, 2000000, false);
-=======
 	int ret, val;
 
 	ret = read_poll_timeout(phy_read_mmd, val, val != 0,
@@ -470,7 +460,6 @@ int aqr_wait_reset_complete(struct phy_device *phydev)
 	}
 
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void aqr107_chip_info(struct phy_device *phydev)
@@ -500,11 +489,7 @@ static int aqr107_config_init(struct phy_device *phydev)
 {
 	struct aqr107_priv *priv = phydev->priv;
 	u32 led_active_low;
-<<<<<<< HEAD
-	int ret, index = 0;
-=======
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Check that the PHY interface type is compatible */
 	if (phydev->interface != PHY_INTERFACE_MODE_SGMII &&
@@ -531,16 +516,9 @@ static int aqr107_config_init(struct phy_device *phydev)
 
 	/* Restore LED polarity state after reset */
 	for_each_set_bit(led_active_low, &priv->leds_active_low, AQR_MAX_LEDS) {
-<<<<<<< HEAD
-		ret = aqr_phy_led_active_low_set(phydev, index, led_active_low);
-		if (ret)
-			return ret;
-		index++;
-=======
 		ret = aqr_phy_led_active_low_set(phydev, led_active_low, true);
 		if (ret)
 			return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -559,15 +537,6 @@ static int aqcs109_config_init(struct phy_device *phydev)
 	if (!ret)
 		aqr107_chip_info(phydev);
 
-<<<<<<< HEAD
-	/* AQCS109 belongs to a chip family partially supporting 10G and 5G.
-	 * PMA speed ability bits are the same for all members of the family,
-	 * AQCS109 however supports speeds up to 2.5G only.
-	 */
-	phy_set_max_speed(phydev, SPEED_2500);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return aqr107_set_downshift(phydev, MDIO_AN_VEND_PROV_DOWNSHIFT_DFLT);
 }
 
@@ -756,8 +725,6 @@ static int aqr113c_fill_interface_modes(struct phy_device *phydev)
 	return aqr107_fill_interface_modes(phydev);
 }
 
-<<<<<<< HEAD
-=======
 static int aqr115c_get_features(struct phy_device *phydev)
 {
 	unsigned long *supported = phydev->supported;
@@ -783,7 +750,6 @@ static int aqr111_get_features(struct phy_device *phydev)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int aqr113c_config_init(struct phy_device *phydev)
 {
 	int ret;
@@ -820,18 +786,6 @@ static int aqr107_probe(struct phy_device *phydev)
 	return aqr_hwmon_probe(phydev);
 }
 
-<<<<<<< HEAD
-static int aqr111_config_init(struct phy_device *phydev)
-{
-	/* AQR111 reports supporting speed up to 10G,
-	 * however only speeds up to 5G are supported.
-	 */
-	phy_set_max_speed(phydev, SPEED_5000);
-
-	return aqr107_config_init(phydev);
-}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct phy_driver aqr_driver[] = {
 {
@@ -909,10 +863,7 @@ static struct phy_driver aqr_driver[] = {
 	.get_sset_count	= aqr107_get_sset_count,
 	.get_strings	= aqr107_get_strings,
 	.get_stats	= aqr107_get_stats,
-<<<<<<< HEAD
-=======
 	.get_features   = aqr115c_get_features,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.link_change_notify = aqr107_link_change_notify,
 	.led_brightness_set = aqr_phy_led_brightness_set,
 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
@@ -925,11 +876,7 @@ static struct phy_driver aqr_driver[] = {
 	.name		= "Aquantia AQR111",
 	.probe		= aqr107_probe,
 	.get_rate_matching = aqr107_get_rate_matching,
-<<<<<<< HEAD
-	.config_init	= aqr111_config_init,
-=======
 	.config_init	= aqr107_config_init,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config_aneg    = aqr_config_aneg,
 	.config_intr	= aqr_config_intr,
 	.handle_interrupt = aqr_handle_interrupt,
@@ -941,10 +888,7 @@ static struct phy_driver aqr_driver[] = {
 	.get_sset_count	= aqr107_get_sset_count,
 	.get_strings	= aqr107_get_strings,
 	.get_stats	= aqr107_get_stats,
-<<<<<<< HEAD
-=======
 	.get_features   = aqr111_get_features,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.link_change_notify = aqr107_link_change_notify,
 	.led_brightness_set = aqr_phy_led_brightness_set,
 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
@@ -957,11 +901,7 @@ static struct phy_driver aqr_driver[] = {
 	.name		= "Aquantia AQR111B0",
 	.probe		= aqr107_probe,
 	.get_rate_matching = aqr107_get_rate_matching,
-<<<<<<< HEAD
-	.config_init	= aqr111_config_init,
-=======
 	.config_init	= aqr107_config_init,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config_aneg    = aqr_config_aneg,
 	.config_intr	= aqr_config_intr,
 	.handle_interrupt = aqr_handle_interrupt,
@@ -973,10 +913,7 @@ static struct phy_driver aqr_driver[] = {
 	.get_sset_count	= aqr107_get_sset_count,
 	.get_strings	= aqr107_get_strings,
 	.get_stats	= aqr107_get_stats,
-<<<<<<< HEAD
-=======
 	.get_features   = aqr111_get_features,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.link_change_notify = aqr107_link_change_notify,
 	.led_brightness_set = aqr_phy_led_brightness_set,
 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
@@ -1086,11 +1023,7 @@ static struct phy_driver aqr_driver[] = {
 	.name           = "Aquantia AQR114C",
 	.probe          = aqr107_probe,
 	.get_rate_matching = aqr107_get_rate_matching,
-<<<<<<< HEAD
-	.config_init    = aqr111_config_init,
-=======
 	.config_init    = aqr107_config_init,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.config_aneg    = aqr_config_aneg,
 	.config_intr    = aqr_config_intr,
 	.handle_interrupt = aqr_handle_interrupt,
@@ -1102,10 +1035,7 @@ static struct phy_driver aqr_driver[] = {
 	.get_sset_count = aqr107_get_sset_count,
 	.get_strings    = aqr107_get_strings,
 	.get_stats      = aqr107_get_stats,
-<<<<<<< HEAD
-=======
 	.get_features   = aqr111_get_features,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.link_change_notify = aqr107_link_change_notify,
 	.led_brightness_set = aqr_phy_led_brightness_set,
 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,
@@ -1130,10 +1060,7 @@ static struct phy_driver aqr_driver[] = {
 	.get_sset_count = aqr107_get_sset_count,
 	.get_strings    = aqr107_get_strings,
 	.get_stats      = aqr107_get_stats,
-<<<<<<< HEAD
-=======
 	.get_features   = aqr115c_get_features,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.link_change_notify = aqr107_link_change_notify,
 	.led_brightness_set = aqr_phy_led_brightness_set,
 	.led_hw_is_supported = aqr_phy_led_hw_is_supported,

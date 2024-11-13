@@ -1426,11 +1426,7 @@ static const struct dev_pm_ops acp_pm_ops = {
 
 static struct platform_driver acp_dma_driver = {
 	.probe = acp_audio_probe,
-<<<<<<< HEAD
-	.remove_new = acp_audio_remove,
-=======
 	.remove = acp_audio_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = DRV_NAME,
 		.pm = &acp_pm_ops,

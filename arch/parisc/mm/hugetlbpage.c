@@ -40,11 +40,7 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
 		addr = ALIGN(addr, huge_page_size(h));
 
 	/* we need to make sure the colouring is OK */
-<<<<<<< HEAD
-	return arch_get_unmapped_area(file, addr, len, pgoff, flags);
-=======
 	return arch_get_unmapped_area(file, addr, len, pgoff, flags, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 

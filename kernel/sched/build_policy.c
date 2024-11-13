@@ -16,36 +16,25 @@
 #include <linux/sched/clock.h>
 #include <linux/sched/cputime.h>
 #include <linux/sched/hotplug.h>
-<<<<<<< HEAD
-=======
 #include <linux/sched/isolation.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/sched/posix-timers.h>
 #include <linux/sched/rt.h>
 
 #include <linux/cpuidle.h>
 #include <linux/jiffies.h>
-<<<<<<< HEAD
-#include <linux/livepatch.h>
-#include <linux/psi.h>
-=======
 #include <linux/kobject.h>
 #include <linux/livepatch.h>
 #include <linux/pm.h>
 #include <linux/psi.h>
 #include <linux/rhashtable.h>
 #include <linux/seq_buf.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/seqlock_api.h>
 #include <linux/slab.h>
 #include <linux/suspend.h>
 #include <linux/tsacct_kern.h>
 #include <linux/vtime.h>
-<<<<<<< HEAD
-=======
 #include <linux/sysrq.h>
 #include <linux/percpu-rwsem.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <uapi/linux/sched/types.h>
 
@@ -70,11 +59,8 @@
 #include "cputime.c"
 #include "deadline.c"
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_SCHED_CLASS_EXT
 # include "ext.c"
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "syscalls.c"

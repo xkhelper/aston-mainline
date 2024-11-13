@@ -7,15 +7,10 @@
 #include <bpf/btf.h>
 
 #include "autoconf_helper.h"
-<<<<<<< HEAD
-#include "unpriv_helpers.h"
-#include "cap_helpers.h"
-=======
 #include "disasm_helpers.h"
 #include "unpriv_helpers.h"
 #include "cap_helpers.h"
 #include "jit_disasm_helpers.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define str_has_pfx(str, pfx) \
 	(strncmp(str, pfx, __builtin_constant_p(pfx) ? sizeof(pfx) - 1 : strlen(pfx)) == 0)
@@ -25,19 +20,11 @@
 #define TEST_TAG_EXPECT_FAILURE "comment:test_expect_failure"
 #define TEST_TAG_EXPECT_SUCCESS "comment:test_expect_success"
 #define TEST_TAG_EXPECT_MSG_PFX "comment:test_expect_msg="
-<<<<<<< HEAD
-#define TEST_TAG_EXPECT_REGEX_PFX "comment:test_expect_regex="
-#define TEST_TAG_EXPECT_FAILURE_UNPRIV "comment:test_expect_failure_unpriv"
-#define TEST_TAG_EXPECT_SUCCESS_UNPRIV "comment:test_expect_success_unpriv"
-#define TEST_TAG_EXPECT_MSG_PFX_UNPRIV "comment:test_expect_msg_unpriv="
-#define TEST_TAG_EXPECT_REGEX_PFX_UNPRIV "comment:test_expect_regex_unpriv="
-=======
 #define TEST_TAG_EXPECT_XLATED_PFX "comment:test_expect_xlated="
 #define TEST_TAG_EXPECT_FAILURE_UNPRIV "comment:test_expect_failure_unpriv"
 #define TEST_TAG_EXPECT_SUCCESS_UNPRIV "comment:test_expect_success_unpriv"
 #define TEST_TAG_EXPECT_MSG_PFX_UNPRIV "comment:test_expect_msg_unpriv="
 #define TEST_TAG_EXPECT_XLATED_PFX_UNPRIV "comment:test_expect_xlated_unpriv="
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define TEST_TAG_LOG_LEVEL_PFX "comment:test_log_level="
 #define TEST_TAG_PROG_FLAGS_PFX "comment:test_prog_flags="
 #define TEST_TAG_DESCRIPTION_PFX "comment:test_description="
@@ -46,12 +33,9 @@
 #define TEST_TAG_AUXILIARY "comment:test_auxiliary"
 #define TEST_TAG_AUXILIARY_UNPRIV "comment:test_auxiliary_unpriv"
 #define TEST_BTF_PATH "comment:test_btf_path="
-<<<<<<< HEAD
-=======
 #define TEST_TAG_ARCH "comment:test_arch="
 #define TEST_TAG_JITED_PFX "comment:test_jited="
 #define TEST_TAG_JITED_PFX_UNPRIV "comment:test_jited_unpriv="
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Warning: duplicated in bpf_misc.h */
 #define POINTER_VALUE	0xcafe4all
@@ -72,10 +56,6 @@ enum mode {
 
 struct expect_msg {
 	const char *substr; /* substring match */
-<<<<<<< HEAD
-	const char *regex_str; /* regex-based match */
-	regex_t regex;
-=======
 	regex_t regex;
 	bool is_regex;
 	bool on_next_line;
@@ -84,20 +64,14 @@ struct expect_msg {
 struct expected_msgs {
 	struct expect_msg *patterns;
 	size_t cnt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct test_subspec {
 	char *name;
 	bool expect_failure;
-<<<<<<< HEAD
-	struct expect_msg *expect_msgs;
-	size_t expect_msg_cnt;
-=======
 	struct expected_msgs expect_msgs;
 	struct expected_msgs expect_xlated;
 	struct expected_msgs jited;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int retval;
 	bool execute;
 };
@@ -110,10 +84,7 @@ struct test_spec {
 	int log_level;
 	int prog_flags;
 	int mode_mask;
-<<<<<<< HEAD
-=======
 	int arch_mask;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool auxiliary;
 	bool valid;
 };
@@ -138,40 +109,6 @@ void test_loader_fini(struct test_loader *tester)
 	free(tester->log_buf);
 }
 
-<<<<<<< HEAD
-static void free_test_spec(struct test_spec *spec)
-{
-	int i;
-
-	/* Deallocate expect_msgs arrays. */
-	for (i = 0; i < spec->priv.expect_msg_cnt; i++)
-		if (spec->priv.expect_msgs[i].regex_str)
-			regfree(&spec->priv.expect_msgs[i].regex);
-	for (i = 0; i < spec->unpriv.expect_msg_cnt; i++)
-		if (spec->unpriv.expect_msgs[i].regex_str)
-			regfree(&spec->unpriv.expect_msgs[i].regex);
-
-	free(spec->priv.name);
-	free(spec->unpriv.name);
-	free(spec->priv.expect_msgs);
-	free(spec->unpriv.expect_msgs);
-
-	spec->priv.name = NULL;
-	spec->unpriv.name = NULL;
-	spec->priv.expect_msgs = NULL;
-	spec->unpriv.expect_msgs = NULL;
-}
-
-static int push_msg(const char *substr, const char *regex_str, struct test_subspec *subspec)
-{
-	void *tmp;
-	int regcomp_res;
-	char error_msg[100];
-	struct expect_msg *msg;
-
-	tmp = realloc(subspec->expect_msgs,
-		      (1 + subspec->expect_msg_cnt) * sizeof(struct expect_msg));
-=======
 static void free_msgs(struct expected_msgs *msgs)
 {
 	int i;
@@ -268,32 +205,10 @@ static int __push_msg(const char *pattern, bool on_next_line, struct expected_ms
 
 	tmp = realloc(msgs->patterns,
 		      (1 + msgs->cnt) * sizeof(struct expect_msg));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!tmp) {
 		ASSERT_FAIL("failed to realloc memory for messages\n");
 		return -ENOMEM;
 	}
-<<<<<<< HEAD
-	subspec->expect_msgs = tmp;
-	msg = &subspec->expect_msgs[subspec->expect_msg_cnt];
-
-	if (substr) {
-		msg->substr = substr;
-		msg->regex_str = NULL;
-	} else {
-		msg->regex_str = regex_str;
-		msg->substr = NULL;
-		regcomp_res = regcomp(&msg->regex, regex_str, REG_EXTENDED|REG_NEWLINE);
-		if (regcomp_res != 0) {
-			regerror(regcomp_res, &msg->regex, error_msg, sizeof(error_msg));
-			PRINT_FAIL("Regexp compilation error in '%s': '%s'\n",
-				   regex_str, error_msg);
-			return -EINVAL;
-		}
-	}
-
-	subspec->expect_msg_cnt += 1;
-=======
 	msgs->patterns = tmp;
 	msg = &msgs->patterns[msgs->cnt];
 	msg->on_next_line = on_next_line;
@@ -340,7 +255,6 @@ static int push_disasm_msg(const char *regex_str, bool *on_next_line, struct exp
 	if (err)
 		return err;
 	*on_next_line = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -392,8 +306,6 @@ static void update_flags(int *flags, int flag, bool clear)
 		*flags |= flag;
 }
 
-<<<<<<< HEAD
-=======
 /* Matches a string of form '<pfx>[^=]=.*' and returns it's suffix.
  * Used to parse btf_decl_tag values.
  * Such values require unique prefix because compiler does not add
@@ -442,7 +354,6 @@ static int get_current_arch(void)
 	return ARCH_UNKNOWN;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Uses btf_decl_tag attributes to describe the expected test
  * behavior, see bpf_misc.h for detailed description of each attribute
  * and attribute combinations.
@@ -455,10 +366,6 @@ static int parse_test_spec(struct test_loader *tester,
 	const char *description = NULL;
 	bool has_unpriv_result = false;
 	bool has_unpriv_retval = false;
-<<<<<<< HEAD
-	int func_id, i, err = 0;
-	struct btf *btf;
-=======
 	bool unpriv_xlated_on_next_line = true;
 	bool xlated_on_next_line = true;
 	bool unpriv_jit_on_next_line;
@@ -468,7 +375,6 @@ static int parse_test_spec(struct test_loader *tester,
 	u32 arch_mask = 0;
 	struct btf *btf;
 	enum arch arch;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memset(spec, 0, sizeof(*spec));
 
@@ -523,29 +429,6 @@ static int parse_test_spec(struct test_loader *tester,
 		} else if (strcmp(s, TEST_TAG_AUXILIARY_UNPRIV) == 0) {
 			spec->auxiliary = true;
 			spec->mode_mask |= UNPRIV;
-<<<<<<< HEAD
-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_MSG_PFX)) {
-			msg = s + sizeof(TEST_TAG_EXPECT_MSG_PFX) - 1;
-			err = push_msg(msg, NULL, &spec->priv);
-			if (err)
-				goto cleanup;
-			spec->mode_mask |= PRIV;
-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_MSG_PFX_UNPRIV)) {
-			msg = s + sizeof(TEST_TAG_EXPECT_MSG_PFX_UNPRIV) - 1;
-			err = push_msg(msg, NULL, &spec->unpriv);
-			if (err)
-				goto cleanup;
-			spec->mode_mask |= UNPRIV;
-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_REGEX_PFX)) {
-			msg = s + sizeof(TEST_TAG_EXPECT_REGEX_PFX) - 1;
-			err = push_msg(NULL, msg, &spec->priv);
-			if (err)
-				goto cleanup;
-			spec->mode_mask |= PRIV;
-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_REGEX_PFX_UNPRIV)) {
-			msg = s + sizeof(TEST_TAG_EXPECT_REGEX_PFX_UNPRIV) - 1;
-			err = push_msg(NULL, msg, &spec->unpriv);
-=======
 		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_MSG_PFX))) {
 			err = push_msg(msg, &spec->priv.expect_msgs);
 			if (err)
@@ -589,7 +472,6 @@ static int parse_test_spec(struct test_loader *tester,
 		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_XLATED_PFX_UNPRIV))) {
 			err = push_disasm_msg(msg, &unpriv_xlated_on_next_line,
 					      &spec->unpriv.expect_xlated);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err)
 				goto cleanup;
 			spec->mode_mask |= UNPRIV;
@@ -640,8 +522,6 @@ static int parse_test_spec(struct test_loader *tester,
 					goto cleanup;
 				update_flags(&spec->prog_flags, flags, clear);
 			}
-<<<<<<< HEAD
-=======
 		} else if (str_has_pfx(s, TEST_TAG_ARCH)) {
 			val = s + sizeof(TEST_TAG_ARCH) - 1;
 			if (strcmp(val, "X86_64") == 0) {
@@ -659,17 +539,13 @@ static int parse_test_spec(struct test_loader *tester,
 			collect_jit = get_current_arch() == arch;
 			unpriv_jit_on_next_line = true;
 			jit_on_next_line = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (str_has_pfx(s, TEST_BTF_PATH)) {
 			spec->btf_custom_path = s + sizeof(TEST_BTF_PATH) - 1;
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	spec->arch_mask = arch_mask ?: -1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (spec->mode_mask == 0)
 		spec->mode_mask = PRIV;
 
@@ -711,24 +587,12 @@ static int parse_test_spec(struct test_loader *tester,
 			spec->unpriv.execute = spec->priv.execute;
 		}
 
-<<<<<<< HEAD
-		if (!spec->unpriv.expect_msgs) {
-			for (i = 0; i < spec->priv.expect_msg_cnt; i++) {
-				struct expect_msg *msg = &spec->priv.expect_msgs[i];
-
-				err = push_msg(msg->substr, msg->regex_str, &spec->unpriv);
-				if (err)
-					goto cleanup;
-			}
-		}
-=======
 		if (spec->unpriv.expect_msgs.cnt == 0)
 			clone_msgs(&spec->priv.expect_msgs, &spec->unpriv.expect_msgs);
 		if (spec->unpriv.expect_xlated.cnt == 0)
 			clone_msgs(&spec->priv.expect_xlated, &spec->unpriv.expect_xlated);
 		if (spec->unpriv.jited.cnt == 0)
 			clone_msgs(&spec->priv.jited, &spec->unpriv.jited);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	spec->valid = true;
@@ -767,10 +631,6 @@ static void prepare_case(struct test_loader *tester,
 	bpf_program__set_flags(prog, prog_flags | spec->prog_flags);
 
 	tester->log_buf[0] = '\0';
-<<<<<<< HEAD
-	tester->next_match_pos = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void emit_verifier_log(const char *log_buf, bool force)
@@ -780,48 +640,6 @@ static void emit_verifier_log(const char *log_buf, bool force)
 	fprintf(stdout, "VERIFIER LOG:\n=============\n%s=============\n", log_buf);
 }
 
-<<<<<<< HEAD
-static void validate_case(struct test_loader *tester,
-			  struct test_subspec *subspec,
-			  struct bpf_object *obj,
-			  struct bpf_program *prog,
-			  int load_err)
-{
-	int i, j, err;
-	char *match;
-	regmatch_t reg_match[1];
-
-	for (i = 0; i < subspec->expect_msg_cnt; i++) {
-		struct expect_msg *msg = &subspec->expect_msgs[i];
-
-		if (msg->substr) {
-			match = strstr(tester->log_buf + tester->next_match_pos, msg->substr);
-			if (match)
-				tester->next_match_pos = match - tester->log_buf + strlen(msg->substr);
-		} else {
-			err = regexec(&msg->regex,
-				      tester->log_buf + tester->next_match_pos, 1, reg_match, 0);
-			if (err == 0) {
-				match = tester->log_buf + tester->next_match_pos + reg_match[0].rm_so;
-				tester->next_match_pos += reg_match[0].rm_eo;
-			} else {
-				match = NULL;
-			}
-		}
-
-		if (!ASSERT_OK_PTR(match, "expect_msg")) {
-			if (env.verbosity == VERBOSE_NONE)
-				emit_verifier_log(tester->log_buf, true /*force*/);
-			for (j = 0; j <= i; j++) {
-				msg = &subspec->expect_msgs[j];
-				fprintf(stderr, "%s %s: '%s'\n",
-					j < i ? "MATCHED " : "EXPECTED",
-					msg->substr ? "SUBSTR" : " REGEX",
-					msg->substr ?: msg->regex_str);
-			}
-			return;
-		}
-=======
 static void emit_xlated(const char *xlated, bool force)
 {
 	if (!force && env.verbosity == VERBOSE_NONE)
@@ -900,7 +718,6 @@ static void validate_msgs(char *log_buf, struct expected_msgs *msgs,
 		}
 
 		prev_match_line = match_line;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -1028,8 +845,6 @@ static bool should_do_test_run(struct test_spec *spec, struct test_subspec *subs
 	return true;
 }
 
-<<<<<<< HEAD
-=======
 /* Get a disassembly of BPF program after verifier applies all rewrites */
 static int get_xlated_program_text(int prog_fd, char *text, size_t text_sz)
 {
@@ -1061,7 +876,6 @@ out:
 	return err;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* this function is forced noinline and has short generic name to look better
  * in test_progs output (in case of a failure)
  */
@@ -1076,32 +890,23 @@ void run_subtest(struct test_loader *tester,
 {
 	struct test_subspec *subspec = unpriv ? &spec->unpriv : &spec->priv;
 	struct bpf_program *tprog = NULL, *tprog_iter;
-<<<<<<< HEAD
-=======
 	struct bpf_link *link, *links[32] = {};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct test_spec *spec_iter;
 	struct cap_state caps = {};
 	struct bpf_object *tobj;
 	struct bpf_map *map;
 	int retval, err, i;
-<<<<<<< HEAD
-=======
 	int links_cnt = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool should_load;
 
 	if (!test__start_subtest(subspec->name))
 		return;
 
-<<<<<<< HEAD
-=======
 	if ((get_current_arch() & spec->arch_mask) == 0) {
 		test__skip();
 		return;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unpriv) {
 		if (!can_execute_unpriv(tester, spec)) {
 			test__skip();
@@ -1162,11 +967,6 @@ void run_subtest(struct test_loader *tester,
 			goto tobj_cleanup;
 		}
 	}
-<<<<<<< HEAD
-
-	emit_verifier_log(tester->log_buf, false /*force*/);
-	validate_case(tester, subspec, tobj, tprog, err);
-=======
 	emit_verifier_log(tester->log_buf, false /*force*/);
 	validate_msgs(tester->log_buf, &subspec->expect_msgs, emit_verifier_log);
 
@@ -1193,7 +993,6 @@ void run_subtest(struct test_loader *tester,
 		emit_jited(tester->log_buf, false /*force*/);
 		validate_msgs(tester->log_buf, &subspec->jited, emit_jited);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (should_do_test_run(spec, subspec)) {
 		/* For some reason test_verifier executes programs
@@ -1202,8 +1001,6 @@ void run_subtest(struct test_loader *tester,
 		if (restore_capabilities(&caps))
 			goto tobj_cleanup;
 
-<<<<<<< HEAD
-=======
 		/* Do bpf_map__attach_struct_ops() for each struct_ops map.
 		 * This should trigger bpf_struct_ops->reg callback on kernel side.
 		 */
@@ -1224,7 +1021,6 @@ void run_subtest(struct test_loader *tester,
 			links[links_cnt++] = link;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (tester->pre_execution_cb) {
 			err = tester->pre_execution_cb(tobj);
 			if (err) {
@@ -1239,11 +1035,6 @@ void run_subtest(struct test_loader *tester,
 			PRINT_FAIL("Unexpected retval: %d != %d\n", retval, subspec->retval);
 			goto tobj_cleanup;
 		}
-<<<<<<< HEAD
-	}
-
-tobj_cleanup:
-=======
 		/* redo bpf_map__attach_struct_ops for each test */
 		while (links_cnt > 0)
 			bpf_link__destroy(links[--links_cnt]);
@@ -1252,7 +1043,6 @@ tobj_cleanup:
 tobj_cleanup:
 	while (links_cnt > 0)
 		bpf_link__destroy(links[--links_cnt]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bpf_object__close(tobj);
 subtest_cleanup:
 	test__end_subtest();

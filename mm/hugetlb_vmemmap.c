@@ -43,11 +43,8 @@ struct vmemmap_remap_walk {
 #define VMEMMAP_SPLIT_NO_TLB_FLUSH	BIT(0)
 /* Skip the TLB flush when we remap the PTE */
 #define VMEMMAP_REMAP_NO_TLB_FLUSH	BIT(1)
-<<<<<<< HEAD
-=======
 /* synchronize_rcu() to avoid writes from page_ref_add_unless() */
 #define VMEMMAP_SYNCHRONIZE_RCU		BIT(2)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		flags;
 };
 
@@ -462,12 +459,9 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
 	if (!folio_test_hugetlb_vmemmap_optimized(folio))
 		return 0;
 
-<<<<<<< HEAD
-=======
 	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
 		synchronize_rcu();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
 	vmemmap_reuse	= vmemmap_start;
 	vmemmap_start	+= HUGETLB_VMEMMAP_RESERVE_SIZE;
@@ -500,14 +494,7 @@ static int __hugetlb_vmemmap_restore_folio(const struct hstate *h,
  */
 int hugetlb_vmemmap_restore_folio(const struct hstate *h, struct folio *folio)
 {
-<<<<<<< HEAD
-	/* avoid writes from page_ref_add_unless() while unfolding vmemmap */
-	synchronize_rcu();
-
-	return __hugetlb_vmemmap_restore_folio(h, folio, 0);
-=======
 	return __hugetlb_vmemmap_restore_folio(h, folio, VMEMMAP_SYNCHRONIZE_RCU);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -530,16 +517,6 @@ long hugetlb_vmemmap_restore_folios(const struct hstate *h,
 	struct folio *folio, *t_folio;
 	long restored = 0;
 	long ret = 0;
-<<<<<<< HEAD
-
-	/* avoid writes from page_ref_add_unless() while unfolding vmemmap */
-	synchronize_rcu();
-
-	list_for_each_entry_safe(folio, t_folio, folio_list, lru) {
-		if (folio_test_hugetlb_vmemmap_optimized(folio)) {
-			ret = __hugetlb_vmemmap_restore_folio(h, folio,
-							      VMEMMAP_REMAP_NO_TLB_FLUSH);
-=======
 	unsigned long flags = VMEMMAP_REMAP_NO_TLB_FLUSH | VMEMMAP_SYNCHRONIZE_RCU;
 
 	list_for_each_entry_safe(folio, t_folio, folio_list, lru) {
@@ -548,7 +525,6 @@ long hugetlb_vmemmap_restore_folios(const struct hstate *h,
 			/* only need to synchronize_rcu() once for each batch */
 			flags &= ~VMEMMAP_SYNCHRONIZE_RCU;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (ret)
 				break;
 			restored++;
@@ -596,12 +572,9 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
 		return ret;
 
 	static_branch_inc(&hugetlb_optimize_vmemmap_key);
-<<<<<<< HEAD
-=======
 
 	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
 		synchronize_rcu();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Very Subtle
 	 * If VMEMMAP_REMAP_NO_TLB_FLUSH is set, TLB flushing is not performed
@@ -649,14 +622,7 @@ void hugetlb_vmemmap_optimize_folio(const struct hstate *h, struct folio *folio)
 {
 	LIST_HEAD(vmemmap_pages);
 
-<<<<<<< HEAD
-	/* avoid writes from page_ref_add_unless() while folding vmemmap */
-	synchronize_rcu();
-
-	__hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages, 0);
-=======
 	__hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages, VMEMMAP_SYNCHRONIZE_RCU);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free_vmemmap_page_list(&vmemmap_pages);
 }
 
@@ -683,10 +649,7 @@ void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_l
 {
 	struct folio *folio;
 	LIST_HEAD(vmemmap_pages);
-<<<<<<< HEAD
-=======
 	unsigned long flags = VMEMMAP_REMAP_NO_TLB_FLUSH | VMEMMAP_SYNCHRONIZE_RCU;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	list_for_each_entry(folio, folio_list, lru) {
 		int ret = hugetlb_vmemmap_split_folio(h, folio);
@@ -703,23 +666,12 @@ void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_l
 
 	flush_tlb_all();
 
-<<<<<<< HEAD
-	/* avoid writes from page_ref_add_unless() while folding vmemmap */
-	synchronize_rcu();
-
-	list_for_each_entry(folio, folio_list, lru) {
-		int ret;
-
-		ret = __hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages,
-						       VMEMMAP_REMAP_NO_TLB_FLUSH);
-=======
 	list_for_each_entry(folio, folio_list, lru) {
 		int ret;
 
 		ret = __hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages, flags);
 		/* only need to synchronize_rcu() once for each batch */
 		flags &= ~VMEMMAP_SYNCHRONIZE_RCU;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/*
 		 * Pages to be freed may have been accumulated.  If we
@@ -733,12 +685,7 @@ void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_l
 			flush_tlb_all();
 			free_vmemmap_page_list(&vmemmap_pages);
 			INIT_LIST_HEAD(&vmemmap_pages);
-<<<<<<< HEAD
-			__hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages,
-							 VMEMMAP_REMAP_NO_TLB_FLUSH);
-=======
 			__hugetlb_vmemmap_optimize_folio(h, folio, &vmemmap_pages, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 

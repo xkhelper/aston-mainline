@@ -591,11 +591,8 @@ bool cm_helper_translate_curve_to_degamma_hw_format(
 				i += increment) {
 			if (j == hw_points - 1)
 				break;
-<<<<<<< HEAD
-=======
 			if (i >= TRANSFER_FUNC_POINTS)
 				return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];

@@ -810,11 +810,6 @@ void mwifiex_update_rxreor_flags(struct mwifiex_adapter *adapter, u8 flags)
 
 	for (i = 0; i < adapter->priv_num; i++) {
 		priv = adapter->priv[i];
-<<<<<<< HEAD
-		if (!priv)
-			continue;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		spin_lock_bh(&priv->rx_reorder_tbl_lock);
 		list_for_each_entry(tbl, &priv->rx_reorder_tbl_ptr, list)
@@ -837,11 +832,6 @@ static void mwifiex_update_ampdu_rxwinsize(struct mwifiex_adapter *adapter,
 	dev_dbg(adapter->dev, "Update rxwinsize %d\n", coex_flag);
 
 	for (i = 0; i < adapter->priv_num; i++) {
-<<<<<<< HEAD
-		if (!adapter->priv[i])
-			continue;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		priv = adapter->priv[i];
 		rx_win_size = priv->add_ba_param.rx_win_size;
 		if (coex_flag) {
@@ -888,19 +878,6 @@ void mwifiex_coex_ampdu_rxwinsize(struct mwifiex_adapter *adapter)
 	u8 count = 0;
 
 	for (i = 0; i < adapter->priv_num; i++) {
-<<<<<<< HEAD
-		if (adapter->priv[i]) {
-			priv = adapter->priv[i];
-			if (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_STA) {
-				if (priv->media_connected)
-					count++;
-			}
-			if (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_UAP) {
-				if (priv->bss_started)
-					count++;
-			}
-		}
-=======
 		priv = adapter->priv[i];
 		if (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_STA) {
 			if (priv->media_connected)
@@ -911,7 +888,6 @@ void mwifiex_coex_ampdu_rxwinsize(struct mwifiex_adapter *adapter)
 				count++;
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (count >= MWIFIEX_BSS_COEX_COUNT)
 			break;
 	}

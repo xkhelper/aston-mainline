@@ -5,17 +5,10 @@
  * Inspired by the older BMP085 driver drivers/misc/bmp085-spi.c
  */
 #include <linux/bits.h>
-<<<<<<< HEAD
-#include <linux/module.h>
-#include <linux/spi/spi.h>
-#include <linux/err.h>
-#include <linux/regmap.h>
-=======
 #include <linux/err.h>
 #include <linux/module.h>
 #include <linux/regmap.h>
 #include <linux/spi/spi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "bmp280.h"
 
@@ -47,21 +40,10 @@ static int bmp380_regmap_spi_read(void *context, const void *reg,
 				  size_t reg_size, void *val, size_t val_size)
 {
 	struct spi_device *spi = to_spi_device(context);
-<<<<<<< HEAD
-	u8 rx_buf[4];
-	ssize_t status;
-
-	/*
-	 * Maximum number of consecutive bytes read for a temperature or
-	 * pressure measurement is 3.
-	 */
-	if (val_size > 3)
-=======
 	u8 rx_buf[BME280_BURST_READ_BYTES + 1];
 	ssize_t status;
 
 	if (val_size > BME280_BURST_READ_BYTES)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	/*
@@ -78,22 +60,14 @@ static int bmp380_regmap_spi_read(void *context, const void *reg,
 	return 0;
 }
 
-<<<<<<< HEAD
-static struct regmap_bus bmp280_regmap_bus = {
-=======
 static const struct regmap_bus bmp280_regmap_bus = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write = bmp280_regmap_spi_write,
 	.read = bmp280_regmap_spi_read,
 	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
 	.val_format_endian_default = REGMAP_ENDIAN_BIG,
 };
 
-<<<<<<< HEAD
-static struct regmap_bus bmp380_regmap_bus = {
-=======
 static const struct regmap_bus bmp380_regmap_bus = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write = bmp280_regmap_spi_write,
 	.read = bmp380_regmap_spi_read,
 	.read_flag_mask = BIT(7),
@@ -105,11 +79,7 @@ static int bmp280_spi_probe(struct spi_device *spi)
 {
 	const struct spi_device_id *id = spi_get_device_id(spi);
 	const struct bmp280_chip_info *chip_info;
-<<<<<<< HEAD
-	struct regmap_bus *bmp_regmap_bus;
-=======
 	struct regmap_bus const *bmp_regmap_bus;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct regmap *regmap;
 	int ret;
 

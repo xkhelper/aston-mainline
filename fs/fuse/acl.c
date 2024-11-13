@@ -12,10 +12,6 @@
 #include <linux/posix_acl_xattr.h>
 
 static struct posix_acl *__fuse_get_acl(struct fuse_conn *fc,
-<<<<<<< HEAD
-					struct mnt_idmap *idmap,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					struct inode *inode, int type, bool rcu)
 {
 	int size;
@@ -77,11 +73,7 @@ struct posix_acl *fuse_get_acl(struct mnt_idmap *idmap,
 	if (fuse_no_acl(fc, inode))
 		return ERR_PTR(-EOPNOTSUPP);
 
-<<<<<<< HEAD
-	return __fuse_get_acl(fc, idmap, inode, type, false);
-=======
 	return __fuse_get_acl(fc, inode, type, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 struct posix_acl *fuse_get_inode_acl(struct inode *inode, int type, bool rcu)
@@ -97,12 +89,7 @@ struct posix_acl *fuse_get_inode_acl(struct inode *inode, int type, bool rcu)
 	 */
 	if (!fc->posix_acl)
 		return NULL;
-<<<<<<< HEAD
-
-	return __fuse_get_acl(fc, &nop_mnt_idmap, inode, type, rcu);
-=======
 	return __fuse_get_acl(fc,  inode, type, rcu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int fuse_set_acl(struct mnt_idmap *idmap, struct dentry *dentry,
@@ -157,13 +144,8 @@ int fuse_set_acl(struct mnt_idmap *idmap, struct dentry *dentry,
 		 * be stripped.
 		 */
 		if (fc->posix_acl &&
-<<<<<<< HEAD
-		    !in_group_or_capable(&nop_mnt_idmap, inode,
-					 i_gid_into_vfsgid(&nop_mnt_idmap, inode)))
-=======
 		    !in_group_or_capable(idmap, inode,
 					 i_gid_into_vfsgid(idmap, inode)))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			extra_flags |= FUSE_SETXATTR_ACL_KILL_SGID;
 
 		ret = fuse_setxattr(inode, name, value, size, 0, extra_flags);

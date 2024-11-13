@@ -68,11 +68,8 @@ bool __pure glob_match(char const *pat, char const *str)
 			back_str = --str;	/* Allow zero-length match */
 			break;
 		case '[': {	/* Character class */
-<<<<<<< HEAD
-=======
 			if (c == '\0')	/* No possible match */
 				return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bool match = false, inverted = (*pat == '!');
 			char const *class = pat + inverted;
 			unsigned char a = *class++;

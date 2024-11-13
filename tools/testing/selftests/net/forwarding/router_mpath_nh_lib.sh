@@ -117,8 +117,6 @@ __nh_stats_test_v6()
 			       $MZ -6 $h1 -A 2001:db8:1::2 -B 2001:db8:2::2
 	sysctl_restore net.ipv6.fib_multipath_hash_policy
 }
-<<<<<<< HEAD
-=======
 
 check_nhgw16()
 {
@@ -132,4 +130,3 @@ check_nhgw16()
 	fi
 	ip nexthop del id 9999 ||:
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

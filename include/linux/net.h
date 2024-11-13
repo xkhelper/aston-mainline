@@ -322,8 +322,6 @@ static inline bool sendpage_ok(struct page *page)
 	return !PageSlab(page) && page_count(page) >= 1;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Check sendpage_ok on contiguous pages.
  */
@@ -343,7 +341,6 @@ static inline bool sendpages_ok(struct page *page, size_t len, size_t offset)
 	return true;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int kernel_sendmsg(struct socket *sock, struct msghdr *msg, struct kvec *vec,
 		   size_t num, size_t len);
 int kernel_sendmsg_locked(struct sock *sk, struct msghdr *msg,

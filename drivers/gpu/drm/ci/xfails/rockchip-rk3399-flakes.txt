@@ -1,11 +1,4 @@
 # Board Name: rk3399-gru-kevin
-<<<<<<< HEAD
-# Bug Report: https://lore.kernel.org/dri-devel/5cc34a8b-c1fa-4744-9031-2d33ecf41011@collabora.com/T/#u
-# IGT Version: 1.28-g0df7b9b97
-# Linux Version: 6.9.0-rc7
-# Failure Rate: 50
-panfrost_submit@pan-unhandled-pagefault
-=======
 # Bug Report: https://lore.kernel.org/linux-rockchip/3e267d0c-fde4-4533-b001-6ab7d7c03546@collabora.com/T/#u
 # Failure Rate: 50
 # IGT Version: 1.28-gf13702b8e
@@ -53,4 +46,3 @@ kms_setmode@basic
 # IGT Version: 1.28-gf13702b8e
 # Linux Version: 6.10.0-rc5
 kms_bw@connected-linear-tiling-1-displays-2560x1440p
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

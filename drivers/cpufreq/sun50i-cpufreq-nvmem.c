@@ -146,11 +146,7 @@ static bool dt_has_supported_hw(void)
 		return false;
 
 	for_each_child_of_node_scoped(np, opp) {
-<<<<<<< HEAD
-		if (of_find_property(opp, "opp-supported-hw", NULL)) {
-=======
 		if (of_property_present(opp, "opp-supported-hw")) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			has_opp_supported_hw = true;
 			break;
 		}

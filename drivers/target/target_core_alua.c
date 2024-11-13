@@ -19,11 +19,7 @@
 #include <linux/file.h>
 #include <linux/fs.h>
 #include <scsi/scsi_proto.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <target/target_core_base.h>
 #include <target/target_core_backend.h>

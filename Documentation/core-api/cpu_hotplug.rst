@@ -737,14 +737,9 @@ can process the event further.
 
 When changes to the CPUs in the system occur, the sysfs file
 /sys/devices/system/cpu/crash_hotplug contains '1' if the kernel
-<<<<<<< HEAD
-updates the kdump capture kernel list of CPUs itself (via elfcorehdr),
-or '0' if userspace must update the kdump capture kernel list of CPUs.
-=======
 updates the kdump capture kernel list of CPUs itself (via elfcorehdr and
 other relevant kexec segment), or '0' if userspace must update the kdump
 capture kernel list of CPUs.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 The availability depends on the CONFIG_HOTPLUG_CPU kernel configuration
 option.
@@ -756,14 +751,9 @@ file can be used in a udev rule as follows:
  SUBSYSTEM=="cpu", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
 
 For a CPU hot un/plug event, if the architecture supports kernel updates
-<<<<<<< HEAD
-of the elfcorehdr (which contains the list of CPUs), then the rule skips
-the unload-then-reload of the kdump capture kernel.
-=======
 of the elfcorehdr (which contains the list of CPUs) and other relevant
 kexec segments, then the rule skips the unload-then-reload of the kdump
 capture kernel.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Kernel Inline Documentations Reference
 ======================================

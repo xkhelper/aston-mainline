@@ -1553,11 +1553,7 @@ static void af9013_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id af9013_id_table[] = {
-<<<<<<< HEAD
-	{"af9013", 0},
-=======
 	{ "af9013" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, af9013_id_table);

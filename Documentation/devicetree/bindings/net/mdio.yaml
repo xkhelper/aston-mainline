@@ -19,11 +19,7 @@ description:
 
 properties:
   $nodename:
-<<<<<<< HEAD
-    pattern: "^mdio(@.*)?"
-=======
     pattern: '^mdio(-(bus|external))?(@.+|-([0-9]+))?$'
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   "#address-cells":
     const: 1

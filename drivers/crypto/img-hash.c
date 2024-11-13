@@ -987,45 +987,23 @@ static int img_hash_probe(struct platform_device *pdev)
 	}
 	dev_dbg(dev, "using IRQ channel %d\n", irq);
 
-<<<<<<< HEAD
-	hdev->hash_clk = devm_clk_get(&pdev->dev, "hash");
-=======
 	hdev->hash_clk = devm_clk_get_enabled(&pdev->dev, "hash");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(hdev->hash_clk)) {
 		dev_err(dev, "clock initialization failed.\n");
 		err = PTR_ERR(hdev->hash_clk);
 		goto res_err;
 	}
 
-<<<<<<< HEAD
-	hdev->sys_clk = devm_clk_get(&pdev->dev, "sys");
-=======
 	hdev->sys_clk = devm_clk_get_enabled(&pdev->dev, "sys");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(hdev->sys_clk)) {
 		dev_err(dev, "clock initialization failed.\n");
 		err = PTR_ERR(hdev->sys_clk);
 		goto res_err;
 	}
 
-<<<<<<< HEAD
-	err = clk_prepare_enable(hdev->hash_clk);
-	if (err)
-		goto res_err;
-
-	err = clk_prepare_enable(hdev->sys_clk);
-	if (err)
-		goto clk_err;
-
-	err = img_hash_dma_init(hdev);
-	if (err)
-		goto dma_err;
-=======
 	err = img_hash_dma_init(hdev);
 	if (err)
 		goto res_err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_dbg(dev, "using %s for DMA transfers\n",
 		dma_chan_name(hdev->dma_lch));
@@ -1046,13 +1024,6 @@ err_algs:
 	list_del(&hdev->list);
 	spin_unlock(&img_hash.lock);
 	dma_release_channel(hdev->dma_lch);
-<<<<<<< HEAD
-dma_err:
-	clk_disable_unprepare(hdev->sys_clk);
-clk_err:
-	clk_disable_unprepare(hdev->hash_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 res_err:
 	tasklet_kill(&hdev->done_task);
 	tasklet_kill(&hdev->dma_task);
@@ -1075,12 +1046,6 @@ static void img_hash_remove(struct platform_device *pdev)
 	tasklet_kill(&hdev->dma_task);
 
 	dma_release_channel(hdev->dma_lch);
-<<<<<<< HEAD
-
-	clk_disable_unprepare(hdev->hash_clk);
-	clk_disable_unprepare(hdev->sys_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #ifdef CONFIG_PM_SLEEP

@@ -1954,11 +1954,8 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
 	list_del_rcu(&ndp->node);
 	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
 
-<<<<<<< HEAD
-=======
 	disable_work_sync(&ndp->work);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(ndp);
 }
 EXPORT_SYMBOL_GPL(ncsi_unregister_dev);

@@ -4,11 +4,7 @@
  * Copyright (C) 2023 Ideas on Board Oy
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/clk.h>
 #include <linux/delay.h>
@@ -1507,11 +1503,7 @@ static int __thp7312_flash_reg_read(struct thp7312_device *thp7312,
 
 	msgs[0].addr = client->addr;
 	msgs[0].flags = 0;
-<<<<<<< HEAD
-	msgs[0].len = sizeof(thp7312_cmd_read_reg),
-=======
 	msgs[0].len = sizeof(thp7312_cmd_read_reg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	msgs[0].buf = (u8 *)thp7312_cmd_read_reg;
 
 	msgs[1].addr = client->addr;

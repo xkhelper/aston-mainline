@@ -62,11 +62,7 @@ static int nfs_superblock_set_dummy_root(struct super_block *sb, struct inode *i
 }
 
 /*
-<<<<<<< HEAD
- * get an NFS2/NFS3 root dentry from the root filehandle
-=======
  * get a root dentry from the root filehandle
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int nfs_get_root(struct super_block *s, struct fs_context *fc)
 {

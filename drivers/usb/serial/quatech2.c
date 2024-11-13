@@ -9,11 +9,7 @@
  *
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/errno.h>
 #include <linux/slab.h>
 #include <linux/tty.h>
@@ -928,10 +924,6 @@ write_out:
 
 static struct usb_serial_driver qt2_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner = THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name = "quatech-serial",
 	},
 	.description	     = DRIVER_DESC,

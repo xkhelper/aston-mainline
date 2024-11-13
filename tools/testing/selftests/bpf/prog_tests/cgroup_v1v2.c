@@ -9,12 +9,6 @@
 
 static int run_test(int cgroup_fd, int server_fd, bool classid)
 {
-<<<<<<< HEAD
-	struct network_helper_opts opts = {
-		.must_fail = true,
-	};
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct connect4_dropper *skel;
 	int fd, err = 0;
 
@@ -35,13 +29,6 @@ static int run_test(int cgroup_fd, int server_fd, bool classid)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	fd = connect_to_fd_opts(server_fd, SOCK_STREAM, &opts);
-	if (fd < 0)
-		err = -1;
-	else
-		close(fd);
-=======
 	errno = 0;
 	fd = connect_to_fd_opts(server_fd, NULL);
 	if (fd >= 0) {
@@ -52,7 +39,6 @@ static int run_test(int cgroup_fd, int server_fd, bool classid)
 		log_err("Unexpected errno from connect to server");
 		err = -1;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	connect4_dropper__destroy(skel);
 	return err;
@@ -68,11 +54,7 @@ void test_cgroup_v1v2(void)
 	server_fd = start_server(AF_INET, SOCK_STREAM, NULL, port, 0);
 	if (!ASSERT_GE(server_fd, 0, "server_fd"))
 		return;
-<<<<<<< HEAD
-	client_fd = connect_to_fd_opts(server_fd, SOCK_STREAM, &opts);
-=======
 	client_fd = connect_to_fd_opts(server_fd, &opts);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ASSERT_GE(client_fd, 0, "client_fd")) {
 		close(server_fd);
 		return;

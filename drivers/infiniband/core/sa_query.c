@@ -1420,11 +1420,7 @@ enum opa_pr_supported {
 /*
  * opa_pr_query_possible - Check if current PR query can be an OPA query.
  *
-<<<<<<< HEAD
- * Retuns PR_NOT_SUPPORTED if a path record query is not
-=======
  * Returns PR_NOT_SUPPORTED if a path record query is not
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * possible, PR_OPA_SUPPORTED if an OPA path record query
  * is possible and PR_IB_SUPPORTED if an IB path record
  * query is possible.

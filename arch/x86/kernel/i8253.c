@@ -8,10 +8,7 @@
 #include <linux/timex.h>
 #include <linux/i8253.h>
 
-<<<<<<< HEAD
-=======
 #include <asm/hypervisor.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <asm/apic.h>
 #include <asm/hpet.h>
 #include <asm/time.h>
@@ -43,11 +40,6 @@ static bool __init use_pit(void)
 
 bool __init pit_timer_init(void)
 {
-<<<<<<< HEAD
-	if (!use_pit())
-		return false;
-
-=======
 	if (!use_pit()) {
 		/*
 		 * Don't just ignore the PIT. Ensure it's stopped, because
@@ -57,7 +49,6 @@ bool __init pit_timer_init(void)
 		clockevent_i8253_disable();
 		return false;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	clockevent_i8253_init(true);
 	global_clock_event = &i8253_clockevent;
 	return true;

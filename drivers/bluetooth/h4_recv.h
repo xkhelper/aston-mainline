@@ -6,11 +6,7 @@
  *  Copyright (C) 2015-2018  Intel Corporation
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct h4_recv_pkt {
 	u8  type;	/* Packet type */
@@ -42,8 +38,6 @@ struct h4_recv_pkt {
 	.lsize = 1, \
 	.maxlen = HCI_MAX_EVENT_SIZE
 
-<<<<<<< HEAD
-=======
 #define H4_RECV_ISO \
 	.type = HCI_ISODATA_PKT, \
 	.hlen = HCI_ISO_HDR_SIZE, \
@@ -51,7 +45,6 @@ struct h4_recv_pkt {
 	.lsize = 2, \
 	.maxlen = HCI_MAX_FRAME_SIZE
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline struct sk_buff *h4_recv_buf(struct hci_dev *hdev,
 					  struct sk_buff *skb,
 					  const unsigned char *buffer,

@@ -22,11 +22,8 @@
 #include <linux/percpu.h>
 #include <linux/notifier.h>
 #include <linux/refcount.h>
-<<<<<<< HEAD
-=======
 #include <linux/ip.h>
 #include <linux/in_route.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct fib_config {
 	u8			fc_dst_len;
@@ -439,14 +436,11 @@ static inline bool fib4_rules_early_flow_dissect(struct net *net,
 
 #endif /* CONFIG_IP_MULTIPLE_TABLES */
 
-<<<<<<< HEAD
-=======
 static inline bool fib_dscp_masked_match(dscp_t dscp, const struct flowi4 *fl4)
 {
 	return dscp == inet_dsfield_to_dscp(RT_TOS(fl4->flowi4_tos));
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Exported by fib_frontend.c */
 extern const struct nla_policy rtm_ipv4_policy[];
 void ip_fib_init(void);

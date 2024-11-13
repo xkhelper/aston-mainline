@@ -34,10 +34,7 @@
 #include <linux/compat.h>
 #include <linux/jhash.h>
 #include <linux/pagemap.h>
-<<<<<<< HEAD
-=======
 #include <linux/debugfs.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/plist.h>
 #include <linux/memblock.h>
 #include <linux/fault-inject.h>

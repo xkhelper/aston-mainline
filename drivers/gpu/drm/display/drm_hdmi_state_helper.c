@@ -521,11 +521,6 @@ int drm_atomic_helper_connector_hdmi_check(struct drm_connector *connector,
 }
 EXPORT_SYMBOL(drm_atomic_helper_connector_hdmi_check);
 
-<<<<<<< HEAD
-#define HDMI_MAX_INFOFRAME_SIZE		29
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int clear_device_infoframe(struct drm_connector *connector,
 				  enum hdmi_infoframe_type type)
 {
@@ -566,11 +561,7 @@ static int write_device_infoframe(struct drm_connector *connector,
 {
 	const struct drm_connector_hdmi_funcs *funcs = connector->hdmi.funcs;
 	struct drm_device *dev = connector->dev;
-<<<<<<< HEAD
-	u8 buffer[HDMI_MAX_INFOFRAME_SIZE];
-=======
 	u8 buffer[HDMI_INFOFRAME_SIZE(MAX)];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 	int len;
 

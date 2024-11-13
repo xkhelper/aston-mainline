@@ -72,8 +72,6 @@ xfs_exchrange_estimate(
 	return error;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Check that file2's metadata agree with the snapshot that we took for the
  * range commit request.
@@ -102,7 +100,6 @@ xfs_exchrange_check_freshness(
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define QRETRY_IP1	(0x1)
 #define QRETRY_IP2	(0x2)
 
@@ -638,15 +635,12 @@ xfs_exchrange_prep(
 	if (error || fxr->length == 0)
 		return error;
 
-<<<<<<< HEAD
-=======
 	if (fxr->flags & __XFS_EXCHANGE_RANGE_CHECK_FRESH2) {
 		error = xfs_exchrange_check_freshness(fxr, ip2);
 		if (error)
 			return error;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Attach dquots to both inodes before changing block maps. */
 	error = xfs_qm_dqattach(ip2);
 	if (error)
@@ -759,12 +753,8 @@ xfs_exchange_range(
 	if (fxr->file1->f_path.mnt != fxr->file2->f_path.mnt)
 		return -EXDEV;
 
-<<<<<<< HEAD
-	if (fxr->flags & ~XFS_EXCHANGE_RANGE_ALL_FLAGS)
-=======
 	if (fxr->flags & ~(XFS_EXCHANGE_RANGE_ALL_FLAGS |
 			 __XFS_EXCHANGE_RANGE_CHECK_FRESH2))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	/* Userspace requests only honored for regular files. */
@@ -839,11 +829,6 @@ xfs_ioc_exchange_range(
 	fxr.flags		= args.flags;
 
 	file1 = fdget(args.file1_fd);
-<<<<<<< HEAD
-	if (!file1.file)
-		return -EBADF;
-	fxr.file1 = file1.file;
-=======
 	if (!fd_file(file1))
 		return -EBADF;
 	fxr.file1 = fd_file(file1);
@@ -953,7 +938,6 @@ xfs_ioc_commit_range(
 	if (fd_empty(file1))
 		return -EBADF;
 	fxr.file1 = fd_file(file1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	error = xfs_exchange_range(&fxr);
 	fdput(file1);

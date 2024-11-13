@@ -125,11 +125,7 @@ static int regulator_range_selector_to_index(struct regulator_dev *rdev,
  *
  * Regulators that use regmap for their register I/O and use pickable
  * ranges can set the vsel_reg, vsel_mask, vsel_range_reg and vsel_range_mask
-<<<<<<< HEAD
- * fields in their descriptor and then use this as their get_voltage_vsel
-=======
  * fields in their descriptor and then use this as their get_voltage_sel
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * operation, saving some code.
  */
 int regulator_get_voltage_sel_pickable_regmap(struct regulator_dev *rdev)
@@ -199,11 +195,7 @@ static int write_separate_vsel_and_range(struct regulator_dev *rdev,
  *
  * Regulators that use regmap for their register I/O and use pickable
  * ranges can set the vsel_reg, vsel_mask, vsel_range_reg and vsel_range_mask
-<<<<<<< HEAD
- * fields in their descriptor and then use this as their set_voltage_vsel
-=======
  * fields in their descriptor and then use this as their set_voltage_sel
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * operation, saving some code.
  */
 int regulator_set_voltage_sel_pickable_regmap(struct regulator_dev *rdev,
@@ -258,11 +250,7 @@ EXPORT_SYMBOL_GPL(regulator_set_voltage_sel_pickable_regmap);
  *
  * Regulators that use regmap for their register I/O can set the
  * vsel_reg and vsel_mask fields in their descriptor and then use this
-<<<<<<< HEAD
- * as their get_voltage_vsel operation, saving some code.
-=======
  * as their get_voltage_sel operation, saving some code.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int regulator_get_voltage_sel_regmap(struct regulator_dev *rdev)
 {
@@ -288,11 +276,7 @@ EXPORT_SYMBOL_GPL(regulator_get_voltage_sel_regmap);
  *
  * Regulators that use regmap for their register I/O can set the
  * vsel_reg and vsel_mask fields in their descriptor and then use this
-<<<<<<< HEAD
- * as their set_voltage_vsel operation, saving some code.
-=======
  * as their set_voltage_sel operation, saving some code.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int regulator_set_voltage_sel_regmap(struct regulator_dev *rdev, unsigned sel)
 {

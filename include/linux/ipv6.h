@@ -89,10 +89,7 @@ struct ipv6_devconf {
 	__u8		ioam6_enabled;
 	__u8		ndisc_evict_nocarrier;
 	__u8		ra_honor_pio_life;
-<<<<<<< HEAD
-=======
 	__u8		ra_honor_pio_pflag;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct ctl_table_header *sysctl_header;
 };

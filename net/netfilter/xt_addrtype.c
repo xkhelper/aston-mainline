@@ -208,19 +208,12 @@ static struct xt_match addrtype_mt_reg[] __read_mostly = {
 	},
 	{
 		.name		= "addrtype",
-<<<<<<< HEAD
-		.family		= NFPROTO_UNSPEC,
-=======
 		.family		= NFPROTO_IPV4,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.revision	= 1,
 		.match		= addrtype_mt_v1,
 		.checkentry	= addrtype_mt_checkentry_v1,
 		.matchsize	= sizeof(struct xt_addrtype_info_v1),
 		.me		= THIS_MODULE
-<<<<<<< HEAD
-	}
-=======
 	},
 #if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
 	{
@@ -233,7 +226,6 @@ static struct xt_match addrtype_mt_reg[] __read_mostly = {
 		.me		= THIS_MODULE
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int __init addrtype_mt_init(void)

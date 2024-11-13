@@ -125,8 +125,6 @@ static const struct sst_res_info bytcr_res_info = {
 	.acpi_ipc_irq_index = 0
 };
 
-<<<<<<< HEAD
-=======
 /* For "LPE0F28" ACPI device found on some Android factory OS models */
 static const struct sst_res_info lpe8086_res_info = {
 	.shim_offset = 0x140000,
@@ -149,7 +147,6 @@ static const struct sst_res_info lpe8086_res_info = {
 	.acpi_ipc_irq_index = 0
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct sst_platform_info byt_rvp_platform_data = {
 	.probe_data = &byt_fwparse_info,
 	.ipc_info = &byt_ipc_info,
@@ -293,12 +290,6 @@ static int sst_acpi_probe(struct platform_device *pdev)
 		mach->pdata = &chv_platform_data;
 	pdata = mach->pdata;
 
-<<<<<<< HEAD
-	ret = kstrtouint(id->id, 16, &dev_id);
-	if (ret < 0) {
-		dev_err(dev, "Unique device id conversion error: %d\n", ret);
-		return ret;
-=======
 	if (!strcmp(id->id, "LPE0F28")) {
 		struct resource *rsrc;
 
@@ -331,7 +322,6 @@ static int sst_acpi_probe(struct platform_device *pdev)
 
 		if (soc_intel_is_byt_cr(pdev))
 			byt_rvp_platform_data.res_info = &bytcr_res_info;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	dev_dbg(dev, "ACPI device id: %x\n", dev_id);
@@ -340,14 +330,6 @@ static int sst_acpi_probe(struct platform_device *pdev)
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	if (soc_intel_is_byt_cr(pdev)) {
-		/* override resource info */
-		byt_rvp_platform_data.res_info = &bytcr_res_info;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* update machine parameters */
 	mach->mach_params.acpi_ipc_irq_index =
 		pdata->res_info->acpi_ipc_irq_index;
@@ -407,10 +389,7 @@ static void sst_acpi_remove(struct platform_device *pdev)
 }
 
 static const struct acpi_device_id sst_acpi_ids[] = {
-<<<<<<< HEAD
-=======
 	{ "LPE0F28", (unsigned long)&snd_soc_acpi_intel_baytrail_machines},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ "80860F28", (unsigned long)&snd_soc_acpi_intel_baytrail_machines},
 	{ "808622A8", (unsigned long)&snd_soc_acpi_intel_cherrytrail_machines},
 	{ },
@@ -425,11 +404,7 @@ static struct platform_driver sst_acpi_driver = {
 		.pm			= &intel_sst_pm,
 	},
 	.probe	= sst_acpi_probe,
-<<<<<<< HEAD
-	.remove_new = sst_acpi_remove,
-=======
 	.remove = sst_acpi_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(sst_acpi_driver);

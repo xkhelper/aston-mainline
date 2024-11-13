@@ -49,8 +49,6 @@ struct io_mapping;
 struct sg_table;
 struct scatterlist;
 
-<<<<<<< HEAD
-=======
 /**
  * enum ttm_lru_item_type - enumerate ttm_lru_item subclasses
  */
@@ -88,7 +86,6 @@ static inline bool ttm_lru_item_is_res(const struct ttm_lru_item *item)
 	return item->type == TTM_LRU_RESOURCE;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ttm_resource_manager_func {
 	/**
 	 * struct ttm_resource_manager_func member alloc
@@ -257,21 +254,6 @@ struct ttm_resource {
 	/**
 	 * @lru: Least recently used list, see &ttm_resource_manager.lru
 	 */
-<<<<<<< HEAD
-	struct list_head lru;
-};
-
-/**
- * struct ttm_resource_cursor
- *
- * @priority: the current priority
- *
- * Cursor to iterate over the resources in a manager.
- */
-struct ttm_resource_cursor {
-	unsigned int priority;
-};
-=======
 	struct ttm_lru_item lru;
 };
 
@@ -286,7 +268,6 @@ ttm_lru_item_to_res(struct ttm_lru_item *item)
 {
 	return container_of(item, struct ttm_resource, lru);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * struct ttm_lru_bulk_move_pos
@@ -303,14 +284,9 @@ struct ttm_lru_bulk_move_pos {
 
 /**
  * struct ttm_lru_bulk_move
-<<<<<<< HEAD
- *
- * @pos: first/last lru entry for resources in the each domain/priority
-=======
  * @pos: first/last lru entry for resources in the each domain/priority
  * @cursor_list: The list of cursors currently traversing any of
  * the sublists of @pos. Protected by the ttm device's lru_lock.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Container for the current bulk move state. Should be used with
  * ttm_lru_bulk_move_init() and ttm_bo_set_bulk_move().
@@ -320,11 +296,6 @@ struct ttm_lru_bulk_move_pos {
  */
 struct ttm_lru_bulk_move {
 	struct ttm_lru_bulk_move_pos pos[TTM_NUM_MEM_TYPES][TTM_MAX_BO_PRIORITY];
-<<<<<<< HEAD
-};
-
-/**
-=======
 	struct list_head cursor_list;
 };
 
@@ -357,7 +328,6 @@ struct ttm_resource_cursor {
 void ttm_resource_cursor_fini(struct ttm_resource_cursor *cursor);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * struct ttm_kmap_iter_iomap - Specialization for a struct io_mapping +
  * struct sg_table backed struct ttm_resource.
  * @base: Embedded struct ttm_kmap_iter providing the usage interface.
@@ -445,11 +415,8 @@ ttm_resource_manager_cleanup(struct ttm_resource_manager *man)
 
 void ttm_lru_bulk_move_init(struct ttm_lru_bulk_move *bulk);
 void ttm_lru_bulk_move_tail(struct ttm_lru_bulk_move *bulk);
-<<<<<<< HEAD
-=======
 void ttm_lru_bulk_move_fini(struct ttm_device *bdev,
 			    struct ttm_lru_bulk_move *bulk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void ttm_resource_add_bulk_move(struct ttm_resource *res,
 				struct ttm_buffer_object *bo);
@@ -492,16 +459,10 @@ struct ttm_resource *
 ttm_resource_manager_first(struct ttm_resource_manager *man,
 			   struct ttm_resource_cursor *cursor);
 struct ttm_resource *
-<<<<<<< HEAD
-ttm_resource_manager_next(struct ttm_resource_manager *man,
-			  struct ttm_resource_cursor *cursor,
-			  struct ttm_resource *res);
-=======
 ttm_resource_manager_next(struct ttm_resource_cursor *cursor);
 
 struct ttm_resource *
 ttm_lru_first_res_or_null(struct list_head *head);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * ttm_resource_manager_for_each_res - iterate over all resources
@@ -513,11 +474,7 @@ ttm_lru_first_res_or_null(struct list_head *head);
  */
 #define ttm_resource_manager_for_each_res(man, cursor, res)		\
 	for (res = ttm_resource_manager_first(man, cursor); res;	\
-<<<<<<< HEAD
-	     res = ttm_resource_manager_next(man, cursor, res))
-=======
 	     res = ttm_resource_manager_next(cursor))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct ttm_kmap_iter *
 ttm_kmap_iter_iomap_init(struct ttm_kmap_iter_iomap *iter_io,

@@ -23,13 +23,10 @@
 #include "xe_sriov_types.h"
 #include "xe_step_types.h"
 
-<<<<<<< HEAD
-=======
 #if IS_ENABLED(CONFIG_DRM_XE_DEBUG)
 #define TEST_VM_OPS_ERROR
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_DRM_XE_DISPLAY)
 #include "soc/intel_pch.h"
 #include "intel_display_core.h"
@@ -47,10 +44,7 @@ struct xe_pat_ops;
 #define MEDIA_VERx100(xe) ((xe)->info.media_verx100)
 #define IS_DGFX(xe) ((xe)->info.is_dgfx)
 #define HAS_HECI_GSCFI(xe) ((xe)->info.has_heci_gscfi)
-<<<<<<< HEAD
-=======
 #define HAS_HECI_CSCFI(xe) ((xe)->info.has_heci_cscfi)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define XE_VRAM_FLAGS_NEED64K		BIT(0)
 
@@ -210,11 +204,7 @@ struct xe_tile {
 			struct xe_memirq memirq;
 
 			/** @sriov.vf.ggtt_balloon: GGTT regions excluded from use. */
-<<<<<<< HEAD
-			struct drm_mm_node ggtt_balloon[2];
-=======
 			struct xe_ggtt_node *ggtt_balloon[2];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} vf;
 	} sriov;
 
@@ -298,10 +288,6 @@ struct xe_device {
 		u8 has_sriov:1;
 		/** @info.has_usm: Device has unified shared memory support */
 		u8 has_usm:1;
-<<<<<<< HEAD
-		/** @info.enable_display: display enabled */
-		u8 enable_display:1;
-=======
 		/**
 		 * @info.probe_display: Probe display hardware.  If set to
 		 * false, the driver will behave as if there is no display
@@ -311,33 +297,20 @@ struct xe_device {
 		 * state the firmware or bootloader left it in.
 		 */
 		u8 probe_display:1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/** @info.skip_mtcfg: skip Multi-Tile configuration from MTCFG register */
 		u8 skip_mtcfg:1;
 		/** @info.skip_pcode: skip access to PCODE uC */
 		u8 skip_pcode:1;
 		/** @info.has_heci_gscfi: device has heci gscfi */
 		u8 has_heci_gscfi:1;
-<<<<<<< HEAD
-=======
 		/** @info.has_heci_cscfi: device has heci cscfi */
 		u8 has_heci_cscfi:1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/** @info.skip_guc_pc: Skip GuC based PM feature init */
 		u8 skip_guc_pc:1;
 		/** @info.has_atomic_enable_pte_bit: Device has atomic enable PTE bit */
 		u8 has_atomic_enable_pte_bit:1;
 		/** @info.has_device_atomics_on_smem: Supports device atomics on SMEM */
 		u8 has_device_atomics_on_smem:1;
-<<<<<<< HEAD
-
-#if IS_ENABLED(CONFIG_DRM_XE_DISPLAY)
-		struct {
-			u32 rawclk_freq;
-		} i915_runtime;
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} info;
 
 	/** @irq: device interrupt state */
@@ -380,35 +353,14 @@ struct xe_device {
 		struct workqueue_struct *wq;
 	} sriov;
 
-<<<<<<< HEAD
-	/** @clients: drm clients info */
-	struct {
-		/** @clients.lock: Protects drm clients info */
-		spinlock_t lock;
-
-		/** @clients.count: number of drm clients */
-		u64 count;
-	} clients;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/** @usm: unified memory state */
 	struct {
 		/** @usm.asid: convert a ASID to VM */
 		struct xarray asid_to_vm;
 		/** @usm.next_asid: next ASID, used to cyclical alloc asids */
 		u32 next_asid;
-<<<<<<< HEAD
-		/** @usm.num_vm_in_fault_mode: number of VM in fault mode */
-		u32 num_vm_in_fault_mode;
-		/** @usm.num_vm_in_non_fault_mode: number of VM in non-fault mode */
-		u32 num_vm_in_non_fault_mode;
-		/** @usm.lock: protects UM state */
-		struct mutex lock;
-=======
 		/** @usm.lock: protects UM state */
 		struct rw_semaphore lock;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} usm;
 
 	/** @pinned: pinned BO state */
@@ -435,12 +387,9 @@ struct xe_device {
 	/** @unordered_wq: used to serialize unordered work, mostly display */
 	struct workqueue_struct *unordered_wq;
 
-<<<<<<< HEAD
-=======
 	/** @destroy_wq: used to serialize user destroy work, like queue */
 	struct workqueue_struct *destroy_wq;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/** @tiles: device tiles */
 	struct xe_tile tiles[XE_MAX_TILES_PER_DEVICE];
 
@@ -532,8 +481,6 @@ struct xe_device {
 		int mode;
 	} wedged;
 
-<<<<<<< HEAD
-=======
 #ifdef TEST_VM_OPS_ERROR
 	/**
 	 * @vm_inject_error_position: inject errors at different places in VM
@@ -542,7 +489,6 @@ struct xe_device {
 	u8 vm_inject_error_position;
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* private: */
 
 #if IS_ENABLED(CONFIG_DRM_XE_DISPLAY)
@@ -615,25 +561,16 @@ struct xe_file {
 	struct {
 		/** @vm.xe: xarray to store VMs */
 		struct xarray xa;
-<<<<<<< HEAD
-		/** @vm.lock: protects file VM state */
-=======
 		/**
 		 * @vm.lock: Protects VM lookup + reference and removal a from
 		 * file xarray. Not an intended to be an outer lock which does
 		 * thing while being held.
 		 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct mutex lock;
 	} vm;
 
 	/** @exec_queue: Submission exec queue state for file */
 	struct {
-<<<<<<< HEAD
-		/** @exec_queue.xe: xarray to store engines */
-		struct xarray xa;
-		/** @exec_queue.lock: protects file engine state */
-=======
 		/** @exec_queue.xa: xarray to store exece queues */
 		struct xarray xa;
 		/**
@@ -641,7 +578,6 @@ struct xe_file {
 		 * removal a frommfile xarray. Not an intended to be an outer
 		 * lock which does thing while being held.
 		 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct mutex lock;
 	} exec_queue;
 
@@ -651,8 +587,6 @@ struct xe_file {
 	/** @client: drm client */
 	struct xe_drm_client *client;
 
-<<<<<<< HEAD
-=======
 	/**
 	 * @process_name: process name for file handle, used to safely output
 	 * during error situations where xe file can outlive process
@@ -665,7 +599,6 @@ struct xe_file {
 	 */
 	pid_t pid;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/** @refcount: ref count of this xe file */
 	struct kref refcount;
 };

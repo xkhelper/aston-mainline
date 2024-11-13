@@ -250,8 +250,6 @@ IRQCHIP_DECLARE(andes, "andestech,cpu-intc", riscv_intc_init);
 
 #ifdef CONFIG_ACPI
 
-<<<<<<< HEAD
-=======
 struct rintc_data {
 	union {
 		u32		ext_intc_id;
@@ -337,17 +335,11 @@ static int __init riscv_intc_acpi_match(union acpi_subtable_headers *header,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
 				       const unsigned long end)
 {
 	struct acpi_madt_rintc *rintc;
 	struct fwnode_handle *fn;
-<<<<<<< HEAD
-	int rc;
-
-	rintc = (struct acpi_madt_rintc *)header;
-=======
 	int count;
 	int rc;
 
@@ -371,7 +363,6 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
 	rintc_acpi_data[nr_rintc]->imsic_addr = rintc->imsic_addr;
 	rintc_acpi_data[nr_rintc]->imsic_size = rintc->imsic_size;
 	nr_rintc++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The ACPI MADT will have one INTC for each CPU (or HART)
@@ -391,11 +382,8 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
 	rc = riscv_intc_init_common(fn, &riscv_intc_chip);
 	if (rc)
 		irq_domain_free_fwnode(fn);
-<<<<<<< HEAD
-=======
 	else
 		acpi_set_irq_model(ACPI_IRQ_MODEL_RINTC, riscv_acpi_get_gsi_domain_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return rc;
 }

@@ -137,14 +137,10 @@ patternProperties:
           - const: fsl,sec-v4.0-rtic
 
       reg:
-<<<<<<< HEAD
-        maxItems: 1
-=======
         items:
           - description: RTIC control and status register space.
           - description: RTIC recoverable error indication register space.
         minItems: 1
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       ranges:
         maxItems: 1

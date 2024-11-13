@@ -94,11 +94,7 @@ int __cfg80211_join_ibss(struct cfg80211_registered_device *rdev,
 
 	lockdep_assert_held(&rdev->wiphy.mtx);
 
-<<<<<<< HEAD
-	if (wdev->cac_started)
-=======
 	if (wdev->links[0].cac_started)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 
 	if (wdev->u.ibss.ssid_len)

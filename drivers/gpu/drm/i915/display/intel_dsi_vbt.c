@@ -32,11 +32,7 @@
 #include <linux/slab.h>
 #include <linux/string_helpers.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/drm_crtc.h>
 #include <drm/drm_edid.h>
@@ -60,11 +56,7 @@
 #define MIPI_PORT_SHIFT			3
 
 struct i2c_adapter_lookup {
-<<<<<<< HEAD
-	u16 slave_addr;
-=======
 	u16 target_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct intel_dsi *intel_dsi;
 	acpi_handle dev_handle;
 };
@@ -451,11 +443,7 @@ static int i2c_adapter_lookup(struct acpi_resource *ares, void *data)
 	if (!i2c_acpi_get_i2c_resource(ares, &sb))
 		return 1;
 
-<<<<<<< HEAD
-	if (lookup->slave_addr != sb->slave_address)
-=======
 	if (lookup->target_addr != sb->slave_address)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 
 	status = acpi_get_handle(lookup->dev_handle,
@@ -472,20 +460,12 @@ static int i2c_adapter_lookup(struct acpi_resource *ares, void *data)
 }
 
 static void i2c_acpi_find_adapter(struct intel_dsi *intel_dsi,
-<<<<<<< HEAD
-				  const u16 slave_addr)
-=======
 				  const u16 target_addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct drm_device *drm_dev = intel_dsi->base.base.dev;
 	struct acpi_device *adev = ACPI_COMPANION(drm_dev->dev);
 	struct i2c_adapter_lookup lookup = {
-<<<<<<< HEAD
-		.slave_addr = slave_addr,
-=======
 		.target_addr = target_addr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.intel_dsi = intel_dsi,
 		.dev_handle = acpi_device_handle(adev),
 	};
@@ -496,11 +476,7 @@ static void i2c_acpi_find_adapter(struct intel_dsi *intel_dsi,
 }
 #else
 static inline void i2c_acpi_find_adapter(struct intel_dsi *intel_dsi,
-<<<<<<< HEAD
-					 const u16 slave_addr)
-=======
 					 const u16 target_addr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 #endif
@@ -512,30 +488,17 @@ static const u8 *mipi_exec_i2c(struct intel_dsi *intel_dsi, const u8 *data)
 	struct i2c_msg msg;
 	int ret;
 	u8 vbt_i2c_bus_num = *(data + 2);
-<<<<<<< HEAD
-	u16 slave_addr = *(u16 *)(data + 3);
-=======
 	u16 target_addr = *(u16 *)(data + 3);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 reg_offset = *(data + 5);
 	u8 payload_size = *(data + 6);
 	u8 *payload_data;
 
-<<<<<<< HEAD
-	drm_dbg_kms(&i915->drm, "bus %d client-addr 0x%02x reg 0x%02x data %*ph\n",
-		    vbt_i2c_bus_num, slave_addr, reg_offset, payload_size, data + 7);
-
-	if (intel_dsi->i2c_bus_num < 0) {
-		intel_dsi->i2c_bus_num = vbt_i2c_bus_num;
-		i2c_acpi_find_adapter(intel_dsi, slave_addr);
-=======
 	drm_dbg_kms(&i915->drm, "bus %d target-addr 0x%02x reg 0x%02x data %*ph\n",
 		    vbt_i2c_bus_num, target_addr, reg_offset, payload_size, data + 7);
 
 	if (intel_dsi->i2c_bus_num < 0) {
 		intel_dsi->i2c_bus_num = vbt_i2c_bus_num;
 		i2c_acpi_find_adapter(intel_dsi, target_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	adapter = i2c_get_adapter(intel_dsi->i2c_bus_num);
@@ -551,11 +514,7 @@ static const u8 *mipi_exec_i2c(struct intel_dsi *intel_dsi, const u8 *data)
 	payload_data[0] = reg_offset;
 	memcpy(&payload_data[1], (data + 7), payload_size);
 
-<<<<<<< HEAD
-	msg.addr = slave_addr;
-=======
 	msg.addr = target_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	msg.flags = 0;
 	msg.len = payload_size + 1;
 	msg.buf = payload_data;

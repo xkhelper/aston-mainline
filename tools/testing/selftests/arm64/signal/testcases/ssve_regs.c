@@ -6,61 +6,19 @@
  * set up as expected.
  */
 
-<<<<<<< HEAD
-=======
 #include <kselftest.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <signal.h>
 #include <ucontext.h>
 #include <sys/prctl.h>
 
 #include "test_signals_utils.h"
-<<<<<<< HEAD
-=======
 #include "sve_helpers.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "testcases.h"
 
 static union {
 	ucontext_t uc;
 	char buf[1024 * 64];
 } context;
-<<<<<<< HEAD
-static unsigned int vls[SVE_VQ_MAX];
-unsigned int nvls = 0;
-
-static bool sme_get_vls(struct tdescr *td)
-{
-	int vq, vl;
-
-	/*
-	 * Enumerate up to SVE_VQ_MAX vector lengths
-	 */
-	for (vq = SVE_VQ_MAX; vq > 0; --vq) {
-		vl = prctl(PR_SME_SET_VL, vq * 16);
-		if (vl == -1)
-			return false;
-
-		vl &= PR_SME_VL_LEN_MASK;
-
-		/* Did we find the lowest supported VL? */
-		if (vq < sve_vq_from_vl(vl))
-			break;
-
-		/* Skip missing VLs */
-		vq = sve_vq_from_vl(vl);
-
-		vls[nvls++] = vl;
-	}
-
-	/* We need at least one VL */
-	if (nvls < 1) {
-		fprintf(stderr, "Only %d VL supported\n", nvls);
-		return false;
-	}
-
-	return true;
-=======
 
 static bool sme_get_vls(struct tdescr *td)
 {
@@ -73,7 +31,6 @@ static bool sme_get_vls(struct tdescr *td)
 		td->result = KSFT_SKIP;
 
 	return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void setup_ssve_regs(void)

@@ -410,29 +410,15 @@ static int tmp421_probe_from_dt(struct i2c_client *client, struct tmp421_data *d
 {
 	struct device *dev = &client->dev;
 	const struct device_node *np = dev->of_node;
-<<<<<<< HEAD
-	struct device_node *child;
-	int err;
-
-	for_each_child_of_node(np, child) {
-=======
 	int err;
 
 	for_each_child_of_node_scoped(np, child) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (strcmp(child->name, "channel"))
 			continue;
 
 		err = tmp421_probe_child_from_dt(client, child, data);
-<<<<<<< HEAD
-		if (err) {
-			of_node_put(child);
-			return err;
-		}
-=======
 		if (err)
 			return err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

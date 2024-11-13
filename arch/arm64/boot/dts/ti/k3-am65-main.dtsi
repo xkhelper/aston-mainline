@@ -54,8 +54,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-=======
 	main_esm: esm@700000 {
 		compatible = "ti,j721e-esm";
 		reg = <0x00 0x700000 0x00 0x1000>;
@@ -64,7 +62,6 @@
 		ti,esm-pins = <224>, <225>, <226>, <227>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	serdes0: serdes@900000 {
 		compatible = "ti,phy-am654-serdes";
 		reg = <0x0 0x900000 0x0 0x2000>;
@@ -489,11 +486,7 @@
 		ranges = <0x0 0x0 0x00100000 0x1c000>;
 
 		serdes0_clk: clock@4080 {
-<<<<<<< HEAD
-			compatible = "ti,am654-serdes-ctrl", "syscon";
-=======
 			compatible = "ti,am654-serdes-ctrl", "syscon", "simple-mfd";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0x4080 0x4>;
 
 			serdes0_mux: mux-controller {
@@ -504,11 +497,7 @@
 		};
 
 		serdes1_clk: clock@4090 {
-<<<<<<< HEAD
-			compatible = "ti,am654-serdes-ctrl", "syscon";
-=======
 			compatible = "ti,am654-serdes-ctrl", "syscon", "simple-mfd";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg = <0x4090 0x4>;
 
 			serdes1_mux: mux-controller {

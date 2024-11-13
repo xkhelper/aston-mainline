@@ -18,14 +18,6 @@ properties:
       - sd-modulator
       - ads1201
 
-<<<<<<< HEAD
-  '#io-channel-cells':
-    const: 0
-
-required:
-  - compatible
-  - '#io-channel-cells'
-=======
   '#io-backend-cells':
     const: 0
 
@@ -44,15 +36,11 @@ required:
 anyOf:
   - required: ['#io-backend-cells']
   - required: ['#io-channel-cells']
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 additionalProperties: false
 
 examples:
   - |
-<<<<<<< HEAD
-    ads1202: adc {
-=======
     // Backend binding example. SD modulator configured as an IIO backend device
     ads1201_0: adc {
       compatible = "sd-modulator";
@@ -63,7 +51,6 @@ examples:
   - |
     // Legacy binding example. SD modulator configured as an IIO channel provider
     ads1201_1: adc {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       compatible = "sd-modulator";
       #io-channel-cells = <0>;
     };

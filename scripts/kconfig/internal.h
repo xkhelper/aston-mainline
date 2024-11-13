@@ -11,15 +11,12 @@ extern HASHTABLE_DECLARE(sym_hashtable, SYMBOL_HASHSIZE);
 #define for_all_symbols(sym) \
 	hash_for_each(sym_hashtable, sym, node)
 
-<<<<<<< HEAD
-=======
 #define EXPR_HASHSIZE		(1U << 14)
 
 extern HASHTABLE_DECLARE(expr_hashtable, EXPR_HASHSIZE);
 
 void expr_invalidate_all(void);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct menu;
 
 extern struct menu *current_menu, *current_entry;

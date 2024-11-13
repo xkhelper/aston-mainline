@@ -252,10 +252,7 @@ static vm_fault_t vm_fault_cpu(struct vm_fault *vmf)
 	struct vm_area_struct *area = vmf->vma;
 	struct i915_mmap_offset *mmo = area->vm_private_data;
 	struct drm_i915_gem_object *obj = mmo->obj;
-<<<<<<< HEAD
-=======
 	unsigned long obj_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	resource_size_t iomap;
 	int err;
 
@@ -277,18 +274,11 @@ static vm_fault_t vm_fault_cpu(struct vm_fault *vmf)
 		iomap -= obj->mm.region->region.start;
 	}
 
-<<<<<<< HEAD
-	/* PTEs are revoked in obj->ops->put_pages() */
-	err = remap_io_sg(area,
-			  area->vm_start, area->vm_end - area->vm_start,
-			  obj->mm.pages->sgl, iomap);
-=======
 	obj_offset = area->vm_pgoff - drm_vma_node_start(&mmo->vma_node);
 	/* PTEs are revoked in obj->ops->put_pages() */
 	err = remap_io_sg(area,
 			  area->vm_start, area->vm_end - area->vm_start,
 			  obj->mm.pages->sgl, obj_offset, iomap);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (area->vm_flags & VM_WRITE) {
 		GEM_BUG_ON(!i915_gem_object_has_pinned_pages(obj));
@@ -305,15 +295,10 @@ out:
 static void set_address_limits(struct vm_area_struct *area,
 			       struct i915_vma *vma,
 			       unsigned long obj_offset,
-<<<<<<< HEAD
-			       unsigned long *start_vaddr,
-			       unsigned long *end_vaddr)
-=======
 			       resource_size_t gmadr_start,
 			       unsigned long *start_vaddr,
 			       unsigned long *end_vaddr,
 			       unsigned long *pfn)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	unsigned long vm_start, vm_end, vma_size; /* user's memory parameters */
 	long start, end; /* memory boundaries */
@@ -342,13 +327,10 @@ static void set_address_limits(struct vm_area_struct *area,
 	/* Let's move back into the "<< PAGE_SHIFT" domain */
 	*start_vaddr = (unsigned long)start << PAGE_SHIFT;
 	*end_vaddr = (unsigned long)end << PAGE_SHIFT;
-<<<<<<< HEAD
-=======
 
 	*pfn = (gmadr_start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
 	*pfn += (*start_vaddr - area->vm_start) >> PAGE_SHIFT;
 	*pfn += obj_offset - vma->gtt_view.partial.offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static vm_fault_t vm_fault_gtt(struct vm_fault *vmf)
@@ -467,13 +449,6 @@ retry:
 	if (ret)
 		goto err_unpin;
 
-<<<<<<< HEAD
-	set_address_limits(area, vma, obj_offset, &start, &end);
-
-	pfn = (ggtt->gmadr.start + i915_ggtt_offset(vma)) >> PAGE_SHIFT;
-	pfn += (start - area->vm_start) >> PAGE_SHIFT;
-	pfn += obj_offset - vma->gtt_view.partial.offset;
-=======
 	/*
 	 * Dump all the necessary parameters in this function to perform the
 	 * arithmetic calculation for the virtual address start and end and
@@ -481,7 +456,6 @@ retry:
 	 */
 	set_address_limits(area, vma, obj_offset, ggtt->gmadr.start,
 			   &start, &end, &pfn);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Finally, remap it using the new GTT offset */
 	ret = remap_io_mapping(area, start, pfn, end - start, &ggtt->iomap);
@@ -1107,15 +1081,9 @@ int i915_gem_mmap(struct file *filp, struct vm_area_struct *vma)
 
 	rcu_read_lock();
 	drm_vma_offset_lock_lookup(dev->vma_offset_manager);
-<<<<<<< HEAD
-	node = drm_vma_offset_exact_lookup_locked(dev->vma_offset_manager,
-						  vma->vm_pgoff,
-						  vma_pages(vma));
-=======
 	node = drm_vma_offset_lookup_locked(dev->vma_offset_manager,
 					    vma->vm_pgoff,
 					    vma_pages(vma));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (node && drm_vma_node_is_allowed(node, priv)) {
 		/*
 		 * Skip 0-refcnted objects as it is in the process of being

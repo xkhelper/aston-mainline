@@ -1636,8 +1636,6 @@ static int phylink_register_sfp(struct phylink *pl,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * phylink_set_fixed_link() - set the fixed link
  * @pl: a pointer to a &struct phylink returned from phylink_create()
  * @state: a pointer to a struct phylink_link_state.
@@ -1680,7 +1678,6 @@ int phylink_set_fixed_link(struct phylink *pl,
 EXPORT_SYMBOL_GPL(phylink_set_fixed_link);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * phylink_create() - create a phylink instance
  * @config: a pointer to the target &struct phylink_config
  * @fwnode: a pointer to a &struct fwnode_handle describing the network
@@ -3468,12 +3465,8 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
 	return ret;
 }
 
-<<<<<<< HEAD
-static void phylink_sfp_disconnect_phy(void *upstream)
-=======
 static void phylink_sfp_disconnect_phy(void *upstream,
 				       struct phy_device *phydev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	phylink_disconnect_phy(upstream);
 }

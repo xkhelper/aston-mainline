@@ -21,15 +21,9 @@
 #define PIT_LATCH	((PIT_TICK_RATE + HZ/2) / HZ)
 
 extern raw_spinlock_t i8253_lock;
-<<<<<<< HEAD
-extern bool i8253_clear_counter_on_shutdown;
-extern struct clock_event_device i8253_clockevent;
-extern void clockevent_i8253_init(bool oneshot);
-=======
 extern struct clock_event_device i8253_clockevent;
 extern void clockevent_i8253_init(bool oneshot);
 extern void clockevent_i8253_disable(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern void setup_pit_timer(void);
 

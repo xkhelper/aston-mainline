@@ -581,10 +581,7 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
 		.id = id,
 		.type = type,
 	};
-<<<<<<< HEAD
-=======
 	__be32 status = nfs_ok;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__be32 *p;
 	int ret;
 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
@@ -597,14 +594,6 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
 		return nfserrno(ret);
 	ret = strlen(item->name);
 	WARN_ON_ONCE(ret > IDMAP_NAMESZ);
-<<<<<<< HEAD
-	p = xdr_reserve_space(xdr, ret + 4);
-	if (!p)
-		return nfserr_resource;
-	p = xdr_encode_opaque(p, item->name, ret);
-	cache_put(&item->h, nn->idtoname_cache);
-	return 0;
-=======
 
 	p = xdr_reserve_space(xdr, ret + 4);
 	if (unlikely(!p)) {
@@ -615,7 +604,6 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
 out_put:
 	cache_put(&item->h, nn->idtoname_cache);
 	return status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool

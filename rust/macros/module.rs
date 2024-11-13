@@ -262,15 +262,12 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
 
                     #[cfg(MODULE)]
                     #[doc(hidden)]
-<<<<<<< HEAD
-=======
                     #[used]
                     #[link_section = \".init.data\"]
                     static __UNIQUE_ID___addressable_init_module: unsafe extern \"C\" fn() -> i32 = init_module;
 
                     #[cfg(MODULE)]
                     #[doc(hidden)]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
                     #[no_mangle]
                     pub extern \"C\" fn cleanup_module() {{
                         // SAFETY:
@@ -282,15 +279,12 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
                         unsafe {{ __exit() }}
                     }}
 
-<<<<<<< HEAD
-=======
                     #[cfg(MODULE)]
                     #[doc(hidden)]
                     #[used]
                     #[link_section = \".exit.data\"]
                     static __UNIQUE_ID___addressable_cleanup_module: extern \"C\" fn() = cleanup_module;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
                     // Built-in modules are initialized through an initcall pointer
                     // and the identifiers need to be unique.
                     #[cfg(not(MODULE))]

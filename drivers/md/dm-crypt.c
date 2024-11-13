@@ -28,11 +28,7 @@
 #include <linux/rbtree.h>
 #include <linux/ctype.h>
 #include <asm/page.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/hash.h>
 #include <crypto/md5.h>
 #include <crypto/skcipher.h>
@@ -151,10 +147,7 @@ enum cipher_flags {
 	CRYPT_MODE_INTEGRITY_AEAD,	/* Use authenticated mode for cipher */
 	CRYPT_IV_LARGE_SECTORS,		/* Calculate IV from sector_size, not 512B sectors */
 	CRYPT_ENCRYPT_PREPROCESS,	/* Must preprocess data for encryption (elephant) */
-<<<<<<< HEAD
-=======
 	CRYPT_KEY_MAC_SIZE_SET,		/* The integrity_key_size option was used */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -2621,24 +2614,6 @@ static int crypt_set_keyring_key(struct crypt_config *cc, const char *key_string
 
 	key = request_key(type, key_desc + 1, NULL);
 	if (IS_ERR(key)) {
-<<<<<<< HEAD
-		kfree_sensitive(new_key_string);
-		return PTR_ERR(key);
-	}
-
-	down_read(&key->sem);
-
-	ret = set_key(cc, key);
-	if (ret < 0) {
-		up_read(&key->sem);
-		key_put(key);
-		kfree_sensitive(new_key_string);
-		return ret;
-	}
-
-	up_read(&key->sem);
-	key_put(key);
-=======
 		ret = PTR_ERR(key);
 		goto free_new_key_string;
 	}
@@ -2649,22 +2624,11 @@ static int crypt_set_keyring_key(struct crypt_config *cc, const char *key_string
 	key_put(key);
 	if (ret < 0)
 		goto free_new_key_string;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* clear the flag since following operations may invalidate previously valid key */
 	clear_bit(DM_CRYPT_KEY_VALID, &cc->flags);
 
 	ret = crypt_setkey(cc);
-<<<<<<< HEAD
-
-	if (!ret) {
-		set_bit(DM_CRYPT_KEY_VALID, &cc->flags);
-		kfree_sensitive(cc->key_string);
-		cc->key_string = new_key_string;
-	} else
-		kfree_sensitive(new_key_string);
-
-=======
 	if (ret)
 		goto free_new_key_string;
 
@@ -2675,7 +2639,6 @@ static int crypt_set_keyring_key(struct crypt_config *cc, const char *key_string
 
 free_new_key_string:
 	kfree_sensitive(new_key_string);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -2971,12 +2934,8 @@ static int crypt_ctr_auth_cipher(struct crypt_config *cc, char *cipher_api)
 	if (IS_ERR(mac))
 		return PTR_ERR(mac);
 
-<<<<<<< HEAD
-	cc->key_mac_size = crypto_ahash_digestsize(mac);
-=======
 	if (!test_bit(CRYPT_KEY_MAC_SIZE_SET, &cc->cipher_flags))
 		cc->key_mac_size = crypto_ahash_digestsize(mac);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	crypto_free_ahash(mac);
 
 	cc->authenc_key = kmalloc(crypt_authenckey_size(cc), GFP_KERNEL);
@@ -3258,8 +3217,6 @@ static int crypt_ctr_optional(struct dm_target *ti, unsigned int argc, char **ar
 			cc->cipher_auth = kstrdup(sval, GFP_KERNEL);
 			if (!cc->cipher_auth)
 				return -ENOMEM;
-<<<<<<< HEAD
-=======
 		} else if (sscanf(opt_string, "integrity_key_size:%u%c", &val, &dummy) == 1) {
 			if (!val) {
 				ti->error = "Invalid integrity_key_size argument";
@@ -3267,7 +3224,6 @@ static int crypt_ctr_optional(struct dm_target *ti, unsigned int argc, char **ar
 			}
 			cc->key_mac_size = val;
 			set_bit(CRYPT_KEY_MAC_SIZE_SET, &cc->cipher_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else if (sscanf(opt_string, "sector_size:%hu%c", &cc->sector_size, &dummy) == 1) {
 			if (cc->sector_size < (1 << SECTOR_SHIFT) ||
 			    cc->sector_size > 4096 ||
@@ -3656,17 +3612,10 @@ static void crypt_status(struct dm_target *ti, status_type_t type,
 		num_feature_args += test_bit(DM_CRYPT_NO_OFFLOAD, &cc->flags);
 		num_feature_args += test_bit(DM_CRYPT_NO_READ_WORKQUEUE, &cc->flags);
 		num_feature_args += test_bit(DM_CRYPT_NO_WRITE_WORKQUEUE, &cc->flags);
-<<<<<<< HEAD
-		num_feature_args += cc->sector_size != (1 << SECTOR_SHIFT);
-		num_feature_args += test_bit(CRYPT_IV_LARGE_SECTORS, &cc->cipher_flags);
-		if (cc->used_tag_size)
-			num_feature_args++;
-=======
 		num_feature_args += !!cc->used_tag_size;
 		num_feature_args += cc->sector_size != (1 << SECTOR_SHIFT);
 		num_feature_args += test_bit(CRYPT_IV_LARGE_SECTORS, &cc->cipher_flags);
 		num_feature_args += test_bit(CRYPT_KEY_MAC_SIZE_SET, &cc->cipher_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (num_feature_args) {
 			DMEMIT(" %d", num_feature_args);
 			if (ti->num_discard_bios)
@@ -3687,11 +3636,8 @@ static void crypt_status(struct dm_target *ti, status_type_t type,
 				DMEMIT(" sector_size:%d", cc->sector_size);
 			if (test_bit(CRYPT_IV_LARGE_SECTORS, &cc->cipher_flags))
 				DMEMIT(" iv_large_sectors");
-<<<<<<< HEAD
-=======
 			if (test_bit(CRYPT_KEY_MAC_SIZE_SET, &cc->cipher_flags))
 				DMEMIT(" integrity_key_size:%u", cc->key_mac_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 
@@ -3819,11 +3765,7 @@ static void crypt_io_hints(struct dm_target *ti, struct queue_limits *limits)
 
 static struct target_type crypt_target = {
 	.name   = "crypt",
-<<<<<<< HEAD
-	.version = {1, 27, 0},
-=======
 	.version = {1, 28, 0},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.module = THIS_MODULE,
 	.ctr    = crypt_ctr,
 	.dtr    = crypt_dtr,

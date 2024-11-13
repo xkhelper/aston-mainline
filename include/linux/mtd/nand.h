@@ -103,11 +103,8 @@ enum nand_page_io_req_type {
  * @ooblen: the number of OOB bytes to read from/write to this page
  * @oobbuf: buffer to store OOB data in or get OOB data from
  * @mode: one of the %MTD_OPS_XXX mode
-<<<<<<< HEAD
-=======
  * @continuous: no need to start over the operation at the end of each page, the
  * NAND device will automatically prepare the next one
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * This object is used to pass per-page I/O requests to NAND sub-layers. This
  * way all useful information are already formatted in a useful way and
@@ -130,10 +127,7 @@ struct nand_page_io_req {
 		void *in;
 	} oobbuf;
 	int mode;
-<<<<<<< HEAD
-=======
 	bool continuous;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const struct mtd_ooblayout_ops *nand_get_small_page_ooblayout(void);
@@ -915,32 +909,19 @@ static inline void nanddev_pos_next_page(struct nand_device *nand,
 }
 
 /**
-<<<<<<< HEAD
- * nand_io_iter_init - Initialize a NAND I/O iterator
-=======
  * nand_io_page_iter_init - Initialize a NAND I/O iterator
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @nand: NAND device
  * @offs: absolute offset
  * @req: MTD request
  * @iter: NAND I/O iterator
  *
  * Initializes a NAND iterator based on the information passed by the MTD
-<<<<<<< HEAD
- * layer.
- */
-static inline void nanddev_io_iter_init(struct nand_device *nand,
-					enum nand_page_io_req_type reqtype,
-					loff_t offs, struct mtd_oob_ops *req,
-					struct nand_io_iter *iter)
-=======
  * layer for page jumps.
  */
 static inline void nanddev_io_page_iter_init(struct nand_device *nand,
 					     enum nand_page_io_req_type reqtype,
 					     loff_t offs, struct mtd_oob_ops *req,
 					     struct nand_io_iter *iter)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct mtd_info *mtd = nanddev_to_mtd(nand);
 
@@ -959,8 +940,6 @@ static inline void nanddev_io_page_iter_init(struct nand_device *nand,
 	iter->req.ooblen = min_t(unsigned int,
 				 iter->oobbytes_per_page - iter->req.ooboffs,
 				 iter->oobleft);
-<<<<<<< HEAD
-=======
 	iter->req.continuous = false;
 }
 
@@ -998,7 +977,6 @@ static inline void nanddev_io_block_iter_init(struct nand_device *nand,
 	iter->req.oobbuf.in = NULL;
 	iter->req.ooblen = 0;
 	iter->req.continuous = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -1025,8 +1003,6 @@ static inline void nanddev_io_iter_next_page(struct nand_device *nand,
 }
 
 /**
-<<<<<<< HEAD
-=======
  * nand_io_iter_next_block - Move to the next block
  * @nand: NAND device
  * @iter: NAND I/O iterator
@@ -1046,7 +1022,6 @@ static inline void nanddev_io_iter_next_block(struct nand_device *nand,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * nand_io_iter_end - Should end iteration or not
  * @nand: NAND device
  * @iter: NAND I/O iterator
@@ -1074,15 +1049,6 @@ static inline bool nanddev_io_iter_end(struct nand_device *nand,
  * @req: MTD I/O request
  * @iter: NAND I/O iterator
  *
-<<<<<<< HEAD
- * Should be used for iterate over pages that are contained in an MTD request.
- */
-#define nanddev_io_for_each_page(nand, type, start, req, iter)		\
-	for (nanddev_io_iter_init(nand, type, start, req, iter);	\
-	     !nanddev_io_iter_end(nand, iter);				\
-	     nanddev_io_iter_next_page(nand, iter))
-
-=======
  * Should be used for iterating over pages that are contained in an MTD request.
  */
 #define nanddev_io_for_each_page(nand, type, start, req, iter)		\
@@ -1105,7 +1071,6 @@ static inline bool nanddev_io_iter_end(struct nand_device *nand,
 	     !nanddev_io_iter_end(nand, iter);				\
 	     nanddev_io_iter_next_block(nand, iter))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bool nanddev_isbad(struct nand_device *nand, const struct nand_pos *pos);
 bool nanddev_isreserved(struct nand_device *nand, const struct nand_pos *pos);
 int nanddev_markbad(struct nand_device *nand, const struct nand_pos *pos);

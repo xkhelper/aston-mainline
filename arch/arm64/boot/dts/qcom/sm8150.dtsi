@@ -17,10 +17,7 @@
 #include <dt-bindings/clock/qcom,videocc-sm8150.h>
 #include <dt-bindings/interconnect/qcom,osm-l3.h>
 #include <dt-bindings/interconnect/qcom,sm8150.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/clock/qcom,sm8150-camcc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/thermal/thermal.h>
 
 / {
@@ -3763,8 +3760,6 @@
 			qcom,bcm-voters = <&apps_bcm_voter>;
 		};
 
-<<<<<<< HEAD
-=======
 		camcc: clock-controller@ad00000 {
 			compatible = "qcom,sm8150-camcc";
 			reg = <0 0x0ad00000 0 0x10000>;
@@ -3777,7 +3772,6 @@
 			#power-domain-cells = <1>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mdss: display-subsystem@ae00000 {
 			compatible = "qcom,sm8150-mdss";
 			reg = <0 0x0ae00000 0 0x1000>;

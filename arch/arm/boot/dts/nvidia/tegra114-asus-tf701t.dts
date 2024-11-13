@@ -57,12 +57,6 @@
 	};
 
 	host1x@50000000 {
-<<<<<<< HEAD
-		dsi@54300000 {
-			status = "okay";
-
-			avdd-dsi-csi-supply = <&tps65913_ldo2>;
-=======
 		hdmi@54280000 {
 			status = "okay";
 
@@ -81,7 +75,6 @@
 			status = "okay";
 
 			avdd-dsi-csi-supply = <&avdd_dsi_csi>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			nvidia,ganged-mode = <&dsib>;
 
@@ -91,11 +84,7 @@
 
 				link2 = <&panel_secondary>;
 
-<<<<<<< HEAD
-				power-supply = <&vdd_lcd>;
-=======
 				power-supply = <&dvdd_1v8_lcd>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				backlight = <&backlight>;
 			};
 		};
@@ -103,11 +92,7 @@
 		dsi@54400000 {
 			status = "okay";
 
-<<<<<<< HEAD
-			avdd-dsi-csi-supply = <&tps65913_ldo2>;
-=======
 			avdd-dsi-csi-supply = <&avdd_dsi_csi>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			panel_secondary: panel@0 {
 				compatible = "sharp,lq101r1sx01";
@@ -116,13 +101,6 @@
 		};
 	};
 
-<<<<<<< HEAD
-	pinmux@70000868 {
-		asus_pad_ec_default: pinmux-asus-pad-ec-default {
-			ec-interrupt {
-				nvidia,pins = "kb_col5_pq5";
-				nvidia,function = "kbc";
-=======
 	vde@6001a000 {
 		assigned-clocks = <&tegra_car TEGRA114_CLK_VDE>;
 		assigned-clock-parents = <&tegra_car TEGRA114_CLK_PLL_P>;
@@ -150,32 +128,18 @@
 					      "sdmmc1_dat2_py5",
 					      "sdmmc1_dat3_py4";
 				nvidia,function = "sdmmc1";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
 
-<<<<<<< HEAD
-			ec-request {
-				nvidia,pins = "kb_col2_pq2";
-				nvidia,function = "kbc";
-=======
 			wlan-power {
 				nvidia,pins = "clk2_req_pcc5";
 				nvidia,function = "rsvd2";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		backlight_default: pinmux-backlight-default {
-			backlight-enable {
-				nvidia,pins = "gmi_ad10_ph2";
-=======
 
 			wlan-reset {
 				nvidia,pins = "gpio_x7_aud_px7";
@@ -358,21 +322,11 @@
 
 			microsd-pwr {
 				nvidia,pins = "gmi_clk_pk1";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,function = "gmi";
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		codec_default: pinmux-codec-default {
-			interrupt {
-				nvidia,pins = "gpio_w2_aud_pw2",
-						"gpio_w3_aud_pw3";
-				nvidia,function = "spi6";
-=======
 
 			/* EMMC pinmux */
 			sdmmc4-clk-cmd {
@@ -394,17 +348,11 @@
 					      "sdmmc4_dat6_paa6",
 					      "sdmmc4_dat7_paa7";
 				nvidia,function = "sdmmc4";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
 
-<<<<<<< HEAD
-			ldo1-en {
-				nvidia,pins = "sdmmc1_wp_n_pv3";
-				nvidia,function = "sdmmc1";
-=======
 			/* I2C pinmux */
 			gen1-i2c {
 				nvidia,pins = "gen1_i2c_scl_pc4",
@@ -466,17 +414,10 @@
 					      "ulpi_nxt_py2",
 					      "ulpi_stp_py3";
 				nvidia,function = "spi1";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		gpio_hall_sensor_default: pinmux-gpio-hall-sensor-default {
-			ulpi_data4_po5 {
-=======
 
 			spi1-in {
 				nvidia,pins = "ulpi_dir_py1";
@@ -515,19 +456,12 @@
 
 			/* GPIO keys pinmux */
 			hall-switch {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pins = "ulpi_data4_po5";
 				nvidia,function = "spi2";
 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		gpio_keys_default: pinmux-gpio-keys-default {
-			power {
-=======
 
 			lineout-switch {
 				nvidia,pins = "gpio_x5_aud_px5";
@@ -538,7 +472,6 @@
 			};
 
 			power-key {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pins = "kb_col0_pq0";
 				nvidia,function = "kbc";
 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
@@ -546,59 +479,31 @@
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
 
-<<<<<<< HEAD
-			volume {
-				nvidia,pins = "kb_row1_pr1",
-						"kb_row2_pr2";
-=======
 			volume-keys {
 				nvidia,pins = "kb_row1_pr1",
 					      "kb_row2_pr2";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,function = "rsvd2";
 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
 				nvidia,tristate = <TEGRA_PIN_ENABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		hp_det_default: pinmux-hp-det-default {
-			gmi_iordy_pi5 {
-				nvidia,pins = "kb_row7_pr7";
-				nvidia,function = "rsvd2";
-=======
 
 			/* Sensors pinmux */
 			nct-irq {
 				nvidia,pins = "ulpi_data3_po4";
 				nvidia,function = "ulpi";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		imu_default: pinmux-imu-default {
-			kb_row3_pr3 {
-=======
 
 			mpu-irq {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pins = "kb_row3_pr3";
 				nvidia,function = "rsvd3";
 				nvidia,pull = <TEGRA_PIN_PULL_DOWN>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		pwm_default: pinmux-pwm-default {
-			gmi_ad9_ph1 {
-=======
 
 			/* HDMI pinmux */
 			hdmi-hpd {
@@ -627,21 +532,12 @@
 
 			/* LED pinmux */
 			backlight-pwm {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pins = "gmi_ad9_ph1";
 				nvidia,function = "pwm1";
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		/* XXX make this something more sensible */
-		pwm_sleep: pinmux-pwm-sleep {
-			gmi_ad9_ph1 {
-				nvidia,pins = "gmi_ad9_ph1";
-=======
 
 			backlight-en {
 				nvidia,pins = "gmi_ad10_ph2";
@@ -958,18 +854,11 @@
 
 			pwm1 {
 				nvidia,pins = "pu4";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,function = "pwm1";
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
 			};
-<<<<<<< HEAD
-		};
-
-		sdmmc3_default: pinmux-sdmmc3-default {
-			drive_sdio3 {
-=======
 
 			/* EXTPERIPH pinmux */
 			clk1-out {
@@ -1288,7 +1177,6 @@
 			};
 
 			drive-sdio3 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				nvidia,pins = "drive_sdio3";
 				nvidia,high-speed-mode = <TEGRA_PIN_ENABLE>;
 				nvidia,schmitt = <TEGRA_PIN_DISABLE>;
@@ -1298,50 +1186,6 @@
 				nvidia,slew-rate-falling = <TEGRA_PIN_SLEW_RATE_FASTEST>;
 			};
 
-<<<<<<< HEAD
-			sdmmc3_clk_pa6 {
-				nvidia,pins = "sdmmc3_clk_pa6";
-				nvidia,function = "sdmmc3";
-				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
-				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-			};
-
-			sdmmc3_cmd_pa7 {
-				nvidia,pins = "sdmmc3_cmd_pa7",
-						"sdmmc3_dat0_pb7",
-						"sdmmc3_dat1_pb6",
-						"sdmmc3_dat2_pb5",
-						"sdmmc3_dat3_pb4",
-						"kb_col4_pq4",
-						"sdmmc3_clk_lb_out_pee4",
-						"sdmmc3_clk_lb_in_pee5",
-						"sdmmc3_cd_n_pv2";
-				nvidia,function = "sdmmc3";
-				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-			};
-		};
-
-		sdmmc3_vdd_default: pinmux-sdmmc3-vdd-default {
-			gmi_clk_pk1 {
-				nvidia,pins = "gmi_clk_pk1";
-				nvidia,function = "gmi";
-				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
-				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
-			};
-		};
-
-		vdd_lcd_default: pinmux-vdd-lcd-default {
-			sdmmc4_clk_pcc4 {
-				nvidia,pins = "sdmmc4_clk_pcc4";
-				nvidia,function = "sdmmc4";
-				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
-				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
-=======
 			drive-gma {
 				nvidia,pins = "drive_gma";
 				nvidia,high-speed-mode = <TEGRA_PIN_ENABLE>;
@@ -1350,7 +1194,6 @@
 				nvidia,pull-up-strength = <2>;
 				nvidia,slew-rate-rising = <TEGRA_PIN_SLEW_RATE_FASTEST>;
 				nvidia,slew-rate-falling = <TEGRA_PIN_SLEW_RATE_FASTEST>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			};
 		};
 	};
@@ -1360,9 +1203,6 @@
 	};
 
 	serial@70006200 {
-<<<<<<< HEAD
-		/* Bluetooth */
-=======
 		compatible = "nvidia,tegra114-hsuart", "nvidia,tegra30-hsuart";
 		reset-names = "serial";
 		/delete-property/ reg-shift;
@@ -1390,7 +1230,6 @@
 			vbat-supply = <&vdd_3v3_com>;
 			vddio-supply = <&vdd_1v8_vio>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	serial@70006300 {
@@ -1401,13 +1240,6 @@
 
 	pwm@7000a000 {
 		status = "okay";
-<<<<<<< HEAD
-
-		pinctrl-names = "default", "sleep";
-		pinctrl-0 = <&pwm_default>;
-		pinctrl-1 = <&pwm_sleep>;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	i2c@7000c000 {
@@ -1418,9 +1250,6 @@
 			compatible = "asahi-kasei,ak09911";
 			reg = <0xc>;
 
-<<<<<<< HEAD
-			vdd-supply = <&vdd_3v3_sys>;
-=======
 			/* no DRDY (polling) */
 
 			vdd-supply = <&vdd_2v85_sen>;
@@ -1429,42 +1258,27 @@
 			mount-matrix =  "0",  "1", "0",
 					"1",  "0", "0",
 					"0",  "0","-1";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		rt5639: audio-codec@1c {
 			compatible = "realtek,rt5639";
 			reg = <0x1c>;
 
-<<<<<<< HEAD
-			interrupt-parent = <&gpio>;
-			interrupts = <TEGRA_GPIO(W, 3) IRQ_TYPE_EDGE_FALLING>;
-
-			realtek,ldo1-en-gpios = <&gpio TEGRA_GPIO(V, 3) GPIO_ACTIVE_HIGH>;
-
-			pinctrl-names = "default";
-			pinctrl-0 = <&codec_default>;
-=======
 			realtek,ldo1-en-gpios =
 				<&gpio TEGRA_GPIO(V, 3) GPIO_ACTIVE_HIGH>;
 
 			clocks = <&tegra_pmc TEGRA_PMC_CLK_OUT_1>;
 			clock-names = "mclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		temp_sensor: temperature-sensor@4c {
 			compatible = "onnn,nct1008";
 			reg = <0x4c>;
 
-<<<<<<< HEAD
-			vcc-supply = <&vdd_3v3_sys>;
-=======
 			interrupt-parent = <&gpio>;
 			interrupts = <TEGRA_GPIO(O, 4) IRQ_TYPE_EDGE_FALLING>;
 
 			vcc-supply = <&vdd_1v8_vio>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#thermal-sensor-cells = <1>;
 		};
 
@@ -1475,21 +1289,12 @@
 			interrupt-parent = <&gpio>;
 			interrupts = <TEGRA_GPIO(R, 3) IRQ_TYPE_LEVEL_HIGH>;
 
-<<<<<<< HEAD
-			mount-matrix =  "0", "-1", "0",
-					"1",  "0", "0",
-					"0",  "0", "1";
-
-			pinctrl-names = "default";
-			pinctrl-0 = <&imu_default>;
-=======
 			vdd-supply = <&vdd_2v85_sen>;
 			vddio-supply = <&vdd_1v8_vio>;
 
 			mount-matrix =  "0", "-1", "0",
 					"1",  "0", "0",
 					"0",  "0", "1";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 
@@ -1500,11 +1305,8 @@
 		power-sensor@44 {
 			compatible = "ti,ina230";
 			reg = <0x44>;
-<<<<<<< HEAD
-=======
 
 			shunt-resistor = <5000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 
@@ -1516,14 +1318,6 @@
 			compatible = "dynaimage,al3320a";
 			reg = <0x1c>;
 
-<<<<<<< HEAD
-			vdd-supply = <&vdd_3v3_sys>;
-		};
-	};
-
-	i2c@7000c700 {
-		/* HDMI DDC */
-=======
 			vdd-supply = <&vdd_1v8_vio>;
 		};
 	};
@@ -1531,7 +1325,6 @@
 	hdmi_ddc: i2c@7000c700 {
 		status = "okay";
 		clock-frequency = <10000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	i2c@7000d000 {
@@ -1548,8 +1341,6 @@
 
 			ti,system-power-controller;
 
-<<<<<<< HEAD
-=======
 			palmas_gpadc: adc {
 				compatible = "ti,palmas-gpadc";
 				interrupts = <18 IRQ_TYPE_NONE>,
@@ -1569,21 +1360,17 @@
 				ti,enable-id-detection;
 			};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			palmas_gpio: gpio {
 				compatible = "ti,palmas-gpio";
 				gpio-controller;
 				#gpio-cells = <2>;
 			};
 
-<<<<<<< HEAD
-=======
 			palmas_clk32kg@0 {
 				compatible = "ti,palmas-clk32kg";
 				#clock-cells = <0>;
 			};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pinmux {
 				compatible = "ti,tps65913-pinctrl";
 				ti,palmas-enable-dvfs1;
@@ -1647,19 +1434,6 @@
 			pmic {
 				compatible = "ti,tps65913-pmic", "ti,palmas-pmic";
 
-<<<<<<< HEAD
-				ldo1-in-supply = <&tps65913_smps7>;
-				ldo2-in-supply = <&tps65913_smps7>;
-				ldo4-in-supply = <&tps65913_smps8>;
-				ldo5-in-supply = <&tps65913_smps9>;
-				ldo6-in-supply = <&tps65913_smps9>;
-				ldo7-in-supply = <&tps65913_smps9>;
-				ldo9-in-supply = <&tps65913_smps9>;
-
-				regulators {
-					tps65913_smps123: smps123 {
-						regulator-name = "vdd-cpu";
-=======
 				ldo1-in-supply = <&vddio_ddr>;
 				ldo2-in-supply = <&vddio_ddr>;
 				ldo4-in-supply = <&vdd_1v8_vio>;
@@ -1672,7 +1446,6 @@
 				regulators {
 					vdd_cpu: smps123 {
 						regulator-name = "vdd_cpu";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <900000>;
 						regulator-max-microvolt = <1350000>;
 						regulator-always-on;
@@ -1681,13 +1454,8 @@
 						ti,mode-sleep = <3>;
 					};
 
-<<<<<<< HEAD
-					tps65913_smps45: smps45 {
-						regulator-name = "vdd-core";
-=======
 					vdd_core: smps45 {
 						regulator-name = "vdd_core";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <900000>;
 						regulator-max-microvolt = <1400000>;
 						regulator-always-on;
@@ -1695,53 +1463,24 @@
 						ti,roof-floor = <3>;
 					};
 
-<<<<<<< HEAD
-					smps6 {
-						regulator-name = "va-lcd-hv";
-						regulator-min-microvolt = <1000000>;
-						regulator-max-microvolt = <1000000>;
-						regulator-always-on;
-						regulator-boot-on;
-					};
-
-					tps65913_smps7: smps7 {
-						regulator-name = "vdd-ddr";
-=======
 					/* smps6 disabled */
 
 					vddio_ddr: smps7 {
 						regulator-name = "vddio_ddr";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <1350000>;
 						regulator-max-microvolt = <1350000>;
 						regulator-always-on;
 						regulator-boot-on;
 					};
 
-<<<<<<< HEAD
-					tps65913_smps8: smps8 {
-						regulator-name = "vdd-1v8";
-=======
 					vdd_1v8_vio: smps8 {
 						regulator-name = "vdd_1v8";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <1800000>;
 						regulator-max-microvolt = <1800000>;
 						regulator-always-on;
 						regulator-boot-on;
 					};
 
-<<<<<<< HEAD
-					tps65913_smps9: smps9 {
-						regulator-name = "vdd-sd";
-						regulator-min-microvolt = <2900000>;
-						regulator-max-microvolt = <2900000>;
-						regulator-always-on;
-					};
-
-					tps65913_smps10_out1: smps10_out1 {
-						regulator-name = "vd-smps10-out1";
-=======
 					vcore_emmc: smps9 {
 						regulator-name = "vdd_emmc";
 						regulator-min-microvolt = <2900000>;
@@ -1751,38 +1490,20 @@
 
 					smps10_out1 {
 						regulator-name = "vd_smps10_out1";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <5000000>;
 						regulator-max-microvolt = <5000000>;
 						regulator-always-on;
 						regulator-boot-on;
 					};
 
-<<<<<<< HEAD
-					tps65913_smps10_out2: smps10_out2 {
-						regulator-name = "vd-smps10-out2";
-=======
 					vdd_smps10_out2: smps10_out2 {
 						regulator-name = "vd_smps10_out2";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <5000000>;
 						regulator-max-microvolt = <5000000>;
 						regulator-always-on;
 						regulator-boot-on;
 					};
 
-<<<<<<< HEAD
-					tps65913_ldo1: ldo1 {
-						regulator-name = "vdd-hdmi-pll";
-						regulator-min-microvolt = <1050000>;
-						regulator-max-microvolt = <1050000>;
-						regulator-always-on;
-						ti,roof-floor = <3>;
-					};
-
-					tps65913_ldo2: ldo2 {
-						regulator-name = "vdd-2v8-dsi-csi";
-=======
 					avdd_hdmi_pll: ldo1 {
 						regulator-name = "avdd_hdmi_pll";
 						regulator-min-microvolt = <1050000>;
@@ -1794,55 +1515,29 @@
 
 					avdd_dsi_csi: ldo2 {
 						regulator-name = "avdd_dsi_csi";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <1200000>;
 						regulator-max-microvolt = <1200000>;
 						regulator-boot-on;
 					};
 
 					ldo3 {
-<<<<<<< HEAD
-						regulator-name = "vpp-fuse";
-=======
 						regulator-name = "vpp_fuse";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <1800000>;
 						regulator-max-microvolt = <1800000>;
 					};
 
-<<<<<<< HEAD
-					ldo4 {
-						regulator-name = "vdd-1v2-cam";
-=======
 					vdd_1v2_cam: ldo4 {
 						regulator-name = "vdd_1v2_cam";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <1200000>;
 						regulator-max-microvolt = <1200000>;
 					};
 
-<<<<<<< HEAD
-					ldo5 {
-						regulator-name = "vdd-cam";
-=======
 					avdd_2v8_cam: ldo5 {
 						regulator-name = "avdd_cam2";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <2800000>;
 						regulator-max-microvolt = <2800000>;
 					};
 
-<<<<<<< HEAD
-					ldo6 {
-						regulator-name = "vdd-dev";
-						regulator-min-microvolt = <2850000>;
-						regulator-max-microvolt = <2850000>;
-						regulator-boot-on;
-					};
-
-					ldo7 {
-						regulator-name = "vdd-2v8-cam";
-=======
 					vdd_2v85_sen: ldo6 {
 						regulator-name = "vdd_dev";
 						regulator-min-microvolt = <2850000>;
@@ -1851,18 +1546,12 @@
 
 					avdd_2v8_af: ldo7 {
 						regulator-name = "avdd_2v8_cam";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <2800000>;
 						regulator-max-microvolt = <2800000>;
 					};
 
-<<<<<<< HEAD
-					tps65913_ldo8: ldo8 {
-						regulator-name = "vdd-rtc";
-=======
 					ldo8 {
 						regulator-name = "vdd_rtc";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-min-microvolt = <950000>;
 						regulator-max-microvolt = <950000>;
 						regulator-always-on;
@@ -1870,25 +1559,6 @@
 						ti,enable-ldo8-tracking;
 					};
 
-<<<<<<< HEAD
-					tps65913_ldo9: ldo9 {
-						regulator-name = "vdd-sdmmc";
-						regulator-min-microvolt = <1800000>;
-						regulator-max-microvolt = <2900000>;
-					};
-
-					tps65913_ldoln: ldoln {
-						regulator-name = "vdd-hdmi";
-						regulator-min-microvolt = <3300000>;
-						regulator-max-microvolt = <3300000>;
-					};
-
-					ldousb {
-						regulator-name = "vdd-usb";
-						regulator-min-microvolt = <3300000>;
-						regulator-max-microvolt = <3300000>;
-						regulator-always-on;
-=======
 					vddio_usd: ldo9 {
 						regulator-name = "vddio_usd";
 						/* min voltage of 1.8v is not stable */
@@ -1907,7 +1577,6 @@
 						regulator-name = "avdd_usb";
 						regulator-min-microvolt = <3300000>;
 						regulator-max-microvolt = <3300000>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						regulator-boot-on;
 					};
 				};
@@ -1916,19 +1585,11 @@
 			rtc {
 				compatible = "ti,palmas-rtc";
 				interrupt-parent = <&palmas>;
-<<<<<<< HEAD
-				interrupts = <8 0>;
-=======
 				interrupts = <8 IRQ_TYPE_NONE>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			};
 		};
 	};
 
-<<<<<<< HEAD
-	ahub@70080000 {
-		i2s@70080300 {
-=======
 	pmc@7000e400 {
 		status = "okay";
 		nvidia,suspend-mode = <2>;
@@ -1956,15 +1617,10 @@
 
 		/* BT SCO (i2s3) */
 		i2s@70080600 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "okay";
 		};
 	};
 
-<<<<<<< HEAD
-	mmc@78000000 {
-		/* WiFi */
-=======
 	brcm_wifi_pwrseq: pwrseq-wifi {
 		compatible = "mmc-pwrseq-simple";
 
@@ -2012,7 +1668,6 @@
 			interrupts = <TEGRA_GPIO(U, 5) IRQ_TYPE_LEVEL_HIGH>;
 			interrupt-names = "host-wake";
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	/* MicroSD card */
@@ -2025,19 +1680,6 @@
 		nvidia,default-tap = <0x3>;
 		nvidia,default-trim = <0x3>;
 
-<<<<<<< HEAD
-		vmmc-supply = <&vdd_usd>;
-		vqmmc-supply = <&tps65913_ldo9>;
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&sdmmc3_default>;
-	};
-
-	mmc@78000600 {
-		/* eMMC */
-	};
-
-=======
 		vmmc-supply = <&vdd_2v9_usd>;
 		vqmmc-supply = <&vddio_usd>;
 	};
@@ -2055,28 +1697,14 @@
 	};
 
 	/* Peripheral USB via ASUS connector */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	usb@7d000000 {
 		compatible = "nvidia,tegra114-udc";
 		status = "okay";
 		dr_mode = "peripheral";
-<<<<<<< HEAD
-
-		/* Peripheral USB via ASUS connector */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	usb-phy@7d000000 {
 		status = "okay";
-<<<<<<< HEAD
-	};
-
-	usb@7d008000 {
-		status = "okay";
-
-		/* Host USB via dock */
-=======
 		dr_mode = "peripheral";
 		vbus-supply = <&avdd_usb>;
 	};
@@ -2084,7 +1712,6 @@
 	/* Host USB via dock */
 	usb@7d008000 {
 		status = "okay";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	usb-phy@7d008000 {
@@ -2095,23 +1722,12 @@
 	backlight: backlight {
 		compatible = "pwm-backlight";
 
-<<<<<<< HEAD
-		enable-gpios = <&gpio TEGRA_GPIO(H, 2) GPIO_ACTIVE_HIGH>;
-		power-supply = <&vdd_5v0_sys>;
-=======
 		power-supply = <&vdd_3v7_bl>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pwms = <&pwm 1 1000000>;
 
 		brightness-levels = <1 255>;
 		num-interpolated-steps = <254>;
 		default-brightness-level = <224>;
-<<<<<<< HEAD
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&backlight_default>;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	/* PMIC has a built-in 32KHz oscillator which is used by PMC */
@@ -2122,16 +1738,6 @@
 		clock-output-names = "pmic-oscillator";
 	};
 
-<<<<<<< HEAD
-	gpio-hall-sensor {
-		compatible = "gpio-keys";
-
-		label = "GPIO Hall Effect Sensor";
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&gpio_hall_sensor_default>;
-
-=======
 	connector {
 		compatible = "hdmi-connector";
 		type = "d";
@@ -2149,7 +1755,6 @@
 	extcon-keys {
 		compatible = "gpio-keys";
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		switch-hall-sensor {
 			label = "Hall Effect Sensor";
 			gpios = <&gpio TEGRA_GPIO(O, 5) GPIO_ACTIVE_LOW>;
@@ -2158,8 +1763,6 @@
 			linux,can-disable;
 			wakeup-source;
 		};
-<<<<<<< HEAD
-=======
 
 		switch-lineout-detect {
 			label = "Audio dock line-out detect";
@@ -2168,22 +1771,12 @@
 			linux,code = <SW_LINEOUT_INSERT>;
 			debounce-interval = <10>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	gpio-keys {
 		compatible = "gpio-keys";
 
-<<<<<<< HEAD
-		label = "GPIO Buttons";
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&gpio_keys_default>;
-
-		button-power {
-=======
 		key-power {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "Power";
 			gpios = <&gpio TEGRA_GPIO(Q, 0) GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_POWER>;
@@ -2191,22 +1784,14 @@
 			wakeup-source;
 		};
 
-<<<<<<< HEAD
-		button-volume-down {
-=======
 		key-volume-down {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "Volume Down";
 			gpios = <&gpio TEGRA_GPIO(R, 1) GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_VOLUMEDOWN>;
 			debounce-interval = <10>;
 		};
 
-<<<<<<< HEAD
-		button-volume-up {
-=======
 		key-volume-up {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			label = "Volume Up";
 			gpios = <&gpio TEGRA_GPIO(R, 2) GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_VOLUMEUP>;
@@ -2226,15 +1811,6 @@
 			"Speakers", "SPORN",
 			"Speakers", "SPOLP",
 			"Speakers", "SPOLN",
-<<<<<<< HEAD
-			"Mic Jack", "MICBIAS1",
-			"IN2P", "Mic Jack";
-
-		nvidia,i2s-controller = <&tegra_i2s0>;
-		nvidia,audio-codec = <&rt5639>;
-
-		nvidia,hp-det-gpios = <&gpio TEGRA_GPIO(R, 7) GPIO_ACTIVE_LOW>;
-=======
 			"IN1P", "Mic Jack",
 			"IN1N", "Mic Jack",
 			"DMIC1", "Int Mic",
@@ -2245,7 +1821,6 @@
 
 		nvidia,hp-det-gpios = <&gpio TEGRA_GPIO(R, 7) GPIO_ACTIVE_LOW>;
 		nvidia,int-mic-en-gpios = <&gpio TEGRA_GPIO(K, 3) GPIO_ACTIVE_HIGH>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		clocks = <&tegra_car TEGRA114_CLK_PLL_A>,
 			 <&tegra_car TEGRA114_CLK_PLL_A_OUT0>,
@@ -2257,21 +1832,11 @@
 
 		assigned-clock-parents = <&tegra_car TEGRA114_CLK_PLL_A_OUT0>,
 					 <&tegra_car TEGRA114_CLK_EXTERN1>;
-<<<<<<< HEAD
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&hp_det_default>;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	vdd_5v0_sys: regulator-5v0-sys {
 		compatible = "regulator-fixed";
-<<<<<<< HEAD
-		regulator-name = "vdd_5v0";
-=======
 		regulator-name = "vdd_5v0_sys";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		regulator-always-on;
@@ -2280,34 +1845,13 @@
 
 	vdd_3v3_sys: regulator-3v3-sys {
 		compatible = "regulator-fixed";
-<<<<<<< HEAD
-		regulator-name = "vdd_3v3";
-=======
 		regulator-name = "vdd_3v3_sys";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
 		regulator-boot-on;
 	};
 
-<<<<<<< HEAD
-	vdd_lcd: regulator-vdd-lcd {
-		compatible = "regulator-fixed";
-		regulator-name = "vdd_lcd_1v8";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		vin-supply = <&tps65913_smps8>;
-		enable-active-high;
-		gpio = <&gpio TEGRA_GPIO(CC, 4) GPIO_ACTIVE_HIGH>;
-		regulator-boot-on;
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&vdd_lcd_default>;
-	};
-
-	vdd_usd: regulator-vdd-usd {
-=======
 	dvdd_1v8_lcd: regulator-vdd-lcd {
 		compatible = "regulator-fixed";
 		regulator-name = "dvdd_1v8_lcd";
@@ -2342,19 +1886,10 @@
 	};
 
 	vdd_2v9_usd: regulator-vdd-usd {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_sd_slot";
 		regulator-min-microvolt = <2900000>;
 		regulator-max-microvolt = <2900000>;
-<<<<<<< HEAD
-		vin-supply = <&tps65913_smps9>;
-		enable-active-high;
-		gpio = <&gpio TEGRA_GPIO(K, 1) GPIO_ACTIVE_HIGH>;
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&sdmmc3_vdd_default>;
-=======
 		regulator-boot-on;
 		gpio = <&gpio TEGRA_GPIO(K, 1) GPIO_ACTIVE_HIGH>;
 		enable-active-high;
@@ -2424,6 +1959,5 @@
 		gpio = <&gpio TEGRA_GPIO(H, 4) GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		vin-supply = <&vdd_3v3_sys>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };

@@ -83,13 +83,8 @@ Default is to monitor all CPUS.
 -m <pages>::
 --mmap-pages=<pages>::
 	Number of mmap data pages (must be a power of two) or size
-<<<<<<< HEAD
-	specification with appended unit character - B/K/M/G. The
-	size is rounded up to have nearest pages power of two value.
-=======
 	specification in bytes with appended unit character - B/K/M/G.
 	The size is rounded up to the nearest power-of-two page value.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 -p <pid>::
 --pid=<pid>::

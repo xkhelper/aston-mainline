@@ -840,8 +840,6 @@ static const struct ts_dmi_data rwc_nanote_p8_data = {
 	.properties = rwc_nanote_p8_props,
 };
 
-<<<<<<< HEAD
-=======
 static const struct property_entry rwc_nanote_next_props[] = {
 	PROPERTY_ENTRY_U32("touchscreen-min-x", 5),
 	PROPERTY_ENTRY_U32("touchscreen-min-y", 5),
@@ -857,7 +855,6 @@ static const struct ts_dmi_data rwc_nanote_next_data = {
 	.properties = rwc_nanote_next_props,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct property_entry schneider_sct101ctm_props[] = {
 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1715),
 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1140),
@@ -1608,8 +1605,6 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
 		},
 	},
 	{
-<<<<<<< HEAD
-=======
 		/* RWC NANOTE NEXT */
 		.driver_data = (void *)&rwc_nanote_next_data,
 		.matches = {
@@ -1621,7 +1616,6 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
 		},
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* Schneider SCT101CTM */
 		.driver_data = (void *)&schneider_sct101ctm_data,
 		.matches = {

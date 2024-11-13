@@ -35,11 +35,6 @@ properties:
 
       - description: Legacy compatibles used on Macintosh devices
         enum:
-<<<<<<< HEAD
-          - adm1030
-          - bmac+
-          - heathrow-media-bay
-=======
           - AAPL,3500
           - AAPL,7500
           - AAPL,8500
@@ -73,31 +68,10 @@ properties:
           - kauai-ata
           - Keylargo
           - keylargo-ata
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - keylargo-media-bay
           - lm87cimt
           - MAC,adm1030
           - MAC,ds1775
-<<<<<<< HEAD
-          - max6690
-          - ohare-media-bay
-          - ohare-swim3
-          - smu-sat
-          - swim3
-
-      - description: Legacy compatibles used on other PowerPC devices
-        enum:
-          - 1682m-rng
-          - IBM,lhca
-          - IBM,lhea
-          - IBM,lhea-ethernet
-          - mpc5200b-fec-phy
-          - mpc5200-serial
-          - mpc5200-sram
-          - ohci-be
-          - ohci-bigendian
-          - ohci-le
-=======
           - MacRISC
           - MacRISC2
           - MacRISC3
@@ -226,18 +200,11 @@ properties:
           - soc
           - sony,ps3
           - sti,platform-spider-pic
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       - description: Legacy compatibles used on SPARC devices
         enum:
           - bq4802
           - ds1287
-<<<<<<< HEAD
-          - isa-m5819p
-          - isa-m5823p
-          - m5819
-          - sab82532
-=======
           - i2cpcf,8584
           - isa-m5819p
           - isa-m5823p
@@ -246,7 +213,6 @@ properties:
           - sab82532
           - su
           - sun4v
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - SUNW,bbc-beep
           - SUNW,bbc-i2c
           - SUNW,CS4231
@@ -274,11 +240,6 @@ properties:
           - compat1
           - compat2
           - compat3
-<<<<<<< HEAD
-          - linux,spi-loopback-test
-          - mailbox-test
-          - regulator-virtual-consumer
-=======
           - gpio-mockup
           - gpio-simulator
           - gpio-virtuser
@@ -286,7 +247,6 @@ properties:
           - mailbox-test
           - regulator-virtual-consumer
           - test-device
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
       - description:
           Devices on MIPS platform, without any DTS users.  These are

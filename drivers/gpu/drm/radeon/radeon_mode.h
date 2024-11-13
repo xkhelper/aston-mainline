@@ -39,10 +39,7 @@
 #include <linux/i2c-algo-bit.h>
 
 struct edid;
-<<<<<<< HEAD
-=======
 struct drm_edid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct radeon_bo;
 struct radeon_device;
 
@@ -266,12 +263,7 @@ struct radeon_mode_info {
 	/* Output CSC */
 	struct drm_property *output_csc_property;
 	/* hardcoded DFP edid from BIOS */
-<<<<<<< HEAD
-	struct edid *bios_hardcoded_edid;
-	int bios_hardcoded_edid_size;
-=======
 	const struct drm_edid *bios_hardcoded_edid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* firmware flags */
 	u16 firmware_flags;

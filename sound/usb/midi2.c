@@ -607,17 +607,8 @@ static int parse_group_terminal_block(struct snd_usb_midi2_ump *rmidi,
 		return 0;
 	}
 
-<<<<<<< HEAD
-	if (ump->info.protocol && ump->info.protocol != protocol)
-		usb_audio_info(rmidi->umidi->chip,
-			       "Overriding preferred MIDI protocol in GTB %d: %x -> %x\n",
-			       rmidi->usb_block_id, ump->info.protocol,
-			       protocol);
-	ump->info.protocol = protocol;
-=======
 	if (!ump->info.protocol)
 		ump->info.protocol = protocol;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	protocol_caps = protocol;
 	switch (desc->bMIDIProtocol) {
@@ -629,17 +620,7 @@ static int parse_group_terminal_block(struct snd_usb_midi2_ump *rmidi,
 		break;
 	}
 
-<<<<<<< HEAD
-	if (ump->info.protocol_caps && ump->info.protocol_caps != protocol_caps)
-		usb_audio_info(rmidi->umidi->chip,
-			       "Overriding MIDI protocol caps in GTB %d: %x -> %x\n",
-			       rmidi->usb_block_id, ump->info.protocol_caps,
-			       protocol_caps);
-	ump->info.protocol_caps = protocol_caps;
-
-=======
 	ump->info.protocol_caps |= protocol_caps;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -882,11 +863,6 @@ static int create_gtb_block(struct snd_usb_midi2_ump *rmidi, int dir, int blk)
 		fb->info.flags |= SNDRV_UMP_BLOCK_IS_MIDI1 |
 			SNDRV_UMP_BLOCK_IS_LOWSPEED;
 
-<<<<<<< HEAD
-	usb_audio_dbg(umidi->chip,
-		      "Created a UMP block %d from GTB, name=%s\n",
-		      blk, fb->info.name);
-=======
 	/* if MIDI 2.0 protocol is supported and yet the GTB shows MIDI 1.0,
 	 * treat it as a MIDI 1.0-specific block
 	 */
@@ -906,7 +882,6 @@ static int create_gtb_block(struct snd_usb_midi2_ump *rmidi, int dir, int blk)
 	usb_audio_dbg(umidi->chip,
 		      "Created a UMP block %d from GTB, name=%s, flags=0x%x\n",
 		      blk, fb->info.name, fb->info.flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 

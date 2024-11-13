@@ -2652,10 +2652,7 @@
 			clocks = <&cpg CPG_MOD 615>;
 			power-domains = <&sysc R8A774E1_PD_A3VP>;
 			resets = <&cpg 615>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vp0 0>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpf1: fcp@fe951000 {
@@ -2664,10 +2661,7 @@
 			clocks = <&cpg CPG_MOD 614>;
 			power-domains = <&sysc R8A774E1_PD_A3VP>;
 			resets = <&cpg 614>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vp1 1>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvb0: fcp@fe96f000 {
@@ -2676,10 +2670,7 @@
 			clocks = <&cpg CPG_MOD 607>;
 			power-domains = <&sysc R8A774E1_PD_A3VP>;
 			resets = <&cpg 607>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vp0 5>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvb1: fcp@fe92f000 {
@@ -2688,10 +2679,7 @@
 			clocks = <&cpg CPG_MOD 606>;
 			power-domains = <&sysc R8A774E1_PD_A3VP>;
 			resets = <&cpg 606>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vp1 7>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvi0: fcp@fe9af000 {
@@ -2700,10 +2688,7 @@
 			clocks = <&cpg CPG_MOD 611>;
 			power-domains = <&sysc R8A774E1_PD_A3VP>;
 			resets = <&cpg 611>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vp0 8>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvi1: fcp@fe9bf000 {
@@ -2712,10 +2697,7 @@
 			clocks = <&cpg CPG_MOD 610>;
 			power-domains = <&sysc R8A774E1_PD_A3VP>;
 			resets = <&cpg 610>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vp1 9>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvd0: fcp@fea27000 {
@@ -2724,10 +2706,7 @@
 			clocks = <&cpg CPG_MOD 603>;
 			power-domains = <&sysc R8A774E1_PD_ALWAYS_ON>;
 			resets = <&cpg 603>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vi0 8>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		fcpvd1: fcp@fea2f000 {
@@ -2736,10 +2715,7 @@
 			clocks = <&cpg CPG_MOD 602>;
 			power-domains = <&sysc R8A774E1_PD_ALWAYS_ON>;
 			resets = <&cpg 602>;
-<<<<<<< HEAD
-=======
 			iommus = <&ipmmu_vi0 9>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		csi20: csi2@fea80000 {

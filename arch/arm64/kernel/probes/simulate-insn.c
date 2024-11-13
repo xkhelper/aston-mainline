@@ -171,19 +171,6 @@ simulate_tbz_tbnz(u32 opcode, long addr, struct pt_regs *regs)
 void __kprobes
 simulate_ldr_literal(u32 opcode, long addr, struct pt_regs *regs)
 {
-<<<<<<< HEAD
-	u64 *load_addr;
-	int xn = opcode & 0x1f;
-	int disp;
-
-	disp = ldr_displacement(opcode);
-	load_addr = (u64 *) (addr + disp);
-
-	if (opcode & (1 << 30))	/* x0-x30 */
-		set_x_reg(regs, xn, *load_addr);
-	else			/* w0-w30 */
-		set_w_reg(regs, xn, *load_addr);
-=======
 	unsigned long load_addr;
 	int xn = opcode & 0x1f;
 
@@ -193,7 +180,6 @@ simulate_ldr_literal(u32 opcode, long addr, struct pt_regs *regs)
 		set_x_reg(regs, xn, READ_ONCE(*(u64 *)load_addr));
 	else			/* w0-w30 */
 		set_w_reg(regs, xn, READ_ONCE(*(u32 *)load_addr));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	instruction_pointer_set(regs, instruction_pointer(regs) + 4);
 }
@@ -201,23 +187,12 @@ simulate_ldr_literal(u32 opcode, long addr, struct pt_regs *regs)
 void __kprobes
 simulate_ldrsw_literal(u32 opcode, long addr, struct pt_regs *regs)
 {
-<<<<<<< HEAD
-	s32 *load_addr;
-	int xn = opcode & 0x1f;
-	int disp;
-
-	disp = ldr_displacement(opcode);
-	load_addr = (s32 *) (addr + disp);
-
-	set_x_reg(regs, xn, *load_addr);
-=======
 	unsigned long load_addr;
 	int xn = opcode & 0x1f;
 
 	load_addr = addr + ldr_displacement(opcode);
 
 	set_x_reg(regs, xn, READ_ONCE(*(s32 *)load_addr));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	instruction_pointer_set(regs, instruction_pointer(regs) + 4);
 }

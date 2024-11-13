@@ -35,10 +35,7 @@ all_files := \
 		stackprotector.h \
 		std.h \
 		stdarg.h \
-<<<<<<< HEAD
-=======
 		stdbool.h \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		stdint.h \
 		stdlib.h \
 		string.h \

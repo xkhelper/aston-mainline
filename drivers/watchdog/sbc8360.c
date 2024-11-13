@@ -301,10 +301,6 @@ static int sbc8360_notify_sys(struct notifier_block *this, unsigned long code,
 
 static const struct file_operations sbc8360_fops = {
 	.owner = THIS_MODULE,
-<<<<<<< HEAD
-	.llseek = no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.write = sbc8360_write,
 	.open = sbc8360_open,
 	.release = sbc8360_close,

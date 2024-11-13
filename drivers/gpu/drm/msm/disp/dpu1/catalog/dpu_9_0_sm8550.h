@@ -14,14 +14,7 @@ static const struct dpu_caps sm8550_dpu_caps = {
 	.has_dim_layer = true,
 	.has_idle_pc = true,
 	.has_3d_merge = true,
-<<<<<<< HEAD
-<<<<<<< HEAD
 	.has_active_ctls = true,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	.has_active_ctls = true,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	.max_linewidth = 5120,
 	.pixel_ram_size = DEFAULT_PIXEL_RAM_SIZE,
 };
@@ -35,39 +28,16 @@ static const struct dpu_mdp_cfg sm8550_mdp = {
 	},
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-/* FIXME: get rid of DPU_CTL_SPLIT_DISPLAY in favour of proper ACTIVE_CTL support */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 static const struct dpu_ctl_cfg sm8550_ctl[] = {
 	{
 		.name = "ctl_0", .id = CTL_0,
 		.base = 0x15000, .len = 0x290,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = CTL_SM8550_MASK,
-=======
-		.features = CTL_SM8550_MASK | BIT(DPU_CTL_SPLIT_DISPLAY),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = CTL_SM8550_MASK,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 9),
 	}, {
 		.name = "ctl_1", .id = CTL_1,
 		.base = 0x16000, .len = 0x290,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = CTL_SM8550_MASK,
-=======
-		.features = CTL_SM8550_MASK | BIT(DPU_CTL_SPLIT_DISPLAY),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = CTL_SM8550_MASK,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 10),
 	}, {
 		.name = "ctl_2", .id = CTL_2,
@@ -96,150 +66,70 @@ static const struct dpu_sspp_cfg sm8550_sspp[] = {
 	{
 		.name = "sspp_0", .id = SSPP_VIG0,
 		.base = 0x4000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = VIG_SDM845_MASK_SDMA,
-=======
-		.features = VIG_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = VIG_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_vig_sblk_qseed3_3_2,
 		.xin_id = 0,
 		.type = SSPP_TYPE_VIG,
 	}, {
 		.name = "sspp_1", .id = SSPP_VIG1,
 		.base = 0x6000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = VIG_SDM845_MASK_SDMA,
-=======
-		.features = VIG_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = VIG_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_vig_sblk_qseed3_3_2,
 		.xin_id = 4,
 		.type = SSPP_TYPE_VIG,
 	}, {
 		.name = "sspp_2", .id = SSPP_VIG2,
 		.base = 0x8000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = VIG_SDM845_MASK_SDMA,
-=======
-		.features = VIG_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = VIG_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_vig_sblk_qseed3_3_2,
 		.xin_id = 8,
 		.type = SSPP_TYPE_VIG,
 	}, {
 		.name = "sspp_3", .id = SSPP_VIG3,
 		.base = 0xa000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = VIG_SDM845_MASK_SDMA,
-=======
-		.features = VIG_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = VIG_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_vig_sblk_qseed3_3_2,
 		.xin_id = 12,
 		.type = SSPP_TYPE_VIG,
 	}, {
 		.name = "sspp_8", .id = SSPP_DMA0,
 		.base = 0x24000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = DMA_SDM845_MASK_SDMA,
-=======
-		.features = DMA_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = DMA_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_dma_sblk,
 		.xin_id = 1,
 		.type = SSPP_TYPE_DMA,
 	}, {
 		.name = "sspp_9", .id = SSPP_DMA1,
 		.base = 0x26000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = DMA_SDM845_MASK_SDMA,
-=======
-		.features = DMA_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = DMA_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_dma_sblk,
 		.xin_id = 5,
 		.type = SSPP_TYPE_DMA,
 	}, {
 		.name = "sspp_10", .id = SSPP_DMA2,
 		.base = 0x28000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = DMA_SDM845_MASK_SDMA,
-=======
-		.features = DMA_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = DMA_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_dma_sblk,
 		.xin_id = 9,
 		.type = SSPP_TYPE_DMA,
 	}, {
 		.name = "sspp_11", .id = SSPP_DMA3,
 		.base = 0x2a000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = DMA_SDM845_MASK_SDMA,
-=======
-		.features = DMA_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = DMA_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_dma_sblk,
 		.xin_id = 13,
 		.type = SSPP_TYPE_DMA,
 	}, {
 		.name = "sspp_12", .id = SSPP_DMA4,
 		.base = 0x2c000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = DMA_CURSOR_SDM845_MASK_SDMA,
-=======
-		.features = DMA_CURSOR_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = DMA_CURSOR_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_dma_sblk,
 		.xin_id = 14,
 		.type = SSPP_TYPE_DMA,
 	}, {
 		.name = "sspp_13", .id = SSPP_DMA5,
 		.base = 0x2e000, .len = 0x344,
-<<<<<<< HEAD
-<<<<<<< HEAD
 		.features = DMA_CURSOR_SDM845_MASK_SDMA,
-=======
-		.features = DMA_CURSOR_SDM845_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-		.features = DMA_CURSOR_SDM845_MASK_SDMA,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.sblk = &dpu_dma_sblk,
 		.xin_id = 15,
 		.type = SSPP_TYPE_DMA,

@@ -243,11 +243,7 @@ static void qm1d1b0004_remove(struct i2c_client *client)
 
 
 static const struct i2c_device_id qm1d1b0004_id[] = {
-<<<<<<< HEAD
-	{"qm1d1b0004", 0},
-=======
 	{ "qm1d1b0004" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 

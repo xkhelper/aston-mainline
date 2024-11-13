@@ -2161,15 +2161,7 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware,
-=======
-static int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-int cs_dsp_load_coeff(struct cs_dsp *dsp, const struct firmware *firmware,
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 			     const char *file)
 {
 	LIST_HEAD(buf_list);
@@ -2366,14 +2358,7 @@ out_fw:
 
 	return ret;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(cs_dsp_load_coeff);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-EXPORT_SYMBOL_GPL(cs_dsp_load_coeff);
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 static int cs_dsp_create_name(struct cs_dsp *dsp)
 {

@@ -325,8 +325,6 @@ other four level 2 metrics by subtracting corresponding metrics as below.
     Fetch_Bandwidth = Frontend_Bound - Fetch_Latency
     Core_Bound = Backend_Bound - Memory_Bound
 
-<<<<<<< HEAD
-=======
 TPEBS in TopDown
 ================
 
@@ -357,7 +355,6 @@ Currently, this feature is supported through perf stat
 	perf stat -M metric_name --record-tpebs ...
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 [1] https://software.intel.com/en-us/top-down-microarchitecture-analysis-method-win
 [2] https://sites.google.com/site/analysismethods/yasin-pubs

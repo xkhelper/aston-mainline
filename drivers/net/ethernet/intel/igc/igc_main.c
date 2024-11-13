@@ -2191,10 +2191,7 @@ static bool igc_alloc_mapped_page(struct igc_ring *rx_ring,
 	page = dev_alloc_pages(igc_rx_pg_order(rx_ring));
 	if (unlikely(!page)) {
 		rx_ring->rx_stats.alloc_failed++;
-<<<<<<< HEAD
-=======
 		set_bit(IGC_RING_FLAG_RX_ALLOC_FAILED, &rx_ring->flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 	}
 
@@ -2211,10 +2208,7 @@ static bool igc_alloc_mapped_page(struct igc_ring *rx_ring,
 		__free_page(page);
 
 		rx_ring->rx_stats.alloc_failed++;
-<<<<<<< HEAD
-=======
 		set_bit(IGC_RING_FLAG_RX_ALLOC_FAILED, &rx_ring->flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 	}
 
@@ -2666,10 +2660,7 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
 		if (!skb) {
 			rx_ring->rx_stats.alloc_failed++;
 			rx_buffer->pagecnt_bias++;
-<<<<<<< HEAD
-=======
 			set_bit(IGC_RING_FLAG_RX_ALLOC_FAILED, &rx_ring->flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 
@@ -2750,10 +2741,7 @@ static void igc_dispatch_skb_zc(struct igc_q_vector *q_vector,
 	skb = igc_construct_skb_zc(ring, xdp);
 	if (!skb) {
 		ring->rx_stats.alloc_failed++;
-<<<<<<< HEAD
-=======
 		set_bit(IGC_RING_FLAG_RX_ALLOC_FAILED, &ring->flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -5823,13 +5811,6 @@ no_wait:
 	if (adapter->flags & IGC_FLAG_HAS_MSIX) {
 		u32 eics = 0;
 
-<<<<<<< HEAD
-		for (i = 0; i < adapter->num_q_vectors; i++)
-			eics |= adapter->q_vector[i]->eims_value;
-		wr32(IGC_EICS, eics);
-	} else {
-		wr32(IGC_ICS, IGC_ICS_RXDMT0);
-=======
 		for (i = 0; i < adapter->num_q_vectors; i++) {
 			struct igc_q_vector *q_vector = adapter->q_vector[i];
 			struct igc_ring *rx_ring;
@@ -5853,7 +5834,6 @@ no_wait:
 			clear_bit(IGC_RING_FLAG_RX_ALLOC_FAILED, &rx_ring->flags);
 			wr32(IGC_ICS, IGC_ICS_RXDMT0);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	igc_ptp_tx_hang(adapter);
@@ -6557,8 +6537,6 @@ static int igc_tc_query_caps(struct igc_adapter *adapter,
 	struct igc_hw *hw = &adapter->hw;
 
 	switch (base->type) {
-<<<<<<< HEAD
-=======
 	case TC_SETUP_QDISC_MQPRIO: {
 		struct tc_mqprio_caps *caps = base->caps;
 
@@ -6566,7 +6544,6 @@ static int igc_tc_query_caps(struct igc_adapter *adapter,
 
 		return 0;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case TC_SETUP_QDISC_TAPRIO: {
 		struct tc_taprio_caps *caps = base->caps;
 
@@ -6584,8 +6561,6 @@ static int igc_tc_query_caps(struct igc_adapter *adapter,
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void igc_save_mqprio_params(struct igc_adapter *adapter, u8 num_tc,
 				   u16 *offset)
 {
@@ -6645,7 +6620,6 @@ apply:
 	return igc_tsn_offload_apply(adapter);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int igc_setup_tc(struct net_device *dev, enum tc_setup_type type,
 			void *type_data)
 {
@@ -6665,12 +6639,9 @@ static int igc_setup_tc(struct net_device *dev, enum tc_setup_type type,
 	case TC_SETUP_QDISC_CBS:
 		return igc_tsn_enable_cbs(adapter, type_data);
 
-<<<<<<< HEAD
-=======
 	case TC_SETUP_QDISC_MQPRIO:
 		return igc_tsn_enable_mqprio(adapter, type_data);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		return -EOPNOTSUPP;
 	}

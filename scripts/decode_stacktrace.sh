@@ -1,21 +1,13 @@
-<<<<<<< HEAD
-#!/bin/bash
-=======
 #!/usr/bin/env bash
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # SPDX-License-Identifier: GPL-2.0
 # (c) 2014, Sasha Levin <sasha.levin@oracle.com>
 #set -x
 
 usage() {
 	echo "Usage:"
-<<<<<<< HEAD
-	echo "	$0 -r <release> | <vmlinux> [<base path>|auto] [<modules path>]"
-=======
 	echo "	$0 -r <release>"
 	echo "	$0 [<vmlinux> [<base_path>|auto [<modules_path>]]]"
 	echo "	$0 -h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 # Try to find a Rust demangler
@@ -42,14 +34,10 @@ READELF=${UTIL_PREFIX}readelf${UTIL_SUFFIX}
 ADDR2LINE=${UTIL_PREFIX}addr2line${UTIL_SUFFIX}
 NM=${UTIL_PREFIX}nm${UTIL_SUFFIX}
 
-<<<<<<< HEAD
-if [[ $1 == "-r" ]] ; then
-=======
 if [[ $1 == "-h" ]] ; then
 	usage
 	exit 0
 elif [[ $1 == "-r" ]] ; then
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vmlinux=""
 	basepath="auto"
 	modpath=""
@@ -106,33 +94,6 @@ find_module() {
 		fi
 	fi
 
-<<<<<<< HEAD
-	if [[ "$modpath" != "" ]] ; then
-		for fn in $(find "$modpath" -name "${module//_/[-_]}.ko*") ; do
-			if ${READELF} -WS "$fn" | grep -qwF .debug_line ; then
-				echo $fn
-				return
-			fi
-		done
-		return 1
-	fi
-
-	modpath=$(dirname "$vmlinux")
-	find_module && return
-
-	if [[ $release == "" ]] ; then
-		release=$(gdb -ex 'print init_uts_ns.name.release' -ex 'quit' -quiet -batch "$vmlinux" 2>/dev/null | sed -n 's/\$1 = "\(.*\)".*/\1/p')
-	fi
-
-	for dn in {/usr/lib/debug,}/lib/modules/$release ; do
-		if [ -e "$dn" ] ; then
-			modpath="$dn"
-			find_module && return
-		fi
-	done
-
-	modpath=""
-=======
 	if [ -z $release ] ; then
 		release=$(gdb -ex 'print init_uts_ns.name.release' -ex 'quit' -quiet -batch "$vmlinux" 2>/dev/null | sed -n 's/\$1 = "\(.*\)".*/\1/p')
 	fi
@@ -159,7 +120,6 @@ find_module() {
 		echo "WARNING! Cannot find .ko for module ${module}, please pass a valid module path" >&2
 	fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 1
 }
 
@@ -177,10 +137,6 @@ parse_symbol() {
 	else
 		local objfile=$(find_module)
 		if [[ $objfile == "" ]] ; then
-<<<<<<< HEAD
-			echo "WARNING! Modules path isn't set, but is needed to parse this symbol" >&2
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return
 		fi
 		if [[ $aarray_support == true ]]; then

@@ -1673,11 +1673,7 @@ void evergreen_pm_misc(struct radeon_device *rdev)
  */
 void evergreen_pm_prepare(struct radeon_device *rdev)
 {
-<<<<<<< HEAD
-	struct drm_device *ddev = rdev->ddev;
-=======
 	struct drm_device *ddev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_crtc *crtc;
 	struct radeon_crtc *radeon_crtc;
 	u32 tmp;
@@ -1702,11 +1698,7 @@ void evergreen_pm_prepare(struct radeon_device *rdev)
  */
 void evergreen_pm_finish(struct radeon_device *rdev)
 {
-<<<<<<< HEAD
-	struct drm_device *ddev = rdev->ddev;
-=======
 	struct drm_device *ddev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_crtc *crtc;
 	struct radeon_crtc *radeon_crtc;
 	u32 tmp;
@@ -1771,11 +1763,7 @@ void evergreen_hpd_set_polarity(struct radeon_device *rdev,
  */
 void evergreen_hpd_init(struct radeon_device *rdev)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_connector *connector;
 	unsigned enabled = 0;
 	u32 tmp = DC_HPDx_CONNECTION_TIMER(0x9c4) |
@@ -1816,11 +1804,7 @@ void evergreen_hpd_init(struct radeon_device *rdev)
  */
 void evergreen_hpd_fini(struct radeon_device *rdev)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct drm_connector *connector;
 	unsigned disabled = 0;
 
@@ -4769,11 +4753,7 @@ restart_ih:
 				event_name = "vblank";
 
 				if (rdev->irq.crtc_vblank_int[crtc_idx]) {
-<<<<<<< HEAD
-					drm_handle_vblank(rdev->ddev, crtc_idx);
-=======
 					drm_handle_vblank(rdev_to_drm(rdev), crtc_idx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					rdev->pm.vblank_sync = true;
 					wake_up(&rdev->irq.vblank_queue);
 				}
@@ -5231,11 +5211,7 @@ int evergreen_init(struct radeon_device *rdev)
 	/* Initialize surface registers */
 	radeon_surface_init(rdev);
 	/* Initialize clocks */
-<<<<<<< HEAD
-	radeon_get_clock_info(rdev->ddev);
-=======
 	radeon_get_clock_info(rdev_to_drm(rdev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Fence driver */
 	radeon_fence_driver_init(rdev);
 	/* initialize AGP */

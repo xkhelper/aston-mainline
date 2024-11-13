@@ -55,11 +55,7 @@ struct imsic {
 	/* IMSIC SW-file */
 	struct imsic_mrif *swfile;
 	phys_addr_t swfile_pa;
-<<<<<<< HEAD
-	spinlock_t swfile_extirq_lock;
-=======
 	raw_spinlock_t swfile_extirq_lock;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define imsic_vs_csr_read(__c)			\
@@ -626,11 +622,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
 	 * interruptions between reading topei and updating pending status.
 	 */
 
-<<<<<<< HEAD
-	spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
-=======
 	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) &&
 	    imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis))
@@ -638,11 +630,7 @@ static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
 	else
 		kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
 
-<<<<<<< HEAD
-	spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
-=======
 	raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void imsic_swfile_read(struct kvm_vcpu *vcpu, bool clear,
@@ -1063,11 +1051,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
 	}
 	imsic->swfile = page_to_virt(swfile_page);
 	imsic->swfile_pa = page_to_phys(swfile_page);
-<<<<<<< HEAD
-	spin_lock_init(&imsic->swfile_extirq_lock);
-=======
 	raw_spin_lock_init(&imsic->swfile_extirq_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Setup IO device */
 	kvm_iodevice_init(&imsic->iodev, &imsic_iodoev_ops);

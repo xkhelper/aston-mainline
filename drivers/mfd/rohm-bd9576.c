@@ -57,11 +57,7 @@ static const struct regmap_access_table volatile_regs = {
 	.n_yes_ranges = ARRAY_SIZE(volatile_ranges),
 };
 
-<<<<<<< HEAD
-static struct regmap_config bd957x_regmap = {
-=======
 static const struct regmap_config bd957x_regmap = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits = 8,
 	.val_bits = 8,
 	.volatile_table = &volatile_regs,
@@ -69,11 +65,7 @@ static const struct regmap_config bd957x_regmap = {
 	.cache_type = REGCACHE_MAPLE,
 };
 
-<<<<<<< HEAD
-static struct regmap_irq bd9576_irqs[] = {
-=======
 static const struct regmap_irq bd9576_irqs[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	REGMAP_IRQ_REG(BD9576_INT_THERM, 0, BD957X_MASK_INT_MAIN_THERM),
 	REGMAP_IRQ_REG(BD9576_INT_OVP, 0, BD957X_MASK_INT_MAIN_OVP),
 	REGMAP_IRQ_REG(BD9576_INT_SCP, 0, BD957X_MASK_INT_MAIN_SCP),
@@ -84,11 +76,7 @@ static const struct regmap_irq bd9576_irqs[] = {
 	REGMAP_IRQ_REG(BD9576_INT_SYS, 0, BD957X_MASK_INT_MAIN_SYS),
 };
 
-<<<<<<< HEAD
-static struct regmap_irq_chip bd9576_irq_chip = {
-=======
 static const struct regmap_irq_chip bd9576_irq_chip = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "bd9576_irq",
 	.irqs = &bd9576_irqs[0],
 	.num_irqs = ARRAY_SIZE(bd9576_irqs),

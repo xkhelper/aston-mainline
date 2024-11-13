@@ -87,11 +87,7 @@ static void tcp_self_connect(const char *tst, unsigned int port,
 	netstat_free(ns_after);
 
 	if (after_aogood <= before_aogood) {
-<<<<<<< HEAD
-		test_fail("%s: TCPAOGood counter mismatch: %zu <= %zu",
-=======
 		test_fail("%s: TCPAOGood counter mismatch: %" PRIu64 " <= %" PRIu64,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  tst, after_aogood, before_aogood);
 		close(sk);
 		return;
@@ -152,11 +148,7 @@ static void tcp_self_connect(const char *tst, unsigned int port,
 	netstat_free(ns_after);
 	close(sk);
 	if (after_aogood <= before_aogood) {
-<<<<<<< HEAD
-		test_fail("%s: TCPAOGood counter mismatch: %zu <= %zu",
-=======
 		test_fail("%s: TCPAOGood counter mismatch: %" PRIu64 " <= %" PRIu64,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			  tst, after_aogood, before_aogood);
 		return;
 	}
@@ -171,13 +163,6 @@ static void *client_fn(void *arg)
 	setup_lo_intf("lo");
 
 	tcp_self_connect("self-connect(same keyids)", port++, false, false);
-<<<<<<< HEAD
-	tcp_self_connect("self-connect(different keyids)", port++, true, false);
-	tcp_self_connect("self-connect(restore)", port, false, true);
-	port += 2;
-	tcp_self_connect("self-connect(restore, different keyids)", port, true, true);
-	port += 2;
-=======
 
 	/* expecting rnext to change based on the first segment RNext != Current */
 	trace_ao_event_expect(TCP_AO_RNEXT_REQUEST, local_addr, local_addr,
@@ -192,17 +177,12 @@ static void *client_fn(void *arg)
 			      port + 1, port + 1, 0, -1, -1, -1, -1, -1, 5, 7, -1);
 	tcp_self_connect("self-connect(restore, different keyids)", port, true, true);
 	port += 2; /* restore test restores over different port */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return NULL;
 }
 
 int main(int argc, char *argv[])
 {
-<<<<<<< HEAD
-	test_init(4, client_fn, NULL);
-=======
 	test_init(5, client_fn, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }

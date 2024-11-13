@@ -346,8 +346,6 @@ xfs_bmap_defer_add(
 	trace_xfs_bmap_defer(bi);
 
 	xfs_bmap_update_get_group(tp->t_mountp, bi);
-<<<<<<< HEAD
-=======
 
 	/*
 	 * Ensure the deferred mapping is pre-recorded in i_delayed_blks.
@@ -359,7 +357,6 @@ xfs_bmap_defer_add(
 	 */
 	if (bi->bi_type == XFS_BMAP_MAP)
 		bi->bi_owner->i_delayed_blks += bi->bi_bmap.br_blockcount;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_defer_add(tp, &bi->bi_list, &xfs_bmap_update_defer_type);
 }
 
@@ -381,12 +378,9 @@ xfs_bmap_update_cancel_item(
 {
 	struct xfs_bmap_intent		*bi = bi_entry(item);
 
-<<<<<<< HEAD
-=======
 	if (bi->bi_type == XFS_BMAP_MAP)
 		bi->bi_owner->i_delayed_blks -= bi->bi_bmap.br_blockcount;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_bmap_update_put_group(bi);
 	kmem_cache_free(xfs_bmap_intent_cache, bi);
 }
@@ -484,12 +478,9 @@ xfs_bui_recover_work(
 	bi->bi_owner = *ipp;
 	xfs_bmap_update_get_group(mp, bi);
 
-<<<<<<< HEAD
-=======
 	/* see xfs_bmap_defer_add for details */
 	if (bi->bi_type == XFS_BMAP_MAP)
 		bi->bi_owner->i_delayed_blks += bi->bi_bmap.br_blockcount;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xfs_defer_add_item(dfp, &bi->bi_list);
 	return bi;
 }

@@ -519,15 +519,9 @@ static void it821x_dev_config(struct ata_device *adev)
 	}
 	/* This is a controller firmware triggered funny, don't
 	   report the drive faulty! */
-<<<<<<< HEAD
-	adev->horkage &= ~ATA_HORKAGE_DIAGNOSTIC;
-	/* No HPA in 'smart' mode */
-	adev->horkage |= ATA_HORKAGE_BROKEN_HPA;
-=======
 	adev->quirks &= ~ATA_QUIRK_DIAGNOSTIC;
 	/* No HPA in 'smart' mode */
 	adev->quirks |= ATA_QUIRK_BROKEN_HPA;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**

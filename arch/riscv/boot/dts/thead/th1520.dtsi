@@ -5,10 +5,7 @@
  */
 
 #include <dt-bindings/interrupt-controller/irq.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/clock/thead,th1520-clk-ap.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	compatible = "thead,th1520";
@@ -219,28 +216,6 @@
 		#clock-cells = <0>;
 	};
 
-<<<<<<< HEAD
-	apb_clk: apb-clk-clock {
-		compatible = "fixed-clock";
-		clock-output-names = "apb_clk";
-		#clock-cells = <0>;
-	};
-
-	uart_sclk: uart-sclk-clock {
-		compatible = "fixed-clock";
-		clock-output-names = "uart_sclk";
-		#clock-cells = <0>;
-	};
-
-	sdhci_clk: sdhci-clock {
-		compatible = "fixed-clock";
-		clock-frequency = <198000000>;
-		clock-output-names = "sdhci_clk";
-		#clock-cells = <0>;
-	};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	soc {
 		compatible = "simple-bus";
 		interrupt-parent = <&plic>;
@@ -271,8 +246,6 @@
 					      <&cpu3_intc 3>, <&cpu3_intc 7>;
 		};
 
-<<<<<<< HEAD
-=======
 		spi0: spi@ffe700c000 {
 			compatible = "thead,th1520-spi", "snps,dw-apb-ssi";
 			reg = <0xff 0xe700c000 0x0 0x1000>;
@@ -283,17 +256,12 @@
 			status = "disabled";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		uart0: serial@ffe7014000 {
 			compatible = "snps,dw-apb-uart";
 			reg = <0xff 0xe7014000 0x0 0x100>;
 			interrupts = <36 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&uart_sclk>;
-=======
 			clocks = <&clk CLK_UART_SCLK>, <&clk CLK_UART0_PCLK>;
 			clock-names = "baudclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-shift = <2>;
 			reg-io-width = <4>;
 			status = "disabled";
@@ -303,11 +271,7 @@
 			compatible = "thead,th1520-dwcmshc";
 			reg = <0xff 0xe7080000 0x0 0x10000>;
 			interrupts = <62 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&sdhci_clk>;
-=======
 			clocks = <&clk CLK_EMMC_SDIO>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "core";
 			status = "disabled";
 		};
@@ -316,11 +280,7 @@
 			compatible = "thead,th1520-dwcmshc";
 			reg = <0xff 0xe7090000 0x0 0x10000>;
 			interrupts = <64 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&sdhci_clk>;
-=======
 			clocks = <&clk CLK_EMMC_SDIO>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "core";
 			status = "disabled";
 		};
@@ -329,11 +289,7 @@
 			compatible = "thead,th1520-dwcmshc";
 			reg = <0xff 0xe70a0000 0x0 0x10000>;
 			interrupts = <71 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&sdhci_clk>;
-=======
 			clocks = <&clk CLK_EMMC_SDIO>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "core";
 			status = "disabled";
 		};
@@ -342,12 +298,8 @@
 			compatible = "snps,dw-apb-uart";
 			reg = <0xff 0xe7f00000 0x0 0x100>;
 			interrupts = <37 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&uart_sclk>;
-=======
 			clocks = <&clk CLK_UART_SCLK>, <&clk CLK_UART1_PCLK>;
 			clock-names = "baudclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-shift = <2>;
 			reg-io-width = <4>;
 			status = "disabled";
@@ -357,12 +309,8 @@
 			compatible = "snps,dw-apb-uart";
 			reg = <0xff 0xe7f04000 0x0 0x100>;
 			interrupts = <39 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&uart_sclk>;
-=======
 			clocks = <&clk CLK_UART_SCLK>, <&clk CLK_UART3_PCLK>;
 			clock-names = "baudclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-shift = <2>;
 			reg-io-width = <4>;
 			status = "disabled";
@@ -373,10 +321,7 @@
 			reg = <0xff 0xe7f34000 0x0 0x1000>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-=======
 			clocks = <&clk CLK_GPIO2>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			portc: gpio-controller@0 {
 				compatible = "snps,dw-apb-gpio-port";
@@ -395,10 +340,7 @@
 			reg = <0xff 0xe7f38000 0x0 0x1000>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-=======
 			clocks = <&clk CLK_GPIO3>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			portd: gpio-controller@0 {
 				compatible = "snps,dw-apb-gpio-port";
@@ -417,10 +359,7 @@
 			reg = <0xff 0xec005000 0x0 0x1000>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-=======
 			clocks = <&clk CLK_GPIO0>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			porta: gpio-controller@0 {
 				compatible = "snps,dw-apb-gpio-port";
@@ -439,10 +378,7 @@
 			reg = <0xff 0xec006000 0x0 0x1000>;
 			#address-cells = <1>;
 			#size-cells = <0>;
-<<<<<<< HEAD
-=======
 			clocks = <&clk CLK_GPIO1>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			portb: gpio-controller@0 {
 				compatible = "snps,dw-apb-gpio-port";
@@ -460,19 +396,13 @@
 			compatible = "snps,dw-apb-uart";
 			reg = <0xff 0xec010000 0x0 0x4000>;
 			interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&uart_sclk>;
-=======
 			clocks = <&clk CLK_UART_SCLK>, <&clk CLK_UART2_PCLK>;
 			clock-names = "baudclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-shift = <2>;
 			reg-io-width = <4>;
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		clk: clock-controller@ffef010000 {
 			compatible = "thead,th1520-clk-ap";
 			reg = <0xff 0xef010000 0x0 0x1000>;
@@ -480,16 +410,11 @@
 			#clock-cells = <1>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dmac0: dma-controller@ffefc00000 {
 			compatible = "snps,axi-dma-1.01a";
 			reg = <0xff 0xefc00000 0x0 0x1000>;
 			interrupts = <27 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>, <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>, <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "core-clk", "cfgr-clk";
 			#dma-cells = <1>;
 			dma-channels = <4>;
@@ -504,11 +429,7 @@
 		timer0: timer@ffefc32000 {
 			compatible = "snps,dw-apb-timer";
 			reg = <0xff 0xefc32000 0x0 0x14>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "timer";
 			interrupts = <16 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
@@ -517,11 +438,7 @@
 		timer1: timer@ffefc32014 {
 			compatible = "snps,dw-apb-timer";
 			reg = <0xff 0xefc32014 0x0 0x14>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "timer";
 			interrupts = <17 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
@@ -530,11 +447,7 @@
 		timer2: timer@ffefc32028 {
 			compatible = "snps,dw-apb-timer";
 			reg = <0xff 0xefc32028 0x0 0x14>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "timer";
 			interrupts = <18 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
@@ -543,11 +456,7 @@
 		timer3: timer@ffefc3203c {
 			compatible = "snps,dw-apb-timer";
 			reg = <0xff 0xefc3203c 0x0 0x14>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "timer";
 			interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
@@ -557,12 +466,8 @@
 			compatible = "snps,dw-apb-uart";
 			reg = <0xff 0xf7f08000 0x0 0x4000>;
 			interrupts = <40 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&uart_sclk>;
-=======
 			clocks = <&clk CLK_UART_SCLK>, <&clk CLK_UART4_PCLK>;
 			clock-names = "baudclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-shift = <2>;
 			reg-io-width = <4>;
 			status = "disabled";
@@ -572,12 +477,8 @@
 			compatible = "snps,dw-apb-uart";
 			reg = <0xff 0xf7f0c000 0x0 0x4000>;
 			interrupts = <41 IRQ_TYPE_LEVEL_HIGH>;
-<<<<<<< HEAD
-			clocks = <&uart_sclk>;
-=======
 			clocks = <&clk CLK_UART_SCLK>, <&clk CLK_UART5_PCLK>;
 			clock-names = "baudclk", "apb_pclk";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			reg-shift = <2>;
 			reg-io-width = <4>;
 			status = "disabled";
@@ -586,11 +487,7 @@
 		timer4: timer@ffffc33000 {
 			compatible = "snps,dw-apb-timer";
 			reg = <0xff 0xffc33000 0x0 0x14>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "timer";
 			interrupts = <20 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
@@ -599,11 +496,7 @@
 		timer5: timer@ffffc33014 {
 			compatible = "snps,dw-apb-timer";
 			reg = <0xff 0xffc33014 0x0 0x14>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "timer";
 			interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
@@ -612,11 +505,7 @@
 		timer6: timer@ffffc33028 {
 			compatible = "snps,dw-apb-timer";
 			reg = <0xff 0xffc33028 0x0 0x14>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "timer";
 			interrupts = <22 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";
@@ -625,11 +514,7 @@
 		timer7: timer@ffffc3303c {
 			compatible = "snps,dw-apb-timer";
 			reg = <0xff 0xffc3303c 0x0 0x14>;
-<<<<<<< HEAD
-			clocks = <&apb_clk>;
-=======
 			clocks = <&clk CLK_PERI_APB_PCLK>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clock-names = "timer";
 			interrupts = <23 IRQ_TYPE_LEVEL_HIGH>;
 			status = "disabled";

@@ -195,10 +195,7 @@ int dev_pm_domain_attach_list(struct device *dev,
 	struct device *pd_dev = NULL;
 	int ret, i, num_pds = 0;
 	bool by_id = true;
-<<<<<<< HEAD
-=======
 	size_t size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 pd_flags = data ? data->pd_flags : 0;
 	u32 link_flags = pd_flags & PD_FLAG_NO_DEV_LINK ? 0 :
 			DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME;
@@ -221,21 +218,6 @@ int dev_pm_domain_attach_list(struct device *dev,
 	if (num_pds <= 0)
 		return 0;
 
-<<<<<<< HEAD
-	pds = devm_kzalloc(dev, sizeof(*pds), GFP_KERNEL);
-	if (!pds)
-		return -ENOMEM;
-
-	pds->pd_devs = devm_kcalloc(dev, num_pds, sizeof(*pds->pd_devs),
-				    GFP_KERNEL);
-	if (!pds->pd_devs)
-		return -ENOMEM;
-
-	pds->pd_links = devm_kcalloc(dev, num_pds, sizeof(*pds->pd_links),
-				     GFP_KERNEL);
-	if (!pds->pd_links)
-		return -ENOMEM;
-=======
 	pds = kzalloc(sizeof(*pds), GFP_KERNEL);
 	if (!pds)
 		return -ENOMEM;
@@ -247,7 +229,6 @@ int dev_pm_domain_attach_list(struct device *dev,
 		goto free_pds;
 	}
 	pds->pd_links = (void *)(pds->pd_devs + num_pds);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (link_flags && pd_flags & PD_FLAG_DEV_LINK_ON)
 		link_flags |= DL_FLAG_RPM_ACTIVE;
@@ -290,19 +271,14 @@ err_attach:
 			device_link_del(pds->pd_links[i]);
 		dev_pm_domain_detach(pds->pd_devs[i], true);
 	}
-<<<<<<< HEAD
-=======
 	kfree(pds->pd_devs);
 free_pds:
 	kfree(pds);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 EXPORT_SYMBOL_GPL(dev_pm_domain_attach_list);
 
 /**
-<<<<<<< HEAD
-=======
  * devm_pm_domain_detach_list - devres-enabled version of dev_pm_domain_detach_list.
  * @_list: The list of PM domains to detach.
  *
@@ -348,7 +324,6 @@ int devm_pm_domain_attach_list(struct device *dev,
 EXPORT_SYMBOL_GPL(devm_pm_domain_attach_list);
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * dev_pm_domain_detach - Detach a device from its PM domain.
  * @dev: Device to detach.
  * @power_off: Used to indicate whether we should power off the device.
@@ -390,12 +365,9 @@ void dev_pm_domain_detach_list(struct dev_pm_domain_list *list)
 			device_link_del(list->pd_links[i]);
 		dev_pm_domain_detach(list->pd_devs[i], true);
 	}
-<<<<<<< HEAD
-=======
 
 	kfree(list->pd_devs);
 	kfree(list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(dev_pm_domain_detach_list);
 

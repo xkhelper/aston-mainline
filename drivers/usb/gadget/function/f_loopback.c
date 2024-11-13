@@ -14,15 +14,9 @@
 #include <linux/module.h>
 #include <linux/err.h>
 #include <linux/usb/composite.h>
-<<<<<<< HEAD
-
-#include "g_zero.h"
-#include "u_f.h"
-=======
 #include <linux/usb/func_utils.h>
 
 #include "g_zero.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * LOOPBACK FUNCTION ... a testing vehicle for USB peripherals,

@@ -236,10 +236,7 @@ struct dml2_configuration_options {
 
 	bool use_clock_dc_limits;
 	bool gpuvm_enable;
-<<<<<<< HEAD
-=======
 	bool force_tdlut_enable;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dml2_soc_bb *bb_from_dmub;
 };
 

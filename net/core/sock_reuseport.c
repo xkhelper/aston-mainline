@@ -173,16 +173,9 @@ static bool __reuseport_detach_closed_sock(struct sock *sk,
 
 static struct sock_reuseport *__reuseport_alloc(unsigned int max_socks)
 {
-<<<<<<< HEAD
-	unsigned int size = sizeof(struct sock_reuseport) +
-		      sizeof(struct sock *) * max_socks;
-	struct sock_reuseport *reuse = kzalloc(size, GFP_ATOMIC);
-
-=======
 	struct sock_reuseport *reuse;
 
 	reuse = kzalloc(struct_size(reuse, socks, max_socks), GFP_ATOMIC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!reuse)
 		return NULL;
 

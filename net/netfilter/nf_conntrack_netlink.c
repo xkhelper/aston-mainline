@@ -382,11 +382,7 @@ nla_put_failure:
 #define ctnetlink_dump_secctx(a, b) (0)
 #endif
 
-<<<<<<< HEAD
-#ifdef CONFIG_NF_CONNTRACK_LABELS
-=======
 #ifdef CONFIG_NF_CONNTRACK_EVENTS
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int ctnetlink_label_size(const struct nf_conn *ct)
 {
 	struct nf_conn_labels *labels = nf_ct_labels_find(ct);
@@ -395,10 +391,7 @@ static inline int ctnetlink_label_size(const struct nf_conn *ct)
 		return 0;
 	return nla_total_size(sizeof(labels->bits));
 }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int
 ctnetlink_dump_labels(struct sk_buff *skb, const struct nf_conn *ct)
@@ -419,13 +412,6 @@ ctnetlink_dump_labels(struct sk_buff *skb, const struct nf_conn *ct)
 
 	return 0;
 }
-<<<<<<< HEAD
-#else
-#define ctnetlink_dump_labels(a, b) (0)
-#define ctnetlink_label_size(a)	(0)
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define master_tuple(ct) &(ct->master->tuplehash[IP_CT_DIR_ORIGINAL].tuple)
 
@@ -663,10 +649,6 @@ static size_t ctnetlink_proto_size(const struct nf_conn *ct)
 
 	return len + len4;
 }
-<<<<<<< HEAD
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline size_t ctnetlink_acct_size(const struct nf_conn *ct)
 {
@@ -704,10 +686,7 @@ static inline size_t ctnetlink_timestamp_size(const struct nf_conn *ct)
 	return 0;
 #endif
 }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_NF_CONNTRACK_EVENTS
 static size_t ctnetlink_nlmsg_size(const struct nf_conn *ct)
@@ -1597,12 +1576,6 @@ static int ctnetlink_flush_conntrack(struct net *net,
 	};
 
 	if (ctnetlink_needs_filter(family, cda)) {
-<<<<<<< HEAD
-		if (cda[CTA_FILTER])
-			return -EOPNOTSUPP;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		filter = ctnetlink_alloc_filter(cda, family);
 		if (IS_ERR(filter))
 			return PTR_ERR(filter);
@@ -1631,16 +1604,6 @@ static int ctnetlink_del_conntrack(struct sk_buff *skb,
 	if (err < 0)
 		return err;
 
-<<<<<<< HEAD
-	if (cda[CTA_TUPLE_ORIG])
-		err = ctnetlink_parse_tuple(cda, &tuple, CTA_TUPLE_ORIG,
-					    family, &zone);
-	else if (cda[CTA_TUPLE_REPLY])
-		err = ctnetlink_parse_tuple(cda, &tuple, CTA_TUPLE_REPLY,
-					    family, &zone);
-	else {
-		u_int8_t u3 = info->nfmsg->version ? family : AF_UNSPEC;
-=======
 	if (cda[CTA_TUPLE_ORIG] && !cda[CTA_FILTER])
 		err = ctnetlink_parse_tuple(cda, &tuple, CTA_TUPLE_ORIG,
 					    family, &zone);
@@ -1649,7 +1612,6 @@ static int ctnetlink_del_conntrack(struct sk_buff *skb,
 					    family, &zone);
 	else {
 		u8 u3 = info->nfmsg->version || cda[CTA_FILTER] ? family : AF_UNSPEC;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return ctnetlink_flush_conntrack(info->net, cda,
 						 NETLINK_CB(skb).portid,

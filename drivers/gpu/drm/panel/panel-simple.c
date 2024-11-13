@@ -726,18 +726,6 @@ static void panel_simple_shutdown(struct device *dev)
 	 * drm_atomic_helper_shutdown() at shutdown time and that should
 	 * cause the panel to be disabled / unprepared if needed. For now,
 	 * however, we'll keep these calls due to the sheer number of
-<<<<<<< HEAD
-	 * different DRM modeset drivers used with panel-simple. The fact that
-	 * we're calling these and _also_ the drm_atomic_helper_shutdown()
-	 * will try to disable/unprepare means that we can get a warning about
-	 * trying to disable/unprepare an already disabled/unprepared panel,
-	 * but that's something we'll have to live with until we've confirmed
-	 * that all DRM modeset drivers are properly calling
-	 * drm_atomic_helper_shutdown().
-	 */
-	drm_panel_disable(&panel->base);
-	drm_panel_unprepare(&panel->base);
-=======
 	 * different DRM modeset drivers used with panel-simple. Once we've
 	 * confirmed that all DRM modeset drivers using this panel properly
 	 * call drm_atomic_helper_shutdown() we can simply delete the two
@@ -756,7 +744,6 @@ static void panel_simple_shutdown(struct device *dev)
 		drm_panel_disable(&panel->base);
 	if (panel->base.prepared)
 		drm_panel_unprepare(&panel->base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void panel_simple_remove(struct device *dev)
@@ -2540,8 +2527,6 @@ static const struct panel_desc innolux_g070y2_l01 = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
-<<<<<<< HEAD
-=======
 static const struct display_timing innolux_g070ace_lh3_timing = {
 	.pixelclock = { 25200000, 25400000, 35700000 },
 	.hactive = { 800, 800, 800 },
@@ -2574,7 +2559,6 @@ static const struct panel_desc innolux_g070ace_lh3 = {
 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct drm_display_mode innolux_g070y2_t02_mode = {
 	.clock = 33333,
 	.hdisplay = 800,
@@ -3534,8 +3518,6 @@ static const struct panel_desc olimex_lcd_olinuxino_43ts = {
 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 };
 
-<<<<<<< HEAD
-=======
 static const struct display_timing ontat_kd50g21_40nt_a1_timing = {
 	.pixelclock = { 30000000, 30000000, 50000000 },
 	.hactive = { 800, 800, 800 },
@@ -3569,7 +3551,6 @@ static const struct panel_desc ontat_kd50g21_40nt_a1 = {
 	.connector_type = DRM_MODE_CONNECTOR_DPI,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * 800x480 CVT. The panel appears to be quite accepting, at least as far as
  * pixel clocks, but this is the timing that was being used in the Adafruit
@@ -4819,12 +4800,9 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "innolux,g070ace-l01",
 		.data = &innolux_g070ace_l01,
 	}, {
-<<<<<<< HEAD
-=======
 		.compatible = "innolux,g070ace-lh3",
 		.data = &innolux_g070ace_lh3,
 	}, {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "innolux,g070y2-l01",
 		.data = &innolux_g070y2_l01,
 	}, {
@@ -4936,12 +4914,9 @@ static const struct of_device_id platform_of_match[] = {
 		.compatible = "olimex,lcd-olinuxino-43-ts",
 		.data = &olimex_lcd_olinuxino_43ts,
 	}, {
-<<<<<<< HEAD
-=======
 		.compatible = "ontat,kd50g21-40nt-a1",
 		.data = &ontat_kd50g21_40nt_a1,
 	}, {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.compatible = "ontat,yx700wv03",
 		.data = &ontat_yx700wv03,
 	}, {

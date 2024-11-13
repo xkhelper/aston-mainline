@@ -9,8 +9,6 @@
 / {
 	model = "Toradex Colibri iMX8DX Module";
 };
-<<<<<<< HEAD
-=======
 
 &thermal_zones {
 	pmic-thermal {
@@ -22,4 +20,3 @@
 		};
 	};
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

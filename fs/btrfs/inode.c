@@ -32,11 +32,7 @@
 #include <linux/migrate.h>
 #include <linux/sched/mm.h>
 #include <linux/iomap.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/fsverity.h>
 #include "misc.h"
 #include "ctree.h"
@@ -120,11 +116,7 @@ static int btrfs_setsize(struct inode *inode, struct iattr *attr);
 static int btrfs_truncate(struct btrfs_inode *inode, bool skip_writeback);
 
 static noinline int run_delalloc_cow(struct btrfs_inode *inode,
-<<<<<<< HEAD
-				     struct page *locked_page, u64 start,
-=======
 				     struct folio *locked_folio, u64 start,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     u64 end, struct writeback_control *wbc,
 				     bool pages_dirty);
 
@@ -401,29 +393,17 @@ void btrfs_inode_unlock(struct btrfs_inode *inode, unsigned int ilock_flags)
  * extent (btrfs_finish_ordered_io()).
  */
 static inline void btrfs_cleanup_ordered_extents(struct btrfs_inode *inode,
-<<<<<<< HEAD
-						 struct page *locked_page,
-=======
 						 struct folio *locked_folio,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						 u64 offset, u64 bytes)
 {
 	unsigned long index = offset >> PAGE_SHIFT;
 	unsigned long end_index = (offset + bytes - 1) >> PAGE_SHIFT;
 	u64 page_start = 0, page_end = 0;
-<<<<<<< HEAD
-	struct page *page;
-
-	if (locked_page) {
-		page_start = page_offset(locked_page);
-		page_end = page_start + PAGE_SIZE - 1;
-=======
 	struct folio *folio;
 
 	if (locked_folio) {
 		page_start = folio_pos(locked_folio);
 		page_end = page_start + folio_size(locked_folio) - 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	while (index <= end_index) {
@@ -437,15 +417,6 @@ static inline void btrfs_cleanup_ordered_extents(struct btrfs_inode *inode,
 		 * btrfs_mark_ordered_io_finished() would skip the accounting
 		 * for the page range, and the ordered extent will never finish.
 		 */
-<<<<<<< HEAD
-		if (locked_page && index == (page_start >> PAGE_SHIFT)) {
-			index++;
-			continue;
-		}
-		page = find_get_page(inode->vfs_inode.i_mapping, index);
-		index++;
-		if (!page)
-=======
 		if (locked_folio && index == (page_start >> PAGE_SHIFT)) {
 			index++;
 			continue;
@@ -453,7 +424,6 @@ static inline void btrfs_cleanup_ordered_extents(struct btrfs_inode *inode,
 		folio = __filemap_get_folio(inode->vfs_inode.i_mapping, index, 0, 0);
 		index++;
 		if (IS_ERR(folio))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			continue;
 
 		/*
@@ -461,16 +431,6 @@ static inline void btrfs_cleanup_ordered_extents(struct btrfs_inode *inode,
 		 * range, then btrfs_mark_ordered_io_finished() will handle
 		 * the ordered extent accounting for the range.
 		 */
-<<<<<<< HEAD
-		btrfs_folio_clamp_clear_ordered(inode->root->fs_info,
-						page_folio(page), offset, bytes);
-		put_page(page);
-	}
-
-	if (locked_page) {
-		/* The locked page covers the full range, nothing needs to be done */
-		if (bytes + offset <= page_start + PAGE_SIZE)
-=======
 		btrfs_folio_clamp_clear_ordered(inode->root->fs_info, folio,
 						offset, bytes);
 		folio_put(folio);
@@ -479,7 +439,6 @@ static inline void btrfs_cleanup_ordered_extents(struct btrfs_inode *inode,
 	if (locked_folio) {
 		/* The locked page covers the full range, nothing needs to be done */
 		if (bytes + offset <= page_start + folio_size(locked_folio))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return;
 		/*
 		 * In case this page belongs to the delalloc range being
@@ -488,14 +447,9 @@ static inline void btrfs_cleanup_ordered_extents(struct btrfs_inode *inode,
 		 * run_delalloc_range
 		 */
 		if (page_start >= offset && page_end <= (offset + bytes - 1)) {
-<<<<<<< HEAD
-			bytes = offset + bytes - page_offset(locked_page) - PAGE_SIZE;
-			offset = page_offset(locked_page) + PAGE_SIZE;
-=======
 			bytes = offset + bytes - folio_pos(locked_folio) -
 				folio_size(locked_folio);
 			offset = folio_pos(locked_folio) + folio_size(locked_folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -541,10 +495,6 @@ static int insert_inline_extent(struct btrfs_trans_handle *trans,
 {
 	struct btrfs_root *root = inode->root;
 	struct extent_buffer *leaf;
-<<<<<<< HEAD
-	struct page *page = NULL;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const u32 sectorsize = trans->fs_info->sectorsize;
 	char *kaddr;
 	unsigned long ptr;
@@ -604,14 +554,6 @@ static int insert_inline_extent(struct btrfs_trans_handle *trans,
 		btrfs_set_file_extent_compression(leaf, ei,
 						  compress_type);
 	} else {
-<<<<<<< HEAD
-		page = find_get_page(inode->vfs_inode.i_mapping, 0);
-		btrfs_set_file_extent_compression(leaf, ei, 0);
-		kaddr = kmap_local_page(page);
-		write_extent_buffer(leaf, kaddr, ptr, size);
-		kunmap_local(kaddr);
-		put_page(page);
-=======
 		struct folio *folio;
 
 		folio = __filemap_get_folio(inode->vfs_inode.i_mapping,
@@ -622,7 +564,6 @@ static int insert_inline_extent(struct btrfs_trans_handle *trans,
 		write_extent_buffer(leaf, kaddr, ptr, size);
 		kunmap_local(kaddr);
 		folio_put(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	btrfs_mark_buffer_dirty(trans, leaf);
 	btrfs_release_path(path);
@@ -778,11 +719,7 @@ out:
 }
 
 static noinline int cow_file_range_inline(struct btrfs_inode *inode,
-<<<<<<< HEAD
-					  struct page *locked_page,
-=======
 					  struct folio *locked_folio,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					  u64 offset, u64 end,
 					  size_t compressed_size,
 					  int compress_type,
@@ -807,15 +744,6 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode,
 		return ret;
 	}
 
-<<<<<<< HEAD
-	if (ret == 0)
-		locked_page = NULL;
-
-	extent_clear_unlock_delalloc(inode, offset, end, locked_page, &cached,
-				     clear_flags,
-				     PAGE_UNLOCK | PAGE_START_WRITEBACK |
-				     PAGE_END_WRITEBACK);
-=======
 	/*
 	 * In the successful case (ret == 0 here), cow_file_range will return 1.
 	 *
@@ -836,7 +764,6 @@ static noinline int cow_file_range_inline(struct btrfs_inode *inode,
 	extent_clear_unlock_delalloc(inode, offset, end, locked_folio, &cached,
 				     clear_flags, PAGE_UNLOCK |
 				     PAGE_START_WRITEBACK | PAGE_END_WRITEBACK);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -852,11 +779,7 @@ struct async_extent {
 
 struct async_chunk {
 	struct btrfs_inode *inode;
-<<<<<<< HEAD
-	struct page *locked_page;
-=======
 	struct folio *locked_folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 start;
 	u64 end;
 	blk_opf_t write_flags;
@@ -962,35 +885,17 @@ static inline void inode_should_defrag(struct btrfs_inode *inode,
 	/* If this is a small write inside eof, kick off a defrag */
 	if (num_bytes < small_write &&
 	    (start > 0 || end + 1 < inode->disk_i_size))
-<<<<<<< HEAD
-		btrfs_add_inode_defrag(NULL, inode, small_write);
-=======
 		btrfs_add_inode_defrag(inode, small_write);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int extent_range_clear_dirty_for_io(struct inode *inode, u64 start, u64 end)
 {
 	unsigned long end_index = end >> PAGE_SHIFT;
-<<<<<<< HEAD
-	struct page *page;
-=======
 	struct folio *folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	for (unsigned long index = start >> PAGE_SHIFT;
 	     index <= end_index; index++) {
-<<<<<<< HEAD
-		page = find_get_page(inode->i_mapping, index);
-		if (unlikely(!page)) {
-			if (!ret)
-				ret = -ENOENT;
-			continue;
-		}
-		clear_page_dirty_for_io(page);
-		put_page(page);
-=======
 		folio = __filemap_get_folio(inode->i_mapping, index, 0, 0);
 		if (IS_ERR(folio)) {
 			if (!ret)
@@ -999,7 +904,6 @@ static int extent_range_clear_dirty_for_io(struct inode *inode, u64 start, u64 e
 		}
 		folio_clear_dirty_for_io(folio);
 		folio_put(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return ret;
 }
@@ -1235,11 +1139,7 @@ static void free_async_extent_pages(struct async_extent *async_extent)
 
 static void submit_uncompressed_range(struct btrfs_inode *inode,
 				      struct async_extent *async_extent,
-<<<<<<< HEAD
-				      struct page *locked_page)
-=======
 				      struct folio *locked_folio)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 start = async_extent->start;
 	u64 end = async_extent->start + async_extent->ram_size - 1;
@@ -1252,22 +1152,6 @@ static void submit_uncompressed_range(struct btrfs_inode *inode,
 	};
 
 	wbc_attach_fdatawrite_inode(&wbc, &inode->vfs_inode);
-<<<<<<< HEAD
-	ret = run_delalloc_cow(inode, locked_page, start, end, &wbc, false);
-	wbc_detach_inode(&wbc);
-	if (ret < 0) {
-		btrfs_cleanup_ordered_extents(inode, locked_page, start, end - start + 1);
-		if (locked_page) {
-			const u64 page_start = page_offset(locked_page);
-
-			set_page_writeback(locked_page);
-			end_page_writeback(locked_page);
-			btrfs_mark_ordered_io_finished(inode, locked_page,
-						       page_start, PAGE_SIZE,
-						       !ret);
-			mapping_set_error(locked_page->mapping, ret);
-			unlock_page(locked_page);
-=======
 	ret = run_delalloc_cow(inode, locked_folio, start, end,
 			       &wbc, false);
 	wbc_detach_inode(&wbc);
@@ -1284,7 +1168,6 @@ static void submit_uncompressed_range(struct btrfs_inode *inode,
 						       !ret);
 			mapping_set_error(locked_folio->mapping, ret);
 			folio_unlock(locked_folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -1300,11 +1183,7 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
 	struct btrfs_ordered_extent *ordered;
 	struct btrfs_file_extent file_extent;
 	struct btrfs_key ins;
-<<<<<<< HEAD
-	struct page *locked_page = NULL;
-=======
 	struct folio *locked_folio = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct extent_state *cached = NULL;
 	struct extent_map *em;
 	int ret = 0;
@@ -1315,21 +1194,6 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
 		kthread_associate_blkcg(async_chunk->blkcg_css);
 
 	/*
-<<<<<<< HEAD
-	 * If async_chunk->locked_page is in the async_extent range, we need to
-	 * handle it.
-	 */
-	if (async_chunk->locked_page) {
-		u64 locked_page_start = page_offset(async_chunk->locked_page);
-		u64 locked_page_end = locked_page_start + PAGE_SIZE - 1;
-
-		if (!(start >= locked_page_end || end <= locked_page_start))
-			locked_page = async_chunk->locked_page;
-	}
-
-	if (async_extent->compress_type == BTRFS_COMPRESS_NONE) {
-		submit_uncompressed_range(inode, async_extent, locked_page);
-=======
 	 * If async_chunk->locked_folio is in the async_extent range, we need to
 	 * handle it.
 	 */
@@ -1344,7 +1208,6 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
 
 	if (async_extent->compress_type == BTRFS_COMPRESS_NONE) {
 		submit_uncompressed_range(inode, async_extent, locked_folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto done;
 	}
 
@@ -1359,11 +1222,7 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
 		 * non-contiguous space for the uncompressed size instead.  So
 		 * fall back to uncompressed.
 		 */
-<<<<<<< HEAD
-		submit_uncompressed_range(inode, async_extent, locked_page);
-=======
 		submit_uncompressed_range(inode, async_extent, locked_folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto done;
 	}
 
@@ -1467,16 +1326,6 @@ u64 btrfs_get_extent_allocation_hint(struct btrfs_inode *inode, u64 start,
  * allocate extents on disk for the range, and create ordered data structs
  * in ram to track those extents.
  *
-<<<<<<< HEAD
- * locked_page is the page that writepage had locked already.  We use
- * it to make sure we don't do extra locks or unlocks.
- *
- * When this function fails, it unlocks all pages except @locked_page.
- *
- * When this function successfully creates an inline extent, it returns 1 and
- * unlocks all pages including locked_page and starts I/O on them.
- * (In reality inline extents are limited to a single page, so locked_page is
-=======
  * locked_folio is the folio that writepage had locked already.  We use
  * it to make sure we don't do extra locks or unlocks.
  *
@@ -1485,18 +1334,13 @@ u64 btrfs_get_extent_allocation_hint(struct btrfs_inode *inode, u64 start,
  * When this function successfully creates an inline extent, it returns 1 and
  * unlocks all pages including locked_folio and starts I/O on them.
  * (In reality inline extents are limited to a single page, so locked_folio is
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * the only page handled anyway).
  *
  * When this function succeed and creates a normal extent, the page locking
  * status depends on the passed in flags:
  *
  * - If @keep_locked is set, all pages are kept locked.
-<<<<<<< HEAD
- * - Else all pages except for @locked_page are unlocked.
-=======
  * - Else all pages except for @locked_folio are unlocked.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * When a failure happens in the second or later iteration of the
  * while-loop, the ordered extents created in previous iterations are kept
@@ -1505,13 +1349,8 @@ u64 btrfs_get_extent_allocation_hint(struct btrfs_inode *inode, u64 start,
  * example.
  */
 static noinline int cow_file_range(struct btrfs_inode *inode,
-<<<<<<< HEAD
-				   struct page *locked_page, u64 start, u64 end,
-				   u64 *done_offset,
-=======
 				   struct folio *locked_folio, u64 start,
 				   u64 end, u64 *done_offset,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   bool keep_locked, bool no_inline)
 {
 	struct btrfs_root *root = inode->root;
@@ -1544,11 +1383,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
 
 	if (!no_inline) {
 		/* lets try to make an inline extent */
-<<<<<<< HEAD
-		ret = cow_file_range_inline(inode, locked_page, start, end, 0,
-=======
 		ret = cow_file_range_inline(inode, locked_folio, start, end, 0,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					    BTRFS_COMPRESS_NONE, NULL, false);
 		if (ret <= 0) {
 			/*
@@ -1685,11 +1520,7 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
 		page_ops |= PAGE_SET_ORDERED;
 
 		extent_clear_unlock_delalloc(inode, start, start + ram_size - 1,
-<<<<<<< HEAD
-					     locked_page, &cached,
-=======
 					     locked_folio, &cached,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     EXTENT_LOCKED | EXTENT_DELALLOC,
 					     page_ops);
 		if (num_bytes < cur_alloc_size)
@@ -1742,15 +1573,6 @@ out_unlock:
 	 * function.
 	 *
 	 * However, in case of @keep_locked, we still need to unlock the pages
-<<<<<<< HEAD
-	 * (except @locked_page) to ensure all the pages are unlocked.
-	 */
-	if (keep_locked && orig_start < start) {
-		if (!locked_page)
-			mapping_set_error(inode->vfs_inode.i_mapping, ret);
-		extent_clear_unlock_delalloc(inode, orig_start, start - 1,
-					     locked_page, NULL, 0, page_ops);
-=======
 	 * (except @locked_folio) to ensure all the pages are unlocked.
 	 */
 	if (keep_locked && orig_start < start) {
@@ -1758,7 +1580,6 @@ out_unlock:
 			mapping_set_error(inode->vfs_inode.i_mapping, ret);
 		extent_clear_unlock_delalloc(inode, orig_start, start - 1,
 					     locked_folio, NULL, 0, page_ops);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/*
@@ -1781,12 +1602,7 @@ out_unlock:
 	if (extent_reserved) {
 		extent_clear_unlock_delalloc(inode, start,
 					     start + cur_alloc_size - 1,
-<<<<<<< HEAD
-					     locked_page, &cached,
-					     clear_bits,
-=======
 					     locked_folio, &cached, clear_bits,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     page_ops);
 		btrfs_qgroup_free_data(inode, NULL, start, cur_alloc_size, NULL);
 		start += cur_alloc_size;
@@ -1800,15 +1616,9 @@ out_unlock:
 	 */
 	if (start < end) {
 		clear_bits |= EXTENT_CLEAR_DATA_RESV;
-<<<<<<< HEAD
-		extent_clear_unlock_delalloc(inode, start, end, locked_page,
-					     &cached, clear_bits, page_ops);
-		btrfs_qgroup_free_data(inode, NULL, start, cur_alloc_size, NULL);
-=======
 		extent_clear_unlock_delalloc(inode, start, end, locked_folio,
 					     &cached, clear_bits, page_ops);
 		btrfs_qgroup_free_data(inode, NULL, start, end - start + 1, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return ret;
 }
@@ -1860,11 +1670,7 @@ static noinline void submit_compressed_extents(struct btrfs_work *work, bool do_
 }
 
 static bool run_delalloc_compressed(struct btrfs_inode *inode,
-<<<<<<< HEAD
-				    struct page *locked_page, u64 start,
-=======
 				    struct folio *locked_folio, u64 start,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    u64 end, struct writeback_control *wbc)
 {
 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
@@ -1904,27 +1710,16 @@ static bool run_delalloc_compressed(struct btrfs_inode *inode,
 		INIT_LIST_HEAD(&async_chunk[i].extents);
 
 		/*
-<<<<<<< HEAD
-		 * The locked_page comes all the way from writepage and its
-		 * the original page we were actually given.  As we spread
-		 * this large delalloc region across multiple async_chunk
-		 * structs, only the first struct needs a pointer to locked_page
-=======
 		 * The locked_folio comes all the way from writepage and its
 		 * the original folio we were actually given.  As we spread
 		 * this large delalloc region across multiple async_chunk
 		 * structs, only the first struct needs a pointer to
 		 * locked_folio.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 *
 		 * This way we don't need racey decisions about who is supposed
 		 * to unlock it.
 		 */
-<<<<<<< HEAD
-		if (locked_page) {
-=======
 		if (locked_folio) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			/*
 			 * Depending on the compressibility, the pages might or
 			 * might not go through async.  We want all of them to
@@ -1934,21 +1729,12 @@ static bool run_delalloc_compressed(struct btrfs_inode *inode,
 			 * need full accuracy.  Just account the whole thing
 			 * against the first page.
 			 */
-<<<<<<< HEAD
-			wbc_account_cgroup_owner(wbc, locked_page,
-						 cur_end - start);
-			async_chunk[i].locked_page = locked_page;
-			locked_page = NULL;
-		} else {
-			async_chunk[i].locked_page = NULL;
-=======
 			wbc_account_cgroup_owner(wbc, &locked_folio->page,
 						 cur_end - start);
 			async_chunk[i].locked_folio = locked_folio;
 			locked_folio = NULL;
 		} else {
 			async_chunk[i].locked_folio = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (blkcg_css != blkcg_root_css) {
@@ -1977,11 +1763,7 @@ static bool run_delalloc_compressed(struct btrfs_inode *inode,
  * covered by the range.
  */
 static noinline int run_delalloc_cow(struct btrfs_inode *inode,
-<<<<<<< HEAD
-				     struct page *locked_page, u64 start,
-=======
 				     struct folio *locked_folio, u64 start,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     u64 end, struct writeback_control *wbc,
 				     bool pages_dirty)
 {
@@ -1989,35 +1771,21 @@ static noinline int run_delalloc_cow(struct btrfs_inode *inode,
 	int ret;
 
 	while (start <= end) {
-<<<<<<< HEAD
-		ret = cow_file_range(inode, locked_page, start, end, &done_offset,
-				     true, false);
-		if (ret)
-			return ret;
-		extent_write_locked_range(&inode->vfs_inode, locked_page, start,
-					  done_offset, wbc, pages_dirty);
-=======
 		ret = cow_file_range(inode, locked_folio, start, end,
 				     &done_offset, true, false);
 		if (ret)
 			return ret;
 		extent_write_locked_range(&inode->vfs_inode, locked_folio,
 					  start, done_offset, wbc, pages_dirty);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		start = done_offset + 1;
 	}
 
 	return 1;
 }
 
-<<<<<<< HEAD
-static int fallback_to_cow(struct btrfs_inode *inode, struct page *locked_page,
-			   const u64 start, const u64 end)
-=======
 static int fallback_to_cow(struct btrfs_inode *inode,
 			   struct folio *locked_folio, const u64 start,
 			   const u64 end)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const bool is_space_ino = btrfs_is_free_space_inode(inode);
 	const bool is_reloc_ino = btrfs_is_data_reloc_root(inode->root);
@@ -2086,12 +1854,8 @@ static int fallback_to_cow(struct btrfs_inode *inode,
 	 * is written out and unlocked directly and a normal NOCOW extent
 	 * doesn't work.
 	 */
-<<<<<<< HEAD
-	ret = cow_file_range(inode, locked_page, start, end, NULL, false, true);
-=======
 	ret = cow_file_range(inode, locked_folio, start, end, NULL, false,
 			     true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ASSERT(ret != 1);
 	return ret;
 }
@@ -2245,11 +2009,7 @@ static int can_nocow_file_extent(struct btrfs_path *path,
  * blocks on disk
  */
 static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
-<<<<<<< HEAD
-				       struct page *locked_page,
-=======
 				       struct folio *locked_folio,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				       const u64 start, const u64 end)
 {
 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
@@ -2412,13 +2172,8 @@ must_cow:
 		 * NOCOW, following one which needs to be COW'ed
 		 */
 		if (cow_start != (u64)-1) {
-<<<<<<< HEAD
-			ret = fallback_to_cow(inode, locked_page,
-					      cow_start, found_key.offset - 1);
-=======
 			ret = fallback_to_cow(inode, locked_folio, cow_start,
 					      found_key.offset - 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			cow_start = (u64)-1;
 			if (ret) {
 				btrfs_dec_nocow_writers(nocow_bg);
@@ -2473,11 +2228,7 @@ must_cow:
 		btrfs_put_ordered_extent(ordered);
 
 		extent_clear_unlock_delalloc(inode, cur_offset, nocow_end,
-<<<<<<< HEAD
-					     locked_page, &cached_state,
-=======
 					     locked_folio, &cached_state,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     EXTENT_LOCKED | EXTENT_DELALLOC |
 					     EXTENT_CLEAR_DATA_RESV,
 					     PAGE_UNLOCK | PAGE_SET_ORDERED);
@@ -2499,11 +2250,7 @@ must_cow:
 
 	if (cow_start != (u64)-1) {
 		cur_offset = end;
-<<<<<<< HEAD
-		ret = fallback_to_cow(inode, locked_page, cow_start, end);
-=======
 		ret = fallback_to_cow(inode, locked_folio, cow_start, end);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cow_start = (u64)-1;
 		if (ret)
 			goto error;
@@ -2530,11 +2277,7 @@ error:
 
 		lock_extent(&inode->io_tree, cur_offset, end, &cached);
 		extent_clear_unlock_delalloc(inode, cur_offset, end,
-<<<<<<< HEAD
-					     locked_page, &cached,
-=======
 					     locked_folio, &cached,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					     EXTENT_LOCKED | EXTENT_DELALLOC |
 					     EXTENT_DEFRAG |
 					     EXTENT_DO_ACCOUNTING, PAGE_UNLOCK |
@@ -2561,27 +2304,13 @@ static bool should_nocow(struct btrfs_inode *inode, u64 start, u64 end)
  * Function to process delayed allocation (create CoW) for ranges which are
  * being touched for the first time.
  */
-<<<<<<< HEAD
-int btrfs_run_delalloc_range(struct btrfs_inode *inode, struct page *locked_page,
-=======
 int btrfs_run_delalloc_range(struct btrfs_inode *inode, struct folio *locked_folio,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     u64 start, u64 end, struct writeback_control *wbc)
 {
 	const bool zoned = btrfs_is_zoned(inode->root->fs_info);
 	int ret;
 
 	/*
-<<<<<<< HEAD
-	 * The range must cover part of the @locked_page, or a return of 1
-	 * can confuse the caller.
-	 */
-	ASSERT(!(end <= page_offset(locked_page) ||
-		 start >= page_offset(locked_page) + PAGE_SIZE));
-
-	if (should_nocow(inode, start, end)) {
-		ret = run_delalloc_nocow(inode, locked_page, start, end);
-=======
 	 * The range must cover part of the @locked_folio, or a return of 1
 	 * can confuse the caller.
 	 */
@@ -2590,22 +2319,11 @@ int btrfs_run_delalloc_range(struct btrfs_inode *inode, struct folio *locked_fol
 
 	if (should_nocow(inode, start, end)) {
 		ret = run_delalloc_nocow(inode, locked_folio, start, end);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 
 	if (btrfs_inode_can_compress(inode) &&
 	    inode_need_compress(inode, start, end) &&
-<<<<<<< HEAD
-	    run_delalloc_compressed(inode, locked_page, start, end, wbc))
-		return 1;
-
-	if (zoned)
-		ret = run_delalloc_cow(inode, locked_page, start, end, wbc,
-				       true);
-	else
-		ret = cow_file_range(inode, locked_page, start, end, NULL,
-=======
 	    run_delalloc_compressed(inode, locked_folio, start, end, wbc))
 		return 1;
 
@@ -2614,16 +2332,11 @@ int btrfs_run_delalloc_range(struct btrfs_inode *inode, struct folio *locked_fol
 				       true);
 	else
 		ret = cow_file_range(inode, locked_folio, start, end, NULL,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     false, false);
 
 out:
 	if (ret < 0)
-<<<<<<< HEAD
-		btrfs_cleanup_ordered_extents(inode, locked_page, start,
-=======
 		btrfs_cleanup_ordered_extents(inode, locked_folio, start,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					      end - start + 1);
 	return ret;
 }
@@ -2999,11 +2712,7 @@ int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
 
 /* see btrfs_writepage_start_hook for details on why this is required */
 struct btrfs_writepage_fixup {
-<<<<<<< HEAD
-	struct page *page;
-=======
 	struct folio *folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct btrfs_inode *inode;
 	struct btrfs_work work;
 };
@@ -3015,43 +2724,16 @@ static void btrfs_writepage_fixup_worker(struct btrfs_work *work)
 	struct btrfs_ordered_extent *ordered;
 	struct extent_state *cached_state = NULL;
 	struct extent_changeset *data_reserved = NULL;
-<<<<<<< HEAD
-	struct page *page = fixup->page;
-	struct btrfs_inode *inode = fixup->inode;
-	struct btrfs_fs_info *fs_info = inode->root->fs_info;
-	u64 page_start = page_offset(page);
-	u64 page_end = page_offset(page) + PAGE_SIZE - 1;
-=======
 	struct folio *folio = fixup->folio;
 	struct btrfs_inode *inode = fixup->inode;
 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
 	u64 page_start = folio_pos(folio);
 	u64 page_end = folio_pos(folio) + folio_size(folio) - 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 	bool free_delalloc_space = true;
 
 	/*
 	 * This is similar to page_mkwrite, we need to reserve the space before
-<<<<<<< HEAD
-	 * we take the page lock.
-	 */
-	ret = btrfs_delalloc_reserve_space(inode, &data_reserved, page_start,
-					   PAGE_SIZE);
-again:
-	lock_page(page);
-
-	/*
-	 * Before we queued this fixup, we took a reference on the page.
-	 * page->mapping may go NULL, but it shouldn't be moved to a different
-	 * address space.
-	 */
-	if (!page->mapping || !PageDirty(page) || !PageChecked(page)) {
-		/*
-		 * Unfortunately this is a little tricky, either
-		 *
-		 * 1) We got here and our page had already been dealt with and
-=======
 	 * we take the folio lock.
 	 */
 	ret = btrfs_delalloc_reserve_space(inode, &data_reserved, page_start,
@@ -3070,26 +2752,10 @@ again:
 		 * Unfortunately this is a little tricky, either
 		 *
 		 * 1) We got here and our folio had already been dealt with and
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		 *    we reserved our space, thus ret == 0, so we need to just
 		 *    drop our space reservation and bail.  This can happen the
 		 *    first time we come into the fixup worker, or could happen
 		 *    while waiting for the ordered extent.
-<<<<<<< HEAD
-		 * 2) Our page was already dealt with, but we happened to get an
-		 *    ENOSPC above from the btrfs_delalloc_reserve_space.  In
-		 *    this case we obviously don't have anything to release, but
-		 *    because the page was already dealt with we don't want to
-		 *    mark the page with an error, so make sure we're resetting
-		 *    ret to 0.  This is why we have this check _before_ the ret
-		 *    check, because we do not want to have a surprise ENOSPC
-		 *    when the page was already properly dealt with.
-		 */
-		if (!ret) {
-			btrfs_delalloc_release_extents(inode, PAGE_SIZE);
-			btrfs_delalloc_release_space(inode, data_reserved,
-						     page_start, PAGE_SIZE,
-=======
 		 * 2) Our folio was already dealt with, but we happened to get an
 		 *    ENOSPC above from the btrfs_delalloc_reserve_space.  In
 		 *    this case we obviously don't have anything to release, but
@@ -3103,7 +2769,6 @@ again:
 			btrfs_delalloc_release_extents(inode, folio_size(folio));
 			btrfs_delalloc_release_space(inode, data_reserved,
 						     page_start, folio_size(folio),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						     true);
 		}
 		ret = 0;
@@ -3111,11 +2776,7 @@ again:
 	}
 
 	/*
-<<<<<<< HEAD
-	 * We can't mess with the page state unless it is locked, so now that
-=======
 	 * We can't mess with the folio state unless it is locked, so now that
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * it is locked bail if we failed to make our space reservation.
 	 */
 	if (ret)
@@ -3124,22 +2785,14 @@ again:
 	lock_extent(&inode->io_tree, page_start, page_end, &cached_state);
 
 	/* already ordered? We're done */
-<<<<<<< HEAD
-	if (PageOrdered(page))
-=======
 	if (folio_test_ordered(folio))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out_reserved;
 
 	ordered = btrfs_lookup_ordered_range(inode, page_start, PAGE_SIZE);
 	if (ordered) {
 		unlock_extent(&inode->io_tree, page_start, page_end,
 			      &cached_state);
-<<<<<<< HEAD
-		unlock_page(page);
-=======
 		folio_unlock(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		btrfs_start_ordered_extent(ordered);
 		btrfs_put_ordered_extent(ordered);
 		goto again;
@@ -3157,11 +2810,7 @@ again:
 	 *
 	 * The page was dirty when we started, nothing should have cleaned it.
 	 */
-<<<<<<< HEAD
-	BUG_ON(!PageDirty(page));
-=======
 	BUG_ON(!folio_test_dirty(folio));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	free_delalloc_space = false;
 out_reserved:
 	btrfs_delalloc_release_extents(inode, PAGE_SIZE);
@@ -3175,16 +2824,6 @@ out_page:
 		 * We hit ENOSPC or other errors.  Update the mapping and page
 		 * to reflect the errors and clean the page.
 		 */
-<<<<<<< HEAD
-		mapping_set_error(page->mapping, ret);
-		btrfs_mark_ordered_io_finished(inode, page, page_start,
-					       PAGE_SIZE, !ret);
-		clear_page_dirty_for_io(page);
-	}
-	btrfs_folio_clear_checked(fs_info, page_folio(page), page_start, PAGE_SIZE);
-	unlock_page(page);
-	put_page(page);
-=======
 		mapping_set_error(folio->mapping, ret);
 		btrfs_mark_ordered_io_finished(inode, folio, page_start,
 					       folio_size(folio), !ret);
@@ -3193,7 +2832,6 @@ out_page:
 	btrfs_folio_clear_checked(fs_info, folio, page_start, PAGE_SIZE);
 	folio_unlock(folio);
 	folio_put(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(fixup);
 	extent_changeset_free(data_reserved);
 	/*
@@ -3206,39 +2844,13 @@ out_page:
 
 /*
  * There are a few paths in the higher layers of the kernel that directly
-<<<<<<< HEAD
- * set the page dirty bit without asking the filesystem if it is a
-=======
  * set the folio dirty bit without asking the filesystem if it is a
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * good idea.  This causes problems because we want to make sure COW
  * properly happens and the data=ordered rules are followed.
  *
  * In our case any range that doesn't have the ORDERED bit set
  * hasn't been properly setup for IO.  We kick off an async process
  * to fix it up.  The async helper will wait for ordered extents, set
-<<<<<<< HEAD
- * the delalloc bit and make it safe to write the page.
- */
-int btrfs_writepage_cow_fixup(struct page *page)
-{
-	struct inode *inode = page->mapping->host;
-	struct btrfs_fs_info *fs_info = inode_to_fs_info(inode);
-	struct btrfs_writepage_fixup *fixup;
-
-	/* This page has ordered extent covering it already */
-	if (PageOrdered(page))
-		return 0;
-
-	/*
-	 * PageChecked is set below when we create a fixup worker for this page,
-	 * don't try to create another one if we're already PageChecked()
-	 *
-	 * The extent_io writepage code will redirty the page if we send back
-	 * EAGAIN.
-	 */
-	if (PageChecked(page))
-=======
  * the delalloc bit and make it safe to write the folio.
  */
 int btrfs_writepage_cow_fixup(struct folio *folio)
@@ -3260,7 +2872,6 @@ int btrfs_writepage_cow_fixup(struct folio *folio)
 	 * EAGAIN.
 	 */
 	if (folio_test_checked(folio))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EAGAIN;
 
 	fixup = kzalloc(sizeof(*fixup), GFP_NOFS);
@@ -3270,16 +2881,6 @@ int btrfs_writepage_cow_fixup(struct folio *folio)
 	/*
 	 * We are already holding a reference to this inode from
 	 * write_cache_pages.  We need to hold it because the space reservation
-<<<<<<< HEAD
-	 * takes place outside of the page lock, and we can't trust
-	 * page->mapping outside of the page lock.
-	 */
-	ihold(inode);
-	btrfs_folio_set_checked(fs_info, page_folio(page), page_offset(page), PAGE_SIZE);
-	get_page(page);
-	btrfs_init_work(&fixup->work, btrfs_writepage_fixup_worker, NULL);
-	fixup->page = page;
-=======
 	 * takes place outside of the folio lock, and we can't trust
 	 * page->mapping outside of the folio lock.
 	 */
@@ -3288,7 +2889,6 @@ int btrfs_writepage_cow_fixup(struct folio *folio)
 	folio_get(folio);
 	btrfs_init_work(&fixup->work, btrfs_writepage_fixup_worker, NULL);
 	fixup->folio = folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fixup->inode = BTRFS_I(inode);
 	btrfs_queue_work(fs_info->fixup_workers, &fixup->work);
 
@@ -3511,14 +3111,11 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
 		ret = btrfs_update_inode_fallback(trans, inode);
 		if (ret) /* -ENOMEM or corruption */
 			btrfs_abort_transaction(trans, ret);
-<<<<<<< HEAD
-=======
 
 		ret = btrfs_insert_raid_extent(trans, ordered_extent);
 		if (ret)
 			btrfs_abort_transaction(trans, ret);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 	}
 
@@ -4771,16 +4368,8 @@ static int btrfs_unlink_subvol(struct btrfs_trans_handle *trans,
 	 */
 	if (btrfs_ino(inode) == BTRFS_EMPTY_SUBVOL_DIR_OBJECTID) {
 		di = btrfs_search_dir_index_item(root, path, dir_ino, &fname.disk_name);
-<<<<<<< HEAD
-		if (IS_ERR_OR_NULL(di)) {
-			if (!di)
-				ret = -ENOENT;
-			else
-				ret = PTR_ERR(di);
-=======
 		if (IS_ERR(di)) {
 			ret = PTR_ERR(di);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			btrfs_abort_transaction(trans, ret);
 			goto out;
 		}
@@ -7137,11 +6726,7 @@ static int btrfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
 }
 
 static noinline int uncompress_inline(struct btrfs_path *path,
-<<<<<<< HEAD
-				      struct page *page,
-=======
 				      struct folio *folio,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      struct btrfs_file_extent_item *item)
 {
 	int ret;
@@ -7163,12 +6748,8 @@ static noinline int uncompress_inline(struct btrfs_path *path,
 	read_extent_buffer(leaf, tmp, ptr, inline_size);
 
 	max_size = min_t(unsigned long, PAGE_SIZE, max_size);
-<<<<<<< HEAD
-	ret = btrfs_decompress(compress_type, tmp, page, 0, inline_size, max_size);
-=======
 	ret = btrfs_decompress(compress_type, tmp, folio, 0, inline_size,
 			       max_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * decompression code contains a memset to fill in any space between the end
@@ -7179,63 +6760,36 @@ static noinline int uncompress_inline(struct btrfs_path *path,
 	 */
 
 	if (max_size < PAGE_SIZE)
-<<<<<<< HEAD
-		memzero_page(page, max_size, PAGE_SIZE - max_size);
-=======
 		folio_zero_range(folio, max_size, PAGE_SIZE - max_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(tmp);
 	return ret;
 }
 
 static int read_inline_extent(struct btrfs_inode *inode, struct btrfs_path *path,
-<<<<<<< HEAD
-			      struct page *page)
-=======
 			      struct folio *folio)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct btrfs_file_extent_item *fi;
 	void *kaddr;
 	size_t copy_size;
 
-<<<<<<< HEAD
-	if (!page || PageUptodate(page))
-		return 0;
-
-	ASSERT(page_offset(page) == 0);
-=======
 	if (!folio || folio_test_uptodate(folio))
 		return 0;
 
 	ASSERT(folio_pos(folio) == 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fi = btrfs_item_ptr(path->nodes[0], path->slots[0],
 			    struct btrfs_file_extent_item);
 	if (btrfs_file_extent_compression(path->nodes[0], fi) != BTRFS_COMPRESS_NONE)
-<<<<<<< HEAD
-		return uncompress_inline(path, page, fi);
-
-	copy_size = min_t(u64, PAGE_SIZE,
-			  btrfs_file_extent_ram_bytes(path->nodes[0], fi));
-	kaddr = kmap_local_page(page);
-=======
 		return uncompress_inline(path, folio, fi);
 
 	copy_size = min_t(u64, PAGE_SIZE,
 			  btrfs_file_extent_ram_bytes(path->nodes[0], fi));
 	kaddr = kmap_local_folio(folio, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	read_extent_buffer(path->nodes[0], kaddr,
 			   btrfs_file_extent_inline_start(fi), copy_size);
 	kunmap_local(kaddr);
 	if (copy_size < PAGE_SIZE)
-<<<<<<< HEAD
-		memzero_page(page, copy_size, PAGE_SIZE - copy_size);
-=======
 		folio_zero_range(folio, copy_size, PAGE_SIZE - copy_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -7257,11 +6811,7 @@ static int read_inline_extent(struct btrfs_inode *inode, struct btrfs_path *path
  * Return: ERR_PTR on error, non-NULL extent_map on success.
  */
 struct extent_map *btrfs_get_extent(struct btrfs_inode *inode,
-<<<<<<< HEAD
-				    struct page *page, u64 start, u64 len)
-=======
 				    struct folio *folio, u64 start, u64 len)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
 	int ret = 0;
@@ -7284,11 +6834,7 @@ struct extent_map *btrfs_get_extent(struct btrfs_inode *inode,
 	if (em) {
 		if (em->start > start || em->start + em->len <= start)
 			free_extent_map(em);
-<<<<<<< HEAD
-		else if (em->disk_bytenr == EXTENT_MAP_INLINE && page)
-=======
 		else if (em->disk_bytenr == EXTENT_MAP_INLINE && folio)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			free_extent_map(em);
 		else
 			goto out;
@@ -7418,11 +6964,7 @@ next:
 		ASSERT(em->disk_bytenr == EXTENT_MAP_INLINE);
 		ASSERT(em->len == fs_info->sectorsize);
 
-<<<<<<< HEAD
-		ret = read_inline_extent(inode, path, page);
-=======
 		ret = read_inline_extent(inode, path, folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret < 0)
 			goto out;
 		goto insert;
@@ -7664,22 +7206,12 @@ struct extent_map *btrfs_create_io_em(struct btrfs_inode *inode, u64 start,
  * for subpage spinlock.  So this function is to spin and wait for subpage
  * spinlock.
  */
-<<<<<<< HEAD
-static void wait_subpage_spinlock(struct page *page)
-{
-	struct btrfs_fs_info *fs_info = page_to_fs_info(page);
-	struct folio *folio = page_folio(page);
-	struct btrfs_subpage *subpage;
-
-	if (!btrfs_is_subpage(fs_info, page->mapping))
-=======
 static void wait_subpage_spinlock(struct folio *folio)
 {
 	struct btrfs_fs_info *fs_info = folio_to_fs_info(folio);
 	struct btrfs_subpage *subpage;
 
 	if (!btrfs_is_subpage(fs_info, folio->mapping))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	ASSERT(folio_test_private(folio) && folio_get_private(folio));
@@ -7708,15 +7240,9 @@ static int btrfs_launder_folio(struct folio *folio)
 
 static bool __btrfs_release_folio(struct folio *folio, gfp_t gfp_flags)
 {
-<<<<<<< HEAD
-	if (try_release_extent_mapping(&folio->page, gfp_flags)) {
-		wait_subpage_spinlock(&folio->page);
-		clear_page_extent_mapped(&folio->page);
-=======
 	if (try_release_extent_mapping(folio, gfp_flags)) {
 		wait_subpage_spinlock(folio);
 		clear_folio_extent_mapped(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	}
 	return false;
@@ -7776,11 +7302,7 @@ static void btrfs_invalidate_folio(struct folio *folio, size_t offset,
 	 * do double ordered extent accounting on the same folio.
 	 */
 	folio_wait_writeback(folio);
-<<<<<<< HEAD
-	wait_subpage_spinlock(&folio->page);
-=======
 	wait_subpage_spinlock(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * For subpage case, we have call sites like
@@ -7918,11 +7440,7 @@ next:
 	btrfs_folio_clear_checked(fs_info, folio, folio_pos(folio), folio_size(folio));
 	if (!inode_evicting)
 		__btrfs_release_folio(folio, GFP_NOFS);
-<<<<<<< HEAD
-	clear_page_extent_mapped(&folio->page);
-=======
 	clear_folio_extent_mapped(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int btrfs_truncate(struct btrfs_inode *inode, bool skip_writeback)
@@ -9459,25 +8977,12 @@ void btrfs_set_range_writeback(struct btrfs_inode *inode, u64 start, u64 end)
 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
 	unsigned long index = start >> PAGE_SHIFT;
 	unsigned long end_index = end >> PAGE_SHIFT;
-<<<<<<< HEAD
-	struct page *page;
-=======
 	struct folio *folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 len;
 
 	ASSERT(end + 1 - start <= U32_MAX);
 	len = end + 1 - start;
 	while (index <= end_index) {
-<<<<<<< HEAD
-		page = find_get_page(inode->vfs_inode.i_mapping, index);
-		ASSERT(page); /* Pages should be in the extent_io_tree */
-
-		/* This is for data, which doesn't yet support larger folio. */
-		ASSERT(folio_order(page_folio(page)) == 0);
-		btrfs_folio_set_writeback(fs_info, page_folio(page), start, len);
-		put_page(page);
-=======
 		folio = __filemap_get_folio(inode->vfs_inode.i_mapping, index, 0, 0);
 		ASSERT(!IS_ERR(folio)); /* folios should be in the extent_io_tree */
 
@@ -9485,7 +8990,6 @@ void btrfs_set_range_writeback(struct btrfs_inode *inode, u64 start, u64 end)
 		ASSERT(folio_order(folio) == 0);
 		btrfs_folio_set_writeback(fs_info, folio, start, len);
 		folio_put(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		index++;
 	}
 }
@@ -9650,11 +9154,7 @@ int btrfs_encoded_read_regular_fill_pages(struct btrfs_inode *inode,
 
 		if (bio_add_page(&bbio->bio, pages[i], bytes, 0) < bytes) {
 			atomic_inc(&priv.pending);
-<<<<<<< HEAD
-			btrfs_submit_bio(bbio, 0);
-=======
 			btrfs_submit_bbio(bbio, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			bbio = btrfs_bio_alloc(BIO_MAX_VECS, REQ_OP_READ, fs_info,
 					       btrfs_encoded_read_endio, &priv);
@@ -9669,11 +9169,7 @@ int btrfs_encoded_read_regular_fill_pages(struct btrfs_inode *inode,
 	} while (disk_io_size);
 
 	atomic_inc(&priv.pending);
-<<<<<<< HEAD
-	btrfs_submit_bio(bbio, 0);
-=======
 	btrfs_submit_bbio(bbio, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (atomic_dec_return(&priv.pending))
 		io_wait_event(priv.wait, !atomic_read(&priv.pending));

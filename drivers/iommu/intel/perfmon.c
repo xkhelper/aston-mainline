@@ -34,34 +34,9 @@ static struct attribute_group iommu_pmu_events_attr_group = {
 	.attrs = attrs_empty,
 };
 
-<<<<<<< HEAD
-static cpumask_t iommu_pmu_cpu_mask;
-
-static ssize_t
-cpumask_show(struct device *dev, struct device_attribute *attr, char *buf)
-{
-	return cpumap_print_to_pagebuf(true, buf, &iommu_pmu_cpu_mask);
-}
-static DEVICE_ATTR_RO(cpumask);
-
-static struct attribute *iommu_pmu_cpumask_attrs[] = {
-	&dev_attr_cpumask.attr,
-	NULL
-};
-
-static struct attribute_group iommu_pmu_cpumask_attr_group = {
-	.attrs = iommu_pmu_cpumask_attrs,
-};
-
 static const struct attribute_group *iommu_pmu_attr_groups[] = {
 	&iommu_pmu_format_attr_group,
 	&iommu_pmu_events_attr_group,
-	&iommu_pmu_cpumask_attr_group,
-=======
-static const struct attribute_group *iommu_pmu_attr_groups[] = {
-	&iommu_pmu_format_attr_group,
-	&iommu_pmu_events_attr_group,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL
 };
 
@@ -571,10 +546,7 @@ static int __iommu_pmu_register(struct intel_iommu *iommu)
 	iommu_pmu->pmu.attr_groups	= iommu_pmu_attr_groups;
 	iommu_pmu->pmu.attr_update	= iommu_pmu_attr_update;
 	iommu_pmu->pmu.capabilities	= PERF_PMU_CAP_NO_EXCLUDE;
-<<<<<<< HEAD
-=======
 	iommu_pmu->pmu.scope		= PERF_PMU_SCOPE_SYS_WIDE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iommu_pmu->pmu.module		= THIS_MODULE;
 
 	return perf_pmu_register(&iommu_pmu->pmu, iommu_pmu->pmu.name, -1);
@@ -783,92 +755,6 @@ static void iommu_pmu_unset_interrupt(struct intel_iommu *iommu)
 	iommu->perf_irq = 0;
 }
 
-<<<<<<< HEAD
-static int iommu_pmu_cpu_online(unsigned int cpu, struct hlist_node *node)
-{
-	struct iommu_pmu *iommu_pmu = hlist_entry_safe(node, typeof(*iommu_pmu), cpuhp_node);
-
-	if (cpumask_empty(&iommu_pmu_cpu_mask))
-		cpumask_set_cpu(cpu, &iommu_pmu_cpu_mask);
-
-	if (cpumask_test_cpu(cpu, &iommu_pmu_cpu_mask))
-		iommu_pmu->cpu = cpu;
-
-	return 0;
-}
-
-static int iommu_pmu_cpu_offline(unsigned int cpu, struct hlist_node *node)
-{
-	struct iommu_pmu *iommu_pmu = hlist_entry_safe(node, typeof(*iommu_pmu), cpuhp_node);
-	int target = cpumask_first(&iommu_pmu_cpu_mask);
-
-	/*
-	 * The iommu_pmu_cpu_mask has been updated when offline the CPU
-	 * for the first iommu_pmu. Migrate the other iommu_pmu to the
-	 * new target.
-	 */
-	if (target < nr_cpu_ids && target != iommu_pmu->cpu) {
-		perf_pmu_migrate_context(&iommu_pmu->pmu, cpu, target);
-		iommu_pmu->cpu = target;
-		return 0;
-	}
-
-	if (!cpumask_test_and_clear_cpu(cpu, &iommu_pmu_cpu_mask))
-		return 0;
-
-	target = cpumask_any_but(cpu_online_mask, cpu);
-
-	if (target < nr_cpu_ids)
-		cpumask_set_cpu(target, &iommu_pmu_cpu_mask);
-	else
-		return 0;
-
-	perf_pmu_migrate_context(&iommu_pmu->pmu, cpu, target);
-	iommu_pmu->cpu = target;
-
-	return 0;
-}
-
-static int nr_iommu_pmu;
-static enum cpuhp_state iommu_cpuhp_slot;
-
-static int iommu_pmu_cpuhp_setup(struct iommu_pmu *iommu_pmu)
-{
-	int ret;
-
-	if (!nr_iommu_pmu) {
-		ret = cpuhp_setup_state_multi(CPUHP_AP_ONLINE_DYN,
-					      "driver/iommu/intel/perfmon:online",
-					      iommu_pmu_cpu_online,
-					      iommu_pmu_cpu_offline);
-		if (ret < 0)
-			return ret;
-		iommu_cpuhp_slot = ret;
-	}
-
-	ret = cpuhp_state_add_instance(iommu_cpuhp_slot, &iommu_pmu->cpuhp_node);
-	if (ret) {
-		if (!nr_iommu_pmu)
-			cpuhp_remove_multi_state(iommu_cpuhp_slot);
-		return ret;
-	}
-	nr_iommu_pmu++;
-
-	return 0;
-}
-
-static void iommu_pmu_cpuhp_free(struct iommu_pmu *iommu_pmu)
-{
-	cpuhp_state_remove_instance(iommu_cpuhp_slot, &iommu_pmu->cpuhp_node);
-
-	if (--nr_iommu_pmu)
-		return;
-
-	cpuhp_remove_multi_state(iommu_cpuhp_slot);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void iommu_pmu_register(struct intel_iommu *iommu)
 {
 	struct iommu_pmu *iommu_pmu = iommu->pmu;
@@ -879,26 +765,12 @@ void iommu_pmu_register(struct intel_iommu *iommu)
 	if (__iommu_pmu_register(iommu))
 		goto err;
 
-<<<<<<< HEAD
-	if (iommu_pmu_cpuhp_setup(iommu_pmu))
-		goto unregister;
-
-	/* Set interrupt for overflow */
-	if (iommu_pmu_set_interrupt(iommu))
-		goto cpuhp_free;
-
-	return;
-
-cpuhp_free:
-	iommu_pmu_cpuhp_free(iommu_pmu);
-=======
 	/* Set interrupt for overflow */
 	if (iommu_pmu_set_interrupt(iommu))
 		goto unregister;
 
 	return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unregister:
 	perf_pmu_unregister(&iommu_pmu->pmu);
 err:
@@ -914,9 +786,5 @@ void iommu_pmu_unregister(struct intel_iommu *iommu)
 		return;
 
 	iommu_pmu_unset_interrupt(iommu);
-<<<<<<< HEAD
-	iommu_pmu_cpuhp_free(iommu_pmu);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_pmu_unregister(&iommu_pmu->pmu);
 }

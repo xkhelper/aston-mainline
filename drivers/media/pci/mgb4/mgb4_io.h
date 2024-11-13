@@ -7,17 +7,9 @@
 #ifndef __MGB4_IO_H__
 #define __MGB4_IO_H__
 
-<<<<<<< HEAD
-#include <media/v4l2-dev.h>
-
-#define MGB4_DEFAULT_WIDTH     1280
-#define MGB4_DEFAULT_HEIGHT    640
-#define MGB4_DEFAULT_PERIOD    (125000000 / 60)
-=======
 #include <linux/math64.h>
 #include <media/v4l2-dev.h>
 #include "mgb4_core.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Register access error indication */
 #define MGB4_ERR_NO_REG        0xFFFFFFFE
@@ -26,12 +18,9 @@
 #define MGB4_ERR_QUEUE_EMPTY   0xFFFFFFFC
 #define MGB4_ERR_QUEUE_FULL    0xFFFFFFFB
 
-<<<<<<< HEAD
-=======
 #define MGB4_PERIOD(numerator, denominator) \
 	((u32)div_u64((MGB4_HW_FREQ * (u64)(numerator)), (denominator)))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mgb4_frame_buffer {
 	struct vb2_v4l2_buffer vb;
 	struct list_head list;
@@ -42,8 +31,6 @@ static inline struct mgb4_frame_buffer *to_frame_buffer(struct vb2_v4l2_buffer *
 	return container_of(vbuf, struct mgb4_frame_buffer, vb);
 }
 
-<<<<<<< HEAD
-=======
 static inline bool has_yuv_and_timeperframe(struct mgb4_regs *video)
 {
 	u32 status = mgb4_read_reg(video, 0xD0);
@@ -64,5 +51,4 @@ static inline u32 pixel_size(struct v4l2_dv_timings *timings)
 	return width * height;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif

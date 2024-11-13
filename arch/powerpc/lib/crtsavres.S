@@ -46,11 +46,7 @@
 
 	.section ".text"
 
-<<<<<<< HEAD
-#ifndef CONFIG_PPC64
-=======
 #ifndef __powerpc64__
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Routines for saving integer registers, called by the compiler.  */
 /* Called with r11 pointing to the stack header word of the caller of the */

@@ -22,12 +22,9 @@ description: |
 
   [0] https://developer.arm.com/documentation/den0056/latest
 
-<<<<<<< HEAD
-=======
 anyOf:
   - $ref: /schemas/firmware/nxp,imx95-scmi.yaml
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 properties:
   $nodename:
     const: scmi
@@ -127,8 +124,6 @@ properties:
       atomic mode of operation, even if requested.
     default: 0
 
-<<<<<<< HEAD
-=======
   arm,max-rx-timeout-ms:
     description:
       An optional time value, expressed in milliseconds, representing the
@@ -136,7 +131,6 @@ properties:
       be a non-zero value if set.
     minimum: 1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   arm,smc-id:
     $ref: /schemas/types.yaml#/definitions/uint32
     description:
@@ -161,8 +155,6 @@ properties:
     required:
       - '#power-domain-cells'
 
-<<<<<<< HEAD
-=======
   protocol@12:
     $ref: '#/$defs/protocol-node'
     unevaluatedProperties: false
@@ -171,7 +163,6 @@ properties:
       reg:
         const: 0x12
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   protocol@13:
     $ref: '#/$defs/protocol-node'
     unevaluatedProperties: false
@@ -311,11 +302,7 @@ properties:
     required:
       - reg
 
-<<<<<<< HEAD
-additionalProperties: false
-=======
 unevaluatedProperties: false
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 $defs:
   protocol-node:

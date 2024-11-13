@@ -17,12 +17,6 @@
 #include "hda_jack.h"
 #include "hda_generic.h"
 
-<<<<<<< HEAD
-struct cmi_spec {
-	struct hda_gen_spec gen;
-};
-
-=======
 /* CM9825 Offset Definitions */
 
 #define CM9825_VERB_SET_HPF_1 0x781
@@ -248,7 +242,6 @@ static int cm9825_resume(struct hda_codec *codec)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * stuff for auto-parser
  */
@@ -260,8 +253,6 @@ static const struct hda_codec_ops cmi_auto_patch_ops = {
 	.unsol_event = snd_hda_jack_unsol_event,
 };
 
-<<<<<<< HEAD
-=======
 static int patch_cm9825(struct hda_codec *codec)
 {
 	struct cmi_spec *spec;
@@ -309,7 +300,6 @@ static int patch_cm9825(struct hda_codec *codec)
 	return err;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int patch_cmi9880(struct hda_codec *codec)
 {
 	struct cmi_spec *spec;
@@ -391,10 +381,7 @@ static const struct hda_device_id snd_hda_id_cmedia[] = {
 	HDA_CODEC_ENTRY(0x13f68888, "CMI8888", patch_cmi8888),
 	HDA_CODEC_ENTRY(0x13f69880, "CMI9880", patch_cmi9880),
 	HDA_CODEC_ENTRY(0x434d4980, "CMI9880", patch_cmi9880),
-<<<<<<< HEAD
-=======
 	HDA_CODEC_ENTRY(0x13f69825, "CM9825", patch_cm9825),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{} /* terminator */
 };
 MODULE_DEVICE_TABLE(hdaudio, snd_hda_id_cmedia);

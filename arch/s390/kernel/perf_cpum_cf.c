@@ -22,13 +22,10 @@
 #include <asm/hwctrset.h>
 #include <asm/debug.h>
 
-<<<<<<< HEAD
-=======
 /* Perf PMU definitions for the counter facility */
 #define PERF_CPUM_CF_MAX_CTR		0xffffUL  /* Max ctr for ECCTR */
 #define PERF_EVENT_CPUM_CF_DIAG		0xBC000UL /* Event: Counter sets */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum cpumf_ctr_set {
 	CPUMF_CTR_SET_BASIC   = 0,    /* Basic Counter Set */
 	CPUMF_CTR_SET_USER    = 1,    /* Problem-State Counter Set */
@@ -1701,10 +1698,6 @@ static const struct file_operations cfset_fops = {
 	.release = cfset_release,
 	.unlocked_ioctl	= cfset_ioctl,
 	.compat_ioctl = cfset_ioctl,
-<<<<<<< HEAD
-	.llseek = no_llseek
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct miscdevice cfset_dev = {

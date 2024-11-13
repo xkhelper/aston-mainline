@@ -330,11 +330,7 @@ static bool cpuhp_wait_for_sync_state(unsigned int cpu, enum cpuhp_sync_state st
 			/* Poll for one millisecond */
 			arch_cpuhp_sync_state_poll();
 		} else {
-<<<<<<< HEAD
-			usleep_range_state(USEC_PER_MSEC, 2 * USEC_PER_MSEC, TASK_UNINTERRUPTIBLE);
-=======
 			usleep_range(USEC_PER_MSEC, 2 * USEC_PER_MSEC);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		sync = atomic_read(st);
 	}
@@ -1812,10 +1808,7 @@ static int __init parallel_bringup_parse_param(char *arg)
 }
 early_param("cpuhp.parallel", parallel_bringup_parse_param);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_HOTPLUG_SMT
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline bool cpuhp_smt_aware(void)
 {
 	return cpu_smt_max_threads > 1;
@@ -1825,8 +1818,6 @@ static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
 {
 	return cpu_primary_thread_mask;
 }
-<<<<<<< HEAD
-=======
 #else
 static inline bool cpuhp_smt_aware(void)
 {
@@ -1842,7 +1833,6 @@ bool __weak arch_cpuhp_init_parallel_bringup(void)
 {
 	return true;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * On architectures which have enabled parallel bringup this invokes all BP
@@ -2715,13 +2705,7 @@ int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval)
 	return ret;
 }
 
-<<<<<<< HEAD
-/**
- * Check if the core a CPU belongs to is online
- */
-=======
 /* Check if the core a CPU belongs to is online */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if !defined(topology_is_core_online)
 static inline bool topology_is_core_online(unsigned int cpu)
 {

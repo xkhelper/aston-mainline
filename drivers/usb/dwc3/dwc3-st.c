@@ -14,10 +14,7 @@
  * Inspired by dwc3-omap.c and dwc3-exynos.c.
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
@@ -201,11 +198,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
 	struct st_dwc3 *dwc3_data;
 	struct resource *res;
 	struct device *dev = &pdev->dev;
-<<<<<<< HEAD
-	struct device_node *node = dev->of_node, *child;
-=======
 	struct device_node *node = dev->of_node;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct platform_device *child_pdev;
 	struct regmap *regmap;
 	int ret;
@@ -232,17 +225,6 @@ static int st_dwc3_probe(struct platform_device *pdev)
 
 	dwc3_data->syscfg_reg_off = res->start;
 
-<<<<<<< HEAD
-	dev_vdbg(&pdev->dev, "glue-logic addr 0x%pK, syscfg-reg offset 0x%x\n",
-		 dwc3_data->glue_base, dwc3_data->syscfg_reg_off);
-
-	dwc3_data->rstc_pwrdn =
-		devm_reset_control_get_exclusive(dev, "powerdown");
-	if (IS_ERR(dwc3_data->rstc_pwrdn)) {
-		dev_err(&pdev->dev, "could not get power controller\n");
-		return PTR_ERR(dwc3_data->rstc_pwrdn);
-	}
-=======
 	dev_vdbg(dev, "glue-logic addr 0x%pK, syscfg-reg offset 0x%x\n",
 		 dwc3_data->glue_base, dwc3_data->syscfg_reg_off);
 
@@ -258,7 +240,6 @@ static int st_dwc3_probe(struct platform_device *pdev)
 	if (IS_ERR(dwc3_data->rstc_pwrdn))
 		return dev_err_probe(dev, PTR_ERR(dwc3_data->rstc_pwrdn),
 				     "could not get power controller\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Manage PowerDown */
 	reset_control_deassert(dwc3_data->rstc_pwrdn);
@@ -266,38 +247,19 @@ static int st_dwc3_probe(struct platform_device *pdev)
 	dwc3_data->rstc_rst =
 		devm_reset_control_get_shared(dev, "softreset");
 	if (IS_ERR(dwc3_data->rstc_rst)) {
-<<<<<<< HEAD
-		dev_err(&pdev->dev, "could not get reset controller\n");
-		ret = PTR_ERR(dwc3_data->rstc_rst);
-=======
 		ret = dev_err_probe(dev, PTR_ERR(dwc3_data->rstc_rst),
 				    "could not get reset controller\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto undo_powerdown;
 	}
 
 	/* Manage SoftReset */
 	reset_control_deassert(dwc3_data->rstc_rst);
 
-<<<<<<< HEAD
-	child = of_get_compatible_child(node, "snps,dwc3");
-	if (!child) {
-		dev_err(&pdev->dev, "failed to find dwc3 core node\n");
-		ret = -ENODEV;
-		goto err_node_put;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Allocate and initialize the core */
 	ret = of_platform_populate(node, NULL, NULL, dev);
 	if (ret) {
 		dev_err(dev, "failed to add dwc3 core\n");
-<<<<<<< HEAD
-		goto err_node_put;
-=======
 		goto undo_softreset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	child_pdev = of_find_device_by_node(child);
@@ -308,10 +270,6 @@ static int st_dwc3_probe(struct platform_device *pdev)
 	}
 
 	dwc3_data->dr_mode = usb_get_dr_mode(&child_pdev->dev);
-<<<<<<< HEAD
-	of_node_put(child);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	platform_device_put(child_pdev);
 
 	/*
@@ -323,12 +281,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
 	ret = st_dwc3_drd_init(dwc3_data);
 	if (ret) {
 		dev_err(dev, "drd initialisation failed\n");
-<<<<<<< HEAD
-		of_platform_depopulate(dev);
-		goto undo_softreset;
-=======
 		goto depopulate;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* ST glue logic init */
@@ -339,11 +292,6 @@ static int st_dwc3_probe(struct platform_device *pdev)
 
 depopulate:
 	of_platform_depopulate(dev);
-<<<<<<< HEAD
-err_node_put:
-	of_node_put(child);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 undo_softreset:
 	reset_control_assert(dwc3_data->rstc_rst);
 undo_powerdown:

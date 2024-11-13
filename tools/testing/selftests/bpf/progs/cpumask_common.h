@@ -7,14 +7,11 @@
 #include "errno.h"
 #include <stdbool.h>
 
-<<<<<<< HEAD
-=======
 /* Should use BTF_FIELDS_MAX, but it is not always available in vmlinux.h,
  * so use the hard-coded number as a workaround.
  */
 #define CPUMASK_KPTR_FIELDS_MAX 11
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int err;
 
 #define private(name) SEC(".bss." #name) __attribute__((aligned(8)))

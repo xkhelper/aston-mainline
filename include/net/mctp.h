@@ -295,11 +295,7 @@ void mctp_neigh_remove_dev(struct mctp_dev *mdev);
 int mctp_routes_init(void);
 void mctp_routes_exit(void);
 
-<<<<<<< HEAD
-void mctp_device_init(void);
-=======
 int mctp_device_init(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mctp_device_exit(void);
 
 #endif /* __NET_MCTP_H */

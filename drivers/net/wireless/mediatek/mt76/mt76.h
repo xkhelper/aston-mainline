@@ -162,13 +162,8 @@ enum mt76_dfs_state {
 
 struct mt76_queue_buf {
 	dma_addr_t addr;
-<<<<<<< HEAD
-	u16 len;
-	bool skip_unmap;
-=======
 	u16 len:15,
 	    skip_unmap:1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct mt76_tx_info {
@@ -235,20 +230,14 @@ struct mt76_queue {
 };
 
 struct mt76_mcu_ops {
-<<<<<<< HEAD
-=======
 	unsigned int max_retry;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 headroom;
 	u32 tailroom;
 
 	int (*mcu_send_msg)(struct mt76_dev *dev, int cmd, const void *data,
 			    int len, bool wait_resp);
-<<<<<<< HEAD
-=======
 	int (*mcu_skb_prepare_msg)(struct mt76_dev *dev, struct sk_buff *skb,
 				   int cmd, int *seq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int (*mcu_skb_send_msg)(struct mt76_dev *dev, struct sk_buff *skb,
 				int cmd, int *seq);
 	int (*mcu_parse_response)(struct mt76_dev *dev, int cmd,
@@ -361,10 +350,7 @@ struct mt76_wcid {
 	u8 hw_key_idx2;
 
 	u8 sta:1;
-<<<<<<< HEAD
-=======
 	u8 sta_disabled:1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 amsdu:1;
 	u8 phy_idx:2;
 	u8 link_id:4;
@@ -379,10 +365,7 @@ struct mt76_wcid {
 
 	struct list_head tx_list;
 	struct sk_buff_head tx_pending;
-<<<<<<< HEAD
-=======
 	struct sk_buff_head tx_offchannel;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct list_head list;
 	struct idr pktid;
@@ -488,15 +471,12 @@ enum {
 	MT76_STATE_WED_RESET,
 };
 
-<<<<<<< HEAD
-=======
 enum mt76_sta_event {
 	MT76_STA_EVENT_ASSOC,
 	MT76_STA_EVENT_AUTHORIZE,
 	MT76_STA_EVENT_DISASSOC,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mt76_hw_cap {
 	bool has_2ghz;
 	bool has_5ghz;
@@ -518,10 +498,7 @@ struct mt76_driver_ops {
 	u8 mcs_rates;
 
 	void (*update_survey)(struct mt76_phy *phy);
-<<<<<<< HEAD
-=======
 	int (*set_channel)(struct mt76_phy *phy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	int (*tx_prepare_skb)(struct mt76_dev *dev, void *txwi_ptr,
 			      enum mt76_txq_id qid, struct mt76_wcid *wcid,
@@ -546,13 +523,8 @@ struct mt76_driver_ops {
 	int (*sta_add)(struct mt76_dev *dev, struct ieee80211_vif *vif,
 		       struct ieee80211_sta *sta);
 
-<<<<<<< HEAD
-	void (*sta_assoc)(struct mt76_dev *dev, struct ieee80211_vif *vif,
-			  struct ieee80211_sta *sta);
-=======
 	int (*sta_event)(struct mt76_dev *dev, struct ieee80211_vif *vif,
 			 struct ieee80211_sta *sta, enum mt76_sta_event ev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	void (*sta_remove)(struct mt76_dev *dev, struct ieee80211_vif *vif,
 			   struct ieee80211_sta *sta);
@@ -808,10 +780,7 @@ struct mt76_phy {
 
 	struct cfg80211_chan_def chandef;
 	struct ieee80211_channel *main_chan;
-<<<<<<< HEAD
-=======
 	bool offchannel;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct mt76_channel_state *chan_state;
 	enum mt76_dfs_state dfs_state;
@@ -1414,11 +1383,7 @@ void mt76_release_buffered_frames(struct ieee80211_hw *hw,
 				  enum ieee80211_frame_release_type reason,
 				  bool more_data);
 bool mt76_has_tx_pending(struct mt76_phy *phy);
-<<<<<<< HEAD
-void mt76_set_channel(struct mt76_phy *phy);
-=======
 int mt76_update_channel(struct mt76_phy *phy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void mt76_update_survey(struct mt76_phy *phy);
 void mt76_update_survey_active_time(struct mt76_phy *phy, ktime_t time);
 int mt76_get_survey(struct ieee80211_hw *hw, int idx,
@@ -1532,11 +1497,8 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames);
 void mt76_testmode_tx_pending(struct mt76_phy *phy);
 void mt76_queue_tx_complete(struct mt76_dev *dev, struct mt76_queue *q,
 			    struct mt76_queue_entry *e);
-<<<<<<< HEAD
-=======
 int mt76_set_channel(struct mt76_phy *phy, struct cfg80211_chan_def *chandef,
 		     bool offchannel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* usb */
 static inline bool mt76u_urb_error(struct urb *urb)

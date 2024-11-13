@@ -707,11 +707,7 @@ static void ti_sci_clk_remove(struct platform_device *pdev)
 
 static struct platform_driver ti_sci_clk_driver = {
 	.probe = ti_sci_clk_probe,
-<<<<<<< HEAD
-	.remove_new = ti_sci_clk_remove,
-=======
 	.remove = ti_sci_clk_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver = {
 		.name = "ti-sci-clk",
 		.of_match_table = of_match_ptr(ti_sci_clk_of_match),

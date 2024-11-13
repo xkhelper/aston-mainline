@@ -368,10 +368,7 @@ static int at91_rtc_probe(struct platform_device *pdev)
 		return ret;
 
 	rtc->gpbr = syscon_node_to_regmap(args.np);
-<<<<<<< HEAD
-=======
 	of_node_put(args.np);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtc->gpbr_offset = args.args[0];
 	if (IS_ERR(rtc->gpbr)) {
 		dev_err(&pdev->dev, "failed to retrieve gpbr regmap, aborting.\n");

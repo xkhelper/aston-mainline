@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 
-<<<<<<< HEAD
-=======
 #include "tegra234.dtsi"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 / {
 	compatible = "nvidia,p3701", "nvidia,tegra234";
 
@@ -50,8 +47,6 @@
 			};
 		};
 
-<<<<<<< HEAD
-=======
 		i2c@3160000 {
 			status = "okay";
 
@@ -109,7 +104,6 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i2c@c240000 {
 			status = "okay";
 
@@ -162,8 +156,6 @@
 				};
 			};
 		};
-<<<<<<< HEAD
-=======
 
 		rtc@c2a0000 {
 			status = "okay";
@@ -230,6 +222,5 @@
 		regulator-max-microvolt = <5000000>;
 		regulator-always-on;
 		regulator-boot-on;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };

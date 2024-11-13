@@ -161,15 +161,6 @@ cleanup:
 /*
  * This test create a memory cgroup, allocates
  * some anonymous memory and some pagecache
-<<<<<<< HEAD
- * and check memory.current and some memory.stat values.
- */
-static int test_memcg_current(const char *root)
-{
-	int ret = KSFT_FAIL;
-	long current;
-	char *memcg;
-=======
  * and checks memory.current, memory.peak, and some memory.stat values.
  */
 static int test_memcg_current_peak(const char *root)
@@ -180,7 +171,6 @@ static int test_memcg_current_peak(const char *root)
 	bool fd2_closed = false, fd3_closed = false, fd4_closed = false;
 	int peak_fd = -1, peak_fd2 = -1, peak_fd3 = -1, peak_fd4 = -1;
 	struct stat ss;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	memcg = cg_name(root, "memcg_test");
 	if (!memcg)
@@ -193,17 +183,6 @@ static int test_memcg_current_peak(const char *root)
 	if (current != 0)
 		goto cleanup;
 
-<<<<<<< HEAD
-	if (cg_run(memcg, alloc_anon_50M_check, NULL))
-		goto cleanup;
-
-	if (cg_run(memcg, alloc_pagecache_50M_check, NULL))
-		goto cleanup;
-
-	ret = KSFT_PASS;
-
-cleanup:
-=======
 	peak = cg_read_long(memcg, "memory.peak");
 	if (peak != 0)
 		goto cleanup;
@@ -322,7 +301,6 @@ cleanup:
 		close(peak_fd3);
 	if (!fd4_closed)
 		close(peak_fd4);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cg_destroy(memcg);
 	free(memcg);
 
@@ -951,15 +929,6 @@ cleanup:
 
 /*
  * This test checks that memory.swap.max limits the amount of
-<<<<<<< HEAD
- * anonymous memory which can be swapped out.
- */
-static int test_memcg_swap_max(const char *root)
-{
-	int ret = KSFT_FAIL;
-	char *memcg;
-	long max;
-=======
  * anonymous memory which can be swapped out. Additionally, it verifies that
  * memory.swap.peak reflects the high watermark and can be reset.
  */
@@ -973,7 +942,6 @@ static int test_memcg_swap_max_peak(const char *root)
 
 	/* any non-empty string resets */
 	static const char reset_string[] = "foobarbaz";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!is_swap_enabled())
 		return KSFT_SKIP;
@@ -990,8 +958,6 @@ static int test_memcg_swap_max_peak(const char *root)
 		goto cleanup;
 	}
 
-<<<<<<< HEAD
-=======
 	swap_peak_fd = cg_open(memcg, "memory.swap.peak",
 			       O_RDWR | O_APPEND | O_CLOEXEC);
 
@@ -1047,7 +1013,6 @@ static int test_memcg_swap_max_peak(const char *root)
 	if (cg_read_long_fd(mem_peak_fd))
 		goto cleanup;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cg_read_strcmp(memcg, "memory.max", "max\n"))
 		goto cleanup;
 
@@ -1070,8 +1035,6 @@ static int test_memcg_swap_max_peak(const char *root)
 	if (cg_read_key_long(memcg, "memory.events", "oom_kill ") != 1)
 		goto cleanup;
 
-<<<<<<< HEAD
-=======
 	peak = cg_read_long(memcg, "memory.peak");
 	if (peak < MB(29))
 		goto cleanup;
@@ -1127,7 +1090,6 @@ static int test_memcg_swap_max_peak(const char *root)
 	if (cg_read_long(memcg, "memory.swap.peak") < MB(29))
 		goto cleanup;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cg_run(memcg, alloc_anon_50M_check_swap, (void *)MB(30)))
 		goto cleanup;
 
@@ -1135,11 +1097,6 @@ static int test_memcg_swap_max_peak(const char *root)
 	if (max <= 0)
 		goto cleanup;
 
-<<<<<<< HEAD
-	ret = KSFT_PASS;
-
-cleanup:
-=======
 	peak = cg_read_long(memcg, "memory.peak");
 	if (peak < MB(29))
 		goto cleanup;
@@ -1163,7 +1120,6 @@ cleanup:
 		ret = KSFT_FAIL;
 	if (swap_peak_fd != -1 && close(swap_peak_fd))
 		ret = KSFT_FAIL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cg_destroy(memcg);
 	free(memcg);
 
@@ -1587,11 +1543,7 @@ struct memcg_test {
 	const char *name;
 } tests[] = {
 	T(test_memcg_subtree_control),
-<<<<<<< HEAD
-	T(test_memcg_current),
-=======
 	T(test_memcg_current_peak),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	T(test_memcg_min),
 	T(test_memcg_low),
 	T(test_memcg_high),
@@ -1599,11 +1551,7 @@ struct memcg_test {
 	T(test_memcg_max),
 	T(test_memcg_reclaim),
 	T(test_memcg_oom_events),
-<<<<<<< HEAD
-	T(test_memcg_swap_max),
-=======
 	T(test_memcg_swap_max_peak),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	T(test_memcg_sock),
 	T(test_memcg_oom_group_leaf_events),
 	T(test_memcg_oom_group_parent_events),

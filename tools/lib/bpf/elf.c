@@ -28,12 +28,9 @@ int elf_open(const char *binary_path, struct elf_fd *elf_fd)
 	int fd, ret;
 	Elf *elf;
 
-<<<<<<< HEAD
-=======
 	elf_fd->elf = NULL;
 	elf_fd->fd = -1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (elf_version(EV_CURRENT) == EV_NONE) {
 		pr_warn("elf: failed to init libelf for %s\n", binary_path);
 		return -LIBBPF_ERRNO__LIBELF;

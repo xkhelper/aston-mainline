@@ -8,10 +8,7 @@ Compute Express Link
    :maxdepth: 1
 
    memory-devices
-<<<<<<< HEAD
-=======
    access-coordinates
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
    maturity-map
 

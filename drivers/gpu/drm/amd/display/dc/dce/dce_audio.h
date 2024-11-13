@@ -166,10 +166,7 @@ void dce_aud_hw_init(struct audio *audio);
 
 void dce_aud_az_enable(struct audio *audio);
 void dce_aud_az_disable(struct audio *audio);
-<<<<<<< HEAD
-=======
 void dce_aud_az_disable_hbr_audio(struct audio *audio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void dce_aud_az_configure(struct audio *audio,
 	enum signal_type signal,

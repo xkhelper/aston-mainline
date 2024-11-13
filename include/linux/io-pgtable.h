@@ -171,13 +171,10 @@ struct io_pgtable_cfg {
 			u64 ttbr[4];
 			u32 n_ttbrs;
 		} apple_dart_cfg;
-<<<<<<< HEAD
-=======
 
 		struct {
 			int nid;
 		} amd;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 

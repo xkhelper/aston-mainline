@@ -37,10 +37,7 @@
 #include "gc/gc_9_4_3_sh_mask.h"
 
 #include "gfx_v9_4_3.h"
-<<<<<<< HEAD
-=======
 #include "gfx_v9_4_3_cleaner_shader.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "amdgpu_xcp.h"
 #include "amdgpu_aca.h"
 
@@ -67,8 +64,6 @@ MODULE_FIRMWARE("amdgpu/gc_9_4_4_rlc.bin");
 #define NORMALIZE_XCC_REG_OFFSET(offset) \
 	(offset & 0xFFFF)
 
-<<<<<<< HEAD
-=======
 static const struct amdgpu_hwip_reg_entry gc_reg_list_9_4_3[] = {
 	SOC15_REG_ENTRY_STR(GC, 0, regGRBM_STATUS),
 	SOC15_REG_ENTRY_STR(GC, 0, regGRBM_STATUS2),
@@ -161,7 +156,6 @@ static const struct amdgpu_hwip_reg_entry gc_cp_reg_list_9_4_3[] = {
 	SOC15_REG_ENTRY_STR(GC, 0, regCP_HQD_GFX_STATUS),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct amdgpu_gfx_ras gfx_v9_4_3_ras;
 
 static void gfx_v9_4_3_set_ring_funcs(struct amdgpu_device *adev);
@@ -170,24 +164,18 @@ static void gfx_v9_4_3_set_gds_init(struct amdgpu_device *adev);
 static void gfx_v9_4_3_set_rlc_funcs(struct amdgpu_device *adev);
 static int gfx_v9_4_3_get_cu_info(struct amdgpu_device *adev,
 				struct amdgpu_cu_info *cu_info);
-<<<<<<< HEAD
-=======
 static void gfx_v9_4_3_xcc_set_safe_mode(struct amdgpu_device *adev, int xcc_id);
 static void gfx_v9_4_3_xcc_unset_safe_mode(struct amdgpu_device *adev, int xcc_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void gfx_v9_4_3_kiq_set_resources(struct amdgpu_ring *kiq_ring,
 				uint64_t queue_mask)
 {
-<<<<<<< HEAD
-=======
 	struct amdgpu_device *adev = kiq_ring->adev;
 	u64 shader_mc_addr;
 
 	/* Cleaner shader MC address */
 	shader_mc_addr = adev->gfx.cleaner_shader_gpu_addr >> 8;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	amdgpu_ring_write(kiq_ring, PACKET3(PACKET3_SET_RESOURCES, 6));
 	amdgpu_ring_write(kiq_ring,
 		PACKET3_SET_RESOURCES_VMID_MASK(0) |
@@ -197,13 +185,8 @@ static void gfx_v9_4_3_kiq_set_resources(struct amdgpu_ring *kiq_ring,
 			lower_32_bits(queue_mask));	/* queue mask lo */
 	amdgpu_ring_write(kiq_ring,
 			upper_32_bits(queue_mask));	/* queue mask hi */
-<<<<<<< HEAD
-	amdgpu_ring_write(kiq_ring, 0);	/* gws mask lo */
-	amdgpu_ring_write(kiq_ring, 0);	/* gws mask hi */
-=======
 	amdgpu_ring_write(kiq_ring, lower_32_bits(shader_mc_addr)); /* cleaner shader addr lo */
 	amdgpu_ring_write(kiq_ring, upper_32_bits(shader_mc_addr)); /* cleaner shader addr hi */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	amdgpu_ring_write(kiq_ring, 0);	/* oac mask */
 	amdgpu_ring_write(kiq_ring, 0);	/* gds heap base:0, gds heap size:0 */
 }
@@ -300,8 +283,6 @@ static void gfx_v9_4_3_kiq_invalidate_tlbs(struct amdgpu_ring *kiq_ring,
 			PACKET3_INVALIDATE_TLBS_FLUSH_TYPE(flush_type));
 }
 
-<<<<<<< HEAD
-=======
 static void gfx_v9_4_3_kiq_reset_hw_queue(struct amdgpu_ring *kiq_ring, uint32_t queue_type,
 					  uint32_t me_id, uint32_t pipe_id, uint32_t queue_id,
 					  uint32_t xcc_id, uint32_t vmid)
@@ -335,17 +316,13 @@ static void gfx_v9_4_3_kiq_reset_hw_queue(struct amdgpu_ring *kiq_ring, uint32_t
 	amdgpu_gfx_rlc_exit_safe_mode(adev, xcc_id);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct kiq_pm4_funcs gfx_v9_4_3_kiq_pm4_funcs = {
 	.kiq_set_resources = gfx_v9_4_3_kiq_set_resources,
 	.kiq_map_queues = gfx_v9_4_3_kiq_map_queues,
 	.kiq_unmap_queues = gfx_v9_4_3_kiq_unmap_queues,
 	.kiq_query_status = gfx_v9_4_3_kiq_query_status,
 	.kiq_invalidate_tlbs = gfx_v9_4_3_kiq_invalidate_tlbs,
-<<<<<<< HEAD
-=======
 	.kiq_reset_hw_queue = gfx_v9_4_3_kiq_reset_hw_queue,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.set_resources_size = 8,
 	.map_queues_size = 7,
 	.unmap_queues_size = 6,
@@ -1043,8 +1020,6 @@ static int gfx_v9_4_3_compute_ring_init(struct amdgpu_device *adev, int ring_id,
 				hw_prio, NULL);
 }
 
-<<<<<<< HEAD
-=======
 static void gfx_v9_4_3_alloc_ip_dump(struct amdgpu_device *adev)
 {
 	uint32_t reg_count = ARRAY_SIZE(gc_reg_list_9_4_3);
@@ -1074,14 +1049,11 @@ static void gfx_v9_4_3_alloc_ip_dump(struct amdgpu_device *adev)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int gfx_v9_4_3_sw_init(void *handle)
 {
 	int i, j, k, r, ring_id, xcc_id, num_xcc;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
-=======
 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
 	case IP_VERSION(9, 4, 3):
 	case IP_VERSION(9, 4, 4):
@@ -1101,7 +1073,6 @@ static int gfx_v9_4_3_sw_init(void *handle)
 		break;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	adev->gfx.mec.num_mec = 2;
 	adev->gfx.mec.num_pipe_per_mec = 4;
 	adev->gfx.mec.num_queue_per_pipe = 8;
@@ -1113,8 +1084,6 @@ static int gfx_v9_4_3_sw_init(void *handle)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
 	/* Bad opcode Event */
 	r = amdgpu_irq_add_id(adev, SOC15_IH_CLIENTID_GRBM_CP,
 			      GFX_9_0__SRCID__CP_BAD_OPCODE_ERROR,
@@ -1122,7 +1091,6 @@ static int gfx_v9_4_3_sw_init(void *handle)
 	if (r)
 		return r;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Privileged reg */
 	r = amdgpu_irq_add_id(adev, SOC15_IH_CLIENTID_GRBM_CP, GFX_9_0__SRCID__CP_PRIV_REG_FAULT,
 			      &adev->gfx.priv_reg_irq);
@@ -1198,12 +1166,6 @@ static int gfx_v9_4_3_sw_init(void *handle)
 		return r;
 
 
-<<<<<<< HEAD
-	if (!amdgpu_sriov_vf(adev))
-		r = amdgpu_gfx_sysfs_init(adev);
-
-	return r;
-=======
 	if (!amdgpu_sriov_vf(adev)) {
 		r = amdgpu_gfx_sysfs_init(adev);
 		if (r)
@@ -1217,7 +1179,6 @@ static int gfx_v9_4_3_sw_init(void *handle)
 		return r;
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int gfx_v9_4_3_sw_fini(void *handle)
@@ -1235,23 +1196,17 @@ static int gfx_v9_4_3_sw_fini(void *handle)
 		amdgpu_gfx_kiq_fini(adev, i);
 	}
 
-<<<<<<< HEAD
-=======
 	amdgpu_gfx_cleaner_shader_sw_fini(adev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	gfx_v9_4_3_mec_fini(adev);
 	amdgpu_bo_unref(&adev->gfx.rlc.clear_state_obj);
 	gfx_v9_4_3_free_microcode(adev);
 	if (!amdgpu_sriov_vf(adev))
 		amdgpu_gfx_sysfs_fini(adev);
-<<<<<<< HEAD
-=======
 	amdgpu_gfx_sysfs_isolation_shader_fini(adev);
 
 	kfree(adev->gfx.ip_dump_core);
 	kfree(adev->gfx.ip_dump_compute_queues);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -1746,9 +1701,6 @@ static void gfx_v9_4_3_xcc_cp_compute_enable(struct amdgpu_device *adev,
 		WREG32_SOC15_RLC(GC, GET_INST(GC, xcc_id), regCP_MEC_CNTL, 0);
 	} else {
 		WREG32_SOC15_RLC(GC, GET_INST(GC, xcc_id), regCP_MEC_CNTL,
-<<<<<<< HEAD
-			(CP_MEC_CNTL__MEC_ME1_HALT_MASK | CP_MEC_CNTL__MEC_ME2_HALT_MASK));
-=======
 			(CP_MEC_CNTL__MEC_INVALIDATE_ICACHE_MASK |
 			 CP_MEC_CNTL__MEC_ME1_PIPE0_RESET_MASK |
 			 CP_MEC_CNTL__MEC_ME1_PIPE1_RESET_MASK |
@@ -1758,7 +1710,6 @@ static void gfx_v9_4_3_xcc_cp_compute_enable(struct amdgpu_device *adev,
 			 CP_MEC_CNTL__MEC_ME2_PIPE1_RESET_MASK |
 			 CP_MEC_CNTL__MEC_ME1_HALT_MASK |
 			 CP_MEC_CNTL__MEC_ME2_HALT_MASK));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		adev->gfx.kiq[xcc_id].ring.sched.ready = false;
 	}
 	udelay(50);
@@ -2172,11 +2123,7 @@ static int gfx_v9_4_3_xcc_kiq_init_queue(struct amdgpu_ring *ring, int xcc_id)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int gfx_v9_4_3_xcc_kcq_init_queue(struct amdgpu_ring *ring, int xcc_id)
-=======
 static int gfx_v9_4_3_xcc_kcq_init_queue(struct amdgpu_ring *ring, int xcc_id, bool restore)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct amdgpu_device *adev = ring->adev;
 	struct v9_mqd *mqd = ring->mqd_ptr;
@@ -2188,13 +2135,8 @@ static int gfx_v9_4_3_xcc_kcq_init_queue(struct amdgpu_ring *ring, int xcc_id, b
 	 */
 	tmp_mqd = (struct v9_mqd *)adev->gfx.mec.mqd_backup[mqd_idx];
 
-<<<<<<< HEAD
-	if (!tmp_mqd->cp_hqd_pq_control ||
-	    (!amdgpu_in_reset(adev) && !adev->in_suspend)) {
-=======
 	if (!restore && (!tmp_mqd->cp_hqd_pq_control ||
 	    (!amdgpu_in_reset(adev) && !adev->in_suspend))) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memset((void *)mqd, 0, sizeof(struct v9_mqd_allocation));
 		((struct v9_mqd_allocation *)mqd)->dynamic_cu_mask = 0xFFFFFFFF;
 		((struct v9_mqd_allocation *)mqd)->dynamic_rb_mask = 0xFFFFFFFF;
@@ -2279,11 +2221,7 @@ static int gfx_v9_4_3_xcc_kcq_resume(struct amdgpu_device *adev, int xcc_id)
 			goto done;
 		r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
 		if (!r) {
-<<<<<<< HEAD
-			r = gfx_v9_4_3_xcc_kcq_init_queue(ring, xcc_id);
-=======
 			r = gfx_v9_4_3_xcc_kcq_init_queue(ring, xcc_id, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			amdgpu_bo_kunmap(ring->mqd_obj);
 			ring->mqd_ptr = NULL;
 		}
@@ -2310,11 +2248,8 @@ static int gfx_v9_4_3_xcc_cp_resume(struct amdgpu_device *adev, int xcc_id)
 		r = gfx_v9_4_3_xcc_cp_compute_load_microcode(adev, xcc_id);
 		if (r)
 			return r;
-<<<<<<< HEAD
-=======
 	} else {
 		gfx_v9_4_3_xcc_cp_compute_enable(adev, false, xcc_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	r = gfx_v9_4_3_xcc_kiq_resume(adev, xcc_id);
@@ -2374,15 +2309,6 @@ static int gfx_v9_4_3_cp_resume(struct amdgpu_device *adev)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void gfx_v9_4_3_xcc_cp_enable(struct amdgpu_device *adev, bool enable,
-				     int xcc_id)
-{
-	gfx_v9_4_3_xcc_cp_compute_enable(adev, enable, xcc_id);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void gfx_v9_4_3_xcc_fini(struct amdgpu_device *adev, int xcc_id)
 {
 	if (amdgpu_gfx_disable_kcq(adev, xcc_id))
@@ -2414,11 +2340,7 @@ static void gfx_v9_4_3_xcc_fini(struct amdgpu_device *adev, int xcc_id)
 	}
 
 	gfx_v9_4_3_xcc_kcq_fini_register(adev, xcc_id);
-<<<<<<< HEAD
-	gfx_v9_4_3_xcc_cp_enable(adev, false, xcc_id);
-=======
 	gfx_v9_4_3_xcc_cp_compute_enable(adev, false, xcc_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int gfx_v9_4_3_hw_init(void *handle)
@@ -2426,12 +2348,9 @@ static int gfx_v9_4_3_hw_init(void *handle)
 	int r;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
-<<<<<<< HEAD
-=======
 	amdgpu_gfx_cleaner_shader_init(adev, adev->gfx.cleaner_shader_size,
 				       adev->gfx.cleaner_shader_ptr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!amdgpu_sriov_vf(adev))
 		gfx_v9_4_3_init_golden_registers(adev);
 
@@ -2455,10 +2374,7 @@ static int gfx_v9_4_3_hw_fini(void *handle)
 
 	amdgpu_irq_put(adev, &adev->gfx.priv_reg_irq, 0);
 	amdgpu_irq_put(adev, &adev->gfx.priv_inst_irq, 0);
-<<<<<<< HEAD
-=======
 	amdgpu_irq_put(adev, &adev->gfx.bad_op_irq, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	num_xcc = NUM_XCC(adev->gfx.xcc_mask);
 	for (i = 0; i < num_xcc; i++) {
@@ -2624,13 +2540,10 @@ static int gfx_v9_4_3_late_init(void *handle)
 	if (r)
 		return r;
 
-<<<<<<< HEAD
-=======
 	r = amdgpu_irq_get(adev, &adev->gfx.bad_op_irq, 0);
 	if (r)
 		return r;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (adev->gfx.ras &&
 	    adev->gfx.ras->enable_watchdog_timer)
 		adev->gfx.ras->enable_watchdog_timer(adev);
@@ -3137,8 +3050,6 @@ static void gfx_v9_4_3_ring_emit_reg_write_reg_wait(struct amdgpu_ring *ring,
 						   ref, mask);
 }
 
-<<<<<<< HEAD
-=======
 static void gfx_v9_4_3_ring_soft_recovery(struct amdgpu_ring *ring,
 					  unsigned vmid)
 {
@@ -3157,7 +3068,6 @@ static void gfx_v9_4_3_ring_soft_recovery(struct amdgpu_ring *ring,
 	amdgpu_gfx_rlc_exit_safe_mode(adev, ring->xcc_id);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void gfx_v9_4_3_xcc_set_compute_eop_interrupt_state(
 	struct amdgpu_device *adev, int me, int pipe,
 	enum amdgpu_interrupt_state state, int xcc_id)
@@ -3211,8 +3121,6 @@ static void gfx_v9_4_3_xcc_set_compute_eop_interrupt_state(
 	}
 }
 
-<<<<<<< HEAD
-=======
 static u32 gfx_v9_4_3_get_cpc_int_cntl(struct amdgpu_device *adev,
 				     int xcc_id, int me, int pipe)
 {
@@ -3238,29 +3146,18 @@ static u32 gfx_v9_4_3_get_cpc_int_cntl(struct amdgpu_device *adev,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int gfx_v9_4_3_set_priv_reg_fault_state(struct amdgpu_device *adev,
 					     struct amdgpu_irq_src *source,
 					     unsigned type,
 					     enum amdgpu_interrupt_state state)
 {
-<<<<<<< HEAD
-	int i, num_xcc;
-=======
 	u32 mec_int_cntl_reg, mec_int_cntl;
 	int i, j, k, num_xcc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	num_xcc = NUM_XCC(adev->gfx.xcc_mask);
 	switch (state) {
 	case AMDGPU_IRQ_STATE_DISABLE:
 	case AMDGPU_IRQ_STATE_ENABLE:
-<<<<<<< HEAD
-		for (i = 0; i < num_xcc; i++)
-			WREG32_FIELD15_PREREG(GC, GET_INST(GC, i), CP_INT_CNTL_RING0,
-				PRIV_REG_INT_ENABLE,
-				state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
-=======
 		for (i = 0; i < num_xcc; i++) {
 			WREG32_FIELD15_PREREG(GC, GET_INST(GC, i), CP_INT_CNTL_RING0,
 					      PRIV_REG_INT_ENABLE,
@@ -3321,7 +3218,6 @@ static int gfx_v9_4_3_set_bad_op_fault_state(struct amdgpu_device *adev,
 				}
 			}
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		break;
@@ -3482,8 +3378,6 @@ static int gfx_v9_4_3_priv_reg_irq(struct amdgpu_device *adev,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int gfx_v9_4_3_bad_op_irq(struct amdgpu_device *adev,
 				 struct amdgpu_irq_src *source,
 				 struct amdgpu_iv_entry *entry)
@@ -3493,7 +3387,6 @@ static int gfx_v9_4_3_bad_op_irq(struct amdgpu_device *adev,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int gfx_v9_4_3_priv_inst_irq(struct amdgpu_device *adev,
 				  struct amdgpu_irq_src *source,
 				  struct amdgpu_iv_entry *entry)
@@ -3580,8 +3473,6 @@ static void gfx_v9_4_3_emit_wave_limit(struct amdgpu_ring *ring, bool enable)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static int gfx_v9_4_3_unmap_done(struct amdgpu_device *adev, uint32_t me,
 				uint32_t pipe, uint32_t queue,
 				uint32_t xcc_id)
@@ -3759,7 +3650,6 @@ pipe_reset:
 	return amdgpu_ring_test_ring(ring);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum amdgpu_gfx_cp_ras_mem_id {
 	AMDGPU_GFX_CP_MEM1 = 1,
 	AMDGPU_GFX_CP_MEM2,
@@ -4572,13 +4462,8 @@ static void gfx_v9_4_3_inst_query_ras_err_count(struct amdgpu_device *adev,
 	/* the caller should make sure initialize value of
 	 * err_data->ue_count and err_data->ce_count
 	 */
-<<<<<<< HEAD
-	amdgpu_ras_error_statistic_ue_count(err_data, &mcm_info, NULL, ue_count);
-	amdgpu_ras_error_statistic_ce_count(err_data, &mcm_info, NULL, ce_count);
-=======
 	amdgpu_ras_error_statistic_ue_count(err_data, &mcm_info, ue_count);
 	amdgpu_ras_error_statistic_ce_count(err_data, &mcm_info, ce_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void gfx_v9_4_3_inst_reset_ras_err_count(struct amdgpu_device *adev,
@@ -4680,8 +4565,6 @@ static void gfx_v9_4_3_enable_watchdog_timer(struct amdgpu_device *adev)
 	amdgpu_gfx_ras_error_func(adev, NULL, gfx_v9_4_3_inst_enable_watchdog_timer);
 }
 
-<<<<<<< HEAD
-=======
 static void gfx_v9_4_3_ring_insert_nop(struct amdgpu_ring *ring, uint32_t num_nop)
 {
 	int i;
@@ -4827,7 +4710,6 @@ static void gfx_v9_4_3_ring_emit_cleaner_shader(struct amdgpu_ring *ring)
 	amdgpu_ring_write(ring, 0);  /* RESERVED field, programmed to zero */
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct amd_ip_funcs gfx_v9_4_3_ip_funcs = {
 	.name = "gfx_v9_4_3",
 	.early_init = gfx_v9_4_3_early_init,
@@ -4844,13 +4726,8 @@ static const struct amd_ip_funcs gfx_v9_4_3_ip_funcs = {
 	.set_clockgating_state = gfx_v9_4_3_set_clockgating_state,
 	.set_powergating_state = gfx_v9_4_3_set_powergating_state,
 	.get_clockgating_state = gfx_v9_4_3_get_clockgating_state,
-<<<<<<< HEAD
-	.dump_ip_state = NULL,
-	.print_ip_state = NULL,
-=======
 	.dump_ip_state = gfx_v9_4_3_ip_dump,
 	.print_ip_state = gfx_v9_4_3_ip_print,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ring_funcs gfx_v9_4_3_ring_funcs_compute = {
@@ -4872,12 +4749,8 @@ static const struct amdgpu_ring_funcs gfx_v9_4_3_ring_funcs_compute = {
 		8 + 8 + 8 + /* gfx_v9_4_3_ring_emit_fence x3 for user fence, vm fence */
 		7 + /* gfx_v9_4_3_emit_mem_sync */
 		5 + /* gfx_v9_4_3_emit_wave_limit for updating regSPI_WCL_PIPE_PERCENT_GFX register */
-<<<<<<< HEAD
-		15, /* for updating 3 regSPI_WCL_PIPE_PERCENT_CS registers */
-=======
 		15 + /* for updating 3 regSPI_WCL_PIPE_PERCENT_CS registers */
 		2, /* gfx_v9_4_3_ring_emit_cleaner_shader */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.emit_ib_size =	7, /* gfx_v9_4_3_ring_emit_ib_compute */
 	.emit_ib = gfx_v9_4_3_ring_emit_ib_compute,
 	.emit_fence = gfx_v9_4_3_ring_emit_fence,
@@ -4887,19 +4760,11 @@ static const struct amdgpu_ring_funcs gfx_v9_4_3_ring_funcs_compute = {
 	.emit_hdp_flush = gfx_v9_4_3_ring_emit_hdp_flush,
 	.test_ring = gfx_v9_4_3_ring_test_ring,
 	.test_ib = gfx_v9_4_3_ring_test_ib,
-<<<<<<< HEAD
-	.insert_nop = amdgpu_ring_insert_nop,
-=======
 	.insert_nop = gfx_v9_4_3_ring_insert_nop,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.pad_ib = amdgpu_ring_generic_pad_ib,
 	.emit_wreg = gfx_v9_4_3_ring_emit_wreg,
 	.emit_reg_wait = gfx_v9_4_3_ring_emit_reg_wait,
 	.emit_reg_write_reg_wait = gfx_v9_4_3_ring_emit_reg_write_reg_wait,
-<<<<<<< HEAD
-	.emit_mem_sync = gfx_v9_4_3_emit_mem_sync,
-	.emit_wave_limit = gfx_v9_4_3_emit_wave_limit,
-=======
 	.soft_recovery = gfx_v9_4_3_ring_soft_recovery,
 	.emit_mem_sync = gfx_v9_4_3_emit_mem_sync,
 	.emit_wave_limit = gfx_v9_4_3_emit_wave_limit,
@@ -4907,7 +4772,6 @@ static const struct amdgpu_ring_funcs gfx_v9_4_3_ring_funcs_compute = {
 	.emit_cleaner_shader = gfx_v9_4_3_ring_emit_cleaner_shader,
 	.begin_use = amdgpu_gfx_enforce_isolation_ring_begin_use,
 	.end_use = amdgpu_gfx_enforce_isolation_ring_end_use,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct amdgpu_ring_funcs gfx_v9_4_3_ring_funcs_kiq = {
@@ -4962,14 +4826,11 @@ static const struct amdgpu_irq_src_funcs gfx_v9_4_3_priv_reg_irq_funcs = {
 	.process = gfx_v9_4_3_priv_reg_irq,
 };
 
-<<<<<<< HEAD
-=======
 static const struct amdgpu_irq_src_funcs gfx_v9_4_3_bad_op_irq_funcs = {
 	.set = gfx_v9_4_3_set_bad_op_fault_state,
 	.process = gfx_v9_4_3_bad_op_irq,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct amdgpu_irq_src_funcs gfx_v9_4_3_priv_inst_irq_funcs = {
 	.set = gfx_v9_4_3_set_priv_inst_fault_state,
 	.process = gfx_v9_4_3_priv_inst_irq,
@@ -4983,12 +4844,9 @@ static void gfx_v9_4_3_set_irq_funcs(struct amdgpu_device *adev)
 	adev->gfx.priv_reg_irq.num_types = 1;
 	adev->gfx.priv_reg_irq.funcs = &gfx_v9_4_3_priv_reg_irq_funcs;
 
-<<<<<<< HEAD
-=======
 	adev->gfx.bad_op_irq.num_types = 1;
 	adev->gfx.bad_op_irq.funcs = &gfx_v9_4_3_bad_op_irq_funcs;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	adev->gfx.priv_inst_irq.num_types = 1;
 	adev->gfx.priv_inst_irq.funcs = &gfx_v9_4_3_priv_inst_irq_funcs;
 }

@@ -1262,43 +1262,13 @@ static s64 dax_unshare_iter(struct iomap_iter *iter)
 {
 	struct iomap *iomap = &iter->iomap;
 	const struct iomap *srcmap = iomap_iter_srcmap(iter);
-<<<<<<< HEAD
-	loff_t pos = iter->pos;
-	loff_t length = iomap_length(iter);
-=======
 	loff_t copy_pos = iter->pos;
 	u64 copy_len = iomap_length(iter);
 	u32 mod;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int id = 0;
 	s64 ret = 0;
 	void *daddr = NULL, *saddr = NULL;
 
-<<<<<<< HEAD
-	/* don't bother with blocks that are not shared to start with */
-	if (!(iomap->flags & IOMAP_F_SHARED))
-		return length;
-
-	id = dax_read_lock();
-	ret = dax_iomap_direct_access(iomap, pos, length, &daddr, NULL);
-	if (ret < 0)
-		goto out_unlock;
-
-	/* zero the distance if srcmap is HOLE or UNWRITTEN */
-	if (srcmap->flags & IOMAP_F_SHARED || srcmap->type == IOMAP_UNWRITTEN) {
-		memset(daddr, 0, length);
-		dax_flush(iomap->dax_dev, daddr, length);
-		ret = length;
-		goto out_unlock;
-	}
-
-	ret = dax_iomap_direct_access(srcmap, pos, length, &saddr, NULL);
-	if (ret < 0)
-		goto out_unlock;
-
-	if (copy_mc_to_kernel(daddr, saddr, length) == 0)
-		ret = length;
-=======
 	if (!iomap_want_unshare_iter(iter))
 		return iomap_length(iter);
 
@@ -1332,7 +1302,6 @@ static s64 dax_unshare_iter(struct iomap_iter *iter)
 
 	if (copy_mc_to_kernel(daddr, saddr, copy_len) == 0)
 		ret = iomap_length(iter);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		ret = -EIO;
 
@@ -1347,13 +1316,6 @@ int dax_file_unshare(struct inode *inode, loff_t pos, loff_t len,
 	struct iomap_iter iter = {
 		.inode		= inode,
 		.pos		= pos,
-<<<<<<< HEAD
-		.len		= len,
-		.flags		= IOMAP_WRITE | IOMAP_UNSHARE | IOMAP_DAX,
-	};
-	int ret;
-
-=======
 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE | IOMAP_DAX,
 	};
 	loff_t size = i_size_read(inode);
@@ -1363,7 +1325,6 @@ int dax_file_unshare(struct inode *inode, loff_t pos, loff_t len,
 		return 0;
 
 	iter.len = min(len, size - pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while ((ret = iomap_iter(&iter, ops)) > 0)
 		iter.processed = dax_unshare_iter(&iter);
 	return ret;

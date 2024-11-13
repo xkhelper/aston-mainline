@@ -87,8 +87,6 @@ static void __init init_vec_parent_group(void)
 	acpi_table_parse(ACPI_SIG_MCFG, early_pci_mcfg_parse);
 }
 
-<<<<<<< HEAD
-=======
 int __init arch_probe_nr_irqs(void)
 {
 	int nr_io_pics = bitmap_weight(loongson_sysconf.cores_io_master, NR_CPUS);
@@ -101,7 +99,6 @@ int __init arch_probe_nr_irqs(void)
 	return NR_IRQS_LEGACY;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void __init init_IRQ(void)
 {
 	int i;

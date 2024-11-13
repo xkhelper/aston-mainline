@@ -10,18 +10,10 @@
  */
 
 #include <linux/bits.h>
-<<<<<<< HEAD
-#include <linux/compiler_types.h>
-#include <linux/completion.h>
-#include <linux/dev_printk.h>
-#include <linux/errno.h>
-#include <linux/i2c.h>
-=======
 #include <linux/completion.h>
 #include <linux/errno.h>
 #include <linux/i2c.h>
 #include <linux/pm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/regmap.h>
 #include <linux/types.h>
 
@@ -116,10 +108,7 @@
 						 DW_IC_INTR_RX_UNDER | \
 						 DW_IC_INTR_RD_REQ)
 
-<<<<<<< HEAD
-=======
 #define DW_IC_ENABLE_ENABLE			BIT(0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define DW_IC_ENABLE_ABORT			BIT(1)
 
 #define DW_IC_STATUS_ACTIVITY			BIT(0)
@@ -127,10 +116,7 @@
 #define DW_IC_STATUS_RFNE			BIT(3)
 #define DW_IC_STATUS_MASTER_ACTIVITY		BIT(5)
 #define DW_IC_STATUS_SLAVE_ACTIVITY		BIT(6)
-<<<<<<< HEAD
-=======
 #define DW_IC_STATUS_MASTER_HOLD_TX_FIFO_EMPTY	BIT(7)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DW_IC_SDA_HOLD_RX_SHIFT			16
 #define DW_IC_SDA_HOLD_RX_MASK			GENMASK(23, 16)
@@ -252,10 +238,6 @@ struct reset_control;
  * @semaphore_idx: Index of table with semaphore type attached to the bus. It's
  *	-1 if there is no semaphore.
  * @shared_with_punit: true if this bus is shared with the SoCs PUNIT
-<<<<<<< HEAD
- * @disable: function to disable the controller
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @init: function to initialize the I2C hardware
  * @set_sda_hold_time: callback to retrieve IP specific SDA hold timing
  * @mode: operation mode - DW_IC_MASTER or DW_IC_SLAVE
@@ -313,10 +295,6 @@ struct dw_i2c_dev {
 	void			(*release_lock)(void);
 	int			semaphore_idx;
 	bool			shared_with_punit;
-<<<<<<< HEAD
-	void			(*disable)(struct dw_i2c_dev *dev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int			(*init)(struct dw_i2c_dev *dev);
 	int			(*set_sda_hold_time)(struct dw_i2c_dev *dev);
 	int			mode;
@@ -350,15 +328,10 @@ struct i2c_dw_semaphore_callbacks {
 };
 
 int i2c_dw_init_regmap(struct dw_i2c_dev *dev);
-<<<<<<< HEAD
-u32 i2c_dw_scl_hcnt(u32 ic_clk, u32 tSYMBOL, u32 tf, int cond, int offset);
-u32 i2c_dw_scl_lcnt(u32 ic_clk, u32 tLOW, u32 tf, int offset);
-=======
 u32 i2c_dw_scl_hcnt(struct dw_i2c_dev *dev, unsigned int reg, u32 ic_clk,
 		    u32 tSYMBOL, u32 tf, int cond, int offset);
 u32 i2c_dw_scl_lcnt(struct dw_i2c_dev *dev, unsigned int reg, u32 ic_clk,
 		    u32 tLOW, u32 tf, int offset);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int i2c_dw_set_sda_hold(struct dw_i2c_dev *dev);
 u32 i2c_dw_clk_rate(struct dw_i2c_dev *dev);
 int i2c_dw_prepare_clk(struct dw_i2c_dev *dev, bool prepare);
@@ -368,12 +341,8 @@ int i2c_dw_wait_bus_not_busy(struct dw_i2c_dev *dev);
 int i2c_dw_handle_tx_abort(struct dw_i2c_dev *dev);
 int i2c_dw_set_fifo_size(struct dw_i2c_dev *dev);
 u32 i2c_dw_func(struct i2c_adapter *adap);
-<<<<<<< HEAD
-void i2c_dw_disable(struct dw_i2c_dev *dev);
-=======
 
 extern const struct dev_pm_ops i2c_dw_dev_pm_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline void __i2c_dw_enable(struct dw_i2c_dev *dev)
 {
@@ -406,10 +375,7 @@ static inline void __i2c_dw_read_intr_mask(struct dw_i2c_dev *dev,
 }
 
 void __i2c_dw_disable(struct dw_i2c_dev *dev);
-<<<<<<< HEAD
-=======
 void i2c_dw_disable(struct dw_i2c_dev *dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 extern void i2c_dw_configure_master(struct dw_i2c_dev *dev);
 extern int i2c_dw_probe_master(struct dw_i2c_dev *dev);
@@ -422,22 +388,6 @@ static inline void i2c_dw_configure_slave(struct dw_i2c_dev *dev) { }
 static inline int i2c_dw_probe_slave(struct dw_i2c_dev *dev) { return -EINVAL; }
 #endif
 
-<<<<<<< HEAD
-static inline int i2c_dw_probe(struct dw_i2c_dev *dev)
-{
-	switch (dev->mode) {
-	case DW_IC_SLAVE:
-		return i2c_dw_probe_slave(dev);
-	case DW_IC_MASTER:
-		return i2c_dw_probe_master(dev);
-	default:
-		dev_err(dev->dev, "Wrong operation mode: %d\n", dev->mode);
-		return -EINVAL;
-	}
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void i2c_dw_configure(struct dw_i2c_dev *dev)
 {
 	if (i2c_detect_slave_mode(dev->dev))
@@ -446,11 +396,8 @@ static inline void i2c_dw_configure(struct dw_i2c_dev *dev)
 		i2c_dw_configure_master(dev);
 }
 
-<<<<<<< HEAD
-=======
 int i2c_dw_probe(struct dw_i2c_dev *dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_I2C_DESIGNWARE_BAYTRAIL)
 int i2c_dw_baytrail_probe_lock_support(struct dw_i2c_dev *dev);
 #endif
@@ -459,15 +406,4 @@ int i2c_dw_baytrail_probe_lock_support(struct dw_i2c_dev *dev);
 int i2c_dw_amdpsp_probe_lock_support(struct dw_i2c_dev *dev);
 #endif
 
-<<<<<<< HEAD
-int i2c_dw_validate_speed(struct dw_i2c_dev *dev);
-void i2c_dw_adjust_bus_speed(struct dw_i2c_dev *dev);
-
-#if IS_ENABLED(CONFIG_ACPI)
-int i2c_dw_acpi_configure(struct device *device);
-#else
-static inline int i2c_dw_acpi_configure(struct device *device) { return -ENODEV; }
-#endif
-=======
 int i2c_dw_fw_parse_and_configure(struct dw_i2c_dev *dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

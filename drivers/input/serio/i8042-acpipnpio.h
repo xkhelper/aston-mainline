@@ -1121,8 +1121,6 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
 		.driver_data = (void *)(SERIO_QUIRK_NOLOOP)
 	},
 	/*
-<<<<<<< HEAD
-=======
 	 * Some TongFang barebones have touchpad and/or keyboard issues after
 	 * suspend fixable with nomux + reset + noloop + nopnp. Luckily, none of
 	 * them have an external PS/2 port so this can safely be set for all of
@@ -1160,7 +1158,6 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
 	},
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
 	 * after suspend fixable with nomux + reset + noloop + nopnp. Luckily,
 	 * none of them have an external PS/2 port so this can safely be set for

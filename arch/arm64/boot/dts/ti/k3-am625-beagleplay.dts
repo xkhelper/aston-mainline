@@ -888,12 +888,8 @@
 
 	mcu {
 		compatible = "ti,cc1352p7";
-<<<<<<< HEAD
-		reset-gpios = <&main_gpio0 72 GPIO_ACTIVE_LOW>;
-=======
 		bootloader-backdoor-gpios = <&main_gpio0 13 GPIO_ACTIVE_HIGH>;
 		reset-gpios = <&main_gpio0 14 GPIO_ACTIVE_HIGH>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vdds-supply = <&vdd_3v3>;
 	};
 };

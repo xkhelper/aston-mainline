@@ -93,11 +93,7 @@ commands (does not impact QAIC).
 uAPI
 ====
 
-<<<<<<< HEAD
-QAIC creates an accel device per phsyical PCIe device. This accel device exists
-=======
 QAIC creates an accel device per physical PCIe device. This accel device exists
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 for as long as the PCIe device is known to Linux.
 
 The PCIe device may not be in the state to accept requests from userspace at
@@ -151,15 +147,6 @@ DRM_IOCTL_QAIC_PERF_STATS_BO
   recent execution of a BO. This allows userspace to construct an end to end
   timeline of the BO processing for a performance analysis.
 
-<<<<<<< HEAD
-DRM_IOCTL_QAIC_PART_DEV
-  This IOCTL allows userspace to request a duplicate "shadow device". This extra
-  accelN device is associated with a specific partition of resources on the
-  AIC100 device and can be used for limiting a process to some subset of
-  resources.
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DRM_IOCTL_QAIC_DETACH_SLICE_BO
   This IOCTL allows userspace to remove the slicing information from a BO that
   was originally provided by a call to DRM_IOCTL_QAIC_ATTACH_SLICE_BO. This

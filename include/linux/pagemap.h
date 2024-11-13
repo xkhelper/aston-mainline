@@ -32,11 +32,8 @@ int invalidate_inode_pages2_range(struct address_space *mapping,
 		pgoff_t start, pgoff_t end);
 int kiocb_invalidate_pages(struct kiocb *iocb, size_t count);
 void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count);
-<<<<<<< HEAD
-=======
 int filemap_invalidate_pages(struct address_space *mapping,
 			     loff_t pos, loff_t end, bool nowait);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int write_inode_now(struct inode *, int sync);
 int filemap_fdatawrite(struct address_space *);
@@ -209,16 +206,6 @@ enum mapping_flags {
 	AS_EXITING	= 4, 	/* final truncate in progress */
 	/* writeback related tags are not used */
 	AS_NO_WRITEBACK_TAGS = 5,
-<<<<<<< HEAD
-	AS_LARGE_FOLIO_SUPPORT = 6,
-	AS_RELEASE_ALWAYS,	/* Call ->release_folio(), even if no private data */
-	AS_STABLE_WRITES,	/* must wait for writeback before modifying
-				   folio contents */
-	AS_INACCESSIBLE,	/* Do not attempt direct R/W access to the mapping,
-				   including to move the mapping */
-};
-
-=======
 	AS_RELEASE_ALWAYS = 6,	/* Call ->release_folio(), even if no private data */
 	AS_STABLE_WRITES = 7,	/* must wait for writeback before modifying
 				   folio contents */
@@ -234,7 +221,6 @@ enum mapping_flags {
 #define AS_FOLIO_ORDER_MAX_MASK (AS_FOLIO_ORDER_BITS_MASK << AS_FOLIO_ORDER_MAX)
 #define AS_FOLIO_ORDER_MASK (AS_FOLIO_ORDER_MIN_MASK | AS_FOLIO_ORDER_MAX_MASK)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * mapping_set_error - record a writeback error in the address_space
  * @mapping: the mapping in which an error should be set
@@ -390,11 +376,6 @@ static inline void mapping_set_gfp_mask(struct address_space *m, gfp_t mask)
 #define MAX_XAS_ORDER		(XA_CHUNK_SHIFT * 2 - 1)
 #define MAX_PAGECACHE_ORDER	min(MAX_XAS_ORDER, PREFERRED_MAX_PAGECACHE_ORDER)
 
-<<<<<<< HEAD
-/**
- * mapping_set_large_folios() - Indicate the file supports large folios.
- * @mapping: The file.
-=======
 /*
  * mapping_max_folio_size_supported() - Check the max folio size supported
  *
@@ -453,7 +434,6 @@ static inline void mapping_set_folio_min_order(struct address_space *mapping,
 /**
  * mapping_set_large_folios() - Indicate the file supports large folios.
  * @mapping: The address space of the file.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * The filesystem should call this function in its inode constructor to
  * indicate that the VFS can use large folios to cache the contents of
@@ -464,9 +444,6 @@ static inline void mapping_set_folio_min_order(struct address_space *mapping,
  */
 static inline void mapping_set_large_folios(struct address_space *mapping)
 {
-<<<<<<< HEAD
-	__set_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
-=======
 	mapping_set_folio_order_range(mapping, 0, MAX_PAGECACHE_ORDER);
 }
 
@@ -505,7 +482,6 @@ static inline pgoff_t mapping_align_index(struct address_space *mapping,
 					  pgoff_t index)
 {
 	return round_down(index, mapping_min_folio_nrpages(mapping));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*
@@ -514,22 +490,6 @@ static inline pgoff_t mapping_align_index(struct address_space *mapping,
  */
 static inline bool mapping_large_folio_support(struct address_space *mapping)
 {
-<<<<<<< HEAD
-	/* AS_LARGE_FOLIO_SUPPORT is only reasonable for pagecache folios */
-	VM_WARN_ONCE((unsigned long)mapping & PAGE_MAPPING_ANON,
-			"Anonymous mapping always supports large folio");
-
-	return IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-		test_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
-}
-
-/* Return the maximum folio size for this pagecache mapping, in bytes. */
-static inline size_t mapping_max_folio_size(struct address_space *mapping)
-{
-	if (mapping_large_folio_support(mapping))
-		return PAGE_SIZE << MAX_PAGECACHE_ORDER;
-	return PAGE_SIZE;
-=======
 	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
 	VM_WARN_ONCE((unsigned long)mapping & PAGE_MAPPING_ANON,
 			"Anonymous mapping always supports large folio");
@@ -541,7 +501,6 @@ static inline size_t mapping_max_folio_size(struct address_space *mapping)
 static inline size_t mapping_max_folio_size(const struct address_space *mapping)
 {
 	return PAGE_SIZE << mapping_max_folio_order(mapping);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int filemap_nr_thps(struct address_space *mapping)

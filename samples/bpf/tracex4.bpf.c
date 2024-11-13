@@ -33,21 +33,13 @@ int bpf_prog1(struct pt_regs *ctx)
 	return 0;
 }
 
-<<<<<<< HEAD
-SEC("kretprobe/kmem_cache_alloc_node")
-=======
 SEC("kretprobe/kmem_cache_alloc_node_noprof")
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bpf_prog2(struct pt_regs *ctx)
 {
 	long ptr = PT_REGS_RC(ctx);
 	long ip = 0;
 
-<<<<<<< HEAD
-	/* get ip address of kmem_cache_alloc_node() caller */
-=======
 	/* get ip address of kmem_cache_alloc_node_noprof() caller */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BPF_KRETPROBE_READ_RET_IP(ip, ctx);
 
 	struct pair v = {

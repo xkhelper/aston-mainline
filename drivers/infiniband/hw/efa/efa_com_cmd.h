@@ -112,10 +112,7 @@ struct efa_com_get_device_attr_result {
 	u8 addr[EFA_GID_SIZE];
 	u64 page_size_cap;
 	u64 max_mr_pages;
-<<<<<<< HEAD
-=======
 	u64 guid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 mtu;
 	u32 fw_version;
 	u32 admin_api_version;

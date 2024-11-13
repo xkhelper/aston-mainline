@@ -577,13 +577,8 @@ static void rp2_reset_asic(struct rp2_card *card, unsigned int asic_id)
 	u32 clk_cfg;
 
 	writew(1, base + RP2_GLOBAL_CMD);
-<<<<<<< HEAD
-	readw(base + RP2_GLOBAL_CMD);
-	msleep(100);
-=======
 	msleep(100);
 	readw(base + RP2_GLOBAL_CMD);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	writel(0, base + RP2_CLK_PRESCALER);
 
 	/* TDM clock configuration */

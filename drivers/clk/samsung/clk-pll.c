@@ -430,12 +430,9 @@ static const struct clk_ops samsung_pll36xx_clk_min_ops = {
 #define PLL0822X_LOCK_STAT_SHIFT	(29)
 #define PLL0822X_ENABLE_SHIFT		(31)
 
-<<<<<<< HEAD
-=======
 /* PLL1418x is similar to PLL0822x, except that MDIV is one bit smaller */
 #define PLL1418X_MDIV_MASK		(0x1FF)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static unsigned long samsung_pll0822x_recalc_rate(struct clk_hw *hw,
 						  unsigned long parent_rate)
 {
@@ -444,14 +441,10 @@ static unsigned long samsung_pll0822x_recalc_rate(struct clk_hw *hw,
 	u64 fvco = parent_rate;
 
 	pll_con3 = readl_relaxed(pll->con_reg);
-<<<<<<< HEAD
-	mdiv = (pll_con3 >> PLL0822X_MDIV_SHIFT) & PLL0822X_MDIV_MASK;
-=======
 	if (pll->type != pll_1418x)
 		mdiv = (pll_con3 >> PLL0822X_MDIV_SHIFT) & PLL0822X_MDIV_MASK;
 	else
 		mdiv = (pll_con3 >> PLL0822X_MDIV_SHIFT) & PLL1418X_MDIV_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pdiv = (pll_con3 >> PLL0822X_PDIV_SHIFT) & PLL0822X_PDIV_MASK;
 	sdiv = (pll_con3 >> PLL0822X_SDIV_SHIFT) & PLL0822X_SDIV_MASK;
 
@@ -469,16 +462,12 @@ static int samsung_pll0822x_set_rate(struct clk_hw *hw, unsigned long drate,
 {
 	const struct samsung_pll_rate_table *rate;
 	struct samsung_clk_pll *pll = to_clk_pll(hw);
-<<<<<<< HEAD
-	u32 pll_con3;
-=======
 	u32 mdiv_mask, pll_con3;
 
 	if (pll->type != pll_1418x)
 		mdiv_mask = PLL0822X_MDIV_MASK;
 	else
 		mdiv_mask = PLL1418X_MDIV_MASK;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Get required rate settings from table */
 	rate = samsung_get_pll_settings(pll, drate);
@@ -490,11 +479,7 @@ static int samsung_pll0822x_set_rate(struct clk_hw *hw, unsigned long drate,
 
 	/* Change PLL PMS values */
 	pll_con3 = readl_relaxed(pll->con_reg);
-<<<<<<< HEAD
-	pll_con3 &= ~((PLL0822X_MDIV_MASK << PLL0822X_MDIV_SHIFT) |
-=======
 	pll_con3 &= ~((mdiv_mask << PLL0822X_MDIV_SHIFT) |
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			(PLL0822X_PDIV_MASK << PLL0822X_PDIV_SHIFT) |
 			(PLL0822X_SDIV_MASK << PLL0822X_SDIV_SHIFT));
 	pll_con3 |= (rate->mdiv << PLL0822X_MDIV_SHIFT) |
@@ -1287,8 +1272,6 @@ static const struct clk_ops samsung_pll2650xx_clk_min_ops = {
 	.recalc_rate = samsung_pll2650xx_recalc_rate,
 };
 
-<<<<<<< HEAD
-=======
 /*
  * PLL531X Clock Type
  */
@@ -1330,7 +1313,6 @@ static const struct clk_ops samsung_pll531x_clk_ops = {
 	.recalc_rate = samsung_pll531x_recalc_rate,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 				const struct samsung_pll_clock *pll_clk)
 {
@@ -1387,10 +1369,7 @@ static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 			init.ops = &samsung_pll35xx_clk_ops;
 		break;
 	case pll_1417x:
-<<<<<<< HEAD
-=======
 	case pll_1418x:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case pll_0818x:
 	case pll_0822x:
 	case pll_0516x:
@@ -1468,12 +1447,9 @@ static void __init _samsung_clk_register_pll(struct samsung_clk_provider *ctx,
 		else
 			init.ops = &samsung_pll2650xx_clk_ops;
 		break;
-<<<<<<< HEAD
-=======
 	case pll_531x:
 		init.ops = &samsung_pll531x_clk_ops;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		pr_warn("%s: Unknown pll type for pll clk %s\n",
 			__func__, pll_clk->name);

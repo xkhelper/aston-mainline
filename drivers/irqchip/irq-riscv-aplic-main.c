@@ -4,15 +4,10 @@
  * Copyright (C) 2022 Ventana Micro Systems Inc.
  */
 
-<<<<<<< HEAD
-#include <linux/bitfield.h>
-#include <linux/irqchip/riscv-aplic.h>
-=======
 #include <linux/acpi.h>
 #include <linux/bitfield.h>
 #include <linux/irqchip/riscv-aplic.h>
 #include <linux/irqchip/riscv-imsic.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_irq.h>
@@ -132,8 +127,6 @@ static void aplic_init_hw_irqs(struct aplic_priv *priv)
 	writel(0, priv->regs + APLIC_DOMAINCFG);
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ACPI
 static const struct acpi_device_id aplic_acpi_match[] = {
 	{ "RSCV0002", 0 },
@@ -143,45 +136,16 @@ MODULE_DEVICE_TABLE(acpi, aplic_acpi_match);
 
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int aplic_setup_priv(struct aplic_priv *priv, struct device *dev, void __iomem *regs)
 {
 	struct device_node *np = to_of_node(dev->fwnode);
 	struct of_phandle_args parent;
 	int rc;
 
-<<<<<<< HEAD
-	/*
-	 * Currently, only OF fwnode is supported so extend this
-	 * function for ACPI support.
-	 */
-	if (!np)
-		return -EINVAL;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Save device pointer and register base */
 	priv->dev = dev;
 	priv->regs = regs;
 
-<<<<<<< HEAD
-	/* Find out number of interrupt sources */
-	rc = of_property_read_u32(np, "riscv,num-sources", &priv->nr_irqs);
-	if (rc) {
-		dev_err(dev, "failed to get number of interrupt sources\n");
-		return rc;
-	}
-
-	/*
-	 * Find out number of IDCs based on parent interrupts
-	 *
-	 * If "msi-parent" property is present then we ignore the
-	 * APLIC IDCs which forces the APLIC driver to use MSI mode.
-	 */
-	if (!of_property_present(np, "msi-parent")) {
-		while (!of_irq_parse_one(np, priv->nr_idcs, &parent))
-			priv->nr_idcs++;
-=======
 	if (np) {
 		/* Find out number of interrupt sources */
 		rc = of_property_read_u32(np, "riscv,num-sources", &priv->nr_irqs);
@@ -207,7 +171,6 @@ int aplic_setup_priv(struct aplic_priv *priv, struct device *dev, void __iomem *
 			dev_err(dev, "failed to find GSI mapping\n");
 			return rc;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Setup initial state APLIC interrupts */
@@ -234,15 +197,11 @@ static int aplic_probe(struct platform_device *pdev)
 	 * If msi-parent property is present then setup APLIC MSI
 	 * mode otherwise setup APLIC direct mode.
 	 */
-<<<<<<< HEAD
-	msi_mode = of_property_present(to_of_node(dev->fwnode), "msi-parent");
-=======
 	if (is_of_node(dev->fwnode))
 		msi_mode = of_property_present(to_of_node(dev->fwnode), "msi-parent");
 	else
 		msi_mode = imsic_acpi_get_fwnode(NULL) ? 1 : 0;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (msi_mode)
 		rc = aplic_msi_setup(dev, regs);
 	else
@@ -250,14 +209,11 @@ static int aplic_probe(struct platform_device *pdev)
 	if (rc)
 		dev_err(dev, "failed to setup APLIC in %s mode\n", msi_mode ? "MSI" : "direct");
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ACPI
 	if (!acpi_disabled)
 		acpi_dev_clear_dependencies(ACPI_COMPANION(dev));
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc;
 }
 
@@ -270,10 +226,7 @@ static struct platform_driver aplic_driver = {
 	.driver = {
 		.name		= "riscv-aplic",
 		.of_match_table	= aplic_match,
-<<<<<<< HEAD
-=======
 		.acpi_match_table = ACPI_PTR(aplic_acpi_match),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	.probe = aplic_probe,
 };

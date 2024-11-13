@@ -3,12 +3,6 @@
 # Contributor: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
 
 pkgbase=${PACMAN_PKGBASE:-linux-upstream}
-<<<<<<< HEAD
-pkgname=("${pkgbase}" "${pkgbase}-api-headers")
-if grep -q CONFIG_MODULES=y include/config/auto.conf; then
-	pkgname+=("${pkgbase}-headers")
-fi
-=======
 pkgname=("${pkgbase}")
 
 _extrapackages=${PACMAN_EXTRAPACKAGES-headers api-headers debug}
@@ -16,7 +10,6 @@ for pkg in $_extrapackages; do
 	pkgname+=("${pkgbase}-${pkg}")
 done
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 pkgver="${KERNELRELEASE//-/_}"
 # The PKGBUILD is evaluated multiple times.
 # Running scripts/build-version from here would introduce inconsistencies.
@@ -43,13 +36,6 @@ makedepends=(
 )
 options=(!debug !strip !buildflags !makeflags)
 
-<<<<<<< HEAD
-build() {
-	# MAKEFLAGS from makepkg.conf override the ones inherited from kbuild.
-	# Bypass this override with a custom variable.
-	export MAKEFLAGS="${KBUILD_MAKEFLAGS}"
-	cd "${objtree}"
-=======
 _prologue() {
 	# MAKEFLAGS from makepkg.conf override the ones inherited from kbuild.
 	# Bypass this override with a custom variable.
@@ -61,7 +47,6 @@ _prologue() {
 
 build() {
 	_prologue
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	${MAKE} KERNELRELEASE="${KERNELRELEASE}" KBUILD_BUILD_VERSION="${pkgrel}"
 }
@@ -69,17 +54,10 @@ build() {
 _package() {
 	pkgdesc="The ${pkgdesc} kernel and modules"
 
-<<<<<<< HEAD
-	export MAKEFLAGS="${KBUILD_MAKEFLAGS}"
-	cd "${objtree}"
-	local modulesdir="${pkgdir}/usr/${MODLIB}"
-
-=======
 	local modulesdir="${pkgdir}/usr/${MODLIB}"
 
 	_prologue
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	echo "Installing boot image..."
 	# systemd expects to find the kernel here to allow hibernation
 	# https://github.com/systemd/systemd/commit/edda44605f06a41fb86b7ab8128dcf99161d2344
@@ -104,16 +82,6 @@ _package() {
 _package-headers() {
 	pkgdesc="Headers and scripts for building modules for the ${pkgdesc} kernel"
 
-<<<<<<< HEAD
-	export MAKEFLAGS="${KBUILD_MAKEFLAGS}"
-	cd "${objtree}"
-	local builddir="${pkgdir}/usr/${MODLIB}/build"
-
-	echo "Installing build files..."
-	"${srctree}/scripts/package/install-extmod-build" "${builddir}"
-
-	echo "Installing System.map and config..."
-=======
 	local builddir="${pkgdir}/usr/${MODLIB}/build"
 
 	_prologue
@@ -125,7 +93,6 @@ _package-headers() {
 
 	echo "Installing System.map and config..."
 	mkdir -p "${builddir}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cp System.map "${builddir}/System.map"
 	cp .config "${builddir}/.config"
 
@@ -139,18 +106,11 @@ _package-api-headers() {
 	provides=(linux-api-headers)
 	conflicts=(linux-api-headers)
 
-<<<<<<< HEAD
-	export MAKEFLAGS="${KBUILD_MAKEFLAGS}"
-	cd "${objtree}"
-=======
 	_prologue
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	${MAKE} headers_install INSTALL_HDR_PATH="${pkgdir}/usr"
 }
 
-<<<<<<< HEAD
-=======
 _package-debug(){
 	pkgdesc="Non-stripped vmlinux file for the ${pkgdesc} kernel"
 
@@ -164,7 +124,6 @@ _package-debug(){
 	ln -sr "${debugdir}/vmlinux" "${builddir}/vmlinux"
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 for _p in "${pkgname[@]}"; do
 	eval "package_$_p() {
 		$(declare -f "_package${_p#$pkgbase}")

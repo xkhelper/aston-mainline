@@ -23,10 +23,6 @@
  *
  */
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "reg_helper.h"
 
 #include "core_types.h"

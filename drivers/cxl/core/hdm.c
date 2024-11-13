@@ -712,9 +712,6 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int cxl_decoder_reset(struct cxl_decoder *cxld)
-=======
 static int commit_reap(struct device *dev, const void *data)
 {
 	struct cxl_port *port = to_cxl_port(dev->parent);
@@ -753,7 +750,6 @@ void cxl_port_commit_reap(struct cxl_decoder *cxld)
 EXPORT_SYMBOL_NS_GPL(cxl_port_commit_reap, CXL);
 
 static void cxl_decoder_reset(struct cxl_decoder *cxld)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct cxl_port *port = to_cxl_port(cxld->dev.parent);
 	struct cxl_hdm *cxlhdm = dev_get_drvdata(&port->dev);
@@ -762,16 +758,6 @@ static void cxl_decoder_reset(struct cxl_decoder *cxld)
 	u32 ctrl;
 
 	if ((cxld->flags & CXL_DECODER_F_ENABLE) == 0)
-<<<<<<< HEAD
-		return 0;
-
-	if (port->commit_end != id) {
-		dev_dbg(&port->dev,
-			"%s: out of order reset, expected decoder%d.%d\n",
-			dev_name(&cxld->dev), port->id, port->commit_end);
-		return -EBUSY;
-	}
-=======
 		return;
 
 	if (port->commit_end == id)
@@ -780,7 +766,6 @@ static void cxl_decoder_reset(struct cxl_decoder *cxld)
 		dev_dbg(&port->dev,
 			"%s: out of order reset, expected decoder%d.%d\n",
 			dev_name(&cxld->dev), port->id, port->commit_end);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	down_read(&cxl_dpa_rwsem);
 	ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(id));
@@ -793,10 +778,6 @@ static void cxl_decoder_reset(struct cxl_decoder *cxld)
 	writel(0, hdm + CXL_HDM_DECODER0_BASE_LOW_OFFSET(id));
 	up_read(&cxl_dpa_rwsem);
 
-<<<<<<< HEAD
-	port->commit_end--;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cxld->flags &= ~CXL_DECODER_F_ENABLE;
 
 	/* Userspace is now responsible for reconfiguring this decoder */
@@ -806,11 +787,6 @@ static void cxl_decoder_reset(struct cxl_decoder *cxld)
 		cxled = to_cxl_endpoint_decoder(&cxld->dev);
 		cxled->state = CXL_DECODER_STATE_MANUAL;
 	}
-<<<<<<< HEAD
-
-	return 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int cxl_setup_hdm_decoder_from_dvsec(

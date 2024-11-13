@@ -189,15 +189,6 @@ static void ks_pcie_compose_msi_msg(struct irq_data *data, struct msi_msg *msg)
 		(int)data->hwirq, msg->address_hi, msg->address_lo);
 }
 
-<<<<<<< HEAD
-static int ks_pcie_msi_set_affinity(struct irq_data *irq_data,
-				    const struct cpumask *mask, bool force)
-{
-	return -EINVAL;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ks_pcie_msi_mask(struct irq_data *data)
 {
 	struct dw_pcie_rp *pp = irq_data_get_irq_chip_data(data);
@@ -250,10 +241,6 @@ static struct irq_chip ks_pcie_msi_irq_chip = {
 	.name = "KEYSTONE-PCI-MSI",
 	.irq_ack = ks_pcie_msi_irq_ack,
 	.irq_compose_msi_msg = ks_pcie_compose_msi_msg,
-<<<<<<< HEAD
-	.irq_set_affinity = ks_pcie_msi_set_affinity,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.irq_mask = ks_pcie_msi_mask,
 	.irq_unmask = ks_pcie_msi_unmask,
 };
@@ -583,11 +570,7 @@ static void ks_pcie_quirk(struct pci_dev *dev)
 	 */
 	if (pci_match_id(am6_pci_devids, bridge)) {
 		bridge_dev = pci_get_host_bridge_device(dev);
-<<<<<<< HEAD
-		if (!bridge_dev && !bridge_dev->parent)
-=======
 		if (!bridge_dev || !bridge_dev->parent)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return;
 
 		ks_pcie = dev_get_drvdata(bridge_dev->parent);

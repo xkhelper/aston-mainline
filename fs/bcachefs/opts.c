@@ -63,11 +63,7 @@ const char * const bch2_compression_opts[] = {
 	NULL
 };
 
-<<<<<<< HEAD
-const char * const bch2_str_hash_types[] = {
-=======
 const char * const __bch2_str_hash_types[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	BCH_STR_HASH_TYPES()
 	NULL
 };
@@ -119,10 +115,7 @@ PRT_STR_OPT_BOUNDSCHECKED(fs_usage_type,	enum bch_fs_usage_type);
 PRT_STR_OPT_BOUNDSCHECKED(data_type,		enum bch_data_type);
 PRT_STR_OPT_BOUNDSCHECKED(csum_type,		enum bch_csum_type);
 PRT_STR_OPT_BOUNDSCHECKED(compression_type,	enum bch_compression_type);
-<<<<<<< HEAD
-=======
 PRT_STR_OPT_BOUNDSCHECKED(str_hash_type,	enum bch_str_hash_type);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int bch2_opt_fix_errors_parse(struct bch_fs *c, const char *val, u64 *res,
 				     struct printbuf *err)
@@ -233,20 +226,13 @@ const struct bch_option bch2_opt_table[] = {
 #define OPT_UINT(_min, _max)	.type = BCH_OPT_UINT,			\
 				.min = _min, .max = _max
 #define OPT_STR(_choices)	.type = BCH_OPT_STR,			\
-<<<<<<< HEAD
-				.min = 0, .max = ARRAY_SIZE(_choices),	\
-=======
 				.min = 0, .max = ARRAY_SIZE(_choices) - 1, \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				.choices = _choices
 #define OPT_STR_NOLIMIT(_choices)	.type = BCH_OPT_STR,		\
 				.min = 0, .max = U64_MAX,		\
 				.choices = _choices
-<<<<<<< HEAD
-=======
 #define OPT_BITFIELD(_choices)	.type = BCH_OPT_BITFIELD,		\
 				.choices = _choices
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define OPT_FN(_fn)		.type = BCH_OPT_FN, .fn	= _fn
 
 #define x(_name, _bits, _flags, _type, _sb_opt, _default, _hint, _help)	\
@@ -393,8 +379,6 @@ int bch2_opt_parse(struct bch_fs *c,
 
 		*res = ret;
 		break;
-<<<<<<< HEAD
-=======
 	case BCH_OPT_BITFIELD: {
 		s64 v = bch2_read_flag_list(val, opt->choices);
 		if (v < 0)
@@ -402,7 +386,6 @@ int bch2_opt_parse(struct bch_fs *c,
 		*res = v;
 		break;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case BCH_OPT_FN:
 		ret = opt->fn.parse(c, val, res, err);
 
@@ -445,23 +428,16 @@ void bch2_opt_to_text(struct printbuf *out,
 			prt_printf(out, "%lli", v);
 		break;
 	case BCH_OPT_STR:
-<<<<<<< HEAD
-		if (flags & OPT_SHOW_FULL_LIST)
-=======
 		if (v < opt->min || v >= opt->max)
 			prt_printf(out, "(invalid option %lli)", v);
 		else if (flags & OPT_SHOW_FULL_LIST)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			prt_string_option(out, opt->choices, v);
 		else
 			prt_str(out, opt->choices[v]);
 		break;
-<<<<<<< HEAD
-=======
 	case BCH_OPT_BITFIELD:
 		prt_bitflags(out, opt->choices, v);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case BCH_OPT_FN:
 		opt->fn.to_text(out, c, sb, v);
 		break;
@@ -470,8 +446,6 @@ void bch2_opt_to_text(struct printbuf *out,
 	}
 }
 
-<<<<<<< HEAD
-=======
 void bch2_opts_to_text(struct printbuf *out,
 		       struct bch_opts opts,
 		       struct bch_fs *c, struct bch_sb *sb,
@@ -498,7 +472,6 @@ void bch2_opts_to_text(struct printbuf *out,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_opt_check_may_set(struct bch_fs *c, int id, u64 v)
 {
 	int ret = 0;
@@ -624,12 +597,9 @@ int bch2_parse_mount_opts(struct bch_fs *c, struct bch_opts *opts,
 	copied_opts_start = copied_opts;
 
 	while ((opt = strsep(&copied_opts, ",")) != NULL) {
-<<<<<<< HEAD
-=======
 		if (!*opt)
 			continue;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		name	= strsep(&opt, "=");
 		val	= opt;
 
@@ -682,12 +652,6 @@ int bch2_opts_from_sb(struct bch_opts *opts, struct bch_sb *sb)
 	return 0;
 }
 
-<<<<<<< HEAD
-void __bch2_opt_set_sb(struct bch_sb *sb, const struct bch_option *opt, u64 v)
-{
-	if (opt->set_sb == SET_BCH2_NO_SB_OPT)
-		return;
-=======
 struct bch_dev_sb_opt_set {
 	void			(*set_sb)(struct bch_member *, u64);
 };
@@ -702,7 +666,6 @@ void __bch2_opt_set_sb(struct bch_sb *sb, int dev_idx,
 		       const struct bch_option *opt, u64 v)
 {
 	enum bch_opt_id id = opt - bch2_opt_table;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (opt->flags & OPT_SB_FIELD_SECTORS)
 		v >>= 9;
@@ -710,18 +673,6 @@ void __bch2_opt_set_sb(struct bch_sb *sb, int dev_idx,
 	if (opt->flags & OPT_SB_FIELD_ILOG2)
 		v = ilog2(v);
 
-<<<<<<< HEAD
-	opt->set_sb(sb, v);
-}
-
-void bch2_opt_set_sb(struct bch_fs *c, const struct bch_option *opt, u64 v)
-{
-	if (opt->set_sb == SET_BCH2_NO_SB_OPT)
-		return;
-
-	mutex_lock(&c->sb_lock);
-	__bch2_opt_set_sb(c->disk_sb.sb, opt, v);
-=======
 	if (opt->flags & OPT_SB_FIELD_ONE_BIAS)
 		v++;
 
@@ -751,7 +702,6 @@ void bch2_opt_set_sb(struct bch_fs *c, struct bch_dev *ca,
 {
 	mutex_lock(&c->sb_lock);
 	__bch2_opt_set_sb(c->disk_sb.sb, ca ? ca->dev_idx : -1, opt, v);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bch2_write_super(c);
 	mutex_unlock(&c->sb_lock);
 }

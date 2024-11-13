@@ -34,10 +34,7 @@ struct branch_info {
 	struct addr_map_symbol from;
 	struct addr_map_symbol to;
 	struct branch_flags    flags;
-<<<<<<< HEAD
-=======
 	u64		       branch_stack_cntr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char		       *srcline_from;
 	char		       *srcline_to;
 };

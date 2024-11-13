@@ -350,12 +350,7 @@ nla_put_failure:
 }
 
 static int nft_target_validate(const struct nft_ctx *ctx,
-<<<<<<< HEAD
-			       const struct nft_expr *expr,
-			       const struct nft_data **data)
-=======
 			       const struct nft_expr *expr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct xt_target *target = expr->ops->data;
 	unsigned int hook_mask = 0;
@@ -540,11 +535,7 @@ nft_match_large_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
 	struct xt_match *m = expr->ops->data;
 	int ret;
 
-<<<<<<< HEAD
-	priv->info = kmalloc(XT_ALIGN(m->matchsize), GFP_KERNEL);
-=======
 	priv->info = kmalloc(XT_ALIGN(m->matchsize), GFP_KERNEL_ACCOUNT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!priv->info)
 		return -ENOMEM;
 
@@ -619,12 +610,7 @@ static int nft_match_large_dump(struct sk_buff *skb,
 }
 
 static int nft_match_validate(const struct nft_ctx *ctx,
-<<<<<<< HEAD
-			      const struct nft_expr *expr,
-			      const struct nft_data **data)
-=======
 			      const struct nft_expr *expr)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct xt_match *match = expr->ops->data;
 	unsigned int hook_mask = 0;
@@ -822,11 +808,7 @@ nft_match_select_ops(const struct nft_ctx *ctx,
 		goto err;
 	}
 
-<<<<<<< HEAD
-	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL);
-=======
 	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL_ACCOUNT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ops) {
 		err = -ENOMEM;
 		goto err;
@@ -916,11 +898,7 @@ nft_target_select_ops(const struct nft_ctx *ctx,
 		goto err;
 	}
 
-<<<<<<< HEAD
-	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL);
-=======
 	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL_ACCOUNT);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ops) {
 		err = -ENOMEM;
 		goto err;

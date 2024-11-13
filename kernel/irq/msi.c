@@ -82,11 +82,7 @@ static struct msi_desc *msi_alloc_desc(struct device *dev, int nvec,
 	desc->dev = dev;
 	desc->nvec_used = nvec;
 	if (affinity) {
-<<<<<<< HEAD
-		desc->affinity = kmemdup(affinity, nvec * sizeof(*desc->affinity), GFP_KERNEL);
-=======
 		desc->affinity = kmemdup_array(affinity, nvec, sizeof(*desc->affinity), GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!desc->affinity) {
 			kfree(desc);
 			return NULL;
@@ -722,11 +718,7 @@ static int msi_domain_alloc(struct irq_domain *domain, unsigned int virq,
 		ret = ops->msi_init(domain, info, virq + i, hwirq + i, arg);
 		if (ret < 0) {
 			if (ops->msi_free) {
-<<<<<<< HEAD
-				for (i--; i > 0; i--)
-=======
 				for (i--; i >= 0; i--)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					ops->msi_free(domain, info, virq + i);
 			}
 			irq_domain_free_irqs_top(domain, virq, nr_irqs);
@@ -840,11 +832,7 @@ static void msi_domain_update_chip_ops(struct msi_domain_info *info)
 	struct irq_chip *chip = info->chip;
 
 	BUG_ON(!chip || !chip->irq_mask || !chip->irq_unmask);
-<<<<<<< HEAD
-	if (!chip->irq_set_affinity)
-=======
 	if (!chip->irq_set_affinity && !(info->flags & MSI_FLAG_NO_AFFINITY))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		chip->irq_set_affinity = msi_domain_set_affinity;
 }
 

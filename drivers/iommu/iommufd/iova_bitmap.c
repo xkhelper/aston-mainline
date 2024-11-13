@@ -3,17 +3,10 @@
  * Copyright (c) 2022, Oracle and/or its affiliates.
  * Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES. All rights reserved
  */
-<<<<<<< HEAD
-#include <linux/iova_bitmap.h>
-#include <linux/mm.h>
-#include <linux/slab.h>
-#include <linux/highmem.h>
-=======
 #include <linux/highmem.h>
 #include <linux/iova_bitmap.h>
 #include <linux/mm.h>
 #include <linux/slab.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define BITS_PER_PAGE (PAGE_SIZE * BITS_PER_BYTE)
 

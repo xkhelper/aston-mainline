@@ -31,10 +31,7 @@
 #include <linux/memory.h>
 #include "kfd_priv.h"
 #include "kfd_events.h"
-<<<<<<< HEAD
-=======
 #include "kfd_device_queue_manager.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/device.h>
 
 /*
@@ -1248,18 +1245,13 @@ void kfd_signal_reset_event(struct kfd_node *dev)
 	idx = srcu_read_lock(&kfd_processes_srcu);
 	hash_for_each_rcu(kfd_processes_table, temp, p, kfd_processes) {
 		int user_gpu_id = kfd_process_get_user_gpu_id(p, dev->id);
-<<<<<<< HEAD
-=======
 		struct kfd_process_device *pdd = kfd_get_process_device_data(dev, p);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (unlikely(user_gpu_id == -EINVAL)) {
 			WARN_ONCE(1, "Could not get user_gpu_id from dev->id:%x\n", dev->id);
 			continue;
 		}
 
-<<<<<<< HEAD
-=======
 		if (unlikely(!pdd)) {
 			WARN_ONCE(1, "Could not get device data from pasid:0x%x\n", p->pasid);
 			continue;
@@ -1280,7 +1272,6 @@ void kfd_signal_reset_event(struct kfd_node *dev)
 			}
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rcu_read_lock();
 
 		id = KFD_FIRST_NONSIGNAL_EVENT_ID;

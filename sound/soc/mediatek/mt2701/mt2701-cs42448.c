@@ -329,17 +329,10 @@ static int mt2701_cs42448_machine_probe(struct platform_device *pdev)
 	int ret;
 	int i;
 	struct device_node *platform_node, *codec_node, *codec_node_bt_mrg;
-<<<<<<< HEAD
-	struct mt2701_cs42448_private *priv =
-		devm_kzalloc(&pdev->dev, sizeof(struct mt2701_cs42448_private),
-			     GFP_KERNEL);
-	struct device *dev = &pdev->dev;
-=======
 	struct device *dev = &pdev->dev;
 	struct mt2701_cs42448_private *priv =
 		devm_kzalloc(dev, sizeof(struct mt2701_cs42448_private),
 			     GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct snd_soc_dai_link *dai_link;
 
 	if (!priv)
@@ -348,11 +341,7 @@ static int mt2701_cs42448_machine_probe(struct platform_device *pdev)
 	platform_node = of_parse_phandle(pdev->dev.of_node,
 					 "mediatek,platform", 0);
 	if (!platform_node) {
-<<<<<<< HEAD
-		dev_err(&pdev->dev, "Property 'platform' missing or invalid\n");
-=======
 		dev_err(dev, "Property 'platform' missing or invalid\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 	}
 	for_each_card_prelinks(card, i, dai_link) {
@@ -366,11 +355,7 @@ static int mt2701_cs42448_machine_probe(struct platform_device *pdev)
 	codec_node = of_parse_phandle(pdev->dev.of_node,
 				      "mediatek,audio-codec", 0);
 	if (!codec_node) {
-<<<<<<< HEAD
-		dev_err(&pdev->dev,
-=======
 		dev_err(dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"Property 'audio-codec' missing or invalid\n");
 		return -EINVAL;
 	}
@@ -383,11 +368,7 @@ static int mt2701_cs42448_machine_probe(struct platform_device *pdev)
 	codec_node_bt_mrg = of_parse_phandle(pdev->dev.of_node,
 					     "mediatek,audio-codec-bt-mrg", 0);
 	if (!codec_node_bt_mrg) {
-<<<<<<< HEAD
-		dev_err(&pdev->dev,
-=======
 		dev_err(dev,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			"Property 'audio-codec-bt-mrg' missing or invalid\n");
 		return -EINVAL;
 	}
@@ -396,11 +377,7 @@ static int mt2701_cs42448_machine_probe(struct platform_device *pdev)
 
 	ret = snd_soc_of_parse_audio_routing(card, "audio-routing");
 	if (ret) {
-<<<<<<< HEAD
-		dev_err(&pdev->dev, "failed to parse audio-routing: %d\n", ret);
-=======
 		dev_err(dev, "failed to parse audio-routing: %d\n", ret);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 
@@ -418,17 +395,10 @@ static int mt2701_cs42448_machine_probe(struct platform_device *pdev)
 
 	snd_soc_card_set_drvdata(card, priv);
 
-<<<<<<< HEAD
-	ret = devm_snd_soc_register_card(&pdev->dev, card);
-
-	if (ret)
-		dev_err(&pdev->dev, "%s snd_soc_register_card fail %d\n",
-=======
 	ret = devm_snd_soc_register_card(dev, card);
 
 	if (ret)
 		dev_err(dev, "%s snd_soc_register_card fail %d\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			__func__, ret);
 	return ret;
 }

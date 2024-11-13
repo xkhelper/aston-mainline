@@ -91,14 +91,11 @@ enum nvme_quirks {
 	NVME_QUIRK_NO_DEEPEST_PS		= (1 << 5),
 
 	/*
-<<<<<<< HEAD
-=======
 	 *  Problems seen with concurrent commands
 	 */
 	NVME_QUIRK_QDEPTH_ONE			= (1 << 6),
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Set MEDIUM priority on SQ creation
 	 */
 	NVME_QUIRK_MEDIUM_PRIO_SQ		= (1 << 7),
@@ -380,11 +377,7 @@ struct nvme_ctrl {
 	struct nvme_dhchap_key *ctrl_key;
 	u16 transaction;
 #endif
-<<<<<<< HEAD
-	struct key *tls_key;
-=======
 	key_serial_t tls_pskid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Power saving configuration */
 	u64 ps_max_latency_us;
@@ -501,10 +494,7 @@ struct nvme_ns_head {
 	struct bio_list		requeue_list;
 	spinlock_t		requeue_lock;
 	struct work_struct	requeue_work;
-<<<<<<< HEAD
-=======
 	struct work_struct	partition_scan_work;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct mutex		lock;
 	unsigned long		flags;
 #define NVME_NSHEAD_DISK_LIVE	0

@@ -21,11 +21,7 @@
 1:
 .endm
 
-<<<<<<< HEAD
-ENTRY(sifive_cip_453_page_fault_trp)
-=======
 SYM_FUNC_START(sifive_cip_453_page_fault_trp)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ADD_SIGN_EXT a0, t0, t1
 #ifdef CONFIG_MMU
 	la t0, do_page_fault
@@ -33,15 +29,6 @@ SYM_FUNC_START(sifive_cip_453_page_fault_trp)
 	la t0, do_trap_unknown
 #endif
 	jr t0
-<<<<<<< HEAD
-END(sifive_cip_453_page_fault_trp)
-
-ENTRY(sifive_cip_453_insn_fault_trp)
-	ADD_SIGN_EXT a0, t0, t1
-	la t0, do_trap_insn_fault
-	jr t0
-END(sifive_cip_453_insn_fault_trp)
-=======
 SYM_FUNC_END(sifive_cip_453_page_fault_trp)
 
 SYM_FUNC_START(sifive_cip_453_insn_fault_trp)
@@ -49,4 +36,3 @@ SYM_FUNC_START(sifive_cip_453_insn_fault_trp)
 	la t0, do_trap_insn_fault
 	jr t0
 SYM_FUNC_END(sifive_cip_453_insn_fault_trp)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

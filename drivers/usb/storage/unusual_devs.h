@@ -2423,8 +2423,6 @@ UNUSUAL_DEV(  0xc251, 0x4003, 0x0100, 0x0100,
 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 		US_FL_NOT_LOCKABLE),
 
-<<<<<<< HEAD
-=======
 /*
  * Reported by Icenowy Zheng <uwu@icenowy.me>
  * This is an interface for vendor-specific cryptic commands instead
@@ -2436,7 +2434,6 @@ UNUSUAL_DEV(  0xe5b7, 0x0811, 0x0100, 0x0100,
 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 		US_FL_IGNORE_DEVICE),
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Reported by Andrew Simmons <andrew.simmons@gmail.com> */
 UNUSUAL_DEV(  0xed06, 0x4500, 0x0001, 0x0001,
 		"DataStor",

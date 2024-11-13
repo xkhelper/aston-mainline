@@ -3043,11 +3043,6 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(struct ath10k *ar,
 				       struct sk_buff *msdu)
 {
 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
-<<<<<<< HEAD
-	struct ath10k_wmi *wmi = &ar->wmi;
-
-	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
-=======
 	struct ath10k_mgmt_tx_pkt_addr *pkt_addr;
 	struct ath10k_wmi *wmi = &ar->wmi;
 
@@ -3056,7 +3051,6 @@ ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(struct ath10k *ar,
 	spin_unlock_bh(&ar->data_lock);
 
 	kfree(pkt_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

@@ -70,10 +70,7 @@ static void __init realview_smp_prepare_cpus(unsigned int max_cpus)
 		return;
 	}
 	map = syscon_node_to_regmap(np);
-<<<<<<< HEAD
-=======
 	of_node_put(np);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(map)) {
 		pr_err("PLATSMP: No syscon regmap\n");
 		return;

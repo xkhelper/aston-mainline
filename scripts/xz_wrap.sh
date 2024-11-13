@@ -1,31 +1,10 @@
 #!/bin/sh
-<<<<<<< HEAD
-=======
 # SPDX-License-Identifier: 0BSD
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #
 # This is a wrapper for xz to compress the kernel image using appropriate
 # compression options depending on the architecture.
 #
 # Author: Lasse Collin <lasse.collin@tukaani.org>
-<<<<<<< HEAD
-#
-# This file has been put into the public domain.
-# You can do whatever you want with this file.
-#
-
-BCJ=
-LZMA2OPTS=
-
-case $SRCARCH in
-	x86)            BCJ=--x86 ;;
-	powerpc)        BCJ=--powerpc ;;
-	arm)            BCJ=--arm ;;
-	sparc)          BCJ=--sparc ;;
-esac
-
-exec $XZ --check=crc32 $BCJ --lzma2=$LZMA2OPTS,dict=32MiB
-=======
 
 # This has specialized settings for the following archs. However,
 # XZ-compressed kernel isn't currently supported on every listed arch.
@@ -181,4 +160,3 @@ esac
 # Thus the dictionary size doesn't affect the memory requirements
 # of the preboot decompressor at all.
 exec $XZ --check=crc32 --threads=1 $BCJ --lzma2=$LZMA2OPTS,dict=128MiB
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

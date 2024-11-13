@@ -1057,11 +1057,7 @@ retry:
 	}
 
 	pagefault_disable();
-<<<<<<< HEAD
-	ret = iomap_file_buffered_write(iocb, from, &gfs2_iomap_ops);
-=======
 	ret = iomap_file_buffered_write(iocb, from, &gfs2_iomap_ops, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pagefault_enable();
 	if (ret > 0)
 		written += ret;

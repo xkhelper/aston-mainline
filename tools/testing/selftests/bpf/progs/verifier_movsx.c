@@ -287,8 +287,6 @@ l0_%=:							\
 	: __clobber_all);
 }
 
-<<<<<<< HEAD
-=======
 SEC("socket")
 __description("MOV64SX, S8, unsigned range_check")
 __success __retval(0)
@@ -329,7 +327,6 @@ label_%=: 	                                        \
 	: __clobber_all);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 
 SEC("socket")

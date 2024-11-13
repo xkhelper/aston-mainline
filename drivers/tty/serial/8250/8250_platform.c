@@ -2,13 +2,6 @@
 /*
  *  Universal/legacy platform driver for 8250/16550-type serial ports
  *
-<<<<<<< HEAD
- *  Supports: ISA-compatible 8250/16550 ports
- *	      PNP 8250/16550 ports
- *	      "serial8250" platform devices
- */
-#include <linux/array_size.h>
-=======
  *  Supports:
  *	      ISA-compatible 8250/16550 ports
  *	      ACPI 8250/16550 ports
@@ -18,7 +11,6 @@
 #include <linux/acpi.h>
 #include <linux/array_size.h>
 #include <linux/io.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/once.h>
@@ -34,15 +26,9 @@
 
 /*
  * Configuration:
-<<<<<<< HEAD
- *    share_irqs   Whether we pass IRQF_SHARED to request_irq().
- *                 This option is unsafe when used on edge-triggered interrupts.
- * skip_txen_test  Force skip of txen test at init time.
-=======
  * share_irqs:     Whether we pass IRQF_SHARED to request_irq().
  *                 This option is unsafe when used on edge-triggered interrupts.
  * skip_txen_test: Force skip of txen test at init time.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 unsigned int share_irqs = SERIAL8250_SHARE_IRQS;
 unsigned int skip_txen_test;
@@ -79,15 +65,9 @@ static void __init __serial8250_isa_init_ports(void)
 		nr_uarts = UART_NR;
 
 	/*
-<<<<<<< HEAD
-	 * Set up initial isa ports based on nr_uart module param, or else
-	 * default to CONFIG_SERIAL_8250_RUNTIME_UARTS. Note that we do not
-	 * need to increase nr_uarts when setting up the initial isa ports.
-=======
 	 * Set up initial ISA ports based on nr_uart module param, or else
 	 * default to CONFIG_SERIAL_8250_RUNTIME_UARTS. Note that we do not
 	 * need to increase nr_uarts when setting up the initial ISA ports.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	for (i = 0; i < nr_uarts; i++)
 		serial8250_setup_port(i);
@@ -125,15 +105,6 @@ void __init serial8250_isa_init_ports(void)
 }
 
 /*
-<<<<<<< HEAD
- * Register a set of serial devices attached to a platform device.  The
- * list is terminated with a zero flags entry, which means we expect
- * all entries to have at least UPF_BOOT_AUTOCONF set.
- */
-static int serial8250_probe(struct platform_device *dev)
-{
-	struct plat_serial8250_port *p = dev_get_platdata(&dev->dev);
-=======
  * Generic 16550A platform devices
  */
 static int serial8250_probe_acpi(struct platform_device *pdev)
@@ -191,7 +162,6 @@ static int serial8250_probe_acpi(struct platform_device *pdev)
 
 static int serial8250_probe_platform(struct platform_device *dev, struct plat_serial8250_port *p)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct uart_8250_port uart;
 	int ret, i, irqflag = 0;
 
@@ -240,8 +210,6 @@ static int serial8250_probe_platform(struct platform_device *dev, struct plat_se
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Register a set of serial devices attached to a platform device.
  * The list is terminated with a zero flags entry, which means we expect
  * all entries to have at least UPF_BOOT_AUTOCONF set.
@@ -267,7 +235,6 @@ static int serial8250_probe(struct platform_device *pdev)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Remove serial ports registered against a platform device.
  */
 static void serial8250_remove(struct platform_device *dev)
@@ -310,15 +277,12 @@ static int serial8250_resume(struct platform_device *dev)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static const struct acpi_device_id acpi_platform_serial_table[] = {
 	{ "RSCV0003" }, /* RISC-V Generic 16550A UART */
 	{ }
 };
 MODULE_DEVICE_TABLE(acpi, acpi_platform_serial_table);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct platform_driver serial8250_isa_driver = {
 	.probe		= serial8250_probe,
 	.remove_new	= serial8250_remove,
@@ -326,20 +290,13 @@ static struct platform_driver serial8250_isa_driver = {
 	.resume		= serial8250_resume,
 	.driver		= {
 		.name	= "serial8250",
-<<<<<<< HEAD
-=======
 		.acpi_match_table = acpi_platform_serial_table,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 };
 
 /*
  * This "device" covers _all_ ISA 8250-compatible serial devices listed
-<<<<<<< HEAD
- * in the table in include/asm/serial.h
-=======
  * in the table in include/asm/serial.h.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct platform_device *serial8250_isa_devs;
 
@@ -368,12 +325,7 @@ static int __init serial8250_init(void)
 	if (ret)
 		goto unreg_uart_drv;
 
-<<<<<<< HEAD
-	serial8250_isa_devs = platform_device_alloc("serial8250",
-						    PLAT8250_DEV_LEGACY);
-=======
 	serial8250_isa_devs = platform_device_alloc("serial8250", PLAT8250_DEV_LEGACY);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!serial8250_isa_devs) {
 		ret = -ENOMEM;
 		goto unreg_pnp;
@@ -412,11 +364,7 @@ static void __exit serial8250_exit(void)
 	/*
 	 * This tells serial8250_unregister_port() not to re-register
 	 * the ports (thereby making serial8250_isa_driver permanently
-<<<<<<< HEAD
-	 * in use.)
-=======
 	 * in use).
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	serial8250_isa_devs = NULL;
 
@@ -449,14 +397,6 @@ MODULE_ALIAS_CHARDEV_MAJOR(TTY_MAJOR);
 
 #ifdef CONFIG_SERIAL_8250_DEPRECATED_OPTIONS
 #ifndef MODULE
-<<<<<<< HEAD
-/* This module was renamed to 8250_core in 3.7.  Keep the old "8250" name
- * working as well for the module options so we don't break people.  We
- * need to keep the names identical and the convenient macros will happily
- * refuse to let us do that by failing the build with redefinition errors
- * of global variables.  So we stick them inside a dummy function to avoid
- * those conflicts.  The options still get parsed, and the redefined
-=======
 /*
  * This module was renamed to 8250_core in 3.7. Keep the old "8250" name
  * working as well for the module options so we don't break people. We
@@ -464,7 +404,6 @@ MODULE_ALIAS_CHARDEV_MAJOR(TTY_MAJOR);
  * refuse to let us do that by failing the build with redefinition errors
  * of global variables. So we stick them inside a dummy function to avoid
  * those conflicts. The options still get parsed, and the redefined
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * MODULE_PARAM_PREFIX lets us keep the "8250." syntax alive.
  *
  * This is hacky.  I'm sorry.

@@ -23,8 +23,6 @@ struct bridge_ctx {
 	struct bridge_stats stats;
 };
 
-<<<<<<< HEAD
-=======
 /*
  * Wrapper to avoid a cast warning when passing the action function directly
  * to kunit_add_action().
@@ -32,7 +30,6 @@ struct bridge_ctx {
 KUNIT_DEFINE_ACTION_WRAPPER(fpga_bridge_unregister_wrapper, fpga_bridge_unregister,
 			    struct fpga_bridge *);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int op_enable_set(struct fpga_bridge *bridge, bool enable)
 {
 	struct bridge_stats *stats = bridge->priv;
@@ -60,10 +57,7 @@ static const struct fpga_bridge_ops fake_bridge_ops = {
 static struct bridge_ctx *register_test_bridge(struct kunit *test, const char *dev_name)
 {
 	struct bridge_ctx *ctx;
-<<<<<<< HEAD
-=======
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
@@ -75,20 +69,10 @@ static struct bridge_ctx *register_test_bridge(struct kunit *test, const char *d
 					   &ctx->stats);
 	KUNIT_ASSERT_FALSE(test, IS_ERR_OR_NULL(ctx->bridge));
 
-<<<<<<< HEAD
-	return ctx;
-}
-
-static void unregister_test_bridge(struct kunit *test, struct bridge_ctx *ctx)
-{
-	fpga_bridge_unregister(ctx->bridge);
-	kunit_device_unregister(test, ctx->dev);
-=======
 	ret = kunit_add_action_or_reset(test, fpga_bridge_unregister_wrapper, ctx->bridge);
 	KUNIT_ASSERT_EQ(test, ret, 0);
 
 	return ctx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void fpga_bridge_test_get(struct kunit *test)
@@ -162,11 +146,6 @@ static void fpga_bridge_test_get_put_list(struct kunit *test)
 	fpga_bridges_put(&bridge_list);
 
 	KUNIT_EXPECT_TRUE(test, list_empty(&bridge_list));
-<<<<<<< HEAD
-
-	unregister_test_bridge(test, ctx_1);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int fpga_bridge_test_init(struct kunit *test)
@@ -176,14 +155,6 @@ static int fpga_bridge_test_init(struct kunit *test)
 	return 0;
 }
 
-<<<<<<< HEAD
-static void fpga_bridge_test_exit(struct kunit *test)
-{
-	unregister_test_bridge(test, test->priv);
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct kunit_case fpga_bridge_test_cases[] = {
 	KUNIT_CASE(fpga_bridge_test_get),
 	KUNIT_CASE(fpga_bridge_test_toggle),
@@ -194,10 +165,6 @@ static struct kunit_case fpga_bridge_test_cases[] = {
 static struct kunit_suite fpga_bridge_suite = {
 	.name = "fpga_bridge",
 	.init = fpga_bridge_test_init,
-<<<<<<< HEAD
-	.exit = fpga_bridge_test_exit,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.test_cases = fpga_bridge_test_cases,
 };
 

@@ -660,11 +660,6 @@ rearm:
 	sched_sync_hw_clock(offset_nsec, res != 0);
 }
 
-<<<<<<< HEAD
-void ntp_notify_cmos_timer(void)
-{
-	/*
-=======
 void ntp_notify_cmos_timer(bool offset_set)
 {
 	/*
@@ -676,7 +671,6 @@ void ntp_notify_cmos_timer(bool offset_set)
 		hrtimer_cancel(&sync_hrtimer);
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * When the work is currently executed but has not yet the timer
 	 * rearmed this queues the work immediately again. No big issue,
 	 * just a pointless work scheduled.

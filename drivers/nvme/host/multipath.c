@@ -421,12 +421,9 @@ static bool nvme_available_path(struct nvme_ns_head *head)
 {
 	struct nvme_ns *ns;
 
-<<<<<<< HEAD
-=======
 	if (!test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags))
 		return NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_for_each_entry_rcu(ns, &head->list, siblings) {
 		if (test_bit(NVME_CTRL_FAILFAST_EXPIRED, &ns->ctrl->flags))
 			continue;
@@ -434,10 +431,6 @@ static bool nvme_available_path(struct nvme_ns_head *head)
 		case NVME_CTRL_LIVE:
 		case NVME_CTRL_RESETTING:
 		case NVME_CTRL_CONNECTING:
-<<<<<<< HEAD
-			/* fallthru */
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return true;
 		default:
 			break;
@@ -586,8 +579,6 @@ static int nvme_add_ns_head_cdev(struct nvme_ns_head *head)
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static void nvme_partition_scan_work(struct work_struct *work)
 {
 	struct nvme_ns_head *head =
@@ -602,7 +593,6 @@ static void nvme_partition_scan_work(struct work_struct *work)
 	mutex_unlock(&head->disk->open_mutex);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void nvme_requeue_work(struct work_struct *work)
 {
 	struct nvme_ns_head *head =
@@ -629,10 +619,7 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
 	bio_list_init(&head->requeue_list);
 	spin_lock_init(&head->requeue_lock);
 	INIT_WORK(&head->requeue_work, nvme_requeue_work);
-<<<<<<< HEAD
-=======
 	INIT_WORK(&head->partition_scan_work, nvme_partition_scan_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Add a multipath node if the subsystems supports multiple controllers.
@@ -656,8 +643,6 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
 		return PTR_ERR(head->disk);
 	head->disk->fops = &nvme_ns_head_ops;
 	head->disk->private_data = head;
-<<<<<<< HEAD
-=======
 
 	/*
 	 * We need to suppress the partition scan from occuring within the
@@ -668,7 +653,6 @@ int nvme_mpath_alloc_disk(struct nvme_ctrl *ctrl, struct nvme_ns_head *head)
 	 * scan_work.
 	 */
 	set_bit(GD_SUPPRESS_PART_SCAN, &head->disk->state);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sprintf(head->disk->disk_name, "nvme%dn%d",
 			ctrl->subsys->instance, head->instance);
 	return 0;
@@ -691,18 +675,11 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
 		rc = device_add_disk(&head->subsys->dev, head->disk,
 				     nvme_ns_attr_groups);
 		if (rc) {
-<<<<<<< HEAD
-			clear_bit(NVME_NSHEAD_DISK_LIVE, &ns->flags);
-			return;
-		}
-		nvme_add_ns_head_cdev(head);
-=======
 			clear_bit(NVME_NSHEAD_DISK_LIVE, &head->flags);
 			return;
 		}
 		nvme_add_ns_head_cdev(head);
 		kblockd_schedule_work(&head->partition_scan_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mutex_lock(&head->lock);
@@ -1020,11 +997,6 @@ void nvme_mpath_shutdown_disk(struct nvme_ns_head *head)
 {
 	if (!head->disk)
 		return;
-<<<<<<< HEAD
-	kblockd_schedule_work(&head->requeue_work);
-	if (test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags)) {
-		nvme_cdev_del(&head->cdev, &head->cdev_device);
-=======
 	if (test_and_clear_bit(NVME_NSHEAD_DISK_LIVE, &head->flags)) {
 		nvme_cdev_del(&head->cdev, &head->cdev_device);
 		/*
@@ -1033,7 +1005,6 @@ void nvme_mpath_shutdown_disk(struct nvme_ns_head *head)
 		 */
 		synchronize_srcu(&head->srcu);
 		kblockd_schedule_work(&head->requeue_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		del_gendisk(head->disk);
 	}
 }
@@ -1045,10 +1016,7 @@ void nvme_mpath_remove_disk(struct nvme_ns_head *head)
 	/* make sure all pending bios are cleaned up */
 	kblockd_schedule_work(&head->requeue_work);
 	flush_work(&head->requeue_work);
-<<<<<<< HEAD
-=======
 	flush_work(&head->partition_scan_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	put_disk(head->disk);
 }
 

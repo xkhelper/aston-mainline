@@ -6,11 +6,7 @@
 
 struct accounting_mem_entry {
 	struct bpos				pos;
-<<<<<<< HEAD
-	struct bversion				version;
-=======
 	struct bversion				bversion;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned				nr_counters;
 	u64 __percpu				*v[2];
 };

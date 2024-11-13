@@ -863,10 +863,6 @@ static bool detect_link_and_local_sink(struct dc_link *link,
 	struct dc_sink *prev_sink = NULL;
 	struct dpcd_caps prev_dpcd_caps;
 	enum dc_connection_type new_connection_type = dc_connection_none;
-<<<<<<< HEAD
-	enum dc_connection_type pre_connection_type = link->type;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const uint32_t post_oui_delay = 30; // 30ms
 
 	DC_LOGGER_INIT(link->ctx->logger);
@@ -968,10 +964,6 @@ static bool detect_link_and_local_sink(struct dc_link *link,
 			}
 
 			if (!detect_dp(link, &sink_caps, reason)) {
-<<<<<<< HEAD
-				link->type = pre_connection_type;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				if (prev_sink)
 					dc_sink_release(prev_sink);
@@ -1197,12 +1189,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
 			//sink only can use supported link rate table, we are foreced to enable it
 			if (link->reported_link_cap.link_rate == LINK_RATE_UNKNOWN)
 				link->panel_config.ilr.optimize_edp_link_rate = true;
-<<<<<<< HEAD
-			if (edp_is_ilr_optimization_enabled(link))
-				link->reported_link_cap.link_rate = get_max_link_rate_from_ilr_table(link);
-=======
 			link->reported_link_cap.link_rate = get_max_edp_link_rate(link);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 	} else {
@@ -1309,12 +1296,7 @@ bool link_detect(struct dc_link *link, enum dc_detect_reason reason)
 			link->dpcd_caps.is_mst_capable)
 		is_delegated_to_mst_top_mgr = discover_dp_mst_topology(link, reason);
 
-<<<<<<< HEAD
-	if (is_local_sink_detect_success &&
-			pre_link_type == dc_connection_mst_branch &&
-=======
 	if (pre_link_type == dc_connection_mst_branch &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			link->type != dc_connection_mst_branch)
 		is_delegated_to_mst_top_mgr = link_reset_cur_dp_mst_topology(link);
 

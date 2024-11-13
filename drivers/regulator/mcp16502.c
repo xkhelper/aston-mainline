@@ -107,16 +107,10 @@ static unsigned int mcp16502_of_map_mode(unsigned int mode)
 	return REGULATOR_MODE_INVALID;
 }
 
-<<<<<<< HEAD
-#define MCP16502_REGULATOR(_name, _id, _ranges, _ops, _ramp_table)	\
-	[_id] = {							\
-		.name			= _name,			\
-=======
 #define MCP16502_REGULATOR(_name, _id, _sn, _ranges, _ops, _ramp_table)	\
 	[_id] = {							\
 		.name			= _name,			\
 		.supply_name		= #_sn,				\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.regulators_node	= "regulators",			\
 		.id			= _id,				\
 		.ops			= &(_ops),			\
@@ -474,20 +468,6 @@ static const struct linear_range b234_ranges[] = {
 };
 
 static const struct regulator_desc mcp16502_desc[] = {
-<<<<<<< HEAD
-	/* MCP16502_REGULATOR(_name, _id, ranges, regulator_ops, ramp_table) */
-	MCP16502_REGULATOR("VDD_IO", BUCK1, b1l12_ranges, mcp16502_buck_ops,
-			   mcp16502_ramp_b1l12),
-	MCP16502_REGULATOR("VDD_DDR", BUCK2, b234_ranges, mcp16502_buck_ops,
-			   mcp16502_ramp_b234),
-	MCP16502_REGULATOR("VDD_CORE", BUCK3, b234_ranges, mcp16502_buck_ops,
-			   mcp16502_ramp_b234),
-	MCP16502_REGULATOR("VDD_OTHER", BUCK4, b234_ranges, mcp16502_buck_ops,
-			   mcp16502_ramp_b234),
-	MCP16502_REGULATOR("LDO1", LDO1, b1l12_ranges, mcp16502_ldo_ops,
-			   mcp16502_ramp_b1l12),
-	MCP16502_REGULATOR("LDO2", LDO2, b1l12_ranges, mcp16502_ldo_ops,
-=======
 	/* MCP16502_REGULATOR(_name, _id, _sn, _ranges, _ops, _ramp_table) */
 	MCP16502_REGULATOR("VDD_IO", BUCK1, pvin1, b1l12_ranges, mcp16502_buck_ops,
 			   mcp16502_ramp_b1l12),
@@ -500,7 +480,6 @@ static const struct regulator_desc mcp16502_desc[] = {
 	MCP16502_REGULATOR("LDO1", LDO1, lvin, b1l12_ranges, mcp16502_ldo_ops,
 			   mcp16502_ramp_b1l12),
 	MCP16502_REGULATOR("LDO2", LDO2, lvin, b1l12_ranges, mcp16502_ldo_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			   mcp16502_ramp_b1l12)
 };
 

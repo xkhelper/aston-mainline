@@ -8,10 +8,7 @@
 #include <vdso/datapage.h>
 
 extern struct vdso_data *vdso_data;
-<<<<<<< HEAD
-=======
 extern struct vdso_rng_data *vdso_rng_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Update the vDSO data page to keep in sync with kernel timekeeping.
@@ -23,8 +20,6 @@ struct vdso_data *__loongarch_get_k_vdso_data(void)
 }
 #define __arch_get_k_vdso_data __loongarch_get_k_vdso_data
 
-<<<<<<< HEAD
-=======
 static __always_inline
 struct vdso_rng_data *__loongarch_get_k_vdso_rng_data(void)
 {
@@ -32,7 +27,6 @@ struct vdso_rng_data *__loongarch_get_k_vdso_rng_data(void)
 }
 #define __arch_get_k_vdso_rng_data __loongarch_get_k_vdso_rng_data
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* The asm-generic header needs to be included after the definitions above */
 #include <asm-generic/vdso/vsyscall.h>
 

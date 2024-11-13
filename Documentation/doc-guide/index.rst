@@ -12,10 +12,7 @@ How to write kernel documentation
    parse-headers
    contributing
    maintainer-profile
-<<<<<<< HEAD
-=======
    checktransupdate
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 .. only::  subproject and html
 

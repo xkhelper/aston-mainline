@@ -728,11 +728,7 @@ static int get_cluster_channels_v3(struct mixer_build *state, unsigned int clust
 			UAC3_CS_REQ_HIGH_CAPABILITY_DESCRIPTOR,
 			USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_IN,
 			cluster_id,
-<<<<<<< HEAD
-			snd_usb_ctrl_intf(state->chip),
-=======
 			snd_usb_ctrl_intf(state->mixer->hostif),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			&c_header, sizeof(c_header));
 	if (err < 0)
 		goto error;
@@ -1209,10 +1205,7 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
 		}
 		break;
 	case USB_ID(0x1bcf, 0x2283): /* NexiGo N930AF FHD Webcam */
-<<<<<<< HEAD
-=======
 	case USB_ID(0x03f0, 0x654a): /* HP 320 FHD Webcam */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
 			usb_audio_info(chip,
 				"set resolution quirk: cval->res = 16\n");
@@ -1385,8 +1378,6 @@ no_res_check:
 
 #define get_min_max(cval, def)	get_min_max_with_quirks(cval, def, NULL)
 
-<<<<<<< HEAD
-=======
 /* get the max value advertised via control API */
 static int get_max_exposed(struct usb_mixer_elem_info *cval)
 {
@@ -1400,7 +1391,6 @@ static int get_max_exposed(struct usb_mixer_elem_info *cval)
 	return cval->max_exposed;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* get a feature/mixer unit info */
 static int mixer_ctl_feature_info(struct snd_kcontrol *kcontrol,
 				  struct snd_ctl_elem_info *uinfo)
@@ -1413,16 +1403,8 @@ static int mixer_ctl_feature_info(struct snd_kcontrol *kcontrol,
 	else
 		uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
 	uinfo->count = cval->channels;
-<<<<<<< HEAD
-	if (cval->val_type == USB_MIXER_BOOLEAN ||
-	    cval->val_type == USB_MIXER_INV_BOOLEAN) {
-		uinfo->value.integer.min = 0;
-		uinfo->value.integer.max = 1;
-	} else {
-=======
 	if (cval->val_type != USB_MIXER_BOOLEAN &&
 	    cval->val_type != USB_MIXER_INV_BOOLEAN) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!cval->initialized) {
 			get_min_max_with_quirks(cval, 0, kcontrol);
 			if (cval->initialized && cval->dBmin >= cval->dBmax) {
@@ -1434,17 +1416,10 @@ static int mixer_ctl_feature_info(struct snd_kcontrol *kcontrol,
 					       &kcontrol->id);
 			}
 		}
-<<<<<<< HEAD
-		uinfo->value.integer.min = 0;
-		uinfo->value.integer.max =
-			DIV_ROUND_UP(cval->max - cval->min, cval->res);
-	}
-=======
 	}
 
 	uinfo->value.integer.min = 0;
 	uinfo->value.integer.max = get_max_exposed(cval);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -1485,10 +1460,7 @@ static int mixer_ctl_feature_put(struct snd_kcontrol *kcontrol,
 				 struct snd_ctl_elem_value *ucontrol)
 {
 	struct usb_mixer_elem_info *cval = kcontrol->private_data;
-<<<<<<< HEAD
-=======
 	int max_val = get_max_exposed(cval);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int c, cnt, val, oval, err;
 	int changed = 0;
 
@@ -1501,11 +1473,8 @@ static int mixer_ctl_feature_put(struct snd_kcontrol *kcontrol,
 			if (err < 0)
 				return filter_error(cval, err);
 			val = ucontrol->value.integer.value[cnt];
-<<<<<<< HEAD
-=======
 			if (val < 0 || val > max_val)
 				return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			val = get_abs_value(cval, val);
 			if (oval != val) {
 				snd_usb_set_cur_mix_value(cval, c + 1, cnt, val);
@@ -1519,11 +1488,8 @@ static int mixer_ctl_feature_put(struct snd_kcontrol *kcontrol,
 		if (err < 0)
 			return filter_error(cval, err);
 		val = ucontrol->value.integer.value[0];
-<<<<<<< HEAD
-=======
 		if (val < 0 || val > max_val)
 			return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		val = get_abs_value(cval, val);
 		if (val != oval) {
 			snd_usb_set_cur_mix_value(cval, 0, 0, val);
@@ -2387,11 +2353,8 @@ static int mixer_ctl_procunit_put(struct snd_kcontrol *kcontrol,
 	if (err < 0)
 		return filter_error(cval, err);
 	val = ucontrol->value.integer.value[0];
-<<<<<<< HEAD
-=======
 	if (val < 0 || val > get_max_exposed(cval))
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	val = get_abs_value(cval, val);
 	if (val != oval) {
 		set_cur_ctl_value(cval, cval->control << 8, val);
@@ -2754,11 +2717,8 @@ static int mixer_ctl_selector_put(struct snd_kcontrol *kcontrol,
 	if (err < 0)
 		return filter_error(cval, err);
 	val = ucontrol->value.enumerated.item[0];
-<<<<<<< HEAD
-=======
 	if (val < 0 || val >= cval->max) /* here cval->max = # elements */
 		return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	val = get_abs_value(cval, val);
 	if (val != oval) {
 		set_cur_ctl_value(cval, cval->control << 8, val);

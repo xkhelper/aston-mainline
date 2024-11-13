@@ -78,16 +78,12 @@ log_test()
 	else
 		ret=1
 		nfail=$((nfail+1))
-<<<<<<< HEAD
-		printf "TEST: %-60s  [FAIL]\n" "${msg}"
-=======
 		if [[ $rc -eq $ksft_skip ]]; then
 			printf "TEST: %-60s  [SKIP]\n" "${msg}"
 		else
 			printf "TEST: %-60s  [FAIL]\n" "${msg}"
 		fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if [ "$VERBOSE" = "1" ]; then
 			echo "    rc=$rc, expected $expected"
 		fi
@@ -932,8 +928,6 @@ ipv6_grp_fcnal()
 
 	ipv6_grp_refs
 	log_test $? 0 "Nexthop group replace refcounts"
-<<<<<<< HEAD
-=======
 
 	#
 	# 16-bit weights.
@@ -957,7 +951,6 @@ ipv6_grp_fcnal()
 	$IP nexthop flush >/dev/null 2>&1
 
 	log_test $rc 0 "16-bit weights"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 ipv6_res_grp_fcnal()
@@ -1022,8 +1015,6 @@ ipv6_res_grp_fcnal()
 	check_nexthop_bucket "list id 102" \
 		"id 102 index 0 nhid 63 id 102 index 1 nhid 62 id 102 index 2 nhid 62 id 102 index 3 nhid 62"
 	log_test $? 0 "Nexthop buckets updated after replace - nECMP"
-<<<<<<< HEAD
-=======
 
 	#
 	# 16-bit weights.
@@ -1049,7 +1040,6 @@ ipv6_res_grp_fcnal()
 	$IP nexthop flush >/dev/null 2>&1
 
 	log_test $rc 0 "16-bit weights"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 ipv6_fcnal_runtime()

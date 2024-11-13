@@ -42,13 +42,8 @@
 #define GMBUS1_TOTAL_BYTES_MASK 0x1ff
 #define gmbus1_total_byte_count(v) (((v) >> \
 	GMBUS1_TOTAL_BYTES_SHIFT) & GMBUS1_TOTAL_BYTES_MASK)
-<<<<<<< HEAD
-#define gmbus1_slave_addr(v) (((v) & 0xff) >> 1)
-#define gmbus1_slave_index(v) (((v) >> 8) & 0xff)
-=======
 #define gmbus1_target_addr(v) (((v) & 0xff) >> 1)
 #define gmbus1_target_index(v) (((v) >> 8) & 0xff)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define gmbus1_bus_cycle(v) (((v) >> 25) & 0x7)
 
 /* GMBUS0 bits definitions */
@@ -59,11 +54,7 @@ static unsigned char edid_get_byte(struct intel_vgpu *vgpu)
 	struct intel_vgpu_i2c_edid *edid = &vgpu->display.i2c_edid;
 	unsigned char chr = 0;
 
-<<<<<<< HEAD
-	if (edid->state == I2C_NOT_SPECIFIED || !edid->slave_selected) {
-=======
 	if (edid->state == I2C_NOT_SPECIFIED || !edid->target_selected) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gvt_vgpu_err("Driver tries to read EDID without proper sequence!\n");
 		return 0;
 	}
@@ -188,11 +179,7 @@ static int gmbus1_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 		void *p_data, unsigned int bytes)
 {
 	struct intel_vgpu_i2c_edid *i2c_edid = &vgpu->display.i2c_edid;
-<<<<<<< HEAD
-	u32 slave_addr;
-=======
 	u32 target_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 wvalue = *(u32 *)p_data;
 
 	if (vgpu_vreg(vgpu, offset) & GMBUS_SW_CLR_INT) {
@@ -223,18 +210,6 @@ static int gmbus1_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 
 		i2c_edid->gmbus.total_byte_count =
 			gmbus1_total_byte_count(wvalue);
-<<<<<<< HEAD
-		slave_addr = gmbus1_slave_addr(wvalue);
-
-		/* vgpu gmbus only support EDID */
-		if (slave_addr == EDID_ADDR) {
-			i2c_edid->slave_selected = true;
-		} else if (slave_addr != 0) {
-			gvt_dbg_dpy(
-				"vgpu%d: unsupported gmbus slave addr(0x%x)\n"
-				"	gmbus operations will be ignored.\n",
-					vgpu->id, slave_addr);
-=======
 		target_addr = gmbus1_target_addr(wvalue);
 
 		/* vgpu gmbus only support EDID */
@@ -245,16 +220,11 @@ static int gmbus1_mmio_write(struct intel_vgpu *vgpu, unsigned int offset,
 				"vgpu%d: unsupported gmbus target addr(0x%x)\n"
 				"	gmbus operations will be ignored.\n",
 					vgpu->id, target_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (wvalue & GMBUS_CYCLE_INDEX)
 			i2c_edid->current_edid_read =
-<<<<<<< HEAD
-				gmbus1_slave_index(wvalue);
-=======
 				gmbus1_target_index(wvalue);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		i2c_edid->gmbus.cycle_type = gmbus1_bus_cycle(wvalue);
 		switch (gmbus1_bus_cycle(wvalue)) {
@@ -553,11 +523,7 @@ void intel_gvt_i2c_handle_aux_ch_write(struct intel_vgpu *vgpu,
 			} else if (addr == EDID_ADDR) {
 				i2c_edid->state = I2C_AUX_CH;
 				i2c_edid->port = port_idx;
-<<<<<<< HEAD
-				i2c_edid->slave_selected = true;
-=======
 				i2c_edid->target_selected = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (intel_vgpu_has_monitor_on_port(vgpu,
 					port_idx) &&
 					intel_vgpu_port_is_dp(vgpu, port_idx))
@@ -576,11 +542,7 @@ void intel_gvt_i2c_handle_aux_ch_write(struct intel_vgpu *vgpu,
 			return;
 		if (drm_WARN_ON(&i915->drm, msg_length != 4))
 			return;
-<<<<<<< HEAD
-		if (i2c_edid->edid_available && i2c_edid->slave_selected) {
-=======
 		if (i2c_edid->edid_available && i2c_edid->target_selected) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			unsigned char val = edid_get_byte(vgpu);
 
 			aux_data_for_write = (val << 16);
@@ -609,11 +571,7 @@ void intel_vgpu_init_i2c_edid(struct intel_vgpu *vgpu)
 	edid->state = I2C_NOT_SPECIFIED;
 
 	edid->port = -1;
-<<<<<<< HEAD
-	edid->slave_selected = false;
-=======
 	edid->target_selected = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	edid->edid_available = false;
 	edid->current_edid_read = 0;
 

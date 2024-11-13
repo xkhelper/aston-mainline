@@ -13,10 +13,7 @@ Sound Subsystem Documentation
    alsa-configuration
    hd-audio/index
    cards/index
-<<<<<<< HEAD
-=======
    utimers
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 .. only::  subproject and html
 

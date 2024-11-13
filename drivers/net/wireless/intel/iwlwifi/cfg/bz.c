@@ -10,11 +10,7 @@
 #include "fw/api/txq.h"
 
 /* Highest firmware API version supported */
-<<<<<<< HEAD
-#define IWL_BZ_UCODE_API_MAX	92
-=======
 #define IWL_BZ_UCODE_API_MAX	93
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Lowest firmware API version supported */
 #define IWL_BZ_UCODE_API_MIN	90
@@ -152,8 +148,6 @@ const struct iwl_cfg_trans_params iwl_bz_trans_cfg = {
 	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
 };
 
-<<<<<<< HEAD
-=======
 const struct iwl_cfg_trans_params iwl_gl_trans_cfg = {
 	.device_family = IWL_DEVICE_FAMILY_BZ,
 	.base_params = &iwl_bz_base_params,
@@ -165,7 +159,6 @@ const struct iwl_cfg_trans_params iwl_gl_trans_cfg = {
 	.low_latency_xtal = true,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const char iwl_bz_name[] = "Intel(R) TBD Bz device";
 const char iwl_fm_name[] = "Intel(R) Wi-Fi 7 BE201 320MHz";
 const char iwl_gl_name[] = "Intel(R) Wi-Fi 7 BE200 320MHz";

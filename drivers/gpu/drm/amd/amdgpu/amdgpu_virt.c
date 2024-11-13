@@ -33,10 +33,7 @@
 #include "amdgpu.h"
 #include "amdgpu_ras.h"
 #include "amdgpu_reset.h"
-<<<<<<< HEAD
-=======
 #include "amdgpu_dpm.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "vi.h"
 #include "soc15.h"
 #include "nv.h"
@@ -853,8 +850,6 @@ enum amdgpu_sriov_vf_mode amdgpu_virt_get_sriov_vf_mode(struct amdgpu_device *ad
 	return mode;
 }
 
-<<<<<<< HEAD
-=======
 void amdgpu_virt_pre_reset(struct amdgpu_device *adev)
 {
 	/* stop the data exchange thread */
@@ -862,7 +857,6 @@ void amdgpu_virt_pre_reset(struct amdgpu_device *adev)
 	amdgpu_dpm_set_mp1_state(adev, PP_MP1_STATE_FLR);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void amdgpu_virt_post_reset(struct amdgpu_device *adev)
 {
 	if (amdgpu_ip_version(adev, GC_HWIP, 0) == IP_VERSION(11, 0, 3)) {

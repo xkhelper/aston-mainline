@@ -359,32 +359,17 @@ static int sprd_thm_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	thm->clk = devm_clk_get(&pdev->dev, "enable");
-=======
 	thm->clk = devm_clk_get_enabled(&pdev->dev, "enable");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(thm->clk)) {
 		dev_err(&pdev->dev, "failed to get enable clock\n");
 		return PTR_ERR(thm->clk);
 	}
 
-<<<<<<< HEAD
-	ret = clk_prepare_enable(thm->clk);
-	if (ret)
-		return ret;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sprd_thm_para_config(thm);
 
 	ret = sprd_thm_cal_read(np, "thm_sign_cal", &val);
 	if (ret)
-<<<<<<< HEAD
-		goto disable_clk;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (val > 0)
 		thm->ratio_sign = -1;
@@ -393,11 +378,7 @@ static int sprd_thm_probe(struct platform_device *pdev)
 
 	ret = sprd_thm_cal_read(np, "thm_ratio_cal", &thm->ratio_off);
 	if (ret)
-<<<<<<< HEAD
-		goto disable_clk;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for_each_child_of_node(np, sen_child) {
 		sen = devm_kzalloc(&pdev->dev, sizeof(*sen), GFP_KERNEL);
@@ -454,11 +435,6 @@ static int sprd_thm_probe(struct platform_device *pdev)
 
 of_put:
 	of_node_put(sen_child);
-<<<<<<< HEAD
-disable_clk:
-	clk_disable_unprepare(thm->clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -544,11 +520,6 @@ static void sprd_thm_remove(struct platform_device *pdev)
 		devm_thermal_of_zone_unregister(&pdev->dev,
 						thm->sensor[i]->tzd);
 	}
-<<<<<<< HEAD
-
-	clk_disable_unprepare(thm->clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static const struct of_device_id sprd_thermal_of_match[] = {

@@ -6,10 +6,7 @@
  * Copyright(c) 2022, Analogix Semiconductor. All rights reserved.
  *
  */
-<<<<<<< HEAD
-=======
 #include <linux/bitfield.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/gpio/consumer.h>
 #include <linux/i2c.h>
 #include <linux/interrupt.h>
@@ -888,13 +885,8 @@ static void anx7411_chip_standby(struct anx7411_data *ctx)
 				OCM_RESET);
 	ret |= anx7411_reg_write(ctx->tcpc_client, ANALOG_CTRL_10, 0x80);
 	/* Set TCPC to RD and DRP enable */
-<<<<<<< HEAD
-	cc1 = TCPC_ROLE_CTRL_CC_RD << TCPC_ROLE_CTRL_CC1_SHIFT;
-	cc2 = TCPC_ROLE_CTRL_CC_RD << TCPC_ROLE_CTRL_CC2_SHIFT;
-=======
 	cc1 = FIELD_PREP(TCPC_ROLE_CTRL_CC1, TCPC_ROLE_CTRL_CC_RD);
 	cc2 = FIELD_PREP(TCPC_ROLE_CTRL_CC2, TCPC_ROLE_CTRL_CC_RD);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret |= anx7411_reg_write(ctx->tcpc_client, TCPC_ROLE_CTRL,
 				 TCPC_ROLE_CTRL_DRP | cc1 | cc2);
 
@@ -1348,15 +1340,6 @@ static void anx7411_get_gpio_irq(struct anx7411_data *ctx)
 		dev_err(dev, "failed to get GPIO IRQ\n");
 }
 
-<<<<<<< HEAD
-static enum power_supply_usb_type anx7411_psy_usb_types[] = {
-	POWER_SUPPLY_USB_TYPE_C,
-	POWER_SUPPLY_USB_TYPE_PD,
-	POWER_SUPPLY_USB_TYPE_PD_PPS,
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static enum power_supply_property anx7411_psy_props[] = {
 	POWER_SUPPLY_PROP_USB_TYPE,
 	POWER_SUPPLY_PROP_ONLINE,
@@ -1434,14 +1417,9 @@ static int anx7411_psy_register(struct anx7411_data *ctx)
 
 	psy_desc->name = psy_name;
 	psy_desc->type = POWER_SUPPLY_TYPE_USB;
-<<<<<<< HEAD
-	psy_desc->usb_types = anx7411_psy_usb_types;
-	psy_desc->num_usb_types = ARRAY_SIZE(anx7411_psy_usb_types);
-=======
 	psy_desc->usb_types = BIT(POWER_SUPPLY_USB_TYPE_C)  |
 			      BIT(POWER_SUPPLY_USB_TYPE_PD) |
 			      BIT(POWER_SUPPLY_USB_TYPE_PD_PPS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	psy_desc->properties = anx7411_psy_props;
 	psy_desc->num_properties = ARRAY_SIZE(anx7411_psy_props);
 
@@ -1594,10 +1572,7 @@ static const struct of_device_id anx_match_table[] = {
 	{.compatible = "analogix,anx7411",},
 	{},
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(of, anx_match_table);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct i2c_driver anx7411_driver = {
 	.driver = {

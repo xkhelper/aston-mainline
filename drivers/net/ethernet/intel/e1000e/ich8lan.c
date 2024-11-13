@@ -1205,19 +1205,10 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
 	if (ret_val)
 		goto out;
 
-<<<<<<< HEAD
-	if (hw->mac.type != e1000_pch_mtp) {
-		ret_val = e1000e_force_smbus(hw);
-		if (ret_val) {
-			e_dbg("Failed to force SMBUS: %d\n", ret_val);
-			goto release;
-		}
-=======
 	ret_val = e1000e_force_smbus(hw);
 	if (ret_val) {
 		e_dbg("Failed to force SMBUS: %d\n", ret_val);
 		goto release;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Si workaround for ULP entry flow on i127/rev6 h/w.  Enable
@@ -1280,16 +1271,6 @@ s32 e1000_enable_ulp_lpt_lp(struct e1000_hw *hw, bool to_sx)
 	}
 
 release:
-<<<<<<< HEAD
-	if (hw->mac.type == e1000_pch_mtp) {
-		ret_val = e1000e_force_smbus(hw);
-		if (ret_val)
-			e_dbg("Failed to force SMBUS over MTL system: %d\n",
-			      ret_val);
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hw->phy.ops.release(hw);
 out:
 	if (ret_val)

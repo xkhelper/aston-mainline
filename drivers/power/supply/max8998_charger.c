@@ -191,10 +191,7 @@ static const struct platform_device_id max8998_battery_id[] = {
 	{ "max8998-battery", TYPE_MAX8998 },
 	{ }
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(platform, max8998_battery_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver max8998_battery_driver = {
 	.driver = {

@@ -79,11 +79,7 @@ static const bool max16065_have_current[] = {
 };
 
 struct max16065_data {
-<<<<<<< HEAD
-	enum chips type;
-=======
 	enum chips chip;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct i2c_client *client;
 	const struct attribute_group *groups[4];
 	struct mutex update_lock;
@@ -118,16 +114,10 @@ static inline int LIMIT_TO_MV(int limit, int range)
 	return limit * range / 256;
 }
 
-<<<<<<< HEAD
-static inline int MV_TO_LIMIT(int mv, int range)
-{
-	return clamp_val(DIV_ROUND_CLOSEST(mv * 256, range), 0, 255);
-=======
 static inline int MV_TO_LIMIT(unsigned long mv, int range)
 {
 	mv = clamp_val(mv, 0, ULONG_MAX / 256);
 	return DIV_ROUND_CLOSEST(clamp_val(mv * 256, 0, range * 255), range);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline int ADC_TO_CURR(int adc, int gain)
@@ -172,12 +162,6 @@ static struct max16065_data *max16065_update_device(struct device *dev)
 						     MAX16065_CURR_SENSE);
 		}
 
-<<<<<<< HEAD
-		for (i = 0; i < DIV_ROUND_UP(data->num_adc, 8); i++)
-			data->fault[i]
-			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
-
-=======
 		for (i = 0; i < 2; i++)
 			data->fault[i]
 			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
@@ -189,7 +173,6 @@ static struct max16065_data *max16065_update_device(struct device *dev)
 		if (data->chip == max16067 || data->chip == max16068)
 			data->fault[0] |= data->fault[1];
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		data->last_updated = jiffies;
 		data->valid = true;
 	}
@@ -538,10 +521,7 @@ static int max16065_probe(struct i2c_client *client)
 	if (unlikely(!data))
 		return -ENOMEM;
 
-<<<<<<< HEAD
-=======
 	data->chip = chip;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	data->client = client;
 	mutex_init(&data->update_lock);
 

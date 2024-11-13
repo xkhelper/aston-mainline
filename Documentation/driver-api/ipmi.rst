@@ -540,11 +540,7 @@ at module load time (for a module) with::
 	alerts_broken
 
 The addresses are normal I2C addresses.  The adapter is the string
-<<<<<<< HEAD
-name of the adapter, as shown in /sys/class/i2c-adapter/i2c-<n>/name.
-=======
 name of the adapter, as shown in /sys/bus/i2c/devices/i2c-<n>/name.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 It is *NOT* i2c-<n> itself.  Also, the comparison is done ignoring
 spaces, so if the name is "This is an I2C chip" you can say
 adapter_name=ThisisanI2cchip.  This is because it's hard to pass in

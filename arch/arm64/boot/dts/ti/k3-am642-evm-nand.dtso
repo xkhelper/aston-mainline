@@ -12,11 +12,7 @@
 #include "k3-pinctrl.h"
 
 &main_pmx0 {
-<<<<<<< HEAD
-	gpmc0_pins_default: gpmc0-pins-default {
-=======
 	gpmc0_default_pins: gpmc0-default-pins {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bootph-all;
 		pinctrl-single,pins = <
 			AM64X_IOPAD(0x0094, PIN_INPUT, 7) /* (T19) GPMC0_BE1n.GPIO0_36 */
@@ -54,11 +50,7 @@
 };
 
 &main_gpio0 {
-<<<<<<< HEAD
-	gpio0-36 {
-=======
 	gpmc0-hog {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		bootph-all;
 		gpio-hog;
 		gpios = <36 0>;
@@ -75,11 +67,7 @@
 &gpmc0 {
 	status = "okay";
 	pinctrl-names = "default";
-<<<<<<< HEAD
-	pinctrl-0 = <&gpmc0_pins_default>;
-=======
 	pinctrl-0 = <&gpmc0_default_pins>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	#address-cells = <2>;
 	#size-cells = <1>;
 

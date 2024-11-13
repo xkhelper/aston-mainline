@@ -75,11 +75,7 @@
 		pon: pon@800 {
 			compatible = "qcom,pm8916-pon";
 			reg = <0x0800>;
-<<<<<<< HEAD
-			pwrkey {
-=======
 			pmc8180_pwrkey: pwrkey {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				compatible = "qcom,pm8941-pwrkey";
 				interrupts = <0x0 0x8 0x0 IRQ_TYPE_EDGE_BOTH>;
 				debounce = <15625>;
@@ -143,19 +139,11 @@
 			interrupts = <0x0 0x61 0x1 IRQ_TYPE_NONE>;
 		};
 
-<<<<<<< HEAD
-		pmc8180_gpios: gpio@c000 {
-			compatible = "qcom,pmc8180-gpio", "qcom,spmi-gpio";
-			reg = <0xc000>;
-			gpio-controller;
-			gpio-ranges = <&pmc8180_gpios 0 0 10>;
-=======
 		pmc8180_1_gpios: gpio@c000 {
 			compatible = "qcom,pmc8180-gpio", "qcom,spmi-gpio";
 			reg = <0xc000>;
 			gpio-controller;
 			gpio-ranges = <&pmc8180_1_gpios 0 0 10>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			#gpio-cells = <2>;
 			interrupt-controller;
 			#interrupt-cells = <2>;
@@ -210,17 +198,11 @@
 		#size-cells = <0>;
 	};
 
-<<<<<<< HEAD
-	pmic@8 {
-=======
 	pmc8180_2: pmic@8 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		compatible = "qcom,pm8150", "qcom,spmi-pmic";
 		reg = <0x8 SPMI_USID>;
 		#address-cells = <1>;
 		#size-cells = <0>;
-<<<<<<< HEAD
-=======
 
 		pmc8180_2_gpios: gpio@c000 {
 			compatible = "qcom,pmc8180-gpio", "qcom,spmi-gpio";
@@ -231,7 +213,6 @@
 			interrupt-controller;
 			#interrupt-cells = <2>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	pmic@a {

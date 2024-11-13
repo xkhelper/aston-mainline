@@ -357,14 +357,11 @@ int iwl_acpi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
 	}
 
 	mcc_val = wifi_pkg->package.elements[1].integer.value;
-<<<<<<< HEAD
-=======
 	if (mcc_val != BIOS_MCC_CHINA) {
 		ret = -EINVAL;
 		IWL_DEBUG_RADIO(fwrt, "ACPI WRDD is supported only for CN\n");
 		goto out_free;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mcc[0] = (mcc_val >> 8) & 0xff;
 	mcc[1] = mcc_val & 0xff;
@@ -432,33 +429,6 @@ out_free:
 	return ret;
 }
 
-<<<<<<< HEAD
-static int iwl_acpi_sar_set_profile(union acpi_object *table,
-				    struct iwl_sar_profile *profile,
-				    bool enabled, u8 num_chains,
-				    u8 num_sub_bands)
-{
-	int i, j, idx = 0;
-
-	/*
-	 * The table from ACPI is flat, but we store it in a
-	 * structured array.
-	 */
-	for (i = 0; i < BIOS_SAR_MAX_CHAINS_PER_PROFILE; i++) {
-		for (j = 0; j < BIOS_SAR_MAX_SUB_BANDS_NUM; j++) {
-			/* if we don't have the values, use the default */
-			if (i >= num_chains || j >= num_sub_bands) {
-				profile->chains[i].subbands[j] = 0;
-			} else {
-				if (table[idx].type != ACPI_TYPE_INTEGER ||
-				    table[idx].integer.value > U8_MAX)
-					return -EINVAL;
-
-				profile->chains[i].subbands[j] =
-					table[idx].integer.value;
-
-				idx++;
-=======
 static int
 iwl_acpi_parse_chains_table(union acpi_object *table,
 			    struct iwl_sar_profile_chain *chains,
@@ -477,17 +447,10 @@ iwl_acpi_parse_chains_table(union acpi_object *table,
 				chains[chain].subbands[subband] =
 					table->integer.value;
 				table++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 		}
 	}
 
-<<<<<<< HEAD
-	/* Only if all values were valid can the profile be enabled */
-	profile->enabled = enabled;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -570,17 +533,11 @@ read_table:
 	/* The profile from WRDS is officially profile 1, but goes
 	 * into sar_profiles[0] (because we don't have a profile 0).
 	 */
-<<<<<<< HEAD
-	ret = iwl_acpi_sar_set_profile(table, &fwrt->sar_profiles[0],
-				       flags & IWL_SAR_ENABLE_MSK,
-				       num_chains, num_sub_bands);
-=======
 	ret = iwl_acpi_parse_chains_table(table, fwrt->sar_profiles[0].chains,
 					  num_chains, num_sub_bands);
 	if (!ret && flags & IWL_SAR_ENABLE_MSK)
 		fwrt->sar_profiles[0].enabled = true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_free:
 	kfree(data);
 	return ret;
@@ -592,11 +549,7 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
 	bool enabled;
 	int i, n_profiles, tbl_rev, pos;
 	int ret = 0;
-<<<<<<< HEAD
-	u8 num_chains, num_sub_bands;
-=======
 	u8 num_sub_bands;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	data = iwl_acpi_get_object(fwrt->dev, ACPI_EWRD_METHOD);
 	if (IS_ERR(data))
@@ -612,10 +565,6 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
 			goto out_free;
 		}
 
-<<<<<<< HEAD
-		num_chains = ACPI_SAR_NUM_CHAINS_REV2;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		num_sub_bands = ACPI_SAR_NUM_SUB_BANDS_REV2;
 
 		goto read_table;
@@ -631,10 +580,6 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
 			goto out_free;
 		}
 
-<<<<<<< HEAD
-		num_chains = ACPI_SAR_NUM_CHAINS_REV1;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		num_sub_bands = ACPI_SAR_NUM_SUB_BANDS_REV1;
 
 		goto read_table;
@@ -650,10 +595,6 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
 			goto out_free;
 		}
 
-<<<<<<< HEAD
-		num_chains = ACPI_SAR_NUM_CHAINS_REV0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		num_sub_bands = ACPI_SAR_NUM_SUB_BANDS_REV0;
 
 		goto read_table;
@@ -685,10 +626,6 @@ read_table:
 	/* the tables start at element 3 */
 	pos = 3;
 
-<<<<<<< HEAD
-	for (i = 0; i < n_profiles; i++) {
-		union acpi_object *table = &wifi_pkg->package.elements[pos];
-=======
 	BUILD_BUG_ON(ACPI_SAR_NUM_CHAINS_REV0 != ACPI_SAR_NUM_CHAINS_REV1);
 	BUILD_BUG_ON(ACPI_SAR_NUM_CHAINS_REV2 != 2 * ACPI_SAR_NUM_CHAINS_REV0);
 
@@ -696,24 +633,10 @@ read_table:
 	for (i = 0; i < n_profiles; i++) {
 		union acpi_object *table = &wifi_pkg->package.elements[pos];
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* The EWRD profiles officially go from 2 to 4, but we
 		 * save them in sar_profiles[1-3] (because we don't
 		 * have profile 0).  So in the array we start from 1.
 		 */
-<<<<<<< HEAD
-		ret = iwl_acpi_sar_set_profile(table,
-					       &fwrt->sar_profiles[i + 1],
-					       enabled, num_chains,
-					       num_sub_bands);
-		if (ret < 0)
-			break;
-
-		/* go to the next table */
-		pos += num_chains * num_sub_bands;
-	}
-
-=======
 		ret = iwl_acpi_parse_chains_table(table,
 						  fwrt->sar_profiles[i + 1].chains,
 						  ACPI_SAR_NUM_CHAINS_REV0,
@@ -751,7 +674,6 @@ set_enabled:
 	for (i = 0; i < n_profiles; i++)
 		fwrt->sar_profiles[i + 1].enabled = enabled;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out_free:
 	kfree(data);
 	return ret;

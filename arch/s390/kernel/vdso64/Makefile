@@ -3,14 +3,6 @@
 
 # Include the generic Makefile to check the built vdso.
 include $(srctree)/lib/vdso/Makefile
-<<<<<<< HEAD
-obj-vdso64 = vdso_user_wrapper.o note.o
-obj-cvdso64 = vdso64_generic.o getcpu.o
-VDSO_CFLAGS_REMOVE := -pg $(CC_FLAGS_FTRACE) $(CC_FLAGS_EXPOLINE) $(CC_FLAGS_CHECK_STACK)
-CFLAGS_REMOVE_getcpu.o = $(VDSO_CFLAGS_REMOVE)
-CFLAGS_REMOVE_vdso64_generic.o = $(VDSO_CFLAGS_REMOVE)
-
-=======
 obj-vdso64 = vdso_user_wrapper.o note.o vgetrandom-chacha.o
 obj-cvdso64 = vdso64_generic.o getcpu.o vgetrandom.o
 VDSO_CFLAGS_REMOVE := -pg $(CC_FLAGS_FTRACE) $(CC_FLAGS_EXPOLINE) $(CC_FLAGS_CHECK_STACK)
@@ -22,7 +14,6 @@ ifneq ($(c-getrandom-y),)
 	CFLAGS_vgetrandom.o += -include $(c-getrandom-y)
 endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 # Build rules
 
 targets := $(obj-vdso64) $(obj-cvdso64) vdso64.so vdso64.so.dbg

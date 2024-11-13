@@ -11,10 +11,7 @@
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/seq_file.h>
-<<<<<<< HEAD
-=======
 #include <linux/string_choices.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/pinctrl/pinconf.h>
 #include <linux/pinctrl/pinmux.h>
@@ -373,22 +370,14 @@ static void stmfx_pinconf_dbg_show(struct pinctrl_dev *pctldev,
 		return;
 
 	if (dir == GPIO_LINE_DIRECTION_OUT) {
-<<<<<<< HEAD
-		seq_printf(s, "output %s ", val ? "high" : "low");
-=======
 		seq_printf(s, "output %s ", str_high_low(val));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (type)
 			seq_printf(s, "open drain %s internal pull-up ",
 				   pupd ? "with" : "without");
 		else
 			seq_puts(s, "push pull no pull ");
 	} else {
-<<<<<<< HEAD
-		seq_printf(s, "input %s ", val ? "high" : "low");
-=======
 		seq_printf(s, "input %s ", str_high_low(val));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (type)
 			seq_printf(s, "with internal pull-%s ",
 				   pupd ? "up" : "down");

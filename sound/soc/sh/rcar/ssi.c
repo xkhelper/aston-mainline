@@ -706,11 +706,7 @@ rsnd_ssi_interrupt_out:
 	spin_unlock(&priv->lock);
 
 	if (elapsed)
-<<<<<<< HEAD
-		rsnd_dai_period_elapsed(io);
-=======
 		snd_pcm_period_elapsed(io->substream);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (stop)
 		snd_pcm_stop_xrun(io->substream);

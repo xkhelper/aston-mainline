@@ -51,10 +51,7 @@
 #include <linux/debugfs.h>
 #include <linux/delay.h>
 #include <linux/intel_tpmi.h>
-<<<<<<< HEAD
-=======
 #include <linux/intel_vsec.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/io.h>
 #include <linux/iopoll.h>
 #include <linux/module.h>
@@ -63,11 +60,6 @@
 #include <linux/sizes.h>
 #include <linux/string_helpers.h>
 
-<<<<<<< HEAD
-#include "vsec.h"
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct intel_tpmi_pfs_entry - TPMI PM Feature Structure (PFS) entry
  * @tpmi_id:	TPMI feature identifier (what the feature is and its data format).

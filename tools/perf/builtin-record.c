@@ -171,10 +171,7 @@ struct record {
 	bool			timestamp_filename;
 	bool			timestamp_boundary;
 	bool			off_cpu;
-<<<<<<< HEAD
-=======
 	const char		*filter_action;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct switch_output	switch_output;
 	unsigned long long	samples;
 	unsigned long		output_max_size;	/* = 0: unlimited */
@@ -197,8 +194,6 @@ static const char *affinity_tags[PERF_AFFINITY_MAX] = {
 	"SYS", "NODE", "CPU"
 };
 
-<<<<<<< HEAD
-=======
 static int build_id__process_mmap(const struct perf_tool *tool, union perf_event *event,
 				  struct perf_sample *sample, struct machine *machine);
 static int build_id__process_mmap2(const struct perf_tool *tool, union perf_event *event,
@@ -208,7 +203,6 @@ static int process_timestamp_boundary(const struct perf_tool *tool,
 				      struct perf_sample *sample,
 				      struct machine *machine);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef HAVE_GETTID
 static inline pid_t gettid(void)
 {
@@ -624,11 +618,7 @@ static int record__comp_enabled(struct record *rec)
 	return rec->opts.comp_level > 0;
 }
 
-<<<<<<< HEAD
-static int process_synthesized_event(struct perf_tool *tool,
-=======
 static int process_synthesized_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     union perf_event *event,
 				     struct perf_sample *sample __maybe_unused,
 				     struct machine *machine __maybe_unused)
@@ -639,11 +629,7 @@ static int process_synthesized_event(const struct perf_tool *tool,
 
 static struct mutex synth_lock;
 
-<<<<<<< HEAD
-static int process_locked_synthesized_event(struct perf_tool *tool,
-=======
 static int process_locked_synthesized_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     union perf_event *event,
 				     struct perf_sample *sample __maybe_unused,
 				     struct machine *machine __maybe_unused)
@@ -728,11 +714,7 @@ static void record__sig_exit(void)
 
 #ifdef HAVE_AUXTRACE_SUPPORT
 
-<<<<<<< HEAD
-static int record__process_auxtrace(struct perf_tool *tool,
-=======
 static int record__process_auxtrace(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    struct mmap *map,
 				    union perf_event *event, void *data1,
 				    size_t len1, void *data2, size_t len2)
@@ -1417,11 +1399,7 @@ try_again:
 "even with a suitable vmlinux or kallsyms file.\n\n");
 	}
 
-<<<<<<< HEAD
-	if (evlist__apply_filters(evlist, &pos)) {
-=======
 	if (evlist__apply_filters(evlist, &pos, &opts->target)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_err("failed to set filter \"%s\" on event %s with %d (%s)\n",
 			pos->filter ?: "BPF", evsel__name(pos), errno,
 			str_error_r(errno, msg, sizeof(msg)));
@@ -1448,11 +1426,7 @@ static void set_timestamp_boundary(struct record *rec, u64 sample_time)
 		rec->evlist->last_sample_time = sample_time;
 }
 
-<<<<<<< HEAD
-static int process_sample_event(struct perf_tool *tool,
-=======
 static int process_sample_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				union perf_event *event,
 				struct perf_sample *sample,
 				struct evsel *evsel,
@@ -1494,11 +1468,7 @@ static int process_buildids(struct record *rec)
 	 * first/last samples.
 	 */
 	if (rec->buildid_all && !rec->timestamp_boundary)
-<<<<<<< HEAD
-		rec->tool.sample = NULL;
-=======
 		rec->tool.sample = process_event_sample_stub;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return perf_session__process_events(session);
 }
@@ -2404,18 +2374,8 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
 	signal(SIGTERM, sig_handler);
 	signal(SIGSEGV, sigsegv_handler);
 
-<<<<<<< HEAD
-	if (rec->opts.record_namespaces)
-		tool->namespace_events = true;
-
-	if (rec->opts.record_cgroup) {
-#ifdef HAVE_FILE_HANDLE
-		tool->cgroup_events = true;
-#else
-=======
 	if (rec->opts.record_cgroup) {
 #ifndef HAVE_FILE_HANDLE
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_err("cgroup tracking is not supported\n");
 		return -1;
 #endif
@@ -2431,8 +2391,6 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
 		signal(SIGUSR2, SIG_IGN);
 	}
 
-<<<<<<< HEAD
-=======
 	perf_tool__init(tool, /*ordered_events=*/true);
 	tool->sample		= process_sample_event;
 	tool->fork		= perf_event__process_fork;
@@ -2445,7 +2403,6 @@ static int __cmd_record(struct record *rec, int argc, const char **argv)
 	tool->aux		= process_timestamp_boundary;
 	tool->namespace_events	= rec->opts.record_namespaces;
 	tool->cgroup_events	= rec->opts.record_cgroup;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	session = perf_session__new(data, tool);
 	if (IS_ERR(session)) {
 		pr_err("Perf session creation failed.\n");
@@ -3303,11 +3260,7 @@ static const char * const __record_usage[] = {
 };
 const char * const *record_usage = __record_usage;
 
-<<<<<<< HEAD
-static int build_id__process_mmap(struct perf_tool *tool, union perf_event *event,
-=======
 static int build_id__process_mmap(const struct perf_tool *tool, union perf_event *event,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				  struct perf_sample *sample, struct machine *machine)
 {
 	/*
@@ -3319,11 +3272,7 @@ static int build_id__process_mmap(const struct perf_tool *tool, union perf_event
 	return perf_event__process_mmap(tool, event, sample, machine);
 }
 
-<<<<<<< HEAD
-static int build_id__process_mmap2(struct perf_tool *tool, union perf_event *event,
-=======
 static int build_id__process_mmap2(const struct perf_tool *tool, union perf_event *event,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				   struct perf_sample *sample, struct machine *machine)
 {
 	/*
@@ -3336,11 +3285,7 @@ static int build_id__process_mmap2(const struct perf_tool *tool, union perf_even
 	return perf_event__process_mmap2(tool, event, sample, machine);
 }
 
-<<<<<<< HEAD
-static int process_timestamp_boundary(struct perf_tool *tool,
-=======
 static int process_timestamp_boundary(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      union perf_event *event __maybe_unused,
 				      struct perf_sample *sample,
 				      struct machine *machine __maybe_unused)
@@ -3398,21 +3343,6 @@ static struct record record = {
 		.ctl_fd_ack          = -1,
 		.synth               = PERF_SYNTH_ALL,
 	},
-<<<<<<< HEAD
-	.tool = {
-		.sample		= process_sample_event,
-		.fork		= perf_event__process_fork,
-		.exit		= perf_event__process_exit,
-		.comm		= perf_event__process_comm,
-		.namespaces	= perf_event__process_namespaces,
-		.mmap		= build_id__process_mmap,
-		.mmap2		= build_id__process_mmap2,
-		.itrace_start	= process_timestamp_boundary,
-		.aux		= process_timestamp_boundary,
-		.ordered_events	= true,
-	},
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 const char record_callchain_help[] = CALLCHAIN_RECORD_HELP
@@ -3632,11 +3562,8 @@ static struct option __record_options[] = {
 			    "write collected trace data into several data files using parallel threads",
 			    record__parse_threads),
 	OPT_BOOLEAN(0, "off-cpu", &record.off_cpu, "Enable off-cpu analysis"),
-<<<<<<< HEAD
-=======
 	OPT_STRING(0, "setup-filter", &record.filter_action, "pin|unpin",
 		   "BPF filter action"),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	OPT_END()
 };
 
@@ -4166,8 +4093,6 @@ int cmd_record(int argc, const char **argv)
 		pr_warning("WARNING: --timestamp-filename option is not available in parallel streaming mode.\n");
 	}
 
-<<<<<<< HEAD
-=======
 	if (rec->filter_action) {
 		if (!strcmp(rec->filter_action, "pin"))
 			err = perf_bpf_filter__pin();
@@ -4180,7 +4105,6 @@ int cmd_record(int argc, const char **argv)
 		goto out_opts;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Allow aliases to facilitate the lookup of symbols for address
 	 * filters. Refer to auxtrace_parse_filters().
@@ -4337,15 +4261,6 @@ int cmd_record(int argc, const char **argv)
 
 	err = __cmd_record(&record, argc, argv);
 out:
-<<<<<<< HEAD
-	evlist__delete(rec->evlist);
-	symbol__exit();
-	auxtrace_record__free(rec->itr);
-out_opts:
-	record__free_thread_masks(rec, rec->nr_threads);
-	rec->nr_threads = 0;
-	evlist__close_control(rec->opts.ctl_fd, rec->opts.ctl_fd_ack, &rec->opts.ctl_fd_close);
-=======
 	record__free_thread_masks(rec, rec->nr_threads);
 	rec->nr_threads = 0;
 	symbol__exit();
@@ -4353,7 +4268,6 @@ out_opts:
 out_opts:
 	evlist__close_control(rec->opts.ctl_fd, rec->opts.ctl_fd_ack, &rec->opts.ctl_fd_close);
 	evlist__delete(rec->evlist);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return err;
 }
 

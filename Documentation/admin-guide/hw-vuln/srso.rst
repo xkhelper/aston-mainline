@@ -158,8 +158,6 @@ poisoned BTB entry and using that safe one for all function returns.
 In older Zen1 and Zen2, this is accomplished using a reinterpretation
 technique similar to Retbleed one: srso_untrain_ret() and
 srso_safe_ret().
-<<<<<<< HEAD
-=======
 
 Checking the safe RET mitigation actually works
 -----------------------------------------------
@@ -229,4 +227,3 @@ tools/testing/selftests/x86/ and do::
 
         make srso
         ./srso
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

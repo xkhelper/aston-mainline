@@ -25,14 +25,6 @@ struct space_resv {
 #define FS_IOC_UNRESVSP64	_IOW('X', 43, struct space_resv)
 #define FS_IOC_ZERO_RANGE	_IOW('X', 57, struct space_resv)
 
-<<<<<<< HEAD
-#define	FALLOC_FL_SUPPORTED_MASK	(FALLOC_FL_KEEP_SIZE |		\
-					 FALLOC_FL_PUNCH_HOLE |		\
-					 FALLOC_FL_COLLAPSE_RANGE |	\
-					 FALLOC_FL_ZERO_RANGE |		\
-					 FALLOC_FL_INSERT_RANGE |	\
-					 FALLOC_FL_UNSHARE_RANGE)
-=======
 /*
  * Mask of all supported fallocate modes.  Only one can be set at a time.
  *
@@ -45,7 +37,6 @@ struct space_resv {
 				 FALLOC_FL_ZERO_RANGE |		\
 				 FALLOC_FL_INSERT_RANGE |	\
 				 FALLOC_FL_UNSHARE_RANGE)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* on ia32 l_start is on a 32-bit boundary */
 #if defined(CONFIG_X86_64)

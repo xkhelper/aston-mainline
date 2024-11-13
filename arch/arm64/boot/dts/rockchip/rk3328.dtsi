@@ -754,12 +754,7 @@
 		compatible = "rockchip,rk3328-dw-hdmi";
 		reg = <0x0 0xff3c0000 0x0 0x20000>;
 		reg-io-width = <4>;
-<<<<<<< HEAD
-		interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>,
-			     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
-=======
 		interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		clocks = <&cru PCLK_HDMI>,
 			 <&cru SCLK_HDMI_SFC>,
 			 <&cru SCLK_RTC32K>;
@@ -914,11 +909,8 @@
 		clock-names = "biu", "ciu", "ciu-drive", "ciu-sample";
 		fifo-depth = <0x100>;
 		max-frequency = <150000000>;
-<<<<<<< HEAD
-=======
 		resets = <&cru SRST_MMC0>;
 		reset-names = "reset";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		status = "disabled";
 	};
 
@@ -931,11 +923,8 @@
 		clock-names = "biu", "ciu", "ciu-drive", "ciu-sample";
 		fifo-depth = <0x100>;
 		max-frequency = <150000000>;
-<<<<<<< HEAD
-=======
 		resets = <&cru SRST_SDIO>;
 		reset-names = "reset";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		status = "disabled";
 	};
 
@@ -948,11 +937,8 @@
 		clock-names = "biu", "ciu", "ciu-drive", "ciu-sample";
 		fifo-depth = <0x100>;
 		max-frequency = <150000000>;
-<<<<<<< HEAD
-=======
 		resets = <&cru SRST_EMMC>;
 		reset-names = "reset";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		status = "disabled";
 	};
 
@@ -1055,8 +1041,6 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
-=======
 	sdmmc_ext: mmc@ff5f0000 {
 		compatible = "rockchip,rk3328-dw-mshc", "rockchip,rk3288-dw-mshc";
 		reg = <0x0 0xff5f0000 0x0 0x4000>;
@@ -1071,7 +1055,6 @@
 		status = "disabled";
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	usbdrd3: usb@ff600000 {
 		compatible = "rockchip,rk3328-dwc3", "snps,dwc3";
 		reg = <0x0 0xff600000 0x0 0x100000>;

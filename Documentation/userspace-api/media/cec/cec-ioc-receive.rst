@@ -232,8 +232,6 @@ View On' messages from initiator 0xf ('Unregistered') to destination 0 ('TV').
 	capability. If that is not set, then the ``EPERM`` error code is
 	returned.
 
-<<<<<<< HEAD
-=======
     * .. _`CEC-MSG-FL-REPLY-VENDOR-ID`:
 
       - ``CEC_MSG_FL_REPLY_VENDOR_ID``
@@ -249,7 +247,6 @@ View On' messages from initiator 0xf ('Unregistered') to destination 0 ('TV').
 
 	This flag makes it easier to wait for replies to vendor commands.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .. tabularcolumns:: |p{5.6cm}|p{0.9cm}|p{10.8cm}|
 
 .. _cec-tx-status:

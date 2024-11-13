@@ -14,13 +14,6 @@
  * 1) read raw logarithmic resistance value from sensor
  *    --> useful to pass it to the algorithm of the sensor vendor for
  *    measuring deteriorations and improvements of air quality.
-<<<<<<< HEAD
- *
- * 2) calculate an estimated absolute voc index (0 - 500 index points) for
- *    measuring the air quality.
- *    For this purpose the value of the resistance for which the voc index
- *    will be 250 can be set up using calibbias.
-=======
  *    It can be read from the attribute in_resistance_raw.
  *
  * 2) calculate an estimated absolute voc index (in_concentration_input)
@@ -31,7 +24,6 @@
  *    The voc index is calculated as:
  *      x = (in_resistance_raw - in_resistance_calibbias) * 0.65
  *      in_concentration_input = 500 / (1 + e^x)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Compensation values of relative humidity and temperature can be set up
  * by writing to the out values of temp and humidityrelative.

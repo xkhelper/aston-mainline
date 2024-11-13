@@ -256,11 +256,7 @@ nft_do_chain(struct nft_pktinfo *pkt, void *priv)
 	const struct net *net = nft_net(pkt);
 	const struct nft_expr *expr, *last;
 	const struct nft_rule_dp *rule;
-<<<<<<< HEAD
-	struct nft_regs regs = {};
-=======
 	struct nft_regs regs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int stackptr = 0;
 	struct nft_jumpstack jumpstack[NFT_JUMP_STACK_SIZE];
 	bool genbit = READ_ONCE(net->nft.gencursor);

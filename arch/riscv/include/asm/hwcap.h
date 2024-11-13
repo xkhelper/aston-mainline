@@ -92,10 +92,7 @@
 #define RISCV_ISA_EXT_ZCF		83
 #define RISCV_ISA_EXT_ZCMOP		84
 #define RISCV_ISA_EXT_ZAWRS		85
-<<<<<<< HEAD
-=======
 #define RISCV_ISA_EXT_SVVPTC		86
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define RISCV_ISA_EXT_XLINUXENVCFG	127
 

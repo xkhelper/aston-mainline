@@ -710,13 +710,8 @@ static void ts2020_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ts2020_id_table[] = {
-<<<<<<< HEAD
-	{"ts2020", 0},
-	{"ts2022", 0},
-=======
 	{ "ts2020" },
 	{ "ts2022" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, ts2020_id_table);

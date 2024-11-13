@@ -9,20 +9,12 @@
 #include "cxlmem.h"
 #include "core.h"
 #include "cxl.h"
-<<<<<<< HEAD
-#include "core.h"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct dsmas_entry {
 	struct range dpa_range;
 	u8 handle;
 	struct access_coordinate coord[ACCESS_COORDINATE_MAX];
-<<<<<<< HEAD
-
-=======
 	struct access_coordinate cdat_coord[ACCESS_COORDINATE_MAX];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int entries;
 	int qos_class;
 };
@@ -170,11 +162,7 @@ static int cdat_dslbis_handler(union acpi_subtable_headers *header, void *arg,
 	val = cdat_normalize(le16_to_cpu(le_val), le64_to_cpu(le_base),
 			     dslbis->data_type);
 
-<<<<<<< HEAD
-	cxl_access_coordinate_set(dent->coord, dslbis->data_type, val);
-=======
 	cxl_access_coordinate_set(dent->cdat_coord, dslbis->data_type, val);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -231,11 +219,7 @@ static int cxl_port_perf_data_calculate(struct cxl_port *port,
 	xa_for_each(dsmas_xa, index, dent) {
 		int qos_class;
 
-<<<<<<< HEAD
-		cxl_coordinates_combine(dent->coord, dent->coord, ep_c);
-=======
 		cxl_coordinates_combine(dent->coord, dent->cdat_coord, ep_c);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dent->entries = 1;
 		rc = cxl_root->ops->qos_class(cxl_root,
 					      &dent->coord[ACCESS_COORDINATE_CPU],
@@ -256,15 +240,10 @@ static int cxl_port_perf_data_calculate(struct cxl_port *port,
 static void update_perf_entry(struct device *dev, struct dsmas_entry *dent,
 			      struct cxl_dpa_perf *dpa_perf)
 {
-<<<<<<< HEAD
-	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++)
-		dpa_perf->coord[i] = dent->coord[i];
-=======
 	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
 		dpa_perf->coord[i] = dent->coord[i];
 		dpa_perf->cdat_coord[i] = dent->cdat_coord[i];
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dpa_perf->dpa_range = dent->dpa_range;
 	dpa_perf->qos_class = dent->qos_class;
 	dev_dbg(dev,
@@ -568,21 +547,6 @@ void cxl_coordinates_combine(struct access_coordinate *out,
 
 MODULE_IMPORT_NS(CXL);
 
-<<<<<<< HEAD
-void cxl_region_perf_data_calculate(struct cxl_region *cxlr,
-				    struct cxl_endpoint_decoder *cxled)
-{
-	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
-	struct range dpa = {
-			.start = cxled->dpa_res->start,
-			.end = cxled->dpa_res->end,
-	};
-	struct cxl_dpa_perf *perf;
-
-	switch (cxlr->mode) {
-=======
 static void cxl_bandwidth_add(struct access_coordinate *coord,
 			      struct access_coordinate *c1,
 			      struct access_coordinate *c2)
@@ -614,7 +578,6 @@ static struct cxl_dpa_perf *cxled_get_dpa_perf(struct cxl_endpoint_decoder *cxle
 	struct cxl_dpa_perf *perf;
 
 	switch (mode) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case CXL_DECODER_RAM:
 		perf = &mds->ram_perf;
 		break;
@@ -622,14 +585,6 @@ static struct cxl_dpa_perf *cxled_get_dpa_perf(struct cxl_endpoint_decoder *cxle
 		perf = &mds->pmem_perf;
 		break;
 	default:
-<<<<<<< HEAD
-		return;
-	}
-
-	lockdep_assert_held(&cxl_dpa_rwsem);
-
-	if (!range_contains(&perf->dpa_range, &dpa))
-=======
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -1100,7 +1055,6 @@ void cxl_region_perf_data_calculate(struct cxl_region *cxlr,
 
 	perf = cxled_get_dpa_perf(cxled, cxlr->mode);
 	if (IS_ERR(perf))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 
 	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {

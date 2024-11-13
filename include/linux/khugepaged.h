@@ -4,10 +4,7 @@
 
 #include <linux/sched/coredump.h> /* MMF_VM_HUGEPAGE */
 
-<<<<<<< HEAD
-=======
 extern unsigned int khugepaged_max_ptes_none __read_mostly;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 extern struct attribute_group khugepaged_attr_group;
 

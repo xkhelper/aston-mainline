@@ -455,10 +455,6 @@ static int imx_gpc_probe(struct platform_device *pdev)
 	} else {
 		struct imx_pm_domain *domain;
 		struct platform_device *pd_pdev;
-<<<<<<< HEAD
-		struct device_node *np;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct clk *ipg_clk;
 		unsigned int ipg_rate_mhz;
 		int domain_index;
@@ -468,44 +464,24 @@ static int imx_gpc_probe(struct platform_device *pdev)
 			return PTR_ERR(ipg_clk);
 		ipg_rate_mhz = clk_get_rate(ipg_clk) / 1000000;
 
-<<<<<<< HEAD
-		for_each_child_of_node(pgc_node, np) {
-			ret = of_property_read_u32(np, "reg", &domain_index);
-			if (ret) {
-				of_node_put(np);
-				return ret;
-			}
-=======
 		for_each_child_of_node_scoped(pgc_node, np) {
 			ret = of_property_read_u32(np, "reg", &domain_index);
 			if (ret)
 				return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (domain_index >= of_id_data->num_domains)
 				continue;
 
 			pd_pdev = platform_device_alloc("imx-pgc-power-domain",
 							domain_index);
-<<<<<<< HEAD
-			if (!pd_pdev) {
-				of_node_put(np);
-				return -ENOMEM;
-			}
-=======
 			if (!pd_pdev)
 				return -ENOMEM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			ret = platform_device_add_data(pd_pdev,
 						       &imx_gpc_domains[domain_index],
 						       sizeof(imx_gpc_domains[domain_index]));
 			if (ret) {
 				platform_device_put(pd_pdev);
-<<<<<<< HEAD
-				of_node_put(np);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return ret;
 			}
 			domain = pd_pdev->dev.platform_data;
@@ -519,10 +495,6 @@ static int imx_gpc_probe(struct platform_device *pdev)
 			ret = platform_device_add(pd_pdev);
 			if (ret) {
 				platform_device_put(pd_pdev);
-<<<<<<< HEAD
-				of_node_put(np);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return ret;
 			}
 		}

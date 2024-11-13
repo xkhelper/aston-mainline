@@ -1361,8 +1361,6 @@ dev_err:
 	return err;
 }
 
-<<<<<<< HEAD
-=======
 static int vdpa_dev_net_device_attr_set(struct vdpa_device *vdev,
 					struct genl_info *info)
 {
@@ -1437,7 +1435,6 @@ dev_err:
 	return err;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int vdpa_dev_config_dump(struct device *dev, void *data)
 {
 	struct vdpa_device *vdev = container_of(dev, struct vdpa_device, dev);
@@ -1574,14 +1571,11 @@ static const struct genl_ops vdpa_nl_ops[] = {
 		.doit = vdpa_nl_cmd_dev_stats_get_doit,
 		.flags = GENL_ADMIN_PERM,
 	},
-<<<<<<< HEAD
-=======
 	{
 		.cmd = VDPA_CMD_DEV_ATTR_SET,
 		.doit = vdpa_nl_cmd_dev_attr_set_doit,
 		.flags = GENL_ADMIN_PERM,
 	},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct genl_family vdpa_nl_family __ro_after_init = {

@@ -141,8 +141,6 @@ long cg_read_long(const char *cgroup, const char *control)
 	return atol(buf);
 }
 
-<<<<<<< HEAD
-=======
 long cg_read_long_fd(int fd)
 {
 	char buf[128];
@@ -153,7 +151,6 @@ long cg_read_long_fd(int fd)
 	return atol(buf);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 long cg_read_key_long(const char *cgroup, const char *control, const char *key)
 {
 	char buf[PAGE_SIZE];
@@ -196,8 +193,6 @@ int cg_write(const char *cgroup, const char *control, char *buf)
 	return ret == len ? 0 : ret;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Returns fd on success, or -1 on failure.
  * (fd should be closed with close() as usual)
@@ -210,7 +205,6 @@ int cg_open(const char *cgroup, const char *control, int flags)
 	return open(path, flags);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int cg_write_numeric(const char *cgroup, const char *control, long value)
 {
 	char buf[64];

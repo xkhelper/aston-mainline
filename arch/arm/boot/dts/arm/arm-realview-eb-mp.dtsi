@@ -103,11 +103,7 @@
 		};
 
 		/* PMU with one IRQ line per core */
-<<<<<<< HEAD
-		pmu: pmu@0 {
-=======
 		pmu: pmu {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			compatible = "arm,arm11mpcore-pmu";
 			interrupt-parent = <&intc>;
 			interrupts = <0 17 IRQ_TYPE_LEVEL_HIGH>,

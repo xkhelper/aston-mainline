@@ -500,11 +500,7 @@ static unsigned long long dmatest_persec(s64 runtime, unsigned int val)
 
 	per_sec *= val;
 	per_sec = INT_TO_FIXPT(per_sec);
-<<<<<<< HEAD
-	do_div(per_sec, runtime);
-=======
 	do_div(per_sec, (u32)runtime);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return per_sec;
 }

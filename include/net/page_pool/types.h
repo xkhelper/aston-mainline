@@ -20,10 +20,6 @@
 					* device driver responsibility
 					*/
 #define PP_FLAG_SYSTEM_POOL	BIT(2) /* Global system page_pool */
-<<<<<<< HEAD
-#define PP_FLAG_ALL		(PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV | \
-				 PP_FLAG_SYSTEM_POOL)
-=======
 
 /* Allow unreadable (net_iov backed) netmem in this page_pool. Drivers setting
  * this must be able to support unreadable netmem, where netmem_address() would
@@ -36,7 +32,6 @@
 
 #define PP_FLAG_ALL		(PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV | \
 				 PP_FLAG_SYSTEM_POOL | PP_FLAG_ALLOW_UNREADABLE_NETMEM)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Fast allocation side cache array/stack
@@ -72,13 +67,9 @@ struct pp_alloc_cache {
  * @offset:	DMA sync address offset for PP_FLAG_DMA_SYNC_DEV
  * @slow:	params with slowpath access only (initialization and Netlink)
  * @netdev:	netdev this pool will serve (leave as NULL if none or multiple)
-<<<<<<< HEAD
- * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV, PP_FLAG_SYSTEM_POOL
-=======
  * @queue_idx:	queue idx this page_pool is being created for.
  * @flags:	PP_FLAG_DMA_MAP, PP_FLAG_DMA_SYNC_DEV, PP_FLAG_SYSTEM_POOL,
  *		PP_FLAG_ALLOW_UNREADABLE_NETMEM.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct page_pool_params {
 	struct_group_tagged(page_pool_params_fast, fast,
@@ -93,10 +84,7 @@ struct page_pool_params {
 	);
 	struct_group_tagged(page_pool_params_slow, slow,
 		struct net_device *netdev;
-<<<<<<< HEAD
-=======
 		unsigned int queue_idx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unsigned int	flags;
 /* private: used by test code only */
 		void (*init_callback)(netmem_ref netmem, void *arg);
@@ -164,13 +152,10 @@ struct page_pool_stats {
  */
 #define PAGE_POOL_FRAG_GROUP_ALIGN	(4 * sizeof(long))
 
-<<<<<<< HEAD
-=======
 struct pp_memory_provider_params {
 	void *mp_priv;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct page_pool {
 	struct page_pool_params_fast p;
 
@@ -229,11 +214,8 @@ struct page_pool {
 	 */
 	struct ptr_ring ring;
 
-<<<<<<< HEAD
-=======
 	void *mp_priv;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PAGE_POOL_STATS
 	/* recycle stats are per-cpu to avoid locking */
 	struct page_pool_recycle_stats __percpu *recycle_stats;

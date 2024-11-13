@@ -374,10 +374,7 @@ static const struct of_device_id gpio_vbus_of_match[] = {
 	},
 	{},
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(of, gpio_vbus_of_match);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct platform_driver gpio_vbus_driver = {
 	.driver = {

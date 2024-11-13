@@ -46,8 +46,6 @@ struct xe_devcoredump_snapshot {
 	struct xe_sched_job_snapshot *job;
 	/** @vm: Snapshot of VM state */
 	struct xe_vm_snapshot *vm;
-<<<<<<< HEAD
-=======
 
 	/** @read: devcoredump in human readable format */
 	struct {
@@ -56,7 +54,6 @@ struct xe_devcoredump_snapshot {
 		/** @read.buffer: buffer of devcoredump in human readable format */
 		char *buffer;
 	} read;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /**

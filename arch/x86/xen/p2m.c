@@ -70,10 +70,7 @@
 #include <linux/memblock.h>
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
-<<<<<<< HEAD
-=======
 #include <linux/acpi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/cache.h>
 #include <asm/setup.h>
@@ -84,10 +81,7 @@
 #include <asm/xen/hypervisor.h>
 #include <xen/balloon.h>
 #include <xen/grant_table.h>
-<<<<<<< HEAD
-=======
 #include <xen/hvc-console.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "xen-ops.h"
 
@@ -800,8 +794,6 @@ int clear_foreign_p2m_mapping(struct gnttab_unmap_grant_ref *unmap_ops,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /* Remapped non-RAM areas */
 #define NR_NONRAM_REMAP 4
 static struct nonram_remap {
@@ -898,7 +890,6 @@ void __init xen_add_remap_nonram(phys_addr_t maddr, phys_addr_t paddr,
 	nr_nonram_remap++;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_XEN_DEBUG_FS
 #include <linux/debugfs.h>
 static int p2m_dump_show(struct seq_file *m, void *v)

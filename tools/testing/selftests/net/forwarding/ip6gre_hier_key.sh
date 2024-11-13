@@ -8,10 +8,7 @@
 ALL_TESTS="
 	gre_hier
 	gre_mtu_change
-<<<<<<< HEAD
-=======
 	gre_hier_remote_change
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 "
 
 NUM_NETIFS=6
@@ -48,8 +45,6 @@ gre_mtu_change()
 	test_mtu_change gre
 }
 
-<<<<<<< HEAD
-=======
 gre_hier_remote_change()
 {
 	hier_remote_change
@@ -63,7 +58,6 @@ gre_hier_remote_change()
 	test_traffic_ip6ip6 "GRE hierarchical IPv6-in-IPv6 with key (old remote)"
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 cleanup()
 {
 	pre_cleanup

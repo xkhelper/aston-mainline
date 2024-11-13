@@ -41,12 +41,9 @@ static inline void * __must_check ERR_PTR(long error)
 	return (void *) error;
 }
 
-<<<<<<< HEAD
-=======
 /* Return the pointer in the percpu address space. */
 #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * PTR_ERR - Extract the error code from an error pointer.
  * @ptr: An error pointer.
@@ -57,12 +54,9 @@ static inline long __must_check PTR_ERR(__force const void *ptr)
 	return (long) ptr;
 }
 
-<<<<<<< HEAD
-=======
 /* Read an error pointer from the percpu address space. */
 #define PTR_ERR_PCPU(ptr) (PTR_ERR((const void *)(__force const unsigned long)(ptr)))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * IS_ERR - Detect an error pointer.
  * @ptr: The pointer to check.
@@ -73,12 +67,9 @@ static inline bool __must_check IS_ERR(__force const void *ptr)
 	return IS_ERR_VALUE((unsigned long)ptr);
 }
 
-<<<<<<< HEAD
-=======
 /* Read an error pointer from the percpu address space. */
 #define IS_ERR_PCPU(ptr) (IS_ERR((const void *)(__force const unsigned long)(ptr)))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * IS_ERR_OR_NULL - Detect an error pointer or a null pointer.
  * @ptr: The pointer to check.

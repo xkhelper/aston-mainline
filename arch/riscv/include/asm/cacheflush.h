@@ -46,9 +46,6 @@ do {							\
 } while (0)
 
 #ifdef CONFIG_64BIT
-<<<<<<< HEAD
-#define flush_cache_vmap(start, end)		flush_tlb_kernel_range(start, end)
-=======
 extern u64 new_vmalloc[NR_CPUS / sizeof(u64) + 1];
 extern char _end[];
 #define flush_cache_vmap flush_cache_vmap
@@ -66,7 +63,6 @@ static inline void flush_cache_vmap(unsigned long start, unsigned long end)
 			new_vmalloc[i] = -1ULL;
 	}
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define flush_cache_vmap_early(start, end)	local_flush_tlb_kernel_range(start, end)
 #endif
 

@@ -119,14 +119,6 @@ static inline void psi_account_irqtime(struct rq *rq, struct task_struct *curr,
 /*
  * PSI tracks state that persists across sleeps, such as iowaits and
  * memory stalls. As a result, it has to distinguish between sleeps,
-<<<<<<< HEAD
- * where a task's runnable state changes, and requeues, where a task
- * and its state are being moved between CPUs and runqueues.
- */
-static inline void psi_enqueue(struct task_struct *p, bool wakeup)
-{
-	int clear = 0, set = TSK_RUNNING;
-=======
  * where a task's runnable state changes, and migrations, where a task
  * and its runnable state are being moved between CPUs and runqueues.
  *
@@ -138,22 +130,10 @@ static inline void psi_enqueue(struct task_struct *p, bool wakeup)
 static inline void psi_enqueue(struct task_struct *p, bool migrate)
 {
 	int clear = 0, set = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (static_branch_likely(&psi_disabled))
 		return;
 
-<<<<<<< HEAD
-	if (p->in_memstall)
-		set |= TSK_MEMSTALL_RUNNING;
-
-	if (!wakeup) {
-		if (p->in_memstall)
-			set |= TSK_MEMSTALL;
-	} else {
-		if (p->in_iowait)
-			clear |= TSK_IOWAIT;
-=======
 	if (p->se.sched_delayed) {
 		/* CPU migration of "sleeping" task */
 		SCHED_WARN_ON(!migrate);
@@ -173,24 +153,17 @@ static inline void psi_enqueue(struct task_struct *p, bool migrate)
 		set = TSK_RUNNING;
 		if (p->in_memstall)
 			set |= TSK_MEMSTALL_RUNNING;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	psi_task_change(p, clear, set);
 }
 
-<<<<<<< HEAD
-static inline void psi_dequeue(struct task_struct *p, bool sleep)
-=======
 static inline void psi_dequeue(struct task_struct *p, bool migrate)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (static_branch_likely(&psi_disabled))
 		return;
 
 	/*
-<<<<<<< HEAD
-=======
 	 * When migrating a task to another CPU, clear all psi
 	 * state. The enqueue callback above will work it out.
 	 */
@@ -198,19 +171,11 @@ static inline void psi_dequeue(struct task_struct *p, bool migrate)
 		psi_task_change(p, p->psi_flags, 0);
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * A voluntary sleep is a dequeue followed by a task switch. To
 	 * avoid walking all ancestors twice, psi_task_switch() handles
 	 * TSK_RUNNING and TSK_IOWAIT for us when it moves TSK_ONCPU.
 	 * Do nothing here.
 	 */
-<<<<<<< HEAD
-	if (sleep)
-		return;
-
-	psi_task_change(p, p->psi_flags, 0);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void psi_ttwu_dequeue(struct task_struct *p)
@@ -243,13 +208,8 @@ static inline void psi_sched_switch(struct task_struct *prev,
 }
 
 #else /* CONFIG_PSI */
-<<<<<<< HEAD
-static inline void psi_enqueue(struct task_struct *p, bool wakeup) {}
-static inline void psi_dequeue(struct task_struct *p, bool sleep) {}
-=======
 static inline void psi_enqueue(struct task_struct *p, bool migrate) {}
 static inline void psi_dequeue(struct task_struct *p, bool migrate) {}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void psi_ttwu_dequeue(struct task_struct *p) {}
 static inline void psi_sched_switch(struct task_struct *prev,
 				    struct task_struct *next,

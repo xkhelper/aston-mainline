@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-=======
 // SPDX-License-Identifier: 0BSD
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * CRC32 using the polynomial from IEEE-802.3
  *
  * Authors: Lasse Collin <lasse.collin@tukaani.org>
  *          Igor Pavlov <https://7-zip.org/>
-<<<<<<< HEAD
- *
- * This file has been put into the public domain.
- * You can do whatever you want with this file.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 /*
@@ -35,15 +26,9 @@
 
 STATIC_RW_DATA uint32_t xz_crc32_table[256];
 
-<<<<<<< HEAD
-XZ_EXTERN void xz_crc32_init(void)
-{
-	const uint32_t poly = CRC32_POLY_LE;
-=======
 void xz_crc32_init(void)
 {
 	const uint32_t poly = 0xEDB88320;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	uint32_t i;
 	uint32_t j;
@@ -60,11 +45,7 @@ void xz_crc32_init(void)
 	return;
 }
 
-<<<<<<< HEAD
-XZ_EXTERN uint32_t xz_crc32(const uint8_t *buf, size_t size, uint32_t crc)
-=======
 uint32_t xz_crc32(const uint8_t *buf, size_t size, uint32_t crc)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	crc = ~crc;
 

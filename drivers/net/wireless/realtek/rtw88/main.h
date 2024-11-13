@@ -50,10 +50,7 @@ extern const struct ieee80211_ops rtw_ops;
 #define RTW_MAX_CHANNEL_NUM_5G 49
 
 struct rtw_dev;
-<<<<<<< HEAD
-=======
 struct rtw_debugfs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum rtw_hci_type {
 	RTW_HCI_TYPE_PCIE,
@@ -626,10 +623,7 @@ struct rtw_rx_pkt_stat {
 	bool crc_err;
 	bool decrypted;
 	bool is_c2h;
-<<<<<<< HEAD
-=======
 	bool channel_invalid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	s32 signal_power;
 	u16 pkt_len;
@@ -748,10 +742,6 @@ struct rtw_txq {
 	unsigned long flags;
 };
 
-<<<<<<< HEAD
-#define RTW_BC_MC_MACID 1
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 DECLARE_EWMA(rssi, 10, 16);
 
 struct rtw_sta_info {
@@ -814,11 +804,7 @@ struct rtw_bf_info {
 struct rtw_vif {
 	enum rtw_net_type net_type;
 	u16 aid;
-<<<<<<< HEAD
-	u8 mac_id; /* for STA mode only */
-=======
 	u8 mac_id;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 mac_addr[ETH_ALEN];
 	u8 bssid[ETH_ALEN];
 	u8 port;
@@ -1800,11 +1786,8 @@ struct rtw_efuse {
 	bool share_ant;
 	u8 bt_setting;
 
-<<<<<<< HEAD
-=======
 	u8 usb_mode_switch;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct {
 		u8 hci;
 		u8 bw;
@@ -2071,11 +2054,7 @@ struct rtw_dev {
 	bool beacon_loss;
 	struct completion lps_leave_check;
 
-<<<<<<< HEAD
-	struct dentry *debugfs;
-=======
 	struct rtw_debugfs *debugfs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	u8 sta_cnt;
 	u32 rts_threshold;
@@ -2151,8 +2130,6 @@ static inline bool rtw_chip_has_tx_stbc(struct rtw_dev *rtwdev)
 	return rtwdev->chip->tx_stbc;
 }
 
-<<<<<<< HEAD
-=======
 static inline u8 rtw_acquire_macid(struct rtw_dev *rtwdev)
 {
 	unsigned long mac_id;
@@ -2164,7 +2141,6 @@ static inline u8 rtw_acquire_macid(struct rtw_dev *rtwdev)
 	return mac_id;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void rtw_release_macid(struct rtw_dev *rtwdev, u8 mac_id)
 {
 	clear_bit(mac_id, rtwdev->mac_id_map);

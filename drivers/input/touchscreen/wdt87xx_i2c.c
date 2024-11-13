@@ -20,11 +20,7 @@
 #include <linux/firmware.h>
 #include <linux/input/mt.h>
 #include <linux/acpi.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define WDT87XX_NAME		"wdt87xx_i2c"
 #define WDT87XX_FW_NAME		"wdt87xx_fw.bin"

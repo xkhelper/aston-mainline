@@ -842,10 +842,6 @@ out:
 
 static const struct file_operations adb_fops = {
 	.owner		= THIS_MODULE,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read		= adb_read,
 	.write		= adb_write,
 	.open		= adb_open,

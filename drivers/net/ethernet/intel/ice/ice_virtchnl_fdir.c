@@ -26,8 +26,6 @@ enum ice_fdir_tunnel_type {
 	ICE_FDIR_TUNNEL_TYPE_NONE = 0,
 	ICE_FDIR_TUNNEL_TYPE_GTPU,
 	ICE_FDIR_TUNNEL_TYPE_GTPU_EH,
-<<<<<<< HEAD
-=======
 	ICE_FDIR_TUNNEL_TYPE_ECPRI,
 	ICE_FDIR_TUNNEL_TYPE_GTPU_INNER,
 	ICE_FDIR_TUNNEL_TYPE_GTPU_EH_INNER,
@@ -37,7 +35,6 @@ enum ice_fdir_tunnel_type {
 	ICE_FDIR_TUNNEL_TYPE_GRE_INNER,
 	ICE_FDIR_TUNNEL_TYPE_L2TPV2,
 	ICE_FDIR_TUNNEL_TYPE_L2TPV2_INNER,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct virtchnl_fdir_fltr_conf {
@@ -45,14 +42,11 @@ struct virtchnl_fdir_fltr_conf {
 	enum ice_fdir_tunnel_type ttype;
 	u64 inset_flag;
 	u32 flow_id;
-<<<<<<< HEAD
-=======
 
 	struct ice_parser_profile *prof;
 	bool parser_ena;
 	u8 *pkt_buf;
 	u8 pkt_len;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct virtchnl_fdir_inset_map {
@@ -807,8 +801,6 @@ err_exit:
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ice_vc_fdir_is_raw_flow - check if FDIR flow is raw (binary)
  * @proto: virtchnl protocol headers
  *
@@ -910,7 +902,6 @@ err_mem_alloc:
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_vc_fdir_parse_pattern
  * @vf: pointer to the VF info
  * @fltr: virtual channel add cmd buffer
@@ -937,13 +928,10 @@ ice_vc_fdir_parse_pattern(struct ice_vf *vf, struct virtchnl_fdir_add *fltr,
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
 	/* For raw FDIR filters created by the parser */
 	if (ice_vc_fdir_is_raw_flow(proto))
 		return ice_vc_fdir_parse_raw(vf, proto, conf);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < proto->count; i++) {
 		struct virtchnl_proto_hdr *hdr = &proto->proto_hdr[i];
 		struct ip_esp_hdr *esph;
@@ -1232,15 +1220,10 @@ ice_vc_validate_fdir_fltr(struct ice_vf *vf, struct virtchnl_fdir_add *fltr,
 	struct virtchnl_proto_hdrs *proto = &fltr->rule_cfg.proto_hdrs;
 	int ret;
 
-<<<<<<< HEAD
-	if (!ice_vc_validate_pattern(vf, proto))
-		return -EINVAL;
-=======
 	/* For raw FDIR filters created by the parser */
 	if (!ice_vc_fdir_is_raw_flow(proto))
 		if (!ice_vc_validate_pattern(vf, proto))
 			return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ice_vc_fdir_parse_pattern(vf, fltr, conf);
 	if (ret)
@@ -1433,13 +1416,6 @@ static int ice_vc_fdir_write_fltr(struct ice_vf *vf,
 		return -ENOMEM;
 
 	ice_fdir_get_prgm_desc(hw, input, &desc, add);
-<<<<<<< HEAD
-	ret = ice_fdir_get_gen_prgm_pkt(hw, input, pkt, false, is_tun);
-	if (ret) {
-		dev_dbg(dev, "Gen training pkt for VF %d ptype %d failed\n",
-			vf->vf_id, input->flow_type);
-		goto err_free_pkt;
-=======
 	if (conf->parser_ena) {
 		memcpy(pkt, conf->pkt_buf, conf->pkt_len);
 	} else {
@@ -1449,7 +1425,6 @@ static int ice_vc_fdir_write_fltr(struct ice_vf *vf,
 				vf->vf_id, input->flow_type);
 			goto err_free_pkt;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = ice_prgm_fdir_fltr(ctrl_vsi, &desc, pkt);
@@ -1671,8 +1646,6 @@ err_exit:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int ice_fdir_is_tunnel(enum ice_fdir_tunnel_type ttype)
 {
 	return (ttype == ICE_FDIR_TUNNEL_TYPE_GRE_INNER ||
@@ -1683,7 +1656,6 @@ static int ice_fdir_is_tunnel(enum ice_fdir_tunnel_type ttype)
 		ttype == ICE_FDIR_TUNNEL_TYPE_L2TPV2_INNER);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * ice_vc_add_fdir_fltr_post
  * @vf: pointer to the VF structure
@@ -1945,8 +1917,6 @@ static void ice_vc_fdir_clear_irq_ctx(struct ice_vf *vf)
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ice_vc_parser_fv_check_diff - check two parsed FDIR profile fv context
  * @fv_a: struct of parsed FDIR profile field vector
  * @fv_b: struct of parsed FDIR profile field vector
@@ -2099,7 +2069,6 @@ err_rem_entry:
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_vc_add_fdir_fltr - add a FDIR filter for VF by the msg buffer
  * @vf: pointer to the VF info
  * @msg: pointer to the msg buffer
@@ -2164,11 +2133,7 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
 	len = sizeof(*stat);
 	ret = ice_vc_validate_fdir_fltr(vf, fltr, conf);
 	if (ret) {
-<<<<<<< HEAD
-		v_ret = VIRTCHNL_STATUS_SUCCESS;
-=======
 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		stat->status = VIRTCHNL_FDIR_FAILURE_RULE_INVALID;
 		dev_dbg(dev, "Invalid FDIR filter from VF %d\n", vf->vf_id);
 		goto err_free_conf;
@@ -2183,8 +2148,6 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
 		goto exit;
 	}
 
-<<<<<<< HEAD
-=======
 	/* For raw FDIR filters created by the parser */
 	if (conf->parser_ena) {
 		ret = ice_vc_add_fdir_raw(vf, conf, &v_ret, stat, len);
@@ -2194,7 +2157,6 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
 	}
 
 	is_tun = ice_fdir_is_tunnel(conf->ttype);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ice_vc_fdir_config_input_set(vf, fltr, conf, is_tun);
 	if (ret) {
 		v_ret = VIRTCHNL_STATUS_SUCCESS;
@@ -2256,8 +2218,6 @@ err_exit:
 }
 
 /**
-<<<<<<< HEAD
-=======
  * ice_vc_del_fdir_raw - delete a raw FDIR filter for VF
  * @vf: pointer to the VF info
  * @conf: FDIR configuration for each filter
@@ -2330,7 +2290,6 @@ ice_vc_del_fdir_raw(struct ice_vf *vf,
 }
 
 /**
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * ice_vc_del_fdir_fltr - delete a FDIR filter for VF by the msg buffer
  * @vf: pointer to the VF info
  * @msg: pointer to the msg buffer
@@ -2342,14 +2301,10 @@ int ice_vc_del_fdir_fltr(struct ice_vf *vf, u8 *msg)
 	struct virtchnl_fdir_del *fltr = (struct virtchnl_fdir_del *)msg;
 	struct virtchnl_fdir_del *stat = NULL;
 	struct virtchnl_fdir_fltr_conf *conf;
-<<<<<<< HEAD
-	enum virtchnl_status_code v_ret;
-=======
 	struct ice_vf_fdir *fdir = &vf->fdir;
 	enum virtchnl_status_code v_ret;
 	struct ice_fdir_fltr *input;
 	enum ice_fltr_ptype flow;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct device *dev;
 	struct ice_pf *pf;
 	int is_tun = 0;
@@ -2399,8 +2354,6 @@ int ice_vc_del_fdir_fltr(struct ice_vf *vf, u8 *msg)
 		goto err_exit;
 	}
 
-<<<<<<< HEAD
-=======
 	/* For raw FDIR filters created by the parser */
 	if (conf->parser_ena) {
 		ret = ice_vc_del_fdir_raw(vf, conf, &v_ret, stat, len);
@@ -2410,7 +2363,6 @@ int ice_vc_del_fdir_fltr(struct ice_vf *vf, u8 *msg)
 	}
 
 	is_tun = ice_fdir_is_tunnel(conf->ttype);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ice_vc_fdir_write_fltr(vf, conf, false, is_tun);
 	if (ret) {
 		v_ret = VIRTCHNL_STATUS_SUCCESS;
@@ -2420,8 +2372,6 @@ int ice_vc_del_fdir_fltr(struct ice_vf *vf, u8 *msg)
 		goto err_del_tmr;
 	}
 
-<<<<<<< HEAD
-=======
 	/* Remove unused profiles to avoid unexpected behaviors */
 	input = &conf->input;
 	flow = input->flow_type;
@@ -2429,7 +2379,6 @@ int ice_vc_del_fdir_fltr(struct ice_vf *vf, u8 *msg)
 		ice_vc_fdir_rem_prof(vf, flow, is_tun);
 
 exit:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(stat);
 
 	return ret;

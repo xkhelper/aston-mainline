@@ -62,11 +62,7 @@ EXPORT_SYMBOL(zero_page_mask);
 
 static void __init setup_zero_pages(void)
 {
-<<<<<<< HEAD
-	unsigned long total_pages = PHYS_PFN(memblock_phys_mem_size() - memblock_reserved_size());
-=======
 	unsigned long total_pages = memblock_estimated_nr_free_pages();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int order;
 	struct page *page;
 	int i;
@@ -101,11 +97,7 @@ void __init paging_init(void)
 
 	vmem_map_init();
 	sparse_init();
-<<<<<<< HEAD
-	zone_dma_bits = 31;
-=======
 	zone_dma_limit = DMA_BIT_MASK(31);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
 	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;

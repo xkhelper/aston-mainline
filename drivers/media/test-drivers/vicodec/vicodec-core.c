@@ -1215,12 +1215,7 @@ static int vicodec_encoder_cmd(struct file *file, void *fh,
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	if (!vb2_is_streaming(&ctx->fh.m2m_ctx->cap_q_ctx.q) ||
-	    !vb2_is_streaming(&ctx->fh.m2m_ctx->out_q_ctx.q))
-=======
 	if (!vb2_is_streaming(&ctx->fh.m2m_ctx->out_q_ctx.q))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	ret = v4l2_m2m_ioctl_encoder_cmd(file, fh, ec);
@@ -1254,12 +1249,7 @@ static int vicodec_decoder_cmd(struct file *file, void *fh,
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-	if (!vb2_is_streaming(&ctx->fh.m2m_ctx->cap_q_ctx.q) ||
-	    !vb2_is_streaming(&ctx->fh.m2m_ctx->out_q_ctx.q))
-=======
 	if (!vb2_is_streaming(&ctx->fh.m2m_ctx->out_q_ctx.q))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 
 	ret = v4l2_m2m_ioctl_decoder_cmd(file, fh, dc);

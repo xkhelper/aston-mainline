@@ -2242,11 +2242,7 @@ static struct clk_branch gcc_hmss_trig_clk = {
 	},
 };
 
-<<<<<<< HEAD
-static struct freq_tbl ftbl_hmss_gpll0_clk_src[] = {
-=======
 static const struct freq_tbl ftbl_hmss_gpll0_clk_src[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	F( 300000000, P_GPLL0_OUT_MAIN, 2, 0, 0),
 	F( 600000000, P_GPLL0_OUT_MAIN, 1, 0, 0),
 	{ }
@@ -2926,8 +2922,6 @@ static struct clk_branch ssc_cnoc_ahbs_clk = {
 	},
 };
 
-<<<<<<< HEAD
-=======
 static struct clk_branch hlos1_vote_lpass_core_smmu_clk = {
 	.halt_reg = 0x7D010,
 	.clkr = {
@@ -2965,7 +2959,6 @@ static struct clk_branch gcc_mss_q6_bimc_axi_clk = {
 	},
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct gdsc pcie_0_gdsc = {
 	.gdscr = 0x6b004,
 	.gds_hw_ctrl = 0x0,
@@ -2997,8 +2990,6 @@ static struct gdsc usb_30_gdsc = {
 	.flags = VOTABLE,
 };
 
-<<<<<<< HEAD
-=======
 static struct gdsc hlos1_vote_lpass_adsp = {
 	.gdscr = 0x7d034,
 	.gds_hw_ctrl = 0x0,
@@ -3019,7 +3010,6 @@ static struct gdsc hlos1_vote_lpass_core = {
 	.flags = ALWAYS_ON,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct clk_regmap *gcc_msm8998_clocks[] = {
 	[BLSP1_QUP1_I2C_APPS_CLK_SRC] = &blsp1_qup1_i2c_apps_clk_src.clkr,
 	[BLSP1_QUP1_SPI_APPS_CLK_SRC] = &blsp1_qup1_spi_apps_clk_src.clkr,
@@ -3200,23 +3190,17 @@ static struct clk_regmap *gcc_msm8998_clocks[] = {
 	[GCC_MMSS_GPLL0_DIV_CLK] = &gcc_mmss_gpll0_div_clk.clkr,
 	[GCC_GPU_GPLL0_DIV_CLK] = &gcc_gpu_gpll0_div_clk.clkr,
 	[GCC_GPU_GPLL0_CLK] = &gcc_gpu_gpll0_clk.clkr,
-<<<<<<< HEAD
-=======
 	[HLOS1_VOTE_LPASS_CORE_SMMU_CLK] = &hlos1_vote_lpass_core_smmu_clk.clkr,
 	[HLOS1_VOTE_LPASS_ADSP_SMMU_CLK] = &hlos1_vote_lpass_adsp_smmu_clk.clkr,
 	[GCC_MSS_Q6_BIMC_AXI_CLK] = &gcc_mss_q6_bimc_axi_clk.clkr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static struct gdsc *gcc_msm8998_gdscs[] = {
 	[PCIE_0_GDSC] = &pcie_0_gdsc,
 	[UFS_GDSC] = &ufs_gdsc,
 	[USB_30_GDSC] = &usb_30_gdsc,
-<<<<<<< HEAD
-=======
 	[LPASS_ADSP_GDSC] = &hlos1_vote_lpass_adsp,
 	[LPASS_CORE_GDSC] = &hlos1_vote_lpass_core,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct qcom_reset_map gcc_msm8998_resets[] = {

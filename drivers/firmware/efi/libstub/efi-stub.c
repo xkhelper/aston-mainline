@@ -145,15 +145,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
 		}
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	*cmdline_ptr = CONFIG_CMDLINE;
-=======
-	*cmdline_ptr = cmdline;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-=======
-	*cmdline_ptr = CONFIG_CMDLINE;
->>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	return EFI_SUCCESS;
 
 fail_free_cmdline:

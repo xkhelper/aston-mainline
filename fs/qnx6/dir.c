@@ -24,15 +24,6 @@ static unsigned qnx6_lfile_checksum(char *name, unsigned size)
 	return crc;
 }
 
-<<<<<<< HEAD
-static struct page *qnx6_get_page(struct inode *dir, unsigned long n)
-{
-	struct address_space *mapping = dir->i_mapping;
-	struct page *page = read_mapping_page(mapping, n, NULL);
-	if (!IS_ERR(page))
-		kmap(page);
-	return page;
-=======
 static void *qnx6_get_folio(struct inode *dir, unsigned long n,
 		struct folio **foliop)
 {
@@ -42,7 +33,6 @@ static void *qnx6_get_folio(struct inode *dir, unsigned long n,
 		return folio;
 	*foliop = folio;
 	return kmap_local_folio(folio, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static unsigned last_entry(struct inode *inode, unsigned long page_nr)
@@ -56,25 +46,11 @@ static unsigned last_entry(struct inode *inode, unsigned long page_nr)
 
 static struct qnx6_long_filename *qnx6_longname(struct super_block *sb,
 					 struct qnx6_long_dir_entry *de,
-<<<<<<< HEAD
-					 struct page **p)
-=======
 					 struct folio **foliop)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct qnx6_sb_info *sbi = QNX6_SB(sb);
 	u32 s = fs32_to_cpu(sbi, de->de_long_inode); /* in block units */
 	u32 n = s >> (PAGE_SHIFT - sb->s_blocksize_bits); /* in pages */
-<<<<<<< HEAD
-	/* within page */
-	u32 offs = (s << sb->s_blocksize_bits) & ~PAGE_MASK;
-	struct address_space *mapping = sbi->longfile->i_mapping;
-	struct page *page = read_mapping_page(mapping, n, NULL);
-	if (IS_ERR(page))
-		return ERR_CAST(page);
-	kmap(*p = page);
-	return (struct qnx6_long_filename *)(page_address(page) + offs);
-=======
 	u32 offs;
 	struct address_space *mapping = sbi->longfile->i_mapping;
 	struct folio *folio = read_mapping_folio(mapping, n, NULL);
@@ -84,7 +60,6 @@ static struct qnx6_long_filename *qnx6_longname(struct super_block *sb,
 	offs = offset_in_folio(folio, s << sb->s_blocksize_bits);
 	*foliop = folio;
 	return kmap_local_folio(folio, offs);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int qnx6_dir_longfilename(struct inode *inode,
@@ -95,11 +70,7 @@ static int qnx6_dir_longfilename(struct inode *inode,
 	struct qnx6_long_filename *lf;
 	struct super_block *s = inode->i_sb;
 	struct qnx6_sb_info *sbi = QNX6_SB(s);
-<<<<<<< HEAD
-	struct page *page;
-=======
 	struct folio *folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int lf_size;
 
 	if (de->de_size != 0xff) {
@@ -108,11 +79,7 @@ static int qnx6_dir_longfilename(struct inode *inode,
 		pr_err("invalid direntry size (%i).\n", de->de_size);
 		return 0;
 	}
-<<<<<<< HEAD
-	lf = qnx6_longname(s, de, &page);
-=======
 	lf = qnx6_longname(s, de, &folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(lf)) {
 		pr_err("Error reading longname\n");
 		return 0;
@@ -123,11 +90,7 @@ static int qnx6_dir_longfilename(struct inode *inode,
 	if (lf_size > QNX6_LONG_NAME_MAX) {
 		pr_debug("file %s\n", lf->lf_fname);
 		pr_err("Filename too long (%i)\n", lf_size);
-<<<<<<< HEAD
-		qnx6_put_page(page);
-=======
 		folio_release_kmap(folio, lf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 
@@ -140,19 +103,11 @@ static int qnx6_dir_longfilename(struct inode *inode,
 	pr_debug("qnx6_readdir:%.*s inode:%u\n",
 		 lf_size, lf->lf_fname, de_inode);
 	if (!dir_emit(ctx, lf->lf_fname, lf_size, de_inode, DT_UNKNOWN)) {
-<<<<<<< HEAD
-		qnx6_put_page(page);
-		return 0;
-	}
-
-	qnx6_put_page(page);
-=======
 		folio_release_kmap(folio, lf);
 		return 0;
 	}
 
 	folio_release_kmap(folio, lf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* success */
 	return 1;
 }
@@ -165,32 +120,13 @@ static int qnx6_readdir(struct file *file, struct dir_context *ctx)
 	loff_t pos = ctx->pos & ~(QNX6_DIR_ENTRY_SIZE - 1);
 	unsigned long npages = dir_pages(inode);
 	unsigned long n = pos >> PAGE_SHIFT;
-<<<<<<< HEAD
-	unsigned start = (pos & ~PAGE_MASK) / QNX6_DIR_ENTRY_SIZE;
-=======
 	unsigned offset = (pos & ~PAGE_MASK) / QNX6_DIR_ENTRY_SIZE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool done = false;
 
 	ctx->pos = pos;
 	if (ctx->pos >= inode->i_size)
 		return 0;
 
-<<<<<<< HEAD
-	for ( ; !done && n < npages; n++, start = 0) {
-		struct page *page = qnx6_get_page(inode, n);
-		int limit = last_entry(inode, n);
-		struct qnx6_dir_entry *de;
-		int i = start;
-
-		if (IS_ERR(page)) {
-			pr_err("%s(): read failed\n", __func__);
-			ctx->pos = (n + 1) << PAGE_SHIFT;
-			return PTR_ERR(page);
-		}
-		de = ((struct qnx6_dir_entry *)page_address(page)) + start;
-		for (; i < limit; i++, de++, ctx->pos += QNX6_DIR_ENTRY_SIZE) {
-=======
 	for ( ; !done && n < npages; n++, offset = 0) {
 		struct qnx6_dir_entry *de;
 		struct folio *folio;
@@ -205,7 +141,6 @@ static int qnx6_readdir(struct file *file, struct dir_context *ctx)
 		de = (struct qnx6_dir_entry *)(kaddr + offset);
 		limit = kaddr + last_entry(inode, n);
 		for (; (char *)de < limit; de++, ctx->pos += QNX6_DIR_ENTRY_SIZE) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			int size = de->de_size;
 			u32 no_inode = fs32_to_cpu(sbi, de->de_inode);
 
@@ -233,11 +168,7 @@ static int qnx6_readdir(struct file *file, struct dir_context *ctx)
 				}
 			}
 		}
-<<<<<<< HEAD
-		qnx6_put_page(page);
-=======
 		folio_release_kmap(folio, kaddr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return 0;
 }
@@ -250,31 +181,15 @@ static unsigned qnx6_long_match(int len, const char *name,
 {
 	struct super_block *s = dir->i_sb;
 	struct qnx6_sb_info *sbi = QNX6_SB(s);
-<<<<<<< HEAD
-	struct page *page;
-	int thislen;
-	struct qnx6_long_filename *lf = qnx6_longname(s, de, &page);
-=======
 	struct folio *folio;
 	int thislen;
 	struct qnx6_long_filename *lf = qnx6_longname(s, de, &folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (IS_ERR(lf))
 		return 0;
 
 	thislen = fs16_to_cpu(sbi, lf->lf_size);
 	if (len != thislen) {
-<<<<<<< HEAD
-		qnx6_put_page(page);
-		return 0;
-	}
-	if (memcmp(name, lf->lf_fname, len) == 0) {
-		qnx6_put_page(page);
-		return fs32_to_cpu(sbi, de->de_inode);
-	}
-	qnx6_put_page(page);
-=======
 		folio_release_kmap(folio, lf);
 		return 0;
 	}
@@ -283,7 +198,6 @@ static unsigned qnx6_long_match(int len, const char *name,
 		return fs32_to_cpu(sbi, de->de_inode);
 	}
 	folio_release_kmap(folio, lf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -300,31 +214,17 @@ static unsigned qnx6_match(struct super_block *s, int len, const char *name,
 }
 
 
-<<<<<<< HEAD
-unsigned qnx6_find_entry(int len, struct inode *dir, const char *name,
-			 struct page **res_page)
-{
-	struct super_block *s = dir->i_sb;
-	struct qnx6_inode_info *ei = QNX6_I(dir);
-	struct page *page = NULL;
-=======
 unsigned qnx6_find_ino(int len, struct inode *dir, const char *name)
 {
 	struct super_block *s = dir->i_sb;
 	struct qnx6_inode_info *ei = QNX6_I(dir);
 	struct folio *folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long start, n;
 	unsigned long npages = dir_pages(dir);
 	unsigned ino;
 	struct qnx6_dir_entry *de;
 	struct qnx6_long_dir_entry *lde;
 
-<<<<<<< HEAD
-	*res_page = NULL;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (npages == 0)
 		return 0;
 	start = ei->i_dir_start_lookup;
@@ -333,20 +233,11 @@ unsigned qnx6_find_ino(int len, struct inode *dir, const char *name)
 	n = start;
 
 	do {
-<<<<<<< HEAD
-		page = qnx6_get_page(dir, n);
-		if (!IS_ERR(page)) {
-			int limit = last_entry(dir, n);
-			int i;
-
-			de = (struct qnx6_dir_entry *)page_address(page);
-=======
 		de = qnx6_get_folio(dir, n, &folio);
 		if (!IS_ERR(de)) {
 			int limit = last_entry(dir, n);
 			int i;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			for (i = 0; i < limit; i++, de++) {
 				if (len <= QNX6_SHORT_NAME_MAX) {
 					/* short filename */
@@ -365,11 +256,7 @@ unsigned qnx6_find_ino(int len, struct inode *dir, const char *name)
 				} else
 					pr_err("undefined filename size in inode.\n");
 			}
-<<<<<<< HEAD
-			qnx6_put_page(page);
-=======
 			folio_release_kmap(folio, de - i);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (++n >= npages)
@@ -378,13 +265,8 @@ unsigned qnx6_find_ino(int len, struct inode *dir, const char *name)
 	return 0;
 
 found:
-<<<<<<< HEAD
-	*res_page = page;
-	ei->i_dir_start_lookup = n;
-=======
 	ei->i_dir_start_lookup = n;
 	folio_release_kmap(folio, de);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ino;
 }
 

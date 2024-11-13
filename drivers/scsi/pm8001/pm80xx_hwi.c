@@ -2037,11 +2037,7 @@ mpi_ssp_completion(struct pm8001_hba_info *pm8001_ha, void *piomb)
 			atomic_dec(&pm8001_dev->running_req);
 		break;
 	}
-<<<<<<< HEAD
-	pm8001_dbg(pm8001_ha, IO, "scsi_status = 0x%x\n ",
-=======
 	pm8001_dbg(pm8001_ha, IO, "scsi_status = 0x%x\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		   psspPayload->ssp_resp_iu.status);
 	spin_lock_irqsave(&t->task_state_lock, flags);
 	t->task_state_flags &= ~SAS_TASK_STATE_PENDING;

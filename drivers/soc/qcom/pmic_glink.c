@@ -4,10 +4,7 @@
  * Copyright (c) 2022, Linaro Ltd
  */
 #include <linux/auxiliary_bus.h>
-<<<<<<< HEAD
-=======
 #include <linux/delay.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/platform_device.h>
@@ -17,11 +14,8 @@
 #include <linux/soc/qcom/pmic_glink.h>
 #include <linux/spinlock.h>
 
-<<<<<<< HEAD
-=======
 #define PMIC_GLINK_SEND_TIMEOUT (5 * HZ)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum {
 	PMIC_GLINK_CLIENT_BATT = 0,
 	PMIC_GLINK_CLIENT_ALTMODE,
@@ -121,15 +115,6 @@ EXPORT_SYMBOL_GPL(pmic_glink_client_register);
 int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
 {
 	struct pmic_glink *pg = client->pg;
-<<<<<<< HEAD
-	int ret;
-
-	mutex_lock(&pg->state_lock);
-	if (!pg->ept)
-		ret = -ECONNRESET;
-	else
-		ret = rpmsg_send(pg->ept, data, len);
-=======
 	bool timeout_reached = false;
 	unsigned long start;
 	int ret;
@@ -153,7 +138,6 @@ int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
 			timeout_reached = time_after(jiffies, start + PMIC_GLINK_SEND_TIMEOUT);
 		}
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&pg->state_lock);
 
 	return ret;

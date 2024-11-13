@@ -13,11 +13,8 @@
 #include <dt-bindings/power/mt8186-power.h>
 #include <dt-bindings/phy/phy.h>
 #include <dt-bindings/reset/mt8186-resets.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/thermal/thermal.h>
 #include <dt-bindings/thermal/mediatek,lvts-thermal.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	compatible = "mediatek,mt8186";
@@ -736,11 +733,7 @@
 		opp-900000000-3 {
 			opp-hz = /bits/ 64 <900000000>;
 			opp-microvolt = <850000>;
-<<<<<<< HEAD
-			opp-supported-hw = <0x8>;
-=======
 			opp-supported-hw = <0xcf>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		opp-900000000-4 {
@@ -752,21 +745,13 @@
 		opp-900000000-5 {
 			opp-hz = /bits/ 64 <900000000>;
 			opp-microvolt = <825000>;
-<<<<<<< HEAD
-			opp-supported-hw = <0x30>;
-=======
 			opp-supported-hw = <0x20>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		opp-950000000-3 {
 			opp-hz = /bits/ 64 <950000000>;
 			opp-microvolt = <900000>;
-<<<<<<< HEAD
-			opp-supported-hw = <0x8>;
-=======
 			opp-supported-hw = <0xcf>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		opp-950000000-4 {
@@ -778,21 +763,13 @@
 		opp-950000000-5 {
 			opp-hz = /bits/ 64 <950000000>;
 			opp-microvolt = <850000>;
-<<<<<<< HEAD
-			opp-supported-hw = <0x30>;
-=======
 			opp-supported-hw = <0x20>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		opp-1000000000-3 {
 			opp-hz = /bits/ 64 <1000000000>;
 			opp-microvolt = <950000>;
-<<<<<<< HEAD
-			opp-supported-hw = <0x8>;
-=======
 			opp-supported-hw = <0xcf>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 
 		opp-1000000000-4 {
@@ -804,11 +781,7 @@
 		opp-1000000000-5 {
 			opp-hz = /bits/ 64 <1000000000>;
 			opp-microvolt = <875000>;
-<<<<<<< HEAD
-			opp-supported-hw = <0x30>;
-=======
 			opp-supported-hw = <0x20>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		};
 	};
 
@@ -1390,8 +1363,6 @@
 			status = "disabled";
 		};
 
-<<<<<<< HEAD
-=======
 		lvts: thermal-sensor@1100b000 {
 			compatible = "mediatek,mt8186-lvts";
 			reg = <0 0x1100b000 0 0x1000>;
@@ -1415,7 +1386,6 @@
 			reset-names = "svs_rst";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pwm0: pwm@1100e000 {
 			compatible = "mediatek,mt8186-disp-pwm", "mediatek,mt8183-disp-pwm";
 			reg = <0 0x1100e000 0 0x1000>;
@@ -1731,8 +1701,6 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 
-<<<<<<< HEAD
-=======
 			lvts_efuse_data1: lvts1-calib@1cc {
 				reg = <0x1cc 0x14>;
 			};
@@ -1745,7 +1713,6 @@
 				reg = <0x550 0x50>;
 			};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			gpu_speedbin: gpu-speedbin@59c {
 				reg = <0x59c 0x4>;
 				bits = <0 3>;
@@ -1894,10 +1861,7 @@
 			assigned-clocks = <&topckgen CLK_TOP_DPI>;
 			assigned-clock-parents = <&topckgen CLK_TOP_TVDPLL_D2>;
 			interrupts = <GIC_SPI 309 IRQ_TYPE_LEVEL_LOW 0>;
-<<<<<<< HEAD
-=======
 			power-domains = <&spm MT8186_POWER_DOMAIN_DIS>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			status = "disabled";
 
 			port {
@@ -2252,8 +2216,6 @@
 			power-domains = <&spm MT8186_POWER_DOMAIN_IPE>;
 		};
 	};
-<<<<<<< HEAD
-=======
 
 	thermal_zones: thermal-zones {
 		cpu-little0-thermal {
@@ -2549,5 +2511,4 @@
 			};
 		};
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

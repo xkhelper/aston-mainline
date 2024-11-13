@@ -37,10 +37,6 @@ pub use super::error::{code::*, Error, Result};
 
 pub use super::{str::CStr, ThisModule};
 
-<<<<<<< HEAD
-pub use super::init::{InPlaceInit, Init, PinInit};
-=======
 pub use super::init::{InPlaceInit, InPlaceWrite, Init, PinInit};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 pub use super::current;

@@ -635,8 +635,6 @@ static const char * const paiext_ctrnames[] = {
 	[25] = "NNPA_1MFRAME",
 	[26] = "NNPA_2GFRAME",
 	[27] = "NNPA_ACCESSEXCEPT",
-<<<<<<< HEAD
-=======
 	[28] = "NNPA_TRANSFORM",
 	[29] = "NNPA_GELU",
 	[30] = "NNPA_MOMENTS",
@@ -646,7 +644,6 @@ static const char * const paiext_ctrnames[] = {
 	[34] = "NNPA_INVSQRT",
 	[35] = "NNPA_NORM",
 	[36] = "NNPA_REDUCE",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void __init attr_event_free(struct attribute **attrs, int num)

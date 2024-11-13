@@ -139,13 +139,10 @@ static const struct opt3001_scale opt3001_scales[] = {
 		.val2 = 400000,
 	},
 	{
-<<<<<<< HEAD
-=======
 		.val = 41932,
 		.val2 = 800000,
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.val = 83865,
 		.val2 = 600000,
 	},

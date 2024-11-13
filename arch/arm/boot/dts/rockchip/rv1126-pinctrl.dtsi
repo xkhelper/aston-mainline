@@ -97,8 +97,6 @@
 				<0 RK_PC3 1 &pcfg_pull_none_drv_level_0_smt>;
 		};
 	};
-<<<<<<< HEAD
-=======
 	i2c3 {
 		/omit-if-no-ref/
 		i2c3m0_xfer: i2c3m0-xfer {
@@ -249,7 +247,6 @@
 				<0 RK_PB7 3 &pcfg_pull_none>;
 		};
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pwm2 {
 		/omit-if-no-ref/
 		pwm2m0_pins: pwm2m0-pins {
@@ -257,8 +254,6 @@
 				/* pwm2_pin_m0 */
 				<0 RK_PC0 3 &pcfg_pull_none>;
 		};
-<<<<<<< HEAD
-=======
 		/omit-if-no-ref/
 		pwm2m1_pins: pwm2m1-pins {
 			rockchip,pins =
@@ -359,7 +354,6 @@
 				/* pwm10_pin_m1 */
 				<2 RK_PD5 5 &pcfg_pull_none>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	pwm11 {
 		/omit-if-no-ref/
@@ -368,15 +362,12 @@
 				/* pwm11_pin_m0 */
 				<3 RK_PA7 6 &pcfg_pull_none>;
 		};
-<<<<<<< HEAD
-=======
 		/omit-if-no-ref/
 		pwm11m1_pins: pwm11m1-pins {
 			rockchip,pins =
 				/* pwm11_pin_m1 */
 				<3 RK_PA1 5 &pcfg_pull_none>;
 		};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 	rgmii {
 		/omit-if-no-ref/

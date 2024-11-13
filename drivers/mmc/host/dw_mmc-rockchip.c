@@ -15,9 +15,6 @@
 #include "dw_mmc.h"
 #include "dw_mmc-pltfm.h"
 
-<<<<<<< HEAD
-#define RK3288_CLKGEN_DIV	2
-=======
 #define RK3288_CLKGEN_DIV		2
 #define SDMMC_TIMING_CON0		0x130
 #define SDMMC_TIMING_CON1		0x134
@@ -29,7 +26,6 @@
 #define ROCKCHIP_MMC_DELAY_ELEMENT_PSEC	60
 #define HIWORD_UPDATE(val, mask, shift) \
 		((val) << (shift) | (mask) << ((shift) + 16))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static const unsigned int freqs[] = { 100000, 200000, 300000, 400000 };
 
@@ -38,10 +34,6 @@ struct dw_mci_rockchip_priv_data {
 	struct clk		*sample_clk;
 	int			default_sample_phase;
 	int			num_phases;
-<<<<<<< HEAD
-};
-
-=======
 	bool			internal_phase;
 };
 
@@ -179,7 +171,6 @@ static int rockchip_mmc_set_phase(struct dw_mci *host, bool sample, int degrees)
 		return clk_set_phase(clock, degrees);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void dw_mci_rk3288_set_ios(struct dw_mci *host, struct mmc_ios *ios)
 {
 	struct dw_mci_rockchip_priv_data *priv = host->priv;
@@ -218,11 +209,7 @@ static void dw_mci_rk3288_set_ios(struct dw_mci *host, struct mmc_ios *ios)
 
 	/* Make sure we use phases which we can enumerate with */
 	if (!IS_ERR(priv->sample_clk) && ios->timing <= MMC_TIMING_SD_HS)
-<<<<<<< HEAD
-		clk_set_phase(priv->sample_clk, priv->default_sample_phase);
-=======
 		rockchip_mmc_set_phase(host, true, priv->default_sample_phase);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Set the drive phase offset based on speed mode to achieve hold times.
@@ -285,11 +272,7 @@ static void dw_mci_rk3288_set_ios(struct dw_mci *host, struct mmc_ios *ios)
 			break;
 		}
 
-<<<<<<< HEAD
-		clk_set_phase(priv->drv_clk, phase);
-=======
 		rockchip_mmc_set_phase(host, false, phase);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -313,10 +296,7 @@ static int dw_mci_rk3288_execute_tuning(struct dw_mci_slot *slot, u32 opcode)
 	int longest_range_len = -1;
 	int longest_range = -1;
 	int middle_phase;
-<<<<<<< HEAD
-=======
 	int phase;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (IS_ERR(priv->sample_clk)) {
 		dev_err(host->dev, "Tuning clock (sample_clk) not defined.\n");
@@ -330,15 +310,10 @@ static int dw_mci_rk3288_execute_tuning(struct dw_mci_slot *slot, u32 opcode)
 
 	/* Try each phase and extract good ranges */
 	for (i = 0; i < priv->num_phases; ) {
-<<<<<<< HEAD
-		clk_set_phase(priv->sample_clk,
-			      TUNING_ITERATION_TO_PHASE(i, priv->num_phases));
-=======
 		rockchip_mmc_set_phase(host, true,
 				       TUNING_ITERATION_TO_PHASE(
 						i,
 						priv->num_phases));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		v = !mmc_send_tuning(mmc, opcode, NULL);
 
@@ -384,12 +359,8 @@ static int dw_mci_rk3288_execute_tuning(struct dw_mci_slot *slot, u32 opcode)
 	}
 
 	if (ranges[0].start == 0 && ranges[0].end == priv->num_phases - 1) {
-<<<<<<< HEAD
-		clk_set_phase(priv->sample_clk, priv->default_sample_phase);
-=======
 		rockchip_mmc_set_phase(host, true, priv->default_sample_phase);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_info(host->dev, "All phases work, using default phase %d.",
 			 priv->default_sample_phase);
 		goto free;
@@ -426,30 +397,17 @@ static int dw_mci_rk3288_execute_tuning(struct dw_mci_slot *slot, u32 opcode)
 
 	middle_phase = ranges[longest_range].start + longest_range_len / 2;
 	middle_phase %= priv->num_phases;
-<<<<<<< HEAD
-	dev_info(host->dev, "Successfully tuned phase to %d\n",
-		 TUNING_ITERATION_TO_PHASE(middle_phase, priv->num_phases));
-
-	clk_set_phase(priv->sample_clk,
-		      TUNING_ITERATION_TO_PHASE(middle_phase,
-						priv->num_phases));
-=======
 	phase = TUNING_ITERATION_TO_PHASE(middle_phase, priv->num_phases);
 	dev_info(host->dev, "Successfully tuned phase to %d\n", phase);
 
 	rockchip_mmc_set_phase(host, true, phase);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 free:
 	kfree(ranges);
 	return ret;
 }
 
-<<<<<<< HEAD
-static int dw_mci_rk3288_parse_dt(struct dw_mci *host)
-=======
 static int dw_mci_common_parse_dt(struct dw_mci *host)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct device_node *np = host->dev->of_node;
 	struct dw_mci_rockchip_priv_data *priv;
@@ -459,15 +417,6 @@ static int dw_mci_common_parse_dt(struct dw_mci *host)
 		return -ENOMEM;
 
 	if (of_property_read_u32(np, "rockchip,desired-num-phases",
-<<<<<<< HEAD
-					&priv->num_phases))
-		priv->num_phases = 360;
-
-	if (of_property_read_u32(np, "rockchip,default-sample-phase",
-					&priv->default_sample_phase))
-		priv->default_sample_phase = 0;
-
-=======
 				 &priv->num_phases))
 		priv->num_phases = 360;
 
@@ -491,7 +440,6 @@ static int dw_mci_rk3288_parse_dt(struct dw_mci *host)
 
 	priv = host->priv;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	priv->drv_clk = devm_clk_get(host->dev, "ciu-drive");
 	if (IS_ERR(priv->drv_clk))
 		dev_dbg(host->dev, "ciu-drive not available\n");
@@ -500,9 +448,6 @@ static int dw_mci_rk3288_parse_dt(struct dw_mci *host)
 	if (IS_ERR(priv->sample_clk))
 		dev_dbg(host->dev, "ciu-sample not available\n");
 
-<<<<<<< HEAD
-	host->priv = priv;
-=======
 	priv->internal_phase = false;
 
 	return 0;
@@ -518,7 +463,6 @@ static int dw_mci_rk3576_parse_dt(struct dw_mci *host)
 	priv = host->priv;
 
 	priv->internal_phase = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -564,8 +508,6 @@ static const struct dw_mci_drv_data rk3288_drv_data = {
 	.init			= dw_mci_rockchip_init,
 };
 
-<<<<<<< HEAD
-=======
 static const struct dw_mci_drv_data rk3576_drv_data = {
 	.common_caps		= MMC_CAP_CMD23,
 	.set_ios		= dw_mci_rk3288_set_ios,
@@ -574,17 +516,13 @@ static const struct dw_mci_drv_data rk3576_drv_data = {
 	.init			= dw_mci_rockchip_init,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct of_device_id dw_mci_rockchip_match[] = {
 	{ .compatible = "rockchip,rk2928-dw-mshc",
 		.data = &rk2928_drv_data },
 	{ .compatible = "rockchip,rk3288-dw-mshc",
 		.data = &rk3288_drv_data },
-<<<<<<< HEAD
-=======
 	{ .compatible = "rockchip,rk3576-dw-mshc",
 		.data = &rk3576_drv_data },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 MODULE_DEVICE_TABLE(of, dw_mci_rockchip_match);

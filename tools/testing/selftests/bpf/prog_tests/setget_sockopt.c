@@ -154,8 +154,6 @@ err_out:
 	close(sfd);
 }
 
-<<<<<<< HEAD
-=======
 static void test_nonstandard_opt(int family)
 {
 	struct setget_sockopt__bss *bss = skel->bss;
@@ -201,7 +199,6 @@ err_out:
 	bpf_link__destroy(getsockopt_link);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void test_setget_sockopt(void)
 {
 	cg_fd = test__join_cgroup(CG_NAME);
@@ -239,11 +236,8 @@ void test_setget_sockopt(void)
 	test_udp(AF_INET);
 	test_ktls(AF_INET6);
 	test_ktls(AF_INET);
-<<<<<<< HEAD
-=======
 	test_nonstandard_opt(AF_INET);
 	test_nonstandard_opt(AF_INET6);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 done:
 	setget_sockopt__destroy(skel);

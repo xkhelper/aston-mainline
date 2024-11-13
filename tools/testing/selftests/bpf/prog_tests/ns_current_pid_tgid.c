@@ -11,11 +11,7 @@
 #include <sched.h>
 #include <sys/wait.h>
 #include <sys/mount.h>
-<<<<<<< HEAD
-#include <sys/fcntl.h>
-=======
 #include <fcntl.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "network_helpers.h"
 
 #define STACK_SIZE (1024 * 1024)

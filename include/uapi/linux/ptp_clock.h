@@ -155,15 +155,6 @@ struct ptp_sys_offset {
 	struct ptp_clock_time ts[2 * PTP_MAX_SAMPLES + 1];
 };
 
-<<<<<<< HEAD
-struct ptp_sys_offset_extended {
-	unsigned int n_samples; /* Desired number of measurements. */
-	unsigned int rsv[3];    /* Reserved for future use. */
-	/*
-	 * Array of [system, phc, system] time stamps. The kernel will provide
-	 * 3*n_samples time stamps.
-	 */
-=======
 /*
  * ptp_sys_offset_extended - data structure for IOCTL operation
  *			     PTP_SYS_OFFSET_EXTENDED
@@ -183,7 +174,6 @@ struct ptp_sys_offset_extended {
 	unsigned int n_samples;
 	__kernel_clockid_t clockid;
 	unsigned int rsv[2];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct ptp_clock_time ts[PTP_MAX_SAMPLES][3];
 };
 

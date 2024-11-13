@@ -116,11 +116,7 @@ xfs_end_ioend(
 	if (unlikely(error)) {
 		if (ioend->io_flags & IOMAP_F_SHARED) {
 			xfs_reflink_cancel_cow_range(ip, offset, size, true);
-<<<<<<< HEAD
-			xfs_bmap_punch_delalloc_range(ip, offset,
-=======
 			xfs_bmap_punch_delalloc_range(ip, XFS_DATA_FORK, offset,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					offset + size);
 		}
 		goto done;
@@ -460,11 +456,7 @@ xfs_discard_folio(
 	 * byte of the next folio. Hence the end offset is only dependent on the
 	 * folio itself and not the start offset that is passed in.
 	 */
-<<<<<<< HEAD
-	xfs_bmap_punch_delalloc_range(ip, pos,
-=======
 	xfs_bmap_punch_delalloc_range(ip, XFS_DATA_FORK, pos,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				folio_pos(folio) + folio_size(folio));
 }
 

@@ -15,11 +15,7 @@
 #include <linux/iio/buffer.h>
 #include <linux/iio/trigger_consumer.h>
 #include <linux/iio/triggered_buffer.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Commands */
 #define DLH_START_SINGLE    0xAA
@@ -260,12 +256,7 @@ static irqreturn_t dlh_trigger_handler(int irq, void *private)
 	if (ret)
 		goto out;
 
-<<<<<<< HEAD
-	for_each_set_bit(chn, indio_dev->active_scan_mask,
-			 indio_dev->masklength) {
-=======
 	iio_for_each_active_channel(indio_dev, chn) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memcpy(&tmp_buf[i++],
 			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
 			DLH_NUM_DATA_BYTES);

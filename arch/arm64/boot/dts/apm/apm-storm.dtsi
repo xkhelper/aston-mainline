@@ -997,11 +997,7 @@
 				compatible = "apm,xgene-mdio";
 				#address-cells = <1>;
 				#size-cells = <0>;
-<<<<<<< HEAD
-				menetphy: menetphy@3 {
-=======
 				menetphy: ethernet-phy@3 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					compatible = "ethernet-phy-id001c.c915";
 					reg = <0x3>;
 				};

@@ -49,8 +49,6 @@ static struct ins_ops *powerpc__associate_instruction_ops(struct arch *arch, con
 	return ops;
 }
 
-<<<<<<< HEAD
-=======
 #define PPC_OP(op)	(((op) >> 26) & 0x3F)
 #define PPC_21_30(R)	(((R) >> 1) & 0x3ff)
 #define PPC_22_30(R)	(((R) >> 1) & 0x1ff)
@@ -304,17 +302,13 @@ static void update_insn_state_powerpc(struct type_state *state,
 }
 #endif /* HAVE_DWARF_SUPPORT */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int powerpc__annotate_init(struct arch *arch, char *cpuid __maybe_unused)
 {
 	if (!arch->initialized) {
 		arch->initialized = true;
 		arch->associate_instruction_ops = powerpc__associate_instruction_ops;
 		arch->objdump.comment_char      = '#';
-<<<<<<< HEAD
-=======
 		annotate_opts.show_asm_raw = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

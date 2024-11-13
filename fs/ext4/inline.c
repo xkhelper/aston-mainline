@@ -601,18 +601,11 @@ retry:
 		goto out;
 
 	if (ext4_should_dioread_nolock(inode)) {
-<<<<<<< HEAD
-		ret = __block_write_begin(&folio->page, from, to,
-					  ext4_get_block_unwritten);
-	} else
-		ret = __block_write_begin(&folio->page, from, to, ext4_get_block);
-=======
 		ret = ext4_block_write_begin(handle, folio, from, to,
 					     ext4_get_block_unwritten);
 	} else
 		ret = ext4_block_write_begin(handle, folio, from, to,
 					     ext4_get_block);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!ret && ext4_should_journal_data(inode)) {
 		ret = ext4_walk_page_buffers(handle, inode,
@@ -668,11 +661,7 @@ out_nofolio:
 int ext4_try_to_write_inline_data(struct address_space *mapping,
 				  struct inode *inode,
 				  loff_t pos, unsigned len,
-<<<<<<< HEAD
-				  struct page **pagep)
-=======
 				  struct folio **foliop)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret;
 	handle_t *handle;
@@ -720,11 +709,7 @@ int ext4_try_to_write_inline_data(struct address_space *mapping,
 		goto out;
 	}
 
-<<<<<<< HEAD
-	*pagep = &folio->page;
-=======
 	*foliop = folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	down_read(&EXT4_I(inode)->xattr_sem);
 	if (!ext4_has_inline_data(inode)) {
 		ret = 0;
@@ -872,13 +857,8 @@ static int ext4_da_convert_inline_data_to_extent(struct address_space *mapping,
 			goto out;
 	}
 
-<<<<<<< HEAD
-	ret = __block_write_begin(&folio->page, 0, inline_size,
-				  ext4_da_get_block_prep);
-=======
 	ret = ext4_block_write_begin(NULL, folio, 0, inline_size,
 				     ext4_da_get_block_prep);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		up_read(&EXT4_I(inode)->xattr_sem);
 		folio_unlock(folio);
@@ -912,11 +892,7 @@ out:
 int ext4_da_write_inline_data_begin(struct address_space *mapping,
 				    struct inode *inode,
 				    loff_t pos, unsigned len,
-<<<<<<< HEAD
-				    struct page **pagep,
-=======
 				    struct folio **foliop,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				    void **fsdata)
 {
 	int ret;
@@ -979,11 +955,7 @@ retry_journal:
 		goto out_release_page;
 
 	up_read(&EXT4_I(inode)->xattr_sem);
-<<<<<<< HEAD
-	*pagep = &folio->page;
-=======
 	*foliop = folio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	brelse(iloc.bh);
 	return 1;
 out_release_page:
@@ -1489,10 +1461,7 @@ int ext4_read_inline_dir(struct file *file,
 	struct ext4_iloc iloc;
 	void *dir_buf = NULL;
 	int dotdot_offset, dotdot_size, extra_offset, extra_size;
-<<<<<<< HEAD
-=======
 	struct dir_private_info *info = file->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = ext4_get_inode_loc(inode, &iloc);
 	if (ret)
@@ -1536,20 +1505,12 @@ int ext4_read_inline_dir(struct file *file,
 	extra_size = extra_offset + inline_size;
 
 	/*
-<<<<<<< HEAD
-	 * If the version has changed since the last call to
-=======
 	 * If the cookie has changed since the last call to
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * readdir(2), then we might be pointing to an invalid
 	 * dirent right now.  Scan from the start of the inline
 	 * dir to make sure.
 	 */
-<<<<<<< HEAD
-	if (!inode_eq_iversion(inode, file->f_version)) {
-=======
 	if (!inode_eq_iversion(inode, info->cookie)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		for (i = 0; i < extra_size && i < offset;) {
 			/*
 			 * "." is with offset 0 and
@@ -1581,11 +1542,7 @@ int ext4_read_inline_dir(struct file *file,
 		}
 		offset = i;
 		ctx->pos = offset;
-<<<<<<< HEAD
-		file->f_version = inode_query_iversion(inode);
-=======
 		info->cookie = inode_query_iversion(inode);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	while (ctx->pos < extra_size) {
@@ -1709,17 +1666,6 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
 					struct ext4_dir_entry_2 **res_dir,
 					int *has_inline_data)
 {
-<<<<<<< HEAD
-	int ret;
-	struct ext4_iloc iloc;
-	void *inline_start;
-	int inline_size;
-
-	if (ext4_get_inode_loc(dir, &iloc))
-		return NULL;
-
-	down_read(&EXT4_I(dir)->xattr_sem);
-=======
 	struct ext4_xattr_ibody_find is = {
 		.s = { .not_found = -ENODATA, },
 	};
@@ -1741,23 +1687,15 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
 	if (ret)
 		goto out;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!ext4_has_inline_data(dir)) {
 		*has_inline_data = 0;
 		goto out;
 	}
 
-<<<<<<< HEAD
-	inline_start = (void *)ext4_raw_inode(&iloc)->i_block +
-						EXT4_INLINE_DOTDOT_SIZE;
-	inline_size = EXT4_MIN_INLINE_DATA_SIZE - EXT4_INLINE_DOTDOT_SIZE;
-	ret = ext4_search_dir(iloc.bh, inline_start, inline_size,
-=======
 	inline_start = (void *)ext4_raw_inode(&is.iloc)->i_block +
 						EXT4_INLINE_DOTDOT_SIZE;
 	inline_size = EXT4_MIN_INLINE_DATA_SIZE - EXT4_INLINE_DOTDOT_SIZE;
 	ret = ext4_search_dir(is.iloc.bh, inline_start, inline_size,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      dir, fname, 0, res_dir);
 	if (ret == 1)
 		goto out_find;
@@ -1767,29 +1705,15 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
 	if (ext4_get_inline_size(dir) == EXT4_MIN_INLINE_DATA_SIZE)
 		goto out;
 
-<<<<<<< HEAD
-	inline_start = ext4_get_inline_xattr_pos(dir, &iloc);
-	inline_size = ext4_get_inline_size(dir) - EXT4_MIN_INLINE_DATA_SIZE;
-
-	ret = ext4_search_dir(iloc.bh, inline_start, inline_size,
-=======
 	inline_start = ext4_get_inline_xattr_pos(dir, &is.iloc);
 	inline_size = ext4_get_inline_size(dir) - EXT4_MIN_INLINE_DATA_SIZE;
 
 	ret = ext4_search_dir(is.iloc.bh, inline_start, inline_size,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      dir, fname, 0, res_dir);
 	if (ret == 1)
 		goto out_find;
 
 out:
-<<<<<<< HEAD
-	brelse(iloc.bh);
-	iloc.bh = NULL;
-out_find:
-	up_read(&EXT4_I(dir)->xattr_sem);
-	return iloc.bh;
-=======
 	brelse(is.iloc.bh);
 	if (ret < 0)
 		is.iloc.bh = ERR_PTR(ret);
@@ -1798,7 +1722,6 @@ out_find:
 out_find:
 	up_read(&EXT4_I(dir)->xattr_sem);
 	return is.iloc.bh;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int ext4_delete_inline_entry(handle_t *handle,

@@ -42,24 +42,12 @@ struct snd_dma_device {
 #define SNDRV_DMA_TYPE_NONCONTIG	8	/* non-coherent SG buffer */
 #define SNDRV_DMA_TYPE_NONCOHERENT	9	/* non-coherent buffer */
 #ifdef CONFIG_SND_DMA_SGBUF
-<<<<<<< HEAD
-#define SNDRV_DMA_TYPE_DEV_SG		SNDRV_DMA_TYPE_NONCONTIG
-=======
 #define SNDRV_DMA_TYPE_DEV_SG		3	/* S/G pages */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define SNDRV_DMA_TYPE_DEV_WC_SG	6	/* SG write-combined */
 #else
 #define SNDRV_DMA_TYPE_DEV_SG	SNDRV_DMA_TYPE_DEV /* no SG-buf support */
 #define SNDRV_DMA_TYPE_DEV_WC_SG	SNDRV_DMA_TYPE_DEV_WC
 #endif
-<<<<<<< HEAD
-/* fallback types, don't use those directly */
-#ifdef CONFIG_SND_DMA_SGBUF
-#define SNDRV_DMA_TYPE_DEV_SG_FALLBACK		10
-#define SNDRV_DMA_TYPE_DEV_WC_SG_FALLBACK	11
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * info for buffer allocation

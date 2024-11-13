@@ -95,12 +95,8 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
 	struct netfs_io_request *wreq;
 	struct netfs_inode *ictx;
 	bool is_buffered = (origin == NETFS_WRITEBACK ||
-<<<<<<< HEAD
-			    origin == NETFS_WRITETHROUGH);
-=======
 			    origin == NETFS_WRITETHROUGH ||
 			    origin == NETFS_PGPRIV2_COPY_TO_CACHE);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	wreq = netfs_alloc_request(mapping, file, start, 0, origin);
 	if (IS_ERR(wreq))
@@ -112,13 +108,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
 	if (is_buffered && netfs_is_cache_enabled(ictx))
 		fscache_begin_write_operation(&wreq->cache_resources, netfs_i_cookie(ictx));
 
-<<<<<<< HEAD
-	wreq->contiguity = wreq->start;
 	wreq->cleaned_to = wreq->start;
-	INIT_WORK(&wreq->work, netfs_write_collection_worker);
-=======
-	wreq->cleaned_to = wreq->start;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	wreq->io_streams[0].stream_nr		= 0;
 	wreq->io_streams[0].source		= NETFS_UPLOAD_TO_SERVER;
@@ -163,8 +153,6 @@ static void netfs_prepare_write(struct netfs_io_request *wreq,
 				loff_t start)
 {
 	struct netfs_io_subrequest *subreq;
-<<<<<<< HEAD
-=======
 	struct iov_iter *wreq_iter = &wreq->io_iter;
 
 	/* Make sure we don't point the iterator at a used-up folio_queue
@@ -175,29 +163,10 @@ static void netfs_prepare_write(struct netfs_io_request *wreq,
 	    wreq_iter->folioq_slot >= folioq_nr_slots(wreq_iter->folioq)) {
 		netfs_buffer_make_space(wreq);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	subreq = netfs_alloc_subrequest(wreq);
 	subreq->source		= stream->source;
 	subreq->start		= start;
-<<<<<<< HEAD
-	subreq->max_len		= ULONG_MAX;
-	subreq->max_nr_segs	= INT_MAX;
-	subreq->stream_nr	= stream->stream_nr;
-
-	_enter("R=%x[%x]", wreq->debug_id, subreq->debug_index);
-
-	trace_netfs_sreq_ref(wreq->debug_id, subreq->debug_index,
-			     refcount_read(&subreq->ref),
-			     netfs_sreq_trace_new);
-
-	trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
-
-	switch (stream->source) {
-	case NETFS_UPLOAD_TO_SERVER:
-		netfs_stat(&netfs_n_wh_upload);
-		subreq->max_len = wreq->wsize;
-=======
 	subreq->stream_nr	= stream->stream_nr;
 	subreq->io_iter		= *wreq_iter;
 
@@ -211,7 +180,6 @@ static void netfs_prepare_write(struct netfs_io_request *wreq,
 	case NETFS_UPLOAD_TO_SERVER:
 		netfs_stat(&netfs_n_wh_upload);
 		stream->sreq_max_len = wreq->wsize;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case NETFS_WRITE_TO_CACHE:
 		netfs_stat(&netfs_n_wh_write);
@@ -230,11 +198,7 @@ static void netfs_prepare_write(struct netfs_io_request *wreq,
 	 * the list.  The collector only goes nextwards and uses the lock to
 	 * remove entries off of the front.
 	 */
-<<<<<<< HEAD
-	spin_lock(&wreq->lock);
-=======
 	spin_lock_bh(&wreq->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
 		stream->front = subreq;
@@ -245,11 +209,7 @@ static void netfs_prepare_write(struct netfs_io_request *wreq,
 		}
 	}
 
-<<<<<<< HEAD
-	spin_unlock(&wreq->lock);
-=======
 	spin_unlock_bh(&wreq->lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	stream->construct = subreq;
 }
@@ -269,31 +229,11 @@ static void netfs_do_issue_write(struct netfs_io_stream *stream,
 	if (test_bit(NETFS_SREQ_FAILED, &subreq->flags))
 		return netfs_write_subrequest_terminated(subreq, subreq->error, false);
 
-<<<<<<< HEAD
-	// TODO: Use encrypted buffer
-	if (test_bit(NETFS_RREQ_USE_IO_ITER, &wreq->flags)) {
-		subreq->io_iter = wreq->io_iter;
-		iov_iter_advance(&subreq->io_iter,
-				 subreq->start + subreq->transferred - wreq->start);
-		iov_iter_truncate(&subreq->io_iter,
-				 subreq->len - subreq->transferred);
-	} else {
-		iov_iter_xarray(&subreq->io_iter, ITER_SOURCE, &wreq->mapping->i_pages,
-				subreq->start + subreq->transferred,
-				subreq->len   - subreq->transferred);
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
 	stream->issue_write(subreq);
 }
 
 void netfs_reissue_write(struct netfs_io_stream *stream,
-<<<<<<< HEAD
-			 struct netfs_io_subrequest *subreq)
-{
-=======
 			 struct netfs_io_subrequest *subreq,
 			 struct iov_iter *source)
 {
@@ -304,31 +244,19 @@ void netfs_reissue_write(struct netfs_io_stream *stream,
 	iov_iter_advance(source, size);
 	iov_iter_truncate(&subreq->io_iter, size);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
 	netfs_do_issue_write(stream, subreq);
 }
 
-<<<<<<< HEAD
-static void netfs_issue_write(struct netfs_io_request *wreq,
-			      struct netfs_io_stream *stream)
-=======
 void netfs_issue_write(struct netfs_io_request *wreq,
 		       struct netfs_io_stream *stream)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct netfs_io_subrequest *subreq = stream->construct;
 
 	if (!subreq)
 		return;
 	stream->construct = NULL;
-<<<<<<< HEAD
-
-	if (subreq->start + subreq->len > wreq->start + wreq->submitted)
-		WRITE_ONCE(wreq->submitted, subreq->start + subreq->len - wreq->start);
-=======
 	subreq->io_iter.count = subreq->len;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	netfs_do_issue_write(stream, subreq);
 }
 
@@ -361,15 +289,6 @@ int netfs_advance_write(struct netfs_io_request *wreq,
 		netfs_prepare_write(wreq, stream, start);
 	subreq = stream->construct;
 
-<<<<<<< HEAD
-	part = min(subreq->max_len - subreq->len, len);
-	_debug("part %zx/%zx %zx/%zx", subreq->len, subreq->max_len, part, len);
-	subreq->len += part;
-	subreq->nr_segs++;
-
-	if (subreq->len >= subreq->max_len ||
-	    subreq->nr_segs >= subreq->max_nr_segs ||
-=======
 	part = umin(stream->sreq_max_len - subreq->len, len);
 	_debug("part %zx/%zx %zx/%zx", subreq->len, stream->sreq_max_len, part, len);
 	subreq->len += part;
@@ -378,7 +297,6 @@ int netfs_advance_write(struct netfs_io_request *wreq,
 
 	if (subreq->len >= stream->sreq_max_len ||
 	    subreq->nr_segs >= stream->sreq_max_segs ||
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	    to_eof) {
 		netfs_issue_write(wreq, stream);
 		subreq = NULL;
@@ -399,10 +317,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
 	struct netfs_io_stream *stream;
 	struct netfs_group *fgroup; /* TODO: Use this with ceph */
 	struct netfs_folio *finfo;
-<<<<<<< HEAD
-=======
 	size_t iter_off = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	size_t fsize = folio_size(folio), flen = fsize, foff = 0;
 	loff_t fpos = folio_pos(folio), i_size;
 	bool to_eof = false, streamw = false;
@@ -496,36 +411,26 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
 	folio_unlock(folio);
 
 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
-<<<<<<< HEAD
-		if (!fscache_resources_valid(&wreq->cache_resources)) {
-=======
 		if (!cache->avail) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
 			netfs_issue_write(wreq, upload);
 			netfs_folio_written_back(folio);
 			return 0;
 		}
 		trace_netfs_folio(folio, netfs_folio_trace_store_copy);
-<<<<<<< HEAD
-=======
 	} else if (!upload->avail && !cache->avail) {
 		trace_netfs_folio(folio, netfs_folio_trace_cancel_store);
 		netfs_folio_written_back(folio);
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (!upload->construct) {
 		trace_netfs_folio(folio, netfs_folio_trace_store);
 	} else {
 		trace_netfs_folio(folio, netfs_folio_trace_store_plus);
 	}
 
-<<<<<<< HEAD
-=======
 	/* Attach the folio to the rolling buffer. */
 	netfs_buffer_append_folio(wreq, folio, false);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Move the submission point forward to allow for write-streaming data
 	 * not starting at the front of the page.  We don't do write-streaming
 	 * with the cache as the cache requires DIO alignment.
@@ -535,10 +440,6 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
 	 */
 	for (int s = 0; s < NR_IO_STREAMS; s++) {
 		stream = &wreq->io_streams[s];
-<<<<<<< HEAD
-		stream->submit_max_len = fsize;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		stream->submit_off = foff;
 		stream->submit_len = flen;
 		if ((stream->source == NETFS_WRITE_TO_CACHE && streamw) ||
@@ -546,10 +447,6 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
 		     fgroup == NETFS_FOLIO_COPY_TO_CACHE)) {
 			stream->submit_off = UINT_MAX;
 			stream->submit_len = 0;
-<<<<<<< HEAD
-			stream->submit_max_len = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 
@@ -577,13 +474,6 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
 			break;
 		stream = &wreq->io_streams[choose_s];
 
-<<<<<<< HEAD
-		part = netfs_advance_write(wreq, stream, fpos + stream->submit_off,
-					   stream->submit_len, to_eof);
-		atomic64_set(&wreq->issued_to, fpos + stream->submit_off);
-		stream->submit_off += part;
-		stream->submit_max_len -= part;
-=======
 		/* Advance the iterator(s). */
 		if (stream->submit_off > iter_off) {
 			iov_iter_advance(&wreq->io_iter, stream->submit_off - iter_off);
@@ -595,7 +485,6 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
 		part = netfs_advance_write(wreq, stream, fpos + stream->submit_off,
 					   stream->submit_len, to_eof);
 		stream->submit_off += part;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (part > stream->submit_len)
 			stream->submit_len = 0;
 		else
@@ -604,11 +493,8 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
 			debug = true;
 	}
 
-<<<<<<< HEAD
-=======
 	if (fsize > iter_off)
 		iov_iter_advance(&wreq->io_iter, fsize - iter_off);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	atomic64_set(&wreq->issued_to, fpos + fsize);
 
 	if (!debug)
@@ -623,8 +509,6 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
 }
 
 /*
-<<<<<<< HEAD
-=======
  * End the issuing of writes, letting the collector know we're done.
  */
 static void netfs_end_issue_write(struct netfs_io_request *wreq)
@@ -649,7 +533,6 @@ static void netfs_end_issue_write(struct netfs_io_request *wreq)
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Write some of the pending data back to the server
  */
 int netfs_writepages(struct address_space *mapping,
@@ -660,12 +543,6 @@ int netfs_writepages(struct address_space *mapping,
 	struct folio *folio;
 	int error = 0;
 
-<<<<<<< HEAD
-	if (wbc->sync_mode == WB_SYNC_ALL)
-		mutex_lock(&ictx->wb_lock);
-	else if (!mutex_trylock(&ictx->wb_lock))
-		return 0;
-=======
 	if (!mutex_trylock(&ictx->wb_lock)) {
 		if (wbc->sync_mode == WB_SYNC_NONE) {
 			netfs_stat(&netfs_n_wb_lock_skip);
@@ -674,7 +551,6 @@ int netfs_writepages(struct address_space *mapping,
 		netfs_stat(&netfs_n_wb_lock_wait);
 		mutex_lock(&ictx->wb_lock);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Need the first folio to be able to set up the op. */
 	folio = writeback_iter(mapping, wbc, NULL, &error);
@@ -691,17 +567,10 @@ int netfs_writepages(struct address_space *mapping,
 	netfs_stat(&netfs_n_wh_writepages);
 
 	do {
-<<<<<<< HEAD
-		_debug("wbiter %lx %llx", folio->index, wreq->start + wreq->submitted);
-
-		/* It appears we don't have to handle cyclic writeback wrapping. */
-		WARN_ON_ONCE(wreq && folio_pos(folio) < wreq->start + wreq->submitted);
-=======
 		_debug("wbiter %lx %llx", folio->index, atomic64_read(&wreq->issued_to));
 
 		/* It appears we don't have to handle cyclic writeback wrapping. */
 		WARN_ON_ONCE(wreq && folio_pos(folio) < atomic64_read(&wreq->issued_to));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (netfs_folio_group(folio) != NETFS_FOLIO_COPY_TO_CACHE &&
 		    unlikely(!test_bit(NETFS_RREQ_UPLOAD_TO_SERVER, &wreq->flags))) {
@@ -714,14 +583,7 @@ int netfs_writepages(struct address_space *mapping,
 			break;
 	} while ((folio = writeback_iter(mapping, wbc, folio, &error)));
 
-<<<<<<< HEAD
-	for (int s = 0; s < NR_IO_STREAMS; s++)
-		netfs_issue_write(wreq, &wreq->io_streams[s]);
-	smp_wmb(); /* Write lists before ALL_QUEUED. */
-	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
-=======
 	netfs_end_issue_write(wreq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&ictx->wb_lock);
 
@@ -809,14 +671,7 @@ int netfs_end_writethrough(struct netfs_io_request *wreq, struct writeback_contr
 	if (writethrough_cache)
 		netfs_write_folio(wreq, wbc, writethrough_cache);
 
-<<<<<<< HEAD
-	netfs_issue_write(wreq, &wreq->io_streams[0]);
-	netfs_issue_write(wreq, &wreq->io_streams[1]);
-	smp_wmb(); /* Write lists before ALL_QUEUED. */
-	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
-=======
 	netfs_end_issue_write(wreq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&ictx->wb_lock);
 
@@ -853,10 +708,7 @@ int netfs_unbuffered_write(struct netfs_io_request *wreq, bool may_wait, size_t 
 		part = netfs_advance_write(wreq, upload, start, len, false);
 		start += part;
 		len -= part;
-<<<<<<< HEAD
-=======
 		iov_iter_advance(&wreq->io_iter, part);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (test_bit(NETFS_RREQ_PAUSE, &wreq->flags)) {
 			trace_netfs_rreq(wreq, netfs_rreq_trace_wait_pause);
 			wait_on_bit(&wreq->flags, NETFS_RREQ_PAUSE, TASK_UNINTERRUPTIBLE);
@@ -865,17 +717,7 @@ int netfs_unbuffered_write(struct netfs_io_request *wreq, bool may_wait, size_t 
 			break;
 	}
 
-<<<<<<< HEAD
-	netfs_issue_write(wreq, upload);
-
-	smp_wmb(); /* Write lists before ALL_QUEUED. */
-	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
-	if (list_empty(&upload->subrequests))
-		netfs_wake_write_collector(wreq, false);
-
-=======
 	netfs_end_issue_write(wreq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	_leave(" = %d", error);
 	return error;
 }

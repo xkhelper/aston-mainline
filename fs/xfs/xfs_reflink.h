@@ -6,8 +6,6 @@
 #ifndef __XFS_REFLINK_H
 #define __XFS_REFLINK_H 1
 
-<<<<<<< HEAD
-=======
 /*
  * Check whether it is safe to free COW fork blocks from an inode. It is unsafe
  * to do so when an inode has dirty cache or I/O in-flight, even if no shared
@@ -27,7 +25,6 @@ xfs_can_free_cowblocks(struct xfs_inode *ip)
 	return true;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern int xfs_reflink_trim_around_shared(struct xfs_inode *ip,
 		struct xfs_bmbt_irec *irec, bool *shared);
 int xfs_bmap_trim_cow(struct xfs_inode *ip, struct xfs_bmbt_irec *imap,

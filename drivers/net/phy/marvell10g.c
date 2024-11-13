@@ -503,11 +503,8 @@ static int mv3310_sfp_insert(void *upstream, const struct sfp_eeprom_id *id)
 static const struct sfp_upstream_ops mv3310_sfp_ops = {
 	.attach = phy_sfp_attach,
 	.detach = phy_sfp_detach,
-<<<<<<< HEAD
-=======
 	.connect_phy = phy_sfp_connect_phy,
 	.disconnect_phy = phy_sfp_disconnect_phy,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.module_insert = mv3310_sfp_insert,
 };
 

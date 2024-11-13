@@ -30,10 +30,6 @@ properties:
   reg:
     maxItems: 1
 
-<<<<<<< HEAD
-  clocks: true
-  clock-names: true
-=======
   clocks:
     minItems: 2
     maxItems: 24
@@ -41,7 +37,6 @@ properties:
   clock-names:
     minItems: 2
     maxItems: 24
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   interrupts:
     minItems: 1
@@ -137,10 +132,7 @@ allOf:
     then:
       properties:
         interrupts:
-<<<<<<< HEAD
-=======
           minItems: 3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           maxItems: 3
 
         clocks:
@@ -197,10 +189,7 @@ allOf:
     then:
       properties:
         interrupts:
-<<<<<<< HEAD
-=======
           minItems: 3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           maxItems: 3
 
         clocks:
@@ -240,10 +229,7 @@ allOf:
     then:
       properties:
         interrupts:
-<<<<<<< HEAD
-=======
           minItems: 3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           maxItems: 3
 
         clocks:

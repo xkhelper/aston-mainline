@@ -731,12 +731,8 @@ static void nfs_pgio_prepare(struct rpc_task *task, void *calldata)
 
 int nfs_initiate_pgio(struct rpc_clnt *clnt, struct nfs_pgio_header *hdr,
 		      const struct cred *cred, const struct nfs_rpc_ops *rpc_ops,
-<<<<<<< HEAD
-		      const struct rpc_call_ops *call_ops, int how, int flags)
-=======
 		      const struct rpc_call_ops *call_ops, int how, int flags,
 		      struct nfsd_file *localio)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rpc_task *task;
 	struct rpc_message msg = {
@@ -766,13 +762,10 @@ int nfs_initiate_pgio(struct rpc_clnt *clnt, struct nfs_pgio_header *hdr,
 		hdr->args.count,
 		(unsigned long long)hdr->args.offset);
 
-<<<<<<< HEAD
-=======
 	if (localio)
 		return nfs_local_doio(NFS_SERVER(hdr->inode)->nfs_client,
 				      localio, hdr, call_ops);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	task = rpc_run_task(&task_setup_data);
 	if (IS_ERR(task))
 		return PTR_ERR(task);
@@ -965,15 +958,12 @@ static int nfs_generic_pg_pgios(struct nfs_pageio_descriptor *desc)
 	nfs_pgheader_init(desc, hdr, nfs_pgio_header_free);
 	ret = nfs_generic_pgio(desc, hdr);
 	if (ret == 0) {
-<<<<<<< HEAD
-=======
 		struct nfs_client *clp = NFS_SERVER(hdr->inode)->nfs_client;
 
 		struct nfsd_file *localio =
 			nfs_local_open_fh(clp, hdr->cred,
 					  hdr->args.fh, hdr->args.context->mode);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (NFS_SERVER(hdr->inode)->nfs_client->cl_minorversion)
 			task_flags = RPC_TASK_MOVEABLE;
 		ret = nfs_initiate_pgio(NFS_CLIENT(hdr->inode),
@@ -982,12 +972,8 @@ static int nfs_generic_pg_pgios(struct nfs_pageio_descriptor *desc)
 					NFS_PROTO(hdr->inode),
 					desc->pg_rpc_callops,
 					desc->pg_ioflags,
-<<<<<<< HEAD
-					RPC_TASK_CRED_NOREF | task_flags);
-=======
 					RPC_TASK_CRED_NOREF | task_flags,
 					localio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return ret;
 }

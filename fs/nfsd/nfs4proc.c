@@ -158,11 +158,7 @@ do_open_permission(struct svc_rqst *rqstp, struct svc_fh *current_fh, struct nfs
 	return fh_verify(rqstp, current_fh, S_IFREG, accmode);
 }
 
-<<<<<<< HEAD
-static __be32 nfsd_check_obj_isreg(struct svc_fh *fh)
-=======
 static __be32 nfsd_check_obj_isreg(struct svc_fh *fh, u32 minor_version)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	umode_t mode = d_inode(fh->fh_dentry)->i_mode;
 
@@ -170,16 +166,6 @@ static __be32 nfsd_check_obj_isreg(struct svc_fh *fh, u32 minor_version)
 		return nfs_ok;
 	if (S_ISDIR(mode))
 		return nfserr_isdir;
-<<<<<<< HEAD
-	/*
-	 * Using err_symlink as our catch-all case may look odd; but
-	 * there's no other obvious error for this case in 4.0, and we
-	 * happen to know that it will cause the linux v4 client to do
-	 * the right thing on attempts to open something other than a
-	 * regular file.
-	 */
-	return nfserr_symlink;
-=======
 	if (S_ISLNK(mode))
 		return nfserr_symlink;
 
@@ -189,7 +175,6 @@ static __be32 nfsd_check_obj_isreg(struct svc_fh *fh, u32 minor_version)
 	else
 		return nfserr_wrong_type;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void nfsd4_set_open_owner_reply_cache(struct nfsd4_compound_state *cstate, struct nfsd4_open *open, struct svc_fh *resfh)
@@ -482,11 +467,7 @@ do_open_lookup(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate, stru
 	}
 	if (status)
 		goto out;
-<<<<<<< HEAD
-	status = nfsd_check_obj_isreg(*resfh);
-=======
 	status = nfsd_check_obj_isreg(*resfh, cstate->minorversion);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (status)
 		goto out;
 
@@ -771,18 +752,6 @@ nfsd4_access(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 			   &access->ac_supported);
 }
 
-<<<<<<< HEAD
-static void gen_boot_verifier(nfs4_verifier *verifier, struct net *net)
-{
-	__be32 *verf = (__be32 *)verifier->data;
-
-	BUILD_BUG_ON(2*sizeof(*verf) != sizeof(verifier->data));
-
-	nfsd_copy_write_verifier(verf, net_generic(net, nfsd_net_id));
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __be32
 nfsd4_commit(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 	     union nfsd4_op_u *u)
@@ -1311,10 +1280,7 @@ static void nfs4_put_copy(struct nfsd4_copy *copy)
 {
 	if (!refcount_dec_and_test(&copy->refcount))
 		return;
-<<<<<<< HEAD
-=======
 	atomic_dec(&copy->cp_nn->pending_async_copies);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(copy->cp_src);
 	kfree(copy);
 }
@@ -1648,12 +1614,8 @@ static int nfsd4_cb_offload_done(struct nfsd4_callback *cb,
 
 static const struct nfsd4_callback_ops nfsd4_cb_offload_ops = {
 	.release = nfsd4_cb_offload_release,
-<<<<<<< HEAD
-	.done = nfsd4_cb_offload_done
-=======
 	.done = nfsd4_cb_offload_done,
 	.opcode = OP_CB_OFFLOAD,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void nfsd4_init_copy_res(struct nfsd4_copy *copy, bool sync)
@@ -1662,10 +1624,6 @@ static void nfsd4_init_copy_res(struct nfsd4_copy *copy, bool sync)
 		test_bit(NFSD4_COPY_F_COMMITTED, &copy->cp_flags) ?
 			NFS_FILE_SYNC : NFS_UNSTABLE;
 	nfsd4_copy_set_sync(copy, sync);
-<<<<<<< HEAD
-	gen_boot_verifier(&copy->cp_res.wr_verifier, copy->cp_clp->net);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t _nfsd_copy_file_range(struct nfsd4_copy *copy,
@@ -1802,11 +1760,7 @@ static int nfsd4_do_async_copy(void *data)
 {
 	struct nfsd4_copy *copy = (struct nfsd4_copy *)data;
 
-<<<<<<< HEAD
-	trace_nfsd_copy_do_async(copy);
-=======
 	trace_nfsd_copy_async(copy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (nfsd4_ssc_is_inter(copy)) {
 		struct file *filp;
 
@@ -1833,10 +1787,7 @@ static int nfsd4_do_async_copy(void *data)
 
 do_callback:
 	set_bit(NFSD4_COPY_F_COMPLETED, &copy->cp_flags);
-<<<<<<< HEAD
-=======
 	trace_nfsd_copy_async_done(copy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nfsd4_send_cb_offload(copy);
 	cleanup_async_copy(copy);
 	return 0;
@@ -1846,17 +1797,11 @@ static __be32
 nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 		union nfsd4_op_u *u)
 {
-<<<<<<< HEAD
-	struct nfsd4_copy *copy = &u->copy;
-	__be32 status;
-	struct nfsd4_copy *async_copy = NULL;
-=======
 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
 	struct nfsd4_copy *async_copy = NULL;
 	struct nfsd4_copy *copy = &u->copy;
 	struct nfsd42_write_res *result;
 	__be32 status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Currently, async COPY is not reliable. Force all COPY
@@ -1865,12 +1810,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 	 */
 	nfsd4_copy_set_sync(copy, true);
 
-<<<<<<< HEAD
-=======
 	result = &copy->cp_res;
 	nfsd_copy_write_verifier((__be32 *)&result->wr_verifier.data, nn);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	copy->cp_clp = cstate->clp;
 	if (nfsd4_ssc_is_inter(copy)) {
 		trace_nfsd_copy_inter(copy);
@@ -1895,16 +1837,6 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
 		sizeof(struct knfsd_fh));
 	if (nfsd4_copy_is_async(copy)) {
-<<<<<<< HEAD
-		struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
-
-		status = nfserrno(-ENOMEM);
-		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
-		if (!async_copy)
-			goto out_err;
-		INIT_LIST_HEAD(&async_copy->copies);
-		refcount_set(&async_copy->refcount, 1);
-=======
 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
 		if (!async_copy)
 			goto out_err;
@@ -1915,19 +1847,13 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 		if (atomic_inc_return(&nn->pending_async_copies) >
 				(int)rqstp->rq_pool->sp_nrthreads)
 			goto out_err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
 		if (!async_copy->cp_src)
 			goto out_err;
 		if (!nfs4_init_copy_state(nn, copy))
 			goto out_err;
-<<<<<<< HEAD
-		memcpy(&copy->cp_res.cb_stateid, &copy->cp_stateid.cs_stid,
-			sizeof(copy->cp_res.cb_stateid));
-=======
 		memcpy(&result->cb_stateid, &copy->cp_stateid.cs_stid,
 			sizeof(result->cb_stateid));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dup_copy_fields(copy, async_copy);
 		async_copy->copy_task = kthread_create(nfsd4_do_async_copy,
 				async_copy, "%s", "copy thread");
@@ -1958,11 +1884,7 @@ out_err:
 	}
 	if (async_copy)
 		cleanup_async_copy(async_copy);
-<<<<<<< HEAD
-	status = nfserrno(-ENOMEM);
-=======
 	status = nfserr_jukebox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	goto out;
 }
 
@@ -2021,11 +1943,7 @@ nfsd4_copy_notify(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 	struct nfsd4_copy_notify *cn = &u->copy_notify;
 	__be32 status;
 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
-<<<<<<< HEAD
-	struct nfs4_stid *stid;
-=======
 	struct nfs4_stid *stid = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nfs4_cpntf_state *cps;
 	struct nfs4_client *clp = cstate->clp;
 
@@ -2034,11 +1952,8 @@ nfsd4_copy_notify(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 					&stid);
 	if (status)
 		return status;
-<<<<<<< HEAD
-=======
 	if (!stid)
 		return nfserr_bad_stateid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cn->cpn_lease_time.tv_sec = nn->nfsd4_lease;
 	cn->cpn_lease_time.tv_nsec = 0;
@@ -2319,13 +2234,9 @@ nfsd4_getdeviceinfo(struct svc_rqst *rqstp,
 		return nfserr_noent;
 	}
 
-<<<<<<< HEAD
-	exp = rqst_exp_find(rqstp, map->fsid_type, map->fsid);
-=======
 	exp = rqst_exp_find(&rqstp->rq_chandle, SVC_NET(rqstp),
 			    rqstp->rq_client, rqstp->rq_gssclient,
 			    map->fsid_type, map->fsid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(exp)) {
 		dprintk("%s: could not find device id\n", __func__);
 		return nfserr_noent;

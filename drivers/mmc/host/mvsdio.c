@@ -22,11 +22,7 @@
 #include <linux/mmc/slot-gpio.h>
 
 #include <linux/sizes.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "mvsdio.h"
 
@@ -42,14 +38,8 @@ struct mvsd_host {
 	unsigned int xfer_mode;
 	unsigned int intr_en;
 	unsigned int ctrl;
-<<<<<<< HEAD
-	bool use_pio;
-	struct sg_mapping_iter sg_miter;
-	unsigned int pio_size;
-=======
 	unsigned int pio_size;
 	void *pio_ptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int sg_frags;
 	unsigned int ns_per_clk;
 	unsigned int clock;
@@ -124,26 +114,11 @@ static int mvsd_setup_data(struct mvsd_host *host, struct mmc_data *data)
 		 * data when the buffer is not aligned on a 64 byte
 		 * boundary.
 		 */
-<<<<<<< HEAD
-		unsigned int miter_flags = SG_MITER_ATOMIC; /* Used from IRQ */
-
-		if (data->flags & MMC_DATA_READ)
-			miter_flags |= SG_MITER_TO_SG;
-		else
-			miter_flags |= SG_MITER_FROM_SG;
-
-		host->pio_size = data->blocks * data->blksz;
-		sg_miter_start(&host->sg_miter, data->sg, data->sg_len, miter_flags);
-		if (!nodma)
-			dev_dbg(host->dev, "fallback to PIO for data\n");
-		host->use_pio = true;
-=======
 		host->pio_size = data->blocks * data->blksz;
 		host->pio_ptr = sg_virt(data->sg);
 		if (!nodma)
 			dev_dbg(host->dev, "fallback to PIO for data at 0x%p size %d\n",
 				host->pio_ptr, host->pio_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1;
 	} else {
 		dma_addr_t phys_addr;
@@ -154,10 +129,6 @@ static int mvsd_setup_data(struct mvsd_host *host, struct mmc_data *data)
 		phys_addr = sg_dma_address(data->sg);
 		mvsd_write(MVSD_SYS_ADDR_LOW, (u32)phys_addr & 0xffff);
 		mvsd_write(MVSD_SYS_ADDR_HI,  (u32)phys_addr >> 16);
-<<<<<<< HEAD
-		host->use_pio = false;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 }
@@ -317,13 +288,8 @@ static u32 mvsd_finish_data(struct mvsd_host *host, struct mmc_data *data,
 {
 	void __iomem *iobase = host->base;
 
-<<<<<<< HEAD
-	if (host->use_pio) {
-		sg_miter_stop(&host->sg_miter);
-=======
 	if (host->pio_ptr) {
 		host->pio_ptr = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		host->pio_size = 0;
 	} else {
 		dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_frags,
@@ -378,18 +344,9 @@ static u32 mvsd_finish_data(struct mvsd_host *host, struct mmc_data *data,
 static irqreturn_t mvsd_irq(int irq, void *dev)
 {
 	struct mvsd_host *host = dev;
-<<<<<<< HEAD
-	struct sg_mapping_iter *sgm = &host->sg_miter;
 	void __iomem *iobase = host->base;
 	u32 intr_status, intr_done_mask;
 	int irq_handled = 0;
-	u16 *p;
-	int s;
-=======
-	void __iomem *iobase = host->base;
-	u32 intr_status, intr_done_mask;
-	int irq_handled = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	intr_status = mvsd_read(MVSD_NOR_INTR_STATUS);
 	dev_dbg(host->dev, "intr 0x%04x intr_en 0x%04x hw_state 0x%04x\n",
@@ -413,47 +370,15 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 	spin_lock(&host->lock);
 
 	/* PIO handling, if needed. Messy business... */
-<<<<<<< HEAD
-	if (host->use_pio) {
-		/*
-		 * As we set sgm->consumed this always gives a valid buffer
-		 * position.
-		 */
-		if (!sg_miter_next(sgm)) {
-			/* This should not happen */
-			dev_err(host->dev, "ran out of scatter segments\n");
-			spin_unlock(&host->lock);
-			host->intr_en &=
-				~(MVSD_NOR_RX_READY | MVSD_NOR_RX_FIFO_8W |
-				  MVSD_NOR_TX_AVAIL | MVSD_NOR_TX_FIFO_8W);
-			mvsd_write(MVSD_NOR_INTR_EN, host->intr_en);
-			return IRQ_HANDLED;
-		}
-		p = sgm->addr;
-		s = sgm->length;
-		if (s > host->pio_size)
-			s = host->pio_size;
-	}
-
-	if (host->use_pio &&
-	    (intr_status & host->intr_en &
-	     (MVSD_NOR_RX_READY | MVSD_NOR_RX_FIFO_8W))) {
-
-=======
 	if (host->pio_size &&
 	    (intr_status & host->intr_en &
 	     (MVSD_NOR_RX_READY | MVSD_NOR_RX_FIFO_8W))) {
 		u16 *p = host->pio_ptr;
 		int s = host->pio_size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		while (s >= 32 && (intr_status & MVSD_NOR_RX_FIFO_8W)) {
 			readsw(iobase + MVSD_FIFO, p, 16);
 			p += 16;
 			s -= 32;
-<<<<<<< HEAD
-			sgm->consumed += 32;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			intr_status = mvsd_read(MVSD_NOR_INTR_STATUS);
 		}
 		/*
@@ -466,10 +391,6 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 				put_unaligned(mvsd_read(MVSD_FIFO), p++);
 				put_unaligned(mvsd_read(MVSD_FIFO), p++);
 				s -= 4;
-<<<<<<< HEAD
-				sgm->consumed += 4;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				intr_status = mvsd_read(MVSD_NOR_INTR_STATUS);
 			}
 			if (s && s < 4 && (intr_status & MVSD_NOR_RX_READY)) {
@@ -477,20 +398,10 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 				val[0] = mvsd_read(MVSD_FIFO);
 				val[1] = mvsd_read(MVSD_FIFO);
 				memcpy(p, ((void *)&val) + 4 - s, s);
-<<<<<<< HEAD
-				sgm->consumed += s;
-				s = 0;
-				intr_status = mvsd_read(MVSD_NOR_INTR_STATUS);
-			}
-			/* PIO transfer done */
-			host->pio_size -= sgm->consumed;
-			if (host->pio_size == 0) {
-=======
 				s = 0;
 				intr_status = mvsd_read(MVSD_NOR_INTR_STATUS);
 			}
 			if (s == 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				host->intr_en &=
 				     ~(MVSD_NOR_RX_READY | MVSD_NOR_RX_FIFO_8W);
 				mvsd_write(MVSD_NOR_INTR_EN, host->intr_en);
@@ -502,12 +413,6 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 		}
 		dev_dbg(host->dev, "pio %d intr 0x%04x hw_state 0x%04x\n",
 			s, intr_status, mvsd_read(MVSD_HW_STATE));
-<<<<<<< HEAD
-		irq_handled = 1;
-	} else if (host->use_pio &&
-		   (intr_status & host->intr_en &
-		    (MVSD_NOR_TX_AVAIL | MVSD_NOR_TX_FIFO_8W))) {
-=======
 		host->pio_ptr = p;
 		host->pio_size = s;
 		irq_handled = 1;
@@ -516,7 +421,6 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 		    (MVSD_NOR_TX_AVAIL | MVSD_NOR_TX_FIFO_8W))) {
 		u16 *p = host->pio_ptr;
 		int s = host->pio_size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * The TX_FIFO_8W bit is unreliable. When set, bursting
 		 * 16 halfwords all at once in the FIFO drops data. Actually
@@ -527,10 +431,6 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 			mvsd_write(MVSD_FIFO, get_unaligned(p++));
 			mvsd_write(MVSD_FIFO, get_unaligned(p++));
 			s -= 4;
-<<<<<<< HEAD
-			sgm->consumed += 4;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			intr_status = mvsd_read(MVSD_NOR_INTR_STATUS);
 		}
 		if (s < 4) {
@@ -539,20 +439,10 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 				memcpy(((void *)&val) + 4 - s, p, s);
 				mvsd_write(MVSD_FIFO, val[0]);
 				mvsd_write(MVSD_FIFO, val[1]);
-<<<<<<< HEAD
-				sgm->consumed += s;
-				s = 0;
-				intr_status = mvsd_read(MVSD_NOR_INTR_STATUS);
-			}
-			/* PIO transfer done */
-			host->pio_size -= sgm->consumed;
-			if (host->pio_size == 0) {
-=======
 				s = 0;
 				intr_status = mvsd_read(MVSD_NOR_INTR_STATUS);
 			}
 			if (s == 0) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				host->intr_en &=
 				     ~(MVSD_NOR_TX_AVAIL | MVSD_NOR_TX_FIFO_8W);
 				mvsd_write(MVSD_NOR_INTR_EN, host->intr_en);
@@ -560,11 +450,8 @@ static irqreturn_t mvsd_irq(int irq, void *dev)
 		}
 		dev_dbg(host->dev, "pio %d intr 0x%04x hw_state 0x%04x\n",
 			s, intr_status, mvsd_read(MVSD_HW_STATE));
-<<<<<<< HEAD
-=======
 		host->pio_ptr = p;
 		host->pio_size = s;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		irq_handled = 1;
 	}
 

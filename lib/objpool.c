@@ -74,17 +74,6 @@ objpool_init_percpu_slots(struct objpool_head *pool, int nr_objs,
 		 * warm caches and TLB hits. in default vmalloc is used to
 		 * reduce the pressure of kernel slab system. as we know,
 		 * mimimal size of vmalloc is one page since vmalloc would
-<<<<<<< HEAD
-		 * always align the requested size to page size
-		 */
-		if (pool->gfp & GFP_ATOMIC)
-			slot = kmalloc_node(size, pool->gfp, cpu_to_node(i));
-		else
-			slot = __vmalloc_node(size, sizeof(void *), pool->gfp,
-				cpu_to_node(i), __builtin_return_address(0));
-		if (!slot)
-			return -ENOMEM;
-=======
 		 * always align the requested size to page size.
 		 * but if vmalloc fails or it is not available (e.g. GFP_ATOMIC)
 		 * allocate percpu slot with kmalloc.
@@ -100,7 +89,6 @@ objpool_init_percpu_slots(struct objpool_head *pool, int nr_objs,
 			if (!slot)
 				return -ENOMEM;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memset(slot, 0, size);
 		pool->cpu_slots[i] = slot;
 

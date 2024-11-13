@@ -6,13 +6,9 @@
  * Author: Jianjun Wang <jianjun.wang@mediatek.com>
  */
 
-<<<<<<< HEAD
-#include <linux/clk.h>
-=======
 #include <linux/bitfield.h>
 #include <linux/clk.h>
 #include <linux/clk-provider.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/iopoll.h>
 #include <linux/irq.h>
@@ -21,11 +17,8 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/msi.h>
-<<<<<<< HEAD
-=======
 #include <linux/of_device.h>
 #include <linux/of_pci.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pci.h>
 #include <linux/phy/phy.h>
 #include <linux/platform_device.h>
@@ -40,15 +33,12 @@
 #define PCI_CLASS(class)		(class << 8)
 #define PCIE_RC_MODE			BIT(0)
 
-<<<<<<< HEAD
-=======
 #define PCIE_EQ_PRESET_01_REG		0x100
 #define PCIE_VAL_LN0_DOWNSTREAM		GENMASK(6, 0)
 #define PCIE_VAL_LN0_UPSTREAM		GENMASK(14, 8)
 #define PCIE_VAL_LN1_DOWNSTREAM		GENMASK(22, 16)
 #define PCIE_VAL_LN1_UPSTREAM		GENMASK(30, 24)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PCIE_CFGNUM_REG			0x140
 #define PCIE_CFG_DEVFN(devfn)		((devfn) & GENMASK(7, 0))
 #define PCIE_CFG_BUS(bus)		(((bus) << 8) & GENMASK(15, 8))
@@ -88,8 +78,6 @@
 #define PCIE_MSI_SET_ENABLE_REG		0x190
 #define PCIE_MSI_SET_ENABLE		GENMASK(PCIE_MSI_SET_NUM - 1, 0)
 
-<<<<<<< HEAD
-=======
 #define PCIE_PIPE4_PIE8_REG		0x338
 #define PCIE_K_FINETUNE_MAX		GENMASK(5, 0)
 #define PCIE_K_FINETUNE_ERR		GENMASK(7, 6)
@@ -98,7 +86,6 @@
 #define PCIE_K_QUERY_TIMEOUT		BIT(20)
 #define PCIE_K_PRESET_TO_USE_16G	GENMASK(31, 21)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define PCIE_MSI_SET_BASE_REG		0xc00
 #define PCIE_MSI_SET_OFFSET		0x10
 #define PCIE_MSI_SET_STATUS_OFFSET	0x04
@@ -131,8 +118,6 @@
 #define PCIE_ATR_TLP_TYPE_MEM		PCIE_ATR_TLP_TYPE(0)
 #define PCIE_ATR_TLP_TYPE_IO		PCIE_ATR_TLP_TYPE(2)
 
-<<<<<<< HEAD
-=======
 #define MAX_NUM_PHY_RESETS		3
 
 /* Time in ms needed to complete PCIe reset on EN7581 SoC */
@@ -153,7 +138,6 @@ struct mtk_gen3_pcie_pdata {
 	} phy_resets;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct mtk_msi_set - MSI information for each set
  * @base: IO mapped register base
@@ -172,11 +156,7 @@ struct mtk_msi_set {
  * @base: IO mapped register base
  * @reg_base: physical register base
  * @mac_reset: MAC reset control
-<<<<<<< HEAD
- * @phy_reset: PHY reset control
-=======
  * @phy_resets: PHY reset controllers
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @phy: PHY controller block
  * @clks: PCIe clocks
  * @num_clks: PCIe clocks count for this port
@@ -189,21 +169,14 @@ struct mtk_msi_set {
  * @msi_sets: MSI sets information
  * @lock: lock protecting IRQ bit map
  * @msi_irq_in_use: bit map for assigned MSI IRQ
-<<<<<<< HEAD
-=======
  * @soc: pointer to SoC-dependent operations
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 struct mtk_gen3_pcie {
 	struct device *dev;
 	void __iomem *base;
 	phys_addr_t reg_base;
 	struct reset_control *mac_reset;
-<<<<<<< HEAD
-	struct reset_control *phy_reset;
-=======
 	struct reset_control_bulk_data phy_resets[MAX_NUM_PHY_RESETS];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct phy *phy;
 	struct clk_bulk_data *clks;
 	int num_clks;
@@ -217,11 +190,8 @@ struct mtk_gen3_pcie {
 	struct mtk_msi_set msi_sets[PCIE_MSI_SET_NUM];
 	struct mutex lock;
 	DECLARE_BITMAP(msi_irq_in_use, PCIE_MSI_IRQS_NUM);
-<<<<<<< HEAD
-=======
 
 	const struct mtk_gen3_pcie_pdata *soc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* LTSSM state in PCIE_LTSSM_STATUS_REG bit[28:24] */
@@ -495,15 +465,6 @@ static int mtk_pcie_startup_port(struct mtk_gen3_pcie *pcie)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int mtk_pcie_set_affinity(struct irq_data *data,
-				 const struct cpumask *mask, bool force)
-{
-	return -EINVAL;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void mtk_pcie_msi_irq_mask(struct irq_data *data)
 {
 	pci_msi_mask_irq(data);
@@ -524,14 +485,9 @@ static struct irq_chip mtk_msi_irq_chip = {
 };
 
 static struct msi_domain_info mtk_msi_domain_info = {
-<<<<<<< HEAD
-	.flags	= (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
-		   MSI_FLAG_PCI_MSIX | MSI_FLAG_MULTI_PCI_MSI),
-=======
 	.flags	= MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
 		  MSI_FLAG_NO_AFFINITY | MSI_FLAG_PCI_MSIX |
 		  MSI_FLAG_MULTI_PCI_MSI,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.chip	= &mtk_msi_irq_chip,
 };
 
@@ -597,10 +553,6 @@ static struct irq_chip mtk_msi_bottom_irq_chip = {
 	.irq_mask		= mtk_msi_bottom_irq_mask,
 	.irq_unmask		= mtk_msi_bottom_irq_unmask,
 	.irq_compose_msi_msg	= mtk_compose_msi_msg,
-<<<<<<< HEAD
-	.irq_set_affinity	= mtk_pcie_set_affinity,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name			= "MSI",
 };
 
@@ -701,10 +653,6 @@ static struct irq_chip mtk_intx_irq_chip = {
 	.irq_mask		= mtk_intx_mask,
 	.irq_unmask		= mtk_intx_unmask,
 	.irq_eoi		= mtk_intx_eoi,
-<<<<<<< HEAD
-	.irq_set_affinity	= mtk_pcie_set_affinity,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name			= "INTx",
 };
 
@@ -861,17 +809,10 @@ static int mtk_pcie_setup_irq(struct mtk_gen3_pcie *pcie)
 
 static int mtk_pcie_parse_port(struct mtk_gen3_pcie *pcie)
 {
-<<<<<<< HEAD
-	struct device *dev = pcie->dev;
-	struct platform_device *pdev = to_platform_device(dev);
-	struct resource *regs;
-	int ret;
-=======
 	int i, ret, num_resets = pcie->soc->phy_resets.num_resets;
 	struct device *dev = pcie->dev;
 	struct platform_device *pdev = to_platform_device(dev);
 	struct resource *regs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	regs = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pcie-mac");
 	if (!regs)
@@ -884,21 +825,12 @@ static int mtk_pcie_parse_port(struct mtk_gen3_pcie *pcie)
 
 	pcie->reg_base = regs->start;
 
-<<<<<<< HEAD
-	pcie->phy_reset = devm_reset_control_get_optional_exclusive(dev, "phy");
-	if (IS_ERR(pcie->phy_reset)) {
-		ret = PTR_ERR(pcie->phy_reset);
-		if (ret != -EPROBE_DEFER)
-			dev_err(dev, "failed to get PHY reset\n");
-
-=======
 	for (i = 0; i < num_resets; i++)
 		pcie->phy_resets[i].id = pcie->soc->phy_resets.id[i];
 
 	ret = devm_reset_control_bulk_get_optional_shared(dev, num_resets, pcie->phy_resets);
 	if (ret) {
 		dev_err(dev, "failed to get PHY bulk reset\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 
@@ -929,8 +861,6 @@ static int mtk_pcie_parse_port(struct mtk_gen3_pcie *pcie)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int mtk_pcie_en7581_power_up(struct mtk_gen3_pcie *pcie)
 {
 	struct device *dev = pcie->dev;
@@ -1010,22 +940,17 @@ err_phy_on:
 	return err;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int mtk_pcie_power_up(struct mtk_gen3_pcie *pcie)
 {
 	struct device *dev = pcie->dev;
 	int err;
 
 	/* PHY power on and enable pipe clock */
-<<<<<<< HEAD
-	reset_control_deassert(pcie->phy_reset);
-=======
 	err = reset_control_bulk_deassert(pcie->soc->phy_resets.num_resets, pcie->phy_resets);
 	if (err) {
 		dev_err(dev, "failed to deassert PHYs\n");
 		return err;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	err = phy_init(pcie->phy);
 	if (err) {
@@ -1061,11 +986,7 @@ err_clk_init:
 err_phy_on:
 	phy_exit(pcie->phy);
 err_phy_init:
-<<<<<<< HEAD
-	reset_control_assert(pcie->phy_reset);
-=======
 	reset_control_bulk_assert(pcie->soc->phy_resets.num_resets, pcie->phy_resets);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return err;
 }
@@ -1080,11 +1001,7 @@ static void mtk_pcie_power_down(struct mtk_gen3_pcie *pcie)
 
 	phy_power_off(pcie->phy);
 	phy_exit(pcie->phy);
-<<<<<<< HEAD
-	reset_control_assert(pcie->phy_reset);
-=======
 	reset_control_bulk_assert(pcie->soc->phy_resets.num_resets, pcie->phy_resets);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int mtk_pcie_setup(struct mtk_gen3_pcie *pcie)
@@ -1096,12 +1013,6 @@ static int mtk_pcie_setup(struct mtk_gen3_pcie *pcie)
 		return err;
 
 	/*
-<<<<<<< HEAD
-	 * The controller may have been left out of reset by the bootloader
-	 * so make sure that we get a clean start by asserting resets here.
-	 */
-	reset_control_assert(pcie->phy_reset);
-=======
 	 * Deassert the line in order to avoid unbalance in deassert_count
 	 * counter since the bulk is shared.
 	 */
@@ -1112,16 +1023,11 @@ static int mtk_pcie_setup(struct mtk_gen3_pcie *pcie)
 	 */
 	reset_control_bulk_assert(pcie->soc->phy_resets.num_resets, pcie->phy_resets);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	reset_control_assert(pcie->mac_reset);
 	usleep_range(10, 20);
 
 	/* Don't touch the hardware registers before power up */
-<<<<<<< HEAD
-	err = mtk_pcie_power_up(pcie);
-=======
 	err = pcie->soc->power_up(pcie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
@@ -1156,10 +1062,7 @@ static int mtk_pcie_probe(struct platform_device *pdev)
 	pcie = pci_host_bridge_priv(host);
 
 	pcie->dev = dev;
-<<<<<<< HEAD
-=======
 	pcie->soc = device_get_match_data(dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	platform_set_drvdata(pdev, pcie);
 
 	err = mtk_pcie_setup(pcie);
@@ -1275,11 +1178,7 @@ static int mtk_pcie_resume_noirq(struct device *dev)
 	struct mtk_gen3_pcie *pcie = dev_get_drvdata(dev);
 	int err;
 
-<<<<<<< HEAD
-	err = mtk_pcie_power_up(pcie);
-=======
 	err = pcie->soc->power_up(pcie);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		return err;
 
@@ -1299,10 +1198,6 @@ static const struct dev_pm_ops mtk_pcie_pm_ops = {
 				  mtk_pcie_resume_noirq)
 };
 
-<<<<<<< HEAD
-static const struct of_device_id mtk_pcie_of_match[] = {
-	{ .compatible = "mediatek,mt8192-pcie" },
-=======
 static const struct mtk_gen3_pcie_pdata mtk_pcie_soc_mt8192 = {
 	.power_up = mtk_pcie_power_up,
 	.phy_resets = {
@@ -1324,7 +1219,6 @@ static const struct mtk_gen3_pcie_pdata mtk_pcie_soc_en7581 = {
 static const struct of_device_id mtk_pcie_of_match[] = {
 	{ .compatible = "airoha,en7581-pcie", .data = &mtk_pcie_soc_en7581 },
 	{ .compatible = "mediatek,mt8192-pcie", .data = &mtk_pcie_soc_mt8192 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{},
 };
 MODULE_DEVICE_TABLE(of, mtk_pcie_of_match);

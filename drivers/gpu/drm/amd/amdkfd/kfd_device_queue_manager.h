@@ -106,15 +106,12 @@ union GRBM_GFX_INDEX_BITS {
  * @uninitialize: Destroys all the device queue manager resources allocated in
  * initialize routine.
  *
-<<<<<<< HEAD
-=======
  * @halt: This routine unmaps queues from runlist and set halt status to true
  * so no more queues will be mapped to runlist until unhalt.
  *
  * @unhalt: This routine unset halt status to flase and maps queues back to
  * runlist.
  *
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @create_kernel_queue: Creates kernel queue. Used for debug queue.
  *
  * @destroy_kernel_queue: Destroys kernel queue. Used for debug queue.
@@ -162,11 +159,8 @@ struct device_queue_manager_ops {
 	int	(*start)(struct device_queue_manager *dqm);
 	int	(*stop)(struct device_queue_manager *dqm);
 	void	(*uninitialize)(struct device_queue_manager *dqm);
-<<<<<<< HEAD
-=======
 	int     (*halt)(struct device_queue_manager *dqm);
 	int     (*unhalt)(struct device_queue_manager *dqm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int	(*create_kernel_queue)(struct device_queue_manager *dqm,
 					struct kernel_queue *kq,
 					struct qcm_process_device *qpd);
@@ -224,8 +218,6 @@ struct device_queue_manager_asic_ops {
 				 struct kfd_node *dev);
 };
 
-<<<<<<< HEAD
-=======
 struct dqm_detect_hang_info {
 	int pipe_id;
 	int queue_id;
@@ -233,7 +225,6 @@ struct dqm_detect_hang_info {
 	uint64_t queue_address;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * struct device_queue_manager
  *
@@ -281,10 +272,7 @@ struct device_queue_manager {
 	struct work_struct	hw_exception_work;
 	struct kfd_mem_obj	hiq_sdma_mqd;
 	bool			sched_running;
-<<<<<<< HEAD
-=======
 	bool			sched_halt;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* used for GFX 9.4.3 only */
 	uint32_t		current_logical_xcc_start;
@@ -292,14 +280,11 @@ struct device_queue_manager {
 	uint32_t		wait_times;
 
 	wait_queue_head_t	destroy_wait;
-<<<<<<< HEAD
-=======
 
 	/* for per-queue reset support */
 	struct dqm_detect_hang_info *detect_hang_info;
 	size_t detect_hang_info_size;
 	int detect_hang_count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void device_queue_manager_init_cik(
@@ -339,12 +324,9 @@ void set_queue_snapshot_entry(struct queue *q,
 int debug_lock_and_unmap(struct device_queue_manager *dqm);
 int debug_map_and_unlock(struct device_queue_manager *dqm);
 int debug_refresh_runlist(struct device_queue_manager *dqm);
-<<<<<<< HEAD
-=======
 bool kfd_dqm_is_queue_in_process(struct device_queue_manager *dqm,
 				 struct qcm_process_device *qpd,
 				 int doorbell_off, u32 *queue_format);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline unsigned int get_sh_mem_bases_32(struct kfd_process_device *pdd)
 {

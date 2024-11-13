@@ -15,10 +15,7 @@ DECLARE_RC_STRUCT(mem_info) {
 };
 
 struct mem_info *mem_info__new(void);
-<<<<<<< HEAD
-=======
 struct mem_info *mem_info__clone(struct mem_info *mi);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct mem_info *mem_info__get(struct mem_info *mi);
 void   mem_info__put(struct mem_info *mi);
 

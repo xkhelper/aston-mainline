@@ -108,13 +108,6 @@
 	cpu-supply = <&vdd_cpu>;
 };
 
-<<<<<<< HEAD
-&display_subsystem {
-	status = "disabled";
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &gpu {
 	mali-supply = <&vdd_gpu>;
 	status = "okay";

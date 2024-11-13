@@ -13,10 +13,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <fcntl.h>
-<<<<<<< HEAD
-=======
 #include <inttypes.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <math.h>
 #include <poll.h>
 #include <ctype.h>
@@ -26,27 +23,18 @@
 #include "debug.h"
 #include <subcmd/pager.h>
 #include <subcmd/parse-options.h>
-<<<<<<< HEAD
-=======
 #include <api/io.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <api/fs/tracing_path.h>
 #include "evlist.h"
 #include "target.h"
 #include "cpumap.h"
-<<<<<<< HEAD
-=======
 #include "hashmap.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "thread_map.h"
 #include "strfilter.h"
 #include "util/cap.h"
 #include "util/config.h"
 #include "util/ftrace.h"
-<<<<<<< HEAD
-=======
 #include "util/stat.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "util/units.h"
 #include "util/parse-sublevel-options.h"
 
@@ -75,8 +63,6 @@ static void ftrace__workload_exec_failed_signal(int signo __maybe_unused,
 	done = true;
 }
 
-<<<<<<< HEAD
-=======
 static bool check_ftrace_capable(void)
 {
 	bool used_root;
@@ -112,7 +98,6 @@ static bool is_ftrace_supported(void)
 	return supported;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __write_tracing_file(const char *name, const char *val, bool append)
 {
 	char *file;
@@ -282,10 +267,7 @@ static void reset_tracing_options(struct perf_ftrace *ftrace __maybe_unused)
 	write_tracing_option_file("funcgraph-irqs", "1");
 	write_tracing_option_file("funcgraph-proc", "0");
 	write_tracing_option_file("funcgraph-abstime", "0");
-<<<<<<< HEAD
-=======
 	write_tracing_option_file("funcgraph-tail", "0");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	write_tracing_option_file("latency-format", "0");
 	write_tracing_option_file("irq-info", "0");
 }
@@ -522,8 +504,6 @@ static int set_tracing_funcgraph_verbose(struct perf_ftrace *ftrace)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int set_tracing_funcgraph_tail(struct perf_ftrace *ftrace)
 {
 	if (!ftrace->graph_tail)
@@ -535,7 +515,6 @@ static int set_tracing_funcgraph_tail(struct perf_ftrace *ftrace)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int set_tracing_thresh(struct perf_ftrace *ftrace)
 {
 	int ret;
@@ -612,14 +591,11 @@ static int set_tracing_options(struct perf_ftrace *ftrace)
 		return -1;
 	}
 
-<<<<<<< HEAD
-=======
 	if (set_tracing_funcgraph_tail(ftrace) < 0) {
 		pr_err("failed to set tracing option funcgraph-tail\n");
 		return -1;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -649,21 +625,6 @@ static int __cmd_ftrace(struct perf_ftrace *ftrace)
 		.events = POLLIN,
 	};
 
-<<<<<<< HEAD
-	if (!(perf_cap__capable(CAP_PERFMON) ||
-	      perf_cap__capable(CAP_SYS_ADMIN))) {
-		pr_err("ftrace only works for %s!\n",
-#ifdef HAVE_LIBCAP_SUPPORT
-		"users with the CAP_PERFMON or CAP_SYS_ADMIN capability"
-#else
-		"root"
-#endif
-		);
-		return -1;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select_tracer(ftrace);
 
 	if (reset_tracing_files(ftrace) < 0) {
@@ -968,21 +929,6 @@ static int __cmd_latency(struct perf_ftrace *ftrace)
 	};
 	int buckets[NUM_BUCKET] = { };
 
-<<<<<<< HEAD
-	if (!(perf_cap__capable(CAP_PERFMON) ||
-	      perf_cap__capable(CAP_SYS_ADMIN))) {
-		pr_err("ftrace only works for %s!\n",
-#ifdef HAVE_LIBCAP_SUPPORT
-		"users with the CAP_PERFMON or CAP_SYS_ADMIN capability"
-#else
-		"root"
-#endif
-		);
-		return -1;
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	trace_fd = prepare_func_latency(ftrace);
 	if (trace_fd < 0)
 		goto out;
@@ -1036,8 +982,6 @@ out:
 	return (done && !workload_exec_errno) ? 0 : -1;
 }
 
-<<<<<<< HEAD
-=======
 static size_t profile_hash(long func, void *ctx __maybe_unused)
 {
 	return str_hash((char *)func);
@@ -1358,7 +1302,6 @@ out:
 	return (done && !workload_exec_errno) ? 0 : -1;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int perf_ftrace_config(const char *var, const char *value, void *cb)
 {
 	struct perf_ftrace *ftrace = cb;
@@ -1508,10 +1451,7 @@ static int parse_graph_tracer_opts(const struct option *opt,
 		{ .name = "verbose",		.value_ptr = &ftrace->graph_verbose },
 		{ .name = "thresh",		.value_ptr = &ftrace->graph_thresh },
 		{ .name = "depth",		.value_ptr = &ftrace->graph_depth },
-<<<<<<< HEAD
-=======
 		{ .name = "tail",		.value_ptr = &ftrace->graph_tail },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		{ .name = NULL, }
 	};
 
@@ -1525,8 +1465,6 @@ static int parse_graph_tracer_opts(const struct option *opt,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int parse_sort_key(const struct option *opt, const char *str, int unset)
 {
 	enum perf_ftrace_profile_sort_key *key = (void *)opt->value;
@@ -1551,15 +1489,11 @@ static int parse_sort_key(const struct option *opt, const char *str, int unset)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum perf_ftrace_subcommand {
 	PERF_FTRACE_NONE,
 	PERF_FTRACE_TRACE,
 	PERF_FTRACE_LATENCY,
-<<<<<<< HEAD
-=======
 	PERF_FTRACE_PROFILE,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 int cmd_ftrace(int argc, const char **argv)
@@ -1625,8 +1559,6 @@ int cmd_ftrace(int argc, const char **argv)
 		    "Use nano-second histogram"),
 	OPT_PARENT(common_options),
 	};
-<<<<<<< HEAD
-=======
 	const struct option profile_options[] = {
 	OPT_CALLBACK('T', "trace-funcs", &ftrace.filters, "func",
 		     "Trace given functions using function tracer",
@@ -1645,19 +1577,13 @@ int cmd_ftrace(int argc, const char **argv)
 		     parse_sort_key),
 	OPT_PARENT(common_options),
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const struct option *options = ftrace_options;
 
 	const char * const ftrace_usage[] = {
 		"perf ftrace [<options>] [<command>]",
 		"perf ftrace [<options>] -- [<command>] [<options>]",
-<<<<<<< HEAD
-		"perf ftrace {trace|latency} [<options>] [<command>]",
-		"perf ftrace {trace|latency} [<options>] -- [<command>] [<options>]",
-=======
 		"perf ftrace {trace|latency|profile} [<options>] [<command>]",
 		"perf ftrace {trace|latency|profile} [<options>] -- [<command>] [<options>]",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		NULL
 	};
 	enum perf_ftrace_subcommand subcmd = PERF_FTRACE_NONE;
@@ -1672,8 +1598,6 @@ int cmd_ftrace(int argc, const char **argv)
 	signal(SIGCHLD, sig_handler);
 	signal(SIGPIPE, sig_handler);
 
-<<<<<<< HEAD
-=======
 	if (!check_ftrace_capable())
 		return -1;
 
@@ -1682,7 +1606,6 @@ int cmd_ftrace(int argc, const char **argv)
 		return -ENOTSUP;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = perf_config(perf_ftrace_config, &ftrace);
 	if (ret < 0)
 		return -1;
@@ -1693,12 +1616,9 @@ int cmd_ftrace(int argc, const char **argv)
 		} else if (!strcmp(argv[1], "latency")) {
 			subcmd = PERF_FTRACE_LATENCY;
 			options = latency_options;
-<<<<<<< HEAD
-=======
 		} else if (!strcmp(argv[1], "profile")) {
 			subcmd = PERF_FTRACE_PROFILE;
 			options = profile_options;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		if (subcmd != PERF_FTRACE_NONE) {
@@ -1734,12 +1654,9 @@ int cmd_ftrace(int argc, const char **argv)
 		}
 		cmd_func = __cmd_latency;
 		break;
-<<<<<<< HEAD
-=======
 	case PERF_FTRACE_PROFILE:
 		cmd_func = __cmd_profile;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case PERF_FTRACE_NONE:
 	default:
 		pr_err("Invalid subcommand\n");

@@ -920,15 +920,9 @@ static const struct of_device_id venc_of_match[] = {
 
 static struct platform_driver omap_venchw_driver = {
 	.probe		= venc_probe,
-<<<<<<< HEAD
-	.remove_new	= venc_remove,
-	.driver         = {
-		.name   = "omapdss_venc",
-=======
 	.remove		= venc_remove,
 	.driver		= {
 		.name	= "omapdss_venc",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.pm	= &venc_pm_ops,
 		.of_match_table = venc_of_match,
 		.suppress_bind_attrs = true,

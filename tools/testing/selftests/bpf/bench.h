@@ -10,10 +10,7 @@
 #include <math.h>
 #include <time.h>
 #include <sys/syscall.h>
-<<<<<<< HEAD
-=======
 #include <limits.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct cpu_set {
 	bool *cpus;

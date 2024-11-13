@@ -112,10 +112,6 @@ const struct genl_ops mptcp_pm_nl_ops[11] = {
 		.dumpit		= mptcp_pm_nl_get_addr_dumpit,
 		.policy		= mptcp_pm_get_addr_nl_policy,
 		.maxattr	= MPTCP_PM_ATTR_TOKEN,
-<<<<<<< HEAD
-		.flags		= GENL_UNS_ADMIN_PERM,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	},
 	{
 		.cmd		= MPTCP_PM_CMD_FLUSH_ADDRS,

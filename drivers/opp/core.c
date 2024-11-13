@@ -2630,15 +2630,10 @@ int dev_pm_opp_set_config(struct device *dev, struct dev_pm_opp_config *config)
 
 	/* Attach genpds */
 	if (config->genpd_names) {
-<<<<<<< HEAD
-		if (config->required_devs)
-			goto err;
-=======
 		if (config->required_devs) {
 			ret = -EINVAL;
 			goto err;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		ret = _opp_attach_genpd(opp_table, dev, config->genpd_names,
 					config->virt_devs);

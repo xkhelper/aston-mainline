@@ -16,11 +16,7 @@
 #include <linux/skbuff.h>
 #include <linux/ieee802154.h>
 #include <linux/crc-ccitt.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <net/mac802154.h>
 #include <net/cfg802154.h>

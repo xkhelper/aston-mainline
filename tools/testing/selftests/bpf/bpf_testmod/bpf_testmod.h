@@ -35,10 +35,7 @@ struct bpf_testmod_ops {
 	void (*test_2)(int a, int b);
 	/* Used to test nullable arguments. */
 	int (*test_maybe_null)(int dummy, struct task_struct *task);
-<<<<<<< HEAD
-=======
 	int (*unsupported_ops)(void);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* The following fields are used to test shadow copies. */
 	char onebyte;
@@ -97,8 +94,6 @@ struct bpf_testmod_ops2 {
 	int (*test_1)(void);
 };
 
-<<<<<<< HEAD
-=======
 struct st_ops_args {
 	u64 a;
 };
@@ -110,5 +105,4 @@ struct bpf_testmod_st_ops {
 	struct module *owner;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _BPF_TESTMOD_H */

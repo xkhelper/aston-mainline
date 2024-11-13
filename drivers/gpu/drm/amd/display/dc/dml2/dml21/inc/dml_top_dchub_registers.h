@@ -2,10 +2,6 @@
 //
 // Copyright 2024 Advanced Micro Devices, Inc.
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifndef __dml2_TOP_DCHUB_REGISTERS_H__
 #define __dml2_TOP_DCHUB_REGISTERS_H__
 

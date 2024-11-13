@@ -5,11 +5,8 @@
 
 #include "xe_lrc.h"
 
-<<<<<<< HEAD
-=======
 #include <generated/xe_wa_oob.h>
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/ascii85.h>
 
 #include "instructions/xe_mi_commands.h"
@@ -29,10 +26,7 @@
 #include "xe_memirq.h"
 #include "xe_sriov.h"
 #include "xe_vm.h"
-<<<<<<< HEAD
-=======
 #include "xe_wa.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define LRC_VALID				BIT_ULL(0)
 #define LRC_PRIVILEGE				BIT_ULL(8)
@@ -1590,21 +1584,6 @@ void xe_lrc_emit_hwe_state_instructions(struct xe_exec_queue *q, struct xe_bb *b
 	int state_table_size = 0;
 
 	/*
-<<<<<<< HEAD
-	 * At the moment we only need to emit non-register state for the RCS
-	 * engine.
-	 */
-	if (q->hwe->class != XE_ENGINE_CLASS_RENDER)
-		return;
-
-	switch (GRAPHICS_VERx100(xe)) {
-	case 1255:
-	case 1270 ... 2004:
-		state_table = xe_hpg_svg_state;
-		state_table_size = ARRAY_SIZE(xe_hpg_svg_state);
-		break;
-	default:
-=======
 	 * Wa_14019789679
 	 *
 	 * If the driver doesn't explicitly emit the SVG instructions while
@@ -1630,7 +1609,6 @@ void xe_lrc_emit_hwe_state_instructions(struct xe_exec_queue *q, struct xe_bb *b
 	}
 
 	if (!state_table) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xe_gt_dbg(gt, "No non-register state to emit on graphics ver %d.%02d\n",
 			  GRAPHICS_VER(xe), GRAPHICS_VERx100(xe) % 100);
 		return;
@@ -1671,11 +1649,7 @@ struct xe_lrc_snapshot *xe_lrc_snapshot_capture(struct xe_lrc *lrc)
 	if (!snapshot)
 		return NULL;
 
-<<<<<<< HEAD
-	if (lrc->bo && lrc->bo->vm)
-=======
 	if (lrc->bo->vm)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xe_vm_get(lrc->bo->vm);
 
 	snapshot->context_desc = xe_lrc_ggtt_addr(lrc);

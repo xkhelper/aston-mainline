@@ -2,10 +2,7 @@
 // Copyright (C) 2018 ROHM Semiconductors
 // bd71837-regulator.c ROHM BD71837MWV/BD71847MWV regulator driver
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/delay.h>
 #include <linux/err.h>
 #include <linux/interrupt.h>
@@ -1639,30 +1636,17 @@ static int get_special_regulators(struct device *dev,
 				  unsigned int num_reg_data, int *info)
 {
 	int ret;
-<<<<<<< HEAD
-	struct device_node *np;
-	struct device_node *nproot = dev->of_node;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int uv;
 
 	*info = 0;
 
-<<<<<<< HEAD
-	nproot = of_get_child_by_name(nproot, "regulators");
-=======
 	struct device_node *nproot __free(device_node) = of_get_child_by_name(dev->of_node,
 									      "regulators");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!nproot) {
 		dev_err(dev, "failed to find regulators node\n");
 		return -ENODEV;
 	}
-<<<<<<< HEAD
-	for_each_child_of_node(nproot, np) {
-=======
 	for_each_child_of_node_scoped(nproot, np) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (of_property_read_bool(np, "rohm,no-regulator-enable-control"))
 			mark_hw_controlled(dev, np, reg_data, num_reg_data,
 					   info);
@@ -1672,33 +1656,15 @@ static int get_special_regulators(struct device *dev,
 			if (ret == -EINVAL)
 				continue;
 			else
-<<<<<<< HEAD
-				goto err_out;
-=======
 				return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		ret = setup_feedback_loop(dev, np, reg_data, num_reg_data, uv);
 		if (ret)
-<<<<<<< HEAD
-			goto err_out;
-	}
-
-	of_node_put(nproot);
-	return 0;
-
-err_out:
-	of_node_put(np);
-	of_node_put(nproot);
-
-	return ret;
-=======
 			return ret;
 	}
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int bd718xx_probe(struct platform_device *pdev)

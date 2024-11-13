@@ -271,13 +271,7 @@ int drm_fb_helper_hotplug_event(struct drm_fb_helper *fb_helper);
 int drm_fb_helper_initial_config(struct drm_fb_helper *fb_helper);
 int drm_fb_helper_debug_enter(struct fb_info *info);
 int drm_fb_helper_debug_leave(struct fb_info *info);
-<<<<<<< HEAD
-
 void drm_fb_helper_lastclose(struct drm_device *dev);
-void drm_fb_helper_output_poll_changed(struct drm_device *dev);
-=======
-void drm_fb_helper_lastclose(struct drm_device *dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 static inline void drm_fb_helper_prepare(struct drm_device *dev,
 					 struct drm_fb_helper *helper,
@@ -405,13 +399,6 @@ static inline int drm_fb_helper_debug_leave(struct fb_info *info)
 static inline void drm_fb_helper_lastclose(struct drm_device *dev)
 {
 }
-<<<<<<< HEAD
-
-static inline void drm_fb_helper_output_poll_changed(struct drm_device *dev)
-{
-}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #endif

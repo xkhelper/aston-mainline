@@ -1923,11 +1923,7 @@ restart:
 				error = -EFSCORRUPTED;
 				goto error0;
 			}
-<<<<<<< HEAD
-			if (flen < bestrlen)
-=======
 			if (flen <= bestrlen)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 			busy = xfs_alloc_compute_aligned(args, fbno, flen,
 					&rbno, &rlen, &busy_gen);
@@ -2770,10 +2766,6 @@ xfs_alloc_commit_autoreap(
 		xfs_defer_item_unpause(tp, aarp->dfp);
 }
 
-<<<<<<< HEAD
-#ifdef DEBUG
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Check if an AGF has a free extent record whose length is equal to
  * args->minlen.
@@ -2813,10 +2805,6 @@ out:
 
 	return error;
 }
-<<<<<<< HEAD
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Decide whether to use this allocation group for this allocation.
@@ -2890,23 +2878,14 @@ xfs_alloc_fix_freelist(
 	if (!xfs_alloc_space_available(args, need, alloc_flags))
 		goto out_agbp_relse;
 
-<<<<<<< HEAD
-#ifdef DEBUG
-	if (args->alloc_minlen_only) {
-=======
 	if (IS_ENABLED(CONFIG_XFS_DEBUG) && args->alloc_minlen_only) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		int stat;
 
 		error = xfs_exact_minlen_extent_available(args, agbp, &stat);
 		if (error || !stat)
 			goto out_agbp_relse;
 	}
-<<<<<<< HEAD
-#endif
-=======
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * Make the freelist shorter if it's too long.
 	 *

@@ -1280,10 +1280,7 @@ static const struct of_device_id bcm2835_pinctrl_match[] = {
 	},
 	{}
 };
-<<<<<<< HEAD
-=======
 MODULE_DEVICE_TABLE(of, bcm2835_pinctrl_match);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static int bcm2835_pinctrl_probe(struct platform_device *pdev)
 {

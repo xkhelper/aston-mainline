@@ -11,11 +11,7 @@
  * Copyright (c) 2014 Red Hat Inc.
  */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <crypto/sha256_base.h>
 #include <linux/kernel.h>
 #include <linux/module.h>

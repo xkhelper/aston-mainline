@@ -12,11 +12,7 @@
 #include <linux/module.h>
 #include <linux/spi/spi.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/iio/buffer.h>
 #include <linux/iio/iio.h>
@@ -498,12 +494,7 @@ static irqreturn_t sca3300_trigger_handler(int irq, void *p)
 	int bit, ret, val, i = 0;
 	s16 *channels = (s16 *)data->buffer;
 
-<<<<<<< HEAD
-	for_each_set_bit(bit, indio_dev->active_scan_mask,
-			 indio_dev->masklength) {
-=======
 	iio_for_each_active_channel(indio_dev, bit) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = sca3300_read_reg(data, indio_dev->channels[bit].address, &val);
 		if (ret) {
 			dev_err_ratelimited(&data->spi->dev,

@@ -17,10 +17,7 @@
 #include <linux/namei.h>
 #include <linux/init_syscalls.h>
 #include <linux/umh.h>
-<<<<<<< HEAD
-=======
 #include <linux/security.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "do_mounts.h"
 
@@ -716,11 +713,8 @@ static void __init do_populate_rootfs(void *unused, async_cookie_t cookie)
 	}
 
 done:
-<<<<<<< HEAD
-=======
 	security_initramfs_populated();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * If the initrd region is overlapped with crashkernel reserved region,
 	 * free only memory that is not part of crashkernel region.

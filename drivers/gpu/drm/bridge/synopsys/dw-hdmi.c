@@ -138,12 +138,6 @@ struct dw_hdmi {
 	struct platform_device *audio;
 	struct platform_device *cec;
 	struct device *dev;
-<<<<<<< HEAD
-	struct clk *isfr_clk;
-	struct clk *iahb_clk;
-	struct clk *cec_clk;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dw_hdmi_i2c *i2c;
 
 	struct hdmi_data_info hdmi_data;
@@ -3329,10 +3323,7 @@ struct dw_hdmi *dw_hdmi_probe(struct platform_device *pdev,
 	struct device_node *ddc_node;
 	struct dw_hdmi_cec_data cec;
 	struct dw_hdmi *hdmi;
-<<<<<<< HEAD
-=======
 	struct clk *clk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct resource *iores = NULL;
 	int irq;
 	int ret;
@@ -3412,58 +3403,13 @@ struct dw_hdmi *dw_hdmi_probe(struct platform_device *pdev,
 		hdmi->regm = plat_data->regm;
 	}
 
-<<<<<<< HEAD
-	hdmi->isfr_clk = devm_clk_get(hdmi->dev, "isfr");
-	if (IS_ERR(hdmi->isfr_clk)) {
-		ret = PTR_ERR(hdmi->isfr_clk);
-=======
 	clk = devm_clk_get_enabled(hdmi->dev, "isfr");
 	if (IS_ERR(clk)) {
 		ret = PTR_ERR(clk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(hdmi->dev, "Unable to get HDMI isfr clk: %d\n", ret);
 		goto err_res;
 	}
 
-<<<<<<< HEAD
-	ret = clk_prepare_enable(hdmi->isfr_clk);
-	if (ret) {
-		dev_err(hdmi->dev, "Cannot enable HDMI isfr clock: %d\n", ret);
-		goto err_res;
-	}
-
-	hdmi->iahb_clk = devm_clk_get(hdmi->dev, "iahb");
-	if (IS_ERR(hdmi->iahb_clk)) {
-		ret = PTR_ERR(hdmi->iahb_clk);
-		dev_err(hdmi->dev, "Unable to get HDMI iahb clk: %d\n", ret);
-		goto err_isfr;
-	}
-
-	ret = clk_prepare_enable(hdmi->iahb_clk);
-	if (ret) {
-		dev_err(hdmi->dev, "Cannot enable HDMI iahb clock: %d\n", ret);
-		goto err_isfr;
-	}
-
-	hdmi->cec_clk = devm_clk_get(hdmi->dev, "cec");
-	if (PTR_ERR(hdmi->cec_clk) == -ENOENT) {
-		hdmi->cec_clk = NULL;
-	} else if (IS_ERR(hdmi->cec_clk)) {
-		ret = PTR_ERR(hdmi->cec_clk);
-		if (ret != -EPROBE_DEFER)
-			dev_err(hdmi->dev, "Cannot get HDMI cec clock: %d\n",
-				ret);
-
-		hdmi->cec_clk = NULL;
-		goto err_iahb;
-	} else {
-		ret = clk_prepare_enable(hdmi->cec_clk);
-		if (ret) {
-			dev_err(hdmi->dev, "Cannot enable HDMI cec clock: %d\n",
-				ret);
-			goto err_iahb;
-		}
-=======
 	clk = devm_clk_get_enabled(hdmi->dev, "iahb");
 	if (IS_ERR(clk)) {
 		ret = PTR_ERR(clk);
@@ -3478,7 +3424,6 @@ struct dw_hdmi *dw_hdmi_probe(struct platform_device *pdev,
 			dev_err(hdmi->dev, "Cannot get HDMI cec clock: %d\n",
 				ret);
 		goto err_res;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Product and revision IDs */
@@ -3492,20 +3437,12 @@ struct dw_hdmi *dw_hdmi_probe(struct platform_device *pdev,
 		dev_err(dev, "Unsupported HDMI controller (%04x:%02x:%02x)\n",
 			hdmi->version, prod_id0, prod_id1);
 		ret = -ENODEV;
-<<<<<<< HEAD
-		goto err_iahb;
-=======
 		goto err_res;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = dw_hdmi_detect_phy(hdmi);
 	if (ret < 0)
-<<<<<<< HEAD
-		goto err_iahb;
-=======
 		goto err_res;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_info(dev, "Detected HDMI TX controller v%x.%03x %s HDCP (%s)\n",
 		 hdmi->version >> 12, hdmi->version & 0xfff,
@@ -3517,22 +3454,14 @@ struct dw_hdmi *dw_hdmi_probe(struct platform_device *pdev,
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0) {
 		ret = irq;
-<<<<<<< HEAD
-		goto err_iahb;
-=======
 		goto err_res;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = devm_request_threaded_irq(dev, irq, dw_hdmi_hardirq,
 					dw_hdmi_irq, IRQF_SHARED,
 					dev_name(dev), hdmi);
 	if (ret)
-<<<<<<< HEAD
-		goto err_iahb;
-=======
 		goto err_res;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * To prevent overflows in HDMI_IH_FC_STAT2, set the clk regenerator
@@ -3649,14 +3578,6 @@ struct dw_hdmi *dw_hdmi_probe(struct platform_device *pdev,
 
 	return hdmi;
 
-<<<<<<< HEAD
-err_iahb:
-	clk_disable_unprepare(hdmi->iahb_clk);
-	clk_disable_unprepare(hdmi->cec_clk);
-err_isfr:
-	clk_disable_unprepare(hdmi->isfr_clk);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 err_res:
 	i2c_put_adapter(hdmi->ddc);
 
@@ -3676,13 +3597,6 @@ void dw_hdmi_remove(struct dw_hdmi *hdmi)
 	/* Disable all interrupts */
 	hdmi_writeb(hdmi, ~0, HDMI_IH_MUTE_PHY_STAT0);
 
-<<<<<<< HEAD
-	clk_disable_unprepare(hdmi->iahb_clk);
-	clk_disable_unprepare(hdmi->isfr_clk);
-	clk_disable_unprepare(hdmi->cec_clk);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (hdmi->i2c)
 		i2c_del_adapter(&hdmi->i2c->adap);
 	else

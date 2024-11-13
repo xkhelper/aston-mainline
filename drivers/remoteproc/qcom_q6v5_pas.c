@@ -829,8 +829,6 @@ static const struct adsp_data adsp_resource_init = {
 	.ssctl_id = 0x14,
 };
 
-<<<<<<< HEAD
-=======
 static const struct adsp_data sa8775p_adsp_resource = {
 	.crash_reason_smem = 423,
 	.firmware_name = "adsp.mbn",
@@ -848,7 +846,6 @@ static const struct adsp_data sa8775p_adsp_resource = {
 	.ssctl_id = 0x14,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct adsp_data sdm845_adsp_resource_init = {
 	.crash_reason_smem = 423,
 	.firmware_name = "adsp.mdt",
@@ -962,8 +959,6 @@ static const struct adsp_data cdsp_resource_init = {
 	.ssctl_id = 0x17,
 };
 
-<<<<<<< HEAD
-=======
 static const struct adsp_data sa8775p_cdsp0_resource = {
 	.crash_reason_smem = 601,
 	.firmware_name = "cdsp0.mbn",
@@ -1000,7 +995,6 @@ static const struct adsp_data sa8775p_cdsp1_resource = {
 	.ssctl_id = 0x20,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct adsp_data sdm845_cdsp_resource_init = {
 	.crash_reason_smem = 601,
 	.firmware_name = "cdsp.mdt",
@@ -1142,8 +1136,6 @@ static const struct adsp_data sm8350_cdsp_resource = {
 	.ssctl_id = 0x17,
 };
 
-<<<<<<< HEAD
-=======
 static const struct adsp_data sa8775p_gpdsp0_resource = {
 	.crash_reason_smem = 640,
 	.firmware_name = "gpdsp0.mbn",
@@ -1178,7 +1170,6 @@ static const struct adsp_data sa8775p_gpdsp1_resource = {
 	.ssctl_id = 0x22,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct adsp_data mpss_resource_init = {
 	.crash_reason_smem = 421,
 	.firmware_name = "modem.mdt",
@@ -1425,14 +1416,11 @@ static const struct of_device_id adsp_of_match[] = {
 	{ .compatible = "qcom,qcs404-adsp-pas", .data = &adsp_resource_init },
 	{ .compatible = "qcom,qcs404-cdsp-pas", .data = &cdsp_resource_init },
 	{ .compatible = "qcom,qcs404-wcss-pas", .data = &wcss_resource_init },
-<<<<<<< HEAD
-=======
 	{ .compatible = "qcom,sa8775p-adsp-pas", .data = &sa8775p_adsp_resource},
 	{ .compatible = "qcom,sa8775p-cdsp0-pas", .data = &sa8775p_cdsp0_resource},
 	{ .compatible = "qcom,sa8775p-cdsp1-pas", .data = &sa8775p_cdsp1_resource},
 	{ .compatible = "qcom,sa8775p-gpdsp0-pas", .data = &sa8775p_gpdsp0_resource},
 	{ .compatible = "qcom,sa8775p-gpdsp1-pas", .data = &sa8775p_gpdsp1_resource},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "qcom,sc7180-adsp-pas", .data = &sm8250_adsp_resource},
 	{ .compatible = "qcom,sc7180-mpss-pas", .data = &mpss_resource_init},
 	{ .compatible = "qcom,sc7280-adsp-pas", .data = &sm8350_adsp_resource},
@@ -1450,10 +1438,7 @@ static const struct of_device_id adsp_of_match[] = {
 	{ .compatible = "qcom,sdm845-cdsp-pas", .data = &sdm845_cdsp_resource_init},
 	{ .compatible = "qcom,sdm845-slpi-pas", .data = &sdm845_slpi_resource_init},
 	{ .compatible = "qcom,sdx55-mpss-pas", .data = &sdx55_mpss_resource},
-<<<<<<< HEAD
-=======
 	{ .compatible = "qcom,sdx75-mpss-pas", .data = &sm8650_mpss_resource},
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ .compatible = "qcom,sm6115-adsp-pas", .data = &adsp_resource_init},
 	{ .compatible = "qcom,sm6115-cdsp-pas", .data = &cdsp_resource_init},
 	{ .compatible = "qcom,sm6115-mpss-pas", .data = &sc8180x_mpss_resource},

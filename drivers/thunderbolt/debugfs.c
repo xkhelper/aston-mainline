@@ -9,10 +9,7 @@
 
 #include <linux/bitfield.h>
 #include <linux/debugfs.h>
-<<<<<<< HEAD
-=======
 #include <linux/delay.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pm_runtime.h>
 #include <linux/uaccess.h>
 
@@ -38,8 +35,6 @@
 
 #define COUNTER_SET_LEN		3
 
-<<<<<<< HEAD
-=======
 /*
  * USB4 spec doesn't specify dwell range, the range of 100 ms to 500 ms
  * probed to give good results.
@@ -48,7 +43,6 @@
 #define MAX_DWELL_TIME		500 /* ms */
 #define DWELL_SAMPLE_INTERVAL	10
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Sideband registers and their sizes as defined in the USB4 spec */
 struct sb_reg {
 	unsigned int reg;
@@ -409,10 +403,6 @@ out:
  * @ber_level: Current BER level contour value
  * @voltage_steps: Number of mandatory voltage steps
  * @max_voltage_offset: Maximum mandatory voltage offset (in mV)
-<<<<<<< HEAD
- * @time_steps: Number of time margin steps
- * @max_time_offset: Maximum time margin offset (in mUI)
-=======
  * @voltage_steps_optional_range: Number of voltage steps for optional range
  * @max_voltage_offset_optional_range: Maximum voltage offset for the optional
  *					range (in mV).
@@ -422,7 +412,6 @@ out:
  * @dwell_time: Dwell time for software margining (in ms)
  * @error_counter: Error counter operation for software margining
  * @optional_voltage_offset_range: Enable optional extended voltage range
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @software: %true if software margining is used instead of hardware
  * @time: %true if time margining is used instead of voltage
  * @right_high: %false if left/low margin test is performed, %true if
@@ -441,10 +430,6 @@ struct tb_margining {
 	unsigned int ber_level;
 	unsigned int voltage_steps;
 	unsigned int max_voltage_offset;
-<<<<<<< HEAD
-	unsigned int time_steps;
-	unsigned int max_time_offset;
-=======
 	unsigned int voltage_steps_optional_range;
 	unsigned int max_voltage_offset_optional_range;
 	unsigned int time_steps;
@@ -453,14 +438,11 @@ struct tb_margining {
 	unsigned int dwell_time;
 	enum usb4_margin_sw_error_counter error_counter;
 	bool optional_voltage_offset_range;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool software;
 	bool time;
 	bool right_high;
 };
 
-<<<<<<< HEAD
-=======
 static int margining_modify_error_counter(struct tb_margining *margining,
 	u32 lanes, enum usb4_margin_sw_error_counter error_counter)
 {
@@ -479,7 +461,6 @@ static int margining_modify_error_counter(struct tb_margining *margining,
 				   &params, &result);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static bool supports_software(const struct tb_margining *margining)
 {
 	return margining->caps[0] & USB4_MARGIN_CAP_0_MODES_SW;
@@ -513,15 +494,12 @@ independent_time_margins(const struct tb_margining *margining)
 	return FIELD_GET(USB4_MARGIN_CAP_1_TIME_INDP_MASK, margining->caps[1]);
 }
 
-<<<<<<< HEAD
-=======
 static bool
 supports_optional_voltage_offset_range(const struct tb_margining *margining)
 {
 	return margining->caps[0] & USB4_MARGIN_CAP_0_OPT_VOLTAGE_SUPPORT;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t
 margining_ber_level_write(struct file *file, const char __user *user_buf,
 			   size_t count, loff_t *ppos)
@@ -621,8 +599,6 @@ static int margining_caps_show(struct seq_file *s, void *not_used)
 		   margining->voltage_steps);
 	seq_printf(s, "# maximum voltage offset: %u mV\n",
 		   margining->max_voltage_offset);
-<<<<<<< HEAD
-=======
 	seq_printf(s, "# optional voltage offset range support: %s\n",
 		   str_yes_no(supports_optional_voltage_offset_range(margining)));
 	if (supports_optional_voltage_offset_range(margining)) {
@@ -631,7 +607,6 @@ static int margining_caps_show(struct seq_file *s, void *not_used)
 		seq_printf(s, "# maximum voltage offset, optional range: %u mV\n",
 			   margining->max_voltage_offset_optional_range);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	switch (independent_voltage_margins(margining)) {
 	case USB4_MARGIN_CAP_0_VOLTAGE_MIN:
@@ -746,8 +721,6 @@ static int margining_lanes_show(struct seq_file *s, void *not_used)
 }
 DEBUGFS_ATTR_RW(margining_lanes);
 
-<<<<<<< HEAD
-=======
 static ssize_t
 margining_voltage_time_offset_write(struct file *file,
 				    const char __user *user_buf,
@@ -940,7 +913,6 @@ static int margining_optional_voltage_offset_show(struct seq_file *s,
 }
 DEBUGFS_ATTR_RW(margining_optional_voltage_offset);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static ssize_t margining_mode_write(struct file *file,
 				   const char __user *user_buf,
 				   size_t count, loff_t *ppos)
@@ -1013,8 +985,6 @@ static int margining_mode_show(struct seq_file *s, void *not_used)
 }
 DEBUGFS_ATTR_RW(margining_mode);
 
-<<<<<<< HEAD
-=======
 static int margining_run_sw(struct tb_margining *margining,
 			    struct usb4_port_margining_params *params)
 {
@@ -1060,7 +1030,6 @@ out_stop:
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int margining_run_write(void *data, u64 val)
 {
 	struct tb_margining *margining = data;
@@ -1101,9 +1070,6 @@ static int margining_run_write(void *data, u64 val)
 		clx = ret;
 	}
 
-<<<<<<< HEAD
-	if (margining->software) {
-=======
 	/* Clear the results */
 	memset(margining->results, 0, sizeof(margining->results));
 
@@ -1117,24 +1083,10 @@ static int margining_run_write(void *data, u64 val)
 			.optional_voltage_offset_range = margining->optional_voltage_offset_range,
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tb_port_dbg(port,
 			    "running software %s lane margining for %s lanes %u\n",
 			    margining->time ? "time" : "voltage", dev_name(dev),
 			    margining->lanes);
-<<<<<<< HEAD
-		ret = usb4_port_sw_margin(port, margining->target, margining->index,
-					  margining->lanes, margining->time,
-					  margining->right_high,
-					  USB4_MARGIN_SW_COUNTER_CLEAR);
-		if (ret)
-			goto out_clx;
-
-		ret = usb4_port_sw_margin_errors(port, margining->target,
-						 margining->index,
-						 &margining->results[0]);
-	} else {
-=======
 
 		ret = margining_run_sw(margining, &params);
 	} else {
@@ -1146,29 +1098,15 @@ static int margining_run_write(void *data, u64 val)
 			.optional_voltage_offset_range = margining->optional_voltage_offset_range,
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tb_port_dbg(port,
 			    "running hardware %s lane margining for %s lanes %u\n",
 			    margining->time ? "time" : "voltage", dev_name(dev),
 			    margining->lanes);
-<<<<<<< HEAD
-		/* Clear the results */
-		margining->results[0] = 0;
-		margining->results[1] = 0;
-		ret = usb4_port_hw_margin(port, margining->target, margining->index,
-					  margining->lanes, margining->ber_level,
-					  margining->time, margining->right_high,
-					  margining->results);
-	}
-
-out_clx:
-=======
 
 		ret = usb4_port_hw_margin(port, margining->target, margining->index, &params,
 					  margining->results);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (down_sw)
 		tb_switch_clx_enable(down_sw, clx);
 out_unlock:
@@ -1197,8 +1135,6 @@ static ssize_t margining_results_write(struct file *file,
 	margining->results[0] = 0;
 	margining->results[1] = 0;
 
-<<<<<<< HEAD
-=======
 	if (margining->software) {
 		/* Clear the error counters */
 		margining_modify_error_counter(margining,
@@ -1206,7 +1142,6 @@ static ssize_t margining_results_write(struct file *file,
 					       USB4_MARGIN_SW_ERROR_COUNTER_CLEAR);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mutex_unlock(&tb->lock);
 	return count;
 }
@@ -1222,11 +1157,8 @@ static void voltage_margin_show(struct seq_file *s,
 	if (val & USB4_MARGIN_HW_RES_1_EXCEEDS)
 		seq_puts(s, " exceeds maximum");
 	seq_puts(s, "\n");
-<<<<<<< HEAD
-=======
 	if (margining->optional_voltage_offset_range)
 		seq_puts(s, " optional voltage offset range enabled\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void time_margin_show(struct seq_file *s,
@@ -1299,8 +1231,6 @@ static int margining_results_show(struct seq_file *s, void *not_used)
 				voltage_margin_show(s, margining, val);
 			}
 		}
-<<<<<<< HEAD
-=======
 	} else {
 		u32 lane_errors, result;
 
@@ -1319,7 +1249,6 @@ static int margining_results_show(struct seq_file *s, void *not_used)
 						margining->results[1]);
 			seq_printf(s, "# lane 1 errors: %u\n", lane_errors);
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	mutex_unlock(&tb->lock);
@@ -1487,8 +1416,6 @@ static struct tb_margining *margining_alloc(struct tb_port *port,
 	val = FIELD_GET(USB4_MARGIN_CAP_0_MAX_VOLTAGE_OFFSET_MASK, margining->caps[0]);
 	margining->max_voltage_offset = 74 + val * 2;
 
-<<<<<<< HEAD
-=======
 	if (supports_optional_voltage_offset_range(margining)) {
 		val = FIELD_GET(USB4_MARGIN_CAP_0_VOLT_STEPS_OPT_MASK,
 				margining->caps[0]);
@@ -1498,7 +1425,6 @@ static struct tb_margining *margining_alloc(struct tb_port *port,
 		margining->max_voltage_offset_optional_range = 74 + val * 2;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (supports_time(margining)) {
 		val = FIELD_GET(USB4_MARGIN_CAP_1_TIME_STEPS_MASK, margining->caps[1]);
 		margining->time_steps = val;
@@ -1535,8 +1461,6 @@ static struct tb_margining *margining_alloc(struct tb_port *port,
 	     independent_time_margins(margining) == USB4_MARGIN_CAP_1_TIME_LR))
 		debugfs_create_file("margin", 0600, dir, margining,
 				    &margining_margin_fops);
-<<<<<<< HEAD
-=======
 
 	margining->error_counter = USB4_MARGIN_SW_ERROR_COUNTER_CLEAR;
 	margining->dwell_time = MIN_DWELL_TIME;
@@ -1553,7 +1477,6 @@ static struct tb_margining *margining_alloc(struct tb_port *port,
 		debugfs_create_file("dwell_time", DEBUGFS_MODE, dir, margining,
 				    &margining_dwell_time_fops);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return margining;
 }
 

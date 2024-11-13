@@ -159,8 +159,6 @@ static void iwl_mvm_rx_esr_mode_notif(struct iwl_mvm *mvm,
 				  iwl_mvm_get_primary_link(vif));
 }
 
-<<<<<<< HEAD
-=======
 static void iwl_mvm_rx_esr_trans_fail_notif(struct iwl_mvm *mvm,
 					    struct iwl_rx_cmd_buffer *rxb)
 {
@@ -198,7 +196,6 @@ static void iwl_mvm_rx_esr_trans_fail_notif(struct iwl_mvm *mvm,
 			 bss_conf->link_id);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void iwl_mvm_rx_monitor_notif(struct iwl_mvm *mvm,
 				     struct iwl_rx_cmd_buffer *rxb)
 {
@@ -301,15 +298,12 @@ static void iwl_mvm_rx_thermal_dual_chain_req(struct iwl_mvm *mvm,
 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
 	struct iwl_thermal_dual_chain_request *req = (void *)pkt->data;
 
-<<<<<<< HEAD
-=======
 	/* firmware is expected to handle that in RLC offload mode */
 	if (IWL_FW_CHECK(mvm, iwl_mvm_has_rlc_offload(mvm),
 			 "Got THERMAL_DUAL_CHAIN_REQUEST (0x%x) in RLC offload mode\n",
 			 req->event))
 		return;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * We could pass it to the iterator data, but also need to remember
 	 * it for new interfaces that are added while in this state.
@@ -374,11 +368,7 @@ struct iwl_rx_handlers {
  */
 static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
 	RX_HANDLER(TX_CMD, iwl_mvm_rx_tx_cmd, RX_HANDLER_SYNC,
-<<<<<<< HEAD
-		   struct iwl_mvm_tx_resp),
-=======
 		   struct iwl_tx_resp),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	RX_HANDLER(BA_NOTIF, iwl_mvm_rx_ba_notif, RX_HANDLER_SYNC,
 		   struct iwl_mvm_ba_notif),
 
@@ -386,18 +376,12 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
 		       iwl_mvm_tlc_update_notif, RX_HANDLER_SYNC,
 		       struct iwl_tlc_update_notif),
 
-<<<<<<< HEAD
-	RX_HANDLER(BT_PROFILE_NOTIFICATION, iwl_mvm_rx_bt_coex_notif,
-		   RX_HANDLER_ASYNC_LOCKED_WIPHY,
-		   struct iwl_bt_coex_profile_notif),
-=======
 	RX_HANDLER(BT_PROFILE_NOTIFICATION, iwl_mvm_rx_bt_coex_old_notif,
 		   RX_HANDLER_ASYNC_LOCKED_WIPHY,
 		   struct iwl_bt_coex_prof_old_notif),
 	RX_HANDLER_GRP(BT_COEX_GROUP, PROFILE_NOTIF, iwl_mvm_rx_bt_coex_notif,
 		       RX_HANDLER_ASYNC_LOCKED_WIPHY,
 		       struct iwl_bt_coex_profile_notif),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	RX_HANDLER_NO_SIZE(BEACON_NOTIFICATION, iwl_mvm_rx_beacon_notif,
 			   RX_HANDLER_ASYNC_LOCKED),
 	RX_HANDLER_NO_SIZE(STATISTICS_NOTIFICATION, iwl_mvm_rx_statistics,
@@ -447,12 +431,6 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
 		   iwl_mvm_rx_umac_scan_iter_complete_notif, RX_HANDLER_SYNC,
 		   struct iwl_umac_scan_iter_complete_notif),
 
-<<<<<<< HEAD
-	RX_HANDLER(MISSED_BEACONS_NOTIFICATION, iwl_mvm_rx_missed_beacons_notif,
-		   RX_HANDLER_ASYNC_LOCKED_WIPHY,
-		   struct iwl_missed_beacons_notif),
-
-=======
 	RX_HANDLER(MISSED_BEACONS_NOTIFICATION,
 		   iwl_mvm_rx_missed_beacons_notif_legacy,
 		   RX_HANDLER_ASYNC_LOCKED_WIPHY,
@@ -462,7 +440,6 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
 		       iwl_mvm_rx_missed_beacons_notif,
 		       RX_HANDLER_ASYNC_LOCKED_WIPHY,
 		       struct iwl_missed_beacons_notif),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	RX_HANDLER(REPLY_ERROR, iwl_mvm_rx_fw_error, RX_HANDLER_SYNC,
 		   struct iwl_error_resp),
 	RX_HANDLER(PSM_UAPSD_AP_MISBEHAVING_NOTIFICATION,
@@ -546,13 +523,10 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
 	RX_HANDLER_GRP(SCAN_GROUP, CHANNEL_SURVEY_NOTIF,
 		       iwl_mvm_rx_channel_survey_notif, RX_HANDLER_ASYNC_LOCKED,
 		       struct iwl_umac_scan_channel_survey_notif),
-<<<<<<< HEAD
-=======
 	RX_HANDLER_GRP(MAC_CONF_GROUP, EMLSR_TRANS_FAIL_NOTIF,
 		       iwl_mvm_rx_esr_trans_fail_notif,
 		       RX_HANDLER_ASYNC_LOCKED_WIPHY,
 		       struct iwl_esr_trans_fail_notif),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 #undef RX_HANDLER
 #undef RX_HANDLER_GRP
@@ -683,10 +657,7 @@ static const struct iwl_hcmd_names iwl_mvm_mac_conf_names[] = {
 	HCMD_NAME(STA_REMOVE_CMD),
 	HCMD_NAME(STA_DISABLE_TX_CMD),
 	HCMD_NAME(ROC_CMD),
-<<<<<<< HEAD
-=======
 	HCMD_NAME(EMLSR_TRANS_FAIL_NOTIF),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	HCMD_NAME(ROC_NOTIF),
 	HCMD_NAME(CHANNEL_SWITCH_ERROR_NOTIF),
 	HCMD_NAME(MISSED_VAP_NOTIF),
@@ -798,8 +769,6 @@ static const struct iwl_hcmd_names iwl_mvm_regulatory_and_nvm_names[] = {
 	HCMD_NAME(TAS_CONFIG),
 };
 
-<<<<<<< HEAD
-=======
 /* Please keep this array *SORTED* by hex value.
  * Access is done through binary search
  */
@@ -807,7 +776,6 @@ static const struct iwl_hcmd_names iwl_mvm_bt_coex_names[] = {
 	HCMD_NAME(PROFILE_NOTIF),
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct iwl_hcmd_arr iwl_mvm_groups[] = {
 	[LEGACY_GROUP] = HCMD_ARR(iwl_mvm_legacy_names),
 	[LONG_GROUP] = HCMD_ARR(iwl_mvm_legacy_names),
@@ -817,10 +785,7 @@ static const struct iwl_hcmd_arr iwl_mvm_groups[] = {
 	[DATA_PATH_GROUP] = HCMD_ARR(iwl_mvm_data_path_names),
 	[SCAN_GROUP] = HCMD_ARR(iwl_mvm_scan_names),
 	[LOCATION_GROUP] = HCMD_ARR(iwl_mvm_location_names),
-<<<<<<< HEAD
-=======
 	[BT_COEX_GROUP] = HCMD_ARR(iwl_mvm_bt_coex_names),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	[PROT_OFFLOAD_GROUP] = HCMD_ARR(iwl_mvm_prot_offload_names),
 	[REGULATORY_AND_NVM_GROUP] =
 		HCMD_ARR(iwl_mvm_regulatory_and_nvm_names),
@@ -1322,20 +1287,12 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
 	struct iwl_mvm_csme_conn_info *csme_conn_info __maybe_unused;
 
 	/*
-<<<<<<< HEAD
-	 * We use IWL_MVM_STATION_COUNT_MAX to check the validity of the station
-=======
 	 * We use IWL_STATION_COUNT_MAX to check the validity of the station
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * index all over the driver - check that its value corresponds to the
 	 * array size.
 	 */
 	BUILD_BUG_ON(ARRAY_SIZE(mvm->fw_id_to_mac_id) !=
-<<<<<<< HEAD
-		     IWL_MVM_STATION_COUNT_MAX);
-=======
 		     IWL_STATION_COUNT_MAX);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/********************************
 	 * 1. Allocating and configuring HW data
@@ -1394,10 +1351,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
 	}
 
 	mvm->fw_restart = iwlwifi_mod_params.fw_restart ? -1 : 0;
-<<<<<<< HEAD
-=======
 	mvm->bios_enable_puncturing = iwl_uefi_get_puncturing(&mvm->fwrt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (iwl_mvm_has_new_tx_api(mvm)) {
 		/*
@@ -1497,13 +1451,6 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
 	trans_cfg.cb_data_offs = offsetof(struct ieee80211_tx_info,
 					  driver_data[2]);
 
-<<<<<<< HEAD
-	/* Set a short watchdog for the command queue */
-	trans_cfg.cmd_q_wdg_timeout =
-		iwl_mvm_get_wd_timeout(mvm, NULL, false, true);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	snprintf(mvm->hw->wiphy->fw_version,
 		 sizeof(mvm->hw->wiphy->fw_version),
 		 "%.31s", fw->fw_version);
@@ -2208,10 +2155,7 @@ static void iwl_op_mode_mvm_time_point(struct iwl_op_mode *op_mode,
 	iwl_dbg_tlv_time_point(&mvm->fwrt, tp_id, tp_data);
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_PM_SLEEP
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void iwl_op_mode_mvm_device_powered_off(struct iwl_op_mode *op_mode)
 {
 	struct iwl_mvm *mvm = IWL_OP_MODE_GET_MVM(op_mode);
@@ -2220,13 +2164,6 @@ static void iwl_op_mode_mvm_device_powered_off(struct iwl_op_mode *op_mode)
 	clear_bit(IWL_MVM_STATUS_IN_D3, &mvm->status);
 	mvm->trans->system_pm_mode = IWL_PLAT_PM_MODE_DISABLED;
 	iwl_mvm_stop_device(mvm);
-<<<<<<< HEAD
-#ifdef CONFIG_PM
-	mvm->fast_resume = false;
-#endif
-	mutex_unlock(&mvm->mutex);
-}
-=======
 	mvm->fast_resume = false;
 	mutex_unlock(&mvm->mutex);
 }
@@ -2234,7 +2171,6 @@ static void iwl_op_mode_mvm_device_powered_off(struct iwl_op_mode *op_mode)
 static void iwl_op_mode_mvm_device_powered_off(struct iwl_op_mode *op_mode)
 {}
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define IWL_MVM_COMMON_OPS					\
 	/* these could be differentiated */			\

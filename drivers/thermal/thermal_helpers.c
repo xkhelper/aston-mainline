@@ -39,31 +39,18 @@ int get_tz_trend(struct thermal_zone_device *tz, const struct thermal_trip *trip
 	return trend;
 }
 
-<<<<<<< HEAD
-static struct thermal_instance *get_instance(struct thermal_zone_device *tz,
-					     struct thermal_cooling_device *cdev,
-					     const struct thermal_trip *trip)
-=======
 static bool thermal_instance_present(struct thermal_zone_device *tz,
 				     struct thermal_cooling_device *cdev,
 				     const struct thermal_trip *trip)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct thermal_instance *ti;
 
 	list_for_each_entry(ti, &tz->thermal_instances, tz_node) {
 		if (ti->trip == trip && ti->cdev == cdev)
-<<<<<<< HEAD
-			return ti;
-	}
-
-	return NULL;
-=======
 			return true;
 	}
 
 	return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 bool thermal_trip_is_bound_to_cdev(struct thermal_zone_device *tz,
@@ -75,11 +62,7 @@ bool thermal_trip_is_bound_to_cdev(struct thermal_zone_device *tz,
 	mutex_lock(&tz->lock);
 	mutex_lock(&cdev->lock);
 
-<<<<<<< HEAD
-	ret = !!get_instance(tz, cdev, trip);
-=======
 	ret = thermal_instance_present(tz, cdev, trip);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_unlock(&cdev->lock);
 	mutex_unlock(&tz->lock);
@@ -88,27 +71,6 @@ bool thermal_trip_is_bound_to_cdev(struct thermal_zone_device *tz,
 }
 EXPORT_SYMBOL_GPL(thermal_trip_is_bound_to_cdev);
 
-<<<<<<< HEAD
-struct thermal_instance *
-get_thermal_instance(struct thermal_zone_device *tz,
-		     struct thermal_cooling_device *cdev, int trip_index)
-{
-	struct thermal_instance *ti;
-
-	mutex_lock(&tz->lock);
-	mutex_lock(&cdev->lock);
-
-	ti = get_instance(tz, cdev, &tz->trips[trip_index].trip);
-
-	mutex_unlock(&cdev->lock);
-	mutex_unlock(&tz->lock);
-
-	return ti;
-}
-EXPORT_SYMBOL(get_thermal_instance);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * __thermal_zone_get_temp() - returns the temperature of a thermal zone
  * @tz: a valid pointer to a struct thermal_zone_device
@@ -219,11 +181,6 @@ void __thermal_cdev_update(struct thermal_cooling_device *cdev)
 
 	/* Make sure cdev enters the deepest cooling state */
 	list_for_each_entry(instance, &cdev->thermal_instances, cdev_node) {
-<<<<<<< HEAD
-		dev_dbg(&cdev->device, "zone%d->target=%lu\n",
-			instance->tz->id, instance->target);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (instance->target == THERMAL_NO_TARGET)
 			continue;
 		if (instance->target > target)

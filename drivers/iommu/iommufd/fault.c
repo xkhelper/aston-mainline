@@ -3,16 +3,6 @@
  */
 #define pr_fmt(fmt) "iommufd: " fmt
 
-<<<<<<< HEAD
-#include <linux/file.h>
-#include <linux/fs.h>
-#include <linux/module.h>
-#include <linux/mutex.h>
-#include <linux/iommufd.h>
-#include <linux/pci.h>
-#include <linux/poll.h>
-#include <linux/anon_inodes.h>
-=======
 #include <linux/anon_inodes.h>
 #include <linux/file.h>
 #include <linux/fs.h>
@@ -21,7 +11,6 @@
 #include <linux/mutex.h>
 #include <linux/pci.h>
 #include <linux/poll.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <uapi/linux/iommufd.h>
 
 #include "../iommu-priv.h"
@@ -172,10 +161,6 @@ static int __fault_domain_replace_dev(struct iommufd_device *idev,
 		if (!handle)
 			return -ENOMEM;
 
-<<<<<<< HEAD
-		handle->handle.domain = hwpt->domain;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		handle->idev = idev;
 		ret = iommu_replace_group_handle(idev->igroup->group,
 						 hwpt->domain, &handle->handle);
@@ -375,10 +360,6 @@ static const struct file_operations iommufd_fault_fops = {
 	.write		= iommufd_fault_fops_write,
 	.poll		= iommufd_fault_fops_poll,
 	.release	= iommufd_fault_fops_release,
-<<<<<<< HEAD
-	.llseek		= no_llseek,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 int iommufd_fault_alloc(struct iommufd_ucmd *ucmd)

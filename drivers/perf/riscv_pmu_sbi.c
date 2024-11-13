@@ -60,11 +60,7 @@ asm volatile(ALTERNATIVE(						\
 #define PERF_EVENT_FLAG_LEGACY		BIT(SYSCTL_LEGACY)
 
 PMU_FORMAT_ATTR(event, "config:0-47");
-<<<<<<< HEAD
-PMU_FORMAT_ATTR(firmware, "config:63");
-=======
 PMU_FORMAT_ATTR(firmware, "config:62-63");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static bool sbi_v2_available;
 static DEFINE_STATIC_KEY_FALSE(sbi_pmu_snapshot_available);
@@ -313,11 +309,7 @@ static void pmu_sbi_check_event(struct sbi_pmu_event_data *edata)
 			  ret.value, 0x1, SBI_PMU_STOP_FLAG_RESET, 0, 0, 0);
 	} else if (ret.error == SBI_ERR_NOT_SUPPORTED) {
 		/* This event cannot be monitored by any counter */
-<<<<<<< HEAD
-		edata->event_idx = -EINVAL;
-=======
 		edata->event_idx = -ENOENT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -515,10 +507,6 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
 {
 	u32 type = event->attr.type;
 	u64 config = event->attr.config;
-<<<<<<< HEAD
-	int bSoftware;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u64 raw_config_val;
 	int ret;
 
@@ -539,24 +527,6 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
 		break;
 	case PERF_TYPE_RAW:
 		/*
-<<<<<<< HEAD
-		 * As per SBI specification, the upper 16 bits must be unused for
-		 * a raw event. Use the MSB (63b) to distinguish between hardware
-		 * raw event and firmware events.
-		 */
-		bSoftware = config >> 63;
-		raw_config_val = config & RISCV_PMU_RAW_EVENT_MASK;
-		if (bSoftware) {
-			ret = (raw_config_val & 0xFFFF) |
-				(SBI_PMU_EVENT_TYPE_FW << 16);
-		} else {
-			ret = RISCV_PMU_RAW_EVENT_IDX;
-			*econfig = raw_config_val;
-		}
-		break;
-	default:
-		ret = -EINVAL;
-=======
 		 * As per SBI specification, the upper 16 bits must be unused
 		 * for a raw event.
 		 * Bits 63:62 are used to distinguish between raw events
@@ -587,7 +557,6 @@ static int pmu_sbi_event_map(struct perf_event *event, u64 *econfig)
 		break;
 	default:
 		ret = -ENOENT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 

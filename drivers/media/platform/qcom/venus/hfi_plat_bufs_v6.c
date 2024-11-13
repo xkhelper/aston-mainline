@@ -1063,83 +1063,51 @@ struct enc_bufsize_ops {
 	u32 (*persist)(void);
 };
 
-<<<<<<< HEAD
-static struct dec_bufsize_ops dec_h264_ops = {
-=======
 static const struct dec_bufsize_ops dec_h264_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scratch = h264d_scratch_size,
 	.scratch1 = h264d_scratch1_size,
 	.persist1 = h264d_persist1_size,
 };
 
-<<<<<<< HEAD
-static struct dec_bufsize_ops dec_h265_ops = {
-=======
 static const struct dec_bufsize_ops dec_h265_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scratch = h265d_scratch_size,
 	.scratch1 = h265d_scratch1_size,
 	.persist1 = h265d_persist1_size,
 };
 
-<<<<<<< HEAD
-static struct dec_bufsize_ops dec_vp8_ops = {
-=======
 static const struct dec_bufsize_ops dec_vp8_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scratch = vpxd_scratch_size,
 	.scratch1 = vp8d_scratch1_size,
 	.persist1 = vp8d_persist1_size,
 };
 
-<<<<<<< HEAD
-static struct dec_bufsize_ops dec_vp9_ops = {
-=======
 static const struct dec_bufsize_ops dec_vp9_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scratch = vpxd_scratch_size,
 	.scratch1 = vp9d_scratch1_size,
 	.persist1 = vp9d_persist1_size,
 };
 
-<<<<<<< HEAD
-static struct dec_bufsize_ops dec_mpeg2_ops = {
-=======
 static const struct dec_bufsize_ops dec_mpeg2_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scratch = mpeg2d_scratch_size,
 	.scratch1 = mpeg2d_scratch1_size,
 	.persist1 = mpeg2d_persist1_size,
 };
 
-<<<<<<< HEAD
-static struct enc_bufsize_ops enc_h264_ops = {
-=======
 static const struct enc_bufsize_ops enc_h264_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scratch = h264e_scratch_size,
 	.scratch1 = h264e_scratch1_size,
 	.scratch2 = enc_scratch2_size,
 	.persist = enc_persist_size,
 };
 
-<<<<<<< HEAD
-static struct enc_bufsize_ops enc_h265_ops = {
-=======
 static const struct enc_bufsize_ops enc_h265_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scratch = h265e_scratch_size,
 	.scratch1 = h265e_scratch1_size,
 	.scratch2 = enc_scratch2_size,
 	.persist = enc_persist_size,
 };
 
-<<<<<<< HEAD
-static struct enc_bufsize_ops enc_vp8_ops = {
-=======
 static const struct enc_bufsize_ops enc_vp8_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.scratch = vp8e_scratch_size,
 	.scratch1 = vp8e_scratch1_size,
 	.scratch2 = enc_scratch2_size,
@@ -1218,11 +1186,7 @@ static int bufreq_dec(struct hfi_plat_buffers_params *params, u32 buftype,
 	u32 codec = params->codec;
 	u32 width = params->width, height = params->height, out_min_count;
 	u32 out_width = params->out_width, out_height = params->out_height;
-<<<<<<< HEAD
-	struct dec_bufsize_ops *dec_ops;
-=======
 	const struct dec_bufsize_ops *dec_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool is_secondary_output = params->dec.is_secondary_output;
 	bool is_interlaced = params->dec.is_interlaced;
 	u32 max_mbs_per_frame = params->dec.max_mbs_per_frame;
@@ -1296,11 +1260,7 @@ static int bufreq_enc(struct hfi_plat_buffers_params *params, u32 buftype,
 		      struct hfi_buffer_requirements *bufreq)
 {
 	enum hfi_version version = params->version;
-<<<<<<< HEAD
-	struct enc_bufsize_ops *enc_ops;
-=======
 	const struct enc_bufsize_ops *enc_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 width = params->width;
 	u32 height = params->height;
 	bool is_tenbit = params->enc.is_tenbit;

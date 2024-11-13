@@ -124,10 +124,6 @@ free_smap:
 	return ERR_PTR(err);
 }
 
-<<<<<<< HEAD
-static void stack_map_get_build_id_offset(struct bpf_stack_build_id *id_offs,
-					  u64 *ips, u32 trace_nr, bool user)
-=======
 static int fetch_build_id(struct vm_area_struct *vma, unsigned char *build_id, bool may_fault)
 {
 	return may_fault ? build_id_parse(vma, build_id, NULL)
@@ -146,7 +142,6 @@ static int fetch_build_id(struct vm_area_struct *vma, unsigned char *build_id, b
  */
 static void stack_map_get_build_id_offset(struct bpf_stack_build_id *id_offs,
 					  u32 trace_nr, bool user, bool may_fault)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 	struct mmap_unlock_irq_work *work = NULL;
@@ -163,29 +158,12 @@ static void stack_map_get_build_id_offset(struct bpf_stack_build_id *id_offs,
 		/* cannot access current->mm, fall back to ips */
 		for (i = 0; i < trace_nr; i++) {
 			id_offs[i].status = BPF_STACK_BUILD_ID_IP;
-<<<<<<< HEAD
-			id_offs[i].ip = ips[i];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			memset(id_offs[i].build_id, 0, BUILD_ID_SIZE_MAX);
 		}
 		return;
 	}
 
 	for (i = 0; i < trace_nr; i++) {
-<<<<<<< HEAD
-		if (range_in_vma(prev_vma, ips[i], ips[i])) {
-			vma = prev_vma;
-			memcpy(id_offs[i].build_id, prev_build_id,
-			       BUILD_ID_SIZE_MAX);
-			goto build_id_valid;
-		}
-		vma = find_vma(current->mm, ips[i]);
-		if (!vma || build_id_parse(vma, id_offs[i].build_id, NULL)) {
-			/* per entry fall back to ips */
-			id_offs[i].status = BPF_STACK_BUILD_ID_IP;
-			id_offs[i].ip = ips[i];
-=======
 		u64 ip = READ_ONCE(id_offs[i].ip);
 
 		if (range_in_vma(prev_vma, ip, ip)) {
@@ -197,17 +175,11 @@ static void stack_map_get_build_id_offset(struct bpf_stack_build_id *id_offs,
 		if (!vma || fetch_build_id(vma, id_offs[i].build_id, may_fault)) {
 			/* per entry fall back to ips */
 			id_offs[i].status = BPF_STACK_BUILD_ID_IP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			memset(id_offs[i].build_id, 0, BUILD_ID_SIZE_MAX);
 			continue;
 		}
 build_id_valid:
-<<<<<<< HEAD
-		id_offs[i].offset = (vma->vm_pgoff << PAGE_SHIFT) + ips[i]
-			- vma->vm_start;
-=======
 		id_offs[i].offset = (vma->vm_pgoff << PAGE_SHIFT) + ip - vma->vm_start;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		id_offs[i].status = BPF_STACK_BUILD_ID_VALID;
 		prev_vma = vma;
 		prev_build_id = id_offs[i].build_id;
@@ -258,11 +230,7 @@ static long __bpf_get_stackid(struct bpf_map *map,
 	struct bpf_stack_map *smap = container_of(map, struct bpf_stack_map, map);
 	struct stack_map_bucket *bucket, *new_bucket, *old_bucket;
 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-<<<<<<< HEAD
-	u32 hash, id, trace_nr, trace_len;
-=======
 	u32 hash, id, trace_nr, trace_len, i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool user = flags & BPF_F_USER_STACK;
 	u64 *ips;
 	bool hash_matches;
@@ -284,27 +252,18 @@ static long __bpf_get_stackid(struct bpf_map *map,
 		return id;
 
 	if (stack_map_use_build_id(map)) {
-<<<<<<< HEAD
-=======
 		struct bpf_stack_build_id *id_offs;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* for build_id+offset, pop a bucket before slow cmp */
 		new_bucket = (struct stack_map_bucket *)
 			pcpu_freelist_pop(&smap->freelist);
 		if (unlikely(!new_bucket))
 			return -ENOMEM;
 		new_bucket->nr = trace_nr;
-<<<<<<< HEAD
-		stack_map_get_build_id_offset(
-			(struct bpf_stack_build_id *)new_bucket->data,
-			ips, trace_nr, user);
-=======
 		id_offs = (struct bpf_stack_build_id *)new_bucket->data;
 		for (i = 0; i < trace_nr; i++)
 			id_offs[i].ip = ips[i];
 		stack_map_get_build_id_offset(id_offs, trace_nr, user, false /* !may_fault */);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		trace_len = trace_nr * sizeof(struct bpf_stack_build_id);
 		if (hash_matches && bucket->nr == trace_nr &&
 		    memcmp(bucket->data, new_bucket->data, trace_len) == 0) {
@@ -445,11 +404,7 @@ const struct bpf_func_proto bpf_get_stackid_proto_pe = {
 
 static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
 			    struct perf_callchain_entry *trace_in,
-<<<<<<< HEAD
-			    void *buf, u32 size, u64 flags)
-=======
 			    void *buf, u32 size, u64 flags, bool may_fault)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
 	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
@@ -467,12 +422,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
 	if (kernel && user_build_id)
 		goto clear;
 
-<<<<<<< HEAD
-	elem_size = (user && user_build_id) ? sizeof(struct bpf_stack_build_id)
-					    : sizeof(u64);
-=======
 	elem_size = user_build_id ? sizeof(struct bpf_stack_build_id) : sizeof(u64);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (unlikely(size % elem_size))
 		goto clear;
 
@@ -493,12 +443,9 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
 	if (sysctl_perf_event_max_stack < max_depth)
 		max_depth = sysctl_perf_event_max_stack;
 
-<<<<<<< HEAD
-=======
 	if (may_fault)
 		rcu_read_lock(); /* need RCU for perf's callchain below */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (trace_in)
 		trace = trace_in;
 	else if (kernel && task)
@@ -506,32 +453,18 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
 	else
 		trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
 					   crosstask, false);
-<<<<<<< HEAD
-	if (unlikely(!trace))
-		goto err_fault;
-
-	if (trace->nr < skip)
-		goto err_fault;
-=======
 
 	if (unlikely(!trace) || trace->nr < skip) {
 		if (may_fault)
 			rcu_read_unlock();
 		goto err_fault;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	trace_nr = trace->nr - skip;
 	trace_nr = (trace_nr <= num_elem) ? trace_nr : num_elem;
 	copy_len = trace_nr * elem_size;
 
 	ips = trace->ip + skip;
-<<<<<<< HEAD
-	if (user && user_build_id)
-		stack_map_get_build_id_offset(buf, ips, trace_nr, user);
-	else
-		memcpy(buf, ips, copy_len);
-=======
 	if (user_build_id) {
 		struct bpf_stack_build_id *id_offs = buf;
 		u32 i;
@@ -548,7 +481,6 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
 
 	if (user_build_id)
 		stack_map_get_build_id_offset(buf, trace_nr, user, may_fault);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (size > copy_len)
 		memset(buf + copy_len, 0, size - copy_len);
@@ -564,11 +496,7 @@ clear:
 BPF_CALL_4(bpf_get_stack, struct pt_regs *, regs, void *, buf, u32, size,
 	   u64, flags)
 {
-<<<<<<< HEAD
-	return __bpf_get_stack(regs, NULL, NULL, buf, size, flags);
-=======
 	return __bpf_get_stack(regs, NULL, NULL, buf, size, flags, false /* !may_fault */);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const struct bpf_func_proto bpf_get_stack_proto = {
@@ -581,10 +509,6 @@ const struct bpf_func_proto bpf_get_stack_proto = {
 	.arg4_type	= ARG_ANYTHING,
 };
 
-<<<<<<< HEAD
-BPF_CALL_4(bpf_get_task_stack, struct task_struct *, task, void *, buf,
-	   u32, size, u64, flags)
-=======
 BPF_CALL_4(bpf_get_stack_sleepable, struct pt_regs *, regs, void *, buf, u32, size,
 	   u64, flags)
 {
@@ -603,7 +527,6 @@ const struct bpf_func_proto bpf_get_stack_sleepable_proto = {
 
 static long __bpf_get_task_stack(struct task_struct *task, void *buf, u32 size,
 				 u64 flags, bool may_fault)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct pt_regs *regs;
 	long res = -EINVAL;
@@ -613,25 +536,18 @@ static long __bpf_get_task_stack(struct task_struct *task, void *buf, u32 size,
 
 	regs = task_pt_regs(task);
 	if (regs)
-<<<<<<< HEAD
-		res = __bpf_get_stack(regs, task, NULL, buf, size, flags);
-=======
 		res = __bpf_get_stack(regs, task, NULL, buf, size, flags, may_fault);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	put_task_stack(task);
 
 	return res;
 }
 
-<<<<<<< HEAD
-=======
 BPF_CALL_4(bpf_get_task_stack, struct task_struct *, task, void *, buf,
 	   u32, size, u64, flags)
 {
 	return __bpf_get_task_stack(task, buf, size, flags, false /* !may_fault */);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct bpf_func_proto bpf_get_task_stack_proto = {
 	.func		= bpf_get_task_stack,
 	.gpl_only	= false,
@@ -643,8 +559,6 @@ const struct bpf_func_proto bpf_get_task_stack_proto = {
 	.arg4_type	= ARG_ANYTHING,
 };
 
-<<<<<<< HEAD
-=======
 BPF_CALL_4(bpf_get_task_stack_sleepable, struct task_struct *, task, void *, buf,
 	   u32, size, u64, flags)
 {
@@ -662,7 +576,6 @@ const struct bpf_func_proto bpf_get_task_stack_sleepable_proto = {
 	.arg4_type	= ARG_ANYTHING,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 BPF_CALL_4(bpf_get_stack_pe, struct bpf_perf_event_data_kern *, ctx,
 	   void *, buf, u32, size, u64, flags)
 {
@@ -674,11 +587,7 @@ BPF_CALL_4(bpf_get_stack_pe, struct bpf_perf_event_data_kern *, ctx,
 	__u64 nr_kernel;
 
 	if (!(event->attr.sample_type & PERF_SAMPLE_CALLCHAIN))
-<<<<<<< HEAD
-		return __bpf_get_stack(regs, NULL, NULL, buf, size, flags);
-=======
 		return __bpf_get_stack(regs, NULL, NULL, buf, size, flags, false /* !may_fault */);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(flags & ~(BPF_F_SKIP_FIELD_MASK | BPF_F_USER_STACK |
 			       BPF_F_USER_BUILD_ID)))
@@ -698,11 +607,7 @@ BPF_CALL_4(bpf_get_stack_pe, struct bpf_perf_event_data_kern *, ctx,
 		__u64 nr = trace->nr;
 
 		trace->nr = nr_kernel;
-<<<<<<< HEAD
-		err = __bpf_get_stack(regs, NULL, trace, buf, size, flags);
-=======
 		err = __bpf_get_stack(regs, NULL, trace, buf, size, flags, false /* !may_fault */);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* restore nr */
 		trace->nr = nr;
@@ -714,11 +619,7 @@ BPF_CALL_4(bpf_get_stack_pe, struct bpf_perf_event_data_kern *, ctx,
 			goto clear;
 
 		flags = (flags & ~BPF_F_SKIP_FIELD_MASK) | skip;
-<<<<<<< HEAD
-		err = __bpf_get_stack(regs, NULL, trace, buf, size, flags);
-=======
 		err = __bpf_get_stack(regs, NULL, trace, buf, size, flags, false /* !may_fault */);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return err;
 

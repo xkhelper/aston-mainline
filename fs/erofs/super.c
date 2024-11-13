@@ -10,10 +10,7 @@
 #include <linux/fs_context.h>
 #include <linux/fs_parser.h>
 #include <linux/exportfs.h>
-<<<<<<< HEAD
-=======
 #include <linux/backing-dev.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "xattr.h"
 
 #define CREATE_TRACE_POINTS
@@ -165,11 +162,7 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
 	struct erofs_sb_info *sbi = EROFS_SB(sb);
 	struct erofs_fscache *fscache;
 	struct erofs_deviceslot *dis;
-<<<<<<< HEAD
-	struct file *bdev_file;
-=======
 	struct file *file;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dis = erofs_read_metabuf(buf, sb, *pos, EROFS_KMAP);
 	if (IS_ERR(dis))
@@ -191,15 +184,6 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
 			return PTR_ERR(fscache);
 		dif->fscache = fscache;
 	} else if (!sbi->devs->flatdev) {
-<<<<<<< HEAD
-		bdev_file = bdev_file_open_by_path(dif->path, BLK_OPEN_READ,
-						sb->s_type, NULL);
-		if (IS_ERR(bdev_file))
-			return PTR_ERR(bdev_file);
-		dif->bdev_file = bdev_file;
-		dif->dax_dev = fs_dax_get_by_bdev(file_bdev(bdev_file),
-				&dif->dax_part_off, NULL, NULL);
-=======
 		file = erofs_is_fileio_mode(sbi) ?
 				filp_open(dif->path, O_RDONLY | O_LARGEFILE, 0) :
 				bdev_file_open_by_path(dif->path,
@@ -215,7 +199,6 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
 			return -EINVAL;
 		}
 		dif->file = file;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	dif->blocks = le32_to_cpu(dis->blocks);
@@ -374,11 +357,7 @@ static int erofs_read_superblock(struct super_block *sb)
 	ret = erofs_scan_devices(sb, dsb);
 
 	if (erofs_is_fscache_mode(sb))
-<<<<<<< HEAD
-		erofs_info(sb, "EXPERIMENTAL fscache-based on-demand read feature in use. Use at your own risk!");
-=======
 		erofs_info(sb, "[deprecated] fscache-based on-demand read feature in use. Use at your own risk!");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	erofs_put_metabuf(&buf);
 	return ret;
@@ -596,17 +575,6 @@ static void erofs_set_sysfs_name(struct super_block *sb)
 {
 	struct erofs_sb_info *sbi = EROFS_SB(sb);
 
-<<<<<<< HEAD
-	if (erofs_is_fscache_mode(sb)) {
-		if (sbi->domain_id)
-			super_set_sysfs_name_generic(sb, "%s,%s",sbi->domain_id,
-						     sbi->fsid);
-		else
-			super_set_sysfs_name_generic(sb, "%s", sbi->fsid);
-		return;
-	}
-	super_set_sysfs_name_id(sb);
-=======
 	if (sbi->domain_id)
 		super_set_sysfs_name_generic(sb, "%s,%s", sbi->domain_id,
 					     sbi->fsid);
@@ -617,7 +585,6 @@ static void erofs_set_sysfs_name(struct super_block *sb)
 					     bdi_dev_name(sb->s_bdi));
 	else
 		super_set_sysfs_name_id(sb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
@@ -632,16 +599,6 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
 	sb->s_op = &erofs_sops;
 
 	sbi->blkszbits = PAGE_SHIFT;
-<<<<<<< HEAD
-	if (erofs_is_fscache_mode(sb)) {
-		sb->s_blocksize = PAGE_SIZE;
-		sb->s_blocksize_bits = PAGE_SHIFT;
-
-		err = erofs_fscache_register_fs(sb);
-		if (err)
-			return err;
-
-=======
 	if (!sb->s_bdev) {
 		sb->s_blocksize = PAGE_SIZE;
 		sb->s_blocksize_bits = PAGE_SHIFT;
@@ -651,7 +608,6 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
 			if (err)
 				return err;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = super_setup_bdi(sb);
 		if (err)
 			return err;
@@ -699,10 +655,6 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
 		sb->s_flags |= SB_POSIXACL;
 	else
 		sb->s_flags &= ~SB_POSIXACL;
-<<<<<<< HEAD
-	erofs_set_sysfs_name(sb);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_EROFS_FS_ZIP
 	xa_init(&sbi->managed_pslots);
@@ -740,10 +692,7 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
 	if (err)
 		return err;
 
-<<<<<<< HEAD
-=======
 	erofs_set_sysfs_name(sb);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	err = erofs_register_sysfs(sb);
 	if (err)
 		return err;
@@ -755,17 +704,11 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
 static int erofs_fc_get_tree(struct fs_context *fc)
 {
 	struct erofs_sb_info *sbi = fc->s_fs_info;
-<<<<<<< HEAD
-=======
 	int ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (IS_ENABLED(CONFIG_EROFS_FS_ONDEMAND) && sbi->fsid)
 		return get_tree_nodev(fc, erofs_fc_fill_super);
 
-<<<<<<< HEAD
-	return get_tree_bdev(fc, erofs_fc_fill_super);
-=======
 	ret = get_tree_bdev_flags(fc, erofs_fc_fill_super,
 		IS_ENABLED(CONFIG_EROFS_FS_BACKED_BY_FILE) ?
 			GET_TREE_BDEV_QUIET_LOOKUP : 0);
@@ -784,7 +727,6 @@ static int erofs_fc_get_tree(struct fs_context *fc)
 	}
 #endif
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int erofs_fc_reconfigure(struct fs_context *fc)
@@ -814,13 +756,8 @@ static int erofs_release_device_info(int id, void *ptr, void *data)
 	struct erofs_device_info *dif = ptr;
 
 	fs_put_dax(dif->dax_dev, NULL);
-<<<<<<< HEAD
-	if (dif->bdev_file)
-		fput(dif->bdev_file);
-=======
 	if (dif->file)
 		fput(dif->file);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	erofs_fscache_unregister_cookie(dif->fscache);
 	dif->fscache = NULL;
 	kfree(dif->path);
@@ -883,11 +820,7 @@ static void erofs_kill_sb(struct super_block *sb)
 {
 	struct erofs_sb_info *sbi = EROFS_SB(sb);
 
-<<<<<<< HEAD
-	if (IS_ENABLED(CONFIG_EROFS_FS_ONDEMAND) && sbi->fsid)
-=======
 	if ((IS_ENABLED(CONFIG_EROFS_FS_ONDEMAND) && sbi->fsid) || sbi->fdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		kill_anon_super(sb);
 	else
 		kill_block_super(sb);
@@ -897,11 +830,8 @@ static void erofs_kill_sb(struct super_block *sb)
 	erofs_fscache_unregister_fs(sb);
 	kfree(sbi->fsid);
 	kfree(sbi->domain_id);
-<<<<<<< HEAD
-=======
 	if (sbi->fdev)
 		fput(sbi->fdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(sbi);
 	sb->s_fs_info = NULL;
 }
@@ -1004,11 +934,7 @@ static int erofs_statfs(struct dentry *dentry, struct kstatfs *buf)
 	buf->f_namelen = EROFS_NAME_LEN;
 
 	if (uuid_is_null(&sb->s_uuid))
-<<<<<<< HEAD
-		buf->f_fsid = u64_to_fsid(erofs_is_fscache_mode(sb) ? 0 :
-=======
 		buf->f_fsid = u64_to_fsid(!sb->s_bdev ? 0 :
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				huge_encode_dev(sb->s_bdev->bd_dev));
 	else
 		buf->f_fsid = uuid_to_fsid(sb->s_uuid.b);

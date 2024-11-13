@@ -740,25 +740,6 @@ static int cc2_probe(struct i2c_client *client)
 	data->client = client;
 
 	data->regulator = devm_regulator_get_exclusive(dev, "vdd");
-<<<<<<< HEAD
-	if (IS_ERR(data->regulator)) {
-		dev_err_probe(dev, PTR_ERR(data->regulator),
-			      "Failed to get regulator\n");
-		return PTR_ERR(data->regulator);
-	}
-
-	ret = cc2_request_ready_irq(data, dev);
-	if (ret) {
-		dev_err_probe(dev, ret, "Failed to request ready irq\n");
-		return ret;
-	}
-
-	ret = cc2_request_alarm_irqs(data, dev);
-	if (ret) {
-		dev_err_probe(dev, ret, "Failed to request alarm irqs\n");
-		goto disable;
-	}
-=======
 	if (IS_ERR(data->regulator))
 		return dev_err_probe(dev, PTR_ERR(data->regulator),
 				     "Failed to get regulator\n");
@@ -770,29 +751,15 @@ static int cc2_probe(struct i2c_client *client)
 	ret = cc2_request_alarm_irqs(data, dev);
 	if (ret)
 		return dev_err_probe(dev, ret, "Failed to request alarm irqs\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	data->hwmon = devm_hwmon_device_register_with_info(dev, client->name,
 							   data, &cc2_chip_info,
 							   NULL);
-<<<<<<< HEAD
-	if (IS_ERR(data->hwmon)) {
-		dev_err_probe(dev, PTR_ERR(data->hwmon),
-			      "Failed to register hwmon device\n");
-		ret = PTR_ERR(data->hwmon);
-	}
-
-disable:
-	cc2_disable(data);
-
-	return ret;
-=======
 	if (IS_ERR(data->hwmon))
 		return dev_err_probe(dev, PTR_ERR(data->hwmon),
 				     "Failed to register hwmon device\n");
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void cc2_remove(struct i2c_client *client)

@@ -26,11 +26,7 @@ There are no systems that support the physical addition (or removal) of CPUs
 while the system is running, and ACPI is not able to sufficiently describe
 them.
 
-<<<<<<< HEAD
-e.g. New CPUs come with new caches, but the platform's cache toplogy is
-=======
 e.g. New CPUs come with new caches, but the platform's cache topology is
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 described in a static table, the PPTT. How caches are shared between CPUs is
 not discoverable, and must be described by firmware.
 

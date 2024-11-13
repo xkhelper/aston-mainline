@@ -32,11 +32,7 @@
 #include <linux/slab.h>
 #include <linux/uaccess.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define WORK_REGISTER_THRESHOLD		0x00
 #define WORK_REGISTER_REPORT_RATE	0x08
@@ -1125,8 +1121,6 @@ static void edt_ft5x06_ts_set_regs(struct edt_ft5x06_ts_data *tsdata)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void edt_ft5x06_exit_regmap(void *arg)
 {
 	struct edt_ft5x06_ts_data *data = arg;
@@ -1135,7 +1129,6 @@ static void edt_ft5x06_exit_regmap(void *arg)
 		regmap_exit(data->regmap);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void edt_ft5x06_disable_regulators(void *arg)
 {
 	struct edt_ft5x06_ts_data *data = arg;
@@ -1169,8 +1162,6 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 		return PTR_ERR(tsdata->regmap);
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * We are not using devm_regmap_init_i2c() and instead install a
 	 * custom action because we may replace regmap with M06-specific one
@@ -1181,7 +1172,6 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client)
 	if (error)
 		return error;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	chip_data = device_get_match_data(&client->dev);
 	if (!chip_data)
 		chip_data = (const struct edt_i2c_chip_data *)id->driver_data;
@@ -1375,10 +1365,6 @@ static void edt_ft5x06_ts_remove(struct i2c_client *client)
 	struct edt_ft5x06_ts_data *tsdata = i2c_get_clientdata(client);
 
 	edt_ft5x06_ts_teardown_debugfs(tsdata);
-<<<<<<< HEAD
-	regmap_exit(tsdata->regmap);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int edt_ft5x06_ts_suspend(struct device *dev)

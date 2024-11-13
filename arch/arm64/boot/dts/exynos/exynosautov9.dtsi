@@ -251,8 +251,6 @@
 				      "dout_fsys2_clkcmu_ethernet";
 		};
 
-<<<<<<< HEAD
-=======
 		cmu_dpum: clock-controller@18c00000 {
 			compatible = "samsung,exynosautov9-cmu-dpum";
 			reg = <0x18c00000 0x8000>;
@@ -299,7 +297,6 @@
 			#iommu-cells = <0>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		cmu_core: clock-controller@1b030000 {
 			compatible = "samsung,exynosautov9-cmu-core";
 			reg = <0x1b030000 0x8000>;

@@ -121,11 +121,7 @@ static void pmac_backlight_unblank(void)
 
 		props = &pmac_backlight->props;
 		props->brightness = props->max_brightness;
-<<<<<<< HEAD
-		props->power = FB_BLANK_UNBLANK;
-=======
 		props->power = BACKLIGHT_POWER_ON;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		backlight_update_status(pmac_backlight);
 	}
 	mutex_unlock(&pmac_backlight_mutex);

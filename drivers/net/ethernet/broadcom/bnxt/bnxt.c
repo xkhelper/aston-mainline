@@ -69,10 +69,7 @@
 #include "bnxt_tc.h"
 #include "bnxt_devlink.h"
 #include "bnxt_debugfs.h"
-<<<<<<< HEAD
-=======
 #include "bnxt_coredump.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "bnxt_hwmon.h"
 
 #define BNXT_TX_TIMEOUT		(5 * HZ)
@@ -305,13 +302,6 @@ static bool bnxt_vf_pciid(enum board_idx idx)
 
 #define DB_CP_REARM_FLAGS	(DB_KEY_CP | DB_IDX_VALID)
 #define DB_CP_FLAGS		(DB_KEY_CP | DB_IDX_VALID | DB_IRQ_DIS)
-<<<<<<< HEAD
-#define DB_CP_IRQ_DIS_FLAGS	(DB_KEY_CP | DB_IRQ_DIS)
-
-#define BNXT_CP_DB_IRQ_DIS(db)						\
-		writel(DB_CP_IRQ_DIS_FLAGS, db)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define BNXT_DB_CQ(db, idx)						\
 	writel(DB_CP_FLAGS | DB_RING_IDX(db, idx), (db)->doorbell)
@@ -2264,18 +2254,11 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
 
 			if (!bnxt_get_rx_ts_p5(bp, &ts, cmpl_ts)) {
 				struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-<<<<<<< HEAD
-
-				spin_lock_bh(&ptp->ptp_lock);
-				ns = timecounter_cyc2time(&ptp->tc, ts);
-				spin_unlock_bh(&ptp->ptp_lock);
-=======
 				unsigned long flags;
 
 				spin_lock_irqsave(&ptp->ptp_lock, flags);
 				ns = timecounter_cyc2time(&ptp->tc, ts);
 				spin_unlock_irqrestore(&ptp->ptp_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				memset(skb_hwtstamps(skb), 0,
 				       sizeof(*skb_hwtstamps(skb)));
 				skb_hwtstamps(skb)->hwtstamp = ns_to_ktime(ns);
@@ -2775,29 +2758,18 @@ static int bnxt_async_event_process(struct bnxt *bp,
 		case ASYNC_EVENT_CMPL_PHC_UPDATE_EVENT_DATA1_FLAGS_PHC_RTC_UPDATE:
 			if (BNXT_PTP_USE_RTC(bp)) {
 				struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-<<<<<<< HEAD
-=======
 				unsigned long flags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				u64 ns;
 
 				if (!ptp)
 					goto async_event_process_exit;
 
-<<<<<<< HEAD
-				spin_lock_bh(&ptp->ptp_lock);
-=======
 				spin_lock_irqsave(&ptp->ptp_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				bnxt_ptp_update_current_time(bp);
 				ns = (((u64)BNXT_EVENT_PHC_RTC_UPDATE(data1) <<
 				       BNXT_PHC_BITS) | ptp->current_time);
 				bnxt_ptp_rtc_timecounter_init(ptp, ns);
-<<<<<<< HEAD
-				spin_unlock_bh(&ptp->ptp_lock);
-=======
 				spin_unlock_irqrestore(&ptp->ptp_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			}
 			break;
 		}
@@ -2880,37 +2852,6 @@ static inline int bnxt_has_work(struct bnxt *bp, struct bnxt_cp_ring_info *cpr)
 	return TX_CMP_VALID(txcmp, raw_cons);
 }
 
-<<<<<<< HEAD
-static irqreturn_t bnxt_inta(int irq, void *dev_instance)
-{
-	struct bnxt_napi *bnapi = dev_instance;
-	struct bnxt *bp = bnapi->bp;
-	struct bnxt_cp_ring_info *cpr = &bnapi->cp_ring;
-	u32 cons = RING_CMP(cpr->cp_raw_cons);
-	u32 int_status;
-
-	prefetch(&cpr->cp_desc_ring[CP_RING(cons)][CP_IDX(cons)]);
-
-	if (!bnxt_has_work(bp, cpr)) {
-		int_status = readl(bp->bar0 + BNXT_CAG_REG_LEGACY_INT_STATUS);
-		/* return if erroneous interrupt */
-		if (!(int_status & (0x10000 << cpr->cp_ring_struct.fw_ring_id)))
-			return IRQ_NONE;
-	}
-
-	/* disable ring IRQ */
-	BNXT_CP_DB_IRQ_DIS(cpr->cp_db.doorbell);
-
-	/* Return here if interrupt is shared and is disabled. */
-	if (unlikely(atomic_read(&bp->intr_sem) != 0))
-		return IRQ_HANDLED;
-
-	napi_schedule(&bnapi->napi);
-	return IRQ_HANDLED;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __bnxt_poll_work(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
 			    int budget)
 {
@@ -6609,12 +6550,8 @@ int bnxt_hwrm_vnic_cfg(struct bnxt *bp, struct bnxt_vnic_info *vnic)
 	req->dflt_ring_grp = cpu_to_le16(bp->grp_info[grp_idx].fw_grp_id);
 	req->lb_rule = cpu_to_le16(0xffff);
 vnic_mru:
-<<<<<<< HEAD
-	req->mru = cpu_to_le16(bp->dev->mtu + ETH_HLEN + VLAN_HLEN);
-=======
 	vnic->mru = bp->dev->mtu + ETH_HLEN + VLAN_HLEN;
 	req->mru = cpu_to_le16(vnic->mru);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	req->vnic_id = cpu_to_le16(vnic->fw_vnic_id);
 #ifdef CONFIG_BNXT_SRIOV
@@ -6750,11 +6687,8 @@ static int bnxt_hwrm_vnic_qcaps(struct bnxt *bp)
 			bp->rss_cap |= BNXT_RSS_CAP_ESP_V4_RSS_CAP;
 		if (flags & VNIC_QCAPS_RESP_FLAGS_RSS_IPSEC_ESP_SPI_IPV6_CAP)
 			bp->rss_cap |= BNXT_RSS_CAP_ESP_V6_RSS_CAP;
-<<<<<<< HEAD
-=======
 		if (flags & VNIC_QCAPS_RESP_FLAGS_RE_FLUSH_CAP)
 			bp->fw_cap |= BNXT_FW_CAP_VNIC_RE_FLUSH;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	hwrm_req_drop(bp, req);
 	return rc;
@@ -6912,23 +6846,14 @@ static int hwrm_ring_alloc_send_msg(struct bnxt *bp,
 			req->cq_handle = cpu_to_le64(ring->handle);
 			req->enables |= cpu_to_le32(
 				RING_ALLOC_REQ_ENABLES_NQ_RING_ID_VALID);
-<<<<<<< HEAD
-		} else if (bp->flags & BNXT_FLAG_USING_MSIX) {
-=======
 		} else {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			req->int_mode = RING_ALLOC_REQ_INT_MODE_MSIX;
 		}
 		break;
 	case HWRM_RING_ALLOC_NQ:
 		req->ring_type = RING_ALLOC_REQ_RING_TYPE_NQ;
 		req->length = cpu_to_le32(bp->cp_ring_mask + 1);
-<<<<<<< HEAD
-		if (bp->flags & BNXT_FLAG_USING_MSIX)
-			req->int_mode = RING_ALLOC_REQ_INT_MODE_MSIX;
-=======
 		req->int_mode = RING_ALLOC_REQ_INT_MODE_MSIX;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		netdev_err(bp->dev, "hwrm alloc invalid ring type %d\n",
@@ -8991,8 +8916,6 @@ skip_rdma:
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int bnxt_hwrm_crash_dump_mem_cfg(struct bnxt *bp)
 {
 	struct hwrm_dbg_crashdump_medium_cfg_input *req;
@@ -9067,7 +8990,6 @@ alloc_done:
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bnxt_hwrm_func_resc_qcaps(struct bnxt *bp, bool all)
 {
 	struct hwrm_func_resource_qcaps_output *resp;
@@ -9243,11 +9165,8 @@ static int __bnxt_hwrm_func_qcaps(struct bnxt *bp)
 		bp->fw_cap |= BNXT_FW_CAP_HOT_RESET_IF;
 	if (BNXT_PF(bp) && (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_FW_LIVEPATCH_SUPPORTED))
 		bp->fw_cap |= BNXT_FW_CAP_LIVEPATCH;
-<<<<<<< HEAD
-=======
 	if (BNXT_PF(bp) && (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_DFLT_VLAN_TPID_PCP_SUPPORTED))
 		bp->fw_cap |= BNXT_FW_CAP_DFLT_VLAN_TPID_PCP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_BS_V2_SUPPORTED)
 		bp->fw_cap |= BNXT_FW_CAP_BACKING_STORE_V2;
 	if (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_TX_COAL_CMPL_CAP)
@@ -10219,8 +10138,6 @@ vnic_setup_err:
 	return rc;
 }
 
-<<<<<<< HEAD
-=======
 int bnxt_hwrm_vnic_update(struct bnxt *bp, struct bnxt_vnic_info *vnic,
 			  u8 valid)
 {
@@ -10241,7 +10158,6 @@ int bnxt_hwrm_vnic_update(struct bnxt *bp, struct bnxt_vnic_info *vnic,
 	return hwrm_req_send(bp, req);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bnxt_hwrm_vnic_rss_cfg_p5(struct bnxt *bp, struct bnxt_vnic_info *vnic)
 {
 	int rc;
@@ -10706,24 +10622,6 @@ static void bnxt_setup_msix(struct bnxt *bp)
 	}
 }
 
-<<<<<<< HEAD
-static void bnxt_setup_inta(struct bnxt *bp)
-{
-	const int len = sizeof(bp->irq_tbl[0].name);
-
-	if (bp->num_tc) {
-		netdev_reset_tc(bp->dev);
-		bp->num_tc = 0;
-	}
-
-	snprintf(bp->irq_tbl[0].name, len, "%s-%s-%d", bp->dev->name, "TxRx",
-		 0);
-	bp->irq_tbl[0].handler = bnxt_inta;
-}
-
-static int bnxt_init_int_mode(struct bnxt *bp);
-
-=======
 static int bnxt_init_int_mode(struct bnxt *bp);
 
 static int bnxt_change_msix(struct bnxt *bp, int total)
@@ -10750,7 +10648,6 @@ static int bnxt_change_msix(struct bnxt *bp, int total)
 	return bp->total_irqs;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int bnxt_setup_int_mode(struct bnxt *bp)
 {
 	int rc;
@@ -10761,14 +10658,7 @@ static int bnxt_setup_int_mode(struct bnxt *bp)
 			return rc ?: -ENODEV;
 	}
 
-<<<<<<< HEAD
-	if (bp->flags & BNXT_FLAG_USING_MSIX)
-		bnxt_setup_msix(bp);
-	else
-		bnxt_setup_inta(bp);
-=======
 	bnxt_setup_msix(bp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rc = bnxt_set_real_num_queues(bp);
 	return rc;
@@ -10856,16 +10746,9 @@ static int bnxt_get_num_msix(struct bnxt *bp)
 	return bnxt_nq_rings_in_use(bp);
 }
 
-<<<<<<< HEAD
-static int bnxt_init_msix(struct bnxt *bp)
-{
-	int i, total_vecs, max, rc = 0, min = 1, ulp_msix, tx_cp;
-	struct msix_entry *msix_ent;
-=======
 static int bnxt_init_int_mode(struct bnxt *bp)
 {
 	int i, total_vecs, max, rc = 0, min = 1, ulp_msix, tx_cp, tbl_size;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	total_vecs = bnxt_get_num_msix(bp);
 	max = bnxt_get_max_func_irqs(bp);
@@ -10875,39 +10758,17 @@ static int bnxt_init_int_mode(struct bnxt *bp)
 	if (!total_vecs)
 		return 0;
 
-<<<<<<< HEAD
-	msix_ent = kcalloc(total_vecs, sizeof(struct msix_entry), GFP_KERNEL);
-	if (!msix_ent)
-		return -ENOMEM;
-
-	for (i = 0; i < total_vecs; i++) {
-		msix_ent[i].entry = i;
-		msix_ent[i].vector = 0;
-	}
-
-	if (!(bp->flags & BNXT_FLAG_SHARED_RINGS))
-		min = 2;
-
-	total_vecs = pci_enable_msix_range(bp->pdev, msix_ent, min, total_vecs);
-=======
 	if (!(bp->flags & BNXT_FLAG_SHARED_RINGS))
 		min = 2;
 
 	total_vecs = pci_alloc_irq_vectors(bp->pdev, min, total_vecs,
 					   PCI_IRQ_MSIX);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ulp_msix = bnxt_get_ulp_msix_num(bp);
 	if (total_vecs < 0 || total_vecs < ulp_msix) {
 		rc = -ENODEV;
 		goto msix_setup_exit;
 	}
 
-<<<<<<< HEAD
-	bp->irq_tbl = kcalloc(total_vecs, sizeof(struct bnxt_irq), GFP_KERNEL);
-	if (bp->irq_tbl) {
-		for (i = 0; i < total_vecs; i++)
-			bp->irq_tbl[i].vector = msix_ent[i].vector;
-=======
 	tbl_size = total_vecs;
 	if (pci_msix_can_alloc_dyn(bp->pdev))
 		tbl_size = max;
@@ -10915,7 +10776,6 @@ static int bnxt_init_int_mode(struct bnxt *bp)
 	if (bp->irq_tbl) {
 		for (i = 0; i < total_vecs; i++)
 			bp->irq_tbl[i].vector = pci_irq_vector(bp->pdev, i);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		bp->total_irqs = total_vecs;
 		/* Trim rings based upon num of vectors allocated */
@@ -10933,47 +10793,6 @@ static int bnxt_init_int_mode(struct bnxt *bp)
 		rc = -ENOMEM;
 		goto msix_setup_exit;
 	}
-<<<<<<< HEAD
-	bp->flags |= BNXT_FLAG_USING_MSIX;
-	kfree(msix_ent);
-	return 0;
-
-msix_setup_exit:
-	netdev_err(bp->dev, "bnxt_init_msix err: %x\n", rc);
-	kfree(bp->irq_tbl);
-	bp->irq_tbl = NULL;
-	pci_disable_msix(bp->pdev);
-	kfree(msix_ent);
-	return rc;
-}
-
-static int bnxt_init_inta(struct bnxt *bp)
-{
-	bp->irq_tbl = kzalloc(sizeof(struct bnxt_irq), GFP_KERNEL);
-	if (!bp->irq_tbl)
-		return -ENOMEM;
-
-	bp->total_irqs = 1;
-	bp->rx_nr_rings = 1;
-	bp->tx_nr_rings = 1;
-	bp->cp_nr_rings = 1;
-	bp->flags |= BNXT_FLAG_SHARED_RINGS;
-	bp->irq_tbl[0].vector = bp->pdev->irq;
-	return 0;
-}
-
-static int bnxt_init_int_mode(struct bnxt *bp)
-{
-	int rc = -ENODEV;
-
-	if (bp->flags & BNXT_FLAG_MSIX_CAP)
-		rc = bnxt_init_msix(bp);
-
-	if (!(bp->flags & BNXT_FLAG_USING_MSIX) && BNXT_PF(bp)) {
-		/* fallback to INTA */
-		rc = bnxt_init_inta(bp);
-	}
-=======
 	return 0;
 
 msix_setup_exit:
@@ -10981,34 +10800,21 @@ msix_setup_exit:
 	kfree(bp->irq_tbl);
 	bp->irq_tbl = NULL;
 	pci_free_irq_vectors(bp->pdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return rc;
 }
 
 static void bnxt_clear_int_mode(struct bnxt *bp)
 {
-<<<<<<< HEAD
-	if (bp->flags & BNXT_FLAG_USING_MSIX)
-		pci_disable_msix(bp->pdev);
-
-	kfree(bp->irq_tbl);
-	bp->irq_tbl = NULL;
-	bp->flags &= ~BNXT_FLAG_USING_MSIX;
-=======
 	pci_free_irq_vectors(bp->pdev);
 
 	kfree(bp->irq_tbl);
 	bp->irq_tbl = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
 {
 	bool irq_cleared = false;
-<<<<<<< HEAD
-=======
 	bool irq_change = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int tcs = bp->num_tc;
 	int irqs_required;
 	int rc;
@@ -11027,30 +10833,21 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
 	}
 
 	if (irq_re_init && BNXT_NEW_RM(bp) && irqs_required != bp->total_irqs) {
-<<<<<<< HEAD
-		bnxt_ulp_irq_stop(bp);
-		bnxt_clear_int_mode(bp);
-		irq_cleared = true;
-=======
 		irq_change = true;
 		if (!pci_msix_can_alloc_dyn(bp->pdev)) {
 			bnxt_ulp_irq_stop(bp);
 			bnxt_clear_int_mode(bp);
 			irq_cleared = true;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	rc = __bnxt_reserve_rings(bp);
 	if (irq_cleared) {
 		if (!rc)
 			rc = bnxt_init_int_mode(bp);
 		bnxt_ulp_irq_restart(bp, rc);
-<<<<<<< HEAD
-=======
 	} else if (irq_change && !rc) {
 		if (bnxt_change_msix(bp, irqs_required) != irqs_required)
 			rc = -ENOSPC;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	if (rc) {
 		netdev_err(bp->dev, "ring reservation/IRQ init failure rc: %d\n", rc);
@@ -11116,12 +10913,6 @@ static int bnxt_request_irq(struct bnxt *bp)
 #ifdef CONFIG_RFS_ACCEL
 	rmap = bp->dev->rx_cpu_rmap;
 #endif
-<<<<<<< HEAD
-	if (!(bp->flags & BNXT_FLAG_USING_MSIX))
-		flags = IRQF_SHARED;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0, j = 0; i < bp->cp_nr_rings; i++) {
 		int map_idx = bnxt_cp_num_to_irq_num(bp, i);
 		struct bnxt_irq *irq = &bp->irq_tbl[map_idx];
@@ -11186,31 +10977,6 @@ static void bnxt_del_napi(struct bnxt *bp)
 
 static void bnxt_init_napi(struct bnxt *bp)
 {
-<<<<<<< HEAD
-	int i;
-	unsigned int cp_nr_rings = bp->cp_nr_rings;
-	struct bnxt_napi *bnapi;
-
-	if (bp->flags & BNXT_FLAG_USING_MSIX) {
-		int (*poll_fn)(struct napi_struct *, int) = bnxt_poll;
-
-		if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS)
-			poll_fn = bnxt_poll_p5;
-		else if (BNXT_CHIP_TYPE_NITRO_A0(bp))
-			cp_nr_rings--;
-		for (i = 0; i < cp_nr_rings; i++) {
-			bnapi = bp->bnapi[i];
-			netif_napi_add(bp->dev, &bnapi->napi, poll_fn);
-		}
-		if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
-			bnapi = bp->bnapi[cp_nr_rings];
-			netif_napi_add(bp->dev, &bnapi->napi,
-				       bnxt_poll_nitroa0);
-		}
-	} else {
-		bnapi = bp->bnapi[0];
-		netif_napi_add(bp->dev, &bnapi->napi, bnxt_poll);
-=======
 	int (*poll_fn)(struct napi_struct *, int) = bnxt_poll;
 	unsigned int cp_nr_rings = bp->cp_nr_rings;
 	struct bnxt_napi *bnapi;
@@ -11227,7 +10993,6 @@ static void bnxt_init_napi(struct bnxt *bp)
 	if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
 		bnapi = bp->bnapi[cp_nr_rings];
 		netif_napi_add(bp->dev, &bnapi->napi, bnxt_poll_nitroa0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 }
 
@@ -12215,23 +11980,6 @@ static int bnxt_update_phy_setting(struct bnxt *bp)
 	return rc;
 }
 
-<<<<<<< HEAD
-/* Common routine to pre-map certain register block to different GRC window.
- * A PF has 16 4K windows and a VF has 4 4K windows. However, only 15 windows
- * in PF and 3 windows in VF that can be customized to map in different
- * register blocks.
- */
-static void bnxt_preset_reg_win(struct bnxt *bp)
-{
-	if (BNXT_PF(bp)) {
-		/* CAG registers map to GRC window #4 */
-		writel(BNXT_CAG_REG_BASE,
-		       bp->bar0 + BNXT_GRCPF_REG_WINDOW_BASE_OUT + 12);
-	}
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int bnxt_init_dflt_ring_mode(struct bnxt *bp);
 
 static int bnxt_reinit_after_abort(struct bnxt *bp)
@@ -12336,10 +12084,6 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
 {
 	int rc = 0;
 
-<<<<<<< HEAD
-	bnxt_preset_reg_win(bp);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	netif_carrier_off(bp->dev);
 	if (irq_re_init) {
 		/* Reserve rings now if none were reserved at driver probe. */
@@ -12352,15 +12096,6 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
 	rc = bnxt_reserve_rings(bp, irq_re_init);
 	if (rc)
 		return rc;
-<<<<<<< HEAD
-	if ((bp->flags & BNXT_FLAG_RFS) &&
-	    !(bp->flags & BNXT_FLAG_USING_MSIX)) {
-		/* disable RFS if falling back to INTA */
-		bp->dev->hw_features &= ~NETIF_F_NTUPLE;
-		bp->flags &= ~BNXT_FLAG_RFS;
-	}
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rc = bnxt_alloc_mem(bp, irq_re_init);
 	if (rc) {
@@ -13087,11 +12822,7 @@ bool bnxt_rfs_capable(struct bnxt *bp, bool new_rss_ctx)
 	    !BNXT_SUPPORTS_NTUPLE_VNIC(bp))
 		return bnxt_rfs_supported(bp);
 
-<<<<<<< HEAD
-	if (!(bp->flags & BNXT_FLAG_MSIX_CAP) || !bnxt_can_reserve_rings(bp) || !bp->rx_nr_rings)
-=======
 	if (!bnxt_can_reserve_rings(bp) || !bp->rx_nr_rings)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 
 	hwr.grp = bp->rx_nr_rings;
@@ -13765,17 +13496,11 @@ static void bnxt_force_fw_reset(struct bnxt *bp)
 		return;
 
 	if (ptp) {
-<<<<<<< HEAD
-		spin_lock_bh(&ptp->ptp_lock);
-		set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
-		spin_unlock_bh(&ptp->ptp_lock);
-=======
 		unsigned long flags;
 
 		spin_lock_irqsave(&ptp->ptp_lock, flags);
 		set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
 		spin_unlock_irqrestore(&ptp->ptp_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
 	}
@@ -13840,17 +13565,11 @@ void bnxt_fw_reset(struct bnxt *bp)
 		int n = 0, tmo;
 
 		if (ptp) {
-<<<<<<< HEAD
-			spin_lock_bh(&ptp->ptp_lock);
-			set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
-			spin_unlock_bh(&ptp->ptp_lock);
-=======
 			unsigned long flags;
 
 			spin_lock_irqsave(&ptp->ptp_lock, flags);
 			set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
 			spin_unlock_irqrestore(&ptp->ptp_lock, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
 		}
@@ -14090,10 +13809,7 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
 	int max_rx, max_tx, max_cp, tx_sets = 1, tx_cp;
 	struct bnxt_hw_rings hwr = {0};
 	int rx_rings = rx;
-<<<<<<< HEAD
-=======
 	int rc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (tcs)
 		tx_sets = tcs;
@@ -14126,9 +13842,6 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
 	}
 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS)
 		hwr.cp_p5 = hwr.tx + rx;
-<<<<<<< HEAD
-	return bnxt_hwrm_check_rings(bp, &hwr);
-=======
 	rc = bnxt_hwrm_check_rings(bp, &hwr);
 	if (!rc && pci_msix_can_alloc_dyn(bp->pdev)) {
 		if (!bnxt_ulp_registered(bp->edev)) {
@@ -14146,7 +13859,6 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
 		}
 	}
 	return rc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void bnxt_unmap_bars(struct bnxt *bp, struct pci_dev *pdev)
@@ -14284,8 +13996,6 @@ static int bnxt_fw_init_one_p2(struct bnxt *bp)
 	if (rc)
 		return -ENODEV;
 
-<<<<<<< HEAD
-=======
 	rc = bnxt_alloc_crash_dump_mem(bp);
 	if (rc)
 		netdev_warn(bp->dev, "crash dump mem alloc failure rc: %d\n",
@@ -14299,7 +14009,6 @@ static int bnxt_fw_init_one_p2(struct bnxt *bp)
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (bnxt_fw_pre_resv_vnics(bp))
 		bp->fw_cap |= BNXT_FW_CAP_PRE_RESV_VNICS;
 
@@ -15491,12 +15200,8 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
 	struct bnxt *bp = netdev_priv(dev);
 	struct bnxt_rx_ring_info *rxr, *clone;
 	struct bnxt_cp_ring_info *cpr;
-<<<<<<< HEAD
-	int rc;
-=======
 	struct bnxt_vnic_info *vnic;
 	int i, rc;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rxr = &bp->rx_ring[idx];
 	clone = qmem;
@@ -15521,13 +15226,6 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
 	if (bp->flags & BNXT_FLAG_AGG_RINGS)
 		bnxt_db_write(bp, &rxr->rx_agg_db, rxr->rx_agg_prod);
 
-<<<<<<< HEAD
-	napi_enable(&rxr->bnapi->napi);
-
-	cpr = &rxr->bnapi->cp_ring;
-	cpr->sw_stats->rx.rx_resets++;
-
-=======
 	cpr = &rxr->bnapi->cp_ring;
 	cpr->sw_stats->rx.rx_resets++;
 
@@ -15538,7 +15236,6 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
 				      VNIC_UPDATE_REQ_ENABLES_MRU_VALID);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 err_free_hwrm_rx_ring:
@@ -15550,11 +15247,6 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
 {
 	struct bnxt *bp = netdev_priv(dev);
 	struct bnxt_rx_ring_info *rxr;
-<<<<<<< HEAD
-
-	rxr = &bp->rx_ring[idx];
-	napi_disable(&rxr->bnapi->napi);
-=======
 	struct bnxt_vnic_info *vnic;
 	int i;
 
@@ -15566,7 +15258,6 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
 	}
 
 	rxr = &bp->rx_ring[idx];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bnxt_hwrm_rx_ring_free(bp, rxr, false);
 	bnxt_hwrm_rx_agg_ring_free(bp, rxr, false);
 	rxr->rx_next_cons = 0;
@@ -15626,10 +15317,7 @@ static void bnxt_remove_one(struct pci_dev *pdev)
 	bp->fw_health = NULL;
 	bnxt_cleanup_pci(bp);
 	bnxt_free_ctx_mem(bp);
-<<<<<<< HEAD
-=======
 	bnxt_free_crash_dump_mem(bp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(bp->rss_indir_tbl);
 	bp->rss_indir_tbl = NULL;
 	bnxt_free_port_stats(bp);
@@ -16017,14 +15705,11 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	if (pci_is_bridge(pdev))
 		return -ENODEV;
 
-<<<<<<< HEAD
-=======
 	if (!pdev->msix_cap) {
 		dev_err(&pdev->dev, "MSIX capability not found, aborting\n");
 		return -ENODEV;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Clear any pending DMA transactions from crash kernel
 	 * while loading driver in capture kernel.
 	 */
@@ -16051,12 +15736,6 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	if (BNXT_PF(bp))
 		SET_NETDEV_DEVLINK_PORT(dev, &bp->dl_port);
 
-<<<<<<< HEAD
-	if (pdev->msix_cap)
-		bp->flags |= BNXT_FLAG_MSIX_CAP;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = bnxt_init_board(pdev, dev);
 	if (rc < 0)
 		goto init_err_free;
@@ -16065,10 +15744,6 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	dev->stat_ops = &bnxt_stat_ops;
 	dev->watchdog_timeo = BNXT_TX_TIMEOUT;
 	dev->ethtool_ops = &bnxt_ethtool_ops;
-<<<<<<< HEAD
-	dev->queue_mgmt_ops = &bnxt_queue_mgmt_ops;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pci_set_drvdata(pdev, dev);
 
 	rc = bnxt_alloc_hwrm_resources(bp);
@@ -16249,11 +15924,8 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	if (BNXT_SUPPORTS_NTUPLE_VNIC(bp))
 		bp->rss_cap |= BNXT_RSS_CAP_MULTI_RSS_CTX;
-<<<<<<< HEAD
-=======
 	if (BNXT_SUPPORTS_QUEUE_API(bp))
 		dev->queue_mgmt_ops = &bnxt_queue_mgmt_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rc = register_netdev(dev);
 	if (rc)
@@ -16287,10 +15959,7 @@ init_err_pci_clean:
 	bp->fw_health = NULL;
 	bnxt_cleanup_pci(bp);
 	bnxt_free_ctx_mem(bp);
-<<<<<<< HEAD
-=======
 	bnxt_free_crash_dump_mem(bp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(bp->rss_indir_tbl);
 	bp->rss_indir_tbl = NULL;
 
@@ -16382,11 +16051,8 @@ static int bnxt_resume(struct device *device)
 		rc = -ENODEV;
 		goto resume_exit;
 	}
-<<<<<<< HEAD
-=======
 	if (bp->fw_crash_mem)
 		bnxt_hwrm_crash_dump_mem_cfg(bp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bnxt_get_wol_settings(bp);
 	if (netif_running(dev)) {

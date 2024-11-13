@@ -414,11 +414,7 @@ mv_xor_tx_submit(struct dma_async_tx_descriptor *tx)
 		if (!mv_chan_is_busy(mv_chan)) {
 			u32 current_desc = mv_chan_get_current_desc(mv_chan);
 			/*
-<<<<<<< HEAD
-			 * and the curren desc is the end of the chain before
-=======
 			 * and the current desc is the end of the chain before
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 * the append, then we need to start the channel
 			 */
 			if (current_desc == old_chain_tail->async_tx.phys)
@@ -1078,11 +1074,7 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
 	if (!mv_chan->dma_desc_pool_virt)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
-	/* discover transaction capabilites from the platform data */
-=======
 	/* discover transaction capabilities from the platform data */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dma_dev->cap_mask = cap_mask;
 
 	INIT_LIST_HEAD(&dma_dev->channels);

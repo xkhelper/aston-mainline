@@ -192,12 +192,6 @@ static inline u64 extent_map_block_len(const struct extent_map *em)
 
 static inline u64 extent_map_block_end(const struct extent_map *em)
 {
-<<<<<<< HEAD
-	if (extent_map_block_start(em) + extent_map_block_len(em) <
-	    extent_map_block_start(em))
-		return (u64)-1;
-	return extent_map_block_start(em) + extent_map_block_len(em);
-=======
 	const u64 block_start = extent_map_block_start(em);
 	const u64 block_end = block_start + extent_map_block_len(em);
 
@@ -205,7 +199,6 @@ static inline u64 extent_map_block_end(const struct extent_map *em)
 		return (u64)-1;
 
 	return block_end;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static bool can_merge_extent_map(const struct extent_map *em)
@@ -237,16 +230,12 @@ static bool mergeable_maps(const struct extent_map *prev, const struct extent_ma
 	if (extent_map_end(prev) != next->start)
 		return false;
 
-<<<<<<< HEAD
-	if (prev->flags != next->flags)
-=======
 	/*
 	 * The merged flag is not an on-disk flag, it just indicates we had the
 	 * extent maps of 2 (or more) adjacent extents merged, so factor it out.
 	 */
 	if ((prev->flags & ~EXTENT_FLAG_MERGED) !=
 	    (next->flags & ~EXTENT_FLAG_MERGED))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 
 	if (next->disk_bytenr < EXTENT_MAP_LAST_BYTE - 1)
@@ -259,15 +248,6 @@ static bool mergeable_maps(const struct extent_map *prev, const struct extent_ma
 /*
  * Handle the on-disk data extents merge for @prev and @next.
  *
-<<<<<<< HEAD
- * Only touches disk_bytenr/disk_num_bytes/offset/ram_bytes.
- * For now only uncompressed regular extent can be merged.
- *
- * @prev and @next will be both updated to point to the new merged range.
- * Thus one of them should be removed by the caller.
- */
-static void merge_ondisk_extents(struct extent_map *prev, struct extent_map *next)
-=======
  * @prev:    left extent to merge
  * @next:    right extent to merge
  * @merged:  the extent we will not discard after the merge; updated with new values
@@ -281,7 +261,6 @@ static void merge_ondisk_extents(struct extent_map *prev, struct extent_map *nex
  */
 static void merge_ondisk_extents(const struct extent_map *prev, const struct extent_map *next,
 				 struct extent_map *merged)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	u64 new_disk_bytenr;
 	u64 new_disk_num_bytes;
@@ -316,22 +295,10 @@ static void merge_ondisk_extents(const struct extent_map *prev, const struct ext
 			     new_disk_bytenr;
 	new_offset = prev->disk_bytenr + prev->offset - new_disk_bytenr;
 
-<<<<<<< HEAD
-	prev->disk_bytenr = new_disk_bytenr;
-	prev->disk_num_bytes = new_disk_num_bytes;
-	prev->ram_bytes = new_disk_num_bytes;
-	prev->offset = new_offset;
-
-	next->disk_bytenr = new_disk_bytenr;
-	next->disk_num_bytes = new_disk_num_bytes;
-	next->ram_bytes = new_disk_num_bytes;
-	next->offset = new_offset;
-=======
 	merged->disk_bytenr = new_disk_bytenr;
 	merged->disk_num_bytes = new_disk_num_bytes;
 	merged->ram_bytes = new_disk_num_bytes;
 	merged->offset = new_offset;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void dump_extent_map(struct btrfs_fs_info *fs_info, const char *prefix,
@@ -400,11 +367,7 @@ static void try_merge_map(struct btrfs_inode *inode, struct extent_map *em)
 			em->generation = max(em->generation, merge->generation);
 
 			if (em->disk_bytenr < EXTENT_MAP_LAST_BYTE)
-<<<<<<< HEAD
-				merge_ondisk_extents(merge, em);
-=======
 				merge_ondisk_extents(merge, em, em);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			em->flags |= EXTENT_FLAG_MERGED;
 
 			validate_extent_map(fs_info, em);
@@ -421,11 +384,7 @@ static void try_merge_map(struct btrfs_inode *inode, struct extent_map *em)
 	if (rb && can_merge_extent_map(merge) && mergeable_maps(em, merge)) {
 		em->len += merge->len;
 		if (em->disk_bytenr < EXTENT_MAP_LAST_BYTE)
-<<<<<<< HEAD
-			merge_ondisk_extents(em, merge);
-=======
 			merge_ondisk_extents(em, merge, em);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		validate_extent_map(fs_info, em);
 		rb_erase(&merge->rb_node, &tree->root);
 		RB_CLEAR_NODE(&merge->rb_node);

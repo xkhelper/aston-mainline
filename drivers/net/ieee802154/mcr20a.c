@@ -1302,23 +1302,13 @@ mcr20a_probe(struct spi_device *spi)
 		irq_type = IRQF_TRIGGER_FALLING;
 
 	ret = devm_request_irq(&spi->dev, spi->irq, mcr20a_irq_isr,
-<<<<<<< HEAD
-			       irq_type, dev_name(&spi->dev), lp);
-=======
 			       irq_type | IRQF_NO_AUTOEN, dev_name(&spi->dev), lp);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret) {
 		dev_err(&spi->dev, "could not request_irq for mcr20a\n");
 		ret = -ENODEV;
 		goto free_dev;
 	}
 
-<<<<<<< HEAD
-	/* disable_irq by default and wait for starting hardware */
-	disable_irq(spi->irq);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = ieee802154_register_hw(hw);
 	if (ret) {
 		dev_crit(&spi->dev, "ieee802154_register_hw failed\n");

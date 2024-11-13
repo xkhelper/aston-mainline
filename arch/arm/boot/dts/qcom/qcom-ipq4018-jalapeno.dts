@@ -11,21 +11,6 @@
 };
 
 &tlmm {
-<<<<<<< HEAD
-	mdio_pins: mdio_pinmux {
-		pinmux_1 {
-			pins = "gpio53";
-			function = "mdio";
-		};
-
-		pinmux_2 {
-			pins = "gpio52";
-			function = "mdc";
-		};
-
-		pinconf {
-			pins = "gpio52", "gpio53";
-=======
 	mdio_pins: mdio-state {
 		mdio-pins {
 			pins = "gpio53";
@@ -36,23 +21,10 @@
 		mdc-pins {
 			pins = "gpio52";
 			function = "mdc";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bias-pull-up;
 		};
 	};
 
-<<<<<<< HEAD
-	serial_pins: serial_pinmux {
-		mux {
-			pins = "gpio60", "gpio61";
-			function = "blsp_uart0";
-			bias-disable;
-		};
-	};
-
-	spi_0_pins: spi_0_pinmux {
-		pin {
-=======
 	serial_pins: serial-state{
 		pins = "gpio60", "gpio61";
 		function = "blsp_uart0";
@@ -61,18 +33,13 @@
 
 	spi_0_pins: spi-0-state {
 		spi0-pins {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			function = "blsp_spi0";
 			pins = "gpio55", "gpio56", "gpio57";
 			drive-strength = <2>;
 			bias-disable;
 		};
 
-<<<<<<< HEAD
-		pin_cs {
-=======
 		spi0-cs-pins {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			function = "gpio";
 			pins = "gpio54", "gpio59";
 			drive-strength = <2>;

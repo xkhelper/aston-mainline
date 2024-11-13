@@ -30,10 +30,7 @@
 		: [val] "+r" (__v)				\
 		: [reg] "i" (csr)				\
 		: "memory");					\
-<<<<<<< HEAD
-=======
 	__v;							\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 })
 
 #define gcsr_xchg(v, m, csr)					\
@@ -185,11 +182,8 @@ __BUILD_GCSR_OP(tlbidx)
 #define kvm_save_hw_gcsr(csr, gid)	(csr->csrs[gid] = gcsr_read(gid))
 #define kvm_restore_hw_gcsr(csr, gid)	(gcsr_write(csr->csrs[gid], gid))
 
-<<<<<<< HEAD
-=======
 #define kvm_read_clear_hw_gcsr(csr, gid)	(csr->csrs[gid] = gcsr_write(0, gid))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int kvm_emu_iocsr(larch_inst inst, struct kvm_run *run, struct kvm_vcpu *vcpu);
 
 static __always_inline unsigned long kvm_read_sw_gcsr(struct loongarch_csrs *csr, int gid)
@@ -217,10 +211,7 @@ static __always_inline void kvm_change_sw_gcsr(struct loongarch_csrs *csr,
 	csr->csrs[gid] |= val & _mask;
 }
 
-<<<<<<< HEAD
-=======
 #define KVM_PMU_EVENT_ENABLED	(CSR_PERFCTRL_PLV0 | CSR_PERFCTRL_PLV1 | \
 					CSR_PERFCTRL_PLV2 | CSR_PERFCTRL_PLV3)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* __ASM_LOONGARCH_KVM_CSR_H__ */

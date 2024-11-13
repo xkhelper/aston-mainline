@@ -208,8 +208,6 @@ static int csd_lock_wait_getcpu(call_single_data_t *csd)
 	return -1;
 }
 
-<<<<<<< HEAD
-=======
 static atomic_t n_csd_lock_stuck;
 
 /**
@@ -223,17 +221,12 @@ bool csd_lock_is_stuck(void)
 	return !!atomic_read(&n_csd_lock_stuck);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Complain if too much time spent waiting.  Note that only
  * the CSD_TYPE_SYNC/ASYNC types provide the destination CPU,
  * so waiting on other types gets much less information.
  */
-<<<<<<< HEAD
-static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, int *bug_id)
-=======
 static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, int *bug_id, unsigned long *nmessages)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int cpu = -1;
 	int cpux;
@@ -249,21 +242,13 @@ static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, in
 		cpu = csd_lock_wait_getcpu(csd);
 		pr_alert("csd: CSD lock (#%d) got unstuck on CPU#%02d, CPU#%02d released the lock.\n",
 			 *bug_id, raw_smp_processor_id(), cpu);
-<<<<<<< HEAD
-=======
 		atomic_dec(&n_csd_lock_stuck);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return true;
 	}
 
 	ts2 = sched_clock();
 	/* How long since we last checked for a stuck CSD lock.*/
 	ts_delta = ts2 - *ts1;
-<<<<<<< HEAD
-	if (likely(ts_delta <= csd_lock_timeout_ns || csd_lock_timeout_ns == 0))
-		return false;
-
-=======
 	if (likely(ts_delta <= csd_lock_timeout_ns * (*nmessages + 1) *
 			       (!*nmessages ? 1 : (ilog2(num_online_cpus()) / 2 + 1)) ||
 		   csd_lock_timeout_ns == 0))
@@ -277,7 +262,6 @@ static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, in
 		return false;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	firsttime = !*bug_id;
 	if (firsttime)
 		*bug_id = atomic_inc_return(&csd_bug_count);
@@ -289,18 +273,12 @@ static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, in
 	cpu_cur_csd = smp_load_acquire(&per_cpu(cur_csd, cpux)); /* Before func and info. */
 	/* How long since this CSD lock was stuck. */
 	ts_delta = ts2 - ts0;
-<<<<<<< HEAD
-	pr_alert("csd: %s non-responsive CSD lock (#%d) on CPU#%d, waiting %llu ns for CPU#%02d %pS(%ps).\n",
-		 firsttime ? "Detected" : "Continued", *bug_id, raw_smp_processor_id(), ts_delta,
-		 cpu, csd->func, csd->info);
-=======
 	pr_alert("csd: %s non-responsive CSD lock (#%d) on CPU#%d, waiting %lld ns for CPU#%02d %pS(%ps).\n",
 		 firsttime ? "Detected" : "Continued", *bug_id, raw_smp_processor_id(), (s64)ts_delta,
 		 cpu, csd->func, csd->info);
 	(*nmessages)++;
 	if (firsttime)
 		atomic_inc(&n_csd_lock_stuck);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * If the CSD lock is still stuck after 5 minutes, it is unlikely
 	 * to become unstuck. Use a signed comparison to avoid triggering
@@ -339,20 +317,13 @@ static bool csd_lock_wait_toolong(call_single_data_t *csd, u64 ts0, u64 *ts1, in
  */
 static void __csd_lock_wait(call_single_data_t *csd)
 {
-<<<<<<< HEAD
-=======
 	unsigned long nmessages = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int bug_id = 0;
 	u64 ts0, ts1;
 
 	ts1 = ts0 = sched_clock();
 	for (;;) {
-<<<<<<< HEAD
-		if (csd_lock_wait_toolong(csd, ts0, &ts1, &bug_id))
-=======
 		if (csd_lock_wait_toolong(csd, ts0, &ts1, &bug_id, &nmessages))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		cpu_relax();
 	}

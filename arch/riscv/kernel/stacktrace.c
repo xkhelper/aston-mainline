@@ -162,8 +162,6 @@ noinline noinstr void arch_stack_walk(stack_trace_consume_fn consume_entry, void
 {
 	walk_stackframe(task, regs, consume_entry, cookie);
 }
-<<<<<<< HEAD
-=======
 
 /*
  * Get the return address for a single stackframe and return a pointer to the
@@ -207,4 +205,3 @@ void arch_stack_walk_user(stack_trace_consume_fn consume_entry, void *cookie,
 	while (fp && !(fp & 0x7))
 		fp = unwind_user_frame(consume_entry, cookie, fp, 0);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

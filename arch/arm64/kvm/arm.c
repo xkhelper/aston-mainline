@@ -46,11 +46,8 @@
 #include <kvm/arm_pmu.h>
 #include <kvm/arm_psci.h>
 
-<<<<<<< HEAD
-=======
 #include "sys_regs.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static enum kvm_mode kvm_mode = KVM_MODE_DEFAULT;
 
 enum kvm_wfx_trap_policy {
@@ -233,10 +230,7 @@ vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
 void kvm_arch_create_vm_debugfs(struct kvm *kvm)
 {
 	kvm_sys_regs_create_debugfs(kvm);
-<<<<<<< HEAD
-=======
 	kvm_s2_ptdump_create_debugfs(kvm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void kvm_destroy_mpidr_data(struct kvm *kvm)
@@ -830,17 +824,6 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
 			return ret;
 	}
 
-<<<<<<< HEAD
-	if (vcpu_has_nv(vcpu)) {
-		ret = kvm_init_nv_sysregs(vcpu->kvm);
-		if (ret)
-			return ret;
-	}
-
-	/*
-	 * This needs to happen after NV has imposed its own restrictions on
-	 * the feature set
-=======
 	ret = kvm_finalize_sys_regs(vcpu);
 	if (ret)
 		return ret;
@@ -848,7 +831,6 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
 	/*
 	 * This needs to happen after any restriction has been applied
 	 * to the feature set.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	kvm_calculate_traps(vcpu);
 
@@ -1015,12 +997,9 @@ static int kvm_vcpu_suspend(struct kvm_vcpu *vcpu)
 static int check_vcpu_requests(struct kvm_vcpu *vcpu)
 {
 	if (kvm_request_pending(vcpu)) {
-<<<<<<< HEAD
-=======
 		if (kvm_check_request(KVM_REQ_VM_DEAD, vcpu))
 			return -EIO;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (kvm_check_request(KVM_REQ_SLEEP, vcpu))
 			kvm_vcpu_sleep(vcpu);
 
@@ -1055,11 +1034,8 @@ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
 
 		if (kvm_dirty_ring_check_request(vcpu))
 			return 0;
-<<<<<<< HEAD
-=======
 
 		check_nested_vcpu_requests(vcpu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 1;
@@ -2193,11 +2169,7 @@ static void cpu_hyp_uninit(void *discard)
 	}
 }
 
-<<<<<<< HEAD
-int kvm_arch_hardware_enable(void)
-=======
 int kvm_arch_enable_virtualization_cpu(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/*
 	 * Most calls to this function are made with migration
@@ -2217,11 +2189,7 @@ int kvm_arch_enable_virtualization_cpu(void)
 	return 0;
 }
 
-<<<<<<< HEAD
-void kvm_arch_hardware_disable(void)
-=======
 void kvm_arch_disable_virtualization_cpu(void)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	kvm_timer_cpu_down();
 	kvm_vgic_cpu_down();
@@ -2417,11 +2385,7 @@ static int __init do_pkvm_init(u32 hyp_va_bits)
 
 	/*
 	 * The stub hypercalls are now disabled, so set our local flag to
-<<<<<<< HEAD
-	 * prevent a later re-init attempt in kvm_arch_hardware_enable().
-=======
 	 * prevent a later re-init attempt in kvm_arch_enable_virtualization_cpu().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	__this_cpu_write(kvm_hyp_initialized, 1);
 	preempt_enable();

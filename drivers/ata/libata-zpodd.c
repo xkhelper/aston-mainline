@@ -112,11 +112,7 @@ static bool zpready(struct ata_device *dev)
 	if (!ret || sense_key != NOT_READY)
 		return false;
 
-<<<<<<< HEAD
-	sense_buf = dev->link->ap->sector_buf;
-=======
 	sense_buf = dev->sector_buf;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = atapi_eh_request_sense(dev, sense_buf, sense_key);
 	if (ret)
 		return false;

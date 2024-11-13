@@ -170,15 +170,12 @@ static inline int for_each_rdev_check_rtnl(void)
 	if (for_each_rdev_check_rtnl()) {} else				\
 		list_for_each_entry(rdev, &cfg80211_rdev_list, list)
 
-<<<<<<< HEAD
-=======
 enum bss_source_type {
 	BSS_SOURCE_DIRECT = 0,
 	BSS_SOURCE_MBSSID,
 	BSS_SOURCE_STA_PROFILE,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cfg80211_internal_bss {
 	struct list_head list;
 	struct list_head hidden_list;
@@ -200,11 +197,8 @@ struct cfg80211_internal_bss {
 	 */
 	u8 parent_bssid[ETH_ALEN] __aligned(2);
 
-<<<<<<< HEAD
-=======
 	enum bss_source_type bss_source;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* must be last because of priv member */
 	struct cfg80211_bss pub;
 };

@@ -687,23 +687,11 @@ static void rtw89_wow_enter_deep_ps(struct rtw89_dev *rtwdev)
 	__rtw89_enter_ps_mode(rtwdev, rtwvif);
 }
 
-<<<<<<< HEAD
-static void rtw89_wow_enter_lps(struct rtw89_dev *rtwdev)
-=======
 static void rtw89_wow_enter_ps(struct rtw89_dev *rtwdev)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ieee80211_vif *wow_vif = rtwdev->wow.wow_vif;
 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)wow_vif->drv_priv;
 
-<<<<<<< HEAD
-	rtw89_enter_lps(rtwdev, rtwvif, false);
-}
-
-static void rtw89_wow_leave_lps(struct rtw89_dev *rtwdev)
-{
-	rtw89_leave_lps(rtwdev);
-=======
 	if (rtw89_wow_mgd_linked(rtwdev))
 		rtw89_enter_lps(rtwdev, rtwvif, false);
 	else if (rtw89_wow_no_link(rtwdev))
@@ -723,7 +711,6 @@ static void rtw89_wow_leave_ps(struct rtw89_dev *rtwdev, bool enable_wow)
 		else
 			rtw89_fw_h2c_fwips(rtwdev, rtwvif, false);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rtw89_wow_config_mac(struct rtw89_dev *rtwdev, bool enable_wow)
@@ -807,25 +794,15 @@ static void rtw89_wow_vif_iter(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvi
 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
 	struct ieee80211_vif *vif = rtwvif_to_vif(rtwvif);
 
-<<<<<<< HEAD
-	/* Current wowlan function support setting of only one STATION vif.
-	 * So when one suitable vif is found, stop the iteration.
-=======
 	/* Current WoWLAN function support setting of only vif in
 	 * infra mode or no link mode. When one suitable vif is found,
 	 * stop the iteration.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	if (rtw_wow->wow_vif || vif->type != NL80211_IFTYPE_STATION)
 		return;
 
 	switch (rtwvif->net_type) {
 	case RTW89_NET_TYPE_INFRA:
-<<<<<<< HEAD
-		rtw_wow->wow_vif = vif;
-		break;
-	case RTW89_NET_TYPE_NO_LINK:
-=======
 		if (rtw_wow_has_mgd_features(rtwdev))
 			rtw_wow->wow_vif = vif;
 		break;
@@ -833,7 +810,6 @@ static void rtw89_wow_vif_iter(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvi
 		if (rtw_wow->pno_inited)
 			rtw_wow->wow_vif = vif;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		break;
 	}
@@ -1067,8 +1043,6 @@ static void rtw89_wow_clear_wakeups(struct rtw89_dev *rtwdev)
 	rtw_wow->wow_vif = NULL;
 	rtw89_core_release_all_bits_map(rtw_wow->flags, RTW89_WOW_FLAG_NUM);
 	rtw_wow->pattern_cnt = 0;
-<<<<<<< HEAD
-=======
 	rtw_wow->pno_inited = false;
 }
 
@@ -1086,7 +1060,6 @@ static void rtw89_wow_init_pno(struct rtw89_dev *rtwdev,
 	INIT_LIST_HEAD(&rtw_wow->pno_pkt_list);
 
 	rtw89_debug(rtwdev, RTW89_DBG_WOW, "WOW: net-detect is enabled\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rtw89_wow_set_wakeups(struct rtw89_dev *rtwdev,
@@ -1099,14 +1072,11 @@ static int rtw89_wow_set_wakeups(struct rtw89_dev *rtwdev,
 		set_bit(RTW89_WOW_FLAG_EN_DISCONNECT, rtw_wow->flags);
 	if (wowlan->magic_pkt)
 		set_bit(RTW89_WOW_FLAG_EN_MAGIC_PKT, rtw_wow->flags);
-<<<<<<< HEAD
-=======
 	if (wowlan->n_patterns && wowlan->patterns)
 		set_bit(RTW89_WOW_FLAG_EN_PATTERN, rtw_wow->flags);
 
 	if (wowlan->nd_config)
 		rtw89_wow_init_pno(rtwdev, wowlan->nd_config);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rtw89_for_each_rtwvif(rtwdev, rtwvif)
 		rtw89_wow_vif_iter(rtwdev, rtwvif);
@@ -1118,8 +1088,6 @@ static int rtw89_wow_set_wakeups(struct rtw89_dev *rtwdev,
 	return rtw89_wow_parse_patterns(rtwdev, rtwvif, wowlan);
 }
 
-<<<<<<< HEAD
-=======
 static int rtw89_wow_cfg_wake_pno(struct rtw89_dev *rtwdev, bool wow)
 {
 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
@@ -1148,7 +1116,6 @@ static int rtw89_wow_cfg_wake_pno(struct rtw89_dev *rtwdev, bool wow)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rtw89_wow_cfg_wake(struct rtw89_dev *rtwdev, bool wow)
 {
 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
@@ -1409,43 +1376,6 @@ static int rtw89_wow_disable_trx_post(struct rtw89_dev *rtwdev)
 	return ret;
 }
 
-<<<<<<< HEAD
-static int rtw89_wow_fw_start(struct rtw89_dev *rtwdev)
-{
-	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
-	struct rtw89_vif *rtwvif = (struct rtw89_vif *)rtw_wow->wow_vif->drv_priv;
-	int ret;
-
-	rtw89_wow_pattern_write(rtwdev);
-	rtw89_wow_construct_key_info(rtwdev);
-
-	ret = rtw89_fw_h2c_keep_alive(rtwdev, rtwvif, true);
-	if (ret) {
-		rtw89_err(rtwdev, "wow: failed to enable keep alive\n");
-		return ret;
-	}
-
-	ret = rtw89_fw_h2c_disconnect_detect(rtwdev, rtwvif, true);
-	if (ret) {
-		rtw89_err(rtwdev, "wow: failed to enable disconnect detect\n");
-		goto out;
-	}
-
-	ret = rtw89_fw_h2c_wow_gtk_ofld(rtwdev, rtwvif, true);
-	if (ret) {
-		rtw89_err(rtwdev, "wow: failed to enable GTK offload\n");
-		goto out;
-	}
-
-	ret = rtw89_fw_h2c_arp_offload(rtwdev, rtwvif, true);
-	if (ret)
-		rtw89_warn(rtwdev, "wow: failed to enable arp offload\n");
-
-	ret = rtw89_wow_cfg_wake(rtwdev, true);
-	if (ret) {
-		rtw89_err(rtwdev, "wow: failed to config wake\n");
-		goto out;
-=======
 static void rtw89_fw_release_pno_pkt_list(struct rtw89_dev *rtwdev,
 					  struct rtw89_vif *rtwvif)
 {
@@ -1604,60 +1534,20 @@ static int rtw89_wow_fw_start(struct rtw89_dev *rtwdev)
 			rtw89_err(rtwdev, "wow: failed to config wake\n");
 			return ret;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = rtw89_wow_check_fw_status(rtwdev, true);
 	if (ret) {
 		rtw89_err(rtwdev, "wow: failed to check enable fw ready\n");
-<<<<<<< HEAD
-		goto out;
-	}
-
-out:
-	return ret;
-=======
 		return ret;
 	}
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rtw89_wow_fw_stop(struct rtw89_dev *rtwdev)
 {
 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
-<<<<<<< HEAD
-	struct rtw89_vif *rtwvif = (struct rtw89_vif *)rtw_wow->wow_vif->drv_priv;
-	int ret;
-
-	rtw89_wow_pattern_clear(rtwdev);
-
-	ret = rtw89_fw_h2c_keep_alive(rtwdev, rtwvif, false);
-	if (ret) {
-		rtw89_err(rtwdev, "wow: failed to disable keep alive\n");
-		goto out;
-	}
-
-	ret = rtw89_fw_h2c_disconnect_detect(rtwdev, rtwvif, false);
-	if (ret) {
-		rtw89_err(rtwdev, "wow: failed to disable disconnect detect\n");
-		goto out;
-	}
-
-	ret = rtw89_fw_h2c_wow_gtk_ofld(rtwdev, rtwvif, false);
-	if (ret) {
-		rtw89_err(rtwdev, "wow: failed to disable GTK offload\n");
-		goto out;
-	}
-
-	ret = rtw89_fw_h2c_arp_offload(rtwdev, rtwvif, false);
-	if (ret)
-		rtw89_warn(rtwdev, "wow: failed to disable arp offload\n");
-
-	rtw89_wow_key_clear(rtwdev);
-	rtw89_fw_release_general_pkt_list(rtwdev, true);
-=======
 	struct ieee80211_vif *wow_vif = rtw_wow->wow_vif;
 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)wow_vif->drv_priv;
 	int ret;
@@ -1705,33 +1595,20 @@ static int rtw89_wow_fw_stop(struct rtw89_dev *rtwdev)
 		rtw89_fw_release_general_pkt_list(rtwdev, true);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = rtw89_wow_cfg_wake(rtwdev, false);
 	if (ret) {
 		rtw89_err(rtwdev, "wow: failed to disable config wake\n");
-<<<<<<< HEAD
-		goto out;
-=======
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	ret = rtw89_wow_check_fw_status(rtwdev, false);
 	if (ret) {
 		rtw89_err(rtwdev, "wow: failed to check disable fw ready\n");
-<<<<<<< HEAD
-		goto out;
-	}
-
-out:
-	return ret;
-=======
 		return ret;
 	}
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int rtw89_wow_enable(struct rtw89_dev *rtwdev)
@@ -1760,11 +1637,7 @@ static int rtw89_wow_enable(struct rtw89_dev *rtwdev)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	rtw89_wow_enter_lps(rtwdev);
-=======
 	rtw89_wow_enter_ps(rtwdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = rtw89_wow_enable_trx_post(rtwdev);
 	if (ret) {
@@ -1789,11 +1662,7 @@ static int rtw89_wow_disable(struct rtw89_dev *rtwdev)
 		goto out;
 	}
 
-<<<<<<< HEAD
-	rtw89_wow_leave_lps(rtwdev);
-=======
 	rtw89_wow_leave_ps(rtwdev, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = rtw89_wow_fw_stop(rtwdev);
 	if (ret) {
@@ -1818,15 +1687,12 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static void rtw89_wow_restore_ps(struct rtw89_dev *rtwdev)
 {
 	if (rtw89_wow_no_link(rtwdev))
 		rtw89_enter_ips(rtwdev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int rtw89_wow_resume(struct rtw89_dev *rtwdev)
 {
 	int ret;
@@ -1851,10 +1717,7 @@ int rtw89_wow_resume(struct rtw89_dev *rtwdev)
 	if (ret)
 		rtw89_err(rtwdev, "failed to disable wow\n");
 
-<<<<<<< HEAD
-=======
 	rtw89_wow_restore_ps(rtwdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	rtw89_wow_clear_wakeups(rtwdev);
 	return ret;
@@ -1870,11 +1733,7 @@ int rtw89_wow_suspend(struct rtw89_dev *rtwdev, struct cfg80211_wowlan *wowlan)
 		return ret;
 	}
 
-<<<<<<< HEAD
-	rtw89_wow_leave_lps(rtwdev);
-=======
 	rtw89_wow_leave_ps(rtwdev, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = rtw89_wow_enable(rtwdev);
 	if (ret) {

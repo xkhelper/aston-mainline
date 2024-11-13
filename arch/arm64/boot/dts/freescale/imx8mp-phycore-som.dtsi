@@ -20,8 +20,6 @@
 		device_type = "memory";
 		reg = <0x0 0x40000000 0 0x80000000>;
 	};
-<<<<<<< HEAD
-=======
 
 	reg_vdd_io: regulator-vdd-io {
 		compatible = "regulator-fixed";
@@ -31,7 +29,6 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-name = "VDD_IO";
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &A53_0 {
@@ -182,10 +179,7 @@
 		compatible = "atmel,24c32";
 		reg = <0x51>;
 		pagesize = <32>;
-<<<<<<< HEAD
-=======
 		vcc-supply = <&reg_vdd_io>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	rv3028: rtc@52 {

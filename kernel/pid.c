@@ -540,15 +540,6 @@ struct pid *pidfd_get_pid(unsigned int fd, unsigned int *flags)
 	struct pid *pid;
 
 	f = fdget(fd);
-<<<<<<< HEAD
-	if (!f.file)
-		return ERR_PTR(-EBADF);
-
-	pid = pidfd_pid(f.file);
-	if (!IS_ERR(pid)) {
-		get_pid(pid);
-		*flags = f.file->f_flags;
-=======
 	if (!fd_file(f))
 		return ERR_PTR(-EBADF);
 
@@ -556,7 +547,6 @@ struct pid *pidfd_get_pid(unsigned int fd, unsigned int *flags)
 	if (!IS_ERR(pid)) {
 		get_pid(pid);
 		*flags = fd_file(f)->f_flags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	fdput(f);
@@ -765,17 +755,10 @@ SYSCALL_DEFINE3(pidfd_getfd, int, pidfd, int, fd,
 		return -EINVAL;
 
 	f = fdget(pidfd);
-<<<<<<< HEAD
-	if (!f.file)
-		return -EBADF;
-
-	pid = pidfd_pid(f.file);
-=======
 	if (!fd_file(f))
 		return -EBADF;
 
 	pid = pidfd_pid(fd_file(f));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(pid))
 		ret = PTR_ERR(pid);
 	else

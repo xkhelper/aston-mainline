@@ -7,14 +7,9 @@
 //! C headers: [`include/linux/phy.h`](srctree/include/linux/phy.h).
 
 use crate::{error::*, prelude::*, types::Opaque};
-<<<<<<< HEAD
-
-use core::marker::PhantomData;
-=======
 use core::{marker::PhantomData, ptr::addr_of_mut};
 
 pub mod reg;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /// PHY state machine states.
 ///
@@ -64,14 +59,9 @@ pub enum DuplexMode {
 ///
 /// # Invariants
 ///
-<<<<<<< HEAD
-/// Referencing a `phy_device` using this struct asserts that you are in
-/// a context where all methods defined on this struct are safe to call.
-=======
 /// - Referencing a `phy_device` using this struct asserts that you are in
 ///   a context where all methods defined on this struct are safe to call.
 /// - This struct always has a valid `self.0.mdio.dev`.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ///
 /// [`struct phy_device`]: srctree/include/linux/phy.h
 // During the calls to most functions in [`Driver`], the C side (`PHYLIB`) holds a lock that is
@@ -88,17 +78,11 @@ impl Device {
     ///
     /// # Safety
     ///
-<<<<<<< HEAD
-    /// For the duration of 'a, the pointer must point at a valid `phy_device`,
-    /// and the caller must be in a context where all methods defined on this struct
-    /// are safe to call.
-=======
     /// For the duration of `'a`,
     /// - the pointer must point at a valid `phy_device`, and the caller
     ///   must be in a context where all methods defined on this struct
     ///   are safe to call.
     /// - `(*ptr).mdio.dev` must be a valid.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
         // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::phy_device`.
         let ptr = ptr.cast::<Self>();
@@ -195,34 +179,6 @@ impl Device {
         unsafe { (*phydev).duplex = v };
     }
 
-<<<<<<< HEAD
-    /// Reads a given C22 PHY register.
-    // This function reads a hardware register and updates the stats so takes `&mut self`.
-    pub fn read(&mut self, regnum: u16) -> Result<u16> {
-        let phydev = self.0.get();
-        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-        // So it's just an FFI call, open code of `phy_read()` with a valid `phy_device` pointer
-        // `phydev`.
-        let ret = unsafe {
-            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into())
-        };
-        if ret < 0 {
-            Err(Error::from_errno(ret))
-        } else {
-            Ok(ret as u16)
-        }
-    }
-
-    /// Writes a given C22 PHY register.
-    pub fn write(&mut self, regnum: u16, val: u16) -> Result {
-        let phydev = self.0.get();
-        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-        // So it's just an FFI call, open code of `phy_write()` with a valid `phy_device` pointer
-        // `phydev`.
-        to_result(unsafe {
-            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into(), val)
-        })
-=======
     /// Reads a PHY register.
     // This function reads a hardware register and updates the stats so takes `&mut self`.
     pub fn read<R: reg::Register>(&mut self, reg: R) -> Result<u16> {
@@ -232,7 +188,6 @@ impl Device {
     /// Writes a PHY register.
     pub fn write<R: reg::Register>(&mut self, reg: R, val: u16) -> Result {
         reg.write(self, val)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 
     /// Reads a paged register.
@@ -297,21 +252,8 @@ impl Device {
     }
 
     /// Checks the link status and updates current link state.
-<<<<<<< HEAD
-    pub fn genphy_read_status(&mut self) -> Result<u16> {
-        let phydev = self.0.get();
-        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-        // So it's just an FFI call.
-        let ret = unsafe { bindings::genphy_read_status(phydev) };
-        if ret < 0 {
-            Err(Error::from_errno(ret))
-        } else {
-            Ok(ret as u16)
-        }
-=======
     pub fn genphy_read_status<R: reg::Register>(&mut self) -> Result<u16> {
         R::read_status(self)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 
     /// Updates the link status.
@@ -339,8 +281,6 @@ impl Device {
     }
 }
 
-<<<<<<< HEAD
-=======
 impl AsRef<kernel::device::Device> for Device {
     fn as_ref(&self) -> &kernel::device::Device {
         let phydev = self.0.get();
@@ -349,7 +289,6 @@ impl AsRef<kernel::device::Device> for Device {
     }
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /// Defines certain other features this PHY supports (like interrupts).
 ///
 /// These flag values are used in [`Driver::FLAGS`].
@@ -389,8 +328,6 @@ impl<T: Driver> Adapter<T> {
     /// # Safety
     ///
     /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-<<<<<<< HEAD
-=======
     unsafe extern "C" fn probe_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
         from_result(|| {
             // SAFETY: This callback is called only in contexts
@@ -406,7 +343,6 @@ impl<T: Driver> Adapter<T> {
     /// # Safety
     ///
     /// `phydev` must be passed by the corresponding callback in `phy_driver`.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     unsafe extern "C" fn get_features_callback(
         phydev: *mut bindings::phy_device,
     ) -> core::ffi::c_int {
@@ -577,14 +513,11 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
         } else {
             None
         },
-<<<<<<< HEAD
-=======
         probe: if T::HAS_PROBE {
             Some(Adapter::<T>::probe_callback)
         } else {
             None
         },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         get_features: if T::HAS_GET_FEATURES {
             Some(Adapter::<T>::get_features_callback)
         } else {
@@ -657,14 +590,11 @@ pub trait Driver {
         kernel::build_error(VTABLE_DEFAULT_ERROR)
     }
 
-<<<<<<< HEAD
-=======
     /// Sets up device-specific structures during discovery.
     fn probe(_dev: &mut Device) -> Result {
         kernel::build_error(VTABLE_DEFAULT_ERROR)
     }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     /// Probes the hardware to determine what abilities it has.
     fn get_features(_dev: &mut Device) -> Result {
         kernel::build_error(VTABLE_DEFAULT_ERROR)

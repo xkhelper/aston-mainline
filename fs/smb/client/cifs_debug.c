@@ -350,12 +350,9 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
 #ifdef CONFIG_CIFS_SWN_UPCALL
 	seq_puts(m, ",WITNESS");
 #endif
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_CIFS_COMPRESSION
 	seq_puts(m, ",COMPRESSION");
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	seq_putc(m, '\n');
 	seq_printf(m, "CIFSMaxBufSize: %d\n", CIFSMaxBufSize);
 	seq_printf(m, "Active VFS Requests: %d\n", GlobalTotalActiveXid);
@@ -481,13 +478,9 @@ skip_rdma:
 		}
 
 		seq_puts(m, "\nCompression: ");
-<<<<<<< HEAD
-		if (!server->compression.requested)
-=======
 		if (!IS_ENABLED(CONFIG_CIFS_COMPRESSION))
 			seq_puts(m, "no built-in support");
 		else if (!server->compression.requested)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			seq_puts(m, "disabled on mount");
 		else if (server->compression.enabled)
 			seq_printf(m, "enabled (%s)", compression_alg_str(server->compression.alg));

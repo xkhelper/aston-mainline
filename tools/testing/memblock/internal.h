@@ -20,11 +20,7 @@ void memblock_free_pages(struct page *page, unsigned long pfn,
 {
 }
 
-<<<<<<< HEAD
-static inline void accept_memory(phys_addr_t start, phys_addr_t end)
-=======
 static inline void accept_memory(phys_addr_t start, unsigned long size)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 }
 

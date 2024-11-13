@@ -366,11 +366,7 @@ static unsigned int __free_extent_tree(struct f2fs_sb_info *sbi,
 static void __drop_largest_extent(struct extent_tree *et,
 					pgoff_t fofs, unsigned int len)
 {
-<<<<<<< HEAD
-	if (fofs < et->largest.fofs + et->largest.len &&
-=======
 	if (fofs < (pgoff_t)et->largest.fofs + et->largest.len &&
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			fofs + len > et->largest.fofs) {
 		et->largest.len = 0;
 		et->largest_updated = true;
@@ -460,11 +456,7 @@ static bool __lookup_extent_tree(struct inode *inode, pgoff_t pgofs,
 
 	if (type == EX_READ &&
 			et->largest.fofs <= pgofs &&
-<<<<<<< HEAD
-			et->largest.fofs + et->largest.len > pgofs) {
-=======
 			(pgoff_t)et->largest.fofs + et->largest.len > pgofs) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		*ei = et->largest;
 		ret = true;
 		stat_inc_largest_node_hit(sbi);

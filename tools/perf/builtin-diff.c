@@ -388,11 +388,7 @@ struct hist_entry_ops block_hist_ops = {
 	.free   = block_hist_free,
 };
 
-<<<<<<< HEAD
-static int diff__process_sample_event(struct perf_tool *tool,
-=======
 static int diff__process_sample_event(const struct perf_tool *tool,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				      union perf_event *event,
 				      struct perf_sample *sample,
 				      struct evsel *evsel,
@@ -435,13 +431,8 @@ static int diff__process_sample_event(const struct perf_tool *tool,
 			goto out;
 		}
 
-<<<<<<< HEAD
-		hist__account_cycles(sample->branch_stack, &al, sample, false,
-				     NULL);
-=======
 		hist__account_cycles(sample->branch_stack, &al, sample,
 				     false, NULL, evsel);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 
 	case COMPUTE_STREAM:
@@ -476,25 +467,7 @@ out:
 	return ret;
 }
 
-<<<<<<< HEAD
-static struct perf_diff pdiff = {
-	.tool = {
-		.sample	= diff__process_sample_event,
-		.mmap	= perf_event__process_mmap,
-		.mmap2	= perf_event__process_mmap2,
-		.comm	= perf_event__process_comm,
-		.exit	= perf_event__process_exit,
-		.fork	= perf_event__process_fork,
-		.lost	= perf_event__process_lost,
-		.namespaces = perf_event__process_namespaces,
-		.cgroup = perf_event__process_cgroup,
-		.ordered_events = true,
-		.ordering_requires_timestamps = true,
-	},
-};
-=======
 static struct perf_diff pdiff;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct evsel *evsel_match(struct evsel *evsel,
 				      struct evlist *evlist)
@@ -718,11 +691,7 @@ static void hists__precompute(struct hists *hists)
 		if (compute == COMPUTE_CYCLES) {
 			bh = container_of(he, struct block_hist, he);
 			init_block_hist(bh);
-<<<<<<< HEAD
-			block_info__process_sym(he, bh, NULL, 0);
-=======
 			block_info__process_sym(he, bh, NULL, 0, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		data__for_each_file_new(i, d) {
@@ -745,11 +714,7 @@ static void hists__precompute(struct hists *hists)
 				pair_bh = container_of(pair, struct block_hist,
 						       he);
 				init_block_hist(pair_bh);
-<<<<<<< HEAD
-				block_info__process_sym(pair, pair_bh, NULL, 0);
-=======
 				block_info__process_sym(pair, pair_bh, NULL, 0, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 				bh = container_of(he, struct block_hist, he);
 
@@ -1980,8 +1945,6 @@ int cmd_diff(int argc, const char **argv)
 	if (ret < 0)
 		return ret;
 
-<<<<<<< HEAD
-=======
 	perf_tool__init(&pdiff.tool, /*ordered_events=*/true);
 	pdiff.tool.sample	= diff__process_sample_event;
 	pdiff.tool.mmap	= perf_event__process_mmap;
@@ -1994,7 +1957,6 @@ int cmd_diff(int argc, const char **argv)
 	pdiff.tool.cgroup = perf_event__process_cgroup;
 	pdiff.tool.ordering_requires_timestamps = true;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	perf_config(diff__config, NULL);
 
 	argc = parse_options(argc, argv, options, diff_usage, 0);

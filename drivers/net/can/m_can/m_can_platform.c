@@ -231,11 +231,7 @@ static struct platform_driver m_can_plat_driver = {
 		.pm     = &m_can_pmops,
 	},
 	.probe = m_can_plat_probe,
-<<<<<<< HEAD
-	.remove_new = m_can_plat_remove,
-=======
 	.remove = m_can_plat_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(m_can_plat_driver);

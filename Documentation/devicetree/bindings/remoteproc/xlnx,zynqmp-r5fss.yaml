@@ -62,10 +62,7 @@ properties:
 patternProperties:
   "^r(.*)@[0-9a-f]+$":
     type: object
-<<<<<<< HEAD
-=======
     additionalProperties: false
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     description: |
       The RPU is located in the Low Power Domain of the Processor Subsystem.
       Each processor includes separate L1 instruction and data caches and

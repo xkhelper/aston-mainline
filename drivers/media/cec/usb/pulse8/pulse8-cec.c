@@ -685,11 +685,7 @@ static int pulse8_setup(struct pulse8 *pulse8, struct serio *serio,
 	err = pulse8_send_and_wait(pulse8, cmd, 1, cmd[0], 4);
 	if (err)
 		return err;
-<<<<<<< HEAD
-	date = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-=======
 	date = ((unsigned)data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_info(pulse8->dev, "Firmware build date %ptT\n", &date);
 
 	dev_dbg(pulse8->dev, "Persistent config:\n");

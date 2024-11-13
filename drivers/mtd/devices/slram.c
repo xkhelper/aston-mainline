@@ -296,18 +296,12 @@ static int __init init_slram(void)
 		T("slram: devname = %s\n", devname);
 		if ((!map) || (!(devstart = strsep(&map, ",")))) {
 			E("slram: No devicestart specified.\n");
-<<<<<<< HEAD
-=======
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		T("slram: devstart = %s\n", devstart);
 		if ((!map) || (!(devlength = strsep(&map, ",")))) {
 			E("slram: No devicelength / -end specified.\n");
-<<<<<<< HEAD
-=======
 			break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		T("slram: devlength = %s\n", devlength);
 		if (parse_cmdline(devname, devstart, devlength) != 0) {

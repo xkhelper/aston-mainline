@@ -17,10 +17,7 @@ properties:
   compatible:
     oneOf:
       - enum:
-<<<<<<< HEAD
-=======
           - fsl,imx95-flexcan
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - fsl,imx93-flexcan
           - fsl,imx8qm-flexcan
           - fsl,imx8mp-flexcan
@@ -43,12 +40,6 @@ properties:
               - fsl,imx6sx-flexcan
           - const: fsl,imx6q-flexcan
       - items:
-<<<<<<< HEAD
-          - const: fsl,imx95-flexcan
-          - const: fsl,imx93-flexcan
-      - items:
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - enum:
               - fsl,ls1028ar1-flexcan
           - const: fsl,lx2160ar1-flexcan
@@ -87,13 +78,10 @@ properties:
       node then controller is assumed to be little endian. If this property is
       present then controller is assumed to be big endian.
 
-<<<<<<< HEAD
-=======
   can-transceiver:
     $ref: can-transceiver.yaml#
     unevaluatedProperties: false
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   fsl,stop-mode:
     description: |
       Register bits of stop mode control.

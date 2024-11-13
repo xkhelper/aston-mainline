@@ -1501,11 +1501,7 @@ static const struct of_device_id et8ek8_of_table[] = {
 MODULE_DEVICE_TABLE(of, et8ek8_of_table);
 
 static const struct i2c_device_id et8ek8_id_table[] = {
-<<<<<<< HEAD
-	{ ET8EK8_NAME, 0 },
-=======
 	{ ET8EK8_NAME },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, et8ek8_id_table);

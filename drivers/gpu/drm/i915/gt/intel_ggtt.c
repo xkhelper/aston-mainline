@@ -12,10 +12,6 @@
 #include <drm/intel/i915_drm.h>
 #include <drm/intel/intel-gtt.h>
 
-<<<<<<< HEAD
-#include "display/intel_display.h"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "gem/i915_gem_lmem.h"
 
 #include "intel_context.h"

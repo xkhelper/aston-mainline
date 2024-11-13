@@ -12,11 +12,4 @@
 
 extern struct key_type key_type_dns_resolver;
 
-<<<<<<< HEAD
-extern int request_dns_resolver_key(const char *description,
-				    const char *callout_info,
-				    char **data);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _KEYS_DNS_RESOLVER_TYPE_H */

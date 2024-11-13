@@ -35,8 +35,6 @@ static const struct snd_soc_acpi_endpoint spk_r_endpoint = {
 	.group_id = 1,
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_endpoint spk_2_endpoint = {
 	.num = 0,
 	.aggregated = 1,
@@ -117,7 +115,6 @@ static const struct snd_soc_acpi_adr_device cs42l43_0_adr[] = {
 	}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_adr_device rt711_0_adr[] = {
 	{
 		.adr = 0x000020025D071100ull,
@@ -499,8 +496,6 @@ static const struct snd_soc_acpi_adr_device rt5682_0_adr[] = {
 	}
 };
 
-<<<<<<< HEAD
-=======
 static const struct snd_soc_acpi_link_adr adl_cs42l43_l0_cs35l56_l23[] = {
 	{
 		.mask = BIT(0),
@@ -520,7 +515,6 @@ static const struct snd_soc_acpi_link_adr adl_cs42l43_l0_cs35l56_l23[] = {
 	{}
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct snd_soc_acpi_link_adr adl_rvp[] = {
 	{
 		.mask = BIT(0),
@@ -666,15 +660,12 @@ EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_adl_machines);
 /* this table is used when there is no I2S codec present */
 struct snd_soc_acpi_mach snd_soc_acpi_intel_adl_sdw_machines[] = {
 	{
-<<<<<<< HEAD
-=======
 		.link_mask = BIT(0) | BIT(2) | BIT(3),
 		.links = adl_cs42l43_l0_cs35l56_l23,
 		.drv_name = "sof_sdw",
 		.sof_tplg_filename = "sof-adl-cs42l43-l0-cs35l56-l23.tplg",
 	},
 	{
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.link_mask = 0xF, /* 4 active links required */
 		.links = adl_default,
 		.drv_name = "sof_sdw",

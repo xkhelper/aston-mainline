@@ -170,10 +170,7 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
 	wbinvd
 .Lsme_off:
 
-<<<<<<< HEAD
-=======
 	/* Save the preserve_context to %r11 as swap_pages clobbers %rcx. */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	movq	%rcx, %r11
 	call	swap_pages
 
@@ -262,11 +259,7 @@ SYM_CODE_END(virtual_mapped)
 	/* Do the copies */
 SYM_CODE_START_LOCAL_NOALIGN(swap_pages)
 	UNWIND_HINT_END_OF_STACK
-<<<<<<< HEAD
-	movq	%rdi, %rcx	/* Put the page_list in %rcx */
-=======
 	movq	%rdi, %rcx	/* Put the indirection_page in %rcx */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	xorl	%edi, %edi
 	xorl	%esi, %esi
 	jmp	1f
@@ -297,33 +290,21 @@ SYM_CODE_START_LOCAL_NOALIGN(swap_pages)
 	movq	%rcx,   %rsi  /* For ever source page do a copy */
 	andq	$0xfffffffffffff000, %rsi
 
-<<<<<<< HEAD
-	movq	%rdi, %rdx
-	movq	%rsi, %rax
-
-=======
 	movq	%rdi, %rdx    /* Save destination page to %rdx */
 	movq	%rsi, %rax    /* Save source page to %rax */
 
 	/* copy source page to swap page */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	movq	%r10, %rdi
 	movl	$512, %ecx
 	rep ; movsq
 
-<<<<<<< HEAD
-=======
 	/* copy destination page to source page */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	movq	%rax, %rdi
 	movq	%rdx, %rsi
 	movl	$512, %ecx
 	rep ; movsq
 
-<<<<<<< HEAD
-=======
 	/* copy swap page to destination page */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	movq	%rdx, %rdi
 	movq	%r10, %rsi
 	movl	$512, %ecx

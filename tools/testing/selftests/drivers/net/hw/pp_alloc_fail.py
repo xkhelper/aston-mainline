@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0
 
-<<<<<<< HEAD
-=======
 import errno
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 import time
 import os
 from lib.py import ksft_run, ksft_exit, ksft_pr
@@ -65,11 +62,7 @@ def test_pp_alloc(cfg, netdevnl):
     try:
         stats = get_stats()
     except NlError as e:
-<<<<<<< HEAD
-        if e.nl_msg.error == -95:
-=======
         if e.nl_msg.error == -errno.EOPNOTSUPP:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             stats = {}
         else:
             raise

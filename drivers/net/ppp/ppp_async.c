@@ -29,11 +29,7 @@
 #include <linux/interrupt.h>
 #include <linux/jiffies.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/uaccess.h>
 #include <asm/string.h>
 
@@ -546,11 +542,7 @@ ppp_async_encode(struct asyncppp *ap)
 	 * and 7 (code-reject) must be sent as though no options
 	 * had been negotiated.
 	 */
-<<<<<<< HEAD
-	islcp = proto == PPP_LCP && 1 <= data[2] && data[2] <= 7;
-=======
 	islcp = proto == PPP_LCP && count >= 3 && 1 <= data[2] && data[2] <= 7;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (i == 0) {
 		if (islcp)

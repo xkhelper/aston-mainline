@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright (c) Meta Platforms, Inc. and affiliates. */
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/pci.h>
 #include <linux/types.h>
 #include <net/devlink.h>
@@ -14,8 +10,6 @@
 
 #define FBNIC_SN_STR_LEN	24
 
-<<<<<<< HEAD
-=======
 static int fbnic_version_running_put(struct devlink_info_req *req,
 				     struct fbnic_fw_ver *fw_ver,
 				     char *ver_name)
@@ -66,7 +60,6 @@ static int fbnic_version_stored_put(struct devlink_info_req *req,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int fbnic_devlink_info_get(struct devlink *devlink,
 				  struct devlink_info_req *req,
 				  struct netlink_ext_ack *extack)
@@ -74,8 +67,6 @@ static int fbnic_devlink_info_get(struct devlink *devlink,
 	struct fbnic_dev *fbd = devlink_priv(devlink);
 	int err;
 
-<<<<<<< HEAD
-=======
 	err = fbnic_version_running_put(req, &fbd->fw_cap.running.mgmt,
 					DEVLINK_INFO_VERSION_GENERIC_FW);
 	if (err)
@@ -101,7 +92,6 @@ static int fbnic_devlink_info_get(struct devlink *devlink,
 	if (err)
 		return err;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (fbd->dsn) {
 		unsigned char serial[FBNIC_SN_STR_LEN];
 		u8 dsn[8];

@@ -56,12 +56,6 @@ static const struct config_entry config_table[] = {
 	},
 #endif
 /*
-<<<<<<< HEAD
- * Apollolake (Broxton-P)
- * the legacy HDAudio driver is used except on Up Squared (SOF) and
- * Chromebooks (SST), as well as devices based on the ES8336 codec
- */
-=======
  * Skylake, Kabylake, Apollolake
  * the legacy HDAudio driver is used except on Up Squared (SOF) and
  * Chromebooks (SST), as well as devices based on the ES8336 codec
@@ -115,7 +109,6 @@ static const struct config_entry config_table[] = {
 		}
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_SND_SOC_SOF_APOLLOLAKE)
 	{
 		.flags = FLAG_SOF,
@@ -137,69 +130,6 @@ static const struct config_entry config_table[] = {
 		.codec_hid =  &essx_83x6,
 	},
 #endif
-<<<<<<< HEAD
-#if IS_ENABLED(CONFIG_SND_SOC_INTEL_APL)
-	{
-		.flags = FLAG_SST,
-		.device = PCI_DEVICE_ID_INTEL_HDA_APL,
-		.dmi_table = (const struct dmi_system_id []) {
-			{
-				.ident = "Google Chromebooks",
-				.matches = {
-					DMI_MATCH(DMI_SYS_VENDOR, "Google"),
-				}
-			},
-			{}
-		}
-	},
-#endif
-/*
- * Skylake and Kabylake use legacy HDAudio driver except for Google
- * Chromebooks (SST)
- */
-
-/* Sunrise Point-LP */
-#if IS_ENABLED(CONFIG_SND_SOC_INTEL_SKL)
-	{
-		.flags = FLAG_SST,
-		.device = PCI_DEVICE_ID_INTEL_HDA_SKL_LP,
-		.dmi_table = (const struct dmi_system_id []) {
-			{
-				.ident = "Google Chromebooks",
-				.matches = {
-					DMI_MATCH(DMI_SYS_VENDOR, "Google"),
-				}
-			},
-			{}
-		}
-	},
-	{
-		.flags = FLAG_SST | FLAG_SST_ONLY_IF_DMIC,
-		.device = PCI_DEVICE_ID_INTEL_HDA_SKL_LP,
-	},
-#endif
-/* Kabylake-LP */
-#if IS_ENABLED(CONFIG_SND_SOC_INTEL_KBL)
-	{
-		.flags = FLAG_SST,
-		.device = PCI_DEVICE_ID_INTEL_HDA_KBL_LP,
-		.dmi_table = (const struct dmi_system_id []) {
-			{
-				.ident = "Google Chromebooks",
-				.matches = {
-					DMI_MATCH(DMI_SYS_VENDOR, "Google"),
-				}
-			},
-			{}
-		}
-	},
-	{
-		.flags = FLAG_SST | FLAG_SST_ONLY_IF_DMIC,
-		.device = PCI_DEVICE_ID_INTEL_HDA_KBL_LP,
-	},
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * Geminilake uses legacy HDAudio driver except for Google
@@ -793,13 +723,10 @@ static const struct config_entry acpi_config_table[] = {
 /* BayTrail */
 	{
 		.flags = FLAG_SST_OR_SOF_BYT,
-<<<<<<< HEAD
-=======
 		.acpi_hid = "LPE0F28",
 	},
 	{
 		.flags = FLAG_SST_OR_SOF_BYT,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.acpi_hid = "80860F28",
 	},
 /* CherryTrail */

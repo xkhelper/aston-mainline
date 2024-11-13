@@ -172,11 +172,7 @@ struct drm_i915_private *mock_gem_device(void)
 		return NULL;
 	}
 
-<<<<<<< HEAD
-	pci_set_drvdata(pdev, i915);
-=======
 	pci_set_drvdata(pdev, &i915->drm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Device parameters start as a copy of module parameters. */
 	i915_params_copy(&i915->params, &i915_modparams);

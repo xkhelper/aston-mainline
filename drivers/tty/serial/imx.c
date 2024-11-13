@@ -762,8 +762,6 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
 
 	imx_uart_writel(sport, USR1_RTSD, USR1);
 	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
-<<<<<<< HEAD
-=======
 	/*
 	 * Update sport->old_status here, so any follow-up calls to
 	 * imx_uart_mctrl_check() will be able to recognize that RTS
@@ -779,7 +777,6 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
 		sport->old_status |= TIOCM_CTS;
 	else
 		sport->old_status &= ~TIOCM_CTS;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	uart_handle_cts_change(&sport->port, usr1);
 	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
 

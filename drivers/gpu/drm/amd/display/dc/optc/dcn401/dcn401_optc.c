@@ -396,8 +396,6 @@ void optc401_set_vtotal_min_max(struct timing_generator *optc, int vtotal_min, i
 	}
 }
 
-<<<<<<< HEAD
-=======
 static void optc401_program_global_sync(
 		struct timing_generator *optc,
 		int vready_offset,
@@ -432,18 +430,13 @@ static void optc401_program_global_sync(
 	REG_UPDATE(OTG_PSTATE_REGISTER, OTG_PSTATE_KEEPOUT_START, pstate_keepout);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct timing_generator_funcs dcn401_tg_funcs = {
 		.validate_timing = optc1_validate_timing,
 		.program_timing = optc1_program_timing,
 		.setup_vertical_interrupt0 = optc1_setup_vertical_interrupt0,
 		.setup_vertical_interrupt1 = optc1_setup_vertical_interrupt1,
 		.setup_vertical_interrupt2 = optc1_setup_vertical_interrupt2,
-<<<<<<< HEAD
-		.program_global_sync = optc1_program_global_sync,
-=======
 		.program_global_sync = optc401_program_global_sync,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.enable_crtc = optc401_enable_crtc,
 		.disable_crtc = optc401_disable_crtc,
 		.phantom_crtc_post_enable = optc401_phantom_crtc_post_enable,

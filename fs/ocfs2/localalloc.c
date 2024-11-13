@@ -1002,8 +1002,6 @@ static int ocfs2_sync_local_to_main(struct ocfs2_super *osb,
 		start = bit_off + 1;
 	}
 
-<<<<<<< HEAD
-=======
 	/* clear the contiguous bits until the end boundary */
 	if (count) {
 		blkno = la_start_blk +
@@ -1023,7 +1021,6 @@ static int ocfs2_sync_local_to_main(struct ocfs2_super *osb,
 			mlog_errno(status);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bail:
 	if (status)
 		mlog_errno(status);

@@ -378,40 +378,6 @@ static const uint32_t spitz_keymap[] = {
 	KEY(6, 8, KEY_RIGHT),
 };
 
-<<<<<<< HEAD
-static const struct matrix_keymap_data spitz_keymap_data = {
-	.keymap		= spitz_keymap,
-	.keymap_size	= ARRAY_SIZE(spitz_keymap),
-};
-
-static const uint32_t spitz_row_gpios[] =
-		{ 12, 17, 91, 34, 36, 38, 39 };
-static const uint32_t spitz_col_gpios[] =
-		{ 88, 23, 24, 25, 26, 27, 52, 103, 107, 108, 114 };
-
-static struct matrix_keypad_platform_data spitz_mkp_pdata = {
-	.keymap_data		= &spitz_keymap_data,
-	.row_gpios		= spitz_row_gpios,
-	.col_gpios		= spitz_col_gpios,
-	.num_row_gpios		= ARRAY_SIZE(spitz_row_gpios),
-	.num_col_gpios		= ARRAY_SIZE(spitz_col_gpios),
-	.col_scan_delay_us	= 10,
-	.debounce_ms		= 10,
-	.wakeup			= 1,
-};
-
-static struct platform_device spitz_mkp_device = {
-	.name		= "matrix-keypad",
-	.id		= -1,
-	.dev		= {
-		.platform_data	= &spitz_mkp_pdata,
-	},
-};
-
-static void __init spitz_mkp_init(void)
-{
-	platform_device_register(&spitz_mkp_device);
-=======
 static const struct software_node_ref_args spitz_mkp_row_gpios[] = {
 	SOFTWARE_NODE_REFERENCE(&pxa2xx_gpiochip_node, 12, GPIO_ACTIVE_HIGH),
 	SOFTWARE_NODE_REFERENCE(&pxa2xx_gpiochip_node, 17, GPIO_ACTIVE_HIGH),
@@ -462,7 +428,6 @@ static void __init spitz_mkp_init(void)
 	err = PTR_ERR_OR_ZERO(pd);
 	if (err)
 		pr_err("failed to create keypad device: %d\n", err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #else
 static inline void spitz_mkp_init(void) {}
@@ -472,42 +437,6 @@ static inline void spitz_mkp_init(void) {}
  * GPIO keys
  ******************************************************************************/
 #if defined(CONFIG_KEYBOARD_GPIO) || defined(CONFIG_KEYBOARD_GPIO_MODULE)
-<<<<<<< HEAD
-static struct gpio_keys_button spitz_gpio_keys[] = {
-	{
-		.type	= EV_PWR,
-		.code	= KEY_SUSPEND,
-		.gpio	= SPITZ_GPIO_ON_KEY,
-		.desc	= "On Off",
-		.wakeup	= 1,
-	},
-	/* Two buttons detecting the lid state */
-	{
-		.type	= EV_SW,
-		.code	= 0,
-		.gpio	= SPITZ_GPIO_SWA,
-		.desc	= "Display Down",
-	},
-	{
-		.type	= EV_SW,
-		.code	= 1,
-		.gpio	= SPITZ_GPIO_SWB,
-		.desc	= "Lid Closed",
-	},
-};
-
-static struct gpio_keys_platform_data spitz_gpio_keys_platform_data = {
-	.buttons	= spitz_gpio_keys,
-	.nbuttons	= ARRAY_SIZE(spitz_gpio_keys),
-};
-
-static struct platform_device spitz_gpio_keys_device = {
-	.name	= "gpio-keys",
-	.id	= -1,
-	.dev	= {
-		.platform_data	= &spitz_gpio_keys_platform_data,
-	},
-=======
 static const struct software_node spitz_gpio_keys_node = {
 	.name = "spitz-gpio-keys",
 };
@@ -561,14 +490,10 @@ static const struct software_node *spitz_gpio_keys_swnodes[] = {
 	&spitz_sw1_node,
 	&spitz_sw2_node,
 	NULL
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void __init spitz_keys_init(void)
 {
-<<<<<<< HEAD
-	platform_device_register(&spitz_gpio_keys_device);
-=======
 	struct platform_device_info keys_info = {
 		.name	= "gpio-keys",
 		.id	= PLATFORM_DEVID_NONE,
@@ -588,7 +513,6 @@ static void __init spitz_keys_init(void)
 	err = PTR_ERR_OR_ZERO(pd);
 	if (err)
 		pr_err("failed to create gpio-keys device: %d\n", err);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 #else
 static inline void spitz_keys_init(void) {}

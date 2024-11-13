@@ -1,14 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
-<<<<<<< HEAD
-#include <uapi/linux/bpf.h>
-#include <linux/if_link.h>
-=======
 #include <arpa/inet.h>
 #include <uapi/linux/bpf.h>
 #include <linux/if_link.h>
 #include <network_helpers.h>
 #include <net/if.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <test_progs.h>
 
 #include "test_xdp_devmap_helpers.skel.h"
@@ -16,40 +11,16 @@
 #include "test_xdp_with_devmap_helpers.skel.h"
 
 #define IFINDEX_LO 1
-<<<<<<< HEAD
-
-static void test_xdp_with_devmap_helpers(void)
-{
-	struct test_xdp_with_devmap_helpers *skel;
-=======
 #define TEST_NS "devmap_attach_ns"
 
 static void test_xdp_with_devmap_helpers(void)
 {
 	struct test_xdp_with_devmap_helpers *skel = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bpf_prog_info info = {};
 	struct bpf_devmap_val val = {
 		.ifindex = IFINDEX_LO,
 	};
 	__u32 len = sizeof(info);
-<<<<<<< HEAD
-	int err, dm_fd, map_fd;
-	__u32 idx = 0;
-
-
-	skel = test_xdp_with_devmap_helpers__open_and_load();
-	if (!ASSERT_OK_PTR(skel, "test_xdp_with_devmap_helpers__open_and_load"))
-		return;
-
-	dm_fd = bpf_program__fd(skel->progs.xdp_redir_prog);
-	err = bpf_xdp_attach(IFINDEX_LO, dm_fd, XDP_FLAGS_SKB_MODE, NULL);
-	if (!ASSERT_OK(err, "Generic attach of program with 8-byte devmap"))
-		goto out_close;
-
-	err = bpf_xdp_detach(IFINDEX_LO, XDP_FLAGS_SKB_MODE, NULL);
-	ASSERT_OK(err, "XDP program detach");
-=======
 	int err, dm_fd, dm_fd_redir, map_fd;
 	struct nstoken *nstoken = NULL;
 	char data[10] = {};
@@ -69,7 +40,6 @@ static void test_xdp_with_devmap_helpers(void)
 	err = bpf_xdp_attach(IFINDEX_LO, dm_fd_redir, XDP_FLAGS_SKB_MODE, NULL);
 	if (!ASSERT_OK(err, "Generic attach of program with 8-byte devmap"))
 		goto out_close;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dm_fd = bpf_program__fd(skel->progs.xdp_dummy_dm);
 	map_fd = bpf_map__fd(skel->maps.dm_ports);
@@ -85,8 +55,6 @@ static void test_xdp_with_devmap_helpers(void)
 	ASSERT_OK(err, "Read devmap entry");
 	ASSERT_EQ(info.id, val.bpf_prog.id, "Match program id to devmap entry prog_id");
 
-<<<<<<< HEAD
-=======
 	/* send a packet to trigger any potential bugs in there */
 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
 			    .data_in = &data,
@@ -103,7 +71,6 @@ static void test_xdp_with_devmap_helpers(void)
 	err = bpf_xdp_detach(IFINDEX_LO, XDP_FLAGS_SKB_MODE, NULL);
 	ASSERT_OK(err, "XDP program detach");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* can not attach BPF_XDP_DEVMAP program to a device */
 	err = bpf_xdp_attach(IFINDEX_LO, dm_fd, XDP_FLAGS_SKB_MODE, NULL);
 	if (!ASSERT_NEQ(err, 0, "Attach of BPF_XDP_DEVMAP program"))
@@ -124,11 +91,8 @@ static void test_xdp_with_devmap_helpers(void)
 	ASSERT_NEQ(err, 0, "Add BPF_XDP program with frags to devmap entry");
 
 out_close:
-<<<<<<< HEAD
-=======
 	close_netns(nstoken);
 	SYS_NOFAIL("ip netns del %s", TEST_NS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	test_xdp_with_devmap_helpers__destroy(skel);
 }
 
@@ -186,8 +150,6 @@ out_close:
 	test_xdp_with_devmap_frags_helpers__destroy(skel);
 }
 
-<<<<<<< HEAD
-=======
 static void test_xdp_with_devmap_helpers_veth(void)
 {
 	struct test_xdp_with_devmap_helpers *skel = NULL;
@@ -268,7 +230,6 @@ out_close:
 	test_xdp_with_devmap_helpers__destroy(skel);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void serial_test_xdp_devmap_attach(void)
 {
 	if (test__start_subtest("DEVMAP with programs in entries"))
@@ -279,10 +240,7 @@ void serial_test_xdp_devmap_attach(void)
 
 	if (test__start_subtest("Verifier check of DEVMAP programs"))
 		test_neg_xdp_devmap_helpers();
-<<<<<<< HEAD
-=======
 
 	if (test__start_subtest("DEVMAP with programs in entries on veth"))
 		test_xdp_with_devmap_helpers_veth();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

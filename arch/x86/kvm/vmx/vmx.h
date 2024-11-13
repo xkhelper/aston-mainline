@@ -17,13 +17,6 @@
 #include "run_flags.h"
 #include "../mmu.h"
 
-<<<<<<< HEAD
-#define MSR_TYPE_R	1
-#define MSR_TYPE_W	2
-#define MSR_TYPE_RW	3
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define X2APIC_MSR(r) (APIC_BASE_MSR + ((r) >> 4))
 
 #ifdef CONFIG_X86_64
@@ -759,12 +752,9 @@ static inline bool vmx_can_use_ipiv(struct kvm_vcpu *vcpu)
 	return  lapic_in_kernel(vcpu) && enable_ipiv;
 }
 
-<<<<<<< HEAD
-=======
 static inline void vmx_segment_cache_clear(struct vcpu_vmx *vmx)
 {
 	vmx->segment_cache.bitmask = 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __KVM_X86_VMX_H */

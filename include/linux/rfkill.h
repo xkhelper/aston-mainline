@@ -147,12 +147,8 @@ void rfkill_destroy(struct rfkill *rfkill);
  * Prefer to use rfkill_set_hw_state if you don't need any special reason.
  */
 bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
-<<<<<<< HEAD
-				bool blocked, unsigned long reason);
-=======
 				bool blocked,
 				enum rfkill_hard_block_reasons reason);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * rfkill_set_hw_state - Set the internal rfkill hardware block state
  * @rfkill: pointer to the rfkill class to modify.
@@ -285,11 +281,7 @@ static inline void rfkill_destroy(struct rfkill *rfkill)
 
 static inline bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
 					      bool blocked,
-<<<<<<< HEAD
-					      unsigned long reason)
-=======
 					      enum rfkill_hard_block_reasons reason)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return blocked;
 }

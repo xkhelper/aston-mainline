@@ -66,8 +66,6 @@ config PROTECTED_NVHE_STACKTRACE
 
 	  If unsure, or not using protected nVHE (pKVM), say N.
 
-<<<<<<< HEAD
-=======
 config PTDUMP_STAGE2_DEBUGFS
 	bool "Present the stage-2 pagetables to debugfs"
 	depends on KVM
@@ -85,5 +83,4 @@ config PTDUMP_STAGE2_DEBUGFS
 
 	  If in doubt, say N.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif # VIRTUALIZATION

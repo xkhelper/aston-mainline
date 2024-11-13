@@ -81,12 +81,7 @@ int cxgb_fcoe_enable(struct net_device *netdev)
 
 	netdev->features |= NETIF_F_FCOE_CRC;
 	netdev->vlan_features |= NETIF_F_FCOE_CRC;
-<<<<<<< HEAD
-	netdev->features |= NETIF_F_FCOE_MTU;
-	netdev->vlan_features |= NETIF_F_FCOE_MTU;
-=======
 	netdev->fcoe_mtu = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	netdev_features_change(netdev);
 
@@ -116,12 +111,7 @@ int cxgb_fcoe_disable(struct net_device *netdev)
 
 	netdev->features &= ~NETIF_F_FCOE_CRC;
 	netdev->vlan_features &= ~NETIF_F_FCOE_CRC;
-<<<<<<< HEAD
-	netdev->features &= ~NETIF_F_FCOE_MTU;
-	netdev->vlan_features &= ~NETIF_F_FCOE_MTU;
-=======
 	netdev->fcoe_mtu = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	netdev_features_change(netdev);
 

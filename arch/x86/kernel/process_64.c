@@ -798,8 +798,6 @@ static long prctl_map_vdso(const struct vdso_image *image, unsigned long addr)
 
 #define LAM_U57_BITS 6
 
-<<<<<<< HEAD
-=======
 static void enable_lam_func(void *__mm)
 {
 	struct mm_struct *mm = __mm;
@@ -826,7 +824,6 @@ static void mm_enable_lam(struct mm_struct *mm)
 	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
 {
 	if (!cpu_feature_enabled(X86_FEATURE_LAM))
@@ -843,40 +840,21 @@ static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
 	if (mmap_write_lock_killable(mm))
 		return -EINTR;
 
-<<<<<<< HEAD
-=======
 	/*
 	 * MM_CONTEXT_LOCK_LAM is set on clone.  Prevent LAM from
 	 * being enabled unless the process is single threaded:
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (test_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags)) {
 		mmap_write_unlock(mm);
 		return -EBUSY;
 	}
 
-<<<<<<< HEAD
-	if (!nr_bits) {
-		mmap_write_unlock(mm);
-		return -EINVAL;
-	} else if (nr_bits <= LAM_U57_BITS) {
-		mm->context.lam_cr3_mask = X86_CR3_LAM_U57;
-		mm->context.untag_mask =  ~GENMASK(62, 57);
-	} else {
-=======
 	if (!nr_bits || nr_bits > LAM_U57_BITS) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		mmap_write_unlock(mm);
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-	write_cr3(__read_cr3() | mm->context.lam_cr3_mask);
-	set_tlbstate_lam_mode(mm);
-	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
-=======
 	mm_enable_lam(mm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mmap_write_unlock(mm);
 

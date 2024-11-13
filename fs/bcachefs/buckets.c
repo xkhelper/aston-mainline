@@ -75,8 +75,6 @@ void bch2_dev_usage_to_text(struct printbuf *out,
 			    struct bch_dev *ca,
 			    struct bch_dev_usage *usage)
 {
-<<<<<<< HEAD
-=======
 	if (out->nr_tabstops < 5) {
 		printbuf_tabstops_reset(out);
 		printbuf_tabstop_push(out, 12);
@@ -86,7 +84,6 @@ void bch2_dev_usage_to_text(struct printbuf *out,
 		printbuf_tabstop_push(out, 16);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	prt_printf(out, "\tbuckets\rsectors\rfragmented\r\n");
 
 	for (unsigned i = 0; i < BCH_DATA_NR; i++) {
@@ -284,11 +281,7 @@ int bch2_check_fix_ptrs(struct btree_trans *trans,
 			goto err;
 
 		rcu_read_lock();
-<<<<<<< HEAD
-		bch2_bkey_drop_ptrs(bkey_i_to_s(new), ptr, !bch2_dev_rcu(c, ptr->dev));
-=======
 		bch2_bkey_drop_ptrs(bkey_i_to_s(new), ptr, !bch2_dev_exists(c, ptr->dev));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		rcu_read_unlock();
 
 		if (level) {
@@ -493,11 +486,7 @@ out:
 	return ret;
 err:
 	bch2_dump_trans_updates(trans);
-<<<<<<< HEAD
-	ret = -EIO;
-=======
 	ret = -BCH_ERR_bucket_ref_update;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	goto out;
 }
 
@@ -576,21 +565,11 @@ static int bch2_trigger_pointer(struct btree_trans *trans,
 			s64 *sectors,
 			enum btree_iter_update_trigger_flags flags)
 {
-<<<<<<< HEAD
-=======
 	struct bch_fs *c = trans->c;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bool insert = !(flags & BTREE_TRIGGER_overwrite);
 	struct printbuf buf = PRINTBUF;
 	int ret = 0;
 
-<<<<<<< HEAD
-	struct bch_fs *c = trans->c;
-	struct bch_dev *ca = bch2_dev_tryget(c, p.ptr.dev);
-	if (unlikely(!ca)) {
-		if (insert && p.ptr.dev != BCH_SB_MEMBER_INVALID)
-			ret = -EIO;
-=======
 	u64 abs_sectors = ptr_disk_sectors(level ? btree_sectors(c) : k.k->size, p);
 	*sectors = insert ? abs_sectors : -abs_sectors;
 
@@ -598,18 +577,12 @@ static int bch2_trigger_pointer(struct btree_trans *trans,
 	if (unlikely(!ca)) {
 		if (insert && p.ptr.dev != BCH_SB_MEMBER_INVALID)
 			ret = -BCH_ERR_trigger_pointer;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err;
 	}
 
 	struct bpos bucket;
 	struct bch_backpointer bp;
-<<<<<<< HEAD
-	bch2_extent_ptr_to_bp(trans->c, ca, btree_id, level, k, p, entry, &bucket, &bp);
-	*sectors = insert ? bp.bucket_len : -((s64) bp.bucket_len);
-=======
 	__bch2_extent_ptr_to_bp(trans->c, ca, btree_id, level, k, p, entry, &bucket, &bp, abs_sectors);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (flags & BTREE_TRIGGER_transactional) {
 		struct bkey_i_alloc_v4 *a = bch2_trans_start_alloc_update(trans, bucket, 0);
@@ -631,11 +604,7 @@ static int bch2_trigger_pointer(struct btree_trans *trans,
 		if (bch2_fs_inconsistent_on(!g, c, "reference to invalid bucket on device %u\n  %s",
 					    p.ptr.dev,
 					    (bch2_bkey_val_to_text(&buf, c, k), buf.buf))) {
-<<<<<<< HEAD
-			ret = -EIO;
-=======
 			ret = -BCH_ERR_trigger_pointer;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err_unlock;
 		}
 
@@ -680,11 +649,7 @@ static int bch2_trigger_stripe_ptr(struct btree_trans *trans,
 			bch2_trans_inconsistent(trans,
 				"stripe pointer doesn't match stripe %llu",
 				(u64) p.ec.idx);
-<<<<<<< HEAD
-			ret = -EIO;
-=======
 			ret = -BCH_ERR_trigger_stripe_pointer;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			goto err;
 		}
 
@@ -723,11 +688,7 @@ err:
 					    (u64) p.ec.idx, buf.buf);
 			printbuf_exit(&buf);
 			bch2_inconsistent_error(c);
-<<<<<<< HEAD
-			return -EIO;
-=======
 			return -BCH_ERR_trigger_stripe_pointer;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		m->block_sectors[p.ec.block] += sectors;
@@ -791,11 +752,7 @@ static int __trigger_extent(struct btree_trans *trans,
 				return ret;
 		} else if (!p.has_ec) {
 			*replicas_sectors       += disk_sectors;
-<<<<<<< HEAD
-			acc_replicas_key.replicas.devs[acc_replicas_key.replicas.nr_devs++] = p.ptr.dev;
-=======
 			replicas_entry_add_dev(&acc_replicas_key.replicas, p.ptr.dev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else {
 			ret = bch2_trigger_stripe_ptr(trans, k, p, data_type, disk_sectors, flags);
 			if (ret)
@@ -1011,11 +968,7 @@ static int __bch2_trans_mark_metadata_bucket(struct btree_trans *trans,
 			bch2_data_type_str(a->v.data_type),
 			bch2_data_type_str(type),
 			bch2_data_type_str(type));
-<<<<<<< HEAD
-		ret = -EIO;
-=======
 		ret = -BCH_ERR_metadata_bucket_inconsistency;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto err;
 	}
 
@@ -1071,11 +1024,7 @@ err:
 	bucket_unlock(g);
 err_unlock:
 	percpu_up_read(&c->mark_lock);
-<<<<<<< HEAD
-	return -EIO;
-=======
 	return -BCH_ERR_metadata_bucket_inconsistency;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int bch2_trans_mark_metadata_bucket(struct btree_trans *trans,
@@ -1211,19 +1160,11 @@ int bch2_trans_mark_dev_sbs(struct bch_fs *c)
 #define SECTORS_CACHE	1024
 
 int __bch2_disk_reservation_add(struct bch_fs *c, struct disk_reservation *res,
-<<<<<<< HEAD
-			      u64 sectors, int flags)
-{
-	struct bch_fs_pcpu *pcpu;
-	u64 old, get;
-	s64 sectors_available;
-=======
 				u64 sectors, enum bch_reservation_flags flags)
 {
 	struct bch_fs_pcpu *pcpu;
 	u64 old, get;
 	u64 sectors_available;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	percpu_down_read(&c->mark_lock);
@@ -1261,12 +1202,9 @@ recalculate:
 	percpu_u64_set(&c->pcpu->sectors_available, 0);
 	sectors_available = avail_factor(__bch2_fs_usage_read_short(c).free);
 
-<<<<<<< HEAD
-=======
 	if (sectors_available && (flags & BCH_DISK_RESERVATION_PARTIAL))
 		sectors = min(sectors, sectors_available);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (sectors <= sectors_available ||
 	    (flags & BCH_DISK_RESERVATION_NOFAIL)) {
 		atomic64_set(&c->sectors_available,

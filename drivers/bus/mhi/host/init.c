@@ -1464,11 +1464,7 @@ static int mhi_match(struct device *dev, const struct device_driver *drv)
 	return 0;
 };
 
-<<<<<<< HEAD
-struct bus_type mhi_bus_type = {
-=======
 const struct bus_type mhi_bus_type = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "mhi",
 	.dev_name = "mhi",
 	.match = mhi_match,

@@ -23,10 +23,6 @@
 
 /**
  * struct syscon_gpio_data - Configuration for the device.
-<<<<<<< HEAD
- * @compatible:		SYSCON driver compatible string.
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @flags:		Set of GPIO_SYSCON_FEAT_ flags:
  *			GPIO_SYSCON_FEAT_IN:	GPIOs supports input,
  *			GPIO_SYSCON_FEAT_OUT:	GPIOs supports output,

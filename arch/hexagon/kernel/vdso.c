@@ -51,15 +51,11 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 {
 	int ret;
 	unsigned long vdso_base;
-<<<<<<< HEAD
-	struct mm_struct *mm = current->mm;
-=======
 	struct vm_area_struct *vma;
 	struct mm_struct *mm = current->mm;
 	static struct vm_special_mapping vdso_mapping = {
 		.name = "[vdso]",
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (mmap_write_lock_killable(mm))
 		return -EINTR;
@@ -74,18 +70,6 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 	}
 
 	/* MAYWRITE to allow gdb to COW and set breakpoints. */
-<<<<<<< HEAD
-	ret = install_special_mapping(mm, vdso_base, PAGE_SIZE,
-				      VM_READ|VM_EXEC|
-				      VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC,
-				      &vdso_page);
-
-	if (ret)
-		goto up_fail;
-
-	mm->context.vdso = (void *)vdso_base;
-
-=======
 	vdso_mapping.pages = &vdso_page;
 	vma = _install_special_mapping(mm, vdso_base, PAGE_SIZE,
 				      VM_READ|VM_EXEC|
@@ -98,7 +82,6 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
 
 	mm->context.vdso = (void *)vdso_base;
 	ret = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 up_fail:
 	mmap_write_unlock(mm);
 	return ret;

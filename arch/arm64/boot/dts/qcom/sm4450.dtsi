@@ -4,14 +4,10 @@
  */
 
 #include <dt-bindings/clock/qcom,rpmh.h>
-<<<<<<< HEAD
-#include <dt-bindings/clock/qcom,sm4450-gcc.h>
-=======
 #include <dt-bindings/clock/qcom,sm4450-camcc.h>
 #include <dt-bindings/clock/qcom,sm4450-dispcc.h>
 #include <dt-bindings/clock/qcom,sm4450-gcc.h>
 #include <dt-bindings/clock/qcom,sm4450-gpucc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/soc/qcom,rpmh-rsc.h>
@@ -429,8 +425,6 @@
 			#hwlock-cells = <1>;
 		};
 
-<<<<<<< HEAD
-=======
 		gpucc: clock-controller@3d90000 {
 			compatible = "qcom,sm4450-gpucc";
 			reg = <0x0 0x03d90000 0x0 0xa000>;
@@ -466,7 +460,6 @@
 			#power-domain-cells = <1>;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pdc: interrupt-controller@b220000 {
 			compatible = "qcom,sm4450-pdc", "qcom,pdc";
 			reg = <0 0x0b220000 0 0x30000>, <0 0x174000f0 0 0x64>;

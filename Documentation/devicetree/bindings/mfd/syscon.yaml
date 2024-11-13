@@ -103,10 +103,7 @@ select:
           - rockchip,rk3368-qos
           - rockchip,rk3399-qos
           - rockchip,rk3568-qos
-<<<<<<< HEAD
-=======
           - rockchip,rk3576-qos
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - rockchip,rk3588-qos
           - rockchip,rv1126-qos
           - st,spear1340-misc
@@ -117,10 +114,7 @@ select:
           - ti,am625-dss-oldi-io-ctrl
           - ti,am62p-cpsw-mac-efuse
           - ti,am654-dss-oldi-io-ctrl
-<<<<<<< HEAD
-=======
           - ti,j784s4-acspcie-proxy-ctrl
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - ti,j784s4-pcie-ctrl
           - ti,keystone-pllctrl
   required:
@@ -206,10 +200,7 @@ properties:
           - rockchip,rk3368-qos
           - rockchip,rk3399-qos
           - rockchip,rk3568-qos
-<<<<<<< HEAD
-=======
           - rockchip,rk3576-qos
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - rockchip,rk3588-qos
           - rockchip,rv1126-qos
           - st,spear1340-misc

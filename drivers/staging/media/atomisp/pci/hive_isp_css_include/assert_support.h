@@ -27,12 +27,8 @@
  * #define assert(cnd) BUG_ON(cnd)
  * but that causes many compiler warnings (==errors) under Android
  * because it seems that the BUG_ON() macro is not seen as a check by
-<<<<<<< HEAD
- * gcc like the BUG() macro is. */
-=======
  * gcc like the BUG() macro is.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define assert(cnd) \
 	do { \
 		if (!(cnd)) \
@@ -42,12 +38,8 @@
 #ifndef PIPE_GENERATION
 /* Deprecated OP___assert, this is still used in ~1000 places
  * in the code. This will be removed over time.
-<<<<<<< HEAD
- * The implementation for the pipe generation tool is in see support.isp.h */
-=======
  * The implementation for the pipe generation tool is in see support.isp.h
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define OP___assert(cnd) assert(cnd)
 
 static inline void compile_time_assert(unsigned int cond)

@@ -660,16 +660,10 @@ static void err_print_params(struct drm_i915_error_state_buf *m,
 			     const struct i915_params *params)
 {
 	struct drm_printer p = i915_error_printer(m);
-<<<<<<< HEAD
-
-	i915_params_dump(params, &p);
-	intel_display_params_dump(m->i915, &p);
-=======
 	struct intel_display *display = &m->i915->display;
 
 	i915_params_dump(params, &p);
 	intel_display_params_dump(display, &p);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void err_print_pciid(struct drm_i915_error_state_buf *m,

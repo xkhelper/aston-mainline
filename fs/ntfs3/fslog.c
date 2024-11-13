@@ -609,8 +609,6 @@ static inline void add_client(struct CLIENT_REC *ca, u16 index, __le16 *head)
 	*head = cpu_to_le16(index);
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Enumerate restart table.
  *
@@ -620,17 +618,10 @@ static inline void add_client(struct CLIENT_REC *ca, u16 index, __le16 *head)
  * enumeration starts with @c == NULL
  * returns next element or NULL
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void *enum_rstbl(struct RESTART_TABLE *t, void *c)
 {
 	__le32 *e;
 	u32 bprt;
-<<<<<<< HEAD
-	u16 rsize = t ? le16_to_cpu(t->size) : 0;
-
-	if (!c) {
-		if (!t || !t->total)
-=======
 	u16 rsize;
 
 	if (!t)
@@ -641,7 +632,6 @@ static inline void *enum_rstbl(struct RESTART_TABLE *t, void *c)
 	if (!c) {
 		/* start enumeration. */
 		if (!t->total)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return NULL;
 		e = Add2Ptr(t, sizeof(struct RESTART_TABLE));
 	} else {

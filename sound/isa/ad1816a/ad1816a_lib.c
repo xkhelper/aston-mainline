@@ -25,11 +25,7 @@ static inline int snd_ad1816a_busy_wait(struct snd_ad1816a *chip)
 		if (inb(AD1816A_REG(AD1816A_CHIP_STATUS)) & AD1816A_READY)
 			return 0;
 
-<<<<<<< HEAD
-	snd_printk(KERN_WARNING "chip busy.\n");
-=======
 	dev_warn(chip->card->dev, "chip busy.\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return -EBUSY;
 }
 
@@ -190,11 +186,7 @@ static int snd_ad1816a_trigger(struct snd_ad1816a *chip, unsigned char what,
 		spin_unlock(&chip->lock);
 		break;
 	default:
-<<<<<<< HEAD
-		snd_printk(KERN_WARNING "invalid trigger mode 0x%x.\n", what);
-=======
 		dev_warn(chip->card->dev, "invalid trigger mode 0x%x.\n", what);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		error = -EINVAL;
 	}
 
@@ -556,13 +548,8 @@ static const char *snd_ad1816a_chip_id(struct snd_ad1816a *chip)
 	case AD1816A_HW_AD1815:	return "AD1815";
 	case AD1816A_HW_AD18MAX10: return "AD18max10";
 	default:
-<<<<<<< HEAD
-		snd_printk(KERN_WARNING "Unknown chip version %d:%d.\n",
-			chip->version, chip->hardware);
-=======
 		dev_warn(chip->card->dev, "Unknown chip version %d:%d.\n",
 			 chip->version, chip->hardware);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return "AD1816A - unknown";
 	}
 }
@@ -579,39 +566,23 @@ int snd_ad1816a_create(struct snd_card *card,
 
 	chip->res_port = devm_request_region(card->dev, port, 16, "AD1816A");
 	if (!chip->res_port) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "ad1816a: can't grab port 0x%lx\n", port);
-=======
 		dev_err(card->dev, "ad1816a: can't grab port 0x%lx\n", port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	if (devm_request_irq(card->dev, irq, snd_ad1816a_interrupt, 0,
 			     "AD1816A", (void *) chip)) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "ad1816a: can't grab IRQ %d\n", irq);
-=======
 		dev_err(card->dev, "ad1816a: can't grab IRQ %d\n", irq);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	chip->irq = irq;
 	card->sync_irq = chip->irq;
 	if (snd_devm_request_dma(card->dev, dma1, "AD1816A - 1")) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "ad1816a: can't grab DMA1 %d\n", dma1);
-=======
 		dev_err(card->dev, "ad1816a: can't grab DMA1 %d\n", dma1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	chip->dma1 = dma1;
 	if (snd_devm_request_dma(card->dev, dma2, "AD1816A - 2")) {
-<<<<<<< HEAD
-		snd_printk(KERN_ERR "ad1816a: can't grab DMA2 %d\n", dma2);
-=======
 		dev_err(card->dev, "ad1816a: can't grab DMA2 %d\n", dma2);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBUSY;
 	}
 	chip->dma2 = dma2;

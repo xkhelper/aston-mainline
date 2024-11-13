@@ -7,10 +7,6 @@
 
 /* Cgroup v1 and v2 common declarations */
 
-<<<<<<< HEAD
-void mem_cgroup_charge_statistics(struct mem_cgroup *memcg, int nr_pages);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
 		     unsigned int nr_pages);
 
@@ -59,11 +55,6 @@ enum mem_cgroup_events_target {
 	MEM_CGROUP_NTARGETS,
 };
 
-<<<<<<< HEAD
-bool mem_cgroup_event_ratelimit(struct mem_cgroup *memcg,
-				enum mem_cgroup_events_target target);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap);
 
 void drain_all_stock(struct mem_cgroup *root_memcg);
@@ -77,13 +68,10 @@ int memory_stat_show(struct seq_file *m, void *v);
 
 /* Cgroup v1-specific declarations */
 #ifdef CONFIG_MEMCG_V1
-<<<<<<< HEAD
-=======
 
 bool memcg1_alloc_events(struct mem_cgroup *memcg);
 void memcg1_free_events(struct mem_cgroup *memcg);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void memcg1_memcg_init(struct mem_cgroup *memcg);
 void memcg1_remove_from_trees(struct mem_cgroup *memcg);
 
@@ -112,14 +100,10 @@ bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked);
 void memcg1_oom_finish(struct mem_cgroup *memcg, bool locked);
 void memcg1_oom_recover(struct mem_cgroup *memcg);
 
-<<<<<<< HEAD
-void memcg1_check_events(struct mem_cgroup *memcg, int nid);
-=======
 void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg);
 void memcg1_swapout(struct folio *folio, struct mem_cgroup *memcg);
 void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
 			   unsigned long nr_memory, int nid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s);
 
@@ -140,12 +124,9 @@ extern struct cftype mem_cgroup_legacy_files[];
 
 #else	/* CONFIG_MEMCG_V1 */
 
-<<<<<<< HEAD
-=======
 static inline bool memcg1_alloc_events(struct mem_cgroup *memcg) { return true; }
 static inline void memcg1_free_events(struct mem_cgroup *memcg) {}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void memcg1_memcg_init(struct mem_cgroup *memcg) {}
 static inline void memcg1_remove_from_trees(struct mem_cgroup *memcg) {}
 static inline void memcg1_soft_limit_reset(struct mem_cgroup *memcg) {}
@@ -156,9 +137,6 @@ static inline bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked) { 
 static inline void memcg1_oom_finish(struct mem_cgroup *memcg, bool locked) {}
 static inline void memcg1_oom_recover(struct mem_cgroup *memcg) {}
 
-<<<<<<< HEAD
-static inline void memcg1_check_events(struct mem_cgroup *memcg, int nid) {}
-=======
 static inline void memcg1_commit_charge(struct folio *folio,
 					struct mem_cgroup *memcg) {}
 
@@ -167,7 +145,6 @@ static inline void memcg1_swapout(struct folio *folio, struct mem_cgroup *memcg)
 static inline void memcg1_uncharge_batch(struct mem_cgroup *memcg,
 					 unsigned long pgpgout,
 					 unsigned long nr_memory, int nid) {}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline void memcg1_stat_format(struct mem_cgroup *memcg, struct seq_buf *s) {}
 
@@ -177,11 +154,6 @@ static inline bool memcg1_charge_skmem(struct mem_cgroup *memcg, unsigned int nr
 				       gfp_t gfp_mask) { return true; }
 static inline void memcg1_uncharge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages) {}
 
-<<<<<<< HEAD
-extern struct cftype memsw_files[];
-extern struct cftype mem_cgroup_legacy_files[];
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* CONFIG_MEMCG_V1 */
 
 #endif	/* __MM_MEMCONTROL_V1_H */

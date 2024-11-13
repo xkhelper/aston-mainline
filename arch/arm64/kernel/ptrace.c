@@ -1440,8 +1440,6 @@ static int tagged_addr_ctrl_set(struct task_struct *target, const struct
 }
 #endif
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ARM64_POE
 static int poe_get(struct task_struct *target,
 		   const struct user_regset *regset,
@@ -1475,7 +1473,6 @@ static int poe_set(struct task_struct *target, const struct
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 enum aarch64_regset {
 	REGSET_GPR,
 	REGSET_FPR,
@@ -1505,12 +1502,9 @@ enum aarch64_regset {
 #ifdef CONFIG_ARM64_TAGGED_ADDR_ABI
 	REGSET_TAGGED_ADDR_CTRL,
 #endif
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ARM64_POE
 	REGSET_POE
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct user_regset aarch64_regsets[] = {
@@ -1670,8 +1664,6 @@ static const struct user_regset aarch64_regsets[] = {
 		.set = tagged_addr_ctrl_set,
 	},
 #endif
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_ARM64_POE
 	[REGSET_POE] = {
 		.core_note_type = NT_ARM_POE,
@@ -1682,7 +1674,6 @@ static const struct user_regset aarch64_regsets[] = {
 		.set = poe_set,
 	},
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct user_regset_view user_aarch64_view = {

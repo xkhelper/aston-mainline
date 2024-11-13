@@ -1194,10 +1194,6 @@ static void geneve_setup(struct net_device *dev)
 
 	SET_NETDEV_DEVTYPE(dev, &geneve_type);
 
-<<<<<<< HEAD
-	dev->features    |= NETIF_F_LLTX;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev->features    |= NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_FRAGLIST;
 	dev->features    |= NETIF_F_RXCSUM;
 	dev->features    |= NETIF_F_GSO_SOFTWARE;
@@ -1218,10 +1214,7 @@ static void geneve_setup(struct net_device *dev)
 	netif_keep_dst(dev);
 	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
 	dev->priv_flags |= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
-<<<<<<< HEAD
-=======
 	dev->lltx = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	eth_hw_addr_random(dev);
 }
 

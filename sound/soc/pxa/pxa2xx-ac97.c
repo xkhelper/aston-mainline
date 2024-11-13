@@ -286,11 +286,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(pxa2xx_ac97_pm_ops,
 
 static struct platform_driver pxa2xx_ac97_driver = {
 	.probe		= pxa2xx_ac97_dev_probe,
-<<<<<<< HEAD
-	.remove_new	= pxa2xx_ac97_dev_remove,
-=======
 	.remove		= pxa2xx_ac97_dev_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.driver		= {
 		.name	= "pxa2xx-ac97",
 		.pm	= &pxa2xx_ac97_pm_ops,

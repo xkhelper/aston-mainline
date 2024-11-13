@@ -333,11 +333,7 @@ static void init_rdev_errors(struct regulator_irq *h)
  *			IRQ.
  * @rdev_amount:	Amount of regulators associated with this IRQ.
  *
-<<<<<<< HEAD
- * Return: handle to irq_helper or an ERR_PTR() encoded error code.
-=======
  * Return: handle to irq_helper or an ERR_PTR() encoded negative error number.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 void *regulator_irq_helper(struct device *dev,
 			   const struct regulator_irq_desc *d, int irq,
@@ -408,18 +404,6 @@ EXPORT_SYMBOL_GPL(regulator_irq_helper_cancel);
 /**
  * regulator_irq_map_event_simple - regulator IRQ notification for trivial IRQs
  *
-<<<<<<< HEAD
- * @irq:	Number of IRQ that occurred
- * @rid:	Information about the event IRQ indicates
- * @dev_mask:	mask indicating the regulator originating the IRQ
- *
- * Regulators whose IRQ has single, well defined purpose (always indicate
- * exactly one event, and are relevant to exactly one regulator device) can
- * use this function as their map_event callbac for their regulator IRQ
- * notification helperk. Exactly one rdev and exactly one error (in
- * "common_errs"-field) can be given at IRQ helper registration for
- * regulator_irq_map_event_simple() to be viable.
-=======
  * @irq:	Number of IRQ that occurred.
  * @rid:	Information about the event IRQ indicates.
  *		The function fills in the &regulator_err_state->notifs
@@ -435,7 +419,6 @@ EXPORT_SYMBOL_GPL(regulator_irq_helper_cancel);
  * regulator_irq_map_event_simple() to be viable.
  *
  * Return: 0.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int regulator_irq_map_event_simple(int irq, struct regulator_irq_data *rid,
 			    unsigned long *dev_mask)

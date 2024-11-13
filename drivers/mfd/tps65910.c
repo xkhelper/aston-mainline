@@ -197,11 +197,7 @@ static const struct regmap_irq tps65910_irqs[] = {
 	},
 };
 
-<<<<<<< HEAD
-static struct regmap_irq_chip tps65911_irq_chip = {
-=======
 static const struct regmap_irq_chip tps65911_irq_chip = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "tps65910",
 	.irqs = tps65911_irqs,
 	.num_irqs = ARRAY_SIZE(tps65911_irqs),
@@ -212,11 +208,7 @@ static const struct regmap_irq_chip tps65911_irq_chip = {
 	.ack_base = TPS65910_INT_STS,
 };
 
-<<<<<<< HEAD
-static struct regmap_irq_chip tps65910_irq_chip = {
-=======
 static const struct regmap_irq_chip tps65910_irq_chip = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "tps65910",
 	.irqs = tps65910_irqs,
 	.num_irqs = ARRAY_SIZE(tps65910_irqs),
@@ -231,11 +223,7 @@ static int tps65910_irq_init(struct tps65910 *tps65910, int irq,
 		    struct tps65910_platform_data *pdata)
 {
 	int ret;
-<<<<<<< HEAD
-	static struct regmap_irq_chip *tps6591x_irqs_chip;
-=======
 	static const struct regmap_irq_chip *tps6591x_irqs_chip;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!irq) {
 		dev_warn(tps65910->dev, "No interrupt support, no core IRQ\n");

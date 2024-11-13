@@ -664,22 +664,6 @@ static DEVICE_ATTR(dhchap_ctrl_secret, S_IRUGO | S_IWUSR,
 	nvme_ctrl_dhchap_ctrl_secret_show, nvme_ctrl_dhchap_ctrl_secret_store);
 #endif
 
-<<<<<<< HEAD
-#ifdef CONFIG_NVME_TCP_TLS
-static ssize_t tls_key_show(struct device *dev,
-			    struct device_attribute *attr, char *buf)
-{
-	struct nvme_ctrl *ctrl = dev_get_drvdata(dev);
-
-	if (!ctrl->tls_key)
-		return 0;
-	return sysfs_emit(buf, "%08x", key_serial(ctrl->tls_key));
-}
-static DEVICE_ATTR_RO(tls_key);
-#endif
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct attribute *nvme_dev_attrs[] = {
 	&dev_attr_reset_controller.attr,
 	&dev_attr_rescan_controller.attr,
@@ -707,12 +691,6 @@ static struct attribute *nvme_dev_attrs[] = {
 	&dev_attr_dhchap_secret.attr,
 	&dev_attr_dhchap_ctrl_secret.attr,
 #endif
-<<<<<<< HEAD
-#ifdef CONFIG_NVME_TCP_TLS
-	&dev_attr_tls_key.attr,
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	&dev_attr_adm_passthru_err_log_enabled.attr,
 	NULL
 };
@@ -743,14 +721,6 @@ static umode_t nvme_dev_attrs_are_visible(struct kobject *kobj,
 	if (a == &dev_attr_dhchap_ctrl_secret.attr && !ctrl->opts)
 		return 0;
 #endif
-<<<<<<< HEAD
-#ifdef CONFIG_NVME_TCP_TLS
-	if (a == &dev_attr_tls_key.attr &&
-	    (!ctrl->opts || strcmp(ctrl->opts->transport, "tcp")))
-		return 0;
-#endif
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return a->mode;
 }
@@ -761,10 +731,6 @@ const struct attribute_group nvme_dev_attrs_group = {
 };
 EXPORT_SYMBOL_GPL(nvme_dev_attrs_group);
 
-<<<<<<< HEAD
-const struct attribute_group *nvme_dev_attr_groups[] = {
-	&nvme_dev_attrs_group,
-=======
 #ifdef CONFIG_NVME_TCP_TLS
 static ssize_t tls_key_show(struct device *dev,
 			    struct device_attribute *attr, char *buf)
@@ -837,7 +803,6 @@ const struct attribute_group *nvme_dev_attr_groups[] = {
 #ifdef CONFIG_NVME_TCP_TLS
 	&nvme_tls_attrs_group,
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	NULL,
 };
 

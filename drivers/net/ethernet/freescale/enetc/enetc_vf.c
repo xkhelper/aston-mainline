@@ -78,17 +78,11 @@ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
 {
 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
 	struct sockaddr *saddr = addr;
-<<<<<<< HEAD
-=======
 	int err;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!is_valid_ether_addr(saddr->sa_data))
 		return -EADDRNOTAVAIL;
 
-<<<<<<< HEAD
-	return enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
-=======
 	err = enetc_msg_vsi_set_primary_mac_addr(priv, saddr);
 	if (err)
 		return err;
@@ -96,7 +90,6 @@ static int enetc_vf_set_mac_addr(struct net_device *ndev, void *addr)
 	eth_hw_addr_set(ndev, saddr->sa_data);
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int enetc_vf_set_features(struct net_device *ndev,

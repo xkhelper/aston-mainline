@@ -8,18 +8,12 @@
 #include "../bpf_experimental.h"
 #include "../bpf_testmod/bpf_testmod_kfunc.h"
 
-<<<<<<< HEAD
-struct node_data {
-	long key;
-	long data;
-=======
 struct plain_local;
 
 struct node_data {
 	long key;
 	long data;
 	struct plain_local __kptr * stashed_in_local_kptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct bpf_rb_node node;
 };
 
@@ -94,10 +88,7 @@ static bool less(struct bpf_rb_node *a, const struct bpf_rb_node *b)
 
 static int create_and_stash(int idx, int val)
 {
-<<<<<<< HEAD
-=======
 	struct plain_local *inner_local_kptr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct map_value *mapval;
 	struct node_data *res;
 
@@ -105,13 +96,6 @@ static int create_and_stash(int idx, int val)
 	if (!mapval)
 		return 1;
 
-<<<<<<< HEAD
-	res = bpf_obj_new(typeof(*res));
-	if (!res)
-		return 1;
-	res->key = val;
-
-=======
 	inner_local_kptr = bpf_obj_new(typeof(*inner_local_kptr));
 	if (!inner_local_kptr)
 		return 2;
@@ -131,7 +115,6 @@ static int create_and_stash(int idx, int val)
 		return 4;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	res = bpf_kptr_xchg(&mapval->node, res);
 	if (res)
 		bpf_obj_drop(res);
@@ -204,10 +187,7 @@ long stash_local_with_root(void *ctx)
 SEC("tc")
 long unstash_rb_node(void *ctx)
 {
-<<<<<<< HEAD
-=======
 	struct plain_local *inner_local_kptr = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct map_value *mapval;
 	struct node_data *res;
 	long retval;
@@ -219,8 +199,6 @@ long unstash_rb_node(void *ctx)
 
 	res = bpf_kptr_xchg(&mapval->node, NULL);
 	if (res) {
-<<<<<<< HEAD
-=======
 		inner_local_kptr = bpf_kptr_xchg(&res->stashed_in_local_kptr, inner_local_kptr);
 		if (!inner_local_kptr) {
 			bpf_obj_drop(res);
@@ -228,7 +206,6 @@ long unstash_rb_node(void *ctx)
 		}
 		bpf_obj_drop(inner_local_kptr);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		retval = res->key;
 		bpf_obj_drop(res);
 		return retval;

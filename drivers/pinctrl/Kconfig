@@ -194,8 +194,6 @@ config PINCTRL_DIGICOLOR
 	select PINMUX
 	select GENERIC_PINCONF
 
-<<<<<<< HEAD
-=======
 config PINCTRL_EP93XX
 	bool
 	depends on ARCH_EP93XX || COMPILE_TEST
@@ -203,7 +201,6 @@ config PINCTRL_EP93XX
 	select GENERIC_PINCONF
 	select MFD_SYSCON
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config PINCTRL_EQUILIBRIUM
 	tristate "Generic pinctrl and GPIO driver for Intel Lightning Mountain SoC"
 	depends on OF && HAS_IOMEM
@@ -223,8 +220,6 @@ config PINCTRL_EQUILIBRIUM
 	  desired pin functions, configure GPIO attributes for LGM SoC pins.
 	  Pin muxing and pin config settings are retrieved from device tree.
 
-<<<<<<< HEAD
-=======
 config PINCTRL_EYEQ5
 	bool "Mobileye EyeQ5 pinctrl driver"
 	depends on OF
@@ -240,7 +235,6 @@ config PINCTRL_EYEQ5
 	  Pin muxing supports two functions for each pin: first is GPIO, second
 	  is pin-dependent. Pin config is about bias & drive strength.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config PINCTRL_GEMINI
 	bool
 	depends on ARCH_GEMINI
@@ -611,10 +605,7 @@ source "drivers/pinctrl/qcom/Kconfig"
 source "drivers/pinctrl/realtek/Kconfig"
 source "drivers/pinctrl/renesas/Kconfig"
 source "drivers/pinctrl/samsung/Kconfig"
-<<<<<<< HEAD
-=======
 source "drivers/pinctrl/sophgo/Kconfig"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 source "drivers/pinctrl/spear/Kconfig"
 source "drivers/pinctrl/sprd/Kconfig"
 source "drivers/pinctrl/starfive/Kconfig"

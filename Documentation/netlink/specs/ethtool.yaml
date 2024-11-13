@@ -39,14 +39,11 @@ definitions:
         - ovld-detected
         - power-not-available
         - short-detected
-<<<<<<< HEAD
-=======
   -
     name: phy-upstream-type
     enum-name:
     type: enum
     entries: [ mac, phy ]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 attribute-sets:
   -
@@ -62,12 +59,9 @@ attribute-sets:
         name: flags
         type: u32
         enum: header-flags
-<<<<<<< HEAD
-=======
       -
         name: phy-index
         type: u32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   -
     name: bitset-bit
@@ -673,12 +667,9 @@ attribute-sets:
       -
         name: code
         type: u8
-<<<<<<< HEAD
-=======
       -
         name: src
         type: u32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   -
     name: cable-fault-length
     attributes:
@@ -688,12 +679,9 @@ attribute-sets:
       -
         name: cm
         type: u32
-<<<<<<< HEAD
-=======
       -
         name: src
         type: u32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   -
     name: cable-nest
     attributes:
@@ -1048,22 +1036,16 @@ attribute-sets:
       -
         name: indir
         type: binary
-<<<<<<< HEAD
-=======
         sub-type: u32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       -
         name: hkey
         type: binary
       -
         name: input_xfrm
         type: u32
-<<<<<<< HEAD
-=======
       -
         name: start-context
         type: u32
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   -
     name: plca
     attributes:
@@ -1121,8 +1103,6 @@ attribute-sets:
       -
         name: total
         type: uint
-<<<<<<< HEAD
-=======
   -
     name: phy
     attributes:
@@ -1152,7 +1132,6 @@ attribute-sets:
       -
         name: downstream-sfp-name
         type: string
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 operations:
   enum-model: directional
@@ -1817,20 +1796,12 @@ operations:
 
       attribute-set: rss
 
-<<<<<<< HEAD
-      do: &rss-get-op
-=======
       do:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
         request:
           attributes:
             - header
             - context
-<<<<<<< HEAD
-        reply:
-=======
         reply: &rss-reply
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           attributes:
             - header
             - context
@@ -1838,15 +1809,12 @@ operations:
             - indir
             - hkey
             - input_xfrm
-<<<<<<< HEAD
-=======
       dump:
         request:
           attributes:
             - header
             - start-context
         reply: *rss-reply
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     -
       name: plca-get-cfg
       doc: Get PLCA params.
@@ -1962,8 +1930,6 @@ operations:
           - status-msg
           - done
           - total
-<<<<<<< HEAD
-=======
     -
       name: phy-get
       doc: Get PHY devices attached to an interface
@@ -1985,4 +1951,3 @@ operations:
             - upstream-sfp-name
             - downstream-sfp-name
       dump: *phy-get-op
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

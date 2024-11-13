@@ -22,8 +22,6 @@ config IMX_SCU
 
 	  This driver manages the IPC interface between host CPU and the
 	  SCU firmware running on M4.
-<<<<<<< HEAD
-=======
 
 config IMX_SCMI_MISC_DRV
 	tristate "IMX SCMI MISC Protocol driver"
@@ -35,4 +33,3 @@ config IMX_SCMI_MISC_DRV
 	  core that could provide misc functions such as board control.
 
 	  This driver can also be built as a module.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -70,21 +70,6 @@ static int ad7606_reg_access(struct iio_dev *indio_dev,
 	struct ad7606_state *st = iio_priv(indio_dev);
 	int ret;
 
-<<<<<<< HEAD
-	mutex_lock(&st->lock);
-	if (readval) {
-		ret = st->bops->reg_read(st, reg);
-		if (ret < 0)
-			goto err_unlock;
-		*readval = ret;
-		ret = 0;
-	} else {
-		ret = st->bops->reg_write(st, reg, writeval);
-	}
-err_unlock:
-	mutex_unlock(&st->lock);
-	return ret;
-=======
 	guard(mutex)(&st->lock);
 
 	if (readval) {
@@ -96,7 +81,6 @@ err_unlock:
 	} else {
 		return st->bops->reg_write(st, reg, writeval);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ad7606_read_samples(struct ad7606_state *st)
@@ -114,15 +98,6 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
 	struct ad7606_state *st = iio_priv(indio_dev);
 	int ret;
 
-<<<<<<< HEAD
-	mutex_lock(&st->lock);
-
-	ret = ad7606_read_samples(st);
-	if (ret == 0)
-		iio_push_to_buffers_with_timestamp(indio_dev, st->data,
-						   iio_get_time_ns(indio_dev));
-
-=======
 	guard(mutex)(&st->lock);
 
 	ret = ad7606_read_samples(st);
@@ -132,16 +107,10 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
 	iio_push_to_buffers_with_timestamp(indio_dev, st->data,
 					   iio_get_time_ns(indio_dev));
 error_ret:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	iio_trigger_notify_done(indio_dev->trig);
 	/* The rising edge of the CONVST signal starts a new conversion. */
 	gpiod_set_value(st->gpio_convst, 1);
 
-<<<<<<< HEAD
-	mutex_unlock(&st->lock);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return IRQ_HANDLED;
 }
 
@@ -241,15 +210,9 @@ static int ad7606_write_os_hw(struct iio_dev *indio_dev, int val)
 	struct ad7606_state *st = iio_priv(indio_dev);
 	DECLARE_BITMAP(values, 3);
 
-<<<<<<< HEAD
-	values[0] = val;
-
-	gpiod_set_array_value(ARRAY_SIZE(values), st->gpio_os->desc,
-=======
 	values[0] = val & GENMASK(2, 0);
 
 	gpiod_set_array_value(st->gpio_os->ndescs, st->gpio_os->desc,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			      st->gpio_os->info, values);
 
 	/* AD7616 requires a reset to update value */
@@ -268,32 +231,17 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
 	struct ad7606_state *st = iio_priv(indio_dev);
 	int i, ret, ch = 0;
 
-<<<<<<< HEAD
-	switch (mask) {
-	case IIO_CHAN_INFO_SCALE:
-		mutex_lock(&st->lock);
-=======
 	guard(mutex)(&st->lock);
 
 	switch (mask) {
 	case IIO_CHAN_INFO_SCALE:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		i = find_closest(val2, st->scale_avail, st->num_scales);
 		if (st->sw_mode_en)
 			ch = chan->address;
 		ret = st->write_scale(indio_dev, ch, i);
-<<<<<<< HEAD
-		if (ret < 0) {
-			mutex_unlock(&st->lock);
-			return ret;
-		}
-		st->range[ch] = i;
-		mutex_unlock(&st->lock);
-=======
 		if (ret < 0)
 			return ret;
 		st->range[ch] = i;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return 0;
 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
@@ -301,20 +249,9 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
 			return -EINVAL;
 		i = find_closest(val, st->oversampling_avail,
 				 st->num_os_ratios);
-<<<<<<< HEAD
-		mutex_lock(&st->lock);
-		ret = st->write_os(indio_dev, i);
-		if (ret < 0) {
-			mutex_unlock(&st->lock);
-			return ret;
-		}
-		st->oversampling = st->oversampling_avail[i];
-		mutex_unlock(&st->lock);
-=======
 		ret = st->write_os(indio_dev, i);
 		if (ret < 0)
 			return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		return 0;
 	default:
@@ -473,11 +410,7 @@ static int ad7606_request_gpios(struct ad7606_state *st)
 		return PTR_ERR(st->gpio_range);
 
 	st->gpio_standby = devm_gpiod_get_optional(dev, "standby",
-<<<<<<< HEAD
-						   GPIOD_OUT_HIGH);
-=======
 						   GPIOD_OUT_LOW);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(st->gpio_standby))
 		return PTR_ERR(st->gpio_standby);
 
@@ -720,11 +653,7 @@ static int ad7606_suspend(struct device *dev)
 
 	if (st->gpio_standby) {
 		gpiod_set_value(st->gpio_range, 1);
-<<<<<<< HEAD
-		gpiod_set_value(st->gpio_standby, 0);
-=======
 		gpiod_set_value(st->gpio_standby, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;

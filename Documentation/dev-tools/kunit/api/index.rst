@@ -9,23 +9,17 @@ API Reference
 	test
 	resource
 	functionredirection
-<<<<<<< HEAD
-=======
 	clk
 	of
 	platformdevice
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 
 This page documents the KUnit kernel testing API. It is divided into the
 following sections:
 
-<<<<<<< HEAD
-=======
 Core KUnit API
 ==============
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Documentation/dev-tools/kunit/api/test.rst
 
  - Documents all of the standard testing API
@@ -37,8 +31,6 @@ Documentation/dev-tools/kunit/api/resource.rst
 Documentation/dev-tools/kunit/api/functionredirection.rst
 
  - Documents the KUnit Function Redirection API
-<<<<<<< HEAD
-=======
 
 Driver KUnit API
 ================
@@ -54,4 +46,3 @@ Documentation/dev-tools/kunit/api/of.rst
 Documentation/dev-tools/kunit/api/platformdevice.rst
 
  - Documents the KUnit platform device API
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

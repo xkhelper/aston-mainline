@@ -23,10 +23,7 @@
 #include <linux/sched/task.h>
 #include <linux/sched/task_stack.h>
 #include <linux/sched/cputime.h>
-<<<<<<< HEAD
-=======
 #include <linux/sched/ext.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/seq_file.h>
 #include <linux/rtmutex.h>
 #include <linux/init.h>
@@ -108,10 +105,7 @@
 #include <linux/rseq.h>
 #include <uapi/linux/pidfd.h>
 #include <linux/pidfs.h>
-<<<<<<< HEAD
-=======
 #include <linux/tick.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/pgalloc.h>
 #include <linux/uaccess.h>
@@ -660,14 +654,6 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
 	mm->exec_vm = oldmm->exec_vm;
 	mm->stack_vm = oldmm->stack_vm;
 
-<<<<<<< HEAD
-	retval = ksm_fork(mm, oldmm);
-	if (retval)
-		goto out;
-	khugepaged_fork(mm, oldmm);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Use __mt_dup() to efficiently build an identical maple tree. */
 	retval = __mt_dup(&oldmm->mm_mt, &mm->mm_mt, GFP_KERNEL);
 	if (unlikely(retval))
@@ -770,11 +756,8 @@ loop_out:
 	vma_iter_free(&vmi);
 	if (!retval) {
 		mt_set_in_rcu(vmi.mas.tree);
-<<<<<<< HEAD
-=======
 		ksm_fork(mm, oldmm);
 		khugepaged_fork(mm, oldmm);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else if (mpnt) {
 		/*
 		 * The entire maple tree has already been duplicated. If the
@@ -790,14 +773,10 @@ out:
 	mmap_write_unlock(mm);
 	flush_tlb_mm(oldmm);
 	mmap_write_unlock(oldmm);
-<<<<<<< HEAD
-	dup_userfaultfd_complete(&uf);
-=======
 	if (!retval)
 		dup_userfaultfd_complete(&uf);
 	else
 		dup_userfaultfd_fail(&uf);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 fail_uprobe_end:
 	uprobe_end_dup_mmap();
 	return retval;
@@ -855,11 +834,7 @@ static void check_mm(struct mm_struct *mm)
 		pr_alert("BUG: non-zero pgtables_bytes on freeing mm: %ld\n",
 				mm_pgtables_bytes(mm));
 
-<<<<<<< HEAD
-#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !USE_SPLIT_PMD_PTLOCKS
-=======
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !defined(CONFIG_SPLIT_PMD_PTLOCKS)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	VM_BUG_ON_MM(mm->pmd_huge_pte, mm);
 #endif
 }
@@ -996,10 +971,7 @@ void __put_task_struct(struct task_struct *tsk)
 	WARN_ON(refcount_read(&tsk->usage));
 	WARN_ON(tsk == current);
 
-<<<<<<< HEAD
-=======
 	sched_ext_free(tsk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	io_uring_free(tsk);
 	cgroup_free(tsk);
 	task_numa_free(tsk, true);
@@ -1028,11 +1000,7 @@ void __init __weak arch_task_cache_init(void) { }
 static void __init set_max_threads(unsigned int max_threads_suggested)
 {
 	u64 threads;
-<<<<<<< HEAD
-	unsigned long nr_pages = PHYS_PFN(memblock_phys_mem_size() - memblock_reserved_size());
-=======
 	unsigned long nr_pages = memblock_estimated_nr_free_pages();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * The number of threads shall be limited such that the thread
@@ -1311,11 +1279,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
 	RCU_INIT_POINTER(mm->exe_file, NULL);
 	mmu_notifier_subscriptions_init(mm);
 	init_tlb_flush_pending(mm);
-<<<<<<< HEAD
-#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !USE_SPLIT_PMD_PTLOCKS
-=======
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !defined(CONFIG_SPLIT_PMD_PTLOCKS)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	mm->pmd_huge_pte = NULL;
 #endif
 	mm_init_uprobes_state(mm);
@@ -1793,46 +1757,21 @@ static int copy_files(unsigned long clone_flags, struct task_struct *tsk,
 		      int no_files)
 {
 	struct files_struct *oldf, *newf;
-<<<<<<< HEAD
-	int error = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * A background process may not have any files ...
 	 */
 	oldf = current->files;
 	if (!oldf)
-<<<<<<< HEAD
-		goto out;
-
-	if (no_files) {
-		tsk->files = NULL;
-		goto out;
-=======
 		return 0;
 
 	if (no_files) {
 		tsk->files = NULL;
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (clone_flags & CLONE_FILES) {
 		atomic_inc(&oldf->count);
-<<<<<<< HEAD
-		goto out;
-	}
-
-	newf = dup_fd(oldf, NR_OPEN_MAX, &error);
-	if (!newf)
-		goto out;
-
-	tsk->files = newf;
-	error = 0;
-out:
-	return error;
-=======
 		return 0;
 	}
 
@@ -1842,7 +1781,6 @@ out:
 
 	tsk->files = newf;
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
@@ -1923,11 +1861,7 @@ static int copy_signal(unsigned long clone_flags, struct task_struct *tsk)
 	prev_cputime_init(&sig->prev_cputime);
 
 #ifdef CONFIG_POSIX_TIMERS
-<<<<<<< HEAD
-	INIT_LIST_HEAD(&sig->posix_timers);
-=======
 	INIT_HLIST_HEAD(&sig->posix_timers);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	hrtimer_init(&sig->real_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 	sig->real_timer.function = it_real_fn;
 #endif
@@ -2359,10 +2293,7 @@ __latent_entropy struct task_struct *copy_process(
 	acct_clear_integrals(p);
 
 	posix_cputimers_init(&p->posix_cputimers);
-<<<<<<< HEAD
-=======
 	tick_dep_init_task(p);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	p->io_context = NULL;
 	audit_set_context(p, NULL);
@@ -2381,10 +2312,6 @@ __latent_entropy struct task_struct *copy_process(
 #endif
 #ifdef CONFIG_CPUSETS
 	p->cpuset_mem_spread_rotor = NUMA_NO_NODE;
-<<<<<<< HEAD
-	p->cpuset_slab_spread_rotor = NUMA_NO_NODE;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	seqcount_spinlock_init(&p->mems_allowed_seq, &p->alloc_lock);
 #endif
 #ifdef CONFIG_TRACE_IRQFLAGS
@@ -2420,11 +2347,7 @@ __latent_entropy struct task_struct *copy_process(
 
 	retval = perf_event_init_task(p, clone_flags);
 	if (retval)
-<<<<<<< HEAD
-		goto bad_fork_cleanup_policy;
-=======
 		goto bad_fork_sched_cancel_fork;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	retval = audit_alloc(p);
 	if (retval)
 		goto bad_fork_cleanup_perf;
@@ -2557,13 +2480,9 @@ __latent_entropy struct task_struct *copy_process(
 	 * cgroup specific, it unconditionally needs to place the task on a
 	 * runqueue.
 	 */
-<<<<<<< HEAD
-	sched_cgroup_fork(p, args);
-=======
 	retval = sched_cgroup_fork(p, args);
 	if (retval)
 		goto bad_fork_cancel_cgroup;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * From this point on we must avoid any synchronous user-space
@@ -2609,21 +2528,13 @@ __latent_entropy struct task_struct *copy_process(
 	/* Don't start children in a dying pid namespace */
 	if (unlikely(!(ns_of_pid(pid)->pid_allocated & PIDNS_ADDING))) {
 		retval = -ENOMEM;
-<<<<<<< HEAD
-		goto bad_fork_cancel_cgroup;
-=======
 		goto bad_fork_core_free;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* Let kill terminate clone/fork in the middle */
 	if (fatal_signal_pending(current)) {
 		retval = -EINTR;
-<<<<<<< HEAD
-		goto bad_fork_cancel_cgroup;
-=======
 		goto bad_fork_core_free;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* No more failure paths after this point. */
@@ -2697,18 +2608,11 @@ __latent_entropy struct task_struct *copy_process(
 
 	return p;
 
-<<<<<<< HEAD
-bad_fork_cancel_cgroup:
-	sched_core_free(p);
-	spin_unlock(&current->sighand->siglock);
-	write_unlock_irq(&tasklist_lock);
-=======
 bad_fork_core_free:
 	sched_core_free(p);
 	spin_unlock(&current->sighand->siglock);
 	write_unlock_irq(&tasklist_lock);
 bad_fork_cancel_cgroup:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cgroup_cancel_fork(p, args);
 bad_fork_put_pidfd:
 	if (clone_flags & CLONE_PIDFD) {
@@ -2747,11 +2651,8 @@ bad_fork_cleanup_audit:
 	audit_free(p);
 bad_fork_cleanup_perf:
 	perf_event_free_task(p);
-<<<<<<< HEAD
-=======
 bad_fork_sched_cancel_fork:
 	sched_cancel_fork(p);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 bad_fork_cleanup_policy:
 	lockdep_free_task(p);
 #ifdef CONFIG_NUMA
@@ -3336,19 +3237,6 @@ static int unshare_fs(unsigned long unshare_flags, struct fs_struct **new_fsp)
 /*
  * Unshare file descriptor table if it is being shared
  */
-<<<<<<< HEAD
-int unshare_fd(unsigned long unshare_flags, unsigned int max_fds,
-	       struct files_struct **new_fdp)
-{
-	struct files_struct *fd = current->files;
-	int error = 0;
-
-	if ((unshare_flags & CLONE_FILES) &&
-	    (fd && atomic_read(&fd->count) > 1)) {
-		*new_fdp = dup_fd(fd, max_fds, &error);
-		if (!*new_fdp)
-			return error;
-=======
 static int unshare_fd(unsigned long unshare_flags, struct files_struct **new_fdp)
 {
 	struct files_struct *fd = current->files;
@@ -3359,7 +3247,6 @@ static int unshare_fd(unsigned long unshare_flags, struct files_struct **new_fdp
 		if (IS_ERR(fd))
 			return PTR_ERR(fd);
 		*new_fdp = fd;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return 0;
@@ -3417,11 +3304,7 @@ int ksys_unshare(unsigned long unshare_flags)
 	err = unshare_fs(unshare_flags, &new_fs);
 	if (err)
 		goto bad_unshare_out;
-<<<<<<< HEAD
-	err = unshare_fd(unshare_flags, NR_OPEN_MAX, &new_fd);
-=======
 	err = unshare_fd(unshare_flags, &new_fd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err)
 		goto bad_unshare_cleanup_fs;
 	err = unshare_userns(unshare_flags, &new_cred);
@@ -3513,11 +3396,7 @@ int unshare_files(void)
 	struct files_struct *old, *copy = NULL;
 	int error;
 
-<<<<<<< HEAD
-	error = unshare_fd(CLONE_FILES, NR_OPEN_MAX, &copy);
-=======
 	error = unshare_fd(CLONE_FILES, &copy);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (error || !copy)
 		return error;
 

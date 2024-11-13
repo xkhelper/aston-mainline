@@ -1561,13 +1561,8 @@ static const struct of_device_id isl7998x_of_match[] = {
 MODULE_DEVICE_TABLE(of, isl7998x_of_match);
 
 static const struct i2c_device_id isl7998x_id[] = {
-<<<<<<< HEAD
-	{ "isl79987", 0 },
-	{ /* sentinel */ },
-=======
 	{ "isl79987" },
 	{ /* sentinel */ }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 MODULE_DEVICE_TABLE(i2c, isl7998x_id);
 

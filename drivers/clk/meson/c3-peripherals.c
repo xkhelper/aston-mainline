@@ -2296,11 +2296,7 @@ static struct clk_regmap *const c3_periphs_clk_regmaps[] = {
 	&vapb,
 };
 
-<<<<<<< HEAD
-static struct regmap_config clkc_regmap_config = {
-=======
 static const struct regmap_config clkc_regmap_config = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.reg_bits       = 32,
 	.val_bits       = 32,
 	.reg_stride     = 4,
@@ -2368,7 +2364,4 @@ module_platform_driver(c3_peripherals_driver);
 MODULE_DESCRIPTION("Amlogic C3 Peripherals Clock Controller driver");
 MODULE_AUTHOR("Chuan Liu <chuan.liu@amlogic.com>");
 MODULE_LICENSE("GPL");
-<<<<<<< HEAD
-=======
 MODULE_IMPORT_NS(CLK_MESON);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

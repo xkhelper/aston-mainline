@@ -59,8 +59,6 @@
 		pwms = <&pwm4 0 83 0>;
 	};
 
-<<<<<<< HEAD
-=======
 	hdmi-connector {
 		compatible = "hdmi-connector";
 		label = "J17";
@@ -73,7 +71,6 @@
 		};
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	panel: panel {
 		/* Compatible string is filled in by panel board DT Overlay. */
 		backlight = <&backlight>;
@@ -326,8 +323,6 @@
 		"", "SPI3_CS#", "", "", "", "", "", "";
 };
 
-<<<<<<< HEAD
-=======
 &hdmi_pvi {
 	status = "okay";
 };
@@ -355,7 +350,6 @@
 	status = "okay";
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &i2c1 {
 	clock-frequency = <100000>;
 	pinctrl-names = "default", "gpio";
@@ -544,10 +538,6 @@
 };
 
 &sai3 {
-<<<<<<< HEAD
-	#clock-cells = <0>;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	#sound-dai-cells = <0>;
 	assigned-clocks = <&clk IMX8MP_CLK_SAI3>;
 	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
@@ -730,8 +720,6 @@
 		>;
 	};
 
-<<<<<<< HEAD
-=======
 	pinctrl_hdmi: hdmi-grp {
 		fsl,pins = <
 			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x154
@@ -739,7 +727,6 @@
 		>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	pinctrl_hog_feature: hog-feature-grp {
 		fsl,pins = <
 			/* GPIO5_IO03 */

@@ -96,8 +96,6 @@ long strnlen_user(const char __user *str, long count)
 	if (unlikely(count <= 0))
 		return 0;
 
-<<<<<<< HEAD
-=======
 	if (can_do_masked_user_access()) {
 		long retval;
 
@@ -107,7 +105,6 @@ long strnlen_user(const char __user *str, long count)
 		return retval;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	max_addr = TASK_SIZE_MAX;
 	src_addr = (unsigned long)untagged_addr(str);
 	if (likely(src_addr < max_addr)) {

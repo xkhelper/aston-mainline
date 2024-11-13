@@ -6,10 +6,6 @@
 #define MCOUNT_INSN_SIZE	6
 
 #ifndef __ASSEMBLY__
-<<<<<<< HEAD
-
-unsigned long return_address(unsigned int n);
-=======
 #include <asm/stacktrace.h>
 
 static __always_inline unsigned long return_address(unsigned int n)
@@ -27,7 +23,6 @@ static __always_inline unsigned long return_address(unsigned int n)
 	} while (--n);
 	return sf->gprs[8];
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ftrace_return_address(n) return_address(n)
 
 void ftrace_caller(void);

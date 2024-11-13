@@ -24,8 +24,6 @@
 	groups = "hscif0_data", "hscif0_ctrl";
 	function = "hscif0";
 };
-<<<<<<< HEAD
-=======
 
 &pfc {
 	tsn0_pins: tsn0 {
@@ -77,4 +75,3 @@
 		};
 	};
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

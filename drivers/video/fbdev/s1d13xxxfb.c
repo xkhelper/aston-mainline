@@ -1001,11 +1001,7 @@ static int s1d13xxxfb_resume(struct platform_device *dev)
 
 static struct platform_driver s1d13xxxfb_driver = {
 	.probe		= s1d13xxxfb_probe,
-<<<<<<< HEAD
-	.remove_new	= s1d13xxxfb_remove,
-=======
 	.remove		= s1d13xxxfb_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PM
 	.suspend	= s1d13xxxfb_suspend,
 	.resume		= s1d13xxxfb_resume,

@@ -772,12 +772,7 @@ static void nfs_inode_add_request(struct nfs_page *req)
 	nfs_lock_request(req);
 	spin_lock(&mapping->i_private_lock);
 	set_bit(PG_MAPPED, &req->wb_flags);
-<<<<<<< HEAD
-	folio_set_private(folio);
-	folio->private = req;
-=======
 	folio_attach_private(folio, req);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock(&mapping->i_private_lock);
 	atomic_long_inc(&nfsi->nrequests);
 	/* this a head request for a page group - mark it as having an
@@ -801,12 +796,7 @@ static void nfs_inode_remove_request(struct nfs_page *req)
 
 		spin_lock(&mapping->i_private_lock);
 		if (likely(folio)) {
-<<<<<<< HEAD
-			folio->private = NULL;
-			folio_clear_private(folio);
-=======
 			folio_detach_private(folio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			clear_bit(PG_MAPPED, &req->wb_head->wb_flags);
 		}
 		spin_unlock(&mapping->i_private_lock);
@@ -1305,14 +1295,10 @@ static int nfs_can_extend_write(struct file *file, struct folio *folio,
 	struct file_lock_context *flctx = locks_inode_context(inode);
 	struct file_lock *fl;
 	int ret;
-<<<<<<< HEAD
-
-=======
 	unsigned int mntflags = NFS_SERVER(inode)->flags;
 
 	if (mntflags & NFS_MOUNT_NO_ALIGNWRITE)
 		return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (file->f_flags & O_DSYNC)
 		return 0;
 	if (!nfs_folio_write_uptodate(folio, pagelen))
@@ -1678,12 +1664,8 @@ EXPORT_SYMBOL_GPL(nfs_commitdata_release);
 int nfs_initiate_commit(struct rpc_clnt *clnt, struct nfs_commit_data *data,
 			const struct nfs_rpc_ops *nfs_ops,
 			const struct rpc_call_ops *call_ops,
-<<<<<<< HEAD
-			int how, int flags)
-=======
 			int how, int flags,
 			struct nfsd_file *localio)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rpc_task *task;
 	int priority = flush_task_priority(how);
@@ -1712,12 +1694,9 @@ int nfs_initiate_commit(struct rpc_clnt *clnt, struct nfs_commit_data *data,
 
 	dprintk("NFS: initiated commit call\n");
 
-<<<<<<< HEAD
-=======
 	if (localio)
 		return nfs_local_commit(localio, data, call_ops, how);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	task = rpc_run_task(&task_setup_data);
 	if (IS_ERR(task))
 		return PTR_ERR(task);
@@ -1817,10 +1796,7 @@ nfs_commit_list(struct inode *inode, struct list_head *head, int how,
 		struct nfs_commit_info *cinfo)
 {
 	struct nfs_commit_data	*data;
-<<<<<<< HEAD
-=======
 	struct nfsd_file *localio;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned short task_flags = 0;
 
 	/* another commit raced with us */
@@ -1837,18 +1813,12 @@ nfs_commit_list(struct inode *inode, struct list_head *head, int how,
 	nfs_init_commit(data, head, NULL, cinfo);
 	if (NFS_SERVER(inode)->nfs_client->cl_minorversion)
 		task_flags = RPC_TASK_MOVEABLE;
-<<<<<<< HEAD
-	return nfs_initiate_commit(NFS_CLIENT(inode), data, NFS_PROTO(inode),
-				   data->mds_ops, how,
-				   RPC_TASK_CRED_NOREF | task_flags);
-=======
 
 	localio = nfs_local_open_fh(NFS_SERVER(inode)->nfs_client, data->cred,
 				    data->args.fh, data->context->mode);
 	return nfs_initiate_commit(NFS_CLIENT(inode), data, NFS_PROTO(inode),
 				   data->mds_ops, how,
 				   RPC_TASK_CRED_NOREF | task_flags, localio);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

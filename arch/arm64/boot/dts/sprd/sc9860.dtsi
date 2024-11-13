@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-=======
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Spreadtrum SC9860 SoC
  *
  * Copyright (C) 2016, Spreadtrum Communications Inc.
-<<<<<<< HEAD
- *
- * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 
 #include <dt-bindings/interrupt-controller/arm-gic.h>

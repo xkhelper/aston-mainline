@@ -10,10 +10,7 @@
 #include "intel_crtc_state_dump.h"
 #include "intel_display_types.h"
 #include "intel_hdmi.h"
-<<<<<<< HEAD
-=======
 #include "intel_vdsc.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "intel_vrr.h"
 
 static void intel_dump_crtc_timings(struct drm_printer *p,
@@ -373,11 +370,8 @@ void intel_crtc_state_dump(const struct intel_crtc_state *pipe_config,
 	else if (IS_VALLEYVIEW(i915))
 		vlv_dump_csc(&p, "wgc csc", &pipe_config->csc);
 
-<<<<<<< HEAD
-=======
 	intel_vdsc_state_dump(&p, 0, pipe_config);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 dump_planes:
 	if (!state)
 		return;

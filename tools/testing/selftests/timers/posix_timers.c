@@ -6,12 +6,6 @@
  *
  * Kernel loop code stolen from Steven Rostedt <srostedt@redhat.com>
  */
-<<<<<<< HEAD
-
-#include <sys/time.h>
-#include <stdio.h>
-#include <signal.h>
-=======
 #define _GNU_SOURCE
 #include <sys/time.h>
 #include <sys/types.h>
@@ -19,7 +13,6 @@
 #include <signal.h>
 #include <stdint.h>
 #include <string.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <unistd.h>
 #include <time.h>
 #include <pthread.h>
@@ -28,8 +21,6 @@
 
 #define DELAY 2
 #define USECS_PER_SEC 1000000
-<<<<<<< HEAD
-=======
 #define NSECS_PER_SEC 1000000000
 
 static void __fatal_error(const char *test, const char *name, const char *what)
@@ -49,7 +40,6 @@ static void __fatal_error(const char *test, const char *name, const char *what)
 }
 
 #define fatal_error(name, what)	__fatal_error(__func__, name, what)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static volatile int done;
 
@@ -106,32 +96,13 @@ static int check_diff(struct timeval start, struct timeval end)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int check_itimer(int which)
-{
-	const char *name;
-	int err;
-=======
 static void check_itimer(int which, const char *name)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct timeval start, end;
 	struct itimerval val = {
 		.it_value.tv_sec = DELAY,
 	};
 
-<<<<<<< HEAD
-	if (which == ITIMER_VIRTUAL)
-		name = "ITIMER_VIRTUAL";
-	else if (which == ITIMER_PROF)
-		name = "ITIMER_PROF";
-	else if (which == ITIMER_REAL)
-		name = "ITIMER_REAL";
-	else
-		return -1;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	done = 0;
 
 	if (which == ITIMER_VIRTUAL)
@@ -141,25 +112,11 @@ static void check_itimer(int which, const char *name)
 	else if (which == ITIMER_REAL)
 		signal(SIGALRM, sig_handler);
 
-<<<<<<< HEAD
-	err = gettimeofday(&start, NULL);
-	if (err < 0) {
-		ksft_perror("Can't call gettimeofday()");
-		return -1;
-	}
-
-	err = setitimer(which, &val, NULL);
-	if (err < 0) {
-		ksft_perror("Can't set timer");
-		return -1;
-	}
-=======
 	if (gettimeofday(&start, NULL) < 0)
 		fatal_error(name, "gettimeofday()");
 
 	if (setitimer(which, &val, NULL) < 0)
 		fatal_error(name, "setitimer()");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (which == ITIMER_VIRTUAL)
 		user_loop();
@@ -168,24 +125,6 @@ static void check_itimer(int which, const char *name)
 	else if (which == ITIMER_REAL)
 		idle_loop();
 
-<<<<<<< HEAD
-	err = gettimeofday(&end, NULL);
-	if (err < 0) {
-		ksft_perror("Can't call gettimeofday()");
-		return -1;
-	}
-
-	ksft_test_result(check_diff(start, end) == 0, "%s\n", name);
-
-	return 0;
-}
-
-static int check_timer_create(int which)
-{
-	const char *type;
-	int err;
-	timer_t id;
-=======
 	if (gettimeofday(&end, NULL) < 0)
 		fatal_error(name, "gettimeofday()");
 
@@ -194,55 +133,10 @@ static int check_timer_create(int which)
 
 static void check_timer_create(int which, const char *name)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct timeval start, end;
 	struct itimerspec val = {
 		.it_value.tv_sec = DELAY,
 	};
-<<<<<<< HEAD
-
-	if (which == CLOCK_THREAD_CPUTIME_ID) {
-		type = "thread";
-	} else if (which == CLOCK_PROCESS_CPUTIME_ID) {
-		type = "process";
-	} else {
-		ksft_print_msg("Unknown timer_create() type %d\n", which);
-		return -1;
-	}
-
-	done = 0;
-	err = timer_create(which, NULL, &id);
-	if (err < 0) {
-		ksft_perror("Can't create timer");
-		return -1;
-	}
-	signal(SIGALRM, sig_handler);
-
-	err = gettimeofday(&start, NULL);
-	if (err < 0) {
-		ksft_perror("Can't call gettimeofday()");
-		return -1;
-	}
-
-	err = timer_settime(id, 0, &val, NULL);
-	if (err < 0) {
-		ksft_perror("Can't set timer");
-		return -1;
-	}
-
-	user_loop();
-
-	err = gettimeofday(&end, NULL);
-	if (err < 0) {
-		ksft_perror("Can't call gettimeofday()");
-		return -1;
-	}
-
-	ksft_test_result(check_diff(start, end) == 0,
-			 "timer_create() per %s\n", type);
-
-	return 0;
-=======
 	timer_t id;
 
 	done = 0;
@@ -266,7 +160,6 @@ static void check_timer_create(int which, const char *name)
 
 	ksft_test_result(check_diff(start, end) == 0,
 			 "timer_create() per %s\n", name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static pthread_t ctd_thread;
@@ -294,25 +187,14 @@ static void *ctd_thread_func(void *arg)
 
 	ctd_count = 100;
 	if (timer_create(CLOCK_PROCESS_CPUTIME_ID, NULL, &id))
-<<<<<<< HEAD
-		return "Can't create timer\n";
-	if (timer_settime(id, 0, &val, NULL))
-		return "Can't set timer\n";
-
-=======
 		fatal_error(NULL, "timer_create()");
 	if (timer_settime(id, 0, &val, NULL))
 		fatal_error(NULL, "timer_settime()");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	while (ctd_count > 0 && !ctd_failed)
 		;
 
 	if (timer_delete(id))
-<<<<<<< HEAD
-		return "Can't delete timer\n";
-=======
 		fatal_error(NULL, "timer_delete()");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return NULL;
 }
@@ -320,21 +202,6 @@ static void *ctd_thread_func(void *arg)
 /*
  * Test that only the running thread receives the timer signal.
  */
-<<<<<<< HEAD
-static int check_timer_distribution(void)
-{
-	const char *errmsg;
-
-	signal(SIGALRM, ctd_sighandler);
-
-	errmsg = "Can't create thread\n";
-	if (pthread_create(&ctd_thread, NULL, ctd_thread_func, NULL))
-		goto err;
-
-	errmsg = "Can't join thread\n";
-	if (pthread_join(ctd_thread, (void **)&errmsg) || errmsg)
-		goto err;
-=======
 static void check_timer_distribution(void)
 {
 	if (signal(SIGALRM, ctd_sighandler) == SIG_ERR)
@@ -345,7 +212,6 @@ static void check_timer_distribution(void)
 
 	if (pthread_join(ctd_thread, NULL))
 		fatal_error(NULL, "pthread_join()");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!ctd_failed)
 		ksft_test_result_pass("check signal distribution\n");
@@ -353,12 +219,6 @@ static void check_timer_distribution(void)
 		ksft_test_result_fail("check signal distribution\n");
 	else
 		ksft_test_result_skip("check signal distribution (old kernel)\n");
-<<<<<<< HEAD
-	return 0;
-err:
-	ksft_print_msg("%s", errmsg);
-	return -1;
-=======
 }
 
 struct tmrsig {
@@ -738,39 +598,20 @@ static void check_overrun(int which, const char *name)
 
 	ksft_test_result(tsig.signals == 1 && tsig.overruns == 9,
 			 "check_overrun %s\n", name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int main(int argc, char **argv)
 {
 	ksft_print_header();
-<<<<<<< HEAD
-	ksft_set_plan(6);
-=======
 	ksft_set_plan(18);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ksft_print_msg("Testing posix timers. False negative may happen on CPU execution \n");
 	ksft_print_msg("based timers if other threads run on the CPU...\n");
 
-<<<<<<< HEAD
-	if (check_itimer(ITIMER_VIRTUAL) < 0)
-		ksft_exit_fail();
-
-	if (check_itimer(ITIMER_PROF) < 0)
-		ksft_exit_fail();
-
-	if (check_itimer(ITIMER_REAL) < 0)
-		ksft_exit_fail();
-
-	if (check_timer_create(CLOCK_THREAD_CPUTIME_ID) < 0)
-		ksft_exit_fail();
-=======
 	check_itimer(ITIMER_VIRTUAL, "ITIMER_VIRTUAL");
 	check_itimer(ITIMER_PROF, "ITIMER_PROF");
 	check_itimer(ITIMER_REAL, "ITIMER_REAL");
 	check_timer_create(CLOCK_THREAD_CPUTIME_ID, "CLOCK_THREAD_CPUTIME_ID");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * It's unfortunately hard to reliably test a timer expiration
@@ -781,13 +622,6 @@ int main(int argc, char **argv)
 	 * to ensure true parallelism. So test only one thread until we
 	 * find a better solution.
 	 */
-<<<<<<< HEAD
-	if (check_timer_create(CLOCK_PROCESS_CPUTIME_ID) < 0)
-		ksft_exit_fail();
-
-	if (check_timer_distribution() < 0)
-		ksft_exit_fail();
-=======
 	check_timer_create(CLOCK_PROCESS_CPUTIME_ID, "CLOCK_PROCESS_CPUTIME_ID");
 	check_timer_distribution();
 
@@ -803,7 +637,6 @@ int main(int argc, char **argv)
 	check_overrun(CLOCK_MONOTONIC, "CLOCK_MONOTONIC");
 	check_overrun(CLOCK_PROCESS_CPUTIME_ID, "CLOCK_PROCESS_CPUTIME_ID");
 	check_overrun(CLOCK_THREAD_CPUTIME_ID, "CLOCK_THREAD_CPUTIME_ID");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ksft_finished();
 }

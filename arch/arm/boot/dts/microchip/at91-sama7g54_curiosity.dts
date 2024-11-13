@@ -72,8 +72,6 @@
 		device_type = "memory";
 		reg = <0x60000000 0x10000000>; /* 256 MiB DDR3L-1066 16-bit */
 	};
-<<<<<<< HEAD
-=======
 
 	reg_5v: regulator-5v {
 		compatible = "regulator-fixed";
@@ -82,7 +80,6 @@
 		regulator-max-microvolt = <5000000>;
 		regulator-always-on;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 &adc {
@@ -200,14 +197,11 @@
 		pmic@5b {
 			compatible = "microchip,mcp16502";
 			reg = <0x5b>;
-<<<<<<< HEAD
-=======
 			lvin-supply = <&reg_5v>;
 			pvin1-supply = <&reg_5v>;
 			pvin2-supply = <&reg_5v>;
 			pvin3-supply = <&reg_5v>;
 			pvin4-supply = <&reg_5v>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 			regulators {
 				vdd_3v3: VDD_IO {

@@ -14,11 +14,7 @@ struct xchk_rtsummary {
 
 	uint64_t		rextents;
 	uint64_t		rbmblocks;
-<<<<<<< HEAD
-	uint64_t		rsumsize;
-=======
 	xfs_filblks_t		rsumblocks;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned int		rsumlevels;
 	unsigned int		resblks;
 

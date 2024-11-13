@@ -5,10 +5,7 @@
 
 #include <linux/kvm_host.h>
 #include <asm/kvm_mmu.h>
-<<<<<<< HEAD
-=======
 #include <asm/kvm_vcpu.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
 	KVM_GENERIC_VM_STATS(),
@@ -43,15 +40,12 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
 	spin_lock_init(&kvm->arch.phyid_map_lock);
 
 	kvm_init_vmcs(kvm);
-<<<<<<< HEAD
-=======
 
 	/* Enable all PV features by default */
 	kvm->arch.pv_features = BIT(KVM_FEATURE_IPI);
 	if (kvm_pvtime_supported())
 		kvm->arch.pv_features |= BIT(KVM_FEATURE_STEAL_TIME);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kvm->arch.gpa_size = BIT(cpu_vabits - 1);
 	kvm->arch.root_level = CONFIG_PGTABLE_LEVELS - 1;
 	kvm->arch.invalid_ptes[0] = 0;
@@ -112,11 +106,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 	return r;
 }
 
-<<<<<<< HEAD
-int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-{
-	return -ENOIOCTLCMD;
-=======
 static int kvm_vm_feature_has_attr(struct kvm *kvm, struct kvm_device_attr *attr)
 {
 	switch (attr->attr) {
@@ -180,5 +169,4 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
 	default:
 		return -ENOIOCTLCMD;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

@@ -11,13 +11,6 @@ maintainers:
 
 properties:
   compatible:
-<<<<<<< HEAD
-    enum:
-      - fsl,ls1021a-qdma
-      - fsl,ls1028a-qdma
-      - fsl,ls1043a-qdma
-      - fsl,ls1046a-qdma
-=======
     oneOf:
       - const: fsl,ls1021a-qdma
       - items:
@@ -26,7 +19,6 @@ properties:
               - fsl,ls1043a-qdma
               - fsl,ls1046a-qdma
           - const: fsl,ls1021a-qdma
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     items:

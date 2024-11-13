@@ -239,31 +239,19 @@ asmlinkage long sys_oabi_fcntl64(unsigned int fd, unsigned int cmd,
 	struct flock64 flock;
 	long err = -EBADF;
 
-<<<<<<< HEAD
-	if (!f.file)
-=======
 	if (!fd_file(f))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto out;
 
 	switch (cmd) {
 	case F_GETLK64:
 	case F_OFD_GETLK:
-<<<<<<< HEAD
-		err = security_file_fcntl(f.file, cmd, arg);
-=======
 		err = security_file_fcntl(fd_file(f), cmd, arg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			break;
 		err = get_oabi_flock(&flock, argp);
 		if (err)
 			break;
-<<<<<<< HEAD
-		err = fcntl_getlk64(f.file, cmd, &flock);
-=======
 		err = fcntl_getlk64(fd_file(f), cmd, &flock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!err)
 		       err = put_oabi_flock(&flock, argp);
 		break;
@@ -271,21 +259,13 @@ asmlinkage long sys_oabi_fcntl64(unsigned int fd, unsigned int cmd,
 	case F_SETLKW64:
 	case F_OFD_SETLK:
 	case F_OFD_SETLKW:
-<<<<<<< HEAD
-		err = security_file_fcntl(f.file, cmd, arg);
-=======
 		err = security_file_fcntl(fd_file(f), cmd, arg);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			break;
 		err = get_oabi_flock(&flock, argp);
 		if (err)
 			break;
-<<<<<<< HEAD
-		err = fcntl_setlk64(fd, f.file, cmd, &flock);
-=======
 		err = fcntl_setlk64(fd, fd_file(f), cmd, &flock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		err = sys_fcntl64(fd, cmd, arg);

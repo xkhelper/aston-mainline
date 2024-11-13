@@ -26,10 +26,6 @@
 
 #include <linux/scatterlist.h>
 
-<<<<<<< HEAD
-#include <drm/drm_mm.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <drm/ttm/ttm_placement.h>
 #include <drm/ttm/ttm_range_manager.h>
 #include <drm/ttm/ttm_resource.h>

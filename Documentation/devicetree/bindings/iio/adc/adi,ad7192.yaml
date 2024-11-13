@@ -39,13 +39,6 @@ properties:
 
   clocks:
     maxItems: 1
-<<<<<<< HEAD
-    description: phandle to the master clock (mclk)
-
-  clock-names:
-    items:
-      - const: mclk
-=======
     description:
       Optionally, either a crystal can be attached externally between MCLK1 and
       MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
@@ -61,7 +54,6 @@ properties:
     const: 0
     description:
       If present when internal clock is used, configured as clock provider.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   interrupts:
     maxItems: 1
@@ -152,11 +144,6 @@ patternProperties:
 required:
   - compatible
   - reg
-<<<<<<< HEAD
-  - clocks
-  - clock-names
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   - interrupts
   - dvdd-supply
   - avdd-supply
@@ -177,8 +164,6 @@ allOf:
     then:
       patternProperties:
         "^channel@[0-9a-f]+$": false
-<<<<<<< HEAD
-=======
   - if:
       anyOf:
         - required:
@@ -191,7 +176,6 @@ allOf:
       required:
         - clocks
         - clock-names
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 unevaluatedProperties: false
 
@@ -237,12 +221,7 @@ examples:
             spi-max-frequency = <1000000>;
             spi-cpol;
             spi-cpha;
-<<<<<<< HEAD
-            clocks = <&ad7192_mclk>;
-            clock-names = "mclk";
-=======
             #clock-cells = <0>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
             interrupts = <25 0x2>;
             interrupt-parent = <&gpio>;
             aincom-supply = <&aincom>;

@@ -323,14 +323,9 @@ static __always_inline
 int crypto_aegis128_process_crypt(struct aegis_state *state,
 				  struct skcipher_walk *walk,
 				  void (*crypt)(struct aegis_state *state,
-<<<<<<< HEAD
-					        u8 *dst, const u8 *src,
-					        unsigned int size))
-=======
 						u8 *dst,
 						const u8 *src,
 						unsigned int size))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err = 0;
 

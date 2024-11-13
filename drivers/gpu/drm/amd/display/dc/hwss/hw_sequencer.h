@@ -240,10 +240,6 @@ struct hw_sequencer_funcs {
 	void (*program_triplebuffer)(const struct dc *dc,
 		struct pipe_ctx *pipe_ctx, bool enableTripleBuffer);
 	void (*update_pending_status)(struct pipe_ctx *pipe_ctx);
-<<<<<<< HEAD
-	void (*power_down)(struct dc *dc);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void (*update_dsc_pg)(struct dc *dc, struct dc_state *context, bool safe_to_disable);
 
 	/* Pipe Lock Related */
@@ -463,12 +459,9 @@ struct hw_sequencer_funcs {
 			bool enable);
 	void (*fams2_global_control_lock_fast)(union block_sequence_params *params);
 	void (*set_long_vtotal)(struct pipe_ctx **pipe_ctx, int num_pipes, uint32_t v_total_min, uint32_t v_total_max);
-<<<<<<< HEAD
-=======
 	void (*program_outstanding_updates)(struct dc *dc,
 			struct dc_state *context);
 	void (*setup_hpo_hw_control)(const struct dce_hwseq *hws, bool enable);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void color_space_to_black_color(
@@ -529,8 +522,6 @@ void hwss_build_fast_sequence(struct dc *dc,
 		struct dc_stream_status *stream_status,
 		struct dc_state *context);
 
-<<<<<<< HEAD
-=======
 void hwss_wait_for_all_blank_complete(struct dc *dc,
 		struct dc_state *context);
 
@@ -546,7 +537,6 @@ void hwss_wait_for_outstanding_hw_updates(struct dc *dc,
 void hwss_process_outstanding_hw_updates(struct dc *dc,
 		struct dc_state *dc_context);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void hwss_send_dmcub_cmd(union block_sequence_params *params);
 
 void hwss_program_manual_trigger(union block_sequence_params *params);

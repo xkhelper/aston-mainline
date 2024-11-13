@@ -642,14 +642,9 @@ int machine__process_lost_event(struct machine *machine __maybe_unused,
 int machine__process_lost_samples_event(struct machine *machine __maybe_unused,
 					union perf_event *event, struct perf_sample *sample)
 {
-<<<<<<< HEAD
-	dump_printf(": id:%" PRIu64 ": lost samples :%" PRI_lu64 "\n",
-		    sample->id, event->lost_samples.lost);
-=======
 	dump_printf(": id:%" PRIu64 ": lost samples :%" PRI_lu64 "%s\n",
 		    sample->id, event->lost_samples.lost,
 		    event->header.misc & PERF_RECORD_MISC_LOST_SAMPLES_BPF ? " (BPF)" : "");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 
@@ -2065,12 +2060,8 @@ static int add_callchain_ip(struct thread *thread,
 			    bool branch,
 			    struct branch_flags *flags,
 			    struct iterations *iter,
-<<<<<<< HEAD
-			    u64 branch_from)
-=======
 			    u64 branch_from,
 			    bool symbols)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct map_symbol ms = {};
 	struct addr_location al;
@@ -2109,12 +2100,8 @@ static int add_callchain_ip(struct thread *thread,
 			}
 			goto out;
 		}
-<<<<<<< HEAD
-		thread__find_symbol(thread, *cpumode, ip, &al);
-=======
 		if (symbols)
 			thread__find_symbol(thread, *cpumode, ip, &al);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (al.sym != NULL) {
@@ -2157,10 +2144,7 @@ struct branch_info *sample__resolve_bstack(struct perf_sample *sample,
 	unsigned int i;
 	const struct branch_stack *bs = sample->branch_stack;
 	struct branch_entry *entries = perf_sample__branch_entries(sample);
-<<<<<<< HEAD
-=======
 	u64 *branch_stack_cntr = sample->branch_stack_cntr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct branch_info *bi = calloc(bs->nr, sizeof(struct branch_info));
 
 	if (!bi)
@@ -2170,11 +2154,8 @@ struct branch_info *sample__resolve_bstack(struct perf_sample *sample,
 		ip__resolve_ams(al->thread, &bi[i].to, entries[i].to);
 		ip__resolve_ams(al->thread, &bi[i].from, entries[i].from);
 		bi[i].flags = entries[i].flags;
-<<<<<<< HEAD
-=======
 		if (branch_stack_cntr)
 			bi[i].branch_stack_cntr  = branch_stack_cntr[i];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 	return bi;
 }
@@ -2249,12 +2230,8 @@ static int lbr_callchain_add_kernel_ip(struct thread *thread,
 				       struct symbol **parent,
 				       struct addr_location *root_al,
 				       u64 branch_from,
-<<<<<<< HEAD
-				       bool callee, int end)
-=======
 				       bool callee, int end,
 				       bool symbols)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ip_callchain *chain = sample->callchain;
 	u8 cpumode = PERF_RECORD_MISC_USER;
@@ -2264,12 +2241,8 @@ static int lbr_callchain_add_kernel_ip(struct thread *thread,
 		for (i = 0; i < end + 1; i++) {
 			err = add_callchain_ip(thread, cursor, parent,
 					       root_al, &cpumode, chain->ips[i],
-<<<<<<< HEAD
-					       false, NULL, NULL, branch_from);
-=======
 					       false, NULL, NULL, branch_from,
 					       symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err)
 				return err;
 		}
@@ -2279,12 +2252,8 @@ static int lbr_callchain_add_kernel_ip(struct thread *thread,
 	for (i = end; i >= 0; i--) {
 		err = add_callchain_ip(thread, cursor, parent,
 				       root_al, &cpumode, chain->ips[i],
-<<<<<<< HEAD
-				       false, NULL, NULL, branch_from);
-=======
 				       false, NULL, NULL, branch_from,
 				       symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 	}
@@ -2310,17 +2279,12 @@ static void save_lbr_cursor_node(struct thread *thread,
 		cursor->curr = cursor->first;
 	else
 		cursor->curr = cursor->curr->next;
-<<<<<<< HEAD
-	memcpy(&lbr_stitch->prev_lbr_cursor[idx], cursor->curr,
-	       sizeof(struct callchain_cursor_node));
-=======
 
 	map_symbol__exit(&lbr_stitch->prev_lbr_cursor[idx].ms);
 	memcpy(&lbr_stitch->prev_lbr_cursor[idx], cursor->curr,
 	       sizeof(struct callchain_cursor_node));
 	lbr_stitch->prev_lbr_cursor[idx].ms.maps = maps__get(cursor->curr->ms.maps);
 	lbr_stitch->prev_lbr_cursor[idx].ms.map = map__get(cursor->curr->ms.map);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lbr_stitch->prev_lbr_cursor[idx].valid = true;
 	cursor->pos++;
@@ -2332,12 +2296,8 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
 				    struct symbol **parent,
 				    struct addr_location *root_al,
 				    u64 *branch_from,
-<<<<<<< HEAD
-				    bool callee)
-=======
 				    bool callee,
 				    bool symbols)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct branch_stack *lbr_stack = sample->branch_stack;
 	struct branch_entry *entries = perf_sample__branch_entries(sample);
@@ -2370,11 +2330,7 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
 		err = add_callchain_ip(thread, cursor, parent,
 				       root_al, &cpumode, ip,
 				       true, flags, NULL,
-<<<<<<< HEAD
-				       *branch_from);
-=======
 				       *branch_from, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 
@@ -2399,11 +2355,7 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
 			err = add_callchain_ip(thread, cursor, parent,
 					       root_al, &cpumode, ip,
 					       true, flags, NULL,
-<<<<<<< HEAD
-					       *branch_from);
-=======
 					       *branch_from, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err)
 				return err;
 			save_lbr_cursor_node(thread, cursor, i);
@@ -2418,11 +2370,7 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
 		err = add_callchain_ip(thread, cursor, parent,
 				       root_al, &cpumode, ip,
 				       true, flags, NULL,
-<<<<<<< HEAD
-				       *branch_from);
-=======
 				       *branch_from, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 		save_lbr_cursor_node(thread, cursor, i);
@@ -2436,11 +2384,7 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
 		err = add_callchain_ip(thread, cursor, parent,
 				root_al, &cpumode, ip,
 				true, flags, NULL,
-<<<<<<< HEAD
-				*branch_from);
-=======
 				*branch_from, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return err;
 	}
@@ -2552,12 +2496,9 @@ static bool has_stitched_lbr(struct thread *thread,
 		memcpy(&stitch_node->cursor, &lbr_stitch->prev_lbr_cursor[i],
 		       sizeof(struct callchain_cursor_node));
 
-<<<<<<< HEAD
-=======
 		stitch_node->cursor.ms.maps = maps__get(lbr_stitch->prev_lbr_cursor[i].ms.maps);
 		stitch_node->cursor.ms.map = map__get(lbr_stitch->prev_lbr_cursor[i].ms.map);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (callee)
 			list_add(&stitch_node->node, &lbr_stitch->lists);
 		else
@@ -2581,11 +2522,8 @@ static bool alloc_lbr_stitch(struct thread *thread, unsigned int max_lbr)
 	if (!thread__lbr_stitch(thread)->prev_lbr_cursor)
 		goto free_lbr_stitch;
 
-<<<<<<< HEAD
-=======
 	thread__lbr_stitch(thread)->prev_lbr_cursor_size = max_lbr + 1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_LIST_HEAD(&thread__lbr_stitch(thread)->lists);
 	INIT_LIST_HEAD(&thread__lbr_stitch(thread)->free_lists);
 
@@ -2613,12 +2551,8 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
 					struct symbol **parent,
 					struct addr_location *root_al,
 					int max_stack,
-<<<<<<< HEAD
-					unsigned int max_lbr)
-=======
 					unsigned int max_lbr,
 					bool symbols)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	bool callee = (callchain_param.order == ORDER_CALLEE);
 	struct ip_callchain *chain = sample->callchain;
@@ -2646,17 +2580,12 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
 						max_lbr, callee);
 
 		if (!stitched_lbr && !list_empty(&lbr_stitch->lists)) {
-<<<<<<< HEAD
-			list_replace_init(&lbr_stitch->lists,
-					  &lbr_stitch->free_lists);
-=======
 			struct stitch_list *stitch_node;
 
 			list_for_each_entry(stitch_node, &lbr_stitch->lists, node)
 				map_symbol__exit(&stitch_node->cursor.ms);
 
 			list_splice_init(&lbr_stitch->lists, &lbr_stitch->free_lists);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		memcpy(&lbr_stitch->prev_sample, sample, sizeof(*sample));
 	}
@@ -2665,20 +2594,12 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
 		/* Add kernel ip */
 		err = lbr_callchain_add_kernel_ip(thread, cursor, sample,
 						  parent, root_al, branch_from,
-<<<<<<< HEAD
-						  true, i);
-=======
 						  true, i, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			goto error;
 
 		err = lbr_callchain_add_lbr_ip(thread, cursor, sample, parent,
-<<<<<<< HEAD
-					       root_al, &branch_from, true);
-=======
 					       root_al, &branch_from, true, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			goto error;
 
@@ -2695,22 +2616,14 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
 				goto error;
 		}
 		err = lbr_callchain_add_lbr_ip(thread, cursor, sample, parent,
-<<<<<<< HEAD
-					       root_al, &branch_from, false);
-=======
 					       root_al, &branch_from, false, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			goto error;
 
 		/* Add kernel ip */
 		err = lbr_callchain_add_kernel_ip(thread, cursor, sample,
 						  parent, root_al, branch_from,
-<<<<<<< HEAD
-						  false, i);
-=======
 						  false, i, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			goto error;
 	}
@@ -2724,11 +2637,7 @@ static int find_prev_cpumode(struct ip_callchain *chain, struct thread *thread,
 			     struct callchain_cursor *cursor,
 			     struct symbol **parent,
 			     struct addr_location *root_al,
-<<<<<<< HEAD
-			     u8 *cpumode, int ent)
-=======
 			     u8 *cpumode, int ent, bool symbols)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int err = 0;
 
@@ -2738,11 +2647,7 @@ static int find_prev_cpumode(struct ip_callchain *chain, struct thread *thread,
 		if (ip >= PERF_CONTEXT_MAX) {
 			err = add_callchain_ip(thread, cursor, parent,
 					       root_al, cpumode, ip,
-<<<<<<< HEAD
-					       false, NULL, NULL, 0);
-=======
 					       false, NULL, NULL, 0, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 	}
@@ -2764,12 +2669,8 @@ static int thread__resolve_callchain_sample(struct thread *thread,
 					    struct perf_sample *sample,
 					    struct symbol **parent,
 					    struct addr_location *root_al,
-<<<<<<< HEAD
-					    int max_stack)
-=======
 					    int max_stack,
 					    bool symbols)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct branch_stack *branch = sample->branch_stack;
 	struct branch_entry *entries = perf_sample__branch_entries(sample);
@@ -2789,12 +2690,8 @@ static int thread__resolve_callchain_sample(struct thread *thread,
 
 		err = resolve_lbr_callchain_sample(thread, cursor, sample, parent,
 						   root_al, max_stack,
-<<<<<<< HEAD
-						   !env ? 0 : env->max_branches);
-=======
 						   !env ? 0 : env->max_branches,
 						   symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return (err < 0) ? err : 0;
 	}
@@ -2859,15 +2756,6 @@ static int thread__resolve_callchain_sample(struct thread *thread,
 					       root_al,
 					       NULL, be[i].to,
 					       true, &be[i].flags,
-<<<<<<< HEAD
-					       NULL, be[i].from);
-
-			if (!err)
-				err = add_callchain_ip(thread, cursor, parent, root_al,
-						       NULL, be[i].from,
-						       true, &be[i].flags,
-						       &iter[i], 0);
-=======
 					       NULL, be[i].from, symbols);
 
 			if (!err) {
@@ -2876,7 +2764,6 @@ static int thread__resolve_callchain_sample(struct thread *thread,
 						       true, &be[i].flags,
 						       &iter[i], 0, symbols);
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err == -EINVAL)
 				break;
 			if (err)
@@ -2892,11 +2779,7 @@ static int thread__resolve_callchain_sample(struct thread *thread,
 check_calls:
 	if (chain && callchain_param.order != ORDER_CALLEE) {
 		err = find_prev_cpumode(chain, thread, cursor, parent, root_al,
-<<<<<<< HEAD
-					&cpumode, chain->nr - first_call);
-=======
 					&cpumode, chain->nr - first_call, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			return (err < 0) ? err : 0;
 	}
@@ -2918,11 +2801,7 @@ check_calls:
                        ++nr_entries;
 		else if (callchain_param.order != ORDER_CALLEE) {
 			err = find_prev_cpumode(chain, thread, cursor, parent,
-<<<<<<< HEAD
-						root_al, &cpumode, j);
-=======
 						root_al, &cpumode, j, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (err)
 				return (err < 0) ? err : 0;
 			continue;
@@ -2949,13 +2828,8 @@ check_calls:
 			if (leaf_frame_caller && leaf_frame_caller != ip) {
 
 				err = add_callchain_ip(thread, cursor, parent,
-<<<<<<< HEAD
-					       root_al, &cpumode, leaf_frame_caller,
-					       false, NULL, NULL, 0);
-=======
 						root_al, &cpumode, leaf_frame_caller,
 						false, NULL, NULL, 0, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				if (err)
 					return (err < 0) ? err : 0;
 			}
@@ -2963,11 +2837,7 @@ check_calls:
 
 		err = add_callchain_ip(thread, cursor, parent,
 				       root_al, &cpumode, ip,
-<<<<<<< HEAD
-				       false, NULL, NULL, 0);
-=======
 				       false, NULL, NULL, 0, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (err)
 			return (err < 0) ? err : 0;
@@ -3047,11 +2917,7 @@ static int thread__resolve_callchain_unwind(struct thread *thread,
 					    struct callchain_cursor *cursor,
 					    struct evsel *evsel,
 					    struct perf_sample *sample,
-<<<<<<< HEAD
-					    int max_stack)
-=======
 					    int max_stack, bool symbols)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	/* Can we do dwarf post unwind? */
 	if (!((evsel->core.attr.sample_type & PERF_SAMPLE_REGS_USER) &&
@@ -3063,25 +2929,13 @@ static int thread__resolve_callchain_unwind(struct thread *thread,
 	    (!sample->user_stack.size))
 		return 0;
 
-<<<<<<< HEAD
-=======
 	if (!symbols)
 		pr_debug("Not resolving symbols with an unwinder isn't currently supported\n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return unwind__get_entries(unwind_entry, cursor,
 				   thread, sample, max_stack, false);
 }
 
-<<<<<<< HEAD
-int thread__resolve_callchain(struct thread *thread,
-			      struct callchain_cursor *cursor,
-			      struct evsel *evsel,
-			      struct perf_sample *sample,
-			      struct symbol **parent,
-			      struct addr_location *root_al,
-			      int max_stack)
-=======
 int __thread__resolve_callchain(struct thread *thread,
 				struct callchain_cursor *cursor,
 				struct evsel *evsel,
@@ -3090,7 +2944,6 @@ int __thread__resolve_callchain(struct thread *thread,
 				struct addr_location *root_al,
 				int max_stack,
 				bool symbols)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret = 0;
 
@@ -3103,38 +2956,22 @@ int __thread__resolve_callchain(struct thread *thread,
 		ret = thread__resolve_callchain_sample(thread, cursor,
 						       evsel, sample,
 						       parent, root_al,
-<<<<<<< HEAD
-						       max_stack);
-=======
 						       max_stack, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 		ret = thread__resolve_callchain_unwind(thread, cursor,
 						       evsel, sample,
-<<<<<<< HEAD
-						       max_stack);
-	} else {
-		ret = thread__resolve_callchain_unwind(thread, cursor,
-						       evsel, sample,
-						       max_stack);
-=======
 						       max_stack, symbols);
 	} else {
 		ret = thread__resolve_callchain_unwind(thread, cursor,
 						       evsel, sample,
 						       max_stack, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			return ret;
 		ret = thread__resolve_callchain_sample(thread, cursor,
 						       evsel, sample,
 						       parent, root_al,
-<<<<<<< HEAD
-						       max_stack);
-=======
 						       max_stack, symbols);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;
@@ -3306,12 +3143,8 @@ out:
 	return addr_cpumode;
 }
 
-<<<<<<< HEAD
-struct dso *machine__findnew_dso_id(struct machine *machine, const char *filename, struct dso_id *id)
-=======
 struct dso *machine__findnew_dso_id(struct machine *machine, const char *filename,
 				    const struct dso_id *id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	return dsos__findnew_id(&machine->dsos, filename, id);
 }

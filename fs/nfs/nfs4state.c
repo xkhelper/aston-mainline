@@ -501,15 +501,7 @@ nfs4_alloc_state_owner(struct nfs_server *server,
 	sp = kzalloc(sizeof(*sp), gfp_flags);
 	if (!sp)
 		return NULL;
-<<<<<<< HEAD
-	sp->so_seqid.owner_id = ida_alloc(&server->openowner_id, gfp_flags);
-	if (sp->so_seqid.owner_id < 0) {
-		kfree(sp);
-		return NULL;
-	}
-=======
 	sp->so_seqid.owner_id = atomic64_inc_return(&server->owner_ctr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sp->so_server = server;
 	sp->so_cred = get_cred(cred);
 	spin_lock_init(&sp->so_lock);
@@ -540,10 +532,6 @@ static void nfs4_free_state_owner(struct nfs4_state_owner *sp)
 {
 	nfs4_destroy_seqid_counter(&sp->so_seqid);
 	put_cred(sp->so_cred);
-<<<<<<< HEAD
-	ida_free(&sp->so_server->openowner_id, sp->so_seqid.owner_id);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	kfree(sp);
 }
 
@@ -886,28 +874,13 @@ static struct nfs4_lock_state *nfs4_alloc_lock_state(struct nfs4_state *state, f
 	refcount_set(&lsp->ls_count, 1);
 	lsp->ls_state = state;
 	lsp->ls_owner = owner;
-<<<<<<< HEAD
-	lsp->ls_seqid.owner_id = ida_alloc(&server->lockowner_id, GFP_KERNEL_ACCOUNT);
-	if (lsp->ls_seqid.owner_id < 0)
-		goto out_free;
-	INIT_LIST_HEAD(&lsp->ls_locks);
-	return lsp;
-out_free:
-	kfree(lsp);
-	return NULL;
-=======
 	lsp->ls_seqid.owner_id = atomic64_inc_return(&server->owner_ctr);
 	INIT_LIST_HEAD(&lsp->ls_locks);
 	return lsp;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void nfs4_free_lock_state(struct nfs_server *server, struct nfs4_lock_state *lsp)
 {
-<<<<<<< HEAD
-	ida_free(&server->lockowner_id, lsp->ls_seqid.owner_id);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nfs4_destroy_seqid_counter(&lsp->ls_seqid);
 	kfree(lsp);
 }
@@ -1612,11 +1585,7 @@ static void nfs42_complete_copies(struct nfs4_state_owner *sp, struct nfs4_state
 			complete(&copy->completion);
 		}
 	}
-<<<<<<< HEAD
-	list_for_each_entry(copy, &sp->so_server->ss_copies, src_copies) {
-=======
 	list_for_each_entry(copy, &sp->so_server->ss_src_copies, src_copies) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if ((test_bit(NFS_CLNT_SRC_SSC_COPY_STATE, &state->flags) &&
 				!nfs4_stateid_match_other(&state->stateid,
 				&copy->parent_src_state->stateid)))
@@ -1977,10 +1946,7 @@ restart:
 				set_bit(ops->owner_flag_bit, &sp->so_flags);
 				nfs4_put_state_owner(sp);
 				status = nfs4_recovery_handle_error(clp, status);
-<<<<<<< HEAD
-=======
 				nfs4_free_state_owners(&freeme);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return (status != 0) ? status : -EAGAIN;
 			}
 
@@ -2047,15 +2013,12 @@ static int nfs4_handle_reclaim_lease_error(struct nfs_client *clp, int status)
 		nfs_mark_client_ready(clp, -EPERM);
 		clear_bit(NFS4CLNT_LEASE_CONFIRM, &clp->cl_state);
 		return -EPERM;
-<<<<<<< HEAD
-=======
 	case -ETIMEDOUT:
 		if (clp->cl_cons_state == NFS_CS_SESSION_INITING) {
 			nfs_mark_client_ready(clp, -EIO);
 			return -EIO;
 		}
 		fallthrough;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case -EACCES:
 	case -NFS4ERR_DELAY:
 	case -EAGAIN:

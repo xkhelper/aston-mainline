@@ -81,11 +81,7 @@
 
 #if IS_ENABLED(CONFIG_DRM_XE_DEBUG)
 #define __xe_assert_msg(xe, condition, msg, arg...) ({						\
-<<<<<<< HEAD
-	(void)drm_WARN(&(xe)->drm, !(condition), "[" DRM_NAME "] Assertion `%s` failed!\n" msg,	\
-=======
 	(void)drm_WARN(&(xe)->drm, !(condition), "Assertion `%s` failed!\n" msg,		\
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		       __stringify(condition), ## arg);						\
 })
 #else

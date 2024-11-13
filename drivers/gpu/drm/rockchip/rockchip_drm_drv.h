@@ -12,16 +12,10 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_gem.h>
 
-<<<<<<< HEAD
-#include <linux/i2c.h>
-#include <linux/module.h>
-#include <linux/component.h>
-=======
 #include <linux/bits.h>
 #include <linux/component.h>
 #include <linux/i2c.h>
 #include <linux/module.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ROCKCHIP_MAX_FB_BUFFER	3
 #define ROCKCHIP_MAX_CONNECTOR	2

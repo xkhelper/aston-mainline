@@ -23,10 +23,7 @@ static const char * const cpumask_success_testcases[] = {
 	"test_global_mask_array_l2_rcu",
 	"test_global_mask_nested_rcu",
 	"test_global_mask_nested_deep_rcu",
-<<<<<<< HEAD
-=======
 	"test_global_mask_nested_deep_array_rcu",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	"test_cpumask_weight",
 };
 

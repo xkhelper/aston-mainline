@@ -12,10 +12,7 @@
 #include <stdlib.h>
 
 #include <list.h>
-<<<<<<< HEAD
-=======
 #include <xalloc.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "lkc.h"
 #include "mnconf-common.h"
 #include "nconf.h"

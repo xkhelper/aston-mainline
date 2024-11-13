@@ -18,12 +18,6 @@ allOf:
 
 properties:
   compatible:
-<<<<<<< HEAD
-    enum:
-      - sensortek,stk3310
-      - sensortek,stk3311
-      - sensortek,stk3335
-=======
     oneOf:
       - enum:
           - sensortek,stk3310
@@ -33,7 +27,6 @@ properties:
           - enum:
               - sensortek,stk3013
           - const: sensortek,stk3310
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
   reg:
     maxItems: 1

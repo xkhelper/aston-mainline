@@ -21,59 +21,33 @@
 			SNDRV_PCM_FMTBIT_S20_3LE | \
 			SNDRV_PCM_FMTBIT_S24_LE)
 
-<<<<<<< HEAD
-=======
 #define LOONGSON_I2S_TX_ENABLE	(I2S_CTRL_TX_EN | I2S_CTRL_TX_DMA_EN)
 #define LOONGSON_I2S_RX_ENABLE	(I2S_CTRL_RX_EN | I2S_CTRL_RX_DMA_EN)
 
 #define LOONGSON_I2S_DEF_DELAY		10
 #define LOONGSON_I2S_DEF_TIMEOUT	500000
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int loongson_i2s_trigger(struct snd_pcm_substream *substream, int cmd,
 				struct snd_soc_dai *dai)
 {
 	struct loongson_i2s *i2s = snd_soc_dai_get_drvdata(dai);
-<<<<<<< HEAD
-=======
 	unsigned int mask;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = 0;
 
 	switch (cmd) {
 	case SNDRV_PCM_TRIGGER_START:
 	case SNDRV_PCM_TRIGGER_RESUME:
 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
-<<<<<<< HEAD
-		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-			regmap_update_bits(i2s->regmap, LS_I2S_CTRL,
-					   I2S_CTRL_TX_EN | I2S_CTRL_TX_DMA_EN,
-					   I2S_CTRL_TX_EN | I2S_CTRL_TX_DMA_EN);
-		else
-			regmap_update_bits(i2s->regmap, LS_I2S_CTRL,
-					   I2S_CTRL_RX_EN | I2S_CTRL_RX_DMA_EN,
-					   I2S_CTRL_RX_EN | I2S_CTRL_RX_DMA_EN);
-=======
 		mask = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
 		       LOONGSON_I2S_TX_ENABLE : LOONGSON_I2S_RX_ENABLE;
 		regmap_update_bits(i2s->regmap, LS_I2S_CTRL, mask, mask);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	case SNDRV_PCM_TRIGGER_STOP:
 	case SNDRV_PCM_TRIGGER_SUSPEND:
 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
-<<<<<<< HEAD
-		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-			regmap_update_bits(i2s->regmap, LS_I2S_CTRL,
-					I2S_CTRL_TX_EN | I2S_CTRL_TX_DMA_EN, 0);
-		else
-			regmap_update_bits(i2s->regmap, LS_I2S_CTRL,
-					I2S_CTRL_RX_EN | I2S_CTRL_RX_DMA_EN, 0);
-=======
 		mask = (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) ?
 		       LOONGSON_I2S_TX_ENABLE : LOONGSON_I2S_RX_ENABLE;
 		regmap_update_bits(i2s->regmap, LS_I2S_CTRL, mask, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		ret = -EINVAL;
@@ -148,12 +122,6 @@ static int loongson_i2s_set_dai_sysclk(struct snd_soc_dai *dai, int clk_id,
 	return 0;
 }
 
-<<<<<<< HEAD
-static int loongson_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
-{
-	struct loongson_i2s *i2s = snd_soc_dai_get_drvdata(dai);
-	u32 val;
-=======
 static int loongson_i2s_enable_mclk(struct loongson_i2s *i2s)
 {
 	u32 val;
@@ -188,7 +156,6 @@ static int loongson_i2s_enable_bclk(struct loongson_i2s *i2s)
 static int loongson_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 {
 	struct loongson_i2s *i2s = snd_soc_dai_get_drvdata(dai);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
@@ -210,44 +177,6 @@ static int loongson_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 		/* Enable master mode */
 		regmap_update_bits(i2s->regmap, LS_I2S_CTRL, I2S_CTRL_MASTER,
 				   I2S_CTRL_MASTER);
-<<<<<<< HEAD
-		if (i2s->rev_id == 1) {
-			ret = regmap_read_poll_timeout_atomic(i2s->regmap,
-						LS_I2S_CTRL, val,
-						val & I2S_CTRL_CLK_READY,
-						10, 500000);
-			if (ret < 0)
-				dev_warn(dai->dev, "wait BCLK ready timeout\n");
-		}
-		break;
-	case SND_SOC_DAIFMT_BC_FP:
-		/* Enable MCLK */
-		if (i2s->rev_id == 1) {
-			regmap_update_bits(i2s->regmap, LS_I2S_CTRL,
-					   I2S_CTRL_MCLK_EN,
-					   I2S_CTRL_MCLK_EN);
-			ret = regmap_read_poll_timeout_atomic(i2s->regmap,
-						LS_I2S_CTRL, val,
-						val & I2S_CTRL_MCLK_READY,
-						10, 500000);
-			if (ret < 0)
-				dev_warn(dai->dev, "wait MCLK ready timeout\n");
-		}
-		break;
-	case SND_SOC_DAIFMT_BP_FP:
-		/* Enable MCLK */
-		if (i2s->rev_id == 1) {
-			regmap_update_bits(i2s->regmap, LS_I2S_CTRL,
-					   I2S_CTRL_MCLK_EN,
-					   I2S_CTRL_MCLK_EN);
-			ret = regmap_read_poll_timeout_atomic(i2s->regmap,
-						LS_I2S_CTRL, val,
-						val & I2S_CTRL_MCLK_READY,
-						10, 500000);
-			if (ret < 0)
-				dev_warn(dai->dev, "wait MCLK ready timeout\n");
-		}
-=======
 		ret = loongson_i2s_enable_bclk(i2s);
 		if (ret < 0)
 			dev_warn(dai->dev, "wait BCLK ready timeout\n");
@@ -263,26 +192,14 @@ static int loongson_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 		ret = loongson_i2s_enable_mclk(i2s);
 		if (ret < 0)
 			dev_warn(dai->dev, "wait MCLK ready timeout\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		/* Enable master mode */
 		regmap_update_bits(i2s->regmap, LS_I2S_CTRL, I2S_CTRL_MASTER,
 				   I2S_CTRL_MASTER);
-<<<<<<< HEAD
-		if (i2s->rev_id == 1) {
-			ret = regmap_read_poll_timeout_atomic(i2s->regmap,
-						LS_I2S_CTRL, val,
-						val & I2S_CTRL_CLK_READY,
-						10, 500000);
-			if (ret < 0)
-				dev_warn(dai->dev, "wait BCLK ready timeout\n");
-		}
-=======
 
 		ret = loongson_i2s_enable_bclk(i2s);
 		if (ret < 0)
 			dev_warn(dai->dev, "wait BCLK ready timeout\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		return -EINVAL;
@@ -342,20 +259,10 @@ static int i2s_suspend(struct device *dev)
 static int i2s_resume(struct device *dev)
 {
 	struct loongson_i2s *i2s = dev_get_drvdata(dev);
-<<<<<<< HEAD
-	int ret;
-
-	regcache_cache_only(i2s->regmap, false);
-	regcache_mark_dirty(i2s->regmap);
-	ret = regcache_sync(i2s->regmap);
-
-	return ret;
-=======
 
 	regcache_cache_only(i2s->regmap, false);
 	regcache_mark_dirty(i2s->regmap);
 	return regcache_sync(i2s->regmap);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 const struct dev_pm_ops loongson_i2s_pm = {

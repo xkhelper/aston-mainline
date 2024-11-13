@@ -6,17 +6,6 @@
  * some credit to Christoph Scheurer, but largely a rewrite
  */
 
-<<<<<<< HEAD
-#include <linux/module.h>
-#include <linux/init.h>
-#include <linux/slab.h>
-#include <linux/jiffies.h>
-#include <linux/i2c.h>
-#include <linux/hwmon.h>
-#include <linux/hwmon-sysfs.h>
-#include <linux/err.h>
-#include <linux/mutex.h>
-=======
 #include <linux/bitops.h>
 #include <linux/bits.h>
 #include <linux/err.h>
@@ -26,7 +15,6 @@
 #include <linux/module.h>
 #include <linux/regmap.h>
 #include <linux/slab.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Addresses to scan */
 static const unsigned short max1668_addr_list[] = {
@@ -42,21 +30,10 @@ static const unsigned short max1668_addr_list[] = {
 
 /* limits */
 
-<<<<<<< HEAD
-/* write high limits */
-#define MAX1668_REG_LIMH_WR(nr)	(0x13 + 2 * (nr))
-/* write low limits */
-#define MAX1668_REG_LIML_WR(nr)	(0x14 + 2 * (nr))
-/* read high limits */
-#define MAX1668_REG_LIMH_RD(nr)	(0x08 + 2 * (nr))
-/* read low limits */
-#define MAX1668_REG_LIML_RD(nr)	(0x09 + 2 * (nr))
-=======
 /* high limits */
 #define MAX1668_REG_LIMH(nr)	(0x08 + 2 * (nr))
 /* read low limits */
 #define MAX1668_REG_LIML(nr)	(0x09 + 2 * (nr))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* manufacturer and device ID Constants */
 #define MAN_ID_MAXIM		0x4d
@@ -69,311 +46,6 @@ static bool read_only;
 module_param(read_only, bool, 0);
 MODULE_PARM_DESC(read_only, "Don't set any values, read only mode");
 
-<<<<<<< HEAD
-enum chips { max1668, max1805, max1989 };
-
-struct max1668_data {
-	struct i2c_client *client;
-	const struct attribute_group *groups[3];
-	enum chips type;
-
-	struct mutex update_lock;
-	bool valid;		/* true if following fields are valid */
-	unsigned long last_updated;	/* In jiffies */
-
-	/* 1x local and 4x remote */
-	s8 temp_max[5];
-	s8 temp_min[5];
-	s8 temp[5];
-	u16 alarms;
-};
-
-static struct max1668_data *max1668_update_device(struct device *dev)
-{
-	struct max1668_data *data = dev_get_drvdata(dev);
-	struct i2c_client *client = data->client;
-	struct max1668_data *ret = data;
-	s32 val;
-	int i;
-
-	mutex_lock(&data->update_lock);
-
-	if (data->valid && !time_after(jiffies,
-			data->last_updated + HZ + HZ / 2))
-		goto abort;
-
-	for (i = 0; i < 5; i++) {
-		val = i2c_smbus_read_byte_data(client, MAX1668_REG_TEMP(i));
-		if (unlikely(val < 0)) {
-			ret = ERR_PTR(val);
-			goto abort;
-		}
-		data->temp[i] = (s8) val;
-
-		val = i2c_smbus_read_byte_data(client, MAX1668_REG_LIMH_RD(i));
-		if (unlikely(val < 0)) {
-			ret = ERR_PTR(val);
-			goto abort;
-		}
-		data->temp_max[i] = (s8) val;
-
-		val = i2c_smbus_read_byte_data(client, MAX1668_REG_LIML_RD(i));
-		if (unlikely(val < 0)) {
-			ret = ERR_PTR(val);
-			goto abort;
-		}
-		data->temp_min[i] = (s8) val;
-	}
-
-	val = i2c_smbus_read_byte_data(client, MAX1668_REG_STAT1);
-	if (unlikely(val < 0)) {
-		ret = ERR_PTR(val);
-		goto abort;
-	}
-	data->alarms = val << 8;
-
-	val = i2c_smbus_read_byte_data(client, MAX1668_REG_STAT2);
-	if (unlikely(val < 0)) {
-		ret = ERR_PTR(val);
-		goto abort;
-	}
-	data->alarms |= val;
-
-	data->last_updated = jiffies;
-	data->valid = true;
-abort:
-	mutex_unlock(&data->update_lock);
-
-	return ret;
-}
-
-static ssize_t show_temp(struct device *dev,
-			 struct device_attribute *devattr, char *buf)
-{
-	int index = to_sensor_dev_attr(devattr)->index;
-	struct max1668_data *data = max1668_update_device(dev);
-
-	if (IS_ERR(data))
-		return PTR_ERR(data);
-
-	return sprintf(buf, "%d\n", data->temp[index] * 1000);
-}
-
-static ssize_t show_temp_max(struct device *dev,
-			     struct device_attribute *devattr, char *buf)
-{
-	int index = to_sensor_dev_attr(devattr)->index;
-	struct max1668_data *data = max1668_update_device(dev);
-
-	if (IS_ERR(data))
-		return PTR_ERR(data);
-
-	return sprintf(buf, "%d\n", data->temp_max[index] * 1000);
-}
-
-static ssize_t show_temp_min(struct device *dev,
-			     struct device_attribute *devattr, char *buf)
-{
-	int index = to_sensor_dev_attr(devattr)->index;
-	struct max1668_data *data = max1668_update_device(dev);
-
-	if (IS_ERR(data))
-		return PTR_ERR(data);
-
-	return sprintf(buf, "%d\n", data->temp_min[index] * 1000);
-}
-
-static ssize_t show_alarm(struct device *dev, struct device_attribute *attr,
-			  char *buf)
-{
-	int index = to_sensor_dev_attr(attr)->index;
-	struct max1668_data *data = max1668_update_device(dev);
-
-	if (IS_ERR(data))
-		return PTR_ERR(data);
-
-	return sprintf(buf, "%u\n", (data->alarms >> index) & 0x1);
-}
-
-static ssize_t show_fault(struct device *dev,
-			  struct device_attribute *devattr, char *buf)
-{
-	int index = to_sensor_dev_attr(devattr)->index;
-	struct max1668_data *data = max1668_update_device(dev);
-
-	if (IS_ERR(data))
-		return PTR_ERR(data);
-
-	return sprintf(buf, "%u\n",
-		       (data->alarms & (1 << 12)) && data->temp[index] == 127);
-}
-
-static ssize_t set_temp_max(struct device *dev,
-			    struct device_attribute *devattr,
-			    const char *buf, size_t count)
-{
-	int index = to_sensor_dev_attr(devattr)->index;
-	struct max1668_data *data = dev_get_drvdata(dev);
-	struct i2c_client *client = data->client;
-	long temp;
-	int ret;
-
-	ret = kstrtol(buf, 10, &temp);
-	if (ret < 0)
-		return ret;
-
-	mutex_lock(&data->update_lock);
-	data->temp_max[index] = clamp_val(temp/1000, -128, 127);
-	ret = i2c_smbus_write_byte_data(client,
-					MAX1668_REG_LIMH_WR(index),
-					data->temp_max[index]);
-	if (ret < 0)
-		count = ret;
-	mutex_unlock(&data->update_lock);
-
-	return count;
-}
-
-static ssize_t set_temp_min(struct device *dev,
-			    struct device_attribute *devattr,
-			    const char *buf, size_t count)
-{
-	int index = to_sensor_dev_attr(devattr)->index;
-	struct max1668_data *data = dev_get_drvdata(dev);
-	struct i2c_client *client = data->client;
-	long temp;
-	int ret;
-
-	ret = kstrtol(buf, 10, &temp);
-	if (ret < 0)
-		return ret;
-
-	mutex_lock(&data->update_lock);
-	data->temp_min[index] = clamp_val(temp/1000, -128, 127);
-	ret = i2c_smbus_write_byte_data(client,
-					MAX1668_REG_LIML_WR(index),
-					data->temp_min[index]);
-	if (ret < 0)
-		count = ret;
-	mutex_unlock(&data->update_lock);
-
-	return count;
-}
-
-static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO, show_temp, NULL, 0);
-static SENSOR_DEVICE_ATTR(temp1_max, S_IRUGO, show_temp_max,
-				set_temp_max, 0);
-static SENSOR_DEVICE_ATTR(temp1_min, S_IRUGO, show_temp_min,
-				set_temp_min, 0);
-static SENSOR_DEVICE_ATTR(temp2_input, S_IRUGO, show_temp, NULL, 1);
-static SENSOR_DEVICE_ATTR(temp2_max, S_IRUGO, show_temp_max,
-				set_temp_max, 1);
-static SENSOR_DEVICE_ATTR(temp2_min, S_IRUGO, show_temp_min,
-				set_temp_min, 1);
-static SENSOR_DEVICE_ATTR(temp3_input, S_IRUGO, show_temp, NULL, 2);
-static SENSOR_DEVICE_ATTR(temp3_max, S_IRUGO, show_temp_max,
-				set_temp_max, 2);
-static SENSOR_DEVICE_ATTR(temp3_min, S_IRUGO, show_temp_min,
-				set_temp_min, 2);
-static SENSOR_DEVICE_ATTR(temp4_input, S_IRUGO, show_temp, NULL, 3);
-static SENSOR_DEVICE_ATTR(temp4_max, S_IRUGO, show_temp_max,
-				set_temp_max, 3);
-static SENSOR_DEVICE_ATTR(temp4_min, S_IRUGO, show_temp_min,
-				set_temp_min, 3);
-static SENSOR_DEVICE_ATTR(temp5_input, S_IRUGO, show_temp, NULL, 4);
-static SENSOR_DEVICE_ATTR(temp5_max, S_IRUGO, show_temp_max,
-				set_temp_max, 4);
-static SENSOR_DEVICE_ATTR(temp5_min, S_IRUGO, show_temp_min,
-				set_temp_min, 4);
-
-static SENSOR_DEVICE_ATTR(temp1_max_alarm, S_IRUGO, show_alarm, NULL, 14);
-static SENSOR_DEVICE_ATTR(temp1_min_alarm, S_IRUGO, show_alarm, NULL, 13);
-static SENSOR_DEVICE_ATTR(temp2_min_alarm, S_IRUGO, show_alarm, NULL, 7);
-static SENSOR_DEVICE_ATTR(temp2_max_alarm, S_IRUGO, show_alarm, NULL, 6);
-static SENSOR_DEVICE_ATTR(temp3_min_alarm, S_IRUGO, show_alarm, NULL, 5);
-static SENSOR_DEVICE_ATTR(temp3_max_alarm, S_IRUGO, show_alarm, NULL, 4);
-static SENSOR_DEVICE_ATTR(temp4_min_alarm, S_IRUGO, show_alarm, NULL, 3);
-static SENSOR_DEVICE_ATTR(temp4_max_alarm, S_IRUGO, show_alarm, NULL, 2);
-static SENSOR_DEVICE_ATTR(temp5_min_alarm, S_IRUGO, show_alarm, NULL, 1);
-static SENSOR_DEVICE_ATTR(temp5_max_alarm, S_IRUGO, show_alarm, NULL, 0);
-
-static SENSOR_DEVICE_ATTR(temp2_fault, S_IRUGO, show_fault, NULL, 1);
-static SENSOR_DEVICE_ATTR(temp3_fault, S_IRUGO, show_fault, NULL, 2);
-static SENSOR_DEVICE_ATTR(temp4_fault, S_IRUGO, show_fault, NULL, 3);
-static SENSOR_DEVICE_ATTR(temp5_fault, S_IRUGO, show_fault, NULL, 4);
-
-/* Attributes common to MAX1668, MAX1989 and MAX1805 */
-static struct attribute *max1668_attribute_common[] = {
-	&sensor_dev_attr_temp1_max.dev_attr.attr,
-	&sensor_dev_attr_temp1_min.dev_attr.attr,
-	&sensor_dev_attr_temp1_input.dev_attr.attr,
-	&sensor_dev_attr_temp2_max.dev_attr.attr,
-	&sensor_dev_attr_temp2_min.dev_attr.attr,
-	&sensor_dev_attr_temp2_input.dev_attr.attr,
-	&sensor_dev_attr_temp3_max.dev_attr.attr,
-	&sensor_dev_attr_temp3_min.dev_attr.attr,
-	&sensor_dev_attr_temp3_input.dev_attr.attr,
-
-	&sensor_dev_attr_temp1_max_alarm.dev_attr.attr,
-	&sensor_dev_attr_temp1_min_alarm.dev_attr.attr,
-	&sensor_dev_attr_temp2_max_alarm.dev_attr.attr,
-	&sensor_dev_attr_temp2_min_alarm.dev_attr.attr,
-	&sensor_dev_attr_temp3_max_alarm.dev_attr.attr,
-	&sensor_dev_attr_temp3_min_alarm.dev_attr.attr,
-
-	&sensor_dev_attr_temp2_fault.dev_attr.attr,
-	&sensor_dev_attr_temp3_fault.dev_attr.attr,
-	NULL
-};
-
-/* Attributes not present on MAX1805 */
-static struct attribute *max1668_attribute_unique[] = {
-	&sensor_dev_attr_temp4_max.dev_attr.attr,
-	&sensor_dev_attr_temp4_min.dev_attr.attr,
-	&sensor_dev_attr_temp4_input.dev_attr.attr,
-	&sensor_dev_attr_temp5_max.dev_attr.attr,
-	&sensor_dev_attr_temp5_min.dev_attr.attr,
-	&sensor_dev_attr_temp5_input.dev_attr.attr,
-
-	&sensor_dev_attr_temp4_max_alarm.dev_attr.attr,
-	&sensor_dev_attr_temp4_min_alarm.dev_attr.attr,
-	&sensor_dev_attr_temp5_max_alarm.dev_attr.attr,
-	&sensor_dev_attr_temp5_min_alarm.dev_attr.attr,
-
-	&sensor_dev_attr_temp4_fault.dev_attr.attr,
-	&sensor_dev_attr_temp5_fault.dev_attr.attr,
-	NULL
-};
-
-static umode_t max1668_attribute_mode(struct kobject *kobj,
-				     struct attribute *attr, int index)
-{
-	umode_t ret = S_IRUGO;
-	if (read_only)
-		return ret;
-	if (attr == &sensor_dev_attr_temp1_max.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp2_max.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp3_max.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp4_max.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp5_max.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp1_min.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp2_min.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp3_min.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp4_min.dev_attr.attr ||
-	    attr == &sensor_dev_attr_temp5_min.dev_attr.attr)
-		ret |= S_IWUSR;
-	return ret;
-}
-
-static const struct attribute_group max1668_group_common = {
-	.attrs = max1668_attribute_common,
-	.is_visible = max1668_attribute_mode
-};
-
-static const struct attribute_group max1668_group_unique = {
-	.attrs = max1668_attribute_unique,
-	.is_visible = max1668_attribute_mode
-=======
 struct max1668_data {
 	struct regmap *regmap;
 	int channels;
@@ -514,7 +186,6 @@ static const struct hwmon_ops max1668_hwmon_ops = {
 static const struct hwmon_chip_info max1668_chip_info = {
 	.ops = &max1668_hwmon_ops,
 	.info = max1668_info,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /* Return 0 if detection is successful, -ENODEV otherwise */
@@ -553,8 +224,6 @@ static int max1668_detect(struct i2c_client *client,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /* regmap */
 
 static int max1668_reg_read(void *context, unsigned int reg, unsigned int *val)
@@ -597,7 +266,6 @@ static const struct regmap_bus max1668_regmap_bus = {
 	.reg_read = max1668_reg_read,
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int max1668_probe(struct i2c_client *client)
 {
 	struct i2c_adapter *adapter = client->adapter;
@@ -612,19 +280,6 @@ static int max1668_probe(struct i2c_client *client)
 	if (!data)
 		return -ENOMEM;
 
-<<<<<<< HEAD
-	data->client = client;
-	data->type = (uintptr_t)i2c_get_match_data(client);
-	mutex_init(&data->update_lock);
-
-	/* sysfs hooks */
-	data->groups[0] = &max1668_group_common;
-	if (data->type == max1668 || data->type == max1989)
-		data->groups[1] = &max1668_group_unique;
-
-	hwmon_dev = devm_hwmon_device_register_with_groups(dev, client->name,
-							   data, data->groups);
-=======
 	data->regmap = devm_regmap_init(dev, &max1668_regmap_bus, client,
 					&max1668_regmap_config);
 	if (IS_ERR(data->regmap))
@@ -634,20 +289,13 @@ static int max1668_probe(struct i2c_client *client)
 
 	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data,
 							 &max1668_chip_info, NULL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return PTR_ERR_OR_ZERO(hwmon_dev);
 }
 
 static const struct i2c_device_id max1668_id[] = {
-<<<<<<< HEAD
-	{ "max1668", max1668 },
-	{ "max1805", max1805 },
-	{ "max1989", max1989 },
-=======
 	{ "max1668", 5 },
 	{ "max1805", 3 },
 	{ "max1989", 5 },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, max1668_id);

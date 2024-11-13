@@ -3,15 +3,9 @@
 
 #include <dt-bindings/input/linux-event-codes.h>
 #include <dt-bindings/input/gpio-keys.h>
-<<<<<<< HEAD
-
-#include "tegra234-p3701-0000.dtsi"
-#include "tegra234-p3737-0000.dtsi"
-=======
 #include <dt-bindings/sound/rt5640.h>
 
 #include "tegra234-p3701-0000.dtsi"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 / {
 	model = "NVIDIA Jetson AGX Orin Developer Kit";
@@ -28,8 +22,6 @@
 	};
 
 	bus@0 {
-<<<<<<< HEAD
-=======
 		aconnect@2900000 {
 			ahub@2900800 {
 				i2s@2901000 {
@@ -45,15 +37,12 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		serial@3100000 {
 			compatible = "nvidia,tegra194-hsuart";
 			reset-names = "serial";
 			status = "okay";
 		};
 
-<<<<<<< HEAD
-=======
 		i2c@3160000 {
 			status = "okay";
 
@@ -70,14 +59,11 @@
 			};
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		serial@31d0000 {
 			current-speed = <115200>;
 			status = "okay";
 		};
 
-<<<<<<< HEAD
-=======
 		i2c@31e0000 {
 			status = "okay";
 
@@ -106,15 +92,12 @@
 			status = "okay";
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pwm@32a0000 {
 			assigned-clocks = <&bpmp TEGRA234_CLK_PWM3>;
 			assigned-clock-parents = <&bpmp TEGRA234_CLK_PLLP_OUT0>;
 			status = "okay";
 		};
 
-<<<<<<< HEAD
-=======
 		pwm@32c0000 {
 			status = "okay";
 		};
@@ -130,7 +113,6 @@
 			disable-wp;
 		};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		hda@3510000 {
 			nvidia,model = "NVIDIA Jetson AGX Orin HDA";
 			status = "okay";
@@ -433,16 +415,11 @@
 		};
 	};
 
-<<<<<<< HEAD
-	pwm-fan {
-		cooling-levels = <66 215 255>;
-=======
 	fan: pwm-fan {
 		compatible = "pwm-fan";
 		cooling-levels = <66 215 255>;
 		pwms = <&pwm3 0 45334>;
 		#cooling-cells = <2>;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	serial {
@@ -544,8 +521,6 @@
 			};
 		};
 	};
-<<<<<<< HEAD
-=======
 
 	vdd_1v8_sys: regulator-vdd-1v8-sys {
 		compatible = "regulator-fixed";
@@ -573,5 +548,4 @@
 		gpio = <&gpio TEGRA234_MAIN_GPIO(A, 1) GPIO_ACTIVE_LOW>;
 		regulator-boot-on;
 	};
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };

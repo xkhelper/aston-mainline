@@ -271,10 +271,6 @@ void auxiliary_driver_unregister(struct auxiliary_driver *auxdrv);
 
 struct auxiliary_device *auxiliary_find_device(struct device *start,
 					       const void *data,
-<<<<<<< HEAD
-					       int (*match)(struct device *dev, const void *data));
-=======
 					       device_match_t match);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _AUXILIARY_BUS_H_ */

@@ -452,11 +452,7 @@ static int axi_dac_data_source_set(struct iio_backend *back, unsigned int chan,
 	struct axi_dac_state *st = iio_backend_get_priv(back);
 
 	switch (data) {
-<<<<<<< HEAD
-	case IIO_BACKEND_INTERNAL_CONTINUOS_WAVE:
-=======
 	case IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return regmap_update_bits(st->regmap,
 					  AXI_DAC_REG_CHAN_CNTRL_7(chan),
 					  AXI_DAC_DATA_SEL,
@@ -511,9 +507,6 @@ static int axi_dac_set_sample_rate(struct iio_backend *back, unsigned int chan,
 	return 0;
 }
 
-<<<<<<< HEAD
-static const struct iio_backend_ops axi_dac_generic = {
-=======
 static int axi_dac_reg_access(struct iio_backend *back, unsigned int reg,
 			      unsigned int writeval, unsigned int *readval)
 {
@@ -526,7 +519,6 @@ static int axi_dac_reg_access(struct iio_backend *back, unsigned int reg,
 }
 
 static const struct iio_backend_ops axi_dac_generic_ops = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.enable = axi_dac_enable,
 	.disable = axi_dac_disable,
 	.request_buffer = axi_dac_request_buffer,
@@ -536,15 +528,12 @@ static const struct iio_backend_ops axi_dac_generic_ops = {
 	.ext_info_get = axi_dac_ext_info_get,
 	.data_source_set = axi_dac_data_source_set,
 	.set_sample_rate = axi_dac_set_sample_rate,
-<<<<<<< HEAD
-=======
 	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_dac_reg_access),
 };
 
 static const struct iio_backend_info axi_dac_generic = {
 	.name = "axi-dac",
 	.ops = &axi_dac_generic_ops,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct regmap_config axi_dac_regmap_config = {

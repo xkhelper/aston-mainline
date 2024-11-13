@@ -193,10 +193,6 @@ struct lp55xx_engine {
  */
 struct lp55xx_chip {
 	struct i2c_client *cl;
-<<<<<<< HEAD
-	struct clk *clk;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct lp55xx_platform_data *pdata;
 	struct mutex lock;	/* lock for user-space interface */
 	int num_leds;

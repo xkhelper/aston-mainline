@@ -927,11 +927,7 @@ static void tas_i2c_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id tas_i2c_id[] = {
-<<<<<<< HEAD
-	{ "MAC,tas3004", 0 },
-=======
 	{ "MAC,tas3004" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c,tas_i2c_id);

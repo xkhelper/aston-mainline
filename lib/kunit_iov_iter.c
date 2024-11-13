@@ -12,10 +12,7 @@
 #include <linux/mm.h>
 #include <linux/uio.h>
 #include <linux/bvec.h>
-<<<<<<< HEAD
-=======
 #include <linux/folio_queue.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <kunit/test.h>
 
 MODULE_DESCRIPTION("iov_iter testing");
@@ -66,12 +63,9 @@ static void *__init iov_kunit_create_buffer(struct kunit *test,
 		KUNIT_ASSERT_EQ(test, got, npages);
 	}
 
-<<<<<<< HEAD
-=======
 	for (int i = 0; i < npages; i++)
 		pages[i]->index = i;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	buffer = vmap(pages, npages, VM_MAP | VM_MAP_PUT_PAGES, PAGE_KERNEL);
         KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
 
@@ -372,8 +366,6 @@ stop:
 	KUNIT_SUCCEED(test);
 }
 
-<<<<<<< HEAD
-=======
 static void iov_kunit_destroy_folioq(void *data)
 {
 	struct folio_queue *folioq, *next;
@@ -547,7 +539,6 @@ stop:
 	KUNIT_SUCCEED(test);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void iov_kunit_destroy_xarray(void *data)
 {
 	struct xarray *xarray = data;
@@ -864,8 +855,6 @@ stop:
 }
 
 /*
-<<<<<<< HEAD
-=======
  * Test the extraction of ITER_FOLIOQ-type iterators.
  */
 static void __init iov_kunit_extract_pages_folioq(struct kunit *test)
@@ -945,7 +934,6 @@ stop:
 }
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Test the extraction of ITER_XARRAY-type iterators.
  */
 static void __init iov_kunit_extract_pages_xarray(struct kunit *test)
@@ -1029,19 +1017,13 @@ static struct kunit_case __refdata iov_kunit_cases[] = {
 	KUNIT_CASE(iov_kunit_copy_from_kvec),
 	KUNIT_CASE(iov_kunit_copy_to_bvec),
 	KUNIT_CASE(iov_kunit_copy_from_bvec),
-<<<<<<< HEAD
-=======
 	KUNIT_CASE(iov_kunit_copy_to_folioq),
 	KUNIT_CASE(iov_kunit_copy_from_folioq),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_CASE(iov_kunit_copy_to_xarray),
 	KUNIT_CASE(iov_kunit_copy_from_xarray),
 	KUNIT_CASE(iov_kunit_extract_pages_kvec),
 	KUNIT_CASE(iov_kunit_extract_pages_bvec),
-<<<<<<< HEAD
-=======
 	KUNIT_CASE(iov_kunit_extract_pages_folioq),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_CASE(iov_kunit_extract_pages_xarray),
 	{}
 };

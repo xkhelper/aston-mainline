@@ -539,10 +539,6 @@ static int fill_analog_mode(struct drm_device *dev,
  * to reach those resolutions.
  *
  * Returns:
-<<<<<<< HEAD
- *
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * A pointer to the mode, allocated with drm_mode_create(). Returns NULL
  * on error.
  */

@@ -315,11 +315,7 @@ static const struct {
 	{ 0x3B, 24576000 },
 };
 
-<<<<<<< HEAD
-unsigned int cs35l45_get_clk_freq_id(unsigned int freq)
-=======
 int cs35l45_get_clk_freq_id(unsigned int freq)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int i;
 

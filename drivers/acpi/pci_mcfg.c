@@ -181,8 +181,6 @@ static struct mcfg_fixup mcfg_quirks[] = {
 	LOONGSON_ECAM_MCFG("LOONGSON", 0),
 	LOONGSON_ECAM_MCFG("\0", 1),
 	LOONGSON_ECAM_MCFG("LOONGSON", 1),
-<<<<<<< HEAD
-=======
 	LOONGSON_ECAM_MCFG("\0", 2),
 	LOONGSON_ECAM_MCFG("LOONGSON", 2),
 	LOONGSON_ECAM_MCFG("\0", 3),
@@ -195,7 +193,6 @@ static struct mcfg_fixup mcfg_quirks[] = {
 	LOONGSON_ECAM_MCFG("LOONGSON", 6),
 	LOONGSON_ECAM_MCFG("\0", 7),
 	LOONGSON_ECAM_MCFG("LOONGSON", 7),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* LOONGARCH */
 };
 

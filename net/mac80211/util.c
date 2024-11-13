@@ -751,13 +751,9 @@ static void __iterate_interfaces(struct ieee80211_local *local,
 	struct ieee80211_sub_if_data *sdata;
 	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
 
-<<<<<<< HEAD
-	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-=======
 	list_for_each_entry_rcu(sdata, &local->interfaces, list,
 				lockdep_is_held(&local->iflist_mtx) ||
 				lockdep_is_held(&local->hw.wiphy->mtx)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		switch (sdata->vif.type) {
 		case NL80211_IFTYPE_MONITOR:
 			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
@@ -839,12 +835,8 @@ static void __iterate_stations(struct ieee80211_local *local,
 {
 	struct sta_info *sta;
 
-<<<<<<< HEAD
-	list_for_each_entry_rcu(sta, &local->sta_list, list) {
-=======
 	list_for_each_entry_rcu(sta, &local->sta_list, list,
 				lockdep_is_held(&local->hw.wiphy->mtx)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!sta->uploaded)
 			continue;
 
@@ -865,8 +857,6 @@ void ieee80211_iterate_stations_atomic(struct ieee80211_hw *hw,
 }
 EXPORT_SYMBOL_GPL(ieee80211_iterate_stations_atomic);
 
-<<<<<<< HEAD
-=======
 void ieee80211_iterate_stations_mtx(struct ieee80211_hw *hw,
 				    void (*iterator)(void *data,
 						     struct ieee80211_sta *sta),
@@ -880,7 +870,6 @@ void ieee80211_iterate_stations_mtx(struct ieee80211_hw *hw,
 }
 EXPORT_SYMBOL_GPL(ieee80211_iterate_stations_mtx);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct ieee80211_vif *wdev_to_ieee80211_vif(struct wireless_dev *wdev)
 {
 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
@@ -3478,12 +3467,6 @@ u64 ieee80211_calculate_rx_timestamp(struct ieee80211_local *local,
 	return ts;
 }
 
-<<<<<<< HEAD
-void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
-{
-	struct ieee80211_sub_if_data *sdata;
-	struct cfg80211_chan_def chandef;
-=======
 /* Cancel CAC for the interfaces under the specified @local. If @ctx is
  * also provided, only the interfaces using that ctx will be canceled.
  */
@@ -3495,23 +3478,10 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local,
 	struct ieee80211_link_data *link;
 	struct ieee80211_chanctx_conf *chanctx_conf;
 	unsigned int link_id;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_wiphy(local->hw.wiphy);
 
 	list_for_each_entry(sdata, &local->interfaces, list) {
-<<<<<<< HEAD
-		wiphy_delayed_work_cancel(local->hw.wiphy,
-					  &sdata->dfs_cac_timer_work);
-
-		if (sdata->wdev.cac_started) {
-			chandef = sdata->vif.bss_conf.chanreq.oper;
-			ieee80211_link_release_channel(&sdata->deflink);
-			cfg80211_cac_event(sdata->dev,
-					   &chandef,
-					   NL80211_RADAR_CAC_ABORTED,
-					   GFP_KERNEL);
-=======
 		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS;
 		     link_id++) {
 			link = sdata_dereference(sdata->link[link_id],
@@ -3535,7 +3505,6 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local,
 			cfg80211_cac_event(sdata->dev, &chandef,
 					   NL80211_RADAR_CAC_ABORTED,
 					   GFP_KERNEL, link_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 }
@@ -3545,14 +3514,8 @@ void ieee80211_dfs_radar_detected_work(struct wiphy *wiphy,
 {
 	struct ieee80211_local *local =
 		container_of(work, struct ieee80211_local, radar_detected_work);
-<<<<<<< HEAD
-	struct cfg80211_chan_def chandef = local->hw.conf.chandef;
-	struct ieee80211_chanctx *ctx;
-	int num_chanctx = 0;
-=======
 	struct cfg80211_chan_def chandef;
 	struct ieee80211_chanctx *ctx;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	lockdep_assert_wiphy(local->hw.wiphy);
 
@@ -3560,22 +3523,6 @@ void ieee80211_dfs_radar_detected_work(struct wiphy *wiphy,
 		if (ctx->replace_state == IEEE80211_CHANCTX_REPLACES_OTHER)
 			continue;
 
-<<<<<<< HEAD
-		num_chanctx++;
-		chandef = ctx->conf.def;
-	}
-
-	ieee80211_dfs_cac_cancel(local);
-
-	if (num_chanctx > 1)
-		/* XXX: multi-channel is not supported yet */
-		WARN_ON(1);
-	else
-		cfg80211_radar_event(local->hw.wiphy, &chandef, GFP_KERNEL);
-}
-
-void ieee80211_radar_detected(struct ieee80211_hw *hw)
-=======
 		if (!ctx->radar_detected)
 			continue;
 
@@ -3608,18 +3555,14 @@ ieee80211_radar_mark_chan_ctx_iterator(struct ieee80211_hw *hw,
 
 void ieee80211_radar_detected(struct ieee80211_hw *hw,
 			      struct ieee80211_chanctx_conf *chanctx_conf)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct ieee80211_local *local = hw_to_local(hw);
 
 	trace_api_radar_detected(local);
 
-<<<<<<< HEAD
-=======
 	ieee80211_iter_chan_contexts_atomic(hw, ieee80211_radar_mark_chan_ctx_iterator,
 					    chanctx_conf);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wiphy_work_queue(hw->wiphy, &local->radar_detected_work);
 }
 EXPORT_SYMBOL(ieee80211_radar_detected);

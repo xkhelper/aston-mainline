@@ -342,14 +342,6 @@ struct resource_pool *dc_create_resource_pool(struct dc  *dc,
 				res_pool->ref_clocks.xtalin_clock_inKhz;
 			res_pool->ref_clocks.dchub_ref_clock_inKhz =
 				res_pool->ref_clocks.xtalin_clock_inKhz;
-<<<<<<< HEAD
-			if (dc->debug.using_dml2)
-				if (res_pool->hubbub && res_pool->hubbub->funcs->get_dchub_ref_freq)
-					res_pool->hubbub->funcs->get_dchub_ref_freq(res_pool->hubbub,
-										    res_pool->ref_clocks.dccg_ref_clock_inKhz,
-										    &res_pool->ref_clocks.dchub_ref_clock_inKhz);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		} else
 			ASSERT_CRITICAL(false);
 	}
@@ -1514,11 +1506,6 @@ bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
 			pipe_ctx->plane_res.scl_data.lb_params.depth = LB_PIXEL_DEPTH_30BPP;
 
 		pipe_ctx->plane_res.scl_data.lb_params.alpha_en = plane_state->per_pixel_alpha;
-<<<<<<< HEAD
-		spl_out->scl_data.h_active = pipe_ctx->plane_res.scl_data.h_active;
-		spl_out->scl_data.v_active = pipe_ctx->plane_res.scl_data.v_active;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		// Convert pipe_ctx to respective input params for SPL
 		translate_SPL_in_params_from_pipe_ctx(pipe_ctx, spl_in);
@@ -3247,11 +3234,8 @@ static bool are_stream_backends_same(
 bool dc_is_stream_unchanged(
 	struct dc_stream_state *old_stream, struct dc_stream_state *stream)
 {
-<<<<<<< HEAD
-=======
 	if (!old_stream || !stream)
 		return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (!are_stream_backends_same(old_stream, stream))
 		return false;
@@ -3782,15 +3766,10 @@ static bool planes_changed_for_existing_stream(struct dc_state *context,
 		}
 	}
 
-<<<<<<< HEAD
-	if (!stream_status)
-		ASSERT(0);
-=======
 	if (!stream_status) {
 		ASSERT(0);
 		return false;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < set_count; i++)
 		if (set[i].stream == stream)
@@ -5182,11 +5161,7 @@ bool dc_resource_acquire_secondary_pipe_for_mpc_odm_legacy(
 			sec_pipe->stream_res.opp = sec_pipe->top_pipe->stream_res.opp;
 		if (sec_pipe->stream->timing.flags.DSC == 1) {
 #if defined(CONFIG_DRM_AMD_DC_FP)
-<<<<<<< HEAD
-			dcn20_acquire_dsc(dc, &state->res_ctx, &sec_pipe->stream_res.dsc, pipe_idx);
-=======
 			dcn20_acquire_dsc(dc, &state->res_ctx, &sec_pipe->stream_res.dsc, sec_pipe->stream_res.opp->inst);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 			ASSERT(sec_pipe->stream_res.dsc);
 			if (sec_pipe->stream_res.dsc == NULL)
@@ -5293,8 +5268,6 @@ void resource_init_common_dml2_callbacks(struct dc *dc, struct dml2_configuratio
 	dml2_options->svp_pstate.callbacks.remove_phantom_streams_and_planes = &dc_state_remove_phantom_streams_and_planes;
 	dml2_options->svp_pstate.callbacks.release_phantom_streams_and_planes = &dc_state_release_phantom_streams_and_planes;
 }
-<<<<<<< HEAD
-=======
 
 /* Returns number of DET segments allocated for a given OTG_MASTER pipe */
 int resource_calculate_det_for_stream(struct dc_state *state, struct pipe_ctx *otg_master)
@@ -5336,4 +5309,3 @@ bool resource_is_hpo_acquired(struct dc_state *context)
 
 	return false;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

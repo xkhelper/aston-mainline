@@ -99,11 +99,7 @@ static void __confirm_options(struct intel_uc *uc)
 	}
 
 	if (!intel_uc_supports_guc(uc))
-<<<<<<< HEAD
-		gt_info(gt,  "Incompatible option enable_guc=%d - %s\n",
-=======
 		gt_info(gt, "Incompatible option enable_guc=%d - %s\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			i915->params.enable_guc, "GuC is not supported!");
 
 	if (i915->params.enable_guc & ENABLE_GUC_SUBMISSION &&

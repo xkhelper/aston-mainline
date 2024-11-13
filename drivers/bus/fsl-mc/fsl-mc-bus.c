@@ -309,11 +309,7 @@ static struct attribute *fsl_mc_bus_attrs[] = {
 
 ATTRIBUTE_GROUPS(fsl_mc_bus);
 
-<<<<<<< HEAD
-struct bus_type fsl_mc_bus_type = {
-=======
 const struct bus_type fsl_mc_bus_type = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.name = "fsl-mc",
 	.match = fsl_mc_bus_match,
 	.uevent = fsl_mc_bus_uevent,

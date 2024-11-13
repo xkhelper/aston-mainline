@@ -562,8 +562,6 @@ struct fc_vft_header {
 #include <uapi/scsi/fc/fc_els.h>
 
 /*
-<<<<<<< HEAD
-=======
  * Application Header
  */
 struct fc_app_header {
@@ -585,7 +583,6 @@ enum lpfc_fc_dfctl {
 };
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *  Extended Link Service LS_COMMAND codes (Payload Word 0)
  */
 #ifdef __BIG_ENDIAN_BITFIELD

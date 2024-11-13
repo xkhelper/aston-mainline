@@ -201,28 +201,6 @@ void mgag200_init_registers(struct mga_device *mdev)
 	WREG8(MGA_MISC_OUT, misc);
 }
 
-<<<<<<< HEAD
-void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mode *mode)
-{
-	const struct mgag200_device_info *info = mdev->info;
-	unsigned int hdisplay, hsyncstart, hsyncend, htotal;
-	unsigned int vdisplay, vsyncstart, vsyncend, vtotal;
-	u8 misc, crtcext1, crtcext2, crtcext5;
-
-	hdisplay = mode->hdisplay / 8 - 1;
-	hsyncstart = mode->hsync_start / 8 - 1;
-	hsyncend = mode->hsync_end / 8 - 1;
-	htotal = mode->htotal / 8 - 1;
-
-	/* Work around hardware quirk */
-	if ((htotal & 0x07) == 0x06 || (htotal & 0x07) == 0x04)
-		htotal++;
-
-	vdisplay = mode->vdisplay - 1;
-	vsyncstart = mode->vsync_start - 1;
-	vsyncend = mode->vsync_end - 1;
-	vtotal = mode->vtotal - 2;
-=======
 void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mode *mode,
 			   bool set_vidrst)
 {
@@ -249,7 +227,6 @@ void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mod
 	vblkend = vtotal + 1;
 
 	linecomp = vdispend;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	misc = RREG8(MGA_MISC_IN);
 
@@ -264,54 +241,14 @@ void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mod
 		misc &= ~MGAREG_MISC_VSYNCPOL;
 
 	crtcext1 = (((htotal - 4) & 0x100) >> 8) |
-<<<<<<< HEAD
-		   ((hdisplay & 0x100) >> 7) |
-		   ((hsyncstart & 0x100) >> 6) |
-		    (htotal & 0x40);
-	if (info->has_vidrst)
-=======
 		   ((hblkstr & 0x100) >> 7) |
 		   ((hsyncstr & 0x100) >> 6) |
 		    (hblkend & 0x40);
 	if (set_vidrst)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		crtcext1 |= MGAREG_CRTCEXT1_VRSTEN |
 			    MGAREG_CRTCEXT1_HRSTEN;
 
 	crtcext2 = ((vtotal & 0xc00) >> 10) |
-<<<<<<< HEAD
-		   ((vdisplay & 0x400) >> 8) |
-		   ((vdisplay & 0xc00) >> 7) |
-		   ((vsyncstart & 0xc00) >> 5) |
-		   ((vdisplay & 0x400) >> 3);
-	crtcext5 = 0x00;
-
-	WREG_CRT(0, htotal - 4);
-	WREG_CRT(1, hdisplay);
-	WREG_CRT(2, hdisplay);
-	WREG_CRT(3, (htotal & 0x1F) | 0x80);
-	WREG_CRT(4, hsyncstart);
-	WREG_CRT(5, ((htotal & 0x20) << 2) | (hsyncend & 0x1F));
-	WREG_CRT(6, vtotal & 0xFF);
-	WREG_CRT(7, ((vtotal & 0x100) >> 8) |
-		 ((vdisplay & 0x100) >> 7) |
-		 ((vsyncstart & 0x100) >> 6) |
-		 ((vdisplay & 0x100) >> 5) |
-		 ((vdisplay & 0x100) >> 4) | /* linecomp */
-		 ((vtotal & 0x200) >> 4) |
-		 ((vdisplay & 0x200) >> 3) |
-		 ((vsyncstart & 0x200) >> 2));
-	WREG_CRT(9, ((vdisplay & 0x200) >> 4) |
-		 ((vdisplay & 0x200) >> 3));
-	WREG_CRT(16, vsyncstart & 0xFF);
-	WREG_CRT(17, (vsyncend & 0x0F) | 0x20);
-	WREG_CRT(18, vdisplay & 0xFF);
-	WREG_CRT(20, 0);
-	WREG_CRT(21, vdisplay & 0xFF);
-	WREG_CRT(22, (vtotal + 1) & 0xFF);
-	WREG_CRT(23, 0xc3);
-	WREG_CRT(24, vdisplay & 0xFF);
-=======
 		   ((vdispend & 0x400) >> 8) |
 		   ((vblkstr & 0xc00) >> 7) |
 		   ((vsyncstr & 0xc00) >> 5) |
@@ -343,7 +280,6 @@ void mgag200_set_mode_regs(struct mga_device *mdev, const struct drm_display_mod
 	WREG_CRT(0x16, vblkend & 0xff);
 	WREG_CRT(0x17, 0xc3);
 	WREG_CRT(0x18, linecomp & 0xff);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	WREG_ECRT(0x01, crtcext1);
 	WREG_ECRT(0x02, crtcext2);
@@ -722,16 +658,8 @@ void mgag200_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_
 	struct mgag200_crtc_state *mgag200_crtc_state = to_mgag200_crtc_state(crtc_state);
 	const struct drm_format_info *format = mgag200_crtc_state->format;
 
-<<<<<<< HEAD
-	if (funcs->disable_vidrst)
-		funcs->disable_vidrst(mdev);
-
-	mgag200_set_format_regs(mdev, format);
-	mgag200_set_mode_regs(mdev, adjusted_mode);
-=======
 	mgag200_set_format_regs(mdev, format);
 	mgag200_set_mode_regs(mdev, adjusted_mode, mgag200_crtc_state->set_vidrst);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (funcs->pixpllc_atomic_update)
 		funcs->pixpllc_atomic_update(crtc, old_state);
@@ -742,31 +670,13 @@ void mgag200_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_
 		mgag200_crtc_set_gamma_linear(mdev, format);
 
 	mgag200_enable_display(mdev);
-<<<<<<< HEAD
-
-	if (funcs->enable_vidrst)
-		funcs->enable_vidrst(mdev);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void mgag200_crtc_helper_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_state *old_state)
 {
 	struct mga_device *mdev = to_mga_device(crtc->dev);
-<<<<<<< HEAD
-	const struct mgag200_device_funcs *funcs = mdev->funcs;
-
-	if (funcs->disable_vidrst)
-		funcs->disable_vidrst(mdev);
 
 	mgag200_disable_display(mdev);
-
-	if (funcs->enable_vidrst)
-		funcs->enable_vidrst(mdev);
-=======
-
-	mgag200_disable_display(mdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void mgag200_crtc_reset(struct drm_crtc *crtc)
@@ -800,10 +710,7 @@ struct drm_crtc_state *mgag200_crtc_atomic_duplicate_state(struct drm_crtc *crtc
 	new_mgag200_crtc_state->format = mgag200_crtc_state->format;
 	memcpy(&new_mgag200_crtc_state->pixpllc, &mgag200_crtc_state->pixpllc,
 	       sizeof(new_mgag200_crtc_state->pixpllc));
-<<<<<<< HEAD
-=======
 	new_mgag200_crtc_state->set_vidrst = mgag200_crtc_state->set_vidrst;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return &new_mgag200_crtc_state->base;
 }

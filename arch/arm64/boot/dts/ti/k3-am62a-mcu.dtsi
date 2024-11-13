@@ -15,8 +15,6 @@
 		status = "disabled";
 	};
 
-<<<<<<< HEAD
-=======
 	mcu_esm: esm@4100000 {
 		compatible = "ti,j721e-esm";
 		reg = <0x0 0x4100000 0x0 0x1000>;
@@ -25,7 +23,6 @@
 		ti,esm-pins = <0>, <1>, <2>, <85>;
 	};
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/*
 	 * The MCU domain timer interrupts are routed only to the ESM module,
 	 * and not currently available for Linux. The MCU domain timers are

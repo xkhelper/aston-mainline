@@ -346,11 +346,7 @@
 		>;
 	};
 
-<<<<<<< HEAD
-	pinctrl_usdhc1_100mhz: usdhc1grp100mhz {
-=======
 	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fsl,pins = <
 			MX6QDL_PAD_SD1_CMD__SD1_CMD	0x170B9
 			MX6QDL_PAD_SD1_CLK__SD1_CLK	0x100B9
@@ -361,11 +357,7 @@
 		>;
 	};
 
-<<<<<<< HEAD
-	pinctrl_usdhc1_200mhz: usdhc1grp200mhz {
-=======
 	pinctrl_usdhc1_200mhz: usdhc1-200mhz-grp {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fsl,pins = <
 			MX6QDL_PAD_SD1_CMD__SD1_CMD	0x170F9
 			MX6QDL_PAD_SD1_CLK__SD1_CLK	0x100F9

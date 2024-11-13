@@ -2,19 +2,12 @@
 /* Test KVM debugging features. */
 #include "kvm_util.h"
 #include "test_util.h"
-<<<<<<< HEAD
-=======
 #include "sie.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/kvm.h>
 
 #define __LC_SVC_NEW_PSW 0x1c0
 #define __LC_PGM_NEW_PSW 0x1d0
-<<<<<<< HEAD
-#define ICPT_INSTRUCTION 0x04
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define IPA0_DIAG 0x8300
 #define PGM_SPECIFICATION 0x06
 
@@ -92,11 +85,7 @@ static void test_step_pgm_diag(void)
 	vm = test_step_int_1(&vcpu, test_step_pgm_diag_guest_code,
 			     __LC_PGM_NEW_PSW, new_psw);
 	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_S390_SIEIC);
-<<<<<<< HEAD
-	TEST_ASSERT_EQ(vcpu->run->s390_sieic.icptcode, ICPT_INSTRUCTION);
-=======
 	TEST_ASSERT_EQ(vcpu->run->s390_sieic.icptcode, ICPT_INST);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TEST_ASSERT_EQ(vcpu->run->s390_sieic.ipa & 0xff00, IPA0_DIAG);
 	vcpu_ioctl(vcpu, KVM_S390_IRQ, &irq);
 	vcpu_run(vcpu);

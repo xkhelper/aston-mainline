@@ -8,20 +8,14 @@
 #ifndef __TI_CPSW_ALE_H__
 #define __TI_CPSW_ALE_H__
 
-<<<<<<< HEAD
-=======
 struct reg_fields;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct cpsw_ale_params {
 	struct device		*dev;
 	void __iomem		*ale_regs;
 	unsigned long		ale_ageout;	/* in secs */
 	unsigned long		ale_entries;
-<<<<<<< HEAD
-=======
 	unsigned long		num_policers;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		ale_ports;
 	/* NU Switch has specific handling as number of bits in ALE entries
 	 * are different than other versions of ALE. Also there are specific
@@ -29,22 +23,13 @@ struct cpsw_ale_params {
 	 * to identify this hardware.
 	 */
 	bool			nu_switch_ale;
-<<<<<<< HEAD
-	/* mask bit used in NU Switch ALE is 3 bits instead of 8 bits. So
-	 * pass it from caller.
-	 */
-	u32			major_ver_mask;
-=======
 	const struct reg_field *reg_fields;
 	int			num_fields;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const char		*dev_id;
 	unsigned long		bus_freq;
 };
 
 struct ale_entry_fld;
-<<<<<<< HEAD
-=======
 struct regmap;
 
 enum ale_fields {
@@ -96,16 +81,12 @@ enum ale_fields {
 	/* terminator */
 	ALE_FIELDS_MAX,
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct cpsw_ale {
 	struct cpsw_ale_params	params;
 	struct timer_list	timer;
-<<<<<<< HEAD
-=======
 	struct regmap		*regmap;
 	struct regmap_field	*fields[ALE_FIELDS_MAX];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	unsigned long		ageout;
 	u32			version;
 	u32			features;
@@ -213,9 +194,6 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
 int cpsw_ale_vlan_del_modify(struct cpsw_ale *ale, u16 vid, int port_mask);
 void cpsw_ale_set_unreg_mcast(struct cpsw_ale *ale, int unreg_mcast_mask,
 			      bool add);
-<<<<<<< HEAD
-=======
 void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif

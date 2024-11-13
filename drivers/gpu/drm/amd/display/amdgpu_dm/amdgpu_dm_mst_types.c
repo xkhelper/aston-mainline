@@ -253,11 +253,7 @@ static bool validate_dsc_caps_on_connector(struct amdgpu_dm_connector *aconnecto
 		aconnector->dsc_aux = &aconnector->mst_root->dm_dp_aux.aux;
 
 	/* synaptics cascaded MST hub case */
-<<<<<<< HEAD
-	if (!aconnector->dsc_aux && is_synaptics_cascaded_panamera(aconnector->dc_link, port))
-=======
 	if (is_synaptics_cascaded_panamera(aconnector->dc_link, port))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		aconnector->dsc_aux = port->mgr->aux;
 
 	if (!aconnector->dsc_aux)
@@ -582,11 +578,8 @@ dm_dp_add_mst_connector(struct drm_dp_mst_topology_mgr *mgr,
 	if (!aconnector)
 		return NULL;
 
-<<<<<<< HEAD
-=======
 	DRM_DEBUG_DRIVER("%s: Create aconnector 0x%p for port 0x%p\n", __func__, aconnector, port);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	connector = &aconnector->base;
 	aconnector->mst_output_port = port;
 	aconnector->mst_root = master;
@@ -881,19 +874,11 @@ static void set_dsc_configs_from_fairness_vars(struct dsc_mst_fairness_params *p
 		if (params[i].sink) {
 			if (params[i].sink->sink_signal != SIGNAL_TYPE_VIRTUAL &&
 				params[i].sink->sink_signal != SIGNAL_TYPE_NONE)
-<<<<<<< HEAD
-				DRM_DEBUG_DRIVER("%s i=%d dispname=%s\n", __func__, i,
-					params[i].sink->edid_caps.display_name);
-		}
-
-		DRM_DEBUG_DRIVER("dsc=%d bits_per_pixel=%d pbn=%d\n",
-=======
 				DRM_DEBUG_DRIVER("MST_DSC %s i=%d dispname=%s\n", __func__, i,
 					params[i].sink->edid_caps.display_name);
 		}
 
 		DRM_DEBUG_DRIVER("MST_DSC dsc=%d bits_per_pixel=%d pbn=%d\n",
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			params[i].timing->flags.DSC,
 			params[i].timing->dsc_cfg.bits_per_pixel,
 			vars[i + k].pbn);
@@ -1042,10 +1027,7 @@ static int try_disable_dsc(struct drm_atomic_state *state,
 	int remaining_to_try = 0;
 	int ret;
 	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
-<<<<<<< HEAD
-=======
 	int var_pbn;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < count; i++) {
 		if (vars[i + k].dsc_enabled
@@ -1075,27 +1057,13 @@ static int try_disable_dsc(struct drm_atomic_state *state,
 		if (next_index == -1)
 			break;
 
-<<<<<<< HEAD
-=======
 		DRM_DEBUG_DRIVER("MST_DSC index #%d, try no compression\n", next_index);
 		var_pbn = vars[next_index].pbn;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		vars[next_index].pbn = kbps_to_peak_pbn(params[next_index].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
 		ret = drm_dp_atomic_find_time_slots(state,
 						    params[next_index].port->mgr,
 						    params[next_index].port,
 						    vars[next_index].pbn);
-<<<<<<< HEAD
-		if (ret < 0)
-			return ret;
-
-		ret = drm_dp_mst_atomic_check(state);
-		if (ret == 0) {
-			vars[next_index].dsc_enabled = false;
-			vars[next_index].bpp_x16 = 0;
-		} else {
-			vars[next_index].pbn = kbps_to_peak_pbn(params[next_index].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
-=======
 		if (ret < 0) {
 			DRM_DEBUG_DRIVER("%s:%d MST_DSC index #%d, failed to set pbn to the state, %d\n",
 						__func__, __LINE__, next_index, ret);
@@ -1111,21 +1079,15 @@ static int try_disable_dsc(struct drm_atomic_state *state,
 		} else {
 			DRM_DEBUG_DRIVER("MST_DSC index #%d, restore optimized pbn value\n", next_index);
 			vars[next_index].pbn = var_pbn;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = drm_dp_atomic_find_time_slots(state,
 							    params[next_index].port->mgr,
 							    params[next_index].port,
 							    vars[next_index].pbn);
-<<<<<<< HEAD
-			if (ret < 0)
-				return ret;
-=======
 			if (ret < 0) {
 				DRM_DEBUG_DRIVER("%s:%d MST_DSC index #%d, failed to set pbn to the state, %d\n",
 							__func__, __LINE__, next_index, ret);
 				return ret;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 
 		tried[next_index] = true;
@@ -1134,8 +1096,6 @@ static int try_disable_dsc(struct drm_atomic_state *state,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static void log_dsc_params(int count, struct dsc_mst_fairness_vars *vars, int k)
 {
 	int i;
@@ -1145,7 +1105,6 @@ static void log_dsc_params(int count, struct dsc_mst_fairness_vars *vars, int k)
 				 i, vars[i + k].dsc_enabled, vars[i + k].bpp_x16, vars[i + k].pbn);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
 					    struct dc_state *dc_state,
 					    struct dc_link *dc_link,
@@ -1168,10 +1127,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
 		return PTR_ERR(mst_state);
 
 	/* Set up params */
-<<<<<<< HEAD
-=======
 	DRM_DEBUG_DRIVER("%s: MST_DSC Set up params for %d streams\n", __func__, dc_state->stream_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < dc_state->stream_count; i++) {
 		struct dc_dsc_policy dsc_policy = {0};
 
@@ -1200,11 +1156,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
 		params[count].num_slices_v = aconnector->dsc_settings.dsc_num_slices_v;
 		params[count].bpp_overwrite = aconnector->dsc_settings.dsc_bits_per_pixel;
 		params[count].compression_possible = stream->sink->dsc_caps.dsc_dec_caps.is_dsc_supported;
-<<<<<<< HEAD
-		dc_dsc_get_policy_for_timing(params[count].timing, 0, &dsc_policy);
-=======
 		dc_dsc_get_policy_for_timing(params[count].timing, 0, &dsc_policy, dc_link_get_highest_encoding_format(stream->link));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!dc_dsc_compute_bandwidth_range(
 				stream->sink->ctx->dc->res_pool->dscs[0],
 				stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
@@ -1217,12 +1169,9 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
 			params[count].bw_range.stream_kbps = dc_bandwidth_in_kbps_from_timing(&stream->timing,
 					dc_link_get_highest_encoding_format(dc_link));
 
-<<<<<<< HEAD
-=======
 		DRM_DEBUG_DRIVER("MST_DSC #%d stream 0x%p - max_kbps = %u, min_kbps = %u, uncompressed_kbps = %u\n",
 			count, stream, params[count].bw_range.max_kbps, params[count].bw_range.min_kbps,
 			params[count].bw_range.stream_kbps);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		count++;
 	}
 
@@ -1237,10 +1186,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
 	*link_vars_start_index += count;
 
 	/* Try no compression */
-<<<<<<< HEAD
-=======
 	DRM_DEBUG_DRIVER("MST_DSC Try no compression\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < count; i++) {
 		vars[i + k].aconnector = params[i].aconnector;
 		vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
@@ -1259,14 +1205,10 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
 		return ret;
 	}
 
-<<<<<<< HEAD
-	/* Try max compression */
-=======
 	log_dsc_params(count, vars, k);
 
 	/* Try max compression */
 	DRM_DEBUG_DRIVER("MST_DSC Try max compression\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < count; i++) {
 		if (params[i].compression_possible && params[i].clock_force_enable != DSC_CLK_FORCE_DISABLE) {
 			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.min_kbps, fec_overhead_multiplier_x1000);
@@ -1290,16 +1232,6 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
 	if (ret != 0)
 		return ret;
 
-<<<<<<< HEAD
-	/* Optimize degree of compression */
-	ret = increase_dsc_bpp(state, mst_state, dc_link, params, vars, count, k);
-	if (ret < 0)
-		return ret;
-
-	ret = try_disable_dsc(state, dc_link, params, vars, count, k);
-	if (ret < 0)
-		return ret;
-=======
 	log_dsc_params(count, vars, k);
 
 	/* Optimize degree of compression */
@@ -1320,7 +1252,6 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
 	}
 
 	log_dsc_params(count, vars, k);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	set_dsc_configs_from_fairness_vars(params, vars, count, k);
 
@@ -1342,30 +1273,19 @@ static bool is_dsc_need_re_compute(
 
 	/* only check phy used by dsc mst branch */
 	if (dc_link->type != dc_connection_mst_branch)
-<<<<<<< HEAD
-		return false;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* add a check for older MST DSC with no virtual DPCDs */
 	if (needs_dsc_aux_workaround(dc_link)  &&
 		(!(dc_link->dpcd_caps.dsc_caps.dsc_basic_caps.fields.dsc_support.DSC_SUPPORT ||
 		dc_link->dpcd_caps.dsc_caps.dsc_basic_caps.fields.dsc_support.DSC_PASSTHROUGH_SUPPORT)))
-<<<<<<< HEAD
-		return false;
-=======
 		goto out;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < MAX_PIPES; i++)
 		stream_on_link[i] = NULL;
 
-<<<<<<< HEAD
-=======
 	DRM_DEBUG_DRIVER("%s: MST_DSC check on %d streams in new dc_state\n", __func__, dc_state->stream_count);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* check if there is mode change in new request */
 	for (i = 0; i < dc_state->stream_count; i++) {
 		struct drm_crtc_state *new_crtc_state;
@@ -1375,11 +1295,8 @@ static bool is_dsc_need_re_compute(
 		if (!stream)
 			continue;
 
-<<<<<<< HEAD
-=======
 		DRM_DEBUG_DRIVER("%s:%d MST_DSC checking #%d stream 0x%p\n", __func__, __LINE__, i, stream);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/* check if stream using the same link for mst */
 		if (stream->link != dc_link)
 			continue;
@@ -1392,16 +1309,11 @@ static bool is_dsc_need_re_compute(
 		new_stream_on_link_num++;
 
 		new_conn_state = drm_atomic_get_new_connector_state(state, &aconnector->base);
-<<<<<<< HEAD
-		if (!new_conn_state)
-			continue;
-=======
 		if (!new_conn_state) {
 			DRM_DEBUG_DRIVER("%s:%d MST_DSC no new_conn_state for stream 0x%p, aconnector 0x%p\n",
 					 __func__, __LINE__, stream, aconnector);
 			continue;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (IS_ERR(new_conn_state))
 			continue;
@@ -1410,31 +1322,17 @@ static bool is_dsc_need_re_compute(
 			continue;
 
 		new_crtc_state = drm_atomic_get_new_crtc_state(state, new_conn_state->crtc);
-<<<<<<< HEAD
-		if (!new_crtc_state)
-			continue;
-=======
 		if (!new_crtc_state) {
 			DRM_DEBUG_DRIVER("%s:%d MST_DSC no new_crtc_state for crtc of stream 0x%p, aconnector 0x%p\n",
 						__func__, __LINE__, stream, aconnector);
 			continue;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (IS_ERR(new_crtc_state))
 			continue;
 
 		if (new_crtc_state->enable && new_crtc_state->active) {
 			if (new_crtc_state->mode_changed || new_crtc_state->active_changed ||
-<<<<<<< HEAD
-				new_crtc_state->connectors_changed)
-				return true;
-		}
-	}
-
-	if (new_stream_on_link_num == 0)
-		return false;
-=======
 					new_crtc_state->connectors_changed) {
 				DRM_DEBUG_DRIVER("%s:%d MST_DSC dsc recompute required."
 						 "stream 0x%p in new dc_state\n",
@@ -1454,7 +1352,6 @@ static bool is_dsc_need_re_compute(
 
 	DRM_DEBUG_DRIVER("%s: MST_DSC check on %d streams in current dc_state\n",
 			 __func__, dc->current_state->stream_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* check current_state if there stream on link but it is not in
 	 * new request state
@@ -1478,24 +1375,18 @@ static bool is_dsc_need_re_compute(
 
 		if (j == new_stream_on_link_num) {
 			/* not in new state */
-<<<<<<< HEAD
-=======
 			DRM_DEBUG_DRIVER("%s:%d MST_DSC dsc recompute required."
 					 "stream 0x%p in current dc_state but not in new dc_state\n",
 						__func__, __LINE__, stream);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			is_dsc_need_re_compute = true;
 			break;
 		}
 	}
 
-<<<<<<< HEAD
-=======
 out:
 	DRM_DEBUG_DRIVER("%s: MST_DSC dsc recompute %s\n",
 			 __func__, is_dsc_need_re_compute ? "required" : "not required");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return is_dsc_need_re_compute;
 }
 
@@ -1524,12 +1415,9 @@ int compute_mst_dsc_configs_for_state(struct drm_atomic_state *state,
 
 		aconnector = (struct amdgpu_dm_connector *)stream->dm_stream_context;
 
-<<<<<<< HEAD
-=======
 		DRM_DEBUG_DRIVER("%s: MST_DSC compute mst dsc configs for stream 0x%p, aconnector 0x%p\n",
 				__func__, stream, aconnector);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!aconnector || !aconnector->dc_sink || !aconnector->mst_output_port)
 			continue;
 
@@ -1562,16 +1450,11 @@ int compute_mst_dsc_configs_for_state(struct drm_atomic_state *state,
 		stream = dc_state->streams[i];
 
 		if (stream->timing.flags.DSC == 1)
-<<<<<<< HEAD
-			if (dc_stream_add_dsc_to_resource(stream->ctx->dc, dc_state, stream) != DC_OK)
-				return -EINVAL;
-=======
 			if (dc_stream_add_dsc_to_resource(stream->ctx->dc, dc_state, stream) != DC_OK) {
 				DRM_DEBUG_DRIVER("%s:%d MST_DSC Failed to request dsc hw resource for stream 0x%p\n",
 							__func__, __LINE__, stream);
 				return -EINVAL;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return ret;
@@ -1600,12 +1483,9 @@ static int pre_compute_mst_dsc_configs_for_state(struct drm_atomic_state *state,
 
 		aconnector = (struct amdgpu_dm_connector *)stream->dm_stream_context;
 
-<<<<<<< HEAD
-=======
 		DRM_DEBUG_DRIVER("MST_DSC pre compute mst dsc configs for #%d stream 0x%p, aconnector 0x%p\n",
 					i, stream, aconnector);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!aconnector || !aconnector->dc_sink || !aconnector->mst_output_port)
 			continue;
 
@@ -1695,20 +1575,12 @@ int pre_validate_dsc(struct drm_atomic_state *state,
 	int ret = 0;
 
 	if (!is_dsc_precompute_needed(state)) {
-<<<<<<< HEAD
-		DRM_INFO_ONCE("DSC precompute is not needed.\n");
-=======
 		DRM_INFO_ONCE("%s:%d MST_DSC dsc precompute is not needed\n", __func__, __LINE__);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 0;
 	}
 	ret = dm_atomic_get_state(state, dm_state_ptr);
 	if (ret != 0) {
-<<<<<<< HEAD
-		DRM_INFO_ONCE("dm_atomic_get_state() failed\n");
-=======
 		DRM_INFO_ONCE("%s:%d MST_DSC dm_atomic_get_state() failed\n", __func__, __LINE__);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return ret;
 	}
 	dm_state = *dm_state_ptr;
@@ -1762,12 +1634,8 @@ int pre_validate_dsc(struct drm_atomic_state *state,
 
 	ret = pre_compute_mst_dsc_configs_for_state(state, local_dc_state, vars);
 	if (ret != 0) {
-<<<<<<< HEAD
-		DRM_INFO_ONCE("pre_compute_mst_dsc_configs_for_state() failed\n");
-=======
 		DRM_INFO_ONCE("%s:%d MST_DSC dsc pre_compute_mst_dsc_configs_for_state() failed\n",
 				__func__, __LINE__);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EINVAL;
 		goto clean_exit;
 	}
@@ -1781,14 +1649,6 @@ int pre_validate_dsc(struct drm_atomic_state *state,
 
 		if (local_dc_state->streams[i] &&
 		    dc_is_timing_changed(stream, local_dc_state->streams[i])) {
-<<<<<<< HEAD
-			DRM_INFO_ONCE("crtc[%d] needs mode_changed\n", i);
-		} else {
-			int ind = find_crtc_index_in_state_by_stream(state, stream);
-
-			if (ind >= 0)
-				state->crtcs[ind].new_state->mode_changed = 0;
-=======
 			DRM_INFO_ONCE("%s:%d MST_DSC crtc[%d] needs mode_change\n", __func__, __LINE__, i);
 		} else {
 			int ind = find_crtc_index_in_state_by_stream(state, stream);
@@ -1798,7 +1658,6 @@ int pre_validate_dsc(struct drm_atomic_state *state,
 						__func__, __LINE__, stream);
 				state->crtcs[ind].new_state->mode_changed = 0;
 			}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 	}
 clean_exit:
@@ -1831,11 +1690,7 @@ static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
 {
 	struct dc_dsc_policy dsc_policy = {0};
 
-<<<<<<< HEAD
-	dc_dsc_get_policy_for_timing(&stream->timing, 0, &dsc_policy);
-=======
 	dc_dsc_get_policy_for_timing(&stream->timing, 0, &dsc_policy, dc_link_get_highest_encoding_format(stream->link));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dc_dsc_compute_bandwidth_range(stream->sink->ctx->dc->res_pool->dscs[0],
 				       stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
 				       dsc_policy.min_target_bpp * 16,
@@ -1927,11 +1782,7 @@ enum dc_status dm_dp_mst_is_port_support_mode(
 	end_to_end_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
 
 	if (stream_kbps <= end_to_end_bw_in_kbps) {
-<<<<<<< HEAD
-		DRM_DEBUG_DRIVER("No DSC needed. End-to-end bw sufficient.");
-=======
 		DRM_DEBUG_DRIVER("MST_DSC no dsc required. End-to-end bw sufficient\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return DC_OK;
 	}
 
@@ -1944,12 +1795,8 @@ enum dc_status dm_dp_mst_is_port_support_mode(
 		/*capable of dsc passthough. dsc bitstream along the entire path*/
 		if (aconnector->mst_output_port->passthrough_aux) {
 			if (bw_range.min_kbps > end_to_end_bw_in_kbps) {
-<<<<<<< HEAD
-				DRM_DEBUG_DRIVER("DSC passthrough. Max dsc compression can't fit into end-to-end bw\n");
-=======
 				DRM_DEBUG_DRIVER("MST_DSC dsc passthrough and decode at endpoint"
 						 "Max dsc compression bw can't fit into end-to-end bw\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				return DC_FAIL_BANDWIDTH_VALIDATE;
 			}
 		} else {
@@ -1960,12 +1807,8 @@ enum dc_status dm_dp_mst_is_port_support_mode(
 			/*Get last DP link BW capability*/
 			if (dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw)) {
 				if (stream_kbps > end_link_bw) {
-<<<<<<< HEAD
-					DRM_DEBUG_DRIVER("DSC decode at last link. Mode required bw can't fit into available bw\n");
-=======
 					DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
 							 "Mode required bw can't fit into last link\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					return DC_FAIL_BANDWIDTH_VALIDATE;
 				}
 			}
@@ -1978,12 +1821,8 @@ enum dc_status dm_dp_mst_is_port_support_mode(
 				virtual_channel_bw_in_kbps = kbps_from_pbn(immediate_upstream_port->full_pbn);
 				virtual_channel_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
 				if (bw_range.min_kbps > virtual_channel_bw_in_kbps) {
-<<<<<<< HEAD
-					DRM_DEBUG_DRIVER("DSC decode at last link. Max dsc compression can't fit into MST available bw\n");
-=======
 					DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
 							 "Max dsc compression can't fit into MST available bw\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					return DC_FAIL_BANDWIDTH_VALIDATE;
 				}
 			}
@@ -2000,15 +1839,9 @@ enum dc_status dm_dp_mst_is_port_support_mode(
 				dc_link_get_highest_encoding_format(stream->link),
 				&stream->timing.dsc_cfg)) {
 			stream->timing.flags.DSC = 1;
-<<<<<<< HEAD
-			DRM_DEBUG_DRIVER("Require dsc and dsc config found\n");
-		} else {
-			DRM_DEBUG_DRIVER("Require dsc but can't find appropriate dsc config\n");
-=======
 			DRM_DEBUG_DRIVER("MST_DSC require dsc and dsc config found\n");
 		} else {
 			DRM_DEBUG_DRIVER("MST_DSC require dsc but can't find appropriate dsc config\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return DC_FAIL_BANDWIDTH_VALIDATE;
 		}
 
@@ -2030,19 +1863,11 @@ enum dc_status dm_dp_mst_is_port_support_mode(
 
 		if (branch_max_throughput_mps != 0 &&
 			((stream->timing.pix_clk_100hz / 10) >  branch_max_throughput_mps * 1000)) {
-<<<<<<< HEAD
-			DRM_DEBUG_DRIVER("DSC is required but max throughput mps fails");
-			return DC_FAIL_BANDWIDTH_VALIDATE;
-		}
-	} else {
-		DRM_DEBUG_DRIVER("DSC is required but can't find common dsc config.");
-=======
 			DRM_DEBUG_DRIVER("MST_DSC require dsc but max throughput mps fails\n");
 			return DC_FAIL_BANDWIDTH_VALIDATE;
 		}
 	} else {
 		DRM_DEBUG_DRIVER("MST_DSC require dsc but can't find common dsc config\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return DC_FAIL_BANDWIDTH_VALIDATE;
 	}
 #endif

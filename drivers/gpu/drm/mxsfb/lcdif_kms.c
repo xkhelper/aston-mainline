@@ -407,12 +407,7 @@ static void lcdif_crtc_mode_set_nofb(struct drm_crtc_state *crtc_state,
 	struct drm_display_mode *m = &crtc_state->adjusted_mode;
 
 	DRM_DEV_DEBUG_DRIVER(drm->dev, "Pixel clock: %dkHz (actual: %dkHz)\n",
-<<<<<<< HEAD
-			     m->crtc_clock,
-			     (int)(clk_get_rate(lcdif->clk) / 1000));
-=======
 			     m->clock, (int)(clk_get_rate(lcdif->clk) / 1000));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DRM_DEV_DEBUG_DRIVER(drm->dev, "Bridge bus_flags: 0x%08X\n",
 			     lcdif_crtc_state->bus_flags);
 	DRM_DEV_DEBUG_DRIVER(drm->dev, "Mode flags: 0x%08X\n", m->flags);
@@ -542,11 +537,7 @@ static void lcdif_crtc_atomic_enable(struct drm_crtc *crtc,
 	struct drm_device *drm = lcdif->drm;
 	dma_addr_t paddr;
 
-<<<<<<< HEAD
-	clk_set_rate(lcdif->clk, m->crtc_clock * 1000);
-=======
 	clk_set_rate(lcdif->clk, m->clock * 1000);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pm_runtime_get_sync(drm->dev);
 

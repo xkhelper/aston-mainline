@@ -107,8 +107,6 @@ config OF_OVERLAY
 	  While this option is selected automatically when needed, you can
 	  enable it manually to improve device tree unit test coverage.
 
-<<<<<<< HEAD
-=======
 config OF_OVERLAY_KUNIT_TEST
 	tristate "Device Tree overlay KUnit tests" if !KUNIT_ALL_TESTS
 	depends on KUNIT
@@ -119,7 +117,6 @@ config OF_OVERLAY_KUNIT_TEST
 
 	  If unsure, say N here, but this option is safe to enable.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config OF_NUMA
 	bool
 

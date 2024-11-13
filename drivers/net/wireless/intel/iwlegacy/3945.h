@@ -157,15 +157,10 @@ struct il3945_ibss_seq {
 };
 
 #define IL_RX_HDR(x) ((struct il3945_rx_frame_hdr *)(\
-<<<<<<< HEAD
-		       x->u.rx_frame.stats.payload + \
-		       x->u.rx_frame.stats.phy_count))
-=======
 		      container_of(&x->u.rx_frame.stats, \
 				   struct il3945_rx_frame_stats, \
 				   hdr)->payload + \
 		      x->u.rx_frame.stats.phy_count))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define IL_RX_END(x) ((struct il3945_rx_frame_end *)(\
 		       IL_RX_HDR(x)->payload + \
 		       le16_to_cpu(IL_RX_HDR(x)->len)))

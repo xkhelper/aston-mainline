@@ -38,15 +38,8 @@ endif
 
 ifeq ($(DEBUG),1)
   CFLAGS += -O0
-<<<<<<< HEAD
-else ifeq ($(CC_NO_CLANG), 0)
-  CFLAGS += -O3
-else
-  CFLAGS += -O6
-=======
 else
   CFLAGS += -O3
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 # Treat warnings as errors unless directed not to
@@ -81,11 +74,7 @@ include $(srctree)/tools/build/Makefile.include
 
 all: fixdep $(LIBFILE)
 
-<<<<<<< HEAD
-$(SUBCMD_IN): FORCE
-=======
 $(SUBCMD_IN): fixdep FORCE
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	@$(MAKE) $(build)=libsubcmd
 
 $(LIBFILE): $(SUBCMD_IN)

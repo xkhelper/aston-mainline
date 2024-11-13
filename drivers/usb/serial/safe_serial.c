@@ -284,10 +284,6 @@ static int safe_startup(struct usb_serial *serial)
 
 static struct usb_serial_driver safe_device = {
 	.driver = {
-<<<<<<< HEAD
-		.owner =	THIS_MODULE,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name =		"safe_serial",
 	},
 	.id_table =		id_table,

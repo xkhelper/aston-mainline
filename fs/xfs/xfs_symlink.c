@@ -165,11 +165,7 @@ xfs_symlink(
 	/*
 	 * Allocate an inode for the symlink.
 	 */
-<<<<<<< HEAD
-	error = xfs_dialloc(&tp, dp->i_ino, S_IFLNK, &ino);
-=======
 	error = xfs_dialloc(&tp, &args, &ino);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!error)
 		error = xfs_icreate(tp, ino, &args, &du.ip);
 	if (error)

@@ -197,11 +197,7 @@ static void bt866_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id bt866_id[] = {
-<<<<<<< HEAD
-	{ "bt866", 0 },
-=======
 	{ "bt866" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, bt866_id);

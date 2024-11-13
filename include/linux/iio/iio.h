@@ -609,11 +609,7 @@ struct iio_dev {
 	int				scan_bytes;
 
 	const unsigned long		*available_scan_masks;
-<<<<<<< HEAD
-	unsigned			masklength;
-=======
 	unsigned			__private masklength;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const unsigned long		*active_scan_mask;
 	bool				scan_timestamp;
 	struct iio_trigger		*trig;
@@ -814,8 +810,6 @@ static inline struct dentry *iio_get_debugfs_dentry(struct iio_dev *indio_dev)
 }
 #endif
 
-<<<<<<< HEAD
-=======
 /**
  * iio_device_suspend_triggering() - suspend trigger attached to an iio_dev
  * @indio_dev: iio_dev associated with the device that will have triggers suspended
@@ -833,7 +827,6 @@ int iio_device_suspend_triggering(struct iio_dev *indio_dev);
  **/
 int iio_device_resume_triggering(struct iio_dev *indio_dev);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ACPI
 bool iio_read_acpi_mount_matrix(struct device *dev,
 				struct iio_mount_matrix *orientation,
@@ -879,8 +872,6 @@ static inline const struct iio_scan_type
 	return &chan->scan_type;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * iio_get_masklength - Get length of the channels mask
  * @indio_dev: the IIO device to get the masklength for
@@ -901,7 +892,6 @@ int iio_active_scan_mask_index(struct iio_dev *indio_dev);
 	for_each_set_bit((chan), (indio_dev)->active_scan_mask, \
 			 iio_get_masklength(indio_dev))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals);
 
 int iio_str_to_fixpoint(const char *str, int fract_mult, int *integer,

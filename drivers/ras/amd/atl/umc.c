@@ -401,20 +401,14 @@ unsigned long convert_umc_mca_addr_to_sys_addr(struct atl_err *err)
 	u8 coh_st_inst_id = get_coh_st_inst_id(err);
 	unsigned long addr = get_addr(err->addr);
 	u8 die_id = get_die_id(err);
-<<<<<<< HEAD
-=======
 	unsigned long ret_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	pr_debug("socket_id=0x%x die_id=0x%x coh_st_inst_id=0x%x addr=0x%016lx",
 		 socket_id, die_id, coh_st_inst_id, addr);
 
-<<<<<<< HEAD
-=======
 	ret_addr = prm_umc_norm_to_sys_addr(socket_id, err->ipid, addr);
 	if (!IS_ERR_VALUE(ret_addr))
 		return ret_addr;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return norm_to_sys_addr(socket_id, die_id, coh_st_inst_id, addr);
 }

@@ -129,12 +129,6 @@ int fbtft_write_vmem16_bus8(struct fbtft_par *par, size_t offset, size_t len)
 	int ret = 0;
 	size_t startbyte_size = 0;
 
-<<<<<<< HEAD
-	fbtft_par_dbg(DEBUG_WRITE_VMEM, par, "%s(offset=%zu, len=%zu)\n",
-		      __func__, offset, len);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	remain = len / 2;
 	vmem16 = (u16 *)(par->info->screen_buffer + offset);
 
@@ -185,12 +179,6 @@ int fbtft_write_vmem16_bus9(struct fbtft_par *par, size_t offset, size_t len)
 	int i;
 	int ret = 0;
 
-<<<<<<< HEAD
-	fbtft_par_dbg(DEBUG_WRITE_VMEM, par, "%s(offset=%zu, len=%zu)\n",
-		      __func__, offset, len);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!par->txbuf.buf) {
 		dev_err(par->info->device, "%s: txbuf.buf is NULL\n", __func__);
 		return -1;
@@ -238,12 +226,6 @@ int fbtft_write_vmem16_bus16(struct fbtft_par *par, size_t offset, size_t len)
 {
 	u16 *vmem16;
 
-<<<<<<< HEAD
-	fbtft_par_dbg(DEBUG_WRITE_VMEM, par, "%s(offset=%zu, len=%zu)\n",
-		      __func__, offset, len);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	vmem16 = (u16 *)(par->info->screen_buffer + offset);
 
 	/* no need for buffered write with 16-bit bus */

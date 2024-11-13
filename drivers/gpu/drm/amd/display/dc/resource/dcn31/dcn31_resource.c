@@ -1948,10 +1948,7 @@ static bool dcn31_resource_construct(
 
 	/* Use pipe context based otg sync logic */
 	dc->config.use_pipe_ctx_sync_logic = true;
-<<<<<<< HEAD
-=======
 	dc->config.disable_hbr_audio_dp2 = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* read VBIOS LTTPR caps */
 	{

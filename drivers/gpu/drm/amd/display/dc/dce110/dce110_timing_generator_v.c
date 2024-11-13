@@ -438,10 +438,7 @@ static void dce110_timing_generator_v_program_timing(struct timing_generator *tg
 	int vstartup_start,
 	int vupdate_offset,
 	int vupdate_width,
-<<<<<<< HEAD
-=======
 	int pstate_keepout,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const enum signal_type signal,
 	bool use_vbios)
 {

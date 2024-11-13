@@ -5,10 +5,7 @@
  * Author: Gene Chen <gene_chen@richtek.com>
  */
 
-<<<<<<< HEAD
-=======
 #include <linux/cleanup.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/crc8.h>
 #include <linux/i2c.h>
 #include <linux/init.h>
@@ -408,10 +405,6 @@ static int mt6360_regmap_read(void *context, const void *reg, size_t reg_size,
 	u8 reg_addr = *(u8 *)(reg + 1);
 	struct i2c_client *i2c;
 	bool crc_needed = false;
-<<<<<<< HEAD
-	u8 *buf;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int buf_len = MT6360_ALLOC_READ_SIZE(val_size);
 	int read_size = val_size;
 	u8 crc;
@@ -430,11 +423,7 @@ static int mt6360_regmap_read(void *context, const void *reg, size_t reg_size,
 		read_size += MT6360_CRC_CRC8_SIZE;
 	}
 
-<<<<<<< HEAD
-	buf = kzalloc(buf_len, GFP_KERNEL);
-=======
 	u8 *buf __free(kfree) = kzalloc(buf_len, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!buf)
 		return -ENOMEM;
 
@@ -444,26 +433,6 @@ static int mt6360_regmap_read(void *context, const void *reg, size_t reg_size,
 	ret = i2c_smbus_read_i2c_block_data(i2c, reg_addr, read_size,
 					    buf + MT6360_CRC_PREDATA_OFFSET);
 	if (ret < 0)
-<<<<<<< HEAD
-		goto out;
-	else if (ret != read_size) {
-		ret = -EIO;
-		goto out;
-	}
-
-	if (crc_needed) {
-		crc = crc8(ddata->crc8_tbl, buf, val_size + MT6360_CRC_PREDATA_OFFSET, 0);
-		if (crc != buf[val_size + MT6360_CRC_PREDATA_OFFSET]) {
-			ret = -EIO;
-			goto out;
-		}
-	}
-
-	memcpy(val, buf + MT6360_CRC_PREDATA_OFFSET, val_size);
-out:
-	kfree(buf);
-	return (ret < 0) ? ret : 0;
-=======
 		return ret;
 	else if (ret != read_size)
 		return -EIO;
@@ -477,7 +446,6 @@ out:
 	memcpy(val, buf + MT6360_CRC_PREDATA_OFFSET, val_size);
 
 	return 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int mt6360_regmap_write(void *context, const void *val, size_t val_size)

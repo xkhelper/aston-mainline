@@ -1145,8 +1145,4 @@ out:
 
 module_init(damon_dbgfs_init);
 
-<<<<<<< HEAD
-#include "dbgfs-test.h"
-=======
 #include "tests/dbgfs-kunit.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

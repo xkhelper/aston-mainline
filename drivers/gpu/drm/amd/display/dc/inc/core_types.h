@@ -534,13 +534,8 @@ struct dcn_bw_output {
 	unsigned int legacy_svp_drr_stream_index;
 	bool legacy_svp_drr_stream_index_valid;
 	struct dml2_mcache_surface_allocation mcache_allocations[DML2_MAX_PLANES];
-<<<<<<< HEAD
-	struct dmub_fams2_stream_static_state fams2_stream_params[DML2_MAX_PLANES];
-	unsigned fams2_stream_count;
-=======
 	struct dmub_cmd_fams2_global_config fams2_global_config;
 	struct dmub_fams2_stream_static_state fams2_stream_params[DML2_MAX_PLANES];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dml2_display_arb_regs arb_regs;
 };
 

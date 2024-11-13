@@ -20,17 +20,11 @@ static int sha3_512_init(struct shash_desc *desc)
 {
 	struct s390_sha_ctx *sctx = shash_desc_ctx(desc);
 
-<<<<<<< HEAD
-	memset(sctx->state, 0, sizeof(sctx->state));
-	sctx->count = 0;
-	sctx->func = CPACF_KIMD_SHA3_512;
-=======
 	if (!test_facility(86)) /* msa 12 */
 		memset(sctx->state, 0, sizeof(sctx->state));
 	sctx->count = 0;
 	sctx->func = CPACF_KIMD_SHA3_512;
 	sctx->first_message_part = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -45,10 +39,7 @@ static int sha3_512_export(struct shash_desc *desc, void *out)
 
 	memcpy(octx->st, sctx->state, sizeof(octx->st));
 	memcpy(octx->buf, sctx->buf, sizeof(octx->buf));
-<<<<<<< HEAD
-=======
 	octx->partial = sctx->first_message_part;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -64,10 +55,7 @@ static int sha3_512_import(struct shash_desc *desc, const void *in)
 
 	memcpy(sctx->state, ictx->st, sizeof(ictx->st));
 	memcpy(sctx->buf, ictx->buf, sizeof(ictx->buf));
-<<<<<<< HEAD
-=======
 	sctx->first_message_part = ictx->partial;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sctx->func = CPACF_KIMD_SHA3_512;
 
 	return 0;
@@ -84,10 +72,7 @@ static int sha3_384_import(struct shash_desc *desc, const void *in)
 
 	memcpy(sctx->state, ictx->st, sizeof(ictx->st));
 	memcpy(sctx->buf, ictx->buf, sizeof(ictx->buf));
-<<<<<<< HEAD
-=======
 	sctx->first_message_part = ictx->partial;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	sctx->func = CPACF_KIMD_SHA3_384;
 
 	return 0;
@@ -117,17 +102,11 @@ static int sha3_384_init(struct shash_desc *desc)
 {
 	struct s390_sha_ctx *sctx = shash_desc_ctx(desc);
 
-<<<<<<< HEAD
-	memset(sctx->state, 0, sizeof(sctx->state));
-	sctx->count = 0;
-	sctx->func = CPACF_KIMD_SHA3_384;
-=======
 	if (!test_facility(86)) /* msa 12 */
 		memset(sctx->state, 0, sizeof(sctx->state));
 	sctx->count = 0;
 	sctx->func = CPACF_KIMD_SHA3_384;
 	sctx->first_message_part = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }

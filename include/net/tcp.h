@@ -1069,12 +1069,8 @@ static inline bool tcp_skb_can_collapse(const struct sk_buff *to,
 	/* skb_cmp_decrypted() not needed, use tcp_write_collapse_fence() */
 	return likely(tcp_skb_can_collapse_to(to) &&
 		      mptcp_skb_can_collapse(to, from) &&
-<<<<<<< HEAD
-		      skb_pure_zcopy_same(to, from));
-=======
 		      skb_pure_zcopy_same(to, from) &&
 		      skb_frags_readable(to) == skb_frags_readable(from));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline bool tcp_skb_can_collapse_rx(const struct sk_buff *to,
@@ -2439,11 +2435,6 @@ static inline s64 tcp_rto_delta_us(const struct sock *sk)
 {
 	const struct sk_buff *skb = tcp_rtx_queue_head(sk);
 	u32 rto = inet_csk(sk)->icsk_rto;
-<<<<<<< HEAD
-	u64 rto_time_stamp_us = tcp_skb_timestamp_us(skb) + jiffies_to_usecs(rto);
-
-	return rto_time_stamp_us - tcp_sk(sk)->tcp_mstamp;
-=======
 
 	if (likely(skb)) {
 		u64 rto_time_stamp_us = tcp_skb_timestamp_us(skb) + jiffies_to_usecs(rto);
@@ -2464,7 +2455,6 @@ static inline s64 tcp_rto_delta_us(const struct sock *sk)
 		return jiffies_to_usecs(rto);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /*

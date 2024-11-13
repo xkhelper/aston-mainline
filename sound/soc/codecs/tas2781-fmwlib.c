@@ -13,10 +13,6 @@
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/of.h>
-<<<<<<< HEAD
-#include <linux/of_gpio.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/of_irq.h>
 #include <linux/regmap.h>
 #include <linux/slab.h>
@@ -24,11 +20,7 @@
 #include <sound/soc.h>
 #include <sound/tlv.h>
 #include <sound/tas2781.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define ERROR_PRAM_CRCCHK			0x0000000
 #define ERROR_YRAM_CRCCHK			0x0000001
@@ -2000,10 +1992,7 @@ static int tasdevice_dspfw_ready(const struct firmware *fmw,
 		break;
 	case 0x202:
 	case 0x400:
-<<<<<<< HEAD
-=======
 	case 0x401:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		tas_priv->fw_parse_variable_header =
 			fw_parse_variable_header_git;
 		tas_priv->fw_parse_program_data =
@@ -2163,22 +2152,6 @@ static int tasdevice_load_data(struct tasdevice_priv *tas_priv,
 
 static void tasdev_load_calibrated_data(struct tasdevice_priv *priv, int i)
 {
-<<<<<<< HEAD
-	struct tasdevice_calibration *cal;
-	struct tasdevice_fw *cal_fmw;
-
-	cal_fmw = priv->tasdevice[i].cali_data_fmw;
-
-	/* No calibrated data for current devices, playback will go ahead. */
-	if (!cal_fmw)
-		return;
-
-	cal = cal_fmw->calibrations;
-	if (!cal)
-		return;
-
-	load_calib_data(priv, &cal->dev_data);
-=======
 	struct tasdevice_fw *cal_fmw = priv->tasdevice[i].cali_data_fmw;
 	struct calidata *cali_data = &priv->cali_data;
 	struct cali_reg *p = &cali_data->cali_reg_array;
@@ -2234,7 +2207,6 @@ static void tasdev_load_calibrated_data(struct tasdevice_priv *priv, int i)
 		dev_err(priv->dev, "chn %d tlimit_reg err = %d\n", i, rc);
 		return;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int tasdevice_select_tuningprm_cfg(void *context, int prm_no,
@@ -2329,16 +2301,10 @@ int tasdevice_select_tuningprm_cfg(void *context, int prm_no,
 				tas_priv->tasdevice[i].cur_conf = cfg_no;
 			}
 		}
-<<<<<<< HEAD
-	} else
-		dev_dbg(tas_priv->dev, "%s: Unneeded loading dsp conf %d\n",
-			__func__, cfg_no);
-=======
 	} else {
 		dev_dbg(tas_priv->dev, "%s: Unneeded loading dsp conf %d\n",
 			__func__, cfg_no);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	status |= cfg_info[rca_conf_no]->active_dev;
 

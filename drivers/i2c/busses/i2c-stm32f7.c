@@ -2395,11 +2395,7 @@ static int __maybe_unused stm32f7_i2c_runtime_suspend(struct device *dev)
 	struct stm32f7_i2c_dev *i2c_dev = dev_get_drvdata(dev);
 
 	if (!stm32f7_i2c_is_slave_registered(i2c_dev))
-<<<<<<< HEAD
-		clk_disable_unprepare(i2c_dev->clk);
-=======
 		clk_disable(i2c_dev->clk);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return 0;
 }
@@ -2410,15 +2406,9 @@ static int __maybe_unused stm32f7_i2c_runtime_resume(struct device *dev)
 	int ret;
 
 	if (!stm32f7_i2c_is_slave_registered(i2c_dev)) {
-<<<<<<< HEAD
-		ret = clk_prepare_enable(i2c_dev->clk);
-		if (ret) {
-			dev_err(dev, "failed to prepare_enable clock\n");
-=======
 		ret = clk_enable(i2c_dev->clk);
 		if (ret) {
 			dev_err(dev, "failed to enable clock\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 	}

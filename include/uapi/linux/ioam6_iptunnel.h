@@ -50,15 +50,12 @@ enum {
 	IOAM6_IPTUNNEL_FREQ_K,		/* u32 */
 	IOAM6_IPTUNNEL_FREQ_N,		/* u32 */
 
-<<<<<<< HEAD
-=======
 	/* Tunnel src address.
 	 * For encap,auto modes.
 	 * Optional (automatic if not provided).
 	 */
 	IOAM6_IPTUNNEL_SRC,		/* struct in6_addr */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__IOAM6_IPTUNNEL_MAX,
 };
 

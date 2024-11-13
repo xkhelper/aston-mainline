@@ -2499,12 +2499,6 @@ static int smu_v13_0_7_set_power_profile_mode(struct smu_context *smu, long *inp
 						       smu->power_profile_mode);
 	if (workload_type < 0)
 		return -EINVAL;
-<<<<<<< HEAD
-	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
-				    1 << workload_type, NULL);
-	if (ret)
-		dev_err(smu->adev->dev, "[%s] Failed to set work load mask!", __func__);
-=======
 
 	ret = smu_cmn_send_smc_msg_with_param(smu, SMU_MSG_SetWorkloadMask,
 				    smu->workload_mask, NULL);
@@ -2513,7 +2507,6 @@ static int smu_v13_0_7_set_power_profile_mode(struct smu_context *smu, long *inp
 		dev_err(smu->adev->dev, "[%s] Failed to set work load mask!", __func__);
 	else
 		smu_cmn_assign_power_profile(smu);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return ret;
 }

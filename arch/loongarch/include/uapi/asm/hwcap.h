@@ -17,9 +17,6 @@
 #define HWCAP_LOONGARCH_LBT_ARM		(1 << 11)
 #define HWCAP_LOONGARCH_LBT_MIPS	(1 << 12)
 #define HWCAP_LOONGARCH_PTW		(1 << 13)
-<<<<<<< HEAD
-=======
 #define HWCAP_LOONGARCH_LSPW		(1 << 14)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #endif /* _UAPI_ASM_HWCAP_H */

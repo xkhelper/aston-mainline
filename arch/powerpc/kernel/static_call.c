@@ -17,11 +17,7 @@ void arch_static_call_transform(void *site, void *tramp, void *func, bool tail)
 	mutex_lock(&text_mutex);
 
 	if (func && !is_short) {
-<<<<<<< HEAD
-		err = patch_instruction(tramp + PPC_SCT_DATA, ppc_inst(target));
-=======
 		err = patch_ulong(tramp + PPC_SCT_DATA, target);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (err)
 			goto out;
 	}

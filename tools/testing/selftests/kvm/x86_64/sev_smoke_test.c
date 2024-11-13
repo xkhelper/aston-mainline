@@ -160,8 +160,6 @@ static void test_sev(void *guest_code, uint64_t policy)
 	kvm_vm_free(vm);
 }
 
-<<<<<<< HEAD
-=======
 static void guest_shutdown_code(void)
 {
 	struct desc_ptr idt;
@@ -192,7 +190,6 @@ static void test_sev_es_shutdown(void)
 	kvm_vm_free(vm);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int main(int argc, char *argv[])
 {
 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
@@ -204,11 +201,8 @@ int main(int argc, char *argv[])
 		test_sev(guest_sev_es_code, SEV_POLICY_ES | SEV_POLICY_NO_DBG);
 		test_sev(guest_sev_es_code, SEV_POLICY_ES);
 
-<<<<<<< HEAD
-=======
 		test_sev_es_shutdown();
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (kvm_has_cap(KVM_CAP_XCRS) &&
 		    (xgetbv(0) & XFEATURE_MASK_X87_AVX) == XFEATURE_MASK_X87_AVX) {
 			test_sync_vmsa(0);

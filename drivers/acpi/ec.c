@@ -783,12 +783,9 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
 	unsigned long tmp;
 	int ret = 0;
 
-<<<<<<< HEAD
-=======
 	if (t->rdata)
 		memset(t->rdata, 0, t->rlen);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* start transaction */
 	spin_lock_irqsave(&ec->lock, tmp);
 	/* Enable GPE for command processing (IBF=0/OBF=1) */
@@ -825,11 +822,6 @@ static int acpi_ec_transaction(struct acpi_ec *ec, struct transaction *t)
 
 	if (!ec || (!t) || (t->wlen && !t->wdata) || (t->rlen && !t->rdata))
 		return -EINVAL;
-<<<<<<< HEAD
-	if (t->rdata)
-		memset(t->rdata, 0, t->rlen);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	mutex_lock(&ec->mutex);
 	if (ec->global_lock) {
@@ -856,11 +848,7 @@ static int acpi_ec_burst_enable(struct acpi_ec *ec)
 				.wdata = NULL, .rdata = &d,
 				.wlen = 0, .rlen = 1};
 
-<<<<<<< HEAD
-	return acpi_ec_transaction(ec, &t);
-=======
 	return acpi_ec_transaction_unlocked(ec, &t);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int acpi_ec_burst_disable(struct acpi_ec *ec)
@@ -870,11 +858,7 @@ static int acpi_ec_burst_disable(struct acpi_ec *ec)
 				.wlen = 0, .rlen = 0};
 
 	return (acpi_ec_read_status(ec) & ACPI_EC_FLAG_BURST) ?
-<<<<<<< HEAD
-				acpi_ec_transaction(ec, &t) : 0;
-=======
 				acpi_ec_transaction_unlocked(ec, &t) : 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
@@ -890,8 +874,6 @@ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
 	return result;
 }
 
-<<<<<<< HEAD
-=======
 static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
 {
 	int result;
@@ -905,7 +887,6 @@ static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
 	return result;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
 {
 	u8 wdata[2] = { address, data };
@@ -916,8 +897,6 @@ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
 	return acpi_ec_transaction(ec, &t);
 }
 
-<<<<<<< HEAD
-=======
 static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
 {
 	u8 wdata[2] = { address, data };
@@ -928,7 +907,6 @@ static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
 	return acpi_ec_transaction_unlocked(ec, &t);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int ec_read(u8 addr, u8 *val)
 {
 	int err;
@@ -1369,10 +1347,7 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
 	struct acpi_ec *ec = handler_context;
 	int result = 0, i, bytes = bits / 8;
 	u8 *value = (u8 *)value64;
-<<<<<<< HEAD
-=======
 	u32 glk;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if ((address > 0xFF) || !value || !handler_context)
 		return AE_BAD_PARAMETER;
@@ -1380,8 +1355,6 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
 	if (function != ACPI_READ && function != ACPI_WRITE)
 		return AE_BAD_PARAMETER;
 
-<<<<<<< HEAD
-=======
 	mutex_lock(&ec->mutex);
 
 	if (ec->global_lock) {
@@ -1394,19 +1367,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
 		}
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ec->busy_polling || bits > 8)
 		acpi_ec_burst_enable(ec);
 
 	for (i = 0; i < bytes; ++i, ++address, ++value) {
 		result = (function == ACPI_READ) ?
-<<<<<<< HEAD
-			acpi_ec_read(ec, address, value) :
-			acpi_ec_write(ec, address, *value);
-=======
 			acpi_ec_read_unlocked(ec, address, value) :
 			acpi_ec_write_unlocked(ec, address, *value);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (result < 0)
 			break;
 	}
@@ -1414,15 +1381,12 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
 	if (ec->busy_polling || bits > 8)
 		acpi_ec_burst_disable(ec);
 
-<<<<<<< HEAD
-=======
 	if (ec->global_lock)
 		acpi_release_global_lock(glk);
 
 unlock:
 	mutex_unlock(&ec->mutex);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (result) {
 	case -EINVAL:
 		return AE_BAD_PARAMETER;

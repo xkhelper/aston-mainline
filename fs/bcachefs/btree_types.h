@@ -138,8 +138,6 @@ struct btree {
 	struct list_head	list;
 };
 
-<<<<<<< HEAD
-=======
 #define BCH_BTREE_CACHE_NOT_FREED_REASONS()	\
 	x(lock_intent)				\
 	x(lock_write)				\
@@ -165,7 +163,6 @@ struct btree_cache_list {
 	size_t			nr;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct btree_cache {
 	struct rhashtable	table;
 	bool			table_init_done;
@@ -183,30 +180,6 @@ struct btree_cache {
 	 * should never grow past ~2-3 nodes in practice.
 	 */
 	struct mutex		lock;
-<<<<<<< HEAD
-	struct list_head	live;
-	struct list_head	freeable;
-	struct list_head	freed_pcpu;
-	struct list_head	freed_nonpcpu;
-
-	/* Number of elements in live + freeable lists */
-	unsigned		used;
-	unsigned		reserve;
-	unsigned		freed;
-	unsigned		not_freed_lock_intent;
-	unsigned		not_freed_lock_write;
-	unsigned		not_freed_dirty;
-	unsigned		not_freed_read_in_flight;
-	unsigned		not_freed_write_in_flight;
-	unsigned		not_freed_noevict;
-	unsigned		not_freed_write_blocked;
-	unsigned		not_freed_will_make_reachable;
-	unsigned		not_freed_access_bit;
-	atomic_t		dirty;
-	struct shrinker		*shrink;
-
-	unsigned		used_by_btree[BTREE_ID_NR];
-=======
 	struct list_head	freeable;
 	struct list_head	freed_pcpu;
 	struct list_head	freed_nonpcpu;
@@ -220,7 +193,6 @@ struct btree_cache {
 	/* shrinker stats */
 	size_t			nr_freed;
 	u64			not_freed[BCH_BTREE_CACHE_NOT_FREED_REASONS_NR];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * If we need to allocate memory for a new btree node and that
@@ -233,13 +205,8 @@ struct btree_cache {
 
 	struct bbpos		pinned_nodes_start;
 	struct bbpos		pinned_nodes_end;
-<<<<<<< HEAD
-	u64			pinned_nodes_leaf_mask;
-	u64			pinned_nodes_interior_mask;
-=======
 	/* btree id mask: 0 for leaves, 1 for interior */
 	u64			pinned_nodes_mask[2];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 struct btree_node_iter {
@@ -435,27 +402,16 @@ struct bkey_cached {
 	struct btree_bkey_cached_common c;
 
 	unsigned long		flags;
-<<<<<<< HEAD
-	unsigned long		btree_trans_barrier_seq;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16			u64s;
 	struct bkey_cached_key	key;
 
 	struct rhash_head	hash;
-<<<<<<< HEAD
-	struct list_head	list;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	struct journal_entry_pin journal;
 	u64			seq;
 
 	struct bkey_i		*k;
-<<<<<<< HEAD
-=======
 	struct rcu_head		rcu;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline struct bpos btree_node_pos(struct btree_bkey_cached_common *b)
@@ -642,12 +598,8 @@ enum btree_write_type {
 	x(dying)							\
 	x(fake)								\
 	x(need_rewrite)							\
-<<<<<<< HEAD
-	x(never_write)
-=======
 	x(never_write)							\
 	x(pinned)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 enum btree_flags {
 	/* First bits for btree node write type */

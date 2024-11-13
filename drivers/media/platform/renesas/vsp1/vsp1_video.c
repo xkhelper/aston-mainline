@@ -1082,8 +1082,6 @@ static const struct v4l2_file_operations vsp1_video_fops = {
 };
 
 /* -----------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
  * Media entity operations
  */
 
@@ -1105,7 +1103,6 @@ static const struct media_entity_operations vsp1_video_media_ops = {
 };
 
 /* -----------------------------------------------------------------------------
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * Suspend and Resume
  */
 
@@ -1239,10 +1236,7 @@ struct vsp1_video *vsp1_video_create(struct vsp1_device *vsp1,
 
 	/* ... and the video node... */
 	video->video.v4l2_dev = &video->vsp1->v4l2_dev;
-<<<<<<< HEAD
-=======
 	video->video.entity.ops = &vsp1_video_media_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	video->video.fops = &vsp1_video_fops;
 	snprintf(video->video.name, sizeof(video->video.name), "%s %s",
 		 rwpf->entity.subdev.name, direction);

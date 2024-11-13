@@ -1011,11 +1011,7 @@ void radeon_i2c_add(struct radeon_device *rdev,
 		    struct radeon_i2c_bus_rec *rec,
 		    const char *name)
 {
-<<<<<<< HEAD
-	struct drm_device *dev = rdev->ddev;
-=======
 	struct drm_device *dev = rdev_to_drm(rdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i;
 
 	for (i = 0; i < RADEON_MAX_I2C_BUS; i++) {

@@ -206,8 +206,6 @@ static int x86__annotate_init(struct arch *arch, char *cpuid)
 	arch->initialized = true;
 	return err;
 }
-<<<<<<< HEAD
-=======
 
 #ifdef HAVE_DWARF_SUPPORT
 static void update_insn_state_x86(struct type_state *state,
@@ -597,4 +595,3 @@ retry:
 	/* Case 4. memory to memory transfers (not handled for now) */
 }
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

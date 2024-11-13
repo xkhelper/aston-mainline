@@ -67,71 +67,39 @@ static struct bpf_map *sock_map_alloc(union bpf_attr *attr)
 
 int sock_map_get_from_fd(const union bpf_attr *attr, struct bpf_prog *prog)
 {
-<<<<<<< HEAD
-	u32 ufd = attr->target_fd;
 	struct bpf_map *map;
-	struct fd f;
-=======
-	struct bpf_map *map;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (attr->attach_flags || attr->replace_bpf_fd)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	f = fdget(ufd);
-=======
 	CLASS(fd, f)(attr->target_fd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
 	mutex_lock(&sockmap_mutex);
 	ret = sock_map_prog_update(map, prog, NULL, NULL, attr->attach_type);
 	mutex_unlock(&sockmap_mutex);
-<<<<<<< HEAD
-	fdput(f);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
 int sock_map_prog_detach(const union bpf_attr *attr, enum bpf_prog_type ptype)
 {
-<<<<<<< HEAD
-	u32 ufd = attr->target_fd;
 	struct bpf_prog *prog;
 	struct bpf_map *map;
-	struct fd f;
-=======
-	struct bpf_prog *prog;
-	struct bpf_map *map;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	if (attr->attach_flags || attr->replace_bpf_fd)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	f = fdget(ufd);
-=======
 	CLASS(fd, f)(attr->target_fd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
 
 	prog = bpf_prog_get(attr->attach_bpf_fd);
-<<<<<<< HEAD
-	if (IS_ERR(prog)) {
-		ret = PTR_ERR(prog);
-		goto put_map;
-	}
-=======
 	if (IS_ERR(prog))
 		return PTR_ERR(prog);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (prog->type != ptype) {
 		ret = -EINVAL;
@@ -143,11 +111,6 @@ int sock_map_prog_detach(const union bpf_attr *attr, enum bpf_prog_type ptype)
 	mutex_unlock(&sockmap_mutex);
 put_prog:
 	bpf_prog_put(prog);
-<<<<<<< HEAD
-put_map:
-	fdput(f);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -684,11 +647,8 @@ BPF_CALL_4(bpf_sk_redirect_map, struct sk_buff *, skb,
 	sk = __sock_map_lookup_elem(map, key);
 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
 		return SK_DROP;
-<<<<<<< HEAD
-=======
 	if ((flags & BPF_F_INGRESS) && sk_is_vsock(sk))
 		return SK_DROP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
 	return SK_PASS;
@@ -717,11 +677,8 @@ BPF_CALL_4(bpf_msg_redirect_map, struct sk_msg *, msg,
 		return SK_DROP;
 	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
 		return SK_DROP;
-<<<<<<< HEAD
-=======
 	if (sk_is_vsock(sk))
 		return SK_DROP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	msg->flags = flags;
 	msg->sk_redir = sk;
@@ -1221,10 +1178,7 @@ static void sock_hash_free(struct bpf_map *map)
 			sock_put(elem->sk);
 			sock_hash_free_elem(htab, elem);
 		}
-<<<<<<< HEAD
-=======
 		cond_resched();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	/* wait for psock readers accessing its map link */
@@ -1299,11 +1253,8 @@ BPF_CALL_4(bpf_sk_redirect_hash, struct sk_buff *, skb,
 	sk = __sock_hash_lookup_elem(map, key);
 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
 		return SK_DROP;
-<<<<<<< HEAD
-=======
 	if ((flags & BPF_F_INGRESS) && sk_is_vsock(sk))
 		return SK_DROP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
 	return SK_PASS;
@@ -1332,11 +1283,8 @@ BPF_CALL_4(bpf_msg_redirect_hash, struct sk_msg *, msg,
 		return SK_DROP;
 	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
 		return SK_DROP;
-<<<<<<< HEAD
-=======
 	if (sk_is_vsock(sk))
 		return SK_DROP;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	msg->flags = flags;
 	msg->sk_redir = sk;
@@ -1602,29 +1550,17 @@ int sock_map_bpf_prog_query(const union bpf_attr *attr,
 			    union bpf_attr __user *uattr)
 {
 	__u32 __user *prog_ids = u64_to_user_ptr(attr->query.prog_ids);
-<<<<<<< HEAD
-	u32 prog_cnt = 0, flags = 0, ufd = attr->target_fd;
-	struct bpf_prog **pprog;
-	struct bpf_prog *prog;
-	struct bpf_map *map;
-	struct fd f;
-=======
 	u32 prog_cnt = 0, flags = 0;
 	struct bpf_prog **pprog;
 	struct bpf_prog *prog;
 	struct bpf_map *map;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 id = 0;
 	int ret;
 
 	if (attr->query.query_flags)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	f = fdget(ufd);
-=======
 	CLASS(fd, f)(attr->target_fd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	map = __bpf_map_get(f);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
@@ -1656,10 +1592,6 @@ end:
 	    copy_to_user(&uattr->query.prog_cnt, &prog_cnt, sizeof(prog_cnt)))
 		ret = -EFAULT;
 
-<<<<<<< HEAD
-	fdput(f);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ret;
 }
 
@@ -1828,13 +1760,10 @@ static int sock_map_link_update_prog(struct bpf_link *link,
 		ret = -EINVAL;
 		goto out;
 	}
-<<<<<<< HEAD
-=======
 	if (!sockmap_link->map) {
 		ret = -ENOLINK;
 		goto out;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ret = sock_map_prog_link_lookup(sockmap_link->map, &pprog, &plink,
 					sockmap_link->attach_type);

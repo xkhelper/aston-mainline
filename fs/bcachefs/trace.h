@@ -3,10 +3,6 @@
 #define TRACE_SYSTEM bcachefs
 
 #if !defined(_TRACE_BCACHEFS_H) || defined(TRACE_HEADER_MULTI_READ)
-<<<<<<< HEAD
-#define _TRACE_BCACHEFS_H
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <linux/tracepoint.h>
 
@@ -561,10 +557,7 @@ TRACE_EVENT(btree_path_relock_fail,
 		__field(unsigned long,		caller_ip	)
 		__field(u8,			btree_id	)
 		__field(u8,			level		)
-<<<<<<< HEAD
-=======
 		__field(u8,			path_idx)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		TRACE_BPOS_entries(pos)
 		__array(char,			node, 24	)
 		__field(u8,			self_read_count	)
@@ -582,12 +575,8 @@ TRACE_EVENT(btree_path_relock_fail,
 		strscpy(__entry->trans_fn, trans->fn, sizeof(__entry->trans_fn));
 		__entry->caller_ip		= caller_ip;
 		__entry->btree_id		= path->btree_id;
-<<<<<<< HEAD
-		__entry->level			= path->level;
-=======
 		__entry->level			= level;
 		__entry->path_idx		= path - trans->paths;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		TRACE_BPOS_assign(pos, path->pos);
 
 		c = bch2_btree_node_lock_counts(trans, NULL, &path->l[level].b->c, level);
@@ -600,11 +589,7 @@ TRACE_EVENT(btree_path_relock_fail,
 			c = six_lock_counts(&path->l[level].b->c.lock);
 			__entry->read_count	= c.n[SIX_LOCK_read];
 			__entry->intent_count	= c.n[SIX_LOCK_intent];
-<<<<<<< HEAD
-			scnprintf(__entry->node, sizeof(__entry->node), "%px", b);
-=======
 			scnprintf(__entry->node, sizeof(__entry->node), "%px", &b->c);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		__entry->iter_lock_seq		= path->l[level].lock_seq;
 		__entry->node_lock_seq		= is_btree_node(path, level)
@@ -612,16 +597,10 @@ TRACE_EVENT(btree_path_relock_fail,
 			: 0;
 	),
 
-<<<<<<< HEAD
-	TP_printk("%s %pS btree %s pos %llu:%llu:%u level %u node %s held %u:%u lock count %u:%u iter seq %u lock seq %u",
-		  __entry->trans_fn,
-		  (void *) __entry->caller_ip,
-=======
 	TP_printk("%s %pS\nidx %2u btree %s pos %llu:%llu:%u level %u node %s held %u:%u lock count %u:%u iter seq %u lock seq %u",
 		  __entry->trans_fn,
 		  (void *) __entry->caller_ip,
 		  __entry->path_idx,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		  bch2_btree_id_str(__entry->btree_id),
 		  __entry->pos_inode,
 		  __entry->pos_offset,
@@ -648,10 +627,7 @@ TRACE_EVENT(btree_path_upgrade_fail,
 		__field(unsigned long,		caller_ip	)
 		__field(u8,			btree_id	)
 		__field(u8,			level		)
-<<<<<<< HEAD
-=======
 		__field(u8,			path_idx)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		TRACE_BPOS_entries(pos)
 		__field(u8,			locked		)
 		__field(u8,			self_read_count	)
@@ -669,10 +645,7 @@ TRACE_EVENT(btree_path_upgrade_fail,
 		__entry->caller_ip		= caller_ip;
 		__entry->btree_id		= path->btree_id;
 		__entry->level			= level;
-<<<<<<< HEAD
-=======
 		__entry->path_idx		= path - trans->paths;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		TRACE_BPOS_assign(pos, path->pos);
 		__entry->locked			= btree_node_locked(path, level);
 
@@ -688,16 +661,10 @@ TRACE_EVENT(btree_path_upgrade_fail,
 			: 0;
 	),
 
-<<<<<<< HEAD
-	TP_printk("%s %pS btree %s pos %llu:%llu:%u level %u locked %u held %u:%u lock count %u:%u iter seq %u lock seq %u",
-		  __entry->trans_fn,
-		  (void *) __entry->caller_ip,
-=======
 	TP_printk("%s %pS\nidx %2u btree %s pos %llu:%llu:%u level %u locked %u held %u:%u lock count %u:%u iter seq %u lock seq %u",
 		  __entry->trans_fn,
 		  (void *) __entry->caller_ip,
 		  __entry->path_idx,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		  bch2_btree_id_str(__entry->btree_id),
 		  __entry->pos_inode,
 		  __entry->pos_offset,
@@ -1476,8 +1443,6 @@ TRACE_EVENT(error_downcast,
 	TP_printk("%s -> %s %s", __entry->bch_err, __entry->std_err, __entry->ip)
 );
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_BCACHEFS_PATH_TRACEPOINTS
 
 TRACE_EVENT(update_by_path,
@@ -1928,7 +1893,6 @@ static inline void trace_btree_path_free_trans_begin(btree_path_idx_t path) {}
 #endif /* CONFIG_BCACHEFS_PATH_TRACEPOINTS */
 
 #define _TRACE_BCACHEFS_H
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* _TRACE_BCACHEFS_H */
 
 /* This part must be outside protection */

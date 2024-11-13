@@ -1485,11 +1485,7 @@ trace_selftest_startup_wakeup(struct tracer *trace, struct trace_array *tr)
 	/* reset the max latency */
 	tr->max_latency = 0;
 
-<<<<<<< HEAD
-	while (p->on_rq) {
-=======
 	while (task_is_runnable(p)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		/*
 		 * Sleep to make sure the -deadline thread is asleep too.
 		 * On virtual machines we can't rely on timings,

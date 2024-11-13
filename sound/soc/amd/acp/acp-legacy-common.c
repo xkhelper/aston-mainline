@@ -113,23 +113,6 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
 	switch (dai->driver->id) {
 	case I2S_SP_INSTANCE:
 		if (dir == SNDRV_PCM_STREAM_PLAYBACK) {
-<<<<<<< HEAD
-			reg_dma_size = ACP_I2S_TX_DMA_SIZE;
-			acp_fifo_addr = rsrc->sram_pte_offset +
-					SP_PB_FIFO_ADDR_OFFSET;
-			reg_fifo_addr = ACP_I2S_TX_FIFOADDR;
-			reg_fifo_size = ACP_I2S_TX_FIFOSIZE;
-			phy_addr = I2S_SP_TX_MEM_WINDOW_START + stream->reg_offset;
-			writel(phy_addr, adata->acp_base + ACP_I2S_TX_RINGBUFADDR);
-		} else {
-			reg_dma_size = ACP_I2S_RX_DMA_SIZE;
-			acp_fifo_addr = rsrc->sram_pte_offset +
-					SP_CAPT_FIFO_ADDR_OFFSET;
-			reg_fifo_addr = ACP_I2S_RX_FIFOADDR;
-			reg_fifo_size = ACP_I2S_RX_FIFOSIZE;
-			phy_addr = I2S_SP_RX_MEM_WINDOW_START + stream->reg_offset;
-			writel(phy_addr, adata->acp_base + ACP_I2S_RX_RINGBUFADDR);
-=======
 			reg_dma_size = ACP_I2S_TX_DMA_SIZE(adata);
 			acp_fifo_addr = rsrc->sram_pte_offset +
 					SP_PB_FIFO_ADDR_OFFSET;
@@ -145,28 +128,10 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
 			reg_fifo_size = ACP_I2S_RX_FIFOSIZE(adata);
 			phy_addr = I2S_SP_RX_MEM_WINDOW_START + stream->reg_offset;
 			writel(phy_addr, adata->acp_base + ACP_I2S_RX_RINGBUFADDR(adata));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 	case I2S_BT_INSTANCE:
 		if (dir == SNDRV_PCM_STREAM_PLAYBACK) {
-<<<<<<< HEAD
-			reg_dma_size = ACP_BT_TX_DMA_SIZE;
-			acp_fifo_addr = rsrc->sram_pte_offset +
-					BT_PB_FIFO_ADDR_OFFSET;
-			reg_fifo_addr = ACP_BT_TX_FIFOADDR;
-			reg_fifo_size = ACP_BT_TX_FIFOSIZE;
-			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
-			writel(phy_addr, adata->acp_base + ACP_BT_TX_RINGBUFADDR);
-		} else {
-			reg_dma_size = ACP_BT_RX_DMA_SIZE;
-			acp_fifo_addr = rsrc->sram_pte_offset +
-					BT_CAPT_FIFO_ADDR_OFFSET;
-			reg_fifo_addr = ACP_BT_RX_FIFOADDR;
-			reg_fifo_size = ACP_BT_RX_FIFOSIZE;
-			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
-			writel(phy_addr, adata->acp_base + ACP_BT_RX_RINGBUFADDR);
-=======
 			reg_dma_size = ACP_BT_TX_DMA_SIZE(adata);
 			acp_fifo_addr = rsrc->sram_pte_offset +
 					BT_PB_FIFO_ADDR_OFFSET;
@@ -182,7 +147,6 @@ static int set_acp_i2s_dma_fifo(struct snd_pcm_substream *substream,
 			reg_fifo_size = ACP_BT_RX_FIFOSIZE(adata);
 			phy_addr = I2S_BT_TX_MEM_WINDOW_START + stream->reg_offset;
 			writel(phy_addr, adata->acp_base + ACP_BT_RX_RINGBUFADDR(adata));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		}
 		break;
 	case I2S_HS_INSTANCE:
@@ -306,10 +270,7 @@ static int acp_power_on(struct acp_chip_info *chip)
 		acp_pgfsm_ctrl_reg = ACP63_PGFSM_CONTROL;
 		break;
 	case ACP70_DEV:
-<<<<<<< HEAD
-=======
 	case ACP71_DEV:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		acp_pgfsm_stat_reg = ACP70_PGFSM_STATUS;
 		acp_pgfsm_ctrl_reg = ACP70_PGFSM_CONTROL;
 		break;
@@ -361,11 +322,8 @@ int acp_init(struct acp_chip_info *chip)
 		pr_err("ACP reset failed\n");
 		return ret;
 	}
-<<<<<<< HEAD
-=======
 	if (chip->acp_rev >= ACP70_DEV)
 		writel(0, chip->base + ACP_ZSC_DSP_CTRL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL_NS_GPL(acp_init, SND_SOC_ACP_COMMON);
@@ -379,15 +337,10 @@ int acp_deinit(struct acp_chip_info *chip)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	if (chip->acp_rev != ACP70_DEV)
-		writel(0, chip->base + ACP_CONTROL);
-=======
 	if (chip->acp_rev < ACP70_DEV)
 		writel(0, chip->base + ACP_CONTROL);
 	else
 		writel(0x01, chip->base + ACP_ZSC_DSP_CTRL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 }
 EXPORT_SYMBOL_NS_GPL(acp_deinit, SND_SOC_ACP_COMMON);
@@ -508,10 +461,7 @@ void check_acp_config(struct pci_dev *pci, struct acp_chip_info *chip)
 		check_acp6x_config(chip);
 		break;
 	case ACP70_DEV:
-<<<<<<< HEAD
-=======
 	case ACP71_DEV:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pdm_addr = ACP70_PDM_ADDR;
 		check_acp70_config(chip);
 		break;

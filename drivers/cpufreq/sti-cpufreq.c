@@ -267,11 +267,7 @@ static int __init sti_cpufreq_init(void)
 		goto skip_voltage_scaling;
 	}
 
-<<<<<<< HEAD
-	if (!of_get_property(ddata.cpu->of_node, "operating-points-v2", NULL)) {
-=======
 	if (!of_property_present(ddata.cpu->of_node, "operating-points-v2")) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(ddata.cpu, "OPP-v2 not supported\n");
 		goto skip_voltage_scaling;
 	}

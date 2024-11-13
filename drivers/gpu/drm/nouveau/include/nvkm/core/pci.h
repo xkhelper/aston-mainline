@@ -10,9 +10,5 @@ struct nvkm_device_pci {
 };
 
 int nvkm_device_pci_new(struct pci_dev *, const char *cfg, const char *dbg,
-<<<<<<< HEAD
-			bool detect, bool mmio, u64 subdev_mask,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			struct nvkm_device **);
 #endif

@@ -121,11 +121,8 @@ described in more detail in the footnotes.
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
 | ``BPF_PROG_TYPE_LWT_XMIT``                |                                        | ``lwt_xmit``                     |           |
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
-<<<<<<< HEAD
-=======
 | ``BPF_PROG_TYPE_NETFILTER``               |                                        | ``netfilter``                    |           |
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 | ``BPF_PROG_TYPE_PERF_EVENT``              |                                        | ``perf_event``                   |           |
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
 | ``BPF_PROG_TYPE_RAW_TRACEPOINT_WRITABLE`` |                                        | ``raw_tp.w+`` [#rawtp]_          |           |
@@ -136,13 +133,6 @@ described in more detail in the footnotes.
 +                                           +                                        +----------------------------------+-----------+
 |                                           |                                        | ``raw_tracepoint+``              |           |
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
-<<<<<<< HEAD
-| ``BPF_PROG_TYPE_SCHED_ACT``               |                                        | ``action``                       |           |
-+-------------------------------------------+----------------------------------------+----------------------------------+-----------+
-| ``BPF_PROG_TYPE_SCHED_CLS``               |                                        | ``classifier``                   |           |
-+                                           +                                        +----------------------------------+-----------+
-|                                           |                                        | ``tc``                           |           |
-=======
 | ``BPF_PROG_TYPE_SCHED_ACT``               |                                        | ``action`` [#tc_legacy]_         |           |
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
 | ``BPF_PROG_TYPE_SCHED_CLS``               |                                        | ``classifier`` [#tc_legacy]_     |           |
@@ -160,7 +150,6 @@ described in more detail in the footnotes.
 |                                           | ``BPF_TCX_INGRESS``                    | ``tcx/ingress``                  |           |
 +                                           +----------------------------------------+----------------------------------+-----------+
 |                                           | ``BPF_TCX_EGRESS``                     | ``tcx/egress``                   |           |
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
 | ``BPF_PROG_TYPE_SK_LOOKUP``               | ``BPF_SK_LOOKUP``                      | ``sk_lookup``                    |           |
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
@@ -180,13 +169,9 @@ described in more detail in the footnotes.
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
 | ``BPF_PROG_TYPE_SOCK_OPS``                | ``BPF_CGROUP_SOCK_OPS``                | ``sockops``                      |           |
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
-<<<<<<< HEAD
-| ``BPF_PROG_TYPE_STRUCT_OPS``              |                                        | ``struct_ops+``                  |           |
-=======
 | ``BPF_PROG_TYPE_STRUCT_OPS``              |                                        | ``struct_ops+`` [#struct_ops]_   |           |
 +                                           +                                        +----------------------------------+-----------+
 |                                           |                                        | ``struct_ops.s+`` [#struct_ops]_ | Yes       |
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
 | ``BPF_PROG_TYPE_SYSCALL``                 |                                        | ``syscall``                      | Yes       |
 +-------------------------------------------+----------------------------------------+----------------------------------+-----------+
@@ -240,14 +225,11 @@ described in more detail in the footnotes.
               ``a-zA-Z0-9_.*?``.
 .. [#lsm] The ``lsm`` attachment format is ``lsm[.s]/<hook>``.
 .. [#rawtp] The ``raw_tp`` attach format is ``raw_tracepoint[.w]/<tracepoint>``.
-<<<<<<< HEAD
-=======
 .. [#tc_legacy] The ``tc``, ``classifier`` and ``action`` attach types are deprecated, use
                 ``tcx/*`` instead.
 .. [#struct_ops] The ``struct_ops`` attach format supports ``struct_ops[.s]/<name>`` convention,
                  but ``name`` is ignored and it is recommended to just use plain
                  ``SEC("struct_ops[.s]")``. The attachments are defined in a struct initializer
                  that is tagged with ``SEC(".struct_ops[.link]")``.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .. [#tp] The ``tracepoint`` attach format is ``tracepoint/<category>/<name>``.
 .. [#iter] The ``iter`` attach format is ``iter[.s]/<struct-name>``.

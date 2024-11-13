@@ -335,8 +335,6 @@ err:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 static int io_register_clock(struct io_ring_ctx *ctx,
 			     struct io_uring_clock_register __user *arg)
 {
@@ -362,7 +360,6 @@ static int io_register_clock(struct io_ring_ctx *ctx,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __io_uring_register(struct io_ring_ctx *ctx, unsigned opcode,
 			       void __user *arg, unsigned nr_args)
 	__releases(ctx->uring_lock)
@@ -539,8 +536,6 @@ static int __io_uring_register(struct io_ring_ctx *ctx, unsigned opcode,
 			break;
 		ret = io_unregister_napi(ctx, arg);
 		break;
-<<<<<<< HEAD
-=======
 	case IORING_REGISTER_CLOCK:
 		ret = -EINVAL;
 		if (!arg || nr_args)
@@ -553,7 +548,6 @@ static int __io_uring_register(struct io_ring_ctx *ctx, unsigned opcode,
 			break;
 		ret = io_register_clone_buffers(ctx, arg);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		ret = -EINVAL;
 		break;
@@ -562,8 +556,6 @@ static int __io_uring_register(struct io_ring_ctx *ctx, unsigned opcode,
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * Given an 'fd' value, return the ctx associated with if. If 'registered' is
  * true, then the registered index is used. Otherwise, the normal fd table.
@@ -596,7 +588,6 @@ struct file *io_uring_register_get_file(unsigned int fd, bool registered)
 	return ERR_PTR(-EOPNOTSUPP);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 SYSCALL_DEFINE4(io_uring_register, unsigned int, fd, unsigned int, opcode,
 		void __user *, arg, unsigned int, nr_args)
 {
@@ -611,44 +602,15 @@ SYSCALL_DEFINE4(io_uring_register, unsigned int, fd, unsigned int, opcode,
 	if (opcode >= IORING_REGISTER_LAST)
 		return -EINVAL;
 
-<<<<<<< HEAD
-	if (use_registered_ring) {
-		/*
-		 * Ring fd has been registered via IORING_REGISTER_RING_FDS, we
-		 * need only dereference our task private array to find it.
-		 */
-		struct io_uring_task *tctx = current->io_uring;
-
-		if (unlikely(!tctx || fd >= IO_RINGFD_REG_MAX))
-			return -EINVAL;
-		fd = array_index_nospec(fd, IO_RINGFD_REG_MAX);
-		file = tctx->registered_rings[fd];
-		if (unlikely(!file))
-			return -EBADF;
-	} else {
-		file = fget(fd);
-		if (unlikely(!file))
-			return -EBADF;
-		ret = -EOPNOTSUPP;
-		if (!io_is_uring_fops(file))
-			goto out_fput;
-	}
-
-=======
 	file = io_uring_register_get_file(fd, use_registered_ring);
 	if (IS_ERR(file))
 		return PTR_ERR(file);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ctx = file->private_data;
 
 	mutex_lock(&ctx->uring_lock);
 	ret = __io_uring_register(ctx, opcode, arg, nr_args);
 	mutex_unlock(&ctx->uring_lock);
 	trace_io_uring_register(ctx, opcode, ctx->nr_user_files, ctx->nr_user_bufs, ret);
-<<<<<<< HEAD
-out_fput:
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!use_registered_ring)
 		fput(file);
 	return ret;

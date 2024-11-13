@@ -51,11 +51,7 @@ static int cryptomgr_probe(void *data)
 {
 	struct cryptomgr_param *param = data;
 	struct crypto_template *tmpl;
-<<<<<<< HEAD
-	int err;
-=======
 	int err = -ENOENT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	tmpl = crypto_lookup_template(param->template);
 	if (!tmpl)
@@ -68,11 +64,8 @@ static int cryptomgr_probe(void *data)
 	crypto_tmpl_put(tmpl);
 
 out:
-<<<<<<< HEAD
-=======
 	param->larval->adult = ERR_PTR(err);
 	param->larval->alg.cra_flags |= CRYPTO_ALG_DEAD;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	complete_all(&param->larval->completion);
 	crypto_alg_put(&param->larval->alg);
 	kfree(param);

@@ -39,11 +39,7 @@
 
 static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
 {
-<<<<<<< HEAD
-	unsigned int ret_val = 0;
-=======
 	unsigned int ret_val = 1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (source_format == dm_444_16) {
 		if (!is_chroma)

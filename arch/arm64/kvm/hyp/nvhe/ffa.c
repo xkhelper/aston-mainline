@@ -426,15 +426,9 @@ out:
 	return;
 }
 
-<<<<<<< HEAD
-static __always_inline void do_ffa_mem_xfer(const u64 func_id,
-					    struct arm_smccc_res *res,
-					    struct kvm_cpu_context *ctxt)
-=======
 static void __do_ffa_mem_xfer(const u64 func_id,
 			      struct arm_smccc_res *res,
 			      struct kvm_cpu_context *ctxt)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	DECLARE_REG(u32, len, ctxt, 1);
 	DECLARE_REG(u32, fraglen, ctxt, 2);
@@ -446,12 +440,6 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 	u32 offset, nr_ranges;
 	int ret = 0;
 
-<<<<<<< HEAD
-	BUILD_BUG_ON(func_id != FFA_FN64_MEM_SHARE &&
-		     func_id != FFA_FN64_MEM_LEND);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (addr_mbz || npages_mbz || fraglen > len ||
 	    fraglen > KVM_FFA_MBOX_NR_PAGES * PAGE_SIZE) {
 		ret = FFA_RET_INVALID_PARAMETERS;
@@ -470,14 +458,11 @@ static void __do_ffa_mem_xfer(const u64 func_id,
 		goto out_unlock;
 	}
 
-<<<<<<< HEAD
-=======
 	if (len > ffa_desc_buf.len) {
 		ret = FFA_RET_NO_MEMORY;
 		goto out_unlock;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	buf = hyp_buffers.tx;
 	memcpy(buf, host_buffers.tx, fraglen);
 
@@ -529,8 +514,6 @@ err_unshare:
 	goto out_unlock;
 }
 
-<<<<<<< HEAD
-=======
 #define do_ffa_mem_xfer(fid, res, ctxt)				\
 	do {							\
 		BUILD_BUG_ON((fid) != FFA_FN64_MEM_SHARE &&	\
@@ -538,7 +521,6 @@ err_unshare:
 		__do_ffa_mem_xfer((fid), (res), (ctxt));	\
 	} while (0);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void do_ffa_mem_reclaim(struct arm_smccc_res *res,
 			       struct kvm_cpu_context *ctxt)
 {

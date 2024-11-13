@@ -1,22 +1,9 @@
 variables:
-<<<<<<< HEAD
-   CONTAINER_TAG: "2024-05-09-mesa-uprev"
-=======
    CONTAINER_TAG: "2024-08-07-mesa-uprev"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    DEBIAN_X86_64_BUILD_BASE_IMAGE: "debian/x86_64_build-base"
    DEBIAN_BASE_TAG: "${CONTAINER_TAG}"
 
    DEBIAN_X86_64_BUILD_IMAGE_PATH: "debian/x86_64_build"
-<<<<<<< HEAD
-   DEBIAN_BUILD_TAG: "2024-06-10-vkms"
-
-   KERNEL_ROOTFS_TAG: "2023-10-06-amd"
-
-   DEBIAN_X86_64_TEST_BASE_IMAGE: "debian/x86_64_test-base"
-   DEBIAN_X86_64_TEST_IMAGE_GL_PATH: "debian/x86_64_test-gl"
-   DEBIAN_X86_64_TEST_GL_TAG: "${CONTAINER_TAG}"
-=======
    DEBIAN_BUILD_TAG: "${CONTAINER_TAG}"
 
    KERNEL_ROOTFS_TAG: "${CONTAINER_TAG}"
@@ -24,6 +11,5 @@ variables:
    DEBIAN_X86_64_TEST_BASE_IMAGE: "debian/x86_64_test-base"
    DEBIAN_X86_64_TEST_IMAGE_GL_PATH: "debian/x86_64_test-gl"
    DEBIAN_TEST_GL_TAG: "${CONTAINER_TAG}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
    ALPINE_X86_64_LAVA_SSH_TAG: "${CONTAINER_TAG}"

@@ -14,10 +14,7 @@
 #include <fcntl.h>
 #include <linux/landlock.h>
 #include <linux/prctl.h>
-<<<<<<< HEAD
-=======
 #include <linux/socket.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,10 +23,7 @@
 #include <sys/stat.h>
 #include <sys/syscall.h>
 #include <unistd.h>
-<<<<<<< HEAD
-=======
 #include <stdbool.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifndef landlock_create_ruleset
 static inline int
@@ -63,10 +57,7 @@ static inline int landlock_restrict_self(const int ruleset_fd,
 #define ENV_FS_RW_NAME "LL_FS_RW"
 #define ENV_TCP_BIND_NAME "LL_TCP_BIND"
 #define ENV_TCP_CONNECT_NAME "LL_TCP_CONNECT"
-<<<<<<< HEAD
-=======
 #define ENV_SCOPED_NAME "LL_SCOPED"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ENV_DELIMITER ":"
 
 static int parse_path(char *env_path, const char ***const path_list)
@@ -196,8 +187,6 @@ out_free_name:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 /* Returns true on error, false otherwise. */
 static bool check_ruleset_scope(const char *const env_var,
 				struct landlock_ruleset_attr *ruleset_attr)
@@ -247,7 +236,6 @@ out_unset:
 	return error;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* clang-format off */
 
 #define ACCESS_FS_ROUGHLY_READ ( \
@@ -272,11 +260,7 @@ out_unset:
 
 /* clang-format on */
 
-<<<<<<< HEAD
-#define LANDLOCK_ABI_LAST 5
-=======
 #define LANDLOCK_ABI_LAST 6
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 int main(const int argc, char *const argv[], char *const *const envp)
 {
@@ -291,26 +275,16 @@ int main(const int argc, char *const argv[], char *const *const envp)
 		.handled_access_fs = access_fs_rw,
 		.handled_access_net = LANDLOCK_ACCESS_NET_BIND_TCP |
 				      LANDLOCK_ACCESS_NET_CONNECT_TCP,
-<<<<<<< HEAD
-=======
 		.scoped = LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET |
 			  LANDLOCK_SCOPE_SIGNAL,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 
 	if (argc < 2) {
 		fprintf(stderr,
-<<<<<<< HEAD
-			"usage: %s=\"...\" %s=\"...\" %s=\"...\" %s=\"...\"%s "
-			"<cmd> [args]...\n\n",
-			ENV_FS_RO_NAME, ENV_FS_RW_NAME, ENV_TCP_BIND_NAME,
-			ENV_TCP_CONNECT_NAME, argv[0]);
-=======
 			"usage: %s=\"...\" %s=\"...\" %s=\"...\" %s=\"...\" %s=\"...\" %s "
 			"<cmd> [args]...\n\n",
 			ENV_FS_RO_NAME, ENV_FS_RW_NAME, ENV_TCP_BIND_NAME,
 			ENV_TCP_CONNECT_NAME, ENV_SCOPED_NAME, argv[0]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fprintf(stderr,
 			"Execute a command in a restricted environment.\n\n");
 		fprintf(stderr,
@@ -331,27 +305,18 @@ int main(const int argc, char *const argv[], char *const *const envp)
 		fprintf(stderr,
 			"* %s: list of ports allowed to connect (client).\n",
 			ENV_TCP_CONNECT_NAME);
-<<<<<<< HEAD
-=======
 		fprintf(stderr, "* %s: list of scoped IPCs.\n",
 			ENV_SCOPED_NAME);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fprintf(stderr,
 			"\nexample:\n"
 			"%s=\"${PATH}:/lib:/usr:/proc:/etc:/dev/urandom\" "
 			"%s=\"/dev/null:/dev/full:/dev/zero:/dev/pts:/tmp\" "
 			"%s=\"9418\" "
 			"%s=\"80:443\" "
-<<<<<<< HEAD
-			"%s bash -i\n\n",
-			ENV_FS_RO_NAME, ENV_FS_RW_NAME, ENV_TCP_BIND_NAME,
-			ENV_TCP_CONNECT_NAME, argv[0]);
-=======
 			"%s=\"a:s\" "
 			"%s bash -i\n\n",
 			ENV_FS_RO_NAME, ENV_FS_RW_NAME, ENV_TCP_BIND_NAME,
 			ENV_TCP_CONNECT_NAME, ENV_SCOPED_NAME, argv[0]);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fprintf(stderr,
 			"This sandboxer can use Landlock features "
 			"up to ABI version %d.\n",
@@ -419,14 +384,11 @@ int main(const int argc, char *const argv[], char *const *const envp)
 		/* Removes LANDLOCK_ACCESS_FS_IOCTL_DEV for ABI < 5 */
 		ruleset_attr.handled_access_fs &= ~LANDLOCK_ACCESS_FS_IOCTL_DEV;
 
-<<<<<<< HEAD
-=======
 		__attribute__((fallthrough));
 	case 5:
 		/* Removes LANDLOCK_SCOPE_* for ABI < 6 */
 		ruleset_attr.scoped &= ~(LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET |
 					 LANDLOCK_SCOPE_SIGNAL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		fprintf(stderr,
 			"Hint: You should update the running kernel "
 			"to leverage Landlock features "
@@ -458,12 +420,9 @@ int main(const int argc, char *const argv[], char *const *const envp)
 			~LANDLOCK_ACCESS_NET_CONNECT_TCP;
 	}
 
-<<<<<<< HEAD
-=======
 	if (check_ruleset_scope(ENV_SCOPED_NAME, &ruleset_attr))
 		return 1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ruleset_fd =
 		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
 	if (ruleset_fd < 0) {

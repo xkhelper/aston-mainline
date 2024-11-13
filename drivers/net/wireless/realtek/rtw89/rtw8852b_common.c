@@ -1445,15 +1445,8 @@ static void rtw8852bx_start_pmac_tx(struct rtw89_dev *rtwdev,
 static
 void rtw8852bx_bb_set_pmac_tx(struct rtw89_dev *rtwdev,
 			      struct rtw8852bx_bb_pmac_info *tx_info,
-<<<<<<< HEAD
-			      enum rtw89_phy_idx idx)
-{
-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-
-=======
 			      enum rtw89_phy_idx idx, const struct rtw89_chan *chan)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!tx_info->en_pmac_tx) {
 		rtw8852bx_stop_pmac_tx(rtwdev, tx_info, idx);
 		rtw89_phy_write32_idx(rtwdev, R_PD_CTRL, B_PD_HIT_DIS, 0, idx);
@@ -1478,11 +1471,7 @@ void rtw8852bx_bb_set_pmac_tx(struct rtw89_dev *rtwdev,
 static
 void __rtw8852bx_bb_set_pmac_pkt_tx(struct rtw89_dev *rtwdev, u8 enable,
 				    u16 tx_cnt, u16 period, u16 tx_time,
-<<<<<<< HEAD
-				    enum rtw89_phy_idx idx)
-=======
 				    enum rtw89_phy_idx idx, const struct rtw89_chan *chan)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct rtw8852bx_bb_pmac_info tx_info = {0};
 
@@ -1493,11 +1482,7 @@ void __rtw8852bx_bb_set_pmac_pkt_tx(struct rtw89_dev *rtwdev, u8 enable,
 	tx_info.period = period;
 	tx_info.tx_time = tx_time;
 
-<<<<<<< HEAD
-	rtw8852bx_bb_set_pmac_tx(rtwdev, &tx_info, idx);
-=======
 	rtw8852bx_bb_set_pmac_tx(rtwdev, &tx_info, idx, chan);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static
@@ -1636,15 +1621,9 @@ static void __rtw8852bx_ctrl_btg_bt_rx(struct rtw89_dev *rtwdev, bool en,
 
 static
 void __rtw8852bx_bb_ctrl_rx_path(struct rtw89_dev *rtwdev,
-<<<<<<< HEAD
-				 enum rtw89_rf_path_bit rx_path)
-{
-	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_SUB_ENTITY_0);
-=======
 				 enum rtw89_rf_path_bit rx_path,
 				 const struct rtw89_chan *chan)
 {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u32 rst_mask0;
 	u32 rst_mask1;
 
@@ -1732,16 +1711,10 @@ static void rtw8852bx_bb_ctrl_rf_mode_rx_path(struct rtw89_dev *rtwdev,
 static void __rtw8852bx_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
 {
 	struct rtw89_hal *hal = &rtwdev->hal;
-<<<<<<< HEAD
-	enum rtw89_rf_path_bit rx_path = hal->antenna_rx ? hal->antenna_rx : RF_AB;
-
-	rtw8852bx_bb_ctrl_rx_path(rtwdev, rx_path);
-=======
 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
 	enum rtw89_rf_path_bit rx_path = hal->antenna_rx ? hal->antenna_rx : RF_AB;
 
 	rtw8852bx_bb_ctrl_rx_path(rtwdev, rx_path, chan);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtw8852bx_bb_ctrl_rf_mode_rx_path(rtwdev, rx_path);
 
 	if (rtwdev->hal.rx_nss == 1) {
@@ -1974,8 +1947,6 @@ static void __rtw8852bx_query_ppdu(struct rtw89_dev *rtwdev,
 		rtw8852bx_fill_freq_with_ppdu(rtwdev, phy_ppdu, status);
 }
 
-<<<<<<< HEAD
-=======
 static void __rtw8852bx_convert_rpl_to_rssi(struct rtw89_dev *rtwdev,
 					    struct rtw89_rx_phy_ppdu *phy_ppdu)
 {
@@ -1989,7 +1960,6 @@ static void __rtw8852bx_convert_rpl_to_rssi(struct rtw89_dev *rtwdev,
 	phy_ppdu->rssi_avg = phy_ppdu->rpl_avg;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __rtw8852bx_mac_enable_bb_rf(struct rtw89_dev *rtwdev)
 {
 	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
@@ -2072,10 +2042,7 @@ const struct rtw8852bx_info rtw8852bx_info = {
 	.ctrl_nbtg_bt_tx = __rtw8852bx_ctrl_nbtg_bt_tx,
 	.ctrl_btg_bt_rx = __rtw8852bx_ctrl_btg_bt_rx,
 	.query_ppdu = __rtw8852bx_query_ppdu,
-<<<<<<< HEAD
-=======
 	.convert_rpl_to_rssi = __rtw8852bx_convert_rpl_to_rssi,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.read_efuse = __rtw8852bx_read_efuse,
 	.read_phycap = __rtw8852bx_read_phycap,
 	.power_trim = __rtw8852bx_power_trim,

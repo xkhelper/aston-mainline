@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright(c) 2020 Intel Corporation. All rights reserved. */
-<<<<<<< HEAD
-#include <asm-generic/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/io-64-nonatomic-lo-hi.h>
 #include <linux/moduleparam.h>
 #include <linux/module.h>
@@ -15,10 +11,7 @@
 #include <linux/pci.h>
 #include <linux/aer.h>
 #include <linux/io.h>
-<<<<<<< HEAD
-=======
 #include <cxl/mailbox.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "cxlmem.h"
 #include "cxlpci.h"
 #include "cxl.h"
@@ -132,10 +125,7 @@ static irqreturn_t cxl_pci_mbox_irq(int irq, void *id)
 	u16 opcode;
 	struct cxl_dev_id *dev_id = id;
 	struct cxl_dev_state *cxlds = dev_id->cxlds;
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
 
 	if (!cxl_mbox_background_complete(cxlds))
@@ -144,15 +134,6 @@ static irqreturn_t cxl_pci_mbox_irq(int irq, void *id)
 	reg = readq(cxlds->regs.mbox + CXLDEV_MBOX_BG_CMD_STATUS_OFFSET);
 	opcode = FIELD_GET(CXLDEV_MBOX_BG_CMD_COMMAND_OPCODE_MASK, reg);
 	if (opcode == CXL_MBOX_OP_SANITIZE) {
-<<<<<<< HEAD
-		mutex_lock(&mds->mbox_mutex);
-		if (mds->security.sanitize_node)
-			mod_delayed_work(system_wq, &mds->security.poll_dwork, 0);
-		mutex_unlock(&mds->mbox_mutex);
-	} else {
-		/* short-circuit the wait in __cxl_pci_mbox_send_cmd() */
-		rcuwait_wake_up(&mds->mbox_wait);
-=======
 		mutex_lock(&cxl_mbox->mbox_mutex);
 		if (mds->security.sanitize_node)
 			mod_delayed_work(system_wq, &mds->security.poll_dwork, 0);
@@ -160,7 +141,6 @@ static irqreturn_t cxl_pci_mbox_irq(int irq, void *id)
 	} else {
 		/* short-circuit the wait in __cxl_pci_mbox_send_cmd() */
 		rcuwait_wake_up(&cxl_mbox->mbox_wait);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	return IRQ_HANDLED;
@@ -174,14 +154,9 @@ static void cxl_mbox_sanitize_work(struct work_struct *work)
 	struct cxl_memdev_state *mds =
 		container_of(work, typeof(*mds), security.poll_dwork.work);
 	struct cxl_dev_state *cxlds = &mds->cxlds;
-<<<<<<< HEAD
-
-	mutex_lock(&mds->mbox_mutex);
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlds->cxl_mbox;
 
 	mutex_lock(&cxl_mbox->mbox_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cxl_mbox_background_complete(cxlds)) {
 		mds->security.poll_tmo_secs = 0;
 		if (mds->security.sanitize_node)
@@ -195,20 +170,12 @@ static void cxl_mbox_sanitize_work(struct work_struct *work)
 		mds->security.poll_tmo_secs = min(15 * 60, timeout);
 		schedule_delayed_work(&mds->security.poll_dwork, timeout * HZ);
 	}
-<<<<<<< HEAD
-	mutex_unlock(&mds->mbox_mutex);
-=======
 	mutex_unlock(&cxl_mbox->mbox_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
  * __cxl_pci_mbox_send_cmd() - Execute a mailbox command
-<<<<<<< HEAD
- * @mds: The memory device driver data
-=======
  * @cxl_mbox: CXL mailbox context
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @mbox_cmd: Command to send to the memory device.
  *
  * Context: Any context. Expects mbox_mutex to be held.
@@ -228,29 +195,18 @@ static void cxl_mbox_sanitize_work(struct work_struct *work)
  * not need to coordinate with each other. The driver only uses the primary
  * mailbox.
  */
-<<<<<<< HEAD
-static int __cxl_pci_mbox_send_cmd(struct cxl_memdev_state *mds,
-				   struct cxl_mbox_cmd *mbox_cmd)
-{
-	struct cxl_dev_state *cxlds = &mds->cxlds;
-=======
 static int __cxl_pci_mbox_send_cmd(struct cxl_mailbox *cxl_mbox,
 				   struct cxl_mbox_cmd *mbox_cmd)
 {
 	struct cxl_dev_state *cxlds = mbox_to_cxlds(cxl_mbox);
 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	void __iomem *payload = cxlds->regs.mbox + CXLDEV_MBOX_PAYLOAD_OFFSET;
 	struct device *dev = cxlds->dev;
 	u64 cmd_reg, status_reg;
 	size_t out_len;
 	int rc;
 
-<<<<<<< HEAD
-	lockdep_assert_held(&mds->mbox_mutex);
-=======
 	lockdep_assert_held(&cxl_mbox->mbox_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/*
 	 * Here are the steps from 8.2.8.4 of the CXL 2.0 spec.
@@ -363,17 +319,10 @@ static int __cxl_pci_mbox_send_cmd(struct cxl_mailbox *cxl_mbox,
 
 		timeout = mbox_cmd->poll_interval_ms;
 		for (i = 0; i < mbox_cmd->poll_count; i++) {
-<<<<<<< HEAD
-			if (rcuwait_wait_event_timeout(&mds->mbox_wait,
-				       cxl_mbox_background_complete(cxlds),
-				       TASK_UNINTERRUPTIBLE,
-				       msecs_to_jiffies(timeout)) > 0)
-=======
 			if (rcuwait_wait_event_timeout(&cxl_mbox->mbox_wait,
 						       cxl_mbox_background_complete(cxlds),
 						       TASK_UNINTERRUPTIBLE,
 						       msecs_to_jiffies(timeout)) > 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				break;
 		}
 
@@ -415,11 +364,7 @@ success:
 		 */
 		size_t n;
 
-<<<<<<< HEAD
-		n = min3(mbox_cmd->size_out, mds->payload_size, out_len);
-=======
 		n = min3(mbox_cmd->size_out, cxl_mbox->payload_size, out_len);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		memcpy_fromio(mbox_cmd->payload_out, payload, n);
 		mbox_cmd->size_out = n;
 	} else {
@@ -429,24 +374,14 @@ success:
 	return 0;
 }
 
-<<<<<<< HEAD
-static int cxl_pci_mbox_send(struct cxl_memdev_state *mds,
-=======
 static int cxl_pci_mbox_send(struct cxl_mailbox *cxl_mbox,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     struct cxl_mbox_cmd *cmd)
 {
 	int rc;
 
-<<<<<<< HEAD
-	mutex_lock_io(&mds->mbox_mutex);
-	rc = __cxl_pci_mbox_send_cmd(mds, cmd);
-	mutex_unlock(&mds->mbox_mutex);
-=======
 	mutex_lock_io(&cxl_mbox->mbox_mutex);
 	rc = __cxl_pci_mbox_send_cmd(cxl_mbox, cmd);
 	mutex_unlock(&cxl_mbox->mbox_mutex);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return rc;
 }
@@ -454,10 +389,7 @@ static int cxl_pci_mbox_send(struct cxl_mailbox *cxl_mbox,
 static int cxl_pci_setup_mailbox(struct cxl_memdev_state *mds, bool irq_avail)
 {
 	struct cxl_dev_state *cxlds = &mds->cxlds;
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &cxlds->cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	const int cap = readl(cxlds->regs.mbox + CXLDEV_MBOX_CAPS_OFFSET);
 	struct device *dev = cxlds->dev;
 	unsigned long timeout;
@@ -490,13 +422,8 @@ static int cxl_pci_setup_mailbox(struct cxl_memdev_state *mds, bool irq_avail)
 		return -ETIMEDOUT;
 	}
 
-<<<<<<< HEAD
-	mds->mbox_send = cxl_pci_mbox_send;
-	mds->payload_size =
-=======
 	cxl_mbox->mbox_send = cxl_pci_mbox_send;
 	cxl_mbox->payload_size =
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		1 << FIELD_GET(CXLDEV_MBOX_CAP_PAYLOAD_SIZE_MASK, cap);
 
 	/*
@@ -506,18 +433,6 @@ static int cxl_pci_setup_mailbox(struct cxl_memdev_state *mds, bool irq_avail)
 	 * there's no point in going forward. If the size is too large, there's
 	 * no harm is soft limiting it.
 	 */
-<<<<<<< HEAD
-	mds->payload_size = min_t(size_t, mds->payload_size, SZ_1M);
-	if (mds->payload_size < 256) {
-		dev_err(dev, "Mailbox is too small (%zub)",
-			mds->payload_size);
-		return -ENXIO;
-	}
-
-	dev_dbg(dev, "Mailbox payload sized %zu", mds->payload_size);
-
-	rcuwait_init(&mds->mbox_wait);
-=======
 	cxl_mbox->payload_size = min_t(size_t, cxl_mbox->payload_size, SZ_1M);
 	if (cxl_mbox->payload_size < 256) {
 		dev_err(dev, "Mailbox is too small (%zub)",
@@ -527,7 +442,6 @@ static int cxl_pci_setup_mailbox(struct cxl_memdev_state *mds, bool irq_avail)
 
 	dev_dbg(dev, "Mailbox payload sized %zu", cxl_mbox->payload_size);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	INIT_DELAYED_WORK(&mds->security.poll_dwork, cxl_mbox_sanitize_work);
 
 	/* background command interrupts are optional */
@@ -563,10 +477,6 @@ static bool is_cxl_restricted(struct pci_dev *pdev)
 static int cxl_rcrb_get_comp_regs(struct pci_dev *pdev,
 				  struct cxl_register_map *map)
 {
-<<<<<<< HEAD
-	struct cxl_port *port;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_dport *dport;
 	resource_size_t component_reg_phys;
 
@@ -575,22 +485,12 @@ static int cxl_rcrb_get_comp_regs(struct pci_dev *pdev,
 		.resource = CXL_RESOURCE_NONE,
 	};
 
-<<<<<<< HEAD
-	port = cxl_pci_find_port(pdev, &dport);
-=======
 	struct cxl_port *port __free(put_cxl_port) =
 		cxl_pci_find_port(pdev, &dport);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!port)
 		return -EPROBE_DEFER;
 
 	component_reg_phys = cxl_rcd_component_reg_phys(&pdev->dev, dport);
-<<<<<<< HEAD
-
-	put_device(&port->dev);
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (component_reg_phys == CXL_RESOURCE_NONE)
 		return -ENXIO;
 
@@ -679,16 +579,10 @@ static void free_event_buf(void *buf)
  */
 static int cxl_mem_alloc_event_buf(struct cxl_memdev_state *mds)
 {
-<<<<<<< HEAD
-	struct cxl_get_event_payload *buf;
-
-	buf = kvmalloc(mds->payload_size, GFP_KERNEL);
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
 	struct cxl_get_event_payload *buf;
 
 	buf = kvmalloc(cxl_mbox->payload_size, GFP_KERNEL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!buf)
 		return -ENOMEM;
 	mds->event.buf = buf;
@@ -761,10 +655,7 @@ static int cxl_event_req_irq(struct cxl_dev_state *cxlds, u8 setting)
 static int cxl_event_get_int_policy(struct cxl_memdev_state *mds,
 				    struct cxl_event_interrupt_policy *policy)
 {
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_cmd mbox_cmd = {
 		.opcode = CXL_MBOX_OP_GET_EVT_INT_POLICY,
 		.payload_out = policy,
@@ -772,11 +663,7 @@ static int cxl_event_get_int_policy(struct cxl_memdev_state *mds,
 	};
 	int rc;
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0)
 		dev_err(mds->cxlds.dev,
 			"Failed to get event interrupt policy : %d", rc);
@@ -787,10 +674,7 @@ static int cxl_event_get_int_policy(struct cxl_memdev_state *mds,
 static int cxl_event_config_msgnums(struct cxl_memdev_state *mds,
 				    struct cxl_event_interrupt_policy *policy)
 {
-<<<<<<< HEAD
-=======
 	struct cxl_mailbox *cxl_mbox = &mds->cxlds.cxl_mbox;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct cxl_mbox_cmd mbox_cmd;
 	int rc;
 
@@ -807,11 +691,7 @@ static int cxl_event_config_msgnums(struct cxl_memdev_state *mds,
 		.size_in = sizeof(*policy),
 	};
 
-<<<<<<< HEAD
-	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-=======
 	rc = cxl_internal_send_cmd(cxl_mbox, &mbox_cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc < 0) {
 		dev_err(mds->cxlds.dev, "Failed to set event interrupt policy : %d",
 			rc);
@@ -910,8 +790,6 @@ static int cxl_event_config(struct pci_host_bridge *host_bridge,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static int cxl_pci_type3_init_mailbox(struct cxl_dev_state *cxlds)
 {
 	int rc;
@@ -929,7 +807,6 @@ static int cxl_pci_type3_init_mailbox(struct cxl_dev_state *cxlds)
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 {
 	struct pci_host_bridge *host_bridge = pci_find_host_bridge(pdev->bus);
@@ -990,13 +867,10 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	if (rc)
 		dev_dbg(&pdev->dev, "Failed to map RAS capability.\n");
 
-<<<<<<< HEAD
-=======
 	rc = cxl_pci_type3_init_mailbox(cxlds);
 	if (rc)
 		return rc;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rc = cxl_await_media_ready(cxlds);
 	if (rc == 0)
 		cxlds->media_ready = true;

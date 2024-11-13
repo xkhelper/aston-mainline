@@ -30,11 +30,7 @@ xfs_bmap_rtalloc(struct xfs_bmalloca *ap)
 }
 #endif /* CONFIG_XFS_RT */
 
-<<<<<<< HEAD
-void	xfs_bmap_punch_delalloc_range(struct xfs_inode *ip,
-=======
 void	xfs_bmap_punch_delalloc_range(struct xfs_inode *ip, int whichfork,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		xfs_off_t start_byte, xfs_off_t end_byte);
 
 struct kgetbmap {

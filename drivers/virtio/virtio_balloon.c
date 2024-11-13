@@ -355,11 +355,8 @@ static inline unsigned int update_balloon_vm_stats(struct virtio_balloon *vb)
 {
 	unsigned long events[NR_VM_EVENT_ITEMS];
 	unsigned int idx = 0;
-<<<<<<< HEAD
-=======
 	unsigned int zid;
 	unsigned long stall = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	all_vm_events(events);
 	update_stat(vb, idx++, VIRTIO_BALLOON_S_SWAP_IN,
@@ -368,8 +365,6 @@ static inline unsigned int update_balloon_vm_stats(struct virtio_balloon *vb)
 		    pages_to_bytes(events[PSWPOUT]));
 	update_stat(vb, idx++, VIRTIO_BALLOON_S_MAJFLT, events[PGMAJFAULT]);
 	update_stat(vb, idx++, VIRTIO_BALLOON_S_MINFLT, events[PGFAULT]);
-<<<<<<< HEAD
-=======
 	update_stat(vb, idx++, VIRTIO_BALLOON_S_OOM_KILL, events[OOM_KILL]);
 
 	/* sum all the stall events */
@@ -386,7 +381,6 @@ static inline unsigned int update_balloon_vm_stats(struct virtio_balloon *vb)
 		    pages_to_bytes(events[PGSTEAL_KSWAPD]));
 	update_stat(vb, idx++, VIRTIO_BALLOON_S_DIRECT_RECLAIM,
 		    pages_to_bytes(events[PGSTEAL_DIRECT]));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_HUGETLB_PAGE
 	update_stat(vb, idx++, VIRTIO_BALLOON_S_HTLB_PGALLOC,

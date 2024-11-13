@@ -2642,10 +2642,7 @@ void test_sock_addr(void)
 			break;
 		default:
 			ASSERT_TRUE(false, "Unknown sock addr test type");
-<<<<<<< HEAD
-=======
 			err = -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		}
 

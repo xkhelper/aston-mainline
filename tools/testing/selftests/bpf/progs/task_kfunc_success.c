@@ -5,10 +5,7 @@
 #include <bpf/bpf_tracing.h>
 #include <bpf/bpf_helpers.h>
 
-<<<<<<< HEAD
-=======
 #include "../bpf_experimental.h"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include "task_kfunc_common.h"
 
 char _license[] SEC("license") = "GPL";
@@ -146,14 +143,9 @@ int BPF_PROG(test_task_acquire_leave_in_map, struct task_struct *task, u64 clone
 SEC("tp_btf/task_newtask")
 int BPF_PROG(test_task_xchg_release, struct task_struct *task, u64 clone_flags)
 {
-<<<<<<< HEAD
-	struct task_struct *kptr;
-	struct __tasks_kfunc_map_value *v;
-=======
 	struct task_struct *kptr, *acquired;
 	struct __tasks_kfunc_map_value *v, *local;
 	int refcnt, refcnt_after_drop;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	long status;
 
 	if (!is_test_kfunc_task())
@@ -177,8 +169,6 @@ int BPF_PROG(test_task_xchg_release, struct task_struct *task, u64 clone_flags)
 		return 0;
 	}
 
-<<<<<<< HEAD
-=======
 	local = bpf_obj_new(typeof(*local));
 	if (!local) {
 		err = 4;
@@ -229,7 +219,6 @@ int BPF_PROG(test_task_xchg_release, struct task_struct *task, u64 clone_flags)
 		return 0;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	bpf_task_release(kptr);
 
 	return 0;

@@ -45,13 +45,7 @@
 
 /* Flags for zram pages (table[page_no].flags) */
 enum zram_pageflags {
-<<<<<<< HEAD
-	/* zram slot is locked */
-	ZRAM_LOCK = ZRAM_FLAG_SHIFT,
-	ZRAM_SAME,	/* Page consists the same element */
-=======
 	ZRAM_SAME = ZRAM_FLAG_SHIFT,	/* Page consists the same element */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ZRAM_WB,	/* page is stored on backing_device */
 	ZRAM_UNDER_WB,	/* page is under writeback */
 	ZRAM_HUGE,	/* Incompressible page */
@@ -72,12 +66,8 @@ struct zram_table_entry {
 		unsigned long handle;
 		unsigned long element;
 	};
-<<<<<<< HEAD
-	unsigned long flags;
-=======
 	unsigned int flags;
 	spinlock_t lock;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
 	ktime_t ac_time;
 #endif
@@ -116,10 +106,7 @@ struct zram {
 	struct zram_table_entry *table;
 	struct zs_pool *mem_pool;
 	struct zcomp *comps[ZRAM_MAX_COMPS];
-<<<<<<< HEAD
-=======
 	struct zcomp_params params[ZRAM_MAX_COMPS];
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct gendisk *disk;
 	/* Prevent concurrent execution of device init */
 	struct rw_semaphore init_lock;

@@ -2652,10 +2652,6 @@ lpfc_rcv_prlo_mapped_node(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 	/* flush the target */
 	lpfc_sli_abort_iocb(vport, ndlp->nlp_sid, 0, LPFC_CTX_TGT);
 
-<<<<<<< HEAD
-	/* Treat like rcv logo */
-	lpfc_rcv_logo(vport, ndlp, cmdiocb, ELS_CMD_PRLO);
-=======
 	/* Send PRLO_ACC */
 	spin_lock_irq(&ndlp->lock);
 	ndlp->nlp_flag |= NLP_LOGO_ACC;
@@ -2676,7 +2672,6 @@ lpfc_rcv_prlo_mapped_node(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
 
 	lpfc_nlp_set_state(vport, ndlp, NLP_STE_NPR_NODE);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return ndlp->nlp_state;
 }
 

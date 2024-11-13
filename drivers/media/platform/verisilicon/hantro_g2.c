@@ -56,8 +56,6 @@ size_t hantro_g2_motion_vectors_offset(struct hantro_ctx *ctx)
 
 	return ALIGN((cr_offset * 3) / 2, G2_ALIGN);
 }
-<<<<<<< HEAD
-=======
 
 static size_t hantro_g2_mv_size(struct hantro_ctx *ctx)
 {
@@ -87,4 +85,3 @@ size_t hantro_g2_chroma_compress_offset(struct hantro_ctx *ctx)
 	return hantro_g2_luma_compress_offset(ctx) +
 	       hantro_hevc_luma_compressed_size(ctx->dst_fmt.width, ctx->dst_fmt.height);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

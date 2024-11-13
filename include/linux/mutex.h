@@ -49,10 +49,6 @@ static inline void mutex_destroy(struct mutex *lock) {}
 
 #endif
 
-<<<<<<< HEAD
-#ifndef CONFIG_PREEMPT_RT
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * mutex_init - initialize the mutex
  * @mutex: the mutex to be initialized
@@ -68,8 +64,6 @@ do {									\
 	__mutex_init((mutex), #mutex, &__key);				\
 } while (0)
 
-<<<<<<< HEAD
-=======
 /**
  * mutex_init_with_key - initialize a mutex with a given lockdep key
  * @mutex: the mutex to be initialized
@@ -82,7 +76,6 @@ do {									\
 #define mutex_init_with_key(mutex, key) __mutex_init((mutex), #mutex, (key))
 
 #ifndef CONFIG_PREEMPT_RT
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define __MUTEX_INITIALIZER(lockname) \
 		{ .owner = ATOMIC_LONG_INIT(0) \
 		, .wait_lock = __RAW_SPIN_LOCK_UNLOCKED(lockname.wait_lock) \
@@ -129,15 +122,6 @@ do {							\
 	__mutex_rt_init((mutex), name, key);		\
 } while (0)
 
-<<<<<<< HEAD
-#define mutex_init(mutex)				\
-do {							\
-	static struct lock_class_key __key;		\
-							\
-	__mutex_init((mutex), #mutex, &__key);		\
-} while (0)
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* CONFIG_PREEMPT_RT */
 
 #ifdef CONFIG_DEBUG_MUTEXES

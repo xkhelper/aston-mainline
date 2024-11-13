@@ -435,11 +435,7 @@ static struct platform_driver mpc5xxx_can_driver = {
 		.of_match_table = mpc5xxx_can_table,
 	},
 	.probe = mpc5xxx_can_probe,
-<<<<<<< HEAD
-	.remove_new = mpc5xxx_can_remove,
-=======
 	.remove = mpc5xxx_can_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #ifdef CONFIG_PM
 	.suspend = mpc5xxx_can_suspend,
 	.resume = mpc5xxx_can_resume,

@@ -120,8 +120,6 @@ config R8169_LEDS
 	  Optional support for controlling the NIC LED's with the netdev
 	  LED trigger.
 
-<<<<<<< HEAD
-=======
 config RTASE
 	tristate "Realtek Automotive Switch 9054/9068/9072/9075/9068/9071 PCIe Interface support"
 	depends on PCI
@@ -141,5 +139,4 @@ config RTASE
 	  To compile this driver as a module, choose M here: the module
 	  will be called rtase. This is recommended.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif # NET_VENDOR_REALTEK

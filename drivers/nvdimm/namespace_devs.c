@@ -1612,12 +1612,6 @@ static int select_pmem_id(struct nd_region *nd_region, const uuid_t *pmem_id)
 {
 	int i;
 
-<<<<<<< HEAD
-	if (!pmem_id)
-		return -ENODEV;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (i = 0; i < nd_region->ndr_mappings; i++) {
 		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
 		struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
@@ -1793,12 +1787,6 @@ static struct device *create_namespace_pmem(struct nd_region *nd_region,
 	case -EINVAL:
 		dev_dbg(&nd_region->dev, "invalid label(s)\n");
 		break;
-<<<<<<< HEAD
-	case -ENODEV:
-		dev_dbg(&nd_region->dev, "label not found\n");
-		break;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		dev_dbg(&nd_region->dev, "unexpected err: %d\n", rc);
 		break;
@@ -1943,23 +1931,16 @@ static int cmp_dpa(const void *a, const void *b)
 static struct device **scan_labels(struct nd_region *nd_region)
 {
 	int i, count = 0;
-<<<<<<< HEAD
-	struct device *dev, **devs = NULL;
-=======
 	struct device *dev, **devs;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nd_label_ent *label_ent, *e;
 	struct nd_mapping *nd_mapping = &nd_region->mapping[0];
 	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
 	resource_size_t map_end = nd_mapping->start + nd_mapping->size - 1;
 
-<<<<<<< HEAD
-=======
 	devs = kcalloc(2, sizeof(dev), GFP_KERNEL);
 	if (!devs)
 		return NULL;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* "safe" because create_namespace_pmem() might list_move() label_ent */
 	list_for_each_entry_safe(label_ent, e, &nd_mapping->labels, list) {
 		struct nd_namespace_label *nd_label = label_ent->label;
@@ -1978,14 +1959,6 @@ static struct device **scan_labels(struct nd_region *nd_region)
 			goto err;
 		if (i < count)
 			continue;
-<<<<<<< HEAD
-		__devs = kcalloc(count + 2, sizeof(dev), GFP_KERNEL);
-		if (!__devs)
-			goto err;
-		memcpy(__devs, devs, sizeof(dev) * count);
-		kfree(devs);
-		devs = __devs;
-=======
 		if (count) {
 			__devs = kcalloc(count + 2, sizeof(dev), GFP_KERNEL);
 			if (!__devs)
@@ -1994,7 +1967,6 @@ static struct device **scan_labels(struct nd_region *nd_region)
 			kfree(devs);
 			devs = __devs;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		dev = create_namespace_pmem(nd_region, nd_mapping, nd_label);
 		if (IS_ERR(dev)) {
@@ -2002,12 +1974,6 @@ static struct device **scan_labels(struct nd_region *nd_region)
 			case -EAGAIN:
 				/* skip invalid labels */
 				continue;
-<<<<<<< HEAD
-			case -ENODEV:
-				/* fallthrough to seed creation */
-				break;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			default:
 				goto err;
 			}
@@ -2024,14 +1990,6 @@ static struct device **scan_labels(struct nd_region *nd_region)
 
 		/* Publish a zero-sized namespace for userspace to configure. */
 		nd_mapping_free_labels(nd_mapping);
-<<<<<<< HEAD
-
-		devs = kcalloc(2, sizeof(dev), GFP_KERNEL);
-		if (!devs)
-			goto err;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		nspm = kzalloc(sizeof(*nspm), GFP_KERNEL);
 		if (!nspm)
 			goto err;
@@ -2070,18 +2028,10 @@ static struct device **scan_labels(struct nd_region *nd_region)
 	return devs;
 
  err:
-<<<<<<< HEAD
-	if (devs) {
-		for (i = 0; devs[i]; i++)
-			namespace_pmem_release(devs[i]);
-		kfree(devs);
-	}
-=======
 	for (i = 0; devs[i]; i++)
 		namespace_pmem_release(devs[i]);
 	kfree(devs);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return NULL;
 }
 

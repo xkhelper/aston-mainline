@@ -4,10 +4,7 @@
 #include <linux/etherdevice.h>
 #include <linux/ipv6.h>
 #include <linux/types.h>
-<<<<<<< HEAD
-=======
 #include <net/netdev_queues.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include "fbnic.h"
 #include "fbnic_netdev.h"
@@ -320,8 +317,6 @@ void fbnic_clear_rx_mode(struct net_device *netdev)
 	__dev_mc_unsync(netdev, NULL);
 }
 
-<<<<<<< HEAD
-=======
 static void fbnic_get_stats64(struct net_device *dev,
 			      struct rtnl_link_stats64 *stats64)
 {
@@ -390,7 +385,6 @@ static void fbnic_get_stats64(struct net_device *dev,
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct net_device_ops fbnic_netdev_ops = {
 	.ndo_open		= fbnic_open,
 	.ndo_stop		= fbnic_stop,
@@ -399,8 +393,6 @@ static const struct net_device_ops fbnic_netdev_ops = {
 	.ndo_features_check	= fbnic_features_check,
 	.ndo_set_mac_address	= fbnic_set_mac,
 	.ndo_set_rx_mode	= fbnic_set_rx_mode,
-<<<<<<< HEAD
-=======
 	.ndo_get_stats64	= fbnic_get_stats64,
 };
 
@@ -467,7 +459,6 @@ static const struct netdev_stat_ops fbnic_stat_ops = {
 	.get_queue_stats_rx	= fbnic_get_queue_stats_rx,
 	.get_queue_stats_tx	= fbnic_get_queue_stats_tx,
 	.get_base_stats		= fbnic_get_base_stats,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void fbnic_reset_queues(struct fbnic_net *fbn,
@@ -528,12 +519,9 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd)
 	fbd->netdev = netdev;
 
 	netdev->netdev_ops = &fbnic_netdev_ops;
-<<<<<<< HEAD
-=======
 	netdev->stat_ops = &fbnic_stat_ops;
 
 	fbnic_set_ethtool_ops(netdev);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	fbn = netdev_priv(netdev);
 

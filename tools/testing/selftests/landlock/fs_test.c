@@ -59,10 +59,6 @@ int open_tree(int dfd, const char *filename, unsigned int flags)
 #define RENAME_EXCHANGE (1 << 1)
 #endif
 
-<<<<<<< HEAD
-#define TMP_DIR "tmp"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define BINARY_PATH "./true"
 
 /* Paths (sibling number and depth) */

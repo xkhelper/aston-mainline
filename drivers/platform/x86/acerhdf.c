@@ -378,35 +378,6 @@ static int acerhdf_get_ec_temp(struct thermal_zone_device *thermal, int *t)
 	return 0;
 }
 
-<<<<<<< HEAD
-static int acerhdf_bind(struct thermal_zone_device *thermal,
-			struct thermal_cooling_device *cdev)
-{
-	/* if the cooling device is the one from acerhdf bind it */
-	if (cdev != cl_dev)
-		return 0;
-
-	if (thermal_zone_bind_cooling_device(thermal, 0, cdev,
-			THERMAL_NO_LIMIT, THERMAL_NO_LIMIT,
-			THERMAL_WEIGHT_DEFAULT)) {
-		pr_err("error binding cooling dev\n");
-		return -EINVAL;
-	}
-	return 0;
-}
-
-static int acerhdf_unbind(struct thermal_zone_device *thermal,
-			  struct thermal_cooling_device *cdev)
-{
-	if (cdev != cl_dev)
-		return 0;
-
-	if (thermal_zone_unbind_cooling_device(thermal, 0, cdev)) {
-		pr_err("error unbinding cooling dev\n");
-		return -EINVAL;
-	}
-	return 0;
-=======
 static bool acerhdf_should_bind(struct thermal_zone_device *thermal,
 				const struct thermal_trip *trip,
 				struct thermal_cooling_device *cdev,
@@ -414,7 +385,6 @@ static bool acerhdf_should_bind(struct thermal_zone_device *thermal,
 {
 	/* if the cooling device is the one from acerhdf bind it */
 	return cdev == cl_dev && trip->type == THERMAL_TRIP_ACTIVE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static inline void acerhdf_revert_to_bios_mode(void)
@@ -457,12 +427,7 @@ static int acerhdf_get_crit_temp(struct thermal_zone_device *thermal,
 
 /* bind callback functions to thermalzone */
 static struct thermal_zone_device_ops acerhdf_dev_ops = {
-<<<<<<< HEAD
-	.bind = acerhdf_bind,
-	.unbind = acerhdf_unbind,
-=======
 	.should_bind = acerhdf_should_bind,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.get_temp = acerhdf_get_ec_temp,
 	.change_mode = acerhdf_change_mode,
 	.get_crit_temp = acerhdf_get_crit_temp,

@@ -176,10 +176,7 @@ static struct platform_driver imxrt1050_clk_driver = {
 };
 module_platform_driver(imxrt1050_clk_driver);
 
-<<<<<<< HEAD
-=======
 MODULE_DESCRIPTION("NXP i.MX RT1050 clock driver");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_AUTHOR("Jesse Taube <Mr.Bossman075@gmail.com>");
 MODULE_AUTHOR("Giulio Benetti <giulio.benetti@benettiengineering.com>");

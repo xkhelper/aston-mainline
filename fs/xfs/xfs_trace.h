@@ -210,16 +210,6 @@ DEFINE_EVENT(xfs_perag_class, name,	\
 	TP_PROTO(struct xfs_perag *pag, unsigned long caller_ip), \
 	TP_ARGS(pag, caller_ip))
 DEFINE_PERAG_REF_EVENT(xfs_perag_get);
-<<<<<<< HEAD
-DEFINE_PERAG_REF_EVENT(xfs_perag_get_tag);
-DEFINE_PERAG_REF_EVENT(xfs_perag_hold);
-DEFINE_PERAG_REF_EVENT(xfs_perag_put);
-DEFINE_PERAG_REF_EVENT(xfs_perag_grab);
-DEFINE_PERAG_REF_EVENT(xfs_perag_grab_tag);
-DEFINE_PERAG_REF_EVENT(xfs_perag_rele);
-DEFINE_PERAG_REF_EVENT(xfs_perag_set_inode_tag);
-DEFINE_PERAG_REF_EVENT(xfs_perag_clear_inode_tag);
-=======
 DEFINE_PERAG_REF_EVENT(xfs_perag_hold);
 DEFINE_PERAG_REF_EVENT(xfs_perag_put);
 DEFINE_PERAG_REF_EVENT(xfs_perag_grab);
@@ -228,7 +218,6 @@ DEFINE_PERAG_REF_EVENT(xfs_perag_rele);
 DEFINE_PERAG_REF_EVENT(xfs_perag_set_inode_tag);
 DEFINE_PERAG_REF_EVENT(xfs_perag_clear_inode_tag);
 DEFINE_PERAG_REF_EVENT(xfs_reclaim_inodes_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 TRACE_EVENT(xfs_inodegc_worker,
 	TP_PROTO(struct xfs_mount *mp, unsigned int shrinker_hits),
@@ -702,13 +691,8 @@ DEFINE_FILESTREAM_EVENT(xfs_filestream_lookup);
 DEFINE_FILESTREAM_EVENT(xfs_filestream_scan);
 
 TRACE_EVENT(xfs_filestream_pick,
-<<<<<<< HEAD
-	TP_PROTO(struct xfs_perag *pag, xfs_ino_t ino, xfs_extlen_t free),
-	TP_ARGS(pag, ino, free),
-=======
 	TP_PROTO(struct xfs_perag *pag, xfs_ino_t ino),
 	TP_ARGS(pag, ino),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	TP_STRUCT__entry(
 		__field(dev_t, dev)
 		__field(xfs_ino_t, ino)
@@ -719,20 +703,9 @@ TRACE_EVENT(xfs_filestream_pick,
 	TP_fast_assign(
 		__entry->dev = pag->pag_mount->m_super->s_dev;
 		__entry->ino = ino;
-<<<<<<< HEAD
-		if (pag) {
-			__entry->agno = pag->pag_agno;
-			__entry->streams = atomic_read(&pag->pagf_fstrms);
-		} else {
-			__entry->agno = NULLAGNUMBER;
-			__entry->streams = 0;
-		}
-		__entry->free = free;
-=======
 		__entry->agno = pag->pag_agno;
 		__entry->streams = atomic_read(&pag->pagf_fstrms);
 		__entry->free = pag->pagf_freeblks;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	),
 	TP_printk("dev %d:%d ino 0x%llx agno 0x%x streams %d free %d",
 		  MAJOR(__entry->dev), MINOR(__entry->dev),
@@ -4948,12 +4921,8 @@ DEFINE_INODE_ERROR_EVENT(xfs_exchrange_error);
 	{ XFS_EXCHANGE_RANGE_DRY_RUN,		"DRY_RUN" }, \
 	{ XFS_EXCHANGE_RANGE_FILE1_WRITTEN,	"F1_WRITTEN" }, \
 	{ __XFS_EXCHANGE_RANGE_UPD_CMTIME1,	"CMTIME1" }, \
-<<<<<<< HEAD
-	{ __XFS_EXCHANGE_RANGE_UPD_CMTIME2,	"CMTIME2" }
-=======
 	{ __XFS_EXCHANGE_RANGE_UPD_CMTIME2,	"CMTIME2" }, \
 	{ __XFS_EXCHANGE_RANGE_CHECK_FRESH2,	"FRESH2" }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* file exchange-range tracepoint class */
 DECLARE_EVENT_CLASS(xfs_exchrange_class,
@@ -5013,8 +4982,6 @@ DEFINE_EXCHRANGE_EVENT(xfs_exchrange_prep);
 DEFINE_EXCHRANGE_EVENT(xfs_exchrange_flush);
 DEFINE_EXCHRANGE_EVENT(xfs_exchrange_mappings);
 
-<<<<<<< HEAD
-=======
 TRACE_EVENT(xfs_exchrange_freshness,
 	TP_PROTO(const struct xfs_exchrange *fxr, struct xfs_inode *ip2),
 	TP_ARGS(fxr, ip2),
@@ -5069,7 +5036,6 @@ TRACE_EVENT(xfs_exchrange_freshness,
 		  __entry->file2_ctime_nsec)
 );
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 TRACE_EVENT(xfs_exchmaps_overhead,
 	TP_PROTO(struct xfs_mount *mp, unsigned long long bmbt_blocks,
 		 unsigned long long rmapbt_blocks),

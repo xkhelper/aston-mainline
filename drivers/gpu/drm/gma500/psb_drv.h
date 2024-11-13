@@ -202,11 +202,7 @@ struct psb_intel_opregion {
 struct sdvo_device_mapping {
 	u8 initialized;
 	u8 dvo_port;
-<<<<<<< HEAD
-	u8 slave_addr;
-=======
 	u8 target_addr;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u8 dvo_wiring;
 	u8 i2c_pin;
 	u8 i2c_speed;

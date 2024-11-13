@@ -980,11 +980,7 @@ SYSCALL_DEFINE4(quotactl_fd, unsigned int, fd, unsigned int, cmd,
 	int ret;
 
 	f = fdget_raw(fd);
-<<<<<<< HEAD
-	if (!f.file)
-=======
 	if (!fd_file(f))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EBADF;
 
 	ret = -EINVAL;
@@ -992,20 +988,12 @@ SYSCALL_DEFINE4(quotactl_fd, unsigned int, fd, unsigned int, cmd,
 		goto out;
 
 	if (quotactl_cmd_write(cmds)) {
-<<<<<<< HEAD
-		ret = mnt_want_write(f.file->f_path.mnt);
-=======
 		ret = mnt_want_write(fd_file(f)->f_path.mnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (ret)
 			goto out;
 	}
 
-<<<<<<< HEAD
-	sb = f.file->f_path.mnt->mnt_sb;
-=======
 	sb = fd_file(f)->f_path.mnt->mnt_sb;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (quotactl_cmd_onoff(cmds))
 		down_write(&sb->s_umount);
 	else
@@ -1019,11 +1007,7 @@ SYSCALL_DEFINE4(quotactl_fd, unsigned int, fd, unsigned int, cmd,
 		up_read(&sb->s_umount);
 
 	if (quotactl_cmd_write(cmds))
-<<<<<<< HEAD
-		mnt_drop_write(f.file->f_path.mnt);
-=======
 		mnt_drop_write(fd_file(f)->f_path.mnt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 out:
 	fdput(f);
 	return ret;

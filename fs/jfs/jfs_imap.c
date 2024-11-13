@@ -1360,11 +1360,7 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
 	/* get the ag number of this iag */
 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
 	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
-<<<<<<< HEAD
-	if (agno < 0 || agno > dn_numag)
-=======
 	if (agno < 0 || agno > dn_numag || agno >= MAXAG)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EIO;
 
 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {

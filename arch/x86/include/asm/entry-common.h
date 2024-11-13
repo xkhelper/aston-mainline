@@ -8,10 +8,7 @@
 #include <asm/nospec-branch.h>
 #include <asm/io_bitmap.h>
 #include <asm/fpu/api.h>
-<<<<<<< HEAD
-=======
 #include <asm/fred.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* Check that the stack and regs on entry from user mode are sane. */
 static __always_inline void arch_enter_from_user_mode(struct pt_regs *regs)
@@ -48,12 +45,7 @@ static __always_inline void arch_enter_from_user_mode(struct pt_regs *regs)
 }
 #define arch_enter_from_user_mode arch_enter_from_user_mode
 
-<<<<<<< HEAD
-static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
-						  unsigned long ti_work)
-=======
 static inline void arch_exit_work(unsigned long ti_work)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (ti_work & _TIF_USER_RETURN_NOTIFY)
 		fire_user_return_notifiers();
@@ -64,8 +56,6 @@ static inline void arch_exit_work(unsigned long ti_work)
 	fpregs_assert_state_consistent();
 	if (unlikely(ti_work & _TIF_NEED_FPU_LOAD))
 		switch_fpu_return();
-<<<<<<< HEAD
-=======
 }
 
 static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
@@ -75,7 +65,6 @@ static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
 		arch_exit_work(ti_work);
 
 	fred_update_rsp0();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #ifdef CONFIG_COMPAT
 	/*

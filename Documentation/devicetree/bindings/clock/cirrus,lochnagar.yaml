@@ -67,15 +67,9 @@ properties:
     minItems: 1
     maxItems: 19
 
-<<<<<<< HEAD
-  clocks: true
-  assigned-clocks: true
-  assigned-clock-parents: true
-=======
   clocks:
     minItems: 1
     maxItems: 19
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 additionalProperties: false
 

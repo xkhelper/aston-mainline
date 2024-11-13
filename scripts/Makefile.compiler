@@ -53,21 +53,11 @@ cc-option = $(call __cc-option, $(CC),\
 
 # cc-option-yn
 # Usage: flag := $(call cc-option-yn,-march=winchip-c6)
-<<<<<<< HEAD
-cc-option-yn = $(call try-run,\
-	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(1) -c -x c /dev/null -o "$$TMP",y,n)
-
-# cc-disable-warning
-# Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
-cc-disable-warning = $(call try-run,\
-	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
-=======
 cc-option-yn = $(if $(call cc-option,$1),y,n)
 
 # cc-disable-warning
 # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
 cc-disable-warning = $(if $(call cc-option,-W$(strip $1)),-Wno-$(strip $1))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 # gcc-min-version
 # Usage: cflags-$(call gcc-min-version, 70100) += -foo
@@ -80,8 +70,6 @@ clang-min-version = $(call test-ge, $(CONFIG_CLANG_VERSION), $1)
 # ld-option
 # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
 ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
-<<<<<<< HEAD
-=======
 
 # __rustc-option
 # Usage: MY_RUSTFLAGS += $(call __rustc-option,$(RUSTC),$(MY_RUSTFLAGS),-Cinstrument-coverage,-Zinstrument-coverage)
@@ -99,4 +87,3 @@ rustc-option = $(call __rustc-option, $(RUSTC),\
 # rustc-option-yn
 # Usage: flag := $(call rustc-option-yn,-Cinstrument-coverage)
 rustc-option-yn = $(if $(call rustc-option,$1),y,n)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -6347,11 +6347,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
 		.invalid_port_mask = BIT(1) | BIT(2) | BIT(8),
 		.num_internal_phys = 5,
 		.internal_phys_offset = 3,
-<<<<<<< HEAD
-		.max_vid = 4095,
-=======
 		.max_vid = 8191,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.max_sid = 63,
 		.port_base_addr = 0x0,
 		.phy_base_addr = 0x0,

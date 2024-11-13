@@ -7,11 +7,7 @@
 
 #include <linux/kernel.h>
 #include <linux/bitfield.h>
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline u32 _iba_get8(const u8 *ptr)
 {

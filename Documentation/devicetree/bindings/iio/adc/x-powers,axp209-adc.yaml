@@ -37,8 +37,6 @@ description: |
    3 | batt_dischrg_i
    4 | ts_v
 
-<<<<<<< HEAD
-=======
   AXP717
   ------
    0 | batt_v
@@ -50,7 +48,6 @@ description: |
    6 | vmid_v
    7 | bkup_batt_v
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   AXP813
   ------
    0 | pmic_temp
@@ -66,10 +63,7 @@ properties:
     oneOf:
       - const: x-powers,axp209-adc
       - const: x-powers,axp221-adc
-<<<<<<< HEAD
-=======
       - const: x-powers,axp717-adc
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
       - const: x-powers,axp813-adc
 
       - items:

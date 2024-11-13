@@ -893,11 +893,7 @@ static const struct mii_phy_ops bcm5201_phy_ops = {
 	.read_link	= genmii_read_link,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5201_phy_def = {
-=======
 static const struct mii_phy_def bcm5201_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x00406210,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5201",
@@ -916,11 +912,7 @@ static const struct mii_phy_ops bcm5221_phy_ops = {
 	.read_link	= genmii_read_link,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5221_phy_def = {
-=======
 static const struct mii_phy_def bcm5221_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x004061e0,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5221",
@@ -938,12 +930,8 @@ static const struct mii_phy_ops bcm5241_phy_ops = {
 	.poll_link	= genmii_poll_link,
 	.read_link	= genmii_read_link,
 };
-<<<<<<< HEAD
-static struct mii_phy_def bcm5241_phy_def = {
-=======
 
 static const struct mii_phy_def bcm5241_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x0143bc30,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5241",
@@ -962,11 +950,7 @@ static const struct mii_phy_ops bcm5400_phy_ops = {
 	.read_link	= bcm54xx_read_link,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5400_phy_def = {
-=======
 static const struct mii_phy_def bcm5400_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x00206040,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5400",
@@ -985,11 +969,7 @@ static const struct mii_phy_ops bcm5401_phy_ops = {
 	.read_link	= bcm54xx_read_link,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5401_phy_def = {
-=======
 static const struct mii_phy_def bcm5401_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x00206050,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5401",
@@ -1008,11 +988,7 @@ static const struct mii_phy_ops bcm5411_phy_ops = {
 	.read_link	= bcm54xx_read_link,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5411_phy_def = {
-=======
 static const struct mii_phy_def bcm5411_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x00206070,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5411",
@@ -1032,11 +1008,7 @@ static const struct mii_phy_ops bcm5421_phy_ops = {
 	.enable_fiber   = bcm5421_enable_fiber,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5421_phy_def = {
-=======
 static const struct mii_phy_def bcm5421_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x002060e0,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5421",
@@ -1055,11 +1027,7 @@ static const struct mii_phy_ops bcm5421k2_phy_ops = {
 	.read_link	= bcm54xx_read_link,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5421k2_phy_def = {
-=======
 static const struct mii_phy_def bcm5421k2_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x002062e0,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5421-K2",
@@ -1078,11 +1046,7 @@ static const struct mii_phy_ops bcm5461_phy_ops = {
 	.enable_fiber   = bcm5461_enable_fiber,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5461_phy_def = {
-=======
 static const struct mii_phy_def bcm5461_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x002060c0,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5461",
@@ -1101,11 +1065,7 @@ static const struct mii_phy_ops bcm5462V_phy_ops = {
 	.read_link	= bcm54xx_read_link,
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def bcm5462V_phy_def = {
-=======
 static const struct mii_phy_def bcm5462V_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x002060d0,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "BCM5462-Vesta",
@@ -1135,11 +1095,7 @@ static const struct mii_phy_ops marvell88e1111_phy_ops = {
 /* two revs in darwin for the 88e1101 ... I could use a datasheet
  * to get the proper names...
  */
-<<<<<<< HEAD
-static struct mii_phy_def marvell88e1101v1_phy_def = {
-=======
 static const struct mii_phy_def marvell88e1101v1_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x01410c20,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "Marvell 88E1101v1",
@@ -1147,12 +1103,8 @@ static const struct mii_phy_def marvell88e1101v1_phy_def = {
 	.magic_aneg	= 1,
 	.ops		= &marvell88e1101_phy_ops
 };
-<<<<<<< HEAD
-static struct mii_phy_def marvell88e1101v2_phy_def = {
-=======
 
 static const struct mii_phy_def marvell88e1101v2_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x01410c60,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "Marvell 88E1101v2",
@@ -1160,12 +1112,8 @@ static const struct mii_phy_def marvell88e1101v2_phy_def = {
 	.magic_aneg	= 1,
 	.ops		= &marvell88e1101_phy_ops
 };
-<<<<<<< HEAD
-static struct mii_phy_def marvell88e1111_phy_def = {
-=======
 
 static const struct mii_phy_def marvell88e1111_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x01410cc0,
 	.phy_id_mask	= 0xfffffff0,
 	.name		= "Marvell 88E1111",
@@ -1182,11 +1130,7 @@ static const struct mii_phy_ops generic_phy_ops = {
 	.read_link	= genmii_read_link
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def genmii_phy_def = {
-=======
 static const struct mii_phy_def genmii_phy_def = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.phy_id		= 0x00000000,
 	.phy_id_mask	= 0x00000000,
 	.name		= "Generic MII",
@@ -1195,11 +1139,7 @@ static const struct mii_phy_def genmii_phy_def = {
 	.ops		= &generic_phy_ops
 };
 
-<<<<<<< HEAD
-static struct mii_phy_def* mii_phy_table[] = {
-=======
 static const struct mii_phy_def *mii_phy_table[] = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	&bcm5201_phy_def,
 	&bcm5221_phy_def,
 	&bcm5241_phy_def,
@@ -1219,15 +1159,9 @@ static const struct mii_phy_def *mii_phy_table[] = {
 
 int sungem_phy_probe(struct mii_phy *phy, int mii_id)
 {
-<<<<<<< HEAD
-	int rc;
-	u32 id;
-	struct mii_phy_def* def;
-=======
 	const struct mii_phy_def *def;
 	int rc;
 	u32 id;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int i;
 
 	/* We do not reset the mii_phy structure as the driver

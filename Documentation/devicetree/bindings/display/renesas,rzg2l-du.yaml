@@ -18,10 +18,7 @@ properties:
   compatible:
     oneOf:
       - enum:
-<<<<<<< HEAD
-=======
           - renesas,r9a07g043u-du # RZ/G2UL
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
           - renesas,r9a07g044-du # RZ/G2{L,LC}
       - items:
           - enum:
@@ -64,12 +61,6 @@ properties:
         $ref: /schemas/graph.yaml#/properties/port
         unevaluatedProperties: false
 
-<<<<<<< HEAD
-    required:
-      - port@0
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     unevaluatedProperties: false
 
   renesas,vsps:
@@ -95,8 +86,6 @@ required:
 
 additionalProperties: false
 
-<<<<<<< HEAD
-=======
 allOf:
   - if:
       properties:
@@ -125,7 +114,6 @@ allOf:
             - port@0
             - port@1
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 examples:
   # RZ/G2L DU
   - |

@@ -4,10 +4,7 @@
 
 #ifndef __ASSEMBLY__
 
-<<<<<<< HEAD
-=======
 #include <asm/barrier.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <vdso/datapage.h>
 
 static __always_inline u32 vdso_read_begin(const struct vdso_data *vd)

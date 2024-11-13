@@ -4,10 +4,7 @@
 #include <linux/mm.h>
 
 #include <xen/hvc-console.h>
-<<<<<<< HEAD
-=======
 #include <xen/acpi.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/bootparam.h>
 #include <asm/io_apic.h>
@@ -32,8 +29,6 @@
 bool __ro_after_init xen_pvh;
 EXPORT_SYMBOL_GPL(xen_pvh);
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_XEN_DOM0
 int xen_pvh_setup_gsi(int gsi, int trigger, int polarity)
 {
@@ -56,7 +51,6 @@ int xen_pvh_setup_gsi(int gsi, int trigger, int polarity)
 EXPORT_SYMBOL_GPL(xen_pvh_setup_gsi);
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Reserve e820 UNUSABLE regions to inflate the memory balloon.
  *

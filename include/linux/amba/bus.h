@@ -105,11 +105,7 @@ enum amba_vendor {
 	AMBA_VENDOR_LSI = 0xb6,
 };
 
-<<<<<<< HEAD
-extern struct bus_type amba_bustype;
-=======
 extern const struct bus_type amba_bustype;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define to_amba_device(d)	container_of_const(d, struct amba_device, dev)
 

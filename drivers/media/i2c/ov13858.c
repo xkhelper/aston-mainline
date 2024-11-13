@@ -1740,13 +1740,8 @@ static void ov13858_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ov13858_id_table[] = {
-<<<<<<< HEAD
-	{"ov13858", 0},
-	{},
-=======
 	{ "ov13858" },
 	{}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 MODULE_DEVICE_TABLE(i2c, ov13858_id_table);

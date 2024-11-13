@@ -26,8 +26,6 @@ static inline u32 acpi_pm_read_early(void)
 	return acpi_pm_read_verified() & ACPI_PM_MASK;
 }
 
-<<<<<<< HEAD
-=======
 /**
  * Register callback for suspend and resume event
  *
@@ -41,7 +39,6 @@ void acpi_pmtmr_register_suspend_resume_callback(void (*cb)(void *data, bool sus
  */
 void acpi_pmtmr_unregister_suspend_resume_callback(void);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #else
 
 static inline u32 acpi_pm_read_early(void)

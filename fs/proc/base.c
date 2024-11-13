@@ -85,10 +85,7 @@
 #include <linux/elf.h>
 #include <linux/pid_namespace.h>
 #include <linux/user_namespace.h>
-<<<<<<< HEAD
-=======
 #include <linux/fs_parser.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/fs_struct.h>
 #include <linux/slab.h>
 #include <linux/sched/autogroup.h>
@@ -121,8 +118,6 @@
 static u8 nlink_tid __ro_after_init;
 static u8 nlink_tgid __ro_after_init;
 
-<<<<<<< HEAD
-=======
 enum proc_mem_force {
 	PROC_MEM_FORCE_ALWAYS,
 	PROC_MEM_FORCE_PTRACE,
@@ -157,7 +152,6 @@ static int __init early_proc_mem_force_override(char *buf)
 }
 early_param("proc_mem.force_override", early_proc_mem_force_override);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct pid_entry {
 	const char *name;
 	unsigned int len;
@@ -868,14 +862,6 @@ static int __mem_open(struct inode *inode, struct file *file, unsigned int mode)
 
 static int mem_open(struct inode *inode, struct file *file)
 {
-<<<<<<< HEAD
-	int ret = __mem_open(inode, file, PTRACE_MODE_ATTACH);
-
-	/* OK to pass negative loff_t, we can catch out-of-range */
-	file->f_mode |= FMODE_UNSIGNED_OFFSET;
-
-	return ret;
-=======
 	if (WARN_ON_ONCE(!(file->f_op->fop_flags & FOP_UNSIGNED_OFFSET)))
 		return -EINVAL;
 	return __mem_open(inode, file, PTRACE_MODE_ATTACH);
@@ -901,7 +887,6 @@ static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
 	default:
 		return true;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static ssize_t mem_rw(struct file *file, char __user *buf,
@@ -924,13 +909,9 @@ static ssize_t mem_rw(struct file *file, char __user *buf,
 	if (!mmget_not_zero(mm))
 		goto free;
 
-<<<<<<< HEAD
-	flags = FOLL_FORCE | (write ? FOLL_WRITE : 0);
-=======
 	flags = write ? FOLL_WRITE : 0;
 	if (proc_mem_foll_force(file, mm))
 		flags |= FOLL_FORCE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	while (count > 0) {
 		size_t this_len = min_t(size_t, count, PAGE_SIZE);
@@ -1007,10 +988,7 @@ static const struct file_operations proc_mem_operations = {
 	.write		= mem_write,
 	.open		= mem_open,
 	.release	= mem_release,
-<<<<<<< HEAD
-=======
 	.fop_flags	= FOP_UNSIGNED_OFFSET,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static int environ_open(struct inode *inode, struct file *file)
@@ -2355,13 +2333,8 @@ proc_map_files_instantiate(struct dentry *dentry,
 	inode->i_op = &proc_map_files_link_inode_operations;
 	inode->i_size = 64;
 
-<<<<<<< HEAD
-	d_set_d_op(dentry, &tid_map_files_dentry_operations);
-	return d_splice_alias(inode, dentry);
-=======
 	return proc_splice_unmountable(inode, dentry,
 				       &tid_map_files_dentry_operations);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct dentry *proc_map_files_lookup(struct inode *dir,
@@ -2540,21 +2513,13 @@ static void *timers_start(struct seq_file *m, loff_t *pos)
 	if (!tp->sighand)
 		return ERR_PTR(-ESRCH);
 
-<<<<<<< HEAD
-	return seq_list_start(&tp->task->signal->posix_timers, *pos);
-=======
 	return seq_hlist_start(&tp->task->signal->posix_timers, *pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void *timers_next(struct seq_file *m, void *v, loff_t *pos)
 {
 	struct timers_private *tp = m->private;
-<<<<<<< HEAD
-	return seq_list_next(v, &tp->task->signal->posix_timers, pos);
-=======
 	return seq_hlist_next(v, &tp->task->signal->posix_timers, pos);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static void timers_stop(struct seq_file *m, void *v)
@@ -2583,11 +2548,7 @@ static int show_timer(struct seq_file *m, void *v)
 		[SIGEV_THREAD] = "thread",
 	};
 
-<<<<<<< HEAD
-	timer = list_entry((struct list_head *)v, struct k_itimer, list);
-=======
 	timer = hlist_entry((struct hlist_node *)v, struct k_itimer, list);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	notify = timer->it_sigev_notify;
 
 	seq_printf(m, "ID: %d\n", timer->it_id);
@@ -2665,18 +2626,11 @@ static ssize_t timerslack_ns_write(struct file *file, const char __user *buf,
 	}
 
 	task_lock(p);
-<<<<<<< HEAD
-	if (slack_ns == 0)
-		p->timer_slack_ns = p->default_timer_slack_ns;
-	else
-		p->timer_slack_ns = slack_ns;
-=======
 	if (rt_or_dl_task_policy(p))
 		slack_ns = 0;
 	else if (slack_ns == 0)
 		slack_ns = p->default_timer_slack_ns;
 	p->timer_slack_ns = slack_ns;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	task_unlock(p);
 
 out:
@@ -3974,21 +3928,12 @@ static int proc_task_readdir(struct file *file, struct dir_context *ctx)
 	if (!dir_emit_dots(file, ctx))
 		return 0;
 
-<<<<<<< HEAD
-	/* f_version caches the tgid value that the last readdir call couldn't
-	 * return. lseek aka telldir automagically resets f_version to 0.
-	 */
-	ns = proc_pid_ns(inode->i_sb);
-	tid = (int)file->f_version;
-	file->f_version = 0;
-=======
 	/* We cache the tgid value that the last readdir call couldn't
 	 * return and lseek resets it to 0.
 	 */
 	ns = proc_pid_ns(inode->i_sb);
 	tid = (int)(intptr_t)file->private_data;
 	file->private_data = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for (task = first_tid(proc_pid(inode), tid, ctx->pos - 2, ns);
 	     task;
 	     task = next_tid(task), ctx->pos++) {
@@ -4003,11 +3948,7 @@ static int proc_task_readdir(struct file *file, struct dir_context *ctx)
 				proc_task_instantiate, task, NULL)) {
 			/* returning this tgid failed, save it as the first
 			 * pid for the next readir call */
-<<<<<<< HEAD
-			file->f_version = (u64)tid;
-=======
 			file->private_data = (void *)(intptr_t)tid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			put_task_struct(task);
 			break;
 		}
@@ -4032,8 +3973,6 @@ static int proc_task_getattr(struct mnt_idmap *idmap,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /*
  * proc_task_readdir() set @file->private_data to a positive integer
  * value, so casting that to u64 is safe. generic_llseek_cookie() will
@@ -4052,7 +3991,6 @@ static loff_t proc_dir_llseek(struct file *file, loff_t offset, int whence)
 	return off;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct inode_operations proc_task_inode_operations = {
 	.lookup		= proc_task_lookup,
 	.getattr	= proc_task_getattr,
@@ -4063,11 +4001,7 @@ static const struct inode_operations proc_task_inode_operations = {
 static const struct file_operations proc_task_operations = {
 	.read		= generic_read_dir,
 	.iterate_shared	= proc_task_readdir,
-<<<<<<< HEAD
-	.llseek		= generic_file_llseek,
-=======
 	.llseek		= proc_dir_llseek,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 void __init set_proc_pid_nlink(void)

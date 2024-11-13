@@ -568,11 +568,7 @@ void cdv_intel_lvds_init(struct drm_device *dev,
 			dev->dev, "I2C bus registration failed.\n");
 		goto err_encoder_cleanup;
 	}
-<<<<<<< HEAD
-	gma_encoder->i2c_bus->slave_addr = 0x2C;
-=======
 	gma_encoder->i2c_bus->target_addr = 0x2C;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dev_priv->lvds_i2c_bus = gma_encoder->i2c_bus;
 
 	/*

@@ -24,26 +24,12 @@ properties:
     maxItems: 1
     description: The DPMAC number
 
-<<<<<<< HEAD
-  phy-handle: true
-
-  phy-connection-type: true
-
-  phy-mode: true
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   pcs-handle:
     maxItems: 1
     description:
       A reference to a node representing a PCS PHY device found on
       the internal MDIO bus.
 
-<<<<<<< HEAD
-  managed: true
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
   phys:
     description: A reference to the SerDes lane(s)
     maxItems: 1
@@ -51,11 +37,7 @@ properties:
 required:
   - reg
 
-<<<<<<< HEAD
-additionalProperties: false
-=======
 unevaluatedProperties: false
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 examples:
   - |

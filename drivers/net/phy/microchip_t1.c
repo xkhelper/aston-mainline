@@ -12,10 +12,7 @@
 
 #define PHY_ID_LAN87XX				0x0007c150
 #define PHY_ID_LAN937X				0x0007c180
-<<<<<<< HEAD
-=======
 #define PHY_ID_LAN887X				0x0007c1f0
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* External Register Control Register */
 #define LAN87XX_EXT_REG_CTL                     (0x14)
@@ -98,10 +95,6 @@
 /* SQI defines */
 #define LAN87XX_MAX_SQI			0x07
 
-<<<<<<< HEAD
-#define DRIVER_AUTHOR	"Nisar Sayed <nisar.sayed@microchip.com>"
-#define DRIVER_DESC	"Microchip LAN87XX/LAN937x T1 PHY driver"
-=======
 /* Chiptop registers */
 #define LAN887X_PMA_EXT_ABILITY_2		0x12
 #define LAN887X_PMA_EXT_ABILITY_2_1000T1	BIT(1)
@@ -251,7 +244,6 @@ enum cable_diag_state {
 	CD_TEST_INIT,
 	CD_TEST_DONE
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct access_ereg_val {
 	u8  mode;
@@ -261,8 +253,6 @@ struct access_ereg_val {
 	u16 mask;
 };
 
-<<<<<<< HEAD
-=======
 struct lan887x_hw_stat {
 	const char *string;
 	u8 mmd;
@@ -289,7 +279,6 @@ struct lan887x_priv {
 	u64 stats[ARRAY_SIZE(lan887x_hw_stats)];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int lan937x_dsp_workaround(struct phy_device *phydev, u16 ereg, u8 bank)
 {
 	u8 prev_bank;
@@ -1045,8 +1034,6 @@ static int lan87xx_get_sqi_max(struct phy_device *phydev)
 	return LAN87XX_MAX_SQI;
 }
 
-<<<<<<< HEAD
-=======
 static int lan887x_rgmii_init(struct phy_device *phydev)
 {
 	int ret;
@@ -1843,7 +1830,6 @@ static int lan887x_cable_test_get_status(struct phy_device *phydev,
 	return lan887x_cable_test_report(phydev);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static struct phy_driver microchip_t1_phy_driver[] = {
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_LAN87XX),
@@ -1878,8 +1864,6 @@ static struct phy_driver microchip_t1_phy_driver[] = {
 		.get_sqi_max	= lan87xx_get_sqi_max,
 		.cable_test_start = lan87xx_cable_test_start,
 		.cable_test_get_status = lan87xx_cable_test_get_status,
-<<<<<<< HEAD
-=======
 	},
 	{
 		PHY_ID_MATCH_MODEL(PHY_ID_LAN887X),
@@ -1897,7 +1881,6 @@ static struct phy_driver microchip_t1_phy_driver[] = {
 		.read_status	= genphy_c45_read_status,
 		.cable_test_start = lan887x_cable_test_start,
 		.cable_test_get_status = lan887x_cable_test_get_status,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 };
 
@@ -1906,10 +1889,7 @@ module_phy_driver(microchip_t1_phy_driver);
 static struct mdio_device_id __maybe_unused microchip_t1_tbl[] = {
 	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN87XX) },
 	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN937X) },
-<<<<<<< HEAD
-=======
 	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN887X) },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 

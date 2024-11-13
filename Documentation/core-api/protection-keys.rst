@@ -12,14 +12,10 @@ Pkeys Userspace (PKU) is a feature which can be found on:
         * Intel server CPUs, Skylake and later
         * Intel client CPUs, Tiger Lake (11th Gen Core) and later
         * Future AMD CPUs
-<<<<<<< HEAD
-
-=======
         * arm64 CPUs implementing the Permission Overlay Extension (FEAT_S1POE)
 
 x86_64
 ======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Pkeys work by dedicating 4 previously Reserved bits in each page table entry to
 a "protection key", giving 16 possible keys.
 
@@ -35,8 +31,6 @@ register.  The feature is only available in 64-bit mode, even though there is
 theoretically space in the PAE PTEs.  These permissions are enforced on data
 access only and have no effect on instruction fetches.
 
-<<<<<<< HEAD
-=======
 arm64
 =====
 
@@ -53,7 +47,6 @@ each thread a different set of protections from every other thread.
 Unlike x86_64, the protection key permissions also apply to instruction
 fetches.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Syscalls
 ========
 
@@ -64,18 +57,10 @@ There are 3 system calls which directly interact with pkeys::
 	int pkey_mprotect(unsigned long start, size_t len,
 			  unsigned long prot, int pkey);
 
-<<<<<<< HEAD
-Before a pkey can be used, it must first be allocated with
-pkey_alloc().  An application calls the WRPKRU instruction
-directly in order to change access permissions to memory covered
-with a key.  In this example WRPKRU is wrapped by a C function
-called pkey_set().
-=======
 Before a pkey can be used, it must first be allocated with pkey_alloc().  An
 application writes to the architecture specific CPU register directly in order
 to change access permissions to memory covered with a key.  In this example
 this is wrapped by a C function called pkey_set().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 ::
 
 	int real_prot = PROT_READ|PROT_WRITE;
@@ -97,15 +82,9 @@ is no longer in use::
 	munmap(ptr, PAGE_SIZE);
 	pkey_free(pkey);
 
-<<<<<<< HEAD
-.. note:: pkey_set() is a wrapper for the RDPKRU and WRPKRU instructions.
-          An example implementation can be found in
-          tools/testing/selftests/x86/protection_keys.c.
-=======
 .. note:: pkey_set() is a wrapper around writing to the CPU register.
           Example implementations can be found in
           tools/testing/selftests/mm/pkey-{arm64,powerpc,x86}.h
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Behavior
 ========
@@ -135,10 +114,7 @@ with a read()::
 The kernel will send a SIGSEGV in both cases, but si_code will be set
 to SEGV_PKERR when violating protection keys versus SEGV_ACCERR when
 the plain mprotect() permissions are violated.
-<<<<<<< HEAD
-=======
 
 Note that kernel accesses from a kthread (such as io_uring) will use a default
 value for the protection key register and so will not be consistent with
 userspace's value of the register or mprotect().
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -34,10 +34,7 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
  * @rtp_blkd_tasks: List of tasks blocked as readers.
  * @rtp_exit_list: List of tasks in the latter portion of do_exit().
  * @cpu: CPU number corresponding to this entry.
-<<<<<<< HEAD
-=======
  * @index: Index of this CPU in rtpcp_array of the rcu_tasks structure.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @rtpp: Pointer to the rcu_tasks structure.
  */
 struct rcu_tasks_percpu {
@@ -53,10 +50,7 @@ struct rcu_tasks_percpu {
 	struct list_head rtp_blkd_tasks;
 	struct list_head rtp_exit_list;
 	int cpu;
-<<<<<<< HEAD
-=======
 	int index;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rcu_tasks *rtpp;
 };
 
@@ -71,11 +65,7 @@ struct rcu_tasks_percpu {
  * @init_fract: Initial backoff sleep interval.
  * @gp_jiffies: Time of last @gp_state transition.
  * @gp_start: Most recent grace-period start in jiffies.
-<<<<<<< HEAD
- * @tasks_gp_seq: Number of grace periods completed since boot.
-=======
  * @tasks_gp_seq: Number of grace periods completed since boot in upper bits.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @n_ipis: Number of IPIs sent to encourage grace periods to end.
  * @n_ipis_fails: Number of IPI-send failures.
  * @kthread_ptr: This flavor's grace-period/callback-invocation kthread.
@@ -88,10 +78,7 @@ struct rcu_tasks_percpu {
  * @call_func: This flavor's call_rcu()-equivalent function.
  * @wait_state: Task state for synchronous grace-period waits (default TASK_UNINTERRUPTIBLE).
  * @rtpcpu: This flavor's rcu_tasks_percpu structure.
-<<<<<<< HEAD
-=======
  * @rtpcp_array: Array of pointers to rcu_tasks_percpu structure of CPUs in cpu_possible_mask.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @percpu_enqueue_shift: Shift down CPU ID this much when enqueuing callbacks.
  * @percpu_enqueue_lim: Number of per-CPU callback queues in use for enqueuing.
  * @percpu_dequeue_lim: Number of per-CPU callback queues in use for dequeuing.
@@ -100,10 +87,7 @@ struct rcu_tasks_percpu {
  * @barrier_q_count: Number of queues being waited on.
  * @barrier_q_completion: Barrier wait/wakeup mechanism.
  * @barrier_q_seq: Sequence number for barrier operations.
-<<<<<<< HEAD
-=======
  * @barrier_q_start: Most recent barrier start in jiffies.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @name: This flavor's textual name.
  * @kname: This flavor's kthread name.
  */
@@ -130,10 +114,7 @@ struct rcu_tasks {
 	call_rcu_func_t call_func;
 	unsigned int wait_state;
 	struct rcu_tasks_percpu __percpu *rtpcpu;
-<<<<<<< HEAD
-=======
 	struct rcu_tasks_percpu **rtpcp_array;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int percpu_enqueue_shift;
 	int percpu_enqueue_lim;
 	int percpu_dequeue_lim;
@@ -142,10 +123,7 @@ struct rcu_tasks {
 	atomic_t barrier_q_count;
 	struct completion barrier_q_completion;
 	unsigned long barrier_q_seq;
-<<<<<<< HEAD
-=======
 	unsigned long barrier_q_start;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	char *name;
 	char *kname;
 };
@@ -210,11 +188,8 @@ module_param(rcu_task_collapse_lim, int, 0444);
 static int rcu_task_lazy_lim __read_mostly = 32;
 module_param(rcu_task_lazy_lim, int, 0444);
 
-<<<<<<< HEAD
-=======
 static int rcu_task_cpu_ids;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* RCU tasks grace-period state for debugging. */
 #define RTGS_INIT		 0
 #define RTGS_WAIT_WAIT_CBS	 1
@@ -278,11 +253,8 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
 	int cpu;
 	int lim;
 	int shift;
-<<<<<<< HEAD
-=======
 	int maxcpu;
 	int index = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (rcu_task_enqueue_lim < 0) {
 		rcu_task_enqueue_lim = 1;
@@ -292,20 +264,9 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
 	}
 	lim = rcu_task_enqueue_lim;
 
-<<<<<<< HEAD
-	if (lim > nr_cpu_ids)
-		lim = nr_cpu_ids;
-	shift = ilog2(nr_cpu_ids / lim);
-	if (((nr_cpu_ids - 1) >> shift) >= lim)
-		shift++;
-	WRITE_ONCE(rtp->percpu_enqueue_shift, shift);
-	WRITE_ONCE(rtp->percpu_dequeue_lim, lim);
-	smp_store_release(&rtp->percpu_enqueue_lim, lim);
-=======
 	rtp->rtpcp_array = kcalloc(num_possible_cpus(), sizeof(struct rcu_tasks_percpu *), GFP_KERNEL);
 	BUG_ON(!rtp->rtpcp_array);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	for_each_possible_cpu(cpu) {
 		struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rtp->rtpcpu, cpu);
 
@@ -317,22 +278,13 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
 		INIT_WORK(&rtpcp->rtp_work, rcu_tasks_invoke_cbs_wq);
 		rtpcp->cpu = cpu;
 		rtpcp->rtpp = rtp;
-<<<<<<< HEAD
-=======
 		rtpcp->index = index;
 		rtp->rtpcp_array[index] = rtpcp;
 		index++;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!rtpcp->rtp_blkd_tasks.next)
 			INIT_LIST_HEAD(&rtpcp->rtp_blkd_tasks);
 		if (!rtpcp->rtp_exit_list.next)
 			INIT_LIST_HEAD(&rtpcp->rtp_exit_list);
-<<<<<<< HEAD
-	}
-
-	pr_info("%s: Setting shift to %d and lim to %d rcu_task_cb_adjust=%d.\n", rtp->name,
-			data_race(rtp->percpu_enqueue_shift), data_race(rtp->percpu_enqueue_lim), rcu_task_cb_adjust);
-=======
 		rtpcp->barrier_q_head.next = &rtpcp->barrier_q_head;
 		maxcpu = cpu;
 	}
@@ -350,7 +302,6 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
 	pr_info("%s: Setting shift to %d and lim to %d rcu_task_cb_adjust=%d rcu_task_cpu_ids=%d.\n",
 			rtp->name, data_race(rtp->percpu_enqueue_shift), data_race(rtp->percpu_enqueue_lim),
 			rcu_task_cb_adjust, rcu_task_cpu_ids);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 // Compute wakeup time for lazy callback timer.
@@ -409,10 +360,7 @@ static void call_rcu_tasks_generic(struct rcu_head *rhp, rcu_callback_t func,
 	rcu_read_lock();
 	ideal_cpu = smp_processor_id() >> READ_ONCE(rtp->percpu_enqueue_shift);
 	chosen_cpu = cpumask_next(ideal_cpu - 1, cpu_possible_mask);
-<<<<<<< HEAD
-=======
 	WARN_ON_ONCE(chosen_cpu >= rcu_task_cpu_ids);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtpcp = per_cpu_ptr(rtp->rtpcpu, chosen_cpu);
 	if (!raw_spin_trylock_rcu_node(rtpcp)) { // irqs already disabled.
 		raw_spin_lock_rcu_node(rtpcp); // irqs already disabled.
@@ -422,11 +370,7 @@ static void call_rcu_tasks_generic(struct rcu_head *rhp, rcu_callback_t func,
 			rtpcp->rtp_n_lock_retries = 0;
 		}
 		if (rcu_task_cb_adjust && ++rtpcp->rtp_n_lock_retries > rcu_task_contend_lim &&
-<<<<<<< HEAD
-		    READ_ONCE(rtp->percpu_enqueue_lim) != nr_cpu_ids)
-=======
 		    READ_ONCE(rtp->percpu_enqueue_lim) != rcu_task_cpu_ids)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			needadjust = true;  // Defer adjustment to avoid deadlock.
 	}
 	// Queuing callbacks before initialization not yet supported.
@@ -446,17 +390,10 @@ static void call_rcu_tasks_generic(struct rcu_head *rhp, rcu_callback_t func,
 	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
 	if (unlikely(needadjust)) {
 		raw_spin_lock_irqsave(&rtp->cbs_gbl_lock, flags);
-<<<<<<< HEAD
-		if (rtp->percpu_enqueue_lim != nr_cpu_ids) {
-			WRITE_ONCE(rtp->percpu_enqueue_shift, 0);
-			WRITE_ONCE(rtp->percpu_dequeue_lim, nr_cpu_ids);
-			smp_store_release(&rtp->percpu_enqueue_lim, nr_cpu_ids);
-=======
 		if (rtp->percpu_enqueue_lim != rcu_task_cpu_ids) {
 			WRITE_ONCE(rtp->percpu_enqueue_shift, 0);
 			WRITE_ONCE(rtp->percpu_dequeue_lim, rcu_task_cpu_ids);
 			smp_store_release(&rtp->percpu_enqueue_lim, rcu_task_cpu_ids);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			pr_info("Switching %s to per-CPU callback queuing.\n", rtp->name);
 		}
 		raw_spin_unlock_irqrestore(&rtp->cbs_gbl_lock, flags);
@@ -473,10 +410,7 @@ static void rcu_barrier_tasks_generic_cb(struct rcu_head *rhp)
 	struct rcu_tasks *rtp;
 	struct rcu_tasks_percpu *rtpcp;
 
-<<<<<<< HEAD
-=======
 	rhp->next = rhp; // Mark the callback as having been invoked.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rtpcp = container_of(rhp, struct rcu_tasks_percpu, barrier_q_head);
 	rtp = rtpcp->rtpp;
 	if (atomic_dec_and_test(&rtp->barrier_q_count))
@@ -485,11 +419,7 @@ static void rcu_barrier_tasks_generic_cb(struct rcu_head *rhp)
 
 // Wait for all in-flight callbacks for the specified RCU Tasks flavor.
 // Operates in a manner similar to rcu_barrier().
-<<<<<<< HEAD
-static void rcu_barrier_tasks_generic(struct rcu_tasks *rtp)
-=======
 static void __maybe_unused rcu_barrier_tasks_generic(struct rcu_tasks *rtp)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int cpu;
 	unsigned long flags;
@@ -502,10 +432,7 @@ static void __maybe_unused rcu_barrier_tasks_generic(struct rcu_tasks *rtp)
 		mutex_unlock(&rtp->barrier_q_mutex);
 		return;
 	}
-<<<<<<< HEAD
-=======
 	rtp->barrier_q_start = jiffies;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_seq_start(&rtp->barrier_q_seq);
 	init_completion(&rtp->barrier_q_completion);
 	atomic_set(&rtp->barrier_q_count, 2);
@@ -541,11 +468,8 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
 
 	dequeue_limit = smp_load_acquire(&rtp->percpu_dequeue_lim);
 	for (cpu = 0; cpu < dequeue_limit; cpu++) {
-<<<<<<< HEAD
-=======
 		if (!cpu_possible(cpu))
 			continue;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rtp->rtpcpu, cpu);
 
 		/* Advance and accelerate any new callbacks. */
@@ -583,11 +507,7 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
 	if (rcu_task_cb_adjust && ncbs <= rcu_task_collapse_lim) {
 		raw_spin_lock_irqsave(&rtp->cbs_gbl_lock, flags);
 		if (rtp->percpu_enqueue_lim > 1) {
-<<<<<<< HEAD
-			WRITE_ONCE(rtp->percpu_enqueue_shift, order_base_2(nr_cpu_ids));
-=======
 			WRITE_ONCE(rtp->percpu_enqueue_shift, order_base_2(rcu_task_cpu_ids));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			smp_store_release(&rtp->percpu_enqueue_lim, 1);
 			rtp->percpu_dequeue_gpseq = get_state_synchronize_rcu();
 			gpdone = false;
@@ -602,13 +522,9 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
 			pr_info("Completing switch %s to CPU-0 callback queuing.\n", rtp->name);
 		}
 		if (rtp->percpu_dequeue_lim == 1) {
-<<<<<<< HEAD
-			for (cpu = rtp->percpu_dequeue_lim; cpu < nr_cpu_ids; cpu++) {
-=======
 			for (cpu = rtp->percpu_dequeue_lim; cpu < rcu_task_cpu_ids; cpu++) {
 				if (!cpu_possible(cpu))
 					continue;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rtp->rtpcpu, cpu);
 
 				WARN_ON_ONCE(rcu_segcblist_n_cbs(&rtpcp->cblist));
@@ -623,39 +539,14 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
 // Advance callbacks and invoke any that are ready.
 static void rcu_tasks_invoke_cbs(struct rcu_tasks *rtp, struct rcu_tasks_percpu *rtpcp)
 {
-<<<<<<< HEAD
-	int cpu;
-	int cpunext;
-	int cpuwq;
-	unsigned long flags;
-	int len;
-=======
 	int cpuwq;
 	unsigned long flags;
 	int len;
 	int index;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct rcu_head *rhp;
 	struct rcu_cblist rcl = RCU_CBLIST_INITIALIZER(rcl);
 	struct rcu_tasks_percpu *rtpcp_next;
 
-<<<<<<< HEAD
-	cpu = rtpcp->cpu;
-	cpunext = cpu * 2 + 1;
-	if (cpunext < smp_load_acquire(&rtp->percpu_dequeue_lim)) {
-		rtpcp_next = per_cpu_ptr(rtp->rtpcpu, cpunext);
-		cpuwq = rcu_cpu_beenfullyonline(cpunext) ? cpunext : WORK_CPU_UNBOUND;
-		queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
-		cpunext++;
-		if (cpunext < smp_load_acquire(&rtp->percpu_dequeue_lim)) {
-			rtpcp_next = per_cpu_ptr(rtp->rtpcpu, cpunext);
-			cpuwq = rcu_cpu_beenfullyonline(cpunext) ? cpunext : WORK_CPU_UNBOUND;
-			queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
-		}
-	}
-
-	if (rcu_segcblist_empty(&rtpcp->cblist) || !cpu_possible(cpu))
-=======
 	index = rtpcp->index * 2 + 1;
 	if (index < num_possible_cpus()) {
 		rtpcp_next = rtp->rtpcp_array[index];
@@ -674,7 +565,6 @@ static void rcu_tasks_invoke_cbs(struct rcu_tasks *rtp, struct rcu_tasks_percpu 
 	}
 
 	if (rcu_segcblist_empty(&rtpcp->cblist))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	raw_spin_lock_irqsave_rcu_node(rtpcp, flags);
 	rcu_segcblist_advance(&rtpcp->cblist, rcu_seq_current(&rtp->tasks_gp_seq));
@@ -827,13 +717,7 @@ static void __init rcu_tasks_bootup_oddness(void)
 #endif /* #ifdef CONFIG_TASKS_TRACE_RCU */
 }
 
-<<<<<<< HEAD
-#endif /* #ifndef CONFIG_TINY_RCU */
 
-#ifndef CONFIG_TINY_RCU
-=======
-
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Dump out rcutorture-relevant state common to all RCU-tasks flavors. */
 static void show_rcu_tasks_generic_gp_kthread(struct rcu_tasks *rtp, char *s)
 {
@@ -867,8 +751,6 @@ static void show_rcu_tasks_generic_gp_kthread(struct rcu_tasks *rtp, char *s)
 		rtp->lazy_jiffies,
 		s);
 }
-<<<<<<< HEAD
-=======
 
 /* Dump out more rcutorture-relevant state common to all RCU-tasks flavors. */
 static void rcu_tasks_torture_stats_print_generic(struct rcu_tasks *rtp, char *tt,
@@ -916,7 +798,6 @@ static void rcu_tasks_torture_stats_print_generic(struct rcu_tasks *rtp, char *t
 	free_cpumask_var(cm);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif // #ifndef CONFIG_TINY_RCU
 
 static void exit_tasks_rcu_finish_trace(struct task_struct *t);
@@ -1105,8 +986,6 @@ static bool rcu_tasks_is_holdout(struct task_struct *t)
 		return false;
 
 	/*
-<<<<<<< HEAD
-=======
 	 * t->on_rq && !t->se.sched_delayed *could* be considered sleeping but
 	 * since it is a spurious state (it will transition into the
 	 * traditional blocked state or get woken up without outside
@@ -1116,7 +995,6 @@ static bool rcu_tasks_is_holdout(struct task_struct *t)
 	 */
 
 	/*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * Idle tasks (or idle injection) within the idle loop are RCU-tasks
 	 * quiescent states. But CPU boot code performed by the idle task
 	 * isn't a quiescent state.
@@ -1380,15 +1258,12 @@ void show_rcu_tasks_classic_gp_kthread(void)
 	show_rcu_tasks_generic_gp_kthread(&rcu_tasks, "");
 }
 EXPORT_SYMBOL_GPL(show_rcu_tasks_classic_gp_kthread);
-<<<<<<< HEAD
-=======
 
 void rcu_tasks_torture_stats_print(char *tt, char *tf)
 {
 	rcu_tasks_torture_stats_print_generic(&rcu_tasks, tt, tf, "");
 }
 EXPORT_SYMBOL_GPL(rcu_tasks_torture_stats_print);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif // !defined(CONFIG_TINY_RCU)
 
 struct task_struct *get_rcu_tasks_gp_kthread(void)
@@ -1459,22 +1334,12 @@ void exit_tasks_rcu_finish(void) { exit_tasks_rcu_finish_trace(current); }
 
 ////////////////////////////////////////////////////////////////////////
 //
-<<<<<<< HEAD
-// "Rude" variant of Tasks RCU, inspired by Steve Rostedt's trick of
-// passing an empty function to schedule_on_each_cpu().  This approach
-// provides an asynchronous call_rcu_tasks_rude() API and batching of
-// concurrent calls to the synchronous synchronize_rcu_tasks_rude() API.
-// This invokes schedule_on_each_cpu() in order to send IPIs far and wide
-// and induces otherwise unnecessary context switches on all online CPUs,
-// whether idle or not.
-=======
 // "Rude" variant of Tasks RCU, inspired by Steve Rostedt's
 // trick of passing an empty function to schedule_on_each_cpu().
 // This approach provides batching of concurrent calls to the synchronous
 // synchronize_rcu_tasks_rude() API.  This invokes schedule_on_each_cpu()
 // in order to send IPIs far and wide and induces otherwise unnecessary
 // context switches on all online CPUs, whether idle or not.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 //
 // Callback handling is provided by the rcu_tasks_kthread() function.
 //
@@ -1492,19 +1357,11 @@ static void rcu_tasks_rude_wait_gp(struct rcu_tasks *rtp)
 	schedule_on_each_cpu(rcu_tasks_be_rude);
 }
 
-<<<<<<< HEAD
-void call_rcu_tasks_rude(struct rcu_head *rhp, rcu_callback_t func);
-DEFINE_RCU_TASKS(rcu_tasks_rude, rcu_tasks_rude_wait_gp, call_rcu_tasks_rude,
-		 "RCU Tasks Rude");
-
-/**
-=======
 static void call_rcu_tasks_rude(struct rcu_head *rhp, rcu_callback_t func);
 DEFINE_RCU_TASKS(rcu_tasks_rude, rcu_tasks_rude_wait_gp, call_rcu_tasks_rude,
 		 "RCU Tasks Rude");
 
 /*
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * call_rcu_tasks_rude() - Queue a callback rude task-based grace period
  * @rhp: structure to be used for queueing the RCU updates.
  * @func: actual callback function to be invoked after the grace period
@@ -1521,14 +1378,6 @@ DEFINE_RCU_TASKS(rcu_tasks_rude, rcu_tasks_rude_wait_gp, call_rcu_tasks_rude,
  *
  * See the description of call_rcu() for more detailed information on
  * memory ordering guarantees.
-<<<<<<< HEAD
- */
-void call_rcu_tasks_rude(struct rcu_head *rhp, rcu_callback_t func)
-{
-	call_rcu_tasks_generic(rhp, func, &rcu_tasks_rude);
-}
-EXPORT_SYMBOL_GPL(call_rcu_tasks_rude);
-=======
  *
  * This is no longer exported, and is instead reserved for use by
  * synchronize_rcu_tasks_rude().
@@ -1537,7 +1386,6 @@ static void call_rcu_tasks_rude(struct rcu_head *rhp, rcu_callback_t func)
 {
 	call_rcu_tasks_generic(rhp, func, &rcu_tasks_rude);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /**
  * synchronize_rcu_tasks_rude - wait for a rude rcu-tasks grace period
@@ -1563,32 +1411,9 @@ void synchronize_rcu_tasks_rude(void)
 }
 EXPORT_SYMBOL_GPL(synchronize_rcu_tasks_rude);
 
-<<<<<<< HEAD
-/**
- * rcu_barrier_tasks_rude - Wait for in-flight call_rcu_tasks_rude() callbacks.
- *
- * Although the current implementation is guaranteed to wait, it is not
- * obligated to, for example, if there are no pending callbacks.
- */
-void rcu_barrier_tasks_rude(void)
-{
-	rcu_barrier_tasks_generic(&rcu_tasks_rude);
-}
-EXPORT_SYMBOL_GPL(rcu_barrier_tasks_rude);
-
-int rcu_tasks_rude_lazy_ms = -1;
-module_param(rcu_tasks_rude_lazy_ms, int, 0444);
-
 static int __init rcu_spawn_tasks_rude_kthread(void)
 {
 	rcu_tasks_rude.gp_sleep = HZ / 10;
-	if (rcu_tasks_rude_lazy_ms >= 0)
-		rcu_tasks_rude.lazy_jiffies = msecs_to_jiffies(rcu_tasks_rude_lazy_ms);
-=======
-static int __init rcu_spawn_tasks_rude_kthread(void)
-{
-	rcu_tasks_rude.gp_sleep = HZ / 10;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rcu_spawn_tasks_kthread_generic(&rcu_tasks_rude);
 	return 0;
 }
@@ -1599,15 +1424,12 @@ void show_rcu_tasks_rude_gp_kthread(void)
 	show_rcu_tasks_generic_gp_kthread(&rcu_tasks_rude, "");
 }
 EXPORT_SYMBOL_GPL(show_rcu_tasks_rude_gp_kthread);
-<<<<<<< HEAD
-=======
 
 void rcu_tasks_rude_torture_stats_print(char *tt, char *tf)
 {
 	rcu_tasks_torture_stats_print_generic(&rcu_tasks_rude, tt, tf, "");
 }
 EXPORT_SYMBOL_GPL(rcu_tasks_rude_torture_stats_print);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif // !defined(CONFIG_TINY_RCU)
 
 struct task_struct *get_rcu_tasks_rude_gp_kthread(void)
@@ -1871,11 +1693,7 @@ static int trc_inspect_reader(struct task_struct *t, void *bhp_in)
 		// However, we cannot safely change its state.
 		n_heavy_reader_attempts++;
 		// Check for "running" idle tasks on offline CPUs.
-<<<<<<< HEAD
-		if (!rcu_dynticks_zero_in_eqs(cpu, &t->trc_reader_nesting))
-=======
 		if (!rcu_watching_zero_in_eqs(cpu, &t->trc_reader_nesting))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return -EINVAL; // No quiescent state, do it the hard way.
 		n_heavy_reader_updates++;
 		nesting = 0;
@@ -2289,15 +2107,12 @@ void show_rcu_tasks_trace_gp_kthread(void)
 	show_rcu_tasks_generic_gp_kthread(&rcu_tasks_trace, buf);
 }
 EXPORT_SYMBOL_GPL(show_rcu_tasks_trace_gp_kthread);
-<<<<<<< HEAD
-=======
 
 void rcu_tasks_trace_torture_stats_print(char *tt, char *tf)
 {
 	rcu_tasks_torture_stats_print_generic(&rcu_tasks_trace, tt, tf, "");
 }
 EXPORT_SYMBOL_GPL(rcu_tasks_trace_torture_stats_print);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif // !defined(CONFIG_TINY_RCU)
 
 struct task_struct *get_rcu_tasks_trace_gp_kthread(void)
@@ -2341,24 +2156,13 @@ static struct rcu_tasks_test_desc tests[] = {
 		.notrun = IS_ENABLED(CONFIG_TASKS_RCU),
 	},
 	{
-<<<<<<< HEAD
-		.name = "call_rcu_tasks_rude()",
-		/* If not defined, the test is skipped. */
-		.notrun = IS_ENABLED(CONFIG_TASKS_RUDE_RCU),
-	},
-	{
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		.name = "call_rcu_tasks_trace()",
 		/* If not defined, the test is skipped. */
 		.notrun = IS_ENABLED(CONFIG_TASKS_TRACE_RCU)
 	}
 };
 
-<<<<<<< HEAD
-=======
 #if defined(CONFIG_TASKS_RCU) || defined(CONFIG_TASKS_TRACE_RCU)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void test_rcu_tasks_callback(struct rcu_head *rhp)
 {
 	struct rcu_tasks_test_desc *rttd =
@@ -2368,10 +2172,7 @@ static void test_rcu_tasks_callback(struct rcu_head *rhp)
 
 	rttd->notrun = false;
 }
-<<<<<<< HEAD
-=======
 #endif // #if defined(CONFIG_TASKS_RCU) || defined(CONFIG_TASKS_TRACE_RCU)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void rcu_tasks_initiate_self_tests(void)
 {
@@ -2384,26 +2185,14 @@ static void rcu_tasks_initiate_self_tests(void)
 
 #ifdef CONFIG_TASKS_RUDE_RCU
 	pr_info("Running RCU Tasks Rude wait API self tests\n");
-<<<<<<< HEAD
-	tests[1].runstart = jiffies;
 	synchronize_rcu_tasks_rude();
-	call_rcu_tasks_rude(&tests[1].rh, test_rcu_tasks_callback);
-=======
-	synchronize_rcu_tasks_rude();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 
 #ifdef CONFIG_TASKS_TRACE_RCU
 	pr_info("Running RCU Tasks Trace wait API self tests\n");
-<<<<<<< HEAD
-	tests[2].runstart = jiffies;
-	synchronize_rcu_tasks_trace();
-	call_rcu_tasks_trace(&tests[2].rh, test_rcu_tasks_callback);
-=======
 	tests[1].runstart = jiffies;
 	synchronize_rcu_tasks_trace();
 	call_rcu_tasks_trace(&tests[1].rh, test_rcu_tasks_callback);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif
 }
 

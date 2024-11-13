@@ -16,11 +16,7 @@
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
 
-<<<<<<< HEAD
-static struct regmap_config mx25_tsadc_regmap_config = {
-=======
 static const struct regmap_config mx25_tsadc_regmap_config = {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.fast_io = true,
 	.max_register = 8,
 	.reg_bits = 32,

@@ -81,10 +81,6 @@ enum dbc_state {
 	DS_ENABLED,
 	DS_CONNECTED,
 	DS_CONFIGURED,
-<<<<<<< HEAD
-	DS_STALLED,
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	DS_MAX
 };
 
@@ -93,10 +89,7 @@ struct dbc_ep {
 	struct list_head		list_pending;
 	struct xhci_ring		*ring;
 	unsigned int			direction:1;
-<<<<<<< HEAD
-=======
 	unsigned int			halted:1;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 #define DBC_QUEUE_SIZE			16
@@ -117,11 +110,7 @@ struct dbc_port {
 	struct tasklet_struct		push;
 
 	struct list_head		write_pool;
-<<<<<<< HEAD
-	struct kfifo			write_fifo;
-=======
 	unsigned int			tx_boundary;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	bool				registered;
 };

@@ -614,8 +614,6 @@ queue, and then start some asynchronous transfer engine (unless it's
 already running).
 
 
-<<<<<<< HEAD
-=======
 Extensions to the SPI protocol
 ------------------------------
 The fact that SPI doesn't have a formal specification or standard permits chip
@@ -699,7 +697,6 @@ of their ``struct spi_controller``. The configuration to idle MOSI low is
 analogous but uses the ``SPI_MOSI_IDLE_LOW`` mode bit.
 
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 THANKS TO
 ---------
 Contributors to Linux-SPI discussions include (in alphabetical order,

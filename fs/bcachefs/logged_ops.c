@@ -34,23 +34,6 @@ static int resume_logged_op(struct btree_trans *trans, struct btree_iter *iter,
 			    struct bkey_s_c k)
 {
 	struct bch_fs *c = trans->c;
-<<<<<<< HEAD
-	const struct bch_logged_op_fn *fn = logged_op_fn(k.k->type);
-	struct bkey_buf sk;
-	u32 restart_count = trans->restart_count;
-
-	if (!fn)
-		return 0;
-
-	bch2_bkey_buf_init(&sk);
-	bch2_bkey_buf_reassemble(&sk, c, k);
-
-	fn->resume(trans, sk.k);
-
-	bch2_bkey_buf_exit(&sk, c);
-
-	return trans_was_restarted(trans, restart_count);
-=======
 	u32 restart_count = trans->restart_count;
 	struct printbuf buf = PRINTBUF;
 	int ret = 0;
@@ -75,7 +58,6 @@ static int resume_logged_op(struct btree_trans *trans, struct btree_iter *iter,
 fsck_err:
 	printbuf_exit(&buf);
 	return ret ?: trans_was_restarted(trans, restart_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int bch2_resume_logged_ops(struct bch_fs *c)
@@ -111,11 +93,7 @@ int bch2_logged_op_start(struct btree_trans *trans, struct bkey_i *k)
 			 __bch2_logged_op_start(trans, k));
 }
 
-<<<<<<< HEAD
-void bch2_logged_op_finish(struct btree_trans *trans, struct bkey_i *k)
-=======
 int bch2_logged_op_finish(struct btree_trans *trans, struct bkey_i *k)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	int ret = commit_do(trans, NULL, NULL, BCH_TRANS_COMMIT_no_enospc,
 			    bch2_btree_delete(trans, BTREE_ID_logged_ops, k->k.p, 0));
@@ -135,9 +113,6 @@ int bch2_logged_op_finish(struct btree_trans *trans, struct bkey_i *k)
 				    buf.buf, bch2_err_str(ret));
 		printbuf_exit(&buf);
 	}
-<<<<<<< HEAD
-=======
 
 	return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

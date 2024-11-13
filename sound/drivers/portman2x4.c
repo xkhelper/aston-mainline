@@ -385,14 +385,8 @@ static void portman_flush_input(struct portman *pm, unsigned char port)
 		command = RXDATA1;
 		break;
 	default:
-<<<<<<< HEAD
-		snd_printk(KERN_WARNING
-			   "portman_flush_input() Won't flush port %i\n",
-			   port);
-=======
 		dev_warn(pm->card->dev, "%s Won't flush port %i\n",
 			 __func__, port);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 
@@ -717,11 +711,7 @@ static int snd_portman_probe(struct platform_device *pdev)
 	err = snd_card_new(&pdev->dev, index[dev], id[dev], THIS_MODULE,
 			   0, &card);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printd("Cannot create card\n");
-=======
 		dev_dbg(&pdev->dev, "Cannot create card\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return err;
 	}
 	strcpy(card->driver, DRIVER_NAME);
@@ -735,33 +725,21 @@ static int snd_portman_probe(struct platform_device *pdev)
 					    &portman_cb,   /* callbacks */
 					    pdev->id);	   /* device number */
 	if (pardev == NULL) {
-<<<<<<< HEAD
-		snd_printd("Cannot register pardevice\n");
-=======
 		dev_dbg(card->dev, "Cannot register pardevice\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EIO;
 		goto __err;
 	}
 
 	/* claim parport */
 	if (parport_claim(pardev)) {
-<<<<<<< HEAD
-		snd_printd("Cannot claim parport 0x%lx\n", pardev->port->base);
-=======
 		dev_dbg(card->dev, "Cannot claim parport 0x%lx\n", pardev->port->base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		err = -EIO;
 		goto free_pardev;
 	}
 
 	err = portman_create(card, pardev, &pm);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printd("Cannot create main component\n");
-=======
 		dev_dbg(card->dev, "Cannot create main component\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto release_pardev;
 	}
 	card->private_data = pm;
@@ -775,11 +753,7 @@ static int snd_portman_probe(struct platform_device *pdev)
 	
 	err = snd_portman_rawmidi_create(card);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printd("Creating Rawmidi component failed\n");
-=======
 		dev_dbg(card->dev, "Creating Rawmidi component failed\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto __err;
 	}
 
@@ -793,19 +767,11 @@ static int snd_portman_probe(struct platform_device *pdev)
 	/* At this point card will be usable */
 	err = snd_card_register(card);
 	if (err < 0) {
-<<<<<<< HEAD
-		snd_printd("Cannot register card\n");
-		goto __err;
-	}
-
-	snd_printk(KERN_INFO "Portman 2x4 on 0x%lx\n", p->base);
-=======
 		dev_dbg(card->dev, "Cannot register card\n");
 		goto __err;
 	}
 
 	dev_info(card->dev, "Portman 2x4 on 0x%lx\n", p->base);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return 0;
 
 release_pardev:

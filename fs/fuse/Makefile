@@ -3,12 +3,9 @@
 # Makefile for the FUSE filesystem.
 #
 
-<<<<<<< HEAD
-=======
 # Needed for trace events
 ccflags-y = -I$(src)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 obj-$(CONFIG_FUSE_FS) += fuse.o
 obj-$(CONFIG_CUSE) += cuse.o
 obj-$(CONFIG_VIRTIO_FS) += virtiofs.o

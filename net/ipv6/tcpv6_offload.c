@@ -159,10 +159,6 @@ static struct sk_buff *tcp6_gso_segment(struct sk_buff *skb,
 	if (!pskb_may_pull(skb, sizeof(*th)))
 		return ERR_PTR(-EINVAL);
 
-<<<<<<< HEAD
-	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
-		return __tcp6_gso_segment_list(skb, features);
-=======
 	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
 		struct tcphdr *th = tcp_hdr(skb);
 
@@ -171,7 +167,6 @@ static struct sk_buff *tcp6_gso_segment(struct sk_buff *skb,
 
 		skb->ip_summed = CHECKSUM_NONE;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
 		const struct ipv6hdr *ipv6h = ipv6_hdr(skb);

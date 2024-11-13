@@ -3452,13 +3452,10 @@ static int nfs4_do_setattr(struct inode *inode, const struct cred *cred,
 		adjust_flags |= NFS_INO_INVALID_MODE;
 	if (sattr->ia_valid & (ATTR_UID | ATTR_GID))
 		adjust_flags |= NFS_INO_INVALID_OTHER;
-<<<<<<< HEAD
-=======
 	if (sattr->ia_valid & ATTR_ATIME)
 		adjust_flags |= NFS_INO_INVALID_ATIME;
 	if (sattr->ia_valid & ATTR_MTIME)
 		adjust_flags |= NFS_INO_INVALID_MTIME;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	do {
 		nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, fattr->label),
@@ -3911,8 +3908,6 @@ static void nfs4_close_context(struct nfs_open_context *ctx, int is_sync)
 #define FATTR4_WORD2_NFS41_MASK (2*FATTR4_WORD2_SUPPATTR_EXCLCREAT - 1UL)
 #define FATTR4_WORD2_NFS42_MASK (2*FATTR4_WORD2_OPEN_ARGUMENTS - 1UL)
 
-<<<<<<< HEAD
-=======
 #define FATTR4_WORD2_NFS42_TIME_DELEG_MASK \
 	(FATTR4_WORD2_TIME_DELEG_MODIFY|FATTR4_WORD2_TIME_DELEG_ACCESS)
 static bool nfs4_server_delegtime_capable(struct nfs4_server_caps_res *res)
@@ -3925,7 +3920,6 @@ static bool nfs4_server_delegtime_capable(struct nfs4_server_caps_res *res)
 					FATTR4_WORD2_NFS42_TIME_DELEG_MASK);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
 {
 	u32 minorversion = server->nfs_client->cl_minorversion;
@@ -4004,11 +3998,6 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
 #endif
 		if (res.attr_bitmask[0] & FATTR4_WORD0_FS_LOCATIONS)
 			server->caps |= NFS_CAP_FS_LOCATIONS;
-<<<<<<< HEAD
-		if (res.attr_bitmask[2] & FATTR4_WORD2_TIME_DELEG_MODIFY)
-			server->caps |= NFS_CAP_DELEGTIME;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!(res.attr_bitmask[0] & FATTR4_WORD0_FILEID))
 			server->fattr_valid &= ~NFS_ATTR_FATTR_FILEID;
 		if (!(res.attr_bitmask[1] & FATTR4_WORD1_MODE))
@@ -4036,11 +4025,8 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
 		if (res.open_caps.oa_share_access_want[0] &
 		    NFS4_SHARE_WANT_OPEN_XOR_DELEGATION)
 			server->caps |= NFS_CAP_OPEN_XOR;
-<<<<<<< HEAD
-=======
 		if (nfs4_server_delegtime_capable(&res))
 			server->caps |= NFS_CAP_DELEGTIME;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		memcpy(server->cache_consistency_bitmask, res.attr_bitmask, sizeof(server->cache_consistency_bitmask));
 		server->cache_consistency_bitmask[0] &= FATTR4_WORD0_CHANGE|FATTR4_WORD0_SIZE;

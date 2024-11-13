@@ -95,11 +95,7 @@ enum iwl_bt_ci_compliance {
 }; /* BT_COEX_CI_COMPLIENCE_E_VER_1 */
 
 /**
-<<<<<<< HEAD
- * struct iwl_bt_coex_profile_notif - notification about BT coex
-=======
  * struct iwl_bt_coex_prof_old_notif - notification about BT coex
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * @mbox_msg: message from BT to WiFi
  * @msg_idx: the index of the message
  * @bt_ci_compliance: enum %iwl_bt_ci_compliance
@@ -114,11 +110,7 @@ enum iwl_bt_ci_compliance {
  * @wifi_loss_mid_high_rssi: The predicted lost WiFi rate (% of air time that
  *	BT is utilizing) when the RSSI is mid/high (>= -65 dBm)
  */
-<<<<<<< HEAD
-struct iwl_bt_coex_profile_notif {
-=======
 struct iwl_bt_coex_prof_old_notif {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	__le32 mbox_msg[4];
 	__le32 msg_idx;
 	__le32 bt_ci_compliance;
@@ -134,8 +126,6 @@ struct iwl_bt_coex_prof_old_notif {
 	     * BT_COEX_PROFILE_NTFY_API_S_VER_5
 	     */
 
-<<<<<<< HEAD
-=======
 /**
  * enum iwl_bt_coex_subcmd_ids - coex configuration command IDs
  */
@@ -161,5 +151,4 @@ struct iwl_bt_coex_profile_notif {
 	u8 wifi_loss_mid_high_rssi[COEX_NUM_BAND][COEX_NUM_CHAINS];
 } __packed; /* BT_COEX_BT_PROFILE_NTF_API_S_VER_1 */
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __iwl_fw_api_coex_h__ */

@@ -17,15 +17,6 @@
 #include <linux/iversion.h>
 #include "affs.h"
 
-<<<<<<< HEAD
-static int affs_readdir(struct file *, struct dir_context *);
-
-const struct file_operations affs_dir_operations = {
-	.read		= generic_read_dir,
-	.llseek		= generic_file_llseek,
-	.iterate_shared	= affs_readdir,
-	.fsync		= affs_file_fsync,
-=======
 struct affs_dir_data {
 	unsigned long ino;
 	u64 cookie;
@@ -64,7 +55,6 @@ const struct file_operations affs_dir_operations = {
 	.iterate_shared	= affs_readdir,
 	.fsync		= affs_file_fsync,
 	.release	= affs_dir_release,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -86,10 +76,7 @@ static int
 affs_readdir(struct file *file, struct dir_context *ctx)
 {
 	struct inode		*inode = file_inode(file);
-<<<<<<< HEAD
-=======
 	struct affs_dir_data	*data = file->private_data;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct super_block	*sb = inode->i_sb;
 	struct buffer_head	*dir_bh = NULL;
 	struct buffer_head	*fh_bh = NULL;
@@ -104,11 +91,7 @@ affs_readdir(struct file *file, struct dir_context *ctx)
 	pr_debug("%s(ino=%lu,f_pos=%llx)\n", __func__, inode->i_ino, ctx->pos);
 
 	if (ctx->pos < 2) {
-<<<<<<< HEAD
-		file->private_data = (void *)0;
-=======
 		data->ino = 0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (!dir_emit_dots(file, ctx))
 			return 0;
 	}
@@ -129,13 +112,8 @@ affs_readdir(struct file *file, struct dir_context *ctx)
 	/* If the directory hasn't changed since the last call to readdir(),
 	 * we can jump directly to where we left off.
 	 */
-<<<<<<< HEAD
-	ino = (u32)(long)file->private_data;
-	if (ino && inode_eq_iversion(inode, file->f_version)) {
-=======
 	ino = data->ino;
 	if (ino && inode_eq_iversion(inode, data->cookie)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		pr_debug("readdir() left off=%d\n", ino);
 		goto inside;
 	}
@@ -185,13 +163,8 @@ inside:
 		} while (ino);
 	}
 done:
-<<<<<<< HEAD
-	file->f_version = inode_query_iversion(inode);
-	file->private_data = (void *)(long)ino;
-=======
 	data->cookie = inode_query_iversion(inode);
 	data->ino = ino;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	affs_brelse(fh_bh);
 
 out_brelse_dir:

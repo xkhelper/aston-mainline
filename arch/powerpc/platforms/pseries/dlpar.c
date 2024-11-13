@@ -23,10 +23,7 @@
 #include <linux/uaccess.h>
 #include <asm/rtas.h>
 #include <asm/rtas-work-area.h>
-<<<<<<< HEAD
-=======
 #include <asm/prom.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static struct workqueue_struct *pseries_hp_wq;
 
@@ -254,16 +251,8 @@ int dlpar_detach_node(struct device_node *dn)
 	struct device_node *child;
 	int rc;
 
-<<<<<<< HEAD
-	child = of_get_next_child(dn, NULL);
-	while (child) {
-		dlpar_detach_node(child);
-		child = of_get_next_child(dn, child);
-	}
-=======
 	for_each_child_of_node(dn, child)
 		dlpar_detach_node(child);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	rc = of_detach_node(dn);
 	if (rc)
@@ -273,8 +262,6 @@ int dlpar_detach_node(struct device_node *dn)
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
 static int dlpar_changeset_attach_cc_nodes(struct of_changeset *ocs,
 					struct device_node *dn)
 {
@@ -289,7 +276,6 @@ static int dlpar_changeset_attach_cc_nodes(struct of_changeset *ocs,
 
 	return rc;
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DR_ENTITY_SENSE		9003
 #define DR_ENTITY_PRESENT	1
@@ -356,8 +342,6 @@ int dlpar_unisolate_drc(u32 drc_index)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static struct device_node *
 get_device_node_with_drc_index(u32 index)
 {
@@ -554,31 +538,10 @@ static int dlpar_hp_dt(struct pseries_hp_errorlog *phpe)
 	return rc;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int handle_dlpar_errorlog(struct pseries_hp_errorlog *hp_elog)
 {
 	int rc;
 
-<<<<<<< HEAD
-	/* pseries error logs are in BE format, convert to cpu type */
-	switch (hp_elog->id_type) {
-	case PSERIES_HP_ELOG_ID_DRC_COUNT:
-		hp_elog->_drc_u.drc_count =
-				be32_to_cpu(hp_elog->_drc_u.drc_count);
-		break;
-	case PSERIES_HP_ELOG_ID_DRC_INDEX:
-		hp_elog->_drc_u.drc_index =
-				be32_to_cpu(hp_elog->_drc_u.drc_index);
-		break;
-	case PSERIES_HP_ELOG_ID_DRC_IC:
-		hp_elog->_drc_u.ic.count =
-				be32_to_cpu(hp_elog->_drc_u.ic.count);
-		hp_elog->_drc_u.ic.index =
-				be32_to_cpu(hp_elog->_drc_u.ic.index);
-	}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	switch (hp_elog->resource) {
 	case PSERIES_HP_ELOG_RESOURCE_MEM:
 		rc = dlpar_memory(hp_elog);
@@ -589,12 +552,9 @@ int handle_dlpar_errorlog(struct pseries_hp_errorlog *hp_elog)
 	case PSERIES_HP_ELOG_RESOURCE_PMEM:
 		rc = dlpar_hp_pmem(hp_elog);
 		break;
-<<<<<<< HEAD
-=======
 	case PSERIES_HP_ELOG_RESOURCE_DT:
 		rc = dlpar_hp_dt(hp_elog);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	default:
 		pr_warn_ratelimited("Invalid resource (%d) specified\n",
@@ -647,11 +607,8 @@ static int dlpar_parse_resource(char **cmd, struct pseries_hp_errorlog *hp_elog)
 		hp_elog->resource = PSERIES_HP_ELOG_RESOURCE_MEM;
 	} else if (sysfs_streq(arg, "cpu")) {
 		hp_elog->resource = PSERIES_HP_ELOG_RESOURCE_CPU;
-<<<<<<< HEAD
-=======
 	} else if (sysfs_streq(arg, "dt")) {
 		hp_elog->resource = PSERIES_HP_ELOG_RESOURCE_DT;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		pr_err("Invalid resource specified.\n");
 		return -EINVAL;
@@ -793,11 +750,7 @@ dlpar_store_out:
 static ssize_t dlpar_show(const struct class *class, const struct class_attribute *attr,
 			  char *buf)
 {
-<<<<<<< HEAD
-	return sprintf(buf, "%s\n", "memory,cpu");
-=======
 	return sprintf(buf, "%s\n", "memory,cpu,dt");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static CLASS_ATTR_RW(dlpar);

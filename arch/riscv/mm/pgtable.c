@@ -9,12 +9,9 @@ int ptep_set_access_flags(struct vm_area_struct *vma,
 			  unsigned long address, pte_t *ptep,
 			  pte_t entry, int dirty)
 {
-<<<<<<< HEAD
-=======
 	asm goto(ALTERNATIVE("nop", "j %l[svvptc]", 0, RISCV_ISA_EXT_SVVPTC, 1)
 		 : : : : svvptc);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (!pte_same(ptep_get(ptep), entry))
 		__set_pte_at(vma->vm_mm, ptep, entry);
 	/*
@@ -22,8 +19,6 @@ int ptep_set_access_flags(struct vm_area_struct *vma,
 	 * the case that the PTE changed and the spurious fault case.
 	 */
 	return true;
-<<<<<<< HEAD
-=======
 
 svvptc:
 	if (!pte_same(ptep_get(ptep), entry)) {
@@ -34,7 +29,6 @@ svvptc:
 	}
 
 	return false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int ptep_test_and_clear_young(struct vm_area_struct *vma,

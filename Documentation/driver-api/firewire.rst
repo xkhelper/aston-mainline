@@ -43,11 +43,8 @@ Firewire core transaction interfaces
 Firewire Isochronous I/O interfaces
 ===================================
 
-<<<<<<< HEAD
-=======
 .. kernel-doc:: include/linux/firewire.h
    :functions: fw_iso_context_schedule_flush_completions
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .. kernel-doc:: drivers/firewire/core-iso.c
    :export:
 

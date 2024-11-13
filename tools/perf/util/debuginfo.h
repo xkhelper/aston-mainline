@@ -40,11 +40,8 @@ static inline void debuginfo__delete(struct debuginfo *dbg __maybe_unused)
 {
 }
 
-<<<<<<< HEAD
-=======
 typedef void Dwarf_Addr;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline int debuginfo__get_text_offset(struct debuginfo *dbg __maybe_unused,
 					     Dwarf_Addr *offs __maybe_unused,
 					     bool adjust_offset __maybe_unused)

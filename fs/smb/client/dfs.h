@@ -19,10 +19,7 @@
 struct dfs_ref {
 	char *path;
 	char *full_path;
-<<<<<<< HEAD
-=======
 	struct cifs_ses *ses;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct dfs_cache_tgt_list tl;
 	struct dfs_cache_tgt_iterator *tit;
 };
@@ -42,10 +39,7 @@ struct dfs_ref_walk {
 #define ref_walk_path(w)	(ref_walk_cur(w)->path)
 #define ref_walk_fpath(w)	(ref_walk_cur(w)->full_path)
 #define ref_walk_tl(w)		(&ref_walk_cur(w)->tl)
-<<<<<<< HEAD
-=======
 #define ref_walk_ses(w)	(ref_walk_cur(w)->ses)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline struct dfs_ref_walk *ref_walk_alloc(void)
 {
@@ -68,28 +62,19 @@ static inline void __ref_walk_free(struct dfs_ref *ref)
 	kfree(ref->path);
 	kfree(ref->full_path);
 	dfs_cache_free_tgts(&ref->tl);
-<<<<<<< HEAD
-=======
 	if (ref->ses)
 		cifs_put_smb_ses(ref->ses);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memset(ref, 0, sizeof(*ref));
 }
 
 static inline void ref_walk_free(struct dfs_ref_walk *rw)
 {
-<<<<<<< HEAD
-	struct dfs_ref *ref = ref_walk_start(rw);
-
-	for (; ref <= ref_walk_end(rw); ref++)
-=======
 	struct dfs_ref *ref;
 
 	if (!rw)
 		return;
 
 	for (ref = ref_walk_start(rw); ref <= ref_walk_end(rw); ref++)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__ref_walk_free(ref);
 	kfree(rw);
 }
@@ -138,11 +123,6 @@ static inline void ref_walk_set_tgt_hint(struct dfs_ref_walk *rw)
 				       ref_walk_tit(rw));
 }
 
-<<<<<<< HEAD
-int dfs_parse_target_referral(const char *full_path, const struct dfs_info3_param *ref,
-			      struct smb3_fs_context *ctx);
-int dfs_mount_share(struct cifs_mount_ctx *mnt_ctx, bool *isdfs);
-=======
 static inline void ref_walk_set_tcon(struct dfs_ref_walk *rw,
 				     struct cifs_tcon *tcon)
 {
@@ -159,7 +139,6 @@ static inline void ref_walk_set_tcon(struct dfs_ref_walk *rw,
 int dfs_parse_target_referral(const char *full_path, const struct dfs_info3_param *ref,
 			      struct smb3_fs_context *ctx);
 int dfs_mount_share(struct cifs_mount_ctx *mnt_ctx);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static inline char *dfs_get_path(struct cifs_sb_info *cifs_sb, const char *path)
 {
@@ -183,22 +162,6 @@ static inline int dfs_get_referral(struct cifs_mount_ctx *mnt_ctx, const char *p
  * references of all DFS root sessions that were used across the mount process
  * in dfs_mount_share().
  */
-<<<<<<< HEAD
-static inline void dfs_put_root_smb_sessions(struct cifs_mount_ctx *mnt_ctx)
-{
-	const struct smb3_fs_context *ctx = mnt_ctx->fs_ctx;
-	struct cifs_ses *ses = ctx->dfs_root_ses;
-	struct cifs_ses *cur;
-
-	if (!ses)
-		return;
-
-	for (cur = ses; cur; cur = cur->dfs_root_ses) {
-		if (cur->dfs_root_ses)
-			cifs_put_smb_ses(cur->dfs_root_ses);
-	}
-	cifs_put_smb_ses(ses);
-=======
 static inline void dfs_put_root_smb_sessions(struct list_head *head)
 {
 	struct cifs_ses *ses, *n;
@@ -207,7 +170,6 @@ static inline void dfs_put_root_smb_sessions(struct list_head *head)
 		list_del_init(&ses->dlist);
 		cifs_put_smb_ses(ses);
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif /* _CIFS_DFS_H */

@@ -10,12 +10,8 @@ description: |
   Common properties for PCI Endpoint Controller Nodes.
 
 maintainers:
-<<<<<<< HEAD
-  - Kishon Vijay Abraham I <kishon@ti.com>
-=======
   - Kishon Vijay Abraham I <kishon@kernel.org>
   - Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 properties:
   $nodename:
@@ -46,8 +42,6 @@ properties:
     default: 1
     maximum: 16
 
-<<<<<<< HEAD
-=======
   linux,pci-domain:
     description:
       If present this property assigns a fixed PCI domain number to a PCI
@@ -59,7 +53,6 @@ properties:
       must be unique.
     $ref: /schemas/types.yaml#/definitions/uint32
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
 

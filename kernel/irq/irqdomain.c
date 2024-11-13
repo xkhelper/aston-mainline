@@ -128,17 +128,6 @@ void irq_domain_free_fwnode(struct fwnode_handle *fwnode)
 }
 EXPORT_SYMBOL_GPL(irq_domain_free_fwnode);
 
-<<<<<<< HEAD
-static int irq_domain_set_name(struct irq_domain *domain,
-			       const struct fwnode_handle *fwnode,
-			       enum irq_domain_bus_token bus_token)
-{
-	static atomic_t unknown_domains;
-	struct irqchip_fwid *fwid;
-
-	if (is_fwnode_irqchip(fwnode)) {
-		fwid = container_of(fwnode, struct irqchip_fwid, fwnode);
-=======
 static int alloc_name(struct irq_domain *domain, char *base, enum irq_domain_bus_token bus_token)
 {
 	if (bus_token == DOMAIN_BUS_ANY)
@@ -210,66 +199,10 @@ static int irq_domain_set_name(struct irq_domain *domain, const struct irq_domai
 		 */
 		if (info->name_suffix)
 			return -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		switch (fwid->type) {
 		case IRQCHIP_FWNODE_NAMED:
 		case IRQCHIP_FWNODE_NAMED_ID:
-<<<<<<< HEAD
-			domain->name = bus_token ?
-					kasprintf(GFP_KERNEL, "%s-%d",
-						  fwid->name, bus_token) :
-					kstrdup(fwid->name, GFP_KERNEL);
-			if (!domain->name)
-				return -ENOMEM;
-			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
-			break;
-		default:
-			domain->name = fwid->name;
-			if (bus_token) {
-				domain->name = kasprintf(GFP_KERNEL, "%s-%d",
-							 fwid->name, bus_token);
-				if (!domain->name)
-					return -ENOMEM;
-				domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
-			}
-			break;
-		}
-	} else if (is_of_node(fwnode) || is_acpi_device_node(fwnode) ||
-		   is_software_node(fwnode)) {
-		char *name;
-
-		/*
-		 * fwnode paths contain '/', which debugfs is legitimately
-		 * unhappy about. Replace them with ':', which does
-		 * the trick and is not as offensive as '\'...
-		 */
-		name = bus_token ?
-			kasprintf(GFP_KERNEL, "%pfw-%d", fwnode, bus_token) :
-			kasprintf(GFP_KERNEL, "%pfw", fwnode);
-		if (!name)
-			return -ENOMEM;
-
-		domain->name = strreplace(name, '/', ':');
-		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
-	}
-
-	if (!domain->name) {
-		if (fwnode)
-			pr_err("Invalid fwnode type for irqdomain\n");
-		domain->name = bus_token ?
-				kasprintf(GFP_KERNEL, "unknown-%d-%d",
-					  atomic_inc_return(&unknown_domains),
-					  bus_token) :
-				kasprintf(GFP_KERNEL, "unknown-%d",
-					  atomic_inc_return(&unknown_domains));
-		if (!domain->name)
-			return -ENOMEM;
-		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
-	}
-
-	return 0;
-=======
 			return alloc_name(domain, fwid->name, bus_token);
 		default:
 			domain->name = fwid->name;
@@ -287,7 +220,6 @@ static int irq_domain_set_name(struct irq_domain *domain, const struct irq_domai
 	if (fwnode)
 		pr_err("Invalid fwnode type for irqdomain\n");
 	return alloc_unknown_name(domain, bus_token);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static struct irq_domain *__irq_domain_create(const struct irq_domain_info *info)
@@ -305,11 +237,7 @@ static struct irq_domain *__irq_domain_create(const struct irq_domain_info *info
 	if (!domain)
 		return ERR_PTR(-ENOMEM);
 
-<<<<<<< HEAD
-	err = irq_domain_set_name(domain, info->fwnode, info->bus_token);
-=======
 	err = irq_domain_set_name(domain, info);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (err) {
 		kfree(domain);
 		return ERR_PTR(err);
@@ -365,15 +293,6 @@ static void irq_domain_free(struct irq_domain *domain)
 	kfree(domain);
 }
 
-<<<<<<< HEAD
-/**
- * irq_domain_instantiate() - Instantiate a new irq domain data structure
- * @info: Domain information pointer pointing to the information for this domain
- *
- * Return: A pointer to the instantiated irq domain or an ERR_PTR value.
- */
-struct irq_domain *irq_domain_instantiate(const struct irq_domain_info *info)
-=======
 static void irq_domain_instantiate_descs(const struct irq_domain_info *info)
 {
 	if (!IS_ENABLED(CONFIG_SPARSE_IRQ))
@@ -388,7 +307,6 @@ static void irq_domain_instantiate_descs(const struct irq_domain_info *info)
 
 static struct irq_domain *__irq_domain_instantiate(const struct irq_domain_info *info,
 						   bool cond_alloc_descs, bool force_associate)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct irq_domain *domain;
 	int err;
@@ -421,8 +339,6 @@ static struct irq_domain *__irq_domain_instantiate(const struct irq_domain_info 
 
 	__irq_domain_publish(domain);
 
-<<<<<<< HEAD
-=======
 	if (cond_alloc_descs && info->virq_base > 0)
 		irq_domain_instantiate_descs(info);
 
@@ -436,7 +352,6 @@ static struct irq_domain *__irq_domain_instantiate(const struct irq_domain_info 
 					  info->size - info->hwirq_base);
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return domain;
 
 err_domain_gc_remove:
@@ -446,8 +361,6 @@ err_domain_free:
 	irq_domain_free(domain);
 	return ERR_PTR(err);
 }
-<<<<<<< HEAD
-=======
 
 /**
  * irq_domain_instantiate() - Instantiate a new irq domain data structure
@@ -459,7 +372,6 @@ struct irq_domain *irq_domain_instantiate(const struct irq_domain_info *info)
 {
 	return __irq_domain_instantiate(info, false, false);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL_GPL(irq_domain_instantiate);
 
 /**
@@ -558,30 +470,6 @@ struct irq_domain *irq_domain_create_simple(struct fwnode_handle *fwnode,
 		.fwnode		= fwnode,
 		.size		= size,
 		.hwirq_max	= size,
-<<<<<<< HEAD
-		.ops		= ops,
-		.host_data	= host_data,
-	};
-	struct irq_domain *domain;
-
-	domain = irq_domain_instantiate(&info);
-	if (IS_ERR(domain))
-		return NULL;
-
-	if (first_irq > 0) {
-		if (IS_ENABLED(CONFIG_SPARSE_IRQ)) {
-			/* attempt to allocated irq_descs */
-			int rc = irq_alloc_descs(first_irq, first_irq, size,
-						 of_node_to_nid(to_of_node(fwnode)));
-			if (rc < 0)
-				pr_info("Cannot allocate irq_descs @ IRQ%d, assuming pre-allocated\n",
-					first_irq);
-		}
-		irq_domain_associate_many(domain, first_irq, 0, size);
-	}
-
-	return domain;
-=======
 		.virq_base	= first_irq,
 		.ops		= ops,
 		.host_data	= host_data,
@@ -589,7 +477,6 @@ struct irq_domain *irq_domain_create_simple(struct fwnode_handle *fwnode,
 	struct irq_domain *domain = __irq_domain_instantiate(&info, true, false);
 
 	return IS_ERR(domain) ? NULL : domain;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(irq_domain_create_simple);
 
@@ -631,20 +518,6 @@ struct irq_domain *irq_domain_create_legacy(struct fwnode_handle *fwnode,
 		.fwnode		= fwnode,
 		.size		= first_hwirq + size,
 		.hwirq_max	= first_hwirq + size,
-<<<<<<< HEAD
-		.ops		= ops,
-		.host_data	= host_data,
-	};
-	struct irq_domain *domain;
-
-	domain = irq_domain_instantiate(&info);
-	if (IS_ERR(domain))
-		return NULL;
-
-	irq_domain_associate_many(domain, first_irq, first_hwirq, size);
-
-	return domain;
-=======
 		.hwirq_base	= first_hwirq,
 		.virq_base	= first_irq,
 		.ops		= ops,
@@ -653,7 +526,6 @@ struct irq_domain *irq_domain_create_legacy(struct fwnode_handle *fwnode,
 	struct irq_domain *domain = __irq_domain_instantiate(&info, false, true);
 
 	return IS_ERR(domain) ? NULL : domain;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL_GPL(irq_domain_create_legacy);
 
@@ -1531,11 +1403,7 @@ static int irq_domain_trim_hierarchy(unsigned int virq)
 	tail = NULL;
 
 	/* The first entry must have a valid irqchip */
-<<<<<<< HEAD
-	if (!irq_data->chip || IS_ERR(irq_data->chip))
-=======
 	if (IS_ERR_OR_NULL(irq_data->chip))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return -EINVAL;
 
 	/*

@@ -3,10 +3,7 @@
 #define __ARCH_M68K_CMPXCHG__
 
 #include <linux/irqflags.h>
-<<<<<<< HEAD
-=======
 #include <linux/minmax.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define __xg(type, x) ((volatile type *)(x))
 
@@ -15,31 +12,12 @@ extern unsigned long __invalid_xchg_size(unsigned long, volatile void *, int);
 #ifndef CONFIG_RMW_INSNS
 static inline unsigned long __arch_xchg(unsigned long x, volatile void * ptr, int size)
 {
-<<<<<<< HEAD
-	unsigned long flags, tmp;
-=======
 	unsigned long flags;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	local_irq_save(flags);
 
 	switch (size) {
 	case 1:
-<<<<<<< HEAD
-		tmp = *(u8 *)ptr;
-		*(u8 *)ptr = x;
-		x = tmp;
-		break;
-	case 2:
-		tmp = *(u16 *)ptr;
-		*(u16 *)ptr = x;
-		x = tmp;
-		break;
-	case 4:
-		tmp = *(u32 *)ptr;
-		*(u32 *)ptr = x;
-		x = tmp;
-=======
 		swap(*(u8 *)ptr, x);
 		break;
 	case 2:
@@ -47,7 +25,6 @@ static inline unsigned long __arch_xchg(unsigned long x, volatile void * ptr, in
 		break;
 	case 4:
 		swap(*(u32 *)ptr, x);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		x = __invalid_xchg_size(x, ptr, size);

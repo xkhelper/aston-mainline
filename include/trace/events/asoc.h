@@ -8,10 +8,7 @@
 #include <linux/ktime.h>
 #include <linux/tracepoint.h>
 #include <sound/jack.h>
-<<<<<<< HEAD
-=======
 #include <sound/pcm.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define DAPM_DIRECT "(direct)"
 #define DAPM_ARROW(dir) (((dir) == SND_SOC_DAPM_DIR_OUT) ? "->" : "<-")
@@ -216,11 +213,7 @@ TRACE_EVENT(snd_soc_dapm_connected,
 	),
 
 	TP_printk("%s: found %d paths",
-<<<<<<< HEAD
-		__entry->stream ? "capture" : "playback", __entry->paths)
-=======
 		  snd_pcm_direction_name(__entry->stream), __entry->paths)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 );
 
 TRACE_EVENT(snd_soc_jack_irq,

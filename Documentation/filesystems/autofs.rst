@@ -18,11 +18,7 @@ key advantages:
 
 2. The names and locations of filesystems can be stored in
    a remote database and can change at any time.  The content
-<<<<<<< HEAD
-   in that data base at the time of access will be used to provide
-=======
    in that database at the time of access will be used to provide
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
    a target for the access.  The interpretation of names in the
    filesystem can even be programmatic rather than database-backed,
    allowing wildcards for example, and can vary based on the user who
@@ -427,11 +423,7 @@ The available ioctl commands are:
 	and objects are expired if the are not in use.
 
 	**AUTOFS_EXP_FORCED** causes the in use status to be ignored
-<<<<<<< HEAD
-	and objects are expired ieven if they are in use. This assumes
-=======
 	and objects are expired even if they are in use. This assumes
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	that the daemon has requested this because it is capable of
 	performing the umount.
 

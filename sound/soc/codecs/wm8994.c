@@ -4699,11 +4699,7 @@ static struct platform_driver wm8994_codec_driver = {
 		.pm = &wm8994_pm_ops,
 	},
 	.probe = wm8994_probe,
-<<<<<<< HEAD
-	.remove_new = wm8994_remove,
-=======
 	.remove = wm8994_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 module_platform_driver(wm8994_codec_driver);

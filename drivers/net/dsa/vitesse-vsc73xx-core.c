@@ -21,10 +21,7 @@
 #include <linux/of.h>
 #include <linux/of_mdio.h>
 #include <linux/bitops.h>
-<<<<<<< HEAD
-=======
 #include <linux/bitfield.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/if_bridge.h>
 #include <linux/if_vlan.h>
 #include <linux/etherdevice.h>
@@ -49,11 +46,8 @@
 #define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
 
 #define CPU_PORT	6 /* CPU port */
-<<<<<<< HEAD
-=======
 #define VSC73XX_NUM_FDB_ROWS	2048
 #define VSC73XX_NUM_BUCKETS	4
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* MAC Block registers */
 #define VSC73XX_MAC_CFG		0x00
@@ -205,8 +199,6 @@
 #define VSC73XX_SRCMASKS_MIRROR			BIT(26)
 #define VSC73XX_SRCMASKS_PORTS_MASK		GENMASK(7, 0)
 
-<<<<<<< HEAD
-=======
 #define VSC73XX_MACHDATA_VID			GENMASK(27, 16)
 #define VSC73XX_MACHDATA_MAC0			GENMASK(15, 8)
 #define VSC73XX_MACHDATA_MAC1			GENMASK(7, 0)
@@ -241,7 +233,6 @@
 #define VSC73XX_MACTINDX_BUCKET_MSK		GENMASK(12, 11)
 #define VSC73XX_MACTINDX_INDEX_MSK		GENMASK(10, 0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define VSC73XX_MACACCESS_CPU_COPY		BIT(14)
 #define VSC73XX_MACACCESS_FWD_KILL		BIT(13)
 #define VSC73XX_MACACCESS_IGNORE_VLAN		BIT(12)
@@ -271,11 +262,6 @@
 #define VSC73XX_VLANACCESS_VLAN_TBL_CMD_CLEAR_TABLE	3
 
 /* MII block 3 registers */
-<<<<<<< HEAD
-#define VSC73XX_MII_STAT	0x0
-#define VSC73XX_MII_CMD		0x1
-#define VSC73XX_MII_DATA	0x2
-=======
 #define VSC73XX_MII_STAT		0x0
 #define VSC73XX_MII_CMD			0x1
 #define VSC73XX_MII_DATA		0x2
@@ -297,7 +283,6 @@
 #define VSC73XX_MII_MPRES_NOPREAMBLE	BIT(6)
 #define VSC73XX_MII_MPRES_PRESCALEVAL	GENMASK(5, 0)
 #define VSC73XX_MII_PRESCALEVAL_MIN	3 /* min allowed mdio clock prescaler */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #define VSC73XX_MII_STAT_BUSY	BIT(3)
 
@@ -383,8 +368,6 @@ struct vsc73xx_counter {
 	const char *name;
 };
 
-<<<<<<< HEAD
-=======
 struct vsc73xx_fdb {
 	u16 vid;
 	u8 port;
@@ -392,7 +375,6 @@ struct vsc73xx_fdb {
 	bool valid;
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Counters are named according to the MIB standards where applicable.
  * Some counters are custom, non-standard. The standard counters are
  * named in accordance with RFC2819, RFC2021 and IEEE Std 802.3-2002 Annex
@@ -648,16 +630,11 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
 		return ret;
 
 	/* Setting bit 26 means "read" */
-<<<<<<< HEAD
-	cmd = BIT(26) | (phy << 21) | (regnum << 16);
-	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
-=======
 	cmd = VSC73XX_MII_CMD_OPERATION |
 	      FIELD_PREP(VSC73XX_MII_CMD_PHY_ADDR, phy) |
 	      FIELD_PREP(VSC73XX_MII_CMD_PHY_REG, regnum);
 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
 			    VSC73XX_MII_CMD, cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -665,27 +642,16 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, 0, 2, &val);
-	if (ret)
-		return ret;
-	if (val & BIT(16)) {
-=======
 	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
 			   VSC73XX_MII_DATA, &val);
 	if (ret)
 		return ret;
 	if (val & VSC73XX_MII_DATA_FAILURE) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		dev_err(vsc->dev, "reading reg %02x from phy%d failed\n",
 			regnum, phy);
 		return -EIO;
 	}
-<<<<<<< HEAD
-	val &= 0xFFFFU;
-=======
 	val &= VSC73XX_MII_DATA_READ_DATA;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	dev_dbg(vsc->dev, "read reg %02x from phy%d = %04x\n",
 		regnum, phy, val);
@@ -704,16 +670,11 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	cmd = (phy << 21) | (regnum << 16) | val;
-	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
-=======
 	cmd = FIELD_PREP(VSC73XX_MII_CMD_PHY_ADDR, phy) |
 	      FIELD_PREP(VSC73XX_MII_CMD_PHY_REG, regnum) |
 	      FIELD_PREP(VSC73XX_MII_CMD_WRITE_DATA, val);
 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
 			    VSC73XX_MII_CMD, cmd);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret)
 		return ret;
 
@@ -822,17 +783,6 @@ vsc73xx_update_vlan_table(struct vsc73xx *vsc, int port, u16 vid, bool set)
 	return vsc73xx_write_vlan_table_entry(vsc, vid, portmap);
 }
 
-<<<<<<< HEAD
-static int vsc73xx_setup(struct dsa_switch *ds)
-{
-	struct vsc73xx *vsc = ds->priv;
-	int i, ret;
-
-	dev_info(vsc->dev, "set up the switch\n");
-
-	ds->untag_bridge_pvid = true;
-	ds->max_num_bridges = DSA_TAG_8021Q_MAX_NUM_BRIDGES;
-=======
 static int vsc73xx_configure_rgmii_port_delay(struct dsa_switch *ds)
 {
 	/* Keep 2.0 ns delay for backward complatibility */
@@ -903,7 +853,6 @@ static int vsc73xx_setup(struct dsa_switch *ds)
 
 	ds->max_num_bridges = DSA_TAG_8021Q_MAX_NUM_BRIDGES;
 	ds->fdb_isolation = true;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	/* Issue RESET */
 	vsc73xx_write(vsc, VSC73XX_BLOCK_SYSTEM, 0, VSC73XX_GLORESET,
@@ -957,18 +906,11 @@ static int vsc73xx_setup(struct dsa_switch *ds)
 			      VSC73XX_MAC_CFG, VSC73XX_MAC_CFG_RESET);
 	}
 
-<<<<<<< HEAD
-	/* MII delay, set both GTX and RX delay to 2 ns */
-	vsc73xx_write(vsc, VSC73XX_BLOCK_SYSTEM, 0, VSC73XX_GMIIDELAY,
-		      VSC73XX_GMIIDELAY_GMII0_GTXDELAY_2_0_NS |
-		      VSC73XX_GMIIDELAY_GMII0_RXDELAY_2_0_NS);
-=======
 	/* Configure RGMII delay */
 	ret = vsc73xx_configure_rgmii_port_delay(ds);
 	if (ret)
 		return ret;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Ingess VLAN reception mask (table 145) */
 	vsc73xx_write(vsc, VSC73XX_BLOCK_ANALYZER, 0, VSC73XX_VLANMASK,
 		      0xff);
@@ -978,8 +920,6 @@ static int vsc73xx_setup(struct dsa_switch *ds)
 
 	mdelay(50);
 
-<<<<<<< HEAD
-=======
 	/* Disable preamble and use maximum allowed clock for the internal
 	 * mdio bus, used for communication with internal PHYs only.
 	 */
@@ -989,7 +929,6 @@ static int vsc73xx_setup(struct dsa_switch *ds)
 	vsc73xx_write(vsc, VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
 		      VSC73XX_MII_MPRES, val);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* Release reset from the internal PHYs */
 	vsc73xx_write(vsc, VSC73XX_BLOCK_SYSTEM, 0, VSC73XX_GLORESET,
 		      VSC73XX_GLORESET_PHY_RESET);
@@ -1964,8 +1903,6 @@ static void vsc73xx_port_stp_state_set(struct dsa_switch *ds, int port,
 		vsc73xx_refresh_fwd_map(ds, port, state);
 }
 
-<<<<<<< HEAD
-=======
 static u16 vsc73xx_calc_hash(const unsigned char *addr, u16 vid)
 {
 	/* VID 5-0, MAC 47-44 */
@@ -2272,7 +2209,6 @@ unlock:
 	return err;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct phylink_mac_ops vsc73xx_phylink_mac_ops = {
 	.mac_config = vsc73xx_mac_config,
 	.mac_link_down = vsc73xx_mac_link_down,
@@ -2295,12 +2231,9 @@ static const struct dsa_switch_ops vsc73xx_ds_ops = {
 	.port_bridge_join = dsa_tag_8021q_bridge_join,
 	.port_bridge_leave = dsa_tag_8021q_bridge_leave,
 	.port_change_mtu = vsc73xx_change_mtu,
-<<<<<<< HEAD
-=======
 	.port_fdb_add = vsc73xx_fdb_add,
 	.port_fdb_del = vsc73xx_fdb_del,
 	.port_fdb_dump = vsc73xx_port_fdb_dump,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.port_max_mtu = vsc73xx_get_max_mtu,
 	.port_stp_state_set = vsc73xx_port_stp_state_set,
 	.port_vlan_filtering = vsc73xx_port_vlan_filtering,
@@ -2431,11 +2364,8 @@ int vsc73xx_probe(struct vsc73xx *vsc)
 		return -ENODEV;
 	}
 
-<<<<<<< HEAD
-=======
 	mutex_init(&vsc->fdb_lock);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	eth_random_addr(vsc->addr);
 	dev_info(vsc->dev,
 		 "MAC for control frames: %02X:%02X:%02X:%02X:%02X:%02X\n",

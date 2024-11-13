@@ -15,11 +15,8 @@
 #include <linux/kernel.h>
 #include <linux/syscore_ops.h>
 
-<<<<<<< HEAD
-=======
 #include "irq-loongson.h"
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* Registers */
 #define LPC_INT_CTL		0x00
 #define LPC_INT_ENA		0x04

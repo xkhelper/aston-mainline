@@ -732,11 +732,7 @@ static int hid_sensor_custom_dev_if_add(struct hid_sensor_custom *sensor_inst)
 
 	sensor_inst->custom_dev.minor = MISC_DYNAMIC_MINOR;
 	sensor_inst->custom_dev.name = dev_name(&sensor_inst->pdev->dev);
-<<<<<<< HEAD
-	sensor_inst->custom_dev.fops = &hid_sensor_custom_fops,
-=======
 	sensor_inst->custom_dev.fops = &hid_sensor_custom_fops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ret = misc_register(&sensor_inst->custom_dev);
 	if (ret) {
 		kfifo_free(&sensor_inst->data_fifo);

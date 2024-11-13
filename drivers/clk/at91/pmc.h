@@ -64,10 +64,7 @@ struct clk_pll_layout {
 	u8 frac_shift;
 	u8 div_shift;
 	u8 endiv_shift;
-<<<<<<< HEAD
-=======
 	u8 div2;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 extern const struct clk_pll_layout at91rm9200_pll_layout;
@@ -79,10 +76,7 @@ struct clk_pll_characteristics {
 	struct clk_range input;
 	int num_output;
 	const struct clk_range *output;
-<<<<<<< HEAD
-=======
 	const struct clk_range *core_output;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	u16 *icpll;
 	u8 *out;
 	u8 upll : 1;
@@ -127,8 +121,6 @@ struct at91_clk_pms {
 
 #define ndck(a, s) (a[s - 1].id + 1)
 #define nck(a) (a[ARRAY_SIZE(a) - 1].id + 1)
-<<<<<<< HEAD
-=======
 
 #define PMC_INIT_TABLE(_table, _count)			\
 	do {						\
@@ -145,7 +137,6 @@ struct at91_clk_pms {
 		}					\
 	} while (0)
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 struct pmc_data *pmc_data_allocate(unsigned int ncore, unsigned int nsystem,
 				   unsigned int nperiph, unsigned int ngck,
 				   unsigned int npck);

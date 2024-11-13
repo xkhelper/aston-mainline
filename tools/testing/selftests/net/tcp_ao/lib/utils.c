@@ -21,8 +21,6 @@ void randomize_buffer(void *buf, size_t buflen)
 	}
 }
 
-<<<<<<< HEAD
-=======
 __printf(3, 4) int test_echo(const char *fname, bool append,
 			     const char *fmt, ...)
 {
@@ -49,7 +47,6 @@ __printf(3, 4) int test_echo(const char *fname, bool append,
 	return written == len ? 0 : -1;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 const struct sockaddr_in6 addr_any6 = {
 	.sin6_family	= AF_INET6,
 };

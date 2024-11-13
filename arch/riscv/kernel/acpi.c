@@ -210,11 +210,7 @@ void __init __iomem *__acpi_map_table(unsigned long phys, unsigned long size)
 	if (!size)
 		return NULL;
 
-<<<<<<< HEAD
-	return early_ioremap(phys, size);
-=======
 	return early_memremap(phys, size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void __init __acpi_unmap_table(void __iomem *map, unsigned long size)
@@ -222,11 +218,7 @@ void __init __acpi_unmap_table(void __iomem *map, unsigned long size)
 	if (!map || !size)
 		return;
 
-<<<<<<< HEAD
-	early_iounmap(map, size);
-=======
 	early_memunmap(map, size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
@@ -319,33 +311,6 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
 #ifdef CONFIG_PCI
 
 /*
-<<<<<<< HEAD
- * These interfaces are defined just to enable building ACPI core.
- * TODO: Update it with actual implementation when external interrupt
- * controller support is added in RISC-V ACPI.
- */
-int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
-		 int reg, int len, u32 *val)
-{
-	return PCIBIOS_DEVICE_NOT_FOUND;
-}
-
-int raw_pci_write(unsigned int domain, unsigned int bus, unsigned int devfn,
-		  int reg, int len, u32 val)
-{
-	return PCIBIOS_DEVICE_NOT_FOUND;
-}
-
-int acpi_pci_bus_find_domain_nr(struct pci_bus *bus)
-{
-	return -1;
-}
-
-struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
-{
-	return NULL;
-}
-=======
  * raw_pci_read/write - Platform-specific PCI config space access.
  */
 int raw_pci_read(unsigned int domain, unsigned int bus,
@@ -368,5 +333,4 @@ int raw_pci_write(unsigned int domain, unsigned int bus,
 	return b->ops->write(b, devfn, reg, len, val);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif	/* CONFIG_PCI */

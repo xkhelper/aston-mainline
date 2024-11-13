@@ -559,14 +559,6 @@ config I2C_DAVINCI
 	  For details please see http://www.ti.com/davinci
 
 config I2C_DESIGNWARE_CORE
-<<<<<<< HEAD
-	tristate
-	select REGMAP
-
-config I2C_DESIGNWARE_SLAVE
-	bool "Synopsys DesignWare Slave"
-	depends on I2C_DESIGNWARE_CORE
-=======
 	tristate "Synopsys DesignWare I2C adapter"
 	select REGMAP
 	help
@@ -581,25 +573,11 @@ if I2C_DESIGNWARE_CORE
 
 config I2C_DESIGNWARE_SLAVE
 	bool "Synopsys DesignWare Slave"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	select I2C_SLAVE
 	help
 	  If you say yes to this option, support will be included for the
 	  Synopsys DesignWare I2C slave adapter.
 
-<<<<<<< HEAD
-	  This is not a standalone module, this module compiles together with
-	  i2c-designware-core.
-
-config I2C_DESIGNWARE_PLATFORM
-	tristate "Synopsys DesignWare Platform"
-	depends on (ACPI && COMMON_CLK) || !ACPI
-	select I2C_DESIGNWARE_CORE
-	select MFD_SYSCON if MIPS_BAIKAL_T1
-	help
-	  If you say yes to this option, support will be included for the
-	  Synopsys DesignWare I2C adapter.
-=======
 config I2C_DESIGNWARE_PLATFORM
 	tristate "Synopsys DesignWare Platform driver"
 	depends on (ACPI && COMMON_CLK) || !ACPI
@@ -608,7 +586,6 @@ config I2C_DESIGNWARE_PLATFORM
 	help
 	  If you say yes to this option, support will be included for the
 	  Synopsys DesignWare I2C adapters on the platform bus.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	  This driver can also be built as a module.  If so, the module
 	  will be called i2c-designware-platform.
@@ -641,15 +618,6 @@ config I2C_DESIGNWARE_BAYTRAIL
 	  a BayTrail system using the AXP288.
 
 config I2C_DESIGNWARE_PCI
-<<<<<<< HEAD
-	tristate "Synopsys DesignWare PCI"
-	depends on PCI
-	select I2C_DESIGNWARE_CORE
-	select I2C_CCGX_UCSI
-	help
-	  If you say yes to this option, support will be included for the
-	  Synopsys DesignWare I2C adapter. Only master mode is supported.
-=======
 	tristate "Synopsys DesignWare PCI driver"
 	depends on PCI
 	select I2C_CCGX_UCSI
@@ -657,16 +625,12 @@ config I2C_DESIGNWARE_PCI
 	  If you say yes to this option, support will be included for the
 	  Synopsys DesignWare I2C adapters on the PCI bus. Only master mode is
 	  supported.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	  This driver can also be built as a module.  If so, the module
 	  will be called i2c-designware-pci.
 
-<<<<<<< HEAD
-=======
 endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config I2C_DIGICOLOR
 	tristate "Conexant Digicolor I2C driver"
 	depends on ARCH_DIGICOLOR || COMPILE_TEST
@@ -815,8 +779,6 @@ config I2C_JZ4780
 
 	 If you don't know what to do here, say N.
 
-<<<<<<< HEAD
-=======
 config I2C_KEBA
 	tristate "KEBA I2C controller support"
 	depends on HAS_IOMEM
@@ -829,7 +791,6 @@ config I2C_KEBA
 	  This driver can also be built as a module. If so, the module
 	  will be called i2c-keba.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 config I2C_KEMPLD
 	tristate "Kontron COM I2C Controller"
 	depends on MFD_KEMPLD

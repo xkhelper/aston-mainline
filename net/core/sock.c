@@ -85,11 +85,7 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/capability.h>
 #include <linux/errno.h>
 #include <linux/errqueue.h>
@@ -128,10 +124,7 @@
 #include <linux/netdevice.h>
 #include <net/protocol.h>
 #include <linux/skbuff.h>
-<<<<<<< HEAD
-=======
 #include <linux/skbuff_ref.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <net/net_namespace.h>
 #include <net/request_sock.h>
 #include <net/sock.h>
@@ -1057,8 +1050,6 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_PAGE_POOL
 
 /* This is the number of tokens that the user can SO_DEVMEM_DONTNEED in
@@ -1122,7 +1113,6 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
 }
 #endif
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 void sockopt_lock_sock(struct sock *sk)
 {
 	/* When current->bpf_ctx is set, the setsockopt is called from
@@ -1285,13 +1275,10 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
 			ret = -EOPNOTSUPP;
 		return ret;
 		}
-<<<<<<< HEAD
-=======
 #ifdef CONFIG_PAGE_POOL
 	case SO_DEVMEM_DONTNEED:
 		return sock_devmem_dontneed(sk, optval, optlen);
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	sockopt_lock_sock(sk);
@@ -2129,11 +2116,7 @@ static inline void sock_lock_init(struct sock *sk)
 
 /*
  * Copy all fields from osk to nsk but nsk->sk_refcnt must not change yet,
-<<<<<<< HEAD
- * even temporarly, because of RCU lookups. sk_node should also be left as is.
-=======
  * even temporarily, because of RCU lookups. sk_node should also be left as is.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * We must not copy fields between sk_dontcopy_begin and sk_dontcopy_end
  */
 static void sock_copy(struct sock *nsk, const struct sock *osk)
@@ -2623,11 +2606,7 @@ void skb_set_owner_w(struct sk_buff *skb, struct sock *sk)
 	skb_set_hash_from_sk(skb, sk);
 	/*
 	 * We used to take a refcount on sk, but following operation
-<<<<<<< HEAD
-	 * is enough to guarantee sk_free() wont free this sock until
-=======
 	 * is enough to guarantee sk_free() won't free this sock until
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 * all in-flight packets are completed
 	 */
 	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
@@ -3518,11 +3497,7 @@ static void sock_def_destruct(struct sock *sk)
 void sk_send_sigurg(struct sock *sk)
 {
 	if (sk->sk_socket && sk->sk_socket->file)
-<<<<<<< HEAD
-		if (send_sigurg(&sk->sk_socket->file->f_owner))
-=======
 		if (send_sigurg(sk->sk_socket->file))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			sk_wake_async(sk, SOCK_WAKE_URG, POLL_PRI);
 }
 EXPORT_SYMBOL(sk_send_sigurg);
@@ -3790,11 +3765,7 @@ EXPORT_SYMBOL(sock_recv_errqueue);
  *
  *	FIX: POSIX 1003.1g is very ambiguous here. It states that
  *	asynchronous errors should be reported by getsockopt. We assume
-<<<<<<< HEAD
- *	this means if you specify SO_ERROR (otherwise whats the point of it).
-=======
  *	this means if you specify SO_ERROR (otherwise what is the point of it).
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int sock_common_getsockopt(struct socket *sock, int level, int optname,
 			   char __user *optval, int __user *optlen)

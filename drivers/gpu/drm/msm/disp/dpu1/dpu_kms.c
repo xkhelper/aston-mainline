@@ -1146,11 +1146,7 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
 	dpu_kms->hw_mdp = dpu_hw_mdptop_init(dev,
 					     dpu_kms->catalog->mdp,
 					     dpu_kms->mmio,
-<<<<<<< HEAD
-					     dpu_kms->catalog);
-=======
 					     dpu_kms->catalog->mdss_ver);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(dpu_kms->hw_mdp)) {
 		rc = PTR_ERR(dpu_kms->hw_mdp);
 		DPU_ERROR("failed to get hw_mdp: %d\n", rc);
@@ -1185,8 +1181,6 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
 		goto err_pm_put;
 	}
 
-<<<<<<< HEAD
-=======
 	/*
 	 * We need to program DP <-> PHY relationship only for SC8180X since it
 	 * has fewer DP controllers than DP PHYs.
@@ -1197,7 +1191,6 @@ static int dpu_kms_hw_init(struct msm_kms *kms)
 	if (of_device_is_compatible(dpu_kms->pdev->dev.of_node, "qcom,sc8180x-dpu"))
 		dpu_kms->hw_mdp->ops.dp_phy_intf_sel(dpu_kms->hw_mdp, (unsigned int[]){ 1, 2, });
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	dpu_kms->hw_intr = dpu_hw_intr_init(dev, dpu_kms->mmio, dpu_kms->catalog);
 	if (IS_ERR(dpu_kms->hw_intr)) {
 		rc = PTR_ERR(dpu_kms->hw_intr);

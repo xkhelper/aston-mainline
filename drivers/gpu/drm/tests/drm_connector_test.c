@@ -996,11 +996,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb(struct kunit *test)
 	unsigned long long rate;
 	struct drm_device *drm = &priv->drm;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 16);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1021,11 +1017,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_10bpc(struct kunit *test)
 	unsigned long long rate;
 	struct drm_device *drm = &priv->drm;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 16);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1046,11 +1038,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_10bpc_vic_1(struct kunit *t
 	unsigned long long rate;
 	struct drm_device *drm = &priv->drm;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 1);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	rate = drm_hdmi_compute_mode_clock(mode, 10, HDMI_COLORSPACE_RGB);
@@ -1068,11 +1056,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_12bpc(struct kunit *test)
 	unsigned long long rate;
 	struct drm_device *drm = &priv->drm;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 16);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1093,11 +1077,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_12bpc_vic_1(struct kunit *t
 	unsigned long long rate;
 	struct drm_device *drm = &priv->drm;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 1);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	rate = drm_hdmi_compute_mode_clock(mode, 12, HDMI_COLORSPACE_RGB);
@@ -1115,11 +1095,7 @@ static void drm_test_drm_hdmi_compute_mode_clock_rgb_double(struct kunit *test)
 	unsigned long long rate;
 	struct drm_device *drm = &priv->drm;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 6);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 6);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_TRUE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1142,11 +1118,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_valid(struct kunit
 	unsigned long long rate;
 	unsigned int vic = *(unsigned int *)test->param_value;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, vic);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1183,11 +1155,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_10_bpc(struct kuni
 		drm_hdmi_compute_mode_clock_yuv420_vic_valid_tests[0];
 	unsigned long long rate;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, vic);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1212,11 +1180,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv420_12_bpc(struct kuni
 		drm_hdmi_compute_mode_clock_yuv420_vic_valid_tests[0];
 	unsigned long long rate;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, vic);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, vic);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1239,11 +1203,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_8_bpc(struct kunit
 	struct drm_device *drm = &priv->drm;
 	unsigned long long rate;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 16);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1265,11 +1225,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_10_bpc(struct kuni
 	struct drm_device *drm = &priv->drm;
 	unsigned long long rate;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 16);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);
@@ -1291,11 +1247,7 @@ static void drm_test_connector_hdmi_compute_mode_clock_yuv422_12_bpc(struct kuni
 	struct drm_device *drm = &priv->drm;
 	unsigned long long rate;
 
-<<<<<<< HEAD
-	mode = drm_display_mode_from_cea_vic(drm, 16);
-=======
 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 16);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	KUNIT_ASSERT_NOT_NULL(test, mode);
 
 	KUNIT_ASSERT_FALSE(test, mode->flags & DRM_MODE_FLAG_DBLCLK);

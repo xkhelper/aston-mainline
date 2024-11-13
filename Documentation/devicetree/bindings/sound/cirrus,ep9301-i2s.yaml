@@ -40,8 +40,6 @@ properties:
       - const: sclk
       - const: lrclk
 
-<<<<<<< HEAD
-=======
   dmas:
     items:
       - description: out DMA channel
@@ -56,7 +54,6 @@ properties:
     $ref: audio-graph-port.yaml#
     unevaluatedProperties: false
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 required:
   - compatible
   - '#sound-dai-cells'
@@ -78,11 +75,8 @@ examples:
                  <&syscon 30>,
                  <&syscon 31>;
         clock-names = "mclk", "sclk", "lrclk";
-<<<<<<< HEAD
-=======
         dmas = <&dma0 0 1>, <&dma0 0 2>;
         dma-names = "tx", "rx";
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     };
 
 ...

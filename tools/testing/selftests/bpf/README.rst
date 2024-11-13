@@ -85,9 +85,6 @@ In case of linker errors when running selftests, try using static linking:
           If you want to change pahole and llvm, you can change `PATH` environment
           variable in the beginning of script.
 
-<<<<<<< HEAD
-.. note:: The script currently only supports x86_64 and s390x architectures.
-=======
 Running vmtest on RV64
 ======================
 To speed up testing and avoid various dependency issues, it is recommended to
@@ -119,7 +116,6 @@ Docker container and local rootfs image. The overall steps are as follows:
 
 Link: https://github.com/pulehui/riscv-bpf-vmtest.git [0]
 Link: https://github.com/libbpf/ci/blob/main/rootfs/mkrootfs_debian.sh [1]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Additional information about selftest failures are
 documented here.

@@ -9,11 +9,8 @@
 
 #include "tsa.h"
 #include <dt-bindings/soc/cpm1-fsl,tsa.h>
-<<<<<<< HEAD
-=======
 #include <dt-bindings/soc/qe-fsl,tsa.h>
 #include <linux/bitfield.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <linux/clk.h>
 #include <linux/io.h>
 #include <linux/module.h>
@@ -21,88 +18,6 @@
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
-<<<<<<< HEAD
-
-
-/* TSA SI RAM routing tables entry */
-#define TSA_SIRAM_ENTRY_LAST		(1 << 16)
-#define TSA_SIRAM_ENTRY_BYTE		(1 << 17)
-#define TSA_SIRAM_ENTRY_CNT(x)		(((x) & 0x0f) << 18)
-#define TSA_SIRAM_ENTRY_CSEL_MASK	(0x7 << 22)
-#define TSA_SIRAM_ENTRY_CSEL_NU		(0x0 << 22)
-#define TSA_SIRAM_ENTRY_CSEL_SCC2	(0x2 << 22)
-#define TSA_SIRAM_ENTRY_CSEL_SCC3	(0x3 << 22)
-#define TSA_SIRAM_ENTRY_CSEL_SCC4	(0x4 << 22)
-#define TSA_SIRAM_ENTRY_CSEL_SMC1	(0x5 << 22)
-#define TSA_SIRAM_ENTRY_CSEL_SMC2	(0x6 << 22)
-
-/* SI mode register (32 bits) */
-#define TSA_SIMODE	0x00
-#define   TSA_SIMODE_SMC2			0x80000000
-#define   TSA_SIMODE_SMC1			0x00008000
-#define   TSA_SIMODE_TDMA(x)			((x) << 0)
-#define   TSA_SIMODE_TDMB(x)			((x) << 16)
-#define     TSA_SIMODE_TDM_MASK			0x0fff
-#define     TSA_SIMODE_TDM_SDM_MASK		0x0c00
-#define       TSA_SIMODE_TDM_SDM_NORM		0x0000
-#define       TSA_SIMODE_TDM_SDM_ECHO		0x0400
-#define       TSA_SIMODE_TDM_SDM_INTL_LOOP	0x0800
-#define       TSA_SIMODE_TDM_SDM_LOOP_CTRL	0x0c00
-#define     TSA_SIMODE_TDM_RFSD(x)		((x) << 8)
-#define     TSA_SIMODE_TDM_DSC			0x0080
-#define     TSA_SIMODE_TDM_CRT			0x0040
-#define     TSA_SIMODE_TDM_STZ			0x0020
-#define     TSA_SIMODE_TDM_CE			0x0010
-#define     TSA_SIMODE_TDM_FE			0x0008
-#define     TSA_SIMODE_TDM_GM			0x0004
-#define     TSA_SIMODE_TDM_TFSD(x)		((x) << 0)
-
-/* SI global mode register (8 bits) */
-#define TSA_SIGMR	0x04
-#define TSA_SIGMR_ENB			(1<<3)
-#define TSA_SIGMR_ENA			(1<<2)
-#define TSA_SIGMR_RDM_MASK		0x03
-#define   TSA_SIGMR_RDM_STATIC_TDMA	0x00
-#define   TSA_SIGMR_RDM_DYN_TDMA	0x01
-#define   TSA_SIGMR_RDM_STATIC_TDMAB	0x02
-#define   TSA_SIGMR_RDM_DYN_TDMAB	0x03
-
-/* SI status register (8 bits) */
-#define TSA_SISTR	0x06
-
-/* SI command register (8 bits) */
-#define TSA_SICMR	0x07
-
-/* SI clock route register (32 bits) */
-#define TSA_SICR	0x0C
-#define   TSA_SICR_SCC2(x)		((x) << 8)
-#define   TSA_SICR_SCC3(x)		((x) << 16)
-#define   TSA_SICR_SCC4(x)		((x) << 24)
-#define     TSA_SICR_SCC_MASK		0x0ff
-#define     TSA_SICR_SCC_GRX		(1 << 7)
-#define     TSA_SICR_SCC_SCX_TSA	(1 << 6)
-#define     TSA_SICR_SCC_RXCS_MASK	(0x7 << 3)
-#define       TSA_SICR_SCC_RXCS_BRG1	(0x0 << 3)
-#define       TSA_SICR_SCC_RXCS_BRG2	(0x1 << 3)
-#define       TSA_SICR_SCC_RXCS_BRG3	(0x2 << 3)
-#define       TSA_SICR_SCC_RXCS_BRG4	(0x3 << 3)
-#define       TSA_SICR_SCC_RXCS_CLK15	(0x4 << 3)
-#define       TSA_SICR_SCC_RXCS_CLK26	(0x5 << 3)
-#define       TSA_SICR_SCC_RXCS_CLK37	(0x6 << 3)
-#define       TSA_SICR_SCC_RXCS_CLK48	(0x7 << 3)
-#define     TSA_SICR_SCC_TXCS_MASK	(0x7 << 0)
-#define       TSA_SICR_SCC_TXCS_BRG1	(0x0 << 0)
-#define       TSA_SICR_SCC_TXCS_BRG2	(0x1 << 0)
-#define       TSA_SICR_SCC_TXCS_BRG3	(0x2 << 0)
-#define       TSA_SICR_SCC_TXCS_BRG4	(0x3 << 0)
-#define       TSA_SICR_SCC_TXCS_CLK15	(0x4 << 0)
-#define       TSA_SICR_SCC_TXCS_CLK26	(0x5 << 0)
-#define       TSA_SICR_SCC_TXCS_CLK37	(0x6 << 0)
-#define       TSA_SICR_SCC_TXCS_CLK48	(0x7 << 0)
-
-/* Serial interface RAM pointer register (32 bits) */
-#define TSA_SIRP	0x10
-=======
 #include <soc/fsl/qe/ucc.h>
 
 /* TSA SI RAM routing tables entry (CPM1) */
@@ -213,7 +128,6 @@
 #define       TSA_CPM1_SICR_SCC_TXCS_CLK26	FIELD_PREP_CONST(TSA_CPM1_SICR_SCC_TXCS_MASK, 0x5)
 #define       TSA_CPM1_SICR_SCC_TXCS_CLK37	FIELD_PREP_CONST(TSA_CPM1_SICR_SCC_TXCS_MASK, 0x6)
 #define       TSA_CPM1_SICR_SCC_TXCS_CLK48	FIELD_PREP_CONST(TSA_CPM1_SICR_SCC_TXCS_MASK, 0x7)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct tsa_entries_area {
 	void __iomem *entries_start;
@@ -232,8 +146,6 @@ struct tsa_tdm {
 
 #define TSA_TDMA	0
 #define TSA_TDMB	1
-<<<<<<< HEAD
-=======
 #define TSA_TDMC	2 /* QE implementation only */
 #define TSA_TDMD	3 /* QE implementation only */
 
@@ -241,18 +153,12 @@ enum tsa_version {
 	TSA_CPM1 = 1, /* Avoid 0 value */
 	TSA_QE,
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 struct tsa {
 	struct device *dev;
 	void __iomem *si_regs;
 	void __iomem *si_ram;
 	resource_size_t si_ram_sz;
-<<<<<<< HEAD
-	spinlock_t	lock;
-	int tdms; /* TSA_TDMx ORed */
-	struct tsa_tdm tdm[2]; /* TDMa and TDMb */
-=======
 	spinlock_t	lock; /* Lock for read/modify/write sequence */
 	enum tsa_version version;
 	int tdms; /* TSA_TDMx ORed */
@@ -265,7 +171,6 @@ struct tsa {
 	 * CPM1: NU, 3 SCCs and 2 SMCs
 	 * QE: NU and 5 UCCs
 	 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct tsa_serial {
 		unsigned int id;
 		struct tsa_serial_info info;
@@ -283,16 +188,12 @@ static inline void tsa_write32(void __iomem *addr, u32 val)
 	iowrite32be(val, addr);
 }
 
-<<<<<<< HEAD
-static inline void tsa_write8(void __iomem *addr, u32 val)
-=======
 static inline void tsa_write16(void __iomem *addr, u16 val)
 {
 	iowrite16be(val, addr);
 }
 
 static inline void tsa_write8(void __iomem *addr, u8 val)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	iowrite8(val, addr);
 }
@@ -302,35 +203,26 @@ static inline u32 tsa_read32(void __iomem *addr)
 	return ioread32be(addr);
 }
 
-<<<<<<< HEAD
-=======
 static inline u16 tsa_read16(void __iomem *addr)
 {
 	return ioread16be(addr);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void tsa_clrbits32(void __iomem *addr, u32 clr)
 {
 	tsa_write32(addr, tsa_read32(addr) & ~clr);
 }
 
-<<<<<<< HEAD
-=======
 static inline void tsa_clrbits16(void __iomem *addr, u16 clr)
 {
 	tsa_write16(addr, tsa_read16(addr) & ~clr);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static inline void tsa_clrsetbits32(void __iomem *addr, u32 clr, u32 set)
 {
 	tsa_write32(addr, (tsa_read32(addr) & ~clr) | set);
 }
 
-<<<<<<< HEAD
-int tsa_serial_connect(struct tsa_serial *tsa_serial)
-=======
 static bool tsa_is_qe(const struct tsa *tsa)
 {
 	if (IS_ENABLED(CONFIG_QUICC_ENGINE) && IS_ENABLED(CONFIG_CPM))
@@ -373,7 +265,6 @@ int tsa_serial_get_num(struct tsa_serial *tsa_serial)
 EXPORT_SYMBOL(tsa_serial_get_num);
 
 static int tsa_cpm1_serial_connect(struct tsa_serial *tsa_serial, bool connect)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct tsa *tsa = tsa_serial_get_tsa(tsa_serial);
 	unsigned long flags;
@@ -382,18 +273,6 @@ static int tsa_cpm1_serial_connect(struct tsa_serial *tsa_serial, bool connect)
 
 	switch (tsa_serial->id) {
 	case FSL_CPM_TSA_SCC2:
-<<<<<<< HEAD
-		clear = TSA_SICR_SCC2(TSA_SICR_SCC_MASK);
-		set = TSA_SICR_SCC2(TSA_SICR_SCC_SCX_TSA);
-		break;
-	case FSL_CPM_TSA_SCC3:
-		clear = TSA_SICR_SCC3(TSA_SICR_SCC_MASK);
-		set = TSA_SICR_SCC3(TSA_SICR_SCC_SCX_TSA);
-		break;
-	case FSL_CPM_TSA_SCC4:
-		clear = TSA_SICR_SCC4(TSA_SICR_SCC_MASK);
-		set = TSA_SICR_SCC4(TSA_SICR_SCC_SCX_TSA);
-=======
 		clear = TSA_CPM1_SICR_SCC2(TSA_CPM1_SICR_SCC_MASK);
 		set = TSA_CPM1_SICR_SCC2(TSA_CPM1_SICR_SCC_SCX_TSA);
 		break;
@@ -404,7 +283,6 @@ static int tsa_cpm1_serial_connect(struct tsa_serial *tsa_serial, bool connect)
 	case FSL_CPM_TSA_SCC4:
 		clear = TSA_CPM1_SICR_SCC4(TSA_CPM1_SICR_SCC_MASK);
 		set = TSA_CPM1_SICR_SCC4(TSA_CPM1_SICR_SCC_SCX_TSA);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	default:
 		dev_err(tsa->dev, "Unsupported serial id %u\n", tsa_serial->id);
@@ -412,18 +290,12 @@ static int tsa_cpm1_serial_connect(struct tsa_serial *tsa_serial, bool connect)
 	}
 
 	spin_lock_irqsave(&tsa->lock, flags);
-<<<<<<< HEAD
-	tsa_clrsetbits32(tsa->si_regs + TSA_SICR, clear, set);
-=======
 	tsa_clrsetbits32(tsa->si_regs + TSA_CPM1_SICR, clear,
 			 connect ? set : 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_unlock_irqrestore(&tsa->lock, flags);
 
 	return 0;
 }
-<<<<<<< HEAD
-=======
 
 static int tsa_qe_serial_connect(struct tsa_serial *tsa_serial, bool connect)
 {
@@ -455,42 +327,15 @@ int tsa_serial_connect(struct tsa_serial *tsa_serial)
 		tsa_qe_serial_connect(tsa_serial, true) :
 		tsa_cpm1_serial_connect(tsa_serial, true);
 }
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 EXPORT_SYMBOL(tsa_serial_connect);
 
 int tsa_serial_disconnect(struct tsa_serial *tsa_serial)
 {
 	struct tsa *tsa = tsa_serial_get_tsa(tsa_serial);
-<<<<<<< HEAD
-	unsigned long flags;
-	u32 clear;
-
-	switch (tsa_serial->id) {
-	case FSL_CPM_TSA_SCC2:
-		clear = TSA_SICR_SCC2(TSA_SICR_SCC_MASK);
-		break;
-	case FSL_CPM_TSA_SCC3:
-		clear = TSA_SICR_SCC3(TSA_SICR_SCC_MASK);
-		break;
-	case FSL_CPM_TSA_SCC4:
-		clear = TSA_SICR_SCC4(TSA_SICR_SCC_MASK);
-		break;
-	default:
-		dev_err(tsa->dev, "Unsupported serial id %u\n", tsa_serial->id);
-		return -EINVAL;
-	}
-
-	spin_lock_irqsave(&tsa->lock, flags);
-	tsa_clrsetbits32(tsa->si_regs + TSA_SICR, clear, 0);
-	spin_unlock_irqrestore(&tsa->lock, flags);
-
-	return 0;
-=======
 
 	return tsa_is_qe(tsa) ?
 		tsa_qe_serial_connect(tsa_serial, false) :
 		tsa_cpm1_serial_connect(tsa_serial, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 EXPORT_SYMBOL(tsa_serial_disconnect);
 
@@ -501,24 +346,14 @@ int tsa_serial_get_info(struct tsa_serial *tsa_serial, struct tsa_serial_info *i
 }
 EXPORT_SYMBOL(tsa_serial_get_info);
 
-<<<<<<< HEAD
-static void tsa_init_entries_area(struct tsa *tsa, struct tsa_entries_area *area,
-				  u32 tdms, u32 tdm_id, bool is_rx)
-=======
 static void tsa_cpm1_init_entries_area(struct tsa *tsa, struct tsa_entries_area *area,
 				       u32 tdms, u32 tdm_id, bool is_rx)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	resource_size_t quarter;
 	resource_size_t half;
 
-<<<<<<< HEAD
-	quarter = tsa->si_ram_sz/4;
-	half = tsa->si_ram_sz/2;
-=======
 	quarter = tsa->si_ram_sz / 4;
 	half = tsa->si_ram_sz / 2;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if (tdms == BIT(TSA_TDMA)) {
 		/* Only TDMA */
@@ -563,9 +398,6 @@ static void tsa_cpm1_init_entries_area(struct tsa *tsa, struct tsa_entries_area 
 	}
 }
 
-<<<<<<< HEAD
-static const char *tsa_serial_id2name(struct tsa *tsa, u32 serial_id)
-=======
 static void tsa_qe_init_entries_area(struct tsa *tsa, struct tsa_entries_area *area,
 				     u32 tdms, u32 tdm_id, bool is_rx)
 {
@@ -602,7 +434,6 @@ static void tsa_init_entries_area(struct tsa *tsa, struct tsa_entries_area *area
 }
 
 static const char *tsa_cpm1_serial_id2name(struct tsa *tsa, u32 serial_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	switch (serial_id) {
 	case FSL_CPM_TSA_NU:	return "Not used";
@@ -617,24 +448,6 @@ static const char *tsa_cpm1_serial_id2name(struct tsa *tsa, u32 serial_id)
 	return NULL;
 }
 
-<<<<<<< HEAD
-static u32 tsa_serial_id2csel(struct tsa *tsa, u32 serial_id)
-{
-	switch (serial_id) {
-	case FSL_CPM_TSA_SCC2:	return TSA_SIRAM_ENTRY_CSEL_SCC2;
-	case FSL_CPM_TSA_SCC3:	return TSA_SIRAM_ENTRY_CSEL_SCC3;
-	case FSL_CPM_TSA_SCC4:	return TSA_SIRAM_ENTRY_CSEL_SCC4;
-	case FSL_CPM_TSA_SMC1:	return TSA_SIRAM_ENTRY_CSEL_SMC1;
-	case FSL_CPM_TSA_SMC2:	return TSA_SIRAM_ENTRY_CSEL_SMC2;
-	default:
-		break;
-	}
-	return TSA_SIRAM_ENTRY_CSEL_NU;
-}
-
-static int tsa_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
-			 u32 count, u32 serial_id)
-=======
 static const char *tsa_qe_serial_id2name(struct tsa *tsa, u32 serial_id)
 {
 	switch (serial_id) {
@@ -673,7 +486,6 @@ static u32 tsa_cpm1_serial_id2csel(struct tsa *tsa, u32 serial_id)
 
 static int tsa_cpm1_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
 			      u32 count, u32 serial_id)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	void __iomem *addr;
 	u32 left;
@@ -691,36 +503,21 @@ static int tsa_cpm1_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
 
 	if (area->last_entry) {
 		/* Clear last flag */
-<<<<<<< HEAD
-		tsa_clrbits32(area->last_entry, TSA_SIRAM_ENTRY_LAST);
-=======
 		tsa_clrbits32(area->last_entry, TSA_CPM1_SIRAM_ENTRY_LAST);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	left = count;
 	while (left) {
-<<<<<<< HEAD
-		val = TSA_SIRAM_ENTRY_BYTE | tsa_serial_id2csel(tsa, serial_id);
-=======
 		val = TSA_CPM1_SIRAM_ENTRY_BYTE | tsa_cpm1_serial_id2csel(tsa, serial_id);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		if (left > 16) {
 			cnt = 16;
 		} else {
 			cnt = left;
-<<<<<<< HEAD
-			val |= TSA_SIRAM_ENTRY_LAST;
-			area->last_entry = addr;
-		}
-		val |= TSA_SIRAM_ENTRY_CNT(cnt - 1);
-=======
 			val |= TSA_CPM1_SIRAM_ENTRY_LAST;
 			area->last_entry = addr;
 		}
 		val |= TSA_CPM1_SIRAM_ENTRY_CNT(cnt - 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 		tsa_write32(addr, val);
 		addr += 4;
@@ -730,8 +527,6 @@ static int tsa_cpm1_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static u32 tsa_qe_serial_id2csel(struct tsa *tsa, u32 serial_id)
 {
 	switch (serial_id) {
@@ -797,7 +592,6 @@ static int tsa_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
 		tsa_cpm1_add_entry(tsa, area, count, serial_id);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int tsa_of_parse_tdm_route(struct tsa *tsa, struct device_node *tdm_np,
 				  u32 tdms, u32 tdm_id, bool is_rx)
 {
@@ -844,11 +638,7 @@ static int tsa_of_parse_tdm_route(struct tsa *tsa, struct device_node *tdm_np,
 		}
 
 		dev_dbg(tsa->dev, "tdm_id=%u, %s ts %u..%u -> %s\n",
-<<<<<<< HEAD
-			tdm_id, route_name, ts, ts+count-1, serial_name);
-=======
 			tdm_id, route_name, ts, ts + count - 1, serial_name);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ts += count;
 
 		ret = tsa_add_entry(tsa, &area, count, serial_id);
@@ -898,13 +688,8 @@ static int tsa_of_parse_tdms(struct tsa *tsa, struct device_node *np)
 	int i;
 
 	tsa->tdms = 0;
-<<<<<<< HEAD
-	tsa->tdm[0].is_enable = false;
-	tsa->tdm[1].is_enable = false;
-=======
 	for (i = 0; i < ARRAY_SIZE(tsa->tdm); i++)
 		tsa->tdm[i].is_enable = false;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for_each_available_child_of_node(np, tdm_np) {
 		ret = of_property_read_u32(tdm_np, "reg", &tdm_id);
@@ -920,9 +705,6 @@ static int tsa_of_parse_tdms(struct tsa *tsa, struct device_node *np)
 		case 1:
 			tsa->tdms |= BIT(TSA_TDMB);
 			break;
-<<<<<<< HEAD
-		default:
-=======
 		case 2:
 			if (!tsa_is_qe(tsa))
 				goto invalid_tdm; /* Not available on CPM1 */
@@ -935,7 +717,6 @@ static int tsa_of_parse_tdms(struct tsa *tsa, struct device_node *np)
 			break;
 		default:
 invalid_tdm:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			dev_err(tsa->dev, "%pOF: Invalid tdm_id (%u)\n", tdm_np,
 				tdm_id);
 			of_node_put(tdm_np);
@@ -1001,12 +782,6 @@ invalid_tdm:
 		if (of_property_read_bool(tdm_np, "fsl,fsync-rising-edge"))
 			tdm->simode_tdm |= TSA_SIMODE_TDM_FE;
 
-<<<<<<< HEAD
-		if (of_property_read_bool(tdm_np, "fsl,double-speed-clock"))
-			tdm->simode_tdm |= TSA_SIMODE_TDM_DSC;
-
-		clk = of_clk_get_by_name(tdm_np, "l1rsync");
-=======
 		if (tsa_is_qe(tsa) &&
 		    of_property_read_bool(tdm_np, "fsl,fsync-active-low"))
 			tdm->simode_tdm |= TSA_QE_SIMODE_TDM_SL;
@@ -1015,7 +790,6 @@ invalid_tdm:
 			tdm->simode_tdm |= TSA_SIMODE_TDM_DSC;
 
 		clk = of_clk_get_by_name(tdm_np, tsa_is_qe(tsa) ? "rsync" : "l1rsync");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(clk)) {
 			ret = PTR_ERR(clk);
 			of_node_put(tdm_np);
@@ -1029,11 +803,7 @@ invalid_tdm:
 		}
 		tdm->l1rsync_clk = clk;
 
-<<<<<<< HEAD
-		clk = of_clk_get_by_name(tdm_np, "l1rclk");
-=======
 		clk = of_clk_get_by_name(tdm_np, tsa_is_qe(tsa) ? "rclk" : "l1rclk");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (IS_ERR(clk)) {
 			ret = PTR_ERR(clk);
 			of_node_put(tdm_np);
@@ -1048,11 +818,7 @@ invalid_tdm:
 		tdm->l1rclk_clk = clk;
 
 		if (!(tdm->simode_tdm & TSA_SIMODE_TDM_CRT)) {
-<<<<<<< HEAD
-			clk = of_clk_get_by_name(tdm_np, "l1tsync");
-=======
 			clk = of_clk_get_by_name(tdm_np, tsa_is_qe(tsa) ? "tsync" : "l1tsync");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (IS_ERR(clk)) {
 				ret = PTR_ERR(clk);
 				of_node_put(tdm_np);
@@ -1066,11 +832,7 @@ invalid_tdm:
 			}
 			tdm->l1tsync_clk = clk;
 
-<<<<<<< HEAD
-			clk = of_clk_get_by_name(tdm_np, "l1tclk");
-=======
 			clk = of_clk_get_by_name(tdm_np, tsa_is_qe(tsa) ? "tclk" : "l1tclk");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (IS_ERR(clk)) {
 				ret = PTR_ERR(clk);
 				of_node_put(tdm_np);
@@ -1085,8 +847,6 @@ invalid_tdm:
 			tdm->l1tclk_clk = clk;
 		}
 
-<<<<<<< HEAD
-=======
 		if (tsa_is_qe(tsa)) {
 			/*
 			 * The starting address for TSA table must be set.
@@ -1098,7 +858,6 @@ invalid_tdm:
 			tdm->simode_tdm |= TSA_QE_SIMODE_TDM_SAD(4 * tdm_id);
 		}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = tsa_of_parse_tdm_rx_route(tsa, tdm_np, tsa->tdms, tdm_id);
 		if (ret) {
 			of_node_put(tdm_np);
@@ -1116,11 +875,7 @@ invalid_tdm:
 	return 0;
 
 err:
-<<<<<<< HEAD
-	for (i = 0; i < 2; i++) {
-=======
 	for (i = 0; i < ARRAY_SIZE(tsa->tdm); i++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (tsa->tdm[i].l1rsync_clk) {
 			clk_disable_unprepare(tsa->tdm[i].l1rsync_clk);
 			clk_put(tsa->tdm[i].l1rsync_clk);
@@ -1146,10 +901,6 @@ static void tsa_init_si_ram(struct tsa *tsa)
 	resource_size_t i;
 
 	/* Fill all entries as the last one */
-<<<<<<< HEAD
-	for (i = 0; i < tsa->si_ram_sz; i += 4)
-		tsa_write32(tsa->si_ram + i, TSA_SIRAM_ENTRY_LAST);
-=======
 	if (tsa_is_qe(tsa)) {
 		for (i = 0; i < tsa->si_ram_sz; i += 2)
 			tsa_write16(tsa->si_ram + i, TSA_QE_SIRAM_ENTRY_LAST);
@@ -1231,7 +982,6 @@ static int tsa_qe_setup(struct tsa *tsa)
 static int tsa_setup(struct tsa *tsa)
 {
 	return tsa_is_qe(tsa) ? tsa_qe_setup(tsa) : tsa_cpm1_setup(tsa);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int tsa_probe(struct platform_device *pdev)
@@ -1240,10 +990,6 @@ static int tsa_probe(struct platform_device *pdev)
 	struct resource *res;
 	struct tsa *tsa;
 	unsigned int i;
-<<<<<<< HEAD
-	u32 val;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret;
 
 	tsa = devm_kzalloc(&pdev->dev, sizeof(*tsa), GFP_KERNEL);
@@ -1251,8 +997,6 @@ static int tsa_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	tsa->dev = &pdev->dev;
-<<<<<<< HEAD
-=======
 	tsa->version = (enum tsa_version)(uintptr_t)of_device_get_match_data(&pdev->dev);
 	switch (tsa->version) {
 	case TSA_CPM1:
@@ -1265,7 +1009,6 @@ static int tsa_probe(struct platform_device *pdev)
 		dev_err(tsa->dev, "Unknown version (%d)\n", tsa->version);
 		return -EINVAL;
 	}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for (i = 0; i < ARRAY_SIZE(tsa->serials); i++)
 		tsa->serials[i].id = i;
@@ -1292,32 +1035,9 @@ static int tsa_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-<<<<<<< HEAD
-	/* Set SIMODE */
-	val = 0;
-	if (tsa->tdm[0].is_enable)
-		val |= TSA_SIMODE_TDMA(tsa->tdm[0].simode_tdm);
-	if (tsa->tdm[1].is_enable)
-		val |= TSA_SIMODE_TDMB(tsa->tdm[1].simode_tdm);
-
-	tsa_clrsetbits32(tsa->si_regs + TSA_SIMODE,
-			 TSA_SIMODE_TDMA(TSA_SIMODE_TDM_MASK) |
-			 TSA_SIMODE_TDMB(TSA_SIMODE_TDM_MASK),
-			 val);
-
-	/* Set SIGMR */
-	val = (tsa->tdms == BIT(TSA_TDMA)) ?
-		TSA_SIGMR_RDM_STATIC_TDMA : TSA_SIGMR_RDM_STATIC_TDMAB;
-	if (tsa->tdms & BIT(TSA_TDMA))
-		val |= TSA_SIGMR_ENA;
-	if (tsa->tdms & BIT(TSA_TDMB))
-		val |= TSA_SIGMR_ENB;
-	tsa_write8(tsa->si_regs + TSA_SIGMR, val);
-=======
 	ret = tsa_setup(tsa);
 	if (ret)
 		return ret;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	platform_set_drvdata(pdev, tsa);
 
@@ -1329,11 +1049,7 @@ static void tsa_remove(struct platform_device *pdev)
 	struct tsa *tsa = platform_get_drvdata(pdev);
 	int i;
 
-<<<<<<< HEAD
-	for (i = 0; i < 2; i++) {
-=======
 	for (i = 0; i < ARRAY_SIZE(tsa->tdm); i++) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (tsa->tdm[i].l1rsync_clk) {
 			clk_disable_unprepare(tsa->tdm[i].l1rsync_clk);
 			clk_put(tsa->tdm[i].l1rsync_clk);
@@ -1354,16 +1070,12 @@ static void tsa_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id tsa_id_table[] = {
-<<<<<<< HEAD
-	{ .compatible = "fsl,cpm1-tsa" },
-=======
 #if IS_ENABLED(CONFIG_CPM1)
 	{ .compatible = "fsl,cpm1-tsa", .data = (void *)TSA_CPM1 },
 #endif
 #if IS_ENABLED(CONFIG_QUICC_ENGINE)
 	{ .compatible = "fsl,qe-tsa", .data = (void *)TSA_QE },
 #endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{} /* sentinel */
 };
 MODULE_DEVICE_TABLE(of, tsa_id_table);
@@ -1472,9 +1184,5 @@ struct tsa_serial *devm_tsa_serial_get_byphandle(struct device *dev,
 EXPORT_SYMBOL(devm_tsa_serial_get_byphandle);
 
 MODULE_AUTHOR("Herve Codina <herve.codina@bootlin.com>");
-<<<<<<< HEAD
-MODULE_DESCRIPTION("CPM TSA driver");
-=======
 MODULE_DESCRIPTION("CPM/QE TSA driver");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 MODULE_LICENSE("GPL");

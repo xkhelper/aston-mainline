@@ -134,11 +134,8 @@
 
 		pinctrl-0 = <&nvme_reg_en>;
 		pinctrl-names = "default";
-<<<<<<< HEAD
-=======
 
 		regulator-boot-on;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	};
 };
 
@@ -506,13 +503,6 @@
 	vdd3-supply = <&vreg_l14b_3p0>;
 };
 
-<<<<<<< HEAD
-&smb2360_2 {
-	status = "disabled";
-};
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 &tlmm {
 	gpio-reserved-ranges = <34 2>, /* Unused */
 			       <44 4>, /* SPI (TPM) */

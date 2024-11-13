@@ -8,10 +8,6 @@
 /*  This file is for 92CE/92CU dynamic mechanism only */
 
 #include <drv_types.h>
-<<<<<<< HEAD
-#include <rtw_debug.h>
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #include <rtl8723b_hal.h>
 
 /*  Global var */

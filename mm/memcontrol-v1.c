@@ -742,12 +742,9 @@ static struct page *mc_handle_file_pte(struct vm_area_struct *vma,
 	return folio_file_page(folio, index);
 }
 
-<<<<<<< HEAD
-=======
 static void memcg1_check_events(struct mem_cgroup *memcg, int nid);
 static void memcg1_charge_statistics(struct mem_cgroup *memcg, int nr_pages);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * mem_cgroup_move_account - move account of the folio
  * @folio: The folio.
@@ -851,11 +848,8 @@ static int mem_cgroup_move_account(struct folio *folio,
 	css_get(&to->css);
 	css_put(&from->css);
 
-<<<<<<< HEAD
-=======
 	/* Warning should never happen, so don't worry about refcount non-0 */
 	WARN_ON_ONCE(folio_unqueue_deferred_split(folio));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	folio->memcg_data = (unsigned long)to;
 
 	__folio_memcg_unlock(from);
@@ -864,15 +858,9 @@ static int mem_cgroup_move_account(struct folio *folio,
 	nid = folio_nid(folio);
 
 	local_irq_disable();
-<<<<<<< HEAD
-	mem_cgroup_charge_statistics(to, nr_pages);
-	memcg1_check_events(to, nid);
-	mem_cgroup_charge_statistics(from, -nr_pages);
-=======
 	memcg1_charge_statistics(to, nr_pages);
 	memcg1_check_events(to, nid);
 	memcg1_charge_statistics(from, -nr_pages);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	memcg1_check_events(from, nid);
 	local_irq_enable();
 out:
@@ -1231,13 +1219,9 @@ static int mem_cgroup_move_charge_pte_range(pmd_t *pmd,
 	enum mc_target_type target_type;
 	union mc_target target;
 	struct folio *folio;
-<<<<<<< HEAD
-
-=======
 	bool tried_split_before = false;
 
 retry_pmd:
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ptl = pmd_trans_huge_lock(pmd, vma);
 	if (ptl) {
 		if (mc.precharge < HPAGE_PMD_NR) {
@@ -1247,8 +1231,6 @@ retry_pmd:
 		target_type = get_mctgt_type_thp(vma, addr, *pmd, &target);
 		if (target_type == MC_TARGET_PAGE) {
 			folio = target.folio;
-<<<<<<< HEAD
-=======
 			/*
 			 * Deferred split queue locking depends on memcg,
 			 * and unqueue is unsafe unless folio refcount is 0:
@@ -1270,7 +1252,6 @@ retry_pmd:
 			 * be racily added to the _deferred_list, because
 			 * __folio_remove_rmap() will find !partially_mapped.
 			 */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			if (folio_isolate_lru(folio)) {
 				if (!mem_cgroup_move_account(folio, true,
 							     mc.from, mc.to)) {
@@ -1486,8 +1467,6 @@ static void mem_cgroup_threshold(struct mem_cgroup *memcg)
 	}
 }
 
-<<<<<<< HEAD
-=======
 /* Cgroup1: threshold notifications & softlimit tree updates */
 struct memcg1_events_percpu {
 	unsigned long nr_page_events;
@@ -1535,34 +1514,21 @@ static bool memcg1_event_ratelimit(struct mem_cgroup *memcg,
 	return false;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * Check events in order.
  *
  */
-<<<<<<< HEAD
-void memcg1_check_events(struct mem_cgroup *memcg, int nid)
-=======
 static void memcg1_check_events(struct mem_cgroup *memcg, int nid)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	if (IS_ENABLED(CONFIG_PREEMPT_RT))
 		return;
 
 	/* threshold event is triggered in finer grain than soft limit */
-<<<<<<< HEAD
-	if (unlikely(mem_cgroup_event_ratelimit(memcg,
-						MEM_CGROUP_TARGET_THRESH))) {
-		bool do_softlimit;
-
-		do_softlimit = mem_cgroup_event_ratelimit(memcg,
-=======
 	if (unlikely(memcg1_event_ratelimit(memcg,
 						MEM_CGROUP_TARGET_THRESH))) {
 		bool do_softlimit;
 
 		do_softlimit = memcg1_event_ratelimit(memcg,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						MEM_CGROUP_TARGET_SOFTLIMIT);
 		mem_cgroup_threshold(memcg);
 		if (unlikely(do_softlimit))
@@ -1570,8 +1536,6 @@ static void memcg1_check_events(struct mem_cgroup *memcg, int nid)
 	}
 }
 
-<<<<<<< HEAD
-=======
 void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
 {
 	unsigned long flags;
@@ -1609,7 +1573,6 @@ void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
 	local_irq_restore(flags);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int compare_thresholds(const void *a, const void *b)
 {
 	const struct mem_cgroup_threshold *_a = a;
@@ -2009,42 +1972,26 @@ static ssize_t memcg_write_event_control(struct kernfs_open_file *of,
 	INIT_WORK(&event->remove, memcg_event_remove);
 
 	efile = fdget(efd);
-<<<<<<< HEAD
-	if (!efile.file) {
-=======
 	if (!fd_file(efile)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out_kfree;
 	}
 
-<<<<<<< HEAD
-	event->eventfd = eventfd_ctx_fileget(efile.file);
-=======
 	event->eventfd = eventfd_ctx_fileget(fd_file(efile));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (IS_ERR(event->eventfd)) {
 		ret = PTR_ERR(event->eventfd);
 		goto out_put_efile;
 	}
 
 	cfile = fdget(cfd);
-<<<<<<< HEAD
-	if (!cfile.file) {
-=======
 	if (!fd_file(cfile)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		ret = -EBADF;
 		goto out_put_eventfd;
 	}
 
 	/* the process need read permission on control file */
 	/* AV: shouldn't we check that it's been opened for read instead? */
-<<<<<<< HEAD
-	ret = file_permission(cfile.file, MAY_READ);
-=======
 	ret = file_permission(fd_file(cfile), MAY_READ);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (ret < 0)
 		goto out_put_cfile;
 
@@ -2052,11 +1999,7 @@ static ssize_t memcg_write_event_control(struct kernfs_open_file *of,
 	 * The control file must be a regular cgroup1 file. As a regular cgroup
 	 * file can't be renamed, it's safe to access its name afterwards.
 	 */
-<<<<<<< HEAD
-	cdentry = cfile.file->f_path.dentry;
-=======
 	cdentry = fd_file(cfile)->f_path.dentry;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (cdentry->d_sb->s_type != &cgroup_fs_type || !d_is_reg(cdentry)) {
 		ret = -EINVAL;
 		goto out_put_cfile;
@@ -2076,11 +2019,6 @@ static ssize_t memcg_write_event_control(struct kernfs_open_file *of,
 		event->register_event = mem_cgroup_usage_register_event;
 		event->unregister_event = mem_cgroup_usage_unregister_event;
 	} else if (!strcmp(name, "memory.oom_control")) {
-<<<<<<< HEAD
-		event->register_event = mem_cgroup_oom_register_event;
-		event->unregister_event = mem_cgroup_oom_unregister_event;
-	} else if (!strcmp(name, "memory.pressure_level")) {
-=======
 		pr_warn_once("oom_control is deprecated and will be removed. "
 			     "Please report your usecase to linux-mm-@kvack.org"
 			     " if you depend on this functionality. \n");
@@ -2090,7 +2028,6 @@ static ssize_t memcg_write_event_control(struct kernfs_open_file *of,
 		pr_warn_once("pressure_level is deprecated and will be removed. "
 			     "Please report your usecase to linux-mm-@kvack.org "
 			     "if you depend on this functionality. \n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		event->register_event = vmpressure_register_event;
 		event->unregister_event = vmpressure_unregister_event;
 	} else if (!strcmp(name, "memory.memsw.usage_in_bytes")) {
@@ -2120,11 +2057,7 @@ static ssize_t memcg_write_event_control(struct kernfs_open_file *of,
 	if (ret)
 		goto out_put_css;
 
-<<<<<<< HEAD
-	vfs_poll(efile.file, &event->pt);
-=======
 	vfs_poll(fd_file(efile), &event->pt);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_irq(&memcg->event_list_lock);
 	list_add(&event->list, &memcg->event_list);
@@ -2632,12 +2565,9 @@ static ssize_t mem_cgroup_write(struct kernfs_open_file *of,
 			ret = 0;
 			break;
 		case _TCP:
-<<<<<<< HEAD
-=======
 			pr_warn_once("kmem.tcp.limit_in_bytes is deprecated and will be removed. "
 				     "Please report your usecase to linux-mm@kvack.org if you "
 				     "depend on this functionality.\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ret = memcg_update_tcp_max(memcg, nr_pages);
 			break;
 		}
@@ -2646,12 +2576,9 @@ static ssize_t mem_cgroup_write(struct kernfs_open_file *of,
 		if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
 			ret = -EOPNOTSUPP;
 		} else {
-<<<<<<< HEAD
-=======
 			pr_warn_once("soft_limit_in_bytes is deprecated and will be removed. "
 				     "Please report your usecase to linux-mm@kvack.org if you "
 				     "depend on this functionality.\n");
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			WRITE_ONCE(memcg->soft_limit, nr_pages);
 			ret = 0;
 		}
@@ -2945,13 +2872,10 @@ static int mem_cgroup_oom_control_write(struct cgroup_subsys_state *css,
 {
 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
 
-<<<<<<< HEAD
-=======
 	pr_warn_once("oom_control is deprecated and will be removed. "
 		     "Please report your usecase to linux-mm-@kvack.org if you "
 		     "depend on this functionality. \n");
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* cannot set to root cgroup and only 0 and 1 are allowed */
 	if (mem_cgroup_is_root(memcg) || !((val == 0) || (val == 1)))
 		return -EINVAL;
@@ -3156,8 +3080,6 @@ bool memcg1_charge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages,
 	return false;
 }
 
-<<<<<<< HEAD
-=======
 bool memcg1_alloc_events(struct mem_cgroup *memcg)
 {
 	memcg->events_percpu = alloc_percpu_gfp(struct memcg1_events_percpu,
@@ -3171,7 +3093,6 @@ void memcg1_free_events(struct mem_cgroup *memcg)
 		free_percpu(memcg->events_percpu);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int __init memcg1_init(void)
 {
 	int node;

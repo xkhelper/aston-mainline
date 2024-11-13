@@ -60,15 +60,6 @@ unsigned int rseq_size = -1U;
 /* Flags used during rseq registration.  */
 unsigned int rseq_flags;
 
-<<<<<<< HEAD
-/*
- * rseq feature size supported by the kernel. 0 if the registration was
- * unsuccessful.
- */
-unsigned int rseq_feature_size = -1U;
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static int rseq_ownership;
 static int rseq_reg_success;	/* At least one rseq registration has succeded. */
 
@@ -114,8 +105,6 @@ int rseq_available(void)
 	}
 }
 
-<<<<<<< HEAD
-=======
 /* The rseq areas need to be at least 32 bytes. */
 static
 unsigned int get_rseq_min_alloc_size(void)
@@ -153,7 +142,6 @@ unsigned int get_rseq_kernel_feature_size(void)
 		return ORIG_RSEQ_FEATURE_SIZE;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int rseq_register_current_thread(void)
 {
 	int rc;
@@ -162,11 +150,7 @@ int rseq_register_current_thread(void)
 		/* Treat libc's ownership as a successful registration. */
 		return 0;
 	}
-<<<<<<< HEAD
-	rc = sys_rseq(&__rseq_abi, rseq_size, 0, RSEQ_SIG);
-=======
 	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc) {
 		if (RSEQ_READ_ONCE(rseq_reg_success)) {
 			/* Incoherent success/failure within process. */
@@ -187,35 +171,12 @@ int rseq_unregister_current_thread(void)
 		/* Treat libc's ownership as a successful unregistration. */
 		return 0;
 	}
-<<<<<<< HEAD
-	rc = sys_rseq(&__rseq_abi, rseq_size, RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
-=======
 	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), RSEQ_ABI_FLAG_UNREGISTER, RSEQ_SIG);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (rc)
 		return -1;
 	return 0;
 }
 
-<<<<<<< HEAD
-static
-unsigned int get_rseq_feature_size(void)
-{
-	unsigned long auxv_rseq_feature_size, auxv_rseq_align;
-
-	auxv_rseq_align = getauxval(AT_RSEQ_ALIGN);
-	assert(!auxv_rseq_align || auxv_rseq_align <= RSEQ_THREAD_AREA_ALLOC_SIZE);
-
-	auxv_rseq_feature_size = getauxval(AT_RSEQ_FEATURE_SIZE);
-	assert(!auxv_rseq_feature_size || auxv_rseq_feature_size <= RSEQ_THREAD_AREA_ALLOC_SIZE);
-	if (auxv_rseq_feature_size)
-		return auxv_rseq_feature_size;
-	else
-		return ORIG_RSEQ_FEATURE_SIZE;
-}
-
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static __attribute__((constructor))
 void rseq_init(void)
 {
@@ -232,15 +193,6 @@ void rseq_init(void)
 	}
 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
 			*libc_rseq_size_p != 0) {
-<<<<<<< HEAD
-		/* rseq registration owned by glibc */
-		rseq_offset = *libc_rseq_offset_p;
-		rseq_size = *libc_rseq_size_p;
-		rseq_flags = *libc_rseq_flags_p;
-		rseq_feature_size = get_rseq_feature_size();
-		if (rseq_feature_size > rseq_size)
-			rseq_feature_size = rseq_size;
-=======
 		unsigned int libc_rseq_size;
 
 		/* rseq registration owned by glibc */
@@ -280,28 +232,15 @@ void rseq_init(void)
 			rseq_size = libc_rseq_size;
 			break;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 	rseq_ownership = 1;
 	if (!rseq_available()) {
 		rseq_size = 0;
-<<<<<<< HEAD
-		rseq_feature_size = 0;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return;
 	}
 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
 	rseq_flags = 0;
-<<<<<<< HEAD
-	rseq_feature_size = get_rseq_feature_size();
-	if (rseq_feature_size == ORIG_RSEQ_FEATURE_SIZE)
-		rseq_size = ORIG_RSEQ_ALLOC_SIZE;
-	else
-		rseq_size = RSEQ_THREAD_AREA_ALLOC_SIZE;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static __attribute__((destructor))
@@ -311,10 +250,6 @@ void rseq_exit(void)
 		return;
 	rseq_offset = 0;
 	rseq_size = -1U;
-<<<<<<< HEAD
-	rseq_feature_size = -1U;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	rseq_ownership = 0;
 }
 

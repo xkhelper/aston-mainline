@@ -1131,11 +1131,7 @@ static vm_fault_t vm_fault_ttm(struct vm_fault *vmf)
 		GEM_WARN_ON(!i915_ttm_cpu_maps_iomem(bo->resource));
 	}
 
-<<<<<<< HEAD
-	if (wakeref & CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
-=======
 	if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND != 0)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		intel_wakeref_auto(&to_i915(obj->base.dev)->runtime_pm.userfault_wakeref,
 				   msecs_to_jiffies_timeout(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND));
 

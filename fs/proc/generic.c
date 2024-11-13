@@ -464,15 +464,9 @@ struct proc_dir_entry *proc_symlink(const char *name,
 			  (S_IFLNK | S_IRUGO | S_IWUGO | S_IXUGO),1);
 
 	if (ent) {
-<<<<<<< HEAD
-		ent->data = kmalloc((ent->size=strlen(dest))+1, GFP_KERNEL);
-		if (ent->data) {
-			strcpy((char*)ent->data,dest);
-=======
 		ent->size = strlen(dest);
 		ent->data = kmemdup(dest, ent->size + 1, GFP_KERNEL);
 		if (ent->data) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			ent->proc_iops = &proc_link_inode_operations;
 			ent = proc_register(parent, ent);
 		} else {

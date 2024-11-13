@@ -115,10 +115,7 @@
 #include <net/addrconf.h>
 #include <net/udp_tunnel.h>
 #include <net/gro.h>
-<<<<<<< HEAD
-=======
 #include <net/inet_dscp.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #if IS_ENABLED(CONFIG_IPV6)
 #include <net/ipv6_stubs.h>
 #endif
@@ -369,11 +366,7 @@ int udp_v4_get_port(struct sock *sk, unsigned short snum)
 	return udp_lib_get_port(sk, snum, hash2_nulladdr);
 }
 
-<<<<<<< HEAD
-static int compute_score(struct sock *sk, struct net *net,
-=======
 static int compute_score(struct sock *sk, const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 __be32 saddr, __be16 sport,
 			 __be32 daddr, unsigned short hnum,
 			 int dif, int sdif)
@@ -428,11 +421,7 @@ u32 udp_ehashfn(const struct net *net, const __be32 laddr, const __u16 lport,
 }
 
 /* called with rcu_read_lock() */
-<<<<<<< HEAD
-static struct sock *udp4_lib_lookup2(struct net *net,
-=======
 static struct sock *udp4_lib_lookup2(const struct net *net,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				     __be32 saddr, __be16 sport,
 				     __be32 daddr, unsigned int hnum,
 				     int dif, int sdif,
@@ -492,11 +481,7 @@ rescore:
 /* UDP is nearly always wildcards out the wazoo, it makes no sense to try
  * harder than this. -DaveM
  */
-<<<<<<< HEAD
-struct sock *__udp4_lib_lookup(struct net *net, __be32 saddr,
-=======
 struct sock *__udp4_lib_lookup(const struct net *net, __be32 saddr,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		__be16 sport, __be32 daddr, __be16 dport, int dif,
 		int sdif, struct udp_table *udptable, struct sk_buff *skb)
 {
@@ -577,11 +562,7 @@ struct sock *udp4_lib_lookup_skb(const struct sk_buff *skb,
  * Does increment socket refcount.
  */
 #if IS_ENABLED(CONFIG_NF_TPROXY_IPV4) || IS_ENABLED(CONFIG_NF_SOCKET_IPV4)
-<<<<<<< HEAD
-struct sock *udp4_lib_lookup(struct net *net, __be32 saddr, __be16 sport,
-=======
 struct sock *udp4_lib_lookup(const struct net *net, __be32 saddr, __be16 sport,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			     __be32 daddr, __be16 dport, int dif)
 {
 	struct sock *sk;
@@ -970,15 +951,10 @@ static int udp_send_skb(struct sk_buff *skb, struct flowi4 *fl4,
 			skb_shinfo(skb)->gso_type = SKB_GSO_UDP_L4;
 			skb_shinfo(skb)->gso_segs = DIV_ROUND_UP(datalen,
 								 cork->gso_size);
-<<<<<<< HEAD
-		}
-		goto csum_partial;
-=======
 
 			/* Don't checksum the payload, skb will get segmented */
 			goto csum_partial;
 		}
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (is_udplite)  				 /*     UDP-Lite      */
@@ -2645,11 +2621,7 @@ int udp_v4_early_demux(struct sk_buff *skb)
 		if (!inet_sk(sk)->inet_daddr && in_dev)
 			return ip_mc_validate_source(skb, iph->daddr,
 						     iph->saddr,
-<<<<<<< HEAD
-						     iph->tos & IPTOS_RT_MASK,
-=======
 						     iph->tos & INET_DSCP_MASK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 						     skb->dev, in_dev, &itag);
 	}
 	return 0;

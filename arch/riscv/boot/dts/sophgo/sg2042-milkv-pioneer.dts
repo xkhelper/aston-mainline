@@ -26,11 +26,6 @@
 	clock-frequency = <25000000>;
 };
 
-<<<<<<< HEAD
-&uart0 {
-	status = "okay";
-};
-=======
 &emmc {
 	bus-width = <4>;
 	no-sdio;
@@ -111,4 +106,3 @@
 		};
 	};
 };
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)

@@ -259,8 +259,6 @@ check_mptcp_disabled()
 	mptcp_lib_ns_init disabled_ns
 
 	print_larger_title "New MPTCP socket can be blocked via sysctl"
-<<<<<<< HEAD
-=======
 
 	# mainly to cover more code
 	if ! ip netns exec ${disabled_ns} sysctl net.mptcp >/dev/null; then
@@ -270,7 +268,6 @@ check_mptcp_disabled()
 		return 1
 	fi
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	# net.mptcp.enabled should be enabled by default
 	if [ "$(ip netns exec ${disabled_ns} sysctl net.mptcp.enabled | awk '{ print $3 }')" -ne 1 ]; then
 		mptcp_lib_pr_fail "net.mptcp.enabled sysctl is not 1 by default"
@@ -357,17 +354,11 @@ do_transfer()
 
 	local addr_port
 	addr_port=$(printf "%s:%d" ${connect_addr} ${port})
-<<<<<<< HEAD
-	local result_msg
-	result_msg="$(printf "%.3s %-5s -> %.3s (%-20s) %-5s" ${connector_ns} ${cl_proto} ${listener_ns} ${addr_port} ${srv_proto})"
-	mptcp_lib_print_title "${result_msg}"
-=======
 	local pretty_title
 	pretty_title="$(printf "%.3s %-5s -> %.3s (%-20s) %-5s" ${connector_ns} ${cl_proto} ${listener_ns} ${addr_port} ${srv_proto})"
 	mptcp_lib_print_title "${pretty_title}"
 
 	local tap_title="${connector_ns:0:3} ${cl_proto} -> ${listener_ns:0:3} (${addr_port}) ${srv_proto}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	if $capture; then
 		local capuser
@@ -451,10 +442,6 @@ do_transfer()
 
 	local duration
 	duration=$((stop-start))
-<<<<<<< HEAD
-	result_msg+=" # time=${duration}ms"
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	printf "(duration %05sms) " "${duration}"
 	if [ ${rets} -ne 0 ] || [ ${retc} -ne 0 ]; then
 		mptcp_lib_pr_fail "client exit code $retc, server $rets"
@@ -467,11 +454,7 @@ do_transfer()
 
 		echo
 		cat "$capout"
-<<<<<<< HEAD
-		mptcp_lib_result_fail "${TEST_GROUP}: ${result_msg}"
-=======
 		mptcp_lib_result_fail "${TEST_GROUP}: ${tap_title}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return 1
 	fi
 
@@ -571,20 +554,12 @@ do_transfer()
 
 	if [ $retc -eq 0 ] && [ $rets -eq 0 ]; then
 		mptcp_lib_pr_ok "${extra:1}"
-<<<<<<< HEAD
-		mptcp_lib_result_pass "${TEST_GROUP}: ${result_msg}"
-=======
 		mptcp_lib_result_pass "${TEST_GROUP}: ${tap_title}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	else
 		if [ -n "${extra}" ]; then
 			mptcp_lib_print_warn "${extra:1}"
 		fi
-<<<<<<< HEAD
-		mptcp_lib_result_fail "${TEST_GROUP}: ${result_msg}"
-=======
 		mptcp_lib_result_fail "${TEST_GROUP}: ${tap_title}"
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	fi
 
 	cat "$capout"
@@ -883,11 +858,8 @@ stop_if_error()
 make_file "$cin" "client"
 make_file "$sin" "server"
 
-<<<<<<< HEAD
-=======
 mptcp_lib_subtests_last_ts_reset
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 check_mptcp_disabled
 
 stop_if_error "The kernel configuration is not valid for MPTCP"

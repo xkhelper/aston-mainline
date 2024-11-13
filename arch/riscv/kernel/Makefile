@@ -36,14 +36,11 @@ KASAN_SANITIZE_alternative.o := n
 KASAN_SANITIZE_cpufeature.o := n
 KASAN_SANITIZE_sbi_ecall.o := n
 endif
-<<<<<<< HEAD
-=======
 ifdef CONFIG_FORTIFY_SOURCE
 CFLAGS_alternative.o += -D__NO_FORTIFY
 CFLAGS_cpufeature.o += -D__NO_FORTIFY
 CFLAGS_sbi_ecall.o += -D__NO_FORTIFY
 endif
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 endif
 
 extra-y += vmlinux.lds

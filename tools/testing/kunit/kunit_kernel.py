@@ -72,12 +72,8 @@ class LinuxSourceTreeOperations:
 			raise ConfigError(e.output.decode())
 
 	def make(self, jobs: int, build_dir: str, make_options: Optional[List[str]]) -> None:
-<<<<<<< HEAD
-		command = ['make', 'ARCH=' + self._linux_arch, 'O=' + build_dir, '--jobs=' + str(jobs)]
-=======
 		command = ['make', 'all', 'compile_commands.json', 'ARCH=' + self._linux_arch,
 			   'O=' + build_dir, '--jobs=' + str(jobs)]
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if make_options:
 			command.extend(make_options)
 		if self._cross_compile:

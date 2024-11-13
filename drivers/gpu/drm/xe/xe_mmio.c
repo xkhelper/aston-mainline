@@ -29,28 +29,6 @@ static void tiles_fini(void *arg)
 	struct xe_tile *tile;
 	int id;
 
-<<<<<<< HEAD
-	for_each_tile(tile, xe, id)
-		if (tile != xe_device_get_root_tile(xe))
-			tile->mmio.regs = NULL;
-}
-
-int xe_mmio_probe_tiles(struct xe_device *xe)
-{
-	size_t tile_mmio_size = SZ_16M, tile_mmio_ext_size = xe->info.tile_mmio_ext_size;
-	u8 id, tile_count = xe->info.tile_count;
-	struct xe_gt *gt = xe_root_mmio_gt(xe);
-	struct xe_tile *tile;
-	void __iomem *regs;
-	u32 mtcfg;
-
-	if (tile_count == 1)
-		goto add_mmio_ext;
-
-	if (!xe->info.skip_mtcfg) {
-		mtcfg = xe_mmio_read64_2x32(gt, XEHP_MTCFG_ADDR);
-		tile_count = REG_FIELD_GET(TILE_COUNT, mtcfg) + 1;
-=======
 	for_each_remote_tile(tile, xe, id)
 		tile->mmio.regs = NULL;
 }
@@ -95,22 +73,16 @@ static void mmio_multi_tile_setup(struct xe_device *xe, size_t tile_mmio_size)
 		mtcfg = xe_mmio_read64_2x32(gt, XEHP_MTCFG_ADDR);
 		tile_count = REG_FIELD_GET(TILE_COUNT, mtcfg) + 1;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		if (tile_count < xe->info.tile_count) {
 			drm_info(&xe->drm, "tile_count: %d, reduced_tile_count %d\n",
 					xe->info.tile_count, tile_count);
 			xe->info.tile_count = tile_count;
 
 			/*
-<<<<<<< HEAD
-			 * FIXME: Needs some work for standalone media, but should be impossible
-			 * with multi-tile for now.
-=======
 			 * FIXME: Needs some work for standalone media, but
 			 * should be impossible with multi-tile for now:
 			 * multi-tile platform with standalone media doesn't
 			 * exist
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			 */
 			xe->info.gt_count = xe->info.tile_count;
 		}
@@ -122,25 +94,6 @@ static void mmio_multi_tile_setup(struct xe_device *xe, size_t tile_mmio_size)
 		tile->mmio.regs = regs;
 		regs += tile_mmio_size;
 	}
-<<<<<<< HEAD
-
-add_mmio_ext:
-	/*
-	 * By design, there's a contiguous multi-tile MMIO space (16MB hard coded per tile).
-	 * When supported, there could be an additional contiguous multi-tile MMIO extension
-	 * space ON TOP of it, and hence the necessity for distinguished MMIO spaces.
-	 */
-	if (xe->info.has_mmio_ext) {
-		regs = xe->mmio.regs + tile_mmio_size * tile_count;
-
-		for_each_tile(tile, xe, id) {
-			tile->mmio_ext.size = tile_mmio_ext_size;
-			tile->mmio_ext.regs = regs;
-
-			regs += tile_mmio_ext_size;
-		}
-	}
-=======
 }
 
 /*
@@ -186,7 +139,6 @@ int xe_mmio_probe_tiles(struct xe_device *xe)
 
 	mmio_multi_tile_setup(xe, tile_mmio_size);
 	mmio_extension_setup(xe, tile_mmio_size, tile_mmio_ext_size);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	return devm_add_action_or_reset(xe->drm.dev, tiles_fini, xe);
 }
@@ -276,15 +228,11 @@ void xe_mmio_write32(struct xe_gt *gt, struct xe_reg reg, u32 val)
 	u32 addr = xe_mmio_adjusted_addr(gt, reg.addr);
 
 	trace_xe_reg_rw(gt, true, addr, val, sizeof(val));
-<<<<<<< HEAD
-	writel(val, (reg.ext ? tile->mmio_ext.regs : tile->mmio.regs) + addr);
-=======
 
 	if (!reg.vf && IS_SRIOV_VF(gt_to_xe(gt)))
 		xe_gt_sriov_vf_write32(gt, reg, val);
 	else
 		writel(val, (reg.ext ? tile->mmio_ext.regs : tile->mmio.regs) + addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 u32 xe_mmio_read32(struct xe_gt *gt, struct xe_reg reg)
@@ -387,8 +335,6 @@ u64 xe_mmio_read64_2x32(struct xe_gt *gt, struct xe_reg reg)
 	return (u64)udw << 32 | ldw;
 }
 
-<<<<<<< HEAD
-=======
 static int __xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
 			    u32 *out_val, bool atomic, bool expect_match)
 {
@@ -442,7 +388,6 @@ static int __xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 v
 	return ret;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /**
  * xe_mmio_wait32() - Wait for a register to match the desired masked value
  * @gt: MMIO target GT
@@ -465,47 +410,7 @@ static int __xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 v
 int xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
 		   u32 *out_val, bool atomic)
 {
-<<<<<<< HEAD
-	ktime_t cur = ktime_get_raw();
-	const ktime_t end = ktime_add_us(cur, timeout_us);
-	int ret = -ETIMEDOUT;
-	s64 wait = 10;
-	u32 read;
-
-	for (;;) {
-		read = xe_mmio_read32(gt, reg);
-		if ((read & mask) == val) {
-			ret = 0;
-			break;
-		}
-
-		cur = ktime_get_raw();
-		if (!ktime_before(cur, end))
-			break;
-
-		if (ktime_after(ktime_add_us(cur, wait), end))
-			wait = ktime_us_delta(end, cur);
-
-		if (atomic)
-			udelay(wait);
-		else
-			usleep_range(wait, wait << 1);
-		wait <<= 1;
-	}
-
-	if (ret != 0) {
-		read = xe_mmio_read32(gt, reg);
-		if ((read & mask) == val)
-			ret = 0;
-	}
-
-	if (out_val)
-		*out_val = read;
-
-	return ret;
-=======
 	return __xe_mmio_wait32(gt, reg, mask, val, timeout_us, out_val, atomic, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 /**
@@ -513,21 +418,6 @@ int xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 t
  * @gt: MMIO target GT
  * @reg: register to read value from
  * @mask: mask to be applied to the value read from the register
-<<<<<<< HEAD
- * @val: value to match after applying the mask
- * @timeout_us: time out after this period of time. Wait logic tries to be
- * smart, applying an exponential backoff until @timeout_us is reached.
- * @out_val: if not NULL, points where to store the last unmasked value
- * @atomic: needs to be true if calling from an atomic context
- *
- * This function polls for a masked value to change from a given value and
- * returns zero on success or -ETIMEDOUT if timed out.
- *
- * Note that @timeout_us represents the minimum amount of time to wait before
- * giving up. The actual time taken by this function can be a little more than
- * @timeout_us for different reasons, specially in non-atomic contexts. Thus,
- * it is possible that this function succeeds even after @timeout_us has passed.
-=======
  * @val: value not to be matched after applying the mask
  * @timeout_us: time out after this period of time
  * @out_val: if not NULL, points where to store the last unmasked value
@@ -535,50 +425,9 @@ int xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 t
  *
  * This function works exactly like xe_mmio_wait32() with the exception that
  * @val is expected not to be matched.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  */
 int xe_mmio_wait32_not(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
 		       u32 *out_val, bool atomic)
 {
-<<<<<<< HEAD
-	ktime_t cur = ktime_get_raw();
-	const ktime_t end = ktime_add_us(cur, timeout_us);
-	int ret = -ETIMEDOUT;
-	s64 wait = 10;
-	u32 read;
-
-	for (;;) {
-		read = xe_mmio_read32(gt, reg);
-		if ((read & mask) != val) {
-			ret = 0;
-			break;
-		}
-
-		cur = ktime_get_raw();
-		if (!ktime_before(cur, end))
-			break;
-
-		if (ktime_after(ktime_add_us(cur, wait), end))
-			wait = ktime_us_delta(end, cur);
-
-		if (atomic)
-			udelay(wait);
-		else
-			usleep_range(wait, wait << 1);
-		wait <<= 1;
-	}
-
-	if (ret != 0) {
-		read = xe_mmio_read32(gt, reg);
-		if ((read & mask) != val)
-			ret = 0;
-	}
-
-	if (out_val)
-		*out_val = read;
-
-	return ret;
-=======
 	return __xe_mmio_wait32(gt, reg, mask, val, timeout_us, out_val, atomic, false);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

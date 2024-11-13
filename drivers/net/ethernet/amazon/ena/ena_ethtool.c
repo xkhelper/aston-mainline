@@ -14,13 +14,10 @@ struct ena_stats {
 	int stat_offset;
 };
 
-<<<<<<< HEAD
-=======
 struct ena_hw_metrics {
 	char name[ETH_GSTRING_LEN];
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #define ENA_STAT_ENA_COM_ENTRY(stat) { \
 	.name = #stat, \
 	.stat_offset = offsetof(struct ena_com_stats_admin, stat) / sizeof(u64) \
@@ -48,8 +45,6 @@ struct ena_hw_metrics {
 #define ENA_STAT_ENI_ENTRY(stat) \
 	ENA_STAT_HW_ENTRY(stat, eni_stats)
 
-<<<<<<< HEAD
-=======
 #define ENA_STAT_ENA_SRD_ENTRY(stat) \
 	ENA_STAT_HW_ENTRY(stat, ena_srd_stats)
 
@@ -62,7 +57,6 @@ struct ena_hw_metrics {
 	.name = #stat \
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct ena_stats ena_stats_global_strings[] = {
 	ENA_STAT_GLOBAL_ENTRY(tx_timeout),
 	ENA_STAT_GLOBAL_ENTRY(suspend),
@@ -74,12 +68,9 @@ static const struct ena_stats ena_stats_global_strings[] = {
 	ENA_STAT_GLOBAL_ENTRY(reset_fail),
 };
 
-<<<<<<< HEAD
-=======
 /* A partial list of hw stats. Used when admin command
  * with type ENA_ADMIN_GET_STATS_TYPE_CUSTOMER_METRICS is not supported
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct ena_stats ena_stats_eni_strings[] = {
 	ENA_STAT_ENI_ENTRY(bw_in_allowance_exceeded),
 	ENA_STAT_ENI_ENTRY(bw_out_allowance_exceeded),
@@ -88,8 +79,6 @@ static const struct ena_stats ena_stats_eni_strings[] = {
 	ENA_STAT_ENI_ENTRY(linklocal_allowance_exceeded),
 };
 
-<<<<<<< HEAD
-=======
 static const struct ena_hw_metrics ena_hw_stats_strings[] = {
 	ENA_METRIC_ENI_ENTRY(bw_in_allowance_exceeded),
 	ENA_METRIC_ENI_ENTRY(bw_out_allowance_exceeded),
@@ -107,7 +96,6 @@ static const struct ena_stats ena_srd_info_strings[] = {
 	ENA_STAT_ENA_SRD_ENTRY(ena_srd_resource_utilization)
 };
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static const struct ena_stats ena_stats_tx_strings[] = {
 	ENA_STAT_TX_ENTRY(cnt),
 	ENA_STAT_TX_ENTRY(bytes),
@@ -160,13 +148,9 @@ static const struct ena_stats ena_stats_ena_com_strings[] = {
 #define ENA_STATS_ARRAY_TX		ARRAY_SIZE(ena_stats_tx_strings)
 #define ENA_STATS_ARRAY_RX		ARRAY_SIZE(ena_stats_rx_strings)
 #define ENA_STATS_ARRAY_ENA_COM		ARRAY_SIZE(ena_stats_ena_com_strings)
-<<<<<<< HEAD
-#define ENA_STATS_ARRAY_ENI(adapter)	ARRAY_SIZE(ena_stats_eni_strings)
-=======
 #define ENA_STATS_ARRAY_ENI		ARRAY_SIZE(ena_stats_eni_strings)
 #define ENA_STATS_ARRAY_ENA_SRD		ARRAY_SIZE(ena_srd_info_strings)
 #define ENA_METRICS_ARRAY_ENI		ARRAY_SIZE(ena_hw_stats_strings)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 static void ena_safe_update_stat(u64 *src, u64 *dst,
 				 struct u64_stats_sync *syncp)
@@ -179,8 +163,6 @@ static void ena_safe_update_stat(u64 *src, u64 *dst,
 	} while (u64_stats_fetch_retry(syncp, start));
 }
 
-<<<<<<< HEAD
-=======
 static void ena_metrics_stats(struct ena_adapter *adapter, u64 **data)
 {
 	struct ena_com_dev *dev = adapter->ena_dev;
@@ -232,7 +214,6 @@ static void ena_metrics_stats(struct ena_adapter *adapter, u64 **data)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ena_queue_stats(struct ena_adapter *adapter, u64 **data)
 {
 	const struct ena_stats *ena_stats;
@@ -287,11 +268,7 @@ static void ena_dev_admin_queue_stats(struct ena_adapter *adapter, u64 **data)
 
 static void ena_get_stats(struct ena_adapter *adapter,
 			  u64 *data,
-<<<<<<< HEAD
-			  bool eni_stats_needed)
-=======
 			  bool hw_stats_needed)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct ena_stats *ena_stats;
 	u64 *ptr;
@@ -305,22 +282,8 @@ static void ena_get_stats(struct ena_adapter *adapter,
 		ena_safe_update_stat(ptr, data++, &adapter->syncp);
 	}
 
-<<<<<<< HEAD
-	if (eni_stats_needed) {
-		ena_update_hw_stats(adapter);
-		for (i = 0; i < ENA_STATS_ARRAY_ENI(adapter); i++) {
-			ena_stats = &ena_stats_eni_strings[i];
-
-			ptr = (u64 *)&adapter->eni_stats +
-				ena_stats->stat_offset;
-
-			ena_safe_update_stat(ptr, data++, &adapter->syncp);
-		}
-	}
-=======
 	if (hw_stats_needed)
 		ena_metrics_stats(adapter, &data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ena_queue_stats(adapter, &data);
 	ena_dev_admin_queue_stats(adapter, &data);
@@ -331,14 +294,8 @@ static void ena_get_ethtool_stats(struct net_device *netdev,
 				  u64 *data)
 {
 	struct ena_adapter *adapter = netdev_priv(netdev);
-<<<<<<< HEAD
-	struct ena_com_dev *dev = adapter->ena_dev;
-
-	ena_get_stats(adapter, data, ena_com_get_cap(dev, ENA_ADMIN_ENI_STATS));
-=======
 
 	ena_get_stats(adapter, data, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int ena_get_sw_stats_count(struct ena_adapter *adapter)
@@ -350,11 +307,6 @@ static int ena_get_sw_stats_count(struct ena_adapter *adapter)
 
 static int ena_get_hw_stats_count(struct ena_adapter *adapter)
 {
-<<<<<<< HEAD
-	bool supported = ena_com_get_cap(adapter->ena_dev, ENA_ADMIN_ENI_STATS);
-
-	return ENA_STATS_ARRAY_ENI(adapter) * supported;
-=======
 	struct ena_com_dev *dev = adapter->ena_dev;
 	int count;
 
@@ -366,7 +318,6 @@ static int ena_get_hw_stats_count(struct ena_adapter *adapter)
 		count += ENA_STATS_ARRAY_ENI;
 
 	return count;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 int ena_get_sset_count(struct net_device *netdev, int sset)
@@ -382,8 +333,6 @@ int ena_get_sset_count(struct net_device *netdev, int sset)
 	return -EOPNOTSUPP;
 }
 
-<<<<<<< HEAD
-=======
 static void ena_metrics_stats_strings(struct ena_adapter *adapter, u8 **data)
 {
 	struct ena_com_dev *dev = adapter->ena_dev;
@@ -413,7 +362,6 @@ static void ena_metrics_stats_strings(struct ena_adapter *adapter, u8 **data)
 	}
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void ena_queue_strings(struct ena_adapter *adapter, u8 **data)
 {
 	const struct ena_stats *ena_stats;
@@ -459,11 +407,7 @@ static void ena_com_dev_strings(u8 **data)
 
 static void ena_get_strings(struct ena_adapter *adapter,
 			    u8 *data,
-<<<<<<< HEAD
-			    bool eni_stats_needed)
-=======
 			    bool hw_stats_needed)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	const struct ena_stats *ena_stats;
 	int i;
@@ -473,17 +417,8 @@ static void ena_get_strings(struct ena_adapter *adapter,
 		ethtool_puts(&data, ena_stats->name);
 	}
 
-<<<<<<< HEAD
-	if (eni_stats_needed) {
-		for (i = 0; i < ENA_STATS_ARRAY_ENI(adapter); i++) {
-			ena_stats = &ena_stats_eni_strings[i];
-			ethtool_puts(&data, ena_stats->name);
-		}
-	}
-=======
 	if (hw_stats_needed)
 		ena_metrics_stats_strings(adapter, &data);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	ena_queue_strings(adapter, &data);
 	ena_com_dev_strings(&data);
@@ -494,18 +429,10 @@ static void ena_get_ethtool_strings(struct net_device *netdev,
 				    u8 *data)
 {
 	struct ena_adapter *adapter = netdev_priv(netdev);
-<<<<<<< HEAD
-	struct ena_com_dev *dev = adapter->ena_dev;
-
-	switch (sset) {
-	case ETH_SS_STATS:
-		ena_get_strings(adapter, data, ena_com_get_cap(dev, ENA_ADMIN_ENI_STATS));
-=======
 
 	switch (sset) {
 	case ETH_SS_STATS:
 		ena_get_strings(adapter, data, true);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		break;
 	}
 }

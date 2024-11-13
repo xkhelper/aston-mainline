@@ -10,10 +10,7 @@
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/nodemask.h>
-<<<<<<< HEAD
-=======
 #include <linux/numa_memblks.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <asm/numa.h>
 
@@ -48,11 +45,7 @@ static int __init of_numa_parse_memory_nodes(void)
 	struct device_node *np = NULL;
 	struct resource rsrc;
 	u32 nid;
-<<<<<<< HEAD
-	int i, r;
-=======
 	int i, r = -EINVAL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	for_each_node_by_type(np, "memory") {
 		r = of_property_read_u32(np, "numa-node-id", &nid);
@@ -79,11 +72,7 @@ static int __init of_numa_parse_memory_nodes(void)
 		}
 	}
 
-<<<<<<< HEAD
-	return 0;
-=======
 	return r;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int __init of_numa_parse_distance_map_v1(struct device_node *map)

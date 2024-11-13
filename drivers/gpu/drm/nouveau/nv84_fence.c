@@ -35,11 +35,7 @@
 static int
 nv84_fence_emit32(struct nouveau_channel *chan, u64 virtual, u32 sequence)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = chan->chan.push;
-=======
 	struct nvif_push *push = &chan->chan.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = PUSH_WAIT(push, 8);
 	if (ret == 0) {
 		PUSH_MTHD(push, NV826F, SET_CONTEXT_DMA_SEMAPHORE, chan->vram.handle);
@@ -62,11 +58,7 @@ nv84_fence_emit32(struct nouveau_channel *chan, u64 virtual, u32 sequence)
 static int
 nv84_fence_sync32(struct nouveau_channel *chan, u64 virtual, u32 sequence)
 {
-<<<<<<< HEAD
-	struct nvif_push *push = chan->chan.push;
-=======
 	struct nvif_push *push = &chan->chan.push;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	int ret = PUSH_WAIT(push, 7);
 	if (ret == 0) {
 		PUSH_MTHD(push, NV826F, SET_CONTEXT_DMA_SEMAPHORE, chan->vram.handle);
@@ -87,11 +79,7 @@ nv84_fence_sync32(struct nouveau_channel *chan, u64 virtual, u32 sequence)
 static inline u32
 nv84_fence_chid(struct nouveau_channel *chan)
 {
-<<<<<<< HEAD
-	return chan->drm->runl[chan->runlist].chan_id_base + chan->chid;
-=======
 	return chan->cli->drm->runl[chan->runlist].chan_id_base + chan->chid;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 static int
@@ -117,22 +105,14 @@ nv84_fence_sync(struct nouveau_fence *fence,
 static u32
 nv84_fence_read(struct nouveau_channel *chan)
 {
-<<<<<<< HEAD
-	struct nv84_fence_priv *priv = chan->drm->fence;
-=======
 	struct nv84_fence_priv *priv = chan->cli->drm->fence;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	return nouveau_bo_rd32(priv->bo, nv84_fence_chid(chan) * 16/4);
 }
 
 static void
 nv84_fence_context_del(struct nouveau_channel *chan)
 {
-<<<<<<< HEAD
-	struct nv84_fence_priv *priv = chan->drm->fence;
-=======
 	struct nv84_fence_priv *priv = chan->cli->drm->fence;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nv84_fence_chan *fctx = chan->fence;
 
 	nouveau_bo_wr32(priv->bo, nv84_fence_chid(chan) * 16 / 4, fctx->base.sequence);
@@ -147,11 +127,7 @@ nv84_fence_context_del(struct nouveau_channel *chan)
 int
 nv84_fence_context_new(struct nouveau_channel *chan)
 {
-<<<<<<< HEAD
-	struct nv84_fence_priv *priv = chan->drm->fence;
-=======
 	struct nv84_fence_priv *priv = chan->cli->drm->fence;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct nv84_fence_chan *fctx;
 	int ret;
 
@@ -212,11 +188,7 @@ nv84_fence_destroy(struct nouveau_drm *drm)
 	nouveau_bo_unmap(priv->bo);
 	if (priv->bo)
 		nouveau_bo_unpin(priv->bo);
-<<<<<<< HEAD
-	nouveau_bo_ref(NULL, &priv->bo);
-=======
 	nouveau_bo_fini(priv->bo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	drm->fence = NULL;
 	kfree(priv);
 }
@@ -260,11 +232,7 @@ nv84_fence_create(struct nouveau_drm *drm)
 				nouveau_bo_unpin(priv->bo);
 		}
 		if (ret)
-<<<<<<< HEAD
-			nouveau_bo_ref(NULL, &priv->bo);
-=======
 			nouveau_bo_fini(priv->bo);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	}
 
 	if (ret)

@@ -140,14 +140,11 @@ int main(void)
 {
 	FILE *fp = fopen("ni_values.py", "w");
 
-<<<<<<< HEAD
-=======
 	if (fp == NULL) {
 		fprintf(stderr, "Could not open file!");
 		return -1;
 	}
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	/* write route register values */
 	fprintf(fp, "ni_route_values = {\n");
 	for (int i = 0; ni_all_route_values[i]; ++i)

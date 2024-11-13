@@ -1475,11 +1475,7 @@ meson_nfc_nand_chip_init(struct device *dev,
 	return 0;
 }
 
-<<<<<<< HEAD
-static void meson_nfc_nand_chip_cleanup(struct meson_nfc *nfc)
-=======
 static void meson_nfc_nand_chips_cleanup(struct meson_nfc *nfc)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct meson_nfc_nand_chip *meson_chip;
 	struct mtd_info *mtd;
@@ -1499,23 +1495,12 @@ static int meson_nfc_nand_chips_init(struct device *dev,
 				     struct meson_nfc *nfc)
 {
 	struct device_node *np = dev->of_node;
-<<<<<<< HEAD
-	struct device_node *nand_np;
-	int ret;
-
-	for_each_child_of_node(np, nand_np) {
-		ret = meson_nfc_nand_chip_init(dev, nfc, nand_np);
-		if (ret) {
-			meson_nfc_nand_chip_cleanup(nfc);
-			of_node_put(nand_np);
-=======
 	int ret;
 
 	for_each_child_of_node_scoped(np, nand_np) {
 		ret = meson_nfc_nand_chip_init(dev, nfc, nand_np);
 		if (ret) {
 			meson_nfc_nand_chips_cleanup(nfc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			return ret;
 		}
 	}
@@ -1629,11 +1614,7 @@ static void meson_nfc_remove(struct platform_device *pdev)
 {
 	struct meson_nfc *nfc = platform_get_drvdata(pdev);
 
-<<<<<<< HEAD
-	meson_nfc_nand_chip_cleanup(nfc);
-=======
 	meson_nfc_nand_chips_cleanup(nfc);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	meson_nfc_disable_clk(nfc);
 }

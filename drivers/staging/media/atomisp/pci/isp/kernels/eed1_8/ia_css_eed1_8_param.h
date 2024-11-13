@@ -94,13 +94,8 @@
 
 struct eed1_8_vmem_params {
 	VMEM_ARRAY(e_dew_enh_x, ISP_VEC_NELEMS);
-<<<<<<< HEAD
-	VMEM_ARRAY(e_dew_enh_y, ISP_VEC_NELEMS);
-	VMEM_ARRAY(e_dew_enh_a, ISP_VEC_NELEMS);
-=======
 	SVMEM_ARRAY(e_dew_enh_y, ISP_VEC_NELEMS);
 	SVMEM_ARRAY(e_dew_enh_a, ISP_VEC_NELEMS);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	VMEM_ARRAY(e_dew_enh_f, ISP_VEC_NELEMS);
 	VMEM_ARRAY(chgrinv_x, ISP_VEC_NELEMS);
 	VMEM_ARRAY(chgrinv_a, ISP_VEC_NELEMS);

@@ -6,10 +6,7 @@ mlx5_ib-y := ah.o \
 	     cong.o \
 	     counters.o \
 	     cq.o \
-<<<<<<< HEAD
-=======
 	     data_direct.o \
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	     dm.o \
 	     doorbell.o \
 	     gsi.o \

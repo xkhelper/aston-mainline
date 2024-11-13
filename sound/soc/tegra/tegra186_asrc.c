@@ -1034,11 +1034,7 @@ static struct platform_driver tegra186_asrc_driver = {
 		.pm = &tegra186_asrc_pm_ops,
 	},
 	.probe = tegra186_asrc_platform_probe,
-<<<<<<< HEAD
-	.remove_new = tegra186_asrc_platform_remove,
-=======
 	.remove = tegra186_asrc_platform_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 module_platform_driver(tegra186_asrc_driver)
 

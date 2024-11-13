@@ -55,12 +55,8 @@ asmlinkage long xtensa_fadvise64_64(int fd, int advice,
 
 #ifdef CONFIG_MMU
 unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
-<<<<<<< HEAD
-		unsigned long len, unsigned long pgoff, unsigned long flags)
-=======
 		unsigned long len, unsigned long pgoff, unsigned long flags,
 		vm_flags_t vm_flags)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 {
 	struct vm_area_struct *vmm;
 	struct vma_iterator vmi;

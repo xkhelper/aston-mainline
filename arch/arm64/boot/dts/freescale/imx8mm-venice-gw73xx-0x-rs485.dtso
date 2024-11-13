@@ -23,22 +23,14 @@
 };
 
 &gpio4 {
-<<<<<<< HEAD
-	rs485_en {
-=======
 	rs485-en-hog {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gpio-hog;
 		gpios = <0 GPIO_ACTIVE_HIGH>;
 		output-high;
 		line-name = "rs485_en";
 	};
 
-<<<<<<< HEAD
-	rs485_hd {
-=======
 	rs485-hd-hog {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		gpio-hog;
 		gpios = <2 GPIO_ACTIVE_HIGH>;
 		output-high;

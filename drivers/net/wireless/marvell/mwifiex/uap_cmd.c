@@ -46,33 +46,6 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
 
 	bss_config->key_mgmt_operation |= KEY_MGMT_ON_HOST;
 
-<<<<<<< HEAD
-	for (i = 0; i < params->crypto.n_akm_suites; i++) {
-		switch (params->crypto.akm_suites[i]) {
-		case WLAN_AKM_SUITE_8021X:
-			if (params->crypto.wpa_versions &
-			    NL80211_WPA_VERSION_1) {
-				bss_config->protocol = PROTOCOL_WPA;
-				bss_config->key_mgmt = KEY_MGMT_EAP;
-			}
-			if (params->crypto.wpa_versions &
-			    NL80211_WPA_VERSION_2) {
-				bss_config->protocol |= PROTOCOL_WPA2;
-				bss_config->key_mgmt = KEY_MGMT_EAP;
-			}
-			break;
-		case WLAN_AKM_SUITE_PSK:
-			if (params->crypto.wpa_versions &
-			    NL80211_WPA_VERSION_1) {
-				bss_config->protocol = PROTOCOL_WPA;
-				bss_config->key_mgmt = KEY_MGMT_PSK;
-			}
-			if (params->crypto.wpa_versions &
-			    NL80211_WPA_VERSION_2) {
-				bss_config->protocol |= PROTOCOL_WPA2;
-				bss_config->key_mgmt = KEY_MGMT_PSK;
-			}
-=======
 	bss_config->protocol = 0;
 	if (params->crypto.wpa_versions & NL80211_WPA_VERSION_1)
 		bss_config->protocol |= PROTOCOL_WPA;
@@ -93,7 +66,6 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
 			break;
 		case WLAN_AKM_SUITE_SAE:
 			bss_config->key_mgmt |= KEY_MGMT_SAE;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			break;
 		default:
 			break;
@@ -774,8 +746,6 @@ mwifiex_cmd_uap_sys_config(struct host_cmd_ds_command *cmd, u16 cmd_action,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /* This function prepares AP start up command with or without host MLME
  */
 static void mwifiex_cmd_uap_bss_start(struct mwifiex_private *priv,
@@ -798,7 +768,6 @@ static void mwifiex_cmd_uap_bss_start(struct mwifiex_private *priv,
 	cmd->size = cpu_to_le16(size);
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* This function prepares AP specific deauth command with mac supplied in
  * function parameter.
  */
@@ -816,8 +785,6 @@ static int mwifiex_cmd_uap_sta_deauth(struct mwifiex_private *priv,
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 /* This function prepares AP specific add station command.
  */
 static int mwifiex_cmd_uap_add_station(struct mwifiex_private *priv,
@@ -956,7 +923,6 @@ static int mwifiex_cmd_uap_add_station(struct mwifiex_private *priv,
 	return 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /* This function prepares the AP specific commands before sending them
  * to the firmware.
  * This is a generic function which calls specific command preparation
@@ -974,11 +940,8 @@ int mwifiex_uap_prepare_cmd(struct mwifiex_private *priv, u16 cmd_no,
 			return -1;
 		break;
 	case HostCmd_CMD_UAP_BSS_START:
-<<<<<<< HEAD
-=======
 		mwifiex_cmd_uap_bss_start(priv, cmd);
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case HostCmd_CMD_UAP_BSS_STOP:
 	case HOST_CMD_APCMD_SYS_RESET:
 	case HOST_CMD_APCMD_STA_LIST:
@@ -994,14 +957,11 @@ int mwifiex_uap_prepare_cmd(struct mwifiex_private *priv, u16 cmd_no,
 							  data_buf))
 			return -1;
 		break;
-<<<<<<< HEAD
-=======
 	case HostCmd_CMD_ADD_NEW_STATION:
 		if (mwifiex_cmd_uap_add_station(priv, cmd, cmd_action,
 						data_buf))
 			return -1;
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	default:
 		mwifiex_dbg(priv->adapter, ERROR,
 			    "PREP_CMD: unknown cmd %#x\n", cmd_no);

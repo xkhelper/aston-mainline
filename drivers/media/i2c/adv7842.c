@@ -3617,11 +3617,7 @@ static void adv7842_remove(struct i2c_client *client)
 /* ----------------------------------------------------------------------- */
 
 static const struct i2c_device_id adv7842_id[] = {
-<<<<<<< HEAD
-	{ "adv7842", 0 },
-=======
 	{ "adv7842" },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, adv7842_id);

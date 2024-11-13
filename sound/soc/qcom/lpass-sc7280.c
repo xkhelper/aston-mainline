@@ -445,11 +445,7 @@ static struct platform_driver sc7280_lpass_cpu_platform_driver = {
 		.pm = &sc7280_lpass_pm_ops,
 	},
 	.probe = asoc_qcom_lpass_cpu_platform_probe,
-<<<<<<< HEAD
-	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
-=======
 	.remove = asoc_qcom_lpass_cpu_platform_remove,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	.shutdown = asoc_qcom_lpass_cpu_platform_shutdown,
 };
 

@@ -89,10 +89,7 @@ static int perf_session__list_build_ids(bool force, bool with_hits)
 		.mode  = PERF_DATA_MODE_READ,
 		.force = force,
 	};
-<<<<<<< HEAD
-=======
 	struct perf_tool build_id__mark_dso_hit_ops;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	symbol__elf_init();
 	/*
@@ -101,8 +98,6 @@ static int perf_session__list_build_ids(bool force, bool with_hits)
 	if (filename__fprintf_build_id(input_name, stdout) > 0)
 		goto out;
 
-<<<<<<< HEAD
-=======
 	perf_tool__init(&build_id__mark_dso_hit_ops, /*ordered_events=*/true);
 	build_id__mark_dso_hit_ops.sample	= build_id__mark_dso_hit;
 	build_id__mark_dso_hit_ops.mmap		= perf_event__process_mmap;
@@ -112,7 +107,6 @@ static int perf_session__list_build_ids(bool force, bool with_hits)
 	build_id__mark_dso_hit_ops.attr		= perf_event__process_attr;
 	build_id__mark_dso_hit_ops.build_id	= perf_event__process_build_id;
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	session = perf_session__new(&data, &build_id__mark_dso_hit_ops);
 	if (IS_ERR(session))
 		return PTR_ERR(session);

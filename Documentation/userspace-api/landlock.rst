@@ -8,11 +8,7 @@ Landlock: unprivileged access control
 =====================================
 
 :Author: Mickaël Salaün
-<<<<<<< HEAD
-:Date: July 2024
-=======
 :Date: September 2024
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 The goal of Landlock is to enable to restrict ambient rights (e.g. global
 filesystem or network access) for a set of processes.  Because Landlock
@@ -85,12 +81,9 @@ to be explicit about the denied-by-default access rights.
         .handled_access_net =
             LANDLOCK_ACCESS_NET_BIND_TCP |
             LANDLOCK_ACCESS_NET_CONNECT_TCP,
-<<<<<<< HEAD
-=======
         .scoped =
             LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET |
             LANDLOCK_SCOPE_SIGNAL,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     };
 
 Because we may not know on which kernel version an application will be
@@ -129,14 +122,11 @@ version, and only use the available subset of access rights:
     case 4:
         /* Removes LANDLOCK_ACCESS_FS_IOCTL_DEV for ABI < 5 */
         ruleset_attr.handled_access_fs &= ~LANDLOCK_ACCESS_FS_IOCTL_DEV;
-<<<<<<< HEAD
-=======
         __attribute__((fallthrough));
     case 5:
         /* Removes LANDLOCK_SCOPE_* for ABI < 6 */
         ruleset_attr.scoped &= ~(LANDLOCK_SCOPE_ABSTRACT_UNIX_SOCKET |
                                  LANDLOCK_SCOPE_SIGNAL);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
     }
 
 This enables to create an inclusive ruleset that will contain our rules.
@@ -324,8 +314,6 @@ To be allowed to use :manpage:`ptrace(2)` and related syscalls on a target
 process, a sandboxed process should have a subset of the target process rules,
 which means the tracee must be in a sub-domain of the tracer.
 
-<<<<<<< HEAD
-=======
 IPC scoping
 -----------
 
@@ -358,7 +346,6 @@ domain.
 IPC scoping does not support exceptions, so if a domain is scoped, no rules can
 be added to allow access to resources or processes outside of the scope.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 Truncating files
 ----------------
 
@@ -457,11 +444,7 @@ Access rights
 -------------
 
 .. kernel-doc:: include/uapi/linux/landlock.h
-<<<<<<< HEAD
-    :identifiers: fs_access net_access
-=======
     :identifiers: fs_access net_access scope
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 Creating a new ruleset
 ----------------------
@@ -598,8 +581,6 @@ earlier ABI.
 Starting with the Landlock ABI version 5, it is possible to restrict the use of
 :manpage:`ioctl(2)` using the new ``LANDLOCK_ACCESS_FS_IOCTL_DEV`` right.
 
-<<<<<<< HEAD
-=======
 Abstract UNIX socket scoping (ABI < 6)
 --------------------------------------
 
@@ -614,7 +595,6 @@ Starting with the Landlock ABI version 6, it is possible to restrict
 :manpage:`signal(7)` sending by setting ``LANDLOCK_SCOPE_SIGNAL`` to the
 ``scoped`` ruleset attribute.
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .. _kernel_support:
 
 Kernel support

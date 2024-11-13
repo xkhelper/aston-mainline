@@ -17,13 +17,10 @@
 struct f_serial_opts {
 	struct usb_function_instance func_inst;
 	u8 port_num;
-<<<<<<< HEAD
-=======
 	u8 protocol;
 
 	struct mutex lock; /* protect instances */
 	int instances;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*

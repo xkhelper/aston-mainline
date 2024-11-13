@@ -9,11 +9,7 @@
 #include <linux/io.h>
 #include <linux/iopoll.h>
 
-<<<<<<< HEAD
-#include <asm/unaligned.h>
-=======
 #include <linux/unaligned.h>
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 #include <drm/display/drm_hdcp_helper.h>
 

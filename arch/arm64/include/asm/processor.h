@@ -184,10 +184,7 @@ struct thread_struct {
 	u64			sctlr_user;
 	u64			svcr;
 	u64			tpidr2_el0;
-<<<<<<< HEAD
-=======
 	u64			por_el0;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static inline unsigned int thread_get_vl(struct thread_struct *thread,
@@ -406,13 +403,10 @@ long get_tagged_addr_ctrl(struct task_struct *task);
 #define GET_TAGGED_ADDR_CTRL()		get_tagged_addr_ctrl(current)
 #endif
 
-<<<<<<< HEAD
-=======
 int get_tsc_mode(unsigned long adr);
 int set_tsc_mode(unsigned int val);
 #define GET_TSC_CTL(adr)        get_tsc_mode((adr))
 #define SET_TSC_CTL(val)        set_tsc_mode((val))
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 #endif /* __ASSEMBLY__ */
 #endif /* __ASM_PROCESSOR_H */

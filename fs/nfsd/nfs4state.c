@@ -400,10 +400,7 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
 	.prepare	= nfsd4_cb_notify_lock_prepare,
 	.done		= nfsd4_cb_notify_lock_done,
 	.release	= nfsd4_cb_notify_lock_release,
-<<<<<<< HEAD
-=======
 	.opcode		= OP_CB_NOTIFY_LOCK,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 /*
@@ -1081,12 +1078,8 @@ static void nfs4_free_deleg(struct nfs4_stid *stid)
  * When a delegation is recalled, the filehandle is stored in the "new"
  * filter.
  * Every 30 seconds we swap the filters and clear the "new" one,
-<<<<<<< HEAD
- * unless both are empty of course.
-=======
  * unless both are empty of course.  This results in delegations for a
  * given filehandle being blocked for between 30 and 60 seconds.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  *
  * Each filter is 256 bits.  We hash the filehandle to 32bit and use the
  * low 3 bytes as hash-table indices.
@@ -1115,15 +1108,9 @@ static int delegation_blocked(struct knfsd_fh *fh)
 		if (ktime_get_seconds() - bd->swap_time > 30) {
 			bd->entries -= bd->old_entries;
 			bd->old_entries = bd->entries;
-<<<<<<< HEAD
-			memset(bd->set[bd->new], 0,
-			       sizeof(bd->set[0]));
-			bd->new = 1-bd->new;
-=======
 			bd->new = 1-bd->new;
 			memset(bd->set[bd->new], 0,
 			       sizeof(bd->set[0]));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			bd->swap_time = ktime_get_seconds();
 		}
 		spin_unlock(&blocked_delegations_lock);
@@ -1372,8 +1359,6 @@ static void destroy_delegation(struct nfs4_delegation *dp)
 		destroy_unhashed_deleg(dp);
 }
 
-<<<<<<< HEAD
-=======
 /**
  * revoke_delegation - perform nfs4 delegation structure cleanup
  * @dp: pointer to the delegation
@@ -1396,24 +1381,11 @@ static void destroy_delegation(struct nfs4_delegation *dp)
  * for removing it from the list. Inspection of where the delegation state
  * in the revocation process is protected by the clp->cl_lock.
  */
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 static void revoke_delegation(struct nfs4_delegation *dp)
 {
 	struct nfs4_client *clp = dp->dl_stid.sc_client;
 
 	WARN_ON(!list_empty(&dp->dl_recall_lru));
-<<<<<<< HEAD
-
-	trace_nfsd_stid_revoke(&dp->dl_stid);
-
-	if (dp->dl_stid.sc_status &
-	    (SC_STATUS_REVOKED | SC_STATUS_ADMIN_REVOKED)) {
-		spin_lock(&clp->cl_lock);
-		refcount_inc(&dp->dl_stid.sc_count);
-		list_add(&dp->dl_recall_lru, &clp->cl_revoked);
-		spin_unlock(&clp->cl_lock);
-	}
-=======
 	WARN_ON_ONCE(!(dp->dl_stid.sc_status &
 		     (SC_STATUS_REVOKED | SC_STATUS_ADMIN_REVOKED)));
 
@@ -1428,7 +1400,6 @@ static void revoke_delegation(struct nfs4_delegation *dp)
 	dp->dl_stid.sc_status |= SC_STATUS_FREEABLE;
 out:
 	spin_unlock(&clp->cl_lock);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	destroy_unhashed_deleg(dp);
 }
 
@@ -1720,13 +1691,7 @@ static void release_openowner(struct nfs4_openowner *oo)
 {
 	struct nfs4_ol_stateid *stp;
 	struct nfs4_client *clp = oo->oo_owner.so_client;
-<<<<<<< HEAD
-	struct list_head reaplist;
-
-	INIT_LIST_HEAD(&reaplist);
-=======
 	LIST_HEAD(reaplist);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock(&clp->cl_lock);
 	unhash_openowner_locked(oo);
@@ -1841,10 +1806,7 @@ void nfsd4_revoke_states(struct net *net, struct super_block *sb)
 					mutex_unlock(&stp->st_mutex);
 					break;
 				case SC_TYPE_DELEG:
-<<<<<<< HEAD
-=======
 					refcount_inc(&stid->sc_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 					dp = delegstateid(stid);
 					spin_lock(&state_lock);
 					if (!unhash_delegation_locked(
@@ -2434,14 +2396,8 @@ __destroy_client(struct nfs4_client *clp)
 	int i;
 	struct nfs4_openowner *oo;
 	struct nfs4_delegation *dp;
-<<<<<<< HEAD
-	struct list_head reaplist;
-
-	INIT_LIST_HEAD(&reaplist);
-=======
 	LIST_HEAD(reaplist);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock(&state_lock);
 	while (!list_empty(&clp->cl_delegations)) {
 		dp = list_entry(clp->cl_delegations.next, struct nfs4_delegation, dl_perclnt);
@@ -2762,11 +2718,7 @@ static int client_info_show(struct seq_file *m, void *v)
 			clp->cl_nii_time.tv_sec, clp->cl_nii_time.tv_nsec);
 	}
 	seq_printf(m, "callback state: %s\n", cb_state2str(clp->cl_cb_state));
-<<<<<<< HEAD
-	seq_printf(m, "callback address: %pISpc\n", &clp->cl_cb_conn.cb_addr);
-=======
 	seq_printf(m, "callback address: \"%pISpc\"\n", &clp->cl_cb_conn.cb_addr);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	seq_printf(m, "admin-revoked states: %d\n",
 		   atomic_read(&clp->cl_admin_revoked));
 	drop_client(clp);
@@ -3133,14 +3085,10 @@ nfsd4_cb_getattr_done(struct nfsd4_callback *cb, struct rpc_task *task)
 {
 	struct nfs4_cb_fattr *ncf =
 			container_of(cb, struct nfs4_cb_fattr, ncf_getattr);
-<<<<<<< HEAD
-
-=======
 	struct nfs4_delegation *dp =
 			container_of(ncf, struct nfs4_delegation, dl_cb_fattr);
 
 	trace_nfsd_cb_getattr_done(&dp->dl_stid.sc_stateid, task);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	ncf->ncf_cb_status = task->tk_status;
 	switch (task->tk_status) {
 	case -NFS4ERR_DELAY:
@@ -3159,31 +3107,20 @@ nfsd4_cb_getattr_release(struct nfsd4_callback *cb)
 	struct nfs4_delegation *dp =
 			container_of(ncf, struct nfs4_delegation, dl_cb_fattr);
 
-<<<<<<< HEAD
-	clear_bit(CB_GETATTR_BUSY, &ncf->ncf_cb_flags);
-	wake_up_bit(&ncf->ncf_cb_flags, CB_GETATTR_BUSY);
-=======
 	clear_and_wake_up_bit(CB_GETATTR_BUSY, &ncf->ncf_cb_flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	nfs4_put_stid(&dp->dl_stid);
 }
 
 static const struct nfsd4_callback_ops nfsd4_cb_recall_any_ops = {
 	.done		= nfsd4_cb_recall_any_done,
 	.release	= nfsd4_cb_recall_any_release,
-<<<<<<< HEAD
-=======
 	.opcode		= OP_CB_RECALL_ANY,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static const struct nfsd4_callback_ops nfsd4_cb_getattr_ops = {
 	.done		= nfsd4_cb_getattr_done,
 	.release	= nfsd4_cb_getattr_release,
-<<<<<<< HEAD
-=======
 	.opcode		= OP_CB_GETATTR,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void nfs4_cb_getattr(struct nfs4_cb_fattr *ncf)
@@ -4797,10 +4734,7 @@ void nfsd4_cstate_clear_replay(struct nfsd4_compound_state *cstate)
 	if (so != NULL) {
 		cstate->replay_owner = NULL;
 		atomic_set(&so->so_replay.rp_locked, RP_UNLOCKED);
-<<<<<<< HEAD
-=======
 		smp_mb__after_atomic();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		wake_up_var(&so->so_replay.rp_locked);
 		nfs4_put_stateowner(so);
 	}
@@ -5101,10 +5035,7 @@ move_to_close_lru(struct nfs4_ol_stateid *s, struct net *net)
 	 * so tell them to stop waiting.
 	 */
 	atomic_set(&oo->oo_owner.so_replay.rp_locked, RP_UNHASHED);
-<<<<<<< HEAD
-=======
 	smp_mb__after_atomic();
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	wake_up_var(&oo->oo_owner.so_replay.rp_locked);
 	wait_event(close_wq, refcount_read(&s->st_stid.sc_count) == 2);
 
@@ -5319,10 +5250,7 @@ static const struct nfsd4_callback_ops nfsd4_cb_recall_ops = {
 	.prepare	= nfsd4_cb_recall_prepare,
 	.done		= nfsd4_cb_recall_done,
 	.release	= nfsd4_cb_recall_release,
-<<<<<<< HEAD
-=======
 	.opcode		= OP_CB_RECALL,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 };
 
 static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
@@ -5382,16 +5310,8 @@ static bool nfsd_breaker_owns_lease(struct file_lease *fl)
 	struct svc_rqst *rqst;
 	struct nfs4_client *clp;
 
-<<<<<<< HEAD
-	if (!i_am_nfsd())
-		return false;
-	rqst = kthread_data(current);
-	/* Note rq_prog == NFS_ACL_PROGRAM is also possible: */
-	if (rqst->rq_prog != NFS_PROGRAM || rqst->rq_vers < 4)
-=======
 	rqst = nfsd_current_rqst();
 	if (!nfsd_v4client(rqst))
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		return false;
 	clp = *(rqst->rq_lease_breaker);
 	return dl->dl_stid.sc_client == clp;
@@ -5969,11 +5889,7 @@ nfs4_set_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
 
 	/*
 	 * Now that the deleg is set, check again to ensure that nothing
-<<<<<<< HEAD
-	 * raced in and changed the mode while we weren't lookng.
-=======
 	 * raced in and changed the mode while we weren't looking.
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	 */
 	status = nfsd4_verify_setuid_write(open, fp->fi_deleg_file);
 	if (status)
@@ -6026,8 +5942,6 @@ static void nfsd4_open_deleg_none_ext(struct nfsd4_open *open, int status)
 	}
 }
 
-<<<<<<< HEAD
-=======
 static bool
 nfs4_delegation_stat(struct nfs4_delegation *dp, struct svc_fh *currentfh,
 		     struct kstat *stat)
@@ -6050,7 +5964,6 @@ nfs4_delegation_stat(struct nfs4_delegation *dp, struct svc_fh *currentfh,
 	return rc == 0;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /*
  * The Linux NFS server does not offer write delegations to NFSv4.0
  * clients in order to avoid conflicts between write delegations and
@@ -6086,10 +5999,6 @@ nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
 	int cb_up;
 	int status = 0;
 	struct kstat stat;
-<<<<<<< HEAD
-	struct path path;
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	cb_up = nfsd4_cb_channel_good(oo->oo_owner.so_client);
 	open->op_recall = false;
@@ -6125,32 +6034,16 @@ nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
 	memcpy(&open->op_delegate_stateid, &dp->dl_stid.sc_stateid, sizeof(dp->dl_stid.sc_stateid));
 
 	if (open->op_share_access & NFS4_SHARE_ACCESS_WRITE) {
-<<<<<<< HEAD
-		open->op_delegate_type = NFS4_OPEN_DELEGATE_WRITE;
-		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
-		path.mnt = currentfh->fh_export->ex_path.mnt;
-		path.dentry = currentfh->fh_dentry;
-		if (vfs_getattr(&path, &stat,
-				(STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
-				AT_STATX_SYNC_AS_STAT)) {
-=======
 		if (!nfs4_delegation_stat(dp, currentfh, &stat)) {
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			nfs4_put_stid(&dp->dl_stid);
 			destroy_delegation(dp);
 			goto out_no_deleg;
 		}
-<<<<<<< HEAD
-		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
-		dp->dl_cb_fattr.ncf_initial_cinfo =
-			nfsd4_change_attribute(&stat, d_inode(currentfh->fh_dentry));
-=======
 		open->op_delegate_type = NFS4_OPEN_DELEGATE_WRITE;
 		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
 		dp->dl_cb_fattr.ncf_initial_cinfo =
 			nfsd4_change_attribute(&stat, d_inode(currentfh->fh_dentry));
 		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	} else {
 		open->op_delegate_type = NFS4_OPEN_DELEGATE_READ;
 		trace_nfsd_deleg_read(&dp->dl_stid.sc_stateid);
@@ -6425,10 +6318,6 @@ void nfsd4_ssc_init_umount_work(struct nfsd_net *nn)
 	INIT_LIST_HEAD(&nn->nfsd_ssc_mount_list);
 	init_waitqueue_head(&nn->nfsd_ssc_waitq);
 }
-<<<<<<< HEAD
-EXPORT_SYMBOL_GPL(nfsd4_ssc_init_umount_work);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /*
  * This is called when nfsd is being shutdown, after all inter_ssc
@@ -6683,10 +6572,7 @@ nfs4_laundromat(struct nfsd_net *nn)
 		dp = list_entry (pos, struct nfs4_delegation, dl_recall_lru);
 		if (!state_expired(&lt, dp->dl_time))
 			break;
-<<<<<<< HEAD
-=======
 		refcount_inc(&dp->dl_stid.sc_count);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		unhash_delegation_locked(dp, SC_STATUS_REVOKED);
 		list_add(&dp->dl_recall_lru, &reaplist);
 	}
@@ -6780,14 +6666,8 @@ deleg_reaper(struct nfsd_net *nn)
 {
 	struct list_head *pos, *next;
 	struct nfs4_client *clp;
-<<<<<<< HEAD
-	struct list_head cblist;
-
-	INIT_LIST_HEAD(&cblist);
-=======
 	LIST_HEAD(cblist);
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	spin_lock(&nn->client_lock);
 	list_for_each_safe(pos, next, &nn->client_lru) {
 		clp = list_entry(pos, struct nfs4_client, cl_lru);
@@ -6813,10 +6693,6 @@ deleg_reaper(struct nfsd_net *nn)
 					cl_ra_cblist);
 		list_del_init(&clp->cl_ra_cblist);
 		clp->cl_ra->ra_keep = 0;
-<<<<<<< HEAD
-		clp->cl_ra->ra_bmval[0] = BIT(RCA4_TYPE_MASK_RDATA_DLG);
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		clp->cl_ra->ra_bmval[0] = BIT(RCA4_TYPE_MASK_RDATA_DLG) |
 						BIT(RCA4_TYPE_MASK_WDATA_DLG);
 		trace_nfsd_cb_recall_any(clp->cl_ra);
@@ -7061,12 +6937,8 @@ nfs4_check_file(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfs4_stid *s,
 
 	nf = nfs4_find_file(s, flags);
 	if (nf) {
-<<<<<<< HEAD
-		status = nfsd_permission(rqstp, fhp->fh_export, fhp->fh_dentry,
-=======
 		status = nfsd_permission(&rqstp->rq_cred,
 					 fhp->fh_export, fhp->fh_dentry,
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 				acc | NFSD_MAY_OWNER_OVERRIDE);
 		if (status) {
 			nfsd_file_put(nf);
@@ -7197,15 +7069,7 @@ nfs4_preprocess_stateid_op(struct svc_rqst *rqstp,
 		*nfp = NULL;
 
 	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid)) {
-<<<<<<< HEAD
-		if (cstid)
-			status = nfserr_bad_stateid;
-		else
-			status = check_special_stateids(net, fhp, stateid,
-									flags);
-=======
 		status = check_special_stateids(net, fhp, stateid, flags);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 		goto done;
 	}
 
@@ -7318,18 +7182,12 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 	switch (s->sc_type) {
 	case SC_TYPE_DELEG:
 		if (s->sc_status & SC_STATUS_REVOKED) {
-<<<<<<< HEAD
-			spin_unlock(&s->sc_lock);
-			dp = delegstateid(s);
-			list_del_init(&dp->dl_recall_lru);
-=======
 			s->sc_status |= SC_STATUS_CLOSED;
 			spin_unlock(&s->sc_lock);
 			dp = delegstateid(s);
 			if (s->sc_status & SC_STATUS_FREEABLE)
 				list_del_init(&dp->dl_recall_lru);
 			s->sc_status |= SC_STATUS_FREED;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 			spin_unlock(&cl->cl_lock);
 			nfs4_put_stid(s);
 			ret = nfs_ok;
@@ -7659,13 +7517,9 @@ nfsd4_delegreturn(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 	if ((status = fh_verify(rqstp, &cstate->current_fh, S_IFREG, 0)))
 		return status;
 
-<<<<<<< HEAD
-	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG, 0, &s, nn);
-=======
 	status = nfsd4_lookup_stateid(cstate, stateid, SC_TYPE_DELEG,
 				      SC_STATUS_REVOKED | SC_STATUS_FREEABLE,
 				      &s, nn);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	if (status)
 		goto out;
 	dp = delegstateid(s);
@@ -7674,14 +7528,9 @@ nfsd4_delegreturn(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
 		goto put_stateid;
 
 	trace_nfsd_deleg_return(stateid);
-<<<<<<< HEAD
-	wake_up_var(d_inode(cstate->current_fh.fh_dentry));
-	destroy_delegation(dp);
-=======
 	destroy_delegation(dp);
 	smp_mb__after_atomic();
 	wake_up_var(d_inode(cstate->current_fh.fh_dentry));
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 put_stateid:
 	nfs4_put_stid(&dp->dl_stid);
 out:
@@ -8537,11 +8386,7 @@ out:
  * @cstate: NFSv4 COMPOUND state
  * @u: RELEASE_LOCKOWNER arguments
  *
-<<<<<<< HEAD
- * Check if theree are any locks still held and if not - free the lockowner
-=======
  * Check if there are any locks still held and if not, free the lockowner
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * and any lock state that is owned.
  *
  * Return values:
@@ -8760,10 +8605,7 @@ static int nfs4_state_create_net(struct net *net)
 	spin_lock_init(&nn->client_lock);
 	spin_lock_init(&nn->s2s_cp_lock);
 	idr_init(&nn->s2s_cp_stateids);
-<<<<<<< HEAD
-=======
 	atomic_set(&nn->pending_async_copies, 0);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 	spin_lock_init(&nn->blocked_locks_lock);
 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
@@ -8874,11 +8716,7 @@ nfs4_state_shutdown_net(struct net *net)
 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
 
 	shrinker_free(nn->nfsd_client_shrinker);
-<<<<<<< HEAD
-	cancel_work(&nn->nfsd_shrinker_work);
-=======
 	cancel_work_sync(&nn->nfsd_shrinker_work);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	cancel_delayed_work_sync(&nn->laundromat_work);
 	locks_end_grace(&nn->nfsd4_manager);
 
@@ -9047,10 +8885,7 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
 	__be32 status;
 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
 	struct file_lock_context *ctx;
-<<<<<<< HEAD
-=======
 	struct nfs4_delegation *dp = NULL;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	struct file_lease *fl;
 	struct iattr attrs;
 	struct nfs4_cb_fattr *ncf;
@@ -9060,88 +8895,6 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
 	ctx = locks_inode_context(inode);
 	if (!ctx)
 		return 0;
-<<<<<<< HEAD
-	spin_lock(&ctx->flc_lock);
-	for_each_file_lock(fl, &ctx->flc_lease) {
-		unsigned char type = fl->c.flc_type;
-
-		if (fl->c.flc_flags == FL_LAYOUT)
-			continue;
-		if (fl->fl_lmops != &nfsd_lease_mng_ops) {
-			/*
-			 * non-nfs lease, if it's a lease with F_RDLCK then
-			 * we are done; there isn't any write delegation
-			 * on this inode
-			 */
-			if (type == F_RDLCK)
-				break;
-
-			nfsd_stats_wdeleg_getattr_inc(nn);
-			spin_unlock(&ctx->flc_lock);
-
-			status = nfserrno(nfsd_open_break_lease(inode, NFSD_MAY_READ));
-			if (status != nfserr_jukebox ||
-			    !nfsd_wait_for_delegreturn(rqstp, inode))
-				return status;
-			return 0;
-		}
-		if (type == F_WRLCK) {
-			struct nfs4_delegation *dp = fl->c.flc_owner;
-
-			if (dp->dl_recall.cb_clp == *(rqstp->rq_lease_breaker)) {
-				spin_unlock(&ctx->flc_lock);
-				return 0;
-			}
-			nfsd_stats_wdeleg_getattr_inc(nn);
-			dp = fl->c.flc_owner;
-			refcount_inc(&dp->dl_stid.sc_count);
-			ncf = &dp->dl_cb_fattr;
-			nfs4_cb_getattr(&dp->dl_cb_fattr);
-			spin_unlock(&ctx->flc_lock);
-			wait_on_bit_timeout(&ncf->ncf_cb_flags, CB_GETATTR_BUSY,
-					TASK_INTERRUPTIBLE, NFSD_CB_GETATTR_TIMEOUT);
-			if (ncf->ncf_cb_status) {
-				/* Recall delegation only if client didn't respond */
-				status = nfserrno(nfsd_open_break_lease(inode, NFSD_MAY_READ));
-				if (status != nfserr_jukebox ||
-						!nfsd_wait_for_delegreturn(rqstp, inode)) {
-					nfs4_put_stid(&dp->dl_stid);
-					return status;
-				}
-			}
-			if (!ncf->ncf_file_modified &&
-					(ncf->ncf_initial_cinfo != ncf->ncf_cb_change ||
-					ncf->ncf_cur_fsize != ncf->ncf_cb_fsize))
-				ncf->ncf_file_modified = true;
-			if (ncf->ncf_file_modified) {
-				int err;
-
-				/*
-				 * Per section 10.4.3 of RFC 8881, the server would
-				 * not update the file's metadata with the client's
-				 * modified size
-				 */
-				attrs.ia_mtime = attrs.ia_ctime = current_time(inode);
-				attrs.ia_valid = ATTR_MTIME | ATTR_CTIME | ATTR_DELEG;
-				inode_lock(inode);
-				err = notify_change(&nop_mnt_idmap, dentry, &attrs, NULL);
-				inode_unlock(inode);
-				if (err) {
-					nfs4_put_stid(&dp->dl_stid);
-					return nfserrno(err);
-				}
-				ncf->ncf_cur_fsize = ncf->ncf_cb_fsize;
-				*size = ncf->ncf_cur_fsize;
-				*modified = true;
-			}
-			nfs4_put_stid(&dp->dl_stid);
-			return 0;
-		}
-		break;
-	}
-	spin_unlock(&ctx->flc_lock);
-	return 0;
-=======
 
 #define NON_NFSD_LEASE ((void *)1)
 
@@ -9214,5 +8967,4 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
 out_status:
 	nfs4_put_stid(&dp->dl_stid);
 	return status;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }

@@ -13,14 +13,7 @@
  * for details.
  */
 .macro vdso_func func
-<<<<<<< HEAD
-	.globl __kernel_\func
-	.type  __kernel_\func,@function
-	__ALIGN
-__kernel_\func:
-=======
 SYM_FUNC_START(__kernel_\func)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	CFI_STARTPROC
 	aghi	%r15,-STACK_FRAME_VDSO_OVERHEAD
 	CFI_DEF_CFA_OFFSET (STACK_FRAME_USER_OVERHEAD + STACK_FRAME_VDSO_OVERHEAD)
@@ -36,11 +29,7 @@ SYM_FUNC_START(__kernel_\func)
 	CFI_RESTORE 15
 	br	%r14
 	CFI_ENDPROC
-<<<<<<< HEAD
-	.size	__kernel_\func,.-__kernel_\func
-=======
 SYM_FUNC_END(__kernel_\func)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .endm
 
 vdso_func gettimeofday
@@ -49,24 +38,13 @@ vdso_func clock_gettime
 vdso_func getcpu
 
 .macro vdso_syscall func,syscall
-<<<<<<< HEAD
-	.globl __kernel_\func
-	.type  __kernel_\func,@function
-	__ALIGN
-__kernel_\func:
-=======
 SYM_FUNC_START(__kernel_\func)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	CFI_STARTPROC
 	svc	\syscall
 	/* Make sure we notice when a syscall returns, which shouldn't happen */
 	.word	0
 	CFI_ENDPROC
-<<<<<<< HEAD
-	.size	__kernel_\func,.-__kernel_\func
-=======
 SYM_FUNC_END(__kernel_\func)
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 .endm
 
 vdso_syscall restart_syscall,__NR_restart_syscall

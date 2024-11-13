@@ -73,11 +73,7 @@
 
 /*
  * Even though the SPC takes max 3-5 ms to complete any OPP/COMMS
-<<<<<<< HEAD
- * operation, the operation could start just before jiffie is about
-=======
  * operation, the operation could start just before jiffy is about
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
  * to be incremented. So setting timeout value of 20ms = 2jiffies@100Hz
  */
 #define TIMEOUT_US	20000

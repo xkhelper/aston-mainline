@@ -179,26 +179,16 @@ extern int v9fs_vfs_rename(struct mnt_idmap *idmap,
 			   struct inode *old_dir, struct dentry *old_dentry,
 			   struct inode *new_dir, struct dentry *new_dentry,
 			   unsigned int flags);
-<<<<<<< HEAD
-extern struct inode *v9fs_fid_iget(struct super_block *sb, struct p9_fid *fid,
-						bool new);
-=======
 extern struct inode *v9fs_inode_from_fid(struct v9fs_session_info *v9ses,
 					 struct p9_fid *fid,
 					 struct super_block *sb, int new);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 extern const struct inode_operations v9fs_dir_inode_operations_dotl;
 extern const struct inode_operations v9fs_file_inode_operations_dotl;
 extern const struct inode_operations v9fs_symlink_inode_operations_dotl;
 extern const struct netfs_request_ops v9fs_req_ops;
-<<<<<<< HEAD
-extern struct inode *v9fs_fid_iget_dotl(struct super_block *sb,
-						struct p9_fid *fid, bool new);
-=======
 extern struct inode *v9fs_inode_from_fid_dotl(struct v9fs_session_info *v9ses,
 					      struct p9_fid *fid,
 					      struct super_block *sb, int new);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 
 /* other default globals */
 #define V9FS_PORT	564
@@ -237,14 +227,6 @@ static inline int v9fs_proto_dotl(struct v9fs_session_info *v9ses)
  */
 static inline struct inode *
 v9fs_get_inode_from_fid(struct v9fs_session_info *v9ses, struct p9_fid *fid,
-<<<<<<< HEAD
-			struct super_block *sb, bool new)
-{
-	if (v9fs_proto_dotl(v9ses))
-		return v9fs_fid_iget_dotl(sb, fid, new);
-	else
-		return v9fs_fid_iget(sb, fid, new);
-=======
 			struct super_block *sb)
 {
 	if (v9fs_proto_dotl(v9ses))
@@ -269,7 +251,6 @@ v9fs_get_new_inode_from_fid(struct v9fs_session_info *v9ses, struct p9_fid *fid,
 		return v9fs_inode_from_fid_dotl(v9ses, fid, sb, 1);
 	else
 		return v9fs_inode_from_fid(v9ses, fid, sb, 1);
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 }
 
 #endif

@@ -1398,11 +1398,8 @@ int mwifiex_process_sta_cmdresp(struct mwifiex_private *priv, u16 cmdresp_no,
 		break;
 	case HostCmd_CMD_UAP_STA_DEAUTH:
 		break;
-<<<<<<< HEAD
-=======
 	case HostCmd_CMD_ADD_NEW_STATION:
 		break;
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	case HOST_CMD_APCMD_SYS_RESET:
 		break;
 	case HostCmd_CMD_MEF_CFG:

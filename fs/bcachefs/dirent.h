@@ -34,8 +34,6 @@ static inline unsigned dirent_val_u64s(unsigned len)
 int bch2_dirent_read_target(struct btree_trans *, subvol_inum,
 			    struct bkey_s_c_dirent, subvol_inum *);
 
-<<<<<<< HEAD
-=======
 static inline void dirent_copy_target(struct bkey_i_dirent *dst,
 				      struct bkey_s_c_dirent src)
 {
@@ -43,7 +41,6 @@ static inline void dirent_copy_target(struct bkey_i_dirent *dst,
 	dst->v.d_type = src.v->d_type;
 }
 
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 int bch2_dirent_create_snapshot(struct btree_trans *, u32, u64, u32,
 			const struct bch_hash_info *, u8,
 			const struct qstr *, u64, u64 *,

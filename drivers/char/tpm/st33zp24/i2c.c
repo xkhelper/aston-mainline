@@ -133,11 +133,7 @@ static void st33zp24_i2c_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id st33zp24_i2c_id[] = {
-<<<<<<< HEAD
-	{TPM_ST33_I2C, 0},
-=======
 	{ TPM_ST33_I2C },
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 	{}
 };
 MODULE_DEVICE_TABLE(i2c, st33zp24_i2c_id);
