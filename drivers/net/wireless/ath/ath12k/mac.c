@@ -9145,13 +9145,19 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		if (!is_valid_ether_addr(ar->mac_addr)) {
 			ath12k_warn(ab, "invalid MAC address; choosing random\n");
 			eth_random_addr(ar->mac_addr);
 		}
 
+<<<<<<< HEAD
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		ret = ath12k_mac_setup_register(ar, &ht_cap_info, hw->wiphy->bands);
 		if (ret)
 			goto err_cleanup_unregister;

@@ -15,9 +15,13 @@ static const struct dpu_caps sm8150_dpu_caps = {
 	.has_idle_pc = true,
 	.has_3d_merge = true,
 <<<<<<< HEAD
+<<<<<<< HEAD
 	.has_active_ctls = true,
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	.has_active_ctls = true,
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	.max_linewidth = 4096,
 	.pixel_ram_size = DEFAULT_PIXEL_RAM_SIZE,
 	.max_hdeci_exp = MAX_HORZ_DECIMATION,
@@ -46,26 +50,37 @@ static const struct dpu_mdp_cfg sm8150_mdp = {
 	},
 };
 
+<<<<<<< HEAD
 /* FIXME: get rid of DPU_CTL_SPLIT_DISPLAY in favour of proper ACTIVE_CTL support */
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 static const struct dpu_ctl_cfg sm8150_ctl[] = {
 	{
 		.name = "ctl_0", .id = CTL_0,
 		.base = 0x1000, .len = 0x1e0,
 <<<<<<< HEAD
-		.features = BIT(DPU_CTL_ACTIVE_CFG),
-=======
-		.features = BIT(DPU_CTL_ACTIVE_CFG) | BIT(DPU_CTL_SPLIT_DISPLAY),
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
-		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 9),
-	}, {
-		.name = "ctl_1", .id = CTL_1,
-		.base = 0x1200, .len = 0x1e0,
 <<<<<<< HEAD
 		.features = BIT(DPU_CTL_ACTIVE_CFG),
 =======
 		.features = BIT(DPU_CTL_ACTIVE_CFG) | BIT(DPU_CTL_SPLIT_DISPLAY),
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+		.features = BIT(DPU_CTL_ACTIVE_CFG),
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
+		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 9),
+	}, {
+		.name = "ctl_1", .id = CTL_1,
+		.base = 0x1200, .len = 0x1e0,
+<<<<<<< HEAD
+<<<<<<< HEAD
+		.features = BIT(DPU_CTL_ACTIVE_CFG),
+=======
+		.features = BIT(DPU_CTL_ACTIVE_CFG) | BIT(DPU_CTL_SPLIT_DISPLAY),
+>>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+		.features = BIT(DPU_CTL_ACTIVE_CFG),
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		.intr_start = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR2, 10),
 	}, {
 		.name = "ctl_2", .id = CTL_2,

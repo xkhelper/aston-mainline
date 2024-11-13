@@ -276,10 +276,15 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-qrd.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-samsung-q5q.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-sony-xperia-yodo-pdx234.dtb
 <<<<<<< HEAD
+<<<<<<< HEAD
 dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-xiaomi-sheng.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-oneplus-aston.dtb
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-xiaomi-sheng.dtb
+dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-oneplus-aston.dtb
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 sm8650-hdk-display-card-dtbs	:= sm8650-hdk.dtb sm8650-hdk-display-card.dtbo
 

@@ -397,9 +397,13 @@ config SND_SOC_WM_ADSP
 	default y if SND_SOC_CS35L41_SPI=y
 	default y if SND_SOC_CS35L41_I2C=y
 <<<<<<< HEAD
+<<<<<<< HEAD
 	default y if SND_SOC_CS35L43=y
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	default y if SND_SOC_CS35L43=y
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	default y if SND_SOC_CS35L45_SPI=y
 	default y if SND_SOC_CS35L45_I2C=y
 	default y if SND_SOC_CS35L56=y
@@ -411,9 +415,13 @@ config SND_SOC_WM_ADSP
 	default m if SND_SOC_CS35L41_SPI=m
 	default m if SND_SOC_CS35L41_I2C=m
 <<<<<<< HEAD
+<<<<<<< HEAD
 	default m if SND_SOC_CS35L43=m
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	default m if SND_SOC_CS35L43=m
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	default m if SND_SOC_CS35L45_SPI=m
 	default m if SND_SOC_CS35L45_I2C=m
 	default m if SND_SOC_CS35L56=m
@@ -810,6 +818,9 @@ config SND_SOC_CS35L41_I2C
 	select REGMAP_I2C
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config SND_SOC_CS35L43
 	tristate "Cirrus Logic CS35L43 CODEC"
 
@@ -825,8 +836,11 @@ config SND_SOC_CS35L43_SPI
 	select REGMAP_SPI
 	select SND_SOC_CS35L43
 
+<<<<<<< HEAD
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config SND_SOC_CS35L45
 	tristate
 	select REGMAP_IRQ

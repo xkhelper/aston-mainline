@@ -75,11 +75,16 @@ drm-y := \
 	drm_vblank_work.o \
 	drm_vma_manager.o \
 <<<<<<< HEAD
+<<<<<<< HEAD
 	drm_writeback.o \
 	drm_notifier.o
 =======
 	drm_writeback.o
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	drm_writeback.o \
+	drm_notifier.o
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 drm-$(CONFIG_DRM_LIB_RANDOM) += lib/drm_random.o
 drm-$(CONFIG_COMPAT) += drm_ioc32.o
 drm-$(CONFIG_DRM_PANEL) += drm_panel.o

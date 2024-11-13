@@ -1241,10 +1241,14 @@ static int dp_display_probe_tail(struct device *dev)
 	dp->next_bridge = devm_drm_of_get_bridge(&dp->pdev->dev, dp->pdev->dev.of_node, 1, 0);
 	if (IS_ERR(dp->next_bridge)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ret = -ENODEV;
 =======
 		ret = PTR_ERR(dp->next_bridge);
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+		ret = -ENODEV;
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		dp->next_bridge = NULL;
 		if (dp->is_edp || ret != -ENODEV)
 			return ret;

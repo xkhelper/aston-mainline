@@ -1437,10 +1437,16 @@ config TOUCHSCREEN_HIMAX_HX83112B
 	  module will be called himax_hx83112b.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 source "drivers/input/touchscreen/synaptics_hbp/Kconfig"
 source "drivers/input/touchscreen/kernelFwUpdate/Kconfig"
 source "drivers/input/touchscreen/touchpanel_notify/Kconfig"
 
+<<<<<<< HEAD
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 endif

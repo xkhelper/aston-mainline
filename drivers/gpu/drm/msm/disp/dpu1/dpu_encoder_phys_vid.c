@@ -299,10 +299,15 @@ static void dpu_encoder_phys_vid_setup_timing_engine(
 		intf_cfg.cdm = phys_enc->hw_cdm->idx;
 	intf_cfg.intf = phys_enc->hw_intf->idx;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (phys_enc->split_role == ENC_ROLE_MASTER)
 		intf_cfg.intf_master = phys_enc->hw_intf->idx;
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	if (phys_enc->split_role == ENC_ROLE_MASTER)
+		intf_cfg.intf_master = phys_enc->hw_intf->idx;
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	intf_cfg.intf_mode_sel = DPU_CTL_MODE_SEL_VID;
 	intf_cfg.stream_sel = 0; /* Don't care value for video mode */
 	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
@@ -382,11 +387,16 @@ static bool dpu_encoder_phys_vid_needs_single_flush(
 		struct dpu_encoder_phys *phys_enc)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return !(phys_enc->hw_ctl->caps->features & BIT(DPU_CTL_ACTIVE_CFG)) &&
 		phys_enc->split_role != ENC_ROLE_SOLO;
 =======
 	return phys_enc->split_role != ENC_ROLE_SOLO;
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	return !(phys_enc->hw_ctl->caps->features & BIT(DPU_CTL_ACTIVE_CFG)) &&
+		phys_enc->split_role != ENC_ROLE_SOLO;
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 }
 
 static void dpu_encoder_phys_vid_atomic_mode_set(

@@ -1783,10 +1783,14 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
 	if (fbcon_is_inactive(vc, info))
 		return true;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	mdelay(1000);
 =======
 
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	mdelay(1000);
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	fbcon_cursor(vc, false);
 
 	/*

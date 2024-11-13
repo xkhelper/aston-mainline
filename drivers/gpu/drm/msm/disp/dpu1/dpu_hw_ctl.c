@@ -545,6 +545,7 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 {
 	struct dpu_hw_blk_reg_map *c = &ctx->hw;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	u32 mode_sel = 0;
 	u32 cdm_active;
 	u32 intf_active;
@@ -557,6 +558,14 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 	u32 wb_active = 0;
 	u32 mode_sel = 0;
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	u32 mode_sel = 0;
+	u32 cdm_active;
+	u32 intf_active;
+	u32 wb_active;
+	u32 dsc_active;
+	u32 merge_3d_active;
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 	/* CTL_TOP[31:28] carries group_id to collate CTL paths
 	 * per VM. Explicitly disable it until VM support is
@@ -569,6 +578,9 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 		mode_sel |= BIT(17);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	cdm_active = DPU_REG_READ(c, CTL_CDM_ACTIVE);
 	intf_active = DPU_REG_READ(c, CTL_INTF_ACTIVE);
 	wb_active = DPU_REG_READ(c, CTL_WB_ACTIVE);
@@ -577,11 +589,14 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 
 	if (cfg->cdm)
 		cdm_active |= cfg->cdm;
+<<<<<<< HEAD
 =======
 	intf_active = DPU_REG_READ(c, CTL_INTF_ACTIVE);
 	wb_active = DPU_REG_READ(c, CTL_WB_ACTIVE);
 	dsc_active = DPU_REG_READ(c, CTL_DSC_ACTIVE);
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 	if (cfg->intf)
 		intf_active |= BIT(cfg->intf - INTF_0);
@@ -592,6 +607,7 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 	if (cfg->dsc)
 		dsc_active |= cfg->dsc;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	if (cfg->merge_3d)
 		merge_3d_active |= BIT(cfg->merge_3d - MERGE_3D_0);
@@ -611,18 +627,31 @@ static void dpu_hw_ctl_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 	else
 		DPU_DEBUG_DRIVER("ACTIVE: intf:%#x merge_3d:%#x dsc:%#x\n", intf_active, merge_3d_active, dsc_active);
 =======
+=======
+	if (cfg->merge_3d)
+		merge_3d_active |= BIT(cfg->merge_3d - MERGE_3D_0);
+
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	DPU_REG_WRITE(c, CTL_TOP, mode_sel);
+	DPU_REG_WRITE(c, CTL_CDM_ACTIVE, cdm_active);
 	DPU_REG_WRITE(c, CTL_INTF_ACTIVE, intf_active);
 	DPU_REG_WRITE(c, CTL_WB_ACTIVE, wb_active);
 	DPU_REG_WRITE(c, CTL_DSC_ACTIVE, dsc_active);
+	DPU_REG_WRITE(c, CTL_MERGE_3D_ACTIVE, merge_3d_active);
 
-	if (cfg->merge_3d)
-		DPU_REG_WRITE(c, CTL_MERGE_3D_ACTIVE,
-			      BIT(cfg->merge_3d - MERGE_3D_0));
+	if (cfg->intf_master)
+		DPU_REG_WRITE(c, CTL_INTF_MASTER, BIT(cfg->intf_master - INTF_0));
 
+<<<<<<< HEAD
 	if (cfg->cdm)
 		DPU_REG_WRITE(c, CTL_CDM_ACTIVE, cfg->cdm);
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	if (cfg->intf_master)
+		DPU_DEBUG_DRIVER("ACTIVE: intf:%#x merge_3d:%#x dsc:%#x master_intf:%d\n", intf_active, merge_3d_active, dsc_active, cfg->intf_master - INTF_0);
+	else
+		DPU_DEBUG_DRIVER("ACTIVE: intf:%#x merge_3d:%#x dsc:%#x\n", intf_active, merge_3d_active, dsc_active);
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 }
 
 static void dpu_hw_ctl_intf_cfg(struct dpu_hw_ctl *ctx,
@@ -664,9 +693,13 @@ static void dpu_hw_ctl_reset_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 	struct dpu_hw_blk_reg_map *c = &ctx->hw;
 	u32 intf_active = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	u32 intf_master = 0;
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+	u32 intf_master = 0;
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	u32 wb_active = 0;
 	u32 merge3d_active = 0;
 	u32 dsc_active;
@@ -694,6 +727,9 @@ static void dpu_hw_ctl_reset_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 		intf_active &= ~BIT(cfg->intf - INTF_0);
 		DPU_REG_WRITE(c, CTL_INTF_ACTIVE, intf_active);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 		/* Unset this intf as master, if it is the current master */
 		/* TODO: Marijn: does this make any sense? */
@@ -702,8 +738,11 @@ static void dpu_hw_ctl_reset_intf_cfg_v1(struct dpu_hw_ctl *ctx,
 			DPU_DEBUG_DRIVER("Unsetting intf:%d master\n", cfg->intf - INTF_0);
 			DPU_REG_WRITE(c, CTL_INTF_MASTER, 0);
 		}
+<<<<<<< HEAD
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	}
 
 	if (cfg->wb) {

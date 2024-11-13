@@ -612,10 +612,14 @@ static struct msm_display_topology dpu_encoder_get_topology(
 	if (dsc) {
 		/*
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 		 * Use 2 DSC encoders, 2 layer mixers, and 1 or 2 interfaces
 		 * when Display Stream Compression (DSC) is enabled.
 		 * This is power-optimal and can drive up to (including) 4k
 		 * screens.
+<<<<<<< HEAD
 		 */
 		topology.num_dsc = 2;
 		topology.num_lm = 2;
@@ -631,6 +635,13 @@ static struct msm_display_topology dpu_encoder_get_topology(
 		topology.num_lm = 2;
 		topology.num_intf = 1;
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+		 */
+		topology.num_dsc = 2;
+		topology.num_lm = 2;
+		WARN(topology.num_intf > 2,
+		     "DSC topology cannot support more than 2 interfaces\n");
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 	}
 
 	return topology;

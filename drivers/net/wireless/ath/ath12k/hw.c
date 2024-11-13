@@ -993,6 +993,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
 					   BIT(CNSS_PCIE_PERST_NO_PULL_V01),
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		.rfkill_pin = 0,
 		.rfkill_cfg = 0,
 		.rfkill_on_level = 0,
@@ -1001,6 +1002,11 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
 		.rfkill_cfg = 0,
 		.rfkill_on_level = 1,
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+		.rfkill_pin = 0,
+		.rfkill_cfg = 0,
+		.rfkill_on_level = 0,
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 
 		.rddm_size = 0x780000,
 

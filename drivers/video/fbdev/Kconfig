@@ -446,14 +446,20 @@ config FB_EFI
 	  using the EFI framebuffer as your console.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config FB_EARLY
 	bool "Framebuffer earlycon"
 	depends on SERIAL_EARLYCON
 	select FONT_SUPPORT
 	select ARCH_USE_MEMREMAP_PROT
 
+<<<<<<< HEAD
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config FB_N411
 	tristate "N411 Apollo/Hecuba devkit support"
 	depends on FB && X86 && MMU

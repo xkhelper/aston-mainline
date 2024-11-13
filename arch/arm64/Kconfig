@@ -2376,6 +2376,9 @@ endmenu # "Kernel Features"
 menu "Boot options"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config ARM64_APPENDED_DTB
 	bool "Use appended device tree blob to Image"
 	depends on OF
@@ -2387,8 +2390,11 @@ config ARM64_APPENDED_DTB
 	  With this option, the size of Image will be extended to be 2MB aligned.
 	  The 2MB memory followed by Image is used for FDT blob.
 
+<<<<<<< HEAD
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 config ARM64_ACPI_PARKING_PROTOCOL
 	bool "Enable support for the ARM64 ACPI parking protocol"
 	depends on ACPI

@@ -51,9 +51,13 @@ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT35560) += panel-novatek-nt35560.o
 obj-$(CONFIG_DRM_PANEL_NOVATEK_NT35950) += panel-novatek-nt35950.o
 obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36523) += panel-novatek-nt36523.o
 <<<<<<< HEAD
+<<<<<<< HEAD
 obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36532E) += panel-novatek-nt36532e.o
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36532E) += panel-novatek-nt36532e.o
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
 obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672A) += panel-novatek-nt36672a.o
 obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672E) += panel-novatek-nt36672e.o
 obj-$(CONFIG_DRM_PANEL_NOVATEK_NT39016) += panel-novatek-nt39016.o
@@ -108,6 +112,10 @@ obj-$(CONFIG_DRM_PANEL_VISIONOX_R66451) += panel-visionox-r66451.o
 obj-$(CONFIG_DRM_PANEL_WIDECHIPS_WS2401) += panel-widechips-ws2401.o
 obj-$(CONFIG_DRM_PANEL_XINPENG_XPP055C272) += panel-xinpeng-xpp055c272.o
 <<<<<<< HEAD
+<<<<<<< HEAD
 obj-$(CONFIG_DRM_PANEL_AA551_P_3_A0004) += panel-aa551-p-3-a0004-dsc.o
 =======
 >>>>>>> 2d5404caa8 (Linux 6.12-rc7)
+=======
+obj-$(CONFIG_DRM_PANEL_AA551_P_3_A0004) += panel-aa551-p-3-a0004-dsc.o
+>>>>>>> 881ea1170d (aston: Re-apply 6.11.0 commits on 6.12.0-rc7 branch)
