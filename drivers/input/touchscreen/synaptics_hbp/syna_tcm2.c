@@ -1365,83 +1365,48 @@ static int init_chip_dts(struct device *dev, void *chip_data)
 	int i = 0;
 	np = dev->of_node;
 
-	rc = of_property_read_u32(np, "project_id", &tcm->panel_data.project_id);
-
-	if (rc) {
-	}
-
-	rc = of_property_count_u32_elems(np, "platform_support_project");
-	tcm->panel_data.project_num = rc;
-
-	if (!rc) {
-	}
-
+	of_property_read_u32(np, "project_id", &tcm->panel_data.project_id);
+	tcm->panel_data.project_num = of_property_count_u32_elems(np, "platform_support_project");
 	if (tcm->panel_data.project_num > 0) {
-		rc = of_property_read_u32_array(np, "platform_support_project",
-						tcm->panel_data.platform_support_project, tcm->panel_data.project_num);
+		rc = of_property_read_u32_array(np, "platform_support_project", tcm->panel_data.platform_support_project, tcm->panel_data.project_num);
 
 		if (rc) {
 			return -1;
 		}
 
-		rc = of_property_read_u32_array(np, "platform_support_project_dir",
-						tcm->panel_data.platform_support_project_dir, tcm->panel_data.project_num);
+		rc = of_property_read_u32_array(np, "platform_support_project_dir", tcm->panel_data.platform_support_project_dir, tcm->panel_data.project_num);
 
 		if (rc) {
 			return -1;
 		}
 
-	} else {
 	}
 
-	rc = of_property_read_u32(np, "chip-num", &tcm->panel_data.chip_num);
-
-	if (rc)  {
-		tcm->panel_data.chip_num = 1;
-	}
-
-
+	tcm->panel_data.chip_num = 1;
 	for (i = 0; i < tcm->panel_data.chip_num; i++) {
-
-		rc = of_property_read_string_index(np, "chip-name", i,
-						   (const char **)&tcm->panel_data.chip_name[i]);
-
-		if (rc) {
-		}
+		of_property_read_string_index(np, "chip-name", i, (const char **)&tcm->panel_data.chip_name[i]);
 	}
 
-	rc = of_property_count_u32_elems(np, "panel_type");
-
-	if (!rc) {
-
-	} else if (rc) {
-		tcm->panel_data.panel_num = rc;
-	}
-
+	tcm->panel_data.panel_num = of_property_count_u32_elems(np, "panel_type");
 	if (tcm->panel_data.panel_num > 0) {
-		rc = of_property_read_u32_array(np, "panel_type", tcm->panel_data.panel_type,
-						tcm->panel_data.panel_num);
-
+		rc = of_property_read_u32_array(np, "panel_type", tcm->panel_data.panel_type, tcm->panel_data.panel_num);
 		if (rc) {
-			goto dts_match_error;
+			return -1;
 		}
 	}
 
 	for (i = 0; i < tcm->panel_data.panel_num; i++) {
-		rc = of_property_read_string_index(np, "platform_support_project_commandline",
-						   i,
-						   (const char **)&tcm->panel_data.platform_support_commandline[i]);
+		rc = of_property_read_string_index(np, "platform_support_project_commandline", i, (const char **)&tcm->panel_data.platform_support_commandline[i]);
 
 		if (rc) {
-			goto dts_match_error;
+			return -1;
 		}
 
 		of_property_read_string_index(np, "firmware_name", i, (const char **)&tcm->panel_data.firmware_name[i]);
 
 	}
 
-	tp_judge_ic_match_commandline(&tcm->panel_data);
-	of_property_read_u32(np, "tp_type", &tcm->panel_data.tp_type);
+	tcm->panel_data.tp_type = TP_UNKNOWN;
 
 	rc = of_property_read_u32_array(np, "touchpanel,tx-rx-num", tx_rx_num, 2);
 
@@ -1469,9 +1434,6 @@ static int init_chip_dts(struct device *dev, void *chip_data)
 	init_panel_config(dev, tcm);
 
 	return 0;
-
-dts_match_error:
-	return -1;
 }
 
 static int tp_paneldata_init(struct syna_tcm *pdata)
@@ -1484,8 +1446,7 @@ static int tp_paneldata_init(struct syna_tcm *pdata)
 		return ret;
 	}
 
-	tcm->panel_data.fw_name = devm_kzalloc(&tcm->pdev->dev, MAX_FW_NAME_LENGTH,
-				 GFP_KERNEL);
+	tcm->panel_data.fw_name = devm_kzalloc(&tcm->pdev->dev, MAX_FW_NAME_LENGTH, GFP_KERNEL);
 
 	if (tcm->panel_data.fw_name == NULL) {
 		ret = -ENOMEM;
@@ -1520,8 +1481,7 @@ static int syna_dev_probe(struct platform_device *pdev)
 		return -ENOMEM;
 	}
 
-	tcm->test_hcd = (struct syna_tcm_test *)devm_kzalloc(&pdev->dev,
-		sizeof(struct syna_tcm_test), GFP_KERNEL);
+	tcm->test_hcd = (struct syna_tcm_test *)devm_kzalloc(&pdev->dev, sizeof(struct syna_tcm_test), GFP_KERNEL);
 	if (!tcm->test_hcd) {
 		syna_pal_mem_free((void *)tcm);
 		LOGE("Fail to alloc tcm->test_hcd mem\n");
@@ -1626,8 +1586,7 @@ static int syna_dev_probe(struct platform_device *pdev)
 		goto err_create_cdev;
 	}
 
-	tcm->speedup_resume_wq =
-			create_singlethread_workqueue("sp_resume0");
+	tcm->speedup_resume_wq = create_singlethread_workqueue("sp_resume0");
 	INIT_WORK(&tcm->speed_up_work, syna_speedup_resume);
 
 	syna_tcm_enable_predict_reading(tcm->tcm_dev, true);
@@ -1655,39 +1614,20 @@ err_allocate_cdev:
 static void syna_dev_remove(struct platform_device *pdev)
 {
 	struct syna_tcm *tcm = platform_get_drvdata(pdev);
-	int ret = 0;
-
-	if (!tcm) {
-		LOGW("Invalid handle to remove\n");
-	}
-
 	syna_send_signal(tcm, SIGKILL);
 	syna_pal_sleep_ms(25);
 	tcm->driver_current_state = IS_REMOVE;
-
 	mutex_lock(&tcm->mutex);
-
-	if (tcm->dev_disconnect(tcm) < 0)
-		LOGE("Fail to do device disconnection\n");
-
-	if (tcm->userspace_app_info != NULL)
+    tcm->dev_disconnect(tcm);
+	if (tcm->userspace_app_info != NULL) 
 		syna_pal_mem_free(tcm->userspace_app_info);
-
 	mutex_unlock(&tcm->mutex);
 	if (tcm->fb_notifier.notifier_call) {
-		ret = msm_drm_unregister_client(&tcm->fb_notifier);
-
-		if (ret) {
-			LOGW("Unable to register fb_notifier: %d\n", ret);
-		}
+		msm_drm_unregister_client(&tcm->fb_notifier);
 	}
-
 	syna_tcm_buf_release(&tcm->event_data);
-
 	syna_pal_mutex_free(&tcm->tp_event_mutex);
-
 	syna_tcm_remove_device(tcm->tcm_dev);
-
 	syna_pal_mem_free((void *)tcm);
 }
 
@@ -1738,240 +1678,6 @@ enum dynamic_config_id {
 
 static void syna_main_register(struct seq_file *s, void *chip_data)
 {
-	int retval = 0;
-	unsigned short config = 0;
-	unsigned int temp = 0;
-	struct syna_tcm *tcm_info = (struct syna_tcm *)chip_data;
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev,
-					     DC_IN_WAKEUP_GESTURE_MODE,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "gesture mode : ERROR\n");
-
-	} else {
-		seq_printf(s, "gesture mode : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_ERROR_PRIORITY,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "error priority(1:finger,0:error): ERROR\n");
-
-	} else {
-		seq_printf(s, "error priority(1:finger,0:error): 0x%0X\n",
-			   config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_NOISE_LENGTH,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "noise length : ERROR\n");
-	} else {
-		seq_printf(s, "noise length : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_SET_REPORT_FRE,
-					     &config, 0);
-
-	if (retval < 0) {
-		seq_printf(s, "report rate(1:120HZ,2:240HZ,3:180HZ): ERROR\n");
-	} else {
-		seq_printf(s, "report rate(1:120HZ,2:240HZ,3:180HZ): %d\n",
-			   config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_CHARGER_CONNECTED,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "charger mode : ERROR\n");
-	} else {
-		seq_printf(s, "charger mode : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_TOUCH_HOLD, &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "fingerprint mode : ERROR\n");
-	} else {
-		seq_printf(s, "fingerprint mode : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_ENABLED,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "grip enable : ERROR\n");
-	} else {
-		seq_printf(s, "grip enable : 0x%0X\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev,
-					     DC_GRIP_ROATE_TO_HORIZONTAL_LEVEL,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "grip direction(1:ver 0:hor): ERROR\n");
-	} else {
-		seq_printf(s, "grip direction(0:ver 1:hor): 0x%0X\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_DARK_ZONE_ENABLE,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "dark zone enable : ERROR\n");
-
-	} else {
-		seq_printf(s, "dark zone enable : 0x%0X\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_DARK_ZONE_X,
-					     &config, 0);
-
-	if (retval < 0) {
-		seq_printf(s, "dark zone x : ERROR\n");
-
-	} else {
-		seq_printf(s, "dark zone x : 0x%0X\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_DARK_ZONE_Y,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "dark zone y : ERROR\n");
-
-	} else {
-		seq_printf(s, "dark zone y : 0x%0X\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_ABS_DARK_SEL,
-					     &config, 0);
-
-	if (retval < 0) {
-		seq_printf(s, "abs dark sel : ERROR\n");
-
-	} else {
-		seq_printf(s, "abs dark sel : 0x%0X\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_ABS_DARK_X,
-					     &config, 0);
-
-	if (retval < 0) {
-		seq_printf(s, "abs dark zone x : ERROR\n");
-	} else {
-		seq_printf(s, "abs dark zone x : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_ABS_DARK_Y,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "abs dark zone y : ERROR\n");
-
-	} else {
-		seq_printf(s, "abs dark zone y : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_ABS_DARK_U,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "abs dark zone U : ERROR\n");
-	} else {
-		seq_printf(s, "abs dark zone U : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_ABS_DARK_V,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "abs dark zone V : ERROR\n");
-	} else {
-		seq_printf(s, "abs dark zone V : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_CONDTION_ZONE,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "condtion zone : ERROR\n");
-	} else {
-		seq_printf(s, "condtion zone : 0x%0X\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_SPECIAL_ZONE_X,
-					     &config, 0);
-
-	if (retval < 0) {
-		seq_printf(s, "special zone x : ERROR\n");
-
-	} else {
-		seq_printf(s, "special zone x : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_SPECIAL_ZONE_Y,
-					     &config, 0);
-
-	if (retval < 0) {
-		seq_printf(s, "special zone y : ERROR\n");
-
-	} else {
-		seq_printf(s, "special zone y : %d\n", config);
-	}
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GRIP_SPECIAL_ZONE_L,
-					     &config, 0);
-	if (retval < 0) {
-		seq_printf(s, "special zone len : ERROR\n");
-
-	} else {
-		seq_printf(s, "special zone len : %d\n", config);
-	}
-
-	seq_printf(s, "Buid ID:%d, Custom ID:0x%s\n",
-		   le4_to_uint(tcm_info->tcm_dev->id_info.build_id),
-		   tcm_info->tcm_dev->app_info.customer_config_id);
-	seq_printf(s, "APP info : version:%d\n",
-		   le2_to_uint(tcm_info->tcm_dev->app_info.version));
-
-	seq_printf(s, "APP info : status:%d\n",
-		   le2_to_uint(tcm_info->tcm_dev->app_info.status));
-
-	temp = le2_to_uint(tcm_info->tcm_dev->app_info.max_touch_report_config_size);
-	seq_printf(s, "APP info : max_touch_report_config_size:%d\n",
-		   temp);
-
-	temp = le2_to_uint(tcm_info->tcm_dev->app_info.max_touch_report_payload_size);
-	seq_printf(s, "APP info : max_touch_report_payload_size:%d\n",
-		   temp);
-
-	seq_printf(s, "APP info : customer_config_id:%d\n",
-		   le2_to_uint(tcm_info->tcm_dev->app_info.customer_config_id));
-
-	seq_printf(s, "APP info : max_x:%d\n",
-		   le2_to_uint(tcm_info->tcm_dev->app_info.max_x));
-
-	seq_printf(s, "APP info : max_y:%d\n",
-		   le2_to_uint(tcm_info->tcm_dev->app_info.max_y));
-
-	seq_printf(s, "APP info : num_of_image_rows:%d\n",
-		   le2_to_uint(tcm_info->tcm_dev->app_info.num_of_image_rows));
-
-	seq_printf(s, "APP info : num_of_image_cols:%d\n",
-		   le2_to_uint(tcm_info->tcm_dev->app_info.num_of_image_cols));
-
-	if (tcm_info->tcm_dev->touch_config.data_length > 0) {
-		seq_printf(s, "default_config:%*ph\n",
-			tcm_info->tcm_dev->touch_config.data_length, tcm_info->tcm_dev->touch_config.buf);
-	}
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_LOW_TEMP_ENABLE, &config, 0);
-	if (retval < 0) {
-	}
-	seq_printf(s, "DC_LOW_TEMP_ENABLE:%d\n", config);
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_FREQUENCE_HOPPING_SYNA, &config, 0);
-	if (retval < 0) {
-	}
-	seq_printf(s, "DC_FREQUENCE_HOPPING:%d\n", config);
-
-	retval = syna_tcm_get_dynamic_config(tcm_info->tcm_dev, DC_GESTURE_MASK, &config, 0);
-	if (retval < 0) {
-	}
-	seq_printf(s, "DC_GESTURE_MASK:%d\n", config);
 	return;
 }
 
@@ -2166,7 +1872,6 @@ static int syna_spi_resume(struct device *dev) {
 	if (!tcm || !tcm->hw_if) {
 		return 0;
 	}
-	
 	attn = &tcm->hw_if->bdata_attn;
 	if (attn->irq_id == 0)
 		return 0;

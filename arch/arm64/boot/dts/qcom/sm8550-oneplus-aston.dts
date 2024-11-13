@@ -1027,7 +1027,7 @@
 &remoteproc_mpss {
 	firmware-name = "qcom/sm8550/aston/modem.mbn",
 			"qcom/sm8550/aston/modem_dtb.mbn";
-	status = "disabled";
+	status = "okay";
 };
 
 &sleep_clk {

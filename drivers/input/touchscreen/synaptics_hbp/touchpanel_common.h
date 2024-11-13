@@ -44,20 +44,13 @@ struct tp_dev_name {
 struct interface_data {
 	bool register_is_16bit;
 	struct mutex bus_mutex;
-	/****i2c write**/
 	unsigned int write_buf_size;
 	unsigned char *write_buf;
-	/****i2c read**/
 	unsigned char *read_buf;
 	unsigned int read_buf_size;
 	unsigned char *read_w_buffer;
 	unsigned int read_w_buf_size;
 };
-
-#ifdef CONFIG_TOUCHIRQ_UPDATE_QOS
-#include <linux/pm_qos.h>
-#define PM_QOS_TOUCH_WAKEUP_VALUE 400
-#endif
 
 #define CONFIG_REMOVE_OPLUS_FUNCTION
 
@@ -756,58 +749,6 @@ typedef enum {
 	WIRELESS_CHARGE,
 } misc_device_type;
 
-#ifdef CONFIG_OPLUS_TP_APK
-
-typedef enum {
-	APK_NULL       = 0,
-	APK_CHARGER    = 'C',
-	APK_DATA       = 'D',
-	APK_EARPHONE   = 'E',
-	APK_GESTURE    = 'G',
-	APK_INFO       = 'I',
-	APK_NOISE      = 'N',
-	APK_PROXIMITY  = 'P',
-	APK_WATER      = 'W',
-	APK_DEBUG_MODE = 'd',
-	APK_GAME_MODE  = 'g'
-} APK_SWITCH_TYPE;
-
-typedef enum {
-	DATA_NULL   = 0,
-	BASE_DATA   = 'B',
-	DIFF_DATA   = 'D',
-	DEBUG_INFO  = 'I',
-	RAW_DATA    = 'R',
-	BACK_DATA   = 'T'
-} APK_DATA_TYPE;
-
-typedef struct apk_proc_operations {
-	void (*apk_game_set)(void *chip_data, bool on_off);
-	bool (*apk_game_get)(void *chip_data);
-	void (*apk_debug_set)(void *chip_data, bool on_off);
-	bool (*apk_debug_get)(void *chip_data);
-	void (*apk_noise_set)(void *chip_data, bool on_off);
-	bool (*apk_noise_get)(void *chip_data);
-	void (*apk_water_set)(void *chip_data, int type);
-	int (*apk_water_get)(void *chip_data);
-	void (*apk_proximity_set)(void *chip_data, bool on_off);
-	int (*apk_proximity_dis)(void *chip_data);
-	void (*apk_gesture_debug)(void *chip_data, bool on_off);
-	bool (*apk_gesture_get)(void *chip_data);
-	int (*apk_gesture_info)(void *chip_data, char *buf, int len);
-	void (*apk_earphone_set)(void *chip_data, bool on_off);
-	bool (*apk_earphone_get)(void *chip_data);
-	void (*apk_charger_set)(void *chip_data, bool on_off);
-	bool (*apk_charger_get)(void *chip_data);
-	int (*apk_tp_info_get)(void *chip_data, char *buf, int len);
-	void (*apk_data_type_set)(void *chip_data, int type);
-	int (*apk_rawdata_get)(void *chip_data, char *buf, int len);
-	int (*apk_diffdata_get)(void *chip_data, char *buf, int len);
-	int (*apk_basedata_get)(void *chip_data, char *buf, int len);
-	int (*apk_backdata_get)(void *chip_data, char *buf, int len);
-} APK_OPERATION;
-
-#endif
 
 #define SNR_RESET(snr)  \
 	do{\
@@ -1022,19 +963,6 @@ struct touchpanel_data {
 	struct work_struct key_trigger_work;
 	struct workqueue_struct *headset_pump_wq;
 	struct work_struct headset_pump_work; 
-#ifdef CONFIG_OPLUS_TP_APK
-	APK_OPERATION *apk_op;
-	APK_SWITCH_TYPE type_now;
-	APK_DATA_TYPE data_now;
-	u8 *log_buf;
-	u8 *gesture_buf;
-	bool gesture_debug_sta;
-#endif
-#ifdef CONFIG_TOUCHIRQ_UPDATE_QOS
-	struct pm_qos_request pm_qos_req;
-	int pm_qos_value;
-	int pm_qos_state;
-#endif
 	struct interface_data interface_data;
 	struct com_api_data com_api_data;
 	int aging_test;
@@ -1065,31 +993,7 @@ struct touchpanel_data {
 	char *ioc_init_buf;
 	u8 en_touch_event_helper;
 	const char *touch_environment;
-#ifdef CONFIG_TOUCHPANEL_TRUSTED_TOUCH
-	struct trusted_touch_vm_info *vm_info;
-	struct mutex clk_io_ctrl_mutex;
-	struct completion trusted_touch_powerdown;
-	struct clk *core_clk;
-	struct clk *iface_clk;
-	atomic_t trusted_touch_initialized;
-	atomic_t trusted_touch_enabled;
-	atomic_t trusted_touch_transition;
-	atomic_t trusted_touch_event;
-	atomic_t trusted_touch_abort_status;
-	atomic_t delayed_vm_probe_pending;
-	atomic_t trusted_touch_mode;
-	int bus_type_tvm;
-	int te_irq;
-	struct mutex transition_lock;
-	spinlock_t irq_lock;
-	bool irq_disabled;
-	uint32_t irq_tui_flags;
-#endif
 };
-
-#ifdef CONFIG_OPLUS_TP_APK
-void log_buf_write(struct touchpanel_data *ts, u8 value);
-#endif
 
 struct engineer_test_operations {
 	int (*black_screen_test)(struct black_gesture_test *p, struct touchpanel_data *ts); 
