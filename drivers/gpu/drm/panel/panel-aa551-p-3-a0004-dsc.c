@@ -341,24 +341,7 @@ static int panel_aa551_p_3_a0004_dsc_turn_on(struct panel_aa551_p_3_a0004_dsc *c
 	
 	msleep(120); // Required
 	
-	//Demura
-	mipi_dsi_dcs_write_seq(dsi, 0xff, 0x08, 0x38, 0x53);
-	mipi_dsi_dcs_write_seq(dsi, 0x86, 0x72);
-	mipi_dsi_dcs_write_seq(dsi, 0x90, 
-				   0x00, 0x00, 0x17, 0x27, 0x27, 0x00, 0x10, 0x00, 
-				   0x27, 0x1d, 0x2c, 0x2c, 0x00, 0x18, 0x00, 0x40, 
-				   0x2a, 0x30, 0x30, 0x00, 0x40, 0x00, 0x2d, 0x3d, 
-				   0x31, 0x61, 0x00, 0x61, 0x00, 0x56, 0x76, 0x6d, 
-				   0x7d, 0x00, 0x9d, 0x00, 0x10, 0x30, 0x28, 0x50, 
-				   0x00, 0x80, 0x00, 0x38, 0x60, 0x60, 0x7d, 0x00, 
-				   0x86, 0x14, 0xb0, 0x20, 0x03, 0xf3, 0x01, 0x33, 
-				   0x3f, 0x00, 0xff, 0xff, 0xff, 0x03, 0xff);
-	mipi_dsi_dcs_write_seq(dsi, 0x93, 
-				   0x10, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x70, 
-				   0x00, 0x10, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 
-				   0x70, 0x00, 0x10, 0x20, 0x20, 0x20, 0x20, 0x20, 
-				   0x20, 0x70, 0x00);
-	mipi_dsi_dcs_write_seq(dsi, 0xff, 0x08, 0x38, 0x00);
+	
 	
 	mipi_dsi_dcs_set_display_on(dsi);
 
@@ -394,6 +377,53 @@ static int panel_aa551_p_3_a0004_dsc_prepare(struct drm_panel *panel)
 		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
 		return ret;
 	}
+	
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x2d);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x80, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xd0, 0x01);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x02);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xa6, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xb0, 0x01, 0x11, 0x80, 0x00, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xfe, 0x00, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xb1, 0xff, 0xff, 0xff, 0x01, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xfe, 0x00, 0x00, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xfe, 0x00, 0x00, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xc2, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xc3, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xb6, 0x80);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x23);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xcb, 0x01);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x65);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x81, 0x00, 0x00, 0x30, 0x03);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x82, 0x00, 0x00, 0x30, 0x03);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x83, 0x00, 0x00, 0x30, 0x03);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x84, 0x00, 0x00, 0x30, 0x03);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x85, 0x00, 0x00, 0x30, 0x03);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x23);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xcb, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x23);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xcb, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x4f);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x81, 0x01);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x80, 0x01);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x88, 0x78);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x02);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xa7, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xa2, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x20);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xbc, 0x52);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xbd, 0x34);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xbe, 0x56);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x0b);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x8c, 0x10);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x8d, 0x03);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x8e, 0xbf);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x4f);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x8b, 0x78);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0xff, 0x08, 0x38, 0x00);
+	mipi_dsi_dcs_write_seq(ctx->dsi, 0x2c);
 
 	drm_dsc_pps_payload_pack(&pps, &ctx->dsc);
 
@@ -457,22 +487,63 @@ static int panel_aa551_p_3_a0004_dsc_unprepare(struct drm_panel *panel)
 	return 0;
 }
 
-static const struct drm_display_mode panel_aa551_p_3_a0004_dsc_mode = {
-	.clock = (1264 + 26 + 2 + 26) * (2780 + 22 + 2 + 42) * 120 / 1000,
-	.hdisplay = 1264,
-	.hsync_start = 1264 + 26,
-	.hsync_end = 1264 + 26 + 2,
-	.htotal = 1264 + 26 + 2 + 26,
-	.vdisplay = 2780,
-	.vsync_start = 2780 + 22,
-	.vsync_end = 2780 + 22 + 2,
-	.vtotal = 2780 + 22 + 2 + 42,
+const struct drm_display_mode panel_aa551_p_3_a0004_dsc_modes[] = {
+	{
+		.clock = (1264 + 26 + 2 + 26) * (2780 + 22 + 2 + 42) * 120 / 1000,
+		.hdisplay = 1264,
+		.hsync_start = 1264 + 26,
+		.hsync_end = 1264 + 26 + 2,
+		.htotal = 1264 + 26 + 2 + 26,
+		.vdisplay = 2780,
+		.vsync_start = 2780 + 22,
+		.vsync_end = 2780 + 22 + 2,
+		.vtotal = 2780 + 22 + 2 + 42,
+	},
+	{
+		.clock = (1264 + 26 + 2 + 26) * (2780 + 971 + 2 + 42) * 90 / 1000,
+		.hdisplay = 1264,
+		.hsync_start = 1264 + 26,
+		.hsync_end = 1264 + 26 + 2,
+		.htotal = 1264 + 26 + 2 + 26,
+		.vdisplay = 2780,
+		.vsync_start = 2780 + 971,
+		.vsync_end = 2780 + 971 + 2,
+		.vtotal = 2780 + 971 + 2 + 42,
+	},
+	{
+		.clock = (1264 + 26 + 2 + 26) * (2780 + 2868 + 2 + 42) * 60 / 1000,
+		.hdisplay = 1264,
+		.hsync_start = 1264 + 26,
+		.hsync_end = 1264 + 26 + 2,
+		.htotal = 1264 + 26 + 2 + 26,
+		.vdisplay = 2780,
+		.vsync_start = 2780 + 2868,
+		.vsync_end = 2780 + 2868 + 2,
+		.vtotal = 2780 + 2868 + 2 + 42,
+	},
 };
 
 static int panel_aa551_p_3_a0004_dsc_get_modes(struct drm_panel *panel,
 					       struct drm_connector *connector)
 {
-	return drm_connector_helper_get_modes_fixed(connector, &panel_aa551_p_3_a0004_dsc_mode);
+	struct drm_display_mode *mode;
+	unsigned int i;
+
+	for (i = 0; i < ARRAY_SIZE(panel_aa551_p_3_a0004_dsc_modes); i++) {
+		mode = drm_mode_duplicate(connector->dev, &panel_aa551_p_3_a0004_dsc_modes[i]);
+		if (!mode)
+			return -ENOMEM;
+
+		drm_mode_set_name(mode);
+
+		mode->type = DRM_MODE_TYPE_DRIVER;
+		if (i == 0)
+			mode->type |= DRM_MODE_TYPE_PREFERRED;
+
+		drm_mode_probed_add(connector, mode);
+	}
+
+	return ARRAY_SIZE(panel_aa551_p_3_a0004_dsc_modes);
 }
 
 static const struct drm_panel_funcs panel_aa551_p_3_a0004_dsc_panel_funcs = {
@@ -489,9 +560,23 @@ static int panel_aa551_p_3_a0004_dsc_bl_update_status(struct backlight_device *b
 	u16 brightness = backlight_get_brightness(bl);
 	int ret;
 
+	mipi_dsi_dcs_write_seq(dsi, 0xff, 0x08, 0x38, 0x4e);
+	if (brightness >= 1088 && brightness <= 1768) {
+			mipi_dsi_dcs_write_seq(dsi, 0xd4, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80);
+			mipi_dsi_dcs_write_seq(dsi, 0xd1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80);
+	} else {
+			mipi_dsi_dcs_write_seq(dsi, 0xd4, 0x00, 0x06, 0x06, 0x06, 0x06, 0x06, 0x00, 0x80);
+			mipi_dsi_dcs_write_seq(dsi, 0xd1, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x80);
+	}
+	mipi_dsi_dcs_write_seq(dsi, 0xff, 0x08, 0x38, 0x00);
+
 	ret = mipi_dsi_dcs_set_display_brightness_large(dsi, brightness);
 	if (ret < 0)
-		return ret;
+			return ret;
+
+	mipi_dsi_dcs_write_seq(dsi, 0xff, 0x08, 0x38, 0x1e);
+	mipi_dsi_dcs_write_seq(dsi, 0xc2, 0xff, 0xff, 0xe5, 0x61, 0x00, 0x62);
+	mipi_dsi_dcs_write_seq(dsi, 0xff, 0x08, 0x38, 0x00);
 
 	return 0;
 }
@@ -601,8 +686,10 @@ static void panel_aa551_p_3_a0004_dsc_remove(struct mipi_dsi_device *dsi)
 }
 
 static const struct of_device_id panel_aa551_p_3_a0004_dsc_of_match[] = {
-	{ .compatible = "panel,aa551-p-3-a0004-dsc" }, // FIXME
-	{ /* sentinel */ }
+	{
+			.compatible = "panel,aa551-p-3-a0004-dsc",
+	},
+	{},
 };
 MODULE_DEVICE_TABLE(of, panel_aa551_p_3_a0004_dsc_of_match);
 

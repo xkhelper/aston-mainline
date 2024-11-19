@@ -8,6 +8,7 @@
 #include <dt-bindings/arm/qcom,ids.h>
 #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
 #include <dt-bindings/leds/common.h>
+#include <dt-bindings/interconnect/qcom,icc.h>
 #include "sm8550.dtsi"
 #include "pm8010.dtsi"
 #include "pm8550.dtsi"
@@ -19,8 +20,8 @@
 
 /* Remove wrong nodes */
 /delete-node/ &rmtfs_mem;
-/delete-node/ &adspslpi_mem;
-/delete-node/ &mpss_mem;
+//delete-node/ &adspslpi_mem;
+//delete-node/ &mpss_mem;
 /delete-node/ &trust_ui_vm_mem;
 /delete-node/ &trust_ui_vm_qrtr;
 /delete-node/ &oem_vm_vblk0_ring;
@@ -32,7 +33,7 @@
 /delete-node/ &trust_ui_vm_swiotlb;
 /delete-node/ &oem_vm_mem;
 
-/delete-node/ &sdhc_2;
+//delete-node/ &sdhc_2;
 
 / {
 	model = "OnePlus Ace 3";
@@ -51,6 +52,297 @@
 		device_type = "memory";
 		reg = <0x00 0x80000000 0x00 0xe00000 0x00 0x811d0000 0x00 0x56f90000 0x00 0xd8800000 0x00 0x00 0x00 0xe1bb0000 0x00 0x1e450000 0x08 0x80000000 0x00 0x38700000 0x08 0xc0000000 0x01 0x40000000 0x0a 0x00 0x02 0x00>;
 	};
+	
+	venus: video-codec@aa00000 {
+		compatible = "qcom,sm8550-iris";
+		reg = <0x0 0x0aa00000 0x0 0xf0000>;
+		interrupts = <GIC_SPI 174 IRQ_TYPE_LEVEL_HIGH>;
+
+		power-domains = <&videocc VIDEO_CC_MVS0C_GDSC>,
+						<&videocc VIDEO_CC_MVS0_GDSC>,
+						<&rpmhpd RPMHPD_MXC>,
+						<&rpmhpd RPMHPD_MMCX>;
+		power-domain-names = "venus", "vcodec0", "mxc", "mmcx";
+
+		clocks = <&gcc GCC_VIDEO_AXI0_CLK>,
+				 <&videocc VIDEO_CC_MVS0C_CLK>,
+				 <&videocc VIDEO_CC_MVS0_CLK>;
+		clock-names = "iface", "core", "vcodec0_core";
+
+		interconnects = <&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
+						 &config_noc SLAVE_VENUS_CFG QCOM_ICC_TAG_ALWAYS>,
+						<&mmss_noc MASTER_VIDEO QCOM_ICC_TAG_ALWAYS
+						 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
+		interconnect-names = "cpu-cfg", "video-mem";
+
+		memory-region = <&video_mem>;
+
+		resets = <&gcc GCC_VIDEO_AXI0_CLK_ARES>;
+		reset-names = "bus";
+
+		iommus = <&apps_smmu 0x1940 0x0000>,
+				 <&apps_smmu 0x1947 0x0000>;
+		dma-coherent;
+
+		operating-points-v2 = <&iris_opp_table>;
+
+		iris_opp_table: opp-table {
+			compatible = "operating-points-v2";
+
+			opp-240000000 {
+				opp-hz = /bits/ 64 <240000000>;
+				required-opps = <&rpmhpd_opp_svs>,
+								<&rpmhpd_opp_low_svs>;
+			};
+
+			opp-338000000 {
+				opp-hz = /bits/ 64 <338000000>;
+				required-opps = <&rpmhpd_opp_svs>,
+								<&rpmhpd_opp_svs>;
+			};
+
+			opp-366000000 {
+				opp-hz = /bits/ 64 <366000000>;
+				required-opps = <&rpmhpd_opp_svs_l1>,
+								<&rpmhpd_opp_svs_l1>;
+			};
+
+			opp-444000000 {
+				opp-hz = /bits/ 64 <444000000>;
+				required-opps = <&rpmhpd_opp_turbo>,
+								<&rpmhpd_opp_turbo>;
+			};
+
+			opp-533333334 {
+				opp-hz = /bits/ 64 <533333334>;
+				required-opps = <&rpmhpd_opp_turbo_l1>,
+								<&rpmhpd_opp_turbo_l1>;
+			};
+		};
+	};
+	
+	/*camss: camss@ace4000 {
+		compatible = "qcom,sm8550-camss";
+
+		reg = <0 0x0acb7000 0 0xd00>,
+			  <0 0x0acb9000 0 0xd00>,
+			  <0 0x0acbb000 0 0xd00>,
+			  <0 0x0acca000 0 0xa00>,
+			  <0 0x0acce000 0 0xa00>,
+			  <0 0x0acb6000 0 0x1000>,
+			  <0 0x0ace4000 0 0x2000>,
+			  <0 0x0ace6000 0 0x2000>,
+			  <0 0x0ace8000 0 0x2000>,
+			  <0 0x0acea000 0 0x2000>,
+			  <0 0x0acec000 0 0x2000>,
+			  <0 0x0acee000 0 0x2000>,
+			  <0 0x0acf0000 0 0x2000>,
+			  <0 0x0acf2000 0 0x2000>,
+			  <0 0x0ac62000 0 0xf000>,
+			  <0 0x0ac71000 0 0xf000>,
+			  <0 0x0ac80000 0 0xf000>,
+			  <0 0x0accb000 0 0x2800>,
+			  <0 0x0accf000 0 0x2800>;
+		reg-names = "csid0",
+					"csid1",
+					"csid2",
+					"csid_lite0",
+					"csid_lite1",
+					"csid_top",
+					"csiphy0",
+					"csiphy1",
+					"csiphy2",
+					"csiphy3",
+					"csiphy4",
+					"csiphy5",
+					"csiphy6",
+					"csiphy7",
+					"vfe0",
+					"vfe1",
+					"vfe2",
+					"vfe_lite0",
+					"vfe_lite1";
+
+		clocks = <&gcc GCC_CAMERA_AHB_CLK>,
+                 <&gcc GCC_CAMERA_HF_AXI_CLK>,
+                 <&gcc GCC_CAMERA_SF_AXI_CLK>,
+                 <&camcc CAM_CC_CAMNOC_AXI_CLK>,
+                 <&camcc CAM_CC_CAMNOC_AXI_CLK_SRC>,
+                 <&camcc CAM_CC_CORE_AHB_CLK>,
+                 <&camcc CAM_CC_CPAS_AHB_CLK>,
+                 <&camcc CAM_CC_SLOW_AHB_CLK_SRC>,
+                 <&camcc CAM_CC_CSIPHY0_CLK>,
+                 <&camcc CAM_CC_CSI0PHYTIMER_CLK>,
+                 <&camcc CAM_CC_CSIPHY1_CLK>,
+                 <&camcc CAM_CC_CSI1PHYTIMER_CLK>,
+                 <&camcc CAM_CC_CSIPHY2_CLK>,
+                 <&camcc CAM_CC_CSI2PHYTIMER_CLK>,
+                 <&camcc CAM_CC_CSIPHY3_CLK>,
+                 <&camcc CAM_CC_CSI3PHYTIMER_CLK>,
+                 <&camcc CAM_CC_CSIPHY4_CLK>,
+                 <&camcc CAM_CC_CSI4PHYTIMER_CLK>,
+                 <&camcc CAM_CC_CSIPHY5_CLK>,
+                 <&camcc CAM_CC_CSI5PHYTIMER_CLK>,
+                 <&camcc CAM_CC_CSIPHY6_CLK>,
+                 <&camcc CAM_CC_CSI6PHYTIMER_CLK>,
+                 <&camcc CAM_CC_CSIPHY7_CLK>,
+                 <&camcc CAM_CC_CSI7PHYTIMER_CLK>,
+                 <&camcc CAM_CC_CSID_CLK_SRC>,
+                 <&camcc CAM_CC_CSID_CLK>,
+                 <&camcc CAM_CC_CSID_CSIPHY_RX_CLK>,
+                 <&camcc CAM_CC_IFE_0_FAST_AHB_CLK>,
+                 <&camcc CAM_CC_IFE_0_CLK_SRC>,
+                 <&camcc CAM_CC_IFE_0_CLK>,
+                 <&camcc CAM_CC_CPAS_IFE_0_CLK>,
+                 <&camcc CAM_CC_IFE_1_FAST_AHB_CLK>,
+                 <&camcc CAM_CC_IFE_1_CLK_SRC>,
+                 <&camcc CAM_CC_IFE_1_CLK>,
+                 <&camcc CAM_CC_CPAS_IFE_1_CLK>,
+                 <&camcc CAM_CC_IFE_2_FAST_AHB_CLK>,
+                 <&camcc CAM_CC_IFE_2_CLK_SRC>,
+                 <&camcc CAM_CC_IFE_2_CLK>,
+                 <&camcc CAM_CC_CPAS_IFE_2_CLK>,
+                 <&camcc CAM_CC_IFE_LITE_AHB_CLK>,
+                 <&camcc CAM_CC_IFE_LITE_CSID_CLK_SRC>,
+                 <&camcc CAM_CC_IFE_LITE_CSID_CLK>,
+                 <&camcc CAM_CC_IFE_LITE_CPHY_RX_CLK>,
+                 <&camcc CAM_CC_IFE_LITE_CLK>,
+                 <&camcc CAM_CC_CPAS_IFE_LITE_CLK>,
+                 <&camcc CAM_CC_CPAS_FAST_AHB_CLK>,
+                 <&camcc CAM_CC_FAST_AHB_CLK_SRC>;
+
+		clock-names = "cam_ahb_clk",
+                      "cam_hf_axi",
+                      "cam_sf_axi",
+                      "camnoc_axi",
+                      "camnoc_axi_src",
+                      "core_ahb",
+                      "cpas_ahb",
+                      "slow_ahb_src",
+                      "csiphy0",
+                      "csiphy0_timer",
+                      "csiphy1",
+                      "csiphy1_timer",
+                      "csiphy2",
+                      "csiphy2_timer",
+                      "csiphy3",
+                      "csiphy3_timer",
+                      "csiphy4",
+                      "csiphy4_timer",
+                      "csiphy5",
+                      "csiphy5_timer",
+                      "csiphy6",
+                      "csiphy6_timer",
+                      "csiphy7",
+                      "csiphy7_timer",
+                      "csid_src",
+                      "csid",
+                      "csiphy_rx",
+                      "vfe0_fast_ahb",
+                      "vfe0_src",
+                      "vfe0",
+                      "cpas_vfe0",
+                      "vfe1_fast_ahb",
+                      "vfe1_src",
+                      "vfe1",
+                      "cpas_vfe1",
+                      "vfe2_fast_ahb",
+                      "vfe2_src",
+                      "vfe2",
+                      "cpas_vfe2",
+                      "vfe_lite_ahb",
+                      "vfe_lite_csid_src",
+                      "vfe_lite_csid",
+                      "vfe_lite_cphy_rx",
+                      "vfe_lite",
+                      "cpas_ife_lite",
+                      "cpas_fast_ahb_clk",
+                      "fast_ahb_src";
+
+		interconnects = <&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_CAMERA_CFG 0>,
+						<&mmss_noc MASTER_CAMNOC_HF 0 &mc_virt SLAVE_EBI1 0>,
+						<&mmss_noc MASTER_CAMNOC_SF 0 &mc_virt SLAVE_EBI1 0>,
+						<&mmss_noc MASTER_CAMNOC_ICP 0 &mc_virt SLAVE_EBI1 0>;
+		interconnect-names = "cam_ahb",
+					 "cam_hf_0_mnoc",
+					 "cam_sf_0_mnoc",
+					 "cam_sf_icp_mnoc";
+
+		interrupts = <GIC_SPI 601 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 603 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 431 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 605 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 376 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 278 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 277 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 602 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 604 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 688 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 606 IRQ_TYPE_LEVEL_HIGH>,
+					 <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>;
+
+		interrupt-names = "csid0",
+						  "csid1",
+						  "csid2",
+						  "csid_lite0",
+						  "csid_lite1",
+						  "csiphy0",
+						  "csiphy1",
+						  "csiphy2",
+						  "csiphy3",
+						  "csiphy4",
+						  "csiphy5",
+						  "csiphy6",
+						  "csiphy7",
+						  "vfe0",
+						  "vfe1",
+						  "vfe2",
+						  "vfe_lite0",
+						  "vfe_lite1";
+
+		iommus = <&apps_smmu 0x800 0x20>;
+
+		power-domains = <&camcc CAM_CC_IFE_0_GDSC>,
+						<&camcc CAM_CC_IFE_1_GDSC>,
+						<&camcc CAM_CC_IFE_2_GDSC>,
+						<&camcc CAM_CC_TITAN_TOP_GDSC>;
+
+		power-domain-names = "ife0",
+							 "ife1",
+							 "ife2",
+							 "top";
+
+		vdda-phy-supply = <&vreg_l1e_0p88>;
+		vdda-pll-supply = <&vreg_l3e_1p2>;
+
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			port@0 {
+				reg = <0>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+			};
+			
+			port@3 {
+				reg = <3>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+				
+				csiphy3_ep: endpoint {
+					data-lanes = <0 1 2 3>;
+					remote-endpoint = <&cam_uw_endpoint>;
+				};
+			};
+		};
+	};*/
 	
 	wcd938x: audio-codec {
 		compatible = "qcom,wcd9385-codec";
@@ -138,13 +430,13 @@
 					};
 				};
 
-				port@2 {
+				/*port@2 {
 					reg = <2>;
 
 					pmic_glink_sbu: endpoint {
 						remote-endpoint = <&fsa4480_sbu_mux>;
 					};
-				};
+				};*/
 			};
 		};
 	};
@@ -216,6 +508,27 @@
 		};
 	};
 
+	fingerprint_dev: fingerprint_dev {
+		status = "ok";
+		compatible = "oplus,fp_spi";
+		interrupt-parent = <&tlmm>;
+		interrupts = <40 0>;
+		power-mode = <1> ; /*0: power mode not set, 1: ldo power, 2: gpio power, 3: auto power */
+		ldo-supply = <&vreg_l14b_3p2>;
+		ldo-config = <3008000 3008000 150000>;
+		uff,gpio_irq = <&tlmm 40 0x1>;
+		uff,gpio_reset = <&tlmm 42 0x0>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&fp_irq_gpio_default>,<&fp_reset_gpio_default>;
+		notify_tpinfo_flag = <1>;
+		power-num = <1>;
+		power_source_1 {
+			power-mode = <1>;
+			power-name = "ldo";
+			power-config = "ldo-config";
+			delay-time = <0>;
+		};
+	};
 
 	reserved-memory {
 		#address-cells = <2>;
@@ -260,20 +573,20 @@
 
 		adsp_mhi_mem: adsp-mhi-region@81f00000 {
 			no-map;
-			reg = <0x00 0x81f00000 0x00 0x20000>;
+			reg = <0x00 0x81f00000 0x00 0x20000>; // 81F20000 end, 6E0000 space between
 		};
 
 		global_sync_mem: global-sync-region@82600000 {
 			no-map;
-			reg = <0x00 0x82600000 0x00 0x100000>;
+			reg = <0x00 0x82600000 0x00 0x100000>; // 82700000 end, 0 space between
 		};
 
 		tz_stat_mem: tz-stat-region@82700000 {
 			no-map;
-			reg = <0x00 0x82700000 0x00 0x100000>;
+			reg = <0x00 0x82700000 0x00 0x100000>; // 82800000 end, 8000000 space between
 		};
 
-		mpss_mem: mpss-region@89800000 {
+		mpss_mem: mpss-region@8a800000 {
 			no-map;
 			reg = <0x00 0x8a800000 0x00 0x10800000>;
 		};
@@ -630,6 +943,7 @@
 			regulator-min-microvolt = <1800000>;
 			regulator-max-microvolt = <1800000>;
 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+			regulator-always-on;
 		};
 
 		vreg_l11b_1p2: ldo11 {
@@ -895,6 +1209,7 @@
 			regulator-min-microvolt = <1200000>;
 			regulator-max-microvolt = <1200000>;
 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+			regulator-always-on;
 		};
 
 		vreg_l3m_2p8: ldo3 {
@@ -902,6 +1217,7 @@
 			regulator-min-microvolt = <2200000>;
 			regulator-max-microvolt = <3304000>;
 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+			
 		};
 
 		vreg_l4m_2p8: ldo4 {
@@ -920,9 +1236,10 @@
 
 		vreg_l6m_2p8: ldo6 {
 			regulator-name = "vreg_l6m_2p8";
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <3304000>;
+			regulator-min-microvolt = <2848000>;
+			regulator-max-microvolt = <2848000>;
 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+			regulator-always-on;
 		};
 
 		vreg_l7m_2p85: ldo7 {
@@ -938,7 +1255,7 @@
 
 &ipa {
 	qcom,gsi-loader = "self";
-	memory-region = <&ipa_gsi_mem>;
+	memory-region = <&ipa_fw_mem>;
 	firmware-name = "qcom/sm8550/aston/ipa_fws.mbn";
 	status = "okay";
 };
@@ -1027,7 +1344,7 @@
 &remoteproc_mpss {
 	firmware-name = "qcom/sm8550/aston/modem.mbn",
 			"qcom/sm8550/aston/modem_dtb.mbn";
-	status = "okay";
+	status = "disabled";
 };
 
 &sleep_clk {
@@ -1251,6 +1568,56 @@
 			bias-pull-down; 
 		}; 
 	};
+	
+	cam_uw_default: cam-uw-default-state {
+		cam_sensor_mclk1_active: cam_sensor_mclk1_active {
+			pins = "gpio101";
+			function = "cam_mclk";
+			drive-strength = <4>;
+			bias-disable;
+		};
+		
+		cam_sensor_mclk1_suspend: cam_sensor_mclk1_suspend {
+			pins = "gpio101";
+			function = "cam_mclk";
+			drive-strength = <4>;
+			bias-pull-down;
+		};
+		
+		cam_sensor_active_rst2: cam_sensor_active_rst2 {
+			pins = "gpio118";
+			function = "gpio";
+			drive-strength = <2>;
+			output-high;
+			bias-disable;
+		};
+		
+		cam_sensor_suspend_rst2: cam_sensor_suspend_rst2 {
+			pins = "gpio118";
+			function = "gpio";
+			drive-strength = <2>;
+			output-low;
+			bias-pull-down;
+		};
+	};
+	
+	fingerprint_dev {
+		fp_irq_gpio_default: fp_irq_gpio_default {
+			pins = "gpio40";
+			function = "gpio";
+			drive-strength = <2>;
+			input-enable;
+			bias-disable;
+		};
+
+		fp_reset_gpio_default: fp_reset_gpio_default {
+			pins = "gpio42";
+			function = "gpio";
+			drive-strength = <2>;
+			output-low;
+			bias-disable;
+		};
+	};
 };
 
 &ufs_mem_hc {
@@ -1291,11 +1658,10 @@
 	vdda12-supply = <&vreg_l3e_1p2>;
 
 	phys = <&pm8550b_eusb2_repeater>;
-
 	status = "okay";
 };
 
-&usb_dp_qmpphy {
+/*&usb_dp_qmpphy {
 	vdda-phy-supply = <&vreg_l3e_1p2>;
 	vdda-pll-supply = <&vreg_l3f_0p91>;
 
@@ -1304,7 +1670,7 @@
 
 &usb_dp_qmpphy_out {
 	remote-endpoint = <&pmic_glink_ss_in>;
-};
+};*/
 
 &xo_board {
 	clock-frequency = <76800000>;
@@ -1505,6 +1871,7 @@
 		qcom,tx-port-mapping = <2 2 3 4>;
 	};
 };
+
 &i2c0 {
 	status = "okay";
 	nfc: sn-nci@28 {
@@ -1545,7 +1912,7 @@
 	};
 };
 
-&i2c_hub_2 {
+/*&i2c_hub_2 {
 	status = "okay";
 	typec-mux@42 {
 		compatible = "fcs,fsa4480";
@@ -1562,7 +1929,7 @@
 			};
 		};
 	};
-};
+};*/
 
 &spi4 {
 	status = "okay";
@@ -1605,3 +1972,62 @@
 		};
 	};
 };
+
+/*&pm8550b_eusb2_repeater {
+	qcom,tune-usb2-amplitude = <16>;
+	qcom,tune-usb2-disc-thres = <6>;
+	qcom,tune-usb2-preem = <7>;
+};*/
+
+&videocc {
+	power-domains = <&rpmhpd SM8550_MXC>;
+};
+
+/*&camcc {
+	power-domains = <&rpmhpd SM8550_MXC>;
+};
+
+&cci0 {
+	status = "okay";
+	pinctrl-0 = <&cci0_0_default &cci0_1_default &cam_sensor_mclk1_active>;
+	pinctrl-1 = <&cci0_0_sleep &cci0_1_sleep &cam_sensor_mclk1_suspend>;
+	pinctrl-names = "default", "sleep";
+};
+
+&cci0_i2c1 {
+	status = "okay";
+	camera@1a {
+		compatible = "sony,imx355";
+		reg = <0x1a>;
+		
+		reset-gpios = <&tlmm 118 GPIO_ACTIVE_HIGH>;
+		
+		clocks = <&camcc CAM_CC_MCLK1_CLK>;
+		clock-names = "mclk";
+		
+		clock-frequency = <19200000>;
+
+		assigned-clocks = <&camcc CAM_CC_MCLK1_CLK>;
+		assigned-clock-rates = <19200000>;
+
+		power-domains = <&rpmhpd SM8550_MMCX>, <&rpmhpd SM8550_MXC>;
+		power-domain-names = "mmcxpd", "mxcpd";
+
+		vana-supply = <&vreg_l6m_2p8>;
+		vdig-supply = <&vreg_l2m_1p08>;
+		vio-supply = <&vreg_l10b_1p8>;
+		clk-supply = <&camcc CAM_CC_TITAN_TOP_GDSC>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&cam_sensor_active_rst2>;
+
+		port {
+			cam_uw_endpoint: endpoint {
+				data-lanes = <0 1 2 3>;
+				link-frequencies = /bits/ 64 <360000000>;
+				remote-endpoint = <&csiphy3_ep>;
+			};
+		};
+	};
+};
+*/
