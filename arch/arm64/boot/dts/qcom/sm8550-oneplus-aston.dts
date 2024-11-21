@@ -22,10 +22,23 @@
 /delete-node/ &rmtfs_mem;
 //delete-node/ &adspslpi_mem;
 //delete-node/ &mpss_mem;
+/delete-node/ &tz_stat_mem;
+/delete-node/ &global_sync_mem;
 /delete-node/ &trust_ui_vm_mem;
 /delete-node/ &trust_ui_vm_qrtr;
 /delete-node/ &oem_vm_vblk0_ring;
 /delete-node/ &oem_vm_swiotlb;
+
+
+/delete-node/ &hyp_tags_mem;
+/delete-node/ &hyp_tags_reserved_mem;
+/delete-node/ &cdsp_secure_heap_mem;
+/delete-node/ &camera_mem;
+/delete-node/ &cvp_mem;
+/delete-node/ &ta_mem;
+/delete-node/ &tz_tags_mem;
+/delete-node/ &hyp_ext_tags_mem;
+/delete-node/ &hyp_ext_reserved_mem;
 
 /delete-node/ &trust_ui_vm_dump;
 /delete-node/ &trust_ui_vm_vblk0_ring;
@@ -121,49 +134,98 @@
 		};
 	};
 	
-	/*camss: camss@ace4000 {
-		compatible = "qcom,sm8550-camss";
+	camss: camss@ace4000 {
+			compatible = "qcom,sm8550-camss";
 
-		reg = <0 0x0acb7000 0 0xd00>,
-			  <0 0x0acb9000 0 0xd00>,
-			  <0 0x0acbb000 0 0xd00>,
-			  <0 0x0acca000 0 0xa00>,
-			  <0 0x0acce000 0 0xa00>,
-			  <0 0x0acb6000 0 0x1000>,
-			  <0 0x0ace4000 0 0x2000>,
-			  <0 0x0ace6000 0 0x2000>,
-			  <0 0x0ace8000 0 0x2000>,
-			  <0 0x0acea000 0 0x2000>,
-			  <0 0x0acec000 0 0x2000>,
-			  <0 0x0acee000 0 0x2000>,
-			  <0 0x0acf0000 0 0x2000>,
-			  <0 0x0acf2000 0 0x2000>,
-			  <0 0x0ac62000 0 0xf000>,
-			  <0 0x0ac71000 0 0xf000>,
-			  <0 0x0ac80000 0 0xf000>,
-			  <0 0x0accb000 0 0x2800>,
-			  <0 0x0accf000 0 0x2800>;
-		reg-names = "csid0",
-					"csid1",
-					"csid2",
-					"csid_lite0",
-					"csid_lite1",
-					"csid_top",
-					"csiphy0",
-					"csiphy1",
-					"csiphy2",
-					"csiphy3",
-					"csiphy4",
-					"csiphy5",
-					"csiphy6",
-					"csiphy7",
-					"vfe0",
-					"vfe1",
-					"vfe2",
-					"vfe_lite0",
-					"vfe_lite1";
+			reg = <0 0x0ace4000 0 0x2000>,
+                  <0 0x0ace6000 0 0x2000>,
+                  <0 0x0ace8000 0 0x2000>,
+                  <0 0x0acea000 0 0x2000>,
+                  <0 0x0acec000 0 0x2000>,
+                  <0 0x0acee000 0 0x2000>,
+                  <0 0x0acf0000 0 0x2000>,
+                  <0 0x0acf2000 0 0x2000>,
+                  <0 0x0acb7000 0 0xd00>,
+                  <0 0x0acb9000 0 0xd00>,
+                  <0 0x0acbb000 0 0xd00>,
+                  <0 0x0acca000 0 0xa00>,
+                  <0 0x0acce000 0 0xa00>,
+                  <0 0x0acb6000 0 0x1000>,
+                  <0 0x0ac62000 0 0xf000>,
+                  <0 0x0ac71000 0 0xf000>,
+                  <0 0x0ac80000 0 0xf000>,
+                  <0 0x0acca000 0 0x2800>,
+                  <0 0x0acce000 0 0x2800>;
+            reg-names = "csiphy0",
+                    "csiphy1",
+                    "csiphy2",
+                    "csiphy3",
+                    "csiphy4",
+                    "csiphy5",
+                    "csiphy6",
+                    "csiphy7",
+                    "csid0",
+                    "csid1",
+                    "csid2",
+                    "csid_lite0",
+                    "csid_lite1",
+                    "csid_top",
+                    "vfe0",
+                    "vfe1",
+                    "vfe2",
+                    "vfe_lite0",
+                    "vfe_lite1";
 
-		clocks = <&gcc GCC_CAMERA_AHB_CLK>,
+            vdda-phy-supply = <&vreg_l1e_0p88>;
+            vdda-pll-supply = <&vreg_l3e_1p2>;
+
+            interrupts = <GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 278 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 277 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 601 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 603 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 431 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 605 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 376 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 602 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 604 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 688 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 606 IRQ_TYPE_LEVEL_HIGH>,
+                     <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>;
+
+            interrupt-names = "csiphy0",
+                    "csiphy1",
+                    "csiphy2",
+                    "csiphy3",
+                    "csiphy4",
+                    "csiphy5",
+                    "csiphy6",
+                    "csiphy7",
+                    "csid0",
+                    "csid1",
+                    "csid2",
+                    "csid_lite0",
+                    "csid_lite1",
+                    "vfe0",
+                    "vfe1",
+                    "vfe2",
+                    "vfe_lite0",
+                    "vfe_lite1";
+
+            power-domains = <&camcc CAM_CC_IFE_0_GDSC>,
+                    <&camcc CAM_CC_IFE_1_GDSC>,
+                    <&camcc CAM_CC_IFE_2_GDSC>,
+                    <&camcc CAM_CC_TITAN_TOP_GDSC>,
+					<&rpmhpd RPMHPD_MX>,
+					<&rpmhpd RPMHPD_MXC>,
+					<&rpmhpd RPMHPD_MMCX>;
+
+            clocks = <&gcc GCC_CAMERA_AHB_CLK>,
                  <&gcc GCC_CAMERA_HF_AXI_CLK>,
                  <&gcc GCC_CAMERA_SF_AXI_CLK>,
                  <&camcc CAM_CC_CAMNOC_AXI_CLK>,
@@ -209,9 +271,10 @@
                  <&camcc CAM_CC_IFE_LITE_CLK>,
                  <&camcc CAM_CC_CPAS_IFE_LITE_CLK>,
                  <&camcc CAM_CC_CPAS_FAST_AHB_CLK>,
-                 <&camcc CAM_CC_FAST_AHB_CLK_SRC>;
+                 <&camcc CAM_CC_FAST_AHB_CLK_SRC>,
+				 <&gcc GCC_CAMERA_AHB_CLK>;
 
-		clock-names = "cam_ahb_clk",
+            clock-names = "cam_ahb_clk",
                       "cam_hf_axi",
                       "cam_sf_axi",
                       "camnoc_axi",
@@ -257,92 +320,52 @@
                       "vfe_lite",
                       "cpas_ife_lite",
                       "cpas_fast_ahb_clk",
-                      "fast_ahb_src";
+                      "fast_ahb_src",
+					  "gcc_camera_ahb";
 
-		interconnects = <&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_CAMERA_CFG 0>,
-						<&mmss_noc MASTER_CAMNOC_HF 0 &mc_virt SLAVE_EBI1 0>,
-						<&mmss_noc MASTER_CAMNOC_SF 0 &mc_virt SLAVE_EBI1 0>,
-						<&mmss_noc MASTER_CAMNOC_ICP 0 &mc_virt SLAVE_EBI1 0>;
-		interconnect-names = "cam_ahb",
-					 "cam_hf_0_mnoc",
-					 "cam_sf_0_mnoc",
-					 "cam_sf_icp_mnoc";
+            iommus = <&apps_smmu 0x800 0x20>;
 
-		interrupts = <GIC_SPI 601 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 603 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 431 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 605 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 376 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 278 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 277 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 602 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 604 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 688 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 606 IRQ_TYPE_LEVEL_HIGH>,
-					 <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>;
+            interconnects =
+                    <&gem_noc         MASTER_APPSS_PROC          0 &config_noc SLAVE_CAMERA_CFG  0>,
+                    <&mmss_noc        MASTER_CAMNOC_HF           0 &mc_virt SLAVE_EBI1           0>,
+                    <&mmss_noc        MASTER_CAMNOC_SF           0 &mc_virt SLAVE_EBI1           0>,
+                    <&mmss_noc        MASTER_CAMNOC_ICP          0 &mc_virt SLAVE_EBI1           0>;
+            interconnect-names =
+                    "cam_ahb",
+                    "cam_hf_0_mnoc",
+                    "cam_sf_0_mnoc",
+                    "cam_sf_icp_mnoc";
 
-		interrupt-names = "csid0",
-						  "csid1",
-						  "csid2",
-						  "csid_lite0",
-						  "csid_lite1",
-						  "csiphy0",
-						  "csiphy1",
-						  "csiphy2",
-						  "csiphy3",
-						  "csiphy4",
-						  "csiphy5",
-						  "csiphy6",
-						  "csiphy7",
-						  "vfe0",
-						  "vfe1",
-						  "vfe2",
-						  "vfe_lite0",
-						  "vfe_lite1";
-
-		iommus = <&apps_smmu 0x800 0x20>;
-
-		power-domains = <&camcc CAM_CC_IFE_0_GDSC>,
-						<&camcc CAM_CC_IFE_1_GDSC>,
-						<&camcc CAM_CC_IFE_2_GDSC>,
-						<&camcc CAM_CC_TITAN_TOP_GDSC>;
-
-		power-domain-names = "ife0",
-							 "ife1",
-							 "ife2",
-							 "top";
-
-		vdda-phy-supply = <&vreg_l1e_0p88>;
-		vdda-pll-supply = <&vreg_l3e_1p2>;
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
+			ports {
 				#address-cells = <1>;
 				#size-cells = <0>;
-			};
-			
-			port@3 {
-				reg = <3>;
-				#address-cells = <1>;
-				#size-cells = <0>;
-				
-				csiphy3_ep: endpoint {
-					data-lanes = <0 1 2 3>;
-					remote-endpoint = <&cam_uw_endpoint>;
+
+				port@0 {
+					reg = <0>;
+				};
+
+				port@1 {
+					reg = <1>;
+				};
+
+				port@2 {
+					reg = <2>;
+				};
+
+				port@3 {
+					reg = <3>;
+					#address-cells = <1>;
+					#size-cells = <0>;
+					
+					csiphy3_ep: endpoint {
+						clock-lanes = <7>;
+						data-lanes = <0 1 2 3>;
+						remote-endpoint = <&imx355_ep>;
+					};
 				};
 			};
 		};
-	};*/
+
 	
 	wcd938x: audio-codec {
 		compatible = "qcom,wcd9385-codec";
@@ -573,19 +596,9 @@
 
 		adsp_mhi_mem: adsp-mhi-region@81f00000 {
 			no-map;
-			reg = <0x00 0x81f00000 0x00 0x20000>; // 81F20000 end, 6E0000 space between
+			reg = <0x00 0x81f00000 0x00 0x20000>;
 		};
-
-		global_sync_mem: global-sync-region@82600000 {
-			no-map;
-			reg = <0x00 0x82600000 0x00 0x100000>; // 82700000 end, 0 space between
-		};
-
-		tz_stat_mem: tz-stat-region@82700000 {
-			no-map;
-			reg = <0x00 0x82700000 0x00 0x100000>; // 82800000 end, 8000000 space between
-		};
-
+		
 		mpss_mem: mpss-region@8a800000 {
 			no-map;
 			reg = <0x00 0x8a800000 0x00 0x10800000>;
@@ -611,36 +624,9 @@
 			reg = <0x00 0x9b09a000 0x00 0x2000>;
 		};
 
-		spss_region_mem: spss-region@9b100000 {
-			no-map;
-			reg = <0x00 0x9b100000 0x00 0x180000>;
-		};
-
-		/* First part of the "SPU secure shared memory" region */
-		spu_tz_shared_mem: spu-tz-shared-region@9b280000 {
-			no-map;
-			reg = <0x00 0x9b280000 0x00 0x60000>;
-		};
-
-		/* Second part of the "SPU secure shared memory" region */
-		spu_modem_shared_mem: spu-modem-shared-region@9b2e0000 {
-			no-map;
-			reg = <0x00 0x9b2e0000 0x00 0x20000>;
-		};
-
-		camera_mem: camera-region@9b300000 {
-			no-map;
-			reg = <0x00 0x9b300000 0x00 0x800000>;
-		};
-
 		video_mem: video-region@9bb00000 {
 			no-map;
 			reg = <0x00 0x9bb00000 0x00 0x700000>;
-		};
-
-		cvp_mem: cvp-region@9c200000 {
-			no-map;
-			reg = <0x00 0x9c200000 0x00 0x700000>;
 		};
 
 		cdsp_mem: cdsp-region@9c900000 {
@@ -701,64 +687,6 @@
 			no-map;
 			reg = <0x00 0xe6440000 0x00 0x279000>;
 		};
-
-		trust_ui_vm_mem: trust-ui-vm-region@f3800000 {
-			no-map;
-			reg = <0x00 0xf3800000 0x00 0x40ee000>;
-		};
-
-		trust_ui_vm_dump: trust-ui-vm-dump-region@f78ee000 {
-			no-map;
-			reg = <0x00 0xf78ee000 0x00 0x1000>;
-		};
-
-		trust_ui_vm_qrtr: trust-ui-vm-qrt-region@f78ef000 {
-			no-map;
-			reg = <0x00 0xf78ef000 0x00 0x9000>;
-		};
-
-		trust_ui_vm_vblk0_ring: trust-ui-vm-vblk0-ring-region@f78f8000 {
-			no-map;
-			reg = <0x00 0xf78f8000 0x00 0x4000>;
-		};
-
-		trust_ui_vm_vblk1_ring: trust-ui-vm-vblk1-ring-region@f78fc000 {
-			no-map;
-			reg = <0x00 0xf78fc000 0x00 0x4000>;
-		};
-
-		trust_ui_vm_swiotlb: trust-ui-vm-swiotlb-region@f7900000 {
-			no-map;
-			reg = <0x00 0xf7900000 0x00 0x100000>;
-		};
-
-		oem_vm_vblk0_ring: oem-vm-vblk0-ring-region@f7afc000 {
-			no-map;
-			reg = <0x00 0xf7afc000 0x00 0x4000>;
-		};
-
-		oem_vm_swiotlb: oem-vm-swiotlb-region@f7b00000 {
-			no-map;
-			reg = <0x00 0xf7b00000 0x00 0x100000>;
-		};
-
-		llcc_lpi_region: llcc_lpi_region@ff800000 {
-			no-map;
-			reg = <0x00 0xff800000 0x00 0x600000>;
-		};
-		
-		oem_vm_mem: oem-vm-region@f7c00000 {
-			reg = <0x00 0xf7c00000 0x00 0x4800000>;
-			no-map;
-		};
-
-		botloader_mem: botloader_mem@a7605000 {
-			reg = <0x00 0xa7605000 0x00 0x8000>;
-		};
-
-		device_info_mem: device_info_mem@a4f00000 {
-			reg = <0x00 0xa4f00000 0x00 0x8000>;
-		};
 	};
 
 	vph_pwr: vph-pwr-regulator {
@@ -792,10 +720,7 @@
 		pinctrl-0 = <&wlan_en>, <&pmk8550_sleep_clk>;
 
 		wlan-enable-gpios = <&tlmm 80 GPIO_ACTIVE_HIGH>;
-		/*
-		 * TODO Add bt-enable-gpios once the Bluetooth driver is
-		 * converted to using the power sequencer.
-		 */
+		bt-enable-gpios = <&tlmm 81 GPIO_ACTIVE_HIGH>;
 
 		vdd-supply = <&vreg_s5g_0p8>;
 		vddio-supply = <&vreg_l15b_1p8>; 
@@ -1570,21 +1495,14 @@
 	};
 	
 	cam_uw_default: cam-uw-default-state {
-		cam_sensor_mclk1_active: cam_sensor_mclk1_active {
+		mclk-pins {
 			pins = "gpio101";
 			function = "cam_mclk";
 			drive-strength = <4>;
 			bias-disable;
 		};
-		
-		cam_sensor_mclk1_suspend: cam_sensor_mclk1_suspend {
-			pins = "gpio101";
-			function = "cam_mclk";
-			drive-strength = <4>;
-			bias-pull-down;
-		};
-		
-		cam_sensor_active_rst2: cam_sensor_active_rst2 {
+
+		rst-pins {
 			pins = "gpio118";
 			function = "gpio";
 			drive-strength = <2>;
@@ -1592,7 +1510,18 @@
 			bias-disable;
 		};
 		
-		cam_sensor_suspend_rst2: cam_sensor_suspend_rst2 {
+		
+	};
+	
+	cam_uw_suspend: cam-uw-suspend-state {
+		mclk-pins {
+			pins = "gpio101";
+			function = "cam_mclk";
+			drive-strength = <4>;
+			bias-pull-down;
+		};
+		
+		rst-pins {
 			pins = "gpio118";
 			function = "gpio";
 			drive-strength = <2>;
@@ -1779,20 +1708,15 @@
 
 		local-bd-address = [ c2 59 96 e0 ca 00 ];
 
-		vddio-supply = <&vreg_l15b_1p8>;
-		vddaon-supply = <&vreg_s4e_0p9>;
-		vdddig-supply = <&vreg_s4e_0p9>;
-		vddrfa0p8-supply = <&vreg_s4e_0p9>;
-		vddrfa1p2-supply = <&vreg_s4g_1p3>;
-		vddrfa1p9-supply = <&vreg_s6g_1p8>;
+		vddrfacmn-supply = <&vreg_pmu_rfa_cmn>;
+		vddaon-supply = <&vreg_pmu_aon_0p59>;
+		vddwlcx-supply = <&vreg_pmu_wlcx_0p8>;
+		vddwlmx-supply = <&vreg_pmu_wlmx_0p85>;
+		vddrfa0p8-supply = <&vreg_pmu_rfa_0p8>;
+		vddrfa1p2-supply = <&vreg_pmu_rfa_1p2>;
+		vddrfa1p8-supply = <&vreg_pmu_rfa_1p8>;
 
 		max-speed = <3200000>;
-
-		enable-gpios = <&tlmm 81 GPIO_ACTIVE_HIGH>;
-		swctrl-gpios = <&tlmm 82 GPIO_ACTIVE_HIGH>;
-
-		pinctrl-0 = <&bt_default>;
-		pinctrl-names = "default";
 	};
 };
 
@@ -1883,7 +1807,7 @@
 		interrupt-parent = <&tlmm>;
 		interrupts = <55 0>;
 		interrupt-names = "nfc_irq";
-		pinctrl-names = "default","sleep";
+		pinctrl-names = "default", "sleep";
 		pinctrl-0 = <&nfc_int_active &nfc_enable_active &nfc_clk_req_active>;
 		pinctrl-1 = <&nfc_int_suspend &nfc_enable_suspend &nfc_clk_req_suspend>;
 	};
@@ -1973,6 +1897,14 @@
 	};
 };
 
+&gpi_dma1 {
+	status = "okay";
+};
+
+&gpi_dma2 {
+	status = "okay";
+};
+
 /*&pm8550b_eusb2_repeater {
 	qcom,tune-usb2-amplitude = <16>;
 	qcom,tune-usb2-disc-thres = <6>;
@@ -1983,15 +1915,14 @@
 	power-domains = <&rpmhpd SM8550_MXC>;
 };
 
-/*&camcc {
-	power-domains = <&rpmhpd SM8550_MXC>;
+&camcc {
+	power-domains = <&rpmhpd RPMHPD_MXC>,
+					<&rpmhpd RPMHPD_MX>,
+					<&rpmhpd RPMHPD_MMCX>;
 };
 
 &cci0 {
 	status = "okay";
-	pinctrl-0 = <&cci0_0_default &cci0_1_default &cam_sensor_mclk1_active>;
-	pinctrl-1 = <&cci0_0_sleep &cci0_1_sleep &cam_sensor_mclk1_suspend>;
-	pinctrl-names = "default", "sleep";
 };
 
 &cci0_i2c1 {
@@ -2003,26 +1934,21 @@
 		reset-gpios = <&tlmm 118 GPIO_ACTIVE_HIGH>;
 		
 		clocks = <&camcc CAM_CC_MCLK1_CLK>;
-		clock-names = "mclk";
-		
-		clock-frequency = <19200000>;
-
 		assigned-clocks = <&camcc CAM_CC_MCLK1_CLK>;
 		assigned-clock-rates = <19200000>;
-
-		power-domains = <&rpmhpd SM8550_MMCX>, <&rpmhpd SM8550_MXC>;
-		power-domain-names = "mmcxpd", "mxcpd";
+		clock-names = "mclk";
+		clock-frequency = <19200000>;
 
 		vana-supply = <&vreg_l6m_2p8>;
 		vdig-supply = <&vreg_l2m_1p08>;
 		vio-supply = <&vreg_l10b_1p8>;
-		clk-supply = <&camcc CAM_CC_TITAN_TOP_GDSC>;
 
-		pinctrl-names = "default";
-		pinctrl-0 = <&cam_sensor_active_rst2>;
+		pinctrl-names = "default", "suspend";
+		pinctrl-0 = <&cam_uw_default>;
+		pinctrl-1 = <&cam_uw_suspend>;
 
 		port {
-			cam_uw_endpoint: endpoint {
+			imx355_ep: endpoint {
 				data-lanes = <0 1 2 3>;
 				link-frequencies = /bits/ 64 <360000000>;
 				remote-endpoint = <&csiphy3_ep>;
@@ -2030,4 +1956,3 @@
 		};
 	};
 };
-*/
