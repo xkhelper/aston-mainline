@@ -489,6 +489,17 @@ static int panel_aa551_p_3_a0004_dsc_unprepare(struct drm_panel *panel)
 
 const struct drm_display_mode panel_aa551_p_3_a0004_dsc_modes[] = {
 	{
+		.clock = (1264 + 26 + 2 + 26) * (2780 + 22 + 2 + 42) * 165 / 1000,
+		.hdisplay = 1264,
+		.hsync_start = 1264 + 26,
+		.hsync_end = 1264 + 26 + 2,
+		.htotal = 1264 + 26 + 2 + 26,
+		.vdisplay = 2780,
+		.vsync_start = 2780 + 22,
+		.vsync_end = 2780 + 22 + 2,
+		.vtotal = 2780 + 22 + 2 + 42,
+	},
+	{
 		.clock = (1264 + 26 + 2 + 26) * (2780 + 22 + 2 + 42) * 120 / 1000,
 		.hdisplay = 1264,
 		.hsync_start = 1264 + 26,
@@ -521,6 +532,17 @@ const struct drm_display_mode panel_aa551_p_3_a0004_dsc_modes[] = {
 		.vsync_end = 2780 + 2868 + 2,
 		.vtotal = 2780 + 2868 + 2 + 42,
 	},
+	{
+		.clock = (1264 + 26 + 2 + 26) * (2780 + 8560 + 2 + 42) * 30 / 1000,
+		.hdisplay = 1264,
+		.hsync_start = 1264 + 26,
+		.hsync_end = 1264 + 26 + 2,
+		.htotal = 1264 + 26 + 2 + 26,
+		.vdisplay = 2780,
+		.vsync_start = 2780 + 8560,
+		.vsync_end = 2780 + 8560 + 2,
+		.vtotal = 2780 + 8560 + 2 + 42,
+	},
 };
 
 static int panel_aa551_p_3_a0004_dsc_get_modes(struct drm_panel *panel,
@@ -537,7 +559,7 @@ static int panel_aa551_p_3_a0004_dsc_get_modes(struct drm_panel *panel,
 		drm_mode_set_name(mode);
 
 		mode->type = DRM_MODE_TYPE_DRIVER;
-		if (i == 0)
+		if (i == 1)
 			mode->type |= DRM_MODE_TYPE_PREFERRED;
 
 		drm_mode_probed_add(connector, mode);
