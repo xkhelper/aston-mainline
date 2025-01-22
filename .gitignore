@@ -24,10 +24,7 @@
 *.dwo
 *.elf
 *.gcno
-<<<<<<< HEAD
-=======
 *.gcda
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 *.gz
 *.i
 *.ko
@@ -50,10 +47,6 @@
 *.so.dbg
 *.su
 *.symtypes
-<<<<<<< HEAD
-*.symversions
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 *.tab.[ch]
 *.tar
 *.xz
@@ -77,10 +70,7 @@ modules.order
 /Module.markers
 /modules.builtin
 /modules.builtin.modinfo
-<<<<<<< HEAD
-=======
 /modules.builtin.ranges
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 /modules.nsdeps
 
 #
@@ -113,6 +103,7 @@ modules.order
 # We don't want to ignore the following even if they are dot-files
 #
 !.clang-format
+!.clippy.toml
 !.cocciconfig
 !.editorconfig
 !.get_maintainer.ignore
@@ -138,6 +129,7 @@ series
 
 # ctags files
 tags
+!tags/
 TAGS
 
 # cscope files
@@ -153,10 +145,6 @@ GTAGS
 # id-utils files
 ID
 
-<<<<<<< HEAD
-*.orig
-=======
->>>>>>> 2d5404caa8 (Linux 6.12-rc7)
 *~
 \#*#
 

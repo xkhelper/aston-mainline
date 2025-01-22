@@ -112,7 +112,6 @@ static u32 get_supported_rt_services(void)
 
 efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
 {
-	int cmdline_size = 0;
 	efi_status_t status;
 	char *cmdline;
 

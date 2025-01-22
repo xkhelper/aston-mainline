@@ -214,6 +214,7 @@ static const struct of_device_id ktz8866_match_table[] = {
 	{ .compatible = "kinetic,ktz8866b", },
 	{},
 };
+MODULE_DEVICE_TABLE(of, ktz8866_match_table);
 
 static struct i2c_driver ktz8866_driver = {
 	.driver = {
