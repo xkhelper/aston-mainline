@@ -387,7 +387,7 @@
 		regulator-always-on;
 		regulator-boot-on;
 	};
-	
+
 	lpi_i2c1 {
 		compatible = "i2c-gpio";
 		#address-cells = <1>;
@@ -399,8 +399,15 @@
 		scl-gpios = <&tlmm 191 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
 		
 		mmc56x3@30 {
-			compatible = "memsic,mmc56x3";
 			reg = <0x30>;
+			compatible = "memsic,mmc56x3";
+		};
+		
+		tcs3720@39 {
+			reg = <0x39>;
+			compatible = "tcs3720";
+			interrupt-parent = <&tlmm>;
+			interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
 		};
 	};
 	
@@ -418,8 +425,8 @@
 		num-chipselects = <1>;
 
 		bmi26x@0 {
-			compatible = "bosch,bmi260";
 			reg = <0>;
+			compatible = "bosch,bmi260";
 			spi-max-frequency = <9600000>;
 			interrupt-parent = <&tlmm>;
 			interrupts = <84 IRQ_TYPE_LEVEL_HIGH>;
@@ -428,11 +435,11 @@
 		};
 	};
 	
-	lpi_i2c4 {
+	lpi_i2c3 {
 		compatible = "i2c-gpio";
 		#address-cells = <1>;
 		#size-cells = <0>;
-		pinctrl-0 = <&lpi_i2c4_default>;
+		pinctrl-0 = <&lpi_i2c3_default>;
 		pinctrl-names = "default";
 
 		sda-gpios = <&tlmm 196 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
@@ -1169,6 +1176,13 @@
 		bias-pull-up;
 	};
 	
+	tcs3720_input: tcs3720_input-state {
+		pins = "gpio16";
+		function = "gpio";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
 	wcd_default: wcd-reset-n-active-state {
 		pins = "gpio108";
 		function = "gpio";
@@ -1212,7 +1226,7 @@
 			bias-pull-down;
 		};
 	};	
-	
+
 	lpi_i2c1_default: lpi-i2c1-default-state {
 		/* SDA, SCL */
 		pins = "gpio190", "gpio191";
@@ -1225,7 +1239,7 @@
 		function = "gpio";
 	};
 	
-	lpi_i2c4_default: lpi-i2c4-default-state {
+	lpi_i2c3_default: lpi-i2c3-default-state {
 		/* SDA, SCL */
 		pins = "gpio196", "gpio197";
 		function = "gpio";
