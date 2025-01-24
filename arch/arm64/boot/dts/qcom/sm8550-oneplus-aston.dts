@@ -108,8 +108,10 @@
 
 	wcd938x: audio-codec {
 		compatible = "qcom,wcd9380-codec";
+		
 		pinctrl-names = "default";
 		pinctrl-0 = <&wcd_default>;
+		
 		qcom,micbias1-microvolt = <2750000>;
 		qcom,micbias2-microvolt = <2750000>;
 		qcom,micbias3-microvolt = <2750000>;
@@ -119,11 +121,14 @@
 		qcom,mbhc-headphone-vthreshold-microvolt = <50000>;
 		qcom,rx-device = <&wcd_rx>;
 		qcom,tx-device = <&wcd_tx>;
+		
 		reset-gpios = <&tlmm 108 GPIO_ACTIVE_LOW>;
+		
 		vdd-buck-supply = <&vreg_l15b_1p8>;
 		vdd-rxtx-supply = <&vreg_l15b_1p8>;
 		vdd-io-supply = <&vreg_l15b_1p8>;
 		vdd-mic-bias-supply = <&vreg_bob1>;
+		
 		#sound-dai-cells = <1>;
 	};
 	
@@ -199,6 +204,13 @@
 	
 	sound {
 		compatible = "qcom,sm8550-sndcard", "qcom,sm8450-sndcard";
+		pinctrl-0 = <&i2s1_default>;
+		pinctrl-names = "default";
+
+		clocks = <&q6prmcc LPASS_CLK_ID_SEC_MI2S_IBIT LPASS_CLK_ATTRIBUTE_COUPLE_NO>;
+		assigned-clocks = <&q6prmcc LPASS_CLK_ID_SEC_MI2S_IBIT LPASS_CLK_ATTRIBUTE_COUPLE_NO>;
+		assigned-clock-rates = <1536000>;
+
 		model = "astonsnd";
 		audio-routing = "IN1_HPHL", "HPHL_OUT",
 				"IN2_HPHR", "HPHR_OUT",
@@ -223,6 +235,7 @@
 				sound-dai = <&q6apm>;
 			};
 		};
+
 		wcd-capture-dai-link {
 			link-name = "WCD Capture";
 			cpu {
@@ -233,6 +246,22 @@
 			};
 			platform {
 				sound-dai = <&q6apm>;
+			};
+		};
+
+		secondary-i2s-dai-link {
+			link-name = "Secondary MI2S Playback";
+
+			cpu {
+				sound-dai = <&q6apmbedai SECONDARY_MI2S_RX>;
+			};
+
+			platform {
+				sound-dai = <&q6apm>;
+			};
+
+			codec {
+				sound-dai = <&top_speaker>, <&bottom_speaker>;
 			};
 		};
 	};
@@ -637,6 +666,7 @@
 			regulator-min-microvolt = <1800000>;
 			regulator-max-microvolt = <1800000>;
 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+			regulator-always-on;
 		};
 
 		vreg_l16b_2p8: ldo16 {
@@ -1169,6 +1199,39 @@
 		};
 	};
 	
+	i2s1_default: i2s1-default-state {
+		sck-pins {
+			pins = "gpio121";
+			function = "i2s1_sck";
+			drive-strength = <8>;
+			bias-disable;
+			output-high;
+		};
+
+		data0-pins {
+			pins = "gpio122";
+			function = "i2s1_data0";
+			drive-strength = <8>;
+			bias-disable;
+		};
+
+		ws-pins {
+			pins = "gpio123";
+			function = "i2s1_ws";
+			drive-strength = <8>;
+			bias-disable;
+			output-high;
+		};
+
+		data1-pins {
+			pins = "gpio124";
+			function = "i2s1_data1";
+			drive-strength = <8>;
+			bias-disable;
+			output-high;
+		};
+	};
+
 	hall_interrupt_input: hall_interrupt_input-state {
 		pins = "gpio17";
 		function = "gpio";
@@ -1428,6 +1491,29 @@
 		pinctrl-1 = <&bq27541_id_pull_up>;
 		pinctrl-2 = <&bq27541_id_pull_down>;
 		monitored-battery = <&bat>;
+	};
+};
+
+&i2c6 {
+	status = "okay";
+
+	top_speaker: codec@34 {
+		reg = <0x34>;
+		compatible = "nxp,tfa9873";
+
+		reset-gpio = <&tlmm 56 GPIO_ACTIVE_HIGH>;
+
+		#sound-dai-cells = <0>;
+	};
+
+	bottom_speaker: codec@35 {
+		reg = <0x35>;
+		compatible = "nxp,tfa9873";
+
+		reset-gpio = <&tlmm 173 GPIO_ACTIVE_HIGH>;
+		is_second_channel;
+
+		#sound-dai-cells = <0>;
 	};
 };
 
