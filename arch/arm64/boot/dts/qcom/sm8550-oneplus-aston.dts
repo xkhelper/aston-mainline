@@ -72,6 +72,8 @@
 
 		operating-points-v2 = <&iris_opp_table>;
 
+		firmware-name = "qcom/sm8550/aston/vpu30_4v.mbn";
+
 		iris_opp_table: opp-table {
 			compatible = "operating-points-v2";
 

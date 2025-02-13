@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_PLATFORM_COMMON_H_
-#define _IRIS_PLATFORM_COMMON_H_
+#ifndef __IRIS_PLATFORM_COMMON_H__
+#define __IRIS_PLATFORM_COMMON_H__
 
 #include <linux/bits.h>
 
@@ -33,8 +33,8 @@ enum pipe_type {
 	PIPE_4 = 4,
 };
 
-extern struct iris_platform_data sm8550_data;
 extern struct iris_platform_data sm8250_data;
+extern struct iris_platform_data sm8550_data;
 
 enum platform_clk_type {
 	IRIS_AXI_CLK,

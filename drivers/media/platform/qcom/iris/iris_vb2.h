@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_VB2_H_
-#define _IRIS_VB2_H_
+#ifndef __IRIS_VB2_H__
+#define __IRIS_VB2_H__
 
 int iris_vb2_buf_init(struct vb2_buffer *vb2);
 int iris_vb2_queue_setup(struct vb2_queue *q,

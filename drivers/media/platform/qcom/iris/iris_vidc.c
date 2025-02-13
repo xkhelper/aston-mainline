@@ -286,9 +286,9 @@ static int iris_g_fmt_vid_mplane(struct file *filp, void *fh, struct v4l2_format
 
 	mutex_lock(&inst->lock);
 	if (V4L2_TYPE_IS_OUTPUT(f->type))
-		memcpy(f, inst->fmt_src, sizeof(*f));
+		*f = *inst->fmt_src;
 	else if (V4L2_TYPE_IS_CAPTURE(f->type))
-		memcpy(f, inst->fmt_dst, sizeof(*f));
+		*f = *inst->fmt_dst;
 	else
 		ret = -EINVAL;
 
@@ -326,7 +326,7 @@ static int iris_enum_framesizes(struct file *filp, void *fh,
 static int iris_querycap(struct file *filp, void *fh, struct v4l2_capability *cap)
 {
 	strscpy(cap->driver, IRIS_DRV_NAME, sizeof(cap->driver));
-	strscpy(cap->card, "iris_decoder", sizeof(cap->card));
+	strscpy(cap->card, "Iris Decoder", sizeof(cap->card));
 
 	return 0;
 }
@@ -373,11 +373,9 @@ static int iris_dec_cmd(struct file *filp, void *fh,
 
 	mutex_lock(&inst->lock);
 
-	if (dec->cmd != V4L2_DEC_CMD_START &&
-	    dec->cmd != V4L2_DEC_CMD_STOP) {
-		ret = -EINVAL;
+	ret = v4l2_m2m_ioctl_decoder_cmd(filp, fh, dec);
+	if (ret)
 		goto unlock;
-	}
 
 	if (inst->state == IRIS_INST_DEINIT)
 		goto unlock;

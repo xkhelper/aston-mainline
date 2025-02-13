@@ -292,6 +292,8 @@ int iris_hfi_queues_init(struct iris_core *core)
 
 void iris_hfi_queues_deinit(struct iris_core *core)
 {
+	u32 queue_size;
+
 	if (!core->iface_q_table_vaddr)
 		return;
 
@@ -305,9 +307,11 @@ void iris_hfi_queues_deinit(struct iris_core *core)
 	core->sfr_vaddr = NULL;
 	core->sfr_daddr = 0;
 
-	dma_free_attrs(core->dev, sizeof(struct iris_hfi_queue_table_header),
-		       core->iface_q_table_vaddr, core->iface_q_table_daddr,
-		       DMA_ATTR_WRITE_COMBINE);
+	queue_size = ALIGN(sizeof(struct iris_hfi_queue_table_header) +
+		(IFACEQ_QUEUE_SIZE * IFACEQ_NUMQ), SZ_4K);
+
+	dma_free_attrs(core->dev, queue_size, core->iface_q_table_vaddr,
+		       core->iface_q_table_daddr, DMA_ATTR_WRITE_COMBINE);
 
 	core->iface_q_table_vaddr = NULL;
 	core->iface_q_table_daddr = 0;

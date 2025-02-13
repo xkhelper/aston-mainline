@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_UTILS_H_
-#define _IRIS_UTILS_H_
+#ifndef __IRIS_UTILS_H__
+#define __IRIS_UTILS_H__
 
 struct iris_core;
 #include "iris_buffer.h"
@@ -35,14 +35,10 @@ struct iris_ts_metadata {
 
 static inline enum iris_buffer_type iris_v4l2_type_to_driver(u32 type)
 {
-	switch (type) {
-	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
+	if (type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE)
 		return BUF_INPUT;
-	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
+	else
 		return BUF_OUTPUT;
-	default:
-		return -EINVAL;
-	}
 }
 
 bool iris_res_is_less_than(u32 width, u32 height,

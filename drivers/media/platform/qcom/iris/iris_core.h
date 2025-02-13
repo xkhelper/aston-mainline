@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_CORE_H_
-#define _IRIS_CORE_H_
+#ifndef __IRIS_CORE_H__
+#define __IRIS_CORE_H__
 
 #include <linux/types.h>
 #include <linux/pm_domain.h>
@@ -35,7 +35,7 @@ struct icc_info {
  * @vdev_dec: iris video device structure for decoder
  * @iris_v4l2_file_ops: iris v4l2 file ops
  * @iris_v4l2_ioctl_ops: iris v4l2 ioctl ops
- * @vb2_ops: iris vb2 ops
+ * @iris_vb2_ops: iris vb2 ops
  * @icc_tbl: table of iris interconnects
  * @icc_count: count of iris interconnects
  * @pmdomain_tbl: table of iris power domains

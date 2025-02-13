@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_INSTANCE_H_
-#define _IRIS_INSTANCE_H_
+#ifndef __IRIS_INSTANCE_H__
+#define __IRIS_INSTANCE_H__
 
 #include <media/v4l2-ctrls.h>
 
@@ -25,8 +25,8 @@
  * @fmt_dst: structure of v4l2_format for destination
  * @ctrl_handler: reference of v4l2 ctrl handler
  * @crop: structure of crop info
- * @completions: structure of signal completions
- * @flush_completions: structure of signal completions for flush cmd
+ * @completion: structure of signal completions
+ * @flush_completion: structure of signal completions for flush cmd
  * @fw_caps: array of supported instance firmware capabilities
  * @buffers: array of different iris buffers
  * @fw_min_count: minimnum count of buffers needed by fw
@@ -38,7 +38,6 @@
  * @icc_data: structure of interconnect data
  * @m2m_dev:	a reference to m2m device structure
  * @m2m_ctx:	a reference to m2m context structure
- * @subscriptions: variable to hold current events subscriptions
  * @sequence_cap: a sequence counter for capture queue
  * @sequence_out: a sequence counter for output queue
  * @tss: timestamp metadata
@@ -69,7 +68,6 @@ struct iris_inst {
 	struct icc_vote_data		icc_data;
 	struct v4l2_m2m_dev		*m2m_dev;
 	struct v4l2_m2m_ctx		*m2m_ctx;
-	unsigned int			subscriptions;
 	u32				sequence_cap;
 	u32				sequence_out;
 	struct iris_ts_metadata		tss[VIDEO_MAX_FRAME];

@@ -178,7 +178,6 @@ static void iris_remove(struct platform_device *pdev)
 	v4l2_device_unregister(&core->v4l2_dev);
 
 	mutex_destroy(&core->lock);
-	core->state = IRIS_CORE_DEINIT;
 }
 
 static void iris_sys_error_handler(struct work_struct *work)
@@ -190,43 +189,12 @@ static void iris_sys_error_handler(struct work_struct *work)
 	iris_core_init(core);
 }
 
-static bool prefer_venus = true;
-MODULE_PARM_DESC(prefer_venus, "Select whether venus or iris driver should be preferred");
-module_param(prefer_venus, bool, 0444);
-
-/* list all platforms supported by only iris driver */
-static const char *const iris_only_platforms[] = {
-	"qcom,sm8550-iris",
-	NULL,
-};
-
-/* list all platforms supported by both venus and iris drivers */
-static const char *const venus_to_iris_migration[] = {
-	"qcom,sm8250-venus",
-	NULL,
-};
-
-static bool video_drv_should_bind(struct device *dev, bool iris_driver)
-{
-	if (of_device_compatible_match(dev->of_node, iris_only_platforms))
-		return iris_driver;
-
-	/* If it is not in the migration list, use venus */
-	if (!of_device_compatible_match(dev->of_node, venus_to_iris_migration))
-		return !iris_driver;
-
-	return prefer_venus ? !iris_driver : iris_driver;
-}
-
 static int iris_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct iris_core *core;
 	u64 dma_mask;
 	int ret;
-
-	if (!video_drv_should_bind(&pdev->dev, true))
-		return -ENODEV;
 
 	core = devm_kzalloc(&pdev->dev, sizeof(*core), GFP_KERNEL);
 	if (!core)
@@ -356,10 +324,12 @@ static const struct of_device_id iris_dt_match[] = {
 		.compatible = "qcom,sm8550-iris",
 		.data = &sm8550_data,
 	},
-	{
-		.compatible = "qcom,sm8250-venus",
-		.data = &sm8250_data,
-	},
+#if (!IS_ENABLED(CONFIG_VIDEO_QCOM_VENUS))
+		{
+			.compatible = "qcom,sm8250-venus",
+			.data = &sm8250_data,
+		},
+#endif
 	{ },
 };
 MODULE_DEVICE_TABLE(of, iris_dt_match);

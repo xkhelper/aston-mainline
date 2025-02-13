@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_CTRLS_H_
-#define _IRIS_CTRLS_H_
+#ifndef __IRIS_CTRLS_H__
+#define __IRIS_CTRLS_H__
 
 #include "iris_platform_common.h"
 

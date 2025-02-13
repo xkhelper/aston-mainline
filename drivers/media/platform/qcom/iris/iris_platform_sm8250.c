@@ -87,13 +87,13 @@ static struct tz_cp_config tz_cp_config_sm8250 = {
 	.cp_nonpixel_size = 0x24800000,
 };
 
-static const u32 sm8250_vdec_input_config_param[] = {
-	HFI_PROPERTY_PARAM_FRAME_SIZE,
+static const u32 sm8250_vdec_input_config_param_default[] = {
 	HFI_PROPERTY_CONFIG_VIDEOCORES_USAGE,
 	HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SELECT,
 	HFI_PROPERTY_PARAM_UNCOMPRESSED_PLANE_ACTUAL_CONSTRAINTS_INFO,
 	HFI_PROPERTY_PARAM_BUFFER_COUNT_ACTUAL,
 	HFI_PROPERTY_PARAM_VDEC_MULTI_STREAM,
+	HFI_PROPERTY_PARAM_FRAME_SIZE,
 	HFI_PROPERTY_PARAM_BUFFER_SIZE_ACTUAL,
 	HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE,
 };
@@ -125,7 +125,8 @@ struct iris_platform_data sm8250_data = {
 	.opp_pd_tbl_size = ARRAY_SIZE(sm8250_opp_pd_table),
 	.clk_tbl = sm8250_clk_table,
 	.clk_tbl_size = ARRAY_SIZE(sm8250_clk_table),
-	.dma_mask = GENMASK(31, 29) - 1,
+	/* Upper bound of DMA address range */
+	.dma_mask = 0xe0000000 - 1,
 	.fwname = "qcom/vpu-1.0/venus.mbn",
 	.pas_id = IRIS_PAS_ID,
 	.inst_caps = &platform_inst_cap_sm8250,
@@ -137,9 +138,9 @@ struct iris_platform_data sm8250_data = {
 	.max_session_count = 16,
 	.max_core_mbpf = (8192 * 4352) / 256,
 	.input_config_params =
-		sm8250_vdec_input_config_param,
+		sm8250_vdec_input_config_param_default,
 	.input_config_params_size =
-		ARRAY_SIZE(sm8250_vdec_input_config_param),
+		ARRAY_SIZE(sm8250_vdec_input_config_param_default),
 
 	.dec_ip_int_buf_tbl = sm8250_dec_ip_int_buf_tbl,
 	.dec_ip_int_buf_tbl_size = ARRAY_SIZE(sm8250_dec_ip_int_buf_tbl),

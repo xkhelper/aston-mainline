@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_HFI_GEN2_DEFINES_H_
-#define _IRIS_HFI_GEN2_DEFINES_H_
+#ifndef __IRIS_HFI_GEN2_DEFINES_H__
+#define __IRIS_HFI_GEN2_DEFINES_H__
 
 #include <linux/types.h>
 
@@ -70,6 +70,7 @@
 #define HFI_ERROR_INVALID_STATE			0x04000004
 #define HFI_ERROR_INSUFFICIENT_RESOURCES	0x04000005
 #define HFI_ERROR_BUFFER_NOT_SET		0x04000006
+#define HFI_ERROR_STREAM_UNSUPPORTED		0x04000008
 #define HFI_SESSION_ERROR_END			0x04FFFFFF
 
 #define HFI_SYSTEM_ERROR_BEGIN			0x05000000

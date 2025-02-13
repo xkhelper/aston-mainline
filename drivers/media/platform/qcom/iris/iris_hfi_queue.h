@@ -3,16 +3,16 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_HFI_QUEUE_H_
-#define _IRIS_HFI_QUEUE_H_
+#ifndef __IRIS_HFI_QUEUE_H__
+#define __IRIS_HFI_QUEUE_H__
 
 struct iris_core;
 
 /*
- * Maximum number of buffers which queue can hold until
- * hardware stops responding and driver times out.
+ * Max 64 Buffers ( 32 input buffers and 32 output buffers)
+ * can be queued by v4l2 framework at any given time.
  */
-#define IFACEQ_MAX_BUF_COUNT		50
+#define IFACEQ_MAX_BUF_COUNT		64
 /*
  * Max session supported are 16.
  * this value is used to calcualte the size of
@@ -100,9 +100,10 @@ enum iris_iface_queue {
 /**
  * struct iris_hfi_queue_header
  *
- * @status: Queue status, qhdr_state define possible status
+ * @status: Queue status, bits (7:0), 0x1 - active, 0x0 - inactive
  * @start_addr: Queue start address in non cached memory
- * @type: qhdr_tx, qhdr_rx, qhdr_q_id and priority defines qhdr type
+ * @queue_type: Queue ID
+ * @header_type: Default queue header
  * @q_size: Queue size
  *		Number of queue packets if pkt_size is non-zero
  *		Queue size in bytes if pkt_size is zero
@@ -150,6 +151,7 @@ struct iris_hfi_queue_header {
  * @num_active_q: Total number of active queues
  * @device_addr: Device address of the queue
  * @name: Queue name in characters
+ * @q_hdr: Array of queue headers
  */
 struct iris_hfi_queue_table_header {
 	u32 version;

@@ -7,12 +7,10 @@
 #include <media/v4l2-event.h>
 #include <media/v4l2-mem2mem.h>
 
-#include "iris_buffer.h"
 #include "iris_instance.h"
 #include "iris_vb2.h"
 #include "iris_vdec.h"
 #include "iris_power.h"
-#include "iris_vpu_buffer.h"
 
 static int iris_check_core_mbpf(struct iris_inst *inst)
 {
@@ -116,8 +114,6 @@ int iris_vb2_queue_setup(struct vb2_queue *q,
 			 unsigned int *num_buffers, unsigned int *num_planes,
 			 unsigned int sizes[], struct device *alloc_devs[])
 {
-	enum iris_buffer_type buffer_type = 0;
-	struct iris_buffers *buffers;
 	struct iris_inst *inst;
 	struct iris_core *core;
 	struct v4l2_format *f;
@@ -136,14 +132,8 @@ int iris_vb2_queue_setup(struct vb2_queue *q,
 
 	if (*num_planes) {
 		if (*num_planes != f->fmt.pix_mp.num_planes ||
-			sizes[0] < f->fmt.pix_mp.plane_fmt[0].sizeimage)
+		    sizes[0] < f->fmt.pix_mp.plane_fmt[0].sizeimage)
 			ret = -EINVAL;
-		goto unlock;
-	}
-
-	buffer_type = iris_v4l2_type_to_driver(q->type);
-	if (buffer_type == -EINVAL) {
-		ret = -EINVAL;
 		goto unlock;
 	}
 
@@ -166,22 +156,8 @@ int iris_vb2_queue_setup(struct vb2_queue *q,
 			goto unlock;
 	}
 
-	buffers = &inst->buffers[buffer_type];
-	if (!buffers) {
-		ret = -EINVAL;
-		goto unlock;
-	}
-
-	buffers->min_count = iris_vpu_buf_count(inst, buffer_type);
-	buffers->actual_count = *num_buffers;
 	*num_planes = 1;
-
-	buffers->size = iris_get_buffer_size(inst, buffer_type);
-
-	if (sizes[0] < buffers->size) {
-		f->fmt.pix_mp.plane_fmt[0].sizeimage = buffers->size;
-		sizes[0] = f->fmt.pix_mp.plane_fmt[0].sizeimage;
-	}
+	sizes[0] = f->fmt.pix_mp.plane_fmt[0].sizeimage;
 
 unlock:
 	mutex_unlock(&inst->lock);
@@ -226,10 +202,6 @@ int iris_vb2_start_streaming(struct vb2_queue *q, unsigned int count)
 		goto error;
 
 	buf_type = iris_v4l2_type_to_driver(q->type);
-	if (buf_type == -EINVAL) {
-		ret = -EINVAL;
-		goto error;
-	}
 
 	ret = iris_queue_deferred_buffers(inst, buf_type);
 	if (ret)
@@ -342,8 +314,7 @@ void iris_vb2_buf_queue(struct vb2_buffer *vb2)
 			vbuf->field = V4L2_FIELD_NONE;
 			vb2_set_plane_payload(vb2, 0, 0);
 			v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
-			if (!v4l2_m2m_has_stopped(m2m_ctx) &&
-			    inst->subscriptions & V4L2_EVENT_EOS) {
+			if (!v4l2_m2m_has_stopped(m2m_ctx)) {
 				v4l2_event_queue_fh(&inst->fh, &eos);
 				v4l2_m2m_mark_stopped(m2m_ctx);
 			}

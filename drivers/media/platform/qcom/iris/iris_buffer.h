@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_BUFFER_H_
-#define _IRIS_BUFFER_H_
+#ifndef __IRIS_BUFFER_H__
+#define __IRIS_BUFFER_H__
 
 #include <media/videobuf2-v4l2.h>
 
@@ -15,16 +15,17 @@ struct iris_inst;
 /**
  * enum iris_buffer_type
  *
- * BUF_INPUT: input buffer to the iris hardware
- * BUF_OUTPUT: output buffer from the iris hardware
- * BUF_BIN: buffer to store intermediate bin data
- * BUF_ARP: buffer for auto register programming
- * BUF_COMV: buffer to store colocated motion vectors
- * BUF_NON_COMV: buffer to hold config data for HW
- * BUF_LINE: buffer to store decoding/encoding context data for HW
- * BUF_DPB: buffer to store display picture buffers for reference
- * BUF_PERSIST: buffer to store session context data
- * BUF_SCRATCH_1: buffer to store decoding/encoding context data for HW
+ * @BUF_INPUT: input buffer to the iris hardware
+ * @BUF_OUTPUT: output buffer from the iris hardware
+ * @BUF_BIN: buffer to store intermediate bin data
+ * @BUF_ARP: buffer for auto register programming
+ * @BUF_COMV: buffer to store colocated motion vectors
+ * @BUF_NON_COMV: buffer to hold config data for HW
+ * @BUF_LINE: buffer to store decoding/encoding context data for HW
+ * @BUF_DPB: buffer to store display picture buffers for reference
+ * @BUF_PERSIST: buffer to store session context data
+ * @BUF_SCRATCH_1: buffer to store decoding/encoding context data for HW
+ * @BUF_TYPE_MAX: max buffer types
  */
 enum iris_buffer_type {
 	BUF_INPUT = 1,
@@ -97,7 +98,6 @@ struct iris_buffer {
 struct iris_buffers {
 	struct list_head	list;
 	u32			min_count;
-	u32			actual_count;
 	u32			size;
 };
 

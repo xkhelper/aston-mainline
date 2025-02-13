@@ -60,7 +60,7 @@
  *
  * Note: All the alignments are hardware requirements.
  */
-static u32 iris_output_buffer_size_nv12(struct iris_inst *inst)
+static u32 iris_yuv_buffer_size_nv12(struct iris_inst *inst)
 {
 	u32 y_plane, uv_plane, y_stride, uv_stride, y_scanlines, uv_scanlines;
 	struct v4l2_format *f = inst->fmt_dst;
@@ -163,7 +163,7 @@ static u32 iris_output_buffer_size_nv12(struct iris_inst *inst)
  *
  * Note: All the alignments are hardware requirements.
  */
-static u32 iris_output_buffer_size_qc08c(struct iris_inst *inst)
+static u32 iris_yuv_buffer_size_qc08c(struct iris_inst *inst)
 {
 	u32 y_plane, uv_plane, y_stride, uv_stride;
 	struct v4l2_format *f = inst->fmt_dst;
@@ -171,7 +171,7 @@ static u32 iris_output_buffer_size_qc08c(struct iris_inst *inst)
 	u32 y_meta_stride, y_meta_plane;
 
 	y_meta_stride = ALIGN(DIV_ROUND_UP(f->fmt.pix_mp.width, META_STRIDE_ALIGNED >> 1),
-					   META_STRIDE_ALIGNED);
+			      META_STRIDE_ALIGNED);
 	y_meta_plane = y_meta_stride * ALIGN(DIV_ROUND_UP(f->fmt.pix_mp.height,
 							  META_SCANLINE_ALIGNED >> 1),
 					     META_SCANLINE_ALIGNED);
@@ -194,7 +194,7 @@ static u32 iris_output_buffer_size_qc08c(struct iris_inst *inst)
 	return ALIGN(y_meta_plane + y_plane + uv_meta_plane + uv_plane, PIXELS_4K);
 }
 
-static u32 iris_input_buffer_size(struct iris_inst *inst)
+static u32 iris_bitstream_buffer_size(struct iris_inst *inst)
 {
 	struct platform_inst_caps *caps = inst->core->iris_platform_data->inst_caps;
 	u32 base_res_mbs = NUM_MBS_4K;
@@ -221,11 +221,11 @@ int iris_get_buffer_size(struct iris_inst *inst,
 {
 	switch (buffer_type) {
 	case BUF_INPUT:
-		return iris_input_buffer_size(inst);
+		return iris_bitstream_buffer_size(inst);
 	case BUF_OUTPUT:
-		return iris_output_buffer_size_nv12(inst);
+		return iris_yuv_buffer_size_nv12(inst);
 	case BUF_DPB:
-		return iris_output_buffer_size_qc08c(inst);
+		return iris_yuv_buffer_size_qc08c(inst);
 	default:
 		return 0;
 	}
@@ -609,8 +609,7 @@ int iris_vb2_buffer_done(struct iris_inst *inst, struct iris_buffer *buf)
 	}
 
 	if (vbuf->flags & V4L2_BUF_FLAG_LAST) {
-		if (!v4l2_m2m_has_stopped(m2m_ctx) &&
-		    inst->subscriptions & V4L2_EVENT_EOS) {
+		if (!v4l2_m2m_has_stopped(m2m_ctx)) {
 			const struct v4l2_event ev = { .type = V4L2_EVENT_EOS };
 
 			v4l2_event_queue_fh(&inst->fh, &ev);
@@ -618,7 +617,6 @@ int iris_vb2_buffer_done(struct iris_inst *inst, struct iris_buffer *buf)
 		}
 	}
 	vb2->timestamp = buf->timestamp;
-	vb2->planes[0].bytesused = buf->data_size + vb2->planes[0].data_offset;
 	v4l2_m2m_buf_done(vbuf, state);
 
 	return 0;

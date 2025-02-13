@@ -157,6 +157,7 @@ static void iris_hfi_gen1_read_changed_params(struct iris_inst *inst,
 
 	inst->fw_min_count = event.buf_count;
 	inst->buffers[BUF_OUTPUT].min_count = iris_vpu_buf_count(inst, BUF_OUTPUT);
+	inst->buffers[BUF_OUTPUT].size = pixmp_op->plane_fmt[0].sizeimage;
 	ctrl = v4l2_ctrl_find(&inst->ctrl_handler, V4L2_CID_MIN_BUFFERS_FOR_CAPTURE);
 	if (ctrl)
 		v4l2_ctrl_s_ctrl(ctrl, inst->buffers[BUF_OUTPUT].min_count);

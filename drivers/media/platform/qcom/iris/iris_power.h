@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_POWER_H_
-#define _IRIS_POWER_H_
+#ifndef __IRIS_POWER_H__
+#define __IRIS_POWER_H__
 
 struct iris_inst;
 

@@ -37,7 +37,6 @@ int iris_vdec_inst_init(struct iris_inst *inst)
 	f->fmt.pix_mp.plane_fmt[0].sizeimage = iris_get_buffer_size(inst, BUF_INPUT);
 	f->fmt.pix_mp.field = V4L2_FIELD_NONE;
 	inst->buffers[BUF_INPUT].min_count = iris_vpu_buf_count(inst, BUF_INPUT);
-	inst->buffers[BUF_INPUT].actual_count = inst->buffers[BUF_INPUT].min_count;
 	inst->buffers[BUF_INPUT].size = f->fmt.pix_mp.plane_fmt[0].sizeimage;
 
 	f = inst->fmt_dst;
@@ -54,7 +53,6 @@ int iris_vdec_inst_init(struct iris_inst *inst)
 	f->fmt.pix_mp.ycbcr_enc = V4L2_YCBCR_ENC_DEFAULT;
 	f->fmt.pix_mp.quantization = V4L2_QUANTIZATION_DEFAULT;
 	inst->buffers[BUF_OUTPUT].min_count = iris_vpu_buf_count(inst, BUF_OUTPUT);
-	inst->buffers[BUF_OUTPUT].actual_count = inst->buffers[BUF_OUTPUT].min_count;
 	inst->buffers[BUF_OUTPUT].size = f->fmt.pix_mp.plane_fmt[0].sizeimage;
 
 	memcpy(&inst->fw_caps[0], &core->inst_fw_caps[0],
@@ -136,6 +134,13 @@ int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f)
 	struct vb2_queue *q;
 	u32 codec_align;
 
+	q = v4l2_m2m_get_vq(inst->m2m_ctx, f->type);
+	if (!q)
+		return -EINVAL;
+
+	if (vb2_is_busy(q))
+		return -EBUSY;
+
 	iris_vdec_try_fmt(inst, f);
 
 	switch (f->type) {
@@ -153,9 +158,6 @@ int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f)
 		fmt->fmt.pix_mp.plane_fmt[0].bytesperline = 0;
 		fmt->fmt.pix_mp.plane_fmt[0].sizeimage = iris_get_buffer_size(inst, BUF_INPUT);
 		inst->buffers[BUF_INPUT].min_count = iris_vpu_buf_count(inst, BUF_INPUT);
-		if (inst->buffers[BUF_INPUT].actual_count < inst->buffers[BUF_INPUT].min_count)
-			inst->buffers[BUF_INPUT].actual_count = inst->buffers[BUF_INPUT].min_count;
-
 		inst->buffers[BUF_INPUT].size = fmt->fmt.pix_mp.plane_fmt[0].sizeimage;
 
 		fmt->fmt.pix_mp.colorspace = f->fmt.pix_mp.colorspace;
@@ -177,11 +179,6 @@ int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f)
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
 		fmt = inst->fmt_dst;
 		fmt->type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
-		q = v4l2_m2m_get_vq(inst->m2m_ctx, f->type);
-		if (q->streaming) {
-			f->fmt.pix_mp.height = inst->fmt_src->fmt.pix_mp.height;
-			f->fmt.pix_mp.width = inst->fmt_src->fmt.pix_mp.width;
-		}
 		if (fmt->fmt.pix_mp.pixelformat != V4L2_PIX_FMT_NV12)
 			return -EINVAL;
 		fmt->fmt.pix_mp.pixelformat = f->fmt.pix_mp.pixelformat;
@@ -190,21 +187,13 @@ int iris_vdec_s_fmt(struct iris_inst *inst, struct v4l2_format *f)
 		fmt->fmt.pix_mp.num_planes = 1;
 		fmt->fmt.pix_mp.plane_fmt[0].bytesperline = ALIGN(f->fmt.pix_mp.width, 128);
 		fmt->fmt.pix_mp.plane_fmt[0].sizeimage = iris_get_buffer_size(inst, BUF_OUTPUT);
-
-		if (!q->streaming)
-			inst->buffers[BUF_OUTPUT].min_count = iris_vpu_buf_count(inst, BUF_INPUT);
-		if (inst->buffers[BUF_OUTPUT].actual_count < inst->buffers[BUF_OUTPUT].min_count)
-			inst->buffers[BUF_OUTPUT].actual_count =
-				inst->buffers[BUF_OUTPUT].min_count;
-
+		inst->buffers[BUF_OUTPUT].min_count = iris_vpu_buf_count(inst, BUF_OUTPUT);
 		inst->buffers[BUF_OUTPUT].size = fmt->fmt.pix_mp.plane_fmt[0].sizeimage;
 
-		if (!q->streaming) {
-			inst->crop.top = 0;
-			inst->crop.left = 0;
-			inst->crop.width = f->fmt.pix_mp.width;
-			inst->crop.height = f->fmt.pix_mp.height;
-		}
+		inst->crop.top = 0;
+		inst->crop.left = 0;
+		inst->crop.width = f->fmt.pix_mp.width;
+		inst->crop.height = f->fmt.pix_mp.height;
 		break;
 	default:
 		return -EINVAL;
@@ -221,15 +210,12 @@ int iris_vdec_subscribe_event(struct iris_inst *inst, const struct v4l2_event_su
 	switch (sub->type) {
 	case V4L2_EVENT_EOS:
 		ret = v4l2_event_subscribe(&inst->fh, sub, 0, NULL);
-		inst->subscriptions |= V4L2_EVENT_EOS;
 		break;
 	case V4L2_EVENT_SOURCE_CHANGE:
 		ret = v4l2_src_change_event_subscribe(&inst->fh, sub);
-		inst->subscriptions |= V4L2_EVENT_SOURCE_CHANGE;
 		break;
 	case V4L2_EVENT_CTRL:
 		ret = v4l2_ctrl_subscribe_event(&inst->fh, sub);
-		inst->subscriptions |= V4L2_EVENT_CTRL;
 		break;
 	default:
 		return -EINVAL;
@@ -540,9 +526,6 @@ iris_vdec_vb2_buffer_to_driver(struct vb2_buffer *vb2, struct iris_buffer *buf)
 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb2);
 
 	buf->type = iris_v4l2_type_to_driver(vb2->type);
-	if (buf->type == -EINVAL)
-		return -EINVAL;
-
 	buf->index = vb2->index;
 	buf->fd = vb2->planes[0].m.fd;
 	buf->buffer_size = vb2->planes[0].length;

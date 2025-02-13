@@ -35,17 +35,16 @@ static int iris_load_fw_to_memory(struct iris_core *core, const char *fw_name)
 		return -EINVAL;
 
 	rmem = of_reserved_mem_lookup(node);
-	if (!rmem) {
-		ret = -EINVAL;
-		goto err_put_node;
-	}
+	of_node_put(node);
+	if (!rmem)
+		return -EINVAL;
 
 	mem_phys = rmem->base;
 	res_size = rmem->size;
 
 	ret = request_firmware(&firmware, fw_name, dev);
 	if (ret)
-		goto err_put_node;
+		return ret;
 
 	fw_size = qcom_mdt_get_size(firmware);
 	if (fw_size < 0 || res_size < (size_t)fw_size) {
@@ -72,8 +71,6 @@ err_mem_unmap:
 	memunmap(mem_virt);
 err_release_fw:
 	release_firmware(firmware);
-err_put_node:
-	of_node_put(node);
 
 	return ret;
 }
@@ -81,9 +78,15 @@ err_put_node:
 int iris_fw_load(struct iris_core *core)
 {
 	struct tz_cp_config *cp_config = core->iris_platform_data->tz_cp_config_data;
+	const char *fwpath = NULL;
 	int ret;
 
-	ret = iris_load_fw_to_memory(core, core->iris_platform_data->fwname);
+	ret = of_property_read_string_index(core->dev->of_node, "firmware-name", 0,
+					    &fwpath);
+	if (ret)
+		fwpath = core->iris_platform_data->fwname;
+
+	ret = iris_load_fw_to_memory(core, fwpath);
 	if (ret) {
 		dev_err(core->dev, "firmware download failed\n");
 		return -ENOMEM;

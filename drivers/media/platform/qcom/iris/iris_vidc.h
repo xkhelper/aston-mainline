@@ -3,8 +3,8 @@
  * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
-#ifndef _IRIS_VIDC_H_
-#define _IRIS_VIDC_H_
+#ifndef __IRIS_VIDC_H__
+#define __IRIS_VIDC_H__
 
 struct iris_core;
 

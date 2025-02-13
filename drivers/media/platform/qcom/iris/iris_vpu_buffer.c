@@ -153,7 +153,7 @@ static u32 iris_vpu_dec_bin_size(struct iris_inst *inst)
 
 static u32 iris_vpu_dec_comv_size(struct iris_inst *inst)
 {
-	u32 num_comv = inst->buffers[BUF_OUTPUT].min_count;
+	u32 num_comv = VIDEO_MAX_FRAME;
 	struct v4l2_format *f = inst->fmt_src;
 	u32 height = f->fmt.pix_mp.height;
 	u32 width = f->fmt.pix_mp.width;

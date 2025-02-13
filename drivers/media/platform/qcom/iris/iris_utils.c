@@ -75,15 +75,16 @@ int iris_wait_for_session_response(struct iris_inst *inst, bool is_flush)
 
 struct iris_inst *iris_get_instance(struct iris_core *core, u32 session_id)
 {
-	struct iris_inst *inst = NULL;
+	struct iris_inst *inst;
 
 	mutex_lock(&core->lock);
 	list_for_each_entry(inst, &core->instances, list) {
-		if (inst->session_id == session_id)
-			goto done;
+		if (inst->session_id == session_id) {
+			mutex_unlock(&core->lock);
+			return inst;
+		}
 	}
 
-done:
 	mutex_unlock(&core->lock);
-	return inst;
+	return NULL;
 }

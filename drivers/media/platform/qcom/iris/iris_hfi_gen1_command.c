@@ -451,8 +451,8 @@ iris_hfi_gen1_packet_session_set_property(struct hfi_session_set_property_pkt *p
 		struct hfi_buffer_count_actual *in = pdata;
 		struct hfi_buffer_count_actual *count = prop_data;
 
-		count->count_actual = in->count_actual;
 		count->type = in->type;
+		count->count_actual = in->count_actual;
 		count->count_min_host = in->count_min_host;
 		packet->shdr.hdr.size += sizeof(u32) + sizeof(*count);
 		break;
@@ -627,8 +627,8 @@ static int iris_hfi_gen1_set_num_bufs(struct iris_inst *inst)
 	int ret;
 
 	buf_count.type = HFI_BUFFER_INPUT;
-	buf_count.count_actual = inst->buffers[BUF_INPUT].actual_count;
-	buf_count.count_min_host = inst->buffers[BUF_INPUT].actual_count;
+	buf_count.count_actual = VIDEO_MAX_FRAME;
+	buf_count.count_min_host = VIDEO_MAX_FRAME;
 
 	ret = hfi_gen1_set_property(inst, ptype, &buf_count, sizeof(buf_count));
 	if (ret)
@@ -636,8 +636,8 @@ static int iris_hfi_gen1_set_num_bufs(struct iris_inst *inst)
 
 	if (iris_split_mode_enabled(inst)) {
 		buf_count.type = HFI_BUFFER_OUTPUT;
-		buf_count.count_actual = inst->buffers[BUF_OUTPUT].actual_count;
-		buf_count.count_min_host = inst->buffers[BUF_OUTPUT].actual_count;
+		buf_count.count_actual = VIDEO_MAX_FRAME;
+		buf_count.count_min_host = VIDEO_MAX_FRAME;
 
 		ret = hfi_gen1_set_property(inst, ptype, &buf_count, sizeof(buf_count));
 		if (ret)
@@ -650,8 +650,8 @@ static int iris_hfi_gen1_set_num_bufs(struct iris_inst *inst)
 		ret = hfi_gen1_set_property(inst, ptype, &buf_count, sizeof(buf_count));
 	} else {
 		buf_count.type = HFI_BUFFER_OUTPUT;
-		buf_count.count_actual = inst->buffers[BUF_OUTPUT].actual_count;
-		buf_count.count_min_host = inst->buffers[BUF_OUTPUT].actual_count;
+		buf_count.count_actual = VIDEO_MAX_FRAME;
+		buf_count.count_min_host = VIDEO_MAX_FRAME;
 
 		ret = hfi_gen1_set_property(inst, ptype, &buf_count, sizeof(buf_count));
 	}
