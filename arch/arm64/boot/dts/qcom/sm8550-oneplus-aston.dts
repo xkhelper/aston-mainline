@@ -1122,7 +1122,7 @@
 		drive-strength = <2>;
 		bias-pull-down;
 	};
-	
+
 	sde_te_active: sde-te-active-state {
 		pins = "gpio86";
 		function = "mdp_vsync";
@@ -1136,7 +1136,7 @@
 		drive-strength = <2>;
 		bias-pull-down;
 	};
-	
+
 	bt_default: bt-default-state {
 		bt-en-pins {
 			pins = "gpio81";
@@ -1151,7 +1151,7 @@
 			bias-pull-down;
 		};
 	};
-	
+
 	ts_reset_active: ts_reset_active-state {
 		pins = "gpio24";
 		function = "gpio";
@@ -1167,7 +1167,7 @@
 		drive-strength = <8>;
 		input-enable;
 	};
-	
+
 	ts_reset_suspend: ts_reset_suspend-state {
 		pins = "gpio24";
 		function = "gpio";
@@ -1205,29 +1205,6 @@
 		};
 	};
 
-	bq27541_default: bq27541-default-state {
-		bq27541_id_not_pull: bq27541_id_not_pull-state {
-			pins = "gpio73";
-			function = "gpio";
-			drive-strength = <2>;
-			bias-disable;
-		};
-		
-		bq27541_id_pull_up: bq27541_id_pull_up-state {
-			pins = "gpio73";
-			function = "gpio";
-			drive-strength = <2>;
-			bias-pull-up;
-		};
-		
-		bq27541_id_pull_down: bq27541_id_pull_down-state {
-			pins = "gpio73";
-			function = "gpio";
-			drive-strength = <2>;
-			bias-pull-down;
-		};
-	};
-	
 	nfc_default: nfc-default-state {
 		nfc_int_active: nfc_int_active-state {
 			pins = "gpio55";
@@ -1235,12 +1212,14 @@
 			drive-strength = <2>;
 			bias-pull-up;
 		};
+
 		nfc_enable_active: nfc_enable_active-state {
 			pins = "gpio30";
 			function = "gpio";
 			drive-strength = <2>;
 			bias-pull-up;
 		};
+
 		nfc_clk_req_active: nfc_clk_req_active-state {
 			pins = "gpio31";
 			function = "gpio";
@@ -1248,7 +1227,7 @@
 			bias-pull-up;
 		};
 	};
-	
+
 	nfc_sleep: nfc-sleep-state {
 		nfc_int_suspend: nfc_int_suspend-state {
 			pins = "gpio55";
@@ -1256,12 +1235,14 @@
 			drive-strength = <2>;
 			bias-pull-up;
 		};
+
 		nfc_enable_suspend: nfc_enable_suspend-state {
 			pins = "gpio30";
 			function = "gpio";
 			drive-strength = <2>;
 			bias-disable;
 		};
+
 		nfc_clk_req_suspend: nfc_clk_req_suspend-state {
 			pins = "gpio31";
 			function = "gpio";
@@ -1269,7 +1250,7 @@
 			bias-disable;
 		};
 	};
-	
+
 	i2s1_default: i2s1-default-state {
 		sck-pins {
 			pins = "gpio121";
@@ -1309,7 +1290,7 @@
 		drive-strength = <2>;
 		bias-pull-up;
 	};
-	
+
 	tcs3720_input: tcs3720_input-state {
 		pins = "gpio16";
 		function = "gpio";
@@ -1379,13 +1360,13 @@
 		pins = "gpio190", "gpio191";
 		function = "gpio";
 	};
-	
+
 	lpi_spi2_default: lpi-spi2-default-state {
 		/* MISO, MOSI, CLK, CS */
 		pins = "gpio192", "gpio193", "gpio194", "gpio195";
 		function = "gpio";
 	};
-	
+
 	lpi_i2c3_default: lpi-i2c3-default-state {
 		/* SDA, SCL */
 		pins = "gpio196", "gpio197";
@@ -1570,10 +1551,6 @@
 	bq28z610: fuel-gauge@55 {
 		compatible = "ti,bq28z610";
 		reg = <0x55>;
-		pinctrl-names = "id_not_pull", "id_pull_up", "id_pull_down";
-		pinctrl-0 = <&bq27541_id_not_pull>;
-		pinctrl-1 = <&bq27541_id_pull_up>;
-		pinctrl-2 = <&bq27541_id_pull_down>;
 		monitored-battery = <&bat>;
 	};
 };
