@@ -1284,7 +1284,7 @@
 		};
 	};
 
-	hall_interrupt_input: hall_interrupt_input-state {
+	hall_interrupt_input: hall-interrupt-input-state {
 		pins = "gpio17";
 		function = "gpio";
 		drive-strength = <2>;
@@ -1622,7 +1622,7 @@
 		reg = <0x10>;
 		vcc-supply = <&vreg_l1b_1p8>;
 		interrupt-parent = <&tlmm>;
-		interrups = <17 2>;
+		interrupts = <17 2>;
 		threeaxis_hall_support;
 		dhall,irq-gpio = <&tlmm 17 0x2008>;
 		pinctrl-names = "hall_interrupt_input";
