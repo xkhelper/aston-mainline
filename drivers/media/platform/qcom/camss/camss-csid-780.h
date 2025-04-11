@@ -6,8 +6,8 @@
  *
  * Copyright (c) 2024 Qualcomm Technologies, Inc.
  */
-#ifndef QC_MSM_CAMSS_CSID_780_H
-#define QC_MSM_CAMSS_CSID_780_H
+#ifndef __QC_MSM_CAMSS_CSID_780_H__
+#define __QC_MSM_CAMSS_CSID_780_H__
 
 #define DECODE_FORMAT_UNCOMPRESSED_8_BIT	0x1
 #define DECODE_FORMAT_UNCOMPRESSED_10_BIT	0x2
@@ -22,4 +22,4 @@
 #define PLAIN_FORMAT_PLAIN16	0x1 /* supports DPCM, UNCOMPRESSED_10/16_BIT */
 #define PLAIN_FORMAT_PLAIN32	0x2 /* supports UNCOMPRESSED_20_BIT */
 
-#endif /* QC_MSM_CAMSS_CSID_780_H */
+#endif /* __QC_MSM_CAMSS_CSID_780_H__ */

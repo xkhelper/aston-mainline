@@ -208,6 +208,11 @@ static void csid_configure_stream(struct csid_device *csid, u8 enable)
 		}
 }
 
+static int csid_configure_testgen_pattern(struct csid_device *csid, s32 val)
+{
+	return 0;
+}
+
 static void csid_subdev_reg_update(struct csid_device *csid, int port_id, bool clear)
 {
 	if (clear) {
@@ -317,13 +322,12 @@ static int csid_reset(struct csid_device *csid)
 
 static void csid_subdev_init(struct csid_device *csid)
 {
-	/* nop */
+	csid->testgen.nmodes = CSID_PAYLOAD_MODE_DISABLED;
 }
 
 const struct csid_hw_ops csid_ops_780 = {
-	/* No testgen pattern hw in csid 780 HW */
-	.configure_testgen_pattern = NULL,
 	.configure_stream = csid_configure_stream,
+	.configure_testgen_pattern = csid_configure_testgen_pattern,
 	.hw_version = csid_hw_version,
 	.isr = csid_isr,
 	.reset = csid_reset,

@@ -99,6 +99,7 @@ struct vfe_line {
 struct vfe_device;
 
 struct vfe_hw_ops {
+	void (*enable_irq)(struct vfe_device *vfe);
 	void (*global_reset)(struct vfe_device *vfe);
 	u32 (*hw_version)(struct vfe_device *vfe);
 	irqreturn_t (*isr)(int irq, void *dev);

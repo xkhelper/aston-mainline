@@ -339,11 +339,12 @@ static u32 vfe_src_pad_code(struct vfe_line *line, u32 sink_code,
 			return sink_code;
 		}
 		break;
-	case CAMSS_8x96:
 	case CAMSS_660:
-	case CAMSS_845:
+	case CAMSS_7280:
+	case CAMSS_8x96:
 	case CAMSS_8250:
 	case CAMSS_8280XP:
+	case CAMSS_845:
 	case CAMSS_8550:
 		switch (sink_code) {
 		case MEDIA_BUS_FMT_YUYV8_1X16:
@@ -597,9 +598,13 @@ int vfe_queue_buffer_v2(struct camss_video *vid,
 int vfe_enable_v2(struct vfe_line *line)
 {
 	struct vfe_device *vfe = to_vfe(line);
+	const struct vfe_hw_ops *ops = vfe->res->hw_ops;
 	int ret;
 
 	mutex_lock(&vfe->stream_lock);
+
+	if (vfe->res->hw_ops->enable_irq)
+		ops->enable_irq(vfe);
 
 	vfe->stream_count++;
 
@@ -821,17 +826,17 @@ int vfe_disable(struct vfe_line *line)
 	struct vfe_device *vfe = to_vfe(line);
 	int ret;
 
-	mutex_lock(&vfe->stream_lock);
-
-	vfe->stream_count--;
-
-	mutex_unlock(&vfe->stream_lock);
-
 	ret = vfe_disable_output(line);
 	if (ret)
 		goto error;
 
 	vfe_put_output(line);
+
+	mutex_lock(&vfe->stream_lock);
+
+	vfe->stream_count--;
+
+	mutex_unlock(&vfe->stream_lock);
 
 error:
 	return ret;
@@ -1962,9 +1967,10 @@ static int vfe_bpl_align(struct vfe_device *vfe)
 	int ret = 8;
 
 	switch (vfe->camss->res->version) {
-	case CAMSS_845:
+	case CAMSS_7280:
 	case CAMSS_8250:
 	case CAMSS_8280XP:
+	case CAMSS_845:
 	case CAMSS_8550:
 		ret = 16;
 		break;

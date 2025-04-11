@@ -96,44 +96,6 @@ static void vfe_global_reset(struct vfe_device *vfe)
 	writel_relaxed(GLOBAL_RESET_HW_AND_REG, vfe->base + VFE_GLOBAL_RESET_CMD);
 }
 
-static void vfe_enable_irq(struct vfe_device *vfe)
-{
-	int i;
-	u32 bus_irq_mask = 0;
-
-	if (!vfe->stream_count)
-		/* enable reset ack IRQ and top BUS status IRQ */
-		writel(IRQ_MASK_0_RESET_ACK | IRQ_MASK_0_BUS_TOP_IRQ,
-		       vfe->base + VFE_IRQ_MASK(0));
-
-	for (i = 0; i < MAX_VFE_OUTPUT_LINES; i++) {
-		/* Enable IRQ for newly added lines, but also keep already running lines's IRQ */
-		if (vfe->line[i].output.state == VFE_OUTPUT_RESERVED ||
-		    vfe->line[i].output.state == VFE_OUTPUT_ON) {
-			bus_irq_mask |= BUS_IRQ_MASK_0_RDI_RUP(vfe, i)
-					| BUS_IRQ_MASK_0_COMP_DONE(vfe, RDI_COMP_GROUP(i));
-			}
-	}
-
-	writel(bus_irq_mask, vfe->base + VFE_BUS_IRQ_MASK(0));
-}
-
-static void vfe_disable_irq(struct vfe_device *vfe, u8 wm)
-{
-	u32 bus_irq_mask;
-
-	bus_irq_mask = readl_relaxed(vfe->base + VFE_BUS_IRQ_MASK(0));
-
-	bus_irq_mask &= ~(BUS_IRQ_MASK_0_RDI_RUP(vfe, wm));
-	bus_irq_mask &= ~(BUS_IRQ_MASK_0_COMP_DONE(vfe, RDI_COMP_GROUP(wm)));
-
-	writel(bus_irq_mask, vfe->base + VFE_BUS_IRQ_MASK(0));
-
-	if (!vfe->stream_count)
-		writel(0, vfe->base + VFE_IRQ_MASK(0));
-
-}
-
 static void vfe_wm_start(struct vfe_device *vfe, u8 wm, struct vfe_line *line)
 {
 	struct v4l2_pix_format_mplane *pix =
@@ -163,14 +125,10 @@ static void vfe_wm_start(struct vfe_device *vfe, u8 wm, struct vfe_line *line)
 
 	writel_relaxed(1 << WM_CFG_EN | MODE_MIPI_RAW << WM_CFG_MODE,
 		       vfe->base + VFE_BUS_WM_CFG(wm));
-
-	vfe_enable_irq(vfe);
 }
 
 static void vfe_wm_stop(struct vfe_device *vfe, u8 wm)
 {
-	vfe_disable_irq(vfe, wm);
-
 	wm = RDI_WM(wm); /* map to actual WM used (from wm=RDI index) */
 	writel_relaxed(0, vfe->base + VFE_BUS_WM_CFG(wm));
 }
@@ -192,6 +150,28 @@ static inline void vfe_reg_update_clear(struct vfe_device *vfe,
 					enum vfe_line_id line_id)
 {
 	vfe->reg_update &= ~REG_UPDATE_RDI(vfe, line_id);
+}
+
+static void vfe_enable_irq(struct vfe_device *vfe)
+{
+	int i;
+	u32 bus_irq_mask = 0;
+
+	if (!vfe->stream_count)
+		/* enable reset ack IRQ and top BUS status IRQ */
+		writel(IRQ_MASK_0_RESET_ACK | IRQ_MASK_0_BUS_TOP_IRQ,
+		       vfe->base + VFE_IRQ_MASK(0));
+
+	for (i = 0; i < MAX_VFE_OUTPUT_LINES; i++) {
+		/* Enable IRQ for newly added lines, but also keep already running lines's IRQ */
+		if (vfe->line[i].output.state == VFE_OUTPUT_RESERVED ||
+		    vfe->line[i].output.state == VFE_OUTPUT_ON) {
+			bus_irq_mask |= BUS_IRQ_MASK_0_RDI_RUP(vfe, i)
+					| BUS_IRQ_MASK_0_COMP_DONE(vfe, RDI_COMP_GROUP(i));
+			}
+	}
+
+	writel(bus_irq_mask, vfe->base + VFE_BUS_IRQ_MASK(0));
 }
 
 static void vfe_isr_reg_update(struct vfe_device *vfe, enum vfe_line_id line_id);
@@ -280,19 +260,38 @@ static void vfe_subdev_init(struct device *dev, struct vfe_device *vfe)
 	vfe->video_ops = vfe_video_ops_480;
 }
 
+static void vfe_isr_read(struct vfe_device *vfe, u32 *value0, u32 *value1)
+{
+	/* nop */
+}
+
+static void vfe_violation_read(struct vfe_device *vfe)
+{
+	/* nop */
+}
+
+static void vfe_buf_done_480(struct vfe_device *vfe, int port_id)
+{
+	/* nop */
+}
+
 const struct vfe_hw_ops vfe_ops_480 = {
+	.enable_irq = vfe_enable_irq,
 	.global_reset = vfe_global_reset,
 	.hw_version = vfe_hw_version,
 	.isr = vfe_isr,
-	.pm_domain_off = vfe_pm_domain_off,
-	.pm_domain_on = vfe_pm_domain_on,
+	.isr_read = vfe_isr_read,
 	.reg_update = vfe_reg_update,
 	.reg_update_clear = vfe_reg_update_clear,
+	.pm_domain_off = vfe_pm_domain_off,
+	.pm_domain_on = vfe_pm_domain_on,
 	.subdev_init = vfe_subdev_init,
 	.vfe_disable = vfe_disable,
 	.vfe_enable = vfe_enable_v2,
 	.vfe_halt = vfe_halt,
+	.violation_read = vfe_violation_read,
 	.vfe_wm_start = vfe_wm_start,
 	.vfe_wm_stop = vfe_wm_stop,
+	.vfe_buf_done = vfe_buf_done_480,
 	.vfe_wm_update = vfe_wm_update,
 };

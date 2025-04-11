@@ -321,26 +321,26 @@ csiphy_lane_regs lane_regs_sm8250[] = {
 /* GEN2 2.1.2 2PH DPHY mode */
 static const struct
 csiphy_lane_regs lane_regs_sm8550[] = {
-	{0x0E90, 0x0f, 0x00, CSIPHY_DEFAULT_PARAMS},
+	{0x0E90, 0x0F, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0E98, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0E94, 0x07, 0x01, CSIPHY_DEFAULT_PARAMS},
 	{0x00A0, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-	{0x0090, 0x0f, 0x00, CSIPHY_DEFAULT_PARAMS},
+	{0x0090, 0x0F, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0098, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0094, 0x07, 0x01, CSIPHY_DEFAULT_PARAMS},
 	{0x0494, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x04A0, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-	{0x0490, 0x0f, 0x00, CSIPHY_DEFAULT_PARAMS},
+	{0x0490, 0x0F, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0498, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0494, 0x07, 0x01, CSIPHY_DEFAULT_PARAMS},
 	{0x0894, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x08A0, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-	{0x0890, 0x0f, 0x00, CSIPHY_DEFAULT_PARAMS},
+	{0x0890, 0x0F, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0898, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0894, 0x07, 0x01, CSIPHY_DEFAULT_PARAMS},
 	{0x0C94, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0CA0, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
-	{0x0C90, 0x0f, 0x00, CSIPHY_DEFAULT_PARAMS},
+	{0x0C90, 0x0F, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0C98, 0x08, 0x00, CSIPHY_DEFAULT_PARAMS},
 	{0x0C94, 0x07, 0x01, CSIPHY_DEFAULT_PARAMS},
 	{0x0E30, 0x00, 0x00, CSIPHY_DEFAULT_PARAMS},
@@ -621,9 +621,10 @@ static bool csiphy_is_gen2(u32 version)
 	bool ret = false;
 
 	switch (version) {
-	case CAMSS_845:
+	case CAMSS_7280:
 	case CAMSS_8250:
 	case CAMSS_8280XP:
+	case CAMSS_845:
 	case CAMSS_8550:
 		ret = true;
 		break;
@@ -704,6 +705,7 @@ static int csiphy_init(struct csiphy_device *csiphy)
 		regs->lane_regs = &lane_regs_sdm845[0];
 		regs->lane_array_size = ARRAY_SIZE(lane_regs_sdm845);
 		break;
+	case CAMSS_7280:
 	case CAMSS_8250:
 		regs->lane_regs = &lane_regs_sm8250[0];
 		regs->lane_array_size = ARRAY_SIZE(lane_regs_sm8250);
