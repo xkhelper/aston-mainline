@@ -109,6 +109,9 @@ scm_version()
 		try_tag "${version_tag}"
 	fi
 
+    # not git hex chars and dirty
+	return
+
 	# If we are at the tagged commit, we ignore it because the
 	# version is well-defined. If none of the attempted tags exist
 	# or were usable, $count is still empty.
