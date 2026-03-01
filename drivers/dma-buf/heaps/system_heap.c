@@ -22,6 +22,7 @@
 #include <linux/vmalloc.h>
 
 static struct dma_heap *sys_heap;
+static struct dma_heap *sys_uncached_heap;
 
 struct system_heap_buffer {
 	struct dma_heap *heap;
@@ -433,6 +434,16 @@ static int __init system_heap_create(void)
 	if (IS_ERR(sys_heap))
 		return PTR_ERR(sys_heap);
 
+	// 添加对/dev/dma_heap/system-uncached的支持
+	exp_info.name = "system-uncached";
+	exp_info.ops = &system_heap_ops;
+	exp_info.priv = NULL;
+
+	sys_uncached_heap = dma_heap_add(&exp_info);
+	if (IS_ERR(sys_uncached_heap))
+		return PTR_ERR(sys_uncached_heap);
+
+	
 	return 0;
 }
 module_init(system_heap_create);
