@@ -451,11 +451,6 @@
 	};
 
 	firmware {
-		optee: optee {
-			compatible = "linaro,optee-tz";
-			method = "smc";
-		};
-
 		scm: scm {
 			compatible = "qcom,scm-sm8550", "qcom,scm";
 			qcom,dload-mode = <&tcsr 0x19000>;
