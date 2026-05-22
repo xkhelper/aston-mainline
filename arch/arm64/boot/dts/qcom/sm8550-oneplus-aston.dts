@@ -1836,3 +1836,8 @@
 		};
 	};
 };
+
+&optee {
+	memory-region = <&optee_reserved>;   
+	status = "okay";
+};
