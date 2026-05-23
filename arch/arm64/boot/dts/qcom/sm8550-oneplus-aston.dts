@@ -1739,6 +1739,10 @@
 	status = "okay";
 };
 
+&optee {
+	status = "okay";
+};
+
 // Ultrawide camera
 &cci0_i2c1 {
 	clock-frequency = <400000>;
@@ -1835,9 +1839,4 @@
 			};
 		};
 	};
-};
-
-&optee {
-	memory-region = <&optee_reserved>;   
-	status = "okay";
 };
