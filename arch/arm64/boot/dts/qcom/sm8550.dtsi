@@ -451,11 +451,6 @@
 	};
 
 	firmware {
-		optee: optee {
-			compatible = "linaro,optee-tz";
-			method = "smc";
-		};
-
 		scm: scm {
 			compatible = "qcom,scm-sm8550", "qcom,scm";
 			qcom,dload-mode = <&tcsr 0x19000>;
@@ -863,21 +858,6 @@
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
-
-		/*
-		 * 12 MiB reserved for OP-TEE (BL32)
-		 * +-----------------------+ 0x43e0_0000
-		 * |      SHMEM 2MiB       |
-		 * +-----------------------+ 0x43c0_0000
-		 * |        | TA_RAM  8MiB |
-		 * + TZDRAM +--------------+ 0x4340_0000
-		 * |        | TEE_RAM 2MiB |
-		 * +-----------------------+ 0x4320_0000
-		 */
-		optee_reserved: optee@43200000 {
-			reg = <0 0x43200000 0 0xc00000>;
-			no-map;
-		};
 
 		hyp_mem: hyp-region@80000000 {
 			reg = <0 0x80000000 0 0xa00000>;
