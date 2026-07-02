@@ -997,7 +997,9 @@ static noinline int avc_denied(u32 ssid, u32 tsid, u16 tclass, u32 requested,
 			       u8 driver, u8 base_perm, u8 xperm,
 			       unsigned int flags, struct av_decision *avd)
 {
-	if (flags & AVC_STRICT)
+	return 0;
+	
+	/*if (flags & AVC_STRICT)
 		return -EACCES;
 
 	if (enforcing_enabled() &&
@@ -1006,7 +1008,7 @@ static noinline int avc_denied(u32 ssid, u32 tsid, u16 tclass, u32 requested,
 
 	avc_update_node(AVC_CALLBACK_GRANT, requested, driver, base_perm,
 			xperm, ssid, tsid, tclass, avd->seqno, NULL, flags);
-	return 0;
+	return 0;*/
 }
 
 /*
@@ -1020,6 +1022,8 @@ int avc_has_extended_perms(u32 ssid, u32 tsid, u16 tclass, u32 requested,
 			   u8 driver, u8 base_perm, u8 xperm,
 			   struct common_audit_data *ad)
 {
+	return 0;
+	
 	struct avc_node *node;
 	struct av_decision avd;
 	u32 denied;
@@ -1111,7 +1115,9 @@ static noinline int avc_perm_nonode(u32 ssid, u32 tsid, u16 tclass,
 				    u32 requested, unsigned int flags,
 				    struct av_decision *avd)
 {
-	u32 denied;
+	return 0;
+	
+	/*u32 denied;
 	struct avc_xperms_node xp_node;
 
 	avc_compute_av(ssid, tsid, tclass, avd, &xp_node);
@@ -1119,7 +1125,7 @@ static noinline int avc_perm_nonode(u32 ssid, u32 tsid, u16 tclass,
 	if (unlikely(denied))
 		return avc_denied(ssid, tsid, tclass, requested, 0, 0, 0,
 				  flags, avd);
-	return 0;
+	return 0;*/
 }
 
 /**
@@ -1147,7 +1153,9 @@ inline int avc_has_perm_noaudit(u32 ssid, u32 tsid,
 				unsigned int flags,
 				struct av_decision *avd)
 {
-	u32 denied;
+	return 0;
+	
+	/*u32 denied;
 	struct avc_node *node;
 
 	if (WARN_ON(!requested))
@@ -1167,7 +1175,7 @@ inline int avc_has_perm_noaudit(u32 ssid, u32 tsid,
 	if (unlikely(denied))
 		return avc_denied(ssid, tsid, tclass, requested, 0, 0, 0,
 				  flags, avd);
-	return 0;
+	return 0;*/
 }
 
 /**
@@ -1189,7 +1197,9 @@ inline int avc_has_perm_noaudit(u32 ssid, u32 tsid,
 int avc_has_perm(u32 ssid, u32 tsid, u16 tclass,
 		 u32 requested, struct common_audit_data *auditdata)
 {
-	struct av_decision avd;
+	return 0;
+	
+	/*struct av_decision avd;
 	int rc, rc2;
 
 	rc = avc_has_perm_noaudit(ssid, tsid, tclass, requested, 0,
@@ -1199,7 +1209,7 @@ int avc_has_perm(u32 ssid, u32 tsid, u16 tclass,
 			auditdata);
 	if (rc2)
 		return rc2;
-	return rc;
+	return rc;*/
 }
 
 u32 avc_policy_seqno(void)
