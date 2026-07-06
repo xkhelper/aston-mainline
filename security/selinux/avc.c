@@ -320,6 +320,8 @@ error:
 static int avc_add_xperms_decision(struct avc_node *node,
 			struct extended_perms_decision *src)
 {
+	return 0;
+	
 	struct avc_xperms_decision_node *dest_xpd;
 
 	dest_xpd = avc_xperms_decision_alloc(src->used);
@@ -345,6 +347,8 @@ static struct avc_xperms_node *avc_xperms_alloc(void)
 static int avc_xperms_populate(struct avc_node *node,
 				struct avc_xperms_node *src)
 {
+	return 0;
+	
 	struct avc_xperms_node *dest;
 	struct avc_xperms_decision_node *dest_xpd;
 	struct avc_xperms_decision_node *src_xpd;
@@ -410,6 +414,8 @@ static inline int avc_xperms_audit(u32 ssid, u32 tsid, u16 tclass,
 				   u8 perm, int result,
 				   struct common_audit_data *ad)
 {
+	return 0;
+	
 	u32 audited, denied;
 
 	audited = avc_xperms_audit_required(
@@ -452,6 +458,8 @@ static void avc_node_replace(struct avc_node *new, struct avc_node *old)
 
 static inline int avc_reclaim_node(void)
 {
+	return 0;
+	
 	struct avc_node *node;
 	int hvalue, try, ecx;
 	unsigned long flags;
@@ -560,6 +568,8 @@ static struct avc_node *avc_lookup(u32 ssid, u32 tsid, u16 tclass)
 
 static int avc_latest_notif_update(u32 seqno, int is_insert)
 {
+	return 0;
+	
 	int ret = 0;
 	static DEFINE_SPINLOCK(notif_lock);
 	unsigned long flag;
@@ -749,6 +759,8 @@ noinline int slow_avc_audit(u32 ssid, u32 tsid, u16 tclass,
 			    u32 requested, u32 audited, u32 denied, int result,
 			    struct common_audit_data *a)
 {
+	return 0;
+	
 	struct common_audit_data stack_data;
 	struct selinux_audit_data sad;
 
@@ -785,6 +797,8 @@ noinline int slow_avc_audit(u32 ssid, u32 tsid, u16 tclass,
  */
 int __init avc_add_callback(int (*callback)(u32 event), u32 events)
 {
+	return 0;
+	
 	struct avc_callback_node *c;
 	int rc = 0;
 
@@ -825,6 +839,8 @@ static int avc_update_node(u32 event, u32 perms, u8 driver, u8 xperm, u32 ssid,
 			   struct extended_perms_decision *xpd,
 			   u32 flags)
 {
+	return 0;
+	
 	u32 hvalue;
 	int rc = 0;
 	unsigned long flag;
@@ -947,6 +963,8 @@ static void avc_flush(void)
  */
 int avc_ss_reset(u32 seqno)
 {
+	return 0;
+	
 	struct avc_callback_node *c;
 	int rc = 0, tmprc;
 
@@ -992,6 +1010,8 @@ static noinline int avc_denied(u32 ssid, u32 tsid,
 			       u8 driver, u8 xperm, unsigned int flags,
 			       struct av_decision *avd)
 {
+	return 0;
+	
 	if (flags & AVC_STRICT)
 		return -EACCES;
 
@@ -1014,6 +1034,8 @@ static noinline int avc_denied(u32 ssid, u32 tsid,
 int avc_has_extended_perms(u32 ssid, u32 tsid, u16 tclass, u32 requested,
 			   u8 driver, u8 xperm, struct common_audit_data *ad)
 {
+	return 0;
+	
 	struct avc_node *node;
 	struct av_decision avd;
 	u32 denied;
@@ -1104,6 +1126,8 @@ static noinline int avc_perm_nonode(u32 ssid, u32 tsid, u16 tclass,
 				    u32 requested, unsigned int flags,
 				    struct av_decision *avd)
 {
+	return 0;
+	
 	u32 denied;
 	struct avc_xperms_node xp_node;
 
@@ -1140,6 +1164,8 @@ inline int avc_has_perm_noaudit(u32 ssid, u32 tsid,
 				unsigned int flags,
 				struct av_decision *avd)
 {
+	return 0;
+	
 	u32 denied;
 	struct avc_node *node;
 
@@ -1182,6 +1208,8 @@ inline int avc_has_perm_noaudit(u32 ssid, u32 tsid,
 int avc_has_perm(u32 ssid, u32 tsid, u16 tclass,
 		 u32 requested, struct common_audit_data *auditdata)
 {
+	return 0;
+	
 	struct av_decision avd;
 	int rc, rc2;
 
