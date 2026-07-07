@@ -20,12 +20,15 @@
 #include <linux/mm.h>
 #include <linux/mman.h>
 #include <linux/uaccess.h>
-#include <linux/page_size_compat.h>
 #include <linux/personality.h>
 #include <linux/bitops.h>
 #include <linux/mutex.h>
 #include <linux/shmem_fs.h>
 #include "ashmem.h"
+
+#define ASHMEM_NAME_PREFIX "dev/ashmem/"
+#define ASHMEM_NAME_PREFIX_LEN (sizeof(ASHMEM_NAME_PREFIX) - 1)
+#define ASHMEM_FULL_NAME_LEN (ASHMEM_NAME_LEN + ASHMEM_NAME_PREFIX_LEN)
 
 /**
  * struct ashmem_area - The anonymous shared memory area
@@ -387,7 +390,7 @@ static int ashmem_mmap(struct file *file, struct vm_area_struct *vma)
 	}
 
 	/* requested mapping size larger than object size */
-	if (vma->vm_end - vma->vm_start > __PAGE_ALIGN(asma->size)) {
+	if (vma->vm_end - vma->vm_start > PAGE_ALIGN(asma->size)) {
 		ret = -EINVAL;
 		goto out;
 	}
