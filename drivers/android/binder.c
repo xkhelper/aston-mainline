@@ -6989,7 +6989,7 @@ static int __init binder_init(void)
 	binder_debugfs_dir_entry_proc = debugfs_create_dir("proc",
 						binder_debugfs_dir_entry_root);
 
-	if (/*!IS_ENABLED(CONFIG_ANDROID_BINDERFS) &&*/
+	if (!IS_ENABLED(CONFIG_ANDROID_BINDERFS) &&
 	    strcmp(binder_devices_param, "") != 0) {
 		/*
 		* Copy the module_parameter string, because we don't want to
