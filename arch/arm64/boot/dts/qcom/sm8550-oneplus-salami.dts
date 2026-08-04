@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: BSD-2-Clause
+/*
+ * Copyright (c) 2025, Boston Edison Media and Production Consultants
+ * OnePlus 11 5G (salami) - SM8550 8GB variant
+ * Derived from sm8550-oneplus-aston.dts by Shandorman
+ */
+
+/dts-v1/;
+#include "sm8550-oneplus-aston.dts"
+
+/ {
+	model = "OnePlus 11 5G";
+	compatible = "oneplus,salami", "qcom,sm8550";
+};
