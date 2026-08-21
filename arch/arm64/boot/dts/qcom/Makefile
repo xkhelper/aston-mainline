@@ -275,8 +275,6 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-xiaomi-sheng.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-oneplus-aston.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-oneplus-aston_12G.dtb
 dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-oneplus-aston_16G_A14.dtb
-dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-oneplus-salami.dtb
-dtb-$(CONFIG_ARCH_QCOM)	+= sm8550-oneplus-salami_12G.dtb
 
 sm8650-hdk-display-card-dtbs	:= sm8650-hdk.dtb sm8650-hdk-display-card.dtbo
 
